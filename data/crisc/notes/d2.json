@@ -54,7 +54,8 @@
             "crisc_d2_121",
             "crisc_d2_136",
             "crisc_d2_156",
-            "crisc_d2_166"
+            "crisc_d2_166",
+            "crisc_d2_182"
           ],
           "definition": "A risk event is something that happened, or nearly happened, that shows a risk scenario can occur. Loss events cause harm; near misses stop just short of it.",
           "why_it_matters": "Events are the best evidence of real likelihood and impact; counting only losses hides how often controls were nearly beaten, understating risk.",
@@ -64,7 +65,7 @@
             "Fixing the immediate cause closes the incident ticket, not the risk; an event whose cause fits no scenario shows a register gap, filled with the process owner.",
             "Impact counts primary and secondary losses, such as missed orders, lost customers, penalties and customer harm, even those arriving after closure; the process owner, not IT's incident record, supplies it."
           ],
-          "example": "At a water utility, an alarm stops an operator opening the wrong valve after a remote session times out. Priya Raman, the risk analyst, logs a near miss against the remote operation error scenario and asks its risk owner, the operations manager, to review likelihood.",
+          "example": "At a water utility, an alarm stops an operator opening the wrong valve in a remote session. Priya Raman, the risk analyst, logs a near miss against the remote operation error scenario and asks its owner, the operations manager, to review likelihood.",
           "audit_focus": {
             "review": [
               "Trace recent incidents and near misses to the risk scenarios they affect",
@@ -81,7 +82,7 @@
           "exam_traps": [
             {
               "trap": "A near miss caused no loss, so it does not need to be recorded.",
-              "why": "It shows the threat can reach the asset and controls barely held: strong likelihood evidence, lost if nobody records it."
+              "why": "It shows the threat reached the asset: likelihood evidence, lost if unrecorded; one stopped by chance, not a control, shows a gap too."
             },
             {
               "trap": "Once the root cause is fixed, the incident and its register entry can both be closed.",
@@ -632,7 +633,8 @@
             "crisc_d2_105",
             "crisc_d2_114",
             "crisc_d2_130",
-            "crisc_d2_167"
+            "crisc_d2_167",
+            "crisc_d2_183"
           ],
           "definition": "Risk-based remediation ranks vulnerability fixes by business impact and likelihood of exploitation, not by severity score or discovery date alone.",
           "why_it_matters": "No enterprise can fix everything at once. Ranking by business risk spends limited patching effort where a successful exploit would hurt objectives most.",
@@ -642,7 +644,7 @@
             "Add exploitability: public exploit code, active attacks or a listing in a known-exploited vulnerabilities catalog.",
             "Fix time frames by risk tier sit in a management-approved policy; a medium flaw with no reachable path or known exploitation takes the next routine cycle, not an emergency change.",
             "When a fix cannot meet its time frame, raise an exception with compensating controls for the risk owner to accept or reject.",
-            "For a new flaw in a shared component, first find where it runs and which business services rely on it, from inventories and component lists for in-house and commercial software."
+            "For a new flaw in a shared component, first find where it runs and which business services rely on it, from component lists for in-house, commercial and AI software."
           ],
           "example": "A city transit agency has 1,200 open findings and patches them in the order they arrive. Marcus Bell, the risk lead, groups them by the service each asset supports, flags the internet-facing fare payment servers that have public exploits, and drafts risk tiers with fix deadlines for management approval.",
           "audit_focus": {
@@ -662,6 +664,10 @@
             {
               "trap": "Patch the highest CVSS scores first, whatever the asset.",
               "why": "The score alone ignores what the asset supports and whether attackers can reach it. Risk-based priority puts critical, exposed, actively exploited assets first."
+            },
+            {
+              "trap": "Model files from public hubs are data, not software to scan.",
+              "why": "Model files and ML libraries can carry malicious content or known flaws."
             }
           ],
           "key_terms": [
@@ -703,7 +709,8 @@
             "crisc_d2_128",
             "crisc_d2_139",
             "crisc_d2_150",
-            "crisc_d2_161"
+            "crisc_d2_161",
+            "crisc_d2_184"
           ],
           "definition": "A risk scenario is a specific, assessable description of how a threat could cause an event that affects an asset and harms business objectives.",
           "why_it_matters": "A vague entry such as 'cyberattack' cannot be rated, owned or treated. A specific scenario shows which controls matter and lets the owner compare it with appetite.",
@@ -713,7 +720,7 @@
             "Asset: the process, system, data or people affected; an AI bias scenario names the group the model treats unfairly, not just 'some applicants'.",
             "Time: when or how long, such as payroll week, outages over four hours or AI drift until the next accuracy check; rate the credible time that hurts most.",
             "Consequence: the effect on objectives in business terms, such as lost revenue, fines or harm to patients; harm from altered data grows until someone notices.",
-            "NIST IR 8286A Rev. 1 suggests a cause-and-effect sentence: an actor exploits a weakness in an asset, resulting in a business impact."
+            "NIST IR 8286A Rev. 1 suggests a cause-and-effect sentence: an actor exploits a weakness in an asset, resulting in a business impact; likelihood and impact rate that same event."
           ],
           "example": "An airline's register lists 'third-party risk' as high, with no detail. Chen Wei, the risk analyst, rewrites it: a ransomware attack on the baggage-handling vendor stops bag tracking at the main hub for more than six hours in peak season, causing missed connections, compensation claims and regulator scrutiny. Chen rates the rewritten scenario and asks the ground operations director to confirm it.",
           "audit_focus": {
@@ -979,19 +986,20 @@
             "crisc_d2_123",
             "crisc_d2_131",
             "crisc_d2_151",
-            "crisc_d2_174"
+            "crisc_d2_174",
+            "crisc_d2_185"
           ],
           "definition": "A risk assessment identifies, estimates and prioritizes risk. NIST SP 800-30 runs it in four steps: prepare, conduct, communicate the results and maintain the assessment.",
           "why_it_matters": "Skipping preparation means assessing the wrong things against the wrong criteria. Skipping communication or maintenance leaves decisions resting on unseen or outdated results.",
           "how_it_works": [
             "Prepare: set purpose, scope, assumptions (checking with owners any that decide a rating), constraints, sources, risk model and approach (threat-, impact- or vulnerability-oriented), chosen partly by where information is strongest.",
-            "Conduct: identify threat sources and events, vulnerabilities and predisposing conditions, then determine likelihood, impact and risk.",
-            "Communicate: give results to decision makers in a form they can act on, like a briefing, report or dashboard.",
+            "Conduct: identify threat sources and events, vulnerabilities and predisposing conditions, then rate likelihood and impact, which a checklist of required controls does not.",
+            "Communicate: give decision makers results they can act on, like a briefing, report or dashboard.",
             "Maintain: monitor risk factors; without a significant change, update just the factors that changed.",
             "The requesting official sets scope and rules on third-party parts outside it; an AI system's scope covers its training-data pipeline and the people using its outputs.",
             "In ISO 31000, ISO/IEC 27005 and the ISACA Glossary, risk evaluation compares each rating with the criteria and appetite; NIST SP 800-30 leaves this to decision makers."
           ],
-          "example": "A hotel group's CIO asks for a cloud migration risk assessment by Friday. Before collecting threats, Isabel Duarte, the risk practitioner, agrees the scope with the CIO: the booking platform and payment data only, a three-year horizon, the group's five-point rating scales and the decisions the results must support.",
+          "example": "A hotel group's CIO asks for a cloud migration risk assessment. Before collecting threats, Isabel Duarte, the risk practitioner, agrees the scope with the CIO: the booking platform and payment data only, a three-year horizon, the group's five-point rating scales and the decisions the results must support.",
           "audit_focus": {
             "review": [
               "Confirm scope, purpose and criteria were agreed before analysis began",
@@ -1144,7 +1152,8 @@
             "crisc_d2_124",
             "crisc_d2_133",
             "crisc_d2_159",
-            "crisc_d2_179"
+            "crisc_d2_179",
+            "crisc_d2_186"
           ],
           "definition": "MTO is a critical function's longest tolerable disruption; RTO, the time allowed to recover a function or resource; RPO, the earliest restore point that tolerable data loss allows.",
           "why_it_matters": "These numbers drive recovery design and cost. Set by IT alone, they reflect technology, not what the business can survive.",
@@ -1667,7 +1676,8 @@
             "crisc_d2_126",
             "crisc_d2_160",
             "crisc_d2_171",
-            "crisc_d2_176"
+            "crisc_d2_176",
+            "crisc_d2_187"
           ],
           "definition": "Inherent risk is risk before any management action; current risk reflects controls already in place; residual risk is what remains after the chosen response is implemented.",
           "why_it_matters": "Comparing inherent risk with appetite overstates the need for new controls; counting planned controls as working understates real exposure.",
@@ -1676,7 +1686,8 @@
             "Residual risk uses inherent risk's scales and method, crediting what each control changes, not how many controls there are.",
             "Current risk, counting only implemented, working responses, is compared with appetite now; a planned response's future residual risk shows whether the plan is enough.",
             "Controls leave residual risk above zero, so 100% effectiveness inputs need a range; layered controls multiply each layer's pass-through share, not add effectiveness rates.",
-            "Before design, inherent risk ranks which scenarios need the strongest controls; target risk then checks whether the design is enough."
+            "Before design, inherent risk ranks which scenarios need the strongest controls; target risk then checks whether the design is enough.",
+            "Loss history under today's controls shows current, not inherent, likelihood; crediting them again double counts."
           ],
           "compare": {
             "columns": [
@@ -1706,7 +1717,7 @@
               }
             ]
           },
-          "example": "A hospital's infusion pump tampering scenario has very high inherent risk. Network isolation exists; firmware signing is planned. Siobhan Kelly, the risk analyst, records current risk as high, counting only isolation, and shows target risk after signing separately, so the patient safety director compares today's exposure with appetite.",
+          "example": "A hospital's infusion pump tampering scenario has high inherent risk. Network isolation exists; firmware signing is planned. Siobhan Kelly, the risk analyst, rates current risk counting only isolation and shows target risk separately.",
           "audit_focus": {
             "review": [
               "Compare inherent, current and target ratings for use of the same scales",

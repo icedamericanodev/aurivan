@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026. Round 9 crisc_d1_118 to crisc_d1_124, 5 Nov 2026. Round 10 crisc_d1_125 to crisc_d1_130, 5 Nov 2026. Round 12 crisc_d1_138 to crisc_d1_143, 5 Nov 2026. Round 13 crisc_d1_144 to crisc_d1_150, 12 Nov 2026. Round 14 crisc_d1_151 to crisc_d1_156, 12 Nov 2026. Round 15 crisc_d1_157 to crisc_d1_163, 12 Nov 2026. Round 17 crisc_d1_170 to crisc_d1_176, 12 Nov 2026. Round 18 crisc_d1_177 to crisc_d1_182, 12 Nov 2026. Round 19 crisc_d1_183 to crisc_d1_188, 12 Nov 2026. Round 20 crisc_d1_189 to crisc_d1_195, 12 Nov 2026. Round 21 crisc_d1_196 to crisc_d1_201, 12 Nov 2026. Round 22 crisc_d1_202 to crisc_d1_208, 12 Nov 2026. Round 23 crisc_d1_209 to crisc_d1_215, 12 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026. Round 9 crisc_d1_118 to crisc_d1_124, 5 Nov 2026. Round 10 crisc_d1_125 to crisc_d1_130, 5 Nov 2026. Round 12 crisc_d1_138 to crisc_d1_143, 5 Nov 2026. Round 13 crisc_d1_144 to crisc_d1_150, 12 Nov 2026. Round 14 crisc_d1_151 to crisc_d1_156, 12 Nov 2026. Round 15 crisc_d1_157 to crisc_d1_163, 12 Nov 2026. Round 17 crisc_d1_170 to crisc_d1_176, 12 Nov 2026. Round 18 crisc_d1_177 to crisc_d1_182, 12 Nov 2026. Round 19 crisc_d1_183 to crisc_d1_188, 12 Nov 2026. Round 20 crisc_d1_189 to crisc_d1_195, 12 Nov 2026. Round 21 crisc_d1_196 to crisc_d1_201, 12 Nov 2026. Round 22 crisc_d1_202 to crisc_d1_208, 12 Nov 2026. Round 23 crisc_d1_209 to crisc_d1_215, 12 Nov 2026. Round 24 crisc_d1_216 to crisc_d1_221, 12 Nov 2026.",
     "schema_version": 1
   },
   "domain": 1,
@@ -6841,7 +6841,7 @@
       "tips": [
         "Eliminate: C classifies by volume and D by the system's main use; the class follows the sensitivity of the data held, whatever its share of the records.",
         "Final two: A beats B because a class sets the protection required; rating sensitivity after that protection is in place makes the requirement disappear.",
-        "Exam cue: a system holding several kinds of data takes the class of its most sensitive data, the high water mark; controls follow the class rather than set it."
+        "Exam cue: a system holding several kinds of data takes the class of its most sensitive data, the high water mark; the class is judged before controls, not net of them."
       ],
       "framework_ref": "NIST FIPS 199 Section 3 (Security Categorization Applied to Information Systems: a system's impact values are the highest values, the high water mark, among the information types it holds); ISACA Glossary (data classification); ISACA Glossary (data owner)",
       "related_concepts": [
@@ -6849,7 +6849,7 @@
         "High water mark",
         "Asset owner"
       ],
-      "_provenance": "Authored from concept: notes 1A6.2 (Classification and Valuation as Risk Input: the owner classifies with the enterprise scheme; bullet extended in round 19: a system takes the class of the most sensitive data it holds). Round 19, 12 Nov 2026: original scenario (a dry-cleaning chain's booking system, mostly price lists but also saved card details, was classified public by its owner) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 19 asks covered: the batch's foundational item and one of its two 'Which of the following' stems, with short noun-phrase options; owner shape k=2 split as runner-up (B) plus an eliminated option (D), the key naming none, as the round 19 brief allows; no Have/Ask options; no wait or defer option; no incidental periods; setting dry-cleaning chain. Neighbours checked: crisc_d1_031 (the owner reviews a class after new data arrives; a FIRST item with action options; this item keys the high water mark basis), crisc_d1_058 (owners over-classify; reapply the criteria), crisc_d1_030 (value by business impact), crisc_d1_076 (custodian decisions), crisc_d4_093 (research data held without a class), cc_d5_057 (a report embedding restricted scans takes the restricted level; the same high water mark rule for a document; keep apart in practice sets), CISA d2_016 and d2_073 (classification scheme design; impact as the basis for levels). Wrong options read against older Exam cues: crisc_d1_031's cue (the owner revisits class first, controls follow) and crisc_d1_058's cue (classification against the scheme's criteria) support the key and rule out B and D. None in CRISC keys the most sensitive data as the basis for a system's class. Audit 12 Nov 2026 (round 19 standards audit): option A lengthened by one word ('that the system holds') so the key is no longer strictly the shortest option by words (round 19 ask for D1); meaning unchanged.",
+      "_provenance": "Authored from concept: notes 1A6.2 (Classification and Valuation as Risk Input: the owner classifies with the enterprise scheme; bullet extended in round 19: a system takes the class of the most sensitive data it holds). Round 19, 12 Nov 2026: original scenario (a dry-cleaning chain's booking system, mostly price lists but also saved card details, was classified public by its owner) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 19 asks covered: the batch's foundational item and one of its two 'Which of the following' stems, with short noun-phrase options; owner shape k=2 split as runner-up (B) plus an eliminated option (D), the key naming none, as the round 19 brief allows; no Have/Ask options; no wait or defer option; no incidental periods; setting dry-cleaning chain. Neighbours checked: crisc_d1_031 (the owner reviews a class after new data arrives; a FIRST item with action options; this item keys the high water mark basis), crisc_d1_058 (owners over-classify; reapply the criteria), crisc_d1_030 (value by business impact), crisc_d1_076 (custodian decisions), crisc_d4_093 (research data held without a class), cc_d5_057 (a report embedding restricted scans takes the restricted level; the same high water mark rule for a document; keep apart in practice sets), CISA d2_016 and d2_073 (classification scheme design; impact as the basis for levels). Wrong options read against older Exam cues: crisc_d1_031's cue (the owner revisits class first, controls follow) and crisc_d1_058's cue (classification against the scheme's criteria) support the key and rule out B and D. None in CRISC keys the most sensitive data as the basis for a system's class. Audit 12 Nov 2026 (round 19 standards audit): option A lengthened by one word ('that the system holds') so the key is no longer strictly the shortest option by words (round 19 ask for D1); meaning unchanged. Audit 12 Nov 2026 (round 24 standards audit): Exam cue narrowed: 'controls follow the class rather than set it' read as keying crisc_d1_218's eliminated option (keep a server on the tier its data class sets) though protection also follows business criticality; the lesson (class not judged net of controls) is unchanged.",
       "style_version": 2
     },
     {
@@ -7960,6 +7960,228 @@
         "Appetite statements"
       ],
       "_provenance": "Authored from concept: notes 1B4.2 (Setting and Expressing Risk Appetite: leaders set appetite by risk type in statements backed by limits) and 1B4.1 (the board and senior management set appetite; the practitioner informs it). Round 23, 12 Nov 2026: original scenario (a hardware store chain's board states a low appetite for online fraud but allows $1,500,000 of losses a year, which its impact scale rates severe) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 23 asks covered: one of two 'Which of the following' stems; owner shape: lone owner on the runner-up (A); analysis item. Lens word 'appetite' in the key also in D. Setting hardware store chain. The figure is $1,500,000, not $2,000,000, to keep apart from crisc_d1_197. Neighbours checked: crisc_d1_197 (unit limits that must fit the board's appetite together; paused, not used), crisc_d1_017 (tolerance supporting a stated appetite), crisc_d1_019 (the practitioner does not set appetite; consistent with B), crisc_d1_041, crisc_d1_091 (capacity gap reported to the board), crisc_d1_201 (IT's own appetite against the board's), crisc_d1_115 (conflicting peer policies go to the level that approved both; same escalation logic, different object), crisc_d1_177 (strategy beyond appetite to the board; paused, and this item's Exam cue is phrased on the appetite-statement trigger instead), crisc_d1_042 (beyond limits, to whoever set them), crisc_d3_141, CC cc_d1_121. The decider verb follows the bank: the board sets appetite (notes 1B4.1, 1B4.2).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_216",
+      "domain": 1,
+      "subtopic": "1A2 Organizational structure, roles and responsibilities. Owner asks the analyst to apply a control",
+      "principle_id": "lines-of-defense",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A foreign exchange bureau's card-fraud risk owner chose the risk analyst's costed option of blocking web orders from three countries and asks the analyst to apply the block. What is the analyst's BEST response?",
+      "options": {
+        "A": "Apply the block through the bureau's change process",
+        "B": "Pass the block to IT operations as a firewall change",
+        "C": "Estimate the fraud the block would stop before applying it",
+        "D": "Get the chief risk officer's approval before the block goes in"
+      },
+      "correct": "B",
+      "key_concept": "Once the owner chooses a response, the practitioner hands the change to the first-line team that makes it, and goes on advising and monitoring.",
+      "pre_read": "Note what has already been decided and whose job the remaining work is.",
+      "correct_explanation": "The owner has already chosen from costed options, so what remains is putting the block in place. Blocking web orders is a technical control, and IT operations makes firewall changes as the first line, so the change goes to them. Applying the block through the change process is the runner-up: the change would be controlled, but the analyst would then run a control the risk function later monitors, mixing first-line work with the second line's.",
+      "wrong_explanations": {
+        "A": "Change control keeps the change orderly, but the analyst would be running a control the risk function later monitors; making firewall changes is IT's first-line work.",
+        "C": "The costed options already set out what the block would save and cost; estimating it again repeats analysis the owner has already used to decide.",
+        "D": "The owner chose within their role as risk owner; the chief risk officer runs the risk function, and this chosen response needs no further approval from them."
+      },
+      "tips": [
+        "Eliminate: C re-estimates what the costed options already showed, and D adds a chief risk officer approval that a response chosen within the owner's authority does not need.",
+        "Final two: B beats A because the analyst advises and monitors but does not run controls; IT operations makes firewall changes, however carefully the analyst would apply one.",
+        "Exam cue: when the owner has chosen a response from completed analysis and asks the practitioner to put it in place, hand the work to whoever runs that control."
+      ],
+      "framework_ref": "ISACA Glossary (control owner); ISACA Journal 2018 Volume 4 (Roles of Three Lines of Defense for Information Security and Governance)",
+      "related_concepts": [
+        "Control owner",
+        "Risk practitioner role",
+        "Lines of defense"
+      ],
+      "_provenance": "Authored from concept: notes 1A2.2 (Risk Owner, Control Owner and Risk Practitioner: the practitioner brings the owner costed options; once the owner chooses, the first-line team that runs the control makes the change) and 1B2 (the first line runs controls, the second line monitors and challenges). Round 24, 12 Nov 2026: original scenario (a foreign exchange bureau's card-fraud risk owner chose the analyst's costed option to block web orders from three countries and asks the analyst to apply the block) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 24 asks covered: the D1 IT key in IT's own role (B: IT operations makes the firewall change as the first line); 'Estimate' on one wrong option (C, eliminated); no owner word in any option (k=0); application item; key opens 'Pass'. The key acts without a fresh assessment because the owner chose from the analyst's costed options; the Exam cue states that condition ('from completed analysis'). Older 'before anyone picks / before choosing / before treatment' cues (crisc_d2_006, crisc_d2_050, crisc_d2_116, crisc_d3_210, crisc_d4_011, crisc_d4_014) all apply to unanalyzed changes and do not clash. Setting foreign exchange bureau (finance). Neighbours checked: crisc_d1_060 (owner asks the analyst to choose: recommend, the owner decides; consistent, this item starts after that choice), crisc_d4_092 (after the owner's choice the practitioner monitors; consistent), crisc_d3_090 (IT as action owner while the director keeps the risk), crisc_d3_005 and crisc_d1_022 (control owner = manager whose team runs the control; paused family, not the lesson here: the item turns on the practitioner not running controls, not on naming a control owner), crisc_d3_248 (control owner fixes a failing control), crisc_d1_157, crisc_d3_104 (re-estimate target risk when a planned control changes; this control is unchanged), crisc_d1_049, CC cc_d4_178 and cc_d4_062 (firewall wording only), CISA d1_093. No CISA, AAIA or CC item has an owner asking the risk function to apply a chosen control. Audit 12 Nov 2026 (round 24 standards audit): wrong explanation D narrowed from a sweeping 'does not approve owners' chosen responses' to this response. Review 12 Nov 2026 (round 24 concept and blind review): Eliminate tip narrowed to a response chosen within the owner's authority, matching the audit's narrowed wrong explanation D (concept item 8: responses above an owner's authority do go up).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_217",
+      "domain": 1,
+      "subtopic": "1A3 Organizational culture and ethics. Request to fix an exposure quietly",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An electrical contractor's project director wants client building-access codes, found exposed in a public folder, fixed quietly; the client contract requires notice of any exposure. What is the risk analyst's BEST response?",
+      "options": {
+        "A": "Report the exposure through the contractor's incident process",
+        "B": "Delete the exposed building-access codes from the public folder",
+        "C": "Send the client's security team the exposure details",
+        "D": "Have IT log the folder fix as a routine change request"
+      },
+      "correct": "A",
+      "key_concept": "A known exposure goes into the incident process, not a quiet fix or a lone disclosure, so those authorized can give the notice owed.",
+      "pre_read": "Weigh what the director wants against what the contract requires, and who handles notice.",
+      "correct_explanation": "Fixing a known exposure quietly would hide a significant fact and break the contract's notice term. Reporting it through the incident process puts containment and the notice decision with the people authorized to handle them. Deleting the codes is the runner-up: it stops further exposure, but codes already seen stay valid until the client changes them, and done quietly no notice is sent.",
+      "wrong_explanations": {
+        "B": "Removing the codes stops further exposure, but codes already seen stay valid until the client changes them, and done quietly the notice the contract requires goes unsent.",
+        "C": "The client must hear, but through the contractor's process; an analyst writing to the client alone releases company information without the authority to do so.",
+        "D": "A routine change records the fix but not the exposure, so the incident and the notice the contract calls for stay hidden."
+      },
+      "tips": [
+        "Eliminate: C has the analyst contact the client outside the contractor's process, and D files the exposure as a routine change, which records the fix but not the incident.",
+        "Final two: A beats B because deleting the codes stops further exposure but hides it from the client, whose codes stay valid; the incident process has the required notice decided by those authorized.",
+        "Exam cue: when someone wants a known exposure fixed quietly, take it into the incident process; containment on its own does not meet a duty to report."
+      ],
+      "framework_ref": "ISACA Code of Professional Ethics (inform appropriate parties of all significant facts); NIST CSF 2.0 RS.CO-02 (internal and external stakeholders are notified of incidents)",
+      "related_concepts": [
+        "Professional ethics",
+        "Incident reporting",
+        "Contractual obligations"
+      ],
+      "_provenance": "Authored from concept: notes 1A3.3 (Professional Ethics and Ethical AI Use: report significant facts that would distort results; a known exposure goes into the incident process, not a quiet fix; release outside information only with the enterprise's approval). Round 24, 12 Nov 2026: original scenario (an electrical contractor's project director wants client building-access codes, found exposed in a public folder, fixed quietly, though the client contract requires notice of any exposure) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 24 asks covered: the D1 'Have' on an eliminated wrong option (D); no Tell-family opener (C opens 'Send'); no owner word in any option (k=0); application item; key opens 'Report'. Setting electrical contractor (construction and trades). Neighbours checked: crisc_d1_007 (keep an unfavorable result in a report; same honest-reporting family, different trigger: an exposure with a contractual notice duty), crisc_d3_168 (show red as amber), crisc_d1_059 (client notice term against the incident procedure; consistent), crisc_d1_062 (outsiders get information only with approval; consistent with C wrong), crisc_d1_163 (legal counsel confirms whether a new law applies; paused, and the earlier draft's counsel option was replaced so that cue cannot key a wrong option), crisc_d4_146, crisc_d4_042, CC cc_d5_101 (delete the public link, then report it) and cc_d5_041 (report as a possible incident), CC cc_d1_167, CISA d4_177 (blameless review). Cross-bank: the CC items teach the operational report; this item teaches the ethics of refusing a quiet fix. An earlier draft (risk team bonuses tied to regional profit) was dropped as a near-duplicate of crisc_d1_089. Review 12 Nov 2026 (round 24 concept and blind review): wrong explanation B, the correct explanation's runner-up sentence and the Final two no longer say deleting the codes contains the exposure: it stops further exposure, but codes already seen stay valid until the client changes them (concept item 2).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_218",
+      "domain": 1,
+      "subtopic": "1A6 Organizational asset management. Protection set by data class",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A pipe maker protects servers by data class, so its production-scheduling server, which holds only public data, gets the lowest tier, though the plant stops without it. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Reclassify the server's data as restricted, with its owner's approval",
+        "B": "Set the server's tier by what the business paid for it",
+        "C": "Keep the server on the tier its data class sets",
+        "D": "Base server tiers on business criticality as well as data class"
+      },
+      "correct": "D",
+      "key_concept": "A data class reflects sensitivity; protection also follows business criticality, so a system holding public data can still need strong availability controls.",
+      "pre_read": "Separate how sensitive the server's data is from how much the business needs the server.",
+      "correct_explanation": "The tier rule looks only at how sensitive the data is, so a server the plant cannot run without gets the least protection. Basing tiers on business criticality as well fixes the rule for this server and any like it. Reclassifying the data as restricted is the runner-up: it would raise the tier, but it labels public data as sensitive, adds handling it does not need and leaves other critical systems under the same gap.",
+      "wrong_explanations": {
+        "A": "A higher class would lift the tier, but even with the owner's approval it mislabels public data and leaves the rule's gap for other critical systems.",
+        "B": "Purchase price ignores what the plant loses while the server is down, which is the harm its protection should match.",
+        "C": "The data class says how sensitive the data is, not how much the plant depends on the server, so the tier stays far below its importance."
+      },
+      "tips": [
+        "Eliminate: B values the server by its purchase price, not the harm of losing it, and C keeps a tier set by data sensitivity while the plant depends on the server.",
+        "Final two: D beats A because the data really is public; the gap is in a rule that ignores criticality, and a false class would fix one server by mislabeling it.",
+        "Exam cue: when an important system gets weak protection because its data is not sensitive, add criticality to the rule; do not relabel the data to force a higher tier."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.AM-05 (assets are prioritized based on classification, criticality, resources and impact on the mission); ISACA Glossary (asset value)",
+      "related_concepts": [
+        "Data classification",
+        "Business criticality",
+        "Asset value"
+      ],
+      "_provenance": "Authored from concept: notes 1A6.2 (Classification and Valuation as Risk Input: class reflects sensitivity; classification, value and business criticality drive protection and impact ratings, so public data can still need strong availability controls) and 1A6.1. Round 24, 12 Nov 2026: original scenario (a pipe maker protects servers by data class, so its production-scheduling server, holding only public data, gets the lowest tier though the plant stops without it) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 24 asks covered: owner shape lone owner on the runner-up (A); 'Set' on an eliminated wrong option (B); application item; key opens 'Base'. Lens word 'business' in the key also in B. Setting pipe maker (manufacturing). Neighbours checked: crisc_d1_185 (a system takes the class of its most sensitive data and controls follow the class rather than set it; consistent: A relabels data to force protection, which that cue rules out), crisc_d1_030 and crisc_d1_194 (value by business impact; B is their wrong answer), crisc_d1_165 (BIA criticality to pick assets to assess), crisc_d3_170 (tier vendors by criticality), crisc_d4_145 and crisc_d4_069 (data keeps its class; class for joined data), CC cc_d1_021 (public catalog with high criticality rated low sensitivity, high criticality) and cc_d5_105 (data kinds and criticality for a service), CISA d2_135 and d2_016. Cross-bank: CC teaches the two labels; this item applies them to a protection rule and the relabel trap.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_219",
+      "domain": 1,
+      "subtopic": "1B3 Risk profile. Process scores in the board's profile",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A feed mill's board gets an 'IT risk profile' that lists each IT process's maturity level, all now 3 or higher out of 5. Which of the following should concern the risk analyst MOST?",
+      "options": {
+        "A": "The levels have no targets tied to the mill's own risks",
+        "B": "Level 3 sits below the sector's typical maturity",
+        "C": "Maturity levels do not show the risk the mill carries",
+        "D": "The report rates IT processes rather than systems"
+      },
+      "correct": "C",
+      "key_concept": "A risk profile shows the exposure the enterprise carries; process maturity shows capability and cannot stand in for it.",
+      "pre_read": "Ask what the board could decide from the measure it is shown.",
+      "correct_explanation": "A risk profile tells the board how much risk the mill carries, so it can judge that against appetite and choose responses. Maturity levels describe how well IT processes are run, and a mature process can still face high risk. Missing risk-based targets is the runner-up: targets would make the scores more useful, but even with them the board would still have no view of the mill's exposure.",
+      "wrong_explanations": {
+        "A": "Risk-based targets would improve how maturity is managed, but the board would still see capability scores, not the exposure a profile should show.",
+        "B": "Comparing with other mills changes the yardstick, not the measure; the board still would not see the mill's own risk.",
+        "D": "Processes and systems are both workable units; the problem is that the report measures capability, not risk, at whatever level it reports."
+      },
+      "tips": [
+        "Eliminate: B compares the scores with other mills, and D swaps processes for systems; either way the report still measures capability, not risk.",
+        "Final two: C beats A because targets would sharpen a capability measure without turning it into exposure; the board still could not set the mill's risk against its appetite.",
+        "Exam cue: when a report called a risk profile shows maturity, compliance or activity scores, ask whether it shows the exposure carried, set against appetite."
+      ],
+      "framework_ref": "ISACA Glossary (IT risk profile); NIST IR 8286 Rev. 1 Section 4.1 (Applying the Enterprise Risk Register and Developing the Enterprise Risk Profile)",
+      "related_concepts": [
+        "Risk profile",
+        "Process maturity",
+        "Board reporting"
+      ],
+      "_provenance": "Authored from concept: notes 1B3.1 (Risk Register Versus Risk Profile: the profile is a view of overall exposure; maturity or compliance scores show capability, not exposure) and the ISACA Glossary's IT risk profile (the overall identified IT risk to which the enterprise is exposed). Round 24, 12 Nov 2026: original scenario (a feed mill's board gets an 'IT risk profile' listing each IT process's maturity level, all 3 or higher out of 5) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 24 asks covered: one of two D1 'Which of the following' stems; analysis item; no owner word in any option (k=0); noun-phrase options. Setting feed mill (food and drink). Neighbours checked: crisc_d1_090 (counts of high-rated risks do not measure exposure; same 'profile measures exposure' family, different measure: capability scores, and the Exam cue is phrased on maturity, compliance or activity scores), crisc_d1_196 (what the profile shows beyond the appetite statement), crisc_d1_056, crisc_d3_079 (averaged heat-map scores), crisc_d3_035 (maturity targets set by risk; A is the runner-up because targets would not turn capability into exposure), crisc_d3_037, crisc_d3_066 and crisc_d3_067 (maturity against effectiveness and building levels; consistent), crisc_d1_027 and crisc_d1_209 (processes and systems as units; consistent with D wrong), CISA d2_168, d2_221 and d2_222 (capability assessments).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_220",
+      "domain": 1,
+      "subtopic": "1B4 Risk appetite and risk tolerance. Getting breaches to deciders",
+      "principle_id": "escalate-to-the-limit-setter",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which of the following should the risk analyst recommend to BEST ensure a vehicle licensing agency's tolerance breaches reach the right decision-makers in time?",
+      "options": {
+        "A": "A KRI dashboard that every manager can view",
+        "B": "Escalation routes and deadlines set for tolerance breaches",
+        "C": "A monthly summary of breaches for the executive risk committee",
+        "D": "Training for risk owners on their tolerance limits"
+      },
+      "correct": "B",
+      "key_concept": "Breaches reach the right level in time when the framework sets, in advance, who hears of each breach and how fast.",
+      "pre_read": "Look for what makes a breach reach someone who decides, within a set time.",
+      "correct_explanation": "A breach needs a decision from the risk owner, or from the level that set the limit, while there is still time to act. Escalation routes and deadlines set in advance say who must hear of a breach and how fast. A monthly summary for the executive risk committee is the runner-up: it keeps oversight informed, but a breach can wait weeks for it, and the committee may not be the level that decides.",
+      "wrong_explanations": {
+        "A": "A dashboard lets managers see breaches but makes no one responsible for raising them, so a breach can sit in plain view with no decision.",
+        "C": "Committee oversight matters, but a monthly summary can arrive weeks after a breach, and the decision may belong to the owner or another level.",
+        "D": "Owners who know their limits still need a set route and deadline for raising a breach; training adds knowledge, not a path."
+      },
+      "tips": [
+        "Eliminate: A shows breaches to many managers without making anyone raise them, and D teaches owners their limits without giving breaches a route.",
+        "Final two: B beats C because a breach needs a decision while action is still possible; a monthly summary reports it later, to a body that may not decide.",
+        "Exam cue: for breaches that must reach deciders in time, look for a route and deadline set in advance; dashboards, training and periodic summaries inform but cannot ensure a timely decision."
+      ],
+      "framework_ref": "NIST IR 8286B-upd1 Section 2.4.3 (Risk Owner: risk escalation and elevation); NIST CSF 2.0 GV.RM-05 (lines of communication across the organization are established for cybersecurity risks, including risks from suppliers and other third parties)",
+      "related_concepts": [
+        "Risk tolerance",
+        "Escalation",
+        "Risk owner"
+      ],
+      "_provenance": "Authored from concept: notes 1B4.3 (Tolerance Breaches and Escalation: escalation paths and timeframes are set in the framework in advance; dashboards and periodic summaries inform but do not escalate; the risk owner decides, and carrying risk above tolerance needs the level that set it). Round 24, 12 Nov 2026: original scenario (a vehicle licensing agency needs its tolerance breaches to reach the right decision-makers in time) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 24 asks covered: the one foundational item; one of two D1 'Which of the following' stems; the D1 each/every/all/any word on one wrong option (A, 'every'), key none; owner shape lone owner eliminated (D); key not strictly shortest by words (tie at 8). Lens word 'tolerance' in the key also in D. Setting vehicle licensing agency (public sector). Neighbours checked: crisc_d1_018 (a confirmed breach goes to the risk owner with an impact estimate; consistent), crisc_d1_042 (running above tolerance is approved by the body that set it), crisc_d3_095 (escalate a passed limit to the level that set it), crisc_d3_018 (route alerts to responders with deadlines, at the monitoring level), crisc_d3_160 (a smoothed dashboard hides breaches), crisc_d1_143, AAIA aaia_d1_095 (monthly-average KRI), CISA d4_091 (named BCP decision makers), CC cc_d4_161. Review 12 Nov 2026 (round 24 concept and blind review): Exam cue narrowed: periodic summaries inform but cannot ensure a timely decision (was 'do not escalate'; a summary to the limit-setter is a slow form of escalation; concept item 11); notes 1B4 bullet narrowed the same way.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_221",
+      "domain": 1,
+      "subtopic": "1B5 Risk frameworks, legal, regulatory and contractual requirements. AI chatbot used in several countries",
+      "principle_id": "emerging-and-ai-risk-owned",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A flooring retailer runs an AI chatbot from its home country for online shoppers in four other countries, whose AI rules require different things. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Apply the AI rules of the retailer's home country to the chatbot",
+        "B": "Apply the strictest country's AI rules across the business",
+        "C": "Make IT the owner of the chatbot's AI compliance duties",
+        "D": "Record the chatbot's duties by country of use under its business owner"
+      },
+      "correct": "D",
+      "key_concept": "AI duties can arise from where a system is used and whom it affects; each country's duties are recorded as owned obligations, with legal input.",
+      "pre_read": "Note where the chatbot is used and how the countries' rules differ.",
+      "correct_explanation": "AI rules can apply where a system is used and to the people it affects, so each of the four countries can add its own duties. Recording them by country, with legal input, in the obligations register under the chatbot's business owner shows each duty and who must meet it. Applying the strictest country's rules is the runner-up: it sounds safe, but when the rules require different things, no one country's set covers the others.",
+      "wrong_explanations": {
+        "A": "Rules follow the shoppers the chatbot serves, not only where the retailer is based, so home-country rules can miss duties in the other four countries.",
+        "B": "When rules require different things, no single country's set is strictest in every respect, so applying one leaves other countries' duties unmet.",
+        "C": "IT runs the chatbot, but meeting legal duties for its use is a business obligation; the business owner answers for it, with IT's help."
+      },
+      "tips": [
+        "Eliminate: A follows where the retailer is based rather than where shoppers are, and C hands a business obligation to IT, which runs the chatbot.",
+        "Final two: D beats B because the four countries' rules require different things; one country's set cannot cover duties it does not contain, while recording by country shows each.",
+        "Exam cue: when an AI system serves people in several jurisdictions, map duties by where it is used and whom it affects, as owned obligations, before choosing how to comply."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) GOVERN 1.1 (legal and regulatory requirements involving AI are understood, managed and documented); NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed)",
+      "related_concepts": [
+        "AI regulation",
+        "Compliance obligations",
+        "Obligations register"
+      ],
+      "_provenance": "Authored from concept: notes 1B5.2 (Compliance Obligations as a Source of Risk: AI laws add duties for certain uses; map each AI use by where it is used and whom it affects, as owned obligations in the register) and 1B5.1. Round 24, 12 Nov 2026: original scenario (a flooring retailer runs an AI chatbot from its home country for online shoppers in four other countries whose AI rules require different things) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 24 asks covered: the D1 AI item in 1B5 (AI obligations across jurisdictions mapped by use and whom it affects, recorded under the business owner, law as context, no clause keyed); the D1 floor key, naturally longest by characters (70 against 64, 6 over the next option); owner shape k=2 split key + eliminated (D key, C eliminated: IT made the owner), D1's one owner pair; analysis item. Lens words in the key ('business', 'owner') also in B and C. Setting flooring retailer (retail). Not 'ask legal counsel to confirm' FIRST (paused), not a legal minimum as a floor (paused), not vendor training on inputs (crisc_d1_198). Neighbours checked: crisc_d1_045 (assess a new AI law's impact on a planned use), crisc_d1_112 (obligations enter as owned register entries; consistent), crisc_d1_163 (counsel confirms whether a law applies; here the stem gives rules that apply, and the explanation keeps legal input in the mapping), crisc_d1_176 (the obligation's owner sets criteria), crisc_d3_164 (map one tailored control set rather than adopting the strictest set whole; consistent with B wrong), crisc_d3_132, AAIA aaia_d1_107 (obligations register missing provider duties), aaia_d2_003, CC cc_d1_172 and cc_d4_200 (data residency for an AI service). No CISA, AAIA or CC item maps AI duties by country of use. Review 12 Nov 2026 (round 24 concept and blind review): key concept and correct explanation narrowed to 'can arise' / 'can apply' where a system is used, since some AI laws also bind on where the provider is based (concept item 10); floor key D unchanged.",
       "style_version": 2
     }
   ]

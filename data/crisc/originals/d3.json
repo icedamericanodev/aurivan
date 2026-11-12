@@ -3722,7 +3722,7 @@
         "D": "Find out from the control owner if the exceptions are fixed"
       },
       "correct": "A",
-      "key_concept": "Recent internal audit results on a control are independent evidence; the practitioner starts from them, and their exceptions shape any further testing.",
+      "key_concept": "Recent results from the enterprise's own internal audit on a control are independent evidence; the practitioner starts from them, and their exceptions shape further testing.",
       "pre_read": "Note what has already happened to this control this year.",
       "correct_explanation": "Internal audit tested the control two months ago and found two exceptions, so its results are recent, independent evidence. Reading them first shows what failed, whether the causes are known and what any further test should target. Running the planned full test is the runner-up: it produces the analyst's own evidence, but it duplicates recent independent work and ignores what the exceptions already show.",
       "wrong_explanations": {
@@ -3733,7 +3733,7 @@
       "tips": [
         "Eliminate: C carries over an opinion despite two exceptions, and D relies on the owner's own word.",
         "Final two: A beats B because recent independent results are the starting point; a full test from scratch duplicates them and ignores what they found.",
-        "Exam cue: treat internal audit's recent results as independent evidence; build on them rather than repeating or ignoring them."
+        "Exam cue: treat recent results from the enterprise's own internal audit as independent evidence; build on them rather than repeating or ignoring them."
       ],
       "framework_ref": "NIST IR 8286 Rev. 1 Section 3.1.1 (Notional Risk Management Roles: the auditor provides independent and formal verification of the achievement of enterprise objectives and the application of ERM processes); NIST SP 800-53A Rev. 5 Section 2.4.2 (Assessment Methods: examine, interview and test, with depth and coverage)",
       "related_concepts": [
@@ -9775,6 +9775,302 @@
         "Risk prioritization"
       ],
       "_provenance": "Authored from concept: notes 3C6.1 (Horizon Scanning and Emerging Risk Sources: senior management decides which emerging risks to study or prepare for; the analyst screens and ranks) and 3C6.2 (the named business owner decides how to prepare for their own emerging risk). Round 23, 12 Nov 2026: original scenario (an armored cash transport firm's horizon review lists nine emerging risks, each with a proposed owner, but the budget funds deeper study of three), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 23 (crisc_d3_257 to 264). Round 23 asks: 3C6 slot (key A); a lone owner on the runner-up (C); each/every on one wrong option (C, the batch's only one; no key carries it); the batch's one key strictly shortest by words (A, 7 words; not shortest by characters). Uses the notes' verbs: senior management decides which emerging risks to study or prepare for (3C6.1); the named owner decides how to prepare (3C6.2). Not 'senior management assigns the owner', 'record the emerging risk now' or 'new evidence on an emerging-risk entry' (paused). Neighbours checked (every 3C6 item's key and Exam cue): crisc_d3_083 (screen signals for relevance), 085 (owner for an emerging AI risk), 115 (staged responses), 176 (risk owner decides on the prepared response once a trigger is reached: consistent), 182, 208, 247; crisc_d1_095 (monitoring draft rules). TF-IDF top: crisc_d3_114 0.26 (reporting format; different lesson).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_265",
+      "domain": 3,
+      "subtopic": "3A2 Risk and control ownership. Supplier risks held by procurement",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A waste collector's register names its procurement manager as owner of the risks from all 45 suppliers, including the vendor of the route-planning software its crews depend on. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Keep procurement as owner, with service heads consulted",
+        "B": "Name the suppliers' own account managers as the risks' owners",
+        "C": "Move supplier risks to the heads of the services using them",
+        "D": "Take the supplier risks into the risk team's own portfolio"
+      },
+      "correct": "C",
+      "key_concept": "Vendor risk is owned by the business manager whose service depends on the vendor, not by procurement, the vendor or the risk team.",
+      "pre_read": "Ask whose objectives would suffer if each supplier failed.",
+      "correct_explanation": "A supplier risk belongs with the manager whose service depends on that supplier: their objectives suffer when it fails, and they decide how to treat it. Procurement runs buying and contracts. Moving the supplier risks to the heads of the services using them puts the decision where the impact falls. Keeping procurement as owner with service heads consulted is the runner-up: it sounds joined up, but those who carry the impact still cannot decide.",
+      "wrong_explanations": {
+        "A": "Procurement manages contracts and due diligence, but route planning failing hurts the crews' service, not procurement's; consulting service heads leaves the decision away from the impact.",
+        "B": "A supplier's account manager works for the supplier; outsourcing moves the work, not accountability for the risk, which stays with a manager inside the waste collector.",
+        "D": "The risk team facilitates, analyzes and reports; holding business risks itself would leave no business manager accountable for treating or accepting them."
+      },
+      "tips": [
+        "Eliminate: B hands the risks to the suppliers' own staff, though accountability for the risk stays in-house, and D gives them to the risk team, which facilitates and reports rather than owns.",
+        "Final two: C beats A because the service heads' objectives suffer when a supplier fails; procurement runs the contract, so ownership there keeps the decision away from the impact.",
+        "Exam cue: vendor risk sits with the business manager whose service relies on the vendor; procurement, IT and the risk team support that owner rather than replace them."
+      ],
+      "framework_ref": "ISACA Glossary (risk owner); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Risk ownership",
+        "Vendor risk",
+        "Procurement"
+      ],
+      "_provenance": "Authored from concept: notes 3A2.1 (Assigning Risk Owners: the owner is the manager whose objectives, process or budget the risk affects) and notes 3A3.1 (record vendor risk under the business owner using the service), with the ISACA Glossary's risk owner entry. Round 24, 12 Nov 2026: original scenario (a waste collector's register names its procurement manager as owner of the risks from all 45 suppliers, including the route-planning software vendor), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 24 (crisc_d3_265 to 272). Round 24 asks: 3A2 slot (key C, application); owner pair split as runner-up (A) and eliminated option (B); 'Take' opens an eliminated option (D); key opens 'Move' on a genuine fact (rarely keyed opener, keyed here). Not 'senior management assigns the owner' or 'a named owner without authority to fund or accept' (paused): the lesson is where vendor risk sits (with the service that relies on the vendor), not who appoints owners or owner authority. Neighbours checked (every 3A2 key, key_concept and Exam cue, and vendor-ownership cues bank-wide): crisc_d3_023 (IT lead vs the director who runs bookings; same rule, new holder: procurement), 090 (IT as action owner), 117, 162 (contractor as control owner), 201, 258 (coordinator, paused family; our runner-up turns on impact, not authority), 052, 241; crisc_d3_118 and 006 (the service's business owner accepts vendor risk and closes assurance gaps; consistent); crisc_d1_005 (committee proposed as owner); crisc_d3_144 and crisc_d2_142 (TF-IDF top 0.32 and 0.30: supplier terms and categories, different lessons); CISA d4_139. No mirror. Audit 12 Nov 2026 (round 24 standards audit): key C reworded to drop 'each' (round 24 ask: no D3 key carries each/every/all/any), meaning unchanged; the correct explanation matches it. Review 12 Nov 2026 (round 24 concept and blind review): wrong explanation B and the Eliminate tip now say accountability for the risk stays in-house, not 'the risk' (outsourcing can move part of the consequence; concept item 9); consistent with the audit's key 'Move supplier risks to the heads of the services using them'.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_266",
+      "domain": 3,
+      "subtopic": "3A3 Vendor/supply chain risk management. Using a right to audit",
+      "principle_id": "transfer-keeps-accountability",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A vendor's SOC 2 report excludes the settlement module built for a clearing house, whose contract grants audit rights. Which of the following should the risk analyst propose as the BEST party to use them?",
+      "options": {
+        "A": "The vendor's own internal audit team, sharing its results",
+        "B": "The clearing house's internal audit function, under the contract",
+        "C": "The settlement service's business owner, using a checklist",
+        "D": "The clearing house's IT operations team that runs the module"
+      },
+      "correct": "B",
+      "key_concept": "A right to audit is used by the customer's own auditors, such as internal audit, so the evidence answers to the customer, not the vendor.",
+      "pre_read": "Ask whom each candidate reports to and what role it plays.",
+      "correct_explanation": "A right to audit lets the clearing house gather its own evidence where the vendor's SOC 2 report stops. Its internal audit function works for the clearing house, so the evidence it gathers under the contract answers to the clearing house. The vendor's own internal audit team is the runner-up: it knows the module, but it answers to the vendor's management, so its results are the vendor's account of itself.",
+      "wrong_explanations": {
+        "A": "The vendor's internal auditors report to the vendor's management; sharing their results gives the clearing house the vendor's view of itself, which the right to audit exists to go beyond.",
+        "C": "The business owner accepts the vendor risk, arranges assurance for the gap and acts on the results; running a checklist review personally is a first-line check, not an audit.",
+        "D": "The team that runs the module relies on it day to day; checking its own service's supplier is first-line work and not an audit of the vendor's controls."
+      },
+      "tips": [
+        "Eliminate: C has the business owner, who accepts the risk, run a checklist, and D has the team that runs the module check it; neither is an assurance role.",
+        "Final two: B beats A because the right to audit gives the clearing house its own evidence; the vendor's internal auditors answer to the vendor's management, not to the clearing house.",
+        "Exam cue: when a contract gives a right to audit a vendor, look to the customer's own internal audit, or auditors it engages, to use it; a vendor's internal auditors answer to its management."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.SC-05 (requirements to address cybersecurity risks in supply chains are established, prioritized and integrated into contracts and other types of agreements with suppliers and other relevant third parties); NIST SP 800-53 Rev. 5 SR-6 (Supplier Assessments and Reviews)",
+      "related_concepts": [
+        "Right to audit",
+        "Internal audit",
+        "Assurance reports"
+      ],
+      "_provenance": "Authored from concept: notes 3A3.1 (write a right to audit into the contract) and notes 3A3.2 (an assurance report counts only for the services it covers; where it stops, the customer's internal audit can use the contract's right to audit). Round 24, 12 Nov 2026: original short stem (a vendor's SOC 2 report excludes the settlement module it built for a clearing house, whose contract grants audit rights), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 24 (crisc_d3_265 to 272). Round 24 asks: the internal-audit key in its assurance role, taken in D3 at the lead's request (D4 did not key it), on a new angle: the customer's own internal audit uses a contractual right to audit where a vendor's SOC 2 report stops, against the vendor's own internal auditors as runner-up; not independent assurance meaning internal audit over the risk process (crisc_d1_078) or second-line testing (crisc_d3_220), not audit's recent results (crisc_d3_101), audit's sample (crisc_d4_067), audit's follow-up (crisc_d1_195) or test exceptions as event sources (crisc_d2_172). One of D3's two 'Which of the following' stems; 3A3 slot (key B, foundational); the D3 floor key (B is naturally longest by characters, 64 against 60). A lone owner on an eliminated option (C). A first draft keyed contract terms requiring notice and approval of new subcontractors; it was replaced to carry the internal-audit key. Neighbours checked (every 3A3 key and Exam cue): crisc_d3_006 (an excluded subcontractor is a gap the business owner closes with assurance of its own; consistent: here the owner gets it through internal audit), 025 (independent reports for critical vendors), 026, 154, 242 (reports count for what they cover), 054, 135, 183, 250; crisc_d3_101 and crisc_d1_195 (internal audit's own results and follow-up: different angles; the runner-up's 'sharing its results' is the vendor's audit, which d3_101's cue does not cover); CISA d2_217 (subcontractors mapped for concentration). TF-IDF top 0.23 (no mirror). Audit 12 Nov 2026 (round 24 standards audit): correct explanation and key concept now rest on whose evidence the audit right produces (the customer's, not the vendor's), not on internal audit's independence (paused family: crisc_d1_078, crisc_d3_220), and the key concept no longer says only internal audit uses the right; wrong explanation C now matches crisc_d3_006 (the business owner arranges assurance for a gap rather than auditing it personally).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_267",
+      "domain": 3,
+      "subtopic": "3B1 Control frameworks, types and standards. An AI control catalog of its own",
+      "principle_id": "proportionate-response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A bookseller's data science lead, adopting the NIST AI RMF, plans an AI control catalog drawn from its subcategories and kept apart from the enterprise control library. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Evaluate the AI tools against the subcategories as a checklist",
+        "B": "Name the data science lead as the AI catalog's owner",
+        "C": "Add an AI section to the library listing the subcategories",
+        "D": "Map the AI RMF outcomes onto the existing control library"
+      },
+      "correct": "D",
+      "key_concept": "AI RMF outcomes are mapped into the existing control library, with AI-specific controls added for the gaps, not run as a parallel AI catalog.",
+      "pre_read": "Notice whether the framework in the stem sets outcomes or lists controls.",
+      "correct_explanation": "The AI RMF sets outcomes, not controls, and expects AI risk management to sit inside enterprise risk management. Mapping its outcomes onto the existing library shows which current controls, such as change and access management, already meet them, and where AI-specific controls such as drift checks must be added. Adding an AI section that lists the subcategories is the runner-up: it shares the library but treats outcomes as controls and repeats ones that exist.",
+      "wrong_explanations": {
+        "A": "The AI RMF says its actions are not a checklist; running the tools against the subcategories ignores tailoring and still leaves AI outside the existing library.",
+        "B": "Naming an owner settles who runs the separate catalog, but it keeps a second control set beside the library, with its own duplicated tests.",
+        "C": "A section listing the subcategories puts AI in the library but treats outcomes as controls and repeats controls it already holds, such as access reviews."
+      },
+      "tips": [
+        "Eliminate: A treats the AI RMF as a checklist, which it says it is not, and B only names an owner for a parallel catalog that duplicates the library.",
+        "Final two: D beats C because the subcategories are outcomes; mapping them to existing controls shows which are met and where AI controls are needed, while listing them copies outcomes in as controls.",
+        "Exam cue: when a new framework arrives, such as one for AI, map its outcomes into the existing control library and add controls for the gaps, rather than running a second catalog."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) Section 1.2.4 (Organizational Integration and Management of Risk: AI risks are not considered in isolation, and AI risk management is integrated into broader enterprise risk management); NIST AI 100-1 (AI RMF 1.0) Section 5 (AI RMF Core: functions break into categories and subcategories of outcomes and actions, which are not a checklist)",
+      "related_concepts": [
+        "NIST AI RMF",
+        "Control mapping",
+        "Control library"
+      ],
+      "_provenance": "Authored from concept: notes 3B1.3 (Control Frameworks and Tailoring: map internal controls to every framework that applies, including the AI RMF's outcomes, so one control meets several requirements) and NIST AI 100-1 Section 1.2.4 (AI risk management integrated into broader enterprise risk management) and Section 5 (the Core's actions are not a checklist). Round 24, 12 Nov 2026: original scenario (a bookseller's data science lead plans an AI control catalog from the AI RMF subcategories, kept apart from the enterprise control library), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 24 (crisc_d3_265 to 272). Round 24 asks: the batch's one AI item (3B1, analysis): AI RMF outcomes mapped into the existing control library, not run as a parallel AI catalog; 'Evaluate' opens an eliminated option (A); a lone owner on an eliminated option (B). Not common rating scales for AI (paused), not a separate AI register (crisc_d1_033), not a control-type classification. Neighbours checked (every 3B1 key and Exam cue, and AI governance items bank-wide): crisc_d3_164 (one control set mapped to overlapping requirements; same rule applied to the AI RMF), 131 (re-map after a framework revision), 060, 140, 203, 237 (tailoring), 120 (catalog vs outcomes); crisc_d1_033 (AI risks in the main register; consistent); AAIA aaia_d1_080; CC cc_d1_072. TF-IDF top 0.20 (no mirror).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_268",
+      "domain": 3,
+      "subtopic": "3B2 Control design, selection, implementation and analysis. Repair invoices outside the match",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A shopping center landlord's system pays invoices only once they match a purchase order, but emergency repair invoices, a quarter of spend, bypass it unchecked. Which change should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Budget owner approval of emergency invoices ahead of payment",
+        "B": "A later review of paid emergency invoices against repair records",
+        "C": "Share of spend paid outside the invoice match",
+        "D": "Sign-off of emergency invoices by the contractor's own supervisor"
+      },
+      "correct": "A",
+      "key_concept": "A control covers only the transactions that pass through it; a route around it, such as emergency payments, needs its own check before the loss.",
+      "pre_read": "Trace which transactions pass through the control and which do not.",
+      "correct_explanation": "A control protects only what passes through it, so control analysis follows every route around it. A quarter of spend skips the match, so that route needs a check of its own. Approval by the budget owner before each emergency invoice is paid stops wrong payments without slowing urgent repairs. A later review against repair records is the runner-up: it finds false or duplicate invoices only after the money has gone.",
+      "wrong_explanations": {
+        "B": "A later review is detective: it finds false or duplicate repair invoices after payment, when recovering money is harder, while an approval before payment stops them.",
+        "C": "Measuring the spend outside the match shows how big the gap is, but it puts no check on the invoices paid outside it.",
+        "D": "The contractor's supervisor works for the firm being paid; a party approving its own invoices cannot show whether the charges are genuine."
+      },
+      "tips": [
+        "Eliminate: C measures the unchecked spend without checking any of it, and D lets the firm being paid approve its own invoices, which segregation of duties rules out.",
+        "Final two: A beats B because a quarter of spend leaves with no check; an approval before payment stops a bad invoice, while a later review finds it once the money is gone.",
+        "Exam cue: when analyzing a control, look for routes around it; a route that skips the check needs its own control, placed before the loss where it can be."
+      ],
+      "framework_ref": "NIST IR 8286B-upd1 Section 2.3.4 (Risk Mitigation: preventive, deterrent, detective, corrective and compensating controls); NIST SP 800-39 Section 3.3 Task 3-2 (Evaluation of Alternatives: effectiveness, feasibility and cost)",
+      "related_concepts": [
+        "Control design gap",
+        "Preventive controls",
+        "Routes around a control"
+      ],
+      "_provenance": "Authored from concept: notes 3B2.3 (Control Gap Analysis: a design gap means the control cannot work as built, such as a route around it) and notes 3B2.1 (prefer controls that act before the loss). Round 24, 12 Nov 2026: original scenario (a shopping center landlord's invoice match pays only invoices matched to a purchase order, while emergency repair invoices, a quarter of spend, bypass it unchecked), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 24 (crisc_d3_265 to 272). Round 24 asks: 3B2 slot (key A, analysis); the batch's keyed lone owner ('budget owner', neither longest nor shortest by words or characters); 'Share of' on an eliminated option (C). The key acts on an identified design gap (a quarter of spend bypasses the match) in a 'which change' stem, as crisc_d3_253 and 229 do; older cues asking to rate a missing control before picking a fix (crisc_d2_006, 116) are FIRST-order rules and do not conflict with a BEST-change item whose gap is stated. Not 'an unrecorded override or return path' (paused, crisc_d3_229): there the check fires and is undone; here a whole class of payments never meets it. Neighbours checked (every 3B2 key and Exam cue): crisc_d3_253 (limit dodged by splitting), 229, 100 (control cannot see the risk as built), 032 (add a preventive layer; consistent), 063, 204, 009, 243; crisc_d4_024 (emergency changes); CISA d5_086 (APIs bypassing a gateway), d1_195 (emergency changes without approval). TF-IDF top 0.30 (no mirror). Audit 12 Nov 2026 (round 24 standards audit): key A reworded to drop 'each' (round 24 ask: no D3 key carries each/every/all/any); still neither longest nor shortest by words (9) or characters (60).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_269",
+      "domain": 3,
+      "subtopic": "3C1 Risk action plans. A long plan with only an end date",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A plastics molder's funded 15-month plan to replace shared logins has interim controls but only an end date; its lead, the action owner, reports 'on track' monthly. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Collect evidence of the work done so far from the action owner",
+        "B": "Split delivery of the plan between the IT and operations teams",
+        "C": "Ask the plan's lead to set dated milestones for the rollout",
+        "D": "Re-rate the risk whenever the lead reports progress"
+      },
+      "correct": "C",
+      "key_concept": "Long risk action plans need dated milestones, so progress reports can be checked and slippage shows early, not at the end date.",
+      "pre_read": "Ask what a progress report in the stem could be checked against.",
+      "correct_explanation": "A plan needs milestones so slippage shows while there is still time to act; with only an end date, 'on track' has no dated point to be checked against before the 15 months are up. Asking the lead to set dated milestones gives each report those points. Collecting evidence of work done is the runner-up: it shows what has been done, but without milestones nobody can tell whether that is enough by now.",
+      "wrong_explanations": {
+        "A": "Evidence of work done shows activity, but with only an end date there is no point to compare it with, so slippage stays hidden until the end.",
+        "B": "Splitting delivery across two teams blurs who answers for each action; a plan needs one owner per action, and this does nothing for tracking progress.",
+        "D": "A rating changes when actions are validated as working, not each time someone reports; re-rating unchanged facts gives no view of slippage."
+      },
+      "tips": [
+        "Eliminate: B splits delivery across two teams, blurring the one owner each action needs, and D re-rates a risk whose facts have not changed instead of tracking the work.",
+        "Final two: C beats A because the plan has only an end date; evidence of work done cannot show whether progress is on schedule until there are dated points to measure it against.",
+        "Exam cue: a long action plan needs dated milestones as well as an end date, so reports can be checked and slippage shows while there is time to act."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CA-5 (Plan of Action and Milestones); NIST CSF 2.0 ID.RA-06 (risk responses are chosen, prioritized, planned, tracked and communicated)",
+      "related_concepts": [
+        "Risk action plans",
+        "Milestones",
+        "Progress tracking"
+      ],
+      "_provenance": "Authored from concept: notes 3C1.1 (Building a Risk Action Plan: milestones show slippage early) and notes 3C1.2 (ask for evidence at each milestone, not only a status color). Round 24, 12 Nov 2026: original scenario (a plastics molder's funded 15-month plan to replace shared machine logins has interim checks running but only an end date, and its lead reports 'on track' monthly), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 24 (crisc_d3_265 to 272). Round 24 asks: 3C1 slot (key C, application); a lone owner on the runner-up (A); the round's 'Ask' key (C), taken in D3 at the lead's request because D2 keyed none, with no Have/Ask on any wrong option in the item. A first draft keyed escalation of a delay past a policy limit; it was replaced because crisc_d3_095 and 029 already teach that, and its server-replacement setting sat in the paused 'support ending before planned replacement' family. Interim checks are stated in the stem so the plan is not crisc_d3_039's (interim controls beat milestones when nothing covers the exposure). Milestones show schedule slippage; progress itself is still reported in risk terms (crisc_d3_214, paused, consistent). Neighbours checked (every 3C1 key and Exam cue): crisc_d3_038 (target risk), 039, 068 (records that each milestone was met; consistent), 070 (one owner per action; our eliminated B), 123, 165, 184, 197, 214, 255. TF-IDF scan of all four banks: no mirror. Audit 12 Nov 2026 (round 24 standards audit): stem names the lead as the action owner, so option A and key C refer to the same person, and says 'has interim controls' (was 'has interim checks running'; 'machine' dropped to keep the stem at 35 words) so crisc_d3_039's interim-controls rule is plainly already met. Review 12 Nov 2026 (round 24 concept and blind review): correct explanation: 'on track' has no dated point to be checked against before the 15 months are up (was 'cannot be tested until'), since evidence could still be set against a straight-line pace (concept item 4; the stem change was made by the audit); the milestone and runner-up sentences shortened to keep the explanation at 75 words or fewer.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_270",
+      "domain": 3,
+      "subtopic": "3C2 Data collection, aggregation, analysis and validation. A sensor feed gone silent",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A fruit packer's KRI showed no cold-store temperature breaches at one packhouse for five weeks because its sensor feed had silently stopped. Which control should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "A sample check of the feed's figures against sensor logs",
+        "B": "An attestation from the sensor system's owner that it still works",
+        "C": "Estimates for silent weeks from other packhouses' averages",
+        "D": "An automatic alert to the feed's data owner when records stop"
+      },
+      "correct": "D",
+      "key_concept": "Completeness is checked as data arrives: a feed that stops should raise an alert, so silence is not reported as zero risk events.",
+      "pre_read": "Ask how each option would tell a true zero from missing data.",
+      "correct_explanation": "A silent feed reads as zero, and zero looks like good news, so completeness has to be checked as data arrives. An automatic alert to the feed's data owner when records stop flags the gap at once, so the KRI is marked incomplete before reporting. A sample check against the sensor logs is the runner-up: it tests the figures, but only when the next check runs, and its sample may skip the silent packhouse.",
+      "wrong_explanations": {
+        "A": "Sample checks test accuracy, but they find a silent feed only when the next check runs and only if the sample includes that packhouse.",
+        "B": "An attestation is the owner's own claim that the system works; it would not have shown that the feed had stopped sending data.",
+        "C": "Estimating the missing weeks fills the gap with guesses and hides the outage; the fault is missing data, which needs detecting, not filling in."
+      },
+      "tips": [
+        "Eliminate: B rests on the owner's own claim rather than the data, and C fills the silent weeks with guesses, hiding the outage instead of detecting it.",
+        "Final two: D beats A because the feed sat silent for five weeks; an alert when records stop flags it at once, while a sample check catches it only if run on that packhouse.",
+        "Exam cue: when no data can pass for good news, check completeness as data arrives; an automatic alert on a silent feed beats a later sample check."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Section 3.1.4 (Data Quality: a validation process checks the integrity, accuracy and structure of data before any analysis is done); NIST SP 800-137 Section 2.3 (Role of Automation in ISCM: automated tools lower costs and improve reliability, such as checking that a machine's software is up to date)",
+      "related_concepts": [
+        "Data completeness",
+        "KRI data feeds",
+        "Data validation"
+      ],
+      "_provenance": "Authored from concept: notes 3C2.1 (Collecting Risk and Control Data: monitor each feed for completeness as data arrives, so silence is not read as zero) and notes 3C2.3 (Validating Data Before Reporting: completeness). Round 24, 12 Nov 2026: original scenario (a fruit packer's KRI showed no cold-store temperature breaches at one packhouse for five weeks because its sensor feed had silently stopped), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 24 (crisc_d3_265 to 272). Round 24 asks: 3C2 slot (key D, application); owner pair split as key (D) and eliminated option (B); 'Estimate' on an eliminated option (C). Not 'recurring capture flaws fixed at source' (paused, crisc_d3_231): the flaw is a silent feed, caught by a completeness alert. Neighbours checked (every 3C2 key and Exam cue): crisc_d3_040 (a sudden fall after a source change is checked first; consistent), 041 (report on time with missing data stated), 179 (complete population), 106, 072, 187, 205, 244, 256; crisc_d4_002 (its cue 'it still works is never a risk assessment' supports B being wrong); AAIA aaia_d2_042 (missing sensor readings in model tests). TF-IDF top 0.21 (no mirror). Review 12 Nov 2026 (round 24 concept and blind review): correct explanation: the alert lets the KRI be marked incomplete before it is reported (concept observation).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_271",
+      "domain": 3,
+      "subtopic": "3C3 Risk and control metrics. Indicator for an archive filling up",
+      "principle_id": "kris-that-predict",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bookkeeping firm's document archive grows unevenly from month to month, and adding storage takes ten weeks. Which of the following should the risk analyst propose as the BEST KRI for the archive filling up?",
+      "options": {
+        "A": "Time left until the archive fills at the recent growth rate",
+        "B": "Share of the archive's storage space already in use",
+        "C": "Client uploads the archive rejected for lack of space",
+        "D": "Time taken to approve and fit new storage"
+      },
+      "correct": "A",
+      "key_concept": "A KRI should warn early enough for the response to take effect, so it is best set against the time that response needs.",
+      "pre_read": "Note any fact in the stem about how long the response takes.",
+      "correct_explanation": "A KRI must warn early enough for the response to work, and here the response, adding storage, takes ten weeks. Time left until the archive fills at the recent growth rate can be set against that lead time and moves as growth changes. The share of storage in use is the runner-up: it rises toward the limit, but with uneven growth a fixed percentage can mean months of headroom one time and days the next.",
+      "wrong_explanations": {
+        "B": "With uneven growth, the same share in use can leave months or days before the archive fills, so a fixed percentage gives no steady warning time.",
+        "C": "Rejected uploads show the archive is already full; a lagging measure like this confirms the harm rather than warning before it.",
+        "D": "This tracks how fast purchasing and fitting work, a performance measure; it says nothing about how close the archive is to filling."
+      },
+      "tips": [
+        "Eliminate: C counts uploads already rejected, a lagging sign of harm, and D measures the purchasing process, a KPI rather than an indicator of exposure.",
+        "Final two: A beats B because growth is uneven and new storage takes ten weeks; time left at the recent rate sets directly against that lead time, while a fixed share does not.",
+        "Exam cue: a KRI should warn earlier than the response takes to work; prefer one expressed in terms that can be set against that lead time."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Section 4.4 (Evaluating Methods for Supporting Continuous Improvement: leading and lagging indicators); ISACA Glossary (key risk indicator)",
+      "related_concepts": [
+        "Key risk indicators",
+        "Leading indicators",
+        "Capacity risk"
+      ],
+      "_provenance": "Authored from concept: notes 3C3.2 (Selecting Effective KRIs: predictive means the indicator moves early enough for the planned response, here adding storage, to work). Round 24, 12 Nov 2026: original scenario (a bookkeeping firm's document archive grows unevenly and adding storage takes ten weeks), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 24 (crisc_d3_265 to 272). Round 24 asks: one of D3's two 'Which of the following' stems; 3C3 slot (key A, application); the second D3 floor key (A is naturally longest by characters, 59 against 53, taking D3 to 42/272 = 15.4%); 'Share of' on the runner-up (B), keyed nowhere. Not 'count vs share' (crisc_d3_245): here the deciding fact is the response's lead time. Neighbours checked (every 3C3 key and Exam cue): crisc_d3_015, 108, 150, 190 (leading over lagging; consistent), 245, 074, 109, 125, 175, 222; crisc_d3_187 (frequency matched to the risk); CISA d4_238 (log storage near full: capacity alert, an auditor's response, not KRI choice); crisc_d4_078 and 108 (archives, different lessons). TF-IDF top 0.38 crisc_d4_108 (archive wording only). Review 12 Nov 2026 (round 24 concept and blind review): correct explanation: time left 'moves as growth changes' (was 'however the growth varies', which overstated it; concept item 6); 'directly' dropped and the runner-up 'moves toward' made 'rises toward' to keep 75 words or fewer.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_272",
+      "domain": 3,
+      "subtopic": "3C6 Monitoring and reporting of emerging risks. A scan that forwards only likely signals",
+      "principle_id": "emerging-and-ai-risk-owned",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A national mapping agency's horizon scan forwards only signals analysts judge likely; this year it dropped three high-impact ones, including solar storms disrupting satellite positioning. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Forward every signal, likely or not, to senior management",
+        "B": "Screen signals on potential impact as well as likelihood",
+        "C": "Rate just the solar storm risk on the agency's usual scale",
+        "D": "Review the three dropped high-impact signals with the analysts"
+      },
+      "correct": "B",
+      "key_concept": "Horizon signals are screened on potential impact as well as likelihood, because emerging risks are often unlikely but severe.",
+      "pre_read": "Look at the rule the scan uses to decide what goes forward.",
+      "correct_explanation": "Horizon scanning screens signals for relevance to objectives, and an emerging risk is often unlikely but severe. A screen that forwards only likely signals is built to drop exactly those, which is why three high-impact ones went missing this year. Screening on potential impact as well as likelihood fixes the cause. Reviewing the three dropped signals with the analysts is the runner-up: it learns from these cases but leaves the screen that dropped them unchanged.",
+      "wrong_explanations": {
+        "A": "Forwarding everything skips the screening that makes a scan usable; senior management would get every signal with no view of which ones matter to objectives.",
+        "C": "A usual-scale rating treats an uncertain, emerging risk as well understood, and it deals with one signal while the screen keeps dropping others.",
+        "D": "Reviewing the dropped signals learns from three cases, but the rule that dropped them stays in place and will keep filtering out unlikely, severe signals."
+      },
+      "tips": [
+        "Eliminate: A skips the screening that keeps a scan usable, burying senior management in signals, and C rates one uncertain signal on the usual scale as if it were well understood.",
+        "Final two: B beats D because the same rule dropped three high-impact signals; changing the screen fixes the cause, while reviewing the three cases leaves it in place.",
+        "Exam cue: emerging risks are often unlikely but severe; screen horizon signals on potential impact on objectives as well as likelihood, so rare, damaging ones reach decision makers."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.RA-05 (threats, vulnerabilities, likelihoods and impacts are used to understand inherent risk and inform risk response prioritization); NIST CSF 2.0 GV.OC-01 (the organizational mission is understood and informs cybersecurity risk management)",
+      "related_concepts": [
+        "Horizon scanning",
+        "Emerging risk",
+        "Screening criteria"
+      ],
+      "_provenance": "Authored from concept: notes 3C6.1 (Horizon Scanning and Emerging Risk Sources: screen signals for relevance and potential impact on objectives, not likelihood alone). Round 24, 12 Nov 2026: original scenario (a national mapping agency's horizon scan forwards only signals analysts judge likely and this year dropped three high-impact ones, including solar storms disrupting satellite positioning), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 24 (crisc_d3_265 to 272). Round 24 asks: 3C6 slot (key B, analysis); 'every' on an eliminated option (A), the batch's one each/every option, with no key carrying one; a 'Review' opener on the runner-up (D); restrictive 'just' on an eliminated option (C), at the lead's request. Not 'emerging means uncertain, not distant', 'who chooses among competing emerging risks' or 'record the emerging risk now' (paused): the lesson is the screen's criteria. Neighbours checked (every 3C6 key and Exam cue): crisc_d3_083 (screen signals against objectives before recording; consistent, extended to impact), 128 (front-line sources), 182 (judge the scan by risks flagged before harm), 208, 216, 049, 114, 115, 247, 264; crisc_d1_037. TF-IDF top 0.31 crisc_d3_083 (same family, new trap: a likelihood-only screen).",
       "style_version": 2
     }
   ]

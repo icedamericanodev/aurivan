@@ -256,7 +256,8 @@
             "crisc_d1_060",
             "crisc_d1_093",
             "crisc_d1_157",
-            "crisc_d1_184"
+            "crisc_d1_184",
+            "crisc_d1_216"
           ],
           "definition": "The risk owner is accountable for a risk; the control owner is accountable for a control being in place and working; the risk practitioner identifies, analyzes, recommends, monitors and reports.",
           "why_it_matters": "Clear ownership means someone with authority and budget acts on each risk. When IT or the risk function is treated as owner, decisions are made by people who cannot fund them or live with the loss.",
@@ -264,7 +265,7 @@
             "The risk owner is a business manager with authority over the affected objective who accepts, mitigates, transfers or avoids the risk.",
             "Control owners are often the managers whose teams run the controls; when a supplier runs a control, an internal manager stays its owner, often the one managing the contract.",
             "One person can own a risk while several control owners answer for its controls; a change weakening a control goes to the risk owner.",
-            "The risk practitioner facilitates assessments and brings the owner options with cost and benefit.",
+            "Practitioners bring owners costed options; the control's first-line team carries out the owner's choice.",
             "Ownership is recorded in the register, written into owners' role descriptions and reviewed when people or structures change.",
             "The practitioner proposes and validates owners; ownership holds once senior management confirms it and the owner acknowledges the risk, such as by signing its entry."
           ],
@@ -540,7 +541,8 @@
             "crisc_d1_073",
             "crisc_d1_113",
             "crisc_d1_156",
-            "crisc_d1_210"
+            "crisc_d1_210",
+            "crisc_d1_217"
           ],
           "definition": "Professional ethics are the conduct standards a practitioner follows, such as the ISACA Code of Professional Ethics: objectivity, due care, confidentiality, competence and disclosure of significant facts.",
           "why_it_matters": "Risk reports drive decisions. A practitioner who softens a rating under pressure, or leaves out a significant fact, misleads the people who must decide. AI adds new questions about fairness and transparency.",
@@ -548,7 +550,7 @@
             "Members and certification holders act with objectivity, due diligence and professional care; asked to rate work they designed, they disclose it first so the assigner can choose a safeguard.",
             "They keep information confidential unless the law requires disclosure, and never use it for personal benefit.",
             "They take on only work they are competent to do and keep their skills current; when a task needs skills they lack, they bring in qualified help.",
-            "They inform the right parties of all significant facts that would distort the results if left out, including their own errors once found.",
+            "They report significant facts whose omission would distort results, own errors included; known exposures go through the incident process, not quiet fixes.",
             "For AI, ethical use means fairness, transparency, human oversight and accountability, set in policy; a fairness concern is analyzed as a risk even when accuracy meets target.",
             "When an outsider asks for information gained at work, seek the enterprise's approval first; release it only with that approval or when the law requires it."
           ],
@@ -1061,14 +1063,15 @@
             "crisc_d1_119",
             "crisc_d1_165",
             "crisc_d1_185",
-            "crisc_d1_194"
+            "crisc_d1_194",
+            "crisc_d1_218"
           ],
           "definition": "Asset classification labels assets by sensitivity and criticality; valuation estimates what an asset is worth to the business. Both are inputs to rating risk.",
           "why_it_matters": "Impact cannot be rated without knowing an asset's value. Purchase cost understates assets such as customer data, whose loss can cost far more in fines, lost trust and downtime.",
           "how_it_works": [
             "The owner classifies the asset with the enterprise scheme, such as public, internal, confidential and restricted; a system takes the class of the most sensitive data it holds.",
             "Valuation considers replacement cost, revenue dependence, legal exposure, reputation and the processes the asset supports; an asset earning nothing itself can enable much of the revenue.",
-            "Higher classification and value drive stronger protection and higher impact ratings in risk analysis.",
+            "Higher classification, value and business criticality drive stronger protection and impact ratings; a system holding only public data can still need strong availability controls.",
             "Values and classes are reviewed when an asset's use, data or regulation changes.",
             "An AI model is valued by the decisions it drives, not its build cost; a rating that rests on build or purchase cost is revalued before anyone accepts the risk.",
             "When assessment time is short, start with the assets whose loss or compromise would most harm the business, judged by the BIA's criticality and sensitivity, not flaw counts or cost."
@@ -1539,13 +1542,14 @@
             "crisc_d1_108",
             "crisc_d1_116",
             "crisc_d1_196",
-            "crisc_d1_207"
+            "crisc_d1_207",
+            "crisc_d1_219"
           ],
           "definition": "The risk register records individual risks with owners, ratings and responses; the risk profile is the aggregated, current picture of enterprise risk built from it for leaders.",
           "why_it_matters": "Leaders need a portfolio view to decide where to act, not hundreds of register lines. Treating the register as the profile buries the few risks that matter most.",
           "how_it_works": [
             "The register is detailed and operational: one entry per scenario, with owner, rating, response and status; acceptance changes the status, not the rating.",
-            "The profile selects, combines and prioritizes register risks into a view of overall exposure by objective or category.",
+            "The profile combines register risks into overall exposure by objective or category; maturity scores show capability, not exposure.",
             "The profile sets current risk, counting only responses already in place, against today's appetite, showing exposure too high or too low; a changed appetite moves the comparison, not the ratings.",
             "In NIST terms, the profile is a prioritized subset of the enterprise risk register; with a limit per category, headroom in one does not offset another's breach.",
             "AI use enters the profile through register entries mapped to the objectives and categories it affects, not as a count of tools or models.",
@@ -1859,15 +1863,16 @@
             "crisc_d1_018",
             "crisc_d1_042",
             "crisc_d1_114",
-            "crisc_d1_132"
+            "crisc_d1_132",
+            "crisc_d1_220"
           ],
           "definition": "A tolerance breach is when a risk or its indicator moves past the agreed limit; escalation takes it to the risk owner and the level that set the limit.",
           "why_it_matters": "A breach means the enterprise is carrying more risk than its leaders agreed to. Handling it as a routine IT ticket hides the decision from those with authority over it.",
           "how_it_works": [
             "KRIs and assessments are monitored against tolerance and appetite thresholds.",
-            "On a breach, the practitioner confirms the data, analyzes the cause and likely impact, and informs the risk owner.",
+            "On a breach, the practitioner confirms the data, analyzes cause and likely impact, and informs the risk owner.",
             "The owner decides: bring risk back within limits, accept it temporarily with approval from the right level, or ask leaders to revisit the limit.",
-            "Escalation paths and timeframes are defined in the framework, so breaches reach the right level quickly.",
+            "Escalation paths and deadlines are set beforehand; dashboards and periodic summaries inform but cannot ensure timely decisions.",
             "Repeated breaches suggest the controls or the limit need review; analyze why they recur before changing either.",
             "Within appetite, tolerance and the owner's delegated authority, on a current assessment, the owner can accept on record without escalation; reassess after a change."
           ],
@@ -2002,7 +2007,8 @@
             "crisc_d1_095",
             "crisc_d1_112",
             "crisc_d1_163",
-            "crisc_d1_176"
+            "crisc_d1_176",
+            "crisc_d1_221"
           ],
           "definition": "Legal and regulatory requirements are obligations from laws and regulators; failing them creates compliance risk, and meeting them does not by itself mean other risks are low.",
           "why_it_matters": "Obligations change often and carry fines, sanctions and lost licenses. Treating compliance as the goal can leave risks that no regulation covers unmanaged.",
@@ -2010,7 +2016,7 @@
             "Legal and compliance teams keep a register of obligations, each with an owner and the controls that meet it.",
             "Each obligation is a source of risk scenarios: what happens if the enterprise fails to meet it.",
             "Regulatory change is monitored; when it is unclear whether a new rule applies, legal counsel confirms it before the impact assessment, ahead of the effective date.",
-            "AI laws, such as the EU AI Act, add duties for certain uses, so the enterprise maps its AI use cases against them.",
+            "AI laws, such as the EU AI Act, add use-based duties; map AI uses by where they are used and whom they affect.",
             "Compliance is a floor: risk analysis still covers threats that no rule addresses.",
             "A rule's open term, such as which incidents are significant, gets criteria from the obligation's owner so handlers apply it alike."
           ],

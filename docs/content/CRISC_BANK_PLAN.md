@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 23 done 12 Nov 2026 (bank 825, on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 24 done 12 Nov 2026 (bank 850, exactly on the outline weights). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 825 reviewed (215 / 181 / 264 / 165) after round 23, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 850 reviewed (221 / 187 / 272 / 170) after round 24, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -932,6 +932,41 @@ notes that said to reassess after any event were narrowed to agree.
 - Sector rule: food and drink counts as its own sector, not manufacturing.
 - Pause (on top of rounds 17–22): the keyed-wait shape; slow AI adoption as risk; owner authority to fund and accept; inventory scope for vendor devices; portfolio ranking with rated risk; and the rest in `r23_cross_domain.json`.
 - Neighbour checks: when a new keyed action is "fix it now" or "wait", grep older cues for the opposite order ("before anyone picks the fix", "reassess after") and narrow them in the same round.
+
+### Round 24 (12 Nov 2026): 25 items, bank 850
+
+Round 24 added 6 D1 (`crisc_d1_216`–`221`), 6 D2 (`crisc_d2_182`–`187`),
+8 D3 (`crisc_d3_265`–`272`) and 5 D4 (`crisc_d4_166`–`170`) items, taking the
+bank to 850, exactly on the outline weights. One AI item per domain: an AI
+chatbot's duties recorded by country of use under its business owner (d1_221);
+model files and ML libraries from a public hub put into vulnerability
+identification (d2_183); AI RMF outcomes mapped into the existing control library
+rather than a parallel AI catalogue (d3_267); and an erasure request reaching a
+fine-tuned model, where the data owner approves the recorded method and the model
+owner decides each request within it (d4_170, consistent with AAIA aaia_d1_044).
+Other highlights: IT operations makes an agreed firewall change in its own role
+(d1_216); exposed client codes reported through the incident process (d1_217);
+a near miss stopped by chance shows a weakness (d2_182); loss history under
+today's controls already carries their effect (d2_187); the customer's own
+internal audit uses contract audit rights where a vendor's SOC 2 stops (d3_266);
+senior management approves ransom-payment authority in advance (d4_166). No keyed
+wait this round.
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 (23 sure); d4_170's runner-up reasoning re-pointed |
+| Standards audit | 0 HARD ERRORS, 8 PRECISION: erasure decided at two levels with "approves" for the data owner (d4_170); "each" off two keys (d3_265, d3_268); d3_266's explanation off the paused assurance reasoning; stem-only facts (d2_183, d3_269); an older cue narrowed so it no longer keys d1_218's wrong option (d1_185) |
+| Concept review | 0 HARD ERRORS, 11 PRECISION: overstated rules softened (codes already seen stay valid, d1_217; AI rules "can" apply by use, d1_221; tamper-evident is not tamper-proof, d4_167; outsourcing keeps accountability, d3_265; periodic summaries are slow escalation, d1_220) |
+| Re-blind | 7/7 (6 sure); d4_170's Eliminate tip names retraining's real weakness |
+| Cross-domain gate | 0 HARD ERRORS, 3 PRECISION: d3_266's cue limited to a vendor's internal auditors; d3_101 names the enterprise's own internal audit; "model owner" used consistently in d4_170 |
+| Gates | All lints 0 errors; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes; keys level; balance exactly 26/22/32/20; longest-key floors 15.4–15.9% |
+
+**Next round (round 25, +25 to 875):** D1 +7, D2 +5, D3 +8, D4 +5 (228/192/280/175). Code placement, key letters, difficulty and settings are in `r24_cross_domain.json`.
+- Length floors: every domain needs exactly one key naturally longest by characters (D1 falls to 14.9% without one).
+- AI angles: D1 1B2 (a model-validation team under the head of data science is first-line self-testing), D2 2B1 (an AI assessment covers foreseeable misuse), D3 3A1 (an AI vendor's indemnity is a partial transfer), D4 per the JSON.
+- Pause new internal-audit keys (three now) and keyed waits; "Number of" on wrong options only; no new "Screen" or "Map" keys.
+- Openers and words: "Review" on 2 wrong options, only/just on 2 eliminated options, "Compare" on 1 wrong option; at most 1 owner pair split key plus eliminated; consider a justified training key in D1.
+- Pause (on top of rounds 17–23): the round 24 lessons listed in `r24_cross_domain.json`.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`
