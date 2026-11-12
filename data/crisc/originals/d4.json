@@ -6503,6 +6503,196 @@
       ],
       "_provenance": "Authored from concept: notes 4A5.1 (Portfolio Management by Value and Risk: proposals scored on value and risk together; bullet extended in round 25: funding stays within delivery capacity, as overloaded teams delay every project). Round 25, 12 Nov 2026: original scenario (a dry dock operator whose portfolio board funds every proposal over a benefit threshold, so nine funded projects share four engineers and all are behind schedule) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_051 (one project's delay spread across a portfolio; analyze the combined risk), crisc_d4_165 (rate an AI project's risks before ranking, with a business owner; its cue concerns unrated risks and keys none of these options, as the stem's gap is capacity, not ratings), crisc_d4_009 (each project's effect on the enterprise risk profile), crisc_d4_104 (sunk cost and a project whose customer left), crisc_d4_114 (residual risk against a business case's target), crisc_d4_141 (builders not deciding a stage gate), crisc_d1_066 and crisc_d1_083; CISA d2_077 (a PMO with consolidated portfolio reporting; its cue, prefer a portfolio view over stronger single-project control, supports B over C and D), d2_075 (realized benefits as IT value), d1_127 (reprioritizing audit work by risk after losing staff). Judged distinct: no item keys ranking proposals on value and risk within delivery capacity when funded projects outrun the people who deliver them. Older cues read against the wrong options: crisc_d4_165 (0.32 on D and 0.29 on C, on shared portfolio words; its rule, rate risks before ranking, keys neither), CISA d2_077 (0.26, supports the key); none keys a wrong option. Owner pattern: lone owner on eliminated C (the projects' business owners); 'portfolio board' on wrong D, none in the key; an 'Estimates' opener on eliminated D (round-wide ask), none in the key. Round 25 asks: D4's 4A5 item; key not strictly longest or shortest by words (9 against 8, 8 and 11) or characters (59 against 49, 50 and 67); 'each' on wrong D only, none in the key; no 'raise the threshold' option; no defer option; no IT key. Audit 12 Nov 2026 (round 25 standards audit): key concept no longer states that funding everything over a threshold always delays every project; it now says it can, when capacity is short of the funded work.",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d4_176",
+      "domain": 4,
+      "subtopic": "4A6 Technology resilience and disaster response/recovery. A database left out of backups",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A taxi company's backup standard covers live systems, yet a restore test found its five-month-old driver-payments database unprotected; IT has added it, but no release step covers backups. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Restore tests run more often across the company's systems",
+        "B": "A review of backup logs for jobs that failed",
+        "C": "The payments owner's sign-off on a restore of the new backup",
+        "D": "Backup setup required before new systems can go live"
+      },
+      "correct": "D",
+      "key_concept": "Backup setup is part of releasing a new system, so none goes live unprotected; restore tests confirm coverage but find a missed system late.",
+      "pre_read": "Ask where the gap opened as well as how it was found.",
+      "correct_explanation": "The standard already requires backups, but no release step applies it, so the database ran five months unprotected and the next new system could too. Requiring backup setup before new systems go live closes that cause where the gap opens. More frequent restore tests are the runner-up: they would find a missed system sooner, but a new system could still go live without backups until a test caught it.",
+      "wrong_explanations": {
+        "A": "More frequent tests find a missed system sooner, but after it has already run without backups; the release steps would still let new systems go live unprotected.",
+        "B": "Backup logs record the jobs that exist; a system never added to the jobs produces no failed job to find, so this review misses the gap.",
+        "C": "Signing off a restore of the new backup checks one database IT has already added; the release steps that let it go live unprotected stay as they are."
+      },
+      "tips": [
+        "Eliminate: B reads logs that cannot show a job never created, and C checks one database IT has already fixed; neither stops the next new system going live unprotected.",
+        "Final two: D beats A because no release step covers backups; more frequent tests find a missed system sooner, but setup before go-live stops the gap opening.",
+        "Exam cue: when a required control is missed because a process lacks the step that applies it, add that step where the gap opens rather than testing more often."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CP-9 (System Backup: backups are conducted at a frequency consistent with recovery time and recovery point objectives); NIST CSF 2.0 PR.DS-11 (backups of data are created, protected, maintained and tested)",
+      "related_concepts": [
+        "Backup coverage",
+        "Release management",
+        "Restore testing",
+        "Root cause"
+      ],
+      "_provenance": "Authored from concept: notes 4A6.2 (Backups and Ransomware Recovery: restores are tested, as a backup never restored is an untested assumption; bullet extended in round 26: backup setup is a release step, so no new system goes live unprotected). Round 26, 12 Nov 2026: original scenario (a taxi company whose backup standard covers live systems, yet a restore test found a five-month-old driver-payments database unprotected, because no release step covers backups) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_117 (backup frequency against the RPO), crisc_d4_035 (restore-test KCI), crisc_d4_138 (retest triggers), crisc_d4_012, crisc_d4_071, crisc_d2_110, crisc_d1_150; CISA d4_306, d5_129 (scanner scope missing new hosts) and d5_261; CC cc_d2_009, cc_d2_055, cc_d3_184. No same-scenario mirror: no bank item has a system left out of backups because release lacks the step. Runner-up A (more frequent restore tests): closest older cues in lesson are crisc_d4_035 (judge a backup control by restores) and crisc_d4_138 (tests on schedule and after set triggers); the stem fact 'no release step covers backups' rules A out, as tests find a missed system after it has run unprotected. crisc_d2_006's cue (record a missing control before picking a fix, unless a standard already requires one) is met by the stem's backup standard. Cue carries the stem conditions (a required control; a process lacking the step). Owner pattern: lone owner on eliminated C (the payments owner); none in the key. Round 26 asks: D4's 4A6 item; key D; key not strictly longest or shortest by words (9 against 9, 9 and 11) or characters (52 against 57, 44 and 60); a 'Review' opener on no option, 'A review' inside eliminated B; no IT key, no keyed wait, no defer option, no internal-audit or 'Number of' option; no only/all/never/just/alone/limited to in any option.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_177",
+      "domain": 4,
+      "subtopic": "4A7 Emerging technologies. An AI agent on a person's login",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A car finance lender's AI agent amends borrowers' payment plans through a team leader's login, which can also approve write-offs; logs show each change as the leader's. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Stronger sign-in checks on the team leader's login",
+        "B": "Checks of the agent's changes by the collections manager",
+        "C": "A separate identity for the agent, with rights for its tasks",
+        "D": "Agent-side records of the changes the agent makes"
+      },
+      "correct": "C",
+      "key_concept": "An AI agent gets its own identity and rights for its tasks; a person's login hides its actions and hands it that person's rights.",
+      "pre_read": "Separate who the logs say acted from what the agent is able to do.",
+      "correct_explanation": "Signed in as the team leader, the agent holds rights its task does not need, write-offs included, and nothing in the logs separates its changes from the leader's. Its own identity, with rights for amending plans, ties its actions to the agent and bounds what a faulty or misled agent can do. Agent-side records are the runner-up: they show what the agent did, but it keeps the leader's write-off rights.",
+      "wrong_explanations": {
+        "A": "Stronger sign-in guards the login against outsiders, but the agent still uses it, so its changes stay recorded as the leader's and it keeps write-off rights.",
+        "B": "The logs show the agent's changes as the leader's, so a reviewer cannot pick them out, and checks after the fact leave the agent's write-off rights in place.",
+        "D": "Agent-side records help separate its changes, but the agent still acts with the leader's rights, so a faulty or misled agent could approve write-offs."
+      },
+      "tips": [
+        "Eliminate: A secures a login the agent would go on sharing, and B asks a reviewer to pick out changes the logs record as the leader's; neither separates the agent from the person.",
+        "Final two: C beats D because the leader's login can approve write-offs; agent-side records show what the agent did, but its own identity also bounds what it can do.",
+        "Exam cue: when an AI agent works through a person's login, give it its own identity and rights for its tasks, so its actions are traceable and bounded."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SA-8(22) (Security and Privacy Engineering Principles | Accountability and Traceability: security-relevant actions can be traced to the entity on whose behalf they are taken, and least privilege makes that tracing finer); NIST SP 800-53 Rev. 5 AC-6 (Least Privilege); NIST CSF 2.0 PR.AA-01 (identities and credentials for authorized users, services and hardware are managed by the organization)",
+      "related_concepts": [
+        "AI agents",
+        "Non-person identities",
+        "Least privilege",
+        "Accountability and traceability"
+      ],
+      "_provenance": "Authored from concept: notes 4A7.2 (AI and Machine Learning Adoption; bullet added in round 26: an AI agent acting through a person's login inherits that person's rights and its actions cannot be told apart, so it gets its own identity) and 4B1.1 (Core Security Principles: each user, system and AI tool gets only the access its task needs). Round 26, 12 Nov 2026: original scenario (a car finance lender whose AI agent amends borrowers' payment plans through a collections team leader's login, which can also approve write-offs, so logs show each change as the leader's) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_048 (limits on what an AI agent may do without approval), crisc_d4_087 (read-only access for an AI assistant), crisc_d4_128 (identity and rights checked on each call, a Zero Trust item), crisc_d4_112 (approval before an AI coding agent merges), crisc_d3_206 (KRI for an AI voice agent); AAIA aaia_d3_068 (the billing system's audit trail of the agent's account as evidence); CC cc_d3_125 (three AI agents sharing one service account, a cross-bank mirror on separate identities, written for a security administrator) and cc_d3_108. This item is not a Zero Trust stem: it turns on attribution and inherited rights, not per-request checks. Runner-up D (agent-side records): closest older cues in lesson are crisc_d4_087 ('remove the access before adding reviews or logs around it', which supports the key) and crisc_d3_206 (a live signal in your own records for an AI agent's errors, a KRI rule that does not key D); the stem fact 'the login can also approve write-offs' rules D out, as records show what the agent did but leave it the leader's rights. Owner pattern: no option names an owner. Round 26 asks: D4's 4A7 AI item on the plan's angle (an agent on an employee's credentials gets its own identity and limited rights); restricting access written as a noun-phrase key; FLOOR KEY: C is the one key in the D4 batch naturally longest by characters (60 against 56, 50 and 49, +4) and by words (11 against 9, 8 and 8); no IT key; no Ask or Have option; none of round 25's AI angles as key or runner-up.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_178",
+      "domain": 4,
+      "subtopic": "4B1 Security concepts, frameworks and standards. An unpublished upload page",
+      "principle_id": "final-two",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Labs upload a food safety agency's recall test results to a page anyone with its unpublished address can use; many lab staff know the address. Which of the following is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Confidentiality terms on the address in lab agreements",
+        "B": "A new unpublished address, shared again with the labs",
+        "C": "Alerts on uploads from networks not seen before",
+        "D": "Sign-in for uploads with accounts issued to the labs"
+      },
+      "correct": "D",
+      "key_concept": "Security should not rest on keeping an address or design secret; results that drive decisions arrive through accounts that identify who sent them.",
+      "pre_read": "Notice what the page relies on to keep unknown senders out.",
+      "correct_explanation": "Anyone who learns the address can upload the results recalls depend on, and the page cannot tell who sent them; a secret address is not an access control. Sign-in with accounts issued to the labs stops unknown senders and ties each result to an accountable lab. Alerts on uploads from new networks are the runner-up: they flag some misuse, but after a false result has arrived, and they cannot say which lab sent it.",
+      "wrong_explanations": {
+        "A": "Agreement terms may deter labs from passing the address on, but it already sits with many lab staff, and anyone who learns it can still upload results.",
+        "B": "A new secret address rests on the same secrecy as the old one; once shared with lab staff again, anyone it reaches can upload results.",
+        "C": "Alerts flag uploads from unfamiliar networks after results have arrived; the page still accepts anyone with the address and cannot tell which lab sent a result."
+      },
+      "tips": [
+        "Eliminate: A and B both keep the address's secrecy as the safeguard; an address shared with lab staff stays secret for as long as no one passes it on.",
+        "Final two: D beats C because the page takes recall test results from anyone with the address; alerts flag misuse after it lands, while lab accounts stop unknown senders and name the sender.",
+        "Exam cue: when a safeguard rests on keeping an address or design secret, look for a control that identifies who acts; secrecy is not access control."
+      ],
+      "framework_ref": "NIST SP 800-123 Section 2.4 (Server Security Principles: open design, so system security does not depend on the secrecy of the implementation or its components); NIST SP 800-53 Rev. 5 AC-14 (Permitted Actions without Identification or Authentication: actions allowed without identification or authentication are identified and justified in the security plan)",
+      "related_concepts": [
+        "Open design",
+        "Security through obscurity",
+        "Authentication",
+        "Integrity of results"
+      ],
+      "_provenance": "Authored from concept: notes 4B1.1 (Core Security Principles: layered controls and least privilege; bullet extended in round 26: a secret address is not access control). Round 26, 12 Nov 2026: original scenario (a food safety agency whose labs upload recall test results to a page anyone with its unpublished address can use, with many lab staff knowing the address) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_053 (layers removed around customer data), crisc_d4_158 (one bypassed filter guarding an AI assistant), crisc_d4_073 (two firewalls with copied rules), crisc_d4_039 and crisc_d4_087 (least privilege), crisc_d4_126 (default credentials), crisc_d1_154; CISA d5_288 and d4_141; CC cc_d3_038 (case officers opening any file) and cc_d4_151. No bank item turns on security that rests on a secret address (open design). Runner-up C (alerts on uploads from new networks): closest older cues in lesson are crisc_d4_158 ('add a layer that works differently', which both C and D satisfy) and crisc_d4_053 (a single point of failure with no detection); the stem facts that the page takes recall test results from anyone with the address and that many lab staff know it rule C out, as alerts act after a false result lands and cannot name the sender. Owner pattern: no option names an owner. Round 26 asks: D4's 4B1 item; 'Which of the following' stem (1 of 2); key D not strictly longest or shortest by words (9 against 8, 9 and 8) or characters (52 against 54, 53 and 47); stem states the gap as a fact (page usable by anyone with the address) so no gap-echo.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_179",
+      "domain": 4,
+      "subtopic": "4B2 Security/risk awareness and training. Clicks falling on reused lures",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A zipper maker's phishing simulations reuse the same five lure templates; clicks fell from 20% to 3%, and the security manager reports staff awareness as fixed. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Further training for the staff who clicked on the lures",
+        "B": "Fresh lures of difficulty comparable to earlier ones",
+        "C": "Report rates tracked alongside the click rates",
+        "D": "Review of the content in the awareness course"
+      },
+      "correct": "B",
+      "key_concept": "An awareness result counts when the test stays comparable; reused lures measure memory of the templates, so fresh lures of similar difficulty are needed.",
+      "pre_read": "Ask what the falling click rate could be measuring besides awareness.",
+      "correct_explanation": "Reusing five templates lets staff learn the lures themselves, so the fall from 20% to 3% may show recognition of those emails rather than better judgment of real phishing. Fresh lures of comparable difficulty keep the trend comparable while testing whether staff spot phishing they have not seen. Report rates are the runner-up: reporting is a better behavior measure, but staff can report familiar templates as easily, so the reused lures inflate it too.",
+      "wrong_explanations": {
+        "A": "With clicks at 3%, more training for a few staff leaves the question open: the drop may reflect familiarity with five reused templates, not better judgment.",
+        "C": "Report rates measure behavior better than clicks, but staff who recognize a reused template can report it as easily, so the same five lures inflate both figures.",
+        "D": "Nothing points to a fault in the course; the doubt is whether simulations reusing five templates still measure how staff handle real phishing."
+      },
+      "tips": [
+        "Eliminate: A trains the few who clicked and D reviews a course nothing faults; neither tells whether the fall to 3% reflects better judgment or familiar templates.",
+        "Final two: B beats C because the same five templates are reused; report rates are a better measure, but familiar lures inflate them too, while fresh lures test real judgment.",
+        "Exam cue: before crediting an improving awareness figure, check whether the test has grown familiar; compare results on fresh tests of similar difficulty."
+      ],
+      "framework_ref": "NIST TN 2276 (NIST Phish Scale User Guide: rating a phishing email's detection difficulty gives context to click and reporting rates); NIST SP 800-50 Rev. 1 Section 2.4.1.1 (Quantitative Measurements: metrics on incident reporting that show employees can recognize and report potential events, and the ability to recognize and report privacy disclosures)",
+      "related_concepts": [
+        "Phishing simulations",
+        "Awareness metrics",
+        "Measurement validity",
+        "Detection difficulty"
+      ],
+      "_provenance": "Authored from concept: notes 4B2.2 (Measuring Awareness, Phishing Simulations and Shadow AI: outcome measures and fair simulations; bullet extended in round 26: results are compared over time on fresh lures of similar difficulty). Round 26, 12 Nov 2026: original scenario (a zipper maker whose phishing simulations reuse the same five lure templates while clicks fell from 20% to 3%, and whose security manager reports awareness as fixed) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_159 (refreshers when clicks climb between yearly courses; its 'simulations of steady difficulty' agrees with this key), crisc_d4_140 (announcing simulations, paused family, not used), crisc_d4_109 and crisc_d4_018 (behavior measures), crisc_d2_149 (click rates weighed by access, paused family, not used), crisc_d1_024 (near-miss reports counted against staff); cross-bank mirrors: CISA d5_114 (an IS auditor finds this year's lures were easier and recommends rating each test's difficulty) and CC cc_d2_108 (a harder lure makes click rates incomparable). This item differs: the same five templates are reused, so familiarity, not ease, inflates the result, and the practitioner's move is fresh lures of comparable difficulty before the figure is credited. Runner-up C (report rates beside click rates): closest older cues in lesson are crisc_d4_109 (compare behavior with an independent record) and crisc_d4_018 (track the risky behavior itself over time); the stem fact 'the same five lure templates' rules C out, as familiar templates inflate report rates too. Owner pattern: no option names an owner. Round 26 asks: D4's 4B2 item; training option on eliminated A only (D4 training options stay wrong); a 'Review' opener on eliminated D (round-wide ask); key B not strictly longest or shortest by words (8 against 10, 7 and 8) or characters (52 against 55, 46 and 45).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_180",
+      "domain": 4,
+      "subtopic": "4B3 Data privacy and data protection principles. Health details in absence records",
+      "principle_id": "objectives-first",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An almond grower's crew supervisors plan shifts from absence records showing each worker's medical reason; the HR system passed its last security review. Which of the following should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Absence records for supervisors without the medical reasons",
+        "B": "Workers' consent to show their medical reasons to supervisors",
+        "C": "A repeat of the HR system's security review",
+        "D": "Logs of supervisors' views of the absence records"
+      },
+      "correct": "A",
+      "key_concept": "Personal data is disclosed as far as the purpose needs: supervisors who plan shifts from absence dates see the dates, not the health details.",
+      "pre_read": "Compare what the supervisors use the records for with what the records show them.",
+      "correct_explanation": "Supervisors plan shifts from who is absent and when; the medical reasons play no part in that, so showing them discloses health data beyond need. Absence records without the reasons meet the purpose with less personal data. Workers' consent is the runner-up: it sounds like a privacy fix, but consent asked by an employer may not be freely given, and it would still disclose health data the planning does not use.",
+      "wrong_explanations": {
+        "B": "Consent asked by an employer may not be freely given, and even when given it would still show supervisors health data that planning shifts does not use.",
+        "C": "The system already passed a security review; the problem is authorized users seeing more than their purpose needs, which a security review does not address.",
+        "D": "Logging supervisors' views of the records watches authorized access but leaves the disclosure in place; supervisors still see health data they do not need."
+      },
+      "tips": [
+        "Eliminate: C repeats a security review the system passed, and D logs views it still allows; both treat disclosure beyond need, a privacy problem, as a security one.",
+        "Final two: A beats B because supervisors plan shifts from absence dates; consent asked by an employer may not be freely given, and the reasons are not needed anyway.",
+        "Exam cue: when people see personal data their task does not use, take it out of their view; consent or logging does not cure disclosure beyond the purpose."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SA-8(33) (Security and Privacy Engineering Principles | Minimization); ISACA Glossary (consent); NIST Privacy Framework Version 1.0 Section 1.2.1 (Cybersecurity and Privacy Risk Management: privacy risk can arise from data processing unrelated to cybersecurity incidents)",
+      "related_concepts": [
+        "Data minimization",
+        "Health data",
+        "Consent",
+        "Privacy versus security"
+      ],
+      "_provenance": "Authored from concept: notes 4B3.1 (Privacy Principles: only data the purpose needs is collected, kept or disclosed; consent counts only if people can refuse; security protects data from unauthorized access, privacy also governs authorized use; bullet extended in round 26: staff see the personal data their task uses). Round 26, 12 Nov 2026: original scenario (an almond grower whose crew supervisors plan shifts from absence records that show each worker's medical reason, in an HR system that passed its last security review) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_130 (third-party tracking code receiving taxpayer data; disclosure beyond purpose to an outside party, where this item is internal staff), crisc_d4_043 (privacy by design defaults), crisc_d4_150 and crisc_d4_019 (purpose before collection, paused family; this item's purpose is set and turns on disclosure within it), crisc_d4_100 and crisc_d4_160 (consent keyed where an extra use or a bought list needs it), crisc_d4_120; CISA d1_118; AAIA aaia_d2_205. Runner-up B (workers' consent): closest older cues in lesson are crisc_d4_100 (unbundle an extra use so people can refuse and still be served) and crisc_d4_160 (check what people agreed to before using data from elsewhere); the stem facts that supervisors plan shifts from the absence records, and that the request would come from their employer, rule B out: consent may not be freely given and the reasons are not needed. Owner pattern: no option names an owner. Round 26 asks: D4's 4B3 item; 'Which of the following' stem (2 of 2); key A not strictly longest or shortest by words (8 against 9, 8 and 8) or characters (59 against 61, 43 and 49); the key no longer the only option echoing 'absence records' (D says it too).",
+      "style_version": 2
     }
   ]
 }

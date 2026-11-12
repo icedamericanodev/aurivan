@@ -10368,6 +10368,302 @@
       ],
       "_provenance": "Authored from concept: notes 3C5.2 (Reporting for the Audience and the Decision: send each report, stating the decision needed, to someone with authority to decide, before that decision is taken). Round 25, 12 Nov 2026: original scenario (an antique dealer's partners set spending each January, while the risk analyst's yearly report, sent in April, has shown online fraud above appetite for two years with no treatment funded), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 25 (crisc_d3_273 to 280). Round 25 asks: 3C5 slot (key A, analysis); 'Estimate' opens the runner-up (B), keyed nowhere; no option names an owner. Not escalation routes set in advance, the board unable to see part of the profile, or technical scores restated in business terms (paused): the lesson is timing a report to the decision it informs (task 21). Neighbours checked: crisc_d3_048 (report to the level that can decide, with the decision needed; consistent, here the timing), 082 (decision and options for leaders), 127 (a breach escalated outside the cycle; paused escalation family, not used), 019, 081, 200, 239; crisc_d1_127 (0.22). TF-IDF top 0.27 crisc_d3_260 (dates only, no mirror). Wrong options against older keys and cues: top 0.26 (crisc_d3_104), none above 0.30. Audit 12 Nov 2026 (round 25 standards audit): no content change. Neighbours added: crisc_d3_247 (an emerging risk reported before a pending board decision; same timing principle in 3C6, consistent).",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d3_281",
+      "domain": 3,
+      "subtopic": "3A3 Vendor/supply chain risk management. Exceptions in a vendor's assurance report",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An interpreting agency's booking platform vendor's SOC 2 Type 2 report gives an unqualified opinion but lists exceptions: 6 of 25 sampled leavers kept administrator access for weeks. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Use the contract's audit right to test the leaver process",
+        "B": "Advise the platform's business owner to switch vendors",
+        "C": "Treat the unqualified opinion as a clean result for the vendor",
+        "D": "Request the vendor's cause and fix for the access exceptions"
+      },
+      "correct": "D",
+      "key_concept": "Exceptions in a vendor's assurance report need follow-up whatever the opinion; get the vendor's cause and fix before stronger steps such as audit or exit.",
+      "pre_read": "Read past the opinion to what the testing found.",
+      "correct_explanation": "Exceptions in a SOC 2 Type 2 report are failures the customer follows up, whatever the opinion. The first step is the vendor's response: why leavers kept administrator access, whether it reached the agency's data and what is fixed. That shows whether the risk is still open. Using the contract's audit right is the runner-up: it retests a failure the report already found, at far greater cost, before the vendor has explained it.",
+      "wrong_explanations": {
+        "A": "The report already tested the leaver process and found it failing; an audit repeats that work at high cost before the vendor's cause and fix are known.",
+        "B": "Switching vendors is the business owner's call once the exceptions are understood; advising it now acts on a finding no one has yet analyzed.",
+        "C": "An unqualified opinion can sit beside listed exceptions; those are still control failures that need follow-up before the agency relies on the report."
+      },
+      "tips": [
+        "Eliminate: C reads an unqualified opinion as clean though exceptions are listed, and B moves to a vendor switch before anyone knows what the exceptions mean.",
+        "Final two: D beats A because the report already shows the leaver control failed; the vendor's cause and fix come first, and audit rights cover what that answer leaves open.",
+        "Exam cue: exceptions in a vendor's assurance report are followed up with the vendor first (cause, effect on your data, fix); audit rights or exit follow if that answer falls short."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SR-6 (Supplier Assessments and Reviews); NIST CSF 2.0 GV.SC-07 (the risks posed by a supplier, their products and services and other third parties are understood, recorded, prioritized, assessed, responded to and monitored)",
+      "related_concepts": [
+        "SOC 2 Type 2 report",
+        "Report exceptions",
+        "Vendor monitoring"
+      ],
+      "_provenance": "Authored from concept: notes 3A3.2 (Ongoing Vendor Monitoring and Assurance Reports: act on report exceptions and complementary user entity controls). Round 26, 12 Nov 2026: original scenario (an interpreting agency's booking platform vendor's SOC 2 Type 2 report gives an unqualified opinion but lists exceptions, with 6 of 25 sampled leavers keeping administrator access for weeks), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 26 (crisc_d3_281 to 288). Round 26 asks: 3A3 slot (key D, application); 'Advise' opens an eliminated option (B), which is also the batch's eliminated lone owner; 'Treat' on a wrong option (C); no option names more than one owner.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_282",
+      "domain": 3,
+      "subtopic": "3B1 Control frameworks, types and standards. Controls over design-file theft",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A bearing maker's risk analyst is classifying its controls over theft of design files. Which of the following is BEST classified as a deterrent control?",
+      "options": {
+        "A": "Blocking of design-file uploads to personal cloud storage",
+        "B": "Alerts on unusual download volumes by a single user",
+        "C": "A sign-in notice that downloads are logged and misuse disciplined",
+        "D": "A legal demand that a departing engineer return copied files"
+      },
+      "correct": "C",
+      "key_concept": "A deterrent control discourages an attempt by warning of its consequences; a preventive control stops the act whatever the person intends.",
+      "pre_read": "Ask whether each control stops, finds, fixes or discourages the theft.",
+      "correct_explanation": "A deterrent control works on intent: it discourages an attempt by warning of consequences, without stopping or finding the act itself. A sign-in notice that downloads are logged and misuse disciplined does exactly that. Blocking uploads to personal cloud storage is the runner-up: it also lowers likelihood, but it is preventive, because it stops the transfer whatever the person intends.",
+      "wrong_explanations": {
+        "A": "Blocking uploads stops the transfer itself, whatever the person intends; that makes it preventive, even though, like a deterrent, it mainly lowers likelihood.",
+        "B": "Alerts on unusual downloads find possible theft as it happens or after, so they are detective; they reduce harm only if someone acts on them in time.",
+        "D": "A legal demand to return copied files acts after the theft to limit its harm, which makes it corrective, not a control that discourages the attempt."
+      },
+      "tips": [
+        "Eliminate: B finds unusual downloads once they happen, which is detective, and D acts after the theft to limit harm, which is corrective.",
+        "Final two: C beats A because a deterrent works by warning of consequences; a block that stops the upload whatever the intent is preventive, though both mainly lower likelihood.",
+        "Exam cue: classify a control by what it does to the event: deterrents discourage by warning, preventive controls stop the act, detective ones find it and corrective ones limit the harm."
+      ],
+      "framework_ref": "NIST IR 8286B-upd1 Section 2.3.4 (Risk Mitigation: preventive, deterrent, detective, corrective and compensating controls); NIST SP 800-53 Rev. 5 AC-8 (System Use Notification: a banner shown before access states that use may be monitored, recorded and audited, and that unauthorized use is prohibited and subject to penalties)",
+      "related_concepts": [
+        "Deterrent control",
+        "Preventive control",
+        "Control classification"
+      ],
+      "_provenance": "Authored from concept: notes 3B1.1 (Control Types by Function: name the function by what the control does here; the types list gives a deterrent as one that discourages a threat actor, such as a warning banner). Round 26, 12 Nov 2026: original scenario (a bearing maker's risk analyst classifying controls over theft of design files: an upload block, download alerts, a sign-in notice and a legal demand to return files), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 26 (crisc_d3_281 to 288). Round 26 asks: 3B1 slot (key C, foundational); a control-type classification item keying deterrent, as point 8 allows; short 'Which of the following' stem (one of two); the batch's floor key, naturally longest by characters; no option names an owner.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_283",
+      "domain": 3,
+      "subtopic": "3B3 Control testing methodologies. A bought prompt filter for a support chatbot",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A cloud backup provider's prompt filter, rated 99% effective on its vendor's public jailbreak benchmark, should stop the support chatbot revealing customers' account details. Which of the following BEST shows the risk analyst it works?",
+      "options": {
+        "A": "Attack prompts built from the provider's own support chats",
+        "B": "The vendor's benchmark report, with its prompts and scoring",
+        "C": "Share of support chats the filter has blocked since launch",
+        "D": "Inspection of the filter's settings against the vendor's guide"
+      },
+      "correct": "A",
+      "key_concept": "An AI guardrail is tested with attacks drawn from the organization's own use and data, not judged on a vendor's benchmark of generic prompts.",
+      "pre_read": "Ask where each piece of evidence was produced, and under what conditions.",
+      "correct_explanation": "A guardrail is tested under the conditions it must work in. Attack prompts built from the provider's own support chats try the routes customers and attackers would take to account details, so the results show whether the filter holds here. The vendor's benchmark report is the runner-up: it is real test evidence, but of generic jailbreak prompts, not of attempts on this chatbot's data and conversations.",
+      "wrong_explanations": {
+        "B": "A public benchmark shows how the filter handles generic jailbreak prompts; it does not show how it handles requests aimed at this chatbot's account data.",
+        "C": "Blocked chats show the filter acting, not what it missed; a high count can mean frequent attacks or harmless questions being stopped.",
+        "D": "Settings that match the vendor's guide show the filter is set up as designed; they do not show it stops attempts on account details in use."
+      },
+      "tips": [
+        "Eliminate: C counts what the filter blocked, not what got past it, and D checks its setup against the guide, which shows design, not whether it stops attacks.",
+        "Final two: A beats B because the benchmark tests generic jailbreaks; prompts built from the provider's own support chats test the filter where it must hold, on account details.",
+        "Exam cue: test an AI guardrail with attacks drawn from the organization's own use and data; a vendor's benchmark shows performance under someone else's conditions."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MEASURE 2.3 (AI system performance or assurance criteria are measured and demonstrated for conditions similar to deployment settings); NIST SP 800-53A Rev. 5 Section 2.4.2 (Assessment Methods: examine, interview and test, with depth and coverage)",
+      "related_concepts": [
+        "AI guardrail testing",
+        "Prompt filter",
+        "Conditions of use"
+      ],
+      "_provenance": "Authored from concept: notes 3B3.1 (Testing Techniques and Evidence Strength: test under real conditions, such as an AI guardrail against attacks drawn from the firm's own use) and 3A3.3 (AI Vendors and the Model Supply Chain: a third-party AI service is monitored as part of your own monitoring). Round 26, 12 Nov 2026: original scenario (a cloud backup provider's bought prompt filter, rated 99% effective on its vendor's public jailbreak benchmark, should stop the support chatbot revealing customers' account details), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 26 (crisc_d3_281 to 288). Round 26 asks: 3B3 slot and the batch's AI item (key A, application), on the plan's angle (test a guardrail with adversarial prompts from the firm's own use, not the vendor's benchmark); 'Share of' on an eliminated option (C), keyed nowhere; short 'Which of the following' stem (two of two); no option names an owner.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_284",
+      "domain": 3,
+      "subtopic": "3C1 Risk action plans. Due dates that action owners can move",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A pipeline operator's action owners can move due dates in its risk register; the overdue-actions report has shown none for a year while several plans slipped. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Attestation by action owners that their due dates are realistic",
+        "B": "Slippage reported against the due dates the plans first set",
+        "C": "Review of the plans' status colors by the risk committee",
+        "D": "Reminders to action owners as their due dates approach"
+      },
+      "correct": "B",
+      "key_concept": "Slippage is measured against the due dates first agreed, so dates moved without trace cannot hide delay from the risk owner.",
+      "pre_read": "Ask what the overdue report measures against, and who can change it.",
+      "correct_explanation": "When action owners can move due dates freely, a slipping plan simply gets a new date, so the overdue report stays empty while the risk stays above its planned level. Reporting slippage against the dates the plans first set shows the risk owner how far each plan has drifted. Attestation by action owners is the runner-up: it asks the people who moved the dates to vouch for them, and reveals no drift.",
+      "wrong_explanations": {
+        "A": "The action owners who moved the dates would attest to them; a statement that dates are realistic does not show how far plans have drifted from what was agreed.",
+        "C": "Status colors are set by the plans' own leads and, with dates reset, show green; the committee would see the same picture the empty overdue report gives.",
+        "D": "Reminders help owners meet dates, but an owner who misses one can still move it unseen, so the overdue report stays empty while plans slip."
+      },
+      "tips": [
+        "Eliminate: C reviews status colors that rest on the same reset dates, and D reminds owners of dates they can still move unseen.",
+        "Final two: B beats A because measuring against the dates first set exposes drift from the record; attestation asks the owners who moved the dates to vouch for them.",
+        "Exam cue: when action owners can reset due dates without trace, measure slippage against the dates first agreed; a report built on movable dates will show no delay."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CA-5 (Plan of Action and Milestones); NIST CSF 2.0 ID.RA-06 (risk responses are chosen, prioritized, planned, tracked and communicated)",
+      "related_concepts": [
+        "Risk action plan tracking",
+        "Slippage",
+        "Overdue actions"
+      ],
+      "_provenance": "Authored from concept: notes 3C1.2 (Validating Execution and Tracking to Closure: measure slippage against the dates first agreed; escalate slipping actions to the risk owner). Round 26, 12 Nov 2026: original scenario (a pipeline operator's action owners can move due dates in its risk register, and the overdue-actions report has shown none for a year while several plans slipped), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 26 (crisc_d3_281 to 288). Round 26 asks: 3C1 slot (key B, application); 'Review' opens an eliminated option (C), keyed nowhere; an owner pair split as runner-up (A) plus an eliminated option (D), key without an owner.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_285",
+      "domain": 3,
+      "subtopic": "3C2 Data collection, aggregation, analysis and validation. Plants that send their top five risks",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A cocoa processor's six plants each send the group risk analyst five top-rated risks; a bean supplier's failure, ranked sixth to eighth at four plants, never appears. What should the analyst recommend as BEST?",
+      "options": {
+        "A": "Extend the plants' submissions from five risks to ten",
+        "B": "Compare the plants' top-five lists for risks they share",
+        "C": "Rank group risks from the plants' full registers combined",
+        "D": "Ask the plants to mark register entries they think others share"
+      },
+      "correct": "C",
+      "key_concept": "Enterprise risks are ranked after combining units' full registers; a per-unit top-five filter can drop a risk that is large across units.",
+      "pre_read": "Notice where the ranking happens and what is dropped before it.",
+      "correct_explanation": "A risk ranked below the cut-off at several plants can be one of the group's largest, yet a top-five filter at each plant drops it before anyone sees the total. Ranking group risks from the plants' full registers combined lets shared exposure, such as the bean supplier's failure, add up and surface. Extending submissions to ten is the runner-up: it catches this risk, but any cut-off still drops one ranked lower at every plant.",
+      "wrong_explanations": {
+        "A": "Ten risks per plant would catch this supplier risk, but a cut-off remains: a shared risk ranked lower at every plant would still never reach the group view.",
+        "B": "The supplier risk is in none of the top-five lists, so comparing those lists cannot find it; the filter acts before the comparison.",
+        "D": "A plant sees its own register, not the others', so it cannot tell which risks are shared; the group view of the combined registers can."
+      },
+      "tips": [
+        "Eliminate: B compares lists the supplier risk never entered, and D asks plants to spot sharing they cannot see from their own registers.",
+        "Final two: C beats A because any per-plant cut-off drops a risk ranked below it at every plant; ranking after combining full registers lets shared exposure add up.",
+        "Exam cue: aggregate before you filter; when each unit forwards its top risks, a risk shared across units can be large in total yet miss the enterprise view."
+      ],
+      "framework_ref": "ISACA Glossary (risk aggregation); NIST SP 800-30 Rev. 1 Section 3.2 Task 2-6 (Determine Risk: several moderate-level risks can aggregate to a higher level of risk)",
+      "related_concepts": [
+        "Risk aggregation",
+        "Enterprise risk profile",
+        "Correlated risk"
+      ],
+      "_provenance": "Authored from concept: notes 3C2.2 (Aggregating and Normalizing Risk Data: watch for correlated risks, like units sharing one vendor, and rank after combining full registers, since top-five lists can drop them). Round 26, 12 Nov 2026: original scenario (a cocoa processor's six plants each send the group risk analyst five top-rated risks, and a bean supplier's failure, ranked sixth to eighth at four plants, never appears), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 26 (crisc_d3_281 to 288). Round 26 asks: 3C2 slot (key C, analysis); 'Compare' opens an eliminated option (B), keyed nowhere; 'Ask' on an eliminated option (D), never the runner-up; 'register' is in a wrong option as well as the key; no option names an owner.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_286",
+      "domain": 3,
+      "subtopic": "3C4 Risk and control monitoring techniques. A small sample of many changes",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An outdoor gear retailer's risk team tests 25 of about 3,000 privileged changes a quarter against approved tickets; the change logs and tickets are machine-readable and share IDs. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Have the control owner automate matching changes to tickets",
+        "B": "Double the sample the risk team draws at random",
+        "C": "Get the control owner's sign-off that changes match their tickets",
+        "D": "Limit privileged changes to a set change window"
+      },
+      "correct": "A",
+      "key_concept": "Where control records are high in volume and machine-readable, automated monitoring of the whole population covers far more than periodic sampling.",
+      "pre_read": "Weigh the sample size against the volume, and note what form the records take.",
+      "correct_explanation": "With about 3,000 privileged changes a quarter, and logs and tickets that are machine-readable and share IDs, a check can compare every change with its ticket as it happens. Having the control owner automate that match turns a small periodic sample into continuous coverage, with the risk team reviewing the exceptions. Doubling the sample is the runner-up: it strengthens the test, but 50 of about 3,000 still leaves most changes unchecked.",
+      "wrong_explanations": {
+        "B": "A larger random sample tests the control more reliably, but 50 of about 3,000 changes still leaves most unchecked when the records allow checking every one.",
+        "C": "A sign-off is the owner's statement that changes match tickets, which is inquiry; it adds no evidence and checks no change against its ticket.",
+        "D": "A change window controls when privileged changes happen, not whether each was approved; changes made inside the window still need matching to tickets."
+      },
+      "tips": [
+        "Eliminate: C rests on the owner's word, which checks nothing, and D limits when changes happen, not whether they were approved.",
+        "Final two: A beats B because the logs and tickets are machine-readable and share IDs, so automation can check the whole population; a bigger sample still leaves most unseen.",
+        "Exam cue: when a control's records are high in volume and machine-readable, automated checks of the whole population beat larger samples; the control owner runs them and the risk team reviews exceptions."
+      ],
+      "framework_ref": "NIST SP 800-137 Section 2.3 (Role of Automation in ISCM: automated tools lower costs and improve reliability, such as checking that a machine's software is up to date); NIST SP 800-53 Rev. 5 CA-7 (Continuous Monitoring)",
+      "related_concepts": [
+        "Continuous control monitoring",
+        "Automation",
+        "Population coverage"
+      ],
+      "_provenance": "Authored from concept: notes 3C4.1 (Continuous Monitoring and Automated Alerts: automate where it helps, including whole-population checks of machine-readable control records) and 3C4.2 (Control Self-Assessment and Trend Analysis: owner-run checks, with the risk function challenging). Round 26, 12 Nov 2026: original scenario (an outdoor gear retailer's risk team tests 25 of about 3,000 privileged changes a quarter against approved tickets, and the change logs and tickets are machine-readable and share IDs), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 26 (crisc_d3_281 to 288). Round 26 asks: 3C4 slot (key A, application); 'Limit' opens an eliminated option (D); a 'Have' key where it is genuinely right; an owner pair split as key (A) plus an eliminated option (C).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_287",
+      "domain": 3,
+      "subtopic": "3C5 Risk and control reporting techniques. One figure from wide estimates",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A professional body's risk analyst estimated yearly losses from member-data breaches at $1,370,000 from experts' wide ranges; the draft board report shows that single figure against appetite. What is the analyst's BEST change?",
+      "options": {
+        "A": "Map the figure onto a cell of the board's heat map",
+        "B": "Estimate the loss again with a more detailed model",
+        "C": "Confirm the figure with the risk owner before reporting",
+        "D": "Show the estimate as a range with its key assumptions"
+      },
+      "correct": "D",
+      "key_concept": "A risk estimate built from wide input ranges is reported as a range with its key assumptions, not as one falsely precise figure.",
+      "pre_read": "Compare how certain the inputs are with how certain the reported figure looks.",
+      "correct_explanation": "The experts gave wide ranges, so a single figure of $1,370,000 implies a precision the analysis lacks, and the board would judge appetite on a number that may sit well off the truth. Showing the estimate as a range with its key assumptions tells the board how uncertain it is and what drives it. Confirming the figure with the risk owner is the runner-up: agreement helps, but the board still sees one exact number.",
+      "wrong_explanations": {
+        "A": "A heat-map cell swaps the dollar estimate for a broad band, which hides its size and still says nothing about how uncertain it is.",
+        "B": "A more detailed model cannot remove uncertainty that comes from the experts' wide input ranges; it adds work and can make one figure look even more exact.",
+        "C": "The risk owner's agreement makes the figure accepted, not more certain; the board would still read one exact number where the inputs support a range."
+      },
+      "tips": [
+        "Eliminate: A turns the estimate into a heat-map cell, losing its size, and B models again when the uncertainty sits in the experts' wide input ranges.",
+        "Final two: D beats C because the problem is false precision; the risk owner's agreement leaves the board reading one exact figure built from wide ranges.",
+        "Exam cue: when an estimate rests on wide or uncertain inputs, report it as a range with the assumptions that drive it, so decision makers see the uncertainty, not a falsely exact figure."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: uncertainty can be communicated by giving ranges of values rather than single values); NIST SP 800-55v1 Section 3.1.2 (Measurement Reporting: context such as the risk indicated, fit with risk appetite and the decision needed)",
+      "related_concepts": [
+        "Risk reporting",
+        "Uncertainty",
+        "Quantitative estimates"
+      ],
+      "_provenance": "Authored from concept: notes 3C5.1 (Heat Maps, Scorecards and Dashboards: a dollar estimate from wide inputs is shown as a range with its key assumptions) and 3C5.2 (Reporting for the Audience and the Decision). Round 26, 12 Nov 2026: original scenario (a professional body's risk analyst estimated yearly losses from member-data breaches at $1,370,000 from experts' wide ranges, and the draft board report shows that single figure against appetite), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 26 (crisc_d3_281 to 288). Round 26 asks: 3C5 slot (key D, analysis); 'Map' opens an eliminated option (A) and 'Estimate' another (B), both keyed nowhere; a lone owner on the runner-up (C).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_288",
+      "domain": 3,
+      "subtopic": "3C6 Monitoring and reporting of emerging risks. A data source under consultation",
+      "principle_id": "emerging-and-ai-risk-owned",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A meteorological office's forecasts depend on free satellite data from a foreign agency, which is consulting on keeping it free, charging for it or ending access. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "A single scenario built on the most likely outcome",
+        "B": "Scenarios for the three outcomes, agreed with the risk owner",
+        "C": "A rating based on the worst outcome, the agency ending access",
+        "D": "A contract for commercial satellite data as a backup"
+      },
+      "correct": "B",
+      "key_concept": "An emerging risk with several distinct possible outcomes is analyzed as alternative scenarios agreed with its owner, not rated on one outcome.",
+      "pre_read": "Count the possible outcomes and ask whether they need the same response.",
+      "correct_explanation": "The consultation has three distinct outcomes, and they would hit forecasting differently: charging needs budget, ending access needs another data source, and keeping it free needs nothing. Scenarios for the three outcomes, agreed with the risk owner, show the effect of each and the options to prepare. A rating based on the worst outcome is the runner-up: it is prudent, but it sizes one future and prepares nothing for the charging outcome.",
+      "wrong_explanations": {
+        "A": "Planning on the most likely outcome leaves the office unready if the consultation goes another way, and while the decision is open no outcome is known.",
+        "C": "Rating on the worst case sizes one future; charging for the data would need a different response, which a single worst-case rating does not prepare.",
+        "D": "Signing for commercial data commits spending before the outcome is known; if the data stay free, the money is wasted, and scenarios would show when a backup is needed."
+      },
+      "tips": [
+        "Eliminate: A plans on one outcome while the decision is open, and D commits spending on a backup before anyone knows whether it will be needed.",
+        "Final two: B beats C because the three outcomes need different responses; a worst-case rating sizes one of them, while scenarios agreed with the risk owner prepare for each.",
+        "Exam cue: when an emerging risk could resolve in several distinct ways, build a scenario for each with the risk owner, not a rating of one outcome, then prepare options to match."
+      ],
+      "framework_ref": "NIST IR 8286A Rev. 1 Section 2.2.5 (Recording Identified Risks: developing or emerging risks are yet to be fully defined but might disrupt enterprise objectives in the future); NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: uncertainty can be communicated by giving ranges of values rather than single values)",
+      "related_concepts": [
+        "Emerging risk",
+        "Alternative scenarios",
+        "Regulatory and policy change"
+      ],
+      "_provenance": "Authored from concept: notes 3C6.2 (Recording and Reporting Emerging Risk: use ranges or alternative scenarios rather than single scores while uncertainty is high; prepare options with the owner). Round 26, 12 Nov 2026: original scenario (a meteorological office's forecasts depend on free satellite data from a foreign agency, which is consulting on keeping it free, charging for it or ending access), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 26 (crisc_d3_281 to 288). Round 26 asks: 3C6 slot (key B, application); the batch's keyed lone owner (B), neither longest nor shortest by words or characters; 'scenario' sits in a wrong option (A) as well as the key.",
+      "style_version": 2
     }
   ]
 }
