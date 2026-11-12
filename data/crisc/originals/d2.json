@@ -6360,7 +6360,7 @@
       "tips": [
         "Eliminate: A adds disputes, which are failures someone already noticed, and D adds owners' statements, which test nothing and so cannot reveal an unnoticed failure.",
         "Final two: C beats B because a skipped control processes as a normal transaction; testing the control against what should have happened exposes it, while an error log stays silent.",
-        "Exam cue: for control failures nobody reported, look to sources that test the controls, such as internal audit's exceptions; error logs flag faults, not checks that were skipped."
+        "Exam cue: for control failures nobody reported, look to sources that check transactions against the control, such as internal audit's test exceptions; error logs flag faults, not skipped checks."
       ],
       "framework_ref": "NIST IR 8286 Rev. 1 Appendix C (Federal Government Sources for Identifying Risks: audits and their outstanding corrective actions are among the sources for identifying risks); NIST IR 8286 Rev. 1 Section 3.1.1 (Notional Risk Management Roles: the auditor provides independent and formal verification of the achievement of enterprise objectives and the application of ERM processes)",
       "related_concepts": [
@@ -6386,7 +6386,7 @@
         "D": "Escalate the owner's scenario rating to the executive committee"
       },
       "correct": "A",
-      "key_concept": "Validating a scenario is a check, not a formality: when evidence contradicts the owner's impact view, the analyst puts it to the owner, who decides.",
+      "key_concept": "Validating a scenario is a check, not a formality: when evidence contradicts the owner's impact view, the analyst puts it to the owner first.",
       "pre_read": "Compare the owner's rating with the facts in the stem before deciding what to record.",
       "correct_explanation": "The parts director owns the scenario and agrees its rating, but sales records suggest an outage could cost far more than 'minor'. The analyst's first move is to put that evidence to the owner, who may know of a fallback, such as phone orders, or may raise the rating. Recording the minor rating is the runner-up: owners do validate scenarios, but recording a view the evidence contradicts, without raising it, skips the practitioner's challenge.",
       "wrong_explanations": {
@@ -6396,7 +6396,7 @@
       },
       "tips": [
         "Eliminate: C has the analyst set the rating over the owner, and D escalates a disagreement that nobody has yet discussed with the owner.",
-        "Final two: A beats B because validation rests on evidence; the owner keeps the decision, but first sees the sales data that contradicts the minor rating.",
+        "Final two: A beats B because validation rests on evidence; the owner's agreement counts once they have weighed the sales data that contradicts the minor rating.",
         "Exam cue: when evidence contradicts an owner's view of a scenario's impact, put it to that owner before recording or escalating; challenge is part of validation."
       ],
       "framework_ref": "ISACA Glossary (risk owner); NIST SP 800-30 Rev. 1 Section 2.3 (Key Risk Concepts: a rationale for the assessed values of risk factors increases reproducibility and repeatability)",
