@@ -114,6 +114,10 @@ The bracket is a short paraphrase of the subcategory statement.
   - Verified 30 Oct 2026: page 2 says the Framework "is intended to be voluntary, rights-preserving, non-sector-specific, and use-case agnostic".
 - NIST AI 100-1 Section 3 (AI Risks and Trustworthiness)
   - Verified 30 Oct 2026: the seven characteristics (valid and reliable; safe; secure and resilient; accountable and transparent; explainable and interpretable; privacy-enhanced; fair with harmful bias managed).
+- NIST AI 100-1 Section 3.1 (Valid and Reliable)
+  - Verified 12 Nov 2026: "3.1 Valid and Reliable" in the table of contents (page 13) and as the section heading; it defines validation as "confirmation, through the provision of objective evidence, that the requirements for a specific intended use or application have been fulfilled" and reliability as the "ability of an item to perform as required, without failure, for a given time interval, under given conditions". The Fig. 4 caption (in Section 3) says Valid & Reliable "is a necessary condition of trustworthiness and is shown as the base for other trustworthiness characteristics".
+- NIST AI 100-1 Section 3.3 (Secure and Resilient)
+  - Verified 12 Nov 2026: "3.3 Secure and Resilient" in the table of contents (page 15) and as the section heading; it says "Common security concerns relate to adversarial examples, data poisoning, and the exfiltration of models, training data, or other intellectual property through AI system endpoints", and that security encompasses "protocols to avoid, protect against, respond to, or recover from attacks".
 - NIST AI 100-1 Section 3.4 (Accountable and Transparent)
 - NIST AI 100-1 Section 3.5 (Explainable and Interpretable)
 - NIST AI 100-1 Section 3.6 (Privacy-Enhanced)
@@ -131,7 +135,13 @@ The bracket is a short paraphrase of the subcategory statement.
 
 All entries: **Verified** 30 Oct 2026 against
 https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf (Section 2, the twelve risks).
+- NIST AI 600-1 Section 2 (Overview of Risks Unique to or Exacerbated by GAI)
+  - Verified 12 Nov 2026: "2. Overview of Risks Unique to or Exacerbated by GAI" in the table of contents and as the section heading; its Scope bullet names ecosystem-level risks such as "algorithmic monocultures" from "repeated use of the same model", and footnote 3 defines them as repeated use of the same model or algorithm "in consequential decision-making settings like employment and lending" causing "increased susceptibility by systems to correlated failures ... due to multiple actors relying on the same algorithm".
+- NIST AI 600-1 Section 2.1 (CBRN Information or Capabilities)
+  - Verified 12 Nov 2026: "2.1. CBRN Information or Capabilities" as the section heading and risk 1 in the Section 2 list: "Eased access to or synthesis of materially nefarious information or design capabilities related to chemical, biological, radiological, or nuclear (CBRN) weapons or other dangerous materials or agents."
 - NIST AI 600-1 Section 2.2 (Confabulation)
+- NIST AI 600-1 Section 2.3 (Dangerous, Violent, or Hateful Content)
+  - Verified 12 Nov 2026: "2.3. Dangerous, Violent, or Hateful Content" as the section heading and risk 3 in the Section 2 list; the text says some models "have generated actionable instructions for dangerous or unethical behavior", that output restrictions may still fail on "less-explicit, novel prompts", and that crafting such prompts deliberately is jailbreaking.
 - NIST AI 600-1 Section 2.4 (Data Privacy)
 - NIST AI 600-1 Section 2.6 (Harmful Bias and Homogenization)
 - NIST AI 600-1 Section 2.7 (Human-AI Configuration)
@@ -173,10 +183,16 @@ the IDs are still valid — re-check against atlas.mitre.org when it can be open
 https://raw.githubusercontent.com/mitre-atlas/atlas-data/main/dist/ATLAS.yaml
 (technique names are ATLAS's own; atlas.mitre.org itself is blocked here).
 - MITRE ATLAS AML.T0010 (AI Supply Chain Compromise)
+- MITRE ATLAS AML.T0011.000 (Unsafe AI Artifacts)
+  - Sub-technique of AML.T0011 (User Execution); Verified 12 Nov 2026 in ATLAS data v5.6.0: unsafe AI artifacts "when executed have a deleterious effect", may be introduced via AML.T0010, and model serialization "without proper checking presents an opportunity for code execution".
+- MITRE ATLAS AML.T0011.002 (Poisoned AI Agent Tool)
+  - Sub-technique of AML.T0011 (User Execution); Verified 12 Nov 2026 in ATLAS data v5.6.0: a poisoned tool invoked by an AI agent "may execute an LLM Prompt Injection or perform AI Agent Tool Invocation", and may arrive via AI Software or because "the user may configure their agent to connect to remote tools".
 - MITRE ATLAS AML.T0015 (Evade AI Model)
 - MITRE ATLAS AML.T0018 (Manipulate AI Model)
 - MITRE ATLAS AML.T0018.000 (Poison AI Model)
   - Sub-technique of AML.T0018; Verified 4 Nov 2026 in ATLAS data v5.6.0: poisoning a model by manipulating its weights, training it on poisoned data or further fine-tuning it.
+- MITRE ATLAS AML.T0018.002 (Embed Malware)
+  - Sub-technique of AML.T0018; Verified 12 Nov 2026 in ATLAS data v5.6.0: adversaries embed malicious code into AI model files; "Some formats such as pickle files are unsafe to deserialize because they can contain unsafe calls such as exec", and such models "may still operate as expected".
 - MITRE ATLAS AML.T0020 (Poison Training Data)
 - MITRE ATLAS AML.T0024 (Exfiltration via AI Inference API)
 - MITRE ATLAS AML.T0024.002 (Extract AI Model)
@@ -235,6 +251,8 @@ The fit to each item is judged in review.
 - NIST SP 800-53 Rev. 5 SI-7 (Software, Firmware, and Information Integrity)
 - NIST SP 800-53 Rev. 5 SI-10 (Information Input Validation)
 - NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention)
+- NIST SP 800-53 Rev. 5 SI-15 (Information Output Filtering)
+  - Verified 12 Nov 2026: "SI-15 INFORMATION OUTPUT FILTERING" in the control text: "Validate information output from ... software programs and/or applications to ensure that the information is consistent with the expected content"; the discussion covers detecting extraneous content and "preventing such extraneous content from being displayed".
 - NIST SP 800-53 Rev. 5 SR-3 (Supply Chain Controls and Processes)
 - NIST SP 800-53 Rev. 5 SR-4 (Provenance)
 - NIST SP 800-53 Rev. 5 SR-6 (Supplier Assessments and Reviews)

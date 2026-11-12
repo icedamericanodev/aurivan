@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original AAIA practice questions for Domain 2 (AI Operations), written to the ISACA AAIA Examination Content Outline (June 2025). Every item is authored from public concepts and KaiSip's own AAIA study notes (data/aaia/notes/d2.json), with no reference to ISACA's AAIA review manual, QAE database, online course or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/aaia-standards-auditor.md. Not affiliated with or endorsed by ISACA®. AAIA is a trademark of ISACA. Pilot batch aaia_d2_001 to aaia_d2_020, 30 Oct 2026. Batch 2 aaia_d2_021 to aaia_d2_050, 31 Oct 2026. Batch 3 aaia_d2_051 to aaia_d2_092, 31 Oct 2026. Batch 4 aaia_d2_093 to aaia_d2_134, 4 Nov 2026. Batch 5 aaia_d2_135 to aaia_d2_176, 5 Nov 2026. Batch 6 aaia_d2_177 to aaia_d2_218, 5 Nov 2026.",
+    "comment": "Original AAIA practice questions for Domain 2 (AI Operations), written to the ISACA AAIA Examination Content Outline (June 2025). Every item is authored from public concepts and KaiSip's own AAIA study notes (data/aaia/notes/d2.json), with no reference to ISACA's AAIA review manual, QAE database, online course or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/aaia-standards-auditor.md. Not affiliated with or endorsed by ISACA®. AAIA is a trademark of ISACA. Pilot batch aaia_d2_001 to aaia_d2_020, 30 Oct 2026. Batch 2 aaia_d2_021 to aaia_d2_050, 31 Oct 2026. Batch 3 aaia_d2_051 to aaia_d2_092, 31 Oct 2026. Batch 4 aaia_d2_093 to aaia_d2_134, 4 Nov 2026. Batch 5 aaia_d2_135 to aaia_d2_176, 5 Nov 2026. Batch 6 aaia_d2_177 to aaia_d2_218, 5 Nov 2026. Batch 7 aaia_d2_219 to aaia_d2_260, 12 Nov 2026.",
     "schema_version": 1
   },
   "domain": 2,
@@ -8040,6 +8040,1551 @@
         "Problem management"
       ],
       "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (accepting a wrong AI output is a design effect, so staff error is not a root cause). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026. Cross-domain fixes 5 Nov 2026 (batch 6): moved away from CISA d4_164 by adding a checklist judged sound, so accepting the closure is the runner-up and automation bias decides; stem asks FIRST; tag moved to real-human-oversight. Round 2: stem states the inspector was shown the rating, so the explanations rest on a given fact.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_219",
+      "domain": 2,
+      "subtopic": "2A Data management for AI. Pooling clients' data for one model",
+      "principle_id": "ai-governance-before-tooling",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Luxembourg payroll-software firm plans to train one salary-benchmarking model on every client company's payroll data; client contracts allow processing only to run each client's own payroll. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Train by federated learning so no client's data leaves its system",
+        "B": "Have management obtain clients' agreement to shared model training",
+        "C": "Proceed, since the firm already holds every client's data",
+        "D": "Pilot the model on one client's data to measure accuracy"
+      },
+      "correct": "B",
+      "key_concept": "Holding data for one purpose does not grant the right to train a shared model on it; settle rights before any technical safeguard.",
+      "pre_read": "Note every limit the stem states before weighing the options.",
+      "correct_explanation": "The contracts allow each client's data to be processed only to run that client's payroll. A pooled model learns from every client's records and then serves all of them, a new purpose the contracts do not cover, so clients' agreement comes first. Federated training keeps each client's records in place, but the shared model still learns from all of them, so the use is still one the contracts do not cover.",
+      "wrong_explanations": {
+        "A": "Tempting because client data never leaves each client's system. But every client's data still trains a model that serves all clients, a purpose the contracts never allowed.",
+        "C": "Tempting because the firm lawfully holds the data. But holding it to run payroll does not permit using it to train a shared model.",
+        "D": "Tempting because it tests value early. But testing on a client's data is itself a use the contracts may not allow; rights come first."
+      },
+      "tips": [
+        "Eliminate: C treats holding data as permission for any use, and D tests on data before the right to use it is settled.",
+        "Final two: B beats A because a shared model is a new purpose wherever it trains; federated learning keeps data in place but still uses it for that purpose.",
+        "Exam cue: when data will train a model it was not collected for, rights to use come before any technical safeguard or test."
+      ],
+      "framework_ref": "NIST AI 100-1 MAP 4.1 (Legal and technology risks of components including third-party data mapped); NIST SP 800-53 Rev. 5 PT-3 (Personally Identifiable Information Processing Purposes)",
+      "related_concepts": [
+        "Rights to use",
+        "Purpose limitation",
+        "Pooled training"
+      ],
+      "_provenance": "Authored from concept: notes 2A.1 Data Provenance, Lineage and Rights to Use (rights to use come before training; a pooled model is a new purpose that security measures cannot authorize). Review round 1: runner-up changed from pseudonymizing to federated learning so an AI fact decides, and the model from anomaly detection to salary benchmarking (notes payroll anomaly example). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_220",
+      "domain": 2,
+      "subtopic": "2A Data management for AI. Retrieval rights that lag the source",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A Qatari sovereign wealth fund's research assistant indexes deal files with their access rights, refreshed weekly, so a deal restricted on Monday stays retrievable fund-wide until Sunday. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Instruct the assistant not to quote restricted deals",
+        "B": "Refresh the index's copy of access rights every night",
+        "C": "Remove restricted deals from the index each quarter",
+        "D": "Check each user's current rights at the moment of retrieval"
+      },
+      "correct": "D",
+      "key_concept": "A retrieval index holds copies of documents and their permissions; checking rights at query time keeps answers in step with the source.",
+      "pre_read": "Trace when the index learns that a deal was restricted.",
+      "correct_explanation": "The index holds its own copy of each file's access rights, so for up to a week after a deal is restricted, anyone at the fund can retrieve it through the assistant. Checking the user's current rights at the source each time the assistant retrieves closes that gap. Nightly refreshes shrink the window to a day, but a restricted deal can still reach the wrong staff within that day.",
+      "wrong_explanations": {
+        "A": "Tempting because it targets the restricted deals. But a prompt instruction is not an access control, and rephrased questions can still draw them out.",
+        "B": "Tempting because it shortens the gap from a week to a day. But a restricted deal can still reach the wrong staff within that day.",
+        "C": "Tempting because it removes restricted files. But quarterly removal leaves them retrievable for months after a restriction."
+      },
+      "tips": [
+        "Eliminate: A relies on a prompt instruction, which is not access control, and C leaves restricted deals retrievable for months.",
+        "Final two: D beats B because rights checked at retrieval are always current; a nightly copy still lags the source by up to a day.",
+        "Exam cue: in retrieval systems, the index is a copy. Ask whether its access rights can fall out of step with the source."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-3 (Access Enforcement); NIST AI 600-1 Section 2.9 (Information Security)",
+      "related_concepts": [
+        "Retrieval-augmented generation",
+        "Access rights",
+        "Permission sync"
+      ],
+      "_provenance": "Authored from concept: notes 2A.1 Data Provenance, Lineage and Rights to Use (retrieval must apply each user's current access rights; an index's copied rights lag changes at the source). Review round 1: setting moved from an investment bank (aaia_d2_065; aaia_d3_034). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_221",
+      "domain": 2,
+      "subtopic": "2A Data management for AI. Live readings no one checks",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Uruguayan sawmill cleaned its log-grading model's training data once, at build; live readings from its 12 scanners now feed daily grades and weekly retraining. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Check live readings against ranges and patterns seen in training",
+        "B": "Have the vendor recalibrate the 12 scanners once a year",
+        "C": "Repeat the original cleaning checks before each weekly retraining",
+        "D": "Rely on the model to discount readings that look faulty"
+      },
+      "correct": "A",
+      "key_concept": "Cleaning data once at build does not protect live use; inputs need checks wherever they reach the model, including for predictions.",
+      "pre_read": "Trace each path the data takes into the model.",
+      "correct_explanation": "A model gives confident grades even on faulty readings; it raises no error. Here the live readings feed both today's grades and each week's retraining, so checking them as they arrive, against what the model saw in training, protects both paths. Repeating the cleaning checks before retraining protects the next model but leaves every grade until then resting on unchecked readings.",
+      "wrong_explanations": {
+        "B": "Tempting because scanners drift. But yearly calibration leaves faults between visits unchecked, and readings still reach the model untested.",
+        "C": "Tempting because it restores the build-time checks. But it covers only retraining; faulty readings still drive the grades issued every day in between.",
+        "D": "Tempting because models seem to learn what normal looks like. But a model scores whatever it receives and rarely signals that an input is wrong."
+      },
+      "tips": [
+        "Eliminate: D expects the model to spot bad inputs, which models rarely do, and B fixes scanners yearly while readings go unchecked between visits.",
+        "Final two: A beats C because the readings drive daily grades as well as retraining; checking only before retraining leaves every grade exposed.",
+        "Exam cue: data checked once at build is not checked in production. Look for every path by which live data reaches the model."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SI-10 (Information Input Validation); NIST AI 100-1 MEASURE 2.4 (Functionality and behavior monitored in production)",
+      "related_concepts": [
+        "Input validation",
+        "Data quality in production",
+        "Retraining data"
+      ],
+      "_provenance": "Authored from concept: notes 2A.2 Data Quality, Labeling and Representativeness (data quality is checked where data enters use, in production as well as at build). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_222",
+      "domain": 2,
+      "subtopic": "2A Data management for AI. Labelers who agree",
+      "principle_id": "accuracy-is-not-assurance",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A Nigerian music-streaming app's comment filter learns from toxicity labels made by six overseas contractors, who agree on 96% of comments; a third are in Nigerian Pidgin. What is the IS auditor's GREATEST concern?",
+      "options": {
+        "A": "Sending users' comments to overseas contractors may breach privacy rules",
+        "B": "Agreement below 100% shows the labels cannot be trusted",
+        "C": "The contractors' agreement may reflect a shared misreading of Pidgin",
+        "D": "Users may dodge the filter by writing abuse in Pidgin slang"
+      },
+      "correct": "C",
+      "key_concept": "High labeler agreement shows consistency, not accuracy; labelers who share a gap, such as a language, agree on the same wrong labels.",
+      "pre_read": "Ask who produced the labels and what they were able to judge.",
+      "correct_explanation": "Agreement shows labelers are consistent, not that they are right. Six contractors outside Nigeria may all misread Pidgin slang or banter the same way, so 96% agreement can hide systematic errors on a third of the comments, and the filter would learn to treat Pidgin speakers' posts as toxic. Sending comments abroad raises a privacy question to manage, but it does not corrupt what the model learns.",
+      "wrong_explanations": {
+        "A": "Tempting because comments carry personal data. But that is a privacy question to manage; it does not corrupt the labels the filter learns from.",
+        "B": "Tempting because labels should be reliable. But no labeling reaches full agreement; 96% is high, and the issue is what the agreement measures.",
+        "D": "Tempting because evasion through slang is real. But nothing here points to it; the stated facts concern how the labels were made."
+      },
+      "tips": [
+        "Eliminate: B demands perfect agreement, which no labeling reaches, and D raises evasion, which nothing in the facts points to.",
+        "Final two: C beats A because shared misreadings corrupt the labels for a third of comments and bias the filter against Pidgin speakers; data access is a separate, manageable risk.",
+        "Exam cue: agreement among labelers is not accuracy. Ask whether the labelers could judge every kind of data they labeled."
+      ],
+      "framework_ref": "NIST AI 100-1 MAP 2.3 (Scientific integrity and TEVV considerations, including data representativeness); NIST AI 100-1 MEASURE 2.11 (Fairness and bias evaluated and documented)",
+      "related_concepts": [
+        "Label quality",
+        "Labeler agreement",
+        "Dialect bias"
+      ],
+      "_provenance": "Authored from concept: notes 2A.2 Data Quality, Labeling and Representativeness (agreement among labelers measures consistency, not correctness; labelers who share a blind spot agree on wrong labels). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_223",
+      "domain": 2,
+      "subtopic": "2A Data management for AI. Near-identical questions on both sides",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Bruneian courier fine-tuned its delivery assistant on 6,000 emails and tested on 600 others from the same months as unseen questions; customers often send near-identical questions. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Add 600 more test emails drawn from those same months, then retest",
+        "B": "Remove test emails that closely reword a tuning email, then retest",
+        "C": "Remove test emails that exactly match a tuning email, then retest",
+        "D": "Accept the score, as no test email was used in tuning"
+      },
+      "correct": "B",
+      "key_concept": "Separate test data must also differ in substance; reworded copies of training questions let a tuned model score from memory.",
+      "pre_read": "Consider how alike the training and test records are.",
+      "correct_explanation": "Customers often send near-identical questions, so many test emails are likely rewordings of tuning emails whose answers the model already learned. Its score then partly measures recall, not how it handles new questions. Screening out close rewordings leaves a test the model has not effectively seen. Removing exact matches catches copies but misses the rewordings, which a tuned model can often answer from what it learned.",
+      "wrong_explanations": {
+        "A": "Tempting because a bigger test seems stronger. But emails drawn the same way carry the same overlap, so the score stays inflated.",
+        "C": "Tempting because it targets duplicates directly. But customers rarely repeat a question word for word, so exact matching leaves most rewordings in the test.",
+        "D": "Tempting because the test emails are separate records. But near-identical questions let the model answer from what it learned in tuning."
+      },
+      "tips": [
+        "Eliminate: A enlarges a test drawn the same way, keeping its overlap, and D treats separate records as unseen ones.",
+        "Final two: B beats C because a tuned model can answer a reworded question from what it learned; exact matching misses most near-duplicates.",
+        "Exam cue: for language models, leakage includes paraphrases. Ask whether test items are new in substance, not just new in wording."
+      ],
+      "framework_ref": "NIST AI 100-1 MEASURE 2.1 (Test sets, metrics and TEVV tools documented); NIST AI 600-1 MS-2.11-001 (Document benchmark assumptions and limitations including possible training/test data cross contamination)",
+      "related_concepts": [
+        "Data leakage",
+        "Near-duplicates",
+        "Fine-tuning tests"
+      ],
+      "_provenance": "Authored from concept: notes 2A.3 Training, Validation and Test Separation (test data must be unseen in substance; reworded near-duplicates of training items leak answers). Review round 1: setting moved from a telecom billing assistant (crisc_d2_022); the stem now states the test is meant for unseen questions. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_224",
+      "domain": 2,
+      "subtopic": "2A Data management for AI. Photos removed from both sets",
+      "principle_id": "test-the-ai-as-used",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A Latvian teledermatology clinic removed blurry and poorly lit photos from both training and test sets for its mole-checking model; patients will upload home phone photos. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Test on photos left unfiltered, like those patients will send",
+        "B": "Add blurry and dim photos to the training set, then retrain",
+        "C": "Test separately on moles photographed on darker skin",
+        "D": "Remove faces and backgrounds from patients' uploaded photos"
+      },
+      "correct": "A",
+      "key_concept": "Cleaning training data can be sound; filtering the test set the same way hides how the model handles the inputs it will really get.",
+      "pre_read": "Ask what each cleaning step changes about the results.",
+      "correct_explanation": "Removing blurry and dim photos from the test set means its results describe clean images only, yet patients' home photos will often be blurry or dim. Testing on an unfiltered set like the photos patients send shows how the model really performs on them. Adding such photos to training may help the model, but without an unfiltered test no one knows whether it does.",
+      "wrong_explanations": {
+        "B": "Tempting because the model never learned from poor photos. But retraining is the owner's choice, and without an unfiltered test no one can tell whether it helped.",
+        "C": "Tempting because skin-tone gaps are a known risk. But nothing here points to it; the stated fact is what the filtering removed.",
+        "D": "Tempting because home photos are sensitive. But that is a privacy step; it says nothing about how the model handles poor photos."
+      },
+      "tips": [
+        "Eliminate: C tests a risk the facts never raise, and D is a privacy step that leaves performance unknown.",
+        "Final two: A beats B because only a test that looks like real uploads shows how the model performs; retraining without one is a fix nobody can check.",
+        "Exam cue: cleaning training data can be fine; cleaning the test set hides the cases the model will meet. Test on inputs like those in use."
+      ],
+      "framework_ref": "NIST AI 100-1 MEASURE 2.3 (Performance measured in conditions similar to deployment); NIST AI 100-1 MAP 2.3 (Scientific integrity and TEVV considerations, including data representativeness)",
+      "related_concepts": [
+        "Test set design",
+        "Deployment conditions",
+        "Image quality"
+      ],
+      "_provenance": "Authored from concept: notes 2A.3 Training, Validation and Test Separation (a test set filtered unlike production overstates performance on the inputs the model will really receive). Review round 1: recast from a GREATEST-concern item to a recommendation, since aaia_d2_181 already asks a concern about test data unlike live inputs; the runner-up is now retraining without an unfiltered test. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_225",
+      "domain": 2,
+      "subtopic": "2B AI lifecycle. An impact trigger tied to data type",
+      "principle_id": "rank-ai-risk-by-harm",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A Norwegian county's AI lifecycle requires an impact assessment only for models using personal data, so its snowplow routing model, which uses only road sensors, skipped it. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Add a privacy review of the sensor data the routing model reads",
+        "B": "Accept the exemption, since no personal data means low risk",
+        "C": "Assess the model's impacts after its first full winter",
+        "D": "Base the impact-assessment trigger on effects on people"
+      },
+      "correct": "D",
+      "key_concept": "AI can harm people without using their data; impact assessment follows who the decisions affect, not what data the model reads.",
+      "pre_read": "Read what the lifecycle rule measures and what the model does.",
+      "correct_explanation": "Plowing routes decide which roads are cleared first, so they can affect ambulance access, school travel and remote households, whatever data the model reads. A trigger tied to personal data misses AI that harms people through its decisions. Setting the trigger on effects on people brings this model, and others like it, into assessment. A privacy review of sensor data examines a risk the model barely has.",
+      "wrong_explanations": {
+        "A": "Tempting because data reviews are familiar. But road sensors hold little personal data; the risk lies in which roads, and so which people, wait.",
+        "B": "Tempting because privacy risk is low. But low privacy risk is not low impact; routing decides who gets cleared roads first.",
+        "C": "Tempting because real use shows effects. But assessing after a winter lets any harm to residents happen before anyone looks."
+      },
+      "tips": [
+        "Eliminate: B equates no personal data with low risk, and C assesses impacts only after a winter of use.",
+        "Final two: D beats A because the model affects people through its routes, not its data; a privacy review studies the wrong risk.",
+        "Exam cue: AI impact follows decisions, not data type. A model reading only sensors can still decide who waits and who gets served."
+      ],
+      "framework_ref": "NIST AI 100-1 MAP 5.1 (Likelihood and magnitude of impacts characterized); NIST AI 100-1 MAP 1.1 (Intended purposes, context and laws documented)",
+      "related_concepts": [
+        "Impact assessment",
+        "Stage gates",
+        "Harm to people"
+      ],
+      "_provenance": "Authored from concept: notes 2B.1 The AI Lifecycle and Stage Gates (impact assessment is triggered by effects on people, not by whether personal data is used). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_226",
+      "domain": 2,
+      "subtopic": "2B AI lifecycle. Teams choosing their own risk tier",
+      "principle_id": "rank-ai-risk-by-harm",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Montenegrin health insurance fund's lifecycle lets each project team set its own model's risk tier, which decides whether independent validation is needed; most teams choose 'low'. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Let teams keep choosing, as they know their models best",
+        "B": "Require independent validation for every model, whatever its tier",
+        "C": "Have the AI governance committee confirm each model's risk tier",
+        "D": "Have internal audit approve each project team's chosen tier"
+      },
+      "correct": "C",
+      "key_concept": "Risk tiers set how deep the lifecycle gates go, so someone outside the build team must confirm them; validating every model alike wastes scarce effort.",
+      "pre_read": "Follow how a tier choice changes the work a model must pass.",
+      "correct_explanation": "Teams that pick their own tier can avoid independent validation by choosing 'low', which most do. Having the AI governance committee confirm each tier keeps the decision with a body that approves high-impact uses and has no stake in an easy gate. Validating every model, whatever its tier, removes the incentive but spends scarce validation effort on low-impact models instead of the risky ones.",
+      "wrong_explanations": {
+        "A": "Tempting because teams know their models. But they also gain from a lighter gate, so their tier choice needs confirming.",
+        "B": "Tempting because it closes the loophole. But it treats a low-impact model like a high-impact one and spreads validators thin.",
+        "D": "Tempting because audit is independent. But approving tiers is a management decision; internal audit would then assess its own decision."
+      },
+      "tips": [
+        "Eliminate: A leaves tiering with those who gain from a low tier, and D has internal audit take a management decision it must later assess.",
+        "Final two: C beats B because confirmed tiers send validation where risk is; validating everything treats low-impact models like high-impact ones.",
+        "Exam cue: when a tier decides how deep the gates go, check who sets it. Builders choosing their own tier is the gap."
+      ],
+      "framework_ref": "NIST AI 100-1 GOVERN 1.3 (Level of risk management activity set by risk tolerance); NIST AI 100-1 MEASURE 1.3 (Independent assessors not on the front-line development team)",
+      "related_concepts": [
+        "Risk tiering",
+        "Stage gates",
+        "AI governance committee"
+      ],
+      "_provenance": "Authored from concept: notes 2B.1 The AI Lifecycle and Stage Gates (gate depth follows risk tiers, so tiers are confirmed outside the build team; validating every model equally wastes effort). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_227",
+      "domain": 2,
+      "subtopic": "2B AI lifecycle. A code license taken for the weights' license",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An Armenian chess-coaching app's engineers chose an open-weight model for its game-review helper, since the model's code repository carries an Apache 2.0 license. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Have counsel check the weights' own license against the planned use",
+        "B": "Confirm the Apache 2.0 license covers the planned commercial use",
+        "C": "Test the model's reviews on real players' games",
+        "D": "Proceed, since an open license permits any commercial use"
+      },
+      "correct": "A",
+      "key_concept": "Open-weight models' weights often carry their own license, separate from the code's, that may restrict uses or users; check it before building.",
+      "pre_read": "Separate what the team assumes from what is written down.",
+      "correct_explanation": "Open weights mean the model files can be downloaded, not that any use is allowed. The code that runs a model and its weights are often licensed separately, and many weight licenses restrict some uses, require separate terms above a number of users or set an acceptable-use policy. Checking the weights' license against the planned use comes first, because testing effort is wasted if the app may not use the model this way.",
+      "wrong_explanations": {
+        "B": "Tempting because Apache 2.0 allows commercial use. But that license covers the repository's code; the weights often carry separate terms that can limit uses or users.",
+        "C": "Tempting because fitness must be shown. But it comes second: tests are wasted if the weights' license bars this use.",
+        "D": "Tempting because 'open' sounds unrestricted. But open-weight licenses can limit uses and users; only the terms say what is allowed."
+      },
+      "tips": [
+        "Eliminate: D reads 'open' as unrestricted, and C tests the model before anyone knows the app may use it.",
+        "Final two: A beats B because the Apache 2.0 license covers the repository's code, not necessarily the weights; only the weights' own terms say what use is allowed.",
+        "Exam cue: open weights are not open permission. Before building on a downloaded model, check what the weights' own license allows."
+      ],
+      "framework_ref": "NIST AI 100-1 GOVERN 6.1 (Policies address third-party AI risks including intellectual property); NIST AI 600-1 Section 2.10 (Intellectual Property)",
+      "related_concepts": [
+        "Open-weight models",
+        "Model licenses",
+        "Build, buy or tune"
+      ],
+      "_provenance": "Authored from concept: notes 2B.2 Model Documentation and Build, Buy or Tune (open-weight models come with licenses that can limit use; settle the terms before investing in testing). Review round 1: setting moved from a tutoring platform's student helper (aaia_d1_124, aaia_d3_028); the trap is now a code license read as covering the weights, so an AI fact decides. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_228",
+      "domain": 2,
+      "subtopic": "2B AI lifecycle. A model card's assumed review",
+      "principle_id": "ai-deciding-fact",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A vendor's model card for a Cambodian eye clinic's retinal-scan model says results assume an ophthalmologist reviews every scan; the clinic now clears scans rated normal without one. What is the IS auditor's GREATEST concern?",
+      "options": {
+        "A": "The model's accuracy may drift as cameras and patient groups change",
+        "B": "The vendor's evidence no longer covers how the model is used",
+        "C": "The model card may be too technical for clinicians to use",
+        "D": "The vendor becomes accountable for every scan cleared"
+      },
+      "correct": "B",
+      "key_concept": "A model card's conditions of use are part of its evidence; using the model outside them leaves its results unsupported.",
+      "pre_read": "Ask what changed after the model was bought.",
+      "correct_explanation": "The vendor's results assume an ophthalmologist reviews every scan, so misses the model makes were expected to be caught. Clearing 'normal' scans without that review removes the safety net the results depend on, and patients with missed eye disease get no follow-up. Drift is a real risk for any model, but nothing here points to it; the stated change in use does.",
+      "wrong_explanations": {
+        "A": "Tempting because drift affects every model. But nothing here points to it; the stated fact is that the assumed review was removed.",
+        "C": "Tempting because documentation must be usable. But readability is minor beside using the model outside its stated conditions.",
+        "D": "Tempting because the vendor built the model. But the clinic that clears scans stays accountable for that decision."
+      },
+      "tips": [
+        "Eliminate: C is a documentation style issue, and D wrongly moves accountability for the clinic's decisions to the vendor.",
+        "Final two: B beats A because the stated change removes the review the card's results depend on; drift is a real risk the facts never raise.",
+        "Exam cue: model cards state conditions as well as scores. Using a model outside its stated conditions leaves its evidence behind."
+      ],
+      "framework_ref": "NIST AI 100-1 MAP 2.2 (Knowledge limits and human oversight of outputs documented); NIST AI 100-1 MEASURE 2.9 (Model explained, validated and documented, output interpreted in context)",
+      "related_concepts": [
+        "Model cards",
+        "Conditions of use",
+        "Human review"
+      ],
+      "_provenance": "Authored from concept: notes 2B.2 Model Documentation and Build, Buy or Tune (a model card's conditions of use, such as human review, are part of what its results rest on). Re-audit: key option reworded so the stem's 'results' no longer echoes only in the key. Re-audit 2: setting moved from a hospital chest X-ray model (aaia_d2_153; CISA d1_108) to an eye clinic's retinal-scan model. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_229",
+      "domain": 2,
+      "subtopic": "2B AI lifecycle. Offline copies that outlive the server",
+      "principle_id": "contain-and-preserve-ai",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Bolivia's health ministry retired its faulty child-malnutrition screening model and shut its server, yet health workers screen children daily with offline copies on tablets the ministry manages remotely. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Take down the download link so no further tablets receive the model",
+        "B": "Mark the model and its offline copies retired in the AI inventory",
+        "C": "Retrain the model to fix the errors, then reissue it",
+        "D": "Disable the model on every device that already holds it"
+      },
+      "correct": "D",
+      "key_concept": "A model retired on the server still acts wherever copies run; retirement must disable every copy, including offline ones on devices.",
+      "pre_read": "Ask where else the model could still be running.",
+      "correct_explanation": "Shutting the server stopped one copy, but the offline copies on tablets keep screening children with the faulty model, so wrong results still reach families. Because the ministry manages the tablets remotely, it can disable the model on every one now. Removing the download link prevents new copies but leaves every tablet that already has the model screening children with it.",
+      "wrong_explanations": {
+        "A": "Tempting because it stops the model spreading. But every tablet that already holds it keeps screening children with the faulty version.",
+        "B": "Tempting because the inventory should show every copy as retired. But a record changes nothing on the tablets still using the model.",
+        "C": "Tempting because the errors need fixing. But a retrained model is a new model needing validation, and the faulty copies keep running meanwhile."
+      },
+      "tips": [
+        "Eliminate: B updates a record while copies keep running, and C builds a new model that needs validation while the faulty copies stay in use.",
+        "Final two: D beats A because existing copies keep screening children; blocking new downloads protects only tablets that never had the model.",
+        "Exam cue: retiring a model means stopping every copy, including offline and on-device ones, not just the server."
+      ],
+      "framework_ref": "NIST AI 100-1 GOVERN 1.7 (Decommissioning AI systems safely); NIST AI 100-1 MANAGE 2.4 (Mechanisms and responsibilities to supersede, disengage or deactivate AI)",
+      "related_concepts": [
+        "Decommissioning",
+        "On-device models",
+        "Disengagement"
+      ],
+      "_provenance": "Authored from concept: notes 2B.3 Decommissioning AI Systems (retirement must reach every copy of a model, including offline copies on devices). Review round 2: the stem now says the offline copies are in daily use, so stopping current screening outranks blocking new downloads. Review round 3: the stem now says the ministry manages the tablets remotely, so disabling existing copies is feasible now and outranks blocking new downloads. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_230",
+      "domain": 2,
+      "subtopic": "2B AI lifecycle. Promises an agent left behind",
+      "principle_id": "named-human-owner",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A Taiwanese logistics firm retired its customer chat agent; no refund system records the refunds it promised 180 customers in chats, some coaxed past its rules. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Restore the agent so it can complete the refunds it promised",
+        "B": "Have the IS auditor decide which promises the firm honors",
+        "C": "Have a service manager review each promise the agent made",
+        "D": "Honor the promises the agent logged as within its rules"
+      },
+      "correct": "C",
+      "key_concept": "Agents make commitments in conversations that systems may not record; retirement includes finding and settling them under a named owner.",
+      "pre_read": "Ask what the agent left unfinished when it was switched off.",
+      "correct_explanation": "An agent's promises in chats can bind or mislead customers even when no system recorded them, and retiring the agent leaves nobody tracking them. A service manager reviewing each promise against the firm's refund rules decides which to honor, correct or explain, so every commitment has a named person accountable. Honoring the promises the agent logged as within its rules, option D, trusts the agent's own judgment, which the coaxing manipulated.",
+      "wrong_explanations": {
+        "A": "Tempting because the agent made the promises. But a retired agent settling its own promises decides again with no person accountable, including on promises it was coaxed into.",
+        "B": "Tempting because the auditor is independent of the agent. But deciding which promises to honor is management's call; the auditor assesses and recommends, never settles them.",
+        "D": "Tempting because the agent's logs look like system evidence. But coaxing that got the agent past its rules can skew its own record too, so the log cannot sort them."
+      },
+      "tips": [
+        "Eliminate: A brings back a retired agent to settle its own promises, and B puts the auditor in management's seat, deciding which promises the firm honors.",
+        "Final two: C beats D because coaxing that got the agent past its rules can skew its own log too; only a person's review sorts the promises on their merits.",
+        "Exam cue: when an agent retires, look for what it left open: promises, bookings and tasks in progress. Each needs a named owner to settle it."
+      ],
+      "framework_ref": "NIST AI 100-1 GOVERN 1.7 (Decommissioning AI systems safely); NIST AI 100-1 GOVERN 2.1 (Roles, responsibilities and lines of communication documented)",
+      "related_concepts": [
+        "Decommissioning",
+        "AI agents",
+        "Accountability"
+      ],
+      "_provenance": "Authored from concept: notes 2B.3 Decommissioning AI Systems (retiring an agent includes settling the commitments it made in conversations, each under a named owner). Cross-domain gate fix, 12 Nov 2026: re-angled because the earlier version reused the frame of aaia_d2_145 (an agent retired by removing its account while something it left keeps acting). Re-audit 12 Nov 2026: stem now states some promises were coaxed past the agent's rules, so the manipulation the explanations relied on is given and decides C over D. Re-audit 3, 12 Nov 2026: wrong explanation A no longer claims a reason for the retirement the stem does not give. Final fix, 12 Nov 2026: option B changed from disowning the promises (a blunt action that left C the only review option, and whose explanation claimed reliance the stem never states) to the IS auditor deciding which promises to honor, a lens trap. Final fix 2, 12 Nov 2026: runner-up D now honors every promise the transcripts prove (evidence-based, a CISA instinct), so only the coaxing fact defeats it; key C names a service manager instead of the repeated 'named owner' wording. Final fix 3, 12 Nov 2026: runner-up D now honors the promises the agent logged as within its rules (system-log evidence, a CISA instinct), so knowing that coaxing can skew an agent's own record decides C over D. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_231",
+      "domain": 2,
+      "subtopic": "2C AI change management. A change board that reads only code",
+      "principle_id": "ai-changes-are-changes",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An Ethiopian telecom's change board approves each retrained airtime-loan model by reviewing its code differences, usually none, and the builders' accuracy summary. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Base approval on independent tests of how each version decides",
+        "B": "Have the IS auditor sign off each retrained release",
+        "C": "Ask the builders to explain each release's code changes in more detail",
+        "D": "Fast-track retrained releases that show no code changes"
+      },
+      "correct": "A",
+      "key_concept": "Retraining changes a model's behavior with no code change, so change approval must rest on independent tests of how each version decides.",
+      "pre_read": "Ask what actually changes when a model is retrained.",
+      "correct_explanation": "A retrain changes the model's weights through new data, usually with no code change, so a board reading code differences sees almost nothing, and the builders' own summary is not independent evidence. Basing approval on independent tests of how the new version decides shows what actually changed. More detail on code changes still describes the code, not the decisions the retrained model makes.",
+      "wrong_explanations": {
+        "B": "Tempting because auditors are independent. But approving releases is a management decision; the IS auditor would later audit their own sign-off.",
+        "C": "Tempting because it deepens the board's existing review. But a retrain changes weights, not code, so more code detail still shows nothing about how the model now decides.",
+        "D": "Tempting because nothing in the code changed. But a retrain changes the model's weights, so a release with no code change can still decide very differently."
+      },
+      "tips": [
+        "Eliminate: B has the IS auditor take a release decision that belongs to management, and D waves retrains through because their code is unchanged.",
+        "Final two: A beats C because a retrained model changes through its data, not its code; more code detail cannot show how it now decides.",
+        "Exam cue: if a change process only sees code, retraining slips past it. Ask who approves a retrained model, and on what evidence."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control); NIST AI 100-1 MEASURE 1.3 (Independent assessors not on the front-line development team)",
+      "related_concepts": [
+        "Retraining as change",
+        "Segregation of duties",
+        "Release approval"
+      ],
+      "_provenance": "Authored from concept: notes 2C.1 What Counts as an AI Change (a retrained model changes without any code change, so a change process that reviews code never sees it). Review round 1: re-angled from builders self-approving (CISA d3_136; aaia_d2_063, 147) to a change board whose evidence cannot see a retrain. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_232",
+      "domain": 2,
+      "subtopic": "2C AI change management. An emergency prompt fix",
+      "principle_id": "test-the-ai-as-used",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Kuwaiti cinema chain's assistant answers cancellation and exchange questions; spot checks show an emergency system-prompt line, 'never discuss refunds', stopped wrong fee quotes. What should the IS auditor recommend as BEST next?",
+      "options": {
+        "A": "Check that users cannot prompt the assistant past the new line",
+        "B": "Confirm with a sample of fee questions that quoting has stopped",
+        "C": "Retrain the model so the new prompt line can be removed",
+        "D": "Regression-test answers on every topic the assistant covers"
+      },
+      "correct": "D",
+      "key_concept": "A system prompt shapes every answer, so a one-line fix can change unrelated behavior; test across topics, not just the target.",
+      "pre_read": "Ask what else a change could affect besides what it was meant to fix.",
+      "correct_explanation": "A system prompt shapes every answer, and 'never discuss refunds' can also stop the assistant explaining the cancellations and exchanges it handles. Regression tests across every topic show what else the emergency change altered. Checking that users cannot argue past the line tests resistance to attack, but the line was added for accuracy, and its effect on every customer's ordinary answers is the untested risk.",
+      "wrong_explanations": {
+        "A": "Tempting because prompt rules can be argued around. But the line was added for accuracy, not security; its untested effect on every customer's other answers is the larger risk.",
+        "B": "Tempting because it confirms the fix worked. But the spot checks already show that; the new line can change answers on other topics too.",
+        "C": "Tempting because it seems a lasting fix. But retraining is a bigger change needing its own tests, and it leaves this edit untested."
+      },
+      "tips": [
+        "Eliminate: B repeats the spot checks already done, and C answers an untested change with a bigger one.",
+        "Final two: D beats A because a prompt line acts on every answer; bypass testing probes attackers, not what the line changed for every customer.",
+        "Exam cue: emergency AI changes still need testing afterward, and for prompts that means the whole range of answers, not just the target."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CM-4 (Impact Analyses); NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control)",
+      "related_concepts": [
+        "Prompt changes",
+        "Emergency change",
+        "Regression testing"
+      ],
+      "_provenance": "Authored from concept: notes 2C.1 What Counts as an AI Change (a prompt edit changes behavior across all answers, so even an emergency fix needs regression testing beyond its target). Review round 1: setting moved from a bank's customer assistant (aaia_d2_065, 176, 234); distractor A recast from a strawman to an AI-plausible attack test. Review round 2: the stem now gives the broad prompt line and the spot-check result, so the fix is confirmed and side effects decide (runner-up now A, bypass testing); key option reworded without its contrast clause. Review round 3: the stem now says the assistant also answers cancellation and exchange questions, the fact that points to side effects over bypass; distractor A's explanation no longer calls bypass one user's choice. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_233",
+      "domain": 2,
+      "subtopic": "2C AI change management. A baseline for a hosted assistant",
+      "principle_id": "ai-changes-are-changes",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A Bahraini insurer's configuration baseline for its hosted claims assistant covers network, identity and encryption settings, which a monthly scan checks. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Run the baseline scan weekly instead of monthly",
+        "B": "Add the settings that shape answers, such as prompt and filters",
+        "C": "Rely on the hosting vendor to keep the assistant's settings stable",
+        "D": "Encrypt the assistant's chat logs at rest as well"
+      },
+      "correct": "B",
+      "key_concept": "For AI services, the prompt, model version, filters and retrieval sources are configuration items and belong in the baseline.",
+      "pre_read": "Think about what makes this system different from an ordinary server.",
+      "correct_explanation": "An assistant's answers depend on its system prompt, model version, safety filters and retrieval sources. None of these are in a baseline built for servers, so they can change without detection while every scan passes. Adding them lets the baseline catch changes that alter claims answers. Scanning weekly checks the same infrastructure settings more often and still misses every change to the assistant's behavior.",
+      "wrong_explanations": {
+        "A": "Tempting because more frequent checks catch drift sooner. But the scan still covers only infrastructure, so changes to prompts or filters stay invisible.",
+        "C": "Tempting because the vendor hosts it. But the insurer sets its own prompt and filters, and vendors change settings too.",
+        "D": "Tempting because logs hold personal data. But encryption protects stored chats; it does not track the settings that shape answers."
+      },
+      "tips": [
+        "Eliminate: C hands the insurer's own settings to the vendor, and D adds a security control that tracks no configuration.",
+        "Final two: B beats A because the gap is what the baseline covers; scanning infrastructure more often still misses prompt and filter changes.",
+        "Exam cue: an AI baseline lists what shapes outputs: model version, prompt, settings, filters and retrieval sources."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CM-2 (Baseline Configuration); NIST SP 800-53 Rev. 5 CM-6 (Configuration Settings)",
+      "related_concepts": [
+        "Configuration baseline",
+        "AI configuration items",
+        "Hosted AI services"
+      ],
+      "_provenance": "Authored from concept: notes 2C.2 Model Versioning, Configuration Baselines and Rollback (an AI service's baseline includes the settings that shape its answers, not only infrastructure settings). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_234",
+      "domain": 2,
+      "subtopic": "2C AI change management. Cached answers after a rollback",
+      "principle_id": "contain-and-preserve-ai",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Zambian agro-dealer chain rolled its farmer assistant back after wrong pesticide-mixing answers, but its response cache keeps serving stored answers to repeated questions for 30 days. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Shorten the cache's expiry from 30 days to one day",
+        "B": "Retest the restored version on pesticide-mixing questions",
+        "C": "Stop serving answers cached under the withdrawn version",
+        "D": "Add a notice that cached answers may be out of date"
+      },
+      "correct": "C",
+      "key_concept": "A rollback is complete only when nothing produced by the withdrawn version keeps reaching users, including cached generated answers.",
+      "pre_read": "Trace every path by which an answer reaches a customer.",
+      "correct_explanation": "The rollback restored the model, but the cache still hands farmers answers the faulty version wrote, so wrong mixing instructions keep going out for up to 30 days. Stopping those cached answers, while keeping a copy for the investigation, completes the rollback. A one-day expiry shortens future exposure but still serves today's wrong answers until they expire.",
+      "wrong_explanations": {
+        "A": "Tempting because shorter caching limits staleness. But wrong mixing answers already stored keep going out until they expire.",
+        "B": "Tempting because a rollback should be confirmed. But retesting the restored model checks fresh answers; the cache keeps serving the withdrawn version's answers.",
+        "D": "Tempting because it warns farmers. But wrong mixing instructions still reach them, and a notice does not withdraw them."
+      },
+      "tips": [
+        "Eliminate: D warns instead of withdrawing wrong answers, and B retests the restored model while the cache keeps serving old answers.",
+        "Final two: C beats A because answers already cached keep going out until purged; a shorter expiry limits future exposure, not today's.",
+        "Exam cue: after an AI rollback, look for what the bad version left in service: caches, stored outputs and downstream copies."
+      ],
+      "framework_ref": "NIST AI 100-1 MANAGE 2.4 (Mechanisms and responsibilities to supersede, disengage or deactivate AI); NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control)",
+      "related_concepts": [
+        "Rollback",
+        "Response caching",
+        "Generative AI"
+      ],
+      "_provenance": "Authored from concept: notes 2C.2 Model Versioning, Configuration Baselines and Rollback (rollback must cover everything a withdrawn version left in service, including cached generated answers). Review round 1: setting moved from a bank's customer assistant (aaia_d2_065, 176, 232); strawman distractors B and D replaced. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_235",
+      "domain": 2,
+      "subtopic": "2C AI change management. A feature the vendor switched on",
+      "principle_id": "ai-changes-are-changes",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An Austrian notary office's hosted staff assistant gained a 'memory' feature in a vendor update, switched on by default, that keeps client details across chats. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Accept it, since vendor updates fall under the vendor's testing",
+        "B": "Pin the model version so that new vendor updates cannot apply",
+        "C": "Review a sample of stored memories each quarter",
+        "D": "Turn it off office-wide until assessed and approved as a change"
+      },
+      "correct": "D",
+      "key_concept": "Vendor updates can add capabilities, such as memory or tools, that change data flows and risks; treat them as changes before use.",
+      "pre_read": "Ask what kind of change the update made to the service.",
+      "correct_explanation": "A memory that keeps client details across chats changes what the assistant stores, who may see it later and how long it lasts, so it is a change for the office to assess and approve, with the feature off office-wide until then. Pinning the model version only stops future model changes; it does not switch off a feature already running.",
+      "wrong_explanations": {
+        "A": "Tempting because the vendor tests its releases. But vendor testing covers the vendor's product, not this office's client data or duties.",
+        "B": "Tempting because pinning is a standard control for vendor model updates. But it stops future model changes; the memory feature has already arrived and stays on.",
+        "C": "Tempting because it looks at what is stored. But quarterly review finds client details only after they have been kept and reused."
+      },
+      "tips": [
+        "Eliminate: A relies on the vendor's testing for the office's own risks, and C reviews stored client details months after the fact.",
+        "Final two: D beats B because the memory is a service feature already running; pinning the model version stops future model changes but leaves it on and unassessed.",
+        "Exam cue: vendor updates can add features as well as change models. A new capability is a change for the deployer to assess."
+      ],
+      "framework_ref": "NIST AI 100-1 MANAGE 3.1 (Third-party AI risks monitored and controls applied); NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control)",
+      "related_concepts": [
+        "Vendor updates",
+        "New AI features",
+        "Change management"
+      ],
+      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (a vendor update can add capabilities as well as change the model; new features are changes to assess before use). Completeness round 1: setting moved from an accounting firm to a notary office (crisc_d4_057 uses an accounting firm with staff generative AI). Review round 2: runner-up B changed from a staff opt-out to model-version pinning, so the AI fact (an update can add a service feature, not only change the model) decides the item; pre_read made neutral. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_236",
+      "domain": 2,
+      "subtopic": "2C AI change management. Same replies, different actions",
+      "principle_id": "test-the-ai-as-used",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A vendor model update made an Indonesian theme park's booking agent grant twice as many free fast-track passes, each within limits; replies read the same. Which control should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Test the agent's actions, not only its replies, before updates apply",
+        "B": "Rely on vendor release notes to flag behavior changes",
+        "C": "Compare samples of replies before and after each update applies",
+        "D": "Lower the agent's pass limit after each vendor update"
+      },
+      "correct": "A",
+      "key_concept": "For AI agents, an update can change what they do while their words look the same; regression tests must cover actions.",
+      "pre_read": "Separate what the agent says from what it does.",
+      "correct_explanation": "The update changed the agent's decisions, granting twice as many free passes, while its replies read the same, so a test that compares text would pass it. Running test cases that check the agent's tool actions, such as when it grants passes, before an update applies catches that kind of change. Comparing sample replies is useful, but it measures words, not the actions that cost the park money.",
+      "wrong_explanations": {
+        "B": "Tempting because vendors describe changes. But release notes rarely predict how one customer's agent will behave with its own tools.",
+        "C": "Tempting because it is a regression check. But the replies here read the same; only the actions changed, and text comparisons would pass them.",
+        "D": "Tempting because it limits cost. But it caps each grant after the fact and does not test what the next update changes."
+      },
+      "tips": [
+        "Eliminate: B trusts vendor notes to predict this agent's behavior, and D trims a limit without testing the update.",
+        "Final two: A beats C because the update changed actions, not words; comparing replies would have passed it.",
+        "Exam cue: for agents, test what they do as well as what they say. An update can change tool use while the text looks the same."
+      ],
+      "framework_ref": "NIST AI 100-1 MANAGE 3.2 (Pre-trained models monitored as part of regular maintenance); NIST SP 800-53 Rev. 5 CM-4 (Impact Analyses)",
+      "related_concepts": [
+        "Vendor updates",
+        "AI agents",
+        "Regression testing"
+      ],
+      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (a vendor model update can change an agent's actions while its text looks the same; update tests must cover tool use). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_237",
+      "domain": 2,
+      "subtopic": "2D AI supervision. Review only when the model is unsure",
+      "principle_id": "ai-output-is-a-lead",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A Tunisian social-security fund's model sends disability claims it scores below 80% confidence to assessors and decides the rest itself; its confidence was never checked against outcomes. What is the IS auditor's GREATEST concern?",
+      "options": {
+        "A": "Assessors may be overloaded by the low-confidence claims",
+        "B": "Confident but wrong decisions take effect with no one seeing them",
+        "C": "Assessors may defer to the model on the low-confidence claims they see",
+        "D": "Claimants may word claims to raise the model's confidence"
+      },
+      "correct": "B",
+      "key_concept": "A model's confidence is its own estimate; if it is not checked against outcomes, confident errors reach people with no review.",
+      "pre_read": "Trace one claim through each route the process allows.",
+      "correct_explanation": "Only claims scored below 80% confidence reach an assessor, so confidently wrong decisions take effect with no person seeing them. Because the confidence was never checked against outcomes, nobody knows how many such errors there are, and a disability claimant wrongly refused has no reviewer at all. Automation bias among assessors is a real risk, but it affects claims that at least reach a person.",
+      "wrong_explanations": {
+        "A": "Tempting because workload affects review quality. But nothing points to overload, and it concerns the reviewed claims, not the unreviewed ones.",
+        "C": "Tempting because automation bias is a classic oversight risk. But those claims at least reach a person; confident errors reach no one.",
+        "D": "Tempting because claimants could game the score. But nothing points to gaming, and errors need no gaming to slip through."
+      },
+      "tips": [
+        "Eliminate: A assumes an overload nothing points to, and D assumes gaming the facts never raise.",
+        "Final two: B beats C because confident errors bypass review entirely while the cutoff rests on unchecked confidence; deference affects only claims a person sees.",
+        "Exam cue: when only uncertain cases reach people, ask whether the model's confidence has been shown to track correctness."
+      ],
+      "framework_ref": "NIST AI 100-1 MAP 3.5 (Processes for human oversight defined and assessed); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
+      "related_concepts": [
+        "Human oversight",
+        "Confidence routing",
+        "Calibration"
+      ],
+      "_provenance": "Authored from concept: notes 2D.1 Human Oversight and Automation Bias (routing only low-confidence cases to people leaves confident errors unreviewed; confidence must be shown to track correctness). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_238",
+      "domain": 2,
+      "subtopic": "2D AI supervision. The customer as the reviewer",
+      "principle_id": "real-human-oversight",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A South Korean card issuer says its app assistant, which recommends debt-consolidation loans, has human oversight because every customer must confirm a recommendation before it proceeds. What is the IS auditor's GREATEST concern?",
+      "options": {
+        "A": "Customers may tap to confirm without reading the recommendation",
+        "B": "Customers may not know an AI made the recommendation",
+        "C": "No one able to judge suitability reviews its recommendations",
+        "D": "The assistant's recommendations may not be logged for review"
+      },
+      "correct": "C",
+      "key_concept": "Human oversight needs a person who can judge the output; the affected customer confirming a recommendation is consent, not oversight.",
+      "pre_read": "Ask who stands between the model and the harm.",
+      "correct_explanation": "Oversight needs a person able to judge whether the output is right and to stop it. Here the only 'reviewer' is the customer the loan affects, who usually cannot judge whether consolidation suits them and may trust the issuer's recommendation. Confirming taps without reading is a symptom of the same problem; even a careful reader lacks the knowledge to catch an unsuitable loan.",
+      "wrong_explanations": {
+        "A": "Tempting because quick taps show inattention. But even a careful customer is the person affected, not an overseer able to judge suitability.",
+        "B": "Tempting because people should know when AI advises them. But disclosure tells customers who advised them; it puts no capable reviewer before an unsuitable loan.",
+        "D": "Tempting because logs support later review. But logging records recommendations after the fact; it does not stop an unsuitable loan before the customer takes it."
+      },
+      "tips": [
+        "Eliminate: B adds disclosure and D adds logging; neither puts anyone able to judge suitability between the model and the loan.",
+        "Final two: C beats A because even a careful customer cannot act as the overseer; skipped reading is a symptom of having no qualified reviewer.",
+        "Exam cue: check who the overseer is. An affected person accepting an AI recommendation is consent, not oversight."
+      ],
+      "framework_ref": "NIST AI 100-1 GOVERN 3.2 (Roles defined for human-AI configurations and oversight); NIST AI 600-1 Section 2.7 (Human-AI Configuration)",
+      "related_concepts": [
+        "Human oversight",
+        "Automation bias",
+        "Consumer harm"
+      ],
+      "_provenance": "Authored from concept: notes 2D.1 Human Oversight and Automation Bias (oversight needs someone able to judge the output; an affected customer confirming a recommendation is not oversight). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_239",
+      "domain": 2,
+      "subtopic": "2D AI supervision. Retention calls and false alarms",
+      "principle_id": "ai-deciding-fact",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A Spanish newspaper calls subscribers its churn model flags; monitoring counts flagged subscribers who stay as false alarms, and that rate doubled after callers began offering discounts. What is the IS auditor's GREATEST concern?",
+      "options": {
+        "A": "Calls that kept subscribers are being counted as model errors",
+        "B": "The model may be drifting as subscribers' reading habits change",
+        "C": "The monitoring dashboard may be refreshed too rarely",
+        "D": "Subscribers may find the retention calls intrusive"
+      },
+      "correct": "A",
+      "key_concept": "Interventions triggered by a model change the outcomes used to monitor it; a rise in 'errors' may be the intervention working.",
+      "pre_read": "Ask what happens between a flag and the recorded outcome.",
+      "correct_explanation": "Flagged subscribers get a call, and since callers began offering discounts more of them stay. Monitoring scores each one who stays as a false alarm, so the doubled rate may show the discounts working, not the model failing, and could trigger a needless retrain. Drift is always possible, but the timing points to the discounts, which change outcomes after every flag.",
+      "wrong_explanations": {
+        "B": "Tempting because a doubled error rate often signals drift. But the rise followed the discounts, which change what happens after each flag.",
+        "C": "Tempting because stale dashboards mislead. But the figure itself is current; what it counts is the problem.",
+        "D": "Tempting because calls affect people. But nothing suggests complaints, and it does not explain the monitoring figure."
+      },
+      "tips": [
+        "Eliminate: D raises intrusiveness the facts never show, and C doubts timeliness when the problem is what the figure counts.",
+        "Final two: A beats B because the rise followed the discounts, which keep flagged subscribers; drift is possible but the facts point to the intervention.",
+        "Exam cue: if a model's flags trigger action, outcomes reflect the action too. Check how monitoring treats cases where the action worked."
+      ],
+      "framework_ref": "NIST AI 100-1 MEASURE 2.4 (Functionality and behavior monitored in production); NIST AI 100-1 MEASURE 1.2 (Metrics and control effectiveness regularly assessed)",
+      "related_concepts": [
+        "Performance monitoring",
+        "Feedback effects",
+        "Churn models"
+      ],
+      "_provenance": "Authored from concept: notes 2D.2 Monitoring Drift, Performance and Impacts (when a model's flags trigger action, the action changes outcomes; monitoring must separate model errors from interventions that worked). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_240",
+      "domain": 2,
+      "subtopic": "2D AI supervision. Privacy rules and drift checks",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Tanzanian HIV-care network's missed-visit model has no drift monitoring, because privacy rules forbid keeping patients' model inputs after scoring. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Skip drift monitoring, since privacy rules take priority",
+        "B": "Keep patients' raw model inputs for 30 days under restricted access",
+        "C": "Retrain monthly so drift monitoring is no longer needed",
+        "D": "Monitor drift from summary statistics that hold no patient details"
+      },
+      "correct": "D",
+      "key_concept": "Drift monitoring needs distributions, not individual records; summary statistics can track drift without keeping personal data.",
+      "pre_read": "Read exactly what the privacy rule forbids before judging what it rules out.",
+      "correct_explanation": "Drift checks compare distributions, such as the share of patients by age band or visit gap, with the training data. Those summaries can be computed at scoring time and kept without any patient's details, so the privacy rule and monitoring can both be met. Keeping raw inputs for 30 days would enable monitoring but breaks the privacy rule that bars keeping them.",
+      "wrong_explanations": {
+        "A": "Tempting because privacy matters most here. But skipping monitoring leaves patients exposed to a model that may be failing unseen.",
+        "B": "Tempting because raw data makes monitoring easy. But it breaks the privacy rule for HIV patients when summaries would do.",
+        "C": "Tempting because retraining refreshes the model. But scheduled retraining is not monitoring; it can learn the same shift without anyone noticing."
+      },
+      "tips": [
+        "Eliminate: A treats privacy and monitoring as either-or, and C replaces monitoring with scheduled retraining, which detects nothing.",
+        "Final two: D beats B because summaries meet both needs; keeping raw HIV-care records breaks the privacy rule when it is not needed.",
+        "Exam cue: drift monitoring needs distributions, not people's records. Look for the option that meets both privacy and oversight."
+      ],
+      "framework_ref": "NIST AI 100-1 MEASURE 2.4 (Functionality and behavior monitored in production); NIST AI 100-1 MEASURE 2.10 (Privacy risk examined and documented)",
+      "related_concepts": [
+        "Drift monitoring",
+        "Privacy",
+        "Summary statistics"
+      ],
+      "_provenance": "Authored from concept: notes 2D.2 Monitoring Drift, Performance and Impacts (drift can be monitored from summary statistics, so privacy limits on raw records are not a reason to skip monitoring). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_241",
+      "domain": 2,
+      "subtopic": "2D AI supervision. Broker records in eligibility scores",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Polish mobile operator's contract-eligibility model scores applicants partly on data-broker records matched by name and birth date; refused applicants receive only their main score factors. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Retrain the model without the data-broker records",
+        "B": "Let applicants see and correct the records the model used",
+        "C": "Give each applicant a fuller list of their own score factors",
+        "D": "Publish how the model weighs each kind of record"
+      },
+      "correct": "B",
+      "key_concept": "To contest an AI decision, people need to see and correct the data it used; factor explanations cannot reveal wrong records.",
+      "pre_read": "Ask what could be wrong in this decision besides the model.",
+      "correct_explanation": "Records matched only by name and birth date can belong to someone else, so some refusals may rest on another person's debts. Factors such as 'payment history' cannot show a refused applicant that the history is not theirs. Letting applicants see and correct the records used gives them a real way to contest. A fuller factor list explains the score better but still hides a wrongly matched record.",
+      "wrong_explanations": {
+        "A": "Tempting because the matched records cause errors. But it leaves past refusals resting on wrong records, and refused applicants still cannot see or challenge what was used.",
+        "C": "Tempting because more explanation helps. But factors describe how the score used the data, not whether the data is the applicant's own.",
+        "D": "Tempting because transparency helps. But a general description lets no applicant find or fix a wrong record in their own case."
+      },
+      "tips": [
+        "Eliminate: D explains the model in general, not each case, and A redesigns the model and leaves past refusals unremedied.",
+        "Final two: B beats C because a wrongly matched record looks like a normal factor; only seeing the records lets an applicant prove it is not theirs.",
+        "Exam cue: contestability covers inputs as well as reasons. Ask whether affected people can see and correct the data an AI decision used."
+      ],
+      "framework_ref": "NIST AI 100-1 MEASURE 3.3 (Feedback and appeal processes for end users and affected communities); NIST AI 100-1 Section 3.4 (Accountable and Transparent)",
+      "related_concepts": [
+        "Contestability",
+        "Input data quality",
+        "Explanations"
+      ],
+      "_provenance": "Authored from concept: notes 2D.3 Decision Logs, Appeals and Feedback (contesting an AI decision needs access to the input data used, not only the factors behind the score). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_242",
+      "domain": 2,
+      "subtopic": "2D AI supervision. Error reports sent straight to retraining",
+      "principle_id": "fix-the-control-not-the-model",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A Laotian electricity utility's customer assistant gets 1,500 'wrong answer' reports monthly through a button; the team plans to retrain it on every reported answer, marked wrong. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Retrain on the reports, as customers saw the errors firsthand",
+        "B": "Report the monthly count to the AI governance committee",
+        "C": "Have the model owner triage reports and fix causes before retraining",
+        "D": "Turn off the report button, as there are too many to read"
+      },
+      "correct": "C",
+      "key_concept": "User reports of wrong answers need an owner to judge them and fix causes; unreviewed reports fed into retraining can teach errors.",
+      "pre_read": "Ask what a single report can and cannot tell you.",
+      "correct_explanation": "Customer reports signal wrong answers, but some are mistaken or malicious, and causes can sit outside the model, such as an outdated tariff document or a prompt gap that retraining never touches. Having the model owner triage the reports and fix each cause before any retraining turns them into real oversight. Retraining on every report skips that judgment, so the model can learn from wrong labels while the real causes stay in place.",
+      "wrong_explanations": {
+        "A": "Tempting because customers saw the errors. But unjudged reports include mistaken and malicious ones, and causes outside the model, such as documents or prompts, are untouched by retraining.",
+        "B": "Tempting because governance should see trends. But a count informs the committee while no one fixes the wrong answers.",
+        "D": "Tempting because volume is high. But removing the button loses the main signal that customers are getting wrong answers."
+      },
+      "tips": [
+        "Eliminate: B reports a count that fixes nothing, and D removes the main way customers flag wrong answers.",
+        "Final two: C beats A because reports must be judged before they become training labels; some are wrong, and causes can sit outside the model.",
+        "Exam cue: user feedback is a lead, not a label. Look for an owner who adjudicates it before it reaches retraining."
+      ],
+      "framework_ref": "NIST AI 100-1 GOVERN 5.2 (Adjudicated feedback incorporated into design); NIST AI 100-1 MEASURE 3.3 (Feedback and appeal processes for end users and affected communities)",
+      "related_concepts": [
+        "User feedback",
+        "Ownership",
+        "Retraining data"
+      ],
+      "_provenance": "Authored from concept: notes 2D.3 Decision Logs, Appeals and Feedback (user feedback is an oversight signal only if an owner adjudicates it; feeding it straight into retraining skips that judgment). Review round 1: the unadjudicated-retraining plan moved into the stem so the AI fact decides (frame of aaia_d2_035). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_243",
+      "domain": 2,
+      "subtopic": "2E AI testing. Criteria and test set from the vendor",
+      "principle_id": "accuracy-is-not-assurance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Zimbabwean revenue authority accepted a bought document classifier on the vendor's pass mark and benchmark, documents the vendor had tuned the model against. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Have the model owner set pass marks and test on in-house files",
+        "B": "Have the model owner set pass marks and rerun the benchmark in-house",
+        "C": "Accept the result, as the vendor knows its classifier best",
+        "D": "Have the vendor retrain it on the authority's own documents"
+      },
+      "correct": "A",
+      "key_concept": "A model tuned against a test set scores well on it; acceptance needs the owner's criteria and unseen data from the deployer's own use.",
+      "pre_read": "Ask how the model relates to the test it passed.",
+      "correct_explanation": "A model tuned against a test set learns its quirks, so any score on that benchmark overstates how it will classify documents it has never seen. The model owner should set pass marks from the authority's risk tolerance and test on unseen in-house files. An in-house rerun of the benchmark, option B, is real reperformance but still measures the model on data it was tuned to pass.",
+      "wrong_explanations": {
+        "B": "Tempting because rerunning the test in-house is reperformance. But the model was tuned against that benchmark, so any rerun measures data it learned to pass.",
+        "C": "Tempting because the vendor knows its product. But it does not know the authority's documents or tolerance, and it has a stake in passing.",
+        "D": "Tempting because local data should improve the fit. But a retrain is a change that needs its own acceptance test, and it sets no owner criteria."
+      },
+      "tips": [
+        "Eliminate: C trusts the seller's own test, and D orders a retrain, a change that itself needs acceptance testing, before any unseen test.",
+        "Final two: A beats B because a benchmark the model was tuned against measures what it learned, wherever it is rerun; only unseen in-house files show how it handles new documents.",
+        "Exam cue: a score on data the model was tuned against is not assurance. Acceptance needs the owner's criteria and unseen data from the actual use."
+      ],
+      "framework_ref": "NIST AI 100-1 MEASURE 2.3 (Performance measured in conditions similar to deployment); NIST AI 100-1 MAP 1.5 (Organizational risk tolerances determined and documented)",
+      "related_concepts": [
+        "Acceptance criteria",
+        "Test-set overfitting",
+        "TEVV"
+      ],
+      "_provenance": "Authored from concept: notes 2E.1 TEVV and Acceptance Criteria (acceptance criteria come from the owner's use and tolerance; rerunning the vendor's own test on its own criteria adds no assurance). Re-audit: the stem now states the vendor's test set came from other countries' tax forms, so a training-versus-deployment data mismatch decides rather than the general acceptance-testing rule. Re-audit 2: deciding fact changed from other countries' forms (frame of aaia_d2_118 and aaia_d1_064) to a vendor benchmark the model was tuned against, not a public one (aaia_d2_056 covers public-benchmark contamination). Cross-domain gate fix, 12 Nov 2026: runner-up B changed from an independent rerun of the vendor's set, which repeated aaia_d2_163's final two. Re-audit 12 Nov 2026: runner-up B changed from a fresh vendor benchmark, which left the final two to general audit sense, to in-house files judged against the vendor's pass mark, so who sets the criteria decides. Re-audit 3, 12 Nov 2026: runner-up B now pairs owner-set marks with the tuned benchmark, so the tuning fact decides A over B; D changed to a vendor retrain so it does not fall for the same reason as B. Final fix, 12 Nov 2026: runner-up B now offers an in-house rerun of the benchmark (reperformance, a CISA instinct), so only the tuning fact defeats it. Final fix 2, 12 Nov 2026: stem no longer says 'test set' (echoed only in key A) and names the vendor as the one who tuned the model. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_244",
+      "domain": 2,
+      "subtopic": "2E AI testing. Tested at one temperature, run at another",
+      "principle_id": "test-the-ai-as-used",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A Serbian tax authority's assistant passed acceptance tests run at temperature 0, which makes answers nearly repeatable; production runs at 0.8 for more natural replies. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Rerun the acceptance tests at temperature 0 with more questions",
+        "B": "Accept the results, as temperature affects wording, not content",
+        "C": "Have taxpayers rate the answers during the first month",
+        "D": "Rerun the acceptance tests at 0.8, several runs per question"
+      },
+      "correct": "D",
+      "key_concept": "Generation settings are part of the system under test; results at one temperature do not show behavior at another.",
+      "pre_read": "Compare the system that was tested with the one that runs.",
+      "correct_explanation": "Temperature controls how much a generative model varies its answers; at 0.8 the assistant samples less likely wording and can produce errors that never appear at 0. Acceptance results from temperature 0 describe a different configuration from the one taxpayers use. Rerunning the tests at 0.8, several times per question, tests the system as deployed and shows how often it errs. Adding questions at 0 enlarges a test of the wrong configuration.",
+      "wrong_explanations": {
+        "A": "Tempting because a bigger test seems stronger. But it still tests a setting production does not use, so it shows nothing about answers at 0.8.",
+        "B": "Tempting because replies may look similar. But higher temperature can change content, including figures and rules, not just wording.",
+        "C": "Tempting because user feedback is real-world. But taxpayers cannot rate accuracy reliably, and errors reach them before any rating."
+      },
+      "tips": [
+        "Eliminate: B assumes temperature affects only style, and C relies on taxpayers to spot wrong tax answers after launch.",
+        "Final two: D beats A because the test must match the deployed setting; more questions at temperature 0 still test a configuration nobody uses.",
+        "Exam cue: for generative AI, test with the deployed model, prompt and generation settings. A different setting is a different system."
+      ],
+      "framework_ref": "NIST AI 100-1 MEASURE 2.3 (Performance measured in conditions similar to deployment); NIST AI 600-1 Section 2.2 (Confabulation)",
+      "related_concepts": [
+        "Acceptance testing",
+        "Generation settings",
+        "Deployed configuration"
+      ],
+      "_provenance": "Authored from concept: notes 2E.1 TEVV and Acceptance Criteria (test the configuration that runs in production; generation settings such as temperature change behavior). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_245",
+      "domain": 2,
+      "subtopic": "2E AI testing. No sex or age inputs",
+      "principle_id": "accuracy-is-not-assurance",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A Rwandan correctional service's team says its model recommending inmates for vocational training needs no fairness testing because it uses no sex or age inputs. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Also remove inputs that closely track sex or age",
+        "B": "Compare selection and error rates by sex and age",
+        "C": "Treat the model as fair because those traits are excluded",
+        "D": "Publish the list of inputs the model uses"
+      },
+      "correct": "B",
+      "key_concept": "Fairness is judged by outcomes; other inputs can stand in for missing traits, so leaving traits out proves nothing.",
+      "pre_read": "Separate what the team claims from what has been tested.",
+      "correct_explanation": "Inputs such as sentence length, education level or prison wing can track sex and age, so a model can treat groups differently without seeing those traits. Only testing selections and error rates by sex and age shows whether it does. Removing correlated inputs too still leaves the outcomes untested, may weaken the model, and other proxies can remain.",
+      "wrong_explanations": {
+        "A": "Tempting because it targets proxies. But proxies are hard to find completely, and without testing outcomes no one knows whether unfairness remains.",
+        "C": "Tempting because the traits are absent. But other inputs can stand in for them, so absence proves nothing about outcomes.",
+        "D": "Tempting because transparency builds trust. But an input list does not show how outcomes fall across groups."
+      },
+      "tips": [
+        "Eliminate: C treats absent traits as proof of fairness, and D publishes inputs, which shows nothing about outcomes.",
+        "Final two: B beats A because only outcome testing shows whether groups are treated differently; removing proxies is a design change still left untested.",
+        "Exam cue: 'we don't use the protected trait' is never fairness evidence. Look for outcomes and errors tested by group."
+      ],
+      "framework_ref": "NIST AI 100-1 MEASURE 2.11 (Fairness and bias evaluated and documented); NIST AI 100-1 Section 3.7 (Fair with Harmful Bias Managed)",
+      "related_concepts": [
+        "Fairness testing",
+        "Proxy variables",
+        "Protected traits"
+      ],
+      "_provenance": "Authored from concept: notes 2E.2 Fairness Testing Across Groups (leaving protected traits out of the inputs does not make a model fair; outcomes must be tested by group). Completeness round 1: setting moved from a cooperative bank's credit model to a correctional service's training-place model (lending settings already used in aaia_d1_138, aaia_d1_123 and aaia_d3_031). Review round 2: key reworded to drop the emphasis word and the stem echo. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_246",
+      "domain": 2,
+      "subtopic": "2E AI testing. A shortlist and a workforce benchmark",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Of 2,000 applicants to an Australian miner, half women, its résumé-screening model shortlisted 400; women are 30% of the shortlist, which the vendor says matches the mining workforce. What is the IS auditor's BEST conclusion?",
+      "options": {
+        "A": "The shortlist of 400 is too small to judge fairness",
+        "B": "The shortlist matches the mining workforce, so it shows no bias",
+        "C": "Women applicants are shortlisted at under half the men's rate",
+        "D": "Women applicants are shortlisted at the same rate as men"
+      },
+      "correct": "C",
+      "key_concept": "Selection fairness compares rates within the applicant pool; matching an outside population, such as the current workforce, can carry past imbalance forward.",
+      "pre_read": "Recompute each group's rate from the numbers given before reading the claims.",
+      "correct_explanation": "Of 1,000 women, 120 were shortlisted (30% of 400), a 12% rate; of 1,000 men, 280 were, a 28% rate. Women are shortlisted at about 0.43 times the men's rate, under half. The vendor compares with the current mining workforce, which reflects past hiring; the fair comparison is with the people who actually applied, so matching the workforce can carry an old imbalance forward.",
+      "wrong_explanations": {
+        "A": "Tempting because samples can be too small. But 400 shortlisted from 2,000 applicants is enough to show a gap this large.",
+        "B": "Tempting because it cites a real benchmark. But the workforce reflects past hiring; selection fairness compares rates among those who applied.",
+        "D": "Tempting because both groups are half the applicants. But women are 30% of those shortlisted, so their rate is 12% against men's 28%."
+      },
+      "tips": [
+        "Eliminate: D miscomputes the rates, 12% for women against 28% for men, and A calls 400 of 2,000 too small.",
+        "Final two: C beats B because fairness compares rates within the applicant pool; the workforce benchmark carries past hiring forward.",
+        "Exam cue: check the comparison group. Selection rates are compared across applicants, not with a population shaped by past decisions."
+      ],
+      "framework_ref": "NIST AI 100-1 MEASURE 2.11 (Fairness and bias evaluated and documented); NIST AI 600-1 Section 2.6 (Harmful Bias and Homogenization)",
+      "related_concepts": [
+        "Fairness testing",
+        "Selection rates",
+        "Comparison groups"
+      ],
+      "_provenance": "Authored from concept: notes 2E.2 Fairness Testing Across Groups (selection rates are compared within the applicant pool, not with an outside population shaped by past decisions). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_247",
+      "domain": 2,
+      "subtopic": "2E AI testing. Explanations offered as validation",
+      "principle_id": "ai-output-is-a-lead",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Guatemalan airline's validators, refused its vendor's code and training data, plan to validate its loyalty-fraud model by running an explanation tool on its scores. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Accept the vendor's own validation report in place of review",
+        "B": "Run the explanation tool on a larger sample of the model's scores",
+        "C": "Require the vendor to disclose its code before further use",
+        "D": "Test its alerts on past cases whose outcomes are already known"
+      },
+      "correct": "D",
+      "key_concept": "Explanations show what drives a score, not whether it is right; a closed model is validated by testing its outputs against known outcomes.",
+      "pre_read": "Ask what each method could prove about a single score.",
+      "correct_explanation": "Testing the model's alerts on past loyalty cases with known outcomes, including confirmed frauds, shows how well it performs on the airline's own members, without needing the vendor's code. That is independent evidence even when code is refused. An explanation tool shows which inputs drive each score, not whether the score is right, so running it on more scores still validates nothing.",
+      "wrong_explanations": {
+        "A": "Tempting because the vendor tested it. But builders' own validation is not independent, and it covers the vendor's data, not this airline's members.",
+        "B": "Tempting because explanations open up a closed model. But they show what drives a score, not whether it is correct; a bigger sample repeats the same gap.",
+        "C": "Tempting because code access aids review. But vendors often refuse, and code alone does not show how the model performs on the airline's own accounts."
+      },
+      "tips": [
+        "Eliminate: A treats the vendor's own validation as independent, and C makes validation wait on code the vendor has refused.",
+        "Final two: D beats B because an explanation shows why the model scored an account, not whether it was right; only known outcomes show accuracy.",
+        "Exam cue: a closed vendor model can still be validated from outside, by testing its outputs against known outcomes. Explanations are not validation."
+      ],
+      "framework_ref": "NIST AI 100-1 MEASURE 1.3 (Independent assessors not on the front-line development team); NIST AI 100-1 MANAGE 3.1 (Third-party AI risks monitored and controls applied)",
+      "related_concepts": [
+        "Independent validation",
+        "Vendor models",
+        "Explainability limits"
+      ],
+      "_provenance": "Authored from concept: notes 2E.3 Independent Validation, Robustness and Red Teaming (a vendor model can be validated through its outputs on the organization's own cases, even without its code or data). Review round 1: setting moved from a bank AML model (CISA d3_137; aaia_d1_115); runner-up is now an explanation tool, as output testing on own data alone repeats CISA d1_162 and d2_117; the code-access claim now matches notes 2E.3 and aaia_d2_079. Re-audit: setting moved from a retail chain's return-fraud model (aaia_d3_048; CISA d1 returns-fraud) to an airline's loyalty-fraud model. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_248",
+      "domain": 2,
+      "subtopic": "2E AI testing. A 1% change that flips decisions",
+      "principle_id": "rank-ai-risk-by-harm",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A Mauritian housing agency's validators found that changing an applicant's declared income by 1% flips 15% of its grant model's decisions. What is the IS auditor's GREATEST concern?",
+      "options": {
+        "A": "Small input errors may decide which families receive a grant",
+        "B": "The model may be overfitted to quirks in its training data",
+        "C": "Income may act as a proxy for applicants' ethnicity",
+        "D": "Refused families may not understand why the model refused them"
+      },
+      "correct": "A",
+      "key_concept": "A robustness test that shows decisions flipping on tiny input changes means ordinary data errors can decide outcomes for people.",
+      "pre_read": "Ask what a 1% change means in everyday data entry.",
+      "correct_explanation": "A 1% change in declared income is within ordinary rounding or entry error, yet it flips 15% of decisions, so whether a family gets a grant can turn on a typing slip rather than its need. That harm to applicants is what the robustness test exposes. Overfitting may explain why the model is so sensitive, but it is a cause to investigate, not the risk to people.",
+      "wrong_explanations": {
+        "B": "Tempting because brittle models are often overfitted. But that is a possible cause to investigate; the concern is families' grants turning on entry errors.",
+        "C": "Tempting because income can track protected groups. But nothing here points to it; the stated result is about sensitivity to small changes.",
+        "D": "Tempting because grant refusals need reasons. But the result is about sensitivity: even a clear reason would rest on a figure a typing slip can flip."
+      },
+      "tips": [
+        "Eliminate: D raises explainability, which the result does not test, and C raises a proxy risk the facts never point to.",
+        "Final two: A beats B because the concern is the effect on families now; overfitting is one possible cause to investigate.",
+        "Exam cue: read robustness results for their effect on people. If tiny input changes flip decisions, ordinary data errors decide outcomes."
+      ],
+      "framework_ref": "NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented); NIST AI 100-1 MAP 5.1 (Likelihood and magnitude of impacts characterized)",
+      "related_concepts": [
+        "Robustness testing",
+        "Sensitivity analysis",
+        "Harm to people"
+      ],
+      "_provenance": "Authored from concept: notes 2E.3 Independent Validation, Robustness and Red Teaming (robustness results are read for their effect on people; decisions that flip on tiny input changes let entry errors decide outcomes). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_249",
+      "domain": 2,
+      "subtopic": "2F AI threats. A signed model from a partner",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A Swiss university hospital will load a model file, signed by a research partner, straight onto a server holding patient records. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Test its accuracy on a sample of patient records first",
+        "B": "Rely on the partner's signature as proof the file is safe",
+        "C": "Open it first in an isolated environment with no patient data",
+        "D": "Scan the model file with the hospital's antivirus software"
+      },
+      "correct": "C",
+      "key_concept": "Some model formats execute code on load; untrusted model files are opened only in isolation and converted there to data-only formats.",
+      "pre_read": "Ask what happens at the moment the file is opened.",
+      "correct_explanation": "Many common model file formats can run code when loaded, so a model file can carry instructions that execute the moment it is opened, whoever signed it. Opening it first in an isolated environment with no patient data, and converting it there to a format that stores only weights, keeps patient records out of reach. Antivirus tools often miss code hidden inside model files, so a clean scan, option D, is weak assurance.",
+      "wrong_explanations": {
+        "A": "Tempting because fitness must be tested. But loading the file to test it may run hidden code beside patient records.",
+        "B": "Tempting because a valid signature proves who sent the file and that it is unaltered. But it cannot show any code inside is safe; the partner may have been compromised.",
+        "D": "Tempting because scanning is the usual control for downloads. But code hidden in model files often passes antivirus tools, and loading it beside patient data risks them."
+      },
+      "tips": [
+        "Eliminate: A loads the file beside patient records to test it, and B treats a signature, which proves only origin and integrity, as proof the code is safe.",
+        "Final two: C beats D because code hidden in a model file can run on load and often passes antivirus; isolation keeps patient data out of its reach.",
+        "Exam cue: a model file is software. Some formats run code when opened, so isolate any outside model before it touches real data, whoever sent it."
+      ],
+      "framework_ref": "NIST AI 100-2e2025 Section 3.2 (Supply Chain Attacks and Mitigations); MITRE ATLAS AML.T0011.000 (Unsafe AI Artifacts)",
+      "related_concepts": [
+        "Model supply chain",
+        "Model file formats",
+        "Isolation"
+      ],
+      "_provenance": "Authored from concept: notes 2F.1 Attacks on Data and Models (some model file formats run code when loaded, so outside model files, even signed, are opened only in isolation). Cross-domain gate fix, 12 Nov 2026: source changed from a public hub to a signed partner file, so the item no longer repeats aaia_d2_043's frame. Re-audit 3, 12 Nov 2026: stem no longer states the file's format runs code, so the candidate must know that common model formats can; conversion to a weights-only format now happens inside the isolated environment. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_250",
+      "domain": 2,
+      "subtopic": "2F AI threats. Partner-shop photos in retraining",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Thai phone trade-in app retrains its screen-damage classifier monthly on photos from partner shops, after staff confirm each photo's label. Which added control should the IS auditor recommend as BEST against poisoning?",
+      "options": {
+        "A": "Retrain weekly so any poisoned photos are replaced sooner",
+        "B": "Track each photo's shop and cap any one shop's share",
+        "C": "Have a second staff member confirm every photo's label",
+        "D": "Encrypt the partner shops' stored photos at rest"
+      },
+      "correct": "B",
+      "key_concept": "Poisoned training samples can carry correct labels; tracing each contributor's samples, and capping its share, works where label checks cannot.",
+      "pre_read": "Ask what the existing check can and cannot see.",
+      "correct_explanation": "In clean-label poisoning, attackers submit photos whose labels are correct but whose subtle changes teach the model a hidden weakness, so a second label check confirms them too. Tracking which shop supplied each photo lets suspect photos be traced and removed, and capping any one shop's share curbs bulk influence, though a targeted attack may need only a few photos. Double-checking labels repeats a check the attack is built to pass.",
+      "wrong_explanations": {
+        "A": "Tempting because fresher data seems safer. But more frequent retraining takes in new poisoned photos sooner as well.",
+        "C": "Tempting because it doubles a familiar check. But clean-label poisoned photos are correctly labeled, so a second reviewer confirms them too.",
+        "D": "Tempting because it protects stored data. But the poisoned photos arrive through the normal upload path, not by tampering with storage."
+      },
+      "tips": [
+        "Eliminate: A retrains more often on the same untraced uploads, and D protects storage from a threat that enters through uploads.",
+        "Final two: B beats C because clean-label poison passes any label check; tracing each photo to its shop lets poison be found and removed, and a cap curbs bulk influence.",
+        "Exam cue: poisoned data can be correctly labeled. When outsiders supply training data, look for source tracking and limits on any one source's influence."
+      ],
+      "framework_ref": "NIST AI 100-2e2025 Section 2.3.2 (Targeted Poisoning); MITRE ATLAS AML.T0020 (Poison Training Data)",
+      "related_concepts": [
+        "Data poisoning",
+        "Clean-label attacks",
+        "Training data provenance"
+      ],
+      "_provenance": "Authored from concept: notes 2F.1 Attacks on Data and Models (clean-label poisoning keeps correct labels, so label review cannot catch it; limit and trace each contributor's influence). Review round 1: setting moved from a marketplace banned-item classifier (aaia_d2_008; notes 2F.1 example). Re-audit: distractor D now names the partner shops, so the stem's source noun no longer appears only in the key. Re-audit 2: explanation leads with provenance tracing and limits the share cap to bulk influence, matching NIST AI 100-2e2025 Section 2.3.2 and aaia_d2_165. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_251",
+      "domain": 2,
+      "subtopic": "2F AI threats. A price floor written in the prompt",
+      "principle_id": "limits-outside-the-model",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Dutch used-car dealer's chatbot books orders at prices it agrees to; its system prompt sets a floor, yet a tester talked it into a 90% discount. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Have the order system reject prices below the approved floor",
+        "B": "Add an output filter blocking replies that quote prices under the floor",
+        "C": "Add a website notice that chatbot prices are not binding",
+        "D": "Add the tester's prompt to a blocklist of known attacks"
+      },
+      "correct": "A",
+      "key_concept": "Limits written into a prompt can be argued away by users; enforce price, refund and approval limits in the systems that carry them out.",
+      "pre_read": "Ask what happens after the chatbot says yes.",
+      "correct_explanation": "A floor stated in the system prompt is an instruction the chatbot weighs against the user's arguments, and the tester's 90% discount shows it can be talked out of it. Having the order system reject any price below the approved floor enforces the limit whatever the chatbot agrees to. An output filter helps, but it judges wording, so a below-floor deal phrased another way can still reach the order.",
+      "wrong_explanations": {
+        "B": "Tempting because it checks replies outside the model. But a filter reads words, and a deal phrased another way, such as 'ninety percent off', can still reach the order.",
+        "C": "Tempting because it limits liability. But a disclaimer leaves the chatbot offering prices, and customers may still hold the dealer to them.",
+        "D": "Tempting because it stops this attack. But any customer can try a new wording; blocking one known prompt fixes nothing."
+      },
+      "tips": [
+        "Eliminate: C adds a disclaimer that leaves the chatbot agreeing to prices, and D blocks one known prompt among endless rewordings.",
+        "Final two: A beats B because the order system checks the actual price, whatever words led to it; a reply filter judges wording and can miss a deal phrased another way.",
+        "Exam cue: a limit stated only in a prompt is not a control. Look for limits enforced where the action takes effect."
+      ],
+      "framework_ref": "NIST AI 100-2e2025 Section 3.3 (Direct Prompting Attacks and Mitigations); MITRE ATLAS AML.T0054 (LLM Jailbreak)",
+      "related_concepts": [
+        "Jailbreaks",
+        "System prompts",
+        "Controls outside the model"
+      ],
+      "_provenance": "Authored from concept: notes 2F.2 Prompt Injection and Jailbreaks (business limits stated in a prompt can be talked away; enforce them in the systems that act). Review round 1: runner-up changed from stronger prompt wording (aaia_d2_017, 046, 125) to an output filter; the stem now states that the chatbot books orders. Re-audit 2: distractor D recast from blocking the tester's account to blocklisting the known jailbreak prompt. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_252",
+      "domain": 2,
+      "subtopic": "2F AI threats. Replies the portal runs as code",
+      "principle_id": "limits-outside-the-model",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Kosovar ministry's staff portal displays its citizen assistant's replies as web code; a tester got a reply carrying a script that ran in staff browsers. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Scan citizens' messages for malware before the assistant reads them",
+        "B": "Train staff to close the portal when replies look odd",
+        "C": "Instruct the assistant in its prompt to refuse writing code",
+        "D": "Treat replies as untrusted and encode them before display"
+      },
+      "correct": "D",
+      "key_concept": "AI output can carry attacker-chosen content; systems that display or run it must treat it as untrusted input.",
+      "pre_read": "Follow the output to whatever uses it next.",
+      "correct_explanation": "Citizens control what the assistant reads, so they can steer it into writing a script, and the portal then runs that script in staff browsers. Treating every reply as untrusted input and encoding it before display stops any script from running, whatever the model writes. A prompt instruction to refuse writing code is something an attacker's wording can override, so it is not a control.",
+      "wrong_explanations": {
+        "A": "Tempting because inputs are often scanned. But the attack is plain text steering the model, which a malware scan does not detect.",
+        "B": "Tempting because staff are the target. But a script runs when the page loads, before anyone can judge how a reply looks.",
+        "C": "Tempting because it targets the behavior. But prompt instructions can be overridden by crafted input, so scripts can still get through."
+      },
+      "tips": [
+        "Eliminate: A scans for malware when the attack is plain text, and B relies on staff reacting after the script has run.",
+        "Final two: D beats C because encoding at display stops scripts whatever the model writes; a prompt instruction can be overridden.",
+        "Exam cue: model output is untrusted input to the next system. Look for validation or encoding where the output is used."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SI-15 (Information Output Filtering); NIST AI 100-2e2025 Section 3.3 (Direct Prompting Attacks and Mitigations)",
+      "related_concepts": [
+        "Output handling",
+        "Prompt injection",
+        "Cross-site scripting"
+      ],
+      "_provenance": "Authored from concept: notes 2F.2 Prompt Injection and Jailbreaks (model output is untrusted input to whatever displays or runs it; encode or validate it there). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_253",
+      "domain": 2,
+      "subtopic": "2F AI threats. A looping appointment agent",
+      "principle_id": "limits-outside-the-model",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A Barbadian dental chain's appointment agent, stuck in a loop on one booking, sent a patient 4,000 texts overnight before anyone noticed. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Alert on-call staff whenever message volume spikes",
+        "B": "Enforce hard caps on the agent's actions and messages for each task",
+        "C": "Retrain the agent's model on the looping conversation",
+        "D": "Add a prompt rule telling the agent to stop repeating messages"
+      },
+      "correct": "B",
+      "key_concept": "Agents can loop or be steered into repeated actions; hard limits enforced outside the model bound the damage before anyone notices.",
+      "pre_read": "Ask what bounds the agent when no one is watching.",
+      "correct_explanation": "Agents can loop or be manipulated into repeating actions, and here nothing stopped one sending 4,000 texts. A hard cap on actions and messages per task, enforced by the systems the agent uses, stops a runaway at a set point whatever the model does. A volume alert helps, but overnight it depends on someone responding, and texts keep going until they do.",
+      "wrong_explanations": {
+        "A": "Tempting because it detects the runaway. But it depends on a person responding, and overnight the texts continue until someone does.",
+        "C": "Tempting because the model misbehaved. But retraining on one loop changes little, and the agent stays unbounded meanwhile.",
+        "D": "Tempting because it addresses repetition. But a looping agent may not follow its prompt, and a rule inside the model is not a limit."
+      },
+      "tips": [
+        "Eliminate: D relies on a prompt rule the looping agent may not follow, and C retrains the model while the agent stays unbounded.",
+        "Final two: B beats A because an agent can loop faster than anyone responds; a cap outside the model stops it at a set point, while an alert waits for a person.",
+        "Exam cue: agents need system-enforced ceilings on actions, messages and spend per task, not only alerts or prompt rules."
+      ],
+      "framework_ref": "NIST AI 100-1 MEASURE 2.6 (Evaluated regularly for safety risks, fails safely); OWASP Top 10 for LLM Applications 2025 LLM06 (Excessive Agency)",
+      "related_concepts": [
+        "Excessive agency",
+        "Agent limits",
+        "Fail-safe design"
+      ],
+      "_provenance": "Authored from concept: notes 2F.3 Excessive Agency and Access Management for AI (agents need hard, system-enforced limits on actions and cost per task, because they can loop or be steered). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_254",
+      "domain": 2,
+      "subtopic": "2F AI threats. Tool descriptions that can change",
+      "principle_id": "ai-changes-are-changes",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Saudi engineering consultancy's research agent uses tools from an outside provider's server; it reads their descriptions as instructions, and the provider can change them without notice. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Tell the agent in its prompt to ignore odd tool descriptions",
+        "B": "Accept tool providers that hold a recognized security certificate",
+        "C": "Pin approved tool descriptions and review any change before use",
+        "D": "Review the agent's tool calls in a monthly log check"
+      },
+      "correct": "C",
+      "key_concept": "Tool descriptions are prompt text the agent obeys; outside tool definitions are pinned, and any change is reviewed like a change to the agent.",
+      "pre_read": "Ask what the agent trusts that someone else can edit.",
+      "correct_explanation": "The agent treats each tool's description as instructions, so a provider, or an attacker who reaches the provider's server, can change the agent's behavior by editing that text without touching the consultancy's systems. Pinning the approved descriptions and reviewing any change before the agent uses it closes that path. A security certificate says the provider runs controls; it does not stop a changed description reaching the agent.",
+      "wrong_explanations": {
+        "A": "Tempting because it warns the agent. But a prompt instruction is not a control, and a poisoned description is itself an instruction.",
+        "B": "Tempting because certification signals good practice. But a certified provider can still change, or be made to change, the text the agent obeys.",
+        "D": "Tempting because logs show what happened. But a monthly check finds misuse weeks after a changed tool steered the agent."
+      },
+      "tips": [
+        "Eliminate: A answers injected text with more prompt text, and D reviews logs weeks after a changed tool acted.",
+        "Final two: C beats B because pinned, reviewed descriptions stop a changed tool reaching the agent; a provider's certificate does not.",
+        "Exam cue: for agents, outside tool definitions are part of the prompt. Treat changes to them like any other AI change."
+      ],
+      "framework_ref": "MITRE ATLAS AML.T0011.002 (Poisoned AI Agent Tool); NIST SP 800-53 Rev. 5 SR-3 (Supply Chain Controls and Processes)",
+      "related_concepts": [
+        "AI agents",
+        "Tool poisoning",
+        "Supply chain"
+      ],
+      "_provenance": "Authored from concept: notes 2F.3 Excessive Agency and Access Management for AI (an agent reads tool descriptions as instructions, so outside tool definitions are pinned and changes reviewed before use). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_255",
+      "domain": 2,
+      "subtopic": "2G AI incident response. A flaw reported by another customer",
+      "principle_id": "independence-of-ai-assurance",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A Sri Lankan municipal council uses a vendor's complaint-routing model; another council publicly reported that the same model under-prioritizes Tamil-language complaints, though this council's monitoring shows no alerts. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Log it as a possible AI incident and test Tamil complaints",
+        "B": "Rely on monitoring, since it has raised no alerts",
+        "C": "Ask the vendor to confirm whether the report is accurate",
+        "D": "Retrain the model on the council's own Tamil complaints"
+      },
+      "correct": "A",
+      "key_concept": "A flaw reported in a shared vendor model is an incident signal for every user; test your own use instead of waiting.",
+      "pre_read": "Ask whether the monitoring could see this kind of flaw at all.",
+      "correct_explanation": "The same vendor model probably behaves the same way here, and monitoring that tracks overall results may never show a gap affecting one language group. Logging it as a possible incident starts triage, and testing the council's own Tamil complaints shows whether its residents are affected. Asking the vendor helps, but a vendor's word on its own model is a claim, and the wait leaves residents exposed.",
+      "wrong_explanations": {
+        "B": "Tempting because monitoring is in place. But monitoring of overall results can miss a gap in one language group entirely.",
+        "C": "Tempting because the vendor knows the model. But its answer is a claim about its own product, and waiting leaves Tamil-speaking residents exposed.",
+        "D": "Tempting because it targets the flaw. But the flaw is unconfirmed here, and retraining a vendor model is not the council's first step."
+      },
+      "tips": [
+        "Eliminate: B trusts monitoring that may not measure by language, and D retrains before the flaw is even confirmed here.",
+        "Final two: A beats C because the council's own test shows whether its residents are harmed; the vendor's confirmation is a claim and takes time.",
+        "Exam cue: a flaw reported in a shared model is an incident signal for every user. Triage and test your own use; do not wait."
+      ],
+      "framework_ref": "NIST AI 100-1 MANAGE 4.3 (Incidents and errors communicated and tracked); NIST AI 100-1 MANAGE 3.1 (Third-party AI risks monitored and controls applied)",
+      "related_concepts": [
+        "AI incidents",
+        "Vendor models",
+        "Detection channels"
+      ],
+      "_provenance": "Authored from concept: notes 2G.1 Recognizing and Triaging AI Incidents (an outside report of a flaw in a shared vendor model is an incident signal; test your own use rather than wait for monitoring or the vendor). Review round 1: setting moved from an insurer's claims-triage model (CISA d2_163; aaia_d2_187; crisc_d1_141). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_256",
+      "domain": 2,
+      "subtopic": "2G AI incident response. Drift the auditor finds in fieldwork",
+      "principle_id": "triage-by-harm-close-on-cause",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "During fieldwork, an IS auditor finds an Albanian hospital's postpartum-hemorrhage alert model has run two months with input drift beyond its owner's tolerance, unnoticed; alert volumes look normal. What should the IS auditor do FIRST?",
+      "options": {
+        "A": "Confirm from patient outcomes that detection has fallen first",
+        "B": "Notify the model owner of the drift at once",
+        "C": "Recommend in the report that the owner add drift monitoring",
+        "D": "Have the data team retrain the model on recent data"
+      },
+      "correct": "B",
+      "key_concept": "Drift beyond tolerance in a live model is an AI incident even before harm shows; the IS auditor alerts the model owner at once.",
+      "pre_read": "Ask what each option does in the next few days.",
+      "correct_explanation": "Input drift beyond the owner's tolerance means the model now sees data unlike what it was validated on, so its detection rate can no longer be trusted, even though alert volumes look normal. That makes it a live AI incident, so the IS auditor tells the model owner at once to triage it, such as adding manual checks. Waiting for patient outcomes to confirm a fall could take weeks while hemorrhages are missed.",
+      "wrong_explanations": {
+        "A": "Tempting because findings need sufficient evidence. But missed hemorrhages show up in outcomes only later; drift beyond tolerance is already the owner's trigger to act.",
+        "C": "Tempting because missing drift monitoring is the control gap. But it belongs in the report later; a live model beyond tolerance needs the owner's action now.",
+        "D": "Tempting because retraining targets drift. But the IS auditor does not direct fixes, and an untested retrain is not containment."
+      },
+      "tips": [
+        "Eliminate: C leaves a live incident for the report, and D has the IS auditor direct a retrain, which is management's role.",
+        "Final two: B beats A because drift beyond tolerance is itself an incident trigger; outcomes reveal missed hemorrhages only later, while the model keeps running.",
+        "Exam cue: drift beyond tolerance in a live model is an incident even when outputs look normal. Alert the owner at once; report the control gap later."
+      ],
+      "framework_ref": "NIST AI 100-1 MANAGE 4.1 (Post-deployment monitoring including appeal, override, incident response and change management); ISACA IT Audit Standard 1401 (Reporting)",
+      "related_concepts": [
+        "AI incidents",
+        "Drift",
+        "Auditor role"
+      ],
+      "_provenance": "Authored from concept: notes 2G.1 Recognizing and Triaging AI Incidents (drift beyond tolerance in a live model is an AI incident; the auditor tells the owner at once rather than waiting for the report). Review round 1: setting moved from a sepsis-alert model (principles.json independence-of-ai-assurance example; crisc_d2_012). Review round 2: stem states the drift as a detection rate below tolerance, so the learner must see drift in a live model as an incident; key option lost its purpose clause. Review round 3: stem now gives input drift beyond tolerance with normal-looking alert volumes, and distractor A (switching the model off) became confirming the fall from patient outcomes first, so recognizing drift as an incident decides rather than general escalation sense. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_257",
+      "domain": 2,
+      "subtopic": "2G AI incident response. Stopping one function of a model",
+      "principle_id": "contain-and-preserve-ai",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Senegalese crafts marketplace's model removes protected-wildlife listings and suspends sellers; it began wrongly suspending Wolof-language sellers, though its removals show no such pattern. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Switch the whole model off until it is retrained and retested",
+        "B": "Keep the model running and have staff review each suspension later",
+        "C": "Have the IS auditor choose which of the model's functions to stop",
+        "D": "Disengage its suspensions and keep the rest running"
+      },
+      "correct": "D",
+      "key_concept": "Containment disengages the AI action causing harm; stopping functions that show no fault can create new harm, such as banned listings going live.",
+      "pre_read": "List each thing the model does before choosing what to stop.",
+      "correct_explanation": "Containment stops the harmful action, and here the harm is confined to seller suspensions: removals show no such pattern, so stopping only suspensions protects Wolof-language sellers while protected-wildlife listings stay blocked. Switching the whole model off, option A, also stops the harm, but it ends removals that are working and lets banned listings go live for as long as retraining and retesting take.",
+      "wrong_explanations": {
+        "A": "Tempting because a full stop is the surest containment. But the removals show no fault, so stopping them trades one harm for another.",
+        "B": "Tempting because review catches wrongful suspensions. But they keep landing on Wolof-language sellers until each is reviewed after the fact.",
+        "C": "Tempting because audit is independent. But choosing what to disengage is a management decision; the IS auditor would then assess its own decision."
+      },
+      "tips": [
+        "Eliminate: B lets wrongful suspensions continue until reviewed, and C gives the IS auditor a containment decision that belongs to management.",
+        "Final two: D beats A because only the suspensions are faulty; stopping the whole model also ends listing removals that still work.",
+        "Exam cue: contain the AI action that is causing harm; when other functions show no fault, keep them running and weigh the harm of stopping."
+      ],
+      "framework_ref": "NIST AI 100-1 MANAGE 2.4 (Mechanisms and responsibilities to supersede, disengage or deactivate AI); NIST SP 800-53 Rev. 5 IR-4 (Incident Handling)",
+      "related_concepts": [
+        "Containment",
+        "Disengaging AI",
+        "Harm to affected groups"
+      ],
+      "_provenance": "Authored from concept: notes 2G.2 Containment: Disengage, Roll Back and Preserve Evidence (containment disengages the AI action causing harm and weighs the harm of stopping functions that still work). Cross-domain gate fix, 12 Nov 2026: re-angled because the earlier version reused the frame of aaia_d2_108 and aaia_d2_088 (triggers or ratings built on outages, missing harm to people). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_258",
+      "domain": 2,
+      "subtopic": "2G AI incident response. Planted pages in the index",
+      "principle_id": "contain-and-preserve-ai",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Honduran university's assistant began telling students to pay fees into an outside account after planted pages entered its retrieval index; engineers want to roll back its model. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Retrain the model to ignore instructions found in pages",
+        "B": "Delete the planted pages from the index and its backups",
+        "C": "Pull the planted pages from the index, keeping copies as evidence",
+        "D": "Roll the assistant's model back to last month's approved version"
+      },
+      "correct": "C",
+      "key_concept": "In retrieval systems the fault often sits in the index, not the model; contain it there and preserve what is removed.",
+      "pre_read": "Ask which component changed when the bad answers began.",
+      "correct_explanation": "The bad answers come from planted pages in the retrieval index, not from the model, so rolling the model back leaves the pages feeding every answer. Pulling them from the index stops students being sent to the outside account, and keeping copies preserves evidence of what was planted, when and by whom. Deleting them everywhere also contains the harm but destroys that evidence.",
+      "wrong_explanations": {
+        "A": "Tempting because the model obeyed the pages. But retraining is slow, untested, and leaves the pages live meanwhile.",
+        "B": "Tempting because it removes the harm completely. But deleting backups destroys the evidence needed to trace the attack and its victims.",
+        "D": "Tempting because rollback is a standard containment step. But the model did not change; the planted pages keep feeding answers after it."
+      },
+      "tips": [
+        "Eliminate: B contains the harm but destroys evidence, and A starts a slow retrain while the pages stay live.",
+        "Final two: C beats D because the fault lives in the index, so a model rollback leaves the planted pages feeding answers.",
+        "Exam cue: contain an AI incident where the fault lives, often the index or prompt, not the model, and preserve what you remove."
+      ],
+      "framework_ref": "MITRE ATLAS AML.T0070 (RAG Poisoning); NIST AI 100-1 MANAGE 2.4 (Mechanisms and responsibilities to supersede, disengage or deactivate AI)",
+      "related_concepts": [
+        "Containment",
+        "RAG poisoning",
+        "Evidence preservation"
+      ],
+      "_provenance": "Authored from concept: notes 2G.2 Containment: Disengage, Roll Back and Preserve Evidence (contain an AI incident where the fault lives, such as the retrieval index, and keep copies of what is removed). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_259",
+      "domain": 2,
+      "subtopic": "2G AI incident response. Misses past page 40",
+      "principle_id": "fix-the-control-not-the-model",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A Peruvian road agency's bid-review assistant misses commitments past about page 40 of proposals; evaluators now hand-check those pages, and the team plans retraining on longer bids. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Check how much of each long proposal the model receives",
+        "B": "Add more long proposals with late commitments to the retraining data",
+        "C": "Switch to a model advertising a larger input limit",
+        "D": "Close the problem, as long proposals are a known limit"
+      },
+      "correct": "A",
+      "key_concept": "When AI failures follow input position or size, check what the integration passes to the model, such as truncated text, before retraining.",
+      "pre_read": "Ask what the pattern of failures says about where they start.",
+      "correct_explanation": "Misses that begin at a fixed point in long documents suggest the model never receives the later pages: the integration may cut text at a size or context limit. Checking how much of each proposal reaches the model tests that cause directly. Retraining on long proposals treats a model weakness that may not exist; if the text is cut before the model sees it, no training fixes that.",
+      "wrong_explanations": {
+        "B": "Tempting because more examples often help. But if later pages never reach the model, no amount of training data fixes the misses.",
+        "C": "Tempting because a larger limit might fit long proposals. But the cause is unconfirmed, and the cut may sit in the agency's integration, not the model.",
+        "D": "Tempting because limits exist. But the limit may sit in the integration and be fixable; closing without a cause leaves the misses."
+      },
+      "tips": [
+        "Eliminate: C swaps models before the cause is known, and D closes the problem with no root cause.",
+        "Final two: A beats B because misses past a fixed page point to truncated input; retraining cannot fix text the model never sees.",
+        "Exam cue: when AI failures follow input position or size, check the pipeline into the model before blaming or retraining the model."
+      ],
+      "framework_ref": "NIST CSF 2.0 RS.AN-03 (Root cause of the incident established); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
+      "related_concepts": [
+        "Root cause analysis",
+        "Context limits",
+        "Integration faults"
+      ],
+      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (a failure pattern tied to input position points to the integration, such as truncation, before the model). Review round 1: interim manual checks moved into the stem, so containment is no longer a competing answer. Completeness round 1: setting moved from a law firm's contract review to a road agency's bid review (crisc_d4_021 uses a law firm's contract-review tool). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d2_260",
+      "domain": 2,
+      "subtopic": "2G AI incident response. A labeling guide with a gap",
+      "principle_id": "fix-the-control-not-the-model",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Belgian broadcaster traced its misinformation model's flagging of satire to a labeling guide with no satire rule; staff relabeled 900 posts, retrained and closed the problem. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Have labelers reread the labeling guide before each batch",
+        "B": "Reopen the problem until the labeling guide covers satire",
+        "C": "Search the training data for satire posts staff missed",
+        "D": "Accept the closure, as the retrained model now passes tests"
+      },
+      "correct": "B",
+      "key_concept": "If bad labels come from a gap in the labeling guide, fixing the found labels treats the symptom; the guide is the root cause.",
+      "pre_read": "Ask what will produce the next batch of labels.",
+      "correct_explanation": "The bad labels came from a guide with no rule for satire, so labelers will mislabel the next satire posts the same way and the next retrain will learn the error again. Reopening the problem until the guide covers satire fixes the cause. Searching for missed satire posts cleans more of today's data, but new labels made under the same guide repeat the flaw.",
+      "wrong_explanations": {
+        "A": "Tempting because it targets how labels are made. But the guide has no satire rule, so rereading it leads labelers to the same wrong labels.",
+        "C": "Tempting because some satire posts may remain mislabeled. But it cleans past data only; new labels made under the same guide repeat the error.",
+        "D": "Tempting because tests now pass. But the guide that produced the bad labels is unchanged, so the next labels bring the error back."
+      },
+      "tips": [
+        "Eliminate: A has labelers reread a guide that still lacks a satire rule, and D accepts closure while the guide is unchanged.",
+        "Final two: B beats C because the guide produces every future label; cleaning past posts fixes the data but not the process that made it wrong.",
+        "Exam cue: trace bad AI behavior to the process that made the data. A gap in labeling rules is a root cause; relabeling found cases is a symptom fix."
+      ],
+      "framework_ref": "NIST CSF 2.0 RS.AN-03 (Root cause of the incident established); NIST AI 100-1 MANAGE 4.2 (Continual improvement integrated into AI system updates)",
+      "related_concepts": [
+        "Root cause analysis",
+        "Labeling guidelines",
+        "Problem management"
+      ],
+      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (when bad labels trace to the labeling guide, the root cause is the guide; relabeling fixes only the cases found). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
       "style_version": 2
     }
   ]
