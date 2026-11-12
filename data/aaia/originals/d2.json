@@ -8455,22 +8455,22 @@
       "question": "A Taiwanese logistics firm retired its customer-service agent; no refund system records the refunds it promised 180 customers in chats, some coaxed past its rules. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Restore the agent so it can complete the refunds it promised",
-        "B": "Tell customers the agent's promises were not binding",
-        "C": "Have a named owner review every promise the agent made",
-        "D": "Refund the 180 customers automatically, as the agent promised them"
+        "B": "Have the IS auditor decide which promises the firm honors",
+        "C": "Have a service manager review each promise the agent made",
+        "D": "Honor the promises the agent logged as within its rules"
       },
       "correct": "C",
       "key_concept": "Agents make commitments in conversations that systems may not record; retirement includes finding and settling them under a named owner.",
       "pre_read": "Ask what the agent left unfinished when it was switched off.",
-      "correct_explanation": "An agent's promises in chats can bind or mislead customers even when no system recorded them, and retiring the agent leaves nobody tracking them. A named owner reviewing each promise against the firm's refund rules decides which to honor, correct or explain, so every commitment has someone accountable. Refunding all 180 automatically, option D, honors them but also pays out on promises customers coaxed past the agent's rules.",
+      "correct_explanation": "An agent's promises in chats can bind or mislead customers even when no system recorded them, and retiring the agent leaves nobody tracking them. A service manager reviewing each promise against the firm's refund rules decides which to honor, correct or explain, so every commitment has a named person accountable. Honoring the promises the agent logged as within its rules, option D, trusts the agent's own judgment, which the coaxing manipulated.",
       "wrong_explanations": {
         "A": "Tempting because the agent made the promises. But a retired agent settling its own promises decides again with no person accountable, including on promises it was coaxed into.",
-        "B": "Tempting because it limits cost. But customers relied on the promises, and disowning them without review damages trust and may breach consumer rules.",
-        "D": "Tempting because it keeps faith with customers. But some promises were coaxed past the agent's rules, and paying all of them rewards that manipulation unchecked."
+        "B": "Tempting because the auditor is independent of the agent. But deciding which promises to honor is management's call; the auditor assesses and recommends, never settles them.",
+        "D": "Tempting because the agent's logs look like system evidence. But coaxing that got the agent past its rules can skew its own record too, so the log cannot sort them."
       },
       "tips": [
-        "Eliminate: A brings back a retired agent to settle its own promises, and B disowns commitments customers relied on without reviewing them.",
-        "Final two: C beats D because an owner's review decides each promise on its merits; paying all of them also pays promises coaxed past the agent's rules.",
+        "Eliminate: A brings back a retired agent to settle its own promises, and B puts the auditor in management's seat, deciding which promises the firm honors.",
+        "Final two: C beats D because coaxing that got the agent past its rules can skew its own log too; only a person's review sorts the promises on their merits.",
         "Exam cue: when an agent retires, look for what it left open: promises, bookings and tasks in progress. Each needs a named owner to settle it."
       ],
       "framework_ref": "NIST AI 100-1 GOVERN 1.7 (Decommissioning AI systems safely); NIST AI 100-1 GOVERN 2.1 (Roles, responsibilities and lines of communication documented)",
@@ -8479,7 +8479,7 @@
         "AI agents",
         "Accountability"
       ],
-      "_provenance": "Authored from concept: notes 2B.3 Decommissioning AI Systems (retiring an agent includes settling the commitments it made in conversations, each under a named owner). Cross-domain gate fix, 12 Nov 2026: re-angled because the earlier version reused the frame of aaia_d2_145 (an agent retired by removing its account while something it left keeps acting). Re-audit 12 Nov 2026: stem now states some promises were coaxed past the agent's rules, so the manipulation the explanations relied on is given and decides C over D. Re-audit 3, 12 Nov 2026: wrong explanation A no longer claims a reason for the retirement the stem does not give. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2B.3 Decommissioning AI Systems (retiring an agent includes settling the commitments it made in conversations, each under a named owner). Cross-domain gate fix, 12 Nov 2026: re-angled because the earlier version reused the frame of aaia_d2_145 (an agent retired by removing its account while something it left keeps acting). Re-audit 12 Nov 2026: stem now states some promises were coaxed past the agent's rules, so the manipulation the explanations relied on is given and decides C over D. Re-audit 3, 12 Nov 2026: wrong explanation A no longer claims a reason for the retirement the stem does not give. Final fix, 12 Nov 2026: option B changed from disowning the promises (a blunt action that left C the only review option, and whose explanation claimed reliance the stem never states) to the IS auditor deciding which promises to honor, a lens trap. Final fix 2, 12 Nov 2026: runner-up D now honors every promise the transcripts prove (evidence-based, a CISA instinct), so only the coaxing fact defeats it; key C names a service manager instead of the repeated 'named owner' wording. Final fix 3, 12 Nov 2026: runner-up D now honors the promises the agent logged as within its rules (system-log evidence, a CISA instinct), so knowing that coaxing can skew an agent's own record decides C over D. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
       "style_version": 2
     },
     {
@@ -8931,25 +8931,25 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Zimbabwean revenue authority accepted a bought document classifier on the vendor's pass mark and own benchmark, a test set its engineers tuned the model against. What should the IS auditor recommend as BEST?",
+      "question": "A Zimbabwean revenue authority accepted a bought document classifier on the vendor's pass mark and benchmark, documents the vendor had tuned the model against. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have the model owner set pass marks and test on in-house files",
-        "B": "Have the model owner set pass marks and retest on the benchmark",
+        "B": "Have the model owner set pass marks and rerun the benchmark in-house",
         "C": "Accept the result, as the vendor knows its classifier best",
         "D": "Have the vendor retrain it on the authority's own documents"
       },
       "correct": "A",
       "key_concept": "A model tuned against a test set scores well on it; acceptance needs the owner's criteria and unseen data from the deployer's own use.",
       "pre_read": "Ask how the model relates to the test it passed.",
-      "correct_explanation": "A model tuned against a test set learns its quirks, so any score on that benchmark overstates how it will classify documents it has never seen. The model owner should set pass marks from the authority's risk tolerance and test on unseen in-house files. Owner-set marks on the benchmark, option B, fix who sets the bar but still measure the model on data it was tuned to pass.",
+      "correct_explanation": "A model tuned against a test set learns its quirks, so any score on that benchmark overstates how it will classify documents it has never seen. The model owner should set pass marks from the authority's risk tolerance and test on unseen in-house files. An in-house rerun of the benchmark, option B, is real reperformance but still measures the model on data it was tuned to pass.",
       "wrong_explanations": {
-        "B": "Tempting because the owner now sets the bar. But the model was tuned against that benchmark, so even a well-chosen bar is measured on data it learned to pass.",
+        "B": "Tempting because rerunning the test in-house is reperformance. But the model was tuned against that benchmark, so any rerun measures data it learned to pass.",
         "C": "Tempting because the vendor knows its product. But it does not know the authority's documents or tolerance, and it has a stake in passing.",
         "D": "Tempting because local data should improve the fit. But a retrain is a change that needs its own acceptance test, and it sets no owner criteria."
       },
       "tips": [
         "Eliminate: C trusts the seller's own test, and D orders a retrain, a change that itself needs acceptance testing, before any unseen test.",
-        "Final two: A beats B because owner-set marks fix the bar but not the data; a benchmark the model was tuned against cannot show how it handles unseen files.",
+        "Final two: A beats B because a benchmark the model was tuned against measures what it learned, wherever it is rerun; only unseen in-house files show how it handles new documents.",
         "Exam cue: a score on data the model was tuned against is not assurance. Acceptance needs the owner's criteria and unseen data from the actual use."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 2.3 (Performance measured in conditions similar to deployment); NIST AI 100-1 MAP 1.5 (Organizational risk tolerances determined and documented)",
@@ -8958,7 +8958,7 @@
         "Test-set overfitting",
         "TEVV"
       ],
-      "_provenance": "Authored from concept: notes 2E.1 TEVV and Acceptance Criteria (acceptance criteria come from the owner's use and tolerance; rerunning the vendor's own test on its own criteria adds no assurance). Re-audit: the stem now states the vendor's test set came from other countries' tax forms, so a training-versus-deployment data mismatch decides rather than the general acceptance-testing rule. Re-audit 2: deciding fact changed from other countries' forms (frame of aaia_d2_118 and aaia_d1_064) to a vendor benchmark the model was tuned against, not a public one (aaia_d2_056 covers public-benchmark contamination). Cross-domain gate fix, 12 Nov 2026: runner-up B changed from an independent rerun of the vendor's set, which repeated aaia_d2_163's final two. Re-audit 12 Nov 2026: runner-up B changed from a fresh vendor benchmark, which left the final two to general audit sense, to in-house files judged against the vendor's pass mark, so who sets the criteria decides. Re-audit 3, 12 Nov 2026: runner-up B now pairs owner-set marks with the tuned benchmark, so the tuning fact decides A over B; D changed to a vendor retrain so it does not fall for the same reason as B. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2E.1 TEVV and Acceptance Criteria (acceptance criteria come from the owner's use and tolerance; rerunning the vendor's own test on its own criteria adds no assurance). Re-audit: the stem now states the vendor's test set came from other countries' tax forms, so a training-versus-deployment data mismatch decides rather than the general acceptance-testing rule. Re-audit 2: deciding fact changed from other countries' forms (frame of aaia_d2_118 and aaia_d1_064) to a vendor benchmark the model was tuned against, not a public one (aaia_d2_056 covers public-benchmark contamination). Cross-domain gate fix, 12 Nov 2026: runner-up B changed from an independent rerun of the vendor's set, which repeated aaia_d2_163's final two. Re-audit 12 Nov 2026: runner-up B changed from a fresh vendor benchmark, which left the final two to general audit sense, to in-house files judged against the vendor's pass mark, so who sets the criteria decides. Re-audit 3, 12 Nov 2026: runner-up B now pairs owner-set marks with the tuned benchmark, so the tuning fact decides A over B; D changed to a vendor retrain so it does not fall for the same reason as B. Final fix, 12 Nov 2026: runner-up B now offers an in-house rerun of the benchmark (reperformance, a CISA instinct), so only the tuning fact defeats it. Final fix 2, 12 Nov 2026: stem no longer says 'test set' (echoed only in key A) and names the vendor as the one who tuned the model. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
       "style_version": 2
     },
     {

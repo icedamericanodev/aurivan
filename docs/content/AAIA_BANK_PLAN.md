@@ -234,6 +234,7 @@ the notice is part of the description.
 | Batch 4 (4 Nov 2026) | — | +42 | +32 | 296 |
 | Batch 5 (5 Nov 2026) | +30 | +42 | — | 368 |
 | Batch 6 (5 Nov 2026) | — | +42 | +32 | 442 |
+| Batch 7 (12 Nov 2026) | +30 | +42 | — | 514 |
 
 Pilot review, 30 Oct 2026:
 - **Blind tests:** 60/60 picks matched the keys on the first pass. After the
@@ -349,6 +350,24 @@ Batch 6 review, 5 Nov 2026 (D2 and D3 only):
 - Length tell: D2 19.7%, D3 19.7%. Tags: 373 of 442.
 
 **Next round:** D1 and D2.
+
+Batch 7 review, 12 Nov 2026 (D1 and D2 only):
+- **Authors:** two new items per notes subtopic in D1 (30) and D2 (42), each checked by script against every
+  earlier setting and frame; eleven drafts were dropped or reworked because they mirrored an existing lesson.
+- **Five reviewers per domain:** first blind pass 72/72 and one HARD ERROR (D2, fixed without changing a key).
+  PRECISION findings went through three fix rounds, the cross-domain gate (7) and the completeness critic
+  (6 gaps: four reused settings and one reused frame, all fixed and re-tested blind; the D1 length-tell aim is
+  carried, since the gate passes). A final fix round cleared the rest; aaia_d2_230's runner-up now rests on the agent's
+  own log, so only the AI fact (coaxing can skew an agent's own record) separates the final two.
+- **Notes:** short additions where a key relied on something the note did not teach (reliability in the NIST
+  AI RMF, homogenization, version pinning versus vendor features, isolating model files that run code on load).
+- **Citations:** nine added by the citation librarian after checking the opened texts (NIST AI 100-1 Sections
+  3.1 and 3.3; NIST AI 600-1 Sections 2, 2.1 and 2.3; MITRE ATLAS AML.T0011.000, AML.T0011.002 and
+  AML.T0018.002; NIST SP 800-53 SI-15). OWASP LLM entries stay unverified (source blocked).
+- Length tell: D1 16.8%, D2 20.8% (inside the 15–24% band; D1 under the 20% aim, to lift in the next D1 round).
+  Tags: 426 of 514.
+
+**Next round:** D2 and D3.
 
 ## 10. Follow-ups outside this plan's scope
 

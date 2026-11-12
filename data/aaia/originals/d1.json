@@ -4276,7 +4276,7 @@
       "subtopic": "1B AI governance. Choosing which AI uses to fund",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Senegalese port authority's AI strategy chooses which of 15 pilots, from crane maintenance to fee disputes, to fund by ranking the accuracy each vendor reports. What should the IS auditor recommend as BEST?",
+      "question": "A Senegalese port authority's AI strategy chooses which of 15 pilots, from tug scheduling to fee disputes, to fund by ranking the accuracy each vendor reports. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have management rank pilots by accuracy on the port's own data",
         "B": "Have management rank pilots by objectives served and risk to people",
@@ -4285,7 +4285,7 @@
       },
       "correct": "B",
       "key_concept": "AI strategy links each use to business objectives and risk; accuracy scores from different tasks are not comparable and say nothing about value.",
-      "pre_read": "Ask what the strategy is meant to achieve, then judge each ranking basis against it.",
+      "pre_read": "Note what the ranking figure compares across very different pilots, then ask what it can and cannot show.",
       "correct_explanation": "Accuracy figures from different tasks cannot be compared, and a high score says nothing about how much a pilot advances the port's objectives or what harm its errors could cause. A strategy should fund AI uses by business value and risk, including risk to the people affected. Ranking pilots by accuracy on the port's own data, option A, shows each model works there, not that the use is worth doing or safe enough.",
       "wrong_explanations": {
         "A": "Tempting because vendor-reported figures need checking on local data. But accuracy on different tasks still cannot be compared, and a model can be accurate on a use that adds little.",
@@ -4303,7 +4303,7 @@
         "Business objectives",
         "Use-case selection"
       ],
-      "_provenance": "Authored from concept: notes 1B.1 AI Strategy, Policy and Inventory (an AI strategy funds uses by the business objectives they serve and their risk; a model's accuracy shows it works, not that the use is worth it). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1B.1 AI Strategy, Policy and Inventory (an AI strategy funds uses by the business objectives they serve and their risk; a model's accuracy shows it works, not that the use is worth it). Re-audit: the crane-maintenance pilot, which echoed a D2 notes example, became tug scheduling. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
       "style_version": 2
     },
     {
@@ -4317,7 +4317,7 @@
         "A": "Personal accounts may run an older model trained on less data",
         "B": "Personal accounts may bypass the firm's single sign-on controls",
         "C": "The firm pays for enterprise licenses that engineers leave unused",
-        "D": "The firm's documents may be used to train the provider's models"
+        "D": "Engineers' inputs may be used to train the provider's models"
       },
       "correct": "D",
       "key_concept": "With hosted AI, data protection often rests on contract terms; the same tool used through consumer accounts may allow the provider to train on inputs.",
@@ -4653,7 +4653,7 @@
         "D": "Deletion of the bank's loan files when the contract ends"
       },
       "correct": "C",
-      "key_concept": "When a vendor tunes a model other clients share on your data, exit cannot delete it; contracts must limit use of that shared tuned model.",
+      "key_concept": "When a vendor tunes a shared model on your data, deleting files at exit leaves what it learned; contracts must limit that model's use.",
       "pre_read": "Ask what the bank needs from the vendor once the relationship ends.",
       "correct_explanation": "Fine-tuning folds patterns, and possibly fragments, of the bank's loan files into the vendor's shared model, which other clients use. Unless the contract limits that use, the vendor may keep serving the model after the bank leaves, and confidential loan details could surface elsewhere. The bank is exiting, so escrow of the tuned model, option A, protects continuity it no longer needs and leaves its data inside the vendor's model.",
       "wrong_explanations": {
@@ -4972,29 +4972,29 @@
     {
       "id": "aaia_d1_136",
       "domain": 1,
-      "subtopic": "1E Ethics, regulations and standards. Explanations and gaming risk",
+      "subtopic": "1E Ethics, regulations and standards. Showing reasons for automated rejections",
       "principle_id": "ai-deciding-fact",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Kuwaiti motor insurer's explainability criterion will show brokers each quote's top three pricing factors; brokers already share reworded job titles that cut the model's quotes. What should concern the IS auditor MOST?",
+      "question": "A Kuwaiti ad platform's explainability criterion requires showing advertisers each rejected ad's top three factors; advertisers already share rewordings that slip banned health claims past the model. What should concern the IS auditor MOST?",
       "options": {
-        "A": "The factors shown may help find inputs that lower premiums",
-        "B": "The top three factors may not fully explain each quote",
+        "A": "The factors shown may teach advertisers which edits avoid rejection",
+        "B": "Three factors may not fully explain each rejection to advertisers",
         "C": "Server tests may not cover the new explanation feature",
-        "D": "Explaining each quote may require a simpler pricing model"
+        "D": "Explaining each rejection may require a simpler screening model"
       },
       "correct": "A",
       "key_concept": "Trustworthy characteristics trade off: explanations that show which inputs drive a result can help people game the model, so explainability criteria must weigh security.",
-      "pre_read": "Read what brokers already do, then ask how each option's risk would play out.",
-      "correct_explanation": "Trustworthy characteristics can trade off. Brokers already reword job titles to cut quotes, so showing each quote's top pricing factors gives them a map of which inputs to change next, weakening the model's security and resilience. The criterion should weigh that risk, for example by testing manipulated inputs before release. Partial explanations, option B, are a real explainability limit, but they do not give an active gaming practice a guide.",
+      "pre_read": "Read what advertisers already do, then ask how each option's risk would play out.",
+      "correct_explanation": "Trustworthy characteristics can trade off. Advertisers already share rewordings that slip banned health claims past the model, so showing the top factors behind each rejection tells them which edits to try next, weakening the model's security and resilience. The criterion should weigh that risk, for example by testing manipulated ads before release. Partial explanations, option B, are a real explainability limit, but they do not give an active evasion practice a guide.",
       "wrong_explanations": {
-        "B": "Tempting because top factors are only a summary. But a partial explanation is a known limit; the larger risk is guiding brokers who already game quotes.",
-        "C": "Tempting because new features need security testing. But server tests never examine how the model responds to inputs, which is where brokers act.",
+        "B": "Tempting because top factors are only a summary. But a partial explanation is a known limit; the larger risk is guiding advertisers who already evade the model.",
+        "C": "Tempting because new features need security testing. But server tests check the hosting, not how the model responds to crafted ads, which is where advertisers act.",
         "D": "Tempting because complex models are harder to explain. But established methods explain individual results of complex models, so replacing the model is not required."
       },
       "tips": [
-        "Eliminate: C treats AI security as server testing, though brokers act through inputs, and D assumes complex models cannot explain individual quotes.",
-        "Final two: A beats B because brokers already game quotes, so factor lists can guide their next edits; a partial explanation is a lesser, known limit.",
+        "Eliminate: C treats AI security as server testing, though advertisers act through inputs, and D assumes complex models cannot explain individual rejections.",
+        "Final two: A beats B because advertisers already evade the model, so factor lists can guide their next edits; a partial explanation is a lesser, known limit.",
         "Exam cue: trustworthy characteristics trade off; explanations showing which inputs drive a score can help people game it, so weigh security too."
       ],
       "framework_ref": "NIST AI 100-1 Section 3.3 (Secure and Resilient); NIST AI 100-2e2025 Section 2.2 (Evasion Attacks and Mitigations)",
@@ -5003,7 +5003,7 @@
         "Explainability",
         "Evasion attacks"
       ],
-      "_provenance": "Authored from concept: notes 1E.1 Trustworthy-AI Characteristics as Testable Criteria (characteristics trade off; explanations that show which inputs drive a result can help people game the model). Round 2 review: reworked to a new angle, as the criterion-measured-by-infrastructure frame repeated aaia_d1_135. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1E.1 Trustworthy-AI Characteristics as Testable Criteria (characteristics trade off; explanations that show which inputs drive a result can help people game the model). Round 2 review: reworked to a new angle, as the criterion-measured-by-infrastructure frame repeated aaia_d1_135. Re-audit: setting moved from a motor insurer's broker-facing pricing model, which repeated crisc_d2_025 and sat beside aaia_d2_205, to an ad platform's ad-screening model. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
       "style_version": 2
     },
     {
