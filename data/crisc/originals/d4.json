@@ -4302,25 +4302,25 @@
     {
       "id": "crisc_d4_117",
       "domain": 4,
-      "subtopic": "4A6 Technology resilience and disaster response/recovery. Registration data and its RPO",
+      "subtopic": "4A6 Technology resilience and disaster response/recovery. Auction data and its RPO",
       "principle_id": "objectives-first",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A disaster-relief NGO's registration owner set a one-hour RPO, as lost entries mean finding displaced families again; IT backs the registration database up nightly to another region. What should the risk practitioner recommend as BEST?",
+      "question": "A fish auction's records owner set a one-hour RPO, as lost sale records leave catches unbilled; IT backs the auction database up nightly to another region. What is the risk practitioner's BEST recommendation?",
       "options": {
-        "A": "Backups of the registration database at least hourly",
+        "A": "Backups of the auction database at least hourly",
         "B": "Restore tests of the backups held in the other region",
-        "C": "An offline copy of each registration backup",
-        "D": "The registration owner's review of the RPO"
+        "C": "An offline copy of each nightly auction backup",
+        "D": "The records owner's review of the one-hour RPO"
       },
       "correct": "A",
       "key_concept": "Backup frequency must meet the RPO the business set; when backups miss it, change the backup design, not a target set on real harm.",
-      "pre_read": "Work out how much registration data the NGO could lose today, then read the options.",
-      "correct_explanation": "With nightly backups, a failure late in the day could lose almost a day of registrations, far beyond the one-hour RPO the owner set from the harm of finding families again. Backing up at least hourly brings the loss window inside the RPO, the basis CP-9 gives for backup frequency. The owner's review of the RPO is the runner-up: owners can revisit targets, but this one rests on stated harm, so the design must change.",
+      "pre_read": "Work out how much auction data could be lost today, then read the options.",
+      "correct_explanation": "With nightly backups, a failure just before the next backup could lose a whole day of sales, far beyond the one-hour RPO the owner set because lost records leave catches unbilled. Backing up at least hourly brings the loss window inside the RPO, the basis CP-9 gives for backup frequency. The owner's review of the RPO is the runner-up: owners can revisit targets, but this one rests on stated harm, so the design must change.",
       "wrong_explanations": {
         "B": "Restore tests show the copies can be recovered, which is worth knowing, but a perfect restore still brings back data up to a day old.",
         "C": "An offline copy guards backups against ransomware and site loss, but it holds the same nightly data, so the loss window stays near a day.",
-        "D": "The owner set the RPO from the harm of finding families again; asking them to loosen it bends a business need to fit IT's schedule."
+        "D": "The owner set the RPO from the harm of unbilled catches; asking them to loosen it bends a business need to fit IT's schedule."
       },
       "tips": [
         "Eliminate: B proves the copies restore and C adds a safer copy, but both still bring back data up to a day old.",
@@ -4333,7 +4333,7 @@
         "Backup frequency",
         "Business impact analysis"
       ],
-      "_provenance": "Authored from concept: notes 4A6.2 (Backups and Ransomware Recovery: backup frequency is set by the RPO; when backups miss the RPO, the backup design changes, not the owner's target) with 4A6.1 (the strategy must meet RTO and RPO by design). Round 14, 12 Nov 2026: original scenario (a disaster-relief NGO whose registration owner set a one-hour RPO because lost entries mean finding displaced families again, while IT backs the database up nightly) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_033 (a charity-managed backup sized to the RPO for SaaS donor records), crisc_d4_035 (restore tests meeting RTO and RPO as the KCI), crisc_d4_071 (retention longer than intruders stay hidden), crisc_d4_097 (offsite backups with keys only at the main site), crisc_d4_088 (ransomware recovery longer than the RTO), crisc_d4_107 (an AI model kept only at the main site), crisc_d2_012 (an RTO set from the vendor's restore time), crisc_d2_124 (an RTO that ignores a paper process); CISA d4_110 (log backups every four hours against a 15-minute RPO: the GREATEST gap), d4_225, d4_278, d4_083 (RTO and RPO mapped to the BIA), d4_082; CC cc_d2_054 (copies every six hours against a 30-minute RPO; a hot site does not fix it), cc_d2_006 (naming the RPO); AAIA: no backup-frequency item. The faster-restore and hot-site decoy used in cc_d2_054 was avoided. Judged distinct: the CISA and CC items ask what the gap is; this one asks the practitioner's recommendation, with loosening the owner's RPO to fit IT's schedule as the runner-up. Round 14 fixed-period ask: the key's period (at least hourly) is the right answer, set by the RPO. Owner pattern: k=1, the runner-up D (the registration owner's review) is the lone owner option; the key A and the easy distractors B and C name none. Review fixes 12 Nov 2026 (round 14 concept review and blind test): key concept no longer implies an RPO can never be revisited; the owner may revisit one weighing cost, but not one set on real harm.",
+      "_provenance": "Authored from concept: notes 4A6.2 (Backups and Ransomware Recovery: backup frequency is set by the RPO; when backups miss the RPO, the backup design changes, not the owner's target) with 4A6.1 (the strategy must meet RTO and RPO by design). Round 14, 12 Nov 2026: original scenario (a disaster-relief NGO whose registration owner set a one-hour RPO because lost entries mean finding displaced families again, while IT backs the database up nightly) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_033 (a charity-managed backup sized to the RPO for SaaS donor records), crisc_d4_035 (restore tests meeting RTO and RPO as the KCI), crisc_d4_071 (retention longer than intruders stay hidden), crisc_d4_097 (offsite backups with keys only at the main site), crisc_d4_088 (ransomware recovery longer than the RTO), crisc_d4_107 (an AI model kept only at the main site), crisc_d2_012 (an RTO set from the vendor's restore time), crisc_d2_124 (an RTO that ignores a paper process); CISA d4_110 (log backups every four hours against a 15-minute RPO: the GREATEST gap), d4_225, d4_278, d4_083 (RTO and RPO mapped to the BIA), d4_082; CC cc_d2_054 (copies every six hours against a 30-minute RPO; a hot site does not fix it), cc_d2_006 (naming the RPO); AAIA: no backup-frequency item. The faster-restore and hot-site decoy used in cc_d2_054 was avoided. Judged distinct: the CISA and CC items ask what the gap is; this one asks the practitioner's recommendation, with loosening the owner's RPO to fit IT's schedule as the runner-up. Round 14 fixed-period ask: the key's period (at least hourly) is the right answer, set by the RPO. Owner pattern: k=1, the runner-up D (the registration owner's review) is the lone owner option; the key A and the easy distractors B and C name none. Review fixes 12 Nov 2026 (round 14 concept review and blind test): key concept no longer implies an RPO can never be revisited; the owner may revisit one weighing cost, but not one set on real harm. Review fixes 12 Nov 2026 (round 14 cross-domain gate): option C now says 'nightly' (as C's explanation already did), so the key is no longer the only option with a period word echoing the stem's one-hour RPO. setting moved from a disaster-relief NGO registering displaced families to a fish auction, so round 14 no longer has two items about registering displaced people (crisc_d1_153) beside a refugee charity (crisc_d3_189); lesson, key, runner-up and owner shape unchanged. Neighbours after the re-set: crisc_d2_034 (a BIA records an hour of lost ticket sales as the RPO: the step before this one), aaia_d2_181 (a fish auction's price model; unrelated lesson).",
       "style_version": 2
     },
     {
@@ -4417,15 +4417,15 @@
       "principle_id": "final-two",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A national library plans to put a scanned 1970s school register online, with pupils' names, birth dates and disciplinary notes; most pupils are likely still alive. What should the risk practitioner recommend as BEST?",
+      "question": "A national archive plans to put a scanned 1970s school register online, with pupils' names, birth dates and disciplinary notes; most pupils are likely still alive. What should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "Online access limited to registered library readers",
+        "A": "Online access limited to registered archive readers",
         "B": "The collection owner's approval to publish with a takedown route",
         "C": "The collection owner's release with entries on living people withheld",
         "D": "A page notice that the register is a historical record"
       },
       "correct": "C",
-      "key_concept": "Old records still hold personal data while the people in them live; release withholds what could harm them instead of waiting for takedown requests.",
+      "key_concept": "Old records hold personal data at least while the people in them live; release withholds what could harm them rather than awaiting takedown requests.",
       "pre_read": "Picture one pupil named in the register today before reading the options.",
       "correct_explanation": "The register links names and birth dates to disciplinary notes about people mostly still alive, so putting it online could harm them. Withholding living pupils' entries until release can no longer harm them protects those people; the collection owner decides, as data owner. Publishing with a takedown route is the runner-up: it helps, but the harm happens when the notes first appear, and most pupils would never know to ask.",
       "wrong_explanations": {
@@ -4444,7 +4444,7 @@
         "Privacy harm to individuals",
         "Data owner"
       ],
-      "_provenance": "Authored from concept: notes 4B3.1 (Privacy Principles: only the data the purpose needs is collected, kept or disclosed; old records still hold personal data while the people in them are alive). Round 14, 12 Nov 2026: original scenario (a national library that plans to put a scanned 1970s school register online, with pupils' names, birth dates and disciplinary notes, while most pupils are likely still alive) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_019 (inferring health from purchase history), crisc_d4_043 (privacy by design defaults), crisc_d4_044 (published trip records linkable to people), crisc_d4_060 (deletion requests missing two stores), crisc_d4_089 (PIA ratings starting from members' harm), crisc_d4_100 (separate consent for AI training), crisc_d4_110 (drone video processed on board), crisc_d4_047 and crisc_d4_103 (4A4); CISA d5_029 (onboarding fields collected in case analytics needs them), d2_210 (purchase histories kept past retention), d5_021, d2_086; CC cc_d1_120 (scanned passports raise breach impact), cc_d1_153 (hashes for a film archive); AAIA: no item on publishing historical records. An earlier draft (reader search histories kept for services not yet designed, with consent as runner-up) was dropped because it mirrored CISA d5_029. Judged distinct: no bank item publishes old records about living people; the final two is withholding before release against a takedown route after it. Owner pattern: k=2, the key C and the runner-up B are the two owner options (round 14 owner-shape ask); the easy distractors A and D name none.",
+      "_provenance": "Authored from concept: notes 4B3.1 (Privacy Principles: only the data the purpose needs is collected, kept or disclosed; old records still hold personal data while the people in them are alive). Round 14, 12 Nov 2026: original scenario (a national library that plans to put a scanned 1970s school register online, with pupils' names, birth dates and disciplinary notes, while most pupils are likely still alive) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_019 (inferring health from purchase history), crisc_d4_043 (privacy by design defaults), crisc_d4_044 (published trip records linkable to people), crisc_d4_060 (deletion requests missing two stores), crisc_d4_089 (PIA ratings starting from members' harm), crisc_d4_100 (separate consent for AI training), crisc_d4_110 (drone video processed on board), crisc_d4_047 and crisc_d4_103 (4A4); CISA d5_029 (onboarding fields collected in case analytics needs them), d2_210 (purchase histories kept past retention), d5_021, d2_086; CC cc_d1_120 (scanned passports raise breach impact), cc_d1_153 (hashes for a film archive); AAIA: no item on publishing historical records. An earlier draft (reader search histories kept for services not yet designed, with consent as runner-up) was dropped because it mirrored CISA d5_029. Judged distinct: no bank item publishes old records about living people; the final two is withholding before release against a takedown route after it. Owner pattern: k=2, the key C and the runner-up B are the two owner options (round 14 owner-shape ask); the easy distractors A and D name none. Review fixes 12 Nov 2026 (round 14 cross-domain gate): key_concept now says records hold personal data 'at least' while the people live, matching notes 4B3.1 (some laws protect records of the dead). setting moved from a national library to a national archive (the round 14 brief bars culture settings; school registers are archive records).",
       "style_version": 2
     }
   ]
