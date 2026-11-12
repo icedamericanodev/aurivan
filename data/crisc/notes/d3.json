@@ -73,7 +73,7 @@
           "why_it_matters": "The response decides how much risk is left and at what cost. The wrong choice wastes money on risk within appetite or leaves risk above it untreated.",
           "how_it_works": [
             "Every response starts from an analyzed risk compared with appetite and tolerance, not a favorite tool; if service is restored and a root-cause review is near, wait.",
-            "Responses combine: controls cut likelihood, then insurance covers part of the remaining impact.",
+            "Responses combine: controls cut likelihood, then insurance or a vendor's indemnity covers part of the remaining cost, not the harm to customers or their trust.",
             "Transfer moves money, not accountability, to another enterprise and only for covered losses: re-rate exposure an exclusion leaves retained; work moved within the group transfers nothing.",
             "Avoidance removes the activity and its benefit, fitting when it is unneeded or nothing else meets appetite. A ban people can still break mitigates.",
             "A response can bring new risks, such as reliance on one provider; weigh them first.",
@@ -284,7 +284,7 @@
           "why_it_matters": "A risk without a capable owner drifts: nobody decides its response, funds the controls or answers when it happens. Ownership at the wrong level gives the decision to people who cannot act on it.",
           "how_it_works": [
             "Assign the owner by business accountability: the manager whose objectives, process or budget it affects.",
-            "Match authority to reach and rating: the owner funds treatment and accepts residual risk across its reach; a department's low-rated risk sits with its process owner.",
+            "Match authority to reach and rating: the owner funds treatment and accepts residual risk; low-rated departmental risks sit with process owners, and lasting re-ratings beyond authority move up.",
             "Name one accountable person with authority to fund and accept, not a committee, department, joint owners or a coordinator; others act as action or control owners.",
             "Revalidate ownership regularly and after reorganizations, departures or process changes.",
             "IT usually owns technology controls; the business owns the risk those controls treat.",
@@ -712,7 +712,7 @@
           "why_it_matters": "Business sometimes cannot meet a requirement on time. Managed, a deviation stays visible, compensated and time-bound; unmanaged, it becomes a permanent, hidden gap.",
           "how_it_works": [
             "Requests come before deviating and state the requirement, reason and risk; a deviation already running is logged as an issue, not a backdated exception.",
-            "The practitioner assesses the risk and proposes compensating controls to keep it within appetite.",
+            "The practitioner assesses the risk and proposes compensating controls that act on the same risk the requirement covered, such as blocking access to an unpatched flaw.",
             "The risk owner approves, at a level that matches the risk; policy may require senior management for high ratings.",
             "Exceptions carry a fixed expiry date, not an unscheduled event, and a plan; exemptions are reviewed periodically. One in date, within authority and compensated waits for review.",
             "Keep all deviations in one register and report them in aggregate, so combined risk shows and repeated requests point to a cause to fix.",
@@ -1164,7 +1164,7 @@
           "how_it_works": [
             "Define the desired state from appetite, policy, regulation or a framework profile.",
             "Describe the current state from control test results, not policies, owners' statements or old ratings.",
-            "Separate design gaps (cannot work as built: an unrecorded return path, a limit dodged by splitting, payments routed around the check) from operating gaps (built right, not performed).",
+            "Separate design gaps (cannot work as built: unrecorded return paths, limits dodged by splitting or changed by those checked, routes around the check) from operating gaps (built right, not performed).",
             "Rank gaps by the risk they leave open, not by how easy they are to fix.",
             "Turn agreed gaps into action plans with owners and dates.",
             "Before removing a control as a duplicate, compare what each catches: a range check passes wrong values that look plausible, which a check against the source finds."
@@ -1312,7 +1312,7 @@
             "Test design first, often by walking through one transaction; a badly designed control needs no operating test, and a new one waits for enough runs to sample.",
             "Test operation over a period, covering the sites where people run it, with a sample sized to frequency and risk; sample each control version changed mid-period.",
             "Draw the sample from the complete population, ideally system-generated, with the tester choosing the items; test any system report the control relies on for completeness.",
-            "Evaluate each failure: find its cause and decide whether the control can still be relied on.",
+            "Evaluate each failure: find its cause and decide whether the control can still be relied on; an earlier pass needs retesting once the people running it change.",
             "Owner-only tests are self-assessment, useful for monitoring; independent assurance needs internal audit or outside assessors; second-line tests are objective, not independent.",
             "Start from recent internal audit results: check scope and date fit, then aim further tests at their exceptions, not repeating audit's work."
           ],
@@ -1873,7 +1873,7 @@
           "definition": "An effective KRI is relevant to a specific risk, reliably measurable, predictive of change, set against thresholds and owned by someone who acts on it.",
           "why_it_matters": "Too many indicators drown the signal, and lagging ones warn only after the loss. A few well-chosen leading KRIs give owners time to act.",
           "how_it_works": [
-            "Relevant: the KRI tracks a driver of a specific high-priority scenario; find candidates in the causes of its past events, then check generic lists against them.",
+            "Relevant: the KRI tracks a driver of a top-priority scenario, not just data that is easy to get; find candidates in its past events' causes, then check generic lists.",
             "Measurable: the data is available, consistent and cheap to collect; count items when each is its own path to harm, as a share of a growing base can hide growth.",
             "Predictive: it moves before the risk event, early enough for the planned response to work.",
             "Thresholds and owner: each KRI has limits tied to tolerance and a person who acts on a breach.",
@@ -2080,7 +2080,7 @@
           "definition": "Control self-assessment (CSA) has managers and staff evaluate their own risks and controls, often in facilitated workshops; trend analysis reads monitoring results over time.",
           "why_it_matters": "People who run a process see risks and workarounds that outside reviews miss. Trends show whether exposure is improving or slipping, which a single snapshot cannot.",
           "how_it_works": [
-            "The risk function designs the questions and facilitates; managers answer for their own areas.",
+            "The risk function designs the questions and sets the scope from the key controls over top risks, then facilitates; managers answer for their own areas.",
             "CSA builds ownership and awareness, but results are self-reported: owners attach records behind key ratings, and the risk function spot-checks them independently.",
             "Trend analysis compares indicator values over several periods to show direction, speed and seasonal patterns; compare a rise with the same months of past years before calling it new.",
             "A worsening trend can justify action before a threshold is breached; growing human overrides of an AI model are analyzed with its owner before a fix such as retraining.",
@@ -2275,7 +2275,7 @@
             "Board and senior management: the profile against appetite, accepted risks, breaches, trends and decisions needed, in business terms; AI risk as harm, not model scores.",
             "Risk owners: their risks, indicator status, overdue actions and acceptances due for review.",
             "Control owners and operations: failures, test results, fixes and exploitable detail such as server names.",
-            "Send each report to someone with authority to decide, stating the decision needed; escalate outside the cycle when a breach or critical risk cannot wait.",
+            "Send each report, stating the decision needed, to someone with authority to decide, before that decision is taken; escalate outside the cycle when a breach or critical risk cannot wait.",
             "Report ratings as assessed; if an owner disputes one without new evidence, show their view beside the unchanged rating.",
             "Share the risk profile with internal audit so its plan covers the top risks; audit sets its plan, approved by the audit committee."
           ],
