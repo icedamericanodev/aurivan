@@ -5085,23 +5085,23 @@
       "bloom_level": "Application",
       "question": "A steel recycler's AI camera flags lithium batteries in incoming scrap for removal before shredding; under 1% of loads contain one. Which evidence BEST shows the risk analyst how well the camera works?",
       "options": {
-        "A": "Its overall accuracy rate on a labeled set of test loads",
-        "B": "Number of batteries it has flagged since the line went live",
+        "A": "The shredding process owner's self-assessment of the camera",
+        "B": "Number of batteries it has flagged on the live sorting line",
         "C": "Number of known batteries it missed in labeled test loads",
-        "D": "The shredding process owner's self-assessment of the camera"
+        "D": "Its overall accuracy rate on a labeled set of test loads"
       },
       "correct": "C",
       "key_concept": "A rare-item detector can score high overall accuracy while missing most targets; its misses among known targets show how well it works.",
       "pre_read": "Think about what each figure counts, and what it leaves out.",
       "correct_explanation": "With batteries in under 1% of loads, a camera that flagged nothing would still score over 99% accuracy, so the headline figure hides the failure that matters: a missed battery reaching the shredder. The count of known test batteries it missed measures exactly that. Overall accuracy is the runner-up: it comes from the same kind of labeled test, but it mixes the rare batteries with a great many easy empty loads.",
       "wrong_explanations": {
-        "A": "Accuracy counts every correct call, and almost every load has no battery, so a camera that misses most batteries can still score near 100%.",
+        "A": "A self-assessment records the owner's view, not test results; it shows confidence in the camera rather than how many batteries it would miss.",
         "B": "Batteries flagged in live use show the camera is active, but without knowing how many passed unflagged, the count says nothing about misses.",
-        "D": "A self-assessment records the owner's view, not test results; it shows confidence in the camera rather than how many batteries it would miss."
+        "D": "Accuracy counts every correct call, and almost every load has no battery, so a camera that misses most batteries can still score near 100%."
       },
       "tips": [
-        "Eliminate: B counts batteries caught in live use with no record of those that slipped past, and D is the owner's view rather than a test result.",
-        "Final two: C beats A because accuracy is swamped by the many empty loads, while the miss count measures the failure the camera exists to prevent.",
+        "Eliminate: B counts batteries caught in live use with no record of those that slipped past, and A is the owner's view rather than a test result.",
+        "Final two: C beats D because accuracy is swamped by the many empty loads, while the miss count measures the failure the camera exists to prevent.",
         "Exam cue: when a control hunts for something rare, judge it by what it misses among known cases, not by its overall hit rate."
       ],
       "framework_ref": "NIST AI 100-1 (AI RMF 1.0) Section 3.1 (Valid and Reliable: measures of accuracy should consider false positive and false negative rates, and results may be disaggregated by data segment); ISACA Glossary (vulnerability)",
@@ -5110,7 +5110,7 @@
         "False negatives",
         "Control weaknesses"
       ],
-      "_provenance": "Authored from concept: notes 2A3.1 (Vulnerabilities in People, Process and Technology: an AI detector is tested on the rare items it must catch, not on overall accuracy). Round 16, 12 Nov 2026: original scenario (a steel recycler's AI camera flags lithium batteries in scrap before shredding, and under 1% of loads contain one) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 16 asks: the batch's one AI item, on a fresh angle (a headline accuracy figure hides misses of the rare item an AI detection control exists to catch; not prompt injection, coding agents, suggested packages, human review of output, vendor ranking tools, output validation, membership inference, fine-tuning or second-line AI skills); the keyed 'Number of ...' option, with a second 'Number of ...' option on a wrong answer so the opener is no cue. Owner shape: k=1, the lone owner option is an easy distractor (D, a self-assessment). Neighbours checked (stems, options, key concepts and explanations): crisc_d2_135 (a detective review's clean record earns no credit until a test shows it catches altered results; this item keys the measure that shows misses, not the test itself), crisc_d2_093 (scans without credentials understate exposure), crisc_d2_077 (an AI assistant inherits over-broad permissions), crisc_d2_052 (a walkthrough finds process weaknesses), crisc_d3_027 and crisc_d3_189 (sampling an AI tool's payouts and translations), crisc_d4_014 (testing an AI tool for bias and accuracy before use), AAIA aaia_d2_075 (a corrosion model where under 2% of sections are corroded: a cap on missed sections set from tolerance), AAIA aaia_d1_024 (a cutoff set for overall accuracy that misses rare ignitions: the owner sets it from each error's cost), AAIA aaia_d2_036 (detection rates against verified outcomes), CC cc_d5_147 (simulated attacks to confirm AI alert grouping), CC cc_d4_078 (a false negative); the AAIA items share the rare-class idea but key a tolerance cap or a cutoff decision, not the evidence a risk analyst uses to rate a control; no mirror found.",
+      "_provenance": "Authored from concept: notes 2A3.1 (Vulnerabilities in People, Process and Technology: an AI detector is tested on the rare items it must catch, not on overall accuracy). Round 16, 12 Nov 2026: original scenario (a steel recycler's AI camera flags lithium batteries in scrap before shredding, and under 1% of loads contain one) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 16 asks: the batch's one AI item, on a fresh angle (a headline accuracy figure hides misses of the rare item an AI detection control exists to catch; not prompt injection, coding agents, suggested packages, human review of output, vendor ranking tools, output validation, membership inference, fine-tuning or second-line AI skills); the keyed 'Number of ...' option, with a second 'Number of ...' option on a wrong answer so the opener is no cue. Owner shape: k=1, the lone owner option is an easy distractor (A, a self-assessment). Neighbours checked (stems, options, key concepts and explanations): crisc_d2_135 (a detective review's clean record earns no credit until a test shows it catches altered results; this item keys the measure that shows misses, not the test itself), crisc_d2_093 (scans without credentials understate exposure), crisc_d2_077 (an AI assistant inherits over-broad permissions), crisc_d2_052 (a walkthrough finds process weaknesses), crisc_d3_027 and crisc_d3_189 (sampling an AI tool's payouts and translations), crisc_d4_014 (testing an AI tool for bias and accuracy before use), AAIA aaia_d2_075 (a corrosion model where under 2% of sections are corroded: a cap on missed sections set from tolerance), AAIA aaia_d1_024 (a cutoff set for overall accuracy that misses rare ignitions: the owner sets it from each error's cost), AAIA aaia_d2_036 (detection rates against verified outcomes), CC cc_d5_147 (simulated attacks to confirm AI alert grouping), CC cc_d4_078 (a false negative); the AAIA items share the rare-class idea but key a tolerance cap or a cutoff decision, not the evidence a risk analyst uses to rate a control; no mirror found.",
       "style_version": 2
     },
     {
@@ -5147,7 +5147,7 @@
         "Integrity events",
         "Impact over time"
       ],
-      "_provenance": "Authored from concept: notes 2A4.1 (Anatomy of a Risk Scenario: the consequence of altered data grows until someone notices). Round 16, 12 Nov 2026: original scenario (a paint manufacturer's draft scenario of an insider altering paint formulas rates impact as the cost of one spoiled batch) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 16 asks: the batch's keyed lone owner (about a third of lone-owner items), not the longest option; the runner-up names no owner. Owner shape: k=1, the lone owner option is the key; counted apart from the lens-word cap (calibration rule 21). Neighbours checked (stems, options, key concepts and explanations): crisc_d2_054 (adding the consequence and timing of a shutdown to a draft scenario), crisc_d2_128 (rating the credible time of day that does most harm), crisc_d2_119 (the best-written scenario statement), crisc_d2_112 (a joint failure scenario), crisc_d2_022 (repeated AI billing errors combined), crisc_d2_131 (an untested assumption confirmed with the process owner: a similar 'ask the owner' action, but about customers' patience, not detection time), crisc_d2_136 (the owner's tally of an outage's losses), crisc_d4_071 (restore points kept longer than intruders stay hidden: detection time drives backup retention, not scenario impact), crisc_d3_097 (a changed credit limit unnoticed after an upgrade), CISA d4_011 (review of spreadsheet logic changes), AAIA aaia_d1_112 (a formula computed by a chatbot); no mirror found.",
+      "_provenance": "Authored from concept: notes 2A4.1 (Anatomy of a Risk Scenario: the consequence of altered data grows until someone notices). Round 16, 12 Nov 2026: original scenario (a paint manufacturer's draft scenario of an insider altering paint formulas rates impact as the cost of one spoiled batch) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 16 asks: the batch's keyed lone owner (about a third of lone-owner items), not the longest option; the runner-up names no owner. Owner shape: k=1, the lone owner option is the key; counted apart from the lens-word cap (calibration rule 21). Neighbours checked (stems, options, key concepts and explanations): crisc_d2_054 (adding the consequence and timing of a shutdown to a draft scenario), crisc_d2_128 (rating the credible time of day that does most harm), crisc_d2_119 (the best-written scenario statement), crisc_d2_112 (a joint failure scenario), crisc_d2_022 (repeated AI billing errors combined), crisc_d2_131 (an untested assumption confirmed with the process owner: a similar 'ask the owner' action, but about customers' patience, not detection time), crisc_d2_136 (the owner's tally of an outage's losses), crisc_d4_071 (restore points kept longer than intruders stay hidden: detection time drives backup retention, not scenario impact), crisc_d3_097 (a changed credit limit unnoticed after an upgrade), crisc_d2_097 (a BIA outage rank misused for leak and tampering impact: the nearest integrity-versus-outage lesson, keyed on the BIA's limits rather than detection time), CISA d4_011 (review of spreadsheet logic changes), AAIA aaia_d1_112 (a formula computed by a chatbot); no mirror found.",
       "style_version": 2
     },
     {
@@ -5159,8 +5159,8 @@
       "bloom_level": "Application",
       "question": "A textile mill's loom controllers, with two faults in eight years, were moved last month beside new dryers and now run 15°C hotter. Which is the BEST basis for the risk analyst's fault-likelihood rating?",
       "options": {
-        "A": "The mill's own eight-year fault record for the controllers",
-        "B": "Threat reports on attacks against textile control systems",
+        "A": "Threat reports on attacks against textile control systems",
+        "B": "The mill's own eight-year fault record for the controllers",
         "C": "The line owner's estimate of the controllers' remaining life",
         "D": "The maker's failure-rate data at the new operating temperature"
       },
@@ -5169,13 +5169,13 @@
       "pre_read": "Ask under what conditions each source's figures were gathered.",
       "correct_explanation": "A controller fault is a non-adversarial event, rated from historical and empirical data, and running hotter changes how often electronics fail. The maker's failure-rate data at the new temperature describes the controllers as they now run. The mill's own eight-year record is the runner-up: own history is usually the best source, but it was gathered in cooler conditions that no longer apply.",
       "wrong_explanations": {
-        "A": "Own history is normally the best basis, but these eight years were spent in cooler conditions, so they may understate faults at the new, hotter site.",
-        "B": "Threat reports describe attackers, but a controller fault is a non-adversarial event; its likelihood comes from failure data, not intent or capability.",
+        "A": "Threat reports describe attackers, but a controller fault is a non-adversarial event; its likelihood comes from failure data, not intent or capability.",
+        "B": "Own history is normally the best basis, but these eight years were spent in cooler conditions, so they may understate faults at the new, hotter site.",
         "C": "An estimate of remaining life is one person's judgment, a fallback when data is missing; measured failure rates are stronger evidence."
       },
       "tips": [
-        "Eliminate: B treats an equipment fault as an attack, and C relies on one person's judgment where measured failure data exists.",
-        "Final two: D beats A because the eight-year record was gathered in cooler conditions; the maker's data matches how the controllers now run.",
+        "Eliminate: A treats an equipment fault as an attack, and C relies on one person's judgment where measured failure data exists.",
+        "Final two: D beats B because the eight-year record was gathered in cooler conditions; the maker's data matches how the controllers now run.",
         "Exam cue: past records predict only while conditions hold; after a move, an upgrade or a new load, look for data that fits the new conditions."
       ],
       "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: likelihood of non-adversarial threat events is estimated from historical evidence and empirical data); NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: predisposing conditions such as a flood-prone location affect likelihood)",
@@ -5258,7 +5258,7 @@
         "Risk categories",
         "Risk aggregation"
       ],
-      "_provenance": "Authored from concept: notes 2B3.3 (From Register to Enterprise Risk Profile: a category field lets the board see, say, all supplier risks together). Round 16, 12 Nov 2026: original scenario (an e-scooter rental operator's board wants its supplier-related risks shown together, but each register entry records only a scenario, owner and ratings) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 16 asks: an owner pair on the two easy distractors (A and D) while the key and the runner-up name no owner. Owner shape: k=2, key outside the pair. Neighbours checked (stems, options, key concepts and explanations): crisc_d1_033 (an IT register brought into the enterprise register in its categories: a separate register is the problem there, a wrong option here), crisc_d1_106 (Risk IT categories in an enterprise register), crisc_d1_012 and crisc_d3_014 (ratings mapped to one enterprise scale), crisc_d2_014 (rolling up unit ratings), crisc_d2_108 (one scenario in two registers), crisc_d2_082 (controls held as free text), crisc_d2_118 (scanner findings loaded as entries), CC cc_d2_124 (a register entry with no indicator); no mirror in CISA, CC or AAIA.",
+      "_provenance": "Authored from concept: notes 2B3.3 (From Register to Enterprise Risk Profile: a category field lets the board see, say, all supplier risks together). Round 16, 12 Nov 2026: original scenario (an e-scooter rental operator's board wants its supplier-related risks shown together, but each register entry records only a scenario, owner and ratings) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 16 asks: an owner pair on the two easy distractors (A and D) while the key and the runner-up name no owner. Owner shape: k=2, key outside the pair. Neighbours checked (stems, options, key concepts and explanations): crisc_d1_033 (an IT register brought into the enterprise register in its categories: a separate register is the problem there, a wrong option here), crisc_d1_106 (Risk IT categories in an enterprise register), crisc_d1_012 and crisc_d3_014 (ratings mapped to one enterprise scale), crisc_d2_014 (rolling up unit ratings), crisc_d1_068 (12 supplier risks that together exceed appetite: escalation, not a register field), crisc_d2_108 (one scenario in two registers), crisc_d2_082 (controls held as free text), crisc_d2_118 (scanner findings loaded as entries), CC cc_d2_124 (a register entry with no indicator); no mirror in CISA, CC or AAIA.",
       "style_version": 2
     },
     {
@@ -5270,9 +5270,9 @@
       "bloom_level": "Application",
       "question": "A veterinary practice group's impact scale gives five levels only as names, minor to severe; rating one group-wide records outage, its 12 clinic managers used all five. What should the risk analyst recommend as BEST?",
       "options": {
-        "A": "Have the outage scenario's risk owner choose the group's rating",
+        "A": "Average the 12 managers' ratings into one level for the group",
         "B": "Define each level with examples in dollars, downtime and animal harm",
-        "C": "Average the 12 managers' ratings into one level for the group",
+        "C": "Have the outage scenario's risk owner choose the group's rating",
         "D": "Switch to a finer 1-to-10 scale for impact ratings"
       },
       "correct": "B",
@@ -5280,13 +5280,13 @@
       "pre_read": "Ask why people rating the same event would land so far apart.",
       "correct_explanation": "When a scale gives only names, each manager reads 'moderate' or 'severe' through their own clinic's experience, so the same outage gets every rating. Defining each level with examples, such as dollar ranges, hours of downtime and harm to animals in care, fixes the cause for this and every later rating. Having the risk owner choose is the runner-up: it settles this one scenario but leaves the scale undefined.",
       "wrong_explanations": {
-        "A": "The owner's choice settles this one rating, but the scale stays undefined, so the next scenario will scatter the same way across the group.",
-        "C": "Averaging ordinal levels gives a middle figure no manager chose and hides the spread; the managers still mean different things by each level.",
+        "A": "Averaging ordinal levels gives a middle figure no manager chose and hides the spread; the managers still mean different things by each level.",
+        "C": "The owner's choice settles this one rating, but the scale stays undefined, so the next scenario will scatter the same way across the group.",
         "D": "More steps on an undefined scale give more room to disagree and a false look of precision; the levels still lack a shared meaning."
       },
       "tips": [
-        "Eliminate: C averages ordinal levels, which carry order but not size, and D adds finer steps to a scale whose levels still lack meaning.",
-        "Final two: B beats A because defining the levels fixes why ratings scatter; an owner's pick settles one scenario and leaves the cause in place.",
+        "Eliminate: A averages ordinal levels, which carry order but not size, and D adds finer steps to a scale whose levels still lack meaning.",
+        "Final two: B beats C because defining the levels fixes why ratings scatter; an owner's pick settles one scenario and leaves the cause in place.",
         "Exam cue: when raters disagree widely on the same risk, look first at the scale's definitions before averaging, re-scaling or overruling them."
       ],
       "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.2 (Assessment Approaches: unless each qualitative value is clearly defined or characterized by meaningful examples, different experts could produce significantly different results); NIST SP 800-30 Rev. 1 Section 3.1 Task 1-5 (Identify the Risk Model and Analytic Approach: organizations define or tailor assessment scales with organizationally meaningful examples and break points between bins)",
@@ -5295,7 +5295,7 @@
         "Rating scales",
         "Consistent ratings"
       ],
-      "_provenance": "Authored from concept: notes 2B4.1 (Qualitative and Semi-Quantitative Analysis: without defined levels, experts' ratings scatter; defining the levels, not averaging or one person's pick, fixes it). Round 16, 12 Nov 2026: original scenario (a veterinary practice group's impact scale names five levels only, and its 12 clinic managers rating one group-wide records outage used all five) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 16 asks: the lone owner on the runner-up (A, an owner settling one rating), balancing crisc_d2_139's keyed lone owner in the final-two count; the key is naturally the longest option (by five characters). Owner shape: k=1, the lone owner option is the runner-up. Neighbours checked (stems, options, key concepts and explanations): crisc_d2_032 (likelihood ratings over different time frames), crisc_d2_084 (ratings with no recorded reason), crisc_d2_042 (equal matrix scores hiding different shapes), crisc_d2_067 (private estimates before discussion), crisc_d3_079 (averaging heat-map scores: here averaging is an easy distractor), crisc_d3_014 (two units on different scales mapped to one), crisc_d1_134 (impact bands reset after growth), crisc_d2_110 (a veterinary chain's offline backups: same sector, different activity), CISA d2_062 (semi-quantitative scoring on calibrated scales chosen as a method); no mirror found.",
+      "_provenance": "Authored from concept: notes 2B4.1 (Qualitative and Semi-Quantitative Analysis: without defined levels, experts' ratings scatter; defining the levels, not averaging or one person's pick, fixes it). Round 16, 12 Nov 2026: original scenario (a veterinary practice group's impact scale names five levels only, and its 12 clinic managers rating one group-wide records outage used all five) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 16 asks: the lone owner on the runner-up (C, an owner settling one rating), balancing crisc_d2_139's keyed lone owner in the final-two count; the key is naturally the longest option (by five characters). Owner shape: k=1, the lone owner option is the runner-up. Neighbours checked (stems, options, key concepts and explanations): crisc_d2_032 (likelihood ratings over different time frames), crisc_d2_084 (ratings with no recorded reason), crisc_d2_042 (equal matrix scores hiding different shapes), crisc_d2_067 (private estimates before discussion), crisc_d3_079 (averaging heat-map scores: here averaging is an easy distractor), crisc_d3_014 (two units on different scales mapped to one), crisc_d1_134 (impact bands reset after growth), crisc_d2_110 (a veterinary chain's offline backups: same sector, different activity), CISA d2_062 (semi-quantitative scoring on calibrated scales chosen as a method); no mirror found.",
       "style_version": 2
     }
   ]
