@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026. Round 9 crisc_d1_118 to crisc_d1_124, 5 Nov 2026. Round 10 crisc_d1_125 to crisc_d1_130, 5 Nov 2026. Round 12 crisc_d1_138 to crisc_d1_143, 5 Nov 2026. Round 13 crisc_d1_144 to crisc_d1_150, 12 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026. Round 9 crisc_d1_118 to crisc_d1_124, 5 Nov 2026. Round 10 crisc_d1_125 to crisc_d1_130, 5 Nov 2026. Round 12 crisc_d1_138 to crisc_d1_143, 5 Nov 2026. Round 13 crisc_d1_144 to crisc_d1_150, 12 Nov 2026. Round 14 crisc_d1_151 to crisc_d1_156, 12 Nov 2026.",
     "schema_version": 1
   },
   "domain": 1,
@@ -5555,6 +5555,228 @@
         "Management response"
       ],
       "_provenance": "Authored from concept: notes 1B2.2 (Independence, Challenge and Coordination Across Lines: the second line advises and leaves decisions with owners; bullet extended in round 13: it helps owners draft, not write, audit responses; definition shortened to keep the subtopic within 380 words). Round 13, 12 Nov 2026: original scenario (internal audit found a glassworks' furnace-control backups had never been restore-tested, and the plant director asks the risk team to write management's response and action plan) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 13 asks covered: owner shape k=2 with the key outside the pair (the owner pair sits on the two easy options, C and D; key and runner-up name no owner); key opener 'Help'; setting glassworks. Neighbours checked: crisc_d1_014 (audit offers to design controls), crisc_d1_036 (second line running a first-line review), crisc_d1_141 (second line asked to own a model's risk), crisc_d1_065 and crisc_d1_102 (second-line challenge), crisc_d1_128 (audit relying on second-line tests), crisc_d2_125 (risk team chose responses before owners saw them; keep apart), crisc_d3_029 (audit fix missing due dates), crisc_d3_171 (finding closed on acceptance), crisc_d3_113 (audit plan from the profile), crisc_d3_157 (closing a finished plan), CISA d1_167 (audit committee adds an audit). None asks who writes management's response to an audit finding. Review fixes 12 Nov 2026 (round 13 cross-domain gate): runner-up B now names the action plan too, so 'action plan' no longer echoes the stem only in the key.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_151",
+      "domain": 1,
+      "subtopic": "1A1 Strategy, goals and objectives. Project risk log scope",
+      "principle_id": "objectives-first",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A regional transit authority's $9,000,000 real-time arrivals project aims to lift ridership 8%, yet its risk log covers only schedule and budget. Which addition should the risk analyst recommend as MOST important?",
+      "options": {
+        "A": "Risks that rising ridership will overload the arrivals servers",
+        "B": "Penalties the vendor owes for releases that run late",
+        "C": "A business owner for each schedule and budget risk",
+        "D": "Risks that the system will not deliver the ridership gain"
+      },
+      "correct": "D",
+      "key_concept": "A project's risk log should include the risk of missing the benefit it was approved for, not only schedule and budget risk.",
+      "pre_read": "Read the stem for the project's purpose and for what its log already covers.",
+      "correct_explanation": "The project exists to lift ridership, so the risk that matters most to the authority is that the system goes live on time and on budget yet riders do not come. Risk IT calls this benefit/value enablement risk, a category apart from project delivery. Naming a business owner for each schedule and budget risk is the runner-up: ownership helps, but the log would still say nothing about the goal the money is for.",
+      "wrong_explanations": {
+        "A": "Capacity under heavier use is a service delivery risk the team can test; it does not ask whether the system will bring the riders it was funded for.",
+        "B": "Vendor penalties recover part of the cost of delay, so they belong with schedule risk; they add nothing on whether the ridership goal will be met.",
+        "C": "Business owners for delivery risks strengthen accountability, but the log would still miss the largest risk: a finished system that does not lift ridership."
+      },
+      "tips": [
+        "Eliminate: A is a capacity risk for live service and B a contract remedy for delay; neither asks whether the system will bring the riders it was funded for.",
+        "Final two: D beats C because risk is judged against the objective the project serves; owners for delivery risks help, but the log would still miss whether ridership rises.",
+        "Exam cue: when a project's risk log tracks only time and cost, look for the option that adds the risk of missing the benefit it was approved for."
+      ],
+      "framework_ref": "ISACA Now Blog 23 September 2019 (IT risk has three categories: benefit/value enablement, program and project delivery, and operations and service delivery); COBIT 2019 APO05 (Managed Portfolio); ISACA Risk IT Framework 2nd Edition (2020)",
+      "related_concepts": [
+        "Benefit risk",
+        "Project delivery risk",
+        "Business objectives"
+      ],
+      "_provenance": "Authored from concept: notes 1A1.1 (Risk in Service of Business Objectives: express each risk by the objective it affects; bullet extended in round 14: a project's risks include missing its promised benefit, not just schedule and budget). Round 14, 12 Nov 2026: original scenario (a regional transit authority's $9,000,000 real-time arrivals project aims to lift ridership 8%, but its risk log covers only schedule and budget) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 14 asks covered: owner shape k=1 with a wrong lone owner option on the runner-up (C); key names no owner and opens 'Risks', as does A; no incidental periods; setting regional transit authority. Neighbours checked: crisc_d1_106 (Risk IT categories: a benefit/value enablement entry), crisc_d1_047 (late IT goal expressed through the goals it serves), crisc_d1_002 and crisc_d1_138 (IT goals judged against business goals), crisc_d1_111 (treatment outlasting its objective), crisc_d1_066 (AI pilot criterion), crisc_d3_103 (cost-benefit of a plan), CISA d3_016, d3_088 and d2_111 (benefits in a post-implementation review or business case, auditor lens). None asks what a project risk log misses when it tracks only delivery. Review fixes 12 Nov 2026 (round 14 concept review and blind test): A's explanation and the Eliminate tip now call ridership overload a service delivery risk, not project delivery; the correct explanation uses the Risk IT term benefit/value enablement risk.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_152",
+      "domain": 1,
+      "subtopic": "1A5 Business processes and resilience. Two directors want the first restore",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A city hospital trust's continuity plan, owned by its chief operating officer, sets no order for restoring clinical systems; the pharmacy and radiology directors each want theirs first. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Have IT restore first whichever system recovers faster",
+        "B": "Set the two systems' order by patient impact for IT",
+        "C": "Ask the plan's owner to set the order on patient impact",
+        "D": "Have the process owners settle the plan's order themselves"
+      },
+      "correct": "C",
+      "key_concept": "When process owners conflict over recovery priority, the owner of the continuity plan who spans both sets the order on business impact.",
+      "pre_read": "List each role in the stem and what it is accountable for.",
+      "correct_explanation": "Recovery order is a business decision, and when two process owners each claim first place, it goes to the person accountable for the plan across both: here the chief operating officer, deciding on patient impact. Letting the two directors settle it is the runner-up: process owners do set recovery needs, but two owners already at odds have no shared authority to break the tie.",
+      "wrong_explanations": {
+        "A": "Restore speed is a technical measure; the faster system may matter less to patients, and IT would be setting a business priority it does not own.",
+        "B": "Patient impact is the right basis, but the analyst would be making the decision; the analyst can supply the impact analysis for the plan's owner to decide on.",
+        "D": "Process owners set recovery needs, but these two already disagree; leaving it to them risks having no agreed order when an outage starts."
+      },
+      "tips": [
+        "Eliminate: A lets IT set a business priority by a technical measure, and B has the analyst decide the order instead of informing the decision.",
+        "Final two: C beats D because the order is a business decision, and when two process owners clash it goes to the owner of the plan that spans both.",
+        "Exam cue: when owners at the same level conflict, take the decision to whoever is accountable across both, with the impact facts; don't decide it yourself."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.2 (Conduct the Business Impact Analysis: recovery criticality rests on the impact of a system disruption and the downtime the process can tolerate); COBIT 2019 DSS04 (Managed Continuity); ISACA Glossary (business continuity plan)",
+      "related_concepts": [
+        "Recovery priorities",
+        "Process ownership",
+        "Business continuity plan"
+      ],
+      "_provenance": "Authored from concept: notes 1A5.1 (Process Ownership and Critical Processes: process owners set recovery needs; bullet extended in round 14: when owners' priorities clash, the plan's owner sets the order by impact). Round 14, 12 Nov 2026: original scenario (a city hospital trust's continuity plan, owned by its chief operating officer, sets no restore order, and the pharmacy and radiology directors each want their system first) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 14 asks covered: owner shape k=2 with the key and the runner-up being the two owner options (rule 22 ask); key opener 'Ask'; no incidental periods; setting city hospital trust. Neighbours checked: crisc_d1_053 (one owner for an end-to-end process), crisc_d1_027 (plan organized around services), crisc_d1_099 and crisc_d1_118 (recovery targets and test results with process owners), crisc_d1_094 (owner and risk team disagree on a rating; keep apart, same 'conflict goes up' family), crisc_d1_052 (two accountable on a RACI), crisc_d2_059 and crisc_d2_081 (BIA impact over time), CISA d4_004, d4_324 (BIA outputs) and d4_079 (one steering group for a pandemic plan). None asks who breaks a tie between process owners over recovery order.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_153",
+      "domain": 1,
+      "subtopic": "1B3 Risk profile. Board weighing an AI registration system",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A humanitarian NGO's risk profile shows its beneficiary-data risk just within appetite, and its board is weighing an AI face-matching system to register 200,000 refugees. What should the risk analyst BEST give the board?",
+      "options": {
+        "A": "How the system would change that risk's position against appetite",
+        "B": "The system's own risk rating, compared with appetite",
+        "C": "The program owner's estimate of registration time saved",
+        "D": "The data owner's sign-off on sharing records with the vendor"
+      },
+      "correct": "A",
+      "key_concept": "A board weighing a new initiative needs its effect on the enterprise risk profile against appetite, not a rating of the initiative alone.",
+      "pre_read": "Check where the named risk already sits against appetite before judging what the board needs.",
+      "correct_explanation": "The profile is the board's view of total exposure, and this risk already sits at the edge of appetite. What the board needs is how adding the face-matching system would shift that enterprise position. Rating the system on its own against appetite is the runner-up: it may pass alone, yet its added exposure could push the combined beneficiary-data risk over the line.",
+      "wrong_explanations": {
+        "B": "A stand-alone rating can look acceptable while the enterprise's beneficiary-data risk, already near its limit, would cross appetite once the system is added.",
+        "C": "Time saved is a benefit the board will weigh, but a benefit estimate from the program's owner says nothing about how the risk position changes.",
+        "D": "Approval to share records comes later, if the board goes ahead; it is a control step, not the risk information the board's decision needs."
+      },
+      "tips": [
+        "Eliminate: C offers only the program's benefits and D a later control step; neither tells the board how the decision changes its risk position.",
+        "Final two: A beats B because the profile shows total exposure; a system rated alone can pass while the combined beneficiary-data risk crosses appetite.",
+        "Exam cue: when a board weighs a new initiative, give it the change to the enterprise risk profile against appetite, not a stand-alone rating."
+      ],
+      "framework_ref": "COBIT 2019 APO12.03 (Maintain a Risk Profile); NIST IR 8286 Rev. 1 Section 4.1 (Applying the Enterprise Risk Register and Developing the Enterprise Risk Profile); NIST AI 100-1 (AI RMF 1.0) GOVERN 2.3 (executive leadership takes responsibility for decisions about risks of AI system development and deployment)",
+      "related_concepts": [
+        "Risk profile",
+        "Risk appetite",
+        "AI risk"
+      ],
+      "_provenance": "Authored from concept: notes 1B3.2 (Aggregation and Keeping the Profile Current: risks can together breach appetite; bullet extended in round 14: a new initiative added to current exposure can breach appetite, so the combined effect goes to whoever set it) and 1B3.1 (the profile sets current risk against appetite). Round 14, 12 Nov 2026: original scenario (a humanitarian NGO's beneficiary-data risk sits just within appetite while its board weighs an AI face-matching system to register 200,000 refugees) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 14 asks covered: the batch's one AI item (AI strategy and the risk profile); owner shape k=2 with the owner pair on the two easy options (C and D) and the key outside; key naturally the longest option (by 4 characters); no incidental periods; setting humanitarian NGO. Neighbours checked: crisc_d1_038 (AI exposure shown in the profile), crisc_d1_083 (timing of risk input to an AI strategy), crisc_d1_068 (aggregated supplier risks above appetite), crisc_d1_116 (risks left out of the board profile), crisc_d2_014 and crisc_d3_158 (combining related risks into one enterprise view), crisc_d3_019 (board risk report content), aaia_d2_115 (face-matching model retraining), cc_d1_163 (biometric face-tagging avoided). None asks what the board needs when a new initiative would add to a risk already at the edge of appetite.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_154",
+      "domain": 1,
+      "subtopic": "1A4 Policies and standards. Most labs hold the same exception",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A state university's standard requires managed laptops, yet 45 of its 60 research labs hold approved exceptions, each renewed on its own as it expires. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Have each lab's risk owner reassess its exception at renewal",
+        "B": "Examine why most labs need an exception to the standard",
+        "C": "Ask the standard's owner to end the labs' exceptions",
+        "D": "Grant permanent exceptions with each lab head as owner"
+      },
+      "correct": "B",
+      "key_concept": "Many exceptions to one rule signal that the rule or the process needs review; examine the cause rather than renewing case by case.",
+      "pre_read": "Compare the number of exceptions with the number of labs the rule covers.",
+      "correct_explanation": "When three in four labs need an exception, the pattern itself is the finding: the rule may not fit research work, or labs may lack a workable way to comply. Examining that cause lets the standard's owner fix the rule or the process once. Having each owner reassess at renewal is the runner-up: it keeps every exception sound, but treats 45 symptoms and never asks why they recur.",
+      "wrong_explanations": {
+        "A": "Fresh analysis at each renewal keeps single exceptions sound, but it handles 45 cases one at a time and never tests whether the rule itself fits.",
+        "C": "Ending exceptions before knowing why labs need them could halt research or push staff to unmanaged workarounds; the cause comes first.",
+        "D": "Exceptions are time-limited by design so the risk is decided again; making them permanent hides the gap from future review."
+      },
+      "tips": [
+        "Eliminate: C ends exceptions before the cause is known, and D makes them permanent, removing the expiry that forces a fresh decision.",
+        "Final two: B beats A because many exceptions to one rule point to a cause in the rule or the process; case-by-case renewal treats symptoms.",
+        "Exam cue: a high or rising count of exceptions to one rule is a signal to examine the rule or the process, not just to renew each case."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked); NIST CSF 2.0 GV.PO-02 (policy for managing cybersecurity risks is reviewed, updated, communicated and enforced to reflect changes); ISACA Glossary (policy)",
+      "related_concepts": [
+        "Policy exceptions",
+        "Exception volume",
+        "Root cause"
+      ],
+      "_provenance": "Authored from concept: notes 1A4.2 (Policy Exceptions: exception volumes are monitored; many exceptions to one rule suggest the rule or the process needs review). Round 14, 12 Nov 2026: original scenario (45 of a state university's 60 research labs hold approved exceptions to its managed-laptop standard, each renewed on its own) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 14 asks covered: owner shape k=3 with the key the one option without an owner and the runner-up an owner option (A); key opener 'Examine'; no incidental periods; setting state university. A first draft keyed keeping a review cycle that state rules set; it was dropped before review because crisc_d3_188 (written in parallel this round) keys the same lesson, so the round's fixed-period key sits in D3. Neighbours checked: crisc_d1_025 (expired exceptions: renew or close), crisc_d1_026 (a standard scaled to system risk; keep apart, same 'revisit the rule' family), crisc_d1_105 (an exception cannot relax a legal requirement), crisc_d1_135 (exceptions kept outside the register), crisc_d3_186 (exceptions approved by IT security), crisc_d3_146 (an exception within its approver's authority), CISA d2_038 (policy review cycle), crisc_d3_119 (18 exceptions with one known cause, keyed to add test capacity, with a case-by-case decoy: keep apart in practice sets). None keys examining why most units need the same exception before the cause is known. Audit 12 Nov 2026 (round 14 standards audit): crisc_d3_119 added to the neighbours.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_155",
+      "domain": 1,
+      "subtopic": "1A6 Organizational asset management. Wipe planned for a retired database",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Having migrated current records, a county tax office's IT team plans to wipe the old property-records database next week; records older than 2015 exist nowhere else. What should the risk analyst recommend FIRST?",
+      "options": {
+        "A": "Copy the older records to an archive before the wipe",
+        "B": "Wipe the database under IT's media disposal standard",
+        "C": "Ask senior management to decide the database's disposal date",
+        "D": "Ask the records' owner which older records must be kept"
+      },
+      "correct": "D",
+      "key_concept": "The asset owner decides retention and disposal; a custodian such as IT carries out that decision, even when decommissioning a system.",
+      "pre_read": "Notice what the wipe would destroy before judging who should act first.",
+      "correct_explanation": "Deciding which records to keep, and for how long, belongs to the records' owner, who knows the legal and business needs; IT as custodian carries out the decision. Asking the owner first keeps the only copy of older records from being lost by default. Archiving everything is the runner-up: it avoids loss, but IT would be setting retention itself and could keep taxpayer data longer than it should.",
+      "wrong_explanations": {
+        "A": "With a week before the wipe there is time to ask; copying everything has IT set retention, and taxpayer data kept past its period is exposure.",
+        "B": "A disposal standard says how to wipe media safely, not whether the records on it may be destroyed; that decision belongs to their owner.",
+        "C": "Disposal of one database is an asset owner's decision within the retention rules; senior management sets policy, not the fate of single assets."
+      },
+      "tips": [
+        "Eliminate: B treats a wiping method as permission to destroy records, and C sends a single asset's disposal up to senior management.",
+        "Final two: D beats A because retention is the owner's call; archiving everything avoids loss, but IT would be deciding retention for the owner.",
+        "Exam cue: before a custodian disposes of, copies or shares an asset, check that the owner has decided; custodians carry out owners' decisions."
+      ],
+      "framework_ref": "ISACA Glossary (data owner); ISACA Glossary (data custodian); NIST CSF 2.0 ID.AM-08 (systems, hardware, software, services and data are managed throughout their life cycles); NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention)",
+      "related_concepts": [
+        "Data owner",
+        "Data custodian",
+        "Asset disposal"
+      ],
+      "_provenance": "Authored from concept: notes 1A6.1 (Asset Inventory and Ownership: custodians decide how to meet the owner's requirements, not the asset's class, retention or who may receive it; bullet extended in round 14 to name disposal). Round 14, 12 Nov 2026: original scenario (a county tax office's IT team plans to wipe a retired property-records database whose pre-2015 records exist nowhere else) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 14 asks covered: keyed lone owner option (D is the only option naming an owner; counted under calibration rule 21); 'senior management' in a wrong option where it overreaches (C, one asset's disposal date); key opener 'Ask'; no incidental periods; setting county tax office. Neighbours checked: crisc_d1_076 (what IT may decide alone: backup timing, not retention), crisc_d4_058 (owner rules on keeping training copies past retention; keep apart), crisc_d4_078 (records kept 60 years when a system retires), crisc_d4_103 and crisc_d4_113 (deletion timing and sanitization methods), crisc_d2_038 (closing register entries for a retired app), CISA d1_174 (records of a retired AI model's decisions), CISA d4_254 (retiring a legacy ERP), cc_d5_004 (who sets a spreadsheet's class). None asks who decides what is kept before a retired system holding the only copy is wiped. Review fixes 12 Nov 2026 (round 14 concept review and blind test): A's explanation now says why copying first loses: with a week before the wipe there is time to ask the owner. Review fixes 12 Nov 2026 (round 14 cross-domain gate): neighbour added: CISA d3_091 (a migration discards 12 years of older records; the auditor first confirms retention is met). Same 'retention before an irreversible discard' idea in the auditor lens; keep apart in cross-course sets.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_156",
+      "domain": 1,
+      "subtopic": "1A3 Organizational culture and ethics. Rating request beyond the analyst's expertise",
+      "principle_id": "final-two",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bus manufacturer's engineering director, who owns brake-control software risk, asks the risk analyst to rate that risk; the analyst has never assessed embedded vehicle software. What should the analyst do FIRST?",
+      "options": {
+        "A": "Rate it from the office software owner's threat list",
+        "B": "Rate it and state the expertise gap in the report",
+        "C": "Have the risk owner add an expert in that software",
+        "D": "Have the risk owner rate it in the analyst's place"
+      },
+      "correct": "C",
+      "key_concept": "Practitioners take on only work they can complete competently; when a rating needs expertise they lack, they bring qualified help in.",
+      "pre_read": "Note what the analyst lacks before judging which option gives a rating others can rely on.",
+      "correct_explanation": "The Code of Professional Ethics asks members to take on only work they can complete with the necessary skills. The gap here can be closed: an expert in the software, added through the owner, lets the analyst give a rating that can be relied on. Rating it while stating the gap is the runner-up: it is honest, but a caveated rating of a brake-safety risk still rests on judgment the analyst lacks.",
+      "wrong_explanations": {
+        "A": "An office-IT threat list misses how safety-critical embedded software fails, so the rating would look complete while resting on the wrong threats.",
+        "B": "Stating the gap is honest, but the owner would still get a weak rating of a safety risk; the Code asks for the skills, not a caveat.",
+        "D": "The owner asked for the analyst's rating; handing it back leaves the skill gap open and gives the owner nothing beyond their own view."
+      },
+      "tips": [
+        "Eliminate: A applies an office-IT threat list to safety-critical embedded software, and D hands the rating back to the owner who asked for it.",
+        "Final two: C beats B because the Code asks for the skills the work needs; stating the gap is honest but still leaves a weak rating of a safety risk.",
+        "Exam cue: when work needs expertise you lack, close the gap with qualified help before you deliver; a caveat alone does not make the result reliable."
+      ],
+      "framework_ref": "ISACA Code of Professional Ethics (undertake only those activities they can reasonably expect to complete with the necessary skills, knowledge and competence); ISACA Code of Professional Ethics (objectivity, due diligence and professional care)",
+      "related_concepts": [
+        "ISACA Code of Professional Ethics",
+        "Professional competence",
+        "Expert input"
+      ],
+      "_provenance": "Authored from concept: notes 1A3.3 (Professional Ethics and Ethical AI Use: members take on only work they are competent to do; bullet extended in round 14: when a task needs skills they lack, they bring in qualified help rather than guess). Round 14, 12 Nov 2026: original scenario (a bus manufacturer's engineering director, who owns brake-control software risk, asks a risk analyst who has never assessed embedded vehicle software to rate it) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 14 asks covered: owner shape k=3 with the key among the owners and the runner-up the one option without an owner; key opener 'Have'; no incidental periods; setting bus manufacturer. Neighbours checked: CISA d1_167 (audit team lacking incident-response skills co-sources specialists; same competence lesson and a similar self-assessment decoy (D here, the incident team's own review there), so keep apart in cross-course practice sets), CISA d1_032 (auditor relying on an external cryptographer), cc_d1_071 and cc_d1_107 (competence canon), crisc_d1_007, crisc_d1_062 and crisc_d1_073 (Code of Ethics items on reporting, confidentiality and own errors), crisc_d2_116 (only engineer able to maintain control software retiring), cc_d1_020 (spouse at a bidder; conflict of interest). None keys closing a practitioner's own competence gap before rating a risk. Audit 12 Nov 2026 (round 14 standards audit): the options say \"risk owner\"; D's explanation and the Eliminate tip no longer rely on an \"independent rating\" the stem never states. Review fixes 12 Nov 2026 (round 14 concept review and blind test): option A reworded to read naturally (it still names an owner). Review fixes 12 Nov 2026 (round 14 cross-domain gate): D's explanation and the Eliminate tip no longer rest on an 'objective view' the stem never states; D is wrong because it hands the work back and leaves the skill gap open.",
       "style_version": 2
     }
   ]

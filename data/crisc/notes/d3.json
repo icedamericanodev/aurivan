@@ -137,18 +137,19 @@
           "practice_ids": [
             "crisc_d3_002",
             "crisc_d3_010",
-            "crisc_d3_116"
+            "crisc_d3_116",
+            "crisc_d3_185"
           ],
-          "definition": "Response selection is choosing the option expected to bring risk within appetite at a cost proportionate to the loss it prevents, while still supporting business objectives.",
-          "why_it_matters": "Spending more on a control than the loss it prevents destroys value, and so does treating a risk already within appetite. Proportion keeps the budget on the risks that matter most.",
+          "definition": "Response selection is choosing the option expected to bring risk within appetite at a cost proportionate to the loss it prevents, while supporting business objectives.",
+          "why_it_matters": "Spending more on a control than the loss it prevents destroys value, and so does treating a risk already within appetite. Proportion keeps budget on the risks that matter most.",
           "how_it_works": [
             "Start with the current rating against appetite and tolerance; a risk within them, even at its worst plausible loss, usually needs acceptance and monitoring, not new spending or insurance.",
-            "Estimate each option's cost over its life: purchase, staff time, training, maintenance and any slowdown to the business.",
-            "Estimate each option's benefit as the reduction in expected loss, plus any legal or contractual requirement it meets.",
+            "Estimate each option's cost over its life: purchase, staff time, training, maintenance and any business slowdown.",
+            "Estimate each option's benefit as the reduction in expected loss, summed across every risk it reduces (counting a shared loss once), plus any legal or contractual requirement it meets.",
             "Prefer the option that meets appetite at the lowest total cost, unless a law or contract demands a specific control.",
-            "Rank by exposure: the risks furthest above appetite get resources first; lower ones may be scheduled later, not dropped."
+            "Rank by exposure: risks furthest above appetite get resources first; lower ones are scheduled later, not dropped."
           ],
-          "example": "A university research office plans to store genomic data from a partner hospital. Kenji, a risk analyst, finds the breach risk above tolerance. Encrypting the dataset and limiting access to named researchers costs about a tenth of the expected annual loss; a separate dedicated data center would cost more than the loss itself. Kenji recommends the first option to the research dean, showing both sets of figures.",
+          "example": "A university research office plans to store genomic data from a partner hospital. Kenji, a risk analyst, finds the breach risk above tolerance. Encrypting the dataset and limiting access to named researchers costs about a tenth of the expected annual loss; a dedicated data center would cost more than the loss itself. Kenji recommends the first option to the research dean, showing both figures.",
           "audit_focus": {
             "review": [
               "Compare each proposed control's cost with its expected loss reduction",
@@ -169,7 +170,7 @@
             },
             {
               "trap": "Add controls to a risk already within appetite, just to be safe.",
-              "why": "Extra controls on an acceptable risk spend money that higher risks need. Accept, record and monitor it instead."
+              "why": "Extra controls on an acceptable risk spend money that higher risks need. Accept, record and monitor it."
             }
           ],
           "key_terms": [
@@ -678,7 +679,8 @@
             "crisc_d3_058",
             "crisc_d3_093",
             "crisc_d3_119",
-            "crisc_d3_146"
+            "crisc_d3_146",
+            "crisc_d3_186"
           ],
           "definition": "An exception is a temporary, approved deviation from a policy or standard; an exemption is an approved exclusion from a requirement that does not apply or cannot apply.",
           "why_it_matters": "Business sometimes cannot meet a requirement on time. A managed deviation keeps that risk visible, compensated and time-bound; an unmanaged one becomes a permanent, hidden gap.",
@@ -1061,12 +1063,13 @@
           "practice_ids": [
             "crisc_d3_011",
             "crisc_d3_063",
-            "crisc_d3_099"
+            "crisc_d3_099",
+            "crisc_d3_188"
           ],
           "definition": "Control implementation is putting a selected control into operation with its owner, procedure, evidence and success measures agreed before it goes live.",
           "why_it_matters": "A well-designed control rolled out without an owner, procedure or evidence trail fails quietly. Agreeing these with the control owner up front makes the control testable and lasting.",
           "how_it_works": [
-            "Agree with the control owner what the control does, how often it runs and what evidence it leaves.",
+            "Agree with the control owner what the control does, how often it runs and what evidence it leaves; a frequency a law or regulator sets is a floor.",
             "Document the procedure so someone else could run it during absence or turnover.",
             "Implement through change management, with testing before go-live and a rollback plan.",
             "Define a key control indicator so the owner can see when the control starts to fail.",
@@ -1182,7 +1185,8 @@
             "crisc_d3_101",
             "crisc_d3_134",
             "crisc_d3_149",
-            "crisc_d3_173"
+            "crisc_d3_173",
+            "crisc_d3_189"
           ],
           "definition": "Control testing techniques are the ways evidence about a control is gathered: asking people, watching it run, inspecting records, or performing it again independently.",
           "why_it_matters": "Techniques give very different assurance. A control rated effective on interviews alone may never actually run, and the rating then hides real exposure from the risk owner.",
@@ -1191,7 +1195,7 @@
             "Inspection of records shows the control ran over time, if the records are complete and genuine; records made after the fact need system evidence from the period.",
             "Reperformance gives the strongest evidence, because the tester reaches the result independently.",
             "NIST SP 800-53A groups methods as examine, interview and test, with depth and coverage set by the assurance needed.",
-            "Job logs and sign-offs show a step ran, not that its result was right; recalculating a sample shows whether it was.",
+            "Job logs and sign-offs show a step ran, not that its result was right; recalculating a sample, or re-checking approved AI outputs, shows whether it was.",
             "When an automated control had nothing to act on in the period, inspect its live setting and change log; no exceptions proves nothing."
           ],
           "types": [
@@ -1532,7 +1536,8 @@
           "practice_ids": [
             "crisc_d3_071",
             "crisc_d3_072",
-            "crisc_d3_124"
+            "crisc_d3_124",
+            "crisc_d3_187"
           ],
           "definition": "Risk data collection is gathering the facts behind ratings and reports, such as incidents, losses, test results and metrics, from defined and trusted sources.",
           "why_it_matters": "Ratings are only as good as their inputs. Data from inconsistent or unknown sources leads owners to fund the wrong risks and miss the right ones.",
@@ -1540,7 +1545,7 @@
             "Define each data element, its source, owner, frequency and format before collecting it.",
             "Prefer system-generated data over hand-kept spreadsheets where possible, and record where each figure came from.",
             "Combine internal data, such as incidents and test results, with external data, such as threat reports and industry losses.",
-            "Collect at a frequency that matches how fast the risk changes.",
+            "Collect at a frequency that matches how fast the risk changes: flaws exploited within days need weekly figures from system records, not a quarterly survey.",
             "To check that a KRI warns early, compare its past values with when related incidents or losses occurred."
           ],
           "example": "A grocery chain's monthly risk report takes store incident counts from emails sent by store managers. Isabela, a risk analyst, finds that some stores report only serious incidents. They propose taking counts directly from the incident ticketing system, with one shared definition of an incident and a named data owner, before the next quarterly report to the operations committee.",
@@ -1794,7 +1799,8 @@
           "practice_ids": [
             "crisc_d3_074",
             "crisc_d3_108",
-            "crisc_d3_150"
+            "crisc_d3_150",
+            "crisc_d3_190"
           ],
           "definition": "An effective KRI is relevant to a specific risk, reliably measurable, predictive of change, set against thresholds and owned by someone who acts on it.",
           "why_it_matters": "Too many indicators drown the signal, and lagging ones warn only after the loss. A few well-chosen leading KRIs give owners time to act.",
@@ -2179,17 +2185,18 @@
             "crisc_d3_113",
             "crisc_d3_127",
             "crisc_d3_168",
-            "crisc_d3_181"
+            "crisc_d3_181",
+            "crisc_d3_191"
           ],
           "definition": "Audience-based reporting gives each stakeholder what they need for their own decisions: the board sees the risk profile against appetite, and owners see their risks and actions.",
           "why_it_matters": "A report the reader cannot act on is noise. Technical detail swamps the board, and summary colors starve the people who must fix things.",
           "how_it_works": [
-            "Board and senior management: the profile of current ratings against appetite, breaches, top risks, trends and decisions needed.",
+            "Board and senior management: the risk profile against appetite, breaches, top risks, trends and decisions needed, in business terms, not technical scores.",
             "Risk owners: their risks, indicator status, overdue actions and acceptances due for review.",
-            "Control owners and operations: control failures, test results and specific remediation tasks.",
-            "Send each report to someone with authority to decide, stating the decision requested; escalate outside the cycle when a breach or critical risk needs a decision now.",
+            "Control owners and operations: control failures, test results and remediation tasks.",
+            "Send each report to someone with authority to decide, stating the decision needed; escalate outside the cycle when a breach or critical risk cannot wait.",
             "Report ratings as assessed; if an owner disputes one without new evidence, show their view beside the unchanged rating.",
-            "Share the risk profile with internal audit so its plan can cover the top risks; internal audit still sets its own plan, approved by the audit committee."
+            "Share the risk profile with internal audit so its plan can cover the top risks; audit still sets its own plan, approved by the audit committee."
           ],
           "example": "A national charity's IT risk report to its board lists 140 vulnerability findings by server name. Samir, the risk analyst, rewrites it for the board as the three risks outside appetite, their trend and the funding decision needed for one of them. They send the server-level detail to the infrastructure manager as an action list.",
           "audit_focus": {
@@ -2303,7 +2310,8 @@
             "crisc_d3_114",
             "crisc_d3_132",
             "crisc_d3_143",
-            "crisc_d3_176"
+            "crisc_d3_176",
+            "crisc_d3_192"
           ],
           "definition": "Recording emerging risk means entering it in the register with its uncertainty stated, an owner and a review date, then reporting it so leaders can prepare without overreacting.",
           "why_it_matters": "Leaders need early sight of what may change the risk profile. Presenting an uncertain risk as certain wastes money, and leaving it out leaves them unprepared.",
@@ -2312,7 +2320,7 @@
             "Use ranges or alternative scenarios rather than single scores while uncertainty is high.",
             "Set short review dates and agree with the owner the signs that would show the risk growing, so each review checks evidence and refines the rating.",
             "Report emerging risks in their own section: what is known, what is not, and what is being done to learn more.",
-            "Move the risk into the main profile once it is understood well enough to rate normally.",
+            "Move the risk into the main profile once it is understood well enough to rate normally; if evidence shows it does not apply, the owner closes it with the reason.",
             "Respond to emerging risk in stages: low-cost steps to learn more, options prepared and agreed triggers for larger spending; when one is reached, the risk owner decides on the spending."
           ],
           "example": "A logistics firm's operations team begins trials of driverless yard trucks. Mateo, the risk analyst, records a safety and liability risk with low confidence, a range of possible impacts and a two-month review date, with the yard operations director confirmed as owner. In the quarterly report, they list it under emerging risks and state what the trials should reveal.",

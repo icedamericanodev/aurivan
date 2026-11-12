@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 13 done 12 Nov 2026 (bank 575, on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 14 done 12 Nov 2026 (bank 600, on the outline weights). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 575 reviewed (150 / 126 / 184 / 115) after round 13, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 600 reviewed (156 / 132 / 192 / 120) after round 14, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -588,6 +588,36 @@ of compromise (d2_122).
 - Settings: no setting more than twice in a batch, no sector over 30%; prefer public sector, health, education, manufacturing, NGO and transport (finance carried 18 of 25 in round 13).
 - Owner shapes (rule 22): key one two-owner item where the runner-up is the other owner option, and add 2 lone-owner runners-up.
 - Keep apart in practice sets: d1_145/d1_067/d3_175/d3_125, d1_144/d1_005/d3_052/d3_023, d3_177/d3_023/d3_109, d2_126/d2_062/d2_018, d4_114/d3_069, d3_184/d1_135/d3_094, d1_145/d4_112 (both credit-bureau change stories).
+
+### Round 14 (12 Nov 2026): 25 items, bank 600
+
+Round 14 added 6 D1 (`crisc_d1_151`–`156`), 6 D2 (`crisc_d2_127`–`132`),
+8 D3 (`crisc_d3_185`–`192`) and 5 D4 (`crisc_d4_116`–`120`) items, one AI item
+per domain. Highlights: benefit/value enablement risk in a project's risk log
+(d1_151), a practitioner who lacks the expertise for a rating closes the gap
+rather than guessing or handing the work back (d1_156), prompt injection where
+untrusted text reaches a model (d2_127), a yearly probability limit tested on
+its own terms against simulated yearly loss (d2_129), a control's benefit summed
+across every risk it reduces (d3_185), a regulator's required frequency as a
+floor (d3_188), AI-suggested packages vetted before use (d4_116), backups that
+miss the business's RPO (d4_117) and fail-open against fail-secure decided by the
+risk owner (d4_118).
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 picks matched the keys (21 sure); two mild giveaways fixed (d4_118's lone verb option, d3_185's lookalike pair) |
+| Standards audit and concept review | 0 HARD ERRORS. d3_188 re-angled off d1_050; d4_118's options made parallel; d2_128's two-owner shape varied; key-only lens word and Obtain/Merge opener tells removed from d2_130 and d2_132; five pre-reads that pointed at the key rewritten. d1_151 names benefit/value enablement risk and calls capacity a service delivery risk; d1_156 drops an auditor-style "independent rating" reason; four notes bullets no longer overstate a rule (acceptance within appetite, RPO targets, failure settings, personal data of the dead) |
+| Cross-domain gate | 0 HARD ERRORS, 3 PRECISION: d4_117's key no longer the only period option (and moved to a fish auction, breaking up a humanitarian cluster); d4_120's key concept follows notes 4B3.1 (and moved from a library to a national archive); d1_156's explanation rests only on stem facts. d3_186 drops a count that pointed at a different lesson; d3_185's stem names the cost the benefit is weighed against; three provenances gained missed neighbours |
+| Re-blind of changed items | 4/4, all sure (d3_185, d3_186, d4_117, d4_120); one explanation reworded for clarity (d4_120 A) |
+| Gates | All lints 0 errors; originality 0 too close; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes; no run of three identical keys; balance exactly 26/22/32/20 |
+
+**Next round (round 15, +25 to 625):** D1 +7, D2 +5, D3 +8, D4 +5 (163/137/200/125).
+- Lone owners (rule 22): in at least half of the items with one owner option, put a wrong lone owner on an easy distractor (an owner acting too early, or the wrong owner deciding); key the lone owner in about a third. Bank target: a lone owner in the final two at most 65% (now 73%).
+- Fixed periods (carried from round 13): the strike-period guesser still scores 34%. In a cue pass, take the incidental period off about 15 wrong options whose explanations never mention time (d1_033 A, d1_056 D, d1_064 C, d1_112 A, d2_047 A, d2_075 D, d3_015 B, d3_022 C, d3_025 C, d3_032 D, d3_048 B, d3_070 B, d4_042 D, d4_067 B, d4_068 B, d4_108 D), then key 2–3 options whose period is the answer with a period word on a wrong option too. Target 28% or less.
+- Pause these lesson families (no new key or runner-up): a legal or regulatory minimum as a floor; many exceptions point to a cause; who approves exceptions; new evidence on an emerging-risk entry; Monte Carlo output against a yearly board limit. Round 14's paused families stay paused.
+- Settings ledger: no two items in a round share sector and activity; charity, NGO or refugee settings at most 2 per round; no library, museum, theater, cinema or sports settings; health at most 4. Each author gets a sector list that does not overlap the others'.
+- Openers: the next Estimate, Help, Obtain, Examine and State options go on wrong answers, and the next "Keep …" option is a wrong "no change" move. Ask/Have keys at 4–7 per round are fine.
+- Keep apart in practice sets: d1_154/d3_119/d1_026, d3_186/d1_025/d3_028/d4_077, d3_192/d3_084/d3_143/d3_176, d2_129/d2_041, d3_188/d1_105/d1_050.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`

@@ -513,7 +513,8 @@
           "practice_ids": [
             "crisc_d4_052",
             "crisc_d4_096",
-            "crisc_d4_106"
+            "crisc_d4_106",
+            "crisc_d4_116"
           ],
           "definition": "Secure development builds security into how software is designed, coded, tested and maintained, following a framework such as the NIST Secure Software Development Framework (SSDF).",
           "why_it_matters": "Most exploitable flaws start as design or coding mistakes. A secure process lowers the number of vulnerabilities released and shows owners, customers and regulators that software risk is managed.",
@@ -521,7 +522,7 @@
             "The SSDF's four practice areas are prepare, protect, produce and respond; responding includes a disclosure policy and a public route for outside flaw reports.",
             "Security requirements are defined early and checked through threat modeling, code review and testing.",
             "Testing combines static analysis, dynamic testing and, for high-risk systems, penetration testing.",
-            "Third-party and open-source components are tracked and checked for known vulnerabilities.",
+            "Third-party and open-source components come from vetted sources and are tracked and checked for known flaws; a package an AI assistant names may be fake or planted.",
             "When a vulnerability is found, its root cause is analyzed so the process improves, not just the code; a flaw that recurs across releases signals a process gap.",
             "Requirements come from the new system's own risk assessment or threat model; a list copied from another product misses threats the old one never faced."
           ],
@@ -1084,19 +1085,20 @@
             "crisc_d4_012",
             "crisc_d4_035",
             "crisc_d4_071",
-            "crisc_d4_097"
+            "crisc_d4_097",
+            "crisc_d4_117"
           ],
           "definition": "Backups are protected copies of data and systems kept so they can be restored after loss, corruption or attack, including ransomware.",
-          "why_it_matters": "Backups are often the last control against ransomware and destructive attacks. If attackers can reach or encrypt them, or restores fail, the organization faces long outages or pressure to pay.",
+          "why_it_matters": "Backups are often the last control against ransomware. If attackers reach or encrypt them, or restores fail, the organization faces long outages or pressure to pay.",
           "how_it_works": [
-            "A common rule of thumb keeps at least three copies on two kinds of media, one offsite or offline; keep decryption keys apart from the main site but reachable.",
+            "A rule of thumb keeps three copies on two kinds of media, one offsite or offline; decryption keys sit apart from the main site but reachable.",
             "Immutable or offline copies resist an attacker with administrator access; retention should outlast how long intruders may stay unnoticed.",
-            "Backup frequency is set by the RPO; restore speed must support the RTO.",
-            "In ransomware recovery, contain the attack first, then verify backups are clean before restoring.",
-            "Restores are tested regularly, because a backup that was never restored is an untested assumption.",
-            "A useful key control indicator for backups is the share of test restores meeting the RTO and RPO, not of backup jobs completed."
+            "Backup frequency is set by the RPO and restore speed by the RTO; when backups miss the RPO, change the design; only the owner, weighing cost, may revisit the target.",
+            "In ransomware recovery, contain the attack, then verify backups are clean before restoring.",
+            "Restores are tested, as a backup never restored is an untested assumption.",
+            "A useful backup key control indicator is the share of test restores meeting the RTO and RPO, not of jobs completed."
           ],
-          "example": "A logistics firm's backups run nightly and the console shows green every day. Sam, the IT risk analyst, asks when a full restore was last tested: never. Sam records the dispatch system's RTO as unproven and proposes a restore test to the infrastructure manager.",
+          "example": "A logistics firm's backups run nightly and the console shows green. Sam, the IT risk analyst, asks when a full restore was last tested: never. Sam records the dispatch system's RTO as unproven and proposes a restore test to the infrastructure manager.",
           "audit_focus": {
             "review": [
               "Inspect backup architecture for offline or immutable copies",
@@ -1127,7 +1129,7 @@
             },
             {
               "term": "3-2-1 backup rule",
-              "definition": "Three copies of data, on two types of media, with one copy kept offsite or offline."
+              "definition": "Three copies of data, on two types of media, one kept offsite or offline."
             },
             {
               "term": "Restore test",
@@ -1376,19 +1378,20 @@
             "crisc_d4_053",
             "crisc_d4_073",
             "crisc_d4_087",
-            "crisc_d4_108"
+            "crisc_d4_108",
+            "crisc_d4_118"
           ],
           "definition": "Core security principles are the design rules behind controls: protect confidentiality, integrity and availability, layer defenses, grant least privilege and separate duties.",
-          "why_it_matters": "These principles let a practitioner judge whether a control set is sound without knowing every product. Gaps against them, such as one control guarding everything, point to concentrated risk.",
+          "why_it_matters": "These principles let a practitioner judge a control set without knowing every product; gaps, such as one control guarding everything, point to concentrated risk.",
           "how_it_works": [
             "CIA (confidentiality, integrity, availability) names what an event harms, shaping the impact rating; encryption mainly guards confidentiality, not integrity, which includes non-repudiation.",
             "Layered controls of different kinds mean one failure does not expose the asset.",
             "Each user, system and AI tool gets only the access its task needs, and only while needed.",
-            "Critical tasks are split so no one person can complete and hide a harmful action.",
-            "Where duties cannot be split, compensating controls such as independent review reduce the risk.",
-            "Layers sharing a vendor, design or rule set can fail together, adding less depth than their number suggests; diversity adds work, so it is weighed against the risk."
+            "Critical tasks are split so no one can complete and hide a harmful action alone; otherwise compensating controls, such as independent review, reduce the risk.",
+            "Layers sharing a vendor, design or rule set can fail together, giving less depth than their number suggests; diversity costs effort, weighed against the risk.",
+            "Failing open keeps a service available; failing secure guards assets. With both costs known, the risk owner chooses, within any life-safety rule."
           ],
-          "example": "A credit union protects its member database mainly with a strong perimeter firewall; inside, every staff account can read all records. Farah, the IT risk analyst, explains to the chief operating officer that one phished account would expose everything, and proposes layered controls: role-based access, database monitoring and multifactor authentication.",
+          "example": "A credit union guards its member database mainly with a perimeter firewall; every staff account inside can read all records. Farah, the IT risk analyst, shows the chief operating officer that one phished account would expose everything and proposes role-based access, database monitoring and multifactor authentication.",
           "audit_focus": {
             "review": [
               "Compare access rights with job roles to find excess privilege",
@@ -1405,7 +1408,7 @@
           "exam_traps": [
             {
               "trap": "Relying on one strong perimeter control to protect everything inside.",
-              "why": "Once an attacker or insider is past the perimeter, nothing else stops them. Layers inside the network limit how far one failure spreads."
+              "why": "Past the perimeter, nothing else stops an attacker or insider; inner layers limit how far one failure spreads."
             }
           ],
           "key_terms": [
@@ -1427,7 +1430,7 @@
             },
             {
               "term": "Just-in-time access",
-              "definition": "Elevated access granted for a specific task and a limited time, then removed, instead of standing administrator rights."
+              "definition": "Elevated access granted for one task and a set time, then removed, instead of standing administrator rights."
             }
           ]
         },
@@ -1565,14 +1568,15 @@
             "crisc_d4_049",
             "crisc_d4_065",
             "crisc_d4_074",
-            "crisc_d4_090"
+            "crisc_d4_090",
+            "crisc_d4_119"
           ],
           "definition": "A risk-aware culture is one where people at every level understand the risks in their work, speak up about them and act within appetite, supported by targeted training.",
           "why_it_matters": "Most controls depend on people. Where staff fear blame or see risk as someone else's job, problems stay hidden until they become incidents; where they speak up, risk is found early.",
           "how_it_works": [
             "Leaders set the tone by following the same controls as staff, discussing risk openly and rewarding early reporting.",
             "Awareness reaches everyone with access, contractors included; role-based training gives deeper skills to people with specific risk duties.",
-            "Training content follows the risk profile, such as payment fraud for finance staff, secure coding for developers or risk oversight for directors.",
+            "Training content follows the risk profile, such as payment fraud for finance staff, secure coding for developers or risk oversight for directors, in a language and format each audience follows.",
             "Reporting channels are easy and safe, and reports get visible follow-up.",
             "Mistakes lead to process fixes first; discipline is for willful or repeated misconduct.",
             "A supplier's general course does not teach the organization's own policies, systems and reporting routes, so contractors with access join its program."
@@ -1690,16 +1694,17 @@
           "practice_ids": [
             "crisc_d4_019",
             "crisc_d4_060",
-            "crisc_d4_100"
+            "crisc_d4_100",
+            "crisc_d4_120"
           ],
           "definition": "Privacy principles are rules for fair handling of personal data, including purpose limitation, data minimization, a lawful basis such as consent, transparency and individual rights.",
           "why_it_matters": "Privacy harm affects people and brings regulatory, legal and trust consequences. A secure system can still breach privacy if it collects too much or uses data for an undisclosed purpose.",
           "how_it_works": [
             "The purpose is decided and stated before collection, and data is not used later in ways incompatible with it.",
-            "Only the data the purpose needs is collected and kept.",
+            "Only data the purpose needs is collected, kept or disclosed; old records stay personal data at least while the people in them live.",
             "People are told what happens to their data, and the organization has a valid basis; consent counts only if people can refuse an unrelated use and still be served.",
-            "People can access, correct or delete their data, depending on the law that applies.",
-            "Rights requests are met only when the organization knows every system holding a person's data, including analytics copies and vendor tools.",
+            "People can access, correct or delete their data, as the applicable law allows.",
+            "Rights requests can be met only when every system holding a person's data is known, analytics copies and vendor tools included.",
             "Security protects data from unauthorized access; privacy also governs authorized use."
           ],
           "compare": {
@@ -1731,7 +1736,7 @@
               }
             ]
           },
-          "example": "A fitness app's product team proposes selling users' location history to advertisers, arguing the data is already encrypted and well protected. Kenji, the privacy risk analyst, explains that encryption does not change the purpose users agreed to, and asks the product owner and privacy officer to assess the proposal against the stated purpose and consent.",
+          "example": "A fitness app's product team proposes selling users' location history to advertisers, arguing the data is encrypted. Kenji, the privacy risk analyst, explains encryption does not change the purpose users agreed to, and asks the product owner and privacy officer to assess it against the stated purpose and consent.",
           "audit_focus": {
             "review": [
               "Compare data collected with the purposes in the privacy notice",
@@ -1752,7 +1757,7 @@
             },
             {
               "trap": "Collecting data first and deciding how to use it later.",
-              "why": "Purpose limitation requires the purpose to be set and stated before collection. Data gathered without one is excess risk."
+              "why": "Purpose limitation requires the purpose to be stated before collection. Data gathered without one is excess risk."
             }
           ],
           "key_terms": [

@@ -109,7 +109,8 @@
             "crisc_d2_021",
             "crisc_d2_047",
             "crisc_d2_088",
-            "crisc_d2_091"
+            "crisc_d2_091",
+            "crisc_d2_132"
           ],
           "definition": "Event sources are where risk event data comes from: inside the enterprise, such as incident logs and audit findings, and outside it, such as peers, regulators and insurers.",
           "why_it_matters": "Internal data shows the enterprise's own controls and history; external data covers events too rare to have happened here yet. Relying on one source alone distorts likelihood.",
@@ -117,7 +118,7 @@
             "Internal sources include incident and problem records, audit and control test findings, customer complaints, operational losses and staff reports.",
             "External sources include industry loss databases, sector information sharing groups, regulator notices, insurer data and public breach reports.",
             "External events are adjusted for differences in size, controls and exposure before they inform the enterprise's own ratings.",
-            "Event data is recorded the same way each time, with date, scenario, cause, source and impact before insurance, any recovery shown separately, so trends can be compared.",
+            "Event data is recorded consistently, with date, scenario, cause, source and impact before insurance, recoveries shown apart; events logged in several places are matched and counted once.",
             "Underreporting is a known weakness; a blame-free reporting culture raises the number of near misses staff report.",
             "A supplier outage that harms the enterprise, such as fees it must repay to staff, is its own loss event, recorded against its own scenario, not an external peer event."
           ],
@@ -390,13 +391,14 @@
             "crisc_d2_004",
             "crisc_d2_025",
             "crisc_d2_050",
-            "crisc_d2_076"
+            "crisc_d2_076",
+            "crisc_d2_127"
           ],
           "definition": "AI-specific threats attack the parts unique to AI systems: the prompts they accept, the data they learn from and the trained model itself.",
           "why_it_matters": "Firewalls and malware tools do not see a malicious instruction hidden in a document an AI assistant reads. Missing these threats leaves AI scenarios out of the register.",
           "how_it_works": [
             "AI threats target three new assets: the prompt channel, the training data pipeline and the model's learned parameters.",
-            "Indirect prompt injection is mounted by a third party who plants instructions in content the model later reads, such as an email or web page.",
+            "Indirect prompt injection is planted by a third party in content the model reads, such as an email; who can send it sets likelihood, and the tool's permissions set impact.",
             "Poisoning can enter through third-party datasets and pre-trained models, so the AI supply chain is part of the threat surface.",
             "Extraction and inversion attacks need only query access, so a public interface is enough to attempt them.",
             "NIST AI 100-2 E2025 names and classifies these attacks; the practitioner turns the relevant ones into scenarios with a business owner.",
@@ -614,13 +616,14 @@
             "crisc_d2_027",
             "crisc_d2_051",
             "crisc_d2_105",
-            "crisc_d2_114"
+            "crisc_d2_114",
+            "crisc_d2_130"
           ],
           "definition": "Risk-based remediation ranks vulnerability fixes by business impact and likelihood of exploitation, not by severity score or discovery date alone.",
           "why_it_matters": "No enterprise can fix everything at once. Ranking by business risk spends limited patching effort where a successful exploit would hurt objectives most.",
           "how_it_works": [
             "First confirm findings are real, verifying a sample when a vendor disputes them; then start from asset criticality: which business process the asset supports and what compromise would cost.",
-            "Add reachability: internet-facing, reachable from partners, or isolated behind strong segmentation; a met patch-rate target can still leave every late flaw on the most reachable system.",
+            "Add reachability: internet-facing, partner-reachable or isolated, with claimed isolation confirmed as current; a met patch-rate target can still leave late flaws on the most reachable system.",
             "Add exploitability: public exploit code, active attacks or a listing in a known-exploited vulnerabilities catalog.",
             "Set fix time frames by risk tier in a policy approved by management, so teams do not negotiate each fix.",
             "When a fix cannot meet its time frame, raise an exception with compensating controls for the risk owner to accept or reject.",
@@ -681,7 +684,8 @@
           "practice_ids": [
             "crisc_d2_007",
             "crisc_d2_054",
-            "crisc_d2_119"
+            "crisc_d2_119",
+            "crisc_d2_128"
           ],
           "definition": "A risk scenario is a specific, assessable description of how a threat could cause an event that affects an asset and harms business objectives.",
           "why_it_matters": "A vague entry such as 'cyberattack' cannot be rated, owned or treated. A specific scenario shows which controls matter and lets the owner compare it with appetite.",
@@ -689,7 +693,7 @@
             "Actor: who or what causes it, such as a criminal group, a careless user or a failed cooling unit.",
             "Event: what happens, such as malicious encryption, disclosure, an error or an outage.",
             "Asset: the process, system, data or people affected.",
-            "Time: when, or for how long, such as during payroll week or an outage of more than four hours.",
+            "Time: when or how long, such as payroll week or outages over four hours; when harm depends on timing, rate the credible time that hurts most.",
             "Consequence: the effect on objectives in business terms, such as lost revenue, fines or harm to patients.",
             "NIST IR 8286A Rev. 1 suggests a cause-and-effect sentence: an actor exploits a weakness in an asset, resulting in a business impact."
           ],
@@ -949,12 +953,13 @@
             "crisc_d2_058",
             "crisc_d2_079",
             "crisc_d2_117",
-            "crisc_d2_123"
+            "crisc_d2_123",
+            "crisc_d2_131"
           ],
           "definition": "A risk assessment identifies, estimates and prioritizes risk. NIST SP 800-30 runs it in four steps: prepare, conduct, communicate the results and maintain the assessment.",
           "why_it_matters": "Skipping preparation means assessing the wrong things against the wrong criteria. Skipping communication or maintenance leaves decisions resting on unseen or outdated results.",
           "how_it_works": [
-            "Prepare: set the purpose, scope, assumptions and constraints (including missing information), information sources, risk model and approach, starting from threats, impacts or vulnerabilities, partly by where information is strongest.",
+            "Prepare: set purpose, scope, assumptions (checking with owners any that decide a rating), constraints, sources, risk model and approach (threat-, impact- or vulnerability-oriented), chosen partly by where information is strongest.",
             "Conduct: identify threat sources and events, vulnerabilities and predisposing conditions, then determine likelihood, impact and risk.",
             "Communicate: give results to decision makers in a form they can act on, like a briefing, report or dashboard.",
             "Maintain: monitor risk factors and update the assessment when systems, threats or the business change.",
@@ -978,7 +983,7 @@
           "exam_traps": [
             {
               "trap": "Start a risk assessment by listing threats and vulnerabilities.",
-              "why": "Without agreed scope, context and criteria, the team cannot tell which threats matter or how to rate them. Preparation comes first."
+              "why": "Without agreed scope, context and criteria, the team cannot tell which threats matter or how to rate them."
             },
             {
               "trap": "A completed assessment stays valid until the next annual cycle.",
@@ -1540,7 +1545,8 @@
             "crisc_d2_067",
             "crisc_d2_083",
             "crisc_d2_099",
-            "crisc_d2_115"
+            "crisc_d2_115",
+            "crisc_d2_129"
           ],
           "definition": "Choosing a method means matching the analysis to the decision it must support and the quality of the data available, from simple scales to FAIR models and Monte Carlo simulation.",
           "why_it_matters": "A precise-looking number built on guesses misleads decision makers more than an honest qualitative rating. The method must fit the data and the decision.",
@@ -1548,7 +1554,7 @@
             "Ask what the decision needs: ranking many risks, funding one control, or capital and insurance planning.",
             "Check the data: loss history, industry benchmarks and expert estimates, and how reliable each is; gather each expert's estimate privately before discussion, as in the Delphi technique.",
             "FAIR, an Open Group standard, splits risk into loss event frequency and loss magnitude; secondary losses, such as fines, get their own frequency: the share of events that trigger them.",
-            "Monte Carlo simulation runs thousands of trials from estimated ranges to give a spread of losses; a limit on large losses is tested on its tail, not the mean.",
+            "Monte Carlo runs thousands of trials from estimated ranges; a yearly loss limit is tested on the tail of simulated yearly losses, not the mean or one event's loss.",
             "When data is uncertain, ranges beat single-point numbers; if a range is too wide to decide, sensitivity analysis shows which input needs better data.",
             "Methods can be combined: qualitative screening first, then quantitative analysis of top risks."
           ],
