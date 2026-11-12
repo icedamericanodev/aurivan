@@ -287,7 +287,7 @@
             "Name one accountable person with authority to fund and accept, not a committee, department, joint owners or a coordinator; others act as action or control owners.",
             "Revalidate ownership regularly and after reorganizations, departures or process changes.",
             "IT usually owns technology controls; the business owns the risk those controls treat.",
-            "Ownership takes hold when the person given it accepts the role; then judge owners by response choices and approvals they signed, not by the register."
+            "Ownership takes hold when the person given it accepts the role; judge owners by the response choices they signed, not the register."
           ],
           "example": "A city council's payroll risk is listed under 'Finance and IT' with no single name. Lina, the council's risk analyst, maps the payroll process and finds that the payroll manager runs it but can approve only small purchases. Lina proposes the finance director as risk owner and the payroll manager as control owner, and asks senior management to confirm the assignment, with the director accepting the role in writing.",
           "audit_focus": {
@@ -515,9 +515,9 @@
           "definition": "Ongoing vendor monitoring is reviewing a supplier's performance, controls and risk, using assurance reports, SLA results, incidents and changes in its suppliers.",
           "why_it_matters": "A vendor that was sound at onboarding can change owners, cut staff, add subcontractors or suffer a breach. Monitoring catches drift in time to respond.",
           "how_it_works": [
-            "Read assurance reports for scope: which services, locations and controls were tested, over what period.",
-            "Act on report exceptions and complementary user entity controls, the customer's own duties; when scope fits and neither is open, rely on the report rather than repeat its tests.",
-            "Track fourth parties: the vendor's own subcontractors, especially those that host or process your data.",
+            "Read assurance reports for scope: services, locations, controls and period tested; where one stops, internal audit can use the contract's audit rights.",
+            "Act on report exceptions and complementary user entity controls, the customer's own duties; when scope fits and neither is open, rely on the report.",
+            "Track fourth parties: the vendor's own subcontractors, especially those holding your data.",
             "Watch concentration: services on one provider or region, even via different vendors, can fail together; rate that as one scenario.",
             "Scale review depth and frequency to criticality; reassess after a breach, sale, missed SLAs, a new subcontractor, or more sensitive data sent than was vetted."
           ],
@@ -981,7 +981,7 @@
             "NIST SP 800-53 Rev. 5 is a security and privacy control catalog; SP 800-53B holds its baselines, and overlays, such as SP 800-82's for OT, tailor them.",
             "CSF 2.0 lists outcomes under six functions, Govern among them, without prescribing the controls that achieve them.",
             "Tailor by scoping out what does not apply, setting parameter values from the organization's own risk and operations, and adding controls for risks the baseline misses.",
-            "Map internal controls to every framework and regulation that applies, so one control can meet several requirements; re-map when a revision materially changes content.",
+            "Map internal controls to every framework and regulation that applies, AI RMF outcomes included, so one control meets several; re-map after material revisions.",
             "A shared or inherited control counts for a new system only once its settings are checked against that system's risk."
           ],
           "example": "A software-as-a-service provider adopts a large catalog whole to win a government contract; its backlog reaches 400 items. Oluwaseun, the risk analyst, maps the catalog to the provider's own risk assessment, marks controls that cannot apply to a cloud-only service and proposes a tailored baseline, with a recorded reason for each change, to the chief technology officer.",
@@ -1160,7 +1160,7 @@
           "how_it_works": [
             "Define the desired state from appetite, policy, regulation or a framework profile.",
             "Describe the current state from control test results, not policies, owners' statements or old ratings.",
-            "Separate design gaps (cannot work as built: a return path anyone can use unrecorded, a limit dodged by splitting) from operating gaps (built right, not performed).",
+            "Separate design gaps (cannot work as built: an unrecorded return path, a limit dodged by splitting, payments routed around the check) from operating gaps (built right, not performed).",
             "Rank gaps by the risk they leave open, not by how easy they are to fix.",
             "Turn agreed gaps into action plans with owners and dates.",
             "Before removing a control as a duplicate, compare what each catches: a range check passes wrong values that look plausible, which a check against the source finds."
@@ -1597,7 +1597,8 @@
             "Prefer system-generated data over hand-kept spreadsheets, and record where each figure came from; a recurring capture flaw is fixed at source by the data's owner.",
             "Combine internal data, such as incidents and test results, with external data, such as threat reports and industry losses.",
             "Collect at a frequency that matches how fast the risk changes: flaws exploited within days need weekly figures from system records, not a quarterly survey.",
-            "To check that a KRI warns early, compare its past values with when related incidents or losses occurred."
+            "To check that a KRI warns early, compare its past values with when related incidents or losses occurred.",
+            "Check each feed for completeness as data arrives: an automatic alert when a source stops sending keeps silence from being reported as zero events."
           ],
           "example": "A grocery chain's monthly risk report takes store incident counts from emails sent by store managers. Isabela, a risk analyst, finds that some stores report only serious incidents. They propose taking counts directly from the incident ticketing system, with one shared definition of an incident and a named data owner, before the next quarterly report to the operations committee.",
           "audit_focus": {
@@ -1867,7 +1868,7 @@
           "how_it_works": [
             "Relevant: the KRI tracks a driver of a specific high-priority scenario; find candidates in the causes of its past events, then check generic lists against them.",
             "Measurable: the data is available, consistent and cheap to collect; count items when each is its own path to harm, as a share of a growing base can hide growth.",
-            "Predictive: a leading indicator changes before the risk event, not after it.",
+            "Predictive: it moves before the risk event, early enough for the planned response to work.",
             "Thresholds and owner: each KRI has limits tied to tolerance and a person who acts on a breach.",
             "Keep the set small, focused on the top risks and reviewed as they change; a KRI green while its risk occurred is replaced if off the losses' path, otherwise retuned.",
             "Check the KRI sits on the scenario's own path: for data copied before staff leave, watch downloads during notice, not account removal afterward."
@@ -2338,7 +2339,7 @@
           "how_it_works": [
             "Use many sources: threat intelligence, regulators' consultations, industry groups, vendors, research and front-line staff; look as far ahead as the plans and assets the scan informs.",
             "Look for opportunities too, such as a new technology that could cut cost or risk.",
-            "Screen signals for relevance to objectives and assets, and rank them for senior management's choice of what to study; judge the scan by risks flagged before harm.",
+            "Screen signals for relevance and potential impact on objectives, not likelihood alone; rank them for senior management's choice of what to study; judge the scan by risks flagged before harm.",
             "Treat as emerging only what is still uncertain, not merely distant; give each such risk an owner to watch it, and rate dated, understood changes normally.",
             "Evaluate new technologies, such as generative AI, for threats, vulnerabilities and opportunities before use spreads.",
             "A peer's incident on the same technology, or an industry report, is valid evidence to record an emerging risk; do not wait for an in-house event."
