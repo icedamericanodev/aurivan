@@ -4568,14 +4568,14 @@
       "question": "A title insurer's BIA gives its closing system a four-hour RTO, needing a $400,000 standby site, but ignores that closers can work on paper for two days. What should the risk analyst recommend FIRST?",
       "options": {
         "A": "Have the closing process owner weigh the site's cost against BIA impact",
-        "B": "Reopen the closing system's RTO in the BIA, counting the manual workaround",
+        "B": "Have the closing process owner revisit the RTO given manual closings",
         "C": "Ask the IT recovery owner for a cheaper design meeting the RTO",
         "D": "Have the closing data owner set a matching four-hour RPO"
       },
       "correct": "B",
       "key_concept": "A recovery objective reflects how long the business can really manage without a system; a workable manual workaround lengthens that time and lowers recovery cost.",
       "pre_read": "Check what the business can still do while the system is down before judging the recovery spending.",
-      "correct_explanation": "An RTO states how long a system can stay down before the process it supports suffers unacceptable harm. Closers can keep working on paper for two days, so the four-hour RTO overstates the need, and the BIA should be reopened with that workaround counted. Having the owner weigh the standby site's cost against impact is the runner-up: cost-benefit matters, but weighed against an overstated objective it would justify spending the workaround makes unnecessary.",
+      "correct_explanation": "An RTO is the recovery time the business allows a function or resource, set through the BIA. Closers can keep working on paper for two days, so the four-hour RTO overstates the need, and the closing process owner should revisit it with that workaround counted. Having the same owner weigh the standby site's cost against impact is the runner-up: cost-benefit matters, but against an overstated objective it would justify spending the workaround makes unnecessary.",
       "wrong_explanations": {
         "A": "Cost-benefit is the owner's call, but here it would compare the site's cost with a four-hour need the paper workaround already contradicts; correct the objective first.",
         "C": "A cheaper design still serves a four-hour objective the business does not need; objectives come from business tolerance before recovery is bought.",
@@ -4592,7 +4592,7 @@
         "Manual workaround",
         "Recovery cost"
       ],
-      "_provenance": "Authored from concept: notes 2B2.2 (MTO, RTO and RPO: a workable manual process lets a system's RTO run longer; shorter objectives cost more). Round 13, 12 Nov 2026: original scenario (a title insurer's BIA sets a four-hour RTO for its closing system, needing a $400,000 standby site, though closers can work on paper for two days) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. The key is naturally the longest option (by 3 characters). Owner shape: three options name an owner and the key is the one that does not; the runner-up A names the closing process owner, and the easy distractors C and D name the IT recovery owner and the data owner. Neighbours checked (stems and options): crisc_d2_035 (tested recovery longer than the MTO), crisc_d2_012 (IT sets an AI service's RTO from the vendor), crisc_d2_080 (every head claims a one-hour limit), crisc_d2_034 (RPO), crisc_d3_121 (a standby site as the response to an outage above appetite), crisc_d3_056 (a tested manual process for an AI outage), crisc_d1_063 (a tested workaround), CISA d4_270 (restore plus catch-up exceeds the MTD), d4_133 and CC cc_d2_122 (BIA before buying a site), CC cc_d2_008 (hot site against a three-week RTO); no mirror. Keep apart from crisc_d2_035 and CC cc_d2_008 in practice sets.",
+      "_provenance": "Authored from concept: notes 2B2.2 (MTO, RTO and RPO: a workable manual process lets a system's RTO run longer; shorter objectives cost more). Round 13, 12 Nov 2026: original scenario (a title insurer's BIA sets a four-hour RTO for its closing system, needing a $400,000 standby site, though closers can work on paper for two days) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Owner shape: all four options name an owner (k=4); the key B and the runner-up A both name the closing process owner, and the easy distractors C and D name the IT recovery owner and the data owner. Neighbours checked (stems and options): crisc_d2_035 (tested recovery longer than the MTO), crisc_d2_012 (IT sets an AI service's RTO from the vendor), crisc_d2_080 (every head claims a one-hour limit), crisc_d2_034 (RPO), crisc_d3_121 (a standby site as the response to an outage above appetite), crisc_d3_056 (a tested manual process for an AI outage), crisc_d1_063 (a tested workaround), CISA d4_270 (restore plus catch-up exceeds the MTD), d4_133 and CC cc_d2_122 (BIA before buying a site), CC cc_d2_008 (hot site against a three-week RTO); no mirror. Keep apart from crisc_d2_035 and CC cc_d2_008 in practice sets. Review fixes 12 Nov 2026 (round 13 concept review and blind test): correct_explanation now defines the RTO as the recovery time the business allows, set through the BIA (not the MTO or AIW); key B reworded to have the closing process owner revisit the RTO, so it is no longer the longest option or the lone option without an owner ('manual closings' rather than the stem's 'paper', so the key does not echo the stem).",
       "style_version": 2
     },
     {
@@ -4607,7 +4607,7 @@
         "A": "Send each entry to its risk owner to choose the response",
         "B": "Run a cost-benefit check of mitigating each of the 40 entries",
         "C": "Ask internal audit to validate the 40 recorded responses",
-        "D": "Draft a mitigation action plan for each of the 40 entries"
+        "D": "Have control owners draft a mitigation plan for each entry"
       },
       "correct": "A",
       "key_concept": "A register's response field records the risk owner's decision; the risk team analyzes and presents the options but does not choose.",
@@ -4616,10 +4616,10 @@
       "wrong_explanations": {
         "B": "Cost-benefit analysis supports the owner's choice, but checking only mitigation presumes the response and keeps the decision with the risk team instead of the owners.",
         "C": "Internal audit gives independent assurance; it neither chooses nor confirms risk responses, and its review would not supply the owners' missing decisions.",
-        "D": "Action plans follow a chosen response; drafting 40 mitigation plans builds on a choice that no one with authority over these risks has made."
+        "D": "Control owners run controls but do not choose risk responses; plans drafted now would build on a response no one with authority over these risks has chosen."
       },
       "tips": [
-        "Eliminate: C sends the entries to internal audit, which gives assurance but owns no risk, and D plans actions for a response no owner has chosen.",
+        "Eliminate: C sends the entries to internal audit, which gives assurance but owns no risk, and D has control owners plan actions for a response no risk owner has chosen.",
         "Final two: A beats B because the response is the risk owner's decision; costing mitigation helps the owner choose but cannot stand in for that choice.",
         "Exam cue: a register field that records a decision is filled in by the person entitled to make it; the risk team supplies the analysis behind it."
       ],
@@ -4629,7 +4629,7 @@
         "Risk response",
         "Risk register fields"
       ],
-      "_provenance": "Authored from concept: notes 2B3.1 (Register Fields and Ownership: the risk owner has authority to decide the response). Round 13, 12 Nov 2026: original scenario (a credit bureau's risk team records 'mitigate' on 40 new register entries before any owner sees them) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Owner shape: a keyed lone owner option (calibration rule 21); the runner-up and both easy distractors name no owner. Neighbours checked (stems and options): crisc_d2_060 (IT security named owner on every entry), crisc_d2_075 (the risk team updates entries without owners), crisc_d2_013 (status closed on approval), crisc_d2_020 (present further options to the owner), crisc_d2_064 (its distractor asks internal audit to confirm a zero rating: a different lesson and code), crisc_d1_093 (owner acknowledgment of a new entry), crisc_d1_050, crisc_d3_090 (risk owner versus action owner), crisc_d3_051 (a control owner marks a risk acceptable); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_060 and crisc_d3_090 in practice sets.",
+      "_provenance": "Authored from concept: notes 2B3.1 (Register Fields and Ownership: the risk owner has authority to decide the response). Round 13, 12 Nov 2026: original scenario (a credit bureau's risk team records 'mitigate' on 40 new register entries before any owner sees them) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Owner shape: k=2, the key A names the risk owner and the easy distractor D names control owners; the runner-up B and distractor C name no owner. Neighbours checked (stems and options): crisc_d2_060 (IT security named owner on every entry), crisc_d2_075 (the risk team updates entries without owners), crisc_d2_013 (status closed on approval), crisc_d2_020 (present further options to the owner), crisc_d2_064 (its distractor asks internal audit to confirm a zero rating: a different lesson and code), crisc_d1_093 (owner acknowledgment of a new entry), crisc_d1_050, crisc_d3_090 (risk owner versus action owner), crisc_d3_051 (a control owner marks a risk acceptable); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_060 and crisc_d3_090 in practice sets. Review fixes 12 Nov 2026 (round 13 concept review and blind test): distractor D reworded to have control owners draft the mitigation plans, so the key is no longer the lone option naming an owner; its wrong explanation and the Eliminate tip updated to match.",
       "style_version": 2
     },
     {
