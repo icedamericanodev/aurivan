@@ -489,12 +489,12 @@
           "definition": "A vulnerability is a weakness in the design, implementation, operation or internal control of a process or system that a threat could exploit.",
           "why_it_matters": "Many serious losses combine a technical flaw with a process gap or human error; scanner output alone leaves process and people weaknesses unmanaged.",
           "how_it_works": [
-            "People weaknesses include missing skills, weak awareness, key-person dependency and too few staff for critical tasks.",
+            "People weaknesses include weak awareness, missing skills, key-person dependency and too few staff, weighed by what those people can reach.",
             "Process weaknesses include missing approvals, poor segregation of duties, untested recovery plans and undocumented procedures.",
-            "Technology weaknesses include unpatched software, misconfigurations, default passwords, unsupported systems and over-broad access, which an AI assistant searching with users' rights makes easy to reach.",
+            "Technology weaknesses include unpatched software, misconfigurations, default passwords, unsupported systems and over-broad access, easy to reach through an AI assistant using users' rights.",
             "A control deficiency found in testing or audit is a vulnerability; one with a shared cause, such as a standard install, is recorded against that cause.",
             "Predisposing conditions, such as a flood-prone site, change likelihood even when nothing is broken.",
-            "Walkthroughs and control tests find process and people weaknesses; documents and self-assessments show intent; uncredentialed scans miss many installed-software flaws; a rare-item AI detector is judged by its misses."
+            "Walkthroughs and control tests find process and people weaknesses; documents and self-assessments show intent; uncredentialed scans miss many installed-software flaws; rare-item AI detectors are judged by misses."
           ],
           "compare": {
             "columns": [
@@ -698,7 +698,7 @@
           "how_it_works": [
             "Actor: who or what causes it, such as a criminal group, a careless user or a failed cooling unit.",
             "Event: what happens, such as malicious encryption, disclosure, an error or an outage.",
-            "Asset: the process, system, data or people affected.",
+            "Asset: the process, system, data or people affected; an AI bias scenario names the group the model treats unfairly, not just 'some applicants'.",
             "Time: when or how long, such as payroll week or outages over four hours; when harm depends on timing, rate the credible time that hurts most.",
             "Consequence: the effect on objectives in business terms, such as lost revenue, fines or harm to patients; harm from altered data grows until someone notices.",
             "NIST IR 8286A Rev. 1 suggests a cause-and-effect sentence: an actor exploits a weakness in an asset, resulting in a business impact."
@@ -970,7 +970,7 @@
             "Prepare: set purpose, scope, assumptions (checking with owners any that decide a rating), constraints, sources, risk model and approach (threat-, impact- or vulnerability-oriented), chosen partly by where information is strongest.",
             "Conduct: identify threat sources and events, vulnerabilities and predisposing conditions, then determine likelihood, impact and risk.",
             "Communicate: give results to decision makers in a form they can act on, like a briefing, report or dashboard.",
-            "Maintain: monitor risk factors and update the assessment when systems, threats or the business change.",
+            "Maintain: monitor risk factors; without a significant change, update just the factors that changed.",
             "The official requesting the assessment sets its scope; a third-party part of the process found outside it goes back to that official to decide.",
             "In ISO 31000, ISO/IEC 27005 and the ISACA Glossary, risk evaluation compares each rating with the criteria and appetite; NIST SP 800-30 leaves this to decision makers."
           ],
@@ -1300,7 +1300,7 @@
             "Update triggers include incidents, near misses, control test results, audit findings, new threats, projects and reorganizations.",
             "Status follows evidence: an entry moves to treated only when the response is implemented and working, not when it is planned.",
             "Current and residual ratings credit a control only after it is implemented and tested, not on the day it is approved.",
-            "Each owner reviews their entries on a set cycle, and KRIs flag when an earlier review is needed.",
+            "Each owner reviews their entries on a set cycle; a stated trigger, such as a KRI breach, calls for an earlier review, and a request alone is not one.",
             "Closing an entry needs a reason, such as the asset being retired or the risk avoided, and the owner's approval; closed entries stay in the register as history.",
             "A new or emerging risk, such as a newly launched AI system, is entered early with its rating's uncertainty stated and an early review date."
           ],
@@ -1728,7 +1728,7 @@
           "definition": "Control effectiveness is how well a control actually reduces a risk's likelihood or impact; it sets the gap between inherent and residual risk.",
           "why_it_matters": "A residual rating that assumes controls work, without evidence, can hide a risk far above appetite. Effectiveness must be shown, not assumed.",
           "how_it_works": [
-            "Design effectiveness asks whether the control, run as intended, would address the scenario's cause.",
+            "Design effectiveness asks whether the control, run as intended, would address the scenario's cause, and which factor it changes: backups cut impact, not likelihood.",
             "Operating effectiveness asks whether it actually ran as designed over the period, shown by testing or monitoring.",
             "Evidence includes control test results, key control indicators (KCIs), audit findings and incident history; a detective control's clean record proves little until a test shows it would catch an event.",
             "An untested or failed control earns little or no reduction in the current rating; one that repeated tests show working earns its credit without waiting for a review.",

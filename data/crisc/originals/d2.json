@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review). Repair round 1, 31 Oct 2026 (independent verification). Round 3 crisc_d2_046 to crisc_d2_065, 4 Nov 2026. Round 7 crisc_d2_091 to crisc_d2_094, 4 Nov 2026. Round 8 crisc_d2_095 to crisc_d2_099, 5 Nov 2026. Round 9 crisc_d2_100 to crisc_d2_104, 5 Nov 2026. Round 10 crisc_d2_105 to crisc_d2_110, 5 Nov 2026. Round 11 crisc_d2_111 to crisc_d2_115, 5 Nov 2026. Round 12 crisc_d2_116 to crisc_d2_121, 5 Nov 2026. Round 14 crisc_d2_127 to crisc_d2_132, 12 Nov 2026. Round 15 crisc_d2_133 to crisc_d2_137, 12 Nov 2026. Round 16 crisc_d2_138 to crisc_d2_143, 12 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review). Repair round 1, 31 Oct 2026 (independent verification). Round 3 crisc_d2_046 to crisc_d2_065, 4 Nov 2026. Round 7 crisc_d2_091 to crisc_d2_094, 4 Nov 2026. Round 8 crisc_d2_095 to crisc_d2_099, 5 Nov 2026. Round 9 crisc_d2_100 to crisc_d2_104, 5 Nov 2026. Round 10 crisc_d2_105 to crisc_d2_110, 5 Nov 2026. Round 11 crisc_d2_111 to crisc_d2_115, 5 Nov 2026. Round 12 crisc_d2_116 to crisc_d2_121, 5 Nov 2026. Round 14 crisc_d2_127 to crisc_d2_132, 12 Nov 2026. Round 15 crisc_d2_133 to crisc_d2_137, 12 Nov 2026. Round 16 crisc_d2_138 to crisc_d2_143, 12 Nov 2026. Round 18 crisc_d2_149 to crisc_d2_154, 12 Nov 2026.",
     "schema_version": 1
   },
   "domain": 2,
@@ -5481,6 +5481,228 @@
         "Event data completeness"
       ],
       "_provenance": "Authored from concept: notes 2A1.2 (Internal and External Event Sources: complaints and staff reports undercount events; complete system records show how often an event occurs). Round 17, 12 Nov 2026: original scenario (a recruitment firm records every CV it sends and every candidate's consent in its CRM, and the analyst needs the frequency of unconsented submissions) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 17 asks: a lone owner on an easy distractor (D, one person's estimate); a 'Which ... BEST' stem with noun-phrase options; the stem's 'CRM' and 'records' echoed in the runner-up as well as the key; key not the longest option. Owner shape: k=1, the lone owner option is an easy distractor. Neighbours checked (stems, options, key concepts, explanations and Exam cues): crisc_d2_046 (a loss threshold omits near misses), crisc_d2_047 (event records naming cause, impact and scenario), crisc_d2_111 (reviewers' logged corrections as an AI system's events), crisc_d2_132 (two teams' outage logs: a paused family, not used here), crisc_d2_140 and crisc_d2_096 (bases for non-adversarial likelihood), crisc_d2_021 and crisc_d2_107 (outside figures adjusted for local exposure), crisc_d3_190 (a share of orders missing a weight as a KRI: a monitoring measure, not an event source), crisc_d3_075 (ratings that change only at the annual review), CC cc_d2_015 and CISA d5_170 (blame and underreporting); no mirror found. Review 12 Nov 2026 (round 17 concept review and blind test): key concept no longer claims complete records show how often an event 'really' occurs (CVs sent outside the CRM or consent never logged are missed); key reworded ('without any') so it is no longer strictly the shortest option (54 against 56-59 characters; now 58).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_149",
+      "domain": 2,
+      "subtopic": "2A3 Vulnerability management. Phishing test results by group",
+      "principle_id": "objectives-first",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A bottled-gas distributor's phishing tests show drivers, whose handhelds open only route lists, click 30% of lures; finance clerks, who release supplier payments, click 9%. Which vulnerability should the risk analyst rate as GREATEST?",
+      "options": {
+        "A": "The drivers' 30% click rate on route-list handhelds",
+        "B": "The phishing filter that let the test lures reach staff",
+        "C": "The finance clerks' 9% click rate with payment rights",
+        "D": "The average click rate across every group in the firm"
+      },
+      "correct": "C",
+      "key_concept": "A people weakness is weighed by what those people can reach, so fewer clicks by staff who release payments can outweigh more clicks elsewhere.",
+      "pre_read": "Weigh every fact the stem gives about each group, not just the headline numbers.",
+      "correct_explanation": "A vulnerability's severity depends on the harm if it is exploited. Finance clerks who release supplier payments give a successful lure a direct route to diverted funds, so their 9% click rate is the weakness that matters most to the firm's scenarios. The drivers' 30% rate is the runner-up: it is the highest, but a compromised handheld opens only route lists, so each click exposes far less.",
+      "wrong_explanations": {
+        "A": "The highest rate draws the eye, but a compromised driver handheld opens only route lists, so each of those clicks exposes far less than a clerk's.",
+        "B": "A phishing test is built to reach staff so it measures how people respond; the lures arriving is the test's design, not a filter gap.",
+        "D": "A firm-wide average blends groups with very different access and hides that the clicks that matter most come from the few who release payments."
+      },
+      "tips": [
+        "Eliminate: B reads lures designed to reach staff as a filter gap, and D averages away the differences in what each group can reach.",
+        "Final two: C beats A because severity depends on what a click exposes; fewer clicks by staff who release payments outweigh more clicks on handhelds that open only route lists.",
+        "Exam cue: weigh a people weakness by how often people fall for an attack and by what their access exposes; the highest rate need not be the greatest exposure."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: the severity of a vulnerability depends on the adverse impact if it is exploited, so it is context-dependent); NIST IR 8286A Rev. 1 Section 2.2.3 (Vulnerability Identification)",
+      "related_concepts": [
+        "People vulnerabilities",
+        "Vulnerability severity",
+        "Phishing susceptibility"
+      ],
+      "_provenance": "Authored from concept: notes 2A3.1 (Vulnerabilities in People, Process and Technology: people weaknesses are weighed by what those people can reach). Round 18, 12 Nov 2026: original scenario (a bottled-gas distributor's phishing tests: drivers whose handhelds open only route lists click 30% of lures; finance clerks who release supplier payments click 9%) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 18 asks: each/every/all/any on a wrong option (D, 'every group in the firm') in an item whose key carries none; no Have/Ask opener on a wrong option; key neither the longest nor the shortest option by words; the batch's analysis item. Owner shape: no option names an owner. Neighbours checked (stems, options, key concepts, explanations and Exam cues): crisc_d2_026 (scans cannot find people or process weaknesses), crisc_d2_006 and crisc_d2_052 (process weaknesses found by tests and walkthroughs), crisc_d2_027, crisc_d2_114 and crisc_d2_093 (ranking technical flaws by exposure), crisc_d2_116 (key-person dependency), crisc_d4_119 (phishing clicks and training language), crisc_d1_024 (near-miss reports and blame), CISA d5_104, d5_114, d5_117, d5_226 and d5_239 (phishing metrics for awareness programs), CC cc_d2_015, cc_d2_108 and cc_d2_137 (click-rate readings for an awareness lead); none weighs click rates by what each group's access exposes; no mirror found.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_150",
+      "domain": 2,
+      "subtopic": "2A4 Risk scenario development and evaluation. Bias found in a scoring model",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A tax-preparation firm's fairness test found its AI refund-advance model declines self-employed filers twice as often as salaried filers with similar repayment records. Which scenario should the risk analyst record as BEST?",
+      "options": {
+        "A": "Self-employed filers get declined twice as often as similar salaried filers",
+        "B": "A biased advance model draws penalties under fair-lending rules",
+        "C": "Outside attackers poison the model's training data to approve fraudulent filers",
+        "D": "The model declines eligible self-employed filers, drawing fines and complaints"
+      },
+      "correct": "D",
+      "key_concept": "A bias scenario names the model, the unfair decision, the group affected and the consequence; a test finding alone is evidence, not a ratable scenario.",
+      "pre_read": "Read each statement as an entry its owner must rate against appetite.",
+      "correct_explanation": "A scenario must be specific enough to rate and own: an actor, an event, the people or asset affected, and the consequence. Here the model is the actor, declining eligible self-employed filers is the event, and fines and complaints are the consequence. The bare test finding is the runner-up: it names the group and the disparity, but it stops before any consequence, so no one can rate its impact.",
+      "wrong_explanations": {
+        "A": "It restates what the test found, naming the group and the disparity, but gives no consequence for filers or the firm, so its impact cannot be rated.",
+        "B": "It asserts bias and a penalty without saying which applicants are treated unfairly or how, so two raters could score it very differently.",
+        "C": "Poisoning is a real AI threat, but this describes a different scenario: an attack to approve fraud, not the unfair declines the test found."
+      },
+      "tips": [
+        "Eliminate: B names no affected group or specific event, and C describes a poisoning attack to approve fraud rather than the unfair declines the test found.",
+        "Final two: D beats A because a scenario must carry its consequence; A restates the test result, which shows the event and the group but no harm to rate.",
+        "Exam cue: a usable bias scenario names the model, what it does wrong, which group it harms and the business consequence; a test finding alone is evidence for one."
+      ],
+      "framework_ref": "NIST IR 8286A Rev. 1 Section 2.2.5 (Recording Identified Risks: risk scenarios in cause-and-effect form); NIST AI 100-1 (AI RMF 1.0) Section 3.7 (Fair – with Harmful Bias Managed: bias can occur without discriminatory intent and can amplify harms to individuals, groups, organizations and society)",
+      "related_concepts": [
+        "Risk scenarios",
+        "AI bias",
+        "Affected groups"
+      ],
+      "_provenance": "Authored from concept: notes 2A4.1 (Anatomy of a Risk Scenario: actor, event, asset or people affected, time and consequence; an AI bias scenario names the group the model treats unfairly). Round 18, 12 Nov 2026: original scenario (a tax-preparation firm's fairness test finds its AI refund-advance model declines self-employed filers twice as often as salaried filers with similar repayment records, and the analyst chooses the scenario to record) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 18 asks: the domain's one AI item, on the assigned angle (a bias risk scenario for an AI scoring model naming actor, event, affected group and consequence); no Have/Ask opener on a wrong option; key neither the longest nor the shortest option by words (10 against 9-11); not a 'Which of the following' stem. Owner shape: no option names an owner. Paused families avoided: no human review of AI decisions, no automated validation of AI output. Neighbours checked (stems, options, key concepts, explanations and Exam cues): crisc_d2_119 (the best-written ransomware scenario statement: same option type, different lesson, here a test finding offered as the runner-up), crisc_d2_007 and crisc_d2_094 (generic or control-shaped entries restated), crisc_d2_054 (adding the consequence to a ransomware draft), crisc_d2_139 (impact understated in an insider scenario), crisc_d2_145 and crisc_d2_076 (AI attack threats), crisc_d4_014 (testing a vendor AI tool for bias before use), AAIA aaia_d2_013, aaia_d2_023, aaia_d2_245 and aaia_d2_246 (fairness testing by group: an auditor's tests, not scenario writing), CISA d2_163 and d4_231 (responses to a biased model); no mirror found.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_151",
+      "domain": 2,
+      "subtopic": "2B1 Risk assessment concepts and standards. Yearly radar network assessment",
+      "principle_id": "proportionate-response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A weather service's risk team redoes its full radar network assessment yearly; monitoring shows only a new threat group and two retired radars since the last one. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Have the team assess just the risk factors that changed",
+        "B": "Repeat the full assessment from scratch with the radar owners",
+        "C": "Carry the previous ratings forward without the two radars",
+        "D": "Swap the assessment for each radar owner's self-rating"
+      },
+      "correct": "A",
+      "key_concept": "Maintaining an assessment means monitoring its risk factors and, unless a significant change calls for a full redo, assessing the factors that changed.",
+      "pre_read": "Note what the stem says monitoring already shows before deciding how much to redo.",
+      "correct_explanation": "NIST SP 800-30 treats maintenance as monitoring risk factors and updating the assessment with the results. Unless a significant change calls for revisiting the whole assessment, an update assesses just the factors that changed: here the new threat group and the retired radars. Repeating the full assessment with the radar owners is the runner-up: it is thorough and involves the owners, but it re-rates what monitoring shows is unchanged.",
+      "wrong_explanations": {
+        "B": "A full redo is thorough and involves the owners, but without a significant change it spends the effort re-rating factors that monitoring shows have not changed.",
+        "C": "Dropping the retired radars is right, but carrying the rest forward ignores the new threat group, a changed risk factor the update has to assess.",
+        "D": "Owners' self-ratings replace analysis with judgment and lose the assessment's common method, so the ratings cannot be compared with each other or with appetite."
+      },
+      "tips": [
+        "Eliminate: C leaves out the new threat group that monitoring found, and D replaces the assessment's common method with each owner's own judgment.",
+        "Final two: A beats B because, with no significant change, an update assesses the factors that changed; a full redo spends its effort re-rating what monitoring shows is stable.",
+        "Exam cue: an assessment stays live through monitoring; redo it in full after a significant change, and otherwise update the factors that have moved."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 3.4 Task 4-2 (Update Risk Assessment: unless significant changes call for revisiting the whole assessment, updates assess only how selected risk factors have changed); NIST SP 800-30 Rev. 1 Section 3.4 (Maintaining the Risk Assessment)",
+      "related_concepts": [
+        "Maintaining a risk assessment",
+        "Risk factor monitoring",
+        "Proportionate assessment"
+      ],
+      "_provenance": "Authored from concept: notes 2B1.2 (The Risk Assessment Process and Scope: Maintain step; without a significant change, update just the factors that changed). Round 18, 12 Nov 2026: original scenario (a weather service's risk team redoes its full radar network assessment every year, though monitoring shows only a new threat group and two retired radars) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 18 asks: a key opening 'Have' where it is genuinely right, with no Have/Ask opener on a wrong option; each/every/all/any on a wrong option (D, 'each radar owner's') in an item whose key carries none; an owner pair SPLIT between the runner-up (B) and an eliminated option (D), the 'runner-up + an eliminated option' split named in the round 18 owner-shape ask; no period word on any option; key neither the longest nor the shortest option by words. Owner shape: k=2, the key outside the pair, one owner option the runner-up. Neighbours checked (stems, options, key concepts, explanations and Exam cues): crisc_d2_010 (a change after approval calls for an update), crisc_d2_144 (new records under tested controls: re-rate residual risk), crisc_d2_009 and crisc_d2_123 (purpose and scope), crisc_d2_068 (a generic library tailored, not copied), crisc_d3_075 and crisc_d3_076 (ratings that change only at the annual review; scheduled reviews kept beside triggers), crisc_d1_130 (an out-of-date asset inventory), crisc_d3_207 and crisc_d2_147 (changes that meet no trigger wait for the schedule: here the change is known and assessed, not deferred); CISA, CC and AAIA searched for full versus partial reassessment: no mirror found.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_152",
+      "domain": 2,
+      "subtopic": "2B3 Risk register. A re-rating request between reviews",
+      "principle_id": "proportionate-response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A notary office's register entries are reviewed every six months, or sooner on a stated trigger; none has fired for the e-signing fraud entry IT wants re-rated now. What is the risk analyst's BEST response?",
+      "options": {
+        "A": "Re-rate the entry now using current threat data",
+        "B": "Escalate the entry to its risk owner for an urgent decision",
+        "C": "Have its owner review it at the next scheduled review",
+        "D": "Raise the entry's likelihood rating at IT's request"
+      },
+      "correct": "C",
+      "key_concept": "Entries are reviewed on the owner's cycle, sooner only when a stated trigger fires; with none met, an entry waits for its next scheduled review.",
+      "pre_read": "Find the fact that decides whether this entry needs attention before its cycle.",
+      "correct_explanation": "The register's own rules say when an entry needs early review: a stated trigger, such as an incident or a KRI breach. None has fired, so the owner reviews the entry at the next scheduled review, as the cycle intends. Re-rating now with current threat data is the runner-up: it looks diligent, but without a trigger it spends owner and analyst effort with no sign that the risk has changed.",
+      "wrong_explanations": {
+        "A": "Re-rating now looks diligent, but the register's rules call for an early review only when a trigger fires, and none has, so nothing shows the risk has moved.",
+        "B": "Escalation is for a breach or a fired trigger that needs a decision; with none, there is nothing for the risk owner to decide urgently.",
+        "D": "Raising a rating on request alone changes it without evidence; a rating moves on analysis of what has changed, not on who asks."
+      },
+      "tips": [
+        "Eliminate: B escalates when no trigger has fired and nothing awaits a decision, and D changes a rating on request alone, with no evidence behind it.",
+        "Final two: C beats A because the register's own triggers decide when an entry is reviewed early; with none fired, the scheduled owner review is the proportionate answer.",
+        "Exam cue: a register's review cycle and triggers are its rules for re-rating; a request on its own is not a trigger, so the entry keeps its scheduled review."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 3.8 (Creating and Maintaining an Enterprise-Level Cybersecurity Risk Register: risk guidance declares the frequency with which the register will be updated); NIST IR 8286 Rev. 1 Section 3.6.1 (Continuous Risk Monitoring: monitoring that shows a risk approaching its tolerance level triggers a review of the risk)",
+      "related_concepts": [
+        "Risk register maintenance",
+        "Review triggers",
+        "Scheduled owner review"
+      ],
+      "_provenance": "Authored from concept: notes 2B3.2 (Keeping the Register Current: each owner reviews their entries on a set cycle; a stated trigger calls for an earlier review, and a request alone is not one). Round 18, 12 Nov 2026: original scenario (a notary office reviews register entries every six months or sooner on a stated trigger; none has fired for its e-signing fraud entry, which IT wants re-rated now) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 18 asks: the domain's one keyed wait, on a register entry that meets none of its stated review triggers, with the no-trigger fact in the stem and 'next scheduled' in the key; no new wrong wait option; a key opening 'Have', with no Have/Ask opener on a wrong option; an owner pair SPLIT between the key (C) and an eliminated option (B); no period word on any option; key neither the shortest option by words nor alone the longest. Owner shape: k=2, the key in the pair, the other owner option eliminated. Not about BIA revision triggers (paused). Compared with the eight existing keyed waits: crisc_d1_123 (a reported change within thresholds), crisc_d1_139 (trained responders and the yearly exercise), crisc_d1_169 (impact bands re-based on the framework's schedule), crisc_d2_147 (a BIA revision trigger), crisc_d3_146 (an exception within its term), crisc_d3_161 (a root-cause review days away), crisc_d3_207 (a hosting change that meets no reassessment trigger) and crisc_d4_132 (a standard change on its routine path); this item's own lesson is that a request on its own is not a trigger for re-rating a register entry, and its Exam cue is worded apart from crisc_d2_147's and crisc_d3_207's. Other neighbours checked (stems, options, key concepts, explanations and Exam cues): crisc_d2_039 (ratings revised after incidents and failed tests), crisc_d2_075 (owner reviews on a set cycle), crisc_d3_075 and crisc_d3_076 (triggers beside scheduled reviews), crisc_d1_069 (a policy reviewed early when a risk is above appetite), crisc_d3_135 (a vendor move that does trigger reassessment); CISA, CC and AAIA searched for re-rating requests without a trigger: no mirror found.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_153",
+      "domain": 2,
+      "subtopic": "2B4 Risk analysis methodologies. Choosing between two generators",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An animal feed producer holds 12 years of costed power-cut mill stoppage records; its board must choose between two backup generators differing in price and coverage. Which method BEST supports the risk analyst's advice?",
+      "options": {
+        "A": "Qualitative ratings of each option's risk as high, medium or low",
+        "B": "Semi-quantitative scores for each option on 1–5 scales",
+        "C": "A ranking of the options by the mill's process owner",
+        "D": "Quantitative estimates of the loss each option would avoid"
+      },
+      "correct": "D",
+      "key_concept": "Choose the method by the decision and the data: reliable loss records and a choice between priced options call for loss estimates in money.",
+      "pre_read": "Ask what the board must weigh and what data the producer already holds.",
+      "correct_explanation": "The method follows the decision and the data. The board must weigh each generator's price against the losses it would prevent, and 12 years of costed stoppage records can support money estimates, so quantitative estimates of the loss each option would avoid fit both. Semi-quantitative scores are the runner-up: they rank the options more finely than words, but their 1–5 values cannot be set against a price.",
+      "wrong_explanations": {
+        "A": "Qualitative ratings suit thin data or broad ranking; here costed records exist and the board must compare prices, which high, medium and low cannot do.",
+        "B": "Scores on 1–5 scales show order within the assessment, not money, so they cannot show whether either generator's price is worth the losses it prevents.",
+        "C": "An owner's ranking is judgment, useful when records are missing; here 12 years of costed records can support estimates the board can check."
+      },
+      "tips": [
+        "Eliminate: A gives broad ratings where costed records and a price comparison call for money, and C relies on one person's judgment where records exist.",
+        "Final two: D beats B because the board weighs prices against losses avoided; 1–5 scores rank the options but cannot be compared with a price.",
+        "Exam cue: when the decision is about spending and reliable loss data exists, pick a method that states losses in money; with thin data, ranges or qualitative ratings fit."
+      ],
+      "framework_ref": "NIST IR 8286A Rev. 1 Section 2.3.1 (Selecting Risk Analysis Methodologies); NIST SP 800-30 Rev. 1 Section 2.3.2 (Assessment Approaches: quantitative assessments support cost-benefit analysis of risk responses)",
+      "related_concepts": [
+        "Choosing an analysis method",
+        "Quantitative analysis",
+        "Cost-benefit analysis"
+      ],
+      "_provenance": "Authored from concept: notes 2B4.3 (Choosing a Method: Data, Decisions, FAIR and Monte Carlo: ask what the decision needs and check the data; pick the method by the decision and the data) and 2B4.1 (scores on 1-5 scales show order, not true size). Round 18, 12 Nov 2026: original scenario (an animal feed producer holding 12 years of costed power-cut stoppage records, whose board must choose between two backup generators differing in price and coverage) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 18 asks: the batch's foundational item; a lone owner on an EASY distractor (C, the process owner's ranking); no Have/Ask opener on a wrong option; key neither the longest nor the shortest option by words (9 against 8-11); not a 'Which of the following' stem; no period word on any option. Owner shape: k=1, the lone owner option an easy distractor. Neighbours checked (stems, options, key concepts, explanations and Exam cues): crisc_d2_016 (ALE reduction against a failover's cost: the next step once the method is chosen), crisc_d2_017 (no loss history, so a range from experts: the opposite data case), crisc_d2_040 (loss ranges for the top five after a qualitative ranking), crisc_d2_079 (choosing an analysis orientation: same 'which approach' form, different concept), crisc_d2_042 and crisc_d2_143 (scale limits), crisc_d2_112 (generator and grid scenarios), CISA d2_062 (semi-quantitative scoring when loss data covers only some risks: consistent with this item's data-rich case); no mirror found.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_154",
+      "domain": 2,
+      "subtopic": "2B5 Inherent and residual risk. Backup credit in a ransomware rating",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A pest-control firm's residual rating for ransomware encrypting its scheduling system cuts both likelihood and impact for offline backups that pass full-restore tests. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Re-rate impact on how long a complete restore of the system takes",
+        "B": "Re-rate likelihood with the risk owner, without backup credit",
+        "C": "Credit the backups in the inherent rating too",
+        "D": "Remove both cuts until a real attack proves the backups"
+      },
+      "correct": "B",
+      "key_concept": "A control earns credit on the factor it changes: offline backups shorten an outage and cut impact, but do not make an attack less likely.",
+      "pre_read": "Picture the attack happening, then ask what each control changes about it.",
+      "correct_explanation": "A control is credited on the factor it changes. Restore-tested offline backups shorten the outage, so they earn the impact cut, but they do nothing to stop ransomware encrypting the system, so the likelihood cut has no control behind it. Re-rating impact on restore time is the runner-up: tying impact credit to recovery time is sound, but the error in this rating is the unsupported likelihood cut.",
+      "wrong_explanations": {
+        "A": "Tying impact credit to restore time is sound practice, but the tested backups already support the impact cut; the rating's error is the likelihood cut no control supports.",
+        "C": "Inherent risk credits no control, so adding the backups there would hide how much the scenario depends on them working.",
+        "D": "Restore tests are evidence that the backups work, so the impact cut is earned now; waiting for a real attack withholds credit the tests support."
+      },
+      "tips": [
+        "Eliminate: C puts a control into inherent risk, which credits none, and D withholds impact credit that passed restore tests already support.",
+        "Final two: B beats A because backups act on impact, not on whether ransomware strikes; refining the impact cut leaves the unsupported likelihood cut in place.",
+        "Exam cue: credit each control on the factor it changes; backups and other recovery controls lower impact, so a likelihood cut needs a control that stops the event."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 3.5.1 (Applying Security Controls to Reduce Risk Exposure: corrective controls offset the impact of consequences after a risk event, while deterrent controls reduce the likelihood of a threat event); ISACA Glossary (residual risk)",
+      "related_concepts": [
+        "Residual risk",
+        "Control credit",
+        "Likelihood and impact"
+      ],
+      "_provenance": "Authored from concept: notes 2B5.2 (Control Effectiveness and the Residual Gap: design effectiveness includes which factor a control changes; backups cut impact, not likelihood). Round 18, 12 Nov 2026: original scenario (a pest-control firm's residual rating for ransomware encrypting its scheduling system cuts both likelihood and impact for restore-tested offline backups) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 18 asks: a keyed LONE owner (B), neither the longest (A, 12 words, 65 characters) nor the shortest (C, 8 words) option; no Have/Ask opener on a wrong option; the runner-up opens the same way as the key ('Re-rate'); no period word on any option. Owner shape: k=1, the lone owner option the key. Neighbours checked (stems, options, key concepts, explanations and Exam cues): crisc_d2_110 (restore-tested backups earn credit in the current rating: consistent, here the credit is limited to impact), crisc_d2_019, crisc_d2_086 and crisc_d2_135 (credit for untested, out-of-scope or detective controls), crisc_d2_044 (one control behind a large gap), crisc_d2_071 and crisc_d2_104 (inherent ratings credit no control), crisc_d2_144 (re-rating residual risk after a change), crisc_d3_096 and crisc_d3_121 (restoring from backups as a corrective control; a standby site lowering an outage's impact), CC cc_d1_041 and cc_d1_180 (backups as recovery controls); no item separates the likelihood and impact credit a control earns; no mirror found.",
       "style_version": 2
     }
   ]
