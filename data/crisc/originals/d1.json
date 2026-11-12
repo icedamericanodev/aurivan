@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026. Round 9 crisc_d1_118 to crisc_d1_124, 5 Nov 2026. Round 10 crisc_d1_125 to crisc_d1_130, 5 Nov 2026. Round 12 crisc_d1_138 to crisc_d1_143, 5 Nov 2026. Round 13 crisc_d1_144 to crisc_d1_150, 12 Nov 2026. Round 14 crisc_d1_151 to crisc_d1_156, 12 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026. Round 9 crisc_d1_118 to crisc_d1_124, 5 Nov 2026. Round 10 crisc_d1_125 to crisc_d1_130, 5 Nov 2026. Round 12 crisc_d1_138 to crisc_d1_143, 5 Nov 2026. Round 13 crisc_d1_144 to crisc_d1_150, 12 Nov 2026. Round 14 crisc_d1_151 to crisc_d1_156, 12 Nov 2026. Round 15 crisc_d1_157 to crisc_d1_163, 12 Nov 2026.",
     "schema_version": 1
   },
   "domain": 1,
@@ -5777,6 +5777,265 @@
         "Expert input"
       ],
       "_provenance": "Authored from concept: notes 1A3.3 (Professional Ethics and Ethical AI Use: members take on only work they are competent to do; bullet extended in round 14: when a task needs skills they lack, they bring in qualified help rather than guess). Round 14, 12 Nov 2026: original scenario (a bus manufacturer's engineering director, who owns brake-control software risk, asks a risk analyst who has never assessed embedded vehicle software to rate it) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 14 asks covered: owner shape k=3 with the key among the owners and the runner-up the one option without an owner; key opener 'Have'; no incidental periods; setting bus manufacturer. Neighbours checked: CISA d1_167 (audit team lacking incident-response skills co-sources specialists; same competence lesson and a similar self-assessment decoy (D here, the incident team's own review there), so keep apart in cross-course practice sets), CISA d1_032 (auditor relying on an external cryptographer), cc_d1_071 and cc_d1_107 (competence canon), crisc_d1_007, crisc_d1_062 and crisc_d1_073 (Code of Ethics items on reporting, confidentiality and own errors), crisc_d2_116 (only engineer able to maintain control software retiring), cc_d1_020 (spouse at a bidder; conflict of interest). None keys closing a practitioner's own competence gap before rating a risk. Audit 12 Nov 2026 (round 14 standards audit): the options say \"risk owner\"; D's explanation and the Eliminate tip no longer rely on an \"independent rating\" the stem never states. Review fixes 12 Nov 2026 (round 14 concept review and blind test): option A reworded to read naturally (it still names an owner). Review fixes 12 Nov 2026 (round 14 cross-domain gate): D's explanation and the Eliminate tip no longer rest on an 'objective view' the stem never states; D is wrong because it hands the work back and leaves the skill gap open.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_157",
+      "domain": 1,
+      "subtopic": "1A2 Organizational structure, roles and responsibilities. Integrity check moved to samples",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At an aerospace parts maker, the IT operations manager owns a machining-program integrity check and wants to run it on samples; the quality director owns the defective-parts risk. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Have the risk owner decide whether sampling is acceptable",
+        "B": "Have the control owner decide whether sampling is acceptable",
+        "C": "Approve sampling if the full check has found no faults",
+        "D": "Ask the IT steering committee to approve the sampling"
+      },
+      "correct": "A",
+      "key_concept": "A control change that cuts coverage raises residual risk, so the risk owner decides; the control owner proposes and runs it.",
+      "pre_read": "Note who owns the check and who owns the risk it protects before you weigh the options.",
+      "correct_explanation": "Checking only samples means an altered program could reach the machines unseen, so the residual risk of defective parts rises, and that risk belongs to the quality director. The risk owner decides whether the staff time saved is worth the added exposure. Having the control owner decide is the runner-up: the IT operations manager runs the check and can propose the change, but would be accepting extra risk on someone else's behalf.",
+      "wrong_explanations": {
+        "B": "The control owner answers for the check working and can propose the change, but cutting its coverage raises a risk the quality director owns.",
+        "C": "The analyst advises and does not approve changes to a control; a clean history also says little about the programs a sample would skip.",
+        "D": "A steering committee sets IT priorities; it owns neither the defective-parts risk nor the check, and a committee decision leaves no single accountable person."
+      },
+      "tips": [
+        "Eliminate: C has the analyst approve a change to someone else's control, and D gives the decision to a committee that owns neither the risk nor the check.",
+        "Final two: A beats B because cutting a control's coverage raises residual risk, which only the risk owner can accept; the control owner proposes and runs the change.",
+        "Exam cue: when a control owner wants to weaken a control, ask whose risk rises; that risk owner decides, and the control owner then carries out the change."
+      ],
+      "framework_ref": "ISACA Glossary (control owner); ISACA Glossary (risk owner); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Control owner",
+        "Risk owner",
+        "Residual risk"
+      ],
+      "_provenance": "Authored from concept: notes 1A2.2 (Risk Owner, Control Owner and Risk Practitioner: one person owns a risk while control owners answer for the controls that reduce it; bullet extended in round 15: a control owner's change that weakens a control goes to the risk owner, whose residual risk rises). Round 15, 12 Nov 2026: original scenario (an aerospace parts maker's IT operations manager, who owns a machining-program integrity check, wants to run it on samples; the quality director owns the defective-parts risk) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 15 asks covered: owner shape k=2 with the key in the pair and the runner-up the other owner option (B); key opener 'Have' (also on B, so the verb is not a tell); 'Ask' on a wrong option (D); no incidental periods; setting aerospace parts maker. Neighbours checked: crisc_d1_022 (who owns a control a contractor runs), crisc_d1_003 (who accepts residual risk), crisc_d1_060 (owner asks the analyst to pick a treatment), crisc_d3_188 (a control owner wants half-yearly restore tests; the regulator's cycle is kept: keep apart in practice sets, since 'keep the control as it is' is right there and the analyst does not decide here), crisc_d3_064 (control owner addresses skipped reviews), crisc_d4_107 (offsite copies of a model), crisc_d1_144 (owner's approval limit), CISA d1_219 (limits of a two-person control). None keys sending a control owner's coverage cut to the risk owner because residual risk rises.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_158",
+      "domain": 1,
+      "subtopic": "1B1 Enterprise risk management (ERM). Risk decisions IT learns of late",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A city government's IT team twice learned of executive committee risk decisions too late, most recently buying servers for a billing system the committee chose not to fund. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Have the billing risk's owner tell IT to stop the purchases",
+        "B": "Ask the committee to revisit its decision in light of IT's work",
+        "C": "Keep the server purchases going for the billing system",
+        "D": "Send each committee risk decision to the teams that act on it"
+      },
+      "correct": "D",
+      "key_concept": "In ERM, risk information flows up and decisions flow down; senior management's risk decisions must reach the teams that act on them, in time.",
+      "pre_read": "Note what IT knew when it acted, and how many times this has happened.",
+      "correct_explanation": "The committee's decision was made; it simply never reached the team spending money on that system, and this is the second time. ERM needs leaders' risk decisions to flow back down to the teams that manage each risk, so a standing route for them fixes the cause. Having the risk owner stop these purchases is the runner-up: it ends this waste, but the next decision would go missing the same way.",
+      "wrong_explanations": {
+        "A": "Stopping the purchases is right for this case, but after two misses the gap is the route decisions travel; the next decision would still go astray.",
+        "B": "The committee set an enterprise priority; reopening it because IT spent without knowing lets lower-level spending drive enterprise decisions.",
+        "C": "Funding a system the committee chose not to fund puts money where leaders decided not to, and leaves the communication gap in place."
+      },
+      "tips": [
+        "Eliminate: B lets IT's uninformed spending reopen an enterprise decision, and C keeps funding what the committee chose not to fund.",
+        "Final two: D beats A because two misses point to the route decisions travel; stopping these purchases fixes one case and leaves the next decision to go astray.",
+        "Exam cue: in ERM, risk information flows up and decisions flow back down; when lower levels keep acting on decisions they never heard, fix the downward route."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 3.5.2 (Responding to Residual Risk: enterprise risk officers communicate senior management's risk decisions appropriately and in a timely way to risk owners at lower levels); ISACA Glossary (enterprise risk management); COBIT 2019 EDM03 (Ensured Risk Optimization)",
+      "related_concepts": [
+        "Enterprise risk management",
+        "Decision flow",
+        "Risk communication"
+      ],
+      "_provenance": "Authored from concept: notes 1B1.1 (IT Risk Within Enterprise Risk: decisions on IT risk flow back down as guidance, so local teams act within enterprise appetite). Round 15, 12 Nov 2026: original scenario (a city government's IT team twice learned of executive committee risk decisions too late, most recently buying servers for a billing system the committee chose not to fund) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 15 asks covered: owner shape k=1 with the lone owner option on the runner-up (A); key names no owner; 'Keep' as the stock no-change move on a wrong option (C); 'Ask' on a wrong option (B); no incidental periods; setting city government. Neighbours checked: crisc_d1_067 (appetite lowered but IT's KRI thresholds still reflect the old level; keyed to propose matching thresholds), crisc_d1_118 (recovery test results that went only to IT; an upward reporting route), crisc_d1_033 (IT register kept apart from the enterprise register), crisc_d1_148 (IT funds treatments by its own ratings), crisc_d1_077 (investments approved without risk input), crisc_d3_191 (vulnerability counts restated as effects on safety and output), crisc_d1_101 (owners told their risks are now above a lowered appetite). None keys a standing route that carries leaders' risk decisions down to the teams that act on them.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_159",
+      "domain": 1,
+      "subtopic": "1B4 Risk appetite and risk tolerance. Owner's two-hour limit under a six-hour tolerance",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A rail freight operator's board set a six-hour tolerance for train-dispatch outages; the dispatch director, who owns that risk, wants the dispatch team held to a two-hour limit. What is the risk analyst's BEST response?",
+      "options": {
+        "A": "Ask the board to approve the two-hour limit first",
+        "B": "Let the risk owner apply the two-hour limit to the dispatch team",
+        "C": "Keep the dispatch team on the board's six-hour tolerance",
+        "D": "Report the two-hour limit to the board as a conflict"
+      },
+      "correct": "B",
+      "key_concept": "Owners may set limits stricter than the board's tolerance within their own authority; only a looser limit needs whoever set the tolerance.",
+      "pre_read": "Compare the director's limit with the board's tolerance, and note which of the two is stricter.",
+      "correct_explanation": "The board's tolerance is the outer limit: no dispatch outage may pass six hours without going to the board. A two-hour limit inside it is stricter, sits within the director's authority as risk owner and flags trouble earlier. Asking the board to approve it is the runner-up: the board must approve any limit looser than its own, but a tighter one leaves everything the board set unchanged.",
+      "wrong_explanations": {
+        "A": "Board approval is needed to loosen its tolerance; a stricter limit inside it leaves the board's limit untouched, so seeking approval only adds delay.",
+        "C": "The board's figure is a ceiling, not a required setting; holding the team to it gives up a stricter limit the risk owner is entitled to set.",
+        "D": "A stricter limit inside the tolerance cannot clash with it; reporting it as a conflict misreads how tolerance passes down to the units that apply it."
+      },
+      "tips": [
+        "Eliminate: C treats the board's tolerance as a required setting rather than a ceiling, and D reads a stricter limit as a clash with the board's.",
+        "Final two: B beats A because only a looser limit needs the board that set the tolerance; a tighter one sits within the risk owner's own authority.",
+        "Exam cue: tolerances pass down as ceilings; lower levels may set stricter limits themselves, but anything looser goes back to whoever set the original."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 2.1 (Overview of ERM: risk tolerance is generally established at the program, objective or component level and is interpreted and applied down to the system level); ISACA Glossary (risk tolerance); NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained)",
+      "related_concepts": [
+        "Risk tolerance",
+        "Tolerance cascade",
+        "Risk owner authority"
+      ],
+      "_provenance": "Authored from concept: notes 1B4.1 (Appetite, Tolerance and Capacity: tolerance sets measurable limits per objective or metric; bullet added in round 15: owners may set limits stricter than the enterprise tolerance within their authority, and only a looser one goes to whoever set it). Round 15, 12 Nov 2026: original scenario (a rail freight operator's board set a six-hour tolerance for train-dispatch outages; the dispatch director, who owns that risk, wants the dispatch team held to a two-hour limit) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 15 asks covered: keyed lone owner option (B is the only option naming an owner; counted under calibration rule 21); a permissive key ('Let') where the risk owner genuinely holds the authority; 'Keep' as the stock no-change move on a wrong option (C); 'Ask' on the runner-up (A); key naturally the longest option (by 8 characters); no incidental periods; setting rail freight operator. Neighbours checked: crisc_d1_042 (a water utility's owner wants to run ABOVE the board committee's tolerance, keyed to that committee: the mirror case, keep apart in practice sets), crisc_d1_143 (a board's monthly downtime tolerance and IT's yearly report; numbers chosen to differ), crisc_d1_145 and crisc_d1_067 (KRI thresholds after a tolerance or appetite change), crisc_d1_114 (owner accepts a risk inside every limit), crisc_d1_041 (tolerance beyond capacity), crisc_d1_098 (a unit keeps its stricter retention standard beside the group's; a policy, not a tolerance), cc_d2_096 (leaders set a measurable tolerance), crisc_d3_125 (an amber KRI level below a board tolerance, proposed for the director to approve, with an 'ask the board' decoy: same 'owner level, not board' idea for warning levels, so keep apart in practice sets). None keys an owner setting a limit stricter than the board's tolerance without board approval.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_160",
+      "domain": 1,
+      "subtopic": "1A5 Business processes and resilience. Same responders in two plans",
+      "principle_id": "priority-word-decides",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A water utility's IT recovery plan and its plant cyberattack plan, each exercised on its own last spring, name the same four engineers as lead responders. What should concern the risk analyst MOST?",
+      "options": {
+        "A": "The four engineers being needed by both plans in one attack",
+        "B": "The separate exercises held for each of the two plans",
+        "C": "Two plans kept for incidents that one plan could cover",
+        "D": "Refresher training the four engineers need on both plans"
+      },
+      "correct": "A",
+      "key_concept": "Plans that one event can set off together must not count on the same people; check what plans share, not just each plan alone.",
+      "pre_read": "Picture the plans being used, not just written, before you rank the concerns.",
+      "correct_explanation": "A cyberattack on a water utility can hit its IT systems and its plant controls together, setting off both plans at once. Each plan then counts on the same four engineers, so one or both would stall when needed most. Exercises run separately are the runner-up: they explain why nobody noticed the clash, but they are a testing gap, not the exposure itself.",
+      "wrong_explanations": {
+        "B": "Separate exercises are why the clash went unseen, and a joint exercise would show it, but the greatest concern is the exposure the clash creates.",
+        "C": "IT recovery and plant cyberattack response cover different systems and work; separate plans are normal as long as they are coordinated.",
+        "D": "Both plans were exercised last spring, so nothing points to stale skills; training would not let the same engineers be in two places."
+      },
+      "tips": [
+        "Eliminate: C treats separate plans as the flaw, though different scopes justify them, and D assumes stale skills that recent exercises do not suggest.",
+        "Final two: A beats B because GREATEST concern asks for the exposure; separate exercises explain why the clash went unseen, but the clash is what fails in an attack.",
+        "Exam cue: when one event can set off two plans, check what they share, such as people, sites or suppliers; a shared single point fails both at once."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev. 1 Section 2.2 (Types of Plans: plans must be coordinated during development and updates so that recovery strategies and supporting resources neither negate each other nor duplicate efforts); COBIT 2019 DSS04 (Managed Continuity); NIST SP 800-34 Rev. 1 Section 3.5 (Plan Testing, Training, and Exercises)",
+      "related_concepts": [
+        "Plan coordination",
+        "Shared responders",
+        "Single point of failure"
+      ],
+      "_provenance": "Authored from concept: notes 1A5.2 (Continuity and Recovery Plans as Risk Responses: plans are maintained as people, suppliers and systems change; bullet extended in round 15: plans one event can trigger together must not count on the same people) and 1A5.1 (dependencies and single points of failure). Round 15, 12 Nov 2026: original scenario (a water utility's IT recovery plan and plant cyberattack plan, each exercised on its own, name the same four engineers as lead responders) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 15 asks covered: no option names an owner (k=0); noun-phrase concern options, with 'The' opening both the key and the runner-up; no incidental periods (the stem's 'last spring' is a fact D's explanation uses); setting water utility. Neighbours checked: crisc_d1_075 (a council's plan needs 900 remote users against 250 seats; same 'plan cannot work as written' family, so keep apart in practice sets), crisc_d1_152 (two directors want their systems restored first), crisc_d1_131 (an unlisted fuel supplier), crisc_d1_139 (two new responders before the yearly exercise), crisc_d1_053 (a process spanning three teams' plans), CISA d4_089 (one engineer leading two recovery workstreams; keep apart), CISA d4_203 (only one engineer can restore a platform), CISA d4_084 (hot-site subscribers invoking together). None asks for the greatest concern when two plans one event can trigger share the same responders.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_161",
+      "domain": 1,
+      "subtopic": "1B2 Lines of defense. AI model ratings passed on unchallenged",
+      "principle_id": "lines-of-defense",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A mobile carrier's second-line risk team passes the AI model teams' own risk ratings to the board unchanged, saying it lacks the skills to question them. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Ask internal audit to review the AI ratings in its place",
+        "B": "Borrow a data scientist from the model teams to challenge them",
+        "C": "Add AI expertise to the risk team from outside the model teams",
+        "D": "Have the AI models' risk owner approve the ratings as final"
+      },
+      "correct": "C",
+      "key_concept": "Second-line challenge needs the skills to question the first line, from people independent of that work; for AI, expertise outside the model teams.",
+      "pre_read": "Note which line produced the ratings and which line is meant to question them.",
+      "correct_explanation": "The model teams are the first line rating their own work, and the second line exists to challenge those ratings before the board relies on them. That takes AI skills from people who did not build the models. Borrowing a data scientist from the model teams is the runner-up: it adds the skills, but that person would be questioning colleagues and then returning to them, so the challenge would not be objective.",
+      "wrong_explanations": {
+        "A": "Internal audit gives periodic independent assurance; putting it in the second line's place leaves no ongoing challenge and draws audit into management's work.",
+        "B": "A data scientist on loan brings the skills but not objectivity: they would be challenging colleagues' ratings and then going back to that team.",
+        "D": "The risk owner needs challenged ratings to decide well; approving unchallenged self-ratings as final skips the review the second line owes the board."
+      },
+      "tips": [
+        "Eliminate: A puts internal audit, the third line, in the second line's place, and D has the risk owner approve ratings nobody has challenged.",
+        "Final two: C beats B because challenge needs objectivity as well as skill; a data scientist on loan from the model teams would be questioning their own colleagues.",
+        "Exam cue: when the second line cannot challenge a technical area, add the skills from outside the team being challenged rather than handing the job to audit or the first line."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MEASURE 1.3 (internal experts who did not serve as front-line developers for the system, or independent assessors, are involved in regular assessments and updates); ISACA Journal 2018 Volume 4 (Roles of Three Lines of Defense for Information Security and Governance); NIST AI 100-1 (AI RMF 1.0) GOVERN 2.1 (roles, responsibilities and lines of communication for AI risks are documented and clear)",
+      "related_concepts": [
+        "Second line of defense",
+        "Effective challenge",
+        "AI model risk"
+      ],
+      "_provenance": "Authored from concept: notes 1B2.2 (Independence, Challenge and Coordination Across Lines: the second line needs objectivity and a path to escalate; bullet extended in round 15: challenging AI ratings takes AI skills from outside the model teams). Round 15, 12 Nov 2026: original scenario (a mobile carrier's second-line risk team passes the AI model teams' own risk ratings to the board unchanged, saying it lacks the skills to question them) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. The round's one D1 AI item, on a fresh angle: second-line competence and objectivity to challenge AI risk ratings (not prompt injection, coding agents, suggested packages, human review of AI output or vendor ranking tools). Round 15 asks covered: owner shape k=1 with the lone owner on an easy distractor (D: the owner acting before any challenge); 'Ask' and 'Have' on wrong options; no incidental periods; setting mobile telecom carrier. Neighbours checked: crisc_d1_065 (risk team passes self-assessed control ratings unchanged; keyed to challenge them before reporting, with an internal-audit decoy: here the team says it cannot challenge, and the key adds independent skills; keep apart in practice sets), crisc_d1_141 (second-line validators asked to own an AI model's risk), crisc_d1_156 (an analyst closes a competence gap with qualified help), crisc_d1_102 (evidence that challenge works), crisc_d1_089 (second-line pay tied to the desk), crisc_d1_121 (a control team inside IT), aaia_d2_014 and aaia_d2_163 (validators independent of the model builders; an IS audit lens on model validation, not second-line challenge of ratings). None keys adding AI expertise from outside the model teams so the second line can challenge their ratings.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_162",
+      "domain": 1,
+      "subtopic": "1B3 Risk profile. Event that calls for an early refresh",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "foundational",
+      "bloom_level": "Comprehension",
+      "question": "Which of the following events MOST clearly calls for the risk analyst to refresh a grocery chain's risk profile before its next scheduled update?",
+      "options": {
+        "A": "A change of owner for the chain's payment-card risk",
+        "B": "The chain's launch of a home-delivery service",
+        "C": "A risk owner's confirmation that last cycle's ratings hold",
+        "D": "The fine a rival chain received after a card breach"
+      },
+      "correct": "B",
+      "key_concept": "Refresh the risk profile when the business or its risks change materially, such as a new service or market, not only on the calendar.",
+      "pre_read": "For each event, ask whether the chain's exposure itself would change.",
+      "correct_explanation": "A new home-delivery service brings new processes, systems, suppliers and customer data, so the chain's exposure changes and the profile is out of date until it is refreshed. A rival's fine is the runner-up: it is a useful signal to review the chain's own card-data risk, which can be done on its own, but it does not change what the chain does or the set of risks it runs.",
+      "wrong_explanations": {
+        "A": "A new owner takes over the same risk at the same level; the register entry changes, but the chain's exposure does not.",
+        "C": "An owner confirming that ratings still hold is evidence the profile remains accurate, not a reason to rebuild it.",
+        "D": "A peer's fine can prompt a review of the chain's own card-data entry, but it adds no new activity and no change across the whole profile."
+      },
+      "tips": [
+        "Eliminate: A changes who manages a risk, not its size, and C confirms the current ratings; neither changes the chain's exposure.",
+        "Final two: B beats D because a new service changes what the chain does and the risks it runs; a rival's fine is a signal for one existing risk.",
+        "Exam cue: profiles are refreshed on schedule and on triggers that change the business or its threats, such as acquisitions, new markets, new services and major incidents."
+      ],
+      "framework_ref": "COBIT 2019 APO12.03 (Maintain a Risk Profile); ISACA Glossary (IT risk profile); NIST IR 8286 Rev. 1 Section 3.6 (Monitor, Evaluate, and Adjust: risk parameters are continually monitored, evaluated for their relevance to organizational objectives and acted on when necessary)",
+      "related_concepts": [
+        "Risk profile",
+        "Refresh triggers",
+        "Business change"
+      ],
+      "_provenance": "Authored from concept: notes 1B3.2 (Aggregation and Keeping the Profile Current: refresh the profile on a schedule and on triggers such as an acquisition, a new market, a major incident or new regulation). Round 15, 12 Nov 2026: original short-stem item (which event calls for refreshing a grocery chain's risk profile before its next scheduled update) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 15 asks covered: the batch's foundational item and short 'Which of the following' stem with noun-phrase options, 'The' opening both the key and the runner-up; owner shape k=2 with the key outside the pair and the two owner options on the easy distractors (A, C); no incidental periods; setting grocery chain. Neighbours checked: crisc_d1_016 (profile after an acquisition; keyed to assess the acquired firm's risks), crisc_d1_079 (ratings older than a major change), crisc_d1_037 (a credited control fails), crisc_d1_142 (ratings that fell when bands changed), crisc_d1_153 (a board weighing a new system against the profile), CISA d1_106 (audit plan after an acquisition and a new regulation). None asks which event, among owner changes, confirmations and outside news, calls for an early refresh.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_163",
+      "domain": 1,
+      "subtopic": "1B5 Risk frameworks, legal, regulatory and contractual requirements. IT's view that a new law does not apply",
+      "principle_id": "final-two",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A state university's IT director has concluded that a new state cybersecurity law for public agencies does not apply to the university. What should the risk analyst recommend FIRST?",
+      "options": {
+        "A": "Assess the university's gaps against the law's requirements",
+        "B": "Record the law as out of scope in the obligations register",
+        "C": "Have each risk owner judge whether the law touches their area",
+        "D": "Ask legal counsel to confirm whether the law applies"
+      },
+      "correct": "D",
+      "key_concept": "Whether a law applies is a legal judgment: confirm it with counsel before scoping gaps or recording the law as out of scope.",
+      "pre_read": "Note what has been decided about the law so far, and by whom.",
+      "correct_explanation": "Whether a law covers the university is a legal judgment, and an IT director's view is not a sound basis for scoping obligations. Counsel's answer decides whether the law becomes a compliance obligation with an owner and a gap assessment. Assessing gaps is the runner-up: it is the right next step if the law applies, but done first it may waste effort or rest on a misread scope.",
+      "wrong_explanations": {
+        "A": "A gap assessment follows once the law is confirmed to apply; started now, it may measure the university against a law that does not cover it.",
+        "B": "Recording the law as out of scope turns an unverified IT opinion into the register's position, so the obligation could be missed with no one owning it.",
+        "C": "Risk owners judge impacts in their own areas, not what a law means; separate readings would also leave the university with conflicting positions."
+      },
+      "tips": [
+        "Eliminate: B records an unverified IT opinion as the university's position, and C has each risk owner interpret the law, giving several conflicting readings.",
+        "Final two: D beats A because applicability comes first and is a legal call; a gap assessment is the next step once counsel confirms the law applies.",
+        "Exam cue: before scoping or dismissing a new law, confirm through legal counsel that it applies; then treat it as an obligation with an owner."
+      ],
+      "framework_ref": "COBIT 2019 MEA03 (Managed Compliance With External Requirements); NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed)",
+      "related_concepts": [
+        "Compliance obligations",
+        "Legal applicability",
+        "Regulatory change"
+      ],
+      "_provenance": "Authored from concept: notes 1B5.2 (Compliance Obligations as a Source of Risk: regulatory change is monitored and new rules trigger an impact assessment; bullet extended in round 15: legal counsel confirms whether a new rule applies before the impact assessment). Round 15, 12 Nov 2026: original scenario (a state university's IT director has concluded that a new state cybersecurity law for public agencies does not apply to the university) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 15 asks covered: owner shape k=1 with the lone owner on an easy distractor (C: the wrong owner deciding what a law means); a FIRST key that is not assess/record (calibration rule 14); key opener 'Ask'; the law is context and the key rests on the principle; no incidental periods; setting state university. Neighbours checked: crisc_d1_045 (a new AI law: assess its impact on a planned use), crisc_d1_095 (new rules found too late: monitor drafts), crisc_d1_112 (obligations as register entries), crisc_d1_020 (a clean examination is not low risk), crisc_d1_059 (a client's notice term), crisc_d1_115 (two policies that conflict), CISA d2_029 and d5_246 (counsel's position on conflicting laws, auditor lens), CISA d5_006 (a new CISO identifies legal and contractual requirements first). None keys confirming with counsel whether a law applies after IT has ruled it out.",
       "style_version": 2
     }
   ]
