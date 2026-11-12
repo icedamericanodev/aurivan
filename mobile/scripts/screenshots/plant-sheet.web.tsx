@@ -45,7 +45,7 @@ function plant(props: Parameters<typeof Plant>[0]): string {
 function page(title: string, sub: string, body: string, theme: Theme, width: number): string {
   const c = pal(theme);
   return `<!doctype html><html><head><meta charset="utf-8"><style>
-@font-face{font-family:Fraunces;src:url(file://${FONTS}/fraunces/500Medium/Fraunces_500Medium.ttf);font-weight:500}
+@font-face{font-family:Fraunces;src:url(file://${path.join(process.cwd(), 'assets/fonts/KaiSipSerif_500Medium.ttf')});font-weight:500}
 @font-face{font-family:Fraunces;font-style:italic;src:url(file://${FONTS}/fraunces/400Regular_Italic/Fraunces_400Regular_Italic.ttf)}
 @font-face{font-family:Figtree;src:url(file://${FONTS}/figtree/400Regular/Figtree_400Regular.ttf);font-weight:400}
 @font-face{font-family:Figtree;src:url(file://${FONTS}/figtree/600SemiBold/Figtree_600SemiBold.ttf);font-weight:600}

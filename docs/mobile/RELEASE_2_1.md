@@ -14,6 +14,7 @@ Owner requirement recorded 9 Nov 2026: the next Android App Bundle must have ver
 | Unified support and feedback | cd977573 | Integrated with review fixes; email/share retained; direct send disabled |
 | Restore signed-in public feature suggestion route | Live integration review | Implemented with cloud-enabled regression test |
 | Show exact direct-send message separately from fitted email preview | Live integration review | Implemented; transport activation still blocked on backend |
+| Conventional letter f in the reading typeface ("KaiSip Serif", FB-006) | Pull request from branch `claude/fb-006-conventional-f` | **Not merged: owner decision (brand typography).** `npm run check` and Android export passed; native phone check pending |
 
 ## Work in progress
 
@@ -29,6 +30,7 @@ Draft release notes; retain this exact section heading separately from other imp
 - **Android backups:** Learners could only find sharing destinations. A separate folder picker now saves and verifies a new backup file while preserving sharing.
 - **Answer explanations:** Learners reported having to remember missing answer options. The answer and mock-review screens now keep each option beside its explanation.
 - **Nickname setup:** Learners reported having to search for username setup. The existing setup screen now offers an optional local nickname; this does not introduce accounts or sign-in.
+- **The letter f (FB-006, waiting for the owner's decision; do not promote before she agrees):** A learner noticed that the letter f looked unusual in many questions. It was the reading typeface's own design. The upright f now has a familiar shape in questions, headings and the home-screen widgets; no other letter and no layout changed. Check on a real Android phone before release.
 - **Coach me readability:** Learners reported that question text became unreadable after opening Coach me. The duplicate question layer was removed so the question uses one readable text layer. Native high-contrast verification remains pending.
 
 The verified anonymous entries are now bundled in `mobile/src/content/support/fixes.json` for the integrated 2.1 preview. They describe implemented changes, not completed native acceptance or a published release. Keep tester-log entries In review until shipment; do not claim inbox delivery or that a release has shipped.

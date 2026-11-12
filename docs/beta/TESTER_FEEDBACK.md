@@ -34,7 +34,7 @@ cause in the app, and slots it into the plan below.
 | FB-005 | 2026-11-09 | Owner emulator review | Phone · Save backup | UX | Medium | Android backup export | Implemented; isolated native save/restore passed | 2.1 |
 | FB-004 | 2026-11-09 | Owner emulator review | Phone · Reset CISA progress | Bug/UX | High | Confirmed full CISA reset | Implemented; isolated native reset/restart passed | 2.1 |
 | FB-003 | 2026-11-06 | Beta reply email | Phone · Nickname setup | UX | Medium | New learners | Implemented, native keyboard/a11y checks pending | 2.1 |
-| FB-006 | 2026-11-12 | Closed-testing message (no report code) | Phone · every screen with serif text (questions, options, headings) | UX (typography) | Low | Whole app | Logged; reproducing | 2.1 (owner decision needed) |
+| FB-006 | 2026-11-12 | Closed-testing message (no report code) | Phone · every screen with serif text (questions, options, headings) | UX (typography) | Low | Whole app | Implemented in a pull request; waiting for the owner's decision on the typeface change | 2.1 (owner decision needed) |
 
 ## Next update plan (phone app, proposed 2.1.0)
 
@@ -134,3 +134,24 @@ Isolated native follow-up: FB-004 reset and restart and FB-005 local Documents s
 
 A closed-testing Android tester wrote: "Just an observation, does the letter 'f' look a bit different? I've seen this in many questions". The owner sees the same odd "f" on the website mockups and asked for it to be fixed across the whole phone app. No report footer came with the message (it was an observation, not an in-app report), so there is no Item, Part, App or Ref to copy.
 
+**Reproduced (12 Nov 2026):** yes, on every screen that sets upright serif text. `npm run shots` (light and dark) shows it in question stems ("fieldwork", "finds"), lesson prose, screen titles and headings, verdicts and word-size stats. Options and body text are Figtree and were never affected; italic lines (the coach's voice, Key idea) have a conventional "f" already.
+
+**Cause:** not a bug and not a fallback font. The brand serif, Fraunces, draws its upright lowercase "f" with a flat, heavy hook. It is the same at every optical size and with every font setting, and the font has no alternate "f" (its f glyphs are f and five ligature glyphs that are only f beside f, i or l).
+
+**Triage:** UX (typography) · Low severity (nothing is blocked or wrong) · Reach: whole app. A typeface change is a brand decision, so it is on the owner's list.
+
+**Options compared** (real phone-size screenshots, in the pull request):
+
+| | Fix | Result |
+|---|---|---|
+| A | Keep Fraunces everywhere and replace only the upright "f" with a conventional one (from Literata, same open licence), in a renamed copy of the font, "KaiSip Serif" | The "f" looks normal in questions AND headings. Nothing else changes; no text moves. |
+| B | Set question text in Figtree, keep Fraunces for headings | Headings keep the odd "f"; questions lose the serif that separates them from the options. |
+| C | Set reading text in another serif (Literata), keep Fraunces for headings | Headings keep the odd "f"; adds a third typeface. |
+
+`mobile-ui-designer`, `mobile-ux-reviewer` and `design-manager` each recommended A: it is the only one that meets the owner's wish that the f looks normal everywhere. Their one shared finding (the hook sat too close to a few following characters) was fixed before the pull request.
+
+**Implemented (A), waiting for the owner:** `mobile/assets/fonts/` (the two font files, both licences, a README), `mobile/scripts/fonts/build_kaisip_serif.py` (how they are made), `mobile/src/theme/tokens.ts` and `mobile/src/app/_layout.tsx` (the app loads them), `mobile/app.json` (the home-screen widgets use them). The new "f" is exactly as wide as the old one: a before/after comparison of 91 screens in light and in dark shows changes only at the letter itself. Not yet checked on a real Android phone or iPhone (the screenshots come from the app's web build, which draws the same font file).
+
+**Still to do after the owner agrees:** the same fix on the web app (`index.html`), `beta.html`, the landing and legal pages, which still load plain Fraunces.
+
+**Reply to the tester when shipped:** "Thanks for spotting the f. It was the typeface's own design, not a glitch. From the next update the letter has a more familiar shape everywhere in the app."

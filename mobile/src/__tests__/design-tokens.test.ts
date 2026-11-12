@@ -188,7 +188,7 @@ describe('type scale', () => {
     );
   });
   it('uses Fraunces for reading moments and numbers, Figtree for UI', () => {
-    for (const v of ['number', 'stat', 'display', 'hero', 'stem'] as const) expect(String(type[v].fontFamily)).toMatch(/^Fraunces_/);
+    for (const v of ['number', 'stat', 'display', 'hero', 'stem'] as const) expect(String(type[v].fontFamily)).toMatch(/^KaiSipSerif_/);
     for (const v of ['quote', 'stage'] as const) expect(type[v].fontFamily).toBe(font.serif400Italic);
     for (const v of ['headline', 'label', 'body', 'small', 'meta', 'caption', 'tab'] as const) expect(String(type[v].fontFamily)).toMatch(/^Figtree_/);
   });
@@ -199,7 +199,7 @@ describe('type scale', () => {
     }
   });
   it('keeps Fraunces at 18px or more', () => {
-    for (const s of Object.values(type)) if (String(s.fontFamily).startsWith('Fraunces')) expect(s.fontSize).toBeGreaterThanOrEqual(18);
+    for (const s of Object.values(type)) if (/^(KaiSipSerif|Fraunces)_/.test(String(s.fontFamily))) expect(s.fontSize).toBeGreaterThanOrEqual(18);
   });
   it('pins key sizes from the spec', () => {
     expect([type.number.fontSize, type.number.lineHeight]).toEqual([52, 52]);

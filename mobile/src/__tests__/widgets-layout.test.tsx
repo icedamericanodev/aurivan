@@ -500,7 +500,7 @@ describe('the words and taps a learner sees', () => {
         walk(build('think', snap({ prefs: ON }), w, h, 'light', scale), (n) => {
           const p = props(n);
           const st = (p.style ?? p) as { fontFamily?: string; fontSize?: number };
-          if (n.type === 'TextWidget' && /Fraunces/.test(String(st.fontFamily))) expect({ w, h, scale, px: st.fontSize! >= 13 }).toEqual({ w, h, scale, px: true });
+          if (n.type === 'TextWidget' && /Fraunces|KaiSipSerif/.test(String(st.fontFamily))) expect({ w, h, scale, px: st.fontSize! >= 13 }).toEqual({ w, h, scale, px: true });
         });
       }
     }
