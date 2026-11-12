@@ -75,7 +75,7 @@
             "Transfer moves money, not accountability, and only for losses covered: re-rate exposure an exclusion leaves retained; an insured breach still harms customers and reputation.",
             "Avoidance gives up the benefit, so it fits when the activity is not needed for objectives or nothing else brings the risk within appetite.",
             "A response can bring new risks, such as reliance on one provider; weigh them first.",
-            "Unexplained AI decisions: human review giving reasons on challenge treats them; a model summary does not."
+            "For unexplained AI decisions, human review giving reasons on challenge treats the risk; a model summary does not."
           ],
           "types": [
             {
@@ -95,7 +95,7 @@
               "meaning": "The business stops, changes or never starts the activity that creates the risk, for good or until a fix is in place."
             }
           ],
-          "example": "An airline's loyalty team wants members to pay with points in a new partner app. Amara, the risk analyst, rates the fraud risk above appetite and lays out four options with their cost and target risk: accept it (with temporary acceptance from the level that set appetite), add step-up authentication, insure fraud losses or drop the feature. The loyalty director chooses.",
+          "example": "An airline's loyalty team wants members to pay with points in a new partner app. Amara, the risk analyst, rates the fraud risk above appetite and lays out four options with cost and target risk: accept (with temporary acceptance from the level that set appetite), add step-up authentication, insure fraud losses or drop the feature. The loyalty director chooses.",
           "audit_focus": {
             "review": [
               "Compare each response in the register with the risk rating and appetite",
@@ -504,11 +504,11 @@
           "definition": "Ongoing vendor monitoring is reviewing a supplier's performance, controls and risk throughout the relationship, using assurance reports, SLA results, incidents and changes in its own suppliers.",
           "why_it_matters": "A vendor that was sound at onboarding can change owners, cut staff, add subcontractors or suffer a breach. Monitoring catches drift in time to respond.",
           "how_it_works": [
-            "Read assurance reports for scope and period: which services, locations and controls were tested.",
+            "Read assurance reports for scope: which services, locations and controls were tested, over what period.",
             "Act on report exceptions and complementary user entity controls, the customer's own duties; when scope fits and neither is open, rely on the report rather than repeat its tests.",
             "Track fourth parties: the vendor's own subcontractors, especially those that host or process your data.",
-            "Watch concentration: services on one provider or region, even via different vendors, fail together; rate it as one scenario.",
-            "Scale review depth and frequency to criticality; reassess on events such as a breach, sale or merger, missed SLAs or a new subcontractor."
+            "Watch concentration: services on one provider or region, even via different vendors, can fail together; rate that as one scenario.",
+            "Scale review depth and frequency to criticality; reassess after a breach, sale or merger, missed SLAs or a new subcontractor."
           ],
           "example": "An insurer relies on a claims vendor whose SOC 2 Type 2 report covers its main data center but not the overseas site now handling the insurer's claims. Chen, a risk analyst, notices the scope gap and two access-review exceptions. They update the vendor entry and ask the claims director to seek coverage of that site.",
           "audit_focus": {
@@ -1280,7 +1280,7 @@
           "why_it_matters": "A well-designed control can still be skipped in practice. Reporting a design test as proof of operation overstates assurance and leaves the risk owner relying on a control that may not run.",
           "how_it_works": [
             "Test design first, often with a walkthrough of one transaction; a badly designed control needs no operating test.",
-            "Test operation over a defined period, at each site where people run it, with a sample sized to frequency and risk; sample each version of a control changed mid-period.",
+            "Test operation over a defined period, covering the sites where people run it, with a sample sized to frequency and risk; sample each version of a control changed mid-period.",
             "Draw the sample from the complete population, ideally system-generated, with the tester choosing the items; test any system report the control relies on for completeness.",
             "Evaluate each failure: find its cause and decide whether the control can still be relied on.",
             "Tests by the control owner alone are self-assessment: useful for monitoring, but weaker than independent testing.",

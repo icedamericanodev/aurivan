@@ -800,8 +800,8 @@
           "definition": "AI training data management applies the data lifecycle to data used to train, test and tune models, from sourcing and labeling through retention and deletion.",
           "why_it_matters": "A model reflects its data. Poor, biased, poisoned or unlawfully sourced training data becomes poor or unlawful decisions, and personal data inside a model can be hard to remove later.",
           "how_it_works": [
-            "Sourcing: record where data came from, whether its license or terms allow training, and whether it contains personal data.",
-            "Preparation: check quality, labeling accuracy and coverage of real cases before training; tests can use synthetic records with planted cases, which expose no one and give known answers.",
+            "Sourcing: record where data came from, whether its license or terms allow training, and whether it contains personal data; synthetic data generated from real records can still leak it.",
+            "Preparation: check quality, labeling accuracy and coverage of real cases before training; tests can use hand-built synthetic records with planted cases, which expose no one and give known answers.",
             "Protection: restrict access to training sets and watch for tampering, which can poison the model.",
             "Lineage: link each model version to the exact data version used to train it.",
             "Retention and deletion: apply the retention schedule to training sets and plan how deletion requests affect trained models.",
