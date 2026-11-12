@@ -273,11 +273,11 @@
           "definition": "A risk owner is the person given the authority and accountability to make decisions about a risk, and who answers for the loss if it happens.",
           "why_it_matters": "A risk without a capable owner drifts: nobody decides its response, funds the controls or answers when it happens. Ownership at the wrong level gives the decision to people who cannot act on it.",
           "how_it_works": [
-            "Assign the owner by business accountability: the manager whose objectives, process or budget the risk affects.",
-            "Match authority to size and reach: the owner must fund treatment and accept residual risk at that rating, across every unit the risk spans.",
+            "Assign the owner by business accountability: the manager whose objectives, process or budget it affects.",
+            "Match authority to size and reach: the owner funds treatment and accepts residual risk at that rating in every unit; a department's low-rated risk sits with its head.",
             "Name one accountable person, not a committee, department or joint owners; others, such as IT delivering treatment, act as action owners, stakeholders or control owners.",
             "Revalidate ownership regularly and after reorganizations, departures or process changes.",
-            "IT usually owns technology controls, while the business owns the business risk those controls protect.",
+            "IT usually owns technology controls; the business owns the risk they protect.",
             "Validate an owner by what they have done, such as response choices, acceptances and plan approvals they signed, not by their name in the register."
           ],
           "example": "A city council's payroll risk is listed under 'Finance and IT' with no single name. Lina, the council's risk analyst, maps the payroll process and finds that the payroll manager runs it but can approve only small purchases. Lina proposes the finance director as risk owner and the payroll manager as control owner, and asks senior management to confirm the assignment, with the director accepting the role in writing.",
@@ -635,7 +635,7 @@
             "Give each issue one owner, an agreed action and a realistic due date.",
             "Escalate overdue or slipping items to the risk owner and, past a set point, to senior management.",
             "Close an issue on evidence that the fix works, not the owner's word, or, where the risk is within appetite, on the risk owner's recorded acceptance.",
-            "Re-rate the related risk once the fix is validated, so the register reflects the change.",
+            "Re-rate the risk once a fix is validated; a fix that differs from the agreed action is first evaluated for the risk it leaves, then agreed with the risk owner.",
             "When teams dispute who should fix an issue, the owner of the affected risk names one action owner; the practitioner escalates to that owner rather than choosing a team."
           ],
           "example": "An internal audit at a manufacturer finds that terminated contractors keep plant-system access for weeks. The plant manager marks the finding closed after a new offboarding checklist is issued. Ravi, the risk analyst, samples ten recent departures and finds three accounts still active. They reopen the item, record the evidence and report it to the plant manager with a revised date.",
@@ -955,7 +955,8 @@
             "NIST SP 800-53 Rev. 5 is a catalog of security and privacy controls; its starting baselines are published separately in SP 800-53B.",
             "CSF 2.0 lists outcomes under six functions: Govern, Identify, Protect, Detect, Respond and Recover; it does not prescribe the controls that achieve them.",
             "Tailor by scoping out what does not apply, setting parameter values from the organization's own risk and operations, and adding controls for risks the baseline misses.",
-            "Map internal controls to every framework and regulation that applies, so one control can meet several requirements; re-map whenever one is revised."
+            "Map internal controls to every framework and regulation that applies, so one control can meet several requirements; re-map whenever one is revised.",
+            "COBIT 2019 is tailored through design factors, such as enterprise strategy, size and the threat landscape, which set objective priorities and target capability levels."
           ],
           "example": "A software-as-a-service provider adopts every control in a large catalog to win a government contract, and its backlog grows to 400 items. Oluwaseun, the risk analyst, maps the catalog to the provider's own risk assessment, marks controls that cannot apply to a cloud-only service and proposes a tailored baseline, with a recorded reason for each change, to the chief technology officer.",
           "audit_focus": {
@@ -1130,7 +1131,8 @@
             "Describe the current state from control test results, not policies, owners' statements or old ratings.",
             "Separate design gaps (the control could not work as built) from operating gaps (built right but not performed).",
             "Rank gaps by the risk they leave open, not by how easy they are to fix.",
-            "Turn agreed gaps into action plans with owners and dates."
+            "Turn agreed gaps into action plans with owners and dates.",
+            "Before removing a control as a duplicate, compare what each catches: a range check passes wrong values that look plausible, which a check against the source finds."
           ],
           "example": "A credit union's target profile requires multifactor sign-in for all remote access. Hana, the risk analyst, compares it with the latest assessment and finds two gaps: the contractors' remote tool has no multifactor option, and the quarterly review of exempt accounts was skipped twice. They label one a design gap and one an operating gap, and rank both by exposure for the member services director.",
           "audit_focus": {
@@ -1602,7 +1604,7 @@
           "why_it_matters": "Senior management needs one picture of enterprise risk. Adding ratings from different scales, or averaging away a severe local risk, gives a picture that looks precise but is wrong.",
           "how_it_works": [
             "Convert unit ratings to one enterprise scale for likelihood and impact before combining them.",
-            "Merge duplicate or similar risks into a representative risk, keeping a link back to each source entry.",
+            "Merge duplicate or similar risks into a representative risk, linked to each source entry, and match loss records to single events so a loss logged twice counts once.",
             "Look for the same risk treated differently by different units, and find out why.",
             "Keep severe single risks visible as their own lines; aggregation must not average them into a moderate total or lift a whole group to the worst rating.",
             "Watch for correlated risks, such as several units relying on one vendor or running the same flawed software, that add up to a larger exposure.",
@@ -1724,7 +1726,8 @@
             "A KCI is tied to a control and shows failure or weakness, such as overdue reviews.",
             "A KPI is tied to a process goal, such as tickets closed on time, and may say nothing about risk.",
             "One measure can serve as more than one type, depending on the decision it supports.",
-            "Risk owners use KRIs, control owners use KCIs and process owners use KPIs."
+            "Risk owners use KRIs, control owners use KCIs and process owners use KPIs.",
+            "Efficiency rates, such as calls an AI agent closes without a human, are KPIs; a KRI for its wrong answers tracks early live signs, such as issues raised again."
           ],
           "compare": {
             "columns": [
@@ -2068,7 +2071,8 @@
             "Define triggers in policy: major system or process change, mergers, new vendors, serious incidents, threshold breaches and new laws.",
             "Link change management and incident processes to the risk function, so a trigger starts a reassessment.",
             "Reassess the affected scenarios, update the register and tell the risk owner of any change in rating.",
-            "Keep scheduled reviews as a backstop, since not every change is announced."
+            "Keep scheduled reviews as a backstop, since not every change is announced.",
+            "A change that meets none of the policy's triggers needs no reassessment of its own; note it for the risk's next scheduled review."
           ],
           "example": "An online retailer moves its checkout to a new payment provider in a weekend release. Lucas, the risk analyst, learns of it from the change calendar and finds that the card-data risk was last assessed against the old provider. They reassess the scenario with the e-commerce manager and update the register, rather than waiting for the next quarterly review.",
           "audit_focus": {
@@ -2269,7 +2273,7 @@
           "definition": "Horizon scanning is the regular search for new or changing risks from technology, regulation, markets, threats and society, before they are well understood or measurable.",
           "why_it_matters": "Emerging risks give the least warning and the most surprise. Spotting them early leaves time to study them, prepare and take up any opportunity they bring.",
           "how_it_works": [
-            "Use many sources: threat intelligence, regulators' consultations, industry groups, vendors, research and front-line staff.",
+            "Use many sources: threat intelligence, regulators' consultations, industry groups, vendors, research and front-line staff; look as far ahead as the plans and assets the scan informs.",
             "Look for opportunities too, such as a new technology that could cut cost or risk.",
             "Screen each signal for relevance to objectives and assets; judge the scan by how many new risks it flagged before harm, not items read or hours spent.",
             "Give each relevant emerging risk an owner to watch it, even while it is uncertain.",
