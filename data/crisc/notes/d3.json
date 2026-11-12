@@ -69,10 +69,10 @@
           "why_it_matters": "The response decides how much risk is left and what that costs. The wrong choice wastes money on a risk within appetite or leaves one above appetite untreated.",
           "how_it_works": [
             "Every response starts from an analyzed risk compared with appetite and tolerance, not a favorite tool; if service is restored and a root-cause review is near, wait.",
-            "Responses combine: controls reduce likelihood, then insurance covers part of the remaining financial impact.",
-            "Transfer moves money, not accountability: insurance repays part of a loss, but an insured or outsourced breach still harms customers and reputation.",
+            "Responses combine: controls cut likelihood, then insurance covers part of the remaining impact.",
+            "Transfer moves money, not accountability, and only for losses covered: re-rate exposure an exclusion leaves retained; an insured or outsourced breach still harms customers and reputation.",
             "Avoidance gives up the benefit, so it fits when the activity is not needed for objectives or nothing else brings the risk within appetite.",
-            "A response can bring new risks, such as reliance on one provider; weigh them before it proceeds."
+            "A response can bring new risks, such as reliance on one provider; weigh them first."
           ],
           "types": [
             {
@@ -338,7 +338,7 @@
             "Risk owners rely on control owners to keep residual risk at the level they accepted, so a change that weakens a control goes to the risk owner first.",
             "Validate by asking the owner to describe the control and show recent evidence, not just by reading the register.",
             "When a control owner changes jobs, or a project hands over a control it built, ownership transfers formally, with a handover of procedures and evidence.",
-            "A control owner needs authority over the people and resources the control depends on; if they can ignore the owner, the control fails."
+            "A control owner needs authority over the people and resources the control depends on, and must not own a check on their own work, such as reviews of their approvals."
           ],
           "compare": {
             "columns": [
@@ -437,8 +437,8 @@
             "Tier vendors by criticality, not spend: data held, processes supported and how hard they are to replace.",
             "Scale due diligence to the tier: questionnaires for low tiers; assurance reports, site reviews and financial checks for critical ones.",
             "Write requirements into the contract: security controls, breach notice times, service level agreements, right to audit and subcontractor approval.",
-            "Plan exit before signing: data return or destruction, transition help and access removal at the end.",
-            "Record the vendor risk in the register under the business owner who uses the service.",
+            "Plan exit before signing: data return or destruction, transition help, access removal; ready it when a critical vendor may fail.",
+            "Record vendor risk in the register under the business owner who uses the service.",
             "When the business wants to start before due diligence ends, propose test data only, with no long-term contract, until it ends; the business owner agrees."
           ],
           "example": "A school district plans to move student records to a cloud learning platform. Grace, its risk analyst, rates the vendor critical because it will hold minors' data. Before signing, they ask for its assurance report, breach-notice terms and a data-return clause, and tell the curriculum director the draft has no right to audit.",
@@ -865,7 +865,8 @@
             "Automated controls run the same way every time and suit high volumes, but a wrong setting fails every time.",
             "Manual controls handle judgment and unusual cases but vary with people, workload and attention.",
             "Administrative controls direct behavior and set accountability, and most technical controls depend on them for configuration and review.",
-            "Review automated control settings after upgrades and other system changes, since one wrong value repeats on every transaction until someone notices."
+            "Review automated control settings after upgrades and other system changes, since one wrong value repeats on every transaction until someone notices.",
+            "When an AI tool or other automation acts with no person in between, validate its output against set limits before use; alerts afterward only find the damage."
           ],
           "compare": {
             "columns": [
@@ -1263,7 +1264,7 @@
           "how_it_works": [
             "Test design first, often with a walkthrough of one transaction; a badly designed control needs no operating test.",
             "Test operation over a defined period, with a sample sized to the control's frequency and risk; if the control changed mid-period, sample each version for the months it ran.",
-            "Draw the sample from the complete population, ideally system-generated, with the tester choosing the items.",
+            "Draw the sample from the complete population, ideally system-generated, with the tester choosing the items; test any system report the control relies on for completeness.",
             "Evaluate each failure: find its cause and decide whether the control can still be relied on.",
             "Tests by the control owner alone are self-assessment: useful for monitoring, but weaker than independent testing.",
             "Start from recent internal audit results as independent evidence: check their scope and date fit, then aim further testing at their exceptions rather than repeating audit's work."
@@ -1297,7 +1298,7 @@
               }
             ]
           },
-          "example": "A shipping company's quarterly user-access review has a sound written procedure. Kofi, a risk analyst, walks through the March review and confirms the design. For operation, they take the last four quarters of reviews from the system's own records and find the September review was never signed off. Kofi reports the control as well designed but not operating consistently.",
+          "example": "A shipping company's quarterly user-access review has a sound written procedure. Kofi, a risk analyst, walks through the March review and confirms the design. For operation, they take the last four quarters of reviews from the system's own records and find the September review was never signed off. Kofi reports it as well designed but not operating consistently.",
           "audit_focus": {
             "review": [
               "Confirm design was tested before operating effectiveness",
@@ -1421,13 +1422,13 @@
           "why_it_matters": "A response without a plan stays an intention. Owners, dates and resources turn it into work that can be tracked, funded and escalated when it slips.",
           "how_it_works": [
             "Each action has one owner, a target date and the resources it needs, agreed with the risk owner; a resource conflict goes back to that owner.",
-            "Milestones break long work into checkpoints, so slippage shows early.",
+            "Order actions by the risk each removes, unless one depends on another; milestones break long work into checkpoints, so slippage shows early.",
             "The plan states the target risk expected at completion, so success can be measured.",
             "Interim measures reduce the exposure while long actions are under way, and stay until the permanent control is shown to work.",
             "The plan links to its risk register entry, where action owners log progress, so the risk picture does not depend on a separate project tool.",
             "When a planned control, its cost or the risk changes, such as the target being met early, re-estimate the cost-benefit before the risk owner agrees any change."
           ],
-          "example": "A media company decides to mitigate the risk of an unsupported content system by migrating off it. Zainab, the risk analyst, works with the digital director, who owns the risk, to build the plan: three milestones, a named migration lead, budget for contractors, a June target date and an interim firewall restriction. Zainab links the plan to the register entry.",
+          "example": "A media company decides to migrate off an unsupported content system. Zainab, the risk analyst, works with the digital director, who owns the risk, to build the plan: three milestones, a named migration lead, budget for contractors, a June target date and an interim firewall restriction. Zainab links the plan to the register entry.",
           "audit_focus": {
             "review": [
               "Inspect a sample of plans for gaps in who, when and budget",
@@ -1953,10 +1954,10 @@
             "Automate where it helps, such as configuration checks, vulnerability scans and control health checks.",
             "Set frequency by risk and rate of change; tune alert rules against confirmed incidents, since mostly false alerts teach responders to ignore them.",
             "Route every alert, including those a vendor's tool raises, to an owner in the organization with a response time; track it to closure and measure the share resolved in time.",
-            "Analyze results against tolerance and feed them into the register and reports.",
+            "Analyze results against tolerance and feed them into the register and reports; a sudden silence after a change is first checked as a broken feed.",
             "Roll monitoring out in priority order, starting with the controls behind the highest risks; switching on every check at once floods owners with alerts."
           ],
-          "example": "A payments startup turns on automated checks that flag any cloud storage made public. After a month, Ji-ho, the risk analyst, finds 60 alerts sitting in a shared mailbox and none acted on. They propose routing alerts to the platform team lead with a four-hour response target, and a weekly count of open alerts reported to the chief technology officer.",
+          "example": "A payments startup's automated checks flag cloud storage made public. After a month, Ji-ho, the risk analyst, finds 60 alerts unread in a shared mailbox. They propose routing alerts to the platform lead with a four-hour response target, and a weekly count of open alerts to the chief technology officer.",
           "audit_focus": {
             "review": [
               "Sample closed alerts and confirm a named person resolved each in time",
@@ -2191,7 +2192,7 @@
           "definition": "Audience-based reporting gives each stakeholder what they need for their own decisions: the board sees the risk profile against appetite, and owners see their risks and actions.",
           "why_it_matters": "A report the reader cannot act on is noise. Technical detail swamps the board, and summary colors starve the people who must fix things.",
           "how_it_works": [
-            "Board and senior management: the risk profile against appetite, breaches, top risks, trends and decisions needed, in business terms, not technical scores.",
+            "Board and senior management: the whole risk profile against appetite, including accepted risks, breaches, trends and decisions needed, in business terms, not technical scores.",
             "Risk owners: their risks, indicator status, overdue actions and acceptances due for review.",
             "Control owners and operations: control failures, test results and remediation tasks.",
             "Send each report to someone with authority to decide, stating the decision needed; escalate outside the cycle when a breach or critical risk cannot wait.",

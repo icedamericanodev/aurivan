@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 3 (Risk Response and Reporting), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d3.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d3_001 to crisc_d3_020, 30 Oct 2026. Round 2 crisc_d3_021 to crisc_d3_050, 31 Oct 2026. Round 3 crisc_d3_051 to crisc_d3_085, 4 Nov 2026. Round 7 crisc_d3_129 to crisc_d3_136, 4 Nov 2026. Round 8 crisc_d3_137 to crisc_d3_144, 5 Nov 2026. Round 9 crisc_d3_145 to crisc_d3_152, 5 Nov 2026. Round 10 crisc_d3_153 to crisc_d3_160, 5 Nov 2026. Round 11 crisc_d3_161 to crisc_d3_168, 5 Nov 2026. Round 12 crisc_d3_169 to crisc_d3_176, 5 Nov 2026. Round 13 crisc_d3_177 to crisc_d3_184, 12 Nov 2026. Round 14 crisc_d3_185 to crisc_d3_192, 12 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 3 (Risk Response and Reporting), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d3.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d3_001 to crisc_d3_020, 30 Oct 2026. Round 2 crisc_d3_021 to crisc_d3_050, 31 Oct 2026. Round 3 crisc_d3_051 to crisc_d3_085, 4 Nov 2026. Round 7 crisc_d3_129 to crisc_d3_136, 4 Nov 2026. Round 8 crisc_d3_137 to crisc_d3_144, 5 Nov 2026. Round 9 crisc_d3_145 to crisc_d3_152, 5 Nov 2026. Round 10 crisc_d3_153 to crisc_d3_160, 5 Nov 2026. Round 11 crisc_d3_161 to crisc_d3_168, 5 Nov 2026. Round 12 crisc_d3_169 to crisc_d3_176, 5 Nov 2026. Round 13 crisc_d3_177 to crisc_d3_184, 12 Nov 2026. Round 14 crisc_d3_185 to crisc_d3_192, 12 Nov 2026. Round 15 crisc_d3_193 to crisc_d3_200, 12 Nov 2026.",
     "schema_version": 1
   },
   "domain": 3,
@@ -7111,6 +7111,302 @@
         "Horizon scanning"
       ],
       "_provenance": "Authored from concept: notes 3C6.2 (Recording and Reporting Emerging Risk: refine the entry as evidence grows; if evidence shows it does not apply, the owner closes it with the reason). Round 14, 12 Nov 2026: original scenario (a dental chain's emerging-risk entry on a draft law about where patient X-rays are stored; the final law applies only above 500 staff), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 14 (crisc_d3_185 to 192). Angle: the end of an emerging risk's life, closing the entry on evidence rather than keeping or rating it. Owner pattern: two options name an owner, and they are the key (C) and the runner-up (B) (round 14 ask). Neighbours checked (stems, keys and decoy families): crisc_d3_084 (new evidence: rate it in the main profile), crisc_d3_143 (agreed signs of growth), crisc_d3_176 (agreed trigger reached), crisc_d3_020 and crisc_d3_132 (rules under consultation), crisc_d3_049 (rating range), crisc_d3_171 (a finding closed on recorded acceptance, in 3A4). None closes an emerging-risk entry because the final facts put the firm out of scope. Keep apart in practice sets from crisc_d3_084.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_193",
+      "domain": 3,
+      "subtopic": "3A2 Risk and control ownership. Owner of a review of approvals",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At a construction contractor, the site manager who approves subcontractor invoices has been named owner of the control that reviews those approvals. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Move the review of invoice approvals to internal audit",
+        "B": "Name the site manager's deputy as the review's control owner",
+        "C": "Keep the site manager as owner, with the project director countersigning",
+        "D": "Make the finance controller the review's control owner"
+      },
+      "correct": "D",
+      "key_concept": "A control owner answers for a check working, so the owner must stand apart from the work it checks and have authority over it.",
+      "pre_read": "Read who does the work, who checks it, and what each person named in the options controls.",
+      "correct_explanation": "The review exists to catch wrong invoice approvals, so its owner must answer for it independently; a site manager cannot be accountable for checking their own approvals. The finance controller sits outside the approving line and has authority over payment, so is the right owner. Keeping the site manager with the project director countersigning is the runner-up: it adds a second look, but the accountable owner is still the person whose work is checked.",
+      "wrong_explanations": {
+        "A": "Internal audit gives independent assurance; running a management control would have it audit its own work and leave the business with no owner.",
+        "B": "The deputy reports to the site manager, so the review still sits inside the approving line it is meant to check.",
+        "C": "A countersignature adds a second look, but the owner accountable for the review is still the manager whose approvals it checks."
+      },
+      "tips": [
+        "Eliminate: A hands a management control to internal audit, which must stay independent, and B leaves the review under the manager it checks, through a deputy.",
+        "Final two: D beats C because a countersignature adds oversight but leaves the conflicted manager accountable; the finance controller is independent and controls payment.",
+        "Exam cue: a control owner should stand apart from the work the control checks; an approver never owns the review of their own approvals."
+      ],
+      "framework_ref": "ISACA Glossary (control owner); NIST SP 800-53 Rev. 5 AC-5 (Separation of Duties); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Control ownership",
+        "Separation of duties",
+        "Independent review"
+      ],
+      "_provenance": "Authored from concept: notes 3A2.2 (Control Owners and Validating Ownership: a control owner needs authority over what the control depends on and must not own a check on their own work). Round 15, 12 Nov 2026: original scenario (a construction contractor's site manager who approves subcontractor invoices named owner of the review of those approvals), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 15 (crisc_d3_193 to 200). Angle: validating a control owner's independence from the work the control checks; the runner-up keeps the conflicted owner and adds a countersignature. Owner pattern: three options name an owner and the key is among them (D), with the runner-up (C) also an owner option; the non-owner option (A) is an easy distractor. Neighbours checked (stems, keys and decoy families): crisc_d3_005 (owner for a recovery control), crisc_d3_053 (control owner retiring), crisc_d3_129 (new control at plan closure), crisc_d3_153 (owner over departments that ignore requests), crisc_d3_162 (control run by a contractor), crisc_d3_177 (risk held by two directors), crisc_d3_186 (IT security approving exceptions, in 3A4), CISA d5_088 (hypervisor administrators who could hide their own actions), crisc_d4 4A access items on separation of duties. None keys an independent control owner for a review of the named owner's own approvals. Keep apart in practice sets from crisc_d3_162.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_194",
+      "domain": 3,
+      "subtopic": "3B1 Control frameworks, types and standards. Settings an AI tool applies itself",
+      "principle_id": "priority-word-decides",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A chip fabrication plant's AI tool adjusts etch-tool settings automatically between runs. Which control should the risk analyst recommend as BEST to stop a faulty adjustment scrapping wafers?",
+      "options": {
+        "A": "Automatic rejection of settings outside engineering limits",
+        "B": "Alerts to process engineers when wafer yield drops after a change",
+        "C": "A log of each AI change for its control owner's review",
+        "D": "Insurance the risk owner buys against scrapped wafers"
+      },
+      "correct": "A",
+      "key_concept": "To stop harm from an AI or automated output, validate the output before it acts; detective controls only find the damage afterward.",
+      "pre_read": "Note what the question asks the control to do, then sort each option by what it actually does.",
+      "correct_explanation": "The tool applies its settings with no person in between, so only a control that acts before a setting is used can stop a faulty one. Automatically rejecting settings outside engineering limits validates the output first, a preventive control. Yield alerts are the runner-up: they are fast detective controls, but by the time yield drops, wafers from that run are already scrapped, so they limit the loss rather than stop it.",
+      "wrong_explanations": {
+        "B": "Yield alerts detect a bad setting after wafers are processed; they limit how many lots are lost but cannot stop the first loss.",
+        "C": "A log reviewed later is detective and slower still; the faulty setting has already run on the tools before anyone reads the entry.",
+        "D": "Insurance transfers part of the financial loss; the wafers are still scrapped and faulty settings still reach the tools."
+      },
+      "tips": [
+        "Eliminate: C reviews a log after the setting has run, and D insures the loss instead of stopping it; neither acts before wafers are processed.",
+        "Final two: A beats B because the question asks to stop the loss; yield alerts are detective, so the wafers are already scrapped when they fire.",
+        "Exam cue: when an AI or automated output acts with no one in between, validate it against set limits before it is used; that check is preventive."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SI-15 (Information Output Filtering: validate output from defined software to ensure it is consistent with the expected content); NIST AI 100-1 (AI RMF 1.0) MEASURE 2.6 (the AI system is evaluated regularly for safety risks and can fail safely, particularly if made to operate beyond its knowledge limits); NIST IR 8286B-upd1 Section 2.3.4 (Risk Mitigation: preventive, deterrent, detective, corrective and compensating controls)",
+      "related_concepts": [
+        "Preventive controls",
+        "AI output validation",
+        "Detective controls"
+      ],
+      "_provenance": "Authored from concept: notes 3B1.2 (Control Categories by Nature: automated controls; when AI or other automation acts with no person in between, validate its output against set limits before use) and 3B1.1 (Control Types by Function). Round 15, 12 Nov 2026: original scenario (a chip fabrication plant's AI tool that changes etch-tool settings between runs on its own), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 15 (crisc_d3_193 to 200). AI item (round 15 ask: a fresh angle, output validation as a preventive control for AI, not human review, prompt injection, coding agents, AI-suggested packages or a ranking tool). Short 'Which ... BEST' stem with noun-phrase options. Owner pattern: two easy distractors name an owner (C, D); the key and the runner-up do not. Neighbours checked (stems, keys and decoy families): crisc_d3_008 (weekly change comparison: detective), crisc_d3_096 (ransomware control types: corrective), crisc_d3_155 (firewall rule set to log), crisc_d3_178 (error that reached investors: corrective), crisc_d3_097 (automated control setting changed), aaia_d2_031 (a chip fab's wafer-defect model rolled back; alert threshold left live), crisc_d4 AI items on model monitoring. None keys a limit check on an AI tool's output before it is applied. Keep apart in practice sets from aaia_d2_031.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_195",
+      "domain": 3,
+      "subtopic": "3C4 Risk and control monitoring techniques. Alerts stop after a network change",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Since a network change six weeks ago, an airline maintenance shop's monitoring tool has logged no access alerts from one hangar that used to raise 40 a week. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Report the drop as an improvement in the hangar's controls",
+        "B": "Compare the hangar's alerts with the same weeks last year",
+        "C": "Have the control owner confirm the hangar's logs still reach the tool",
+        "D": "Lower the hangar's alert thresholds to restore the usual volume"
+      },
+      "correct": "C",
+      "key_concept": "A sudden silence in monitoring data, especially after a change, is first checked as a possible data failure before it is read as good news.",
+      "pre_read": "Ask what else could explain the numbers before deciding what they say about the controls.",
+      "correct_explanation": "Alerts falling from 40 a week to none, right after a network change, more likely mean the hangar's logs stopped arriving than that its controls improved. Monitoring results count only once the data behind them is confirmed, so the first step is for the control owner to check the feed. Comparing with the same weeks last year is the runner-up: seasonal patterns move volumes, but they do not drop them to zero overnight.",
+      "wrong_explanations": {
+        "A": "Reporting the silence as an improvement credits the controls before anyone confirms the logs still arrive; a broken feed would look exactly the same.",
+        "B": "A seasonal comparison explains gradual or recurring shifts; an abrupt fall to zero right after a network change points to the data, which is checked first.",
+        "D": "Lowering thresholds tunes the rules to produce alerts again without knowing why they stopped; if no logs arrive, no threshold will fire."
+      },
+      "tips": [
+        "Eliminate: A treats silence as good news without checking the data, and D retunes alert rules before anyone knows why the alerts stopped.",
+        "Final two: C beats B because a drop to zero right after a network change points to a broken feed; seasonality does not empty a data source overnight.",
+        "Exam cue: when a monitoring measure suddenly goes quiet, confirm the data is still flowing and complete before reading the result as a change in risk."
+      ],
+      "framework_ref": "NIST SP 800-137 Section 3.6 (Review and Update the Monitoring Program and Strategy: the accuracy of measurements and the usefulness of collected data are reviewed, and collection found not useful is reconsidered); NIST SP 800-55v1 Section 3.1.4 (Data Quality: a validation process checks the integrity, accuracy and structure of data before any analysis is done)",
+      "related_concepts": [
+        "Continuous monitoring",
+        "Data validation",
+        "Log source health"
+      ],
+      "_provenance": "Authored from concept: notes 3C4.1 (Continuous Monitoring and Automated Alerts: analyze results against tolerance; a sudden silence, especially after a change, is checked as a possible broken feed first). Round 15, 12 Nov 2026: original scenario (an airline maintenance shop's monitoring tool that has logged no access alerts from one hangar since a network change), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 15 (crisc_d3_193 to 200). Angle: monitoring the monitoring, a quiet data source validated before it is read as better control; a FIRST key that is not assess, record or reassess. Owner pattern: one option names an owner and it is the key (C), a keyed lone owner (round 15 ask: key the lone owner in about a third of lone-owner items). Neighbours checked (stems, keys and decoy families): crisc_d3_137 (rise during a change freeze: compare with past years; here the deliberate runner-up), crisc_d3_180 (alerts mostly false: tune the rules), crisc_d3_018 (unread alerts), crisc_d3_126 (measuring the monitoring), crisc_d3_167 (vendor's drift alerts), CISA d4_195 (a server stopped sending logs for six weeks: which control) and d4_309 (servers missing from the log store). None keys confirming the feed before reading a sudden silence as improvement. Keep apart in practice sets from crisc_d3_137 and CISA d4_195.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_196",
+      "domain": 3,
+      "subtopic": "3A3 Vendor/supply chain risk management. Critical vendor in financial trouble",
+      "principle_id": "proportionate-response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A hotel group's reservations vendor, rated critical, has reported two years of losses and cut a third of its staff. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Get the contract owner to add service credits for outages",
+        "B": "Have the service's business owner prepare an exit plan",
+        "C": "Begin replacing the vendor, led by the service's business owner",
+        "D": "Run a full on-site security review of the vendor's systems"
+      },
+      "correct": "B",
+      "key_concept": "When a critical vendor may fail, plan how the service would move or continue, in proportion to the dependence, before failure forces it.",
+      "pre_read": "Ask which risk the new facts raise, and which response fits its size and its timing.",
+      "correct_explanation": "Losses and deep staff cuts raise the chance that a critical vendor fails, and the group's exposure is how long reservations would stop. An exit plan, owned by the service's business owner, sets out data return, an alternative and the steps to move, so the group can act quickly if needed. Replacing the vendor now is the runner-up: it removes the dependence, but at full cost and disruption before the vendor has failed.",
+      "wrong_explanations": {
+        "A": "Service credits refund fees for missed service; a vendor that fails cannot pay them, and they do not keep reservations running.",
+        "C": "Replacing a critical platform is costly and risky in itself; doing it before any failure is a large response to a risk an exit plan can contain.",
+        "D": "A security review tests the vendor's controls, not its financial health or the group's ability to move the service if the vendor fails."
+      },
+      "tips": [
+        "Eliminate: A relies on credits a failing vendor cannot pay, and D reviews security when the new risk is the vendor's survival.",
+        "Final two: B beats C because an exit plan contains the risk at a fraction of the cost; replacing the vendor now pays the full price before any failure.",
+        "Exam cue: signs that a critical vendor may fail call for a ready exit or contingency plan, scaled to the dependence, rather than an immediate switch."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SR-6 (Supplier Assessments and Reviews); NIST CSF 2.0 GV.SC-10 (cybersecurity supply chain risk management plans include provisions for activities that occur after the conclusion of a partnership or service agreement); NIST CSF 2.0 GV.SC-07 (the risks posed by a supplier, their products and services and other third parties are understood, recorded, prioritized, assessed, responded to and monitored)",
+      "related_concepts": [
+        "Vendor risk monitoring",
+        "Exit planning",
+        "Supplier financial health"
+      ],
+      "_provenance": "Authored from concept: notes 3A3.2 (Ongoing Vendor Monitoring and Assurance Reports: watch a critical vendor's financial health; signs of failure call for a ready exit or contingency plan) and 3A3.1 (plan exit before signing). Round 15, 12 Nov 2026: original scenario (a hotel group's critical reservations vendor with two years of losses and a third of its staff cut), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 15 (crisc_d3_193 to 200). Angle: vendor financial distress answered with a proportionate exit plan rather than an immediate switch. Owner pattern: three options name an owner and the key is among them (B), with the runner-up (C) also an owner option; the non-owner option (D) is an easy distractor. Neighbours checked (stems, keys and decoy families): crisc_d3_135 (provider sold to a new owner: reassess before the move), crisc_d3_144 (concentration risk), crisc_d3_055 (access left after a contract ended), crisc_d3_056 (AI service outage: tested manual fallback), crisc_d3_027 (AI vendor service credits), crisc_d3_183 (reviews after onboarding), crisc_d1_043 (restoration SLA against the RTO), CISA d2_106 (exit from a SaaS provider after an incident) and d3_130 (source code escrow from a small vendor). None keys an exit plan for a critical vendor showing financial distress. Keep apart in practice sets from crisc_d3_135.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_197",
+      "domain": 3,
+      "subtopic": "3C1 Risk action plans. Actions scheduled easiest first",
+      "principle_id": "appetite-drives-response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A life insurer's ten actions against a data risk above appetite run easiest first, so claims database encryption, the biggest risk cut and dependent on nothing, comes last. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Track each action owner's progress against its due date",
+        "B": "Widen appetite for the risk, with the risk owner's approval",
+        "C": "Add interim monitoring of the database by its control owner",
+        "D": "Reorder the actions so the largest reductions come first"
+      },
+      "correct": "D",
+      "key_concept": "Order a plan's actions by the risk each removes, subject to dependencies, so exposure above appetite falls as early as possible.",
+      "pre_read": "Ask how long the exposure stays above appetite under this plan, and what keeps it there.",
+      "correct_explanation": "While the risk sits above appetite, every month the biggest cut waits is exposure the insurer carries for no reason; encryption depends on nothing, so it can start now. Reordering the actions by the risk each removes brings the risk down soonest. Interim monitoring is the runner-up: it helps when a long action cannot start sooner, but here it would watch a delay the plan itself created instead of removing it.",
+      "wrong_explanations": {
+        "A": "Tracking dates shows whether the plan keeps to schedule; a plan on schedule still leaves the largest exposure open until its final action.",
+        "B": "Appetite is set by the board and senior management for what the enterprise will bear; it is not widened to fit a plan's order.",
+        "C": "Interim monitoring watches the database while encryption waits; when nothing blocks encryption, moving it forward reduces the exposure itself."
+      },
+      "tips": [
+        "Eliminate: A tracks dates in a badly ordered plan, and B bends appetite, which the board and senior management set, to fit the schedule.",
+        "Final two: D beats C because encryption depends on nothing, so it can start now; interim monitoring only watches an exposure the plan's order prolongs.",
+        "Exam cue: in a risk action plan, check the order as well as the owners and dates; the biggest risk reductions go first unless a dependency blocks them."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.RA-06 (risk responses are chosen, prioritized, planned, tracked and communicated); NIST CSF 2.0 Section 3.1 (Organizational Profiles step 4: analyze the gaps between the Current and Target Profiles and develop a prioritized action plan); NIST SP 800-53 Rev. 5 CA-5 (Plan of Action and Milestones)",
+      "related_concepts": [
+        "Risk action plan",
+        "Prioritization",
+        "Interim controls"
+      ],
+      "_provenance": "Authored from concept: notes 3C1.1 (Building a Risk Action Plan: order actions by the risk each removes, unless one depends on another; interim measures for long actions). Round 15, 12 Nov 2026: original scenario (a life insurer's ten-action plan run easiest first, leaving claims database encryption, the biggest risk cut with no dependencies, last), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 15 (crisc_d3_193 to 200). Angle: plan design, the order of actions (round 15 ask: a 3C1 key other than taking changed facts to the risk owner). Owner pattern: three options name an owner and the key is the one that does not (D); the runner-up (C) is an owner option. Neighbours checked (stems, keys and decoy families): crisc_d3_039 (long plan above appetite: interim controls; here the deliberate runner-up, beaten by a stem fact), crisc_d3_038 (what the draft plan lacks: target level), crisc_d3_070 (one named person per action), crisc_d3_068 (status reported as green), crisc_d3_123 (engineers booked elsewhere), crisc_d3_174 (target reached before the plan ends), crisc_d1_027 (a continuity plan's restore sequence). None keys reordering a plan's actions by risk reduction. Keep apart in practice sets from crisc_d3_039.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_198",
+      "domain": 3,
+      "subtopic": "3A1 Risk response options. Insurance that excludes two plants",
+      "principle_id": "transfer-keeps-accountability",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A frozen food processor rates ransomware risk within appetite partly by crediting cyber insurance; the broker confirms the policy excludes two plants lacking multifactor remote access. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Re-rate the two plants' risk without the insurance",
+        "B": "Have IT add multifactor remote access at the two plants",
+        "C": "Seek the risk owner's acceptance of the uninsured loss",
+        "D": "Raise the insurance limit to take in the two plants"
+      },
+      "correct": "A",
+      "key_concept": "A transfer counts only where the policy or contract actually covers the loss; excluded exposure is retained and rated as such.",
+      "pre_read": "Ask what the broker's confirmation changes, and what must be true before anyone chooses a response.",
+      "correct_explanation": "The within-appetite rating counted insurance that does not cover the two plants, so their ransomware loss is retained, not transferred, and the rating overstates protection. Re-rating it without the cover comes first, so the risk owner chooses a response from the true exposure. Adding multifactor access is the runner-up: it may well be the response chosen, and it would restore cover, but it decides the treatment before the risk is re-rated.",
+      "wrong_explanations": {
+        "B": "Multifactor access may well be the right fix, but ordering it now chooses the treatment before the risk is re-rated and the risk owner decides.",
+        "C": "An acceptance must rest on the true rating; asking the risk owner to accept now, before re-rating, asks them to decide blind.",
+        "D": "A higher limit raises the cover for insured losses; it does not override an exclusion, so the two plants stay uninsured."
+      },
+      "tips": [
+        "Eliminate: C seeks acceptance before the exposure is re-rated, and D raises a limit that cannot override the policy's exclusion.",
+        "Final two: A beats B because the rating is wrong today; re-rating comes before choosing a fix, even a sensible one the owner may well approve.",
+        "Exam cue: credit insurance or a contract only for losses it actually covers; when cover falls away, re-rate the retained exposure before choosing a response."
+      ],
+      "framework_ref": "ISACA Glossary (risk transfer); NIST IR 8286B-upd1 Section 2.3.3 (Risk Transfer: considered when a risk cannot be accepted or fully avoided, most often through insurance); NIST SP 800-39 Section 3.3 (Responding to Risk: accept, avoid, mitigate, share or transfer)",
+      "related_concepts": [
+        "Risk transfer",
+        "Cyber insurance",
+        "Retained risk"
+      ],
+      "_provenance": "Authored from concept: notes 3A1.1 (The Four Risk Responses: transfer moves money, not accountability; credit insurance only for losses the policy covers, and re-rate excluded exposure before choosing a response). Round 15, 12 Nov 2026: original scenario (a frozen food processor whose cyber insurance, credited in its ransomware rating, excludes two plants without multifactor remote access), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 15 (crisc_d3_193 to 200). Angle: a transfer that does not apply, retained exposure re-rated before any treatment. Owner pattern: one option names an owner and it is an easy distractor (C: the risk owner asked to accept before re-rating), round 15 lone-owner ask. Neighbours checked (stems, keys and decoy families): crisc_d3_001 (insurance shifts part of the loss), crisc_d3_086 (insure part of the loss left after controls), crisc_d3_116 (cover for a risk within appetite), crisc_d3_088 (comparing the options), crisc_d3_130 (rating that counts a planned review, in 3C1), crisc_d1_081 (a supplier's liability cap below the exposure). None keys re-rating exposure that an insurance exclusion leaves retained. Keep apart in practice sets from crisc_d3_001.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_199",
+      "domain": 3,
+      "subtopic": "3B3 Control testing methodologies. Review that works from a system report",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Testing a card payments processor's chargeback review, the risk analyst found all 25 sampled cases properly reviewed; reviewers work only from a system-generated exception report. What should the analyst do FIRST before crediting the control?",
+      "options": {
+        "A": "Observe a reviewer working through today's exception report",
+        "B": "Test the report's completeness against the chargeback records",
+        "C": "Reperform the review for a sample of the listed cases",
+        "D": "Ask the control owner how the report's rules were set"
+      },
+      "correct": "B",
+      "key_concept": "When a control works from a system report, test the report's completeness and accuracy; a perfect review of an incomplete list still misses cases.",
+      "pre_read": "Ask what the sample could not show about the control, given where the reviewers' work comes from.",
+      "correct_explanation": "The sample shows reviewers handled the cases the report listed, but the review can be no better than the report: cases its rules miss are never reviewed at all. Testing the report's completeness against the chargeback records closes that gap before the control is credited. Reperforming sampled reviews is the runner-up: it is strong evidence that listed cases were judged correctly, but it cannot reveal cases the report left out.",
+      "wrong_explanations": {
+        "A": "Observing one session shows how a reviewer works that day; like the sample, it starts from the report and cannot show what the report misses.",
+        "C": "Reperformance checks the reviewers' decisions on listed cases; it is strong evidence of their quality, but it never reaches cases the report omits.",
+        "D": "The owner's account of the rules is inquiry, the weakest evidence; it describes the report's design without showing that it captures every case."
+      },
+      "tips": [
+        "Eliminate: D relies on the owner's account, which is inquiry only, and A observes one session that starts from the same report.",
+        "Final two: B beats C because reperformance re-checks listed cases only; testing the report's completeness finds cases the review never sees.",
+        "Exam cue: when a control relies on system-generated information, test that information's completeness and accuracy as part of testing the control."
+      ],
+      "framework_ref": "NIST SP 800-53A Rev. 5 Section 2.4.2 (Assessment Methods: examine, interview and test, with depth and coverage); NIST SP 800-53 Rev. 5 CA-2 (Control Assessments)",
+      "related_concepts": [
+        "Control testing",
+        "System-generated reports",
+        "Reperformance"
+      ],
+      "_provenance": "Authored from concept: notes 3B3.2 (Design and Operating Effectiveness Testing: if the control works from a system report, test that report's completeness too) and 3B3.1 (reperformance and inquiry as evidence). Round 15, 12 Nov 2026: original scenario (a card payments processor's chargeback review where reviewers work only from a system exception report), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 15 (crisc_d3_193 to 200). Angle: a control's input report tested before the control is credited; the runner-up is reperformance, strong but limited to listed cases. Owner pattern: one option names an owner and it is an easy distractor (D: inquiry of the control owner), round 15 lone-owner ask. Neighbours checked (stems, keys and decoy families): crisc_d3_102 (population list supplied by the owner: check it against the deployment log; the closest lesson, but about the test population, not the control's own input; its decoy has the owner sign the list, ours asks how the rules were set), crisc_d3_149 (recalculate sampled discounts), crisc_d3_122 (reconciliation against a copy of itself), crisc_d3_134 (records made after the fact), crisc_d3_173 (rule with no cases), CISA d1_118 (sign-off on a daily exception report) and d1_152 (testing billing independently of system reports). None keys testing the completeness of the report a review works from. Keep apart in practice sets from crisc_d3_102.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_200",
+      "domain": 3,
+      "subtopic": "3C5 Risk and control reporting techniques. Report limited to risks under treatment",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A city bus operator's board risk report lists only risks under treatment, so 14 risks their owners accepted never appear, three of them now near tolerance. What is the risk analyst's BEST change?",
+      "options": {
+        "A": "Have owners re-confirm their acceptances before each report",
+        "B": "Report accepted risks when they breach tolerance",
+        "C": "Add accepted risks to the report, showing each one's owner",
+        "D": "Route each acceptance to the board for its approval"
+      },
+      "correct": "C",
+      "key_concept": "Accepting a risk does not take it out of view; leaders need accepted risks in the profile they oversee, especially those near tolerance.",
+      "pre_read": "Ask what the board can and cannot see from this report, and why that matters.",
+      "correct_explanation": "Acceptance keeps a risk, so it stays part of the profile the board oversees against appetite; three accepted risks near tolerance are exactly what leaders need to see before they breach. Adding accepted risks to the report, each with its owner, gives the board the whole picture. Having owners re-confirm acceptances is the runner-up: it keeps decisions current, but the board still never sees them.",
+      "wrong_explanations": {
+        "A": "Re-confirming keeps each acceptance current with its owner; the board's report still leaves out the 14 risks and the three near tolerance.",
+        "B": "Waiting for a breach removes the warning; the board would learn of three risks near tolerance only after they cross it.",
+        "D": "Owners may accept risks within their authority; sending every acceptance to the board overloads it and still does not show the profile."
+      },
+      "tips": [
+        "Eliminate: B reports accepted risks only after a breach, losing the warning, and D moves acceptances within owners' authority up to the board.",
+        "Final two: C beats A because the problem is what the board sees; re-confirmed acceptances that never reach the report still leave it blind.",
+        "Exam cue: accepted risk is still risk; keep it in monitoring and reporting, with its owner, so leaders see the full profile against appetite."
+      ],
+      "framework_ref": "NIST IR 8286B-upd1 Section 2.3 (Selection of Risk Response Types: senior leaders can be unaware of serious risks accepted by lower levels of management, so response decisions and trends are reported); NIST IR 8286B-upd1 Section 2.3.1 (Risk Acceptance: exposure within risk tolerance is still reported, monitored and managed); ISACA Glossary (risk acceptance)",
+      "related_concepts": [
+        "Risk reporting",
+        "Risk acceptance",
+        "Risk profile"
+      ],
+      "_provenance": "Authored from concept: notes 3C5.2 (Reporting for the Audience and the Decision: board and senior management get the risk profile against appetite, accepted risks included) and 3A1.3 (keep monitoring and reporting accepted risk). Round 15, 12 Nov 2026: original scenario (a city bus operator's board report that lists only risks under treatment, so 14 accepted risks, three near tolerance, never appear), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 15 (crisc_d3_193 to 200). Angle: accepted risk kept in board reporting; not an acceptance-condition or exception item. Owner pattern: two options name an owner, and they are the key (C) and the runner-up (A) (the two-owner, key-in shape). Neighbours checked (stems, keys and decoy families): crisc_d3_019 (board committee report: risks beyond appetite, trend, decisions), crisc_d3_081 (same pack for every owner), crisc_d3_127 (breach between reports), crisc_d3_168 (owner asks for a softer color), crisc_d3_181 (current rating against appetite), crisc_d3_021 (recording an acceptance: review date), crisc_d3_116 and crisc_d3_002 (accepting a risk within appetite), crisc_d3_024 (acceptance above delegated authority). None keys putting accepted risks back into board reporting. Keep apart in practice sets from crisc_d3_024.",
       "style_version": 2
     }
   ]
