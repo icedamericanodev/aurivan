@@ -832,7 +832,7 @@
           "definition": "A business process is a set of activities that produces a business outcome; its process owner is accountable for its performance, risks and controls from end to end.",
           "why_it_matters": "Risk lands on processes, not on servers. Knowing which processes are critical, and who owns them, shows where disruption hurts most and who decides on resilience spending.",
           "how_it_works": [
-            "Each critical process has one owner who answers for its outcome across departments.",
+            "Each critical process has one owner who answers for its outcome across departments; its plan names who may invoke it, with a deputy.",
             "Critical processes are those whose failure most harms objectives, customers, safety or compliance; the business impact analysis (BIA, see 2B2) ranks them, and the ranking can shift by season.",
             "Processes depend on people, suppliers, data and systems; mapping them end to end with the owner shows single points of failure a plan built around one system misses.",
             "Process owners set recovery needs, including the manual fallback if an AI service fails, that IT and suppliers meet; when owners clash, the plan's owner orders recovery by impact.",
@@ -1182,7 +1182,7 @@
           "definition": "Enterprise risk management (ERM) identifies, assesses, responds to and monitors risk of every type, upside included, so risk-taking supports strategy and adds stakeholder value; IT risk is one part.",
           "why_it_matters": "When IT risk sits in its own register with its own language, leaders cannot weigh it against financial, operational or strategic risk, and it competes poorly for attention and budget.",
           "how_it_works": [
-            "Enterprise leaders set the strategy, appetite and methods; each discipline, including IT, applies them.",
+            "Enterprise leaders set the strategy, appetite and methods; each discipline, including IT, applies them, deriving its limits from the enterprise appetite rather than setting its own.",
             "System and business unit risk registers roll up into enterprise-level registers through aggregation and normalization.",
             "IT risk is expressed by its effect on enterprise objectives: strategic, operations, reporting and compliance; one 'IT failure' entry held by IT is recast as business scenarios with business owners.",
             "Decisions on IT risk flow back down as guidance, so local teams act within enterprise appetite; IT ranks and funds treatments by the enterprise risks they reduce.",
@@ -1793,7 +1793,7 @@
           "how_it_works": [
             "The risk practitioner gathers data on objectives, past losses, capacity and stakeholder expectations to inform leaders.",
             "Leaders set appetite by risk type, in qualitative statements backed by quantitative limits.",
-            "Statements are communicated to risk owners and built into policies, project approvals and key risk indicator (KRI) thresholds.",
+            "Statements are communicated to risk owners and built into policies, project approvals and key risk indicator (KRI) thresholds; limits handed to units together stay within appetite.",
             "Appetite is reviewed at least yearly and when strategy, capacity or the environment changes.",
             "For AI, appetite states which uses are acceptable, which need extra review and which are out of bounds.",
             "When leaders change a tolerance, up or down, KRI thresholds are re-aligned with the risk owner, keeping an early-warning level below the new limit."
@@ -2054,7 +2054,7 @@
             "Supplier contracts set SLAs, security requirements, right-to-audit clauses, incident notice and exit terms.",
             "SLA targets should reflect business recovery needs and appetite, not just the provider's standard offer.",
             "Handing a task to a supplier does not hand over accountability; the enterprise still owns the risk to its objectives.",
-            "The business owner, legal and risk review contract terms before signing and at renewal.",
+            "The business owner, legal and risk review contract terms before signing and at renewal; supplier terms clashing with customer commitments, such as AI training rights, go to their owner first.",
             "A liability cap limits what a supplier repays, not the loss, and an unmet insurance condition can void cover; rate residual risk on what each contract will really pay."
           ],
           "example": "A city council's parking app runs on a supplier platform whose contract promises 99% monthly uptime, which allows about seven hours of outage. The parking services manager can accept no more than one hour of outage at peak times. Kwame, the risk practitioner, documents the gap between the SLA and the business need and recommends the manager raise it at renewal.",
