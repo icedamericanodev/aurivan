@@ -17,7 +17,8 @@ Runs the gates every CC batch must pass before review, in one place:
     characters longer than the longest distractor, and opener tells (an
     option's first word, such as "Refer" or "Agree", winning far more or
     less often than chance across the whole bank, checked when all five
-    domains run); --new N shows both rates
+    domains run, plus a WARNING for whole words anywhere in an option that
+    do the same at under 0.01%); --new N shows both rates
     for one batch alone
   - coverage: notes sub-topics with no question
   - lens: CC notes' rule and "In practice" fields never speak as an auditor
@@ -52,6 +53,7 @@ SHORT_MIN, SHORT_MAX = 0.12, 0.30  # "pick the shortest" must not become the rev
 LAG_MIN, LAG_MAX, MAX_RUN = 0.15, 0.35, 3  # stored key order must look random (chance is 25%)
 OPENER_MIN_ITEMS, OPENER_P = 5, 0.01  # an option's first word must not predict the key
 OPENER_SAME = {"agreed": "agree", "disagreed": "disagree"}
+WORD_MIN_ITEMS, WORD_P = 10, 0.0001  # a word anywhere in an option (many words tested, so stricter)
 
 
 def opener(text):
@@ -92,6 +94,35 @@ def opener_tells(qs):
         if tail < OPENER_P:
             out.append((w, n, k, p))
     return sorted(out)
+
+
+def word_tells(qs):
+    """Whole words, anywhere in an option, whose options win far more or less often than chance.
+
+    The opener gate sees only the first word; this sees "named", "until", "and" in mid-option.
+    A word on all four options of an item tells nothing there and is skipped. Reported as a
+    WARNING (the older bank still carries some), so new batches can avoid adding to one."""
+    used, won, chance = Counter(), Counter(), Counter()
+    for q in qs:
+        sets = {k: {w.lower() for w in re.findall(r"[A-Za-z']+", v)} for k, v in q["options"].items()}
+        for w in set().union(*sets.values()):
+            c = sum(w in s for s in sets.values())
+            if c == 4:
+                continue
+            used[w] += 1
+            chance[w] += c / 4
+            if w in sets[q["correct"]]:
+                won[w] += 1
+    out = []
+    for w, n in used.items():
+        if n < WORD_MIN_ITEMS:
+            continue
+        p = chance[w] / n
+        k = won[w]
+        tail = _tail(n, k, p, upper=k > n * p)
+        if tail < WORD_P:
+            out.append((tail, w, n, k, p))
+    return [o[1:] for o in sorted(out)]
 
 
 def key_order(keys):
@@ -303,6 +334,9 @@ def main(argv):
             print(f"ERROR bank: options starting '{w}' win {k} of {n} items (chance about {exp:.0%}); "
                   "reword some openers so the first word does not predict the key")
             errors += 1
+        for w, n, k, exp in word_tells(bank):
+            print(f"WARNING bank: options containing '{w}' win {k} of {n} items (chance about {exp * n:.0f}); "
+                  "new items should not add to this")
     if "--similarity" in argv:
         similarity()
     sys.exit(1 if errors else 0)

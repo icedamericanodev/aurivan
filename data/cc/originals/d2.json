@@ -301,7 +301,7 @@
       "subtopic": "2.2 Redundancy. Backups",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A school's nightly backups have reported success for a year, and its backup procedure assigns test restores to the IT technician, though none has been done. What should the technician do FIRST?",
+      "question": "A school's nightly backups have reported success for a year, and its backup procedure assigns test restores to the system administrator, though none has been done. What should the administrator do FIRST?",
       "options": {
         "A": "Report the untested backups to the system owner as a risk",
         "B": "Add a second nightly backup job to the same storage",
@@ -311,15 +311,15 @@
       "correct": "D",
       "key_concept": "A backup counts only when a restore has been tested and timed; whoever the procedure assigns runs the test.",
       "pre_read": "Notice what the job reports actually show, and whose task the procedure names.",
-      "correct_explanation": "A successful job shows data was copied, not that it can be restored in time; corrupt files and slow restores show up only in a test. The procedure makes test restores the technician's task, so the technician runs one and records the time. Reporting the gap to the system owner is the runner-up: it sounds responsible, but it hands back work that is already the technician's, and gives the owner no evidence.",
+      "correct_explanation": "A successful job shows data was copied, not that it can be restored in time; corrupt files and slow restores show up only in a test. The procedure makes test restores the administrator's task, so the administrator runs one and records the time. Reporting the gap to the system owner is the runner-up: it sounds responsible, but it hands back work that is already the administrator's, and gives the owner no evidence.",
       "wrong_explanations": {
-        "A": "Closest choice: untested backups are a real risk. But the procedure already gives testing to the technician; reporting without testing passes on their own task.",
+        "A": "Closest choice: untested backups are a real risk. But the procedure already gives testing to the administrator; reporting without testing passes on their own task.",
         "B": "Tempting because more copies feel safer. But a second untested job on the same storage proves nothing about restoring and shares the first one's weaknesses.",
         "C": "Tempting because better equipment sounds like a fix. But nobody yet knows whether restores work; buying hardware first answers the wrong question."
       },
       "tips": [
         "Eliminate: B adds more untested copies on the same storage, and C buys equipment before anyone knows whether restores work.",
-        "Final two: D beats A because the procedure makes test restores the technician's job; do the assigned task, then report the result.",
+        "Final two: D beats A because the procedure makes test restores the administrator's job; do the assigned task, then report the result.",
         "Exam cue: a backup never restored is a hope, not a control. When the task is yours, do it and record the evidence; escalate what is outside your role."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 CP-9(1) (System Backup | Testing for Reliability and Integrity); NIST CSF 2.0 PR.DS-11 (backups of data are created, protected, maintained and tested)",
@@ -328,7 +328,7 @@
         "Backup evidence",
         "Acting within your role"
       ],
-      "_provenance": "Authored from concept: 'a backup never restored is a hope, not a control' (notes 2.2.5 Backups: Types, the 3-2-1 Rule and Restore Testing). Calibration: in-role key over escalation; the stem states the procedure assigns the task. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026.",
+      "_provenance": "Authored from concept: 'a backup never restored is a hope, not a control' (notes 2.2.5 Backups: Types, the 3-2-1 Rule and Restore Testing). Calibration: in-role key over escalation; the stem states the procedure assigns the task. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Batch 7 final fix round (12 Nov 2026): 'IT technician' became 'system administrator' (canonical role names).",
       "style_version": 2
     },
     {
@@ -589,7 +589,7 @@
       "subtopic": "2.4 Measuring effectiveness. Types of measures",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A charity's IT lead reports that 100% of its laptops have disk encryption on. Which type of measure is this MOST accurately?",
+      "question": "A charity's IT manager reports that 100% of its laptops have disk encryption on. Which type of measure is this MOST accurately?",
       "options": {
         "A": "An implementation measure",
         "B": "An effectiveness measure",
@@ -616,7 +616,7 @@
         "Effectiveness measures",
         "Security metrics"
       ],
-      "_provenance": "Authored from concept: 'existence is not effectiveness' (notes 2.4.2 Types of Security Measures, NIST measure types). Laptop encryption chosen to avoid the notes' training-completion example. Plain recognition item. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026.",
+      "_provenance": "Authored from concept: 'existence is not effectiveness' (notes 2.4.2 Types of Security Measures, NIST measure types). Laptop encryption chosen to avoid the notes' training-completion example. Plain recognition item. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Batch 7 final fix round (12 Nov 2026): 'IT lead' became 'IT manager' (canonical role names).",
       "style_version": 2
     },
     {
@@ -913,7 +913,7 @@
       "subtopic": "2.1 GRC. Governing AI use",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "The vendor of an accounting firm's approved AI writing assistant changes its terms so business customers' prompts may train its models. What should the IT support analyst who spots the notice do FIRST?",
+      "question": "The vendor of an accounting firm's approved AI writing assistant changes its terms so business customers' prompts may train its models. What should the help desk analyst who spots the notice do FIRST?",
       "options": {
         "A": "Keep using the assistant, since it remains on the approved list",
         "B": "Report the new terms to the security team for a fresh review",
@@ -940,7 +940,7 @@
         "Approval review",
         "Third-party AI risk"
       ],
-      "_provenance": "Authored from concept: 'approval holds only while the facts behind it hold; a change in vendor terms, data or purpose sends the tool back for review' (notes 2.1.8 Governing AI Use). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): replaced an item that duplicated cc_d5_026 (data level on an approved tool). Provenance fix (31 Oct 2026): the concept now quotes the notes 2.1.8 bullet added after the notes test.",
+      "_provenance": "Authored from concept: 'approval holds only while the facts behind it hold; a change in vendor terms, data or purpose sends the tool back for review' (notes 2.1.8 Governing AI Use). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): replaced an item that duplicated cc_d5_026 (data level on an approved tool). Provenance fix (31 Oct 2026): the concept now quotes the notes 2.1.8 bullet added after the notes test. Batch 7 final fix round (12 Nov 2026): 'IT support analyst' became 'help desk analyst' (canonical role names).",
       "style_version": 2
     },
     {
@@ -949,7 +949,7 @@
       "subtopic": "2.2 Redundancy. High availability",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A ski resort's booking site runs on two web servers in separate racks, with internet lines from two providers, all behind one firewall. Which change should the IT technician propose to BEST improve availability?",
+      "question": "A ski resort's booking site runs on two web servers in separate racks, with internet lines from two providers, all behind one firewall. Which change should the network technician propose to BEST improve availability?",
       "options": {
         "A": "Add a third web server beside the existing two",
         "B": "Back up the firewall's settings every night",
@@ -976,7 +976,7 @@
         "Failover",
         "High availability"
       ],
-      "_provenance": "Authored from concept: 'find single points of failure and add a spare for each' (notes 2.2.1 Redundancy and High Availability). Angle: the one unpaired component in an otherwise redundant design; cc_d1_023 covers a single server. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'find single points of failure and add a spare for each' (notes 2.2.1 Redundancy and High Availability). Angle: the one unpaired component in an otherwise redundant design; cc_d1_023 covers a single server. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Batch 7 final fix round (12 Nov 2026): 'IT technician' became 'network technician' (canonical role names).",
       "style_version": 2
     },
     {
@@ -1021,7 +1021,7 @@
       "subtopic": "2.2 Redundancy. Backing up AI systems",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A college's admissions chatbot runs on a tuned AI model and answers from a document library, which is backed up nightly. Which addition BEST lets the IT technician restore the same service?",
+      "question": "A college's admissions chatbot runs on a tuned AI model and answers from a document library, which is backed up nightly. Which addition BEST lets the system administrator restore the same service?",
       "options": {
         "A": "Logs of every answer the model has given to users",
         "B": "A second copy of the document library, stored offsite",
@@ -1048,7 +1048,7 @@
         "Model versioning",
         "Restore scope"
       ],
-      "_provenance": "Authored from concept: 'back up what rebuilds the service: model versions, settings and prompts, and the training data' (notes 2.2.8 Backing Up AI Systems and Model Drift). Angle: backup scope for an AI service; model drift is tested in cc_d2_019. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
+      "_provenance": "Authored from concept: 'back up what rebuilds the service: model versions, settings and prompts, and the training data' (notes 2.2.8 Backing Up AI Systems and Model Drift). Angle: backup scope for an AI service; model drift is tested in cc_d2_019. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Batch 7 final fix round (12 Nov 2026): 'IT technician' became 'system administrator' (canonical role names).",
       "style_version": 2
     },
     {
@@ -1489,7 +1489,7 @@
       "subtopic": "2.4 Measuring effectiveness. Using measurement to improve",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A cruise line's server team took 40 days on average to apply critical patches, against a 14-day target, so the IT manager added a weekly patch window. What is the metrics analyst's BEST next step?",
+      "question": "A cruise line's server team took 40 days on average to apply critical patches, against a 14-day target, so the IT manager added a weekly patch window. What is the security analyst's BEST next step?",
       "options": {
         "A": "Mark the patching gap closed now the window is in place",
         "B": "Raise the target to 40 days to match current results",
@@ -1516,7 +1516,7 @@
         "Verifying fixes",
         "Targets"
       ],
-      "_provenance": "Authored from concept: 'give each fix an owner and a due date, then measure again to confirm it worked' (notes 2.4.6 Using Measurement to Improve). Angle: confirming a fix by measuring again, not the notes example of metric gaming. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Cross-review fix (31 Oct 2026): option D names the server team's dashboard so the key is not the longest option (CD-14).",
+      "_provenance": "Authored from concept: 'give each fix an owner and a due date, then measure again to confirm it worked' (notes 2.4.6 Using Measurement to Improve). Angle: confirming a fix by measuring again, not the notes example of metric gaming. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Cross-review fix (31 Oct 2026): option D names the server team's dashboard so the key is not the longest option (CD-14). Batch 7 final fix round (12 Nov 2026): 'metrics analyst' became 'security analyst' (canonical role names).",
       "style_version": 2
     },
     {
@@ -2209,7 +2209,7 @@
       "subtopic": "2.4 Measuring effectiveness. Measures and metrics",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A furniture maker's IT lead is preparing a monthly security report for managers. Under NIST SP 800-55 definitions, which item is MOST accurately a metric rather than a raw measure?",
+      "question": "A furniture maker's IT manager is preparing a monthly security report for managers. Under NIST SP 800-55 definitions, which item is MOST accurately a metric rather than a raw measure?",
       "options": {
         "A": "1,850 of 2,000 staff accounts have multifactor sign-in turned on",
         "B": "340 suspicious emails were reported by staff this month",
@@ -2236,7 +2236,7 @@
         "Metrics",
         "Targets"
       ],
-      "_provenance": "Authored from concept: 'Compare each result with a baseline and a target' (notes 2.4.1 Measures and Metrics: The Basics). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Fix-up (31 Oct 2026): stem names NIST SP 800-55 because older usage calls any ratio a metric; the key now sets a count against a target, so the runner-up is no longer a subset of the key.",
+      "_provenance": "Authored from concept: 'Compare each result with a baseline and a target' (notes 2.4.1 Measures and Metrics: The Basics). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Fix-up (31 Oct 2026): stem names NIST SP 800-55 because older usage calls any ratio a metric; the key now sets a count against a target, so the runner-up is no longer a subset of the key. Batch 7 final fix round (12 Nov 2026): 'IT lead' became 'IT manager' (canonical role names).",
       "style_version": 2
     },
     {
@@ -2317,7 +2317,7 @@
       "subtopic": "2.4 Measuring effectiveness. Using measurement to improve",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A stadium's monthly security report has 45 metrics; leaders used just 8 for decisions last year, and none of the rest is mandatory or an early warning. What should the metrics analyst propose as BEST?",
+      "question": "A stadium's monthly security report has 45 metrics; leaders used just 8 for decisions last year, and none of the rest is mandatory or an early warning. What should the security analyst propose as BEST?",
       "options": {
         "A": "Keep reporting the 45 metrics with their full history",
         "B": "Retire the 37 unused metrics and archive their past data",
@@ -2344,7 +2344,7 @@
         "Retiring metrics",
         "Metric selection"
       ],
-      "_provenance": "Authored from concept: 'Retire metrics no one uses, and add ones for new risks such as artificial intelligence (AI) use' (notes 2.4.6 Using Measurement to Improve). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): stem states that none of the unused metrics is required or used as an early warning, so retiring them is the single best answer. Option A lost its reason clause (rule 3).",
+      "_provenance": "Authored from concept: 'Retire metrics no one uses, and add ones for new risks such as artificial intelligence (AI) use' (notes 2.4.6 Using Measurement to Improve). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): stem states that none of the unused metrics is required or used as an early warning, so retiring them is the single best answer. Option A lost its reason clause (rule 3). Batch 7 final fix round (12 Nov 2026): 'metrics analyst' became 'security analyst' (canonical role names).",
       "style_version": 2
     },
     {
@@ -2463,7 +2463,7 @@
       "bloom_level": "Application",
       "question": "A cosmetics maker's main retail partner requires suppliers to report progress against the NIST Cybersecurity Framework (CSF) 2.0, and senior management will choose the firm's framework. Which option should the security analyst propose as BEST?",
       "options": {
-        "A": "The framework the IT lead used at a previous employer",
+        "A": "The framework the IT manager used at a previous employer",
         "B": "The framework listing the most separate controls",
         "C": "NIST CSF 2.0, using its current and target profiles",
         "D": "ISO/IEC 27001 certification, with a CSF 2.0 mapping later"
@@ -2488,7 +2488,7 @@
         "Customer requirements",
         "NIST CSF 2.0"
       ],
-      "_provenance": "Authored from concept: 'Start from what leaders, customers or contracts ask to see' (notes 2.1.5 Choosing and Mapping Frameworks in GRC). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'Start from what leaders, customers or contracts ask to see' (notes 2.1.5 Choosing and Mapping Frameworks in GRC). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026. Batch 7 final fix round (12 Nov 2026): 'IT lead' became 'IT manager' (canonical role names).",
       "style_version": 2
     },
     {
@@ -3937,7 +3937,7 @@
       "subtopic": "2.4 Measuring effectiveness. Types of measures",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A printing cooperative's IT lead needs an effectiveness measure that shows whether its backups actually work. Which measure BEST fits?",
+      "question": "A printing cooperative's IT manager needs an effectiveness measure that shows whether its backups actually work. Which measure BEST fits?",
       "options": {
         "A": "Share of servers that have the backup software agent installed",
         "B": "Share of nightly backup jobs that report success",
@@ -3964,7 +3964,7 @@
         "Implementation measure",
         "Restore testing"
       ],
-      "_provenance": "Authored from concept: 'Existence is not effectiveness. To show a control works, use an effectiveness measure' (notes 2.4.2 Types of Security Measures). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'Existence is not effectiveness. To show a control works, use an effectiveness measure' (notes 2.4.2 Types of Security Measures). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026. Batch 7 final fix round (12 Nov 2026): 'IT lead' became 'IT manager' (canonical role names).",
       "style_version": 2
     },
     {
@@ -4081,7 +4081,7 @@
       "subtopic": "2.4 Measuring effectiveness. Using measurement to improve",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A tram operator's average time to disable leavers' accounts doubled in March after a steady year, and the IT manager urges buying an identity governance tool at once. What should the metrics analyst propose FIRST?",
+      "question": "A tram operator's average time to disable leavers' accounts doubled in March after a steady year, and the IT manager urges buying an identity governance tool at once. What should the security analyst propose FIRST?",
       "options": {
         "A": "Find out what drove the March figure up",
         "B": "Buy the tool, since leaver handling has clearly worsened",
@@ -4108,7 +4108,7 @@
         "Root cause",
         "Trend analysis"
       ],
-      "_provenance": "Authored from concept: 'Look at trends, not one month alone, and ask why a number moved before acting' (notes 2.4.6 Using Measurement to Improve). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026; re-set from patch times to leaver accounts after the cross-domain gate (cc_d2_042 uses patch times).",
+      "_provenance": "Authored from concept: 'Look at trends, not one month alone, and ask why a number moved before acting' (notes 2.4.6 Using Measurement to Improve). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026; re-set from patch times to leaver accounts after the cross-domain gate (cc_d2_042 uses patch times). Batch 7 final fix round (12 Nov 2026): 'metrics analyst' became 'security analyst' (canonical role names).",
       "style_version": 2
     },
     {
@@ -4297,7 +4297,7 @@
       "subtopic": "2.1 GRC. Compliance obligations",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A laundry chain's video policy, owned by its operations director, keeps video 30 days unless legally held and assigns its deletion to the IT technician. How should the technician BEST handle expired, unheld video?",
+      "question": "A laundry chain's video policy, owned by its operations director, keeps video 30 days unless legally held and assigns its deletion to the system administrator. How should the administrator BEST handle expired, unheld video?",
       "options": {
         "A": "Archive the expired video offline and record where it is kept",
         "B": "Ask the operations director to approve each deletion first",
@@ -4307,7 +4307,7 @@
       "correct": "C",
       "key_concept": "A retention obligation sets when data must go as well as how long it stays; with no legal hold, expired data is deleted on schedule.",
       "pre_read": "Think about what a retention period requires once it ends.",
-      "correct_explanation": "The policy sets a 30-day limit, no legal hold applies and the task is assigned to the technician, so deleting the expired video on schedule, with a record, meets the obligation. Retention rules limit how long data is kept, not only how short. Asking the director to approve each deletion is the runner-up: the director owns the policy, but has already decided, and the policy gives the task to the technician.",
+      "correct_explanation": "The policy sets a 30-day limit, no legal hold applies and the task is assigned to the administrator, so deleting the expired video on schedule, with a record, meets the obligation. Retention rules limit how long data is kept, not only how short. Asking the director to approve each deletion is the runner-up: the director owns the policy, but has already decided, and the policy gives the task to the administrator.",
       "wrong_explanations": {
         "A": "Tempting because keeping a copy feels safer. But video kept past its limit breaks the policy and holds personal images that should be gone.",
         "B": "Closest choice: the director owns the policy. But the policy already sets the limit and assigns deletion, so asking again only delays it.",
@@ -4315,7 +4315,7 @@
       },
       "tips": [
         "Eliminate: A and D both keep video past its 30-day limit, which breaks the retention policy wherever the copy is stored.",
-        "Final two: C beats B because the owner already set the rule and assigned deletion to the technician; asking for each approval only delays it.",
+        "Final two: C beats B because the owner already set the rule and assigned deletion to the administrator; asking for each approval only delays it.",
         "Exam cue: retention limits work both ways; when the period ends, no hold applies and the task is yours, delete on schedule and keep a record."
       ],
       "framework_ref": "NIST SP 800-122 Section 4.2.1 (Minimizing the Use, Collection, and Retention of PII: destruction follows retention schedules and litigation holds); NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention)",
@@ -4324,7 +4324,7 @@
         "Legal hold",
         "Compliance obligations"
       ],
-      "_provenance": "Authored from concept: 'Identify each obligation, its source and what it requires, and meet it as work happens, including retention limits' (notes 2.1.4 Compliance Obligations and Evidence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'Identify each obligation, its source and what it requires, and meet it as work happens, including retention limits' (notes 2.1.4 Compliance Obligations and Evidence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026. Batch 7 final fix round (12 Nov 2026): 'IT technician' became 'system administrator' (canonical role names).",
       "style_version": 2
     },
     {
@@ -5009,6 +5009,870 @@
         "Phishing reports"
       ],
       "_provenance": "Authored from concept: 'Give people one simple way to report, then thank them and share the outcome' (notes 2.3.7 Reporting Culture and Phishing Simulations). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_140",
+      "domain": 2,
+      "subtopic": "2.1 GRC. Purpose of GRC",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A rug importer's IT and compliance teams each keep their own risk list, and leaders get two conflicting ratings for the same order system. Which change should the security analyst propose as BEST?",
+      "options": {
+        "A": "Have the board pick one team's rating for each system",
+        "B": "Load both teams' risk lists into one GRC platform",
+        "C": "Keep one shared risk register that both teams work from",
+        "D": "Ask compliance to rate every risk, as it is audited"
+      },
+      "correct": "C",
+      "key_concept": "GRC gives leaders one shared view of risk: teams work from one register, so the same risk is not rated two ways.",
+      "pre_read": "Recall why GRC joins governance, risk and compliance instead of running them separately.",
+      "correct_explanation": "GRC joins governance, risk and compliance so they share one set of records and leaders get one view of risk. A single register that both teams work from removes the conflicting ratings at their source. Loading both lists into a platform is the runner-up: a tool can hold the data, but two separate lists inside it still give leaders two answers.",
+      "wrong_explanations": {
+        "A": "Tempting because the board oversees risk. But asking leaders to referee duplicate records keeps the silos; the fix is one shared record, not a choice between two.",
+        "B": "Closest choice: a GRC platform can hold shared records. But two separate lists loaded into it still rate one system two ways; tools support GRC, they do not join it.",
+        "D": "Tempting because compliance work leaves evidence. But giving one team every rating keeps a one-sided view instead of joining both teams' knowledge in one record."
+      },
+      "tips": [
+        "Eliminate: A has leaders referee duplicate records instead of fixing them, and D hands every rating to one team because its work is audited.",
+        "Final two: C beats B because GRC means one shared record of risk; two lists loaded into one platform still disagree.",
+        "Exam cue: when separate teams give leaders conflicting pictures, the GRC answer joins them into one shared record, not a tool or a tiebreak."
+      ],
+      "framework_ref": "NIST SP 800-39 Chapter One (The Need for Integrated Organization-Wide Risk Management: missions, processes and systems require an integrated, organization-wide view for managing risk)",
+      "related_concepts": [
+        "GRC purpose",
+        "Risk register",
+        "Single view of risk"
+      ],
+      "_provenance": "Authored from concept: 'All three share one set of records, so one control can meet several needs' (notes 2.1.1 GRC Purpose and Importance). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_141",
+      "domain": 2,
+      "subtopic": "2.2 Redundancy. Recovery objectives",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A water-testing lab copies its results database at 00:00, 06:00, 12:00 and 18:00, against a 4-hour recovery point objective (RPO). After a 17:00 failure, which finding should the system administrator report as MOST accurate?",
+      "options": {
+        "A": "Five hours of results are lost, which is past the RPO",
+        "B": "One hour of results is lost, well inside the RPO",
+        "C": "As many as six hours of results are lost, beyond the RPO",
+        "D": "No results are lost after the database comes back"
+      },
+      "correct": "A",
+      "key_concept": "Data lost in a failure runs back from the moment of failure to the last good copy; compare that span with the RPO.",
+      "pre_read": "Recall which direction the RPO is measured in, and from which point.",
+      "correct_explanation": "The RPO looks back from the failure to the last good copy. The last copy before 17:00 was taken at 12:00, so five hours of results are lost, beyond the 4-hour RPO; a six-hour copy cycle cannot meet it. Six hours is the runner-up: that is the worst case the schedule allows, not what this 17:00 failure loses.",
+      "wrong_explanations": {
+        "B": "Tempting because the 18:00 copy is only an hour away. But data loss is counted back to the last copy taken; a copy due after the failure never happened.",
+        "C": "Closest choice: six hours is the most this schedule could ever lose. But this failure came five hours after the 12:00 copy, so five hours are lost.",
+        "D": "Tempting because a restore brings the database back. But it brings back only what the 12:00 copy holds; results recorded after it are gone."
+      },
+      "tips": [
+        "Eliminate: B counts forward to a copy that was never taken, and D assumes a restore returns data made after the last copy.",
+        "Final two: A beats C because loss is measured from this failure back to the 12:00 copy; six hours is only the schedule's worst case.",
+        "Exam cue: for data loss, count back from the failure to the last good copy; RPO is about data, looking back."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO)",
+      "related_concepts": [
+        "Recovery point objective",
+        "Backup frequency",
+        "Data loss"
+      ],
+      "_provenance": "Authored from concept: 'Recovery point objective (RPO) is the most data, measured in time, the business can lose; it looks back from the disruption' (notes 2.2.4 Recovery Objectives: MTD, RTO and RPO). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): re-set from a dance school's bookings to a water-testing lab's results, reported by the system administrator, so it no longer retells cc_d2_054's frame; losing words 'once' and 'is' removed from distractors.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_142",
+      "domain": 2,
+      "subtopic": "2.3 Security awareness. Social engineering tactics",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An adult missing from a camp's parent-signed pickup list comes for a child, naming the coach and saying a parent sent them; procedure releases children only to listed adults. What should the counselor do FIRST?",
+      "options": {
+        "A": "Release the child, since the adult knows the coach by name",
+        "B": "Ask the child whether a parent sent this adult, then decide",
+        "C": "Ask the camp director to add the adult to the list now",
+        "D": "Keep the child with staff and call a parent on the list"
+      },
+      "correct": "D",
+      "key_concept": "Pretexting uses a believable story; where a person's safety is involved, staff follow the release procedure exactly, whatever the story.",
+      "pre_read": "Recall how pretexting works and what a written procedure is for.",
+      "correct_explanation": "The pickup list is the camp's safeguard for children, and knowing a coach's name proves research, not authority. The counselor keeps the child safe with staff and calls a listed parent, who can confirm the story or come. Asking the director to add the adult is the runner-up: it feels like sensible escalation, but parents sign the list, so a name added on the adult's own story carries no parent's permission.",
+      "wrong_explanations": {
+        "A": "Tempting because the adult knows real details. But a coach's name is easy to learn; knowing it proves research, not that a parent sent them.",
+        "B": "Tempting because children often know family plans. But a child's word is not a parent's permission, and a child can know an adult who must not collect them.",
+        "C": "Closest choice: it brings in someone senior. But parents sign the list; a name added now, on the adult's own story, carries no parent's permission."
+      },
+      "tips": [
+        "Eliminate: A treats knowing the coach's name as proof, and B treats a child's word as a parent's permission.",
+        "Final two: D beats C because parents sign the pickup list; a name added on the adult's own story carries no parent's permission.",
+        "Exam cue: when a person's safety is at stake and a story applies pressure, follow the written procedure exactly; details and claims prove nothing."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AT-2(3) (Literacy Training and Awareness | Social Engineering and Mining)",
+      "related_concepts": [
+        "Pretexting",
+        "People safety",
+        "Following procedure"
+      ],
+      "_provenance": "Authored from concept: 'They build a believable story, such as a new IT contractor or a supplier' (notes 2.3.3 Social Engineering Tactics). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_143",
+      "domain": 2,
+      "subtopic": "2.4 Measuring effectiveness. Types of measures",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A furniture rental firm is starting its first security measurement program and has little reliable data yet. Which type of measure should the security analyst propose starting with as BEST?",
+      "options": {
+        "A": "Impact measures, such as revenue lost in each hour of outage",
+        "B": "Efficiency measures, such as average time to detect incidents",
+        "C": "Effectiveness measures, such as share of test phishing emails reported",
+        "D": "Implementation measures, such as share of laptops with encryption on"
+      },
+      "correct": "D",
+      "key_concept": "New measurement programs start with implementation measures, then broaden to effectiveness, efficiency and impact as their data matures.",
+      "pre_read": "Recall the four types of security measures and what data each one needs.",
+      "correct_explanation": "Measurement guidance has programs gather implementation measures first: they record whether controls are in place, and the data is easy to collect. Once those are in hand, the program broadens to effectiveness, efficiency and impact. Effectiveness is the runner-up: it shows whether controls work, which matters, but it needs reliable data the firm does not have yet.",
+      "wrong_explanations": {
+        "A": "Tempting because executives care most about business impact. But impact measures need mature data linking security events to outcomes, which a new program lacks.",
+        "B": "Tempting because speed matters. But average detection times need consistent processes and records over time before the figures mean anything.",
+        "C": "Closest choice: it shows whether a control works. But effectiveness measures come after implementation data, and the firm does not yet have reliable data."
+      },
+      "tips": [
+        "Eliminate: A needs data linking security to business outcomes, and B needs consistent timing records; a brand-new program has neither.",
+        "Final two: D beats C because programs first record which controls exist, then broaden to whether they work.",
+        "Exam cue: a new measurement program starts with implementation measures, then adds effectiveness, efficiency and impact as data matures."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Section 3.3.1 (Implementation Measures: once implementation measures are completed, the program broadens to effectiveness, efficiency and impact measures); NIST SP 800-55v1 Section 3.3 (Types of Measures: implementation, effectiveness, efficiency and impact)",
+      "related_concepts": [
+        "Implementation measures",
+        "Measurement maturity",
+        "Types of measures"
+      ],
+      "_provenance": "Authored from concept: 'Programs usually start with implementation measures and add the others as data matures' (notes 2.4.2 Types of Security Measures). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_144",
+      "domain": 2,
+      "subtopic": "2.1 GRC. Frameworks and mapping",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bowling chain maps its controls to the NIST Cybersecurity Framework (CSF) 2.0; a grant now requires SP 800-53. Where should the security analyst look FIRST for the SP 800-53 controls behind each CSF outcome?",
+      "options": {
+        "A": "The CSF tiers, which rate how rigorous practices are",
+        "B": "The chain's risk register, listing its current risks",
+        "C": "The informative references that map CSF 2.0 to SP 800-53",
+        "D": "The SP 800-53 catalog, read one control at a time"
+      },
+      "correct": "C",
+      "key_concept": "NIST's informative references map CSF 2.0 outcomes to documents such as SP 800-53, so a second mapping starts from them.",
+      "pre_read": "Recall what NIST publishes alongside CSF 2.0 to link its outcomes to other standards.",
+      "correct_explanation": "NIST publishes informative references alongside CSF 2.0 that link each outcome to controls in other documents, including SP 800-53. Starting there shows which SP 800-53 controls support each outcome the chain already maps, so the analyst checks those links and adds controls only for real gaps. Reading the SP 800-53 catalog is the runner-up: it is the right document, but working through it one control at a time repeats a mapping NIST has already published.",
+      "wrong_explanations": {
+        "A": "Tempting because tiers are part of CSF 2.0. But they describe how rigorous the organization's risk practices are overall; they do not link outcomes to SP 800-53 controls.",
+        "B": "Tempting because the register drives control choices. But it lists risks, not how CSF outcomes line up with SP 800-53 controls.",
+        "D": "Closest choice: the grant names SP 800-53. But reading it one control at a time redoes a mapping NIST already publishes, and it is slow."
+      },
+      "tips": [
+        "Eliminate: A rates practice maturity rather than linking frameworks, and B lists risks; neither shows which SP 800-53 controls support a CSF outcome.",
+        "Final two: C beats D because the informative references already link CSF outcomes to SP 800-53; start from them rather than rebuilding the mapping by hand.",
+        "Exam cue: when a second framework is required, start from the published mapping (informative references or a crosswalk), then reuse controls and close only the real gaps."
+      ],
+      "framework_ref": "NIST CSF 2.0 Section 4 (Introduction to Online Resources That Supplement the CSF: Informative References map Core outcomes to standards such as SP 800-53)",
+      "related_concepts": [
+        "Informative references",
+        "Framework mapping",
+        "Control reuse"
+      ],
+      "_provenance": "Authored from concept: 'NIST publishes informative references that map CSF 2.0 outcomes to other documents, such as SP 800-53, so a new mapping can start from them' (notes 2.1.5 Choosing and Mapping Frameworks in GRC). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): re-angled from a crosswalk Agree/Disagree reply (same lesson as cc_d2_048) to where to look first: NIST's informative references; role became security analyst (canonical role names).",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_145",
+      "domain": 2,
+      "subtopic": "2.3 Security awareness. Phishing variants",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An aquarium's staff receive what looks like last week's genuine newsletter, resent from the usual sender, but its link leads to a different site. Which term should the security analyst use as MOST precise?",
+      "options": {
+        "A": "A whaling attack",
+        "B": "A clone phishing attack",
+        "C": "A pharming attack",
+        "D": "A spear phishing attack"
+      },
+      "correct": "B",
+      "key_concept": "Clone phishing resends a copy of a genuine earlier message with its link or attachment swapped for a malicious one.",
+      "pre_read": "Recall how phishing variants are named: by channel, by target or by method.",
+      "correct_explanation": "Clone phishing copies a real message the targets already received, such as last week's newsletter, and swaps its link or attachment for a malicious one, so familiarity does the persuading. Spear phishing is the runner-up: it is targeted too, but it is written fresh from research about the victims, not copied from a genuine earlier message.",
+      "wrong_explanations": {
+        "A": "Tempting because whaling is a targeted variant. But whaling aims at senior executives, and this resent newsletter went to staff in general.",
+        "C": "Tempting because users land on a fake site. But pharming redirects traffic through poisoned DNS or device settings, not through a changed link in an email.",
+        "D": "Closest choice: it reaches known recipients. But spear phishing is crafted fresh from research; copying a real earlier message is what defines clone phishing."
+      },
+      "tips": [
+        "Eliminate: A targets senior executives, and C redirects traffic through DNS or settings rather than a changed link in an email.",
+        "Final two: B beats D because the message is a copy of a real earlier email with its link swapped; that copying is the defining feature.",
+        "Exam cue: name a phishing variant by its defining feature: channel (smishing, vishing), target (whaling) or method (clone, credential harvesting)."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AT-2(3) (Literacy Training and Awareness | Social Engineering and Mining)",
+      "related_concepts": [
+        "Clone phishing",
+        "Spear phishing",
+        "Phishing variants"
+      ],
+      "_provenance": "Authored from concept: 'Lures copy trusted senders, such as a bank, a delivery firm or the IT team' (notes 2.3.4 Phishing and Its Variants). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_146",
+      "domain": 2,
+      "subtopic": "2.2 Redundancy. Backing up AI systems",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An ice rink's AI model forecasts skate rentals; since late-night sessions began, its forecasts have steadily worsened, though nobody changed the model or its training data. Which cause should the system administrator suspect MOST?",
+      "options": {
+        "A": "A fault in the servers that host and run the model",
+        "B": "Poisoning of its training data by an outside attacker",
+        "C": "Drift between live rental demand and its training data",
+        "D": "Prompt injection hidden in the text of customers' online bookings"
+      },
+      "correct": "C",
+      "key_concept": "Model drift is a gradual drop in accuracy as live data moves away from what the model learned, with no tampering involved.",
+      "pre_read": "Recall the ways an AI model can start giving worse answers, and what each one needs.",
+      "correct_explanation": "Model drift is a gradual loss of accuracy as real-world data moves away from what the model learned. New late-night sessions changed rental patterns, and nothing else changed. Poisoning is the runner-up: it also degrades a model, but it needs someone to tamper with the training data, and the stem rules that out.",
+      "wrong_explanations": {
+        "A": "Tempting because outages stop services. But the model still produces forecasts; they are wrong, not missing, which points to its data rather than its servers.",
+        "B": "Closest choice: poisoning does make a model less accurate. But it requires tampered training data, and no one changed the data here.",
+        "D": "Tempting because injected text can mislead AI. But prompt injection targets models that follow text instructions, not a demand forecast, and it would not cause a steady slide."
+      },
+      "tips": [
+        "Eliminate: A would stop the forecasts rather than make them wrong, and D targets models that follow text instructions, not a demand forecast.",
+        "Final two: C beats B because the slide began with a change in the real world while the training data stayed untouched.",
+        "Exam cue: a steady accuracy slide after the world changes, with nothing tampered, points to drift; watch accuracy and keep a fallback ready."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) Appendix B (How AI Risks Differ from Traditional Software Risks: data, model or concept drift can trigger corrective maintenance); NIST AI 100-1 (AI RMF 1.0) MEASURE 2.4 (the functionality and behavior of the AI system are monitored when in production)",
+      "related_concepts": [
+        "Model drift",
+        "Data poisoning",
+        "AI service resilience"
+      ],
+      "_provenance": "Authored from concept: 'Model drift is a gradual drop in accuracy as real-world data moves away from what the model learned' (notes 2.2.8 Backing Up AI Systems and Model Drift). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): 'IT technician' became 'system administrator' (canonical role names).",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_147",
+      "domain": 2,
+      "subtopic": "2.4 Measuring effectiveness. KPIs and KRIs",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A bookbinder's risk owner proposes late payroll runs as the early-warning key risk indicator (KRI) for late or missed payroll when one staff member is away. Which reply from the security analyst is BEST?",
+      "options": {
+        "A": "Agree; late runs show the risk most directly",
+        "B": "Disagree; count payroll tasks that have no trained backup",
+        "C": "Agree; and add on-time payroll runs as a second KRI",
+        "D": "Disagree; count the hours of payroll training given each year"
+      },
+      "correct": "B",
+      "key_concept": "A KRI can count a people exposure, such as tasks only one person can do; counting the risk event itself only confirms past harm.",
+      "pre_read": "Recall the difference between leading and lagging indicators, and between KPIs and KRIs.",
+      "correct_explanation": "An early-warning KRI must move before harm happens. Late runs are counted only after payroll has already slipped, so they warn too late. Tasks with no trained backup are the exposure that turns an absence into a late payroll, and the count falls as cover is trained. Agreeing with late runs is the runner-up: they fit the named risk, but they are a lagging measure.",
+      "wrong_explanations": {
+        "A": "Closest choice: late runs are tied to the named risk. But they record harm after it happens; an early-warning KRI must move before payroll is late.",
+        "C": "Tempting because more indicators feel safer. But on-time runs judge process performance, a KPI, and the lagging measure stays as the KRI.",
+        "D": "Tempting because training builds cover. But hours delivered count activity, not whether any payroll task still depends on one person."
+      },
+      "tips": [
+        "Eliminate: C adds a performance measure and keeps the lagging one, and D counts training activity rather than exposure.",
+        "Final two: B beats A because late runs count harm after it happens; tasks with no trained backup warn before it.",
+        "Exam cue: if the proposed KRI counts the risk event itself (late payroll for a late-payroll risk), it is lagging; count the condition that makes the event possible, including work that depends on one person."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Section 4.4 (Evaluating Methods for Supporting Continuous Improvement: leading and lagging indicators); NIST SP 800-55v1 Section 2.4 (Metrics: key risk indicators and key performance indicators)",
+      "related_concepts": [
+        "Key risk indicator",
+        "Leading indicator",
+        "Key-person risk"
+      ],
+      "_provenance": "Authored from concept: 'Good KRIs are leading, measurable and tied to a named risk, with thresholds set from its tolerance' (notes 2.4.3 Key Performance and Key Risk Indicators). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): key concept and exam cue re-centred on people exposure (single-person dependency) so the item no longer repeats cc_d2_016's lesson.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_148",
+      "domain": 2,
+      "subtopic": "2.1 GRC. Accountability and RACI",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An exhibition center's RACI chart for badge-access reviews lists facilities and IT staff as Responsible but no one as Accountable; the security manager assigns owners. What should the analyst drafting the chart do FIRST?",
+      "options": {
+        "A": "Mark the security manager and facilities manager both Accountable",
+        "B": "Mark the facilities manager Accountable, as their team does most work",
+        "C": "Ask the security manager to name one Accountable person",
+        "D": "Treat the Responsible staff as answering for the result"
+      },
+      "correct": "C",
+      "key_concept": "Each task has exactly one Accountable person; when none is named, the gap goes to whoever assigns owners.",
+      "pre_read": "Recall what each RACI letter means and how many of each a task can have.",
+      "correct_explanation": "Every task needs exactly one Accountable person, and assigning owners is the security manager's call here, so the analyst raises the gap for them to decide. Marking the facilities manager is the runner-up: it fills the box with one name, but the analyst would be choosing an owner without authority, and doing most of the work makes a team Responsible, not Accountable.",
+      "wrong_explanations": {
+        "A": "Tempting because it names both managers involved. But two Accountable people each assume the other is acting; each task gets exactly one.",
+        "B": "Closest choice: it gives the task one Accountable name. But the security manager assigns owners, and doing the work makes a team Responsible, not Accountable.",
+        "D": "Tempting because the work is already assigned. But Responsible people do the work; without one person answering for the result, missed reviews have no owner."
+      },
+      "tips": [
+        "Eliminate: A makes two people Accountable, and D confuses doing the work with answering for the result.",
+        "Final two: C beats B because the security manager assigns owners; the analyst raises the gap instead of choosing an owner.",
+        "Exam cue: when a task has no clear owner, raise it with whoever assigns owners; never fill the gap by quietly deciding yourself."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "RACI",
+        "Accountability",
+        "Assigning owners"
+      ],
+      "_provenance": "Authored from concept: 'Each task has exactly one Accountable person; several can be Responsible' (notes 2.1.3 GRC Accountability: RACI and Reporting Lines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_149",
+      "domain": 2,
+      "subtopic": "2.3 Security awareness. Password protection",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A podcast studio's staff are moving their work passwords into the company's password manager. Which protection for each person's vault should the help desk analyst stress as MOST important?",
+      "options": {
+        "A": "Reuse the strong work email password as the master password",
+        "B": "Change the master password each month",
+        "C": "Use a long master passphrase and turn on MFA",
+        "D": "Use a long master passphrase and a short auto-lock timer"
+      },
+      "correct": "C",
+      "key_concept": "A password manager is only as safe as its vault: protect it with a long master passphrase and multifactor authentication.",
+      "pre_read": "Recall current advice on password length, reuse and forced changes.",
+      "correct_explanation": "The vault holds every password, so its own lock matters most: a long master passphrase plus multifactor authentication (MFA) means a stolen or guessed master password alone cannot open it. A long passphrase with a short auto-lock timer is the runner-up: auto-lock guards an unattended device, but if the passphrase is phished or captured by malware, nothing else stands between the attacker and every stored password.",
+      "wrong_explanations": {
+        "A": "Tempting because the email password is already strong. But reuse means one leak opens both the mailbox and every password in the vault.",
+        "B": "Tempting because changing passwords sounds careful. But forced periodic changes lead to predictable variants; change the master password when exposure is suspected.",
+        "D": "Closest choice: auto-lock protects a vault left open on an unattended device. But a phished or captured passphrase still opens the vault from anywhere; only a second factor stops that."
+      },
+      "tips": [
+        "Eliminate: A ties the vault to a password used elsewhere, and B forces monthly changes that push people toward predictable variants.",
+        "Final two: C beats D because MFA stops a phished or captured passphrase from opening the vault; auto-lock only covers an unattended device.",
+        "Exam cue: guard the one secret that protects all the others most strongly: a long passphrase plus MFA, changed on any sign of exposure."
+      ],
+      "framework_ref": "NIST SP 800-63B-4 Section 3.1.1.2 (Password Verifiers: no periodic changes, but a forced change on evidence of compromise); NIST SP 800-63B-4 (Authentication and Authenticator Management: multi-factor authentication)",
+      "related_concepts": [
+        "Password manager",
+        "Passphrase",
+        "Multifactor authentication"
+      ],
+      "_provenance": "Authored from concept: 'A password manager stores unique passwords; protect it with a strong passphrase and multifactor authentication (MFA)' (notes 2.3.6 Password and Passphrase Habits). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): D no longer a subset of the key (auto-lock runner-up); B loses 'every'.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_150",
+      "domain": 2,
+      "subtopic": "2.4 Measuring effectiveness. Thresholds",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A board-game publisher's key risk indicator (KRI) for servers without a tested backup reaches amber; band rules send amber to the risk owner and red to senior management. What should the security analyst do FIRST?",
+      "options": {
+        "A": "Pass the amber reading and its trend to the risk owner",
+        "B": "Escalate the reading straight to senior management as a rising risk",
+        "C": "Raise the amber line so the reading shows green again",
+        "D": "Hold the reading from the risk owner until it turns red"
+      },
+      "correct": "A",
+      "key_concept": "Each threshold band names an owner and an action; a reading goes to the owner its band names, no higher and no lower.",
+      "pre_read": "Recall what a threshold band's color tells you to do, and whom to tell.",
+      "correct_explanation": "Each threshold band names an action and an owner, so an amber reading goes to the risk owner, who can act before the risk reaches red. Escalating to senior management is the runner-up: it looks diligent, but the band rules reserve senior management for red, and skipping the owner takes the decision from the person accountable for the risk.",
+      "wrong_explanations": {
+        "B": "Closest choice: the risk is rising. But the rules send amber to the risk owner; senior management is the red-band path, and the owner decides first.",
+        "C": "Tempting because green looks better. But moving a line hides the risk without reducing it, and only the threshold's owner may change it.",
+        "D": "Tempting because amber is not yet a breach. But amber exists to reach the risk owner early; holding it until red wastes the warning the band rules give."
+      },
+      "tips": [
+        "Eliminate: C moves the line instead of reducing the risk, and D sits on a warning the band rules say to act on.",
+        "Final two: A beats B because the band rules route amber to the risk owner; senior management is the red-band path.",
+        "Exam cue: follow the band rule exactly: each color names who hears about it and what happens, no higher and no later."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Section 3.1.2 (Measurement Reporting: reports give context, such as the risk indicated and what action or decision may be needed); NIST SP 800-53 Rev. 5 PM-6 (Measures of Performance)",
+      "related_concepts": [
+        "Threshold bands",
+        "Escalation path",
+        "Risk owner"
+      ],
+      "_provenance": "Authored from concept: 'Color bands show how close a metric is to its limit; each band names an action and an owner' (notes 2.4.4 Thresholds, Targets and Escalation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_151",
+      "domain": 2,
+      "subtopic": "2.3 Security awareness. Culture and leadership",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At a freight forwarder, the customs team's head tells the security analyst that security steps in customs processing are IT's job, not the customs team's. Which reply from the analyst is MOST accurate?",
+      "options": {
+        "A": "Agree; IT runs the security tools and owns the steps",
+        "B": "Agree; the security team answers for each security step",
+        "C": "Disagree; each team owns the security steps in its processes",
+        "D": "Disagree; the risk owner carries out the steps in each process"
+      },
+      "correct": "C",
+      "key_concept": "Security is part of everyone's job: each team carries out the security steps in its own processes, and its head answers for them.",
+      "pre_read": "Recall who carries out security steps in day-to-day work.",
+      "correct_explanation": "Security is part of everyone's job. IT runs shared tools such as email filtering, but the security steps inside a team's own process, such as verifying a caller before changing a shipment's delivery address, belong to that team, and its head answers for them. IT owning the steps is the runner-up: IT does own its tools, but it cannot carry out checks inside every other team's daily work.",
+      "wrong_explanations": {
+        "A": "Closest choice: IT does run the security tools. But checks inside the customs process are done by customs staff; IT cannot perform them for every team.",
+        "B": "Tempting because the security team leads the program. But it sets policy and advises; it cannot carry out steps inside every team's daily work.",
+        "D": "Tempting because risk owners decide how a risk is treated. But deciding is not doing; the steps inside a process are carried out by the team that runs it."
+      },
+      "tips": [
+        "Eliminate: B hands every step to the security team, and D confuses deciding on a risk with doing the work.",
+        "Final two: C beats A because IT owns its tools, not the checks inside another team's process; the customs team does those.",
+        "Exam cue: security is part of everyone's job; whoever runs a process carries out the security steps inside it."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RR-01 (organizational leadership is responsible and accountable for cybersecurity risk and fosters a culture that is risk-aware, ethical and continually improving); NIST SP 800-50 Rev. 1 Section 1.4 (Developing a Cybersecurity and Privacy Culture: the culture should emphasize, reinforce and drive desired behaviors)",
+      "related_concepts": [
+        "Shared responsibility",
+        "Process ownership",
+        "Security culture"
+      ],
+      "_provenance": "Authored from concept: 'Security is part of everyone's job, not only the security team's' (notes 2.3.1 Security Culture and Leadership). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): setting moved from an insurance broker's claims team to a freight forwarder's customs team (setting overuse); D now names 'process' so the stem's processing is not echoed only in the key; B loses 'every' (now 'each'). A loses 'so'.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_152",
+      "domain": 2,
+      "subtopic": "2.2 Redundancy. Backups",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A lantern maker's restore test met its recovery time objective (RTO), but the restored data was 30 hours old against a 24-hour recovery point objective (RPO). How should the continuity coordinator BEST record it?",
+      "options": {
+        "A": "Record a pass, since the restore met the RTO",
+        "B": "Record no result before a full interruption test runs",
+        "C": "Ask the system owner whether missing the RPO counts as a pass",
+        "D": "Record a failure, since the data missed the RPO"
+      },
+      "correct": "D",
+      "key_concept": "A restore test passes only when data comes back complete, within the RTO and no older than the RPO allows.",
+      "pre_read": "Recall the two recovery targets a restore test is checked against.",
+      "correct_explanation": "A restore test checks that data comes back intact, in time and recent enough. Thirty-hour-old data breaks the 24-hour RPO, so the lantern maker would lose more orders than it accepts, however fast the restore. Grading tests is the coordinator's task, so they record the failure. Asking the system owner is the runner-up: owners decide how to close a gap, but here grading is the coordinator's job and the RPO already defines a pass.",
+      "wrong_explanations": {
+        "A": "Tempting because the restore was fast. But speed is only half the test; data older than the RPO allows means more lost orders than the business accepts.",
+        "B": "Tempting because a bigger test seems more conclusive. But a full interruption is the riskiest test, and this restore test already gave a clear result.",
+        "C": "Closest choice: the owner decides how to fix gaps. But grading tests is the coordinator's task, and the RPO already defines a pass."
+      },
+      "tips": [
+        "Eliminate: A checks only the time goal, and B swaps a clear result for the riskiest test there is.",
+        "Final two: D beats C because grading is the coordinator's task and the RPO already defines a pass; the owner then decides the fix.",
+        "Exam cue: a restore passes only if the data is complete, back within the RTO and recent enough for the RPO; when grading is your task, do it yourself."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CP-9(1) (System Backup | Testing for Reliability and Integrity); NIST SP 800-34 Rev. 1 Section 3.5 (Plan Testing, Training, and Exercises)",
+      "related_concepts": [
+        "Restore testing",
+        "Recovery point objective",
+        "Test grading"
+      ],
+      "_provenance": "Authored from concept: 'Choose the backup type and frequency to meet the recovery point objective (RPO)' (notes 2.2.5 Backups: Types, the 3-2-1 Rule and Restore Testing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): sawmill became a lantern maker (setting overuse); 'the technician who grades tests' became the continuity coordinator (canonical role names); B loses 'until'.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_153",
+      "domain": 2,
+      "subtopic": "2.1 GRC. GRC tools and monitoring",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A cable TV provider's security analyst is copying green control statuses from the governance, risk and compliance (GRC) platform into a quarterly report. What should the analyst check FIRST?",
+      "options": {
+        "A": "Last quarter's statuses for the same controls",
+        "B": "The date each control's data was last collected",
+        "C": "Each control's named owner in the platform",
+        "D": "The platform vendor's security certification"
+      },
+      "correct": "B",
+      "key_concept": "A GRC tool's status is only as current as its data; check when each feed last updated before trusting a green.",
+      "pre_read": "Think about what a dashboard color actually rests on.",
+      "correct_explanation": "A dashboard status is only as current as the data behind it. If a feed stopped months ago, a green shows an old result, so the analyst checks when each control's data was last collected before reporting it. A named owner is the runner-up: ownership matters in GRC, but it says nothing about whether today's green is still true.",
+      "wrong_explanations": {
+        "A": "Tempting because trends matter. But matching last quarter shows only that the colors agree; a stopped feed would repeat the same green.",
+        "C": "Closest choice: every control needs an owner. But an owner on record does not show that the status reflects current data.",
+        "D": "Tempting because a trusted platform seems reliable. But a certified tool still shows stale results when a data feed stops."
+      },
+      "tips": [
+        "Eliminate: A compares colors that a stopped feed would repeat, and D judges the tool rather than the data it is showing.",
+        "Final two: B beats C because a status is only as current as its data; ownership does not make a green true.",
+        "Exam cue: before trusting a dashboard green, check when its data was last collected; stale data gives stale colors."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Section 3.1.1 (Measures Documentation: recording when a measure was taken helps identify expired or invalid data); NIST SP 800-55v1 Section 3.1.4 (Data Quality: a validation process checks the integrity and accuracy of measures data before analysis)",
+      "related_concepts": [
+        "GRC platform",
+        "Data freshness",
+        "Status reporting"
+      ],
+      "_provenance": "Authored from concept: 'A status is only as current as its data; check when each feed last updated before trusting a green' (notes 2.1.6 GRC Tools and Automation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_154",
+      "domain": 2,
+      "subtopic": "2.3 Security awareness. Phishing simulations",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An interpreting agency's awareness lead is deciding what happens when staff click the link in an approved phishing simulation. Which response to a click is BEST?",
+      "options": {
+        "A": "Lock the account and make the person retake the yearly course",
+        "B": "Show a brief page pointing out the clues they missed",
+        "C": "Enroll the person in the full yearly course again",
+        "D": "Send the person's manager the names of everyone who clicked"
+      },
+      "correct": "B",
+      "key_concept": "In a phishing simulation, a click is a teaching moment: show the missed clues at once, without blame.",
+      "pre_read": "Recall what phishing simulations are for, and how they should treat a click.",
+      "correct_explanation": "A click in a simulation is a teaching moment. A brief page right after the click shows the clues the person missed while the lure is fresh, without blame, so they stay willing to report. Re-enrolling them in the full yearly course is the runner-up: it is training, but it comes late, repeats general content and feels like a penalty.",
+      "wrong_explanations": {
+        "A": "Tempting because it forces training. But locking accounts punishes the click, and fear makes staff hide real mistakes instead of reporting them.",
+        "C": "Closest choice: it gives more training. But a long general course arrives late and feels like a penalty; a short, immediate explanation teaches more.",
+        "D": "Tempting because managers can follow up. But naming clickers turns practice into blame, and reporting drops when people fear exposure."
+      },
+      "tips": [
+        "Eliminate: A and D punish or expose the clicker; simulations are practice, and fear of exposure lowers reporting.",
+        "Final two: B beats C because a short explanation at the moment of the click teaches while the lure is fresh, without feeling like a penalty.",
+        "Exam cue: simulations are practice; treat a click as a teaching moment, never as grounds for punishment or exposure."
+      ],
+      "framework_ref": "NIST SP 800-50 Rev. 1 Section 2.7.2 (Experiential Learning: phishing exercises reviewed in advance, run at random and never punitive); NIST SP 800-53 Rev. 5 AT-2(1) (Literacy Training and Awareness | Practical Exercises)",
+      "related_concepts": [
+        "Phishing simulation",
+        "Teaching moment",
+        "No-blame culture"
+      ],
+      "_provenance": "Authored from concept: 'Simulations are approved in advance, avoid lures that cause real distress and treat a click as a teaching moment, not grounds for punishment' (notes 2.3.7 Reporting Culture and Phishing Simulations). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): zoo became an interpreting agency (setting overuse); A loses 'until' and gains 'and', and the key says 'brief' (bank-wide word tells).",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_155",
+      "domain": 2,
+      "subtopic": "2.4 Measuring effectiveness. AI risk indicators",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A hop farm's AI tool sorting buyer feedback scored 97% accurate before launch; its model owner wants that figure reported monthly as the accuracy KRI. Which reply from the security analyst is BEST?",
+      "options": {
+        "A": "Disagree; check a sample of the latest live results monthly",
+        "B": "Agree; the launch test is the most thorough figure",
+        "C": "Agree; and rerun the same launch test set each month",
+        "D": "Disagree; report the vendor's published accuracy monthly"
+      },
+      "correct": "A",
+      "key_concept": "AI accuracy indicators use recent, live results measured again each period; a one-time pre-launch score cannot warn of drift.",
+      "pre_read": "Think about what a risk indicator must do from one month to the next.",
+      "correct_explanation": "A key risk indicator must show how the risk is moving now. The 97% was measured once, before launch, so repeating it each month would stay flat while real accuracy slips. Checking a recent sample of live results each month reveals drift early. Rerunning the launch test set is the runner-up: it measures monthly, but the fixed test set never changes, so it cannot show the model falling behind new kinds of feedback.",
+      "wrong_explanations": {
+        "B": "Tempting because the launch test was careful. But a one-time figure never changes, so as a monthly indicator it cannot warn that live accuracy is slipping.",
+        "C": "Closest choice: it measures every month. But an unchanged model scores the same on a fixed test set, so the figure stays flat while live accuracy slips.",
+        "D": "Tempting because vendors test at scale. But the vendor's figure comes from its own data, not this farm's feedback, and it does not move with live results."
+      },
+      "tips": [
+        "Eliminate: B repeats a one-time launch score, and D swaps in a vendor figure from someone else's data; neither moves with live results.",
+        "Final two: A beats C because only live results show drift; a fixed test set scores the same while the world changes.",
+        "Exam cue: an AI accuracy indicator is measured on recent live results, period after period; a launch or vendor score is history, not a warning."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MEASURE 2.4 (the functionality and behavior of the AI system are monitored when in production)",
+      "related_concepts": [
+        "AI risk indicator",
+        "Model accuracy",
+        "Live monitoring"
+      ],
+      "_provenance": "Authored from concept: 'Accuracy on recent, labeled live data, and shifts in live inputs away from the training data, tracked over time, signal model drift' (notes 2.4.7 AI Risk Indicators). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): museum's visitor feedback became a hop farm's buyer feedback (setting overuse). Key no longer the lone longest option (D lengthened).",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_156",
+      "domain": 2,
+      "subtopic": "2.1 GRC. Planning a GRC program",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A rope-access firm's draft governance, risk and compliance (GRC) plan sets its scope, lists its obligations, picks a framework and has a funded, approved charter. Which gap should the security analyst flag as MOST important?",
+      "options": {
+        "A": "No GRC platform to hold the program's risks and controls",
+        "B": "No vulnerability scan of every in-scope system",
+        "C": "No external audit to show where it stands today",
+        "D": "No named owner for each policy, risk and control"
+      },
+      "correct": "D",
+      "key_concept": "A GRC plan needs a named owner for each policy, risk and control; scope, framework and funding alone leave no one accountable.",
+      "pre_read": "Recall the planning steps for a GRC program, and what makes its work actually happen.",
+      "correct_explanation": "A GRC plan works only when every policy, risk and control has a named owner who answers for it; scope, obligations, a framework and a funded charter without owners leave nobody accountable for the work. The external audit is the runner-up: it can show where the firm stands, but its findings would go to a program with no one to act on them.",
+      "wrong_explanations": {
+        "A": "Tempting because tools organize GRC work. But a platform comes after the plan; without owners it would hold records nobody answers for.",
+        "B": "Tempting because scans find real weaknesses. But scan results need owners and priorities before anyone acts on them; the plan's gap is accountability.",
+        "C": "Closest choice: a baseline helps measure progress. But audit findings need owners to act on them, and the plan names none yet."
+      },
+      "tips": [
+        "Eliminate: A buys a tool before the plan is complete, and B produces results with no owners or priorities to act on them.",
+        "Final two: D beats C because an audit's findings need owners to fix them; accountability comes before measurement.",
+        "Exam cue: when a plan has scope, rules and funding but no owners, the missing piece is accountability: one named owner per item."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced); NIST SP 800-53 Rev. 5 PM-1 (Information Security Program Plan)",
+      "related_concepts": [
+        "GRC planning",
+        "Ownership",
+        "Program charter"
+      ],
+      "_provenance": "Authored from concept: 'Give each policy, risk and control an owner, and have senior management approve a charter and budget' (notes 2.1.2 Planning a GRC Program). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_157",
+      "domain": 2,
+      "subtopic": "2.3 Security awareness. Awareness and training",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A housing charity's board chair says board members, as volunteers, need no security training, though emails built around their board roles keep targeting them. Which reply from the awareness lead is BEST?",
+      "options": {
+        "A": "Disagree; brief board members on the lures their power attracts",
+        "B": "Agree; volunteers fall outside the staff training policy",
+        "C": "Disagree; enroll board members in the yearly staff phishing course",
+        "D": "Agree; the email filter already stops attacks on board members"
+      },
+      "correct": "A",
+      "key_concept": "Training follows role and risk, not employment status: anyone targeted for their position, volunteers included, needs training on the attacks aimed at them.",
+      "pre_read": "Recall who needs security training and how role-based training differs from the general course.",
+      "correct_explanation": "Volunteers or not, board members hold the authority attackers want, and the emails aimed at their roles show the risk is real. Training follows role and risk, so a short briefing on the attacks aimed at board roles fits them. Adding them to the staff course is the runner-up: it covers the basics, but not requests built around board roles, such as approving payments or sharing board papers.",
+      "wrong_explanations": {
+        "B": "Tempting because board members are not employees. But attackers target roles, not contracts; anyone with authority attackers want needs training that fits the risk.",
+        "C": "Closest choice: it brings the board into training. But the yearly staff course is built for everyone and misses the attacks aimed at board roles.",
+        "D": "Tempting because filters stop much phishing. But these emails are already reaching board members, and a filter teaches no one to spot what gets through."
+      },
+      "tips": [
+        "Eliminate: B treats volunteer status as an exemption from risk, and D leans on a filter the stem shows is being passed.",
+        "Final two: A beats C because targeted roles need training on the attacks aimed at them; the staff course is the same for everyone.",
+        "Exam cue: training follows role and risk, not job title or pay: anyone attackers target for their position gets training on those attacks."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AT-3 (Role-based Training); NIST SP 800-50 Rev. 1 Section 1.6.2 (Senior Leadership: leading by example and participating in their own training)",
+      "related_concepts": [
+        "Role-based training",
+        "Board members",
+        "Targeted attacks"
+      ],
+      "_provenance": "Authored from concept: 'Match the learning to the role and the risk' (notes 2.3.2 Awareness, Training and Education). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): key no longer repeats the stem's 'targeting them'; runner-up C made as specific as the key.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_158",
+      "domain": 2,
+      "subtopic": "2.2 Redundancy. AI monitoring and resilience",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A milliner's AI monitor predicts a storage array failure, and the array's logs agree; the IT manager's runbook has the administrator switch to the tested standby on confirmed warnings. What should the administrator do FIRST?",
+      "options": {
+        "A": "Wait for a real failure, as AI predictions can be wrong",
+        "B": "Keep running and restore from backup if the array fails",
+        "C": "Ask the IT manager to approve a move to the standby array",
+        "D": "Move service to the standby array in a planned switch"
+      },
+      "correct": "D",
+      "key_concept": "Early detection is a resilience control: a confirmed warning lets the team switch to a spare before an outage happens.",
+      "pre_read": "Think about what an early, confirmed warning lets a team do before a failure.",
+      "correct_explanation": "Early detection is a resilience control: catching trouble before it disrupts the business leaves less to recover. The warning is confirmed, and the IT manager's runbook already gives the switch to the administrator, so a planned move avoids an outage. Asking the IT manager is the runner-up: it looks careful, but the runbook already holds the manager's approval, and waiting spends the warning.",
+      "wrong_explanations": {
+        "A": "Tempting because AI can be wrong. But the array's own error logs confirm the warning, so waiting simply lets a predictable outage happen.",
+        "B": "Tempting because backups protect the data. But a restore means downtime and losing changes since the last copy, which a planned switch avoids.",
+        "C": "Closest choice: the IT manager owns the runbook. But the runbook already assigns this switch to the administrator on a confirmed warning, so asking again only spends the time."
+      },
+      "tips": [
+        "Eliminate: A doubts a warning the logs confirm, and B accepts an outage and data loss that early warning lets the team avoid.",
+        "Final two: D beats C because the runbook already gives the administrator the switch on a confirmed warning; asking again wastes the lead time.",
+        "Exam cue: when early detection gives a confirmed warning and procedure assigns the response, use the lead time to act in a planned way."
+      ],
+      "framework_ref": "NIST CSF 2.0 PR.IR-03 (mechanisms are implemented to achieve resilience requirements in normal and adverse situations); NIST CSF 2.0 PR.PS-03 (hardware is maintained, replaced, and removed commensurate with risk)",
+      "related_concepts": [
+        "Early detection",
+        "Planned failover",
+        "Resilience"
+      ],
+      "_provenance": "Authored from concept: 'Artificial intelligence (AI) assisted detection spots trouble early; for resilience, it must catch events before they disrupt the business' (notes 2.2.9 AI-Assisted Detection and Resilience). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_159",
+      "domain": 2,
+      "subtopic": "2.4 Measuring effectiveness. Reporting to leaders",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A pottery studio's quarterly security report to leaders shows every metric green, but its online shop, launched last month, has no security metrics yet. What should the security manager add as BEST?",
+      "options": {
+        "A": "Nothing more, as every metric in this quarter's report is green",
+        "B": "A note that the new shop's risks are not yet measured",
+        "C": "The full technical dashboard behind every metric",
+        "D": "The passing result of the shop's pre-launch security test"
+      },
+      "correct": "B",
+      "key_concept": "Reports show only what is measured; new or unmeasured areas are stated plainly so an all-green view does not mislead leaders.",
+      "pre_read": "Think about what a green report can and cannot tell leaders.",
+      "correct_explanation": "Green covers only what is measured. A report that shows every metric green while a new online shop has no metrics leaves leaders believing all risk is covered, so the manager states plainly that the shop is not yet measured. The pre-launch test result is the runner-up: it shows the shop was checked once, but a single past test is not ongoing measurement and still hides the gap.",
+      "wrong_explanations": {
+        "A": "Tempting because nothing is red. But green covers only what is measured, and the new shop has no measures at all.",
+        "C": "Tempting because more detail seems more open. But leaders need the gap stated plainly, not a technical dashboard that buries it.",
+        "D": "Closest choice: it shows the shop was checked. But one past test is not ongoing measurement, and leaders would still miss that the shop is unmeasured."
+      },
+      "tips": [
+        "Eliminate: A treats an all-green report as complete, and C buries the point in technical detail leaders cannot use.",
+        "Final two: B beats D because a single past test leaves the shop unmeasured; the report must say plainly what it does not cover.",
+        "Exam cue: an all-green report covers only what is measured; tell leaders about new or unmeasured areas."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Section 3.1.1 (Measures Documentation: scope distinguishes the total risk from the risks currently being measured); NIST SP 800-55v1 Section 3.1.2 (Measurement Reporting: reports give context, such as the risk indicated and what action or decision may be needed)",
+      "related_concepts": [
+        "Board reporting",
+        "Unmeasured risk",
+        "Report scope"
+      ],
+      "_provenance": "Authored from concept: 'Green covers only what is measured; reports still need new risks, unmeasured areas and trends heading toward a limit' (notes 2.4.5 Dashboards, Scorecards and Reports). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_160",
+      "domain": 2,
+      "subtopic": "2.3 Security awareness. AI-boosted phishing and deepfakes",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Two members tell a gym chain's front-desk clerk they got fluent, personal texts, likely AI-written, from a fake 'membership team' urging them to renew through a link. What should the clerk do FIRST?",
+      "options": {
+        "A": "Note the texts in the front desk log and carry on",
+        "B": "Pass the texts' details to the security team",
+        "C": "Warn all members on the gym's social media page",
+        "D": "Reply to the sender's number asking them to stop"
+      },
+      "correct": "B",
+      "key_concept": "Scams that use the organization's name, including fluent AI-written texts to customers, go to the security team, which confirms them and decides the response.",
+      "pre_read": "Recall what staff should do with signs of a scam aimed at anyone linked to the organization.",
+      "correct_explanation": "Scams aimed at customers are security events too, and fluent AI-written texts can reach every member at once. Passing the details to the security team lets it confirm the scam, have the link blocked and decide how members are warned. A public warning is the runner-up: members may need one, but the clerk would be speaking for the gym on a channel they do not own, before anyone has confirmed the facts.",
+      "wrong_explanations": {
+        "A": "Tempting because it records what members said. But a desk log is not a report; the security team never sees it, and other members stay exposed.",
+        "C": "Closest choice: members may need a warning. But the security team must first confirm the scam and decide the response; the gym's public channels are not the clerk's.",
+        "D": "Tempting because it seems to confront the scammer. But replying confirms the number reaches a real person and protects no other member."
+      },
+      "tips": [
+        "Eliminate: A keeps the report in a desk log nobody acts on, and D engages the scammer, which protects no one.",
+        "Final two: B beats C because the security team confirms the scam and decides the warning; a public post from the desk is outside the clerk's role.",
+        "Exam cue: when you learn of a scam using your organization's name, report it to the security team first; they decide who warns whom."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AT-2(3) (Literacy Training and Awareness | Social Engineering and Mining); NIST AI 600-1 (Generative AI Profile) Section 2.8 (Information Integrity: deepfakes and content that impersonates others)",
+      "related_concepts": [
+        "AI-written phishing",
+        "Brand impersonation",
+        "Reporting scams"
+      ],
+      "_provenance": "Authored from concept: 'Generative AI writes fluent, personalized lures in many languages, at scale' (notes 2.3.5 AI-Boosted Phishing and Deepfakes). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_161",
+      "domain": 2,
+      "subtopic": "2.2 Redundancy. Testing BC and DR plans",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An organ builder replaced its order system with new vendor software, and the operations manager says the old-system recovery plan needs updating before the tabletop. Which reply from the continuity coordinator is BEST?",
+      "options": {
+        "A": "Agree; and test the updated plan at the tabletop exercise",
+        "B": "Disagree; the tabletop will reveal what the new system changed",
+        "C": "Disagree; the new vendor's support now handles recovery",
+        "D": "Agree; and test the updated plan in a full interruption test"
+      },
+      "correct": "A",
+      "key_concept": "Recovery plans are updated after every major change, such as replacing a system, and then tested in their new form.",
+      "pre_read": "Recall when a recovery plan should be reviewed and updated.",
+      "correct_explanation": "A plan must reflect the system as it is now, and a major change such as replacing the system triggers a review and update; testing then checks the new plan. Letting the tabletop find the changes is the runner-up: tests do expose gaps, but walking through steps for a system no longer in use spends the exercise on a gap everyone already knows.",
+      "wrong_explanations": {
+        "B": "Closest choice: tests do expose gaps. But this gap is already known, so the tabletop would rehearse steps for a system that is no longer in use.",
+        "C": "Tempting because the vendor supports its software. But support helps fix the product; the organ builder still owns its data, settings and recovery plan.",
+        "D": "Tempting because it is the most realistic test. But a full interruption is the riskiest test, needs senior management approval and does not suit a freshly rewritten plan."
+      },
+      "tips": [
+        "Eliminate: C assumes the vendor owns the organ builder's recovery, and D jumps to the riskiest test with a freshly rewritten plan.",
+        "Final two: A beats B because a known change goes into the plan first; a test should check the current plan, not rediscover a known gap.",
+        "Exam cue: update the plan after every major change, real event and test, then test the updated plan."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.6 (Plan Maintenance: the plan is reviewed whenever significant changes occur to any element of it); NIST SP 800-53 Rev. 5 CP-2 (Contingency Plan)",
+      "related_concepts": [
+        "Plan maintenance",
+        "Major change",
+        "Tabletop exercise"
+      ],
+      "_provenance": "Authored from concept: 'Update the plan after every test, real event and major change; senior management approves disruptive tests' (notes 2.2.7 Testing and Maintaining BC and DR Plans). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): candle maker became an organ builder (setting overuse); D also names the updated plan, so the stem's 'needs updating' is not echoed only in the key. Key no longer the lone shortest option.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_162",
+      "domain": 2,
+      "subtopic": "2.4 Measuring effectiveness. Using measurement to improve",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A stationery wholesaler's quarterly metrics review finds three red items, and the team agrees on each one's cause. Which next step should the security manager take as BEST?",
+      "options": {
+        "A": "Give each fix one named owner and a firm due date",
+        "B": "Add weekly metrics for each red area, each with a named tracker",
+        "C": "Lower the three targets and let the items turn amber",
+        "D": "Retire the three metrics that keep showing red"
+      },
+      "correct": "A",
+      "key_concept": "Metrics drive improvement when each agreed fix has a named owner and a due date, followed by measuring again.",
+      "pre_read": "Think about what turns a red metric into a change in the outcome.",
+      "correct_explanation": "Measurement improves security only when it leads to action. Giving each fix a named owner and a due date turns the agreed causes into tracked work, and the next measurement shows whether it worked. More metrics is the runner-up: closer watching can feel like progress, but extra measures without owners only describe the problem more often.",
+      "wrong_explanations": {
+        "B": "Closest choice: closer watching gives faster feedback. But without an owner and a due date, more measures describe the problem more often without fixing it.",
+        "C": "Tempting because amber looks better. But lowering targets changes the number, not the outcome, and hides the gap from leaders.",
+        "D": "Tempting because the metrics are uncomfortable. But they are doing their job; retiring them hides problems the team has just agreed are real."
+      },
+      "tips": [
+        "Eliminate: C changes the target instead of the outcome, and D removes the metrics exactly when they are showing real problems.",
+        "Final two: A beats B because a fix happens when someone owns it by a date; more metrics only watch the problem.",
+        "Exam cue: turn each finding into a fix with one owner and a due date, then measure again to confirm it worked."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.RA-06 (risk responses are chosen, prioritized, planned, tracked and communicated); NIST SP 800-53 Rev. 5 PM-6 (Measures of Performance)",
+      "related_concepts": [
+        "Improvement actions",
+        "Ownership",
+        "Re-measuring"
+      ],
+      "_provenance": "Authored from concept: 'Give each fix an owner and a due date, then measure again to confirm it worked' (notes 2.4.6 Using Measurement to Improve). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): B carries 'named' too (bank-wide word tell); C loses 'so' and gains 'and'; the key is no longer the lone shortest option.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_163",
+      "domain": 2,
+      "subtopic": "2.1 GRC. Governing AI use",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A dog grooming chain is setting rules for staff use of chatbots and image generators. Which NIST publication should the security manager propose to leaders as the BEST structure for this work?",
+      "options": {
+        "A": "NIST Cybersecurity Framework (CSF) 2.0",
+        "B": "NIST AI 100-2 adversarial machine learning taxonomy",
+        "C": "NIST SP 800-63B-4 authentication guidelines",
+        "D": "NIST AI 100-1 AI Risk Management Framework"
+      },
+      "correct": "D",
+      "key_concept": "The NIST AI Risk Management Framework structures how an organization governs, maps, measures and manages the risks of AI.",
+      "pre_read": "Recall which NIST publication covers which kind of risk.",
+      "correct_explanation": "The NIST AI Risk Management Framework (AI RMF) is built for AI risk: its Govern, Map, Measure and Manage functions cover issues such as unreliable or biased outputs and accountability for AI use, which general security frameworks do not comprehensively address. CSF 2.0 is the runner-up: it is strong for cybersecurity governance and can sit alongside, but it is not built around AI-specific risks.",
+      "wrong_explanations": {
+        "A": "Closest choice: CSF 2.0 has a Govern function. But it is built for cybersecurity risk in general and does not comprehensively address AI-specific risks such as biased outputs.",
+        "B": "Tempting because it is a NIST AI publication. But it names attacks on AI systems and their mitigations; it is a taxonomy, not a framework for managing AI risk.",
+        "C": "Tempting because AI tools need sign-in controls. But it sets digital identity and authentication rules, not a structure for managing AI risk."
+      },
+      "tips": [
+        "Eliminate: B catalogs attacks on AI rather than structuring how AI risk is managed, and C covers digital identity.",
+        "Final two: D beats A because the AI RMF is built for AI-specific risks such as biased outputs; CSF 2.0 covers cybersecurity in general.",
+        "Exam cue: match the publication to the job: CSF for cybersecurity programs, the AI RMF for managing AI risk, AI 100-2 for naming attacks on AI."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) Section 5 (AI RMF Core: the GOVERN, MAP, MEASURE and MANAGE functions organize AI risk management); NIST AI 100-1 (AI RMF 1.0) Appendix B (How AI Risks Differ from Traditional Software Risks: AI systems bring risks that current risk frameworks do not comprehensively address)",
+      "related_concepts": [
+        "AI Risk Management Framework",
+        "AI governance",
+        "Choosing frameworks"
+      ],
+      "_provenance": "Authored from concept: 'The NIST (National Institute of Standards and Technology) AI Risk Management Framework can structure this work' (notes 2.1.8 Governing AI Use). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): the security manager now proposes and leaders choose (matches cc_d1_206 and notes 1.3); D carries its document number like A to C; C no longer uses the series title.",
       "style_version": 2
     }
   ]

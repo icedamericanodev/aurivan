@@ -733,7 +733,7 @@
    "subtopic": "4.1 Network security. Network building blocks",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A ferry operator's ticket kiosks sit on one IP subnet and its booking server on another. Which device should the IT technician use to MOST directly carry traffic between the two subnets?",
+   "question": "A ferry operator's ticket kiosks sit on one IP subnet and its booking server on another. Which device should the network technician use to MOST directly carry traffic between the two subnets?",
    "options": {
     "A": "A wireless access point",
     "B": "An unmanaged network switch",
@@ -949,7 +949,7 @@
    "subtopic": "4.2 Network security architecture. Defense in depth",
    "difficulty": "analysis",
    "bloom_level": "Analysis",
-   "question": "An art gallery's IT lead says its firewall, email filter, endpoint protection and backups give defense in depth, yet all four share one administrator password. Why should the security analyst MOST doubt the claim?",
+   "question": "An art gallery's IT manager says its firewall, email filter, endpoint protection and backups give defense in depth, yet all four share one administrator password. Why should the security analyst MOST doubt the claim?",
    "options": {
     "A": "Shared passwords could stop actions being traced to one person",
     "B": "Four controls are too few to count as defense in depth",
@@ -958,7 +958,7 @@
    },
    "correct": "D",
    "key_concept": "Defense in depth needs independent layers; controls that share one password or flaw fail together and count as one.",
-   "pre_read": "Weigh each option against the specific claim the IT lead is making.",
+   "pre_read": "Weigh each option against the specific claim the IT manager is making.",
    "correct_explanation": "Defense in depth works only if layers fail independently, so an attacker must defeat each one separately. Here one stolen password would let an attacker switch off the firewall, filter and endpoint tool and wipe the backups, so the four layers act as one. Lost traceability is the runner-up: shared passwords do destroy accountability, but that is a separate weakness from whether the layers are independent.",
    "wrong_explanations": {
     "A": "Closest choice: shared passwords do hide who did what. But that is an accountability problem; the claim fails because one password defeats every layer at once.",
@@ -1057,7 +1057,7 @@
    "subtopic": "4.3 Cloud security. Cloud roles and agreements",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A housing association's cloud provider shares an independent report showing strong security controls, and the project manager says the association now has no security tasks left. Which reply from the IT coordinator is MOST accurate?",
+   "question": "A housing association's cloud provider shares an independent report showing strong security controls, and the project manager says the association now has no security tasks left. Which reply from the security analyst is MOST accurate?",
    "options": {
     "A": "The report moves accountability for any data breach to the provider",
     "B": "The report proves the provider's controls will stay effective from now on",
@@ -1165,7 +1165,7 @@
    "subtopic": "4.1 Network security. Ports and services",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A public library's print server has FTP, Telnet, HTTPS and the printing port open, but staff use only printing and the HTTPS admin page. Which change should the IT technician propose as BEST?",
+   "question": "A public library's print server has FTP, Telnet, HTTPS and the printing port open, but staff use only printing and the HTTPS admin page. Which change should the system administrator propose as BEST?",
    "options": {
     "A": "Have the IDS alert whenever FTP or Telnet is used",
     "B": "Replace FTP and Telnet with SFTP and SSH on the server",
@@ -1273,7 +1273,7 @@
    "subtopic": "4.1 Network security. Bluetooth security",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A furniture retailer's delivery drivers connect Bluetooth barcode scanners to their phones, and the IT technician finds the scanners announce themselves to nearby devices all day. Which change is BEST?",
+   "question": "A furniture retailer's delivery drivers connect Bluetooth barcode scanners to their phones, and the network technician finds the scanners announce themselves to nearby devices all day. Which change is BEST?",
    "options": {
     "A": "Update the scanners' firmware on a regular schedule",
     "B": "Count on Bluetooth's short range to keep strangers away",
@@ -1345,7 +1345,7 @@
    "subtopic": "4.2 Network security architecture. VLANs",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "At a car dealership group, the admin pages of every switch and firewall can be reached from any employee's computer. Which change should the IT technician propose as BEST?",
+   "question": "At a car dealership group, the admin pages of every switch and firewall can be reached from any employee's computer. Which change should the network technician propose as BEST?",
    "options": {
     "A": "Turn off the switch ports that no one is using",
     "B": "Switch the admin pages from plain HTTP to HTTPS",
@@ -1996,14 +1996,14 @@
    "question": "A card issuer's fraud model retrains nightly on a dataset that every developer account can edit, because its AI development segment is treated as trusted. Which control should the security analyst propose as BEST?",
    "options": {
     "A": "Isolate the segment further from the office network",
-    "B": "Scan the dataset for malware and log each nightly retraining",
-    "C": "Limit edits to named data engineers and log every change",
+    "B": "Scan the dataset for malware and log each nightly retraining run",
+    "C": "Restrict edits to approved data engineers and log every change",
     "D": "Encrypt the dataset so that edits cannot alter the model"
    },
    "correct": "C",
    "key_concept": "Training data shapes what a model learns, so only named people should change it, and every change should be logged.",
    "pre_read": "Picture one careless or hostile edit to the dataset, and follow it into tomorrow's model.",
-   "correct_explanation": "Whoever can edit training data can quietly change what the model learns, for example teaching it to wave through one kind of fraud. So edits go only to named people who need them, and every change is logged so bad records can be traced and removed. Malware scanning is the runner-up, but poisoned records are ordinary-looking data, not malicious code, and a retraining log does not show who changed a record.",
+   "correct_explanation": "Whoever can edit training data can quietly change what the model learns, for example teaching it to wave through one kind of fraud. So edits go only to approved people who need them, and every change is logged so bad records can be traced and removed. Malware scanning is the runner-up, but poisoned records are ordinary-looking data, not malicious code, and a retraining log does not show who changed a record.",
    "wrong_explanations": {
     "A": "Tempting because segmenting AI work is good practice. But the risk is already inside: every developer account can edit the data, and a tighter wall does not change that.",
     "B": "Closest choice: checking data before training is wise. But poisoned records look like normal transactions, so a malware scan passes them, and a retraining log omits who changed a record.",
@@ -2065,7 +2065,7 @@
    "subtopic": "4.3 Cloud security. Deployment models",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A botanical garden keeps its plant records database in a private cloud and its public website on a public cloud, linked for exhibit data. Which deployment model should its IT coordinator record as MOST accurate?",
+   "question": "A botanical garden keeps its plant records database in a private cloud and its public website on a public cloud, linked for exhibit data. Which deployment model should its IT manager record as MOST accurate?",
    "options": {
     "A": "Public cloud",
     "B": "Multi-cloud",
@@ -2101,7 +2101,7 @@
    "subtopic": "4.3 Cloud security. Cloud roles and agreements",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "An e-sports league's cloud contract promises 99.95% uptime, and its manager says the league therefore needs no plan for provider outages. Which reply from the IT coordinator is MOST accurate?",
+   "question": "An e-sports league's cloud contract promises 99.95% uptime, and its manager says the league therefore needs no plan for provider outages. Which reply from the continuity coordinator is MOST accurate?",
    "options": {
     "A": "That target still allows about four hours of outage a year",
     "B": "Service credits in the contract will make up for any outage",
@@ -4477,7 +4477,7 @@
    "subtopic": "4.3 Cloud security. Deployment models",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A bagel chain spreads its services across three public cloud providers so it does not depend on any one of them. Which security task does this MOST clearly add for the IT coordinator?",
+   "question": "A bagel chain spreads its services across three public cloud providers so it does not depend on any one of them. Which security task does this MOST clearly add for the security team?",
    "options": {
     "A": "Securing the link that moves data between its private and public clouds",
     "B": "Sharing infrastructure with other firms that follow the same rules",
@@ -5945,6 +5945,1266 @@
     "Log protection"
    ],
    "_provenance": "Authored from concept: 'Training data and tuned models are customer assets needing access control, encryption and logging' (notes 4.3.9 Shared Responsibility for AI Workloads). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_166",
+   "domain": 4,
+   "subtopic": "4.1 Network security. Network building blocks",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A bowling alley chain's network technician turns on Domain Name System Security Extensions (DNSSEC) validation at its DNS resolver. What does this MOST directly add to staff name lookups?",
+   "options": {
+    "A": "Encryption that hides each lookup from anyone on the network path",
+    "B": "Blocking of lookups for domains known to host harmful content",
+    "C": "Signature checks that reveal forged or altered DNS answers",
+    "D": "Faster answers, by caching names on a server near each venue"
+   },
+   "correct": "C",
+   "key_concept": "DNSSEC signs DNS answers so a validating resolver can spot forgery or tampering; it does not encrypt lookups.",
+   "pre_read": "Recall what a forged DNS answer would do to a device, and what a digital signature can prove.",
+   "correct_explanation": "DNSSEC adds digital signatures to DNS data, so a resolver that validates them can tell when an answer was forged or altered on the way, and refuse it. It protects integrity and the source's authenticity only. Encryption is the runner-up: it is a real DNS protection, but it comes from encrypted DNS, such as DNS over TLS, while DNSSEC answers still travel readable.",
+   "wrong_explanations": {
+    "A": "Closest choice: lookups can be encrypted. But that is encrypted DNS, such as DNS over TLS; DNSSEC signs answers and leaves them readable.",
+    "B": "Tempting because some resolvers do filter bad domains. But that is protective DNS filtering, a separate service; DNSSEC only proves answers are genuine.",
+    "D": "Tempting because resolvers do cache answers. But caching is a speed feature that works with or without DNSSEC, which adds signatures."
+   },
+   "tips": [
+    "Eliminate: B describes protective DNS filtering, and D describes caching; neither is what DNSSEC adds.",
+    "Final two: C beats A because DNSSEC signs answers so tampering shows, but it does not encrypt them; encrypted DNS does that.",
+    "Exam cue: signatures prove integrity and origin, not secrecy; an option that says a signing control hides data is mixing up the two."
+   ],
+   "framework_ref": "NIST SP 800-81 Rev. 3 Section 3.8 (DNSSEC Signing Considerations for Authoritative Service: DNSSEC adds source authentication and integrity protection but does not protect confidentiality); NIST SP 800-81 Rev. 3 Section 1.1 (Domain Name Systems: translating domain names into IP addresses is called name resolution)",
+   "related_concepts": [
+    "DNSSEC",
+    "DNS integrity",
+    "Encrypted DNS"
+   ],
+   "_provenance": "Authored from concept: 'DNS Security Extensions (DNSSEC) sign DNS answers so tampering can be detected; they do not encrypt them' (notes 4.1.1 Network Building Blocks). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_167",
+   "domain": 4,
+   "subtopic": "4.1 Network security. OSI layers",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A puppet theater's security analyst says Wi-Fi Protected Access 3 (WPA3) also protects payroll data on the cable beyond the access point. Which reply from the network technician is MOST accurate?",
+   "options": {
+    "A": "Agree; WPA3 keeps the data encrypted until the server receives it",
+    "B": "Disagree; WPA3 works at layer 3, so it covers routed traffic only",
+    "C": "Disagree; the cable is inside the office, so it needs no encryption",
+    "D": "Disagree; WPA3 covers only the radio hop, so the app needs TLS"
+   },
+   "correct": "D",
+   "key_concept": "Wi-Fi encryption such as WPA3 protects only the radio link to the access point; end-to-end protection needs a higher-layer protocol such as TLS.",
+   "pre_read": "Picture the path the payroll data takes, hop by hop, and which layer each protection works at.",
+   "correct_explanation": "WPA3 encrypts frames at layer 2, between the laptop and the access point only. The access point decrypts them before passing them onto the wired network, so payroll data on the cable is readable unless the app itself uses TLS, which protects it end to end. Saying the cable needs no encryption is the runner-up: it rejects the claim, but trusting the internal network is the mistake.",
+   "wrong_explanations": {
+    "A": "Tempting because WPA3 is strong encryption. But the access point decrypts each frame, so the data crosses the cable unprotected unless the app adds TLS.",
+    "B": "Tempting because WPA3 is a network setting. But Wi-Fi encryption works at layer 2, the data link layer, not at layer 3.",
+    "C": "Closest choice: it rightly rejects the claim. But inside does not mean trusted; anyone on the wired network could capture the readable data."
+   },
+   "tips": [
+    "Eliminate: A fails because the access point decrypts each frame, and B puts Wi-Fi encryption at layer 3 instead of layer 2.",
+    "Final two: D beats C because inside does not mean trusted; once WPA3 ends at the access point, only TLS keeps payroll data protected.",
+    "Exam cue: ask where each encryption starts and stops; link-layer encryption protects one hop, while TLS protects the whole conversation."
+   ],
+   "framework_ref": "NIST SP 800-77 Rev. 1 Section 8.1.1 (WiFi Data Link Protection); NIST SP 800-53 Rev. 5 SC-8(1) (Transmission Confidentiality and Integrity | Cryptographic Protection)",
+   "related_concepts": [
+    "Layer 2 encryption",
+    "WPA3 scope",
+    "End-to-end TLS"
+   ],
+   "_provenance": "Authored from concept: 'Wi-Fi encrypts at layer 2, IP Security (IPsec) at layer 3, and Transport Layer Security (TLS) above layer 4' (notes 4.1.2 The OSI Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_168",
+   "domain": 4,
+   "subtopic": "4.1 Network security. TCP and UDP",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "An opera house's phone system vendor says its calls use the User Datagram Protocol (UDP) because resending late audio is pointless. Which reply from the network technician is MOST accurate?",
+   "options": {
+    "A": "Disagree; UDP lacks delivery checks, so the calls should move to TCP",
+    "B": "Agree; losing a sound packet matters less than delaying the call",
+    "C": "Disagree; UDP resends lost packets in the same way that TCP does",
+    "D": "Agree; UDP also encrypts each packet, which keeps the calls private"
+   },
+   "correct": "B",
+   "key_concept": "UDP skips delivery checks and resends, which suits live voice and video where late data is useless; that is a design choice, not a flaw.",
+   "pre_read": "Compare what TCP and UDP each do when a packet goes missing, and what a live call needs.",
+   "correct_explanation": "UDP sends each packet once, with no handshake or resend. On a live call, a resent sound packet would arrive too late to play, so a tiny gap beats a stalled call; that is why voice and video use UDP. Moving calls to TCP is the runner-up: its reliability sounds safer, but its resends and waits make live audio lag, and neither protocol encrypts.",
+   "wrong_explanations": {
+    "A": "Closest choice: TCP does check delivery. But on live calls its resends and waits cause lag; UDP's missing checks are a design choice, not a weakness.",
+    "C": "Tempting because both are transport protocols. But UDP has no acknowledgments and never resends; that is its main difference from TCP.",
+    "D": "Tempting because some call systems do encrypt audio. But UDP itself adds no encryption; calls need a protocol on top, such as Secure Real-time Transport Protocol (SRTP)."
+   },
+   "tips": [
+    "Eliminate: C claims UDP resends lost packets, and D claims UDP encrypts them; it does neither.",
+    "Final two: B beats A because live audio cannot wait for resends; UDP suits calls, and security comes from protocols on top.",
+    "Exam cue: match the protocol to the job; TCP for complete, ordered data, UDP for speed where late data is useless."
+   ],
+   "framework_ref": "NIST SP 800-94 Section 4.1.2 (Transport Layer: when loss of some application data is not a concern, such as streaming audio and video, UDP is typically used)",
+   "related_concepts": [
+    "UDP",
+    "TCP versus UDP",
+    "Real-time traffic"
+   ],
+   "_provenance": "Authored from concept: 'The User Datagram Protocol (UDP) sends each datagram alone, with no delivery check, which suits name lookups, voice and video' (notes 4.1.3 The TCP/IP Model, TCP and UDP). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_169",
+   "domain": 4,
+   "subtopic": "4.1 Network security. IP versions",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A citrus grower's laptops use Internet Protocol version 6 (IPv6), which its firewall filters as fully as IPv4, but the security analyst's alert rules match only IPv4. What should the analyst propose as BEST?",
+   "options": {
+    "A": "Extend the alert rules so that they also match IPv6 addresses",
+    "B": "Keep the alert rules, since the firewall already filters IPv6",
+    "C": "Rely on IPv6's built-in IPsec to block harmful traffic instead",
+    "D": "Keep the alert rules, since private IPv4 addresses hide the laptops"
+   },
+   "correct": "A",
+   "key_concept": "Prevention and detection must each cover both IPv4 and IPv6; a firewall that filters IPv6 does not make IPv4-only alerts see it.",
+   "pre_read": "Separate what the firewall decides from what the alert rules can see.",
+   "correct_explanation": "The firewall decides which IPv6 traffic may pass, but alert rules are how the analyst spots attacks hiding in allowed traffic. Rules that match only IPv4 leave every IPv6 connection unwatched, so an attack over IPv6 raises no alert. Extending the rules closes the gap. Relying on the firewall is the runner-up: filtering and detection are separate layers, and a firewall does not judge whether allowed traffic is an attack.",
+   "wrong_explanations": {
+    "B": "Closest choice: the firewall does filter IPv6. But filtering only decides what passes; spotting attacks inside allowed IPv6 traffic needs alert rules that can see it.",
+    "C": "Tempting because IPv6 was designed with IPsec in mind. But IPsec must be set up, and it encrypts traffic rather than detecting attacks.",
+    "D": "Tempting because private addresses are not routed on the internet. But they filter and detect nothing, and IPv6 traffic bypasses IPv4 rules anyway."
+   },
+   "tips": [
+    "Eliminate: C treats IPv6's IPsec as automatic protection, and D treats private IPv4 addresses as a security control.",
+    "Final two: A beats B because the firewall only decides what passes; attacks inside allowed IPv6 traffic need alert rules that can see IPv6.",
+    "Exam cue: check prevention and detection separately for each IP version; covering IPv6 in one layer does not cover it in the other."
+   ],
+   "framework_ref": "NIST SP 800-119 Section 6.1.1 (Attacker Community: IPv6 traffic may not be detectable by security controls that do not monitor it, so make them both IPv4 and IPv6 aware); NIST SP 800-41 Rev. 1 Section 4.1.2 (IPv6: filter IPv6 traffic as fully as IPv4)",
+   "related_concepts": [
+    "IPv6 monitoring",
+    "Prevention and detection",
+    "Alert coverage"
+   ],
+   "_provenance": "Authored from concept: 'Many systems enable IPv6 by default, so rules and monitoring must cover both versions' (notes 4.1.4 IPv4 and IPv6). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_170",
+   "domain": 4,
+   "subtopic": "4.1 Network security. Secure protocols",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A tea merchant's system administrator says moving its wholesale order form to Hypertext Transfer Protocol Secure (HTTPS) will not stop buyers' uploaded files from carrying malware. Which reply from the security analyst is MOST accurate?",
+   "options": {
+    "A": "Disagree; TLS scans each uploaded file before storing it",
+    "B": "Disagree; harmful files cannot travel to a site on port 443",
+    "C": "Agree; HTTPS protects files in transit, not what they contain",
+    "D": "Agree, but HTTPS stops them if plain HTTP gets switched off"
+   },
+   "correct": "C",
+   "key_concept": "HTTPS encrypts data between browser and server; it does not check what the data contains, so uploads still need malware scanning.",
+   "pre_read": "Separate protecting data on its way from checking what the data contains.",
+   "correct_explanation": "The administrator is right. HTTPS wraps web traffic in TLS, so files cannot be read or altered on the way, but it carries an infected file as faithfully as a clean one. Uploads still need their own checks on the server, such as malware scanning and allowed file types. Turning off plain HTTP is the runner-up: it is good practice for data in transit, but infected files arrive through HTTPS anyway.",
+   "wrong_explanations": {
+    "A": "Tempting because TLS does protect the upload. But it only encrypts the file in transit; it never checks whether the file is safe.",
+    "B": "Tempting because HTTPS uses port 443. But a port is only a number; an infected file reaches port 443 just like a clean one.",
+    "D": "Closest choice: plain HTTP should be turned off too. But infected files arrive through HTTPS like real orders, so closing HTTP stops none of them."
+   },
+   "tips": [
+    "Eliminate: A has TLS scanning files, and B treats port 443 as a barrier; TLS only encrypts, and a port is just a number.",
+    "Final two: C beats D because an infected file rides inside the encrypted channel; closing plain HTTP protects transit, not content.",
+    "Exam cue: encryption in transit protects the pipe, not what flows through it; content needs its own checks."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 SC-8(1) (Transmission Confidentiality and Integrity | Cryptographic Protection); NIST SP 800-53 Rev. 5 SI-3 (Malicious Code Protection)",
+   "related_concepts": [
+    "HTTPS scope",
+    "Malware scanning",
+    "Encryption in transit"
+   ],
+   "_provenance": "Authored from concept: 'Encryption protects data in transit, but every open port is still a way in, so expose only what the business needs' (notes 4.1.5 Ports, Protocols and Secure Alternatives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_171",
+   "domain": 4,
+   "subtopic": "4.1 Network security. Secure protocols",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "A furniture studio's VPN serves outside support; its file server exposes ports 445 (office file sharing) and 3389 (a vendor's monthly remote desktop) to the internet. What should the network technician propose as BEST?",
+   "options": {
+    "A": "Keep both ports open, moving remote desktop to a high port",
+    "B": "Keep both ports open, since staff already connect over the VPN",
+    "C": "Close both ports, and give the vendor remote desktop over the VPN",
+    "D": "Close port 445, and allow 3389 only from the vendor's own addresses"
+   },
+   "correct": "C",
+   "key_concept": "Expose only what the business needs: close services nobody outside uses, and route occasional remote access through a VPN rather than an open port.",
+   "pre_read": "Ask who actually needs each port from the internet, and how often.",
+   "correct_explanation": "Nobody outside needs file sharing, so port 445 should close, and remote desktop should not face the internet either; the vendor can connect through the studio's VPN, which already serves outside support and adds a verified sign-in before the server is reachable. Allowing 3389 from the vendor's addresses is the runner-up: it narrows exposure, but remote desktop still faces the internet, guarded only by the server's own login.",
+   "wrong_explanations": {
+    "A": "Tempting because fewer scanners probe high ports. But scanners find services on any port in minutes, and both services stay exposed.",
+    "B": "Tempting because the studio already has a VPN. But a VPN protects only traffic that uses it; ports left open still face the whole internet.",
+    "D": "Closest choice: it closes file sharing and narrows remote desktop. But remote desktop still faces the internet, guarded only by the server's own login."
+   },
+   "tips": [
+    "Eliminate: A relies on an unusual port, and B assumes a VPN protects ports that stay open; scanners find any port, and the VPN covers only its own traffic.",
+    "Final two: C beats D because a monthly vendor visit fits the VPN; an address-limited remote desktop port still faces the internet directly.",
+    "Exam cue: sort exposed ports by who uses them; close what only on-site staff need, and an address list still leaves a service facing the internet."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 CM-7 (Least Functionality); NIST SP 800-53 Rev. 5 AC-17 (Remote Access)",
+   "related_concepts": [
+    "Exposed services",
+    "Remote desktop",
+    "Least functionality"
+   ],
+   "_provenance": "Authored from concept: 'Remote Desktop Protocol (RDP) is reached through a VPN or gateway with MFA, and Server Message Block (SMB) never faces the internet' (notes 4.1.5 Ports, Protocols and Secure Alternatives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_172",
+   "domain": 4,
+   "subtopic": "4.1 Network security. Virtual private networks",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A wildlife charity lets volunteers join its virtual private network (VPN) from their own laptops, and every sign-in already uses multifactor authentication (MFA). Which added control should the network technician propose as BEST?",
+   "options": {
+    "A": "Stronger encryption on the tunnel between laptops and the office",
+    "B": "A health check of each laptop before its VPN session is allowed",
+    "C": "Split tunneling, so that less volunteer traffic crosses the VPN",
+    "D": "A second MFA prompt every hour while volunteers stay connected"
+   },
+   "correct": "B",
+   "key_concept": "A VPN protects the path, not the device: personal laptops need a health check before they connect, because malware travels through the tunnel.",
+   "pre_read": "Think about what the tunnel protects, and what MFA already covers here.",
+   "correct_explanation": "MFA already proves who is signing in, and the tunnel already encrypts the path. What neither checks is the laptop: an unpatched or infected personal device would carry malware straight into the network through the tunnel. A health check before each session closes that gap. Hourly MFA prompts are the runner-up: they recheck the person, but an infected laptop passes every prompt.",
+   "wrong_explanations": {
+    "A": "Tempting because a VPN is about encryption. But the tunnel is already encrypted; stronger encryption does nothing about malware on the laptop.",
+    "C": "Tempting because it eases the load on the VPN. But internet traffic then skips the charity's filtering and monitoring, which weakens protection.",
+    "D": "Closest choice: rechecking identity helps against stolen sessions. But it proves only who is there; an infected laptop passes every prompt."
+   },
+   "tips": [
+    "Eliminate: A strengthens a tunnel that is already encrypted, and C sends traffic around the charity's filtering and monitoring.",
+    "Final two: B beats D because MFA already covers identity; the open risk is the personal laptop itself, which only a device check addresses.",
+    "Exam cue: when identity and the tunnel are already covered, look for the gap that is left; for personal laptops, that gap is the device's own health."
+   ],
+   "framework_ref": "NIST SP 800-46 Rev. 2 Section 2.1 (Vulnerabilities, Threats, and Security Controls: infected client devices); NIST SP 800-41 Rev. 1 Section 2.1.7 (Network Access Control: health checks and limited access for remediation)",
+   "related_concepts": [
+    "VPN limits",
+    "Device health checks",
+    "Personal devices"
+   ],
+   "_provenance": "Authored from concept: 'A VPN protects the path, not the device at either end' (notes 4.1.6 Virtual Private Networks (VPNs)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_173",
+   "domain": 4,
+   "subtopic": "4.1 Network security. Firewall rule sets",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A film studio's producer phones the network technician demanding a firewall port opened today for a vendor's upload; procedure routes firewall changes to the system owner for approval. What should the technician do FIRST?",
+   "options": {
+    "A": "Open the port now, and tell the system owner afterward",
+    "B": "Submit a change request for the system owner to approve",
+    "C": "Open the port for one day, since it is just temporary",
+    "D": "Ask the producer to approve the change in writing first"
+   },
+   "correct": "B",
+   "key_concept": "Firewall rules change only through change management; a requester's urgency does not replace the system owner's approval.",
+   "pre_read": "Check who the procedure says approves firewall changes.",
+   "correct_explanation": "The procedure sends firewall changes to the system owner, so the technician submits a change request and lets the owner decide; urgent changes can still move quickly through that route. Getting the producer's written approval is the runner-up: it looks careful, but the producer is the requester, not the firewall's owner, so their signature authorizes nothing.",
+   "wrong_explanations": {
+    "A": "Tempting because the upload is urgent. But a live edit outside change management skips the owner's review, and telling the owner afterward does not fix that.",
+    "C": "Tempting because a short-lived rule sounds low risk. But temporary rules still need approval, and they are easily left open.",
+    "D": "Closest choice: written approval looks careful. But the producer is the requester, not the system owner the procedure names."
+   },
+   "tips": [
+    "Eliminate: A edits the firewall outside change management, and C assumes a temporary rule needs no approval.",
+    "Final two: B beats D because only the system owner can approve the change; the producer's signature comes from the wrong person.",
+    "Exam cue: the person asking for a change is not the person who approves it; find the approver the procedure names, however urgent the request."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control); NIST CSF 2.0 PR.PS-01 (configuration management practices are established and applied)",
+   "related_concepts": [
+    "Change management",
+    "Firewall rule changes",
+    "System owner approval"
+   ],
+   "_provenance": "Authored from concept: 'Allow only what the business needs with the narrowest rule, deny the rest, and change rules only through change management' (notes 4.1.7 Firewalls: Ports and Applications). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_174",
+   "domain": 4,
+   "subtopic": "4.1 Network security. Firewall types",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "In a magazine publisher's penetration test, a laptop reaches other laptops' file-sharing ports directly through the office switch. Which control should the network technician propose as BEST to stop this?",
+   "options": {
+    "A": "Host-based firewalls that refuse unrequested connections",
+    "B": "Stricter file-sharing rules on the edge firewall",
+    "C": "An intrusion detection system fed a copy of switch traffic",
+    "D": "File sharing moved to an unusual, high port number"
+   },
+   "correct": "A",
+   "key_concept": "A network firewall filters only traffic that passes through it; host-based firewalls protect each machine from neighbors on the same subnet.",
+   "pre_read": "Trace the path the probes take, and which devices they actually cross.",
+   "correct_explanation": "Laptops on the same subnet talk directly through the switch, so their traffic never reaches the edge firewall. A host-based firewall runs on each laptop and can refuse connections nobody requested, whatever their source. Stricter edge rules are the runner-up: they sound like the natural fix, but the edge firewall never sees this traffic at all.",
+   "wrong_explanations": {
+    "B": "Closest choice: tighter firewall rules sound like the natural fix. But laptop-to-laptop traffic on one subnet never passes the edge firewall.",
+    "C": "Tempting because it would reveal the probes. But a passive intrusion detection system only alerts; it cannot block the traffic itself.",
+    "D": "Tempting because fewer probes target unusual ports. But scanners check every port, and a new number blocks nothing."
+   },
+   "tips": [
+    "Eliminate: C only detects, since a passive IDS cannot block, and D relies on an unusual port number.",
+    "Final two: A beats B because traffic between laptops on one subnet never reaches the edge firewall; only a control on each laptop sees it.",
+    "Exam cue: a firewall can only filter what passes through it; for traffic between neighbors, put the control on the hosts."
+   ],
+   "framework_ref": "NIST SP 800-41 Rev. 1 Section 2.2.1 (Host-Based Firewalls and Personal Firewalls: protection from hosts on the same subnet that no network firewall separates); NIST SP 800-215 Section 2.1 (Limitations of Network Perimeter-based Protections: east-west traffic stays within the local network)",
+   "related_concepts": [
+    "Host-based firewalls",
+    "East-west traffic",
+    "Firewall placement"
+   ],
+   "_provenance": "Authored from concept: 'Host-based firewalls run on each computer and keep protecting laptops away from the office' (notes 4.1.7 Firewalls: Ports and Applications). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_175",
+   "domain": 4,
+   "subtopic": "4.1 Network security. Host and network sensors",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A ski resort's lift-gate card readers cannot run any added software, and the security analyst wants to spot suspicious traffic around them. Which intrusion detection system (IDS) setup should the analyst propose as BEST?",
+   "options": {
+    "A": "A network IDS sensor placed at the internet edge",
+    "B": "A network IDS sensor watching the readers' own segment",
+    "C": "A host-based IDS agent on the server the readers report to",
+    "D": "A network IDS sensor watching the staff office segment"
+   },
+   "correct": "B",
+   "key_concept": "A network-based IDS watches a whole segment's traffic, so it can cover devices that cannot run a host agent.",
+   "pre_read": "Consider where each sensor sits and which traffic it can actually see.",
+   "correct_explanation": "A host-based IDS needs an agent on the device it protects, and the readers cannot run one. A network-based sensor on the readers' segment sees every reader's traffic, whichever system it talks to. An agent on the server is the runner-up: it is a real host-based option, but it sees only traffic that reaches that one server, not readers talking to anything else.",
+   "wrong_explanations": {
+    "A": "Tempting because edge sensors are common. But reader traffic to internal systems never crosses the internet edge, so most of it goes unseen.",
+    "C": "Closest choice: it uses a host agent where one can run. But it sees only traffic reaching that server, missing readers talking to other systems.",
+    "D": "Tempting because the office segment holds the most users. But the readers' traffic never crosses it, so the sensor sees none of it."
+   },
+   "tips": [
+    "Eliminate: A and D watch segments the readers' traffic mostly never crosses: the internet edge and the staff office.",
+    "Final two: B beats C because a sensor on the readers' segment sees all their traffic; an agent on one server sees only what reaches it.",
+    "Exam cue: when devices cannot run agents, watch them from the network, and pick the sensor whose position sees the traffic in question."
+   ],
+   "framework_ref": "NIST SP 800-94 Section 4.5 (Summary: a network-based IDPS monitors network traffic for particular network segments or devices); NIST SP 800-94 Section 7.1.1 (Typical Components: most host-based IDPSs have agents installed on the hosts of interest)",
+   "related_concepts": [
+    "Network-based IDS",
+    "Host-based IDS",
+    "Sensor placement"
+   ],
+   "_provenance": "Authored from concept: 'A network-based system watches traffic on a segment; a host-based system watches one computer's activity, logs and files' (notes 4.1.8 Intrusion Detection and Prevention Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_176",
+   "domain": 4,
+   "subtopic": "4.1 Network security. IDS and IPS",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A currency exchange's owner says a false positive does more harm on its intrusion prevention system (IPS) than on its intrusion detection system (IDS). Which reply from the security analyst is MOST accurate?",
+   "options": {
+    "A": "Agree; an IPS false positive blocks traffic, an IDS one alerts",
+    "B": "Disagree; an IDS false positive also blocks the traffic it flags",
+    "C": "Disagree; on both, a false positive only wastes analyst time",
+    "D": "Agree; an IPS false positive also lets the real attack through"
+   },
+   "correct": "A",
+   "key_concept": "An IPS sits inline, so a false positive blocks genuine traffic; an IDS gets a copy, so its false positive only raises an alert.",
+   "pre_read": "Picture where each system sits in the traffic path.",
+   "correct_explanation": "An IPS sits inline, so every packet passes through it; when it wrongly flags genuine traffic, such as a rate feed, it blocks that traffic and the business feels it. An IDS works on a copy of the traffic, so its false positive costs an analyst's time but stops nothing. The runner-up, that a false positive only wastes analyst time, is true of the IDS alone.",
+   "wrong_explanations": {
+    "B": "Tempting because both systems flag the same activity. But an IDS works on a copy of the traffic, so it alerts without blocking anything.",
+    "C": "Closest choice: an IDS false positive does only cost analyst time. But an inline IPS also blocks the genuine traffic it misjudges.",
+    "D": "Tempting because both are detection errors. But letting a real attack through is a false negative; a false positive flags harmless traffic."
+   },
+   "tips": [
+    "Eliminate: B has the IDS blocking, though it works on a copy of the traffic, and D describes a false negative, which misses a real attack.",
+    "Final two: A beats C because the IPS sits inline; its wrong verdict blocks genuine traffic, not just an analyst's time.",
+    "Exam cue: ask where a tool sits; inline tools act on their mistakes, so their false positives disrupt the business, while passive tools only alert."
+   ],
+   "framework_ref": "NIST SP 800-94 Section 4.2.2 (Network Architectures and Sensor Locations: inline versus passive sensors); NIST SP 800-94 Section 2.2 (Key Functions of IDPS Technologies: a false positive flags benign activity, and altering the configuration to improve detection accuracy is called tuning)",
+   "related_concepts": [
+    "False positives",
+    "Inline IPS",
+    "Passive IDS"
+   ],
+   "_provenance": "Authored from concept: 'An IPS sits inline, so every packet passes through it, and a wrong block stops legitimate business traffic' (notes 4.1.8 Intrusion Detection and Prevention Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_177",
+   "domain": 4,
+   "subtopic": "4.1 Network security. AI in traffic monitoring",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "A children's museum's trial of an artificial intelligence (AI) traffic monitor would upload full packet captures, including unencrypted payroll traffic, to the vendor's cloud. Which setup should the security analyst propose as BEST?",
+   "options": {
+    "A": "Send full captures, since the upload is encrypted in transit",
+    "B": "Skip the trial, since any data sent to an AI service leaks",
+    "C": "Send only flow records, such as timing, volume and addresses",
+    "D": "Send full captures, under a contract barring vendor reuse"
+   },
+   "correct": "C",
+   "key_concept": "Send an AI service only the data it needs: traffic models work from flow patterns, so full captures with sensitive content add risk without need.",
+   "pre_read": "Ask what the model actually needs to see to spot unusual traffic.",
+   "correct_explanation": "AI traffic monitors learn from patterns such as timing, volume and destinations, which flow records carry without the content. Full captures would hand the vendor readable payroll data for no detection benefit, so sending less is the better design. A contract barring reuse is the runner-up: it limits what the vendor may do, but the payroll data would still leave the museum.",
+   "wrong_explanations": {
+    "A": "Tempting because the upload would be encrypted. But encryption protects the trip only; the vendor still receives readable payroll data.",
+    "B": "Tempting because uploads can leak data. But flow records give the model what it needs without sensitive content, so the trial can go ahead.",
+    "D": "Closest choice: a contract does limit how the vendor may use the data. But payroll content would still leave the museum when flow records would do."
+   },
+   "tips": [
+    "Eliminate: A relies on encryption in transit, which still delivers payroll data to the vendor, and B drops a trial that minimized data makes safe.",
+    "Final two: C beats D because the model needs only patterns; sending less beats promises about what is sent.",
+    "Exam cue: a contract limits what a vendor may do with data it holds; sending less means it never holds it. When a lighter feed does the job, choose the lighter feed."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 SA-8(33) (Security and Privacy Engineering Principles | Minimization); NIST SP 800-53 Rev. 5 SI-4(13) (System Monitoring | Analyze Traffic and Event Patterns)",
+   "related_concepts": [
+    "AI monitoring data",
+    "Data minimization",
+    "Flow records"
+   ],
+   "_provenance": "Authored from concept: 'The model learns a traffic baseline (who talks to whom, when and how much) and scores new activity against it' (notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_178",
+   "domain": 4,
+   "subtopic": "4.1 Network security. AI in traffic monitoring",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A stock photo agency's artificial intelligence (AI) monitor, tuned in alert-only mode, can now cut off devices it scores as risky, payment servers included. Which setup should the security manager choose as BEST?",
+   "options": {
+    "A": "Auto-block laptops; analysts confirm any block of a server",
+    "B": "Auto-block any device it scores as risky, the servers included",
+    "C": "Let the vendor's defaults decide which devices it may block",
+    "D": "Auto-block devices it scores in its highest risk band"
+   },
+   "correct": "A",
+   "key_concept": "Let AI act automatically where a wrong block costs little, and keep a person in the loop before high-impact blocks.",
+   "pre_read": "Weigh the cost of a wrong automatic block on each kind of device.",
+   "correct_explanation": "AI scores still produce false positives, so the impact of a wrong block decides how much automation is safe. Cutting off a laptop is cheap to undo; cutting off payment servers stops the business, so those blocks wait for an analyst to confirm. Blocking only the highest scores is the runner-up: it cuts false positives, but it sets confidence, not impact, and a rare wrong block of a payment server is still an outage.",
+   "wrong_explanations": {
+    "B": "Tempting because automatic blocking contains threats fastest. But AI scores include false positives, and one wrong block of the payment servers halts the business.",
+    "C": "Tempting because the vendor knows the product. But only the agency knows which of its systems are critical, so it must set the limits.",
+    "D": "Closest choice: a high score threshold does cut false positives. But it still lets the AI cut off payment servers alone, and even top scores are sometimes wrong."
+   },
+   "tips": [
+    "Eliminate: B automates every block though AI scores include false positives, and C hands the agency's own risk decision to vendor defaults.",
+    "Final two: A beats D because a score threshold sets confidence, not impact; even a top-band false positive on payment servers stops the business.",
+    "Exam cue: match automation to impact; the costlier a wrong action, the more a person should confirm it, however confident the tool."
+   ],
+   "framework_ref": "NIST AI 100-1 (AI RMF 1.0) GOVERN 3.2 (roles and responsibilities for human-AI configurations and oversight of AI systems are defined); NIST SP 800-94 Section 2.2 (Key Functions of IDPS Technologies: a false positive flags benign activity, and altering the configuration to improve detection accuracy is called tuning)",
+   "related_concepts": [
+    "AI automatic blocking",
+    "Human oversight",
+    "Impact-based response"
+   ],
+   "_provenance": "Authored from concept: 'Scores feed intrusion detection system (IDS) alerts or analyst queues; high-impact automatic blocks get a human check first' (notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_179",
+   "domain": 4,
+   "subtopic": "4.1 Network security. Wi-Fi security",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A climbing gym's owner plans to hide the staff Wi-Fi network's name as its main protection, instead of upgrading the access point. Which reply from the IT technician is MOST accurate?",
+   "options": {
+    "A": "Agree; hiding works well with a long and random name",
+    "B": "Agree; hiding the name also stops copycat networks posing as it",
+    "C": "Disagree; hidden names still show in traffic, so tools reveal them",
+    "D": "Disagree; add MAC filtering too, and then hiding will be enough"
+   },
+   "correct": "C",
+   "key_concept": "Hiding a Wi-Fi network's name adds little, because the name still appears in connection traffic; strong encryption and sign-in do the real work.",
+   "pre_read": "Think about what a listening device can still see when a network's name is not announced.",
+   "correct_explanation": "A hidden network's name still travels whenever devices connect, so free wireless tools reveal it within minutes; hiding is not protection. Real protection comes from strong encryption and sign-in, such as WPA3 on an access point that supports it. Adding MAC filtering is the runner-up: it sounds like a second layer, but MAC addresses are easy to copy from the same traffic.",
+   "wrong_explanations": {
+    "A": "Tempting because long, random names are hard to guess. But nobody needs to guess; devices reveal the name each time they connect.",
+    "B": "Tempting because a hidden name seems harder to copy. But attackers learn it from traffic and can still set up a look-alike network.",
+    "D": "Closest choice: it adds a second control. But MAC addresses are easy to copy, so two weak controls together are still weak."
+   },
+   "tips": [
+    "Eliminate: A assumes attackers must guess the hidden name, and B assumes hiding blocks look-alike networks; the name leaks in normal traffic.",
+    "Final two: C beats D because MAC filtering is just as easy to get around; encryption and sign-in do the real work.",
+    "Exam cue: on wireless, prefer controls an attacker cannot simply watch and copy; names and MAC addresses travel in the clear."
+   ],
+   "framework_ref": "NIST SP 800-94 Section 5.1.2 (WLAN Components: SSIDs are broadcast in plaintext, so any listening device can learn them, and MAC addresses are relatively trivial to spoof); NIST SP 800-53 Rev. 5 AC-18(1) (Wireless Access | Authentication and Encryption)",
+   "related_concepts": [
+    "Hidden network names",
+    "Wi-Fi encryption",
+    "MAC filtering"
+   ],
+   "_provenance": "Authored from concept: 'Guest Wi-Fi belongs on its own segment; hiding the network name or filtering by media access control (MAC) address adds little' (notes 4.1.10 Wireless Security: Wi-Fi and Bluetooth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_180",
+   "domain": 4,
+   "subtopic": "4.1 Network security. Embedded and control systems",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A city's traffic team is ranking security goals for the controllers that run its traffic signals. Which goal should the security analyst place FIRST?",
+   "options": {
+    "A": "Preventing unsafe signal states, such as green lights both ways",
+    "B": "Keeping the signal timing plans confidential from outsiders",
+    "C": "Keeping every controller running without any interruption",
+    "D": "Patching every controller as quickly as the office laptops"
+   },
+   "correct": "A",
+   "key_concept": "In industrial and control systems, people's safety comes first, then keeping the process running, then protecting the data.",
+   "pre_read": "Think about what can go wrong in the physical world when a controller misbehaves.",
+   "correct_explanation": "Controllers that move physical things can hurt people, so safety comes first: a junction must never show conflicting greens, whatever else happens. Keeping the process running comes next, and data confidentiality after that. Keeping every controller running is the runner-up: availability matters greatly in control systems, but a signal that keeps running in an unsafe state is worse than one that stops.",
+   "wrong_explanations": {
+    "B": "Tempting because confidentiality leads in many office systems. But in control systems, safety and the process come well before secret timing plans.",
+    "C": "Closest choice: availability ranks high in control systems. But safety ranks higher; a controller running in an unsafe state is worse than one that stops.",
+    "D": "Tempting because fast patching protects laptops. But untested patches can crash controllers, so patches are tested and scheduled instead."
+   },
+   "tips": [
+    "Eliminate: B puts data secrecy first, an office priority, and D patches controllers like laptops, which can crash them.",
+    "Final two: A beats C because safety outranks availability; a controller that keeps running unsafely is worse than one that stops.",
+    "Exam cue: when systems move physical things, rank people's safety first, then the process, then the data."
+   ],
+   "framework_ref": "NIST SP 800-82 Rev. 3 Section 2.4 (Comparing OT and IT System Security: human safety is paramount, followed by protection of the process)",
+   "related_concepts": [
+    "Safety first",
+    "Control system priorities",
+    "Traffic signal controllers"
+   ],
+   "_provenance": "Authored from concept: 'With systems that move physical things, protect people first, then keep the process running' (notes 4.1.11 Embedded Systems and Industrial Control Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_181",
+   "domain": 4,
+   "subtopic": "4.1 Network security. IoT devices",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "An office tower's landlord is buying networked lighting controllers that will stay in service for about ten years. Which feature should the network technician rank as MOST important?",
+   "options": {
+    "A": "A tamper-resistant case that blocks hands-on access to its debug ports",
+    "B": "One admin password the installer sets the same on every unit",
+    "C": "Central control of every unit through the landlord's own app",
+    "D": "Signed firmware updates from the maker for the units' whole life"
+   },
+   "correct": "D",
+   "key_concept": "For connected devices that stay in service for years, a stated support period with secure updates matters most, because new flaws keep appearing.",
+   "pre_read": "Think about what will happen to the devices' software over ten years.",
+   "correct_explanation": "Over ten years, new flaws will be found in the controllers' software, and only updates from the maker can fix them; signed updates also prove each update is genuine. A device with no update path stays vulnerable for its whole life. The tamper-resistant case is the runner-up: it stops hands-on attacks, but most attacks on connected devices arrive over the network.",
+   "wrong_explanations": {
+    "A": "Closest choice: physical protection has value. But most attacks on connected devices come over the network, and only updates fix newly found flaws.",
+    "B": "Tempting because one password is easy to manage. But a shared password exposes every unit once it leaks; each device needs its own.",
+    "C": "Tempting because central control sounds easier to secure. But it is a management convenience; it does nothing to fix flaws found in the units' software."
+   },
+   "tips": [
+    "Eliminate: B shares one password across every unit, and C is a management convenience that fixes no software flaws.",
+    "Final two: D beats A because over ten years new flaws will appear and only secure updates fix them; a strong case stops only hands-on attacks.",
+    "Exam cue: for long-lived connected devices, ask how flaws will be fixed; no update path means the risk only grows."
+   ],
+   "framework_ref": "NIST SP 800-213 Section 3.1 (IoT Device Cybersecurity Considerations: consider the manufacturer's expectations for delivering software updates in response to discovered vulnerabilities); NIST SP 800-213 Section 2.3 (How IoT Devices May Create Security Challenges)",
+   "related_concepts": [
+    "IoT purchasing",
+    "Secure updates",
+    "Support period"
+   ],
+   "_provenance": "Authored from concept: 'Buy devices with secure updates, unique passwords and a stated support period' (notes 4.1.12 Internet of Things (IoT) Security). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_182",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. Segmentation",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "An optician chain has bought a small rival, whose shop network must now reach the chain's booking server. How should the network technician connect the shop's network as BEST?",
+   "options": {
+    "A": "Join it flat to head office to reach the booking server",
+    "B": "Add it as its own segment reaching only the booking server",
+    "C": "Give it its own firewalled subnet open to all head-office traffic",
+    "D": "Join it to head office once its laptops pass an antivirus scan"
+   },
+   "correct": "B",
+   "key_concept": "A newly joined network is a separate trust zone: connect it as its own segment, with rules allowing only the traffic it needs.",
+   "pre_read": "Think about what the shop's network must reach, and what you know about its devices.",
+   "correct_explanation": "Nobody yet knows what is on the rival's network, so it joins as its own segment, with firewall rules that let booking traffic reach the one server it uses. If something there is compromised, it cannot spread freely. Joining after an antivirus scan is the runner-up: a scan helps, but one clean result does not justify broad trust or open reach.",
+   "wrong_explanations": {
+    "A": "Tempting because it gives the shop the booking access it needs. But unknown devices on a flat network can also reach everything else.",
+    "C": "Tempting because a separate subnet behind a firewall sounds segmented. But a firewall that lets all head-office traffic through separates nothing.",
+    "D": "Closest choice: scanning the laptops is a sensible check. But one clean scan does not justify open access; limit the shop to the booking traffic."
+   },
+   "tips": [
+    "Eliminate: A joins an unknown network flat to head office, and C puts up a firewall that lets all traffic through.",
+    "Final two: B beats D because a single scan cannot prove an unknown network safe; segmenting limits harm whatever is there.",
+    "Exam cue: when you cannot vouch for a network, give it its own segment and open only the paths its work requires."
+   ],
+   "framework_ref": "NIST SP 800-82 Rev. 3 Section 6.2.1.3 (Network Segmentation and Isolation: only explicitly authorized traffic between segments); NIST SP 800-53 Rev. 5 AC-4 (Information Flow Enforcement)",
+   "related_concepts": [
+    "Segmentation",
+    "Acquired networks",
+    "Trust levels"
+   ],
+   "_provenance": "Authored from concept: 'Systems are grouped by trust level and purpose, such as staff devices, payment systems and guests' (notes 4.2.1 Network Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_183",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. Screened subnet",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A hiking gear retailer's network technician is assigning servers to firewall zones. Which server MOST clearly belongs in the screened subnet, or demilitarized zone (DMZ)?",
+   "options": {
+    "A": "The payroll database that only the finance staff query",
+    "B": "The internal DNS server that staff laptops use for lookups",
+    "C": "The public DNS server answering for the shop's own domain",
+    "D": "The file server holding product designs for next season"
+   },
+   "correct": "C",
+   "key_concept": "The screened subnet holds servers the public must reach; servers that only staff use stay in internal zones.",
+   "pre_read": "Ask who must reach each server: people on the internet, or only staff?",
+   "correct_explanation": "Anything the public must reach belongs in the screened subnet, where the outer firewall exposes only named services and the inner firewall keeps it apart from staff systems. A public DNS server answers internet lookups for the retailer's domain, so it fits there. The internal DNS server is the runner-up: it is the same kind of server, but only staff laptops use it, so it stays inside.",
+   "wrong_explanations": {
+    "A": "Tempting because finance data needs strong protection. But that is why it stays internal; nothing on the internet should reach it directly.",
+    "B": "Closest choice: it is also a DNS server. But only staff laptops use it, so it belongs in the internal zone, out of the public's reach.",
+    "D": "Tempting because designs are shared work files. But only staff use them, and sensitive files stay deeper inside, away from public-facing servers."
+   },
+   "tips": [
+    "Eliminate: A and D hold internal data that only staff use; neither faces the public.",
+    "Final two: C beats B because the zone follows who must reach the server; the public DNS server serves the internet, the internal one serves staff.",
+    "Exam cue: the same kind of server can sit in different zones; with split DNS, the public half goes in the screened subnet and the internal half stays inside."
+   ],
+   "framework_ref": "NIST SP 800-41 Rev. 1 Section 3.1 (Network Layouts with Firewalls: public-facing servers on the DMZ); NIST SP 800-53 Rev. 5 SC-7 (Boundary Protection)",
+   "related_concepts": [
+    "Screened subnet",
+    "Firewall zones",
+    "Public DNS"
+   ],
+   "_provenance": "Authored from concept: 'Web servers and email gateways belong there; customer databases belong in an internal zone' (notes 4.2.2 Firewall Zones and the Screened Subnet (DMZ)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_184",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. VLANs",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A dog grooming chain's network technician is writing a training note on virtual local area networks (VLANs). Which statement about where VLANs work is MOST accurate?",
+   "options": {
+    "A": "Layer 1, since each VLAN is a set of physical switch ports",
+    "B": "Layer 3, since each VLAN routes packets by IP address",
+    "C": "Layer 3, since the VLAN tag sits inside each packet's IP header",
+    "D": "Layer 2, since switches keep the frames of each VLAN apart"
+   },
+   "correct": "D",
+   "key_concept": "VLANs are a layer 2 switch feature; traffic between VLANs must pass a router or layer 3 switch, where it can be filtered.",
+   "pre_read": "Recall which device forwards frames and which device routes packets.",
+   "correct_explanation": "A VLAN splits one switch's ports into separate layer 2 networks, tagging frames with a VLAN number when they cross a trunk, and devices in different VLANs cannot talk directly. To move between VLANs, traffic must pass a router or layer 3 switch, which is where filtering belongs. Layer 1 is the runner-up: ports are physical, but VLAN membership is a switch setting, not a cable.",
+   "wrong_explanations": {
+    "A": "Closest choice: VLANs are assigned to ports. But membership is a switch setting that tags frames at layer 2; layer 1 is only the physical signal.",
+    "B": "Tempting because each VLAN acts like its own network. But routing by IP address is the layer 3 device's job between VLANs, not the VLAN's.",
+    "C": "Tempting because VLANs are tagged. But the 802.1Q tag sits in the layer 2 frame, not in the IP header."
+   },
+   "tips": [
+    "Eliminate: B and C put VLANs at layer 3; VLANs neither route by IP address nor tag the IP header.",
+    "Final two: D beats A because VLAN membership is a layer 2 switch setting; ports are physical, but the separation is not.",
+    "Exam cue: VLAN means layer 2 separation; anything moving between VLANs meets a layer 3 device, which is where to filter."
+   ],
+   "framework_ref": "NIST SP 800-82 Rev. 3 Appendix E.1.3 (Virtual Local Area Networks (VLANs): switches logically separate traffic based on switch ports); NIST SP 800-119 Section 6.4.1 (Deployment of a Dual Stack Environment: 802.1q tags can be used to divide a network logically)",
+   "related_concepts": [
+    "VLANs",
+    "OSI layer 2",
+    "Inter-VLAN routing"
+   ],
+   "_provenance": "Authored from concept: 'VLANs are a layer 2 switch feature; traffic between them needs a layer 3 device, where filtering happens' (notes 4.2.3 Virtual LANs (VLANs)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_185",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. Micro-segmentation",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A mortgage broker wants micro-segmentation for 60 virtual machines on one hypervisor cluster, without buying new network hardware. Where should the system administrator propose enforcing the rules as BEST?",
+   "options": {
+    "A": "On the edge firewall in front of the hypervisor cluster",
+    "B": "On the core router, filtering traffic between the data center's VLANs",
+    "C": "On the switches, by giving each virtual machine its own physical port",
+    "D": "In the hypervisor's virtual firewall or each machine's host firewall"
+   },
+   "correct": "D",
+   "key_concept": "Micro-segmentation is enforced close to each workload, in the hypervisor, host firewalls or cloud security groups, so it sees traffic between neighbors.",
+   "pre_read": "Think about which traffic each enforcement point can actually see.",
+   "correct_explanation": "Micro-segmentation applies policy to each workload, so enforcement must sit where every machine's traffic passes: a virtual firewall in the hypervisor or a firewall on each host. Both are software, so no new hardware is needed, and they see traffic between machines on the same host or VLAN. The core router is the runner-up: it filters between VLANs, but machines sharing a VLAN never pass it.",
+   "wrong_explanations": {
+    "A": "Tempting because the edge firewall is the main control. But it sees only traffic entering or leaving, not traffic between the virtual machines.",
+    "B": "Closest choice: routers do filter between VLANs. But machines on the same VLAN or host talk without passing the router at all.",
+    "C": "Tempting because separate ports isolate devices. But the machines share physical hosts, and this needs the new hardware the broker wants to avoid."
+   },
+   "tips": [
+    "Eliminate: A filters only traffic crossing the internet edge, and C needs new hardware while machines still share hosts.",
+    "Final two: D beats B because enforcement in the hypervisor or host sees traffic between neighbors; the router sees only traffic between VLANs.",
+    "Exam cue: micro-segmentation lives next to the workload; if an option enforces it on a distant boundary device, look again."
+   ],
+   "framework_ref": "NIST SP 800-215 Section 5.1.2 (Microsegmentation – Implementation Approaches: virtual firewalls inside a hypervisor, or host-based agents using the host's native firewall); NIST SP 800-207 Section 3.1.2 (ZTA Using Micro-Segmentation)",
+   "related_concepts": [
+    "Micro-segmentation",
+    "Hypervisor firewalls",
+    "Workload enforcement"
+   ],
+   "_provenance": "Authored from concept: 'Enforcement sits close to the workload: in host firewalls, the virtualization platform or cloud security groups' (notes 4.2.4 Micro-Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_186",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. Defense in depth",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "A ticket resale site relies on its web application firewall (WAF) alone to stop injected commands, and testers slipped one past it. Which addition should the security analyst propose to BEST apply defense in depth?",
+   "options": {
+    "A": "Tighter WAF rules, so the same trick cannot get through again",
+    "B": "Checks on every input inside the application's own code",
+    "C": "Blocking the testers' addresses at the edge firewall",
+    "D": "A stricter edge firewall rule set for the application's web ports"
+   },
+   "correct": "B",
+   "key_concept": "Defense in depth puts a second, independent check behind each control, so a bypass of one layer is caught by the next.",
+   "pre_read": "Ask which option still stops the attack after the WAF is bypassed again.",
+   "correct_explanation": "The WAF is one layer, and testers have shown it can be bypassed. Validating input in the application's own code adds a layer behind it: it checks each entry where it is used, whatever got past the WAF. Tighter WAF rules are the runner-up: they close this one trick, but the WAF stays the only check, so the next bypass meets nothing.",
+   "wrong_explanations": {
+    "A": "Closest choice: it closes the trick the testers used. But the WAF remains the only check, so the next new bypass meets no second control.",
+    "C": "Tempting because it stops this test from repeating. But real attackers use other addresses, and the bypass itself still works.",
+    "D": "Tempting because the edge firewall guards the server. But it filters ports and addresses, and the web ports must stay open for customers."
+   },
+   "tips": [
+    "Eliminate: C blocks only the testers' addresses, which real attackers do not share, and D adds a port filter that cannot read web requests and must leave web ports open.",
+    "Final two: B beats A because tighter rules still leave the WAF as the only check; validation in the code stops what the next bypass lets through.",
+    "Exam cue: assume every layer will be bypassed one day; defense in depth asks what still stops the attack when it is."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 PL-8(1) (Security and Privacy Architectures | Defense in Depth); NIST SP 800-53 Rev. 5 SI-10 (Information Input Validation)",
+   "related_concepts": [
+    "Defense in depth",
+    "Input validation",
+    "Independent layers"
+   ],
+   "_provenance": "Authored from concept: 'Each layer should fail independently; two controls sharing one password or one flaw are really one layer' (notes 4.2.5 Defense in Depth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_187",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. Zero Trust principles",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "At a fashion house adopting Zero Trust, the security analyst finds the payroll app admits any office Wi-Fi device unchecked; its system owner approves the app's access rules. What should the analyst do FIRST?",
+   "options": {
+    "A": "Flag the gap to the system owner, proposing a device check",
+    "B": "Change the rule to require device checks, then tell the system owner",
+    "C": "Leave the rule, since the office Wi-Fi is an internal network",
+    "D": "Block every office Wi-Fi device from the app until it is fixed"
+   },
+   "correct": "A",
+   "key_concept": "Zero Trust grants nothing for network location; a rule that still trusts location goes to its owner with a proposed fix.",
+   "pre_read": "Check what Zero Trust says about trusting a network location, and who approves this app's rules.",
+   "correct_explanation": "Admitting any device because it is on the office Wi-Fi is location-based trust, which Zero Trust removes: every request should be checked for identity and device health. The system owner approves the app's access rules, so the analyst flags the gap to them with a proposed device check. Changing the rule first is the runner-up: the fix is right, but making it alone bypasses the owner's approval.",
+   "wrong_explanations": {
+    "B": "Closest choice: a device check is the right fix. But the system owner approves this app's access rules, so changing it first bypasses them, even if they are told afterward.",
+    "C": "Tempting because the office Wi-Fi is the company's own. But Zero Trust gives no trust for network location; every request is checked.",
+    "D": "Tempting because it closes the gap at once. But it cuts all staff off from payroll, a change the analyst has no authority to make."
+   },
+   "tips": [
+    "Eliminate: C trusts devices for being on the office network, and D shuts every staff device out, far beyond the analyst's role.",
+    "Final two: A beats B because the system owner approves the app's access rules; the analyst proposes the fix rather than making it alone.",
+    "Exam cue: Zero Trust removes trust by location; when a rule still relies on it, take it to the rule's owner with a fix."
+   ],
+   "framework_ref": "NIST SP 800-207 Section 2.1 (Tenets of Zero Trust); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+   "related_concepts": [
+    "Location-based trust",
+    "Zero Trust principles",
+    "System owner approval"
+   ],
+   "_provenance": "Authored from concept: 'Never trust, always verify: being on the office network or a virtual private network (VPN) earns no access by itself' (notes 4.2.6 Zero Trust Principles). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_188",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. Zero Trust components",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A dairy cooperative is adopting Zero Trust. Which input should its policy engine use MOST directly to judge whether a staff laptop asking for access is healthy?",
+   "options": {
+    "A": "The laptop's IP address on the office's internal network",
+    "B": "The user's job title in the human resources system",
+    "C": "The device manager's record of patches and encryption",
+    "D": "The threat feed's list of known malicious domains"
+   },
+   "correct": "C",
+   "key_concept": "A Zero Trust policy engine judges device health from inputs such as device management data on patches and encryption, not from network location.",
+   "pre_read": "Match each input to what it actually tells the policy engine.",
+   "correct_explanation": "The policy engine weighs inputs from several sources, and device health comes from the device management system, which reports each laptop's patch level, encryption and similar state. A threat feed is the runner-up: it is also a real policy input, but it describes outside threats, such as bad domains, not the condition of this laptop.",
+   "wrong_explanations": {
+    "A": "Tempting because the address shows where the laptop is. But Zero Trust grants nothing for location, and an address says nothing about health.",
+    "B": "Tempting because job title is a real access input. But it describes the user's role, not whether the laptop is patched or encrypted.",
+    "D": "Closest choice: threat feeds are real policy inputs. But they describe outside threats, such as bad domains, not this laptop's condition."
+   },
+   "tips": [
+    "Eliminate: A judges by network location, and B describes the person rather than the device.",
+    "Final two: C beats D because device health comes from device management data; a threat feed describes outside dangers, not the laptop.",
+    "Exam cue: match the policy input to the question: identity systems answer who, device management answers how healthy, threat feeds answer what is dangerous."
+   ],
+   "framework_ref": "NIST SP 800-207 Section 3 (Logical Components of Zero Trust Architecture)",
+   "related_concepts": [
+    "Policy engine inputs",
+    "Device health",
+    "Zero Trust components"
+   ],
+   "_provenance": "Authored from concept: 'Policy inputs are sources the engine consults, such as identity systems, device management and security monitoring' (notes 4.2.7 Zero Trust Architecture Components). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_189",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. Network access control",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A planetarium's IT manager says the switches' list of allowed media access control (MAC) addresses is no substitute for network access control (NAC). Which reply from the security analyst is MOST accurate?",
+   "options": {
+    "A": "Disagree; a MAC list suffices if each port admits one address",
+    "B": "Disagree; a MAC address is fixed in hardware and cannot be faked",
+    "C": "Agree; NAC also encrypts traffic between each device and the switch",
+    "D": "Agree; NAC also verifies each device's credentials and health"
+   },
+   "correct": "D",
+   "key_concept": "A MAC list checks only an address the device announces; NAC authenticates devices with credentials or certificates and checks their health.",
+   "pre_read": "Compare what each control actually verifies about a device.",
+   "correct_explanation": "The IT manager is right. A MAC list checks only an address the device announces, and software can copy an allowed one. NAC authenticates each device with credentials or certificates, often through 802.1X, and checks its health, such as patches and antivirus, before granting access. One address per port is the runner-up: it limits how many devices join, but a copied address still gets in.",
+   "wrong_explanations": {
+    "A": "Closest choice: one address per port does stop extra devices joining. But a device that copies the allowed address still gets in, unchecked.",
+    "B": "Tempting because makers assign MAC addresses. But software can change the address a device presents, so allowed ones are easily copied.",
+    "C": "Tempting because NAC guards the network edge. But NAC decides which devices join and how far; it does not encrypt their traffic."
+   },
+   "tips": [
+    "Eliminate: B treats MAC addresses as fixed, though software can change them, and C credits NAC with encryption, which is not its job.",
+    "Final two: D beats A because NAC checks credentials and health; limiting each port to one address still admits a copied address.",
+    "Exam cue: when asked whether one control can replace another, list what each actually verifies; a stand-in that checks less is not a substitute."
+   ],
+   "framework_ref": "NIST SP 800-41 Rev. 1 Section 2.1.7 (Network Access Control: health checks and limited access for remediation); NIST SP 800-94 Section 5.1.2 (WLAN Components: SSIDs are broadcast in plaintext, so any listening device can learn them, and MAC addresses are relatively trivial to spoof)",
+   "related_concepts": [
+    "NAC",
+    "MAC filtering",
+    "802.1X"
+   ],
+   "_provenance": "Authored from concept: 'Media access control (MAC) address filtering protects as well as NAC is a trap: MAC addresses are easy to copy, while NAC authenticates and checks health' (notes 4.2.8 Network Access Control (NAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_190",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. AI development environments",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A recipe app company's artificial intelligence (AI) experiment servers can reach every internal database, because all of them sit inside the network. Which change should the security analyst propose as BEST?",
+   "options": {
+    "A": "Keep full reach, since the experiments run on internal servers",
+    "B": "Copy every production database onto the experiment segment",
+    "C": "Allow flows only to the approved, masked datasets they use",
+    "D": "Require multifactor sign-in for staff on the experiment servers"
+   },
+   "correct": "C",
+   "key_concept": "AI experiment segments get only the data flows they need, using approved, masked data; being internal earns no open reach.",
+   "pre_read": "Consider what an experiment server could reach if it were misused or compromised.",
+   "correct_explanation": "Internal does not mean trusted: experiment servers are often less hardened than production, so open reach to every database makes them an easy path for leaks and poisoning. Allowing only flows to the approved, masked datasets keeps experiments working while cutting that path. Multifactor sign-in is the runner-up: it protects who logs in, but the servers themselves could still reach every database.",
+   "wrong_explanations": {
+    "A": "Tempting because everything stays inside the network. But internal does not mean trusted; a misused experiment server could read or alter any database.",
+    "B": "Tempting because it removes the network flows. But it puts real production data on less protected servers, the risk masked data avoids.",
+    "D": "Closest choice: MFA strengthens sign-in. But it limits who logs in, not where the servers can reach; one compromise still reaches every database."
+   },
+   "tips": [
+    "Eliminate: A treats internal as trusted, and B copies real production data onto less protected experiment servers.",
+    "Final two: C beats D because the problem is the servers' reach; MFA guards sign-ins but leaves every database open to them.",
+    "Exam cue: for AI development, limit both the data and the paths to it; an internal location grants nothing."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 AC-4 (Information Flow Enforcement); NIST SP 800-53 Rev. 5 SA-3(2) (System Development Life Cycle | Use of Live or Operational Data)",
+   "related_concepts": [
+    "AI development segments",
+    "Least privilege flows",
+    "Masked data"
+   ],
+   "_provenance": "Authored from concept: 'AI development servers are internal, so they may reach production data and the internet, is a trap: internal does not mean trusted' (notes 4.2.9 Segmenting AI Development Environments). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_191",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. Cloud characteristics",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A national lottery's results website automatically adds servers when draw results go live, then removes them an hour later. Which essential cloud characteristic does the system administrator see MOST directly?",
+   "options": {
+    "A": "Rapid elasticity",
+    "B": "Resource pooling",
+    "C": "Measured service",
+    "D": "On-demand self-service"
+   },
+   "correct": "A",
+   "key_concept": "Rapid elasticity is capacity growing and shrinking quickly with demand; resource pooling is the provider sharing hardware among customers.",
+   "pre_read": "Focus on what changes in this scenario, and when it changes.",
+   "correct_explanation": "Rapid elasticity means capacity scales out and back in quickly, often automatically, to match demand, as the lottery's servers do when results go live. Resource pooling is the runner-up: the provider does serve many customers from shared hardware, which makes elasticity possible, but pooling describes that sharing, not one customer's capacity growing and shrinking.",
+   "wrong_explanations": {
+    "B": "Closest choice: pooling is what lets capacity appear so fast. But it describes the provider sharing hardware among customers, not one customer scaling.",
+    "C": "Tempting because the extra servers will show up on the bill. But measured service is about metering use, not capacity changing.",
+    "D": "Tempting because the servers appear without a ticket. But self-service means customers set things up themselves; growing and shrinking with demand is elasticity."
+   },
+   "tips": [
+    "Eliminate: C is about metering and billing, and D is about customers setting up resources themselves, not scaling with demand.",
+    "Final two: A beats B because the clue is capacity growing and shrinking with demand; pooling is the shared hardware behind it.",
+    "Exam cue: 'scales up and down with demand' signals rapid elasticity; 'shared hardware among customers' signals resource pooling."
+   ],
+   "framework_ref": "NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: essential characteristics)",
+   "related_concepts": [
+    "Rapid elasticity",
+    "Resource pooling",
+    "Cloud characteristics"
+   ],
+   "_provenance": "Authored from concept: 'Rapid elasticity and resource pooling mean the same thing is a trap: pooling is shared hardware, elasticity is capacity growing and shrinking with demand' (notes 4.3.1 The Five Essential Characteristics of Cloud Computing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_192",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. Virtualization and containers",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A dating app company's developer runs every container in privileged mode, with full access to the host, to avoid permission errors. Which change should the system administrator propose as BEST?",
+   "options": {
+    "A": "Scan every image for known flaws, and keep privileged mode",
+    "B": "Keep privileged mode, since containers are as isolated as VMs",
+    "C": "Drop privileged mode only for the containers facing the internet",
+    "D": "Run them unprivileged, with only the rights each one needs"
+   },
+   "correct": "D",
+   "key_concept": "A privileged container can act as part of the host and affect every other container on it; run containers with only the rights they need.",
+   "pre_read": "Think about what a compromised container could reach in each setup.",
+   "correct_explanation": "Containers share the host's kernel, and privileged mode removes most of the walls between a container and the host. If any one container is compromised, the attacker can act as the host and reach every other container on it. Running unprivileged, with only needed rights, limits that. Scanning images is the runner-up: it finds known flaws, but unknown flaws and stolen credentials still get in.",
+   "wrong_explanations": {
+    "A": "Closest choice: scanning images finds known flaws. But unknown flaws and stolen credentials still get in, and privileged mode then hands over the host.",
+    "B": "Tempting because containers feel separate. But they share the host's kernel, and privileged mode removes most of the walls left between them.",
+    "C": "Tempting because internet-facing containers are the likeliest targets. But any compromised container in privileged mode can still take over the host."
+   },
+   "tips": [
+    "Eliminate: B treats containers as isolated as virtual machines, and C leaves privileged mode on containers that can still be compromised.",
+    "Final two: D beats A because scanning catches only known flaws; removing privilege limits the damage from any compromise.",
+    "Exam cue: when a setting removes isolation, reduce privilege first; detection tools help, but least privilege limits the blast."
+   ],
+   "framework_ref": "NIST SP 800-190 Section 3.4.3 (Insecure container runtime configurations: a container run in privileged mode can act as part of the host OS and impact all other containers); NIST SP 800-53 Rev. 5 AC-6 (Least Privilege)",
+   "related_concepts": [
+    "Privileged containers",
+    "Shared kernel",
+    "Least privilege"
+   ],
+   "_provenance": "Authored from concept: 'Containers are as isolated from each other as virtual machines is a trap: containers share the host's kernel, so one kernel flaw can affect them all' (notes 4.3.2 Virtualization and Containers in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_193",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. Service models",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A pottery supplier's security team wants to keep its monitoring agent on the booking servers after bookings move to a software as a service (SaaS) product. Which reply from the system administrator is MOST accurate?",
+   "options": {
+    "A": "SaaS gives no server access, so watch the service's audit logs",
+    "B": "Ask the service provider to install the firm's agent on its servers",
+    "C": "Install the agent through the SaaS admin console after the move",
+    "D": "Monitoring now falls to the provider, so the agent is not needed"
+   },
+   "correct": "A",
+   "key_concept": "In SaaS the customer manages no servers, so it watches its own use through the service's audit logs rather than server agents.",
+   "pre_read": "Think about what a SaaS customer controls, and what it can still see.",
+   "correct_explanation": "In SaaS the provider runs the servers, operating systems and application, so the customer cannot place its own agents there. Monitoring does not end, though: the customer still watches its own users and data, through the service's audit logs and admin reports. Asking the provider to install the agent is the runner-up: it keeps the familiar tool, but providers run shared infrastructure and do not host customers' agents.",
+   "wrong_explanations": {
+    "B": "Closest choice: it tries to keep the familiar tool. But the provider runs shared servers for many customers and does not install customers' agents.",
+    "C": "Tempting because the console controls the service. But SaaS consoles manage users and settings, not software on the provider's servers.",
+    "D": "Tempting because the provider now runs the servers. But the firm still watches its own users and data, using the service's logs."
+   },
+   "tips": [
+    "Eliminate: C assumes SaaS customers can install software on provider servers, and D hands the firm's own monitoring to the provider.",
+    "Final two: A beats B because SaaS gives the customer no server access at all; its view comes from the service's own audit logs.",
+    "Exam cue: as the service model moves up, your tools move up too: from server agents to the logs and settings the service exposes."
+   ],
+   "framework_ref": "NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: service models); NIST SP 800-53 Rev. 5 AU-6 (Audit Record Review, Analysis, and Reporting)",
+   "related_concepts": [
+    "SaaS monitoring",
+    "Customer duties",
+    "Audit logs"
+   ],
+   "_provenance": "Authored from concept: 'SaaS delivers a finished application; the customer manages users, settings and the data it puts in' (notes 4.3.3 Cloud Service Models: IaaS, PaaS and SaaS). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_194",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. Deployment models",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A bakers' trade association runs cloud services built for its members' food-safety records, and only member bakeries may sign up. Which deployment model should the association's security analyst record as MOST accurate?",
+   "options": {
+    "A": "A private cloud",
+    "B": "A community cloud",
+    "C": "A hybrid cloud",
+    "D": "A public cloud"
+   },
+   "correct": "B",
+   "key_concept": "A community cloud serves several organizations with common needs and excludes others; a private cloud serves one organization.",
+   "pre_read": "Count how many organizations use the services, and what they have in common.",
+   "correct_explanation": "A community cloud serves a group of separate organizations with shared concerns, here the same food-safety record needs, and excludes everyone outside the group; members must agree who manages access and security. A private cloud is the runner-up: it also excludes outsiders, but it serves just one organization, while many separate bakeries use these services.",
+   "wrong_explanations": {
+    "A": "Closest choice: it also excludes outsiders. But a private cloud serves one organization, and many separate bakeries use these services.",
+    "C": "Tempting because several parties are involved. But hybrid means joining different deployment models, and this is one set of services.",
+    "D": "Tempting because many businesses use it. But a public cloud is open to any customer, and only member bakeries may sign up here."
+   },
+   "tips": [
+    "Eliminate: C needs a mix of deployment models, and D is open to any customer.",
+    "Final two: B beats A because private means one organization; several organizations with shared needs make a community cloud.",
+    "Exam cue: identify the model by who uses it: anyone (public), one organization (private), a group with shared needs (community), a mix (hybrid)."
+   ],
+   "framework_ref": "NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: deployment models)",
+   "related_concepts": [
+    "Community cloud",
+    "Deployment models",
+    "Private cloud"
+   ],
+   "_provenance": "Authored from concept: 'A community cloud is shared by organizations with common needs' (notes 4.3.4 Cloud Deployment Models). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_195",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. Shared responsibility",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A county parks department uses infrastructure, platform and software as a service (IaaS, PaaS and SaaS). Which security duty should its security analyst list as MOST clearly the department's in all three?",
+   "options": {
+    "A": "Patching the operating system under each service",
+    "B": "Fixing flaws in the department's own application code",
+    "C": "Securing the data center buildings that host the services",
+    "D": "Deciding who can access the department's data and accounts"
+   },
+   "correct": "D",
+   "key_concept": "Data, accounts and access stay with the customer in every cloud model; other layers move to the provider as models go from IaaS to SaaS.",
+   "pre_read": "Walk each duty through IaaS, PaaS and SaaS and see where it changes hands.",
+   "correct_explanation": "In every model the customer decides who can reach its data, manages its accounts and sets its own access rules; that never moves to the provider. Other duties shift as the model changes. Fixing application code is the runner-up: the department owns its code in IaaS and PaaS, but in SaaS the provider writes and fixes the application.",
+   "wrong_explanations": {
+    "A": "Tempting because the department patches its own servers in IaaS. But in PaaS and SaaS the provider patches the operating system.",
+    "B": "Closest choice: the department owns its code in IaaS and PaaS. But in SaaS the provider writes and fixes the application.",
+    "C": "Tempting because buildings need protecting. But data center security is the provider's in every model, never the customer's."
+   },
+   "tips": [
+    "Eliminate: A applies only to IaaS, and C is always the provider's job.",
+    "Final two: D beats B because data and access stay with the customer in every model; application code moves to the provider in SaaS.",
+    "Exam cue: for 'in every model' questions, test each option against SaaS, where the customer holds least; a duty that survives there is the customer's everywhere."
+   ],
+   "framework_ref": "NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: service models); NIST SP 800-53 Rev. 5 AC-2 (Account Management)",
+   "related_concepts": [
+    "Shared responsibility",
+    "Customer duties",
+    "Service models"
+   ],
+   "_provenance": "Authored from concept: 'The customer always owns its data, accounts, access rights and service configuration' (notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_196",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. Shared responsibility",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A tutoring platform put all its infrastructure as a service (IaaS) virtual machines in one zone, and a zone outage took it offline. Under shared responsibility, who MOST clearly should have spread them across zones?",
+   "options": {
+    "A": "The provider, since its agreement with the platform covers uptime",
+    "B": "The tutoring platform, since it chooses where its machines run",
+    "C": "The provider, since it should move machines between zones itself",
+    "D": "Nobody, since cloud services stay available by design"
+   },
+   "correct": "B",
+   "key_concept": "In IaaS the provider offers separate zones, but designing the customer's own workloads to survive a zone outage is the customer's job.",
+   "pre_read": "Ask who decides where the virtual machines run in IaaS.",
+   "correct_explanation": "In IaaS the provider runs the zones and keeps each one as reliable as its agreement says, but the customer decides where its own machines run. Placing every machine in one zone was the platform's choice, so spreading them across zones was its job. The service level agreement is the runner-up: it sets an uptime target and a remedy, such as credits, not the customer's design.",
+   "wrong_explanations": {
+    "A": "Closest choice: the agreement does set an uptime target. But it promises a target and credits, not the design of the customer's own machines.",
+    "C": "Tempting because the provider runs the zones. But in IaaS the customer places and manages its own machines; the provider does not redesign them.",
+    "D": "Tempting because cloud services are built for resilience. But a workload placed in a single zone fails along with that zone."
+   },
+   "tips": [
+    "Eliminate: C expects the provider to rearrange the customer's machines, and D assumes the cloud is resilient whatever the design.",
+    "Final two: B beats A because the agreement sets a target and a remedy, not the platform's design; placing machines is the customer's choice.",
+    "Exam cue: the provider offers resilient building blocks; using them to keep your own workload running is your job."
+   ],
+   "framework_ref": "NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: service models); NIST SP 800-144 Section 4.8 (Availability: 99.95% availability still means about 4.38 hours of downtime a year)",
+   "related_concepts": [
+    "Shared responsibility",
+    "Availability zones",
+    "Customer architecture"
+   ],
+   "_provenance": "Authored from concept: 'The provider owns security of the cloud; the customer owns security in the cloud' (notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_197",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. Cloud roles and agreements",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A fishing cooperative's IT coordinator notes its cloud traffic travels to the provider over a telecom firm's leased line. Which National Institute of Standards and Technology (NIST) cloud actor is the telecom firm MOST accurately?",
+   "options": {
+    "A": "A cloud broker",
+    "B": "A cloud carrier",
+    "C": "A cloud auditor",
+    "D": "A cloud provider"
+   },
+   "correct": "B",
+   "key_concept": "In NIST's reference architecture, a cloud carrier provides the connectivity and transport between cloud consumers and providers.",
+   "pre_read": "Match the telecom firm's job to each actor's role.",
+   "correct_explanation": "NIST names five cloud actors. The carrier provides connectivity and transport of cloud services between consumers and providers, which is exactly what the telecom firm's leased line does. The broker is the runner-up: it is also a go-between, but it manages, combines or negotiates cloud services for the consumer rather than carrying the traffic.",
+   "wrong_explanations": {
+    "A": "Closest choice: a broker is also a go-between. But it manages or combines services and negotiates with providers; it does not carry traffic.",
+    "C": "Tempting because an outside firm is involved. But a cloud auditor independently assesses cloud services; it carries no traffic.",
+    "D": "Tempting because the firm supplies a service. But the provider runs the cloud service itself; the telecom only carries traffic to it."
+   },
+   "tips": [
+    "Eliminate: C assesses cloud services independently, and D runs the cloud service; neither carries the traffic.",
+    "Final two: B beats A because the telecom firm transports traffic; a broker manages or combines services for the consumer.",
+    "Exam cue: carrier carries, broker brokers, auditor assesses; match the actor to the verb in the scenario."
+   ],
+   "framework_ref": "NIST SP 500-292 Section 2.6 (Cloud Carrier: an intermediary that provides connectivity and transport of cloud services between cloud consumers and cloud providers)",
+   "related_concepts": [
+    "Cloud carrier",
+    "NIST cloud actors",
+    "Cloud roles"
+   ],
+   "_provenance": "Authored from concept: 'Cloud carrier: the network or telecom provider that carries traffic between consumers and providers' (notes 4.3.6 Cloud Roles and Agreements). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_198",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. Cloud data protection",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "A weather analytics startup encrypts its artificial intelligence (AI) training data in cloud storage with keys kept only on one administrator's laptop, outside the provider. Which risk should the security analyst rate GREATEST?",
+   "options": {
+    "A": "Losing that laptop would leave the training data unreadable for good",
+    "B": "The provider could decrypt the training data whenever it chose",
+    "C": "The training data sits unencrypted, since the keys are kept elsewhere",
+    "D": "The laptop's uploads to the cloud would no longer use TLS"
+   },
+   "correct": "A",
+   "key_concept": "Customer-held keys shield data from the provider, but if the only copy of the keys is lost, the data is gone for good.",
+   "pre_read": "Consider who holds the keys, and what happens if that holder fails.",
+   "correct_explanation": "Holding the keys outside the provider is what stops the provider from reading the data, so that risk is low here. The new risk is that one laptop holds the only copy: if it is lost, stolen or fails, nothing can decrypt the training data again. Provider access is the runner-up: it is the main risk when the provider manages the keys, but customer-held keys remove it.",
+   "wrong_explanations": {
+    "B": "Closest choice: provider access is the usual worry. But it applies when the provider manages the keys; keys held only by the startup block it.",
+    "C": "Tempting because the keys are not with the data. But keeping keys apart is how encryption works; the stored data stays encrypted.",
+    "D": "Tempting because the keys sit on that laptop. But TLS protects data in transit no matter where the storage keys are kept."
+   },
+   "tips": [
+    "Eliminate: C confuses keeping keys elsewhere with leaving data unencrypted, and D mixes up storage keys with TLS for data in transit.",
+    "Final two: A beats B because customer-held keys stop provider access; with a single copy on one laptop, losing it loses the data.",
+    "Exam cue: whoever holds the keys holds the data; check both who else can use them and what happens if the only copy is lost."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 SC-12(1) (Cryptographic Key Establishment and Management | Availability); NIST SP 800-144 Section 4.7 (Data Protection)",
+   "related_concepts": [
+    "Customer-held keys",
+    "Key loss",
+    "AI training data"
+   ],
+   "_provenance": "Authored from concept: 'Keys can be provider-managed, customer-managed inside the provider's key service, or held only by the customer' (notes 4.3.7 Protecting Data in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_199",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. Cloud posture management",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "By procedure, a printing firm's security analyst deletes access keys idle over 60 days in any company cloud account; a scan finds one idle 200 days. What should the analyst do FIRST?",
+   "options": {
+    "A": "Rotate the key, so any copy of the old one stops working",
+    "B": "Leave the key, since the provider retires unused keys itself",
+    "C": "Cut the key to read-only rights, and record it on the scan",
+    "D": "Delete the key, and record the change on the scan finding"
+   },
+   "correct": "D",
+   "key_concept": "An unused cloud key should be removed, not rotated or weakened; when the procedure assigns removal, the analyst does it and records it.",
+   "pre_read": "Check what the procedure already assigns, and to whom.",
+   "correct_explanation": "Stale access keys are a common cloud misconfiguration: anyone who finds an old key gets its rights, and nobody is watching it. The procedure gives the analyst the job of deleting keys idle over 60 days, so deleting this one and recording the change is the in-role step. Rotating it is the runner-up: it stops leaked copies of the old secret, but leaves a working key that nothing needs.",
+   "wrong_explanations": {
+    "A": "Closest choice: rotating does stop leaked copies of the old key. But it leaves a fresh, working credential that nothing needs, and the procedure says delete.",
+    "B": "Tempting because providers offer key tools. But keys and permissions are customer settings, and an unused key stays valid until the customer removes it.",
+    "C": "Tempting because it reduces the key's power and records the change. But a forgotten key that can still read data keeps the exposure open."
+   },
+   "tips": [
+    "Eliminate: B leaves a customer setting to the provider, and C keeps a forgotten credential active with access to data.",
+    "Final two: D beats A because rotation still leaves a working key that does no work; deleting it closes the door, as the procedure directs.",
+    "Exam cue: an unused credential does no work but still opens doors; remove it rather than refresh or weaken it."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 AC-2 (Account Management); NIST SP 800-53 Rev. 5 CA-7 (Continuous Monitoring)",
+   "related_concepts": [
+    "Stale access keys",
+    "Cloud misconfiguration",
+    "Key rotation"
+   ],
+   "_provenance": "Authored from concept: 'Common mistakes are public storage, management ports open to the internet and accounts with more rights than they need' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_200",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. AI workloads",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A tax firm's client contracts require data to stay in its home country, and its cloud artificial intelligence (AI) service's processing region is still set to 'any'. Which step should the system administrator take FIRST?",
+   "options": {
+    "A": "Ask the provider to keep the firm's prompts in its home country",
+    "B": "Encrypt prompts sent to the service, which keeps them within the rules",
+    "C": "Leave the processing region as is, since the provider decides it",
+    "D": "Set the AI service's processing region to the firm's home country"
+   },
+   "correct": "D",
+   "key_concept": "Where a cloud AI service processes data is often a customer setting, and meeting data-location duties stays the customer's job.",
+   "pre_read": "Check who controls the service's settings, including where it runs.",
+   "correct_explanation": "The service lets customers choose where prompts are processed, so meeting the contracts' location rule is a setting the firm controls: it sets the region to the home country before client data is sent. Asking the provider is the runner-up: the provider does run the regions, but this choice is already the customer's, and the firm stays accountable for its client data.",
+   "wrong_explanations": {
+    "A": "Closest choice: the provider runs the regions. But the service already gives the firm this setting, and the firm stays accountable for meeting its contracts.",
+    "B": "Tempting because encryption protects prompts. But it protects them on the way; they would still be processed in another country.",
+    "C": "Tempting because the provider runs the service. But where the firm's data goes is a customer setting, and the contracts bind the firm."
+   },
+   "tips": [
+    "Eliminate: B mistakes encryption in transit for keeping data in the country, and C hands a customer setting to the provider.",
+    "Final two: D beats A because the region is already a customer setting; the firm meets its own contracts by setting it.",
+    "Exam cue: an AI service is still a cloud service; if a setting decides where your data goes, setting it is your job."
+   ],
+   "framework_ref": "NIST SP 800-144 Section 4.2 (Compliance: data location is one of the most common compliance issues, and organizations remain accountable for data a provider holds for them); NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed)",
+   "related_concepts": [
+    "Data location",
+    "AI service settings",
+    "Customer duties"
+   ],
+   "_provenance": "Authored from concept: 'An AI service is still a cloud service: the provider secures the platform, and the customer owns its data, models, access and settings' (notes 4.3.9 Shared Responsibility for AI Workloads). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
    "style_version": 2
   }
  ]
