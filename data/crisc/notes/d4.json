@@ -307,7 +307,7 @@
           "definition": "Incident management restores normal service quickly after a disruption; problem management finds and removes the root cause so the incident does not happen again.",
           "why_it_matters": "Fixing symptoms without the cause lets the same failure recur, often at a worse time. Repeat incidents raise likelihood, and an unknown root cause hides what really needs a control.",
           "how_it_works": [
-            "An incident is recorded, classified by business impact, prioritized, resolved and closed.",
+            "An incident is recorded, classified by business impact, prioritized, resolved and closed; incident criteria cover harm to users, such as wrong or harmful AI answers, not only outages.",
             "A problem is opened when incidents repeat, a major incident occurs or a trend appears.",
             "Root cause analysis finds why it happened; a known error records the cause and any workaround; the practitioner monitors a workaround the owner relies on until the fix ships.",
             "A permanent fix usually goes through change management, so problem and change processes connect.",
@@ -1004,11 +1004,11 @@
             "crisc_d4_088",
             "crisc_d4_107"
           ],
-          "definition": "Recovery strategies are planned ways to restore systems after a disruption, such as hot, warm or cold sites or cloud failover, chosen to meet recovery objectives.",
+          "definition": "Recovery strategies are ways to restore systems after a disruption, such as hot, warm or cold sites or cloud failover, chosen to meet recovery objectives.",
           "why_it_matters": "The strategy decides whether the business recovers within its tolerance for downtime and data loss. Too little breaches tolerance; too much wastes money.",
           "how_it_works": [
             "Through the business impact analysis, process owners set each critical process's MTO, an RTO within it, and an RPO from the data loss they can tolerate.",
-            "The strategy must meet RTO and RPO by design, at a cost the owner accepts.",
+            "The strategy must meet RTO and RPO by design, even at peak load, at a cost the owner accepts.",
             "An alternate site must share no hazard or dependency, such as one network carrier, identity service or power feed, that one event could disable.",
             "Cloud recovery is shared: the contract sets who restores what, often the platform but not data the customer's users delete; the customer stays accountable.",
             "Trained AI models are recovery assets too: retraining takes far longer than a restore, so released model versions are kept offsite."
@@ -1054,7 +1054,7 @@
               }
             ]
           },
-          "example": "A food distributor's recovery site shares its data center's substation and flood plain. Dara, the risk analyst, shows the operations director that one flood would take out both, breaching order processing's four-hour RTO.",
+          "example": "A food distributor's recovery site shares its data center's flood plain. Dara, the risk analyst, shows the operations director that one flood would disable both, breaching order processing's four-hour RTO.",
           "audit_focus": {
             "review": [
               "Walk through the recovery timeline for one critical process against its RTO and RPO",
@@ -1277,14 +1277,14 @@
             },
             {
               "term": "Blockchain",
-              "meaning": "Tamper-evident shared records; key management risk and errors that are hard to reverse."
+              "meaning": "Tamper-evident shared records that prove entries unchanged, not true; key management risk and errors that are hard to reverse."
             },
             {
               "term": "Quantum computing",
               "meaning": "Future computing power that could break today's public-key encryption, so cryptography inventories and migration plans matter."
             }
           ],
-          "example": "A farm cooperative's operations head wants soil sensors linked to a cloud dashboard to cut fertilizer costs, while some board members want it blocked. Luca, the risk analyst, assesses both the savings and the risks, such as default device passwords and vendor lock-in, and proposes a limited pilot with conditions for the board.",
+          "example": "A farm cooperative's operations head wants soil sensors linked to a cloud dashboard to cut fertilizer costs, while some board members want it blocked. Luca, the risk analyst, assesses both the savings and the risks and proposes a limited pilot with conditions for the board.",
           "audit_focus": {
             "review": [
               "Compare the technology's business case with its risk assessment",
@@ -1597,7 +1597,7 @@
           "definition": "A risk-aware culture is one where people at every level understand the risks in their work, speak up about them and act within appetite, supported by targeted training.",
           "why_it_matters": "Most controls depend on people. Where staff fear blame or see risk as someone else's job, problems stay hidden until they become incidents; where they speak up, risk is found early.",
           "how_it_works": [
-            "Leaders set the tone by following the same controls as staff, discussing risk openly and rewarding early reporting.",
+            "Leaders set the tone by following the same controls as staff, discussing risk openly and rewarding early reporting; managers who sign deals learn how the appetite applies to their choices.",
             "Awareness reaches everyone with access, contractors included; role-based training gives deeper skills to people with specific risk duties, such as new risk owners learning the decisions their role holds.",
             "Training content follows the risk profile, such as payment fraud for finance staff, secure coding for developers or risk oversight for directors, in a language and format each audience follows.",
             "Reporting channels are easy and safe, and reports get visible follow-up.",
@@ -1782,7 +1782,7 @@
             },
             {
               "trap": "Collecting data first and deciding how to use it later.",
-              "why": "Purpose limitation requires the purpose to be stated before collection. Data gathered without one is excess risk."
+              "why": "Purpose must be stated before collection; without one, data is excess risk and consent is uninformed."
             }
           ],
           "key_terms": [
