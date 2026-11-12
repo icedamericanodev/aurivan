@@ -265,14 +265,15 @@
             "crisc_d3_023",
             "crisc_d3_052",
             "crisc_d3_090",
-            "crisc_d3_117"
+            "crisc_d3_117",
+            "crisc_d3_177"
           ],
           "definition": "A risk owner is the person given the authority and accountability to make decisions about a risk, and who answers for the loss if it happens.",
           "why_it_matters": "A risk without a capable owner drifts: nobody decides its response, funds the controls or answers when it happens. Ownership at the wrong level gives the decision to people who cannot act on it.",
           "how_it_works": [
             "Assign the owner by business accountability: the manager whose objectives, process or budget the risk affects.",
             "Match authority to size and reach: the owner must fund treatment and accept residual risk at that rating, across every unit the risk spans.",
-            "Name one accountable person, not a committee or a department; others, such as IT delivering the treatment, contribute as action owners, stakeholders or control owners.",
+            "Name one accountable person, not a committee, department or joint owners; others, such as IT delivering treatment, act as action owners, stakeholders or control owners.",
             "Revalidate ownership regularly and after reorganizations, departures or process changes.",
             "IT usually owns technology controls, while the business owns the business risk those controls protect.",
             "Validate an owner by what they have done, such as response choices, acceptances and plan approvals they signed, not by their name in the register."
@@ -489,16 +490,17 @@
             "crisc_d3_026",
             "crisc_d3_135",
             "crisc_d3_144",
-            "crisc_d3_154"
+            "crisc_d3_154",
+            "crisc_d3_183"
           ],
           "definition": "Ongoing vendor monitoring is reviewing a supplier's performance, controls and risk throughout the relationship, using assurance reports, SLA results, incidents and changes in its own suppliers.",
-          "why_it_matters": "A vendor that was sound at onboarding can change owners, cut staff, add subcontractors or suffer a breach. Monitoring catches drift while there is still time to respond.",
+          "why_it_matters": "A vendor that was sound at onboarding can change owners, cut staff, add subcontractors or suffer a breach. Monitoring catches drift in time to respond.",
           "how_it_works": [
-            "Read assurance reports for scope and period: which services, locations and controls were tested, and over what dates.",
+            "Read assurance reports for scope and period: which services, locations and controls were tested, and when.",
             "Act on report exceptions and complementary user entity controls, the customer's own duties; when scope fits and neither is open, rely on the report rather than repeat its tests.",
             "Track fourth parties: the vendor's own subcontractors, especially those that host or process your data.",
             "Watch concentration: many critical services on one provider or region create a single point of failure.",
-            "Trigger reassessment on events such as a breach, a sale or merger, missed SLAs or a new subcontractor."
+            "Scale review depth and frequency to criticality; reassess on events such as a breach, sale or merger, missed SLAs or a new subcontractor."
           ],
           "example": "An insurer relies on a claims vendor whose SOC 2 Type 2 report covers its main data center but not the overseas site now handling the insurer's claims. Chen, a risk analyst, notices the scope gap and two access-review exceptions. They update the vendor entry and ask the claims director to seek coverage of that site.",
           "audit_focus": {
@@ -776,14 +778,15 @@
             "crisc_d3_031",
             "crisc_d3_032",
             "crisc_d3_096",
-            "crisc_d3_155"
+            "crisc_d3_155",
+            "crisc_d3_178"
           ],
           "definition": "Control types by function describe what a control does about a risk event: stop it, discourage it, find it, fix it, or stand in for a missing control.",
           "why_it_matters": "Calling a detective control preventive overstates protection and understates residual risk. Knowing the function shows which part of the risk a control actually reduces.",
           "how_it_works": [
             "Preventive and deterrent controls mainly reduce likelihood; corrective controls mainly reduce impact after an event.",
             "Detective controls reduce impact only if someone acts on what they find, quickly enough to matter.",
-            "A layered set mixes functions, so a failure of one control is caught or contained by another.",
+            "A layered set mixes functions so one failure is caught or contained by another; a corrective procedure sets how errors getting through are fixed.",
             "Name the function by what the control does in this process, not by the tool: a log review detects, an enforced approval prevents.",
             "A compensating control is an alternative or interim measure; the gap it covers stays recorded and reviewed.",
             "Credit a control in the rating only for the function it performs: a firewall rule set to log traffic detects; it does not prevent."
@@ -1407,7 +1410,8 @@
             "crisc_d3_104",
             "crisc_d3_123",
             "crisc_d3_142",
-            "crisc_d3_174"
+            "crisc_d3_174",
+            "crisc_d3_184"
           ],
           "definition": "A risk action plan sets out how a chosen response will be carried out: the actions, an owner for each, resources, milestones, target dates and the target risk at completion.",
           "why_it_matters": "A response without a plan stays an intention. Owners, dates and resources turn it into work that can be tracked, funded and escalated when it slips.",
@@ -1416,7 +1420,7 @@
             "Milestones break long work into checkpoints, so slippage shows early.",
             "The plan states the target risk expected at completion, so success can be measured.",
             "Interim measures reduce the exposure while long actions are under way, and stay until the permanent control is shown to work.",
-            "The plan links to its risk register entry, so progress updates the risk picture.",
+            "The plan links to its risk register entry, where action owners log progress, so the risk picture does not depend on a separate project tool.",
             "When a planned control, its cost or the risk changes, such as the target being met early, re-estimate the cost-benefit before the risk owner agrees any change."
           ],
           "example": "A media company decides to mitigate the risk of an unsupported content system by migrating off it. Zainab, the risk analyst, works with the digital director, who owns the risk, to build the plan: three milestones, a named migration lead, budget for contractors, a June target date and an interim firewall restriction. Zainab links the plan to the register entry.",
@@ -1635,12 +1639,13 @@
             "crisc_d3_040",
             "crisc_d3_041",
             "crisc_d3_106",
-            "crisc_d3_139"
+            "crisc_d3_139",
+            "crisc_d3_179"
           ],
           "definition": "Data validation is checking that risk and control data are complete, accurate, current and consistent before they are analyzed or reported to decision makers.",
           "why_it_matters": "A wrong figure in a board report can drive the wrong decision and damages trust in the whole risk function. Checking before reporting costs far less than correcting afterward.",
           "how_it_works": [
-            "Completeness: every unit, system and source expected in the data is present; a rating found to have missed one is redone before decisions rest on it.",
+            "Completeness: every unit, system and source expected is present, checked against other records such as AI spending; a rating that missed one is redone before decisions rest on it.",
             "Accuracy: a sample reconciles to the source records, whether a person, a spreadsheet or an AI tool produced the figures.",
             "Currency: the data dates match the reporting period.",
             "Consistency: definitions and scales match across sources and over time.",
@@ -1932,14 +1937,15 @@
             "crisc_d3_110",
             "crisc_d3_111",
             "crisc_d3_126",
-            "crisc_d3_167"
+            "crisc_d3_167",
+            "crisc_d3_180"
           ],
           "definition": "Continuous monitoring is keeping ongoing awareness of security, vulnerabilities and threats to support risk decisions, using automated feeds and assessments at a frequency set by risk.",
           "why_it_matters": "Yearly reviews miss what changes between them. Ongoing monitoring catches control failures and new exposure while there is still time to respond, provided someone acts on the alerts.",
           "how_it_works": [
             "Write a monitoring strategy: what to monitor, how often and who receives the results.",
             "Automate where it helps, such as configuration checks, vulnerability scans and control health checks.",
-            "Set frequency by risk and by how fast the item changes; continuous does not mean every second.",
+            "Set frequency by risk and rate of change; tune alert rules against confirmed incidents, since mostly false alerts teach responders to ignore them.",
             "Route every alert, including those a vendor's tool raises, to an owner in the organization with a response time; track it to closure and measure the share resolved in time.",
             "Analyze results against tolerance and feed them into the register and reports.",
             "Roll monitoring out in priority order, starting with the controls behind the highest risks; switching on every check at once floods owners with alerts."
@@ -2172,12 +2178,13 @@
             "crisc_d3_082",
             "crisc_d3_113",
             "crisc_d3_127",
-            "crisc_d3_168"
+            "crisc_d3_168",
+            "crisc_d3_181"
           ],
           "definition": "Audience-based reporting gives each stakeholder what they need for their own decisions: the board sees the risk profile against appetite, and owners see their risks and actions.",
           "why_it_matters": "A report the reader cannot act on is noise. Technical detail swamps the board, and summary colors starve the people who must fix things.",
           "how_it_works": [
-            "Board and senior management: the enterprise profile, appetite breaches, top risks, trends and the decisions needed.",
+            "Board and senior management: the profile of current ratings against appetite, breaches, top risks, trends and decisions needed.",
             "Risk owners: their risks, indicator status, overdue actions and acceptances due for review.",
             "Control owners and operations: control failures, test results and specific remediation tasks.",
             "Send each report to someone with authority to decide, stating the decision requested; escalate outside the cycle when a breach or critical risk needs a decision now.",
@@ -2240,14 +2247,15 @@
             "crisc_d3_083",
             "crisc_d3_115",
             "crisc_d3_128",
-            "crisc_d3_152"
+            "crisc_d3_152",
+            "crisc_d3_182"
           ],
           "definition": "Horizon scanning is the regular search for new or changing risks from technology, regulation, markets, threats and society, before they are well understood or measurable.",
           "why_it_matters": "Emerging risks give the least warning and the most surprise. Spotting them early leaves time to study them, prepare and take up any opportunity they bring.",
           "how_it_works": [
             "Use many sources: threat intelligence, regulators' consultations, industry groups, vendors, research and front-line staff.",
             "Look for opportunities too, such as a new technology that could cut cost or risk.",
-            "Screen each signal for relevance to the organization's objectives and assets.",
+            "Screen each signal for relevance to objectives and assets; judge the scan by how many new risks it flagged before harm, not items read or hours spent.",
             "Give each relevant emerging risk an owner to watch it, even while it is uncertain.",
             "Evaluate new technologies, such as generative AI, for threats, vulnerabilities and opportunities before use spreads.",
             "A peer's incident on the same technology, or an industry report, is valid evidence to record an emerging risk; do not wait for an in-house event."

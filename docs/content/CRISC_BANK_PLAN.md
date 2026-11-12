@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 12 done 5 Nov 2026 (bank 550, on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 13 done 12 Nov 2026 (bank 575, on the outline weights). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 550 reviewed (143 / 121 / 176 / 110) after round 12, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 575 reviewed (150 / 126 / 184 / 115) after round 13, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -559,6 +559,35 @@ New calibration rule 21: a keyed lone owner option is counted apart from rule
 - At least one AI item per domain (D2 had none in round 12). Settings to avoid: payroll provider, freight forwarder, port authority, insurance broker, housing association. Unused: title insurer, mortgage servicer, fund administrator, debt collector, credit bureau.
 - Let 2 keys per domain be naturally the longest (D1 and D4 sit near 16%). Decide "KRI owner" against "risk owner" (d3_074, d3_137, d3_160).
 - Keep apart in practice sets: d1_143/d3_160, d1_142/d1_134, the four 3C1 "take it to the risk owner" items (d3_069, d3_103, d3_123, d3_174), d3_040/d3_175, d1_139/d1_028/d1_123/d3_146, d1_141/d1_121/d2_060, d3_171/d3_136.
+
+### Round 13 (12 Nov 2026): 25 items, bank 575
+
+Round 13 added 7 D1 (`crisc_d1_144`–`150`), 5 D2 (`crisc_d2_122`–`126`),
+8 D3 (`crisc_d3_177`–`184`) and 5 D4 (`crisc_d4_111`–`115`) items, one AI item
+per domain. Highlights: the legitimate upward threshold change (d1_145: the
+board raised a tolerance after an approved strategy change, so the practitioner
+drafts matching KRI thresholds for the risk owner), a "Current risk" option
+that is wrong because the question is about a plan's target (d4_114), separation
+of duties for an AI coding agent (d4_112), sanitization by data class and next
+use under SP 800-88 Rev. 2 (d4_113), and intelligence reports versus indicators
+of compromise (d2_122).
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 picks matched the keys |
+| Standards audit and concept review | 0 HARD ERRORS; about 20 fixes (RTO is the recovery time allowed, not MTO/AIW, in d2_124; senior management names the accountable owner in d3_177; "action owners" named consistently; pre-reads that gave keys away rewritten) |
+| Cue check | The batch's owner shapes predicted about half the keys (a shape guesser scored 49%); seven option edits brought it to 30%. New calibration rule 22 sets owner-shape targets for new batches |
+| Re-blind of changed items | 14/14, all sure; d4_112's stem then states that the agent deploys its own fixes |
+| Cross-domain gate | 0 HARD ERRORS, 5 PRECISION: d2_126 re-angled off d2_062 (a target rating credits a planned sample check only for what it covers); d3_177 keys "Propose" rather than "Name" an owner; d4_114's "Residual" label tell removed; four older wrong options now name "senior management" (it was keyed 13 of 17); incidental fixed periods taken off three options |
+| Gates | All lints 0 errors; originality 0 too close; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes; no run of three identical keys |
+
+**Next round (round 14, +25 to 600):** D1 +6, D2 +6, D3 +8, D4 +5 (156/132/192/120).
+- Fixed periods: striking yearly/monthly/quarterly/weekly/daily options scores 35%. Key 4–5 options whose period is part of the right answer (a monthly KRI trend, a review cycle set by regulation or criticality, a yearly re-approval the policy requires), and in a cue pass remove the incidental period from about 15 wrong options whose explanations never mention time (first candidates: d1_017 D, d1_033 A, d1_056 D, d1_064 C, d1_112 A, d2_047 A, d2_075 D, d3_015 B, d3_022 C, d3_025 C, d3_032 D, d3_070 B, d4_042 D, d4_067 B, d4_068 B, d4_108 D). Target: strike score 28% or less.
+- Stock phrases: put "senior management" in at least 4 wrong options where it overreaches; the next "Estimate" and "Help" openers go on wrong options; key 3–4 "Ask"/"Have" options.
+- Pause these lesson families (4+ items each): the current/target/inherent rating trio; "practitioner proposes thresholds, owner agrees"; "senior management assigns the owner"; "link X to its register entry". Spend D4 slots on 4A3, 4A6, 4B1, 4B2 and 4B3.
+- Settings: no setting more than twice in a batch, no sector over 30%; prefer public sector, health, education, manufacturing, NGO and transport (finance carried 18 of 25 in round 13).
+- Owner shapes (rule 22): key one two-owner item where the runner-up is the other owner option, and add 2 lone-owner runners-up.
+- Keep apart in practice sets: d1_145/d1_067/d3_175/d3_125, d1_144/d1_005/d3_052/d3_023, d3_177/d3_023/d3_109, d2_126/d2_062/d2_018, d4_114/d3_069, d3_184/d1_135/d3_094, d1_145/d4_112 (both credit-bureau change stories).
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`

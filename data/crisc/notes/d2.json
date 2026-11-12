@@ -305,12 +305,13 @@
             "crisc_d2_049",
             "crisc_d2_090",
             "crisc_d2_101",
-            "crisc_d2_109"
+            "crisc_d2_109",
+            "crisc_d2_122"
           ],
           "definition": "Threat intelligence is analyzed information about threat actors and their methods; threat modeling is a structured way to work out how a system could be attacked or fail.",
           "why_it_matters": "Intelligence shows what is happening outside; modeling shows whether it matters to this enterprise's assets. A feed nobody analyzes creates noise, not risk insight.",
           "how_it_works": [
-            "Intelligence comes from vendors, information sharing groups, government alerts and the enterprise's own security monitoring.",
+            "Intelligence comes from vendors, sharing groups and alerts; reports on actors' aims, methods and targets inform scenarios, and indicators of compromise feed detection tools.",
             "Intelligence is filtered for relevance: does the actor target this sector, and does the enterprise use the targeted technology?",
             "STRIDE prompts six threat types against a design: spoofing, tampering, repudiation, information disclosure, denial of service and elevation of privilege; AI systems also need AI attack classes added.",
             "Attack trees break an attacker's goal into the paths that reach it; uncontrolled paths show where a scenario's exposure sits, and a control blocking several paths is a key control.",
@@ -363,7 +364,7 @@
           "exam_traps": [
             {
               "trap": "Buying a premium threat feed means threat identification is done.",
-              "why": "A feed lists outside activity. Someone must still decide which threats apply to the enterprise's assets and update the scenarios; unread alerts reduce no risk."
+              "why": "A feed lists outside activity; someone must still decide which threats apply to the enterprise's assets and update the scenarios."
             }
           ],
           "key_terms": [
@@ -947,19 +948,20 @@
             "crisc_d2_057",
             "crisc_d2_058",
             "crisc_d2_079",
-            "crisc_d2_117"
+            "crisc_d2_117",
+            "crisc_d2_123"
           ],
           "definition": "A risk assessment identifies, estimates and prioritizes risk. NIST SP 800-30 runs it in four steps: prepare, conduct, communicate the results and maintain the assessment.",
-          "why_it_matters": "Skipping preparation means assessing the wrong things against the wrong criteria. Skipping communication or maintenance means decisions rest on results nobody saw or that are out of date.",
+          "why_it_matters": "Skipping preparation means assessing the wrong things against the wrong criteria. Skipping communication or maintenance leaves decisions resting on unseen or outdated results.",
           "how_it_works": [
-            "Prepare: set the purpose, scope, assumptions and constraints (including missing information), information sources, risk model and analytic approach, starting from threats, impacts or vulnerabilities, chosen partly by the strongest information.",
+            "Prepare: set the purpose, scope, assumptions and constraints (including missing information), information sources, risk model and approach, starting from threats, impacts or vulnerabilities, partly by where information is strongest.",
             "Conduct: identify threat sources and events, vulnerabilities and predisposing conditions, then determine likelihood, impact and risk.",
-            "Communicate: give results to decision makers in a form they can act on, such as a briefing, report or dashboard.",
+            "Communicate: give results to decision makers in a form they can act on, like a briefing, report or dashboard.",
             "Maintain: monitor risk factors and update the assessment when systems, threats or the business change.",
-            "ISO 31000 and ISO/IEC 27005 describe a similar flow that starts with scope, context and risk criteria.",
-            "In that flow and the ISACA Glossary, risk evaluation compares each rating with the risk criteria and appetite; NIST SP 800-30 leaves this to decision makers choosing a response."
+            "The official requesting the assessment sets its scope; a third-party part of the process found outside it goes back to that official to decide.",
+            "In ISO 31000, ISO/IEC 27005 and the ISACA Glossary, risk evaluation compares each rating with the criteria and appetite; NIST SP 800-30 leaves this to decision makers."
           ],
-          "example": "A hotel group's CIO asks for a cloud migration risk assessment by Friday. Before collecting threats, Isabel Duarte, the risk practitioner, agrees the scope with the CIO: the booking platform and payment data only, a three-year horizon, the group's five-point rating scales and the decisions the results must support. Isabel then plans who will receive the results.",
+          "example": "A hotel group's CIO asks for a cloud migration risk assessment by Friday. Before collecting threats, Isabel Duarte, the risk practitioner, agrees the scope with the CIO: the booking platform and payment data only, a three-year horizon, the group's five-point rating scales and the decisions the results must support.",
           "audit_focus": {
             "review": [
               "Confirm scope, purpose and criteria were agreed before analysis began",
@@ -994,7 +996,7 @@
             },
             {
               "term": "Risk evaluation",
-              "definition": "The decision step after analysis: setting each rated risk against the agreed criteria and appetite to decide whether it needs a response, and how urgently."
+              "definition": "The step after analysis: setting each rated risk against the criteria and appetite to decide whether, and how urgently, it needs a response."
             }
           ],
           "memory_aid": "Prepare, conduct, communicate, maintain: scope before threats."
@@ -1105,16 +1107,17 @@
             "crisc_d2_034",
             "crisc_d2_035",
             "crisc_d2_037",
-            "crisc_d2_080"
+            "crisc_d2_080",
+            "crisc_d2_124"
           ],
           "definition": "MTO is a critical function's longest tolerable disruption; RTO, the time allowed to recover a function or resource; RPO, the earliest restore point that tolerable data loss allows.",
-          "why_it_matters": "These numbers drive recovery design and cost. Set by IT alone, they reflect what the technology can do, not what the business can survive.",
+          "why_it_matters": "These numbers drive recovery design and cost. Set by IT alone, they reflect the technology, not what the business can survive.",
           "how_it_works": [
             "Process owners and leadership set the maximum tolerable outage (MTO; other sources say MTD) from impact-over-time results.",
             "The recovery time objective (RTO) for each supporting function or resource must normally be shorter than the MTO, leaving time to reprocess work.",
-            "The recovery point objective (RPO) is the earliest point to which data must be recoverable; a four-hour RPO allows up to four hours of lost data.",
+            "The recovery point objective (RPO) is the earliest point data must be recoverable to; a four-hour RPO allows four hours of lost data.",
             "The service delivery objective (SDO) sets the service level, such as share of normal volume, needed in alternate mode.",
-            "Shorter objectives cost more; when tested recovery misses the MTO, the process owner weighs that cost against the BIA impact.",
+            "Shorter objectives cost more; a workable manual process lets a system's RTO run longer, and when tested recovery misses the MTO, the owner weighs cost against impact.",
             "Owners' outage limits rest on impact evidence; when nearly every process claims the shortest limit, the practitioner challenges each with its owner."
           ],
           "compare": {
@@ -1150,7 +1153,7 @@
               }
             ]
           },
-          "example": "A veterinary chain moves its records system to the cloud, and IT proposes a 72-hour RTO because the cloud backup restores in that time. Grace Liu, the risk analyst, asks the clinical operations lead, who says emergency surgery becomes unsafe after 12 hours without records. Grace records the gap against the business tolerance.",
+          "example": "A veterinary chain moves its records system to the cloud, and IT proposes a 72-hour RTO matching the cloud backup's restore time. Grace Liu, the risk analyst, asks the clinical operations lead, who says emergency surgery becomes unsafe after 12 hours without records. Grace records the gap against the business tolerance.",
           "audit_focus": {
             "review": [
               "Trace each approved objective to the BIA result and owner sign-off",
@@ -1171,7 +1174,7 @@
             },
             {
               "trap": "IT should set the RTO because it knows the recovery technology.",
-              "why": "IT knows what is achievable and its cost; only business owners know how long the process can be down. IT advises; the business decides."
+              "why": "IT knows what is achievable and its cost; only business owners know how long the process can be down."
             }
           ],
           "key_terms": [
@@ -1181,11 +1184,11 @@
             },
             {
               "term": "Acceptable interruption window (AIW)",
-              "definition": "ISACA term: the business's downtime limit for a system, set at the point where a longer outage would start to put business objectives at risk."
+              "definition": "ISACA term: the business's downtime limit for a system, set where a longer outage would start to put business objectives at risk."
             },
             {
               "term": "Service delivery objective (SDO)",
-              "definition": "ISACA term: the agreed level of service the business must still get on recovery arrangements, often below normal; it sizes the alternate setup."
+              "definition": "ISACA term: the agreed service level the business must still get on recovery arrangements, often below normal; it sizes the alternate setup."
             }
           ],
           "memory_aid": "RTO looks forward to recovery; RPO looks back to the last good data."
@@ -1211,7 +1214,8 @@
             "crisc_d2_060",
             "crisc_d2_062",
             "crisc_d2_082",
-            "crisc_d2_098"
+            "crisc_d2_098",
+            "crisc_d2_125"
           ],
           "definition": "A risk register is the working record of risk scenarios, with the owner, ratings, controls, chosen response and status for each one.",
           "why_it_matters": "The register is how risk is tracked and decided on. An entry with no owner has nobody to accept, treat or monitor it, so it drifts.",
@@ -1610,7 +1614,8 @@
             "crisc_d2_064",
             "crisc_d2_065",
             "crisc_d2_071",
-            "crisc_d2_104"
+            "crisc_d2_104",
+            "crisc_d2_126"
           ],
           "definition": "Inherent risk is risk before any management action; current risk reflects controls already in place; residual risk is what remains after the chosen response is implemented.",
           "why_it_matters": "Comparing inherent risk with appetite overstates the need for new controls; counting planned controls as working understates real exposure.",
@@ -1706,7 +1711,7 @@
             "Evidence includes control test results, key control indicators (KCIs), audit findings and incident history.",
             "An untested or failed control earns little or no reduction in the current rating; one that repeated tests show working earns its credit without waiting for a review.",
             "When test results or a control's scope change, such as a system replaced after the test, residual risk is re-rated and the risk owner is told.",
-            "Design is judged first: a control that runs perfectly but does not address the scenario's cause earns little credit, whatever its operating record."
+            "Design is judged first: a control that misses the scenario's cause earns little credit, and one that reaches only some items, such as a one-in-ten sample, earns credit for those."
           ],
           "example": "A broadband provider's register rates staff export of customer data as low residual risk because a data loss prevention tool is installed. Kwame Asante, the risk analyst, asks for its results: it has run in monitor-only mode for a year and blocked nothing. Kwame re-rates the residual risk without credit for blocking and sends the evidence to the customer data owner.",
           "audit_focus": {

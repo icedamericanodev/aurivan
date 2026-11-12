@@ -48,12 +48,13 @@
             "crisc_d4_021",
             "crisc_d4_046",
             "crisc_d4_066",
-            "crisc_d4_080"
+            "crisc_d4_080",
+            "crisc_d4_111"
           ],
           "definition": "Enterprise architecture (EA) is the documented model of how business processes, data, applications and technology fit together to deliver the organization's strategy.",
           "why_it_matters": "EA shows where a new system, vendor or AI service touches critical data and processes, so risk can be judged before money is committed. Without it, risk decisions are made one project at a time.",
           "how_it_works": [
-            "EA describes layers: business processes, data, applications and technology, and the links between them.",
+            "EA describes layers: business processes, data, applications and technology, and the links between them; before an assessment relies on it, links changed since its last update are confirmed.",
             "An architecture review board checks proposed solutions against approved principles, standards and the target architecture before funding.",
             "Security and privacy requirements are built into the architecture, so each new system inherits them instead of reinventing them.",
             "AI services are architecture components too: their data flows, model hosting and integrations belong in the EA.",
@@ -384,13 +385,14 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d4_050",
-            "crisc_d4_067"
+            "crisc_d4_067",
+            "crisc_d4_112"
           ],
           "definition": "DevOps joins development and operations so software moves to production through an automated continuous integration and continuous delivery (CI/CD) pipeline.",
           "why_it_matters": "Pipelines can push changes many times a day, so manual approvals cannot keep up. If controls are not built into the pipeline, one person or one stolen account can put unreviewed code straight into production.",
           "how_it_works": [
             "Controls move into the pipeline: automated tests, security scans and policy checks gate each release.",
-            "Separation of duties is kept by requiring a second person to review and approve code before merge.",
+            "Separation of duties is kept by requiring a second person to review and approve code before merge, including code an AI agent writes; passing tests do not replace that approval.",
             "Pipeline accounts, secrets and build tools are protected, because whoever controls the pipeline controls production.",
             "Infrastructure as code puts server and network settings under the same review and version control as software.",
             "Pipeline logs record every change; a gate is shown to work by testing real releases, as internal audit may do with a sample, not by its setting alone.",
@@ -712,15 +714,16 @@
           "practice_ids": [
             "crisc_d4_008",
             "crisc_d4_078",
-            "crisc_d4_103"
+            "crisc_d4_103",
+            "crisc_d4_113"
           ],
           "definition": "Retention sets how long each type of data is kept, and sanitization makes data on storage media unrecoverable once it is no longer needed.",
           "why_it_matters": "Data kept past its purpose adds breach impact, legal exposure and cost with no business value. Data removed the wrong way may still be recoverable when equipment is reused, sold or discarded.",
           "how_it_works": [
             "Retention periods follow legal, regulatory and business needs by data type; copies made for a short task are deleted when it ends.",
             "At the end of the period, data is disposed of unless a legal hold requires it to be kept.",
-            "Deleting a file usually removes only the pointer to it; the data can often still be recovered.",
-            "NIST SP 800-88 describes three sanitization methods, chosen by data sensitivity and media type.",
+            "Deleting a file usually removes only the pointer to it; the data often remains recoverable.",
+            "NIST SP 800-88 methods follow data class and the media's next use; media type shapes the technique.",
             "Sanitization is verified and recorded, including when a vendor handles disposal.",
             "Archives stay readable for the whole retention period: before the last software that reads a format retires, records move to a supported format and are checked."
           ],
@@ -849,7 +852,8 @@
           "practice_ids": [
             "crisc_d4_009",
             "crisc_d4_051",
-            "crisc_d4_104"
+            "crisc_d4_104",
+            "crisc_d4_114"
           ],
           "definition": "Portfolio management selects, prioritizes and balances the organization's programs and projects by their expected value, risk and fit with strategy.",
           "why_it_matters": "Money and people are limited. A portfolio view stops low-value, high-risk projects from consuming resources and shows senior management the combined risk of everything in flight.",
@@ -858,7 +862,7 @@
             "Proposals are scored on value and risk together, not on cost or sponsor influence alone.",
             "The portfolio is reviewed regularly; projects whose value falls or risk rises are changed, paused or stopped.",
             "Continuing a project rests on the value and risk of the spend still to come; money already spent is no reason to finish a project whose value has gone.",
-            "Projects can also reduce risk, such as retiring a weak system, and that benefit counts in scoring.",
+            "Projects can also reduce risk, such as retiring a weak system; that benefit counts in scoring, and after delivery residual risk is compared with the target the business case promised.",
             "Dependencies between projects are tracked, since one delay can push risk into others."
           ],
           "example": "A city transit authority's steering group ranks nine technology proposals by cost alone. Amara, the enterprise risk analyst, adds a risk column and shows that a mid-ranked upgrade would remove a weakness behind fare collection, a top-rated scenario, while the cheapest proposal adds a new vendor dependency. Amara presents both views to the steering group.",
@@ -1227,17 +1231,18 @@
             "crisc_d4_072",
             "crisc_d4_083",
             "crisc_d4_095",
-            "crisc_d4_105"
+            "crisc_d4_105",
+            "crisc_d4_115"
           ],
           "definition": "Evaluating emerging technology means assessing a new technology's threats, vulnerabilities and opportunities for the business before and during adoption.",
           "why_it_matters": "New technology can create advantage, new exposure or both. The ISACA Glossary's enterprise risk management exploits risk as well as controlling it, to increase stakeholder value, so leaders weigh both instead of banning by reflex or adopting blind.",
           "how_it_works": [
             "Start from the objective it serves; known benefits belong in the business case, uncertain ones in the register as opportunities.",
             "Identify new threats: weak integrations, vendor flaws, irreversible harms (stolen biometrics, public-blockchain personal data) and cloud paths to physical controls.",
-            "Check vendor claims through evidence, pilots and independent assessments, not marketing.",
+            "Check vendor claims, including patch support periods, through evidence, pilots and independent assessments, not marketing.",
             "Apps staff build on low-code platforms are inventoried with owners and data, not banned or ignored.",
             "Weigh exposure against appetite, propose conditions such as a pilot or exit terms, and reassess when the technology matures or use scales.",
-            "With little data, record it as an emerging risk with stated uncertainty, a proposed owner and a review date, rather than waiting for losses."
+            "With little data, record an emerging risk with stated uncertainty, a proposed owner and a review date, not waiting for losses."
           ],
           "types": [
             {
@@ -1246,7 +1251,7 @@
             },
             {
               "term": "Internet of Things (IoT)",
-              "meaning": "Real-time data from devices; weak default security and devices that are hard to patch."
+              "meaning": "Real-time data from devices; weak default security, and patch support that can end years before the devices retire."
             },
             {
               "term": "Blockchain",

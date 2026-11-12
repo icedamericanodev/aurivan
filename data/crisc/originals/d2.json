@@ -1942,7 +1942,7 @@
       "options": {
         "A": "Add three scenarios covering the weaknesses IT found",
         "B": "Add a bottom-up review using asset and threat data",
-        "C": "Propose that executives re-rank the workshop scenarios",
+        "C": "Propose that senior management re-rank the workshop scenarios",
         "D": "Log the three weaknesses in IT's operational issue list"
       },
       "correct": "B",
@@ -1965,7 +1965,7 @@
         "Risk scenario",
         "Vulnerability data"
       ],
-      "_provenance": "Authored from concept: notes 2A4.2 (Top-Down and Bottom-Up Scenario Development). Round 3, 4 Nov 2026: original scenario of a freight railway whose workshop-built scenarios miss weaknesses found in IT's vulnerability data written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): subtopic label no longer names the top-down method, which leaked the bottom-up key. Cue pass 2, 5 Nov 2026: C reworded (was 'Have the executives re-rank'): a wrong option now opens 'Propose', so that opening no longer points to the key.",
+      "_provenance": "Authored from concept: notes 2A4.2 (Top-Down and Bottom-Up Scenario Development). Round 3, 4 Nov 2026: original scenario of a freight railway whose workshop-built scenarios miss weaknesses found in IT's vulnerability data written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): subtopic label no longer names the top-down method, which leaked the bottom-up key. Cue pass 2, 5 Nov 2026: C reworded (was 'Have the executives re-rank'): a wrong option now opens 'Propose', so that opening no longer points to the key. Review fixes 12 Nov 2026 (round 13 cross-domain gate): distractor C names senior management instead of 'executives' (senior-management options were keyed 13 of 17).",
       "style_version": 2
     },
     {
@@ -4482,6 +4482,191 @@
         "Secondary loss"
       ],
       "_provenance": "Authored from concept: notes 2A1.1 (Loss Events, Incidents and Near Misses: impact counts every loss). Round 12, 5 Nov 2026: original scenario (a fixed sensor calibration error made an agritech start-up's app advise 40 farmers to over-irrigate, raising their water bills, and none has complained) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Owner shape: the two easy distractors name an owner (product owner, service owner); the key and the runner-up name none. Neighbours checked (stems and options): crisc_d2_088 (a payroll provider's outage recorded as the firm's own loss event; its options also start 'As a loss event' and 'As a near miss', a different lesson), crisc_d2_087 (losses missing from an event record), crisc_d2_001 and crisc_d2_048 (near misses), crisc_d2_022 (small AI errors closed one by one), crisc_d2_111 (a seed company's AI chatbot event data), crisc_d2_078 (harm to people served), AAIA aaia_d2_018, aaia_d2_061 and aaia_d2_089 (agritech and irrigation models, different topics); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_088 and crisc_d2_087 in practice sets.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_122",
+      "domain": 2,
+      "subtopic": "2A2 Threat modeling and threat landscape. Intelligence for risk scenarios",
+      "principle_id": "priority-word-decides",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which threat intelligence is MOST useful to the risk analyst updating a fund administrator's risk scenarios?",
+      "options": {
+        "A": "Reports on the aims and methods of groups targeting fund administrators",
+        "B": "Indicators of compromise, such as malicious IP addresses and file hashes",
+        "C": "Counts of attacks blocked at the fund administrator's firewalls",
+        "D": "Vendor bulletins on newly found flaws in widely used software"
+      },
+      "correct": "A",
+      "key_concept": "Intelligence reports on who targets the sector, why and how inform risk scenarios; indicators of compromise serve detection tools.",
+      "pre_read": "Ask what each kind of information is built for and who in the enterprise mainly uses it.",
+      "correct_explanation": "A scenario's likelihood for an adversary rests on intent, capability and targeting, and prose intelligence reports on the groups attacking fund administrators describe exactly that: who they are, what they want and how they work. Indicators of compromise are the runner-up: they are genuine threat information, but short-lived technical markers that feed detection and blocking tools rather than the context a likelihood rating needs.",
+      "wrong_explanations": {
+        "B": "Indicators such as IP addresses and file hashes help security tools detect and block attacks, but they change quickly and say little about who targets the firm or why.",
+        "C": "Blocked-attack counts are the firm's own monitoring data on failed attempts; a count of attempts says nothing about the actors' intent or the chance of harm.",
+        "D": "Security bulletins describe weaknesses in products, which feed vulnerability management; they do not say which actors target fund administrators or how they operate."
+      },
+      "tips": [
+        "Eliminate: C counts attempts already blocked, the firm's own data rather than intelligence on actors, and D lists product weaknesses, which are vulnerabilities rather than threats.",
+        "Final two: A beats B because adversarial likelihood rests on actors' intent, capability and targeting; indicators are technical markers built for detection tools.",
+        "Exam cue: for risk scenarios, prefer intelligence that explains who targets the sector, why and how; technical indicators belong to security operations."
+      ],
+      "framework_ref": "NIST SP 800-150 Section 2.1 (Threat Information Types: threat intelligence reports describe actors, TTPs and targeted systems, while indicators help detect and defend against threats); NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: adversarial likelihood is based on intent, capability and targeting); NIST CSF 2.0 ID.RA-02 (cyber threat intelligence is received from information sharing forums and sources)",
+      "related_concepts": [
+        "Threat intelligence report",
+        "Indicator of compromise",
+        "Adversarial likelihood"
+      ],
+      "_provenance": "Authored from concept: notes 2A2.2 (Threat Intelligence and Threat Modeling: intelligence reports inform scenarios, indicators feed detection) and 2A2.1 (Threat Sources and Threat Events: adversarial likelihood weighs capability, intent and targeting). Round 13, 12 Nov 2026: original options (four kinds of threat information offered to a fund administrator's risk analyst) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 13 asks: a genuinely short 'Which ... MOST' stem (16 words) with noun-phrase options. Owner shape: no option names an owner. Neighbours checked (stems and options): crisc_d2_090 (filtering alerts by sector and technology), crisc_d2_024 (a feed offered as the threat analysis), crisc_d2_101 (ATT&CK techniques of groups that target ports), crisc_d2_056 (adversarial likelihood from capability, intent and targeting), crisc_d2_069 (phishing counts are attempts, not likelihood), crisc_d2_109 (threat reports on live deepfakes), crisc_d2_066 (missing threat sources), CC cc_d5_072 (which part of an old intelligence report stays useful: a different question about TTP shelf life); no mirror in CISA, AAIA or CC. Keep apart from crisc_d2_056 and cc_d5_072 in practice sets. Review fixes 12 Nov 2026 (round 13 cross-domain gate): 'Daily' dropped from distractor C (fixed-period cue); its flaw is that blocked-attack counts are the firm's own data, not intelligence on actors.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_123",
+      "domain": 2,
+      "subtopic": "2B1 Risk assessment concepts and standards. Partner-hosted page outside the scope",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "While assessing a mortgage servicer's payment process, the risk analyst finds that a fintech partner hosts its payment page, which the scope agreed with the risk owner leaves out. What should the analyst do FIRST?",
+      "options": {
+        "A": "Ask the partner's relationship owner for the page's test results",
+        "B": "Record the page as out of scope under the partner's contract",
+        "C": "Take the scope gap to the risk owner before going further",
+        "D": "Have the web platform owner scan the partner's page for flaws"
+      },
+      "correct": "C",
+      "key_concept": "The official who requests an assessment sets its scope; a material gap found partway through goes back to them before the work goes on.",
+      "pre_read": "Note who agreed the assessment's boundaries and what the analyst has just learned about them.",
+      "correct_explanation": "Scope is set by the official requesting an assessment (NIST SP 800-30), here the risk owner, and it decides which decisions the results support. The page where borrowers pay sits inside the process under review, so the gap goes back to that owner, who can widen the scope or keep the limit. Asking for the partner's test results is the runner-up: that evidence may be needed, once the owner brings the page into scope.",
+      "wrong_explanations": {
+        "A": "The partner's test results may be needed later, but gathering them now works outside the agreed scope; the risk owner first decides whether the page is assessed.",
+        "B": "Outsourcing the page does not move accountability for the servicer's payment risk; a contract can share the consequences, but the risk stays with the servicer.",
+        "D": "Scanning a partner's system needs the partner's agreement, and a technical scan before the scope is settled finds flaws without assessing the payment risk."
+      },
+      "tips": [
+        "Eliminate: B treats the contract as moving the payment risk to the partner, and D tests a third party's system before anyone has agreed it is in scope.",
+        "Final two: C beats A because whoever set the assessment's scope decides any change to it; evidence from the partner follows once the risk owner widens it.",
+        "Exam cue: when an assessment's scope turns out to miss part of the process, take the gap to whoever set the scope before collecting more evidence."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 3.1 Task 1-2 (Identify Scope: scope is determined by the organizational official requesting the assessment and sets which decisions the results support); NIST SP 800-30 Rev. 1 Section 3.1 (Preparing for the Risk Assessment: purpose, scope, assumptions, information sources and risk model); NIST IR 8286 Rev. 1 Section 3.5 Table 2 (Response types for negative cybersecurity risks: transfer shares a portion of the consequences, such as through cybersecurity insurance)",
+      "related_concepts": [
+        "Assessment scope",
+        "Third-party risk",
+        "Risk owner"
+      ],
+      "_provenance": "Authored from concept: notes 2B1.2 (The Risk Assessment Process and Scope: the requesting official sets the scope, which covers the whole process). Round 13, 12 Nov 2026: original scenario (partway through assessing a mortgage servicer's payment process, the analyst finds a fintech partner hosts the payment page that the owner-agreed scope leaves out) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Owner shape: three options name an owner and the key is among them; the runner-up A also names one (the partner's relationship owner), and the easy distractor D names the web platform owner; B names none. Neighbours checked (stems and options): crisc_d2_009 (agree purpose, scope and criteria with the COO before starting: this item is a gap found partway, a different moment and lesson), crisc_d2_057 (a vendor withholds its audit report), crisc_d2_033 (results to the risk owner before launch), crisc_d1_061 (framework scope after acquisitions), crisc_d3_090 (risk owner versus action owner), CISA d5_025 and d4_127 (certificate and SOC report scope), CC cc_d1_173 (certificate scope), AAIA aaia_d2_041 (red-team scope); no mirror. Keep apart from crisc_d2_009 in practice sets. Review fixes 12 Nov 2026 (round 13 standards audit): last sentence of the explanation completed.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_124",
+      "domain": 2,
+      "subtopic": "2B2 Business impact analysis (BIA). Costly recovery objective for closings",
+      "principle_id": "objectives-first",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A title insurer's BIA gives its closing system a four-hour RTO, needing a $400,000 standby site, but ignores that closers can work on paper for two days. What should the risk analyst recommend FIRST?",
+      "options": {
+        "A": "Have the closing process owner weigh the site's cost against BIA impact",
+        "B": "Have the closing process owner revisit the RTO given manual closings",
+        "C": "Ask the IT recovery owner for a cheaper design meeting the RTO",
+        "D": "Have the closing data owner set a matching four-hour RPO"
+      },
+      "correct": "B",
+      "key_concept": "A recovery objective reflects how long the business can really manage without a system; a workable manual workaround lengthens that time and lowers recovery cost.",
+      "pre_read": "Check what the business can still do while the system is down before judging the recovery spending.",
+      "correct_explanation": "An RTO is the recovery time the business allows a function or resource, set through the BIA. Closers can keep working on paper for two days, so the four-hour RTO overstates the need, and the closing process owner should revisit it with that workaround counted. Having the same owner weigh the standby site's cost against impact is the runner-up: cost-benefit matters, but against an overstated objective it would justify spending the workaround makes unnecessary.",
+      "wrong_explanations": {
+        "A": "Cost-benefit is the owner's call, but here it would compare the site's cost with a four-hour need the paper workaround already contradicts; correct the objective first.",
+        "C": "A cheaper design still serves a four-hour objective the business does not need; objectives come from business tolerance before recovery is bought.",
+        "D": "An RPO limits data loss, not downtime; matching it to the RTO confuses the two and leaves the overstated recovery time in place."
+      },
+      "tips": [
+        "Eliminate: C keeps an objective set without the workaround and only seeks a cheaper way to meet it, and D confuses the RPO, which limits data loss, with the RTO.",
+        "Final two: B beats A because cost-benefit needs a sound objective; weighing the site against a four-hour need the paper process contradicts would justify needless spending.",
+        "Exam cue: before costly recovery is bought, check that the objective reflects what the business can really tolerate, including any workable manual workaround."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO); NIST SP 800-34 Rev. 1 Appendix B Section 3.1.1 (BIA Template, Identify Outage Impacts and Estimated Downtime: alternate means, such as a manual work-around, are described for each process); ISACA Glossary (recovery point objective)",
+      "related_concepts": [
+        "Recovery time objective",
+        "Manual workaround",
+        "Recovery cost"
+      ],
+      "_provenance": "Authored from concept: notes 2B2.2 (MTO, RTO and RPO: a workable manual process lets a system's RTO run longer; shorter objectives cost more). Round 13, 12 Nov 2026: original scenario (a title insurer's BIA sets a four-hour RTO for its closing system, needing a $400,000 standby site, though closers can work on paper for two days) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Owner shape: all four options name an owner (k=4); the key B and the runner-up A both name the closing process owner, and the easy distractors C and D name the IT recovery owner and the data owner. Neighbours checked (stems and options): crisc_d2_035 (tested recovery longer than the MTO), crisc_d2_012 (IT sets an AI service's RTO from the vendor), crisc_d2_080 (every head claims a one-hour limit), crisc_d2_034 (RPO), crisc_d3_121 (a standby site as the response to an outage above appetite), crisc_d3_056 (a tested manual process for an AI outage), crisc_d1_063 (a tested workaround), CISA d4_270 (restore plus catch-up exceeds the MTD), d4_133 and CC cc_d2_122 (BIA before buying a site), CC cc_d2_008 (hot site against a three-week RTO); no mirror. Keep apart from crisc_d2_035 and CC cc_d2_008 in practice sets. Review fixes 12 Nov 2026 (round 13 concept review and blind test): correct_explanation now defines the RTO as the recovery time the business allows, set through the BIA (not the MTO or AIW); key B reworded to have the closing process owner revisit the RTO, so it is no longer the longest option or the lone option without an owner ('manual closings' rather than the stem's 'paper', so the key does not echo the stem).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_125",
+      "domain": 2,
+      "subtopic": "2B3 Risk register. Responses filled in by the risk team",
+      "principle_id": "advise-dont-decide",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "After an assessment, a credit bureau's risk team recorded 'mitigate' as the response on all 40 new register entries before any risk owner had seen them. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Send each entry to its risk owner to choose the response",
+        "B": "Run a cost-benefit check of mitigating each of the 40 entries",
+        "C": "Ask internal audit to validate the 40 recorded responses",
+        "D": "Have control owners draft a mitigation plan for each entry"
+      },
+      "correct": "A",
+      "key_concept": "A register's response field records the risk owner's decision; the risk team analyzes and presents the options but does not choose.",
+      "pre_read": "Look at who filled in each field of the new entries and whose decision that field records.",
+      "correct_explanation": "Choosing a response is the risk owner's decision: the manager with authority and accountability for the risk weighs the options against appetite. Responses the risk team filled in record no decision at all, so each entry goes back to its owner, with the analyzed options, to choose. A cost-benefit check of mitigation is the runner-up: it is useful analysis, but it presumes mitigation is the answer and leaves the choice with the risk team.",
+      "wrong_explanations": {
+        "B": "Cost-benefit analysis supports the owner's choice, but checking only mitigation presumes the response and keeps the decision with the risk team instead of the owners.",
+        "C": "Internal audit gives independent assurance; it neither chooses nor confirms risk responses, and its review would not supply the owners' missing decisions.",
+        "D": "Control owners run controls but do not choose risk responses; plans drafted now would build on a response no one with authority over these risks has chosen."
+      },
+      "tips": [
+        "Eliminate: C sends the entries to internal audit, which gives assurance but owns no risk, and D has control owners plan actions for a response no risk owner has chosen.",
+        "Final two: A beats B because the response is the risk owner's decision; costing mitigation helps the owner choose but cannot stand in for that choice.",
+        "Exam cue: a register field that records a decision is filled in by the person entitled to make it; the risk team supplies the analysis behind it."
+      ],
+      "framework_ref": "ISACA Glossary (risk owner); ISACA Glossary (risk response); NIST IR 8286 Rev. 1 Section 3 Table 1 (Descriptions of notional cybersecurity risk register template elements)",
+      "related_concepts": [
+        "Risk owner",
+        "Risk response",
+        "Risk register fields"
+      ],
+      "_provenance": "Authored from concept: notes 2B3.1 (Register Fields and Ownership: the risk owner has authority to decide the response). Round 13, 12 Nov 2026: original scenario (a credit bureau's risk team records 'mitigate' on 40 new register entries before any owner sees them) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Owner shape: k=2, the key A names the risk owner and the easy distractor D names control owners; the runner-up B and distractor C name no owner. Neighbours checked (stems and options): crisc_d2_060 (IT security named owner on every entry), crisc_d2_075 (the risk team updates entries without owners), crisc_d2_013 (status closed on approval), crisc_d2_020 (present further options to the owner), crisc_d2_064 (its distractor asks internal audit to confirm a zero rating: a different lesson and code), crisc_d1_093 (owner acknowledgment of a new entry), crisc_d1_050, crisc_d3_090 (risk owner versus action owner), crisc_d3_051 (a control owner marks a risk acceptable); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_060 and crisc_d3_090 in practice sets. Review fixes 12 Nov 2026 (round 13 concept review and blind test): distractor D reworded to have control owners draft the mitigation plans, so the key is no longer the lone option naming an owner; its wrong explanation and the Eliminate tip updated to match.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_126",
+      "domain": 2,
+      "subtopic": "2B5 Inherent and residual risk. Sampling checks on AI-drafted letters",
+      "principle_id": "residual-counts-working-controls",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An optician chain's risk owner plans staff checks of one in ten AI-drafted billing letters; the owner's target rating, within appetite, assumes every misstated letter is caught. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Record the target rating the risk owner has proposed",
+        "B": "Ask the risk owner to have staff check each letter instead",
+        "C": "Re-rate the target on what one-in-ten checks can catch",
+        "D": "Rate the plan after a year of check results"
+      },
+      "correct": "C",
+      "key_concept": "Target risk credits each planned control only for what it will cover; a one-in-ten check cannot be rated as catching every error.",
+      "pre_read": "Compare how far the planned checks reach with what the rating assumes.",
+      "correct_explanation": "Target risk, the Glossary's future residual risk, judges a plan only if each planned control is credited for what it will do. Checking one letter in ten catches errors in about a tenth of letters, plus patterns the sample reveals, so a target assuming every error is caught overstates the plan. Having staff check each letter is the runner-up: it may be needed, but only a corrected target shows the owner whether it is.",
+      "wrong_explanations": {
+        "A": "Recording the owner's figure files a target that credits the checks with catching errors in letters nobody reviews, so the plan looks enough before anyone knows it is.",
+        "B": "Checking each letter may be the right response, but choosing it now skips the analysis; the owner needs a corrected target to see whether one in ten falls short.",
+        "D": "Target risk exists to judge a plan before it is adopted; a year of results arrives after the owner has committed, with misstated letters sent meanwhile."
+      },
+      "tips": [
+        "Eliminate: A files a target that credits checks on letters nobody reviews, and D waits a year to judge a plan that must be judged before adoption.",
+        "Final two: C beats B because analysis comes before the response; a corrected target shows whether one in ten falls short, and the owner then chooses the fix.",
+        "Exam cue: a target rating credits each planned control only for what it will cover and catch; a sample check is not a full check."
+      ],
+      "framework_ref": "ISACA Glossary (risk response); ISACA Glossary (residual risk); NIST IR 8286 Rev. 1 Section 3.5.2 (Responding to Residual Risk)",
+      "related_concepts": [
+        "Target risk",
+        "Future residual risk",
+        "Human review of AI output"
+      ],
+      "_provenance": "Authored from concept: notes 2B5.1 (Inherent, Current and Residual Risk: a planned response's future residual risk, KaiSip's target risk, shows whether the plan is enough). Round 13, 12 Nov 2026: original scenario (a debt collector's risk owner plans staff checks of one in ten letters its AI tool drafts) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 13 asks: the batch's AI item, and the counter-example where a 'Current risk ...' option is wrong because the question asks whether a plan is enough. Owner shape: no option names an owner. Neighbours checked (stems and options): crisc_d2_018 (current risk compared with appetite today), crisc_d2_104 (inherent risk ranks which scenarios need the strongest controls), crisc_d2_062 (the register's target rating answers whether plans will reach appetite: the same rating from the register-field angle), crisc_d2_085 (an AI fraud filter's new risk), crisc_d2_013 (an approved tool is not yet a control), crisc_d3_088, crisc_d3_104 and crisc_d3_082 (target risk in choosing responses), crisc_d4_040 (current risk crediting users already moved), crisc_d1_116; no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_062, crisc_d2_018 and crisc_d2_104 in practice sets. Review fixes 12 Nov 2026 (round 13 standards audit): pre_read no longer points at the key; 'planned' no longer echoes the stem only in the key. Same lesson and decoy family as crisc_d2_062 (target rating judges a plan; current and inherent decoys): keep apart in practice sets from crisc_d2_062, crisc_d2_018, crisc_d2_104, crisc_d3_038 and crisc_d4_114, and re-angle in a later round if the cross-domain gate asks. Review fixes 12 Nov 2026 (round 13 cross-domain gate): re-angled from 'which rating judges a plan' (same question, key, runner-up and inherent decoy as crisc_d2_062; options 0.52 similar to crisc_d2_018) to 'a target rating credits a planned sampling check only for what it covers'. The old option B ('Residual risk, rated after the planned checks run for a year') could be read as the Glossary's future residual risk, the key itself. Setting moved from a debt collector (three round 13 stems) to an optician chain. Owner shape now k=2 with the key outside the owner pair; key letter C unchanged. Keep apart in practice sets from crisc_d3_130 (rating that credits a review not yet running), crisc_d3_104 (target of a substitute control) and crisc_d2_062.",
       "style_version": 2
     }
   ]
