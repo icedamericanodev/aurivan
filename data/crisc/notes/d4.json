@@ -522,7 +522,7 @@
           "why_it_matters": "Most exploitable flaws start as design or coding mistakes. A secure process lowers the number of vulnerabilities released and shows owners, customers and regulators that software risk is managed.",
           "how_it_works": [
             "The SSDF's four practice areas are prepare, protect, produce and respond; responding includes a disclosure policy and a public route for outside flaw reports.",
-            "Security requirements are defined early and checked through threat modeling, code review and testing.",
+            "Security requirements are defined early, including secure defaults such as a unique password per device, and checked through threat modeling, code review and testing.",
             "Testing combines static analysis, dynamic testing and, for high-risk systems, penetration testing.",
             "Third-party and open-source components come from vetted sources and are tracked and checked for known flaws; a package an AI assistant names may be fake or planted.",
             "When a vulnerability is found, its root cause is analyzed so the process improves, not just the code; a flaw that recurs across releases signals a process gap.",
@@ -1153,7 +1153,7 @@
           "definition": "Recovery testing checks that disaster recovery capability, and the technology side of continuity plans, works, using methods that range from checklist reviews and tabletop exercises to full interruption tests.",
           "why_it_matters": "An untested plan is an assumption. Tests show whether RTO and RPO are met, whether people know their roles and where the gaps are, so owners can decide on fixes before a real event.",
           "how_it_works": [
-            "Tests are chosen by risk and plan maturity, starting with low-disruption methods and building to realistic ones.",
+            "Tests are chosen by risk and plan maturity, starting with low-disruption methods and building to realistic ones that cover the whole cycle, including the return to the main site.",
             "A test that could disrupt operations is a business decision: the owner of the affected process accepts or limits the disruption, informed by what a failed test could cost.",
             "Each test has objectives tied to RTO, RPO and the scenarios in the risk register.",
             "Observers record what worked, what failed and how long recovery actually took.",
@@ -1454,7 +1454,7 @@
           "how_it_works": [
             "NIST SP 800-207 tenets include that network location alone grants no trust and access to each resource is granted per session, so one stolen login cannot roam to other systems.",
             "Decisions use identity, device health, behavior and data sensitivity, and are re-checked over time.",
-            "Least privilege and micro-segmentation keep each user or workload to what it needs.",
+            "Least privilege and micro-segmentation keep each user, workload or AI agent to what it needs; a segment narrows reach, but each request is still verified.",
             "Monitoring of assets and access feeds back into policy decisions.",
             "Adoption is incremental: NIST SP 800-207 describes moving one business process at a time, often piloting on a lower-risk process, to protect the highest-value data.",
             "Until a rollout covers a scenario's users and assets, the register credits only the coverage that is live and working; the finished rollout is target risk."
@@ -1581,7 +1581,7 @@
           "why_it_matters": "Most controls depend on people. Where staff fear blame or see risk as someone else's job, problems stay hidden until they become incidents; where they speak up, risk is found early.",
           "how_it_works": [
             "Leaders set the tone by following the same controls as staff, discussing risk openly and rewarding early reporting.",
-            "Awareness reaches everyone with access, contractors included; role-based training gives deeper skills to people with specific risk duties.",
+            "Awareness reaches everyone with access, contractors included; role-based training gives deeper skills to people with specific risk duties, such as new risk owners learning the decisions their role holds.",
             "Training content follows the risk profile, such as payment fraud for finance staff, secure coding for developers or risk oversight for directors, in a language and format each audience follows.",
             "Reporting channels are easy and safe, and reports get visible follow-up.",
             "Mistakes lead to process fixes first; discipline is for willful or repeated misconduct.",
@@ -1798,7 +1798,7 @@
             "A PIA is run before building or buying technology that processes personal data, or starting a new collection.",
             "It maps data flows, rates the problems the processing could cause individuals and the organizational impacts that follow, and proposes mitigations.",
             "Privacy by design sets protective defaults, such as minimal collection and short retention; data needed only in the moment is processed on the device, not collected.",
-            "The PIA is updated when the system, purpose or data changes.",
+            "The PIA is updated when the system, purpose, data or recipients change; third-party code on a page, such as ad tracking, receives what that page shows.",
             "The NIST Privacy Framework helps organize privacy risk work alongside cybersecurity risk.",
             "PIA mitigations become requirements with owners; a check before go-live confirms each is built, or the gap goes to the owner as a risk to treat or accept."
           ],

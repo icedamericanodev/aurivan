@@ -4631,6 +4631,191 @@
       ],
       "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: reassess when the technology matures, use scales or an earlier rejection's reason changes). Round 15, 12 Nov 2026: original scenario (a national statistics office whose leaders turned down phone location data for commuting statistics in 2023, as no telecom would aggregate it, and one telecom now offers aggregated counts) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_013 (vendor claims for a blockchain platform), crisc_d4_036 (pause conditions for a pilot), crisc_d4_037, crisc_d4_072 (reassess before scaling a pilot), crisc_d4_083 (recording upside), crisc_d4_115, crisc_d1_125 (a club that rejected a cloud move on data risk alone: rate the current platform's risk to the goal), crisc_d2_107; CISA d2_223 (unused location collection in a fitness app); CC: no item on a rejected technology reopened; AAIA aaia_d1_105 (statistical noise in a statistics office's model: a different lesson, and a different activity) and aaia_d1_016 (adding location data to a de-identified training set). Judged distinct: no bank item reopens a rejected technology after the fact behind the rejection changed; not the paused 'new evidence on an emerging-risk entry' family (no register entry is involved: the question is a past adoption decision). Owner pattern: k=1, the lone owner option B is the runner-up (an owner acting before analysis), so only the runner-up names an owner in the final two; the key A and the easy distractors C and D name none. Round 15 asks: the next 'Keep' option is a wrong no-change move (C); a 'Have' opener on a wrong option (B); the year in the stem and option C dates the decision, not a fixed period. Cross-domain gate 12 Nov 2026 (round 15): stem's lowercase 'first' (beside the priority word FIRST) became 'supply it aggregated'. Re-blind 12 Nov 2026 (round 15 final): wording follows the edited options.",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d4_126",
+      "domain": 4,
+      "subtopic": "4A3 System development life cycle (SDLC). One password across every unit",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A medical device maker's infusion pump design gives every unit the same administrator password, and the draft manual tells hospitals to change it at setup. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "A longer shared pump password chosen by the product owner",
+        "B": "Training for hospital staff on changing it at setup",
+        "C": "A risk owner's clause making hospitals liable for misuse",
+        "D": "A unique password set on each pump at the factory"
+      },
+      "correct": "D",
+      "key_concept": "Secure settings belong in the design by default; relying on each customer to change a shared default password leaves units exposed.",
+      "pre_read": "Note who must act for the design to be safe, and what happens when one of them does not.",
+      "correct_explanation": "One password shared by every pump means a single leak exposes every unit whose hospital skipped the change, and the design relies on each customer to act. Setting a unique password on each pump at the factory removes the shared secret at the source. Training hospital staff is the runner-up: it raises how many hospitals change the password, but any that miss the step still leave pumps open to anyone who knows it.",
+      "wrong_explanations": {
+        "A": "A longer password is harder to guess but is still one secret shared by every pump; once it leaks or is published, every unchanged unit is open.",
+        "B": "Training helps more hospitals make the change, but security that depends on every customer acting leaves pumps exposed wherever one step is missed.",
+        "C": "Shifting liability to hospitals moves cost, not the hazard; patients are still at risk from pumps that anyone with the shared password can reach."
+      },
+      "tips": [
+        "Eliminate: A keeps one secret shared across every pump, and C shifts liability while the hazard to patients stays.",
+        "Final two: D beats B because a unique factory password removes the shared secret by design; training still relies on each hospital acting.",
+        "Exam cue: when a design leaves a security step to every customer, prefer the option that makes the default secure before the product ships."
+      ],
+      "framework_ref": "NIST SP 800-218 Version 1.1 PW.9 (Configure Software to Have Secure Settings by Default: reduce the likelihood of software being deployed with weak security settings); NIST SP 800-53 Rev. 5 IA-5 (Authenticator Management: default authenticators are changed before first use, as factory default credentials are often well known and a significant risk)",
+      "related_concepts": [
+        "Secure by default",
+        "Default credentials",
+        "Security requirements"
+      ],
+      "_provenance": "Authored from concept: notes 4A3.2 (Secure Development and Testing: security requirements are set early, including secure defaults such as a unique password per device). Round 16, 12 Nov 2026: original scenario (a medical device maker whose infusion pump design gives every unit one administrator password and leaves hospitals to change it at setup) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_027 (requirements in vendor selection criteria), crisc_d4_096 (requirements from the new product's own risk assessment), crisc_d4_115 (valve controllers with three years of patches), crisc_d4_106 (a public route for flaw reports, with a 'support staff training' decoy), crisc_d4_116 (vetting AI-named packages), crisc_d4_052 (recurring injection flaw), crisc_d3_078 (a medical device maker's monitoring checks: a different activity); CC cc_d4_051 (a technician gives each new gym camera its own password before connecting it), cc_d3_090 and cc_d5_129 (changing a storage device's default admin password at install), cc_d5_039 (purchase requirements for thermostats); CISA d3_023 and d5_353 (tracing a library flaw to products: an SBOM idea first drafted for this slot was dropped as a near-copy of d3_023); AAIA: no item on a maker's default credentials. Judged distinct: the CC items fix defaults at installation on the customer's side; this item keys the maker's design choice, so the shared secret never ships, and its runner-up is the customer-side fix. No pen-test, patch-deadline or package-scan decoy, to stay off the 4A3 decoys in d4_027, d4_052, d4_106 and d4_116. Owner pattern: k=2, both owner options (A product owner, C risk owner) are the easy distractors and the key D names no owner (shape: key outside the owner pair). Round 16 asks: no period word on any option; no defer option; key opener 'A' (noun phrase).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_127",
+      "domain": 4,
+      "subtopic": "4A6 Technology resilience and disaster response/recovery. Tests of a standby ground station",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A satellite operator's switchover tests always end once its standby ground station has control; the plan says control returns to the main station within 10 days. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Add a second standby ground station far from the main one",
+        "B": "Have the plan owner test the hand-back to the main station",
+        "C": "Have the plan owner measure each switchover against the RTO",
+        "D": "Switch control to the standby more often during tests"
+      },
+      "correct": "B",
+      "key_concept": "Recovery tests cover the whole cycle, including the return to the main site, because an untested hand-back can cause a second outage.",
+      "pre_read": "List the steps the plan relies on, then check which of them the tests actually run.",
+      "correct_explanation": "The plan relies on handing control back to the main station within 10 days, yet no test has ever done it, so that step is an untested assumption; a failed hand-back could cut control again or lose records made at the standby. Measuring each switchover against the RTO is the runner-up: it adds detail on a step tests already prove and leaves the hand-back unproven.",
+      "wrong_explanations": {
+        "A": "A second standby adds capacity, but control would still have to come back to the main station by a step no test has run.",
+        "C": "Tests already prove the switchover; measuring it against the RTO adds detail there and leaves the hand-back the plan relies on unproven.",
+        "D": "More switchovers repeat the step tests already prove; how often a test runs matters less than whether it covers every step of recovery."
+      },
+      "tips": [
+        "Eliminate: A adds a standby that would face the same untested hand-back, and D repeats more often a step the tests already prove.",
+        "Final two: B beats C because the plan relies on the hand-back within 10 days, and only B puts that untested step under test.",
+        "Exam cue: a recovery test proves only the steps it runs; check tests against every step the plan relies on, including the return to normal."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.5.4 (TT&E Program Summary: a full-scale functional exercise for a high-impact system includes failover to the alternate location and full recovery and reconstitution to a known state); NIST SP 800-34 Rev. 1 Section 4.4 (Reconstitution Phase: recovery activities are completed, normal operations resume and the system is validated by testing before the plan is deactivated)",
+      "related_concepts": [
+        "Recovery testing",
+        "Reconstitution",
+        "Alternate site"
+      ],
+      "_provenance": "Authored from concept: notes 4A6.3 (Testing Recovery Capability: tests cover the whole cycle, including the return to the main site). Round 16, 12 Nov 2026: original scenario (a satellite operator whose switchover tests always stop once its standby ground station has control, though its plan has control return to the main station within 10 days) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_034 (tests that never assume online backups are lost: scenario coverage, not a plan step; its 'advance notice' decoy not reused), crisc_d4_088 (restore tests that overstate ransomware recovery), crisc_d4_056 (disruption from a full interruption test), crisc_d4_011 (shared carrier at the recovery site), crisc_d4_104 (a satellite operator's ground station project: 4A5, a different activity), crisc_d2_102 (a fallback never practiced), crisc_d1_152 (restore order); CISA d4_114 (improvised fixes during a test), d5_176 (drill after a tabletop), d4_222 (domain controllers left out of tests), d3_087 (blue-green switch-back in deployment); CC cc_d2_131 (standby server in another building), cc_d2_074 (reciprocal site in one valley); AAIA: none on failback. Judged distinct: no bank item tests the return to the main site (failback); a full-bank search for fail back, switch back and return to the primary found only CISA d3_087, a deployment item. Owner pattern: k=2, both owner options (B key, C runner-up) name the plan owner and the easy distractors A and D name none (shape: key inside the owner pair, runner-up the other owner option, as round 14 asked). Round 16 asks: 'Have' opener keyed, one 'Have' on a wrong option; no period word on options ('more often' carries no fixed period); no defer option.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_128",
+      "domain": 4,
+      "subtopic": "4B1 Security concepts, frameworks and standards. An AI agent calling a payments service",
+      "principle_id": "final-two",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A home insurer's new AI claims agent will call its payments service, which accepts any request from inside the data center network. Which control should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "The claims owner's sign-off on the agent before launch",
+        "B": "A separate network segment for the claims agent's servers",
+        "C": "A check of the agent's own identity and rights on every call",
+        "D": "Encryption of traffic between the agent and the service"
+      },
+      "correct": "C",
+      "key_concept": "Zero Trust gives network location no trust: a service checks every caller, AI agents included, for identity and rights on each request.",
+      "pre_read": "Note what the payments service trusts today, then ask which option changes that.",
+      "correct_explanation": "Zero Trust grants nothing for network location: each request is checked for who is calling and what that caller may do. Checking the agent's own identity and rights on every call stops payments being accepted just because they come from inside, and limits what a misused agent can do. A separate segment is the runner-up: it narrows which systems can connect, but the service would still trust whatever reaches it.",
+      "wrong_explanations": {
+        "A": "A sign-off before launch is a one-time approval; once live, the payments service would still accept any request from inside, from the agent or anything else.",
+        "B": "A segment limits which systems can connect, but the payments service would still trust whatever reaches it, including a misused or impersonated agent.",
+        "D": "Encryption keeps traffic private and unaltered in transit; it does not tell the payments service whether the caller may request a payment."
+      },
+      "tips": [
+        "Eliminate: A approves the agent once with nothing checked when it runs, and D protects traffic in transit without deciding who may call.",
+        "Final two: C beats B because Zero Trust checks every request's identity and rights; a segment still trusts whatever reaches the service.",
+        "Exam cue: under Zero Trust, ask what is checked on each request; a control that trusts where a call comes from falls short, for AI agents too."
+      ],
+      "framework_ref": "NIST SP 800-207 Section 2.1 (Tenets of Zero Trust: network location alone does not imply trust, and access to each enterprise resource is granted per session); NIST SP 800-207 Section 5.7 (Use of Non-person Entities in ZTA Administration: AI and other software agents must authenticate, and an attacker may trick an agent into tasks the attacker is not privileged to perform)",
+      "related_concepts": [
+        "Zero Trust",
+        "Non-person entities",
+        "AI agents"
+      ],
+      "_provenance": "Authored from concept: notes 4B1.2 (Zero Trust Architecture: network location grants no trust; a segment narrows reach, but each request, from a user, workload or AI agent, is still verified). Round 16, 12 Nov 2026: original scenario (a home insurer's new AI claims agent that will call a payments service which accepts any request from inside the data center network) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. AI item for round 16 (fresh angle: an AI agent as a non-person caller under Zero Trust; not prompt injection, AI coding agents, AI-suggested packages, human review of AI output, vendor AI ranking, AI output validation, membership inference, fine-tuning on restricted files or second-line AI skills). Neighbours checked: crisc_d4_098 (which scenario's rating falls most under Zero Trust access: lateral movement), crisc_d4_040 (partial Zero Trust rollout), crisc_d4_062 (first process for Zero Trust), crisc_d4_087 (an AI assistant's write access to ratings: least privilege), crisc_d4_112 (an AI coding agent merging its own fixes), crisc_d4_101 (a separate segment keyed for unpatchable controllers: 4A1, legacy isolation), crisc_d2_077 (an AI assistant searching with each lawyer's access); CC cc_d4_012 (Zero Trust for a teacher on the staff network), cc_d4_190 (AI experiment servers reaching every database), cc_d3_044 (an AI assistant with an all-access account), cc_d4_026 (segments limit internal reach), cc_d4_088 (an AI scheduling agent reaching a database over an old path no Zero Trust enforcement point covers: the nearest neighbour, a CC 'which statement' item on a path that bypasses policy), cc_d3_125 (three agents sharing one service account); AAIA aaia_d1_094 (an agent's tool combinations), aaia_d2_021 (RAG through one service account), aaia_d2_017 and aaia_d2_169 (agents' service accounts trimmed to the rights each request needs); CISA d5_148 (east-west monitoring). Judged distinct: cc_d4_088 asks a network technician to name what is missing on an unenforced path, and the AAIA items trim an agent account's rights; no CRISC item keys per-request verification of a non-person caller by the service it calls, against a service that trusts network location; crisc_d4_101 keys a segment for legacy devices that cannot be patched, a different need, and here the segment is the runner-up because the called service still trusts location. Owner pattern: k=1, the lone owner option A is an easy distractor (an owner approving once, before launch); the key and runner-up name no owner. Round 16 asks: lone owner wrong on an easy distractor; key naturally the longest option (60 against 57 characters); no period word.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_129",
+      "domain": 4,
+      "subtopic": "4B2 Security/risk awareness and training. New risk owners after a restructuring",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Since a restructuring, a cosmetics brand's new risk owners send every accept-or-treat decision to the risk team, believing the decisions are its job; 14 are overdue. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Train the risk owners on the decisions their role holds",
+        "B": "Escalate the 14 overdue decisions to the executive committee",
+        "C": "Take the decisions into the risk team during the transition",
+        "D": "Add automatic reminders for overdue decisions in the register"
+      },
+      "correct": "A",
+      "key_concept": "Role-based training gives people with risk duties, such as newly appointed risk owners, what they need to make the decisions their role holds.",
+      "pre_read": "Separate the cause of the backlog from the backlog itself before judging each option.",
+      "correct_explanation": "The new owners believe these decisions belong to the risk team, so the cause is a misunderstanding of their role: role-based training shows each owner which accept-or-treat decisions are theirs, with the risk team advising. Escalating the overdue decisions is the runner-up: it clears today's backlog by moving the decisions to executives, but the owners would keep sending new ones to the risk team.",
+      "wrong_explanations": {
+        "B": "Escalation moves today's 14 decisions to executives, who do not own these risks, and leaves the cause in place, so new decisions keep coming back.",
+        "C": "Accept-or-treat decisions belong to the risk owners; the risk team advises, and deciding for them, even for a while, takes on accountability it cannot hold.",
+        "D": "Reminders tell owners a decision is late, but these owners send decisions on because they think the risk team decides, so a reminder changes nothing."
+      },
+      "tips": [
+        "Eliminate: C has the risk team take decisions that belong to the owners, and D reminds owners who are not forgetting but misreading their role.",
+        "Final two: A beats B because training fixes why the decisions reach the risk team; escalating clears the backlog but leaves the owners misreading their role.",
+        "Exam cue: when people new to a risk role keep handing their decisions back, teach the role before escalating or deciding for them."
+      ],
+      "framework_ref": "NIST CSF 2.0 PR.AT-02 (individuals in specialized roles are provided with awareness and training so that they possess the knowledge and skills to perform relevant tasks with cybersecurity risks in mind); ISACA Glossary (risk owner)",
+      "related_concepts": [
+        "Role-based training",
+        "Risk ownership",
+        "Risk-aware culture"
+      ],
+      "_provenance": "Authored from concept: notes 4B2.1 (Risk-Aware Culture and Role-Based Training: role-based training gives people with risk duties, such as new risk owners, the decisions their role holds). Round 16, 12 Nov 2026: original scenario (a cosmetics brand whose new risk owners, after a restructuring, send every accept-or-treat decision to the risk team in the belief that the decisions are its job, leaving 14 overdue) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_041 (who is accountable for risk culture), crisc_d4_065 (training for directors), crisc_d4_017 (role-based training for seasonal workers), crisc_d4_074 (contractors outside the program), crisc_d4_042 (error blamed on one clerk), crisc_d3_052 (after a reorganization, a departed owner still named: the paused 'senior management assigns the owner' family, not used here), crisc_d3_029 (escalating repeated slippage to the risk owner), crisc_d3_007 and crisc_d3_090 (owners asking the practitioner to approve or IT to own); AAIA aaia_d1_032 (model owners accepting AI risk on one accuracy figure: role-based training on judging model risk, an AI-specific skill); CC cc_d1_205 (overdue treatment through risk reporting); CISA: no item on owners handing decisions back. Judged distinct: the owners here are named and in post, so the item is not about assigning owners; the key teaches the role, the runner-up escalates the backlog. Owner pattern: k=1, the lone owner option is the key A and it is the shortest option (55 characters against 59 to 61); the runner-up B and easy distractors C and D name no owner. Round 16 asks: keyed lone owner, not the longest; 'senior management' style overreach on the runner-up (executive committee); no period word; no defer option.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_130",
+      "domain": 4,
+      "subtopic": "4B3 Data privacy and data protection principles. Ad tracking on tax-filing pages",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A tax agency's communications team put an ad platform's tracking code on its online filing pages to measure a campaign; the platform may reuse what it collects. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "List the tracking code in the site's privacy notice",
+        "B": "Get the campaign owner to approve the platform's terms",
+        "C": "Scan the filing pages for security flaws the code adds",
+        "D": "Move the tracking code to pages that hold no taxpayer data"
+      },
+      "correct": "D",
+      "key_concept": "Third-party tracking code on pages holding personal data discloses that data to the code's owner, so such code stays on pages without it.",
+      "pre_read": "Work out what the tracking code can see on each page and who receives it.",
+      "correct_explanation": "Filing pages hold taxpayer data collected to administer tax, and code on them can pass what a page shows to the platform, which may reuse it for its own ends. Moving the code to pages with no taxpayer data stops that disclosure and still measures the campaign. Listing the code in the privacy notice is the runner-up: taxpayers would be told, but their data would still go beyond the purpose it was collected for.",
+      "wrong_explanations": {
+        "A": "A notice tells taxpayers about the disclosure; it does not make sending filing data to an ad platform for its own reuse fit the purpose of collection.",
+        "B": "The campaign owner runs the campaign, not the taxpayer data; disclosure is the data owner's call, and approved terms would still let the platform reuse it.",
+        "C": "A security scan looks for weaknesses the code brings, but the privacy problem is the code working as designed and sending page data to the platform."
+      },
+      "tips": [
+        "Eliminate: B lets the campaign's owner approve disclosing data that is not theirs, and C looks for security flaws while the code works as designed.",
+        "Final two: D beats A because it stops taxpayer data reaching the platform; a notice describes the disclosure but leaves it outside the filing purpose.",
+        "Exam cue: privacy asks whether data should reach a party at all; telling people or securing the flow does not cure a disclosure beyond the purpose."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 PT-3 (Personally Identifiable Information Processing Purposes); NIST SP 800-53 Rev. 5 SA-8(33) (Security and Privacy Engineering Principles | Minimization)",
+      "related_concepts": [
+        "Purpose limitation",
+        "Third-party disclosure",
+        "Tracking code"
+      ],
+      "_provenance": "Authored from concept: notes 4B3.2 (Privacy by Design and Privacy Impact Assessment: third-party code on a page, such as ad tracking, receives what that page shows, so it stays off pages holding personal data). Round 16, 12 Nov 2026: original scenario (a tax agency whose communications team put an ad platform's tracking code on its online filing pages to measure a campaign, under terms that let the platform reuse what it collects) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_019 (a new use beyond the collection purpose: the principle identified, not a disclosure fixed), crisc_d4_047 (removing identifiers a research partner does not need; its encryption decoy not reused), crisc_d4_075 (a vendor AI tool training on customer emails; its encryption and name-removal decoys not reused), crisc_d4_100 (tied consent for AI training), crisc_d4_110 (drone video processed on board), crisc_d4_120 (an old register put online), crisc_d1_155 (a county tax office's old records: a different activity); CISA d5_029 (collect only fields with a documented purpose), d5_240 (production data in a test database); CC cc_d4_097 (remove card numbers before a cloud copy), cc_d1_127 (cross-border move); AAIA aaia_d1_041 (prompts carrying a full account record); CC cc_d4_038 (a 'Move' key for switch admin pages: a different lesson). A full-bank search for pixel, tracking code, tracker and ad platform found no item on third-party tracking code. Judged distinct. Owner pattern: k=1, the lone owner option B is an easy distractor (the wrong owner deciding: the campaign owner, not the data owner); the key and runner-up name no owner. Round 16 asks: a 'Move' key where it is genuinely right (the code moves to campaign pages, so measurement continues without taxpayer data); key naturally the longest option (58 against 54 characters); no period word; no defer option.",
+      "style_version": 2
     }
   ]
 }
