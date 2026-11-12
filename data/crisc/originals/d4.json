@@ -944,12 +944,12 @@
         "A": "Treat instruction edits as changes that need testing",
         "B": "Propose a filter that strips refund offers from chatbot replies",
         "C": "Limit instruction edits to the IT operations team",
-        "D": "Find errors in a weekly sample of chatbot conversations"
+        "D": "Find errors in a sample of live chatbot conversations"
       },
       "correct": "A",
       "key_concept": "Edits to an AI system's instructions are production changes and need testing, approval and rollback like code or model updates.",
       "pre_read": "Notice what the change policy covers and what it leaves out.",
-      "correct_explanation": "The change policy covers code and model releases but not instruction edits, yet the instructions shape what the chatbot tells customers just as code does. Treating each edit as a change means it is tested against the returns policy before customers see it and can be rolled back. A weekly review of conversations is the runner-up: it finds bad answers, but only after customers have received them.",
+      "correct_explanation": "The change policy covers code and model releases but not instruction edits, yet the instructions shape what the chatbot tells customers just as code does. Treating each edit as a change means it is tested against the returns policy before customers see it and can be rolled back. A review of sampled conversations is the runner-up: it finds bad answers, but only after customers have received them.",
       "wrong_explanations": {
         "B": "A refund filter blocks this one error; however, the next untested edit could cause a different wrong answer the filter was never built to catch.",
         "C": "Restricting who edits narrows access; however, IT operations does not own the chatbot's content, and edits would still reach customers untested.",
@@ -966,7 +966,7 @@
         "Change control",
         "Preventive control"
       ],
-      "_provenance": "Authored from concept: notes 4A3.3 AI Models in the SDLC. Round 2, 31 Oct 2026: authored from notes 4A3.3 (edits to an AI system's instructions are production changes that need testing before release); original retailer customer chatbot instructions scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): re-angled to the change policy's scope to break the mirror with CISA d4_197. Cue pass 2, 5 Nov 2026: B reworded (was 'Have the vendor filter'): a wrong option now opens 'Propose', so that opening no longer points to the key, and off the 'vendor' wording.",
+      "_provenance": "Authored from concept: notes 4A3.3 AI Models in the SDLC. Round 2, 31 Oct 2026: authored from notes 4A3.3 (edits to an AI system's instructions are production changes that need testing before release); original retailer customer chatbot instructions scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): re-angled to the change policy's scope to break the mirror with CISA d4_197. Cue pass 2, 5 Nov 2026: B reworded (was 'Have the vendor filter'): a wrong option now opens 'Propose', so that opening no longer points to the key, and off the 'vendor' wording. Cue pass 12 Nov 2026 (fixed periods): option D dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -1129,7 +1129,7 @@
         "A": "A risk team sign-off on security before each release",
         "B": "Security criteria in the team's definition of done",
         "C": "A dedicated security sprint before each major release",
-        "D": "A quarterly internal audit review of the team's backlog"
+        "D": "An internal audit review of the team's sprint backlog"
       },
       "correct": "B",
       "key_concept": "In Agile, security and control criteria in the definition of done keep risk work inside each item; the second line oversees rather than gates.",
@@ -1138,7 +1138,7 @@
       "wrong_explanations": {
         "A": "A release gate catches some gaps; however, it finds them at the end and puts the second-line risk team in the job of running a delivery control.",
         "C": "A security sprint keeps the work planned; however, it still pushes security to the end, where it competes with the release date again.",
-        "D": "Internal audit gives independent assurance; however, a quarterly review finds deferrals months later and does not change how the team finishes its work."
+        "D": "Internal audit gives independent assurance; however, a periodic review finds deferrals sprints later and does not change how the team finishes its work."
       },
       "tips": [
         "Eliminate: C still schedules security after the features, and D gives third-line assurance months later instead of preventing deferral.",
@@ -1151,7 +1151,7 @@
         "Agile backlog",
         "Three lines model"
       ],
-      "_provenance": "Authored from concept: notes 4A5.2 Project Risk and Agile Delivery. Round 2, 31 Oct 2026: authored from notes 4A5.2 (security criteria in the definition of done keep risk work inside each sprint item); original logistics firm deferred security stories scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4A5.2 Project Risk and Agile Delivery. Round 2, 31 Oct 2026: authored from notes 4A5.2 (security criteria in the definition of done keep risk work inside each sprint item); original logistics firm deferred security stories scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Cue pass 12 Nov 2026 (fixed periods): option D dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -1275,7 +1275,7 @@
       "question": "Which of the following should a risk practitioner propose as the BEST key control indicator for a magazine publisher's backup control?",
       "options": {
         "A": "Share of test restores that meet the RTO and RPO targets",
-        "B": "Share of nightly backup jobs that finish without error",
+        "B": "Share of scheduled backup jobs that finish without error",
         "C": "Number of ransomware incidents in the past year",
         "D": "Backup storage used as a share of capacity"
       },
@@ -1299,7 +1299,7 @@
         "Restore test",
         "Backup"
       ],
-      "_provenance": "Authored from concept: notes 4A6.2 Backups and Ransomware Recovery. Round 2, 31 Oct 2026: authored from notes 4A6.2 (the KCI for a backup control is restore success against RTO and RPO); original magazine publisher backup control scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4A6.2 Backups and Ransomware Recovery. Round 2, 31 Oct 2026: authored from notes 4A6.2 (the KCI for a backup control is restore success against RTO and RPO); original magazine publisher backup control scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Cue pass 12 Nov 2026 (fixed periods): option B dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -1424,7 +1424,7 @@
       "options": {
         "A": "Remove developers' administrator access to production",
         "B": "Limit each grant to the task and a few hours",
-        "C": "Review each developer's administrator grants yearly",
+        "C": "Review each developer's administrator grants periodically",
         "D": "Record each developer's acceptance of the access risk"
       },
       "correct": "B",
@@ -1433,11 +1433,11 @@
       "correct_explanation": "Least privilege covers time as well as scope. A 30-day grant for a fix that takes four hours leaves production administrator rights open far longer than the work needs, for an attacker or a mistake to use. Limiting each grant to the task and a few hours keeps emergency fixes possible while removing most of that exposure. Removing access is the runner-up: it cuts the risk but leaves no fast route for real emergencies.",
       "wrong_explanations": {
         "A": "Removal cuts exposure most and fits separation of duties; however, it leaves no fast way to fix production in a real emergency, trading one risk for another.",
-        "C": "Periodic review is useful; however, a yearly check does nothing about 30-day grants that outlast each task.",
+        "C": "Periodic review is useful; however, a periodic check does nothing about 30-day grants that outlast each task.",
         "D": "Signed acknowledgments raise awareness; however, individual developers cannot accept organizational risk, and the long grants stay in place."
       },
       "tips": [
-        "Eliminate: C reviews grants yearly without shortening any of them, and D asks individuals to accept a risk that belongs to the risk owner.",
+        "Eliminate: C reviews grants periodically without shortening any of them, and D asks individuals to accept a risk that belongs to the risk owner.",
         "Final two: B beats A because a grant sized to the task meets the emergency need with least privilege; removal cuts exposure but disables emergency response.",
         "Exam cue: least privilege applies to time as well as scope; size each grant of elevated access to the task, not to a convenient period."
       ],
@@ -1447,7 +1447,7 @@
         "Just-in-time access",
         "Privileged access"
       ],
-      "_provenance": "Authored from concept: notes 4B1.1 Core Security Principles. Round 2, 31 Oct 2026: authored from notes 4B1.1 (least privilege covers time as well as scope, so rare admin needs get time-limited access); original payroll software provider 30-day admin grant scenario (standing rights until repair round 1) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): re-angled from standing rights to the length of each grant to break the mirror with CISA d5_030; pre_read no longer points at the key; 'grant' now also in option C so the key is not the only stem echo. Review fixes 31 Oct 2026 (repair round 2, verifiers): AC-5 (Separation of Duties) citation removed because it argues for removal, not the key; the note for A now admits that pull.",
+      "_provenance": "Authored from concept: notes 4B1.1 Core Security Principles. Round 2, 31 Oct 2026: authored from notes 4B1.1 (least privilege covers time as well as scope, so rare admin needs get time-limited access); original payroll software provider 30-day admin grant scenario (standing rights until repair round 1) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): re-angled from standing rights to the length of each grant to break the mirror with CISA d5_030; pre_read no longer points at the key; 'grant' now also in option C so the key is not the only stem echo. Review fixes 31 Oct 2026 (repair round 2, verifiers): AC-5 (Separation of Duties) citation removed because it argues for removal, not the key; the note for A now admits that pull. Cue pass 12 Nov 2026 (fixed periods): option C dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -1536,7 +1536,7 @@
         "A": "A verification step in the payment process",
         "B": "Removal of the clerk from the payment process",
         "C": "Retraining for the finance team on fake invoices",
-        "D": "Monthly fraud awareness tests for the clerk"
+        "D": "Targeted fraud awareness tests for the clerk"
       },
       "correct": "A",
       "key_concept": "When an error follows the documented process, the process is the root cause; fix it before blaming or retraining the person.",
@@ -1558,7 +1558,7 @@
         "Root cause",
         "Process control"
       ],
-      "_provenance": "Authored from concept: notes 4B2.1 Risk-Aware Culture and Role-Based Training. Round 2, 31 Oct 2026: authored from notes 4B2.1 (an error made by following a weak process is fixed in the process, not by blaming the person); original builders' merchant fake invoice scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): stem no longer names the missing supplier callback, which planted the key. Review fixes 31 Oct 2026 (repair round 2, verifiers): converted to a short 'Which of the following' stem (rule 13) with the deciding fact kept in the stem; key letter unchanged. Options are now noun phrases; the finance director's demand was dropped as it only set up option B. Parity finish 31 Oct 2026: option B now also names the payment process so the key is not the only option echoing the stem's deciding fact; wrong explanation B follows. Stem turned back into a short scenario with a named role to bring the domain's 'Which of the following' share to about 29%; lesson, options and key letter unchanged.",
+      "_provenance": "Authored from concept: notes 4B2.1 Risk-Aware Culture and Role-Based Training. Round 2, 31 Oct 2026: authored from notes 4B2.1 (an error made by following a weak process is fixed in the process, not by blaming the person); original builders' merchant fake invoice scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): stem no longer names the missing supplier callback, which planted the key. Review fixes 31 Oct 2026 (repair round 2, verifiers): converted to a short 'Which of the following' stem (rule 13) with the deciding fact kept in the stem; key letter unchanged. Options are now noun phrases; the finance director's demand was dropped as it only set up option B. Parity finish 31 Oct 2026: option B now also names the payment process so the key is not the only option echoing the stem's deciding fact; wrong explanation B follows. Stem turned back into a short scenario with a named role to bring the domain's 'Which of the following' share to about 29%; lesson, options and key letter unchanged. Cue pass 12 Nov 2026 (fixed periods): option D dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -1718,7 +1718,7 @@
       "bloom_level": "Application",
       "question": "An electricity distributor's data owner signed an agreement letting a university partner study household energy use, and the monthly smart-meter extracts include customers' names and street addresses. What should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "Encrypt the extracts before each monthly email is sent",
+        "A": "Encrypt the extracts before each email is sent",
         "B": "Add a confidentiality clause to the sharing agreement",
         "C": "Stop the sharing until the partner passes a security audit",
         "D": "Remove the identifiers the agreed research does not need"
@@ -1743,7 +1743,7 @@
         "Data sharing agreement",
         "Data lifecycle"
       ],
-      "_provenance": "Authored from concept: notes 4A4.1 (Data Lifecycle, Classification and Ownership: sharing is a lifecycle stage controlled by owner-approved agreements, and classification sets sharing limits) and 4B3.1 (only the data the purpose needs is collected and kept). Round 3, 4 Nov 2026: original scenario (electricity distributor whose owner-approved smart-meter extracts to a university partner include customers' names and street addresses) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): the stem now states that the extracts hold names, addresses and usage, so the explanation's case against removing names rests on stem facts; option C names the partner so the key is not the only option echoing it. Cross-domain fixes 4 Nov 2026: re-angled from 'data owner sets terms' (duplicated crisc_d4_007; 'owner' sat only in the key) to minimization at the sharing stage; internal audit is no longer a filler distractor. Principle moved from advise-dont-decide to root-cause-over-symptom; now cites NIST SP 800-53 Rev. 5 SA-8(33) (re-opened and Verified 4 Nov 2026) with CA-3, no longer ISACA Glossary (data owner). 'still' dropped from the gate's stem to meet the 35-word limit; key_concept and correct_explanation trimmed to the length limits; key says 'agreed research' rather than the gate's 'agreed study', so no stem word sits only in the key; pre_read reworded so it shares no word with the key; exam cue worded apart from aaia_d1_041 (prompt minimization, a different scenario). Checked against crisc_d4_043 (privacy by design at collection; different stage and question). Key unchanged (D).",
+      "_provenance": "Authored from concept: notes 4A4.1 (Data Lifecycle, Classification and Ownership: sharing is a lifecycle stage controlled by owner-approved agreements, and classification sets sharing limits) and 4B3.1 (only the data the purpose needs is collected and kept). Round 3, 4 Nov 2026: original scenario (electricity distributor whose owner-approved smart-meter extracts to a university partner include customers' names and street addresses) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): the stem now states that the extracts hold names, addresses and usage, so the explanation's case against removing names rests on stem facts; option C names the partner so the key is not the only option echoing it. Cross-domain fixes 4 Nov 2026: re-angled from 'data owner sets terms' (duplicated crisc_d4_007; 'owner' sat only in the key) to minimization at the sharing stage; internal audit is no longer a filler distractor. Principle moved from advise-dont-decide to root-cause-over-symptom; now cites NIST SP 800-53 Rev. 5 SA-8(33) (re-opened and Verified 4 Nov 2026) with CA-3, no longer ISACA Glossary (data owner). 'still' dropped from the gate's stem to meet the 35-word limit; key_concept and correct_explanation trimmed to the length limits; key says 'agreed research' rather than the gate's 'agreed study', so no stem word sits only in the key; pre_read reworded so it shares no word with the key; exam cue worded apart from aaia_d1_041 (prompt minimization, a different scenario). Checked against crisc_d4_043 (privacy by design at collection; different stage and question). Key unchanged (D). Cue pass 12 Nov 2026 (fixed periods): option A dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -2090,7 +2090,7 @@
       "options": {
         "A": "Extend the block to personal phones on the guest Wi-Fi",
         "B": "Discipline staff who admit using personal phones for work",
-        "C": "Add the AI chat risk to the yearly awareness course",
+        "C": "Add the AI chat risk to the staff awareness course",
         "D": "Offer an approved AI tool with clear rules on client data"
       },
       "correct": "D",
@@ -2100,7 +2100,7 @@
       "wrong_explanations": {
         "A": "Blocking more networks pushes use further out of sight, because phones on mobile data bypass any Wi-Fi block.",
         "B": "Punishing staff who admit the habit discourages honest answers and leaves unmet the need that drives the use.",
-        "C": "Awareness is part of the answer; however, a yearly course without an approved tool leaves staff with the same need and the same workaround."
+        "C": "Awareness is part of the answer; however, a course without an approved tool leaves staff with the same need and the same workaround."
       },
       "tips": [
         "Eliminate: A pushes use further out of sight, and B discourages the honest reporting the survey depended on.",
@@ -2113,7 +2113,7 @@
         "Security awareness program",
         "Acceptable use policy (AUP)"
       ],
-      "_provenance": "Authored from concept: notes 4B2.2 (Measuring Awareness, Phishing Simulations and Shadow AI: shadow AI is an awareness topic, and awareness works best paired with an approved alternative because bans push use underground). Round 3, 4 Nov 2026: original scenario (accounting firm whose block on public AI sites moved use to personal phones) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4B2.2 (Measuring Awareness, Phishing Simulations and Shadow AI: shadow AI is an awareness topic, and awareness works best paired with an approved alternative because bans push use underground). Round 3, 4 Nov 2026: original scenario (accounting firm whose block on public AI sites moved use to personal phones) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Cue pass 12 Nov 2026 (fixed periods): option C dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -2236,9 +2236,9 @@
       "bloom_level": "Foundational",
       "question": "Which of the following should a risk practitioner propose as the BEST key risk indicator of security risk building up in a bank's Agile delivery program?",
       "options": {
-        "A": "Number of sprints the teams complete each quarter",
+        "A": "Number of sprints the teams complete on schedule",
         "B": "Count of security backlog items deferred across sprints",
-        "C": "Number of security flaws found in production each quarter",
+        "C": "Number of security flaws found in production",
         "D": "Share of team members who finished secure coding training"
       },
       "correct": "B",
@@ -2261,7 +2261,7 @@
         "Leading indicator",
         "Backlog"
       ],
-      "_provenance": "Authored from concept: notes 4A5.2 (Project Risk and Agile Delivery: risk items sit in the backlog, and growing deferred security work is an early warning that risk is building). Round 3, 4 Nov 2026: original scenario (bank Agile program choosing a security KRI) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4A5.2 (Project Risk and Agile Delivery: risk items sit in the backlog, and growing deferred security work is an early warning that risk is building). Round 3, 4 Nov 2026: original scenario (bank Agile program choosing a security KRI) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Cue pass 12 Nov 2026 (fixed periods): option A dropped an incidental period word. Cue pass 12 Nov 2026 (fixed periods): option C dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -2459,8 +2459,8 @@
       "question": "A payments company's risk analyst is rating its CI/CD pipeline's peer-review gate, which pipeline administrators can switch off. Which of the following is the MOST reliable evidence that the gate works?",
       "options": {
         "A": "The pipeline setting that blocks merges without a second review",
-        "B": "Engineering's monthly report of releases that passed the gate",
-        "C": "Each engineer's yearly statement of following the review rule",
+        "B": "Engineering's report of releases that passed the gate",
+        "C": "Each engineer's signed statement of following the review rule",
         "D": "Internal audit's match of sampled releases to their review records"
       },
       "correct": "D",
@@ -2470,7 +2470,7 @@
       "wrong_explanations": {
         "A": "The setting shows the gate's design today; administrators can switch it off, so it says nothing about releases already made.",
         "B": "Engineering runs the gate and reports on its own work, and a count of passed releases cannot show the ones that bypassed it.",
-        "C": "A yearly statement records what engineers say they do, not what was released, and it comes from the people the gate checks."
+        "C": "A signed statement records what engineers say they do, not what was released, and it comes from the people the gate checks."
       },
       "tips": [
         "Eliminate: B is engineering reporting on its own gate, and C is a statement from the people the gate checks; neither tests what was released.",
@@ -2483,7 +2483,7 @@
         "Pipeline controls",
         "Control effectiveness evidence"
       ],
-      "_provenance": "Authored from concept: notes 4A2.3 (DevOps and Pipeline Controls: separation of duties is kept by a second person's review before merge; whoever controls the pipeline controls production; a gate is shown to work by testing real releases, such as internal audit matching a sample to review records). Round 5, 4 Nov 2026: original scenario (a payments company's risk analyst rating a peer-review gate that pipeline administrators can switch off; internal audit keyed in its independent-assurance role) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_050 (the risk function monitors gates rather than approving releases), crisc_d1_078 (who gives the board independent assurance), crisc_d1_035, crisc_d1_037, crisc_d3_101 and crisc_d3_113 (CRISC); CISA d3_009, d3_033 and d3_127; AAIA aaia_d2_004. Judged distinct: none weighs an independent test of releases against a gate setting that administrators can switch off.",
+      "_provenance": "Authored from concept: notes 4A2.3 (DevOps and Pipeline Controls: separation of duties is kept by a second person's review before merge; whoever controls the pipeline controls production; a gate is shown to work by testing real releases, such as internal audit matching a sample to review records). Round 5, 4 Nov 2026: original scenario (a payments company's risk analyst rating a peer-review gate that pipeline administrators can switch off; internal audit keyed in its independent-assurance role) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_050 (the risk function monitors gates rather than approving releases), crisc_d1_078 (who gives the board independent assurance), crisc_d1_035, crisc_d1_037, crisc_d3_101 and crisc_d3_113 (CRISC); CISA d3_009, d3_033 and d3_127; AAIA aaia_d2_004. Judged distinct: none weighs an independent test of releases against a gate setting that administrators can switch off. Cue pass 12 Nov 2026 (fixed periods): option B dropped an incidental period word. Cue pass 12 Nov 2026 (fixed periods): option C dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -2496,14 +2496,14 @@
       "question": "A theater chain replaced its ticketing system but left the database running on an unpatched cloud server with 900,000 customer records. Which of the following should the risk practitioner recommend to BEST prevent a repeat?",
       "options": {
         "A": "A retirement phase in each project that replaces a system",
-        "B": "A quarterly scan for cloud servers with no named owner",
+        "B": "An automated scan for cloud servers with no named owner",
         "C": "Deletion of the database and the server it runs on",
         "D": "The ticketing system owner's acceptance of the server risk"
       },
       "correct": "A",
       "key_concept": "The SDLC ends with disposal: a replacement project retires the old data, servers and access as a planned step, so nothing keeps running unowned.",
       "pre_read": "Note the goal the question sets for the recommendation.",
-      "correct_explanation": "The database outlived the system it served, which shows retiring old components was not a planned step, so the next replacement can leave the same gap. A retirement phase in each such project names who removes or archives the old data, servers and access, and confirms it is done. A quarterly scan is the runner-up; it would find leftovers, but only after they have sat exposed and unpatched.",
+      "correct_explanation": "The database outlived the system it served, which shows retiring old components was not a planned step, so the next replacement can leave the same gap. A retirement phase in each such project names who removes or archives the old data, servers and access, and confirms it is done. An automated scan is the runner-up; it would find leftovers, but only after they have sat exposed and unpatched.",
       "wrong_explanations": {
         "B": "A scan finds leftover servers after they have sat exposed and unpatched; it detects the gap rather than closing it in each project.",
         "C": "Removing this database, once the data owner rules on keeping its records, deals with the case found; the next replacement can leave the same gap.",
@@ -2520,7 +2520,7 @@
         "SDLC phases",
         "Decommissioning"
       ],
-      "_provenance": "Authored from concept: notes 4A3.1 (Risk Across the SDLC Phases: disposal is planned as a project step, so the old system's data, servers and access are retired or archived and confirmed). Round 5, 4 Nov 2026: original scenario (a theater chain's replaced ticketing system leaving its database on an unpatched cloud server with 900,000 customer records) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_030 (unclaimed records), crisc_d4_032 (open risks at project closure), crisc_d4_008 and crisc_d4_052 (CRISC); CISA d3_114 (what to confirm before shutting a legacy system), d4_254 and d1_174; CC cc_d4_060. Judged distinct: none keys a disposal phase in the SDLC as the fix for systems left running after a replacement. Review fixes 4 Nov 2026 (standards audit and concept review): pre_read made neutral (it no longer rules out the clean-up option before the options are read); notes 4A3.1 disposal bullet now says the old data is archived or securely destroyed as the data owner decides. Cue pass 5 Nov 2026: B now scans for servers with no named owner (was servers no team uses), a second owner-naming distractor, so owner options no longer point to the key.",
+      "_provenance": "Authored from concept: notes 4A3.1 (Risk Across the SDLC Phases: disposal is planned as a project step, so the old system's data, servers and access are retired or archived and confirmed). Round 5, 4 Nov 2026: original scenario (a theater chain's replaced ticketing system leaving its database on an unpatched cloud server with 900,000 customer records) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_030 (unclaimed records), crisc_d4_032 (open risks at project closure), crisc_d4_008 and crisc_d4_052 (CRISC); CISA d3_114 (what to confirm before shutting a legacy system), d4_254 and d1_174; CC cc_d4_060. Judged distinct: none keys a disposal phase in the SDLC as the fix for systems left running after a replacement. Review fixes 4 Nov 2026 (standards audit and concept review): pre_read made neutral (it no longer rules out the clean-up option before the options are read); notes 4A3.1 disposal bullet now says the old data is archived or securely destroyed as the data owner decides. Cue pass 5 Nov 2026: B now scans for servers with no named owner (was servers no team uses), a second owner-naming distractor, so owner options no longer point to the key. Cue pass 12 Nov 2026 (fixed periods): option B dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -2717,7 +2717,7 @@
       "bloom_level": "Application",
       "question": "An insurer's awareness program covers only employees; its 200 staffing-firm contractors with administrator rights take the firm's general course, which omits the insurer's policies and incident reporting. What should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "Yearly proof the contractors finished the firm's awareness course",
+        "A": "Proof the contractors finished the staffing firm's awareness course",
         "B": "A contract clause making the staffing firm liable to the insurer",
         "C": "The business owner's acceptance of the contractors' training gap",
         "D": "The insurer's own security training for the contractors"
@@ -2742,7 +2742,7 @@
         "Contractors",
         "Third-party personnel"
       ],
-      "_provenance": "Authored from concept: notes 4B2.1 (Risk-Aware Culture and Role-Based Training: awareness reaches everyone with access, contractors included; a supplier's general course does not teach the organization's own policies, systems and reporting routes). Round 5, 4 Nov 2026: original scenario (an insurer's employee-only awareness program while 200 staffing-firm IT contractors hold administrator rights to claims systems) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_017 (seasonal workers' onboarding training), crisc_d4_065 (director training), crisc_d4_049 and crisc_d3_055 (a contractor's leftover access) (CRISC); CISA d2_101 and d5_101; CC and AAIA have no item on contractors outside an awareness program. Judged distinct: none keys bringing a supplier's staff into the organization's own awareness program. Review fixes 4 Nov 2026 (standards audit and concept review): the stem now states that the firm's course omits the insurer's policies and incident reporting, the fact the explanation uses against the runner-up ('to claims systems' dropped to stay within 35 words); the key is the insurer's own security training, which also covers the duties administrator rights carry, and the item now also cites NIST CSF 2.0 PR.AT-02 (specialized roles); pre_read reworded. Neighbours checked: CISA d5_199 (contractors outside onboarding; policy acknowledgment as a condition of access) judged distinct: this keys the content only the insurer can teach, with proof of the supplier's course as the runner-up. Re-blind fix 4 Nov 2026: runner-up moved from A to B, since the stem now states the firm's course omits the insurer's rules. Cross-domain fixes 4 Nov 2026 (round 5): option C names the business owner, not a claims owner the stem never mentions.",
+      "_provenance": "Authored from concept: notes 4B2.1 (Risk-Aware Culture and Role-Based Training: awareness reaches everyone with access, contractors included; a supplier's general course does not teach the organization's own policies, systems and reporting routes). Round 5, 4 Nov 2026: original scenario (an insurer's employee-only awareness program while 200 staffing-firm IT contractors hold administrator rights to claims systems) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_017 (seasonal workers' onboarding training), crisc_d4_065 (director training), crisc_d4_049 and crisc_d3_055 (a contractor's leftover access) (CRISC); CISA d2_101 and d5_101; CC and AAIA have no item on contractors outside an awareness program. Judged distinct: none keys bringing a supplier's staff into the organization's own awareness program. Review fixes 4 Nov 2026 (standards audit and concept review): the stem now states that the firm's course omits the insurer's policies and incident reporting, the fact the explanation uses against the runner-up ('to claims systems' dropped to stay within 35 words); the key is the insurer's own security training, which also covers the duties administrator rights carry, and the item now also cites NIST CSF 2.0 PR.AT-02 (specialized roles); pre_read reworded. Neighbours checked: CISA d5_199 (contractors outside onboarding; policy acknowledgment as a condition of access) judged distinct: this keys the content only the insurer can teach, with proof of the supplier's course as the runner-up. Re-blind fix 4 Nov 2026: runner-up moved from A to B, since the stem now states the firm's course omits the insurer's rules. Cross-domain fixes 4 Nov 2026 (round 5): option C names the business owner, not a claims owner the stem never mentions. Cue pass 12 Nov 2026 (fixed periods): option A dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -2867,7 +2867,7 @@
       "options": {
         "A": "Conversion of the archive to a widely supported format",
         "B": "A retained copy of the document system, kept by its owner",
-        "C": "Yearly integrity checks on the archive in its current format",
+        "C": "Routine integrity checks on the archive in its current format",
         "D": "A shorter retention period agreed with the records' owner"
       },
       "correct": "A",
@@ -2890,7 +2890,7 @@
         "Retention schedule",
         "System retirement"
       ],
-      "_provenance": "Authored from concept: notes 4A4.2 (Retention and Sanitization: a retention schedule sets periods from legal and business needs; archives stay readable for the whole retention period, so records move to a supported format before the software that reads them retires). Round 6, 4 Nov 2026: original scenario (a pension fund with a 60-year legal retention period retiring the only document system that reads its archive) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_068 (a retirement phase after a database was left running), crisc_d4_008 (deletion never set up), crisc_d4_022 (delayed legacy retirement), crisc_d4_037 (vendor data in its own format: exit terms) and crisc_d4_058 (CRISC); CISA d3_114 (reconcile and archive legacy data before shutdown), d4_249 and d5_069 (archives unreadable after key loss), d4_254 (a legacy ERP kept for interfaces) and d2_209; CC cc_d5_021 (legal hold during destruction) and cc_d4_060 (key destruction at cloud exit); AAIA aaia_d1_174 (keeping records of past model decisions) and aaia_d2_029. Judged distinct: those key archiving or deleting at retirement, or key recovery; this keys keeping archived records readable for a legal retention period after the only software that reads them retires; keep apart from d4_068 in practice sets. Cue pass 5 Nov 2026: B now has the system's owner keep the retained copy, a second owner-naming distractor, so owner options no longer point to the key.",
+      "_provenance": "Authored from concept: notes 4A4.2 (Retention and Sanitization: a retention schedule sets periods from legal and business needs; archives stay readable for the whole retention period, so records move to a supported format before the software that reads them retires). Round 6, 4 Nov 2026: original scenario (a pension fund with a 60-year legal retention period retiring the only document system that reads its archive) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_068 (a retirement phase after a database was left running), crisc_d4_008 (deletion never set up), crisc_d4_022 (delayed legacy retirement), crisc_d4_037 (vendor data in its own format: exit terms) and crisc_d4_058 (CRISC); CISA d3_114 (reconcile and archive legacy data before shutdown), d4_249 and d5_069 (archives unreadable after key loss), d4_254 (a legacy ERP kept for interfaces) and d2_209; CC cc_d5_021 (legal hold during destruction) and cc_d4_060 (key destruction at cloud exit); AAIA aaia_d1_174 (keeping records of past model decisions) and aaia_d2_029. Judged distinct: those key archiving or deleting at retirement, or key recovery; this keys keeping archived records readable for a legal retention period after the only software that reads them retires; keep apart from d4_068 in practice sets. Cue pass 5 Nov 2026: B now has the system's owner keep the retained copy, a second owner-naming distractor, so owner options no longer point to the key. Cue pass 12 Nov 2026 (fixed periods): option C dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -2979,20 +2979,20 @@
         "A": "Privacy officer sign-off on each assessment before build",
         "B": "A fuller assessment template with more privacy questions",
         "C": "A go-live check confirming each mitigation is in place",
-        "D": "A yearly privacy audit of each launch's mitigations"
+        "D": "An internal privacy audit of each launch's mitigations"
       },
       "correct": "C",
       "key_concept": "A privacy impact assessment reduces risk only when its mitigations are built, so a check before go-live confirms each one is in place.",
       "pre_read": "Note what went right and what went wrong across the five launches.",
-      "correct_explanation": "The assessments found the privacy risks and named mitigations. The failure came later, when a third of those mitigations were never built, so the target privacy risk each owner approved, which counted those mitigations, was not the risk that went live. A go-live check that each mitigation is in place closes that gap before personal data is exposed. A yearly privacy audit is the runner-up; it gives assurance, but finds the gap after launch.",
+      "correct_explanation": "The assessments found the privacy risks and named mitigations. The failure came later, when a third of those mitigations were never built, so the target privacy risk each owner approved, which counted those mitigations, was not the risk that went live. A go-live check that each mitigation is in place closes that gap before personal data is exposed. An internal privacy audit is the runner-up; it gives assurance, but finds the gap after launch.",
       "wrong_explanations": {
         "A": "The assessments were already approved; another sign-off before build adds review where the process was working, not where the mitigations went missing.",
         "B": "The assessments found the risks and named mitigations; more questions improve analysis that was not the gap, and unbuilt mitigations would still go live.",
-        "D": "An audit gives independent assurance, but a yearly check finds missing mitigations months after launch, once people's data has already been exposed."
+        "D": "An audit gives independent assurance, but an audit finds missing mitigations after launch, once people's data has already been exposed."
       },
       "tips": [
         "Eliminate: A and B strengthen the assessment itself, which was approved and named the mitigations; the gap opened between approval and launch.",
-        "Final two: C beats D because a check before go-live stops a launch without its mitigations; a yearly audit finds them missing after the exposure.",
+        "Final two: C beats D because a check before go-live stops a launch without its mitigations; an audit finds them missing after the exposure.",
         "Exam cue: a privacy impact assessment helps only through mitigations that get built; look for a control between approval and launch, not a better assessment."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 RA-8 (Privacy Impact Assessments); NIST SP 800-37 Rev. 2 Task I-1 (Control Implementation: implement the controls in the security and privacy plans)",
@@ -3001,7 +3001,7 @@
         "Phase gate",
         "Target risk"
       ],
-      "_provenance": "Authored from concept: notes 4B3.2 (Privacy by Design and Privacy Impact Assessment: PIA mitigations become requirements with owners, and a check before go-live confirms each is built; the notes' review focus compares PIA mitigations with the controls actually implemented). Round 7, 4 Nov 2026: original scenario (an insurer whose five approved privacy impact assessments named mitigations, a third of which were never built) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. 4B3 angle: every fresh privacy idea mirrored an existing item, so this takes the angle the 4B3.2 notes teach (audit_focus.review 'Compare PIA mitigations with the controls actually implemented') that no item keyed. Neighbours checked: crisc_d4_020 (update the PIA when sharing changes), crisc_d4_043 (evidence of privacy by design), crisc_d4_031 (security criteria in the definition of done), crisc_d4_068 (a retirement phase), crisc_d3_069 (plan complete but above target); AAIA aaia_d1_042 (PIA scope limited to security) and aaia_d1_016 (PIA update for re-identification); CISA d2_084 (a DPIA first), d2_223 (undisclosed processing), d3_078 (privacy checks at sprint planning), d3_120 (a PIR finds a missing approval workflow) and d3_102 (PIR recommendations without owners); CC has no PIA item. Judged distinct: this keys a launch check on PIA mitigations, with a yearly privacy audit as the runner-up. Review fixes 4 Nov 2026 (round 7 audit and concept review): explanation and related concept say target risk, not residual risk, since the mitigations the owners counted were never built (audit, calibration rule 9).",
+      "_provenance": "Authored from concept: notes 4B3.2 (Privacy by Design and Privacy Impact Assessment: PIA mitigations become requirements with owners, and a check before go-live confirms each is built; the notes' review focus compares PIA mitigations with the controls actually implemented). Round 7, 4 Nov 2026: original scenario (an insurer whose five approved privacy impact assessments named mitigations, a third of which were never built) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. 4B3 angle: every fresh privacy idea mirrored an existing item, so this takes the angle the 4B3.2 notes teach (audit_focus.review 'Compare PIA mitigations with the controls actually implemented') that no item keyed. Neighbours checked: crisc_d4_020 (update the PIA when sharing changes), crisc_d4_043 (evidence of privacy by design), crisc_d4_031 (security criteria in the definition of done), crisc_d4_068 (a retirement phase), crisc_d3_069 (plan complete but above target); AAIA aaia_d1_042 (PIA scope limited to security) and aaia_d1_016 (PIA update for re-identification); CISA d2_084 (a DPIA first), d2_223 (undisclosed processing), d3_078 (privacy checks at sprint planning), d3_120 (a PIR finds a missing approval workflow) and d3_102 (PIR recommendations without owners); CC has no PIA item. Judged distinct: this keys a launch check on PIA mitigations, with a yearly privacy audit as the runner-up. Review fixes 4 Nov 2026 (round 7 audit and concept review): explanation and related concept say target risk, not residual risk, since the mitigations the owners counted were never built (audit, calibration rule 9). Cue pass 12 Nov 2026 (fixed periods): option D dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -3013,7 +3013,7 @@
       "bloom_level": "Application",
       "question": "A bank's change board spends each weekly meeting on 120 changes, mostly certificate renewals that have never failed; two outages came from complex changes it passed quickly. What should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "A separate weekly board meeting for certificate renewals",
+        "A": "A separate board meeting for certificate renewals",
         "B": "Pre-approval of these renewals as standard changes",
         "C": "A longer checklist for the changes the board reviews",
         "D": "Board approval waived for changes by senior engineers"
@@ -3038,7 +3038,7 @@
         "Change advisory board (CAB)",
         "Risk-based review"
       ],
-      "_provenance": "Authored from concept: notes 4A2.1 (Change and Configuration Management: low-risk, repeatable changes can be pre-approved, so review effort follows risk). Round 7, 4 Nov 2026: original scenario (a bank's change board spending its weekly meeting on certificate renewals that have never failed, while complex changes it passed quickly caused two outages) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_003 (standard changes without board review are not the concern), crisc_d4_024 (rising emergency changes), crisc_d4_059 (a change called too small still has its impact assessed: pre-approval follows a proven low-risk record, not size), crisc_d4_077 (a baseline deviation), crisc_d3_035 (targets set by risk); AAIA aaia_d2_007 (prompt edits wrongly logged as pre-approved standard changes, consistent: only proven low-risk changes qualify); CC cc_d5_084 (which change fits the standard type); CISA d3_013 (a board that checks only description and timing), d4_185 (emergency fixes) and d4_271 (testing approved change records). Judged distinct: this keys moving board time to risky changes through pre-approval, with a separate meeting for renewals as the runner-up.",
+      "_provenance": "Authored from concept: notes 4A2.1 (Change and Configuration Management: low-risk, repeatable changes can be pre-approved, so review effort follows risk). Round 7, 4 Nov 2026: original scenario (a bank's change board spending its weekly meeting on certificate renewals that have never failed, while complex changes it passed quickly caused two outages) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_003 (standard changes without board review are not the concern), crisc_d4_024 (rising emergency changes), crisc_d4_059 (a change called too small still has its impact assessed: pre-approval follows a proven low-risk record, not size), crisc_d4_077 (a baseline deviation), crisc_d3_035 (targets set by risk); AAIA aaia_d2_007 (prompt edits wrongly logged as pre-approved standard changes, consistent: only proven low-risk changes qualify); CC cc_d5_084 (which change fits the standard type); CISA d3_013 (a board that checks only description and timing), d4_185 (emergency fixes) and d4_271 (testing approved change records). Judged distinct: this keys moving board time to risky changes through pre-approval, with a separate meeting for renewals as the runner-up. Cue pass 12 Nov 2026 (fixed periods): option A dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -3199,7 +3199,7 @@
       "question": "A bank's AI assistant drafts the board's risk report using an account that can edit risk ratings; last quarter it lowered an owner-approved rating. What should the risk practitioner recommend to BEST prevent a repeat?",
       "options": {
         "A": "Human review of each drafted report before the board sees it",
-        "B": "A yearly internal audit review of the AI assistant",
+        "B": "An internal audit review of the AI assistant",
         "C": "A change history kept for the ratings the assistant edits",
         "D": "Read-only access to the risk ratings for the assistant"
       },
@@ -3209,11 +3209,11 @@
       "correct_explanation": "Drafting a report needs only to read ratings, yet the assistant's account can change them, so a model error or a manipulated prompt can rewrite what an owner approved. Least privilege removes that cause: with read-only access, any rating change has to go back through its owner. Human review of each report is the runner-up: the reviewer sees a report that matches the altered rating, and the access that allowed the change stays.",
       "wrong_explanations": {
         "A": "A reviewer checks the draft against ratings that already hold the change, so the edit can pass unnoticed, and the access that allowed it remains.",
-        "B": "Internal audit gives periodic assurance; a yearly review finds the problem months later and leaves the access that causes it in place.",
+        "B": "Internal audit gives periodic assurance; a review finds the problem after the fact and leaves the access that causes it in place.",
         "C": "A change history shows edits after they happen and helps only if someone reads it; the assistant can still change ratings that owners approved."
       },
       "tips": [
-        "Eliminate: B gives assurance a year later without removing the access, and C records edits the assistant can still make.",
+        "Eliminate: B gives assurance after the fact without removing the access, and C records edits the assistant can still make.",
         "Final two: D beats A because a reviewer compares the draft with ratings that already hold the change; removing the edit right stops it at its source.",
         "Exam cue: when a person or AI tool holds access its task does not need, remove the access before adding reviews or logs around it."
       ],
@@ -3223,7 +3223,7 @@
         "AI tool access",
         "Integrity of risk data"
       ],
-      "_provenance": "Authored from concept: notes 4B1.1 (Core Security Principles: each user, system and AI tool gets only the access its task needs; critical tasks are split so no one person can complete and hide a harmful action). Round 8, 5 Nov 2026: original scenario (a bank's AI assistant that drafts the board's risk report through an account able to edit ratings, which lowered an owner-approved rating) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 8 AI item. Neighbours checked: crisc_d4_039 (time-limited administrator grants), crisc_d4_048 (limits on an AI agent acting alone), crisc_d4_050 (the analyst asked to approve releases), crisc_d4_067 (a pipeline gate its administrators can switch off), crisc_d2_077 (an AI assistant searching over-shared folders), crisc_d3_022 (an owner's recorded decisions); CC cc_d3_125 (AI agents sharing one service account) and cc_d4_088 (an AI agent outside Zero Trust enforcement); AAIA aaia_d2_086 (a facilities agent able to do too much) and aaia_d2_128 (an analytics assistant on a server with finance credentials); CISA d2_037 (a compensating control for an engineer with deploy and database rights) and d5_274 (payables duties). Judged distinct: this keys least privilege for an AI tool that reads the register to draft reports, with human review of the report as the runner-up. Review fixes 5 Nov 2026 (round 8 standards audit, ISACA concept review and blind test): pre_read no longer points at the assistant's access; options B and D swapped to balance D4 application keys (key now D, was B).",
+      "_provenance": "Authored from concept: notes 4B1.1 (Core Security Principles: each user, system and AI tool gets only the access its task needs; critical tasks are split so no one person can complete and hide a harmful action). Round 8, 5 Nov 2026: original scenario (a bank's AI assistant that drafts the board's risk report through an account able to edit ratings, which lowered an owner-approved rating) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 8 AI item. Neighbours checked: crisc_d4_039 (time-limited administrator grants), crisc_d4_048 (limits on an AI agent acting alone), crisc_d4_050 (the analyst asked to approve releases), crisc_d4_067 (a pipeline gate its administrators can switch off), crisc_d2_077 (an AI assistant searching over-shared folders), crisc_d3_022 (an owner's recorded decisions); CC cc_d3_125 (AI agents sharing one service account) and cc_d4_088 (an AI agent outside Zero Trust enforcement); AAIA aaia_d2_086 (a facilities agent able to do too much) and aaia_d2_128 (an analytics assistant on a server with finance credentials); CISA d2_037 (a compensating control for an engineer with deploy and database rights) and d5_274 (payables duties). Judged distinct: this keys least privilege for an AI tool that reads the register to draft reports, with human review of the report as the runner-up. Review fixes 5 Nov 2026 (round 8 standards audit, ISACA concept review and blind test): pre_read no longer points at the assistant's access; options B and D swapped to balance D4 application keys (key now D, was B). Cue pass 12 Nov 2026 (fixed periods): option B dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -3496,7 +3496,7 @@
       "options": {
         "A": "The start-up failing and the line's model being lost",
         "B": "Unsafe heating changes made through the cloud platform",
-        "C": "Sensor data showing the dairy's daily output volumes",
+        "C": "Sensor data showing the dairy's milk output volumes",
         "D": "Cloud storage costs rising as sensor data builds up"
       },
       "correct": "B",
@@ -3519,7 +3519,7 @@
         "Digital twin",
         "Safety impact"
       ],
-      "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: identify new threats, including cloud paths to physical controls, and weigh them against the objective). Round 9, 5 Nov 2026: original short stem (a dairy's digital twin of its pasteurizing line on a start-up's cloud platform that can change heating settings) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_037 (exit terms for a drone start-up; its key is this item's runner-up), crisc_d4_063 (central face templates), crisc_d4_072 (private 5G across 14 plants), crisc_d4_036 (pause conditions for a headset pilot), crisc_d4_048 (an AI agent scheduling line shutdowns), crisc_d4_013 (vendor claims for blockchain), crisc_d2_078 (rating a treatment-plant failure by safety impact), crisc_d2_018 (a water utility's control system intrusion scenario); CISA d1_129 (vendor remote access to SCADA), d4_192 (SCADA lines in continuity planning) and d4_199 (ransomware on a chemical plant's SCADA); CC cc_d3_039 (operators able to change chlorine dosing). No bank holds a digital twin item. Judged distinct: this ranks a new cloud-to-process control path above vendor failure for an emerging technology before adoption; the setting moved from a water utility to a dairy to stay apart from crisc_d2_078.",
+      "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: identify new threats, including cloud paths to physical controls, and weigh them against the objective). Round 9, 5 Nov 2026: original short stem (a dairy's digital twin of its pasteurizing line on a start-up's cloud platform that can change heating settings) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_037 (exit terms for a drone start-up; its key is this item's runner-up), crisc_d4_063 (central face templates), crisc_d4_072 (private 5G across 14 plants), crisc_d4_036 (pause conditions for a headset pilot), crisc_d4_048 (an AI agent scheduling line shutdowns), crisc_d4_013 (vendor claims for blockchain), crisc_d2_078 (rating a treatment-plant failure by safety impact), crisc_d2_018 (a water utility's control system intrusion scenario); CISA d1_129 (vendor remote access to SCADA), d4_192 (SCADA lines in continuity planning) and d4_199 (ransomware on a chemical plant's SCADA); CC cc_d3_039 (operators able to change chlorine dosing). No bank holds a digital twin item. Judged distinct: this ranks a new cloud-to-process control path above vendor failure for an emerging technology before adoption; the setting moved from a water utility to a dairy to stay apart from crisc_d2_078. Cue pass 12 Nov 2026 (fixed periods): option C dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -3717,14 +3717,14 @@
       "question": "A semiconductor fab's lithography controllers run an operating system the vendor no longer patches; replacement is due in 2029, and their analyzed risk is above appetite. What should the risk practitioner recommend as BEST?",
       "options": {
         "A": "Acceptance of the risk by the lithography process owner",
-        "B": "Monthly scans of the controllers, reported to the process owner",
+        "B": "Vulnerability scans of the controllers, reported to the process owner",
         "C": "Isolation of the controllers on a separate network segment",
         "D": "A request that the process owner raise the risk appetite"
       },
       "correct": "C",
       "key_concept": "Unpatchable legacy technology needs a compensating control, such as isolation, until replacement; finding flaws no one can fix lowers nothing.",
       "pre_read": "Note where the rating sits against appetite and what the vendor still provides.",
-      "correct_explanation": "With no patches coming and replacement years away, the risk above appetite must be treated now. Isolating the controllers on a separate segment removes most routes an attacker could use to reach them; NIST SP 800-53 SA-22 names isolation as a way to reduce the risk of unsupported components. Monthly scans are the runner-up: they show which flaws exist, but none can be patched, so the exposure stays above appetite.",
+      "correct_explanation": "With no patches coming and replacement years away, the risk above appetite must be treated now. Isolating the controllers on a separate segment removes most routes an attacker could use to reach them; NIST SP 800-53 SA-22 names isolation as a way to reduce the risk of unsupported components. Vulnerability scans are the runner-up: they show which flaws exist, but none can be patched, so the exposure stays above appetite.",
       "wrong_explanations": {
         "A": "An owner may accept risk within appetite; this rating is above it, so the process owner cannot accept it, and the exposure would continue as it is.",
         "B": "Scans list the controllers' flaws, but the vendor issues no patches, so the findings cannot be fixed and the exposure stays where it is.",
@@ -3741,7 +3741,7 @@
         "Unsupported systems",
         "Compensating controls"
       ],
-      "_provenance": "Authored from concept: notes 4A1.3 (Technical Debt and Legacy Systems: options for legacy risk include isolating with compensating controls until a dated replacement; scanning a system that can no longer be patched finds flaws but lowers no risk). Round 11, 5 Nov 2026: original scenario (a semiconductor fab's lithography controllers on an operating system the vendor no longer patches, replacement due in 2029, analyzed risk above appetite) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_002 (a legacy court system said to need no risk entry), crisc_d4_022 (a retirement slip and re-rating), crisc_d4_064 (technical debt restated as business loss), crisc_d4_091 (acceptance of an unsupported server above the director's money limit), crisc_d1_110 (vendor support end dates in the asset inventory), crisc_d3_146 (an unpatched bus-routing server's exception reviewed at its due date), crisc_d2_026 (monthly scans read as low exposure), crisc_d2_096 (rating an airport's baggage-sorting controllers); CISA d4_255 (formal acceptance with a funded exit plan for an isolated unsupported OS) and d5_326 (segmenting printers and badge readers exempt from network access control); AAIA aaia_d2_031 (a chip fab's wafer-defect model rollback); CC cc_d4_158 (a PaaS runtime losing support) and cc_d4_115 (separate switches for a heating plant's safety controllers). Judged distinct: no bank item keys isolation as the treatment for unpatchable legacy technology above appetite, and the final two is isolation against scanning flaws that cannot be fixed. Owner pattern: the key names no owner; the runner-up B and both easy distractors (A, D) name the process owner, so the key is the lone option without an owner. Review fixes 5 Nov 2026 (round 11 audit, concept review and blind test): owner shape varied (rule 20): runner-up B now reports to the process owner, so the owner options are no longer exactly the Eliminate pair.",
+      "_provenance": "Authored from concept: notes 4A1.3 (Technical Debt and Legacy Systems: options for legacy risk include isolating with compensating controls until a dated replacement; scanning a system that can no longer be patched finds flaws but lowers no risk). Round 11, 5 Nov 2026: original scenario (a semiconductor fab's lithography controllers on an operating system the vendor no longer patches, replacement due in 2029, analyzed risk above appetite) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_002 (a legacy court system said to need no risk entry), crisc_d4_022 (a retirement slip and re-rating), crisc_d4_064 (technical debt restated as business loss), crisc_d4_091 (acceptance of an unsupported server above the director's money limit), crisc_d1_110 (vendor support end dates in the asset inventory), crisc_d3_146 (an unpatched bus-routing server's exception reviewed at its due date), crisc_d2_026 (monthly scans read as low exposure), crisc_d2_096 (rating an airport's baggage-sorting controllers); CISA d4_255 (formal acceptance with a funded exit plan for an isolated unsupported OS) and d5_326 (segmenting printers and badge readers exempt from network access control); AAIA aaia_d2_031 (a chip fab's wafer-defect model rollback); CC cc_d4_158 (a PaaS runtime losing support) and cc_d4_115 (separate switches for a heating plant's safety controllers). Judged distinct: no bank item keys isolation as the treatment for unpatchable legacy technology above appetite, and the final two is isolation against scanning flaws that cannot be fixed. Owner pattern: the key names no owner; the runner-up B and both easy distractors (A, D) name the process owner, so the key is the lone option without an owner. Review fixes 5 Nov 2026 (round 11 audit, concept review and blind test): owner shape varied (rule 20): runner-up B now reports to the process owner, so the owner options are no longer exactly the Eliminate pair. Cue pass 12 Nov 2026 (fixed periods): option B dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -3978,7 +3978,7 @@
         "A": "Fine estimates added to the archive's leak ratings",
         "B": "Availability harm rated with the archive's business owner",
         "C": "Integrity harm rated with the archive's business owner",
-        "D": "Quarterly tests of the archive's encryption strength"
+        "D": "Independent tests of the archive's encryption strength"
       },
       "correct": "C",
       "key_concept": "Rate each risk by its harm to confidentiality, integrity and availability; for signed records used as evidence, integrity weighs most, whatever the encryption.",
@@ -4000,7 +4000,7 @@
         "Non-repudiation",
         "Impact rating"
       ],
-      "_provenance": "Authored from concept: notes 4B1.1 (Core Security Principles: CIA names what an event harms, shaping the impact rating; encryption mainly guards confidentiality, not integrity, which includes non-repudiation). Round 12, 5 Nov 2026: original scenario (an e-signature provider whose register rates its encrypted signed-contract archive only on leak harm, while customers rely on the contracts as evidence in disputes) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_015 (conflicting duties), crisc_d4_053 (removing layers around customer data), crisc_d4_016 (lowering ratings after a framework assessment), crisc_d4_073 (two firewalls with copied rules), crisc_d4_078 (an archive tied to a retiring system), crisc_d2_097 (a recovery rank used to rate leak and tampering impact), crisc_d1_119 (an AI model's tampering impact rated at build cost); CISA d4_244 (sealing archived logs kept as evidence); CC cc_d1_112 (encryption said to prove files were not altered), cc_d1_026 (integrity first for published tide tables), cc_d1_156 (shared-key codes and non-repudiation). Options compared with every 4B1 item; an early easy distractor that lowered ratings to credit encryption was replaced, as it repeated crisc_d4_016's lowering pattern. Judged distinct: no CRISC item asks which CIA harm a register misses for an encrypted archive of signed records; CISA d4_244 keys a sealing control, and the CC items name a property, not a register rating. Owner pattern: k=2, the key C and the runner-up B both name the archive's business owner; the easy distractors name none. Review fixes 5 Nov 2026 (round 12 audit, concept review and blind test): tips and key_concept no longer say encryption does nothing for integrity (authenticated encryption detects tampering); the notes 4B1.1 bullet is softened the same way.",
+      "_provenance": "Authored from concept: notes 4B1.1 (Core Security Principles: CIA names what an event harms, shaping the impact rating; encryption mainly guards confidentiality, not integrity, which includes non-repudiation). Round 12, 5 Nov 2026: original scenario (an e-signature provider whose register rates its encrypted signed-contract archive only on leak harm, while customers rely on the contracts as evidence in disputes) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_015 (conflicting duties), crisc_d4_053 (removing layers around customer data), crisc_d4_016 (lowering ratings after a framework assessment), crisc_d4_073 (two firewalls with copied rules), crisc_d4_078 (an archive tied to a retiring system), crisc_d2_097 (a recovery rank used to rate leak and tampering impact), crisc_d1_119 (an AI model's tampering impact rated at build cost); CISA d4_244 (sealing archived logs kept as evidence); CC cc_d1_112 (encryption said to prove files were not altered), cc_d1_026 (integrity first for published tide tables), cc_d1_156 (shared-key codes and non-repudiation). Options compared with every 4B1 item; an early easy distractor that lowered ratings to credit encryption was replaced, as it repeated crisc_d4_016's lowering pattern. Judged distinct: no CRISC item asks which CIA harm a register misses for an encrypted archive of signed records; CISA d4_244 keys a sealing control, and the CC items name a property, not a register rating. Owner pattern: k=2, the key C and the runner-up B both name the archive's business owner; the easy distractors name none. Review fixes 5 Nov 2026 (round 12 audit, concept review and blind test): tips and key_concept no longer say encryption does nothing for integrity (authenticated encryption detects tampering); the notes 4B1.1 bullet is softened the same way. Cue pass 12 Nov 2026 (fixed periods): option D dropped an incidental period word.",
       "style_version": 2
     },
     {
@@ -4012,15 +4012,15 @@
       "bloom_level": "Analysis",
       "question": "Which of the following BEST shows a risk practitioner whether a benefits administrator's staff report their own data-handling mistakes?",
       "options": {
-        "A": "Share of simulated phishing emails that staff report each month",
+        "A": "Share of simulated phishing emails that staff report",
         "B": "Share of staff who say in surveys they would report mistakes",
-        "C": "Monthly count of data-handling mistakes staff report themselves",
+        "C": "Count of data-handling mistakes staff report themselves",
         "D": "Share of filter-flagged misdirected files their senders reported"
       },
       "correct": "D",
       "key_concept": "Measure reporting culture by behavior against an independent record: the share of detected mistakes that staff reported themselves, not intent or raw counts.",
       "pre_read": "Decide what the measure must show before reading the options.",
-      "correct_explanation": "Reporting culture shows in what people do after a mistake. Comparing the misdirected member files the email filter flags with those their senders reported gives a share that rises only when more mistakes are reported. A monthly count of self-reported mistakes is the runner-up: it is real behavior, but a fall could mean fewer mistakes or more hidden ones, and the count alone cannot tell which.",
+      "correct_explanation": "Reporting culture shows in what people do after a mistake. Comparing the misdirected member files the email filter flags with those their senders reported gives a share that rises only when more mistakes are reported. A count of self-reported mistakes is the runner-up: it is real behavior, but a fall could mean fewer mistakes or more hidden ones, and the count alone cannot tell which.",
       "wrong_explanations": {
         "A": "Reporting a phishing lure costs staff nothing; owning up to their own mistake is a different behavior, and this measure says nothing about it.",
         "B": "A survey records what staff say they would do; reporting culture is judged by what they do when a real mistake happens.",
@@ -4037,7 +4037,7 @@
         "Awareness metrics",
         "Self-reporting"
       ],
-      "_provenance": "Authored from concept: notes 4B2.2 (Measuring Awareness, Phishing Simulations and Shadow AI: measure behavior, not attendance; outcome measures include the share of independently detected mistakes that staff reported themselves). Round 12, 5 Nov 2026: original scenario (a payroll provider measuring whether staff report their own data-handling mistakes, such as payroll files sent to the wrong client, which its email filter also flags) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_018 (tracking whether AI-use training works), crisc_d1_046 (gauging a freight forwarder's risk culture), crisc_d1_024 (near-miss reports that fell once they counted against ratings), crisc_d4_042 (an error blamed on one clerk), crisc_d4_035 (a backup control indicator); CC cc_d2_077 (signs that a culture program works: staff report their own mistakes), cc_d2_089 (bonuses tied to course completion), cc_d2_015 and cc_d2_139 (falling phishing reports), cc_d2_108 (report and click rates with a harder lure); CISA d5_226 (report rate when click rates are flat), d5_227 (observed behavior against completion and quiz scores). Options compared with every 4B2 item; an early completion-rate distractor was replaced, as it repeated crisc_d4_018's. Judged distinct: cc_d2_077 keys self-reporting as a sign of culture; this item's final two is a share of independently detected mistakes against a raw count of self-reports. Owner pattern: no option names an owner. Review fixes 5 Nov 2026 (round 12 audit, concept review and blind test): option D shortened so the key is no longer the longest option. Review fixes 5 Nov 2026 (round 12 cross-domain gate): setting changed from payroll provider (five stems) to benefits administrator.",
+      "_provenance": "Authored from concept: notes 4B2.2 (Measuring Awareness, Phishing Simulations and Shadow AI: measure behavior, not attendance; outcome measures include the share of independently detected mistakes that staff reported themselves). Round 12, 5 Nov 2026: original scenario (a payroll provider measuring whether staff report their own data-handling mistakes, such as payroll files sent to the wrong client, which its email filter also flags) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_018 (tracking whether AI-use training works), crisc_d1_046 (gauging a freight forwarder's risk culture), crisc_d1_024 (near-miss reports that fell once they counted against ratings), crisc_d4_042 (an error blamed on one clerk), crisc_d4_035 (a backup control indicator); CC cc_d2_077 (signs that a culture program works: staff report their own mistakes), cc_d2_089 (bonuses tied to course completion), cc_d2_015 and cc_d2_139 (falling phishing reports), cc_d2_108 (report and click rates with a harder lure); CISA d5_226 (report rate when click rates are flat), d5_227 (observed behavior against completion and quiz scores). Options compared with every 4B2 item; an early completion-rate distractor was replaced, as it repeated crisc_d4_018's. Judged distinct: cc_d2_077 keys self-reporting as a sign of culture; this item's final two is a share of independently detected mistakes against a raw count of self-reports. Owner pattern: no option names an owner. Review fixes 5 Nov 2026 (round 12 audit, concept review and blind test): option D shortened so the key is no longer the longest option. Review fixes 5 Nov 2026 (round 12 cross-domain gate): setting changed from payroll provider (five stems) to benefits administrator. Cue pass 12 Nov 2026 (fixed periods): option A dropped an incidental period word. Cue pass 12 Nov 2026 (fixed periods): option C dropped an incidental period word.",
       "style_version": 2
     },
     {
