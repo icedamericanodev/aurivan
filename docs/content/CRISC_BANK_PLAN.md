@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 15 done 12 Nov 2026 (bank 625, on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 16 done 12 Nov 2026 (bank 650, on the outline weights). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 625 reviewed (163 / 137 / 200 / 125) after round 15, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 650 reviewed (169 / 143 / 208 / 130) after round 16, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -651,6 +651,41 @@ fixing a missing control that both raises likelihood and voids insurance
 - Owner shapes: lone owners on easy distractors in at least half of lone-owner items, keyed in about a third (bank lone owner in the final two now 66%, target 65% or less). Openers: key one "Move", one "Rely", one "Number of …" and one "Keep" option where justified.
 - Settings: no hotel group, transport at most 2, health at most 4, no charity, NGO, refugee or leisure settings; non-overlapping sector lists per author.
 - Keep apart in practice sets: d1_157/d3_138/d1_050/d3_188, d3_195/d3_040, d3_194/d3_098, d3_198/d1_103, d3_200/d1_116, d1_163/d4_045, d3_196/d4_037, d1_159/d1_042/d3_125, d2_137/d2_025.
+
+### Round 16 (12 Nov 2026): 25 items, bank 650
+
+Round 16 added 6 D1 (`crisc_d1_164`–`169`), 6 D2 (`crisc_d2_138`–`143`),
+8 D3 (`crisc_d3_201`–`208`) and 5 D4 (`crisc_d4_126`–`130`) items, one AI item
+per domain on a fresh angle. Highlights: an AI offer engine that meets its sales
+measure while working against a retention objective (d1_164), apparent
+retaliation against a reporter referred to whoever protects reporters before the
+reported risk is rated (d1_166), a detector judged by its miss rate on the rare
+item it exists to catch (d2_138), the BIA at project approval, before hosting and
+recovery design (d2_141), COBIT 2019 design factors (d3_203), an AI agent's
+containment rate as a KPI rather than a KRI (d3_206), testing the hand-back to
+the main site (d4_127), per-call Zero Trust checks for an AI agent (d4_128) and
+tracking code kept off pages with taxpayer data (d4_130). Two items key waiting
+for the next scheduled review because the stem says no trigger is met (d1_169,
+d3_207), so "wait" is no longer an always-wrong answer.
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 picks matched the keys (21 sure); d1_165's key echoed the stem, d3_204's requester was ambiguous |
+| Standards audit and concept review | 0 HARD ERRORS. d1_165's options evened and its stem lists all three inventory fields; d2_141's stem moved to project approval so the BIA-timing key holds; d3_207 lost a stock acceptance distractor; d3_203 cites the COBIT 2019 Design Guide; the SP 800-207 Section 5.7 bullet now says agents are assumed to authenticate. d2_138's key became a miss rate, not a raw count; d3_204's requester is the control owner, with internal audit as the wrong decider. Overstated rules fixed on retaliation referral, own failure history, Zero Trust checks and tracking code. Three keys lost a length lead; two D1 notes subtopics trimmed back |
+| Re-blind of changed items | 16/16 matched (14 sure, 2 unsure on fair runners-up), then 2/2 after the last edits |
+| Cross-domain gate | 0 HARD ERRORS, 4 PRECISION: d3_204's D explanation sends a weakening change to the risk owner (it had said the control owner); d3_206's cue no longer calls a lagging signal leading; d3_205 re-angled off d2_132; d1_165 rests on business impact (criticality and sensitivity), not criticality alone. Defer family: 6 keyed waits against 50 wrong defer options; striking every defer option now scores 29.9% |
+| Gates | All lints 0 errors; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes; no run of three identical keys; balance exactly 26/22/32/20; longest-option rates 19–20% |
+
+**Next round (round 17, +25 to 675):** D1 +7, D2 +5, D3 +8, D4 +5 (176/148/216/135), which also levels every key spread.
+- Keys: D1 A2 B2 C2 D1, D2 A1 B1 C1 D2, D3 two of each, D4 A1 B2 C2 D0. Difficulty (F/A/An): D1 1/4/2, D2 0/4/1, D3 1/5/2, D4 0/4/1. Round 18 to 700 is then +6/+6/+8/+5.
+- AI angles the bank lacks: D1 AI systems missing from the asset inventory (1A6); D2 a downloaded model as a supply-chain threat, or synthetic data passed off as real; D3 an AI decision the business cannot explain to those affected; D4 synthetic or masked data for AI testing (4A4).
+- Defer family: one genuine keyed wait in D2 and one in D4 (no-trigger fact in the stem, "next" or "scheduled" in the key); no keyed wait in D1 or D3; no new wrong defer option. Target strike-defer 28% or less.
+- Owner shapes: at least 3 two-owner items split the pair; 2 three-owner items, at most one keying the non-owner; lone owners on easy distractors in at least half of one-owner items, keyed in about a third and never as the longest option.
+- Openers: key Have/Ask in 6–8 items (striking them now wins 30%); put Evaluate, Estimate, Require, Match, Train and Define on wrong options; keep each/every/all off keys unless a distractor has one too. No D4 key longest by characters or words; pad a distractor in d4_116, d4_128 and d4_062 to bring D4's by-words rate down from 26%.
+- Settings (each once, non-overlapping): D1 law firm, mining company, wind-farm operator, dairy cooperative, translation agency, waste-management firm, elevator maintenance company; D2 geological survey, irrigation district, contract research lab, recruitment firm, patent office; D3 desalination plant, airport ground handler, engineering consultancy, cold-storage warehouse, print works, tea exporter, flower grower, parking operator; D4 smart-meter installer, customs broker, solar installer, election commission, public transit authority.
+- Pause (on top of round 16's list): an AI tool meets its own metric while harming an objective; combining overlapping records so each event counts once; procedure vs standard approver; own history vs changed conditions; a KPI offered as a KRI; Zero Trust per-request checks; BIA timing for a new system.
+- Re-check any explanation a fix rewrites against the notes' who-decides rules (d3_204's D was a late blind-test fix that contradicted them).
+- Keep apart in practice sets: d3_205/d2_132/d3_041, d3_204/d1_157/d3_138, d1_165/d2_097, d1_164/d1_125/d2_085, the six keyed waits d1_169/d3_207/d1_123/d1_139/d3_146/d3_161 and their twins, d2_140/d2_096/d2_103, d1_167/d1_050.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`
