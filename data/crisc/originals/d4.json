@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026. Round 3 crisc_d4_046 to crisc_d4_065, 4 Nov 2026. Round 5 crisc_d4_066 to crisc_d4_075, 4 Nov 2026. Round 6 crisc_d4_076 to crisc_d4_079, 4 Nov 2026. Round 7 crisc_d4_080 to crisc_d4_085, 4 Nov 2026. Round 8 crisc_d4_086 to crisc_d4_090, 5 Nov 2026. Round 9 crisc_d4_091 to crisc_d4_095, 5 Nov 2026. Round 10 crisc_d4_096 to crisc_d4_100, 5 Nov 2026. Round 11 crisc_d4_101 to crisc_d4_105, 5 Nov 2026. Round 12 crisc_d4_106 to crisc_d4_110, 5 Nov 2026. Round 13 crisc_d4_111 to crisc_d4_115, 12 Nov 2026. Round 14 crisc_d4_116 to crisc_d4_120, 12 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026. Round 3 crisc_d4_046 to crisc_d4_065, 4 Nov 2026. Round 5 crisc_d4_066 to crisc_d4_075, 4 Nov 2026. Round 6 crisc_d4_076 to crisc_d4_079, 4 Nov 2026. Round 7 crisc_d4_080 to crisc_d4_085, 4 Nov 2026. Round 8 crisc_d4_086 to crisc_d4_090, 5 Nov 2026. Round 9 crisc_d4_091 to crisc_d4_095, 5 Nov 2026. Round 10 crisc_d4_096 to crisc_d4_100, 5 Nov 2026. Round 11 crisc_d4_101 to crisc_d4_105, 5 Nov 2026. Round 12 crisc_d4_106 to crisc_d4_110, 5 Nov 2026. Round 13 crisc_d4_111 to crisc_d4_115, 12 Nov 2026. Round 14 crisc_d4_116 to crisc_d4_120, 12 Nov 2026. Round 15 crisc_d4_121 to crisc_d4_125, 12 Nov 2026.",
     "schema_version": 1
   },
   "domain": 4,
@@ -4445,6 +4445,191 @@
         "Data owner"
       ],
       "_provenance": "Authored from concept: notes 4B3.1 (Privacy Principles: only the data the purpose needs is collected, kept or disclosed; old records still hold personal data while the people in them are alive). Round 14, 12 Nov 2026: original scenario (a national library that plans to put a scanned 1970s school register online, with pupils' names, birth dates and disciplinary notes, while most pupils are likely still alive) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_019 (inferring health from purchase history), crisc_d4_043 (privacy by design defaults), crisc_d4_044 (published trip records linkable to people), crisc_d4_060 (deletion requests missing two stores), crisc_d4_089 (PIA ratings starting from members' harm), crisc_d4_100 (separate consent for AI training), crisc_d4_110 (drone video processed on board), crisc_d4_047 and crisc_d4_103 (4A4); CISA d5_029 (onboarding fields collected in case analytics needs them), d2_210 (purchase histories kept past retention), d5_021, d2_086; CC cc_d1_120 (scanned passports raise breach impact), cc_d1_153 (hashes for a film archive); AAIA: no item on publishing historical records. An earlier draft (reader search histories kept for services not yet designed, with consent as runner-up) was dropped because it mirrored CISA d5_029. Judged distinct: no bank item publishes old records about living people; the final two is withholding before release against a takedown route after it. Owner pattern: k=2, the key C and the runner-up B are the two owner options (round 14 owner-shape ask); the easy distractors A and D name none. Review fixes 12 Nov 2026 (round 14 cross-domain gate): key_concept now says records hold personal data 'at least' while the people live, matching notes 4B3.1 (some laws protect records of the dead). setting moved from a national library to a national archive (the round 14 brief bars culture settings; school registers are archive records).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_121",
+      "domain": 4,
+      "subtopic": "4A1 Technology roadmaps and enterprise architecture (EA). Old and new systems side by side",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An auto parts supplier's ERP move runs old and new systems side by side, passing orders between them, but its architecture review covered only the finished design. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "A risk assessment of each interim stage of the move",
+        "B": "Reconciliation of the orders passed between the two systems",
+        "C": "The order process owner's approval of the finished design",
+        "D": "A post-implementation assessment once the new ERP is fully live"
+      },
+      "correct": "A",
+      "key_concept": "A phased move creates interim states, with old and new systems linked, whose risks a review of the finished design does not cover.",
+      "pre_read": "Note what the review looked at, and when each part of the move happens.",
+      "correct_explanation": "Running old and new systems side by side, with orders passing between them, adds links and complexity that exist only during the move; a review of the finished design never saw them. Assessing each interim stage finds those risks so controls can be chosen. Reconciling orders between the systems is the runner-up: a sound control for one likely risk, but it is chosen before the interim risks are analyzed and may miss others.",
+      "wrong_explanations": {
+        "B": "Reconciliation catches orders lost or altered between the systems, one interim risk; chosen before the interim stages are assessed, it may leave others, such as extra access paths, untreated.",
+        "C": "The finished design was already reviewed; the owner approving it says nothing about the months when old and new systems run together and exchange orders.",
+        "D": "An assessment after go-live comes once the interim stages are over, so whatever risk they carried would already have been borne, not managed."
+      },
+      "tips": [
+        "Eliminate: C approves a finished design that was already reviewed, and D assesses only after the interim stages have passed.",
+        "Final two: A beats B because the interim risks are not yet analyzed; reconciliation treats one of them before anyone knows what the rest are.",
+        "Exam cue: when a change runs in stages, the in-between states carry their own risk; assess those, not only the end state, before choosing controls."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SA-8(7) (Security and Privacy Engineering Principles | Reduced Complexity: running older and newer technologies side by side during a transition temporarily increases system complexity); NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked)",
+      "related_concepts": [
+        "Technology roadmap",
+        "Transition states in a migration",
+        "Change risk assessment"
+      ],
+      "_provenance": "Authored from concept: notes 4A1.2 (Technology Roadmaps and Off-Roadmap Technology: each roadmap milestone carries a risk assessment, including interim stages when old and new systems run side by side). Round 15, 12 Nov 2026: original scenario (an auto parts supplier whose ERP move runs old and new systems side by side, passing orders between them, while its architecture review covered only the finished design) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_001 (off-roadmap survey tool), crisc_d4_022 (a legacy retirement that slipped 18 months: re-rate), crisc_d4_046 (EA links for an integration's impact), crisc_d4_054 (strategy change and an old roadmap), crisc_d4_066, crisc_d4_080 (reassess before renewing an acceptance after a platform move), crisc_d4_101, crisc_d4_111 (EA repository older than an acquisition), crisc_d4_102 (a change that broke an unlisted system), crisc_d3_039 (interim controls while plant servers are replaced); CISA d2_146 (phased handover with parallel running and go/no-go gates), d3_036 (phased core-banking rollout), d3_060 (sequence migrations by risk), d3_114 (reconciliation sign-off before legacy shutdown), d3_049 (cutover reconciliation tolerances); CC: no item on unassessed interim states; AAIA: none on migration states. Judged distinct: no bank item keys assessing the interim states that a target-state review left out; the runner-up (reconciliation) is a control chosen before analysis, not a cutover gate. Owner pattern: k=1, the lone owner option C is wrong and sits on an easy distractor (an owner approving the wrong thing; round 15 ask 7); the key A and the runner-up B name no owner. Round 15 asks: no period word on any option; opener 'A risk assessment' keyed, 'Have/Keep' unused here.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_122",
+      "domain": 4,
+      "subtopic": "4A2 Operations management. A security patch during a change freeze",
+      "principle_id": "proportionate-response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "During an online marketplace's peak-season change freeze, its payment software vendor releases a patch for a flaw that attackers are actively exploiting. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Install the patch now and log the change after the freeze",
+        "B": "Keep the freeze and install the patch once it ends",
+        "C": "Route the patch through the emergency change process",
+        "D": "Have the platform owner waive testing to install it sooner"
+      },
+      "correct": "C",
+      "key_concept": "A change freeze does not stop urgent fixes; they go through the emergency change route, with fast approval, testing and a back-out plan.",
+      "pre_read": "Weigh what the freeze protects against what the flaw threatens before reading the options.",
+      "correct_explanation": "An actively exploited flaw in payment software is hard to leave open through peak season, yet the freeze exists to stop unplanned breakage. The emergency change process serves both: fast, authorized approval, testing in proportion to the urgency, a back-out plan and a review afterward. Installing now and logging later is the runner-up: it is quick, but skips approval, testing and back-out, so a faulty install could stop payments at the busiest time.",
+      "wrong_explanations": {
+        "A": "Logging afterward keeps a record but skips the approval, testing and back-out plan that make an urgent change safe; a faulty install could halt payments at peak.",
+        "B": "Holding the patch leaves an actively exploited flaw open in payment software through the busiest period; a freeze channels urgent fixes through a controlled route rather than blocking them.",
+        "D": "Testing is what keeps an urgent patch from breaking payments; the platform owner waiving it swaps one risk for another, outside the emergency approval route."
+      },
+      "tips": [
+        "Eliminate: B leaves an exploited flaw open through peak season, and D drops the testing that keeps an urgent patch from breaking payments.",
+        "Final two: C beats A because the emergency route keeps approval, testing and back-out at speed; logging after the fact keeps only the record.",
+        "Exam cue: urgency changes the change path, not the need for control; look for the emergency process rather than a bypass or a delay."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SI-2 (Flaw Remediation: test updates for effectiveness and side effects before installation, install security-relevant updates within an organization-defined time period, and incorporate flaw remediation into configuration management); NIST SP 800-128 Section 3.3.2 (Implement the Configuration Change Control Process: unscheduled changes are reviewed by the CCB as soon as practical)",
+      "related_concepts": [
+        "Emergency change",
+        "Change freeze",
+        "Patch management"
+      ],
+      "_provenance": "Authored from concept: notes 4A2.1 (Change and Configuration Management: emergency changes, including urgent fixes in a change freeze, go through an emergency approver, then are documented and reviewed). Round 15, 12 Nov 2026: original scenario (an online marketplace in its peak-season change freeze when the vendor of its payment software releases a patch for an actively exploited flaw) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_003 (emergency changes with no review afterward), crisc_d4_024 (emergency changes rising to 30%), crisc_d4_050, crisc_d4_067, crisc_d4_082 (standard changes for certificate renewals), crisc_d4_077, crisc_d4_112, crisc_d3_137 (a patch KRI that rises each holiday change freeze); CISA d4_033 (an actively exploited flaw in a monthly patch release: expedite it and test the rest as usual), d4_023 (test in staging, deploy with rollback), d4_186 (order patches by active exploitation), d4_148 (operators changing job schedules without tickets: formal change control with an emergency route), d3_035 (error-budget release freeze), d4_177, d5_154 (an unticketed console change restored from baseline); CC cc_d5_016 (patch the actively exploited flaw first); CC has no change-freeze item; AAIA: none. Judged distinct: no bank item puts an urgent security patch against a change freeze (the CISA and CC items rank or expedite patches with no freeze in force); the final two is the emergency route against install-now-log-later. Not a faulty-vendor-update scenario: the patch is sound and the question is the change path. Owner pattern: k=1, the lone owner option D is wrong and sits on an easy distractor (an owner waiving testing; round 15 ask 7); the key C and the runner-up A name no owner. Round 15 asks: the next 'Keep' option is the wrong no-change move (B); a 'Have' opener on a wrong option (D); no period word on any option.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_123",
+      "domain": 4,
+      "subtopic": "4A4 Data lifecycle management. Restricted files in a training set",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A law firm will fine-tune a drafting assistant on all closed matter files for use by every lawyer; most files are open only to their matter team. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Have the data owners reclassify the matter files for firm-wide use",
+        "B": "Exclude restricted matter files from the training set",
+        "C": "Add output filters that strip client names from drafts",
+        "D": "Have the system owner encrypt the training set at rest"
+      },
+      "correct": "B",
+      "key_concept": "Access rules do not carry into a trained model, which can repeat what it learned; train only on data all its users may see.",
+      "pre_read": "Compare who may open each file today with who will use the assistant.",
+      "correct_explanation": "Fine-tuning folds every file into the model, and a model can repeat what it learned (data memorization); the per-matter access rules on the files do not come with it. Excluding restricted matter files keeps what the assistant can repeat within what every lawyer may already see. Output filters stripping client names are the runner-up: they catch one identifier, but facts, strategy and terms from restricted matters could still surface in drafts.",
+      "wrong_explanations": {
+        "A": "Classification follows the files' sensitivity and the firm's duty to each client, not a tool's needs; relabeling them would open restricted matters to every lawyer.",
+        "C": "Filters catch the identifiers they are told to look for; a draft can still reveal a restricted matter's facts or strategy with no client name in it.",
+        "D": "Encryption at rest protects the stored training set from theft, but the model has already learned its content and can repeat it to any user."
+      },
+      "tips": [
+        "Eliminate: A relabels restricted files to suit the tool, and D protects the stored copy while the model still holds what it learned.",
+        "Final two: B beats C because it keeps restricted content out of the model; filters screen only some of what the model might repeat.",
+        "Exam cue: access rules stay with the files, not with a model trained on them; match what goes into training to who will use the model."
+      ],
+      "framework_ref": "NIST AI 600-1 Section 2.4 (Data Privacy: models may leak sensitive information included in their training data, a problem referred to as data memorization); NIST SP 800-53 Rev. 5 AC-6 (Least Privilege); ISACA Glossary (data classification)",
+      "related_concepts": [
+        "AI training data",
+        "Need to know",
+        "Data classification"
+      ],
+      "_provenance": "Authored from concept: notes 4A4.3 (AI Training Data Through the Lifecycle: access rules do not travel into a trained model, so training data is limited to what all its users may see). Round 15, 12 Nov 2026: original scenario (a law firm that will fine-tune a drafting assistant on all closed matter files for every lawyer, while most files are open only to their matter team) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. AI item for round 15 (fresh angle: per-matter access rules lost when files become training data; not prompt injection, coding agents, AI-suggested packages, human review of output or vendor ranking tools). Neighbours checked: crisc_d4_021 (law firm AI contract-review tool outside the target architecture), crisc_d4_029, crisc_d4_058, crisc_d4_085 (license for training), crisc_d4_069 (joined data classed for what it reveals), crisc_d4_093, crisc_d4_087 (an AI assistant's access), crisc_d2_077 (a law firm AI assistant searching with each lawyer's access over over-shared folders); CC cc_d4_045 (a fine-tuned model kept private as it can leak claims), cc_d3_117 (an agent keeps case-note access after a role change); AAIA aaia_d1_043 (extraction tests for memorized family details), aaia_d1_103 (retrieval instead of fine-tuning so deletions take effect), aaia_d1_014 (a model reproducing an erased user's essays); CISA: no item on training across access boundaries. Retrieval neighbours: CC cc_d3_044 (an AI assistant searching all shares through an all-access account: limit it to files the asker can open) and AAIA aaia_d2_021 (RAG over manager-only salary files through one service account). Judged distinct: crisc_d2_077 keys over-wide folder permissions for retrieval, and cc_d3_044 and aaia_d2_021 scope retrieval to each user's access, which a retrieval system can enforce per request; the key was worded 'Exclude restricted matter files from the training set' rather than 'limit to files every lawyer may open' to keep its option skeleton apart from cc_d3_044; here the files are correctly restricted and the training step itself would erase the boundary; the AAIA items test for or design around memorization of personal data, not need-to-know between internal teams. Owner pattern: k=2, both owner options (A, D) are the easy distractors and the key B names no owner (shape: key outside the owner pair). Round 15 asks: 'Have' openers on two wrong options; no period word on any option.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_124",
+      "domain": 4,
+      "subtopic": "4A5 Portfolio and project management. A vendor building for a fixed price",
+      "principle_id": "transfer-keeps-accountability",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A vendor is building a regional hospital's patient portal for a fixed price, reporting only dates and budget; the hospital keeps no risk log for the project. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Rely on the fixed price to cap the hospital's exposure",
+        "B": "Ask internal audit to review the vendor's project methods",
+        "C": "Add a late-delivery penalty to the vendor's contract",
+        "D": "Have the portal's owner review project risks with the vendor"
+      },
+      "correct": "D",
+      "key_concept": "A fixed price moves overrun costs to the vendor, not the hospital's accountability for the portal's risks, which its business owner keeps tracking.",
+      "pre_read": "List what the vendor's reports cover and what they leave out.",
+      "correct_explanation": "A fixed price moves overrun costs to the vendor, yet the hospital still answers for a portal that will hold patient data, and the vendor's reports say nothing on security, privacy or quality. Having the portal's business owner review project risks with the vendor gives the hospital that view. A late-delivery penalty is the runner-up: it adds leverage on dates, but prices one risk and may push the vendor to cut testing.",
+      "wrong_explanations": {
+        "A": "A fixed price caps what the hospital pays, not what it could lose; a breach of patient data or a faulty portal would still land on the hospital.",
+        "B": "Internal audit gives independent assurance; asking it to review the vendor's methods does not give the portal's owner a running view of the project's risks.",
+        "C": "A penalty compensates for lateness, one risk among many, and can push the vendor to trim testing to hit the date; it shows nothing of the other risks."
+      },
+      "tips": [
+        "Eliminate: A treats a cap on cost as a cap on the hospital's loss, and B hands the project's risk view to assurance rather than to its owner.",
+        "Final two: D beats C because a penalty only prices lateness; the portal's owner still needs to see and act on the project's other risks.",
+        "Exam cue: contracts and penalties move cost, not accountability; the business owner keeps tracking the risks of work a vendor delivers."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.SC-07 (the risks posed by a supplier, their products and services and other third parties are understood, recorded, prioritized, assessed, responded to and monitored); ISACA Glossary (risk transfer); ISACA Glossary (risk owner)",
+      "related_concepts": [
+        "Risk transfer",
+        "Project risk log",
+        "Vendor-delivered projects"
+      ],
+      "_provenance": "Authored from concept: notes 4A5.2 (Project Risk and Agile Delivery: project risk covers delivery and the finished system's operating risks, even under a vendor's fixed-price contract). Round 15, 12 Nov 2026: original scenario (a vendor building a regional hospital's patient portal for a fixed price, reporting only dates and budget, while the hospital keeps no risk log for the project) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_010, crisc_d4_032 (open risks handed over at closure), crisc_d4_070 and crisc_d4_079 (scope of a project risk log), crisc_d4_094 (security tests cut to meet a regulator's date), crisc_d4_104, crisc_d4_037 (exit terms for a young vendor), crisc_d1_151 (a project log holding only schedule and budget: add value risks), crisc_d3_167 (vendor-side drift alerts sent to the tool's owner); CISA d2_159 (outsourced app releases failing UAT: contract quality criteria), d2_042, d5_140 (retain staff to oversee an MSSP), d4_237, d3_043 (formal project closure); CC and AAIA: no fixed-price project item. Judged distinct: crisc_d1_151 adds benefit risk to an in-house log; here no hospital log exists because delivery was contracted out, and the lesson is that a fixed price transfers cost, not accountability (the CISA items fix quality criteria or retain staff). Owner pattern: k=1, the key D is the lone owner option (calibration rule 21; round 15 ask 7, keyed lone owner); the runner-up C and the easy distractors A and B name no owner. Round 15 asks: a keyed 'Have' option with an 'Ask' opener on a wrong option (B); no period word on any option (an earlier 'each week' penalty wording was removed); the key is naturally the longest option, by 3 characters.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_125",
+      "domain": 4,
+      "subtopic": "4A7 Emerging technologies. A rejected data source on new terms",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "In 2023 a national statistics office's leaders turned down phone location data for commuting statistics, as no telecom would aggregate it first; one telecom now offers aggregated counts. What should the risk practitioner recommend FIRST?",
+      "options": {
+        "A": "Reassess the data's risks and benefits as now offered",
+        "B": "Have the commuting statistics owner approve the data's use",
+        "C": "Keep the rejection that the 2023 assessment reached",
+        "D": "Take the telecom's word that the counts cannot identify anyone"
+      },
+      "correct": "A",
+      "key_concept": "When the facts behind an emerging-technology decision change, the risks and benefits are reassessed before the earlier ban stands or a new approval is given.",
+      "pre_read": "Note what has changed since the 2023 decision before reading the options.",
+      "correct_explanation": "The 2023 rejection rested on one fact, that no telecom would aggregate the data, and that fact has changed. A fresh assessment weighs the new offer's threats, such as re-identification from small counts or reliance on one supplier, against its benefits for commuting statistics. Owner approval is the runner-up: a business decision does follow, but approving now would come before anyone has analyzed the data as now offered.",
+      "wrong_explanations": {
+        "B": "Approval is a business decision that follows analysis; approving now would take on the new offer's risks before anyone has assessed them.",
+        "C": "The 2023 rejection rested on a fact that has changed; keeping it without a fresh look could forgo real value for a reason that no longer holds.",
+        "D": "A supplier's statement is a claim, not evidence; whether small counts could identify people needs checking against how the counts are built."
+      },
+      "tips": [
+        "Eliminate: C keeps a decision whose reason no longer holds, and D takes a supplier's claim in place of evidence.",
+        "Final two: A beats B because the business decision comes after analysis; approving now skips the risks of the data as offered today.",
+        "Exam cue: when the facts behind a past yes or no change, reassess before keeping the old decision or making a new one."
+      ],
+      "framework_ref": "NIST SP 800-37 Rev. 2 Task P-14 (Risk Assessment for the System: conduct a system-level risk assessment from initiation and update it on an ongoing basis); NIST CSF 2.0 GV.RM-07 (strategic opportunities or positive risks are characterized and are included in organizational cybersecurity risk discussions)",
+      "related_concepts": [
+        "Emerging technology evaluation",
+        "Reassessment",
+        "Opportunity"
+      ],
+      "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: reassess when the technology matures, use scales or an earlier rejection's reason changes). Round 15, 12 Nov 2026: original scenario (a national statistics office whose leaders turned down phone location data for commuting statistics in 2023, as no telecom would aggregate it, and one telecom now offers aggregated counts) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_013 (vendor claims for a blockchain platform), crisc_d4_036 (pause conditions for a pilot), crisc_d4_037, crisc_d4_072 (reassess before scaling a pilot), crisc_d4_083 (recording upside), crisc_d4_115, crisc_d1_125 (a club that rejected a cloud move on data risk alone: rate the current platform's risk to the goal), crisc_d2_107; CISA d2_223 (unused location collection in a fitness app); CC: no item on a rejected technology reopened; AAIA aaia_d1_105 (statistical noise in a statistics office's model: a different lesson, and a different activity) and aaia_d1_016 (adding location data to a de-identified training set). Judged distinct: no bank item reopens a rejected technology after the fact behind the rejection changed; not the paused 'new evidence on an emerging-risk entry' family (no register entry is involved: the question is a past adoption decision). Owner pattern: k=1, the lone owner option B is the runner-up (an owner acting before analysis), so only the runner-up names an owner in the final two; the key A and the easy distractors C and D name none. Round 15 asks: the next 'Keep' option is a wrong no-change move (C); a 'Have' opener on a wrong option (B); the year in the stem and option C dates the decision, not a fixed period.",
       "style_version": 2
     }
   ]

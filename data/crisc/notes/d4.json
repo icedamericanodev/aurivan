@@ -112,7 +112,7 @@
             "When business strategy changes, the roadmap is reviewed against the new objectives, because investments planned for the old goals may no longer serve them.",
             "It flags known risk events in advance, such as vendor end of support or contract renewals.",
             "Business-led purchases outside the roadmap still need a risk assessment and a named owner.",
-            "Each roadmap milestone should carry a risk assessment, not just a budget line.",
+            "Each roadmap milestone carries a risk assessment, not just a budget line, including interim stages when old and new systems run side by side.",
             "Slippage is itself a risk signal when it delays the retirement of weak technology."
           ],
           "example": "Ayo, a risk analyst at a logistics firm, sees that the sales team has signed up for a route-planning software service with a corporate card. It is not on the technology roadmap and it holds customer addresses. Ayo asks the sales director, as business owner, to sponsor a risk assessment and logs the tool in the risk register while the assessment runs.",
@@ -234,7 +234,7 @@
           "why_it_matters": "Many outages and incidents follow a change. Controlled change keeps risk within appetite: someone has judged the impact, can undo the change and knows what the system should look like.",
           "how_it_works": [
             "Each change has a request, an impact assessment, an approval suited to its risk, a test result and a back-out plan.",
-            "Emergency changes may bypass the normal approval path, usually through an emergency approver, but are documented and reviewed after the fact as soon as practical.",
+            "Emergency changes, including urgent fixes in a change freeze, go through an emergency approver, then are documented and reviewed as soon as practical.",
             "A configuration management database (CMDB) records configuration items and the dependencies impact assessments rely on; assets missing from it miss patching, change and backup, so counts are reconciled.",
             "Comparing live settings with the baseline finds unauthorized changes, which are investigated, not quietly reversed; a needed deviation is approved by its business owner, recorded and reviewed.",
             "Low-risk, repeatable changes with a proven record can be pre-approved as standard changes, still tested and recorded, so review effort follows risk.",
@@ -797,7 +797,8 @@
             "Preparation: check quality, labeling accuracy and coverage of real cases before training.",
             "Protection: restrict access to training sets and watch for tampering, which can poison the model.",
             "Lineage: link each model version to the exact data version used to train it.",
-            "Retention and deletion: apply the retention schedule to training sets and plan how deletion requests affect trained models."
+            "Retention and deletion: apply the retention schedule to training sets and plan how deletion requests affect trained models.",
+            "Use: access rules do not travel into a trained model, which can repeat what it learned, so training data is limited to what all its users may see."
           ],
           "example": "A recruitment platform wants to train a candidate-matching model on ten years of past hiring decisions. Ravi, the risk analyst, points out that the history may encode past bias and holds personal data collected for a different purpose. Ravi asks the product owner to sponsor a data review and a privacy assessment before training starts.",
           "audit_focus": {
@@ -918,9 +919,9 @@
           "definition": "Project risk is uncertainty that can affect a project's scope, time, cost or quality; in Agile delivery it is managed in short, repeated cycles.",
           "why_it_matters": "Project risks often become operational IT risks after go-live. Tracked only inside the project, or dropped to meet a date, they leave exposure no one approved.",
           "how_it_works": [
-            "Project risks are logged with owners; those that may outlast the project or threaten enterprise objectives join the enterprise register, and other delivery risks stay in the project log.",
-            "Project risk covers delivery and the finished system's operating risks; Agile backlogs prioritize work on both.",
-            "The definition of done includes security, privacy and control criteria, so work is not finished without them.",
+            "Project risks are logged with owners; those that may outlast the project or threaten enterprise objectives join the enterprise register, others stay in the project log.",
+            "Project risk covers delivery and the finished system's operating risks, even under a vendor's fixed-price contract; Agile backlogs prioritize work on both.",
+            "The definition of done includes security, privacy and control criteria.",
             "Sprint reviews update risk status; growing deferred security work is an early warning.",
             "Agile reduces heavy documents, not risk records: decisions and accepted risks are still recorded.",
             "At closure, open risks continuing into operation move to the enterprise register with an operational owner."
@@ -1241,9 +1242,9 @@
           "how_it_works": [
             "Start from the objective it serves; known benefits belong in the business case, uncertain ones in the register as opportunities.",
             "Identify new threats: weak integrations, vendor flaws, irreversible harms (stolen biometrics, public-blockchain personal data) and cloud paths to physical controls.",
-            "Check vendor claims, including patch support periods, through evidence, pilots and independent assessments, not marketing.",
+            "Check vendor claims, including patch support periods, through evidence, pilots and independent assessments.",
             "Apps staff build on low-code platforms are inventoried with owners and data, not banned or ignored.",
-            "Weigh exposure against appetite, propose conditions such as a pilot or exit terms, and reassess when the technology matures or use scales.",
+            "Weigh exposure against appetite, propose conditions such as a pilot or exit terms, and reassess when the technology matures, use scales or an earlier rejection's reason changes.",
             "With little data, record an emerging risk with stated uncertainty, a proposed owner and a review date, not waiting for losses."
           ],
           "types": [
@@ -1264,7 +1265,7 @@
               "meaning": "Future computing power that could break today's public-key encryption, so cryptography inventories and migration plans matter."
             }
           ],
-          "example": "A farm cooperative's operations head wants soil sensors linked to a cloud dashboard to cut fertilizer costs, while some board members want it blocked over security fears. Luca, the risk analyst, assesses both the savings and the risks, such as default device passwords and vendor lock-in, and proposes a limited pilot with conditions for the board.",
+          "example": "A farm cooperative's operations head wants soil sensors linked to a cloud dashboard to cut fertilizer costs, while some board members want it blocked. Luca, the risk analyst, assesses both the savings and the risks, such as default device passwords and vendor lock-in, and proposes a limited pilot with conditions for the board.",
           "audit_focus": {
             "review": [
               "Compare the technology's business case with its risk assessment",
