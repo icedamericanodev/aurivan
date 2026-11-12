@@ -245,11 +245,11 @@
           "why_it_matters": "Scenarios built only around outside hackers miss insiders, errors, equipment failures and disasters. A full taxonomy keeps identification complete and keeps threats separate from weaknesses.",
           "how_it_works": [
             "NIST SP 800-30 Rev. 1 Table D-2 sorts threat sources by cause: intent (adversarial), human error (accidental), failing equipment or software (structural), and disasters or outside outages (environmental).",
-            "For adversaries, likelihood weighs capability, intent and targeting; for other sources, it uses history and empirical data.",
+            "For adversaries, likelihood weighs capability, intent and targeting, the last two following what the enterprise holds; other sources use history.",
             "One threat source can cause many threat events, and one event can come from several sources.",
             "A threat acts on a vulnerability: the threat is the actor or force, the vulnerability is the weakness it uses.",
             "Each scenario names its threat source and threat event, so the right likelihood evidence can be gathered.",
-            "Adversaries shift target, timing, method or path when a control blocks them, so a control's effect is rated across every path."
+            "Adversaries shift target, timing, method or path when blocked, so a control's effect is rated across every path."
           ],
           "types": [
             {
@@ -854,7 +854,7 @@
           "how_it_works": [
             "Process and asset owners review each scenario's events, impacts and controls and sign it off; evidence that contradicts an owner's view goes back to that owner first.",
             "A tabletop exercise is a facilitated, discussion-based walkthrough; no systems are touched, so a fallback claimed in play earns rating credit only after a drill shows it works.",
-            "Participants include business owners, control owners, IT, communications and key suppliers; the exercise tests decisions, so the owners who would make them must take part.",
+            "Objectives come first and set who attends, from business owners, control owners, IT, communications and key suppliers; decisions under test need the owners who make them.",
             "Injects, new facts added during play, test decisions such as escalation, customer notice and recovery order; the base scenario is a severe but plausible one from owners' top risks.",
             "Findings become actions: new or revised scenarios, register updates and control changes, each with an owner and a date.",
             "Internal audit may later give independent assurance on how scenarios were built, but it does not replace validation by the business owners."
@@ -996,7 +996,7 @@
             "Conduct: identify threat sources and events, vulnerabilities and predisposing conditions, then rate likelihood and impact, which a checklist of required controls does not.",
             "Communicate: give decision makers results they can act on, like a briefing, report or dashboard.",
             "Maintain: monitor risk factors; without a significant change, update just the factors that changed.",
-            "The requesting official sets scope and rules on third-party parts outside it; an AI system's scope covers its training-data pipeline and the people using its outputs.",
+            "The requesting official sets scope, ruling on third-party parts outside it; an AI system's scope covers its training-data pipeline, the people using outputs and foreseeable misuse.",
             "In ISO 31000, ISO/IEC 27005 and the ISACA Glossary, risk evaluation compares each rating with the criteria and appetite; NIST SP 800-30 leaves this to decision makers."
           ],
           "example": "A hotel group's CIO asks for a cloud migration risk assessment. Before collecting threats, Isabel Duarte, the risk practitioner, agrees the scope with the CIO: the booking platform and payment data only, a three-year horizon, the group's five-point rating scales and the decisions the results must support.",
@@ -1387,7 +1387,7 @@
             "Normalization puts every unit on one scale; a scenario recorded in two registers is merged into one entry and owner, linked to both sources, not added up.",
             "Risks across units that share a cause, such as the same weakness, are aggregated, which can reveal a risk that is small locally but large in total.",
             "The IT risk register feeds the enterprise risk register and risk profile, as NIST IR 8286 Rev. 1 describes.",
-            "The profile is compared with the appetite set by senior management and the board.",
+            "The profile is compared with the appetite set by senior management and the board; tracing critical processes and assets to entries shows gaps.",
             "An entry states a risk, an event and its effect on objectives, not a missing control or a scanner finding, so it can be rated against appetite and combined."
           ],
           "example": "Five plants of a car-parts maker each rate unsupported controller software as low. When Hana Sato, the enterprise risk analyst, rolls up the registers, they find all five share the same controller vendor and patch gap. Hana normalizes the plants' scales, aggregates the five entries into one enterprise scenario, and reports the combined exposure in the quarterly risk profile.",
@@ -1603,12 +1603,12 @@
           "definition": "Choosing a method means matching the analysis to the decision it must support and the quality of the data available, from simple scales to FAIR models and Monte Carlo simulation.",
           "why_it_matters": "A precise-looking number built on guesses misleads decision makers more than an honest qualitative rating. The method must fit the data and the decision.",
           "how_it_works": [
-            "Ask what the decision needs: ranking many risks, funding one control, or capital and insurance planning.",
+            "Ask what the decision needs: ranking risks, funding a control, or capital and insurance plans.",
             "Check data reliability: loss history, benchmarks, expert estimates; gather estimates privately first (Delphi), and judge experts by how often past ranges held actual results.",
             "FAIR, an Open Group standard, splits risk into loss event frequency and loss magnitude; secondary losses, such as fines, get their own frequency: the share of events that trigger them.",
             "Monte Carlo runs thousands of trials from estimated ranges; a yearly loss limit is tested on the tail of simulated yearly losses, not the mean or one event's loss.",
             "Ranges beat single points: with no loss history, validated error rate times volume gives a frequency range; if too wide, sensitivity analysis finds the input to improve.",
-            "Methods can be combined: qualitative screening first, then quantitative analysis of top risks."
+            "Screen qualitatively, quantify top risks; event trees run forward from one event, fault trees back from one outcome."
           ],
           "example": "A biotech firm's board asks how much cyber insurance to buy. The last analysis gave one guessed ALE. Olu Adeyemi, the risk practitioner, gathers ranges from claims data and experts, runs a Monte Carlo simulation and shows the board a loss distribution, including a one-in-twenty-year loss of about $9 million, with every assumption listed.",
           "audit_focus": {
