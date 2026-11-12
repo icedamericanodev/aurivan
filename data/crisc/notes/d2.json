@@ -117,7 +117,7 @@
             "Internal sources include incident and problem records, audit and control test findings, customer complaints, operational losses and staff reports.",
             "External sources include industry loss databases, sector information sharing groups, regulator notices, insurer data and public breach reports.",
             "External events are adjusted for differences in size, controls and exposure before they inform the enterprise's own ratings.",
-            "Event data is recorded the same way each time, with date, scenario, cause, source and impact before insurance, any recovery shown separately, so trends can be compared.",
+            "Event data is recorded consistently, with date, scenario, cause, source and impact before insurance, recoveries shown apart; events logged in several places are matched and counted once.",
             "Underreporting is a known weakness; a blame-free reporting culture raises the number of near misses staff report.",
             "A supplier outage that harms the enterprise, such as fees it must repay to staff, is its own loss event, recorded against its own scenario, not an external peer event."
           ],
@@ -396,7 +396,7 @@
           "why_it_matters": "Firewalls and malware tools do not see a malicious instruction hidden in a document an AI assistant reads. Missing these threats leaves AI scenarios out of the register.",
           "how_it_works": [
             "AI threats target three new assets: the prompt channel, the training data pipeline and the model's learned parameters.",
-            "Indirect prompt injection is mounted by a third party who plants instructions in content the model later reads, such as an email or web page.",
+            "Indirect prompt injection is planted by a third party in content the model reads, such as an email; who can send it sets likelihood, and the tool's permissions set impact.",
             "Poisoning can enter through third-party datasets and pre-trained models, so the AI supply chain is part of the threat surface.",
             "Extraction and inversion attacks need only query access, so a public interface is enough to attempt them.",
             "NIST AI 100-2 E2025 names and classifies these attacks; the practitioner turns the relevant ones into scenarios with a business owner.",
@@ -620,7 +620,7 @@
           "why_it_matters": "No enterprise can fix everything at once. Ranking by business risk spends limited patching effort where a successful exploit would hurt objectives most.",
           "how_it_works": [
             "First confirm findings are real, verifying a sample when a vendor disputes them; then start from asset criticality: which business process the asset supports and what compromise would cost.",
-            "Add reachability: internet-facing, reachable from partners, or isolated behind strong segmentation; a met patch-rate target can still leave every late flaw on the most reachable system.",
+            "Add reachability: internet-facing, partner-reachable or isolated, with claimed isolation confirmed as current; a met patch-rate target can still leave late flaws on the most reachable system.",
             "Add exploitability: public exploit code, active attacks or a listing in a known-exploited vulnerabilities catalog.",
             "Set fix time frames by risk tier in a policy approved by management, so teams do not negotiate each fix.",
             "When a fix cannot meet its time frame, raise an exception with compensating controls for the risk owner to accept or reject.",
@@ -689,7 +689,7 @@
             "Actor: who or what causes it, such as a criminal group, a careless user or a failed cooling unit.",
             "Event: what happens, such as malicious encryption, disclosure, an error or an outage.",
             "Asset: the process, system, data or people affected.",
-            "Time: when, or for how long, such as during payroll week or an outage of more than four hours.",
+            "Time: when or how long, such as payroll week or outages over four hours; when harm depends on timing, rate the credible time that hurts most.",
             "Consequence: the effect on objectives in business terms, such as lost revenue, fines or harm to patients.",
             "NIST IR 8286A Rev. 1 suggests a cause-and-effect sentence: an actor exploits a weakness in an asset, resulting in a business impact."
           ],
@@ -893,7 +893,7 @@
           "how_it_works": [
             "Likelihood combines the chance a threat event starts and the chance it causes harm, over a stated time frame.",
             "For adversaries, likelihood weighs capability, intent and targeting; other sources use recorded history, from regional or industry records when local history is short, with expert judgment filling gaps.",
-            "Impact is the effect on objectives: financial, operational, legal, reputational, safety or customer harm.",
+            "Impact is the effect on objectives: financial, operational, legal, reputational, safety or customer harm, not what a lost asset costs to replace.",
             "Existing controls and predisposing conditions change likelihood, so they are understood before rating.",
             "ISO 31000, named here as context only, describes risk as the effect of uncertainty on objectives, which can include upside opportunity.",
             "When a scenario harms several kinds of objective, the most severe credible harm sets the impact level; ordinal levels are not averaged."
@@ -1548,7 +1548,7 @@
             "Ask what the decision needs: ranking many risks, funding one control, or capital and insurance planning.",
             "Check the data: loss history, industry benchmarks and expert estimates, and how reliable each is; gather each expert's estimate privately before discussion, as in the Delphi technique.",
             "FAIR, an Open Group standard, splits risk into loss event frequency and loss magnitude; secondary losses, such as fines, get their own frequency: the share of events that trigger them.",
-            "Monte Carlo simulation runs thousands of trials from estimated ranges to give a spread of losses; a limit on large losses is tested on its tail, not the mean.",
+            "Monte Carlo runs thousands of trials from estimated ranges; a yearly loss limit is tested on the tail of simulated yearly losses, not the mean or one event's loss.",
             "When data is uncertain, ranges beat single-point numbers; if a range is too wide to decide, sensitivity analysis shows which input needs better data.",
             "Methods can be combined: qualitative screening first, then quantitative analysis of top risks."
           ],
