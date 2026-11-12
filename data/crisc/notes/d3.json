@@ -333,7 +333,8 @@
             "crisc_d3_138",
             "crisc_d3_153",
             "crisc_d3_162",
-            "crisc_d3_193"
+            "crisc_d3_193",
+            "crisc_d3_217"
           ],
           "definition": "A control owner is accountable for a control being in place and working, often as the manager whose team runs it; validation confirms owners perform the role.",
           "why_it_matters": "A control that nobody owns decays quietly: reviews stop, settings drift and evidence disappears. Validating ownership finds these gaps before a test or an incident does.",
@@ -341,7 +342,7 @@
             "Each key control has one named owner inside the organization who answers for it working, keeps its evidence and reports failures; their team or a contractor may run it.",
             "One control can protect several risks, so its owner may serve several risk owners.",
             "Risk owners rely on control owners to keep residual risk at the level they accepted, so a change that weakens a control goes to the risk owner first.",
-            "Validate by asking the owner to describe the control and show recent evidence, not just by reading the register.",
+            "Validate by asking the owner to describe the control and show recent evidence, not just by reading the register; a credited control nobody runs goes to the risk owner first.",
             "When a control owner changes jobs, or a project hands over a control it built, ownership transfers formally, with a handover of procedures and evidence.",
             "A control owner needs authority over the people and resources the control depends on, and must not own a check on their own work, such as reviews of their approvals."
           ],
@@ -631,7 +632,8 @@
             "crisc_d3_136",
             "crisc_d3_163",
             "crisc_d3_171",
-            "crisc_d3_202"
+            "crisc_d3_202",
+            "crisc_d3_218"
           ],
           "definition": "Issue management is logging each control weakness, audit finding or incident lesson with an owner, an action and a due date, then tracking it until closure is validated.",
           "why_it_matters": "Findings that are logged but never really fixed leave the same risk open while reports show progress. Overdue items are often where the next incident comes from.",
@@ -639,7 +641,7 @@
             "Log every issue in one tracker, linked to the risk it affects and ranked by that risk's rating, since audits, regulators and reviews each rate on their own scale.",
             "Give each issue one owner, an agreed action and a realistic due date.",
             "Escalate overdue or slipping items to the risk owner and, past a set point, to senior management.",
-            "Close an issue on evidence that the fix works, not the owner's word, or, where the risk is within appetite, on the risk owner's recorded acceptance.",
+            "Close an issue on evidence the fix works, not the owner's word, or, within appetite, on the risk owner's recorded acceptance; above appetite, the level that set it decides.",
             "Re-rate the risk once a fix is validated; a fix that differs from the agreed action is first evaluated for the risk it leaves, then agreed with the risk owner.",
             "When teams dispute who should fix an issue, the owner of the affected risk names one action owner; the practitioner escalates to that owner rather than choosing a team."
           ],
@@ -1078,14 +1080,15 @@
             "crisc_d3_011",
             "crisc_d3_063",
             "crisc_d3_099",
-            "crisc_d3_188"
+            "crisc_d3_188",
+            "crisc_d3_219"
           ],
           "definition": "Control implementation is putting a selected control into operation with its owner, procedure, evidence and success measures agreed before it goes live.",
           "why_it_matters": "A well-designed control rolled out without an owner, procedure or evidence trail fails quietly. Agreeing these with the control owner up front makes the control testable and lasting.",
           "how_it_works": [
             "Agree with the control owner what the control does, how often it runs and what evidence it leaves; a frequency a law or regulator sets is a floor.",
             "Document the procedure so someone else could run it during absence or turnover.",
-            "Implement through change management, with testing before go-live and a rollback plan.",
+            "Implement through change management, with testing before go-live and a rollback plan; when a manual process moves into a system, trace each manual check into the design first.",
             "Define a key control indicator so the owner can see when the control starts to fail.",
             "After go-live, confirm it works as designed before reporting the risk as reduced.",
             "Once running, check with the control owner that the control fits the work it protects; if it stalls the business, rework the design by risk rather than remove it."
@@ -1274,7 +1277,8 @@
             "crisc_d3_122",
             "crisc_d3_148",
             "crisc_d3_199",
-            "crisc_d3_213"
+            "crisc_d3_213",
+            "crisc_d3_220"
           ],
           "definition": "Design testing asks whether a control could meet its objective as built; operating testing asks whether it actually worked consistently over a period, usually by sampling.",
           "why_it_matters": "A well-designed control can still be skipped in practice. Reporting a design test as proof of operation overstates assurance and leaves the risk owner relying on a control that may not run.",
@@ -1283,7 +1287,7 @@
             "Test operation over a defined period, covering the sites where people run it, with a sample sized to frequency and risk; sample each version of a control changed mid-period.",
             "Draw the sample from the complete population, ideally system-generated, with the tester choosing the items; test any system report the control relies on for completeness.",
             "Evaluate each failure: find its cause and decide whether the control can still be relied on.",
-            "Tests by the control owner alone are self-assessment: useful for monitoring, but weaker than independent testing.",
+            "Owner-only tests are self-assessment; for independent assurance, internal audit tests, as the second line is objective, not independent.",
             "Start from recent internal audit results as independent evidence: check their scope and date fit, then aim further testing at their exceptions rather than repeating audit's work."
           ],
           "compare": {
@@ -1315,7 +1319,7 @@
               }
             ]
           },
-          "example": "A shipping company's quarterly user-access review has a sound written procedure. Kofi, a risk analyst, walks through the March review and confirms the design. For operation, they take the last four quarters of reviews from the system's records and find the September review was never signed off. Kofi reports it as well designed but not operating consistently.",
+          "example": "A shipping company's quarterly user-access review has a sound written procedure. Kofi, a risk analyst, walks through the March review and confirms the design. For operation, they pull four quarters of reviews from system records and find September's was never signed off. Kofi reports it as well designed but not operating consistently.",
           "audit_focus": {
             "review": [
               "Confirm design was tested before operating effectiveness",
@@ -1610,12 +1614,13 @@
             "crisc_d3_133",
             "crisc_d3_158",
             "crisc_d3_166",
-            "crisc_d3_205"
+            "crisc_d3_205",
+            "crisc_d3_221"
           ],
           "definition": "Risk aggregation combines risks from many units or systems into one enterprise view, after normalizing them to the same rating criteria so they can be compared.",
           "why_it_matters": "Senior management needs one picture of enterprise risk. Adding ratings from different scales, or averaging away a severe local risk, gives a picture that looks precise but is wrong.",
           "how_it_works": [
-            "Convert unit ratings to one enterprise scale for likelihood and impact before combining them.",
+            "Convert ratings to one scale before combining; 2% a year at each of 60 sites means an event most years.",
             "Merge duplicate or similar risks into a representative risk, linked to each source entry, and match loss records to single events so a loss logged twice counts once.",
             "Look for the same risk treated differently by different units, and find out why.",
             "Keep severe single risks visible as their own lines; aggregation must not average them into a moderate total or lift a whole group to the worst rating.",
@@ -1730,13 +1735,14 @@
             "crisc_d3_015",
             "crisc_d3_042",
             "crisc_d3_043",
-            "crisc_d3_206"
+            "crisc_d3_206",
+            "crisc_d3_222"
           ],
           "definition": "Key risk indicators (KRIs) signal changing risk exposure, key control indicators (KCIs) show how well controls work, and key performance indicators (KPIs) measure progress toward process goals.",
           "why_it_matters": "Mixing them up sends the wrong signal: a KPI can stay green while risk rises. Each answers a different question for a different owner.",
           "how_it_works": [
             "A KRI is tied to a risk scenario and warns that exposure is moving toward tolerance.",
-            "A KCI is tied to a control and shows failure or weakness, such as overdue reviews.",
+            "A KCI is tied to a control and shows failure or weakness, such as overdue reviews or devices where a blocking tool is set only to log.",
             "A KPI is tied to a process goal, such as tickets closed on time, and may say nothing about risk.",
             "One measure can serve as more than one type, depending on the decision it supports.",
             "Risk owners use KRIs, control owners use KCIs and process owners use KPIs.",
@@ -1968,19 +1974,20 @@
             "crisc_d3_126",
             "crisc_d3_167",
             "crisc_d3_180",
-            "crisc_d3_195"
+            "crisc_d3_195",
+            "crisc_d3_223"
           ],
           "definition": "Continuous monitoring is keeping ongoing awareness of security, vulnerabilities and threats to support risk decisions, using automated feeds and assessments at a frequency set by risk.",
           "why_it_matters": "Yearly reviews miss what changes between them. Ongoing monitoring catches control failures and new exposure while there is time to respond, provided someone acts on the alerts.",
           "how_it_works": [
-            "Write a monitoring strategy: what to monitor, how often and who receives the results.",
+            "Write a monitoring strategy: what to monitor, how often, who gets results, and the authoritative source each check reads.",
             "Automate where it helps, such as configuration checks, vulnerability scans and control health checks.",
             "Set frequency by risk and rate of change; tune alert rules against confirmed incidents, since mostly false alerts teach responders to ignore them.",
             "Route every alert, including those a vendor's tool raises, to an owner in the organization with a response time; track it to closure and measure the share resolved in time.",
             "Analyze results against tolerance and feed them into the register and reports; a sudden silence after a change is first checked as a broken feed.",
             "Roll monitoring out in priority order, starting with the controls behind the highest risks; switching on every check at once floods owners with alerts."
           ],
-          "example": "A payments startup's automated checks flag cloud storage made public. After a month, Ji-ho, the risk analyst, finds 60 alerts unread in a shared mailbox. They propose routing alerts to the platform lead with a four-hour response target, and a weekly open-alert count for the chief technology officer.",
+          "example": "A payments startup's automated checks flag cloud storage made public. Ji-ho, the risk analyst, finds 60 alerts unread in a shared mailbox. They propose routing alerts to the platform lead with a four-hour response target, and a weekly open-alert count for the chief technology officer.",
           "audit_focus": {
             "review": [
               "Sample closed alerts and confirm a named person resolved each in time",
@@ -2001,7 +2008,7 @@
             },
             {
               "trap": "The audit cycle is often enough to monitor key controls.",
-              "why": "Yearly or less frequent audits leave long blind spots. Key controls need monitoring at a frequency matched to their risk."
+              "why": "Yearly audits leave long blind spots; key controls need monitoring at a frequency matched to their risk."
             }
           ],
           "key_terms": [
@@ -2214,12 +2221,13 @@
             "crisc_d3_168",
             "crisc_d3_181",
             "crisc_d3_191",
-            "crisc_d3_200"
+            "crisc_d3_200",
+            "crisc_d3_224"
           ],
           "definition": "Audience-based reporting gives each stakeholder what they need for their own decisions: the board sees the risk profile against appetite, and owners see their risks and actions.",
           "why_it_matters": "A report the reader cannot act on is noise. Technical detail swamps the board, and summary colors starve the people who must fix things.",
           "how_it_works": [
-            "Board and senior management: the whole risk profile against appetite, including accepted risks, breaches, trends and decisions needed, in business terms, not technical scores.",
+            "Board and senior management: the profile against appetite, accepted risks, breaches, trends and decisions needed, in business terms; AI risk as harm, not model scores.",
             "Risk owners: their risks, indicator status, overdue actions and acceptances due for review.",
             "Control owners and operations: control failures, test results and remediation tasks.",
             "Send each report to someone with authority to decide, stating the decision needed; escalate outside the cycle when a breach or critical risk cannot wait.",
@@ -2257,7 +2265,7 @@
             },
             {
               "term": "Decision request",
-              "definition": "A clear statement in a report of the decision the reader is asked to make, with the options."
+              "definition": "A clear statement in a report of the decision the reader must make, with the options."
             }
           ]
         }
