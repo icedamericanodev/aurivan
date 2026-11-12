@@ -202,10 +202,10 @@
           "how_it_works": [
             "The board sets direction, approves risk appetite and oversees major risk; within appetite, owners accept risks and the board oversees through reporting.",
             "Senior management turns direction into strategy, approves the risk management framework and policies, and assigns risk owners.",
-            "A risk committee, at board or management level, reviews the profile, challenges ratings, approves decisions within its authority and escalates breaches.",
+            "A risk committee reviews the profile, challenges ratings, approves decisions within its authority and escalates breaches; members sit out votes on their own requests.",
             "The chief risk officer (CRO) runs the risk function, keeps the framework and enterprise register working, and reports the profile.",
             "Committees advise and oversee; one named person stays accountable for each risk.",
-            "Changes within every limit, escalation thresholds included, wait for the committee's scheduled review; out-of-cycle escalation is for breaches."
+            "Changes within every limit wait for the committee's scheduled review; out-of-cycle escalation is for breaches."
           ],
           "example": "At a bank, the IT steering group wants to approve a new appetite statement for technology risk. Sofia, the risk analyst, explains that appetite is set by the board on senior management's proposal, drafts the statement with the CRO's team, and routes it through the board risk committee to the board.",
           "audit_focus": {
@@ -770,7 +770,7 @@
           "definition": "Policy life cycle management keeps policies current through scheduled and event-driven reviews; an AI acceptable use policy sets how staff may use AI tools and data.",
           "why_it_matters": "Outdated policies leave new risks uncovered. Generative AI tools spread quickly, and without a clear use policy staff may paste confidential data into public services.",
           "how_it_works": [
-            "Each policy has an owner and a review cycle, often yearly, plus a review after major changes in threats, law or strategy.",
+            "Each policy has an owner and a review cycle, often yearly, plus a review after major changes in threats, law or strategy; a missed date leaves it in force.",
             "Reviews check that the policy still matches risk appetite, regulation and how work is actually done.",
             "An AI use policy defines approved tools, data that must not be entered, human review of outputs and who approves new uses.",
             "Policies are communicated, acknowledged, enforced and monitored; standards citing a replaced policy are reissued under its successor so they still bind.",
@@ -844,7 +844,7 @@
             "Each critical process has one owner who answers for its outcome across departments; its plan names who may invoke it, with a deputy.",
             "Critical processes are those whose failure most harms objectives, customers, safety or compliance; the business impact analysis (BIA, see 2B2) ranks them, and the ranking can shift by season.",
             "Processes depend on people, suppliers, data and systems; mapping them end to end with the owner shows single points of failure a plan built around one system misses.",
-            "Process owners set recovery needs, including the manual fallback if an AI service fails, that IT and suppliers meet; when owners clash, the plan's owner orders recovery by impact.",
+            "Process owners set recovery needs, including an AI service's manual fallback, that IT, suppliers and upstream process owners meet; when owners clash, the plan's owner orders recovery by impact.",
             "A tested recovery slower than the target but within appetite can be accepted by the process owner on record, with the RTO and the plan updated to match.",
             "A workaround that drops a control, such as an approval step, keeps the process going but adds risk; assess it with the process owner before relying on it."
           ],
@@ -1308,7 +1308,7 @@
           "why_it_matters": "The framework makes risk work consistent and authoritative. Without senior approval, units can ignore it, and a framework signed off only by the team that wrote it carries no weight with the business.",
           "how_it_works": [
             "The framework covers scope, roles, use of risk appetite, assessment methods, response options, monitoring and reporting.",
-            "The risk function drafts and maintains it; senior management approves it; the board oversees that it works.",
+            "The enterprise risk function, not IT security or another team rated under it, drafts and maintains it; senior management approves it; the board oversees that it works.",
             "It is built into strategy, planning and investment decisions, not run as a side process.",
             "It is reviewed periodically and after major change; its effectiveness is judged by outcomes, such as major losses from risks it never identified, and assessed by internal audit.",
             "After major change, the review first checks that its scope and roles still reach the whole enterprise, including acquired units and new platforms.",
@@ -1373,7 +1373,7 @@
           "definition": "The lines of defense model separates who owns and manages risk (first line), who oversees and challenges it (second line) and who gives independent assurance (third line).",
           "why_it_matters": "Clear lines prevent gaps and overlaps. When audit designs controls or the risk function owns business risk, independence and accountability are both lost.",
           "how_it_works": [
-            "First line: business and operational management own risks and run controls day to day, their own control testers included; other lines' tests check these controls but do not replace them.",
+            "First line: business and operational management own risks and run controls, with their own testers, such as validators inside a model unit; other lines' tests do not replace these.",
             "Second line: risk management, compliance and similar functions set methods, monitor, challenge and report; challenge shows it works when ratings or plans change because of it.",
             "Third line: internal audit gives independent, objective assurance to the board or audit committee; its follow-up confirms fixes to its own findings.",
             "The board oversees all three; senior management is accountable for the first and second lines.",
@@ -1549,11 +1549,11 @@
           "why_it_matters": "Leaders need a portfolio view to decide where to act, not hundreds of register lines. Treating the register as the profile buries the few risks that matter most.",
           "how_it_works": [
             "The register is detailed and operational: one entry per scenario, with owner, rating, response and status; acceptance changes the status, not the rating.",
-            "The profile combines register risks into overall exposure by objective or category; maturity scores show capability, not exposure.",
-            "The profile sets current risk, counting only responses already in place, against today's appetite, showing exposure too high or too low; a changed appetite moves the comparison, not the ratings.",
-            "In NIST terms, the profile is a prioritized subset of the enterprise risk register; with a limit per category, headroom in one does not offset another's breach.",
+            "The profile combines register risks, outsourced work included, into exposure by objective or category; maturity scores show capability, not exposure.",
+            "The profile sets current risk, counting only responses in place, against today's appetite, showing exposure too high or too low; a changed appetite moves the comparison, not the ratings.",
+            "In NIST terms, the profile is a prioritized subset of the enterprise register; with a limit per category, headroom in one does not offset another's breach.",
             "AI use enters the profile through register entries mapped to the objectives and categories it affects, not as a count of tools or models.",
-            "Before reporting, check the ratings behind the profile are current; ratings set before a major change are refreshed with their owners."
+            "Before reporting, check that ratings behind the profile are current; ratings predating a major change are refreshed with their owners."
           ],
           "compare": {
             "columns": [
