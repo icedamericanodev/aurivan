@@ -1413,16 +1413,16 @@
             "crisc_d4_158"
           ],
           "definition": "Core security principles are the design rules behind controls: protect confidentiality, integrity and availability, layer defenses, grant least privilege and separate duties.",
-          "why_it_matters": "These principles let a practitioner judge controls without knowing every product; one control guarding everything points to concentrated risk.",
+          "why_it_matters": "These principles let a practitioner judge controls without knowing every product; one control guarding everything signals concentrated risk.",
           "how_it_works": [
             "CIA (confidentiality, integrity, availability) names what an event harms, shaping the impact rating; encryption mainly guards confidentiality, not integrity, which includes non-repudiation.",
-            "Layered controls of different kinds mean one failure does not expose the asset; back an AI prompt filter with answer screening.",
-            "Each user, system and AI tool gets only the access its task needs, and only while needed.",
+            "Layered controls of different kinds mean one failure does not expose the asset; back an AI assistant's prompt filter with answer screening and retrieval limits.",
+            "Each user, system and AI tool gets only the access its task needs, only while needed.",
             "Critical tasks are split so no one can complete and hide a harmful action alone; otherwise compensating controls, such as independent review, reduce the risk.",
             "Layers sharing a vendor, design or rule set can fail together, giving less depth than their number suggests; diversity costs effort, weighed against risk.",
             "Failing open keeps a service available; failing secure guards assets. With both costs known, the risk owner chooses, within any life-safety rule."
           ],
-          "example": "A credit union guards its member database mainly with a perimeter firewall; every staff account inside can read all records. Farah, the risk analyst, shows the chief operating officer one phished account would expose everything and proposes role-based access, database monitoring and multifactor authentication.",
+          "example": "A credit union guards its member database mainly with a perimeter firewall; every staff account can read all records. Farah, the risk analyst, shows the chief operating officer one phished account would expose everything and proposes role-based access, database monitoring and multifactor authentication.",
           "audit_focus": {
             "review": [
               "Compare access rights with job roles to find excess privilege",
@@ -1461,7 +1461,7 @@
             },
             {
               "term": "Just-in-time access",
-              "definition": "Elevated access granted for one task and a set time, then removed, instead of standing administrator rights."
+              "definition": "Elevated access for one task and a set time, then removed, instead of standing administrator rights."
             }
           ]
         },
