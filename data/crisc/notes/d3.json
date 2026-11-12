@@ -73,7 +73,8 @@
             "Responses combine: controls cut likelihood, then insurance covers part of the remaining impact.",
             "Transfer moves money, not accountability, and only for losses covered: re-rate exposure an exclusion leaves retained; an insured breach still harms customers and reputation.",
             "Avoidance gives up the benefit, so it fits when the activity is not needed for objectives or nothing else brings the risk within appetite.",
-            "A response can bring new risks, such as reliance on one provider; weigh them first."
+            "A response can bring new risks, such as reliance on one provider; weigh them first.",
+            "When people cannot have an AI decision explained, human review that gives reasons on challenge keeps the benefit; a model summary explains how it works, not why."
           ],
           "types": [
             {
@@ -504,7 +505,7 @@
             "Read assurance reports for scope and period: which services, locations and controls were tested, and when.",
             "Act on report exceptions and complementary user entity controls, the customer's own duties; when scope fits and neither is open, rely on the report rather than repeat its tests.",
             "Track fourth parties: the vendor's own subcontractors, especially those that host or process your data.",
-            "Watch concentration: many critical services on one provider or region create a single point of failure.",
+            "Watch concentration: critical services on one provider or region, even through different vendors, can fail together; rate that joint outage as one scenario.",
             "Scale review depth and frequency to criticality; reassess on events such as a breach, sale or merger, missed SLAs or a new subcontractor."
           ],
           "example": "An insurer relies on a claims vendor whose SOC 2 Type 2 report covers its main data center but not the overseas site now handling the insurer's claims. Chen, a risk analyst, notices the scope gap and two access-review exceptions. They update the vendor entry and ask the claims director to seek coverage of that site.",
@@ -695,7 +696,7 @@
             "The risk owner approves, at a level that matches the risk; policy may require senior management for high ratings.",
             "Exceptions carry an expiry date and a plan to comply; exemptions are reviewed periodically. One in date, within authority and compensated is reviewed then, not escalated early.",
             "Keep all deviations in one register and report them in aggregate, so combined risk shows and repeated requests point to a cause to fix.",
-            "An exemption rests on facts about its scope; when the system or its data changes, reassess whether it still applies without waiting for the scheduled review."
+            "An exemption covers only the assets assessed: a new asset needs its own request, and a change to a covered system or its data is reassessed before the scheduled review."
           ],
           "compare": {
             "columns": [
@@ -794,7 +795,7 @@
             "Preventive and deterrent controls mainly reduce likelihood; corrective controls mainly reduce impact after an event.",
             "Detective controls reduce impact only if someone acts on what they find, quickly enough to matter.",
             "A layered set mixes functions so one failure is caught or contained by another; a corrective procedure sets how errors getting through are fixed.",
-            "Name the function by what the control does in this process, not by the tool: a log review detects, an enforced approval prevents.",
+            "Name the function by what the control does in this process, not by the tool: a log review or tamper-evident seal detects; an enforced approval prevents.",
             "A compensating control is an alternative or interim measure; the gap it covers stays recorded and reviewed.",
             "Credit a control in the rating only for the function it performs: a firewall rule set to log traffic detects; it does not prevent."
           ],
@@ -1274,7 +1275,7 @@
           "why_it_matters": "A well-designed control can still be skipped in practice. Reporting a design test as proof of operation overstates assurance and leaves the risk owner relying on a control that may not run.",
           "how_it_works": [
             "Test design first, often with a walkthrough of one transaction; a badly designed control needs no operating test.",
-            "Test operation over a defined period, with a sample sized to the control's frequency and risk; if the control changed mid-period, sample each version for the months it ran.",
+            "Test operation over a defined period, at each site where people run it, with a sample sized to frequency and risk; sample each version of a control changed mid-period.",
             "Draw the sample from the complete population, ideally system-generated, with the tester choosing the items; test any system report the control relies on for completeness.",
             "Evaluate each failure: find its cause and decide whether the control can still be relied on.",
             "Tests by the control owner alone are self-assessment: useful for monitoring, but weaker than independent testing.",
@@ -1435,7 +1436,7 @@
           "how_it_works": [
             "Each action has one owner, a target date and the resources it needs, agreed with the risk owner; a resource conflict goes back to that owner.",
             "Sequence actions so the largest risk reductions come early, allowing for dependencies and cost; milestones break long work into checkpoints, so slippage shows early.",
-            "The plan states the target risk expected at completion, so success can be measured.",
+            "The plan states the target risk expected at completion, so success can be measured; report progress as risk reduced toward that target, not the share of actions done.",
             "Interim measures reduce the exposure while long actions are under way, and stay until the permanent control is shown to work.",
             "The plan links to its risk register entry, where action owners log progress, so the risk picture does not depend on a separate project tool.",
             "When a planned control, its cost or the risk changes, such as the target being met early, re-estimate the cost-benefit before the risk owner agrees any change."
@@ -2143,7 +2144,7 @@
             "Heat maps show relative position but not trend; add trend arrows fed by each risk's KRI history, because a risk can hold its cell while its drivers worsen.",
             "Heat-map scores are ordinal, so cells cannot be added or averaged meaningfully.",
             "Scorecards and dashboards show indicators against thresholds and trend, not raw counts alone.",
-            "Every visual needs a date, a data source and a note of known limitations.",
+            "Every visual needs a date, a data source and a note of known limitations; after a rating scale changes, restate earlier periods on the new scale.",
             "Draw heat-map color bands from the approved appetite and tolerance, not a tool's default scoring, so a risk's color shows where it stands against appetite.",
             "Show each period's KRI value against its thresholds; a rolling average smooths single-period breaches away, so keep it as a trend line."
           ],
@@ -2366,6 +2367,10 @@
             {
               "trap": "An emerging AI risk belongs to IT because AI is technology.",
               "why": "The business owner of the process using the AI owns its risk. IT may own the technical controls."
+            },
+            {
+              "trap": "A risk that lies years ahead is emerging, so it waits in the emerging section.",
+              "why": "Uncertainty, not distance in time, makes a risk emerging. A dated change with a known effect, such as a network closure, is rated and treated in the main register now."
             }
           ],
           "key_terms": [
