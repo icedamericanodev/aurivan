@@ -429,10 +429,10 @@ version bump today.
 ### Results
 | Domain | Questions | Tagged | Untagged |
 |---|---|---|---|
-| D1 | 110 | 83 | 27 |
-| D2 | 218 | 186 | 32 |
+| D1 | 140 | 103 | 37 |
+| D2 | 260 | 219 | 41 |
 | D3 | 114 | 104 | 10 |
-| All | 442 | 373 | 69 |
+| All | 514 | 426 | 88 |
 
 New principle `independence-of-ai-assurance` (role family): seeds and tags
 aaia_d2_014, aaia_d3_024 and aaia_d3_043, moved from
@@ -637,3 +637,49 @@ aaia_d2_199 aaia_d2_200 aaia_d2_201 aaia_d2_203 aaia_d2_204 aaia_d2_206
 aaia_d2_213 aaia_d2_217 aaia_d2_218 aaia_d3_084 aaia_d3_085 aaia_d3_086
 aaia_d3_088 aaia_d3_092 aaia_d3_098 aaia_d3_102 aaia_d3_103 aaia_d3_104
 aaia_d3_107 aaia_d3_109 aaia_d3_110 aaia_d3_114.
+
+### Batch 7 (12 November 2026)
+aaia_d1_111-140 and aaia_d2_219-260 were read against the rule above. None
+is a seed. Changed: aaia_d1_115 moved from `real-human-oversight` to
+`ai-priority-word-decides` (the runner-up, hiring analysts, also makes review
+real; FIRST puts the owner's reassessment before choosing a response, as
+aaia_d1_128); aaia_d1_120 moved from `named-human-owner` to
+`fix-the-control-not-the-model` (the runner-up is the same owner acting, but
+funding treatment absorbs the side effect while the model stays unbounded);
+aaia_d2_237 moved from `real-human-oversight` to `ai-output-is-a-lead` (the
+runner-up, deference, is the oversight card's own trap; the review cutoff
+rests on confidence never checked against outcomes). Newly tagged:
+aaia_d1_121 `accuracy-is-not-assurance` (training on reported accuracy hides
+how models fail and whom failures harm); aaia_d2_229 and aaia_d2_234
+`contain-and-preserve-ai` (the runner-up stops new harm only: blocking new
+downloads, a shorter cache expiry; copies and cached answers already out keep
+harming people). Three tags removed (below).
+
+**Untagged new items (low confidence):**
+- aaia_d1_112: generative-arithmetic knowledge (a chatbot predicts figures, it does not compute them); the runner-up samples the output, so no principle separates the key.
+- aaia_d1_113: extrapolation knowledge (out-of-range inputs); the Final two turns on timing (acting before June), not a principle.
+- aaia_d1_117: strategy-fit knowledge (value and risk over vendor accuracy), as aaia_d1_087; the Final two weighs business value, not a harm ranking.
+- aaia_d1_118: was `rank-ai-risk-by-harm`; the Final two compares what each safeguard covers (contract terms versus sign-on), not harm, so consumer-terms knowledge decides (as aaia_d1_038).
+- aaia_d1_134: erasure knowledge (a frozen snapshot brings erased trips back), as aaia_d1_104.
+- aaia_d1_135: framework knowledge (the NIST AI RMF meaning of reliable).
+- aaia_d1_137: was `ai-priority-word-decides`; the key wins under BEST too, so knowing a prohibited practice has one response (stop it) decides.
+- aaia_d1_138: legal knowledge (existing lending and data laws apply to model decisions).
+- aaia_d1_139: framework knowledge (valid and reliable as the base characteristic), as aaia_d1_046.
+- aaia_d1_140: framework knowledge (hard-to-measure risks stay tracked).
+- aaia_d2_220: retrieval-access knowledge; both options are enforced outside the model (as aaia_d2_084), so currency of rights decides.
+- aaia_d2_221: input-validation knowledge; both options check data, so coverage of the live grading path decides.
+- aaia_d2_223: leakage knowledge (near-duplicate test items), as aaia_d2_140.
+- aaia_d2_227: was `ai-governance-before-tooling`; both options check rights before building, so knowing weights carry their own licence decides (as aaia_d1_070).
+- aaia_d2_240: privacy-preserving monitoring knowledge (drift needs distributions, not records).
+- aaia_d2_241: contestability knowledge (seeing the data used); the runner-up, a fuller factor list, is a contest route too.
+- aaia_d2_246: fairness-measure knowledge (rates within the applicant pool), as aaia_d2_161.
+- aaia_d2_249: attack knowledge (model files that run code on load), as aaia_d2_081.
+- aaia_d2_250: attack knowledge (clean-label poisoning), as aaia_d2_081.
+
+**Medium confidence (tagged, review first):** aaia_d1_114 aaia_d1_115
+aaia_d1_116 aaia_d1_119 aaia_d1_120 aaia_d1_121 aaia_d1_122 aaia_d1_125
+aaia_d1_127 aaia_d1_129 aaia_d1_130 aaia_d1_131 aaia_d1_132 aaia_d1_136
+aaia_d2_222 aaia_d2_226 aaia_d2_228 aaia_d2_229 aaia_d2_231 aaia_d2_232
+aaia_d2_234 aaia_d2_235 aaia_d2_236 aaia_d2_237 aaia_d2_238 aaia_d2_247
+aaia_d2_251 aaia_d2_254 aaia_d2_255 aaia_d2_256 aaia_d2_257 aaia_d2_258
+aaia_d2_260.
