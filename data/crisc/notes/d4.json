@@ -106,14 +106,15 @@
           "practice_ids": [
             "crisc_d4_001",
             "crisc_d4_054",
-            "crisc_d4_121"
+            "crisc_d4_121",
+            "crisc_d4_161"
           ],
           "definition": "A technology roadmap is a time-based plan showing which technologies the organization will adopt, upgrade or retire, and how each supports business goals.",
           "why_it_matters": "A roadmap lets risk be planned: end-of-support dates, skills and funding are known years ahead. Technology bought outside it often arrives with no risk review, no support model and no owner.",
           "how_it_works": [
             "The roadmap links each technology change to a business objective and a target date.",
             "When business strategy changes, the roadmap is reviewed against the new objectives, because investments planned for the old goals may no longer serve them.",
-            "It flags known risk events in advance, such as vendor end of support or contract renewals.",
+            "It flags known risk events in advance, such as vendor end of support or contract renewals; systems whose support ends before their planned replacement are gaps to count.",
             "Business-led purchases outside the roadmap still need a risk assessment and a named owner.",
             "Each roadmap milestone carries a risk assessment, not just a budget line, including interim stages when old and new systems run side by side.",
             "Slippage is itself a risk signal when it delays the retirement of weak technology."
@@ -304,13 +305,14 @@
             "crisc_d4_004",
             "crisc_d4_023",
             "crisc_d4_092",
-            "crisc_d4_146"
+            "crisc_d4_146",
+            "crisc_d4_162"
           ],
           "definition": "Incident management restores normal service quickly after a disruption; problem management finds and removes the root cause so the incident does not happen again.",
           "why_it_matters": "Fixing symptoms without the cause lets the same failure recur, often at a worse time. Repeat incidents raise likelihood, and an unknown root cause hides what really needs a control.",
           "how_it_works": [
             "An incident is recorded, classified by business impact, prioritized, resolved and closed; incident criteria cover harm to users, such as harmful AI answers, not only outages.",
-            "A problem is opened when incidents repeat, a major incident occurs or a trend appears.",
+            "A problem is opened when incidents repeat, a major incident occurs or a trend appears; open problems are worked in order of how likely and how harmful a recurrence is.",
             "Root cause analysis finds why it happened; a known error records the cause and any workaround; the practitioner monitors a workaround the owner relies on until the fix ships.",
             "A permanent fix usually goes through change management, so problem and change processes connect.",
             "Incident and problem trends feed the risk register and key risk indicators.",
@@ -466,13 +468,14 @@
             "crisc_d4_086",
             "crisc_d4_137",
             "crisc_d4_144",
-            "crisc_d4_152"
+            "crisc_d4_152",
+            "crisc_d4_163"
           ],
           "definition": "The system development life cycle (SDLC) is the sequence of phases from initiation through design, build, testing, implementation, operation and disposal, each with risk activities.",
           "why_it_matters": "A design flaw is cheap to fix early and costly, even harmful, after go-live. Risk work in every phase keeps the project within appetite.",
           "how_it_works": [
             "Initiation: confirm the business case, owner, data sensitivity and initial risk assessment, updated when scope or data change; a demo gone live enters the gates it skipped.",
-            "Requirements and design: define security, privacy and control requirements alongside functional ones; for a purchased system, put them in the selection criteria and contract.",
+            "Requirements and design: define security, privacy and business control requirements alongside functional ones; for a purchased system, put them in the selection criteria and contract.",
             "Build and test: tests verify requirements, security ones through cases written from them; business users, not developers, sign off UAT.",
             "Implementation: before go-live, the owner accepts residual risk within appetite or orders more treatment; the assessment is updated first only if scope, data or threats changed.",
             "Post-implementation review: check whether benefits arrived, risks stayed within appetite and assumed controls work; quiet months do not show that.",
@@ -730,17 +733,18 @@
             "crisc_d4_078",
             "crisc_d4_103",
             "crisc_d4_113",
-            "crisc_d4_153"
+            "crisc_d4_153",
+            "crisc_d4_164"
           ],
-          "definition": "Retention sets how long each type of data is kept, and sanitization makes data on storage media unrecoverable once it is no longer needed.",
+          "definition": "Retention sets how long each type of data is kept, and sanitization makes data on media unrecoverable once no longer needed.",
           "why_it_matters": "Data kept past its purpose adds breach impact, legal exposure and cost with no business value. Data removed the wrong way can be recovered from equipment reused, sold or discarded.",
           "how_it_works": [
-            "Retention periods follow legal, regulatory and business needs by data type; copies made for a short task are deleted when it ends.",
-            "At the end of the period, data is disposed of unless a legal hold requires it to be kept.",
-            "Deleting a file usually removes only the pointer to it; the data often remains recoverable.",
+            "Retention periods follow legal, regulatory and business needs by data type, from the event the need depends on, such as a worker leaving; task copies end with the task.",
+            "At the period's end, data is disposed of unless a legal hold requires keeping it.",
+            "Deleting a file usually removes only its pointer; the data often stays recoverable.",
             "NIST SP 800-88 methods follow data class and the media's next use; media type shapes the technique.",
             "Sanitization is verified and recorded, including by disposal vendors, and covers any device leaving the firm's control, such as resold cars.",
-            "Archives stay readable for the whole retention period: before the last software that reads a format retires, records move to a supported format and are checked."
+            "Archives stay readable for the whole retention period: before the last software reading a format retires, records move to a supported format and are checked."
           ],
           "types": [
             {
@@ -872,12 +876,13 @@
             "crisc_d4_051",
             "crisc_d4_104",
             "crisc_d4_114",
-            "crisc_d4_141"
+            "crisc_d4_141",
+            "crisc_d4_165"
           ],
           "definition": "Portfolio management selects, prioritizes and balances the organization's programs and projects by their expected value, risk and fit with strategy.",
           "why_it_matters": "Money and people are limited. A portfolio view stops low-value, high-risk projects from consuming resources and shows senior management the combined risk of everything in flight.",
           "how_it_works": [
-            "Each proposal states its business value, cost, risks and link to strategic objectives.",
+            "Each proposal states its business value, cost, risks and link to strategic objectives; an AI project's risks are rated before ranking, with a business owner.",
             "Proposals are scored on value and risk together, not cost or sponsor influence alone; at stage gates, such as an AI pilot going live, builders present but do not decide.",
             "The portfolio is reviewed regularly; projects whose value falls or risk rises are changed, paused or stopped.",
             "Continuing a project rests on the value and risk of the spend still to come; money already spent is no reason to finish a project whose value has gone.",

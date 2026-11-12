@@ -22,7 +22,7 @@
         "D": "Bring the near miss to the board's risk committee"
       },
       "correct": "A",
-      "key_concept": "Near misses are likelihood evidence; after any event, reassess the linked risk scenario before anyone chooses new controls.",
+      "key_concept": "Near misses are likelihood evidence; once one is contained, reassess its risk scenario with it before anyone chooses new controls.",
       "pre_read": "Notice what happened, what was lost and what has already been fixed.",
       "correct_explanation": "A near miss is likelihood evidence: it shows the misrouting scenario can happen and that a nurse was the last barrier. With the fault contained, the risk practitioner reassesses the scenario's likelihood and impact using the event, so the risk owner can decide whether the fix is enough. Weighing a second check may help, but it studies a control before the risk itself is reassessed.",
       "wrong_explanations": {
@@ -33,7 +33,7 @@
       "tips": [
         "Eliminate: B closes the incident while leaving the rating blind to new evidence, and D sends one unassessed near miss to the board, which sets appetite rather than reviewing single events.",
         "Final two: A beats C because the near miss must first update the scenario's rating; only then can the risk owner judge whether another control is worth it.",
-        "Exam cue: once an incident or near miss is contained, the first risk move is to update the scenario and its rating, even when the fault is already fixed."
+        "Exam cue: once a near miss is contained, the first risk move is to weigh it in its scenario's rating, even when the fault is already fixed."
       ],
       "framework_ref": "COBIT 2019 APO12.01 (Collect Data); NIST SP 800-30 Rev. 1 Section 3.4 (Maintaining the Risk Assessment)",
       "related_concepts": [
@@ -41,7 +41,7 @@
         "Risk event data",
         "Reassessment after incidents"
       ],
-      "_provenance": "Authored from concept: notes 2A1.1 Loss Events, Incidents and Near Misses (near misses are likelihood evidence; closing the incident is not closing the risk). Original hospital lab-routing scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): B now keeps the rating instead of closing a risk; lens word 'assess' added to runner-up C; options trimmed of reasons; containment caveat in the exam cue; candidate renamed risk practitioner; neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): key made a single action (audit wording 'Reassess the misrouting scenario using the near miss'); absolute 'unchanged' removed from B and urgency word 'urgent' from D; correct_explanation updated to the single-action key. Option lengths evened (rule 5). Review fixes 5 Nov 2026 (round 12 cross-domain gate): distractor opener matched to a keyed opener (Bring).",
+      "_provenance": "Authored from concept: notes 2A1.1 Loss Events, Incidents and Near Misses (near misses are likelihood evidence; closing the incident is not closing the risk). Original hospital lab-routing scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): B now keeps the rating instead of closing a risk; lens word 'assess' added to runner-up C; options trimmed of reasons; containment caveat in the exam cue; candidate renamed risk practitioner; neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): key made a single action (audit wording 'Reassess the misrouting scenario using the near miss'); absolute 'unchanged' removed from B and urgency word 'urgent' from D; correct_explanation updated to the single-action key. Option lengths evened (rule 5). Review fixes 5 Nov 2026 (round 12 cross-domain gate): distractor opener matched to a keyed opener (Bring). Audit 12 Nov 2026 (round 23 standards audit): key concept ('after any event, reassess') and Exam cue ('once an incident or near miss is contained ... update the scenario and its rating') narrowed to the stem's trigger, a near miss: in absolute form they keyed the runner-up of crisc_d3_262 (round 23), where an outage inside the frequency and size the rating assumed is logged for the scheduled review. Key and options unchanged.",
       "style_version": 2
     },
     {
@@ -218,7 +218,7 @@
       "tips": [
         "Eliminate: A routes a live business risk to audit tracking instead of the register, and B files a process weakness as an IT configuration defect.",
         "Final two: C beats D because the obvious fix carries its own night-shift safety cost; re-rating the scenario lets the risk owner weigh removal against options such as a next-morning independent review.",
-        "Exam cue: a failed or missing control is a vulnerability. Record it against the scenarios it weakens before anyone picks the fix."
+        "Exam cue: a failed or missing control is a vulnerability. Record it against the scenarios it weakens before anyone picks a fix, unless a standard already requires one."
       ],
       "framework_ref": "ISACA Glossary (vulnerability); NIST IR 8286A Rev. 1 Section 2.2.3 (Vulnerability Identification)",
       "related_concepts": [
@@ -2660,7 +2660,7 @@
       "tips": [
         "Eliminate: B keeps a first guess the review disproved, and D raises a rating for a cause that did not happen.",
         "Final two: A beats C because the event must update the scenario it belongs to before any fix is chosen; the test step can follow.",
-        "Exam cue: attach each risk event to the scenario its root cause shows, then reassess that scenario."
+        "Exam cue: attach each risk event to the scenario its root cause shows; a misattributed event misstates both scenarios' ratings."
       ],
       "framework_ref": "NIST CSF 2.0 RS.AN-03 (analysis is performed to establish what has taken place during an incident and the root cause of the incident); COBIT 2019 APO12.01 (Collect Data)",
       "related_concepts": [
@@ -2668,7 +2668,7 @@
         "Root cause analysis",
         "Risk scenario"
       ],
-      "_provenance": "Authored from concept: notes 2A1.1 (Loss Events, Incidents and Near Misses). Round 5, 4 Nov 2026: original scenario (a web retailer's outage logged against hosting, then traced to an internal change) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_047 (event records that name cause and scenario), crisc_d2_001 (reassess after a near miss), CISA d4_177 (outage after a firewall change) and d4_164 (root cause stopping at operator error); none tests moving an event to the scenario its cause shows. Review fixes 4 Nov 2026 (standards audit and concept review): option A says 'a change failure scenario', since the stem does not say the register holds one (the reviewer's 'the register's' wording was not used: 'register' would then be a lens word only in the key, and D2 is at its cap of 3).",
+      "_provenance": "Authored from concept: notes 2A1.1 (Loss Events, Incidents and Near Misses). Round 5, 4 Nov 2026: original scenario (a web retailer's outage logged against hosting, then traced to an internal change) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_047 (event records that name cause and scenario), crisc_d2_001 (reassess after a near miss), CISA d4_177 (outage after a firewall change) and d4_164 (root cause stopping at operator error); none tests moving an event to the scenario its cause shows. Review fixes 4 Nov 2026 (standards audit and concept review): option A says 'a change failure scenario', since the stem does not say the register holds one (the reviewer's 'the register's' wording was not used: 'register' would then be a lens word only in the key, and D2 is at its cap of 3). Audit 12 Nov 2026 (round 23 standards audit): Exam cue no longer ends 'then reassess that scenario', which read as 'every event triggers reassessment' and keyed the runner-up of crisc_d3_262 (round 23); the lesson (attach the event to the scenario its cause shows) is unchanged.",
       "style_version": 2
     },
     {
@@ -4288,7 +4288,7 @@
       "tips": [
         "Eliminate: A looks only for technical flaws, and C treats the dependency as staffing alone, though vulnerabilities include people and process as well as technology.",
         "Final two: D beats B because the outage risk is assessed with its owner before a response is picked; documentation is one option the owner may then choose.",
-        "Exam cue: when a new weakness appears, people and process ones included, assess the risk it changes with the owner before anyone chooses the fix."
+        "Exam cue: when a new weakness appears, people and process ones included, assess the risk it changes with the owner before anyone chooses a fix, unless a standard already requires one."
       ],
       "framework_ref": "ISACA Glossary (vulnerability); NIST IR 8286A Rev. 1 Section 2.2.3 (Vulnerability Identification)",
       "related_concepts": [
@@ -6517,6 +6517,191 @@
         "Rating method"
       ],
       "_provenance": "Authored from concept: notes 2B5.1 (Inherent, Current and Residual Risk: residual risk uses inherent risk's scales and method, crediting what each control changes, not how many controls there are). Round 22, 12 Nov 2026: original scenario (a fishing fleet whose register lowers a scenario's residual rating one level for every two tested controls mapped to it) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 22 asks: no 'Which' stem; no each/every/all/any on any option; key not the shortest by words (9 against 8 to 9) nor the longest by characters (53 against 49 to 58). Owner shape: k=1, a wrong lone owner on an eliminated option (D); no owner on the final two. Neighbours checked (stems, options, key concepts, explanations and Exam cues, all codes): crisc_d2_154 (credit on the factor a control changes; paused: this item does not turn on likelihood against impact, and its cue is consistent), crisc_d2_171 (layered-control arithmetic; paused, not used), crisc_d2_063 (effective in operation but not in design), crisc_d2_126 (credit for a one-in-ten sample), crisc_d2_160 (a 100% effectiveness input), crisc_d2_071 and crisc_d2_018 (inherent ratings credit no controls; consistent with D as wrong), crisc_d3_185 (one control reducing five risks: benefit summed across them; consistent with A as wrong), crisc_d3_164 and CISA d5_204 (one control set mapped to several requirements), CC cc_d2_153 (control status dates), AAIA (none); no item scores residual risk by counting controls; no mirror found.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_177",
+      "domain": 2,
+      "subtopic": "2A2 Threat modeling and threat landscape. Threat list for an online form",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A census office's threat list for its online census form names 'unpatched web servers', 'weak staff passwords' and 'a single data center'. What is the GREATEST flaw for the risk analyst to raise?",
+      "options": {
+        "A": "It lists weaknesses, not the sources or events that use them",
+        "B": "It names no outside attackers known to target online censuses",
+        "C": "It gives no likelihood or impact rating for each item",
+        "D": "It mixes people, technology and site items in one list"
+      },
+      "correct": "A",
+      "key_concept": "A threat is the source or event that could cause harm; the weakness it uses is a vulnerability, not a threat.",
+      "pre_read": "Before judging what the list lacks, decide what kind of thing each listed item is.",
+      "correct_explanation": "A threat is the source or event that could cause harm; a vulnerability is the weakness it uses. Unpatched servers, weak passwords and one data center are weaknesses and conditions, so the list names no threat at all, and likelihood cannot be judged without one. A missing outside attacker is the runner-up: it names one absent source type, but adding attackers alone would still leave out staff error, equipment failure and disasters.",
+      "wrong_explanations": {
+        "B": "Outside attackers are one source type; the list names no source at all, so adding them alone would still leave out errors, failures and disasters.",
+        "C": "Likelihood and impact are rated in analysis, after threats are identified; rating these items now would rate weaknesses with no threat named to act on them.",
+        "D": "Weaknesses in people, technology and sites belong in the same assessment; mixing them is normal and is not what makes this list wrong."
+      },
+      "tips": [
+        "Eliminate: C asks for ratings, which follow once threats are identified, and D objects to mixing people, technology and site items, which belong in one assessment.",
+        "Final two: A beats B because the list names no threat at all, only weaknesses; adding outside attackers covers one source type and leaves the weaknesses mislabeled as threats.",
+        "Exam cue: a threat is who or what acts; a vulnerability is the weakness it uses. When a 'threat list' names flaws or conditions, look for the missing sources and events."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: threats, vulnerabilities, likelihood and impact); ISACA Glossary (vulnerability); NIST SP 800-30 Rev. 1 Appendix D Table D-2 (Taxonomy of Threat Sources: adversarial, accidental, structural and environmental)",
+      "related_concepts": [
+        "Threat source",
+        "Threat event",
+        "Vulnerability"
+      ],
+      "_provenance": "Authored from concept: notes 2A2.1 (Threat Sources and Threat Events: a threat acts on a vulnerability; the threat is the actor or force, the vulnerability is the weakness it uses; exam trap 'an unpatched server is a threat'). Round 23, 12 Nov 2026: original scenario (a census office whose threat list for its online census form names only weaknesses and conditions) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 23 asks: the batch's one foundational item; 'each' on wrong option C (one of the batch's two each/every wrong options, keys carry none); no owner option (no-owner item); no lens word in the key; key not the shortest by words (11 against 10 to 10) nor strictly the longest by characters (60 against 53 to 61). Neighbours checked (stems, options, key concepts, explanations and Exam cues, all codes): crisc_d2_003 (classifying an accidental source), crisc_d2_066 (no staff error among named sources; this list names no source at all, and its gap item is the runner-up shape here, so the Final two rests on 'no source of any type'), crisc_d2_023 (the threat event of a fraud scenario), crisc_d2_168 (a ranking from threat and weakness ratings leaves out impact; its wrong option D, rating weaknesses apart from threats, stays consistent: there both are rated, here no threat is named), crisc_d2_094 (register entries naming a missing tool restated as event and harm; a sibling lesson for register entries, not threat lists), crisc_d2_028 (a flood-zone site as a predisposing condition; consistent with 'one data center' as a condition), crisc_d2_056 (adversarial likelihood from capability, intent and targeting; consistent with C's explanation that likelihood needs a named threat), crisc_d2_074 and crisc_d2_068 (scenario sets), crisc_d4_108 (an archive rated only on leak harm), CISA d3_024 and CC cc_d5_042 and cc_d5_113 (STRIDE threat classes, a different task), AAIA (no threat-versus-weakness list item); no mirror found.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_178",
+      "domain": 2,
+      "subtopic": "2A3 Vulnerability management. Online shop on a SaaS platform",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A cider maker's IT manager wants its online shop, which runs on a SaaS platform, left out of vulnerability identification, since the provider patches the platform. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Take the provider's patching record as the shop's risk rating",
+        "B": "Obtain the provider's latest independent assurance report",
+        "C": "Ask IT to check the shop settings the firm itself controls",
+        "D": "Scan the provider's servers with the IT team's own scanner"
+      },
+      "correct": "C",
+      "key_concept": "In a SaaS service the provider patches the platform, but the customer's own settings, accounts and integrations stay within its vulnerability identification.",
+      "pre_read": "Before agreeing to leave a rented service out, work out who controls each part of it.",
+      "correct_explanation": "In a SaaS service the provider patches the platform, but the customer still controls its own settings: admin accounts, staff access, add-ons and payment links. Weaknesses there are the cider maker's to find, and its IT team, which runs its technical controls, is the one to check them. The provider's assurance report is the runner-up: it covers the provider's controls, not how the cider maker has set up its own shop.",
+      "wrong_explanations": {
+        "A": "Patching covers flaws in the provider's software, the IT manager's premise; it says nothing about the shop's own accounts and settings, so it cannot stand as the shop's rating.",
+        "B": "An assurance report tests the provider's side of the service; weak admin accounts or risky add-ons the cider maker set up itself fall outside what it covers.",
+        "D": "The servers belong to the provider, so scanning them needs its consent and tests its side of the service; the shop's own settings would still go unchecked."
+      },
+      "tips": [
+        "Eliminate: A accepts the premise that patching covers the whole shop, and D scans servers the firm does not own, which needs the provider's consent, and still misses the shop's settings.",
+        "Final two: C beats B because the firm still sets up its own shop's accounts, add-ons and settings; the provider's assurance report covers the provider's side, not the customer's setup.",
+        "Exam cue: for a cloud service, split the work by who controls what: the provider's assurance covers its part, and the customer checks the settings, accounts and integrations it controls."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.RA-01 (vulnerabilities in assets are identified, validated and recorded); NIST CSF 2.0 GV.SC-02 (cybersecurity roles and responsibilities for suppliers, customers and partners are established, communicated and coordinated internally and externally)",
+      "related_concepts": [
+        "Shared responsibility",
+        "Misconfiguration",
+        "Third-party assurance"
+      ],
+      "_provenance": "Authored from concept: notes 2A3.1 (Vulnerabilities in People, Process and Technology: technology weaknesses include misconfigurations, including a SaaS customer's own settings; exam trap 'a SaaS service is out of vulnerability scope because the provider patches it'). Round 23, 12 Nov 2026: original scenario (a cider maker's IT manager who wants the SaaS-hosted online shop left out of vulnerability identification) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 23 asks: the batch's IT key in IT's own role (IT administers the shop's settings, the technical control it answers for) and its one 'Ask' key; 'Take' on wrong option A; 'Obtain' only on a wrong option; no owner option (no-owner item); no lens word in the key; key not the shortest by words (11 against 7 to 10) nor strictly the longest by characters (58 against 57 to 61). Neighbours checked (stems, options, key concepts, explanations and Exam cues, all codes): crisc_d3_026 (a provider's SOC 2 report lists the customer controls it expects; consistent: the report's own scope stops at the provider, which is why B is the runner-up), crisc_d3_154 and crisc_d3_242 (relying on and refreshing a provider's report; consistent), crisc_d3_228 (a shared control set for another use, a paused family not used here), crisc_d2_026 and crisc_d2_093 (scan coverage limits), crisc_d2_051 and crisc_d1_140 and crisc_d4_025 (inventories that miss assets; this item's asset is known), crisc_d2_077 (over-broad folder permissions as a technology weakness), crisc_d2_157 (IT security keyed in its own role in 2A2; a different code and task), crisc_d2_134 (an IT manager keeping a risk out of the register for a stated reason; the same stem shape in 2B3, with a different lesson and key), crisc_d1_064 and crisc_d1_087 (assets held or bought outside IT), CC cc_d4_017, cc_d4_020, cc_d4_158 and cc_d4_196 (shared responsibility for SaaS, PaaS and IaaS customers: who removes accounts or picks a runtime; this item is the risk practitioner's scope question), CISA d5_187 and d4_181 (customer duties under shared responsibility in incident response and backup), AAIA (no SaaS vulnerability-scope item); no mirror found. Audit 12 Nov 2026 (round 23 standards audit): Final two no longer asserts 'the gap sits in settings the firm configures itself', a gap the stem does not report; it now rests on the SaaS split the stem implies (the provider patches the platform, the firm sets up its shop). Review 12 Nov 2026 (round 23 concept and blind review): Eliminate tip no longer asserts the scan runs 'without the provider's consent', a fact the stem does not give; it now says scanning needs that consent, matching wrong explanation D.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_179",
+      "domain": 2,
+      "subtopic": "2B2 Business impact analysis (BIA). Recovery point for a shared database",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A crane hire firm's invoicing owner set a 24-hour RPO for the bookings database; dispatch, which works from it too, can lose at most an hour's bookings. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Have the invoicing owner confirm the 24-hour RPO",
+        "B": "Set a 12-hour RPO between the dispatch and invoicing owners' limits",
+        "C": "Match the database's RPO to the nightly backups IT already runs",
+        "D": "Base the database's RPO on dispatch's one-hour limit"
+      },
+      "correct": "D",
+      "key_concept": "A database shared by several processes is restored to one point in time, so its RPO must meet the strictest process that relies on it.",
+      "pre_read": "Before weighing the objective, list who depends on the data it protects.",
+      "correct_explanation": "Restoring the bookings database to a point 24 hours back could lose a day of bookings that dispatch needs, far past the hour it can bear. The database is restored to one point in time for every process using it, so its RPO must meet the strictest of them: dispatch's hour. Having the invoicing owner confirm 24 hours is the runner-up: that owner can speak for invoicing's tolerance, not dispatch's.",
+      "wrong_explanations": {
+        "A": "The invoicing owner can confirm what invoicing can lose, but not what dispatch can; confirming 24 hours would leave dispatch facing up to a day of lost bookings.",
+        "B": "Splitting the difference still lets dispatch lose up to 12 hours of bookings; the RPO of a shared database has to meet the strictest process using it.",
+        "C": "The RPO comes from how much data loss the business can bear; backups are then scheduled to meet it, not the other way round."
+      },
+      "tips": [
+        "Eliminate: B splits the difference and still costs dispatch half a day of bookings, and C lets the current backup schedule set the RPO, when tolerable data loss should set the backups.",
+        "Final two: D beats A because dispatch shares the database and can bear only an hour's loss; the invoicing owner can confirm invoicing's tolerance, not set one for dispatch.",
+        "Exam cue: when processes share data, its RPO comes from the process that can afford to lose the least; each process owner speaks only for their own process's tolerance."
+      ],
+      "framework_ref": "ISACA Glossary (recovery point objective); NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO)",
+      "related_concepts": [
+        "Recovery point objective",
+        "Shared data",
+        "Business impact analysis"
+      ],
+      "_provenance": "Authored from concept: notes 2B2.2 (MTO, RTO and RPO: the RPO is the earliest point data must be recoverable to; vital data that cannot be recreated, and the strictest process sharing it, set it), with 2B2.1 (a supporting system takes the priority of the most critical process that depends on it). Round 23, 12 Nov 2026: original scenario (a crane hire firm whose invoicing owner set a day-long RPO for a bookings database that dispatch also uses) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 23 asks: 'Have' on the runner-up (A), the round's one runner-up 'Have'; 'Set' and 'Match' only on wrong options; time words on options because the explanation turns on time; key not strictly the shortest by words (8, tied with A) nor the longest by characters (52 against 48 to 67). Owner shape: k=2 split runner-up + eliminated (A and B name owners; the key names none). No lens word in the key. Neighbours checked (stems, options, key concepts, explanations and Exam cues, all codes): crisc_d2_073 (a supporting system inherits the criticality of the most critical dependent process; the same rule applied to a data objective, with a different trap: the owner who set the objective speaks only for one process; Exam cue reworded to the data case), crisc_d2_133 (the RPO is set by the data that cannot be re-entered; consistent and complementary), crisc_d2_034 (recording a one-hour RPO), crisc_d2_012 and crisc_d2_080 (objectives set by IT or by each head without evidence), crisc_d2_035 and crisc_d2_159 (RTO and MTO), crisc_d4_117 and crisc_d4_147 (RPO and copy frequency at peak, a paused family not used here: C is about who sets the objective, not peak timing), crisc_d1_152 and crisc_d1_193 (restore order), crisc_d4_107 (a model stored only at the main site), CISA d4_083 (owners set RTO and RPO with no BIA link) and d4_104, CC (no shared-data RPO item), AAIA (none); no mirror found. Audit 12 Nov 2026 (round 23 standards audit): Exam cue's 'whoever looks after the data' (which reads as the data custodian, often IT) replaced by 'each process owner', the role the item turns on.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_180",
+      "domain": 2,
+      "subtopic": "2B3 Risk register. AI feature added by a vendor update",
+      "principle_id": "emerging-and-ai-risk-owned",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A vendor update switched on an AI feature that sends buyers' emails to an outside model to draft replies, inside an estate agency's CRM already in its register. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Get the CRM's owner to log the update as a routine change",
+        "B": "Open a linked entry for the AI feature under a business owner",
+        "C": "Widen the CRM's existing entry to cover the AI feature's risks",
+        "D": "Use the vendor's own AI risk rating for the feature"
+      },
+      "correct": "B",
+      "key_concept": "An AI feature that adds a new data use and new harms gets its own register entry and owner, linked to the tool's entry.",
+      "pre_read": "Ask whether the change alters a risk already recorded or brings a new one.",
+      "correct_explanation": "The feature brings a new data use, buyers' emails sent to an outside model, and new harms, such as invented claims in replies, that the CRM's entry never rated. Its own entry, with a business owner, gets that risk rated against appetite, and the link to the CRM's entry shows the dependency between them. Widening the CRM's entry is the runner-up: it blends two different risks into one rating and owner, hiding the new one.",
+      "wrong_explanations": {
+        "A": "An update that adds a new data use is not business as usual; logged as a routine change, the feature's risk is never rated or entered in the register.",
+        "C": "One entry would blend the CRM's existing risk with a new data use and new harms, so neither rating shows clearly against appetite or reaches the right owner.",
+        "D": "A vendor rates its feature for typical use; the agency's own data, buyers and appetite set the risk of this use, so the agency rates its own."
+      },
+      "tips": [
+        "Eliminate: A logs a new data use as a routine change, so its risk is never rated, and D takes the vendor's rating in place of the agency's own analysis.",
+        "Final two: B beats C because the feature adds a data use and harms the CRM's entry never rated; its own linked entry keeps both risks visible, each with the right owner.",
+        "Exam cue: when an existing tool gains an AI feature that adds a data use or new harms, give it its own register entry and owner, linked to the tool's entry, not folded in."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 3 Table 1 (Descriptions of notional cybersecurity risk register template elements); NIST AI 100-1 (AI RMF 1.0) Section 1.2.1 (Risk Measurement: a deployer's particular use of a pre-trained model may entail risks that differ from those the developer perceived); NIST AI 100-1 (AI RMF 1.0) MANAGE 3.1 (AI risks and benefits from third-party resources are regularly monitored and risk controls are applied and documented)",
+      "related_concepts": [
+        "Risk register",
+        "Third-party AI",
+        "Risk owner"
+      ],
+      "_provenance": "Authored from concept: notes 2B3.2 (Keeping the Register Current: a new or emerging risk, such as a new AI system or a vendor-added AI feature, gets its own entry early, linked to related ones, with its uncertainty stated). Round 23, 12 Nov 2026: original scenario (an estate agency whose CRM gains, by vendor update, an AI feature that sends buyers' emails to an outside model) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 23 asks: the batch's one AI item, on the assigned 2B3 angle (a vendor-enabled AI feature gets its own register entry linked to the tool's, as it brings a data use the tool's entry never rated); not a faulty vendor update and not the AI-use inventory scope of crisc_d1_172; 'Get', 'Use' and 'Widen' only on wrong options; key not the shortest by words (11 against 10 to 11) nor strictly the longest by characters (61 against 51 to 62). Owner shape: k=2 split key + eliminated (B and A name owners). Lens words in the key also in a distractor ('owner' and 'business' in A). Neighbours checked (stems, options, key concepts, explanations and Exam cues, all codes): crisc_d2_061 (a new AI system's entry states its uncertainty; consistent), crisc_d2_085 (a response's side effect rated as a risk of its own, not folded into the treated risk's rating; a sibling lesson in 2B5, with a different trigger, so the Exam cue here names the host tool and the link), crisc_d2_108 (one scenario in two registers merged into one entry; consistent: here the two risks differ), crisc_d2_014 (unit ratings rolled into one group scenario of the same risk; consistent), crisc_d2_174 and crisc_d2_175 (round 22's paused AI-scope and entry-closure families, not used), crisc_d1_172 (AI-use register scope), crisc_d1_032 (an unannounced model version swap; a different, inventory lesson), crisc_d1_198 and crisc_d4_075 (vendor terms that train on customer data), crisc_d3_179 (AI services missing from the register), AAIA aaia_d1_027 (policy review whenever a tool gains AI), aaia_d3_051 (a vendor-enabled AI feature added to the audit universe) and aaia_d2_235 (a memory feature switched on by update), CISA and CC (no register item for a vendor-added AI feature); no mirror found. Audit 12 Nov 2026 (round 23 standards audit): option A changed from 'Get the CRM's owner to accept the feature's business risk' (the stock 'seek acceptance' decoy the round 23 brief bars; options naming acceptance are keyed 18 of 103 in the bank) to logging the update as a routine change, which topic knowledge rules out; owner shape unchanged (key B and eliminated A name an owner); wrong explanation A and Eliminate tip follow. Neighbours added: crisc_d2_109 (a new technique re-rates the existing scenario rather than adding an entry; here a new data use and new harms need their own entry). Review 12 Nov 2026 (round 23 concept and blind review): key concept and Exam cue narrowed to an AI feature that adds a new data use or new harms, as here; not every AI feature an update adds is a new risk. Option A and the Eliminate tip keep the audit's wording.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_181",
+      "domain": 2,
+      "subtopic": "2B4 Risk analysis methodologies. Trusting experts' loss ranges",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A pet insurer's experts gave a 90% loss range for each of its last 20 IT incidents before costs were known. Which of the following BEST shows the risk analyst how far to trust them?",
+      "options": {
+        "A": "Years of incident and claims experience each expert has",
+        "B": "How narrow the loss ranges were around their midpoints",
+        "C": "Number of the 20 ranges that held the incident's actual loss",
+        "D": "How closely the experts' 20 ranges agreed with one another"
+      },
+      "correct": "C",
+      "key_concept": "Estimates are judged by their track record: a well-calibrated expert's 90% ranges hold the actual value about nine times in ten.",
+      "pre_read": "Read each option as a test: what would it reveal about whether a range can be trusted?",
+      "correct_explanation": "A 90% range should hold the actual value about nine times in ten, about 18 of these 20, so counting how many held the final loss tests the experts against outcomes; 9 of 20 would show overconfidence. Comparing past estimates with what happened is how estimation improves. Agreement among the experts is the runner-up: experts who share a blind spot can agree closely and all be wrong.",
+      "wrong_explanations": {
+        "A": "Experience says nothing about how well someone sizes uncertainty; seasoned experts can be overconfident, and only results against outcomes show it.",
+        "B": "Narrow ranges look precise, but precision is not accuracy; overconfident experts give narrow ranges that miss the actual loss.",
+        "D": "Agreement shows the experts think alike, not that they are right; a shared blind spot would make them agree and miss together."
+      },
+      "tips": [
+        "Eliminate: A judges the experts by their careers and B by how precise their ranges look; neither checks the ranges against what the incidents actually cost.",
+        "Final two: C beats D because only outcomes test a range; experts can agree closely and still share a blind spot that makes them miss together.",
+        "Exam cue: to judge estimates, compare them with what happened; well-calibrated 90% ranges hold the actual value about nine times in ten. Agreement, credentials and narrow ranges do not show calibration."
+      ],
+      "framework_ref": "NIST IR 8286A Rev. 1 Section 2.3.2 (Techniques for Estimating Likelihood and Impact: comparing historical estimates with realized outcomes over time improves estimation accuracy and shows where assumptions consistently under- or over-shoot); NIST IR 8286A Rev. 1 Section 2.3.2 (Techniques for Estimating Likelihood and Impact: calibration training and assessment improve individuals' ability to estimate uncertainty accurately and reduce overconfidence)",
+      "related_concepts": [
+        "Calibration",
+        "Expert estimation",
+        "Overconfidence bias"
+      ],
+      "_provenance": "Authored from concept: notes 2B4.3 (Choosing a Method: Data, Decisions, FAIR and Monte Carlo: check data reliability, gather estimates privately first, and judge experts by how often past ranges held actual results). Round 23, 12 Nov 2026: original scenario (a pet insurer whose experts gave 90% loss ranges for its last 20 IT incidents) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 23 asks: the batch's one analysis item and its one 'Which of the following' stem; the round's keyed 'Number of' (a count of ranges that held the actual loss is the calibration measure); 'each' on wrong option A (one of the batch's two each/every wrong options); no owner option (no-owner item); no lens word in the key; the domain's floor key, naturally the longest by characters (60 against 54 to 58, 2 over the next option); key not the shortest by words (11 against 8 to 9). Neighbours checked (stems, options, key concepts, explanations and Exam cues, all codes): crisc_d2_067 (private estimates before discussion counter group think; consistent: D's explanation says agreement can hide a shared blind spot), crisc_d2_083 (three-point inputs for a simulation), crisc_d2_017 and crisc_d2_170 (ranges over point figures), crisc_d2_115 (sensitivity analysis finds the input to improve), crisc_d2_084 and crisc_d2_143 (recorded reasons and defined levels for ratings), crisc_d3_124 (testing whether a KRI leads by lining its history up with incidents; a sibling 'test against outcomes' lesson for indicators, not estimates), crisc_d2_107 (scaling an outside rate), CISA d1_147 (choosing a risk method for an audit plan), CC and AAIA (no expert-calibration item); no mirror found. Audit 12 Nov 2026 (round 23 standards audit): Exam cue's sweeping 'prove nothing' narrowed to 'do not show calibration' (round 23 brief, rule 12); floor key C unchanged. Review 12 Nov 2026 (round 23 concept and blind review): correct explanation states the expected count (about 18 of these 20) (optional concept observation); floor key C unchanged.",
       "style_version": 2
     }
   ]

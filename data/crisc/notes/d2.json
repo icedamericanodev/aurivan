@@ -77,7 +77,7 @@
             "recommend": "Have the incident manager route every closed incident and near miss to the relevant risk owner for scenario review.",
             "decides": "The risk owner agrees any rating change the event supports and decides the response"
           },
-          "isaca_rule": "Treat every loss event and near miss as evidence about a risk scenario. Closing the incident is not closing the risk: link the event to its scenario, reassess likelihood and impact, and let the risk owner decide on any change.",
+          "isaca_rule": "Treat every loss event and near miss as scenario evidence. Closing the incident is not closing the risk: link the event to its scenario, reassess unless the rating already expected it, and let the risk owner decide on any change.",
           "exam_traps": [
             {
               "trap": "A near miss caused no loss, so it does not need to be recorded.",
@@ -102,7 +102,7 @@
               "definition": "(Security sense) An event harming, or about to harm, the confidentiality, integrity or availability of information, or breaching law or security rules."
             }
           ],
-          "memory_aid": "Loss hurt, near miss nearly hurt: both re-rate the scenario."
+          "memory_aid": "Loss hurt, near miss nearly hurt: both are rating evidence."
         },
         {
           "id": "2A1.2",
@@ -237,7 +237,8 @@
             "crisc_d2_003",
             "crisc_d2_023",
             "crisc_d2_066",
-            "crisc_d2_092"
+            "crisc_d2_092",
+            "crisc_d2_177"
           ],
           "definition": "A threat source is anyone or anything that could cause harm; a threat event is what that source does, such as phishing staff or flooding a data center.",
           "why_it_matters": "Scenarios built only around outside hackers miss insiders, errors, equipment failures and disasters. A full taxonomy keeps identification complete and keeps threats separate from weaknesses.",
@@ -490,14 +491,15 @@
             "crisc_d2_095",
             "crisc_d2_116",
             "crisc_d2_138",
-            "crisc_d2_149"
+            "crisc_d2_149",
+            "crisc_d2_178"
           ],
           "definition": "A vulnerability is a weakness in the design, implementation, operation or internal control of a process or system that a threat could exploit.",
           "why_it_matters": "Many serious losses combine a technical flaw with a process gap or human error; scanner output alone leaves process and people weaknesses unmanaged.",
           "how_it_works": [
             "People weaknesses include weak awareness, missing skills, key-person dependency and too few staff, weighed by what those people can reach.",
             "Process weaknesses include missing approvals, poor segregation of duties, untested recovery plans and undocumented procedures.",
-            "Technology weaknesses include unpatched software, misconfigurations, default passwords, unsupported systems and over-broad access, easy to reach through an AI assistant using users' rights.",
+            "Technology weaknesses include unpatched software, misconfigurations (a SaaS customer's own settings too), default passwords, unsupported systems and over-broad access, easy to reach through an AI assistant using users' rights.",
             "A control deficiency found in testing or audit is a vulnerability; one with a shared cause, such as a standard install, is recorded against that cause.",
             "Predisposing conditions, such as a flood-prone site, change likelihood even when nothing is broken.",
             "Walkthroughs and control tests find process and people weaknesses; documents and self-assessments show intent; uncredentialed scans miss many installed-software flaws; rare-item AI detectors are judged by misses."
@@ -527,7 +529,7 @@
               }
             ]
           },
-          "example": "A food manufacturer's control test finds that recipe changes in the production system need no second approval. Yusuf Haddad, the IT risk analyst, records the gap as a process vulnerability under the unauthorized recipe change scenario, attaches the test result as evidence, and asks the plant quality manager, who owns the scenario, to review its likelihood rating.",
+          "example": "A food manufacturer's control test finds that recipe changes in the production system need no second approval. Yusuf Haddad, the risk analyst, records the gap as a process vulnerability under the unauthorized recipe change scenario and asks the plant quality manager, who owns the scenario, to review its likelihood rating.",
           "audit_focus": {
             "review": [
               "Compare scenario vulnerability lists against scan, control test and audit results",
@@ -1141,14 +1143,15 @@
             "crisc_d2_080",
             "crisc_d2_124",
             "crisc_d2_133",
-            "crisc_d2_159"
+            "crisc_d2_159",
+            "crisc_d2_179"
           ],
           "definition": "MTO is a critical function's longest tolerable disruption; RTO, the time allowed to recover a function or resource; RPO, the earliest restore point that tolerable data loss allows.",
           "why_it_matters": "These numbers drive recovery design and cost. Set by IT alone, they reflect technology, not what the business can survive.",
           "how_it_works": [
             "Process owners and leadership set the maximum tolerable outage (MTO; other sources say MTD) from impact-over-time results.",
             "The recovery time objective (RTO) for each supporting function or resource must normally be shorter than the MTO, leaving time to reprocess work.",
-            "The recovery point objective (RPO) is the earliest point data must be recoverable to; a four-hour RPO allows four hours' loss; vital data that cannot be recreated sets it.",
+            "The recovery point objective (RPO) is the earliest point data must be recoverable to; vital data that cannot be recreated, and the strictest process sharing it, set it.",
             "The service delivery objective (SDO) sets the service level, such as share of normal volume, needed in alternate mode.",
             "Shorter objectives cost more; a workable manual process lets a system's RTO run longer, and when tested recovery misses the MTO, the owner weighs cost against impact.",
             "Owners' outage limits rest on impact evidence; when nearly every process claims the shortest limit, the practitioner challenges each with its owner."
@@ -1313,17 +1316,18 @@
             "crisc_d2_075",
             "crisc_d2_152",
             "crisc_d2_162",
-            "crisc_d2_175"
+            "crisc_d2_175",
+            "crisc_d2_180"
           ],
           "definition": "Keeping the register current means updating ratings, controls, responses and status whenever events, assessments, control tests or business changes alter a risk.",
           "why_it_matters": "Decisions are only as good as the register behind them. A stale register reports risks as treated that are not, and hides risks that have grown.",
           "how_it_works": [
-            "Update triggers include incidents, near misses, control test results, audit findings, new threats, projects and reorganizations.",
+            "Update triggers include serious incidents, events outside a rating's expected range, control test results, audit findings, new threats, projects and reorganizations.",
             "Status follows evidence: an entry moves to treated only when the response is implemented and working, not when it is planned.",
             "Current and residual ratings credit a control only after it is implemented and tested, not on the day it is approved.",
             "Owners review entries on a cycle set by rating; a stated trigger, such as a KRI breach, brings review forward, and a request alone is not one.",
             "An entry closes, with a reason and the owner's approval, once its risk ends, as with a retired asset; working controls do not end it. Closed entries stay as history.",
-            "A new or emerging risk, such as a newly launched AI system, is entered early with its rating's uncertainty stated and an early review date."
+            "A new or emerging risk, such as a vendor AI feature that brings a new data use, gets its own entry early, linked to related ones, with its uncertainty stated."
           ],
           "example": "A pension fund's register shows member portal account takeover as treated because multifactor sign-in was approved in March. In September, Elif Yilmaz, the risk analyst, finds the rollout covers only 20% of members. Elif moves the status back to in treatment, re-scores the current risk on the control as it stands, and flags the gap to the member services director.",
           "audit_focus": {
@@ -1387,7 +1391,7 @@
               "Enterprise risk profile with links to source register entries",
               "Common rating scale and risk category guide"
             ],
-            "recommend": "Have the enterprise risk function set one taxonomy and scale and roll up unit registers each quarter.",
+            "recommend": "Have the enterprise risk function apply the approved taxonomy and scale and roll up unit registers each quarter.",
             "decides": "Senior management and the board decide whether the profile is acceptable"
           },
           "isaca_rule": "Keep the IT risk register consistent with the enterprise's categories and scales so it can roll up. Aggregation can turn the same small risk in many units into one significant enterprise risk.",
@@ -1584,13 +1588,14 @@
             "crisc_d2_115",
             "crisc_d2_129",
             "crisc_d2_153",
-            "crisc_d2_170"
+            "crisc_d2_170",
+            "crisc_d2_181"
           ],
           "definition": "Choosing a method means matching the analysis to the decision it must support and the quality of the data available, from simple scales to FAIR models and Monte Carlo simulation.",
           "why_it_matters": "A precise-looking number built on guesses misleads decision makers more than an honest qualitative rating. The method must fit the data and the decision.",
           "how_it_works": [
             "Ask what the decision needs: ranking many risks, funding one control, or capital and insurance planning.",
-            "Check the data: loss history, industry benchmarks and expert estimates, and how reliable each is; gather each expert's estimate privately before discussion, as in the Delphi technique.",
+            "Check data reliability: loss history, benchmarks, expert estimates; gather estimates privately first (Delphi), and judge experts by how often past ranges held actual results.",
             "FAIR, an Open Group standard, splits risk into loss event frequency and loss magnitude; secondary losses, such as fines, get their own frequency: the share of events that trigger them.",
             "Monte Carlo runs thousands of trials from estimated ranges; a yearly loss limit is tested on the tail of simulated yearly losses, not the mean or one event's loss.",
             "Ranges beat single points: with no loss history, validated error rate times volume gives a frequency range; if too wide, sensitivity analysis finds the input to improve.",
