@@ -60,9 +60,9 @@
             "An incident breaks, or nearly breaks, security policy; it need not cause loss.",
             "Each event is linked to the scenario its review's root cause points to, not the first guess logged, and feeds that scenario's likelihood or impact.",
             "Fixing the immediate cause closes the incident ticket, not the risk; an event whose cause fits no scenario shows a register gap, filled with the process owner.",
-            "Impact counts primary and secondary losses, such as missed orders, lost customers, penalties and customer harm; the process owner, not IT's incident record, supplies it."
+            "Impact counts primary and secondary losses, such as missed orders, lost customers, penalties and customer harm, even those arriving after closure; the process owner, not IT's incident record, supplies it."
           ],
-          "example": "At a water utility, an alarm stops an operator from opening the wrong valve after a remote session times out. Priya Raman, the risk analyst, logs a near miss against the remote operation error scenario, notes the alarm was the last barrier, and asks the operations manager, its risk owner, to review the likelihood rating.",
+          "example": "At a water utility, an alarm stops an operator from opening the wrong valve after a remote session times out. Priya Raman, the risk analyst, logs a near miss against the remote operation error scenario and asks the operations manager, its risk owner, to review the likelihood rating.",
           "audit_focus": {
             "review": [
               "Trace recent incidents and near misses to the risk scenarios they affect",
@@ -317,7 +317,7 @@
             "Intelligence comes from vendors, sharing groups and alerts; reports on actors' aims, methods and targets inform scenarios, and indicators of compromise feed detection tools.",
             "Intelligence is filtered for relevance: does the actor target this sector, and does the enterprise use the targeted technology?",
             "STRIDE prompts six threat types against a design: spoofing, tampering, repudiation, information disclosure, denial of service and elevation of privilege; AI systems also need AI attack classes added.",
-            "Attack trees break an attacker's goal into the paths that reach it; uncontrolled paths show where a scenario's exposure sits, and a control blocking several paths is a key control.",
+            "Attack trees break an attacker's goal into paths, including through suppliers and transport; uncontrolled paths show where exposure sits, and a control blocking several is a key control.",
             "MITRE ATT&CK catalogs tactics and techniques seen in real attacks; those used by groups that target the sector show which attack paths are credible.",
             "Modeling results feed risk scenarios, rated with the risk owner; a new technique that beats a credited control, such as live deepfake video, means re-rating the existing scenario."
           ],
@@ -577,7 +577,7 @@
             "Environmental metrics adjust for the enterprise's own setting, such as mitigating controls and how much the asset's confidentiality, integrity and availability matter.",
             "Supplemental metrics, such as Safety and Automatable, add context without changing the score.",
             "Scores are labeled by the metrics used, from CVSS-B for Base only to CVSS-BTE for Base, Threat and Environmental.",
-            "FIRST describes CVSS as one input to risk assessment, beside factors such as regulation, customers affected and monetary loss."
+            "FIRST describes CVSS as one input to risk assessment, beside regulation, customers affected and monetary loss; chained flaws are rated together, by what the path reaches."
           ],
           "example": "A retailer's scanner reports a 9.3 Base score on a kiosk app in a closed training room and a 7.1 on its internet-facing loyalty site, which holds card tokens and has public exploit code. Sofia Marin, the risk analyst, adds threat and environmental context, rates the loyalty site scenario higher, and gives both findings to the e-commerce manager to set the fix order.",
           "audit_focus": {
@@ -907,12 +907,12 @@
           "how_it_works": [
             "Likelihood combines the chance a threat event starts and the chance it causes harm, over a stated time frame.",
             "For adversaries, likelihood weighs capability, intent and targeting; other sources use recorded history, from regional or industry records when local history is short, with expert judgment filling gaps.",
-            "Impact is the effect on objectives: financial, operational, legal, reputational, safety or customer harm.",
+            "Impact is the effect on objectives, such as financial, operational, legal, safety or customer harm, in the enterprise's own use; a supplier's AI rating for another use is rechecked.",
             "Controls and predisposing conditions change likelihood and are understood before rating; when one changes, such as more heat, older history may stop predicting.",
             "ISO 31000, named here as context only, describes risk as the effect of uncertainty on objectives, which can include upside opportunity.",
             "When a scenario harms several kinds of objective, the most severe credible harm sets the impact level; ordinal levels are not averaged."
           ],
-          "example": "A ski resort's register rates a ticketing system outage as high because it would stop sales. Kofi Mensah, the risk analyst, adds the missing half: two outages in five years, both under an hour, and a working offline sales mode. Kofi re-rates the scenario on likelihood and impact over the next 12 months and shares the rationale with the commercial director.",
+          "example": "A ski resort's register rates a ticketing system outage as high because it would stop sales. Kofi Mensah, the risk analyst, adds the missing half: two outages in five years, both under an hour, and a working offline sales mode. Kofi re-rates both for the next 12 months with the commercial director.",
           "audit_focus": {
             "review": [
               "Sample register ratings for a separate likelihood and impact rationale",
@@ -929,7 +929,7 @@
           "exam_traps": [
             {
               "trap": "A high-impact event is always a high risk.",
-              "why": "If likelihood is very low and controls are strong, the combined risk may be moderate. Both factors set the rating."
+              "why": "If likelihood is low and controls are strong, the combined risk may be moderate."
             },
             {
               "trap": "When two analysts rate the same scenario differently, average the ratings or keep the higher one.",
@@ -1648,7 +1648,7 @@
             "Inherent risk credits no control, even standard ones, so it shows how much a scenario depends on controls; a high rating marks controls that must not fail.",
             "Residual risk is rated with the same scales and method as inherent risk, so the two are comparable.",
             "Current risk, counting only implemented, working responses, is compared with appetite now; a planned response's future residual risk shows whether the plan is enough.",
-            "Residual risk is never zero; some uncertainty remains after any response.",
+            "Residual risk is never zero: no control stops every case, so a 100% effectiveness input needs a range.",
             "Before design, inherent risk ranks which scenarios need the strongest controls; target risk then checks whether the design is enough."
           ],
           "compare": {
@@ -1710,7 +1710,7 @@
             },
             {
               "term": "Target risk",
-              "definition": "The risk level a planned response is expected to reach, set within appetite; it becomes residual risk only once the response is implemented."
+              "definition": "The level a planned response should reach, set within appetite; it becomes residual risk once implemented."
             },
             {
               "term": "Key control",

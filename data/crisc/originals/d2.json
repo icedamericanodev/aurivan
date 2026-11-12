@@ -5704,6 +5704,228 @@
       ],
       "_provenance": "Authored from concept: notes 2B5.2 (Control Effectiveness and the Residual Gap: design effectiveness includes which factor a control changes; backups cut impact, not likelihood). Round 18, 12 Nov 2026: original scenario (a pest-control firm's residual rating for ransomware encrypting its scheduling system cuts both likelihood and impact for restore-tested offline backups) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 18 asks: a keyed LONE owner (B), neither the longest (A, 12 words, 65 characters) nor the shortest (C, 8 words) option; no Have/Ask opener on a wrong option; the runner-up opens the same way as the key ('Re-rate'); no period word on any option. Owner shape: k=1, the lone owner option the key. Neighbours checked (stems, options, key concepts, explanations and Exam cues): crisc_d2_110 (restore-tested backups earn credit in the current rating: consistent, here the credit is limited to impact), crisc_d2_019, crisc_d2_086 and crisc_d2_135 (credit for untested, out-of-scope or detective controls), crisc_d2_044 (one control behind a large gap), crisc_d2_071 and crisc_d2_104 (inherent ratings credit no control), crisc_d2_144 (re-rating residual risk after a change), crisc_d3_096 and crisc_d3_121 (restoring from backups as a corrective control; a standby site lowering an outage's impact), CC cc_d1_041 and cc_d1_180 (backups as recovery controls); no item separates the likelihood and impact credit a control earns; no mirror found.",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d2_155",
+      "domain": 2,
+      "subtopic": "2B1 Risk assessment concepts and standards. Vendor rating for a dosing model",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A wastewater treatment plant will let a vendor's AI model set chemical doses directly; the vendor rates it low risk from tests as an advisory forecasting tool. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Rate the model's risk for direct dosing with the process owner",
+        "B": "Check the vendor's test results behind the model's low rating",
+        "C": "Record the vendor's low rating in the plant's risk register",
+        "D": "Raise the vendor's rating by one level for the plant's direct dosing"
+      },
+      "correct": "A",
+      "key_concept": "AI risk is rated in the deployer's own context of use; a supplier's rating made for a different use is an input, not the answer.",
+      "pre_read": "Compare the use the vendor's rating assumed with how the plant plans to use the model.",
+      "correct_explanation": "A supplier rates a model for the use it tested, here an advisory tool whose forecasts people check. Setting doses directly changes who could be harmed and how fast, so the plant first rates the risk in its own context of use with the process owner, as AI RMF MAP 1 expects. Checking the vendor's test results is the runner-up: they become useful evidence once the plant's use defines what they must show.",
+      "wrong_explanations": {
+        "B": "Those tests show how the model behaved as an advisory tool with people checking its forecasts; they cannot show whether direct dosing is safe until that use is defined.",
+        "C": "Copying the rating into the register adopts a judgment made for another use; letting the model dose with no person checking may carry far higher risk.",
+        "D": "A one-level uplift is a guess, not an analysis; the plant's rating could differ by more, in either direction, once its own use is assessed."
+      },
+      "tips": [
+        "Eliminate: C copies a rating made for advisory use into the register, and D adjusts it by a guessed step; neither analyzes how the plant will use the model.",
+        "Final two: A beats B because the vendor's tests can only be judged once the plant's context of use is set; context comes before evidence about the model.",
+        "Exam cue: a supplier's AI risk rating holds for the use it assumed; when the enterprise's use differs, rate the risk again in that context before relying on it."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MAP 1.1 (intended purposes, context-specific laws, norms and expectations, and the settings where the AI system will be deployed are understood and documented); NIST AI 100-1 (AI RMF 1.0) Section 1.2.1 (Risk Measurement: a deployer's particular use of a pre-trained model may entail risks that differ from those the developer perceived)",
+      "related_concepts": [
+        "AI context of use",
+        "Supplier AI risk ratings",
+        "AI RMF MAP function"
+      ],
+      "_provenance": "Authored from concept: notes 2B1.1 (Likelihood, Impact and Risk: impact depends on the enterprise's own use, so a supplier's AI rating for another use is rechecked) and 2A2.3 (AI-Specific Threats). Round 19, 12 Nov 2026: original scenario (a wastewater treatment plant letting a vendor's AI model set chemical doses directly, while the vendor rates it low risk from tests as an advisory forecasting tool) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 19 asks: the domain's one AI item, on the assigned 2B1 angle (a vendor's generic model rating weighed against the firm's own context of use, NIST AI RMF MAP 1); a keyed LONE owner (A), neither the longest (D, 12 words, 68 characters) nor the shortest option (B and C, 10 words); scenario stem, no 'Which'; no period word on any option. Owner shape: k=1, the lone owner keyed; final two key-only owner. Neighbours checked (stems, options, key concepts, explanations and Exam cues): crisc_d2_009 (agree purpose, scope and context first; consistent), crisc_d1_032 (a rating holds only for the model version assessed), crisc_d1_172 (its wrong option rates one found model with its owner, wrong there only because the register's scope hides other models; no scope gap here), crisc_d4_006 (a vendor's new model is a change), crisc_d4_048 (an AI that acts rather than advises), crisc_d3_206 (vendor test scores against own records), AAIA aaia_d1_051 and aaia_d3_083 (a change of use re-rates an AI system, audit lens), AAIA aaia_d1_050 (intended use undocumented, audit lens), CISA bank searched for vendor AI ratings (none); no item keys rating a supplier's AI model in the deployer's own context; no mirror found.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_156",
+      "domain": 2,
+      "subtopic": "2A1 Risk events. A regulator's fine after closure",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A battery recycler closed its record of a three-day emissions-monitor outage at $25,000 in repairs; later, the regulator fined it $90,000 for the missing readings. How should the risk analyst BEST handle the fine?",
+      "options": {
+        "A": "Record the fine in the finance ledger, outside the event data",
+        "B": "Reopen the monitor outage incident for IT to investigate again",
+        "C": "Add the fine to the losses recorded against the outage event",
+        "D": "Re-rate the scenario with its risk owner, keeping the $25,000 record"
+      },
+      "correct": "C",
+      "key_concept": "An event's recorded impact includes secondary losses that arrive after the incident closes, such as a regulator's fine.",
+      "pre_read": "Ask what caused the fine and which record should carry its cost.",
+      "correct_explanation": "An event's impact is not fixed when its ticket closes. The fine is a secondary loss caused by the same outage, so it is added to that event's recorded losses, which become $115,000 rather than $25,000. Re-rating the scenario with its risk owner while keeping the $25,000 record is the runner-up: the rating may well need to move, but it would rest on event data that still understates the loss.",
+      "wrong_explanations": {
+        "A": "A fine caused by an IT outage is part of that event's impact; keeping it in finance records alone leaves the event data at $25,000.",
+        "B": "The outage's cause is known and fixed; the fine changes the event's loss, not its cause, so another IT investigation adds nothing to the risk record.",
+        "D": "The rating should reflect the fine, but a record still showing $25,000 understates the event, and future ratings and reports drawn from event data inherit the gap."
+      },
+      "tips": [
+        "Eliminate: A keeps the fine out of event data as a finance cost, and B reopens a fixed incident; both leave the event's recorded impact at $25,000.",
+        "Final two: C beats D because ratings rest on event records; re-rating while the record still says $25,000 builds on data that understates the loss.",
+        "Exam cue: losses that arrive after an incident closes, such as fines, claims or lost contracts, belong to the original event's recorded impact."
+      ],
+      "framework_ref": "NIST IR 8286A Rev. 1 Section 2.2.4 (Determining Potential Impact: secondary impacts such as fines and penalties from regulators follow the primary impact); ISACA Glossary (loss event)",
+      "related_concepts": [
+        "Loss events",
+        "Secondary losses",
+        "Event data quality"
+      ],
+      "_provenance": "Authored from concept: notes 2A1.1 (Loss Events, Incidents and Near Misses: impact counts primary and secondary losses, even those arriving after closure). Round 19, 12 Nov 2026: original scenario (a battery recycler's closed record of a three-day emissions-monitor outage at $25,000, followed by a $90,000 regulator fine for the missing readings) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 19 asks: the batch's foundational item; a lone owner on the RUNNER-UP (D), balancing the final-two count; key not the shortest option by words (11 against 10-11); no 'Which' stem; no period word on any option. Owner shape: k=1, the lone owner on the runner-up; final two runner-up-only owner. Neighbours checked (stems, options, key concepts, explanations and Exam cues): crisc_d2_087 (missing secondary losses on a ransomware record: same family, but losses known at recording, not arriving after closure; its cue agrees with this key), crisc_d2_099 (FAIR primary and secondary losses), crisc_d2_091 (loss before insurance), crisc_d2_001 (first move after a contained incident; this item asks BEST handling of a later loss, not FIRST), crisc_d2_136 (impact source), crisc_d3_205 (fixing a data flaw before reporting), CISA and CC banks searched for fines arriving after an incident (none); no mirror found.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_157",
+      "domain": 2,
+      "subtopic": "2A2 Threat modeling and threat landscape. Leak paths for exam papers",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An exam board's IT security team modeled leak threats to unreleased papers in its repository only; a contractor prints the papers and couriers deliver them to schools. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Rate the leak scenario with its risk owner from the current model",
+        "B": "Have IT security extend the model to the printer and couriers",
+        "C": "Rely on the printer's and couriers' contract confidentiality terms",
+        "D": "Add intelligence on groups known to sell leaked exam papers"
+      },
+      "correct": "B",
+      "key_concept": "A threat model follows the asset along its whole path, suppliers and transport included, before the scenario is rated.",
+      "pre_read": "Trace where the papers go after the repository and check what the model covers.",
+      "correct_explanation": "A threat model must cover every place the papers can leak, and after the repository they pass through the contractor's print systems and the couriers' hands. Having IT security, which built the model, extend it to those stages finds the paths no one has examined. Intelligence on groups that sell leaked papers is the runner-up: it helps judge how likely attacks are, but it cannot reveal paths the model never mapped.",
+      "wrong_explanations": {
+        "A": "The current model maps the repository alone, so a rating now would leave out the print and delivery stages, where the papers also sit.",
+        "C": "Contract terms set duties and remedies after a breach; they do not show how papers could leak at the printer or in transit, so those paths stay unmodeled.",
+        "D": "Knowing who sells leaked papers sharpens likelihood, but added to a model of one stage, it still misses the printing and delivery paths."
+      },
+      "tips": [
+        "Eliminate: A rates the scenario from a model covering one of three stages, and C treats contract terms as if they showed how leaks could happen.",
+        "Final two: B beats D because intelligence sharpens likelihood for paths already mapped; the print and delivery paths are missing from the model altogether.",
+        "Exam cue: follow the asset through its whole life, suppliers and transport included, before rating; a model that stops at the enterprise's own systems misses where the asset goes next."
+      ],
+      "framework_ref": "NIST IR 8286A Rev. 1 Section 2.2.2.1 (Threat Enumeration: logical and physical threat sources are considered, as are threat conditions that supply chain partners such as external service providers might introduce); NIST SP 800-30 Rev. 1 Section 3.2 Task 2-2 (Identify Threat Events: general threat event descriptions are tailored to show how each could harm the organization)",
+      "related_concepts": [
+        "Threat modeling scope",
+        "Supply chain threats",
+        "Threat intelligence"
+      ],
+      "_provenance": "Authored from concept: notes 2A2.2 (Threat Intelligence and Threat Modeling: attack trees cover paths through suppliers and transport; intelligence is an input, not an answer). Round 19, 12 Nov 2026: original scenario (an exam board whose IT security team modeled leak threats to unreleased papers in its repository only, while a contractor prints them and couriers deliver them) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 19 asks: the keyed Have option (B), with IT security acting in its own role as the team that built and maintains the threat model; a lone owner on an EASY distractor (A); key neither the longest nor the shortest by words; no 'Which' stem. Owner shape: k=1, the lone owner an easy distractor. Neighbours checked (stems, options, key concepts, explanations and Exam cues): crisc_d2_024 (a feed does not replace a threat model; its cue agrees), crisc_d2_049 (attack tree open paths), crisc_d2_066 (missing threat source types), crisc_d2_090 and crisc_d2_122 (filtering intelligence), crisc_d1_070 and crisc_d1_081 (contracts move cost, not accountability; consistent with C wrong), crisc_d3_006 (subcontractor outside an assurance report), CISA d4_123 and d4_173 (tape custody and an offsite vault courier, audit lens), CC cc_d1_002 (courier non-repudiation); no item extends a threat model along an asset's supply chain; no mirror found.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_158",
+      "domain": 2,
+      "subtopic": "2A3 Vulnerability management. Penetration test findings",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A penetration test at a land surveying firm chained three flaws, each scored medium under CVSS, to reach clients' survey files from the internet. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Send each flaw's medium CVSS rating to the system owner",
+        "B": "Re-score each flaw with CVSS environmental metrics for the firm",
+        "C": "Have IT patch the three flaws in order of CVSS score",
+        "D": "Rate the three flaws together as one route to clients' files"
+      },
+      "correct": "D",
+      "key_concept": "Flaws that combine into one attack path are rated together, by what the path reaches, not one by one by their scores.",
+      "pre_read": "Read what the test showed an attacker could reach before weighing the scores.",
+      "correct_explanation": "CVSS rates flaws one at a time, but the test showed these three together give an internet path to clients' files. Rated singly they look medium; combined they reach clients' confidential data, so the analyst first rates them as one route, as CVSS guidance on chaining allows. Re-scoring each flaw with environmental metrics is the runner-up: it adds the firm's setting but still rates each flaw alone.",
+      "wrong_explanations": {
+        "A": "Each medium score describes one flaw alone; reporting them separately hides from the owner that together they reach clients' files from the internet.",
+        "B": "Environmental metrics adjust each flaw for the firm's setting, but every flaw is still scored alone, so the internet path to clients' files stays unrated.",
+        "C": "Patching by score order is a fix chosen before the risk is rated; the combined path, not each score, shows which flaw matters most to break."
+      },
+      "tips": [
+        "Eliminate: A reports three separate medium scores, and C patches by score order before the path is rated; both treat the flaws as unrelated.",
+        "Final two: D beats B because the harm comes from the flaws combined; environmental metrics refine each score but still rate the flaws one at a time.",
+        "Exam cue: when a test chains flaws into one path, rate the path by what it reaches; separate medium scores can hide a severe combined route."
+      ],
+      "framework_ref": "FIRST Common Vulnerability Scoring System (CVSS) v4.0 User Guide, Vulnerability Chaining (CVSS rates individual vulnerabilities, and for a chain the analyst may combine scores using the least-restrictive Exploitability and most-impactful Impact metrics); NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: the severity of a vulnerability depends on the adverse impact if it is exploited, so it is context-dependent)",
+      "related_concepts": [
+        "Vulnerability chaining",
+        "CVSS limits",
+        "Penetration testing"
+      ],
+      "_provenance": "Authored from concept: notes 2A3.2 (CVSS as a Severity Input: chained flaws are rated together, by what the path reaches) and 2A3.3 (Risk-Based Remediation Priority). Round 19, 12 Nov 2026: original scenario (a penetration test at a land surveying firm chaining three CVSS-medium flaws to reach clients' survey files from the internet) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 19 asks: the one Have/Ask opener on an ELIMINATED wrong option (C, 'Have IT patch...'), in an item whose key is not Have/Ask; each/every on wrong options (A, B) where the key carries none; a lone owner on an EASY distractor (A); key not the shortest by words (11 against 10); no 'Which' stem. Owner shape: k=1, the lone owner an easy distractor. Neighbours checked (stems, options, key concepts, explanations and Exam cues): crisc_d2_005 (CVSS as one input; consistent), crisc_d2_027 (fix order by business risk), crisc_d2_070 (Threat versus Environmental metrics; its cue does not key B here), crisc_d2_114 (met patch target), crisc_d2_130 (confirm reachability), crisc_d2_093 (scan method understates exposure), crisc_d4_052 (a recurring injection flaw in penetration tests: root cause in development), AAIA aaia_d1_094 (three agent tools each rated low alone: a cross-cert cousin on combined capability, audit lens), CISA d5_180 (incident-readiness findings); no item rates chained flaws as one path; no mirror found.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_159",
+      "domain": 2,
+      "subtopic": "2B2 Business impact analysis (BIA). Order system recovery objective",
+      "principle_id": "objectives-first",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A flour mill's BIA gives order processing a 24-hour MTO; its order system's draft RTO is 24 hours, and clearing held orders after restart takes six hours. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Shorten the system's draft RTO with the order process owner",
+        "B": "Base each RTO on the restore times IT has already tested",
+        "C": "Schedule clearing the order backlog once the 24-hour restore ends",
+        "D": "Set the RTO from past order-system outage lengths with the process owner"
+      },
+      "correct": "A",
+      "key_concept": "The RTO must leave time to catch up on held work, so restore plus catch-up fits within the MTO.",
+      "pre_read": "Work out how long order processing would be disrupted in total before judging each option.",
+      "correct_explanation": "The MTO bounds the whole disruption, catch-up included. A 24-hour restore plus six hours of clearing held orders would disrupt order processing for 30 hours, six past the limit, so the system's RTO must be shorter, set with the order process owner to leave room for the backlog. Scheduling the backlog after a 24-hour restore is the runner-up: it organizes the catch-up but still runs past the MTO.",
+      "wrong_explanations": {
+        "B": "Recovery objectives come from what the business can bear, through the BIA; a restore time IT has tested shows capability, not the outage order processing can tolerate.",
+        "C": "Clearing the backlog after a 24-hour restore leaves orders unprocessed for 30 hours, six beyond the MTO; the catch-up is planned, but the limit is still broken.",
+        "D": "Past outages show how long recovery has taken, not how long order processing can bear; the RTO starts from the 24-hour limit, less catch-up time."
+      },
+      "tips": [
+        "Eliminate: B lets IT's restore capability set a business objective, and D sets it from past outages; neither starts from what order processing can bear.",
+        "Final two: A beats C because restore and catch-up together must fit inside the 24-hour MTO; 24 hours of restore plus six of clearing orders make 30.",
+        "Exam cue: add the time to catch up on held work, such as backlogged orders, to the RTO; the total, not the restore alone, must fit within the MTO."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: the time to reprocess data after an outage is added to the RTO to stay within the MTD); ISACA Glossary (maximum tolerable outage)",
+      "related_concepts": [
+        "Recovery time objective",
+        "Maximum tolerable outage",
+        "Catch-up time after recovery"
+      ],
+      "_provenance": "Authored from concept: notes 2B2.2 (MTO, RTO and RPO: the RTO must normally be shorter than the MTO, leaving time to reprocess work). Round 19, 12 Nov 2026: original scenario (a flour mill whose order system's draft RTO equals the 24-hour MTO for order processing, with six hours needed to clear held orders after restart) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 19 asks: a SPLIT owner pair (key A and the easy distractor D), the batch's only pair, not on the final two; 'each' on a wrong option (B) where the key carries none; key not the shortest by words (10 against 9) and not the longest by characters; the 24-hour period on C is part of the explanation; no 'Which' stem. Owner shape: k=2, the key in the pair, split with an eliminated option; final two key-only owner. Neighbours checked (stems, options, key concepts, explanations and Exam cues): crisc_d2_035 (tested recovery of 36 hours against a 24-hour MTO goes to the owner; here the draft objective itself is set too long, and shortening it with the owner is not changing a number to fit capability), crisc_d2_012 (IT or a vendor setting an RTO; consistent), crisc_d2_124 (a manual workaround lets an RTO run longer), crisc_d1_029 (no process to re-enter work after a restore goes to the process owner; consistent, as here the catch-up process exists but needs six hours), crisc_d2_034, crisc_d2_124 and crisc_d4_117 (an RPO matched to an outage limit was avoided as a decoy, since crisc_d2_124 already uses it), crisc_d4_088 (judge recovery by the full timeline; consistent), CISA and CC banks searched for reprocessing or catch-up time (none); no mirror found.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_160",
+      "domain": 2,
+      "subtopic": "2B5 Inherent and residual risk. A model showing no residual loss",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A fish farm's quantitative model shows $0 residual yearly loss from feed-barge takeover, using the control owner's figure of 100% effectiveness for a new, tested isolation gateway. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Close the scenario with its risk owner on the $0 result",
+        "B": "Re-run the model with a gateway effectiveness range below 100%",
+        "C": "Keep the 100% input that the control owner's tests support",
+        "D": "Replace the model with the risk owner's qualitative rating"
+      },
+      "correct": "B",
+      "key_concept": "No control is certain to stop every attempt, so residual risk is never zero; model control effectiveness as a range the evidence supports.",
+      "pre_read": "Ask what each model input claims and what the evidence behind it can show.",
+      "correct_explanation": "No control stops every attempt, so residual risk is never zero, and a $0 result signals an input claiming more certainty than any evidence gives. Passing tests shows the gateway worked in the cases tried, not in every case, so the model should be re-run with a range of effectiveness below 100%. Keeping the 100% input the control owner's tests support is the runner-up: tests justify high credit, not perfect credit.",
+      "wrong_explanations": {
+        "A": "Residual risk is never zero; closing the scenario on a $0 output would drop a risk that remains, on the strength of an input no test can prove.",
+        "C": "Tests show the gateway worked in the cases tried; they cannot show it will stop every attempt, so a 100% input overstates its credit.",
+        "D": "The fault lies in one input, not the method; switching to a qualitative rating discards usable analysis instead of correcting the overstated effectiveness."
+      },
+      "tips": [
+        "Eliminate: A closes a scenario whose residual risk cannot be zero, and D swaps the method when the fault lies in one input.",
+        "Final two: B beats C because a test pass supports high effectiveness, not certainty; a range below 100% shows the loss the gateway still leaves.",
+        "Exam cue: a residual loss of zero signals an input claiming certainty; give control effectiveness a range that reflects what the evidence can actually show."
+      ],
+      "framework_ref": "ISACA Glossary (residual risk); NIST IR 8286A Rev. 1 Section 2.3.2 (Techniques for Estimating Likelihood and Impact: a range of possible values is more helpful and likely more accurate than a single point estimate)",
+      "related_concepts": [
+        "Residual risk",
+        "Control effectiveness",
+        "Ranges in quantitative analysis"
+      ],
+      "_provenance": "Authored from concept: notes 2B5.1 (Inherent, Current and Residual Risk: residual risk is never zero; a 100% effectiveness input needs a range) and 2B4.3 (ranges in quantitative analysis). Round 19, 12 Nov 2026: original scenario (a fish farm's quantitative model showing $0 residual yearly loss from feed-barge takeover, using the control owner's 100% effectiveness figure for a new, tested isolation gateway) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 19 asks: the batch's three-owner item, keyed on its lone NON-owner option (B); key not the shortest by words (10 against 9) and the batch's one key naturally longest by characters (62 against 55-58), not by words (A has 11); no 'Which' stem; no period word on any option. Owner shape: k=3, the key the lone non-owner option; final two runner-up-only owner. Neighbours checked (stems, options, key concepts, explanations and Exam cues): crisc_d2_064 (a request to record residual risk as zero after tokenization: same rule, here reached through a quantitative input), crisc_d2_017 and crisc_d2_083 (ranges over exact numbers; consistent), crisc_d2_110 (credit a tested control promptly: high credit, not perfect), crisc_d2_019 and crisc_d2_135 (evidence for control credit), crisc_d4_137 (no incidents is not evidence), CC cc_d2_017 (a 100% encryption coverage measure) (a coverage measure, different concept); no item fixes a 100% effectiveness input; no mirror found.",
+      "style_version": 2
     }
   ]
 }
