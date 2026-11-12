@@ -53,17 +53,18 @@
             "crisc_d2_100",
             "crisc_d2_121",
             "crisc_d2_136",
-            "crisc_d2_156"
+            "crisc_d2_156",
+            "crisc_d2_166"
           ],
           "definition": "A risk event is something that happened, or nearly happened, that shows a risk scenario can occur. Loss events cause harm; near misses stop just short of it.",
-          "why_it_matters": "Events are the best evidence of real likelihood and impact. Counting only losses hides how often controls were nearly beaten, so the register understates risk.",
+          "why_it_matters": "Events are the best evidence of real likelihood and impact; counting only losses hides how often controls were nearly beaten, understating risk.",
           "how_it_works": [
-            "An incident breaks, or nearly breaks, security policy; it need not cause loss.",
+            "An incident need not cause loss; a loss event does, however routine, such as an outage that staff covered with paid overtime.",
             "Each event is linked to the scenario its review's root cause points to, not the first guess logged, and feeds that scenario's likelihood or impact.",
             "Fixing the immediate cause closes the incident ticket, not the risk; an event whose cause fits no scenario shows a register gap, filled with the process owner.",
             "Impact counts primary and secondary losses, such as missed orders, lost customers, penalties and customer harm, even those arriving after closure; the process owner, not IT's incident record, supplies it."
           ],
-          "example": "At a water utility, an alarm stops an operator from opening the wrong valve after a remote session times out. Priya Raman, the risk analyst, logs a near miss against the remote operation error scenario and asks the operations manager, its risk owner, to review the likelihood rating.",
+          "example": "At a water utility, an alarm stops an operator opening the wrong valve after a remote session times out. Priya Raman, the risk analyst, logs a near miss against the remote operation error scenario and asks its risk owner, the operations manager, to review likelihood.",
           "audit_focus": {
             "review": [
               "Trace recent incidents and near misses to the risk scenarios they affect",
@@ -84,7 +85,7 @@
             },
             {
               "trap": "Once the root cause is fixed, the incident and its register entry can both be closed.",
-              "why": "The fix may lower the risk, but the scenario must be reassessed first. The risk owner then decides whether the change is enough."
+              "why": "The fix may lower the risk, but the scenario is reassessed first; the risk owner then decides whether the change is enough."
             }
           ],
           "key_terms": [
@@ -627,7 +628,8 @@
             "crisc_d2_051",
             "crisc_d2_105",
             "crisc_d2_114",
-            "crisc_d2_130"
+            "crisc_d2_130",
+            "crisc_d2_167"
           ],
           "definition": "Risk-based remediation ranks vulnerability fixes by business impact and likelihood of exploitation, not by severity score or discovery date alone.",
           "why_it_matters": "No enterprise can fix everything at once. Ranking by business risk spends limited patching effort where a successful exploit would hurt objectives most.",
@@ -635,7 +637,7 @@
             "First confirm findings are real, verifying a sample when a vendor disputes them; then start from asset criticality: which business process the asset supports and what compromise would cost.",
             "Add reachability: internet-facing, partner-reachable or isolated, with claimed isolation confirmed as current; a met patch-rate target can still leave late flaws on the most reachable system.",
             "Add exploitability: public exploit code, active attacks or a listing in a known-exploited vulnerabilities catalog.",
-            "Set fix time frames by risk tier in a policy approved by management, so teams do not negotiate each fix.",
+            "Fix time frames by risk tier sit in a management-approved policy; a medium flaw with no reachable path or known exploitation takes the next routine cycle, not an emergency change.",
             "When a fix cannot meet its time frame, raise an exception with compensating controls for the risk owner to accept or reject.",
             "For a new flaw in a shared component, first find where it runs and which business services rely on it, from inventories and component lists for in-house and commercial software."
           ],
@@ -906,19 +908,20 @@
             "crisc_d2_096",
             "crisc_d2_103",
             "crisc_d2_140",
-            "crisc_d2_155"
+            "crisc_d2_155",
+            "crisc_d2_168"
           ],
           "definition": "Risk is the chance that an event happens, weighed with how much it would affect objectives; the ISACA Glossary frames it as likelihood combined with impact.",
           "why_it_matters": "Rating only impact makes every disaster look urgent; rating only likelihood ignores rare but severe events. Both together let owners compare risks fairly against appetite.",
           "how_it_works": [
-            "Likelihood combines the chance a threat event starts and the chance it causes harm, over a stated time frame.",
+            "Likelihood combines the chance a threat event starts and then causes harm, over a stated time frame; threat and weakness ratings give likelihood, not impact.",
             "For adversaries, likelihood weighs capability, intent and targeting; other sources use recorded history, from regional or industry records when local history is short, with expert judgment filling gaps.",
             "Impact is the effect on objectives, such as financial, operational, legal, reputational or safety harm; a supplier's AI rating for another use is redone for the enterprise's own use.",
             "Controls and predisposing conditions change likelihood and are understood before rating; when one changes, such as more heat, older history may stop predicting.",
             "ISO 31000, named here as context only, describes risk as the effect of uncertainty on objectives, which can include upside opportunity.",
             "When a scenario harms several kinds of objective, the most severe credible harm sets the impact level; ordinal levels are not averaged."
           ],
-          "example": "A ski resort's register rates a ticketing system outage as high because it would stop sales. Kofi Mensah, the risk analyst, adds the missing half: two outages in five years, both under an hour, and a working offline sales mode. Kofi re-rates likelihood and impact over 12 months with the commercial director.",
+          "example": "A ski resort's register rates a ticketing system outage as high because it would stop sales. Kofi Mensah, the risk analyst, adds the missing half: two outages in five years and a working offline sales mode. Kofi re-rates both over 12 months with the commercial director.",
           "audit_focus": {
             "review": [
               "Sample register ratings for a separate likelihood and impact rationale",
@@ -1243,7 +1246,8 @@
             "crisc_d2_082",
             "crisc_d2_098",
             "crisc_d2_125",
-            "crisc_d2_134"
+            "crisc_d2_134",
+            "crisc_d2_169"
           ],
           "definition": "A risk register is the working record of risk scenarios, with the owner, ratings, controls, chosen response and status of each.",
           "why_it_matters": "The register is where risk is tracked and decided. An entry with no owner has nobody to accept, treat or monitor it, so it drifts.",
@@ -1575,7 +1579,8 @@
             "crisc_d2_099",
             "crisc_d2_115",
             "crisc_d2_129",
-            "crisc_d2_153"
+            "crisc_d2_153",
+            "crisc_d2_170"
           ],
           "definition": "Choosing a method means matching the analysis to the decision it must support and the quality of the data available, from simple scales to FAIR models and Monte Carlo simulation.",
           "why_it_matters": "A precise-looking number built on guesses misleads decision makers more than an honest qualitative rating. The method must fit the data and the decision.",
@@ -1584,10 +1589,10 @@
             "Check the data: loss history, industry benchmarks and expert estimates, and how reliable each is; gather each expert's estimate privately before discussion, as in the Delphi technique.",
             "FAIR, an Open Group standard, splits risk into loss event frequency and loss magnitude; secondary losses, such as fines, get their own frequency: the share of events that trigger them.",
             "Monte Carlo runs thousands of trials from estimated ranges; a yearly loss limit is tested on the tail of simulated yearly losses, not the mean or one event's loss.",
-            "When data is uncertain, ranges beat single-point numbers; if a range is too wide to decide, sensitivity analysis shows which input needs better data.",
+            "Ranges beat single points: with no loss history, validated error rate times volume gives a frequency range; if too wide, sensitivity analysis finds the input to improve.",
             "Methods can be combined: qualitative screening first, then quantitative analysis of top risks."
           ],
-          "example": "A biotech firm's board asks how much cyber insurance to buy. The previous analysis gave one ALE figure from a single guess. Olu Adeyemi, the risk practitioner, gathers ranges from claims data and experts, runs a Monte Carlo simulation and shows the board a loss distribution, including a one-in-twenty-year loss of about $9 million, with every assumption listed.",
+          "example": "A biotech firm's board asks how much cyber insurance to buy. The last analysis gave one guessed ALE. Olu Adeyemi, the risk practitioner, gathers ranges from claims data and experts, runs a Monte Carlo simulation and shows the board a loss distribution, including a one-in-twenty-year loss of about $9 million, with every assumption listed.",
           "audit_focus": {
             "review": [
               "Evaluate whether input data quality supports the precision of the results",
@@ -1651,7 +1656,8 @@
             "crisc_d2_071",
             "crisc_d2_104",
             "crisc_d2_126",
-            "crisc_d2_160"
+            "crisc_d2_160",
+            "crisc_d2_171"
           ],
           "definition": "Inherent risk is risk before any management action; current risk reflects controls already in place; residual risk is what remains after the chosen response is implemented.",
           "why_it_matters": "Comparing inherent risk with appetite overstates the need for new controls; counting planned controls as working understates real exposure.",
@@ -1659,7 +1665,7 @@
             "Inherent risk credits no control, even standard ones, so it shows how much a scenario depends on controls; a high rating marks controls that must not fail.",
             "Residual risk is rated with the same scales and method as inherent risk, so the two are comparable.",
             "Current risk, counting only implemented, working responses, is compared with appetite now; a planned response's future residual risk shows whether the plan is enough.",
-            "Controls leave residual risk above zero: none stops every case, so a 100% effectiveness input needs a range.",
+            "Controls leave residual risk above zero, so 100% effectiveness inputs need a range; layered controls multiply each layer's pass-through share, not add effectiveness rates.",
             "Before design, inherent risk ranks which scenarios need the strongest controls; target risk then checks whether the design is enough."
           ],
           "compare": {
@@ -1690,7 +1696,7 @@
               }
             ]
           },
-          "example": "A hospital's infusion pump tampering scenario has very high inherent risk. Network isolation exists; firmware signing is planned for next year. Siobhan Kelly, the risk analyst, records current risk as high, counting only isolation, and shows target risk after signing separately, so the patient safety director compares today's exposure with appetite.",
+          "example": "A hospital's infusion pump tampering scenario has very high inherent risk. Network isolation exists; firmware signing is planned. Siobhan Kelly, the risk analyst, records current risk as high, counting only isolation, and shows target risk after signing separately, so the patient safety director compares today's exposure with appetite.",
           "audit_focus": {
             "review": [
               "Compare inherent, current and target ratings for use of the same scales",
@@ -1711,7 +1717,7 @@
             },
             {
               "trap": "Only current risk is compared with appetite, so ignore an implemented response's residual rating.",
-              "why": "Once a response is implemented, the risk it leaves is today's current risk, which items may call residual. Reject any rating that credits planned or untested controls as today's position."
+              "why": "Once a response is implemented, the risk it leaves is today's current risk, which items may call residual; reject current ratings crediting planned or untested controls."
             }
           ],
           "key_terms": [
