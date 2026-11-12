@@ -61,7 +61,7 @@
             "Express each risk in business terms, by objective, impact and likelihood; a project's risks include missing its promised benefit.",
             "Treat technical weaknesses as causes inside a risk scenario, not as the risk itself.",
             "Missed opportunities (upside risk) count, and so does a status quo that cannot meet objectives.",
-            "Choose controls only once the objective and its risk are clear, so spending follows business value.",
+            "Choose controls and scope assessments from clear, approved objectives and their risks, so spending follows business value.",
             "When objectives conflict, show each option's risk against appetite; the objective's owner decides, or the executive over both when two owners' objectives clash."
           ],
           "example": "An electronics distributor promises 98% on-time delivery. A scan lists 400 server weaknesses, and the IT manager wants them ranked by severity. Amara, the risk analyst, traces which weaknesses could stop the route-planning system, writes them up as risk scenarios against that goal, and takes them to the goal's owner, the operations director.",
@@ -200,7 +200,7 @@
             "The board sets direction, approves risk appetite and oversees major risk; within appetite, owners accept risks and the board oversees through reporting.",
             "Senior management turns direction into strategy, approves the risk management framework and policies, and assigns risk owners.",
             "A risk committee, at board or management level, reviews the profile, challenges ratings, approves decisions within its authority and escalates breaches.",
-            "The chief risk officer (CRO) runs the risk function, keeps the framework working and reports on the risk profile.",
+            "The chief risk officer (CRO) runs the risk function, keeps the framework and enterprise register working, and reports the profile.",
             "Committees advise and oversee; one named person stays accountable for each risk.",
             "Changes within every limit, escalation thresholds included, wait for the committee's scheduled review; out-of-cycle escalation is for breaches."
           ],
@@ -765,7 +765,7 @@
             "Each policy has an owner and a review cycle, often yearly, plus a review after major changes in threats, law or strategy.",
             "Reviews check that the policy still matches risk appetite, regulation and how work is actually done.",
             "An AI use policy defines approved tools, data that must not be entered, human review of outputs and who approves new uses.",
-            "Policies are communicated, acknowledged and enforced; monitoring shows whether they are followed.",
+            "Policies are communicated, acknowledged, enforced and monitored; standards citing a replaced policy are reissued under its successor so they still bind.",
             "Gaps found in review go to the policy owner, who proposes changes for senior management approval; conflicts between approved policies go to senior management, which approved both.",
             "After an acquisition, the new unit is brought under enterprise policy on a dated plan, with owned, time-limited exceptions covering the gaps meanwhile."
           ],
@@ -897,10 +897,10 @@
           "how_it_works": [
             "The BCP is scoped by business processes and owned by the business; the DRP is a supporting, system-focused plan.",
             "Recovery targets in both plans come from business needs agreed by process owners.",
-            "Plans are tested regularly and after major change, as close to real conditions as practical; new responders are trained promptly, and a minor staff change awaits the next scheduled exercise.",
+            "Plans are tested regularly and after major change, close to real conditions; new responders are trained promptly, and a minor staff change awaits the next scheduled exercise.",
             "Test results go to the process owners and feed the register: each gap is rated at its current level; its owner approves a plan or, within appetite, accepts it.",
             "Plans are kept current as people, suppliers and systems change; plans one event can trigger together share no responders, and copies sit away from the systems they recover.",
-            "A continuity plan mainly cuts a disruption's impact, not its likelihood; a workaround counts only if it carries the service level the owner needs."
+            "A continuity plan mainly cuts a disruption's impact, not likelihood; a workaround counts once exercised by the people who run it at the needed service level."
           ],
           "compare": {
             "columns": [
@@ -1458,13 +1458,13 @@
           "why_it_matters": "Holding the second line to audit-level independence cuts it off from the business it must advise, while too little objectivity turns challenge into rubber-stamping. Coordination avoids duplication and gaps.",
           "how_it_works": [
             "Internal audit reports functionally to the board or audit committee and performs no management duties.",
-            "The second line sits within management, reports to the CRO, can reach the board and needs access to first-line records it challenges; senior management settles refusals.",
+            "The second line sits within management, reports to the CRO, can reach the board and needs access to first-line records; senior management settles refusals.",
             "The second line advises on design and leaves decisions with owners, even for AI models it validates; it helps draft audit responses, never writing them.",
-            "Combined assurance maps who tests what; audit relies on another line's tests only after judging the testers' objectivity and records.",
+            "Combined assurance maps who tests what; second-line teams merge overlapping requests to the first line, and audit relies on others' tests after judging testers' objectivity and records.",
             "Second-line pay and reporting do not depend on the units it challenges; challenging AI ratings needs AI skills from outside model teams.",
             "When an owner and the second line disagree on a rating after weighing evidence, both views go to the risk committee."
           ],
-          "example": "A pension fund's audit committee says the risk team breaks independence by helping units draft assessments. Nadia, the risk analyst, explains that the second line advises and challenges from inside management and proposes a combined assurance map showing where audit may rely on its tests.",
+          "example": "A pension fund's audit committee says the risk team breaks independence by helping units draft assessments. Nadia, the risk analyst, explains that the second line advises and challenges within management and proposes a combined assurance map showing where audit can rely on its tests.",
           "audit_focus": {
             "review": [
               "Map assurance activities by line to find gaps and duplicates",
@@ -1485,7 +1485,7 @@
             },
             {
               "trap": "Let the risk team run a first-line control for as long as the business is short-staffed.",
-              "why": "A second line that runs a control cannot challenge it objectively, and the first line stops owning it. Any cover needs an end date and hand-back plan."
+              "why": "A second line that runs a control cannot challenge it objectively, and the first line stops owning it. Any cover needs an end date."
             }
           ],
           "key_terms": [
@@ -1499,7 +1499,7 @@
             },
             {
               "term": "Escalation right",
-              "definition": "The authority to take an unresolved concern to senior management or the board."
+              "definition": "Authority to take an unresolved concern to senior management or the board."
             }
           ]
         }
@@ -1532,12 +1532,12 @@
           "definition": "The risk register records individual risks with owners, ratings and responses; the risk profile is the aggregated, current picture of enterprise risk built from it for leaders.",
           "why_it_matters": "Leaders need a portfolio view to decide where to act, not hundreds of register lines. Treating the register as the profile buries the few risks that matter most.",
           "how_it_works": [
-            "The register is detailed and operational: one entry per risk scenario, with owner, rating, response and status.",
+            "The register is detailed and operational: one entry per scenario, with owner, rating, response and status; acceptance changes the status, not the rating.",
             "The profile selects, combines and prioritizes register risks into a view of overall exposure by objective or category.",
             "The profile sets current risk, counting only responses already in place, against today's appetite, showing exposure too high or too low; a changed appetite moves the comparison, not the ratings.",
             "In NIST terms, the profile is a prioritized subset of the enterprise risk register; with a limit per category, headroom in one does not offset another's breach.",
-            "AI use enters the profile through register entries mapped to the objectives and risk categories it affects, not as a count of tools or models.",
-            "Before reporting, check that the ratings behind the profile are current; ratings set before a major change are refreshed with their owners first."
+            "AI use enters the profile through register entries mapped to the objectives and categories it affects, not as a count of tools or models.",
+            "Before reporting, check the ratings behind the profile are current; ratings set before a major change are refreshed with their owners."
           ],
           "compare": {
             "columns": [
@@ -2056,7 +2056,7 @@
           "definition": "Contractual requirements are obligations the enterprise accepts in agreements with customers and suppliers, such as security clauses, audit rights and service level agreements (SLAs).",
           "why_it_matters": "Contracts both create risk and help manage it. A broken customer commitment brings penalties and lost trust, while weak supplier terms leave the enterprise without remedies when a provider fails.",
           "how_it_works": [
-            "Customer contracts can require specific controls, breach notice times or data locations, which become obligations with owners; a term adding liability is sized before the owner signs.",
+            "Customer contracts can require controls, notice times or data locations, which become owned obligations; a liability term is sized before signing, per-record ones by records held.",
             "Supplier contracts set SLAs, security requirements, right-to-audit clauses, incident notice and exit terms.",
             "SLA targets should reflect business recovery needs and appetite, not just the provider's standard offer.",
             "Handing a task to a supplier does not hand over accountability; the enterprise still owns the risk to its objectives.",
