@@ -50,13 +50,14 @@
             "crisc_d1_057",
             "crisc_d1_071",
             "crisc_d1_096",
-            "crisc_d1_125"
+            "crisc_d1_125",
+            "crisc_d1_151"
           ],
           "definition": "Business-aligned risk management treats risk as the effect of uncertainty on business objectives, so each risk is described, rated and treated by what it does to them.",
           "why_it_matters": "A program built from technical findings alone ranks issues by severity score, not business harm. Linking each risk to an objective shows leaders which risks threaten what they promised stakeholders.",
           "how_it_works": [
             "Start from the enterprise strategy and objectives, then ask which uncertainties could help or hinder each one.",
-            "Express each risk in business terms: the objective affected, the impact on it and how likely that is.",
+            "Express each risk by the objective affected, its impact and likelihood; a project's risks include missing its promised benefit, not just schedule and budget.",
             "Treat technical weaknesses as causes inside a risk scenario, not as the risk itself.",
             "Missed or delayed opportunities (upside risk) count, and so does inaction: a status quo that cannot meet objectives.",
             "Choose controls only after the objective and the risk to it are clear, so spending follows business value.",
@@ -79,7 +80,7 @@
           "exam_traps": [
             {
               "trap": "Build the risk program from the vulnerability scan, since it is the most complete list of problems.",
-              "why": "A scan lists causes, not risks. Without objectives there is no way to rank them by business impact or to know who should decide."
+              "why": "A scan lists causes, not risks. Without objectives, nothing ranks them by business impact or shows who decides."
             },
             {
               "trap": "Pick the strongest control first, then work out which objective it protects.",
@@ -522,14 +523,15 @@
             "crisc_d1_007",
             "crisc_d1_062",
             "crisc_d1_073",
-            "crisc_d1_113"
+            "crisc_d1_113",
+            "crisc_d1_156"
           ],
           "definition": "Professional ethics are the conduct standards a practitioner follows, such as the ISACA Code of Professional Ethics: objectivity, due care, confidentiality, competence and disclosure of significant facts.",
           "why_it_matters": "Risk reports drive decisions. A practitioner who softens a rating under pressure, or leaves out a significant fact, misleads the people who must decide. AI adds new questions about fairness and transparency.",
           "how_it_works": [
             "Members and certification holders act with objectivity, due diligence and professional care, in line with professional standards.",
             "They keep information confidential unless the law requires disclosure, and never use it for personal benefit.",
-            "They take on only work they are competent to do, and keep their skills current.",
+            "They take on only work they are competent to do and keep their skills current; when a task needs skills they lack, they bring in qualified help.",
             "They inform the right parties of all significant facts that would distort the results if left out, including their own errors once found.",
             "For AI, ethical use means fairness, transparency, human oversight and accountability, set in policy; a fairness concern is analyzed as a risk even when accuracy meets target.",
             "When an outsider asks for information gained at work, seek the enterprise's approval first; release it only with that approval or when the law requires it."
@@ -684,7 +686,8 @@
           "practice_ids": [
             "crisc_d1_025",
             "crisc_d1_105",
-            "crisc_d1_135"
+            "crisc_d1_135",
+            "crisc_d1_154"
           ],
           "definition": "A policy exception is a documented, approved and time-limited permission to depart from a policy or standard, with the resulting risk assessed and accepted by its owner.",
           "why_it_matters": "Exceptions are risk acceptances under another name. Without an owner, an expiry and a review, they pile up and quietly push risk beyond appetite.",
@@ -807,7 +810,8 @@
             "crisc_d1_053",
             "crisc_d1_099",
             "crisc_d1_107",
-            "crisc_d1_131"
+            "crisc_d1_131",
+            "crisc_d1_152"
           ],
           "definition": "A business process is a set of activities that produces a business outcome; its process owner is accountable for its performance, risks and controls from end to end.",
           "why_it_matters": "Risk lands on processes, not on servers. Knowing which processes are critical, and who owns them, shows where disruption hurts most and who decides on resilience spending.",
@@ -815,7 +819,7 @@
             "Each critical process has one owner who answers for its outcome across departments.",
             "Critical processes are those whose failure most harms objectives, customers, safety or compliance; the business impact analysis (BIA, see 2B2) ranks them.",
             "Processes depend on people, suppliers, data and systems; mapping them end to end with the owner shows single points of failure a plan built around one system misses.",
-            "Process owners set recovery needs; IT and suppliers design the capability to meet them.",
+            "Process owners set recovery needs that IT and suppliers meet; when owners' priorities clash, the plan's owner sets the order by impact.",
             "A tested recovery slower than the target but within appetite can be accepted by the process owner on record, with the RTO and the plan updated to match.",
             "A workaround that drops a control, such as an approval step, keeps the process going but adds risk; assess it with the process owner before relying on it."
           ],
@@ -971,7 +975,8 @@
             "crisc_d1_076",
             "crisc_d1_110",
             "crisc_d1_130",
-            "crisc_d1_140"
+            "crisc_d1_140",
+            "crisc_d1_155"
           ],
           "definition": "An asset inventory is a register of the enterprise's valuable assets, such as hardware, software, data, services and people, each with a named business owner.",
           "why_it_matters": "An enterprise cannot assess or protect what it does not know it has. Assets without owners have nobody to classify them, decide their protection or accept their risk.",
@@ -980,7 +985,7 @@
             "Owners are business roles that answer for the asset's use and protection; custodians such as IT look after it day to day.",
             "Discovery tools, purchasing records and cloud billing help find assets the inventory misses; plant (OT) controllers on separate networks are listed too, using OT-safe or manual discovery.",
             "The inventory is updated through change, purchasing and offboarding processes, not a yearly clean-up alone; a stale one is reconciled before it feeds a risk assessment.",
-            "Custodians decide how to meet the owner's requirements, such as when backups run, but not the asset's class, retention or who may receive it.",
+            "Custodians decide how to meet the owner's requirements, such as when backups run, but not the asset's class, retention, disposal or who may receive it.",
             "Lifecycle dates, such as when vendor support ends, let owners plan replacement or treatment before support runs out."
           ],
           "example": "A freight company's inventory lists 2,000 devices, but half show IT as owner and no business process. Yusuf, the risk analyst, explains that without business owners the asset values and risk ratings cannot be set, and proposes the operations managers who rely on the warehouse and fleet systems as their owners, for senior management to confirm.",
@@ -1572,17 +1577,18 @@
             "crisc_d1_068",
             "crisc_d1_090",
             "crisc_d1_129",
-            "crisc_d1_142"
+            "crisc_d1_142",
+            "crisc_d1_153"
           ],
           "definition": "Risk aggregation combines related risks into an enterprise view, allowing for shared causes and dependencies; the profile is refreshed whenever the business or threat landscape changes.",
-          "why_it_matters": "Several moderate risks with a common cause can add up to a severe exposure that no single entry shows. A profile updated once a year misses acquisitions, new products and new threats.",
+          "why_it_matters": "Several moderate risks with a common cause can add up to a severe exposure that no single entry shows. A yearly profile misses acquisitions, new products and new threats.",
           "how_it_works": [
             "Group risks that share a cause, asset, supplier or process, and assess their combined impact.",
             "Do not just add scores or count high-rated risks: a count hides each risk's size, risks overlap, and correlated risks can compound.",
             "Refresh the profile on a schedule and on triggers such as an acquisition, a new market, a major incident or new regulation.",
             "Report changes and trends, not just the current position; after a rating-method change, restate the prior period on the new method.",
             "When a control credited in a profile rating stops working, re-rate the affected risks without it and report any change against appetite.",
-            "Risks each within tolerance can together breach the overall or category appetite: escalate to whoever set it."
+            "Risks each within tolerance, or a new initiative added to current exposure, can together breach the overall or category appetite: take the combined effect to whoever set it."
           ],
           "example": "An online retailer rates three separate risks as medium: payment outage, warehouse system failure and website downtime. Gabriel, the risk analyst, notices that all three depend on the same cloud region and assesses the combined scenario of losing that region, which would stop sales entirely. They report the aggregated exposure to the chief operating officer.",
           "audit_focus": {
