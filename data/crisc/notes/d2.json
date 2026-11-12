@@ -911,7 +911,7 @@
           "how_it_works": [
             "Likelihood combines the chance a threat event starts and the chance it causes harm, over a stated time frame.",
             "For adversaries, likelihood weighs capability, intent and targeting; other sources use recorded history, from regional or industry records when local history is short, with expert judgment filling gaps.",
-            "Impact is the effect on objectives, such as financial, operational, legal, safety or customer harm; a supplier's AI rating for another use is redone for the enterprise's own use.",
+            "Impact is the effect on objectives, such as financial, operational, legal, reputational or safety harm; a supplier's AI rating for another use is redone for the enterprise's own use.",
             "Controls and predisposing conditions change likelihood and are understood before rating; when one changes, such as more heat, older history may stop predicting.",
             "ISO 31000, named here as context only, describes risk as the effect of uncertainty on objectives, which can include upside opportunity.",
             "When a scenario harms several kinds of objective, the most severe credible harm sets the impact level; ordinal levels are not averaged."
@@ -1654,7 +1654,7 @@
             "Inherent risk credits no control, even standard ones, so it shows how much a scenario depends on controls; a high rating marks controls that must not fail.",
             "Residual risk is rated with the same scales and method as inherent risk, so the two are comparable.",
             "Current risk, counting only implemented, working responses, is compared with appetite now; a planned response's future residual risk shows whether the plan is enough.",
-            "Residual risk is never zero: no control stops every case, so a 100% effectiveness input needs a range.",
+            "Controls leave residual risk above zero: none stops every case, so a 100% effectiveness input needs a range.",
             "Before design, inherent risk ranks which scenarios need the strongest controls; target risk then checks whether the design is enough."
           ],
           "compare": {
@@ -1716,7 +1716,7 @@
             },
             {
               "term": "Target risk",
-              "definition": "The level a planned response should reach, set within appetite; it becomes residual risk once implemented."
+              "definition": "The level a planned response should reach, within appetite; once implemented, residual risk is measured against it."
             },
             {
               "term": "Key control",
