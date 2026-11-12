@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 20 done 12 Nov 2026 (bank 750, on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 21 done 12 Nov 2026 (bank 775, on the outline weights). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 750 reviewed (195 / 165 / 240 / 150) after round 20, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 775 reviewed (201 / 171 / 248 / 155) after round 21, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -824,6 +824,40 @@ test waits for enough runs to sample (d3_238), making twelve.
 - Openers and words: key 4 Have/Ask (at least 2 "Ask", no "Have" key in D1) and put 3 "Have" on eliminated options; Tell-family, Take, "Share of" and only/just on wrong options; key one "Number of" where a count is right; in D1 key 2 options that naturally carry each/every/all.
 - Pause (on top of rounds 17–19): RACI accountability with the business owner; IT goals cascade; speak-up routes; vague standards made measurable; seasonal or peak impact; asset value from enabled revenue; who closes an audit finding; AI drift scenarios; review frequency by risk; cost-benefit time basis and full cost; and the rest in `r20_cross_domain.json`.
 - Neighbour checks: read each new item's runner-up and Final two beside its top same-code neighbour; read every notes line in the item's code and in the code of the rule it relies on; when a review narrows a rule, grep the bank, notes, principles and glossary for the absolute form.
+
+### Round 21 (12 Nov 2026): 25 items, bank 775
+
+Round 21 added 6 D1 (`crisc_d1_196`–`201`), 6 D2 (`crisc_d2_166`–`171`),
+8 D3 (`crisc_d3_241`–`248`) and 5 D4 (`crisc_d4_151`–`155`) items, taking the
+bank to 775. One AI item per domain: a vendor's AI terms that clash with
+customer confidentiality commitments go to the contracts' owner first (d1_198);
+an AI model's loss frequency estimated as a range from its validated error rate
+and volume (d2_170); a rising human-override rate investigated with the model's
+owner (d3_246); and generative AI services the architecture standards omit, which the
+architecture review board covers with approved patterns (d4_151). Other highlights: the risk profile
+against the full register (d1_196), unit limits that must together fit inside
+the enterprise appetite (d1_197, d1_201), a deputy named in the continuity plan
+(d1_200), control pass-through arithmetic (d2_171) and a KRI counted where the
+base grows (d3_245). One more keyed wait: an unreachable, unexploited medium flaw
+goes in the routine patch cycle (d2_167), making thirteen.
+
+| Stage | Result |
+|---|---|
+| Blind test | 24/25; d1_198 disputed because the stem did not say who owned the customer contracts |
+| Standards audit | 1 HARD ERROR: d1_196's option A also described a risk profile under its own citation (NIST IR 8286 Rev. 1 Table 7), now the full register; d1_198's runner-up split from the key on more than who rates it; stem echoes removed from six keys or runners-up; d3_246's option A moved off a CC near-copy |
+| Concept review | 0 HARD ERRORS, 8 PRECISION: the d1_198 stem names the sales director's contracts and notes 1B5.3 sends clashes to the commitments' owner; outage limits agreed with the business owners (d1_201); emergency patching for severe or actively exploited flaws only (d2_167); d3_245's KRI defined in the stem; assurance through the vendor's relationship owner (d3_242); notes 4A1.1 names the architecture review board |
+| Re-blind | 17/17 (12 sure) |
+| Cross-domain gate | 0 HARD ERRORS, 5 PRECISION: four Exam cues narrowed to their stem's trigger so they no longer read against older keys (d4_031, d4_154 vs d3_029, d3_241 vs d4_129, d3_245 vs d3_222); d3_242's wrong explanation says a bridge letter covers a gap in time, not a new site |
+| Gates | All lints 0 errors; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes; keys level; balance exactly 26/22/32/20; longest-key floors 15.2–15.5% |
+
+**Next round (round 22, +25 to 800):** D1 +7, D2 +5, D3 +8, D4 +5 (208/176/256/160). Code placement, key letters, difficulty and settings are in `r21_cross_domain.json`.
+- Length floors: every domain needs exactly one key naturally longest by characters (without one, D1, D2 and D3 fall below 15% and D4 sits at the edge). Never apply a review fix that shortens a floor key without re-running the lint. No key strictly shortest by words in D1 or D2.
+- AI angles: D1 1A5 (an AI tool's manual workaround that newer staff have never run), D2 2B1 (an AI assessment's scope covers its data pipeline and the people who act on its outputs), D3 3B1 (keyed corrective), D4 4B1.
+- Defer: one genuine keyed wait in D1 on a new lesson; no new wrong defer option.
+- Owner shapes: owner keyed in about half of owner items; lone owners keyed at most twice, and a keyed lone owner is never the longest or shortest option.
+- Openers and words: key 3 "Ask" outside D1 and no Have/Ask in D1; "Have" on 3 wrong options; Tell-family, Take, "Share of" and restrictive only/just on wrong options (only/just missed in rounds 20 and 21); key one "Number of" in D1 or D4.
+- Pause (on top of rounds 17–20): profile against register; unit limits within appetite; supplier terms against customer commitments; audit-timed risk work; plan invocation deputies; loss event against near miss; patch speed by exploitation; and the rest in `r21_cross_domain.json`.
+- Neighbour checks: when a new Exam cue sets an order ("before", "not") or a measure preference (count, share, rate), grep every older cue and notes line for the same nouns and phrase the cue on the stem's trigger fact.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`
