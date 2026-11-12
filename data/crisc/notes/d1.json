@@ -51,17 +51,18 @@
             "crisc_d1_071",
             "crisc_d1_096",
             "crisc_d1_125",
-            "crisc_d1_151"
+            "crisc_d1_151",
+            "crisc_d1_170"
           ],
           "definition": "Business-aligned risk management treats risk as the effect of uncertainty on business objectives, so each risk is described, rated and treated by what it does to them.",
-          "why_it_matters": "A program built from technical findings alone ranks issues by severity score, not business harm. Linking each risk to an objective shows leaders which risks threaten what they promised stakeholders.",
+          "why_it_matters": "A program built from technical findings alone ranks issues by severity, not business harm. Linking each risk to an objective shows leaders which risks threaten what they promised stakeholders.",
           "how_it_works": [
             "Start from the enterprise strategy and objectives, then ask which uncertainties could help or hinder each one.",
-            "Express each risk in business terms, by objective, impact and likelihood; a project's risks include missing its promised benefit, not just schedule and budget.",
+            "Express each risk in business terms, by objective, impact and likelihood; a project's risks include missing its promised benefit.",
             "Treat technical weaknesses as causes inside a risk scenario, not as the risk itself.",
-            "Missed or delayed opportunities (upside risk) count, and so does inaction: a status quo that cannot meet objectives.",
-            "Choose controls only after the objective and the risk to it are clear, so spending follows business value.",
-            "When objectives conflict, show each compliant option's risk against appetite; the objective's owner decides."
+            "Missed opportunities (upside risk) count, and so does a status quo that cannot meet objectives.",
+            "Choose controls only once the objective and its risk are clear, so spending follows business value.",
+            "When objectives conflict, show each option's risk against appetite; the objective's owner decides, or the executive over both when two owners' objectives clash."
           ],
           "example": "An electronics distributor promises 98% on-time delivery. A scan lists 400 server weaknesses, and the IT manager wants them ranked by severity. Amara, the risk analyst, traces which weaknesses could stop the route-planning system, writes them up as risk scenarios against that goal, and takes them to the goal's owner, the operations director.",
           "audit_focus": {
@@ -188,19 +189,20 @@
             "crisc_d1_023",
             "crisc_d1_072",
             "crisc_d1_123",
-            "crisc_d1_136"
+            "crisc_d1_136",
+            "crisc_d1_171"
           ],
           "definition": "Governance bodies are the board, its committees and senior management, who set direction, approve risk appetite and the risk framework, and oversee how risk is managed.",
-          "why_it_matters": "Many exam items turn on who has authority. The board and senior management set direction and answer for outcomes; specialists advise. Sending a decision to the wrong level is a common wrong answer.",
+          "why_it_matters": "Many exam items turn on who has authority. The board and senior management set direction and answer for outcomes; specialists advise. Sending a decision to the wrong level is a common error.",
           "how_it_works": [
-            "The board sets direction, approves risk appetite and oversees how senior management handles major risk.",
+            "The board sets direction, approves risk appetite and oversees major risk; within appetite, owners accept and the board sees acceptances in reports.",
             "Senior management turns direction into strategy, approves the risk management framework and policies, and assigns risk owners.",
-            "A risk committee, at board or management level, reviews the risk profile, challenges ratings, approves decisions within its authority and escalates breaches.",
+            "A risk committee, at board or management level, reviews the profile, challenges ratings, approves decisions within its authority and escalates breaches.",
             "The chief risk officer (CRO) runs the risk function, keeps the framework working and reports on the risk profile.",
             "Committees advise and oversee; one named person stays accountable for each risk.",
             "Changes within every limit, escalation thresholds included, wait for the committee's scheduled review; out-of-cycle escalation is for breaches."
           ],
-          "example": "At a bank, the IT steering group wants to approve a new appetite statement for technology risk. Sofia, the risk analyst, explains that appetite is set by the board on senior management's proposal, drafts the statement with the CRO's team, and routes it through the board risk committee for review before it goes to the board.",
+          "example": "At a bank, the IT steering group wants to approve a new appetite statement for technology risk. Sofia, the risk analyst, explains that appetite is set by the board on senior management's proposal, drafts the statement with the CRO's team, and routes it through the board risk committee to the board.",
           "audit_focus": {
             "review": [
               "Compare committee charters with the decisions each body actually takes",
@@ -1093,7 +1095,8 @@
             "crisc_d1_011",
             "crisc_d1_032",
             "crisc_d1_048",
-            "crisc_d1_087"
+            "crisc_d1_087",
+            "crisc_d1_172"
           ],
           "definition": "Modern inventories include assets the enterprise does not host: cloud services, software as a service (SaaS) subscriptions, data held by suppliers, and AI models and datasets.",
           "why_it_matters": "These assets carry real business risk but are easy to miss because no server sits on site. An AI model in use but missing from the inventory has no owner, no risk assessment and no monitoring.",
@@ -1102,7 +1105,8 @@
             "Record AI models with their purpose, owner, training data sources, version and whether they were built or bought.",
             "Datasets used to train or prompt AI are assets too, each with a classification and an owner.",
             "Find hidden services through expense reports, single sign-on logs and network data, then bring them into the inventory.",
-            "A new model version is a change to the asset, even one a vendor ships silently inside a service; update the record and revisit the risk rating."
+            "A new model version is a change to the asset, even one a vendor ships silently inside a service; update the record and revisit the risk rating.",
+            "An AI register covers every kind of AI the business relies on, older machine learning included; a scope limited to generative tools leaves systems unassessed."
           ],
           "example": "A credit union's marketing team subscribes to an AI tool that scores customer leads using account data. The tool is paid by card, so it is missing from the inventory. Sana, the risk analyst, adds the tool, the model version and the data feed to the inventory, proposes the marketing director as owner for senior management to confirm, and schedules a risk assessment.",
           "audit_focus": {
@@ -1428,15 +1432,16 @@
             "crisc_d1_128",
             "crisc_d1_141",
             "crisc_d1_150",
-            "crisc_d1_161"
+            "crisc_d1_161",
+            "crisc_d1_173"
           ],
           "definition": "Internal audit needs full independence from management; the second line sits within management, with the objectivity to challenge first-line work.",
           "why_it_matters": "Holding the second line to audit-level independence cuts it off from the business it must advise, while too little objectivity turns challenge into rubber-stamping. Coordination avoids duplication and gaps.",
           "how_it_works": [
             "Internal audit reports functionally to the board or audit committee and performs no management duties.",
-            "The second line sits within management and reports to the CRO, with access to the board.",
-            "The second line advises on design and leaves decisions with owners, even for AI models it validates; it helps owners draft audit responses but never writes them.",
-            "Combined assurance maps who tests what so lines rely on each other's work; audit relies on another line's tests only after judging the testers' objectivity and records.",
+            "The second line sits within management, reports to the CRO, can reach the board and sees the first-line records it challenges; senior management settles refusals.",
+            "The second line advises on design and leaves decisions with owners, even for AI models it validates; it helps draft audit responses, never writing them.",
+            "Combined assurance maps who tests what; audit relies on another line's tests only after judging the testers' objectivity and records.",
             "Second-line pay and reporting do not depend on the units it challenges; challenging AI ratings needs AI skills from outside model teams.",
             "When an owner and the second line still disagree on a rating after weighing evidence, both views go to the risk committee."
           ],
@@ -1590,19 +1595,20 @@
             "crisc_d1_129",
             "crisc_d1_142",
             "crisc_d1_153",
-            "crisc_d1_162"
+            "crisc_d1_162",
+            "crisc_d1_174"
           ],
           "definition": "Risk aggregation combines related risks into an enterprise view, allowing for shared causes and dependencies; the profile is refreshed whenever the business or threat landscape changes.",
           "why_it_matters": "Several moderate risks with a common cause can add up to a severe exposure that no single entry shows. A yearly profile misses acquisitions, new products and new threats.",
           "how_it_works": [
             "Group risks that share a cause, asset, supplier or process, and assess their combined impact.",
             "Do not just add scores or count high-rated risks: a count hides each risk's size, risks overlap, and correlated risks can compound.",
-            "Refresh the profile on a schedule and on triggers such as an acquisition, a new market, a major incident or new regulation.",
+            "Refresh the profile on schedule and on triggers: an acquisition, a sale (services run for the buyer add risks), a new market, a major incident or new regulation.",
             "Report changes and trends, not just the current position; after a rating-method change, restate the prior period on the new method.",
             "When a control credited in a profile rating stops working, re-rate the affected risks without it and report any change against appetite.",
             "Risks each within tolerance, or a new initiative added to current exposure, can together breach the overall or category appetite: take the combined effect to whoever set it."
           ],
-          "example": "An online retailer rates three separate risks as medium: payment outage, warehouse system failure and website downtime. Gabriel, the risk analyst, notices that all three depend on the same cloud region and assesses the combined scenario of losing that region, which would stop sales entirely. They report the aggregated exposure to the chief operating officer.",
+          "example": "An online retailer rates three risks as medium: payment outage, warehouse system failure and website downtime. Gabriel, the risk analyst, notices that all three depend on the same cloud region and assesses the combined scenario of losing that region. They report the aggregated exposure to the chief operating officer.",
           "audit_focus": {
             "review": [
               "Inspect the profile for risks that share one dependency",
@@ -1663,16 +1669,17 @@
             "crisc_d1_080",
             "crisc_d1_091",
             "crisc_d1_143",
-            "crisc_d1_159"
+            "crisc_d1_159",
+            "crisc_d1_175"
           ],
           "definition": "Appetite is the overall level of risk the enterprise chooses to take on; tolerance, how far one risk may move before escalation; capacity, the most loss it can survive.",
           "why_it_matters": "These thresholds turn analysis into decisions: a risk inside appetite can be accepted, one outside needs a response, and limits beyond capacity put survival at stake.",
           "how_it_works": [
-            "Capacity is the outer limit: the loss the enterprise could survive, bounded by finances, regulation and reputation.",
+            "Capacity is the outer limit: the loss the enterprise could survive, bounded by finances, regulation and reputation; insurance counts only for covered events.",
             "Appetite sits inside capacity and reflects strategy and culture, such as a low appetite for safety risk.",
-            "Tolerance sets measurable limits per objective or metric, such as four hours of outage a month, monitored per month: a yearly figure can hide a breach.",
+            "Tolerance sets measurable limits per objective or metric, such as four hours of outage a month, monitored monthly: a yearly figure can hide a breach.",
             "Tolerance must never extend past capacity.",
-            "Appetite can differ by risk type: an enterprise may welcome product innovation risk but avoid compliance risk.",
+            "Appetite can differ by risk type: an enterprise may welcome innovation risk but avoid compliance risk.",
             "A risk owner may set a limit stricter than tolerance within their authority and budget; a looser one goes to whoever set it."
           ],
           "compare": {
@@ -1708,7 +1715,7 @@
               }
             ]
           },
-          "example": "A regional insurer could absorb a claims outage of about three days before regulators intervene. Its appetite for service disruption is low, and its tolerance for the claims system is eight hours a month. When a unit proposes a five-day tolerance, Wei, the risk practitioner, tells the chief operating officer it exceeds capacity.",
+          "example": "An insurer could absorb a three-day claims outage before regulators intervene. Its appetite for service disruption is low, and its tolerance for the claims system is eight hours a month. When a unit proposes a five-day tolerance, Wei, the risk practitioner, tells the chief operating officer it exceeds capacity.",
           "audit_focus": {
             "review": [
               "Compare each tolerance with the enterprise's documented capacity",
@@ -1957,18 +1964,20 @@
             "crisc_d1_045",
             "crisc_d1_095",
             "crisc_d1_112",
-            "crisc_d1_163"
+            "crisc_d1_163",
+            "crisc_d1_176"
           ],
           "definition": "Legal and regulatory requirements are obligations from laws and regulators; failing them creates compliance risk, and meeting them does not by itself mean other risks are low.",
-          "why_it_matters": "Obligations change often and carry fines, sanctions and lost licenses. Treating compliance as the goal can leave risks that no regulation covers, such as AI errors in a new use, unmanaged.",
+          "why_it_matters": "Obligations change often and carry fines, sanctions and lost licenses. Treating compliance as the goal can leave risks that no regulation covers unmanaged.",
           "how_it_works": [
             "Legal and compliance teams keep a register of obligations, each with an owner and the controls that meet it.",
             "Each obligation is a source of risk scenarios: what happens if the enterprise fails to meet it.",
             "Regulatory change is monitored; when it is unclear whether a new rule applies, legal counsel confirms it before the impact assessment, ahead of the effective date.",
             "AI laws, such as the EU AI Act, add duties for certain uses, so the enterprise maps its AI use cases against them.",
-            "Compliance is a floor: risk analysis still covers threats that no rule addresses."
+            "Compliance is a floor: risk analysis still covers threats that no rule addresses.",
+            "An open term in a rule, such as which incidents are significant, gets criteria from the obligation's owner so handlers apply it alike."
           ],
-          "example": "A recruitment platform plans to use AI to rank job applicants in several countries. Tanvi, the risk analyst, asks legal to confirm which jurisdictions treat hiring AI as high-risk, adds those obligations to the compliance register with owners, and assesses bias and transparency risks that apply whatever the law says, for the product director to review.",
+          "example": "A recruitment platform plans AI ranking of job applicants in several countries. Tanvi, the risk analyst, asks legal which jurisdictions treat hiring AI as high-risk, adds those obligations to the register with owners, and assesses bias risks that apply whatever the law says.",
           "audit_focus": {
             "review": [
               "Compare the obligations register with the laws that apply in each market",
