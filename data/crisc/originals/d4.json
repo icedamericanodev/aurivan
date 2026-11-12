@@ -5743,6 +5743,196 @@
       ],
       "_provenance": "Authored from concept: notes 4B1.1 (Core Security Principles: where critical tasks cannot be split, compensating controls such as independent review reduce the risk). Round 21, 12 Nov 2026: original scenario (a language school whose only office administrator issues student refunds and reconciles the bank account they are paid from) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_015 (separation of duties named for one person adding suppliers, approving and paying; here the duties are refunds and reconciliation and the question is the compensating control; its runner-up idea, least privilege, is eliminated A here, consistently), crisc_d4_039, crisc_d4_087 (least privilege removes access a task does not need; here the job needs both duties), crisc_d3_031 (a compensating check keeps the gap open); CC cc_d1_138 (a daily refund report as a detective control), cc_d3_072, cc_d3_133, cc_d1_195; AAIA aaia_d2_017. Judged distinct: no CRISC item keys an independent review as the compensating control where one person must hold conflicting duties. Owner pattern: owner pair on the two eliminated options (A and D). Round 21 asks: a 'Which of the following' stem; key not strictly longest or shortest by words or characters; no period word; no defer option; not Zero Trust.",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d4_156",
+      "domain": 4,
+      "subtopic": "4A6 Technology resilience and disaster response/recovery. A failover test judged by its servers",
+      "principle_id": "objectives-first",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "IT marked a wool exporter's failover test passed when the shipping servers ran at the backup site in four hours, inside the six-hour RTO; no user tried them. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "An unannounced repeat of the test for the IT team",
+        "B": "A second backup site, paid for by the process owner",
+        "C": "Shipping clerks completing test orders at the backup site",
+        "D": "Checks of restored shipping records by their data owner"
+      },
+      "correct": "C",
+      "key_concept": "A recovery test succeeds when the business process can run on the recovered systems within the RTO, not when the servers start.",
+      "pre_read": "Ask what the RTO is meant to protect and what this test actually measured.",
+      "correct_explanation": "The RTO is set for the shipping function, so recovery counts only when clerks can ship within six hours. Having clerks complete test orders at the backup site shows whether sign-ins, links to partners, printing and data all work in time. Checks by the data owner are the runner-up: they show the records arrived intact, but not that anyone could ship goods from the backup site within the RTO.",
+      "wrong_explanations": {
+        "A": "Surprise makes a test more realistic for the IT team, but the repeat would still end when servers start, without showing that shipping resumes within the RTO.",
+        "B": "A second site adds recovery capacity, but nothing in the test shows the first site falls short; the open question is whether shipping can run there.",
+        "D": "Data owners often check restored records, and rightly, but intact records do not show that clerks can sign in, reach partners and ship within six hours."
+      },
+      "tips": [
+        "Eliminate: A changes only who knows the start time, and B buys a second site when nothing shows the first one falls short; both leave the test measuring servers.",
+        "Final two: C beats D because the RTO covers the shipping function; checked records show the data survived, while clerks working at the backup site show whether shipping resumes in time.",
+        "Exam cue: when a recovery test ends once servers start, look for the option that has the process's own users work on the recovered systems within the RTO."
+      ],
+      "framework_ref": "ISACA Glossary (recovery time objective); NIST SP 800-34 Rev. 1 Section 3.5.3 (Exercises: functional exercises have personnel perform their duties in a simulated operational environment to validate operational readiness)",
+      "related_concepts": [
+        "Recovery time objective",
+        "Disaster recovery testing",
+        "Functional exercise",
+        "Test success criteria"
+      ],
+      "_provenance": "Authored from concept: notes 4A6.3 (Testing Recovery Capability: recovery is timed until users can work again, not until servers start) and 4A6.1 (RTO set per critical process). Round 22, 12 Nov 2026: original scenario (a wool exporter whose failover test was marked passed when the shipping servers ran at the backup site in four hours, inside a six-hour RTO, with no clerk using them) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_029 (a restore inside the RTO while lending stopped for two days; its cue, a recovery test passes only if the business process carried on, supports this key; there a found process gap goes to the process owner, here the test design stops at servers, so the keyed action differs), crisc_d4_127 (hand-back untested; whole-cycle cue, consistent), crisc_d4_034 (test scenario against the top risk), crisc_d4_056 (test disruption accepted by the business owner), crisc_d4_088 (restore test against the ransomware playbook), crisc_d4_107, crisc_d4_138 (paused retest family not used), crisc_d2_102 (a fallback earns credit once drilled; consistent), crisc_d2_159 and crisc_d2_124 (RTO revisions keyed with the process owner; an earlier draft's 'shorter RTO' decoy was replaced by a second backup site so no wrong option mirrors those keys), crisc_d2_035 (its cue warns against buying a fix; consistent with eliminating B), crisc_d1_118; CISA d4_085 (servers ordered after a disaster against a 48-hour RTO; an earlier draft on that angle was dropped as its mirror), d4_075, d4_114; CC cc_d2_008, cc_d2_034, cc_d5_035 (a functional exercise to show responders can act in time). Judged distinct: no item keys having the process's own users work on the recovered systems as a test's success measure. Owner pattern: owner pair split across runner-up D and eliminated B. Round 22 asks: the D4 floor key, naturally longest by characters (57 against 55) and tied shortest by words (9); no each/every/all/any; no defer option; no IT key ('IT' sits in the stem and wrong option A only); no period word in any option.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_157",
+      "domain": 4,
+      "subtopic": "4A7 Emerging technologies. Sensor accuracy shown only in a lab",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A cotton gin operator is buying a start-up's moisture sensors for 12 gins; their accuracy figures come from lab tests, and none has run in a dusty gin. What should the risk practitioner recommend FIRST?",
+      "options": {
+        "A": "A trial at one site, judged against agreed accuracy targets",
+        "B": "An independent lab's check of the start-up's accuracy figures",
+        "C": "A refund term for failed sensors, set by the contract owner",
+        "D": "Rejection of the sensors as an unproven technology"
+      },
+      "correct": "A",
+      "key_concept": "Vendor figures for a new technology are confirmed in the organization's own conditions, through a trial judged against agreed targets, before a full rollout.",
+      "pre_read": "Compare where the accuracy figures came from with where the sensors will work.",
+      "correct_explanation": "The sensors' accuracy is known only from a lab, and dust is the condition the gins will add. A trial at one gin, judged against accuracy targets agreed before it starts, gives evidence from working conditions before the operator commits all 12 gins. An independent lab's check is the runner-up: independent evidence is valuable, but a second lab still tests clean conditions, so the question of how the sensors read in dust stays open.",
+      "wrong_explanations": {
+        "B": "Independent checks are good practice for a vendor's claims and often come next, but this one repeats lab conditions; the open question is how the sensors read in dust.",
+        "C": "A refund returns the price of failed sensors, not the cost of bad readings at the gins; it shifts part of the cost without showing whether the sensors work.",
+        "D": "Rejecting a new technology because it is unproven gives up its benefits by reflex; what is missing is evidence from working conditions, which a trial can supply."
+      },
+      "tips": [
+        "Eliminate: C refunds the price of failed sensors without showing whether they work, and D bans a new technology by reflex instead of testing it.",
+        "Final two: A beats B because the open question is performance in dust; a second lab repeats clean conditions, while a trial at one gin tests the real ones.",
+        "Exam cue: when a device's figures come only from lab tests and your sites add conditions the lab lacked, trial it at one site against targets set beforehand, before a full rollout."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SR-5(2) (Acquisition Strategies, Tools, and Methods | Assessments Prior to Selection, Acceptance, Modification, or Update); NIST CSF 2.0 ID.RA-10 (critical suppliers are assessed prior to acquisition)",
+      "related_concepts": [
+        "Emerging technology evaluation",
+        "Vendor claims",
+        "Pilot",
+        "Internet of Things"
+      ],
+      "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: vendor claims are checked through evidence, pilots and independent assessments; lab figures are confirmed by a trial in working conditions). Round 22, 12 Nov 2026: original scenario (a cotton gin operator buying a start-up's moisture sensors for 12 gins whose accuracy figures come from lab tests, none having run in a dusty gin) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_013 (a vendor's tamper-proof claim: assess risks and benefits; independent certification is its runner-up, consistent with B here), crisc_d4_014 (an AI tool tested on the council's own data first; the same own-conditions principle for an AI tool, while here a non-AI sensor turns on operating conditions, not data), crisc_d4_036 (pilot pause conditions), crisc_d4_072 (a pilot's approval covers its scope), crisc_d4_115 (patch support as a purchase term), crisc_d4_125, crisc_d4_135 (paused objectives-first family not used), crisc_d4_152 (paused demo family not used), crisc_d4_075 (its cue says a liability clause only moves cost; consistent with eliminating C), crisc_d3_216, crisc_d1_138; AAIA aaia_d2_042 (robustness testing on degraded sensor readings for an AI model), aaia_d2_173; CC cc_d5_039 (purchase requirements before buying thermostats), cc_d4_082; CISA d5_210. Judged distinct: no CRISC item keys a trial in the organization's own operating conditions for a non-AI emerging technology whose figures come from a lab. Owner pattern: lone owner on eliminated C. Round 22 asks: key not strictly longest or shortest by words or characters; no defer option (the ban in D carries no 'until'); no each/every/all/any; the key avoids 'gin' so it is not the only option echoing the stem. Audit 12 Nov 2026 (round 22 standards audit): Exam cue phrased on the stem's trigger (lab-only figures, harsher site conditions); the wider 'figures from conditions unlike yours, trial in your own conditions' also fitted crisc_d4_014, where limiting the AI tool to one district is wrong.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_158",
+      "domain": 4,
+      "subtopic": "4B1 Security concepts, frameworks and standards. One filter guarding an AI assistant",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A soap maker's AI assistant answers staff questions from company files, formulas included; testers got past its only safeguard, a prompt filter, by rewording requests. Which of the following is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "A stricter prompt filter, retrained on the testers' own rewordings",
+        "B": "Prompt guidance for staff from the assistant's business owner",
+        "C": "The filter vendor's test report, accepted by the system owner",
+        "D": "Screening of answers for sensitive data before they reach staff"
+      },
+      "correct": "D",
+      "key_concept": "Defense in depth adds controls of a different kind, such as screening an AI assistant's answers, so one bypassed filter does not leave data open.",
+      "pre_read": "Count the safeguards between a reworded request and the formulas, and notice what kind each one is.",
+      "correct_explanation": "Defense in depth places controls of different kinds in an attacker's path, so one failure does not expose the asset. Screening answers for sensitive data such as formulas adds a different kind of check on what leaves the assistant, so a request reworded past the filter meets a second barrier. Retraining the filter on the testers' rewordings is the runner-up: it closes the gaps already found, but the filter still stands alone.",
+      "wrong_explanations": {
+        "A": "Retraining on found bypasses is sound practice after testing, but the filter is still the only barrier; the next rewording it misses reaches the formulas unchecked.",
+        "B": "Guidance helps honest staff phrase questions, but the testers bypassed the filter on purpose; someone set on getting formulas will not follow it.",
+        "C": "The vendor's report describes the filter in general; the soap maker's own test already got past it, and accepting the report adds no barrier."
+      },
+      "tips": [
+        "Eliminate: B guides honest users when the bypass came from deliberate rewording, and C credits the vendor's report although the soap maker's own test already beat the filter.",
+        "Final two: D beats A because defense in depth needs more than one layer; a retrained filter still stands alone, while screening answers can stop formulas that a new rewording gets past it.",
+        "Exam cue: when the one control guarding an AI assistant is bypassed, add a layer that works differently, such as a check on its outputs; retuning the bypassed control still leaves one layer."
+      ],
+      "framework_ref": "ISACA Glossary (defense in depth); NIST SP 800-53 Rev. 5 PL-8(1) (Security and Privacy Architectures | Defense in Depth); NIST AI 100-2 E2025 Section 3.3.3 (Mitigations: detection systems that classify user input or model output can add assurance through defense in depth, but are themselves open to attack and may fail together with the model they monitor)",
+      "related_concepts": [
+        "Defense in depth",
+        "Prompt injection",
+        "Output screening",
+        "Generative AI assistant"
+      ],
+      "_provenance": "Authored from concept: notes 4B1.1 (Core Security Principles: layered controls of different kinds; back an AI prompt filter with answer screening; layers sharing a design can fail together). Round 22, 12 Nov 2026: original scenario (a soap maker's AI assistant that answers staff questions from company files, formulas included, whose only safeguard, a prompt filter, testers got past by rewording requests) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_087 (least privilege for an AI assistant; not used), crisc_d4_053 (layers removed because one control tests strong; consistent), crisc_d4_073 (two firewalls with copied rules; its cue counts layers by how independently they fail, consistent), crisc_d4_098, crisc_d4_128 and crisc_d4_139 (Zero Trust; no Zero Trust stem here), crisc_d4_116, crisc_d3_194 (preventive validation of AI output before use; consistent with screening answers), crisc_d3_062, crisc_d3_032, crisc_d3_180 (tuning a noisy monitoring tool's rules is keyed there; here retuning the one bypassed safeguard still leaves a single layer, a different trigger), crisc_d2_004 (indirect prompt injection); AAIA aaia_d2_021 and aaia_d2_220 (retrieval limited to each user's file rights; that layer is deliberately not offered, so no option mirrors those keys), aaia_d2_209, aaia_d3_028, aaia_d2_143; CC cc_d4_087 (defense in depth with a second email filter from another vendor as a decoy; an earlier draft's 'second prompt filter from another vendor' runner-up was replaced by a retrained filter so it does not mirror that option), cc_d1_040. Judged distinct: no CRISC item keys an output-side layer behind a bypassed prompt filter. Owner pattern: owner pair on the two eliminated options (B and C). Round 22 asks: the assigned AI angle (defense in depth for a retrieval AI assistant: no single layer such as a prompt filter relied on alone; not least privilege; no Zero Trust stem); a 'Which of the following' stem; key tied longest by words (10) and not strictly longest or shortest by characters (63 against 66, 61 and 61). Review 12 Nov 2026 (round 22 concept and blind review): correct explanation and Final two no longer promise that output screening catches every bypass (NIST AI 100-2: output detectors can be attacked and fail with the model); screening is a second barrier of a different kind.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_159",
+      "domain": 4,
+      "subtopic": "4B2 Security/risk awareness and training. Clicks that climb between yearly courses",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A dry cleaner chain runs its security course each January; on simulations of steady difficulty, clicks are lowest in February and climb every month until the next course. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Add a second full security course in July repeating January's content",
+        "B": "Have managers give disciplinary warnings to staff who click",
+        "C": "Ask the awareness program owner for refreshers through the year",
+        "D": "Report course completion rates to managers against a target"
+      },
+      "correct": "C",
+      "key_concept": "Awareness fades after a one-off course, so the program keeps it current with short activities spread through the year.",
+      "pre_read": "Look at how the click rate moves between one course and the next.",
+      "correct_explanation": "Clicks climb month by month after each course, so awareness fades as time passes since training, and one yearly event cannot hold it. Asking the awareness program's owner for short refreshers spread through the year keeps the message current between courses. A second full course in July is the runner-up: it shortens the gap, but still leaves months of steady decline between two long events.",
+      "wrong_explanations": {
+        "A": "Twice-yearly courses are a common answer to fading results; but the rise is monthly, so long gaps between two big courses still leave months of decline.",
+        "B": "Warnings punish clicks without changing why awareness fades, and they can teach staff to hide mistakes, so real phishing goes unreported.",
+        "D": "Completion shows who sat the course, which staff already do each January; it says nothing about the monthly fade the simulations show."
+      },
+      "tips": [
+        "Eliminate: B blames the people who click instead of fixing a program that fades, and D measures attendance at a course staff already complete.",
+        "Final two: C beats A because clicks rise month by month after training; refreshers spread through the year meet that, while a second long course still leaves months of decline.",
+        "Exam cue: when results fade steadily after a yearly course, spread awareness through the year instead of adding more of the same course; read the trend's shape first."
+      ],
+      "framework_ref": "NIST SP 800-50 Rev. 1 Section 2.7.1 (Awareness Activities: awareness activities run on an ongoing basis throughout the year, by campaign or in response to threats); NIST CSF 2.0 PR.AT-01 (personnel are provided with awareness and training so that they possess the knowledge and skills to perform general tasks with cybersecurity risks in mind)",
+      "related_concepts": [
+        "Security awareness",
+        "Phishing simulation",
+        "Awareness decay",
+        "Learning program"
+      ],
+      "_provenance": "Authored from concept: notes 4B2.2 (Measuring Awareness: results compared over time; awareness that fades between yearly courses needs activities through the year). Round 22, 12 Nov 2026: original scenario (a dry cleaner chain whose January security course is followed by simulation clicks that are lowest in February and climb every month until the next course) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_017 (incidents clustered in one role and moment: targeted onboarding training; its eliminated 'twice a year' option matches runner-up A here, wrong in both, and its cue's trigger, clustering in one role, is absent here), crisc_d4_018 and crisc_d4_109 (behavior measures; consistent with eliminating D), crisc_d4_119 (its eliminated warnings match B), crisc_d4_140 (paused announcement family not used), crisc_d4_090, crisc_d4_065, crisc_d4_074, crisc_d4_129, crisc_d1_199 (reminders add prompts, but its trigger is a missing motive), crisc_d1_024, crisc_d1_046; CC cc_d2_060 (a short alert now for a new threat instead of waiting for the yearly course; consistent, different trigger), cc_d2_038 (its eliminated 'twice a year' option), cc_d2_089, cc_d2_015; CISA d5_104, d5_114 (lure difficulty; the stem holds difficulty steady), d5_117, d5_226, d5_239. Judged distinct: no item keys spreading awareness through the year in answer to clicks that climb between yearly courses. Owner pattern: lone owner keyed (C), neither the longest nor the shortest option by words (10 against 11, 9 and 9) or characters (63 against 68, 61 and 61). Round 22 asks: an 'Ask' key; period words ('through the year', 'in July') only where the explanation turns on time; no each/every/all/any; no defer option. Audit 12 Nov 2026 (round 22 standards audit): options A, B and D recast as actions so the 'Ask' key is no longer the only verb-form option among noun phrases; 'Have' now sits on eliminated B (round 22 ask 7); keyed lone owner C still neither longest nor shortest (63 characters against 69, 59 and 59; 10 words against 11, 9 and 9). Review 12 Nov 2026 (round 22 concept and blind review): wrong explanation B softened ('can teach staff to hide mistakes'); the concept review's option C rewrite was not applied, as the audit already made A, B and D actions.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_160",
+      "domain": 4,
+      "subtopic": "4B3 Data privacy and data protection principles. A bought list for marketing emails",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A leather goods retailer, whose policy requires consent for marketing emails, plans to email 50,000 people on a list bought from a magazine. Which of the following should the risk practitioner recommend FIRST?",
+      "options": {
+        "A": "An unsubscribe link in every email the campaign sends",
+        "B": "Records showing what those on the list agreed to receive",
+        "C": "Access to the bought list limited to the marketing team",
+        "D": "A contract clause making the magazine liable for complaints"
+      },
+      "correct": "B",
+      "key_concept": "Before using bought personal data, check what its people consented to, and with whom; consent given to the seller may not cover the buyer.",
+      "pre_read": "Note what the policy requires and where the list came from.",
+      "correct_explanation": "The retailer's policy requires consent before marketing emails, and a bought list carries whatever consent people gave the magazine, if any. Checking records of what those on the list agreed to receive shows whether they agreed, specifically and knowingly, to emails from this retailer before any are sent. An unsubscribe link is the runner-up: it lets people refuse further emails, but the first one has already reached people who may never have agreed.",
+      "wrong_explanations": {
+        "A": "Unsubscribe links belong in marketing emails, and many campaigns rely on them; but opting out after a first email is not the consent the policy requires before it.",
+        "C": "Limiting access protects the list from misuse inside the retailer, a security step; it does not show that the people agreed to the retailer's emails.",
+        "D": "A clause may move the cost of complaints to the magazine, but the retailer stays accountable for emailing people who never agreed."
+      },
+      "tips": [
+        "Eliminate: C protects the list instead of checking whether it may be used, and D moves the cost of complaints while the retailer stays accountable.",
+        "Final two: B beats A because the policy requires consent before emails go out; an unsubscribe link lets people refuse only after the first email arrives.",
+        "Exam cue: when personal data comes from another organization, check what its people agreed to, and with whom, before using it; consent given to one firm may not cover another's use."
+      ],
+      "framework_ref": "ISACA Glossary (consent); NIST SP 800-53 Rev. 5 PT-4 (Consent)",
+      "related_concepts": [
+        "Consent",
+        "Third-party data",
+        "Privacy principles",
+        "Marketing email"
+      ],
+      "_provenance": "Authored from concept: notes 4B3.1 (Privacy Principles: a valid basis before use; privacy also governs authorized use, such as emailing a bought list without consent). Round 22, 12 Nov 2026: original scenario (a leather goods retailer whose policy requires consent for marketing emails, planning to email 50,000 people on a list bought from a magazine) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_100 (consent tied to the core service), crisc_d4_150 (purpose before collection; paused, not used), crisc_d4_019 (a new use beyond the purpose), crisc_d4_047 (minimization at sharing), crisc_d4_075 (its cue on liability clauses supports eliminating D), crisc_d4_060, crisc_d4_120, crisc_d4_130; CISA d2_040 (lawful basis for personalization), d5_022 (verify a requester's identity; an earlier draft on that angle was dropped as its mirror), d5_224; AAIA aaia_d1_074 (the data owner decides whether chats may serve marketing); CC cc_d3_117. Judged distinct: no item keys checking the consent behind bought personal data before it is used. Owner pattern: no owner option (k=0). Round 22 asks: 'every' on one wrong option (A, the runner-up) and none in any key; a 'Which of the following' stem; key tied longest by words (10) and not strictly longest or shortest by characters (56 against 53, 55 and 59); no Encrypt decoy; no defer option.",
+      "style_version": 2
     }
   ]
 }

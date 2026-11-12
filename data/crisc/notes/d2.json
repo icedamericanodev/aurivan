@@ -75,7 +75,7 @@
               "Register change history showing ratings updated after events"
             ],
             "recommend": "Have the incident manager route every closed incident and near miss to the relevant risk owner for scenario review.",
-            "decides": "The risk owner decides whether the scenario rating and response change"
+            "decides": "The risk owner agrees any rating change the event supports and decides the response"
           },
           "isaca_rule": "Treat every loss event and near miss as evidence about a risk scenario. Closing the incident is not closing the risk: link the event to its scenario, reassess likelihood and impact, and let the risk owner decide on any change.",
           "exam_traps": [
@@ -114,13 +114,14 @@
             "crisc_d2_088",
             "crisc_d2_091",
             "crisc_d2_132",
-            "crisc_d2_148"
+            "crisc_d2_148",
+            "crisc_d2_172"
           ],
           "definition": "Event sources are where risk event data comes from: inside the enterprise, such as incident logs and audit findings, and outside it, such as peers, regulators and insurers.",
           "why_it_matters": "Internal data shows the enterprise's own controls and history; external data covers events too rare to have happened here yet. Relying on one source alone distorts likelihood.",
           "how_it_works": [
-            "Internal sources include incident and problem records, audit and control test findings, customer complaints, operational losses and staff reports.",
-            "External sources include industry loss databases, sector information sharing groups, regulator notices, insurer data and public breach reports.",
+            "Internal sources: incident and problem records, audit and control test exceptions (failures no one reported), complaints, losses and staff reports.",
+            "External sources: industry loss databases, sector information sharing groups, regulator notices, insurer data and public breach reports.",
             "External events are adjusted for differences in size, controls and exposure before they inform the enterprise's own ratings.",
             "Event data is recorded consistently, with date, scenario, cause, source and impact before insurance, recoveries shown apart; events logged in several places are matched and counted once.",
             "Underreporting is a known weakness; blame-free reporting helps, and system records of every transaction count events no one reports.",
@@ -836,12 +837,13 @@
             "crisc_d2_055",
             "crisc_d2_089",
             "crisc_d2_102",
-            "crisc_d2_146"
+            "crisc_d2_146",
+            "crisc_d2_173"
           ],
           "definition": "Validation confirms with business owners that a scenario is realistic and its impact is right; a tabletop exercise walks a team through a scenario to test plans and find gaps.",
           "why_it_matters": "Scenarios written by the risk team alone often misjudge business impact. Tabletop exercises reveal missing scenarios, unclear roles and weak responses before a real event does.",
           "how_it_works": [
-            "Process and asset owners review each scenario's events, impacts and existing controls and sign off the description.",
+            "Process and asset owners review each scenario's events, impacts and controls and sign it off; evidence that contradicts an owner's view goes back to that owner first.",
             "A tabletop exercise is a facilitated, discussion-based walkthrough; no systems are touched, so a fallback claimed in play earns rating credit only after a drill shows it works.",
             "Participants include business owners, control owners, IT, communications and key suppliers; the exercise tests decisions, so the owners who would make them must take part.",
             "Injects, new facts added during play, test decisions such as escalation, customer notice and recovery order; the base scenario is a severe but plausible one from owners' top risks.",
@@ -932,7 +934,7 @@
               "Approved assessment scales with defined levels and periods"
             ],
             "recommend": "Have risk owners record likelihood and impact separately, each with a written rationale and a stated period.",
-            "decides": "The risk owner agrees the final rating for their scenario"
+            "decides": "The risk owner agrees the rating on evidence; the risk committee settles disputes"
           },
           "isaca_rule": "Rate risk on both likelihood and impact, tied to business objectives and a stated time frame. An entry with only one dimension cannot be compared with appetite or with other risks.",
           "exam_traps": [
@@ -974,7 +976,8 @@
             "crisc_d2_117",
             "crisc_d2_123",
             "crisc_d2_131",
-            "crisc_d2_151"
+            "crisc_d2_151",
+            "crisc_d2_174"
           ],
           "definition": "A risk assessment identifies, estimates and prioritizes risk. NIST SP 800-30 runs it in four steps: prepare, conduct, communicate the results and maintain the assessment.",
           "why_it_matters": "Skipping preparation means assessing the wrong things against the wrong criteria. Skipping communication or maintenance leaves decisions resting on unseen or outdated results.",
@@ -983,7 +986,7 @@
             "Conduct: identify threat sources and events, vulnerabilities and predisposing conditions, then determine likelihood, impact and risk.",
             "Communicate: give results to decision makers in a form they can act on, like a briefing, report or dashboard.",
             "Maintain: monitor risk factors; without a significant change, update just the factors that changed.",
-            "The official requesting the assessment sets its scope; a third-party part of the process found outside it goes back to that official to decide.",
+            "The requesting official sets scope and rules on third-party parts outside it; an AI system's scope covers its training-data pipeline and the people using its outputs.",
             "In ISO 31000, ISO/IEC 27005 and the ISACA Glossary, risk evaluation compares each rating with the criteria and appetite; NIST SP 800-30 leaves this to decision makers."
           ],
           "example": "A hotel group's CIO asks for a cloud migration risk assessment by Friday. Before collecting threats, Isabel Duarte, the risk practitioner, agrees the scope with the CIO: the booking platform and payment data only, a three-year horizon, the group's five-point rating scales and the decisions the results must support.",
@@ -1309,7 +1312,8 @@
             "crisc_d2_061",
             "crisc_d2_075",
             "crisc_d2_152",
-            "crisc_d2_162"
+            "crisc_d2_162",
+            "crisc_d2_175"
           ],
           "definition": "Keeping the register current means updating ratings, controls, responses and status whenever events, assessments, control tests or business changes alter a risk.",
           "why_it_matters": "Decisions are only as good as the register behind them. A stale register reports risks as treated that are not, and hides risks that have grown.",
@@ -1318,7 +1322,7 @@
             "Status follows evidence: an entry moves to treated only when the response is implemented and working, not when it is planned.",
             "Current and residual ratings credit a control only after it is implemented and tested, not on the day it is approved.",
             "Owners review entries on a cycle set by rating; a stated trigger, such as a KRI breach, brings review forward, and a request alone is not one.",
-            "Closing an entry needs a reason, such as the asset being retired or the risk avoided, and the owner's approval; closed entries stay in the register as history.",
+            "An entry closes, with a reason and the owner's approval, once its risk ends, as with a retired asset; working controls do not end it. Closed entries stay as history.",
             "A new or emerging risk, such as a newly launched AI system, is entered early with its rating's uncertainty stated and an early review date."
           ],
           "example": "A pension fund's register shows member portal account takeover as treated because multifactor sign-in was approved in March. In September, Elif Yilmaz, the risk analyst, finds the rollout covers only 20% of members. Elif moves the status back to in treatment, re-scores the current risk on the control as it stands, and flags the gap to the member services director.",
@@ -1657,13 +1661,14 @@
             "crisc_d2_104",
             "crisc_d2_126",
             "crisc_d2_160",
-            "crisc_d2_171"
+            "crisc_d2_171",
+            "crisc_d2_176"
           ],
           "definition": "Inherent risk is risk before any management action; current risk reflects controls already in place; residual risk is what remains after the chosen response is implemented.",
           "why_it_matters": "Comparing inherent risk with appetite overstates the need for new controls; counting planned controls as working understates real exposure.",
           "how_it_works": [
             "Inherent risk credits no control, even standard ones, so it shows how much a scenario depends on controls; a high rating marks controls that must not fail.",
-            "Residual risk is rated with the same scales and method as inherent risk, so the two are comparable.",
+            "Residual risk uses inherent risk's scales and method, crediting what each control changes, not how many controls there are.",
             "Current risk, counting only implemented, working responses, is compared with appetite now; a planned response's future residual risk shows whether the plan is enough.",
             "Controls leave residual risk above zero, so 100% effectiveness inputs need a range; layered controls multiply each layer's pass-through share, not add effectiveness rates.",
             "Before design, inherent risk ranks which scenarios need the strongest controls; target risk then checks whether the design is enough."

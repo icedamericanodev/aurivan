@@ -1167,15 +1167,16 @@
             "crisc_d4_034",
             "crisc_d4_056",
             "crisc_d4_127",
-            "crisc_d4_138"
+            "crisc_d4_138",
+            "crisc_d4_156"
           ],
-          "definition": "Recovery testing checks that disaster recovery capability, and the technology side of continuity plans, works, using methods that range from checklist reviews and tabletop exercises to full interruption tests.",
-          "why_it_matters": "An untested plan is an assumption. Tests show whether RTO and RPO are met, whether people know their roles and where the gaps are, so owners can decide on fixes before a real event.",
+          "definition": "Recovery testing checks that disaster recovery capability, and the technology side of continuity plans, works, using methods from checklist reviews and tabletop exercises to full interruption tests.",
+          "why_it_matters": "An untested plan is an assumption. Tests show whether RTO and RPO are met, whether people know their roles and where gaps lie, so owners can fix them before a real event.",
           "how_it_works": [
             "Tests are chosen by risk and plan maturity, starting with low-disruption methods and building to realistic ones that cover the whole cycle, including the return to the main site.",
             "A test that could disrupt operations is a business decision: the owner of the affected process accepts or limits the disruption, informed by what a failed test could cost.",
             "Each test has objectives tied to RTO, RPO and register scenarios; tests run on schedule and after set triggers, not after unrelated outside outages.",
-            "Observers record what worked, what failed and how long recovery actually took.",
+            "Observers record what worked, what failed and how long recovery took until users could work again, not until servers started.",
             "Findings go into a corrective action plan with owners and dates, and the plan is retested.",
             "A restore test times only the restore; under ransomware, containment and malware checks come first, so real recovery takes longer than the test shows."
           ],
@@ -1201,7 +1202,7 @@
               "meaning": "Production is actually moved to recovery systems; the most realistic and most disruptive test."
             }
           ],
-          "example": "A city water utility runs its first ransomware tabletop exercise. Within an hour the team finds that no one knows who may authorize switching treatment controls to manual operation. Aiko, the risk analyst, records the gap, links it to the ransomware scenario in the register and asks the operations director to assign the decision authority.",
+          "example": "A city water utility runs its first ransomware tabletop exercise. Within an hour the team finds no one knows who may authorize switching treatment controls to manual operation. Aiko, the risk analyst, records the gap, links it to the ransomware scenario in the register and asks the operations director to assign the decision authority.",
           "audit_focus": {
             "review": [
               "Compare tested scenarios with the top-rated scenarios in the register",
@@ -1218,7 +1219,7 @@
           "exam_traps": [
             {
               "trap": "Starting with a full interruption test to get the most realistic result.",
-              "why": "A full interruption test can itself cause an outage. Organizations build up from tabletop and functional tests and run full tests only when the plan is mature and the risk is accepted."
+              "why": "A full interruption test can itself cause an outage. Organizations build up from tabletop and functional tests, running full tests only when the plan is mature and the risk is accepted."
             }
           ],
           "key_terms": [
@@ -1261,14 +1262,15 @@
             "crisc_d4_115",
             "crisc_d4_125",
             "crisc_d4_135",
-            "crisc_d4_148"
+            "crisc_d4_148",
+            "crisc_d4_157"
           ],
           "definition": "Evaluating emerging technology means assessing a new technology's threats, vulnerabilities and opportunities for the business before and during adoption.",
-          "why_it_matters": "New technology can create advantage, new exposure or both. The ISACA Glossary's enterprise risk management exploits risk as well as controlling it, to increase stakeholder value, so leaders weigh both instead of banning by reflex or adopting blind.",
+          "why_it_matters": "New technology can create advantage, exposure or both. The ISACA Glossary's enterprise risk management exploits risk as well as controlling it, to increase stakeholder value, so leaders weigh both instead of banning by reflex or adopting blind.",
           "how_it_works": [
             "Start from the objective it serves; known benefits belong in the business case, uncertain ones in the register as opportunities.",
             "Identify new threats: weak integrations, vendor flaws, irreversible harms (stolen biometrics, public-blockchain personal data) and cloud paths to physical controls.",
-            "Check vendor claims, including patch support periods, through evidence, pilots and independent assessments.",
+            "Check vendor claims, including patch support periods, through evidence, pilots and independent assessments; confirm lab figures by a trial in working conditions.",
             "Apps staff build on low-code platforms are inventoried with owners and data, not banned or ignored.",
             "Weigh exposure against appetite, propose conditions such as a pilot or exit terms, and reassess when the technology matures, use scales or an earlier rejection's reason changes.",
             "With little data, record an emerging risk with stated uncertainty, a proposed owner and a review date, not waiting for losses."
@@ -1291,7 +1293,7 @@
               "meaning": "Future computing power that could break today's public-key encryption, so cryptography inventories and migration plans matter."
             }
           ],
-          "example": "A farm cooperative's operations head wants soil sensors linked to a cloud dashboard to cut fertilizer costs, while some board members want it blocked. Luca, the risk analyst, assesses both the savings and the risks and proposes a limited pilot with conditions for the board.",
+          "example": "A farm cooperative's operations head wants soil sensors linked to a cloud dashboard to cut fertilizer costs, while some board members want it blocked. Luca, the risk analyst, assesses the savings and the risks and proposes a limited pilot with conditions for the board.",
           "audit_focus": {
             "review": [
               "Compare the technology's business case with its risk assessment",
@@ -1407,19 +1409,20 @@
             "crisc_d4_087",
             "crisc_d4_108",
             "crisc_d4_118",
-            "crisc_d4_155"
+            "crisc_d4_155",
+            "crisc_d4_158"
           ],
           "definition": "Core security principles are the design rules behind controls: protect confidentiality, integrity and availability, layer defenses, grant least privilege and separate duties.",
-          "why_it_matters": "These principles let a practitioner judge a control set without knowing every product; gaps, such as one control guarding everything, point to concentrated risk.",
+          "why_it_matters": "These principles let a practitioner judge controls without knowing every product; one control guarding everything signals concentrated risk.",
           "how_it_works": [
             "CIA (confidentiality, integrity, availability) names what an event harms, shaping the impact rating; encryption mainly guards confidentiality, not integrity, which includes non-repudiation.",
-            "Layered controls of different kinds mean one failure does not expose the asset.",
-            "Each user, system and AI tool gets only the access its task needs, and only while needed.",
+            "Layered controls of different kinds mean one failure does not expose the asset; back an AI assistant's prompt filter with answer screening and retrieval limits.",
+            "Each user, system and AI tool gets only the access its task needs, only while needed.",
             "Critical tasks are split so no one can complete and hide a harmful action alone; otherwise compensating controls, such as independent review, reduce the risk.",
-            "Layers sharing a vendor, design or rule set can fail together, giving less depth than their number suggests; diversity costs effort, weighed against the risk.",
+            "Layers sharing a vendor, design or rule set can fail together, giving less depth than their number suggests; diversity costs effort, weighed against risk.",
             "Failing open keeps a service available; failing secure guards assets. With both costs known, the risk owner chooses, within any life-safety rule."
           ],
-          "example": "A credit union guards its member database mainly with a perimeter firewall; every staff account inside can read all records. Farah, the IT risk analyst, shows the chief operating officer that one phished account would expose everything and proposes role-based access, database monitoring and multifactor authentication.",
+          "example": "A credit union guards its member database mainly with a perimeter firewall; every staff account can read all records. Farah, the risk analyst, shows the chief operating officer one phished account would expose everything and proposes role-based access, database monitoring and multifactor authentication.",
           "audit_focus": {
             "review": [
               "Compare access rights with job roles to find excess privilege",
@@ -1458,7 +1461,7 @@
             },
             {
               "term": "Just-in-time access",
-              "definition": "Elevated access granted for one task and a set time, then removed, instead of standing administrator rights."
+              "definition": "Elevated access for one task and a set time, then removed, instead of standing administrator rights."
             }
           ]
         },
@@ -1657,19 +1660,20 @@
             "crisc_d4_057",
             "crisc_d4_099",
             "crisc_d4_109",
-            "crisc_d4_140"
+            "crisc_d4_140",
+            "crisc_d4_159"
           ],
           "definition": "Measuring awareness means tracking whether behavior changes after training, using measures such as reporting rates and simulation results, not just course completion.",
           "why_it_matters": "Completion rates show who clicked through a course, not who acts safely. Behavior measures show whether training reduces risk and where to focus, including new risks such as staff pasting data into public AI tools.",
           "how_it_works": [
             "Outcome measures include phishing report rates, repeat-click rates, policy exceptions, incidents caused by error and the share of independently detected mistakes that staff reported themselves.",
             "Fair simulations are announced as a program but not by date, avoid cruel lures, coach rather than shame and report trends, not names; random timing keeps results honest.",
-            "Results are compared over time and by role to target follow-up training.",
+            "Results are compared over time and by role to target follow-up; awareness that fades between yearly courses needs activities through the year.",
             "Shadow AI, staff using unapproved AI tools, is an awareness topic: what data may go where and which tools are approved.",
-            "Awareness works best paired with an approved alternative, because bans without options push use underground.",
-            "Awareness gives concrete examples of restricted data, because staff apply a rule like 'non-confidential only' through their own idea of what is confidential."
+            "Awareness works best paired with an approved alternative; bans without options push use underground.",
+            "Awareness gives concrete examples of restricted data, because staff apply a rule like 'non-confidential only' through their own idea of confidential."
           ],
-          "example": "A transport authority reports 99% completion of its phishing course, yet monthly simulations show the same teams clicking and few staff reporting. Jordan, the risk analyst, proposes adding report and repeat-click rates to the awareness report and coaching for repeat clickers instead of discipline, and asks the chief operating officer to sponsor the change.",
+          "example": "A transport authority reports 99% completion of its phishing course, yet monthly simulations show the same teams clicking and few staff reporting. Jordan, the risk analyst, proposes adding report and repeat-click rates and coaching for repeat clickers instead of discipline, and asks the chief operating officer to sponsor the change.",
           "audit_focus": {
             "review": [
               "Compare awareness metrics with incident trends caused by human error",
@@ -1730,17 +1734,18 @@
             "crisc_d4_100",
             "crisc_d4_120",
             "crisc_d4_142",
-            "crisc_d4_150"
+            "crisc_d4_150",
+            "crisc_d4_160"
           ],
           "definition": "Privacy principles are rules for fair handling of personal data, including purpose limitation, data minimization, a lawful basis such as consent, transparency and individual rights.",
-          "why_it_matters": "Privacy harm affects people and brings regulatory, legal and trust consequences. A secure system can still breach privacy if it collects too much or uses data for an undisclosed purpose.",
+          "why_it_matters": "Privacy harm affects people and brings regulatory, legal and trust consequences. A secure system can still breach privacy by collecting too much or using data for an undisclosed purpose.",
           "how_it_works": [
             "The purpose is decided and stated before collection, and data is not used later in ways incompatible with it.",
             "Only data the purpose needs is collected, kept or disclosed; old records stay personal data at least while the people in them live.",
             "People are told what happens to their data, and the organization has a valid basis; consent counts only if people can refuse an unrelated use and still be served.",
             "People can access, correct or delete their data as law allows, and challenge data used in decisions about them.",
             "Rights requests can be met only when every system holding a person's data is known, analytics copies and vendor tools included.",
-            "Security protects data from unauthorized access; privacy also governs authorized use."
+            "Security protects data from unauthorized access; privacy also governs authorized use, such as emailing a bought list without consent."
           ],
           "compare": {
             "columns": [
@@ -1771,7 +1776,7 @@
               }
             ]
           },
-          "example": "A fitness app's product team proposes selling users' location history to advertisers, arguing the data is encrypted. Kenji, the privacy risk analyst, explains encryption does not change the agreed purpose, and asks the product owner and privacy officer to assess the sale against it.",
+          "example": "A fitness app's product team proposes selling users' location history to advertisers, arguing the data is encrypted. Kenji, the risk analyst, explains encryption does not change the agreed purpose and asks the product owner and privacy officer to assess the sale.",
           "audit_focus": {
             "review": [
               "Compare data collected with the purposes in the privacy notice",
@@ -1784,11 +1789,11 @@
             "recommend": "Have the privacy officer review every new use of personal data against its stated purpose before launch.",
             "decides": "The data owner decides on use, with the privacy officer's advice"
           },
-          "isaca_rule": "Privacy is not the same as security. Ask whether the purpose was set before collection and whether the use matches it; strong encryption does not make an unfair use acceptable. The data owner decides, advised by the privacy officer and legal counsel.",
+          "isaca_rule": "Privacy is not the same as security. Ask whether the purpose was set before collection and the use matches it; strong encryption does not make an unfair use acceptable. The data owner decides, advised by the privacy officer and legal counsel.",
           "exam_traps": [
             {
               "trap": "Assuming encrypted data has no privacy risk.",
-              "why": "Encryption stops outsiders reading data. It does nothing about an organization using the data beyond what people agreed to."
+              "why": "Encryption stops outsiders reading data. It does nothing about an organization using data beyond what people agreed to."
             },
             {
               "trap": "Collecting data first and deciding how to use it later.",
@@ -1806,7 +1811,7 @@
             },
             {
               "term": "Personal data",
-              "definition": "Any information that tells you about a particular person, or lets someone work out who they are, alone or combined with other data."
+              "definition": "Any information about a particular person, or that lets someone work out who they are, alone or combined with other data."
             }
           ]
         },

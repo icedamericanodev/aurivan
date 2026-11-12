@@ -65,14 +65,15 @@
             "crisc_d3_161",
             "crisc_d3_169",
             "crisc_d3_198",
-            "crisc_d3_209"
+            "crisc_d3_209",
+            "crisc_d3_249"
           ],
           "definition": "Risk responses are the four ways an organization deals with an analyzed risk: accept it, mitigate it with controls, transfer or share it, or avoid the activity causing it.",
           "why_it_matters": "The response decides how much risk is left and at what cost. The wrong choice wastes money on risk within appetite or leaves risk above it untreated.",
           "how_it_works": [
             "Every response starts from an analyzed risk compared with appetite and tolerance, not a favorite tool; if service is restored and a root-cause review is near, wait.",
             "Responses combine: controls cut likelihood, then insurance covers part of the remaining impact.",
-            "Transfer moves money, not accountability, and only for losses covered: re-rate exposure an exclusion leaves retained; an insured breach still harms customers and reputation.",
+            "Transfer moves money, not accountability, to another enterprise and only for covered losses: re-rate exposure an exclusion leaves retained; work moved within the group transfers nothing.",
             "Avoidance gives up the benefit, so it fits when the activity is not needed for objectives or nothing else brings the risk within appetite.",
             "A response can bring new risks, such as reliance on one provider; weigh them first.",
             "For unexplained AI decisions, human review giving reasons on challenge treats the risk; a model summary does not."
@@ -95,7 +96,7 @@
               "meaning": "The business stops, changes or never starts the activity that creates the risk, for good or until a fix is in place."
             }
           ],
-          "example": "An airline's loyalty team wants members to pay with points in a new partner app. Amara, the risk analyst, rates the fraud risk above appetite and lays out four options with cost and target risk: accept (with temporary acceptance from the level that set appetite), add step-up authentication, insure fraud losses or drop the feature. The loyalty director chooses.",
+          "example": "An airline's loyalty team wants members paying with points in a partner app. Amara, the risk analyst, rates the fraud risk above appetite and lays out four options with cost and target risk: accept (with temporary acceptance from the level that set appetite), add step-up authentication, insure fraud losses or drop the feature. The loyalty director chooses.",
           "audit_focus": {
             "review": [
               "Compare each response in the register with the risk rating and appetite",
@@ -441,7 +442,8 @@
             "crisc_d3_092",
             "crisc_d3_170",
             "crisc_d3_196",
-            "crisc_d3_227"
+            "crisc_d3_227",
+            "crisc_d3_250"
           ],
           "definition": "Vendor due diligence is assessing a supplier's risk before signing, then writing needed controls into the contract, such as security duties, audit rights and exit terms.",
           "why_it_matters": "After signing, leverage drops: terms left out, such as breach notice or audit rights, are hard to add, and the organization still answers for the outcome.",
@@ -508,14 +510,14 @@
             "crisc_d3_210",
             "crisc_d3_242"
           ],
-          "definition": "Ongoing vendor monitoring is reviewing a supplier's performance, controls and risk throughout the relationship, using assurance reports, SLA results, incidents and changes in its own suppliers.",
+          "definition": "Ongoing vendor monitoring is reviewing a supplier's performance, controls and risk, using assurance reports, SLA results, incidents and changes in its suppliers.",
           "why_it_matters": "A vendor that was sound at onboarding can change owners, cut staff, add subcontractors or suffer a breach. Monitoring catches drift in time to respond.",
           "how_it_works": [
             "Read assurance reports for scope: which services, locations and controls were tested, over what period.",
             "Act on report exceptions and complementary user entity controls, the customer's own duties; when scope fits and neither is open, rely on the report rather than repeat its tests.",
             "Track fourth parties: the vendor's own subcontractors, especially those that host or process your data.",
             "Watch concentration: services on one provider or region, even via different vendors, can fail together; rate that as one scenario.",
-            "Scale review depth and frequency to criticality; reassess after a breach, sale or merger, missed SLAs or a new subcontractor."
+            "Scale review depth and frequency to criticality; reassess after a breach, sale, missed SLAs, a new subcontractor, or more sensitive data sent than was vetted."
           ],
           "example": "An insurer relies on a claims vendor whose SOC 2 Type 2 report covers its main data center but not the overseas site now handling the insurer's claims. Chen, a risk analyst, notices the scope gap and two access-review exceptions. They update the vendor entry and ask the claims director to seek coverage of that site.",
           "audit_focus": {
@@ -639,19 +641,20 @@
             "crisc_d3_163",
             "crisc_d3_171",
             "crisc_d3_202",
-            "crisc_d3_233"
+            "crisc_d3_233",
+            "crisc_d3_251"
           ],
           "definition": "Issue management is logging each control weakness, audit finding or incident lesson with an owner, an action and a due date, then tracking it until closure is validated.",
-          "why_it_matters": "Findings that are logged but never really fixed leave the same risk open while reports show progress. Overdue items are often where the next incident comes from.",
+          "why_it_matters": "Findings logged but never fixed leave the risk open while reports show progress; overdue items often breed the next incident.",
           "how_it_works": [
             "Log every issue in one tracker, linked to the risk it affects and ranked by that risk's rating, since audits, regulators and reviews rate on their own scales.",
             "Give each issue one owner, an agreed action and a due date; repeats of one problem, such as an AI tool's errors, become one finding at their cause.",
-            "Escalate overdue or slipping items to the risk owner and, past a set point, to senior management.",
+            "Escalate overdue or slipping items to the risk owner, and past a set point to senior management; an unexplained rating drop is checked with that owner.",
             "Close an issue on evidence the fix works, not the owner's word, or, within appetite, on the risk owner's recorded acceptance.",
             "Re-rate the risk once a fix is validated; a fix that differs from the agreed action is first evaluated for the risk it leaves, then agreed with the risk owner.",
             "When teams dispute who should fix an issue, the owner of the affected risk names one action owner; the practitioner escalates to that owner rather than choosing a team."
           ],
-          "example": "An internal audit at a manufacturer finds that terminated contractors keep plant-system access for weeks. The plant manager marks the finding closed after issuing a new offboarding checklist. Ravi, the risk analyst, samples ten departures and finds three accounts still active. They reopen the item and report the evidence to the plant manager and internal audit, with a revised date.",
+          "example": "An internal audit at a manufacturer finds terminated contractors keeping plant-system access for weeks. The plant manager marks the finding closed after issuing an offboarding checklist. Ravi, the risk analyst, samples ten departures and finds three accounts still active. They reopen the item and report the evidence to the plant manager and internal audit, with a revised date.",
           "audit_focus": {
             "review": [
               "Sample closed issues and reperform the evidence check behind each closure",
@@ -800,7 +803,8 @@
             "crisc_d3_096",
             "crisc_d3_155",
             "crisc_d3_178",
-            "crisc_d3_212"
+            "crisc_d3_212",
+            "crisc_d3_252"
           ],
           "definition": "Control types by function describe what a control does about a risk event: stop it, discourage it, find it, fix it, or stand in for a missing control.",
           "why_it_matters": "Calling a detective control preventive overstates protection and understates residual risk. Knowing the function shows which part of the risk a control actually reduces.",
@@ -882,7 +886,7 @@
           "why_it_matters": "Relying on one category leaves gaps: a firewall cannot stop someone carrying paper records out of a building, and a policy cannot block a malicious sign-in. Mixing categories gives depth.",
           "how_it_works": [
             "Category and function combine: a badge reader is physical and preventive; a camera is physical and detective.",
-            "Automated controls run the same way every time and suit high volumes, but a wrong setting fails every time.",
+            "Automated controls run the same way every time and suit high volumes, but a wrong setting fails every time; automatic rollback after a fault is corrective.",
             "Manual controls handle judgment and unusual cases but vary with people, workload and attention.",
             "Administrative controls direct behavior and set accountability, and most technical controls depend on them for configuration and review.",
             "Review automated control settings after upgrades and other system changes, since one wrong value repeats on every transaction until someone notices.",
@@ -1145,14 +1149,15 @@
             "crisc_d3_100",
             "crisc_d3_172",
             "crisc_d3_204",
-            "crisc_d3_229"
+            "crisc_d3_229",
+            "crisc_d3_253"
           ],
           "definition": "Control gap analysis compares the current controls on a risk with the controls needed to bring it within appetite, judging both how they are designed and how they operate.",
           "why_it_matters": "Gaps show where residual risk is higher than the register claims. Finding them before an incident lets the risk owner fund the most important fixes first.",
           "how_it_works": [
             "Define the desired state from appetite, policy, regulation or a framework profile.",
             "Describe the current state from control test results, not policies, owners' statements or old ratings.",
-            "Separate design gaps (the control could not work as built, such as a return path anyone can use unrecorded) from operating gaps (built right but not performed).",
+            "Separate design gaps (cannot work as built: a return path anyone can use unrecorded, a limit dodged by splitting) from operating gaps (built right, not performed).",
             "Rank gaps by the risk they leave open, not by how easy they are to fix.",
             "Turn agreed gaps into action plans with owners and dates.",
             "Before removing a control as a duplicate, compare what each catches: a range check passes wrong values that look plausible, which a check against the source finds."
@@ -1216,7 +1221,8 @@
             "crisc_d3_134",
             "crisc_d3_149",
             "crisc_d3_173",
-            "crisc_d3_189"
+            "crisc_d3_189",
+            "crisc_d3_254"
           ],
           "definition": "Control testing techniques are the ways evidence about a control is gathered: asking people, watching it run, inspecting records, or performing it again independently.",
           "why_it_matters": "Techniques give very different assurance. A control rated effective on interviews alone may never actually run, and the rating then hides real exposure from the risk owner.",
@@ -1226,7 +1232,7 @@
             "Reperformance gives the strongest evidence, because the tester reaches the result independently.",
             "NIST SP 800-53A groups methods as examine, interview and test, with depth and coverage set by the assurance needed.",
             "Job logs and sign-offs show a step ran, not that its result was right; recalculating a sample, or re-checking approved AI outputs, shows whether it was.",
-            "When an automated control had nothing to act on in the period, inspect its live setting and change log; no exceptions proves nothing."
+            "No exceptions shows little: when an automated control had nothing to act on, inspect its live setting and change log; when a check flagged nothing, run cases it should catch."
           ],
           "types": [
             {
@@ -1511,13 +1517,14 @@
             "crisc_d3_130",
             "crisc_d3_157",
             "crisc_d3_165",
-            "crisc_d3_214"
+            "crisc_d3_214",
+            "crisc_d3_255"
           ],
           "definition": "Validating execution is confirming, with evidence, that the actions in a risk plan were carried out as agreed and reduced the risk as expected.",
           "why_it_matters": "Status reports often say done when a control is installed but untested. Validation stops the register from showing a lower risk than really exists.",
           "how_it_works": [
             "Ask for evidence at each milestone, not only a status color, and watch the risk's indicators: if completed, working actions do not move them, check what drives the risk.",
-            "Confirm the control is implemented, then that it operates, before treating the action as complete.",
+            "Confirm the control is implemented, then that it operates, before treating the action as complete; interdependent actions run by different teams are tested working together.",
             "Re-rate the risk after validation and report progress as risk reduced toward the plan's target, not the share of actions done.",
             "Escalate slipping or blocked actions to the risk owner, and past agreed limits to senior management.",
             "Close the plan once evidence and the owner's sign-off show the risk at target, or the owner records a new decision on the current rating, not the target.",
@@ -1687,14 +1694,15 @@
             "crisc_d3_041",
             "crisc_d3_106",
             "crisc_d3_139",
-            "crisc_d3_179"
+            "crisc_d3_179",
+            "crisc_d3_256"
           ],
           "definition": "Data validation is checking that risk and control data are complete, accurate, current and consistent before they are analyzed or reported to decision makers.",
           "why_it_matters": "A wrong figure in a board report can drive the wrong decision and damages trust in the whole risk function. Checking before reporting costs far less than correcting afterward.",
           "how_it_works": [
             "Completeness: every unit, system and source expected is present, checked against other records such as AI spending; a rating that missed one is redone before decisions rest on it.",
             "Accuracy: a sample reconciles to the source records, whether a person, a spreadsheet or an AI tool produced the figures.",
-            "Currency: the data dates match the reporting period.",
+            "Currency: every source's figures cover the reporting period; where it can, a source with a different cut-off supplies figures to the common date before they are added.",
             "Consistency: definitions and scales match across sources and over time.",
             "Known limitations are stated in the report rather than left out.",
             "When a metric's data source or tool changes, confirm the new source covers the same population and definitions before comparing periods."

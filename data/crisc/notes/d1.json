@@ -52,19 +52,20 @@
             "crisc_d1_096",
             "crisc_d1_125",
             "crisc_d1_151",
-            "crisc_d1_170"
+            "crisc_d1_170",
+            "crisc_d1_202"
           ],
           "definition": "Business-aligned risk management treats risk as the effect of uncertainty on business objectives, so each risk is described, rated and treated by what it does to them.",
           "why_it_matters": "A program built from technical findings alone ranks issues by severity, not business harm. Linking each risk to an objective shows leaders which risks threaten what they promised stakeholders.",
           "how_it_works": [
-            "Start from the enterprise strategy and objectives, then ask which uncertainties could help or hinder each one.",
+            "Start from enterprise strategy and objectives, then ask which uncertainties could help or hinder each.",
             "Express each risk in business terms, by objective, impact and likelihood; a project's risks include missing its promised benefit.",
             "Treat technical weaknesses as causes inside a risk scenario, not as the risk itself.",
             "Missed opportunities (upside risk) count, and so does a status quo that cannot meet objectives.",
-            "Choose controls only once the objective and its risk are clear, so spending follows business value.",
+            "Choose controls and scope assessments from approved objectives and their risks, so spending follows value; scope on a draft only when the work cannot wait.",
             "When objectives conflict, show each option's risk against appetite; the objective's owner decides, or the executive over both when two owners' objectives clash."
           ],
-          "example": "An electronics distributor promises 98% on-time delivery. A scan lists 400 server weaknesses, and the IT manager wants them ranked by severity. Amara, the risk analyst, traces which weaknesses could stop the route-planning system, writes them up as risk scenarios against that goal, and takes them to the goal's owner, the operations director.",
+          "example": "An electronics distributor promises 98% on-time delivery. A scan lists 400 server weaknesses; the IT manager wants them ranked by severity. Amara, the risk analyst, traces which weaknesses could stop the route-planning system, writes them up as risk scenarios against that goal, and takes them to the goal's owner, the operations director.",
           "audit_focus": {
             "review": [
               "Trace each top register risk to a named business objective",
@@ -77,7 +78,7 @@
             "recommend": "Have risk owners restate technical findings as risk scenarios tied to the objectives they own.",
             "decides": "The executive accountable for the affected goal chooses the treatment"
           },
-          "isaca_rule": "On CRISC items, start from the business objective. A risk matters by its effect on what the enterprise is trying to achieve; a technical defect becomes a risk only once it is tied to an objective, an impact and an owner.",
+          "isaca_rule": "On CRISC items, start from the business objective. A risk matters by its effect on what the enterprise aims to achieve; a technical defect becomes a risk only once tied to an objective, an impact and an owner.",
           "exam_traps": [
             {
               "trap": "Build the risk program from the vulnerability scan, since it is the most complete list of problems.",
@@ -91,7 +92,7 @@
           "key_terms": [
             {
               "term": "Business objective",
-              "definition": "A measurable result the enterprise has committed to, such as revenue, a service level or regulatory standing."
+              "definition": "A measurable result the enterprise has committed to, such as revenue, service levels or regulatory standing."
             },
             {
               "term": "Risk scenario",
@@ -192,7 +193,8 @@
             "crisc_d1_072",
             "crisc_d1_123",
             "crisc_d1_136",
-            "crisc_d1_171"
+            "crisc_d1_171",
+            "crisc_d1_203"
           ],
           "definition": "Governance bodies are the board, its committees and senior management, who set direction, approve risk appetite and the risk framework, and oversee how risk is managed.",
           "why_it_matters": "Many exam items turn on who has authority. The board and senior management set direction and answer for outcomes; specialists advise. Sending a decision to the wrong level is a common error.",
@@ -200,7 +202,7 @@
             "The board sets direction, approves risk appetite and oversees major risk; within appetite, owners accept risks and the board oversees through reporting.",
             "Senior management turns direction into strategy, approves the risk management framework and policies, and assigns risk owners.",
             "A risk committee, at board or management level, reviews the profile, challenges ratings, approves decisions within its authority and escalates breaches.",
-            "The chief risk officer (CRO) runs the risk function, keeps the framework working and reports on the risk profile.",
+            "The chief risk officer (CRO) runs the risk function, keeps the framework and enterprise register working, and reports the profile.",
             "Committees advise and oversee; one named person stays accountable for each risk.",
             "Changes within every limit, escalation thresholds included, wait for the committee's scheduled review; out-of-cycle escalation is for breaches."
           ],
@@ -609,7 +611,8 @@
             "crisc_d1_147",
             "crisc_d1_167",
             "crisc_d1_179",
-            "crisc_d1_192"
+            "crisc_d1_192",
+            "crisc_d1_204"
           ],
           "definition": "The policy hierarchy runs from policies (management intent) to standards (mandatory specifics), procedures (step-by-step tasks) and guidelines (advisory good practice).",
           "why_it_matters": "Each layer has a different approver and force. Confusing them leads to treating advice as a rule, or to IT approving what only senior management can.",
@@ -765,7 +768,7 @@
             "Each policy has an owner and a review cycle, often yearly, plus a review after major changes in threats, law or strategy.",
             "Reviews check that the policy still matches risk appetite, regulation and how work is actually done.",
             "An AI use policy defines approved tools, data that must not be entered, human review of outputs and who approves new uses.",
-            "Policies are communicated, acknowledged and enforced; monitoring shows whether they are followed.",
+            "Policies are communicated, acknowledged, enforced and monitored; standards citing a replaced policy are reissued under its successor so they still bind.",
             "Gaps found in review go to the policy owner, who proposes changes for senior management approval; conflicts between approved policies go to senior management, which approved both.",
             "After an acquisition, the new unit is brought under enterprise policy on a dated plan, with owned, time-limited exceptions covering the gaps meanwhile."
           ],
@@ -890,17 +893,18 @@
             "crisc_d1_139",
             "crisc_d1_160",
             "crisc_d1_168",
-            "crisc_d1_200"
+            "crisc_d1_200",
+            "crisc_d1_205"
           ],
           "definition": "A business continuity plan (BCP) keeps critical business processes running during disruption; a disaster recovery plan (DRP) restores the IT systems those processes depend on.",
           "why_it_matters": "Both plans cut the impact of disruptive scenarios. A DRP without a BCP restores servers but not the business; untested plans give false comfort.",
           "how_it_works": [
             "The BCP is scoped by business processes and owned by the business; the DRP is a supporting, system-focused plan.",
             "Recovery targets in both plans come from business needs agreed by process owners.",
-            "Plans are tested regularly and after major change, as close to real conditions as practical; new responders are trained promptly, and a minor staff change awaits the next scheduled exercise.",
+            "Plans are tested regularly and after major change, close to real conditions; new responders are trained promptly, and a minor staff change awaits the next scheduled exercise.",
             "Test results go to the process owners and feed the register: each gap is rated at its current level; its owner approves a plan or, within appetite, accepts it.",
             "Plans are kept current as people, suppliers and systems change; plans one event can trigger together share no responders, and copies sit away from the systems they recover.",
-            "A continuity plan mainly cuts a disruption's impact, not its likelihood; a workaround counts only if it carries the service level the owner needs."
+            "A continuity plan mainly cuts a disruption's impact, not likelihood; a workaround counts once exercised by the people who run it at the needed service level."
           ],
           "compare": {
             "columns": [
@@ -1452,19 +1456,20 @@
             "crisc_d1_141",
             "crisc_d1_150",
             "crisc_d1_161",
-            "crisc_d1_173"
+            "crisc_d1_173",
+            "crisc_d1_206"
           ],
           "definition": "Internal audit needs full independence from management; the second line sits within management, with the objectivity to challenge first-line work.",
           "why_it_matters": "Holding the second line to audit-level independence cuts it off from the business it must advise, while too little objectivity turns challenge into rubber-stamping. Coordination avoids duplication and gaps.",
           "how_it_works": [
             "Internal audit reports functionally to the board or audit committee and performs no management duties.",
-            "The second line sits within management, reports to the CRO, can reach the board and needs access to first-line records it challenges; senior management settles refusals.",
+            "The second line sits within management, reports to the CRO, can reach the board and needs access to first-line records; senior management settles refusals.",
             "The second line advises on design and leaves decisions with owners, even for AI models it validates; it helps draft audit responses, never writing them.",
-            "Combined assurance maps who tests what; audit relies on another line's tests only after judging the testers' objectivity and records.",
+            "Combined assurance maps who tests what; second-line teams merge overlapping requests to the first line, and audit relies on others' tests after judging testers' objectivity and records.",
             "Second-line pay and reporting do not depend on the units it challenges; challenging AI ratings needs AI skills from outside model teams.",
             "When an owner and the second line disagree on a rating after weighing evidence, both views go to the risk committee."
           ],
-          "example": "A pension fund's audit committee says the risk team breaks independence by helping units draft assessments. Nadia, the risk analyst, explains that the second line advises and challenges from inside management and proposes a combined assurance map showing where audit may rely on its tests.",
+          "example": "A pension fund's audit committee says the risk team breaks independence by helping units draft assessments. Nadia, the risk analyst, explains that the second line advises and challenges within management and proposes a combined assurance map showing where audit can rely on its tests.",
           "audit_focus": {
             "review": [
               "Map assurance activities by line to find gaps and duplicates",
@@ -1485,7 +1490,7 @@
             },
             {
               "trap": "Let the risk team run a first-line control for as long as the business is short-staffed.",
-              "why": "A second line that runs a control cannot challenge it objectively, and the first line stops owning it. Any cover needs an end date and hand-back plan."
+              "why": "A second line that runs a control cannot challenge it objectively, and the first line stops owning it. Any cover needs an end date."
             }
           ],
           "key_terms": [
@@ -1499,7 +1504,7 @@
             },
             {
               "term": "Escalation right",
-              "definition": "The authority to take an unresolved concern to senior management or the board."
+              "definition": "Authority to take an unresolved concern to senior management or the board."
             }
           ]
         }
@@ -1527,17 +1532,18 @@
             "crisc_d1_101",
             "crisc_d1_108",
             "crisc_d1_116",
-            "crisc_d1_196"
+            "crisc_d1_196",
+            "crisc_d1_207"
           ],
           "definition": "The risk register records individual risks with owners, ratings and responses; the risk profile is the aggregated, current picture of enterprise risk built from it for leaders.",
           "why_it_matters": "Leaders need a portfolio view to decide where to act, not hundreds of register lines. Treating the register as the profile buries the few risks that matter most.",
           "how_it_works": [
-            "The register is detailed and operational: one entry per risk scenario, with owner, rating, response and status.",
+            "The register is detailed and operational: one entry per scenario, with owner, rating, response and status; acceptance changes the status, not the rating.",
             "The profile selects, combines and prioritizes register risks into a view of overall exposure by objective or category.",
             "The profile sets current risk, counting only responses already in place, against today's appetite, showing exposure too high or too low; a changed appetite moves the comparison, not the ratings.",
             "In NIST terms, the profile is a prioritized subset of the enterprise risk register; with a limit per category, headroom in one does not offset another's breach.",
-            "AI use enters the profile through register entries mapped to the objectives and risk categories it affects, not as a count of tools or models.",
-            "Before reporting, check that the ratings behind the profile are current; ratings set before a major change are refreshed with their owners first."
+            "AI use enters the profile through register entries mapped to the objectives and categories it affects, not as a count of tools or models.",
+            "Before reporting, check the ratings behind the profile are current; ratings set before a major change are refreshed with their owners."
           ],
           "compare": {
             "columns": [
@@ -2051,12 +2057,13 @@
             "crisc_d1_081",
             "crisc_d1_103",
             "crisc_d1_149",
-            "crisc_d1_198"
+            "crisc_d1_198",
+            "crisc_d1_208"
           ],
           "definition": "Contractual requirements are obligations the enterprise accepts in agreements with customers and suppliers, such as security clauses, audit rights and service level agreements (SLAs).",
           "why_it_matters": "Contracts both create risk and help manage it. A broken customer commitment brings penalties and lost trust, while weak supplier terms leave the enterprise without remedies when a provider fails.",
           "how_it_works": [
-            "Customer contracts can require specific controls, breach notice times or data locations, which become obligations with owners; a term adding liability is sized before the owner signs.",
+            "Customer contracts can require controls, notice times or data locations, which become owned obligations; a liability term is sized before signing, per-record ones by records held.",
             "Supplier contracts set SLAs, security requirements, right-to-audit clauses, incident notice and exit terms.",
             "SLA targets should reflect business recovery needs and appetite, not just the provider's standard offer.",
             "Handing a task to a supplier does not hand over accountability; the enterprise still owns the risk to its objectives.",
