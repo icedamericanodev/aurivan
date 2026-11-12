@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026. Round 9 crisc_d1_118 to crisc_d1_124, 5 Nov 2026. Round 10 crisc_d1_125 to crisc_d1_130, 5 Nov 2026. Round 12 crisc_d1_138 to crisc_d1_143, 5 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026. Round 9 crisc_d1_118 to crisc_d1_124, 5 Nov 2026. Round 10 crisc_d1_125 to crisc_d1_130, 5 Nov 2026. Round 12 crisc_d1_138 to crisc_d1_143, 5 Nov 2026. Round 13 crisc_d1_144 to crisc_d1_150, 12 Nov 2026.",
     "schema_version": 1
   },
   "domain": 1,
@@ -5296,6 +5296,265 @@
         "KPI versus tolerance"
       ],
       "_provenance": "Authored from concept: notes 1B4.1 (Appetite, Tolerance and Capacity: tolerance sets measurable limits per objective or metric, such as no more than four hours of outage a month; bullet added in round 12: monitor each tolerance in its own unit and period). Round 12, 5 Nov 2026: original scenario (a freight forwarder's board set a tolerance of four hours of tracking-system downtime a month while IT reports only yearly availability, with a 99.5% target) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 12 asks covered: 1B4 item that is not an acceptance-condition item; no option names an owner; short 'Which of the following' stem with noun-phrase options; numeric options in ascending order (99.5% before 99.9%); setting freight forwarder. Neighbours checked: crisc_d1_017 (expressing a tolerance: two hours a month), crisc_d1_018 (KRI above tolerance with a routine ticket), crisc_d1_040 (input for a downtime tolerance), crisc_d1_067 (appetite change and IT thresholds), crisc_d1_132 (recurring breaches), crisc_d3_125 (a yearly four-hour tolerance with no amber level; its monthly-count distractor is consistent with this key), crisc_d2_047 (freight forwarder loss log), CISA d4_143 (provider availability that excludes maintenance: measure over business hours) and d4_059 (contracted 99.99%). None keys monitoring a monthly tolerance that a yearly availability figure hides. Review fixes 5 Nov 2026 (round 12 audit, concept review and blind test): the A explanation no longer implies the board always sets tolerance.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_144",
+      "domain": 1,
+      "subtopic": "1A2 Organizational structure, roles and responsibilities. Named owner with a small approval limit",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A ferry builder names its CAD team lead as owner of a hull-design ransomware risk above appetite; each response option costs more than the lead's $10,000 approval limit. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Have the CIO fund the response from the IT budget",
+        "B": "Ask senior management to name an owner with funding authority",
+        "C": "Escalate each spending request to the engineering director",
+        "D": "Split the response into steps within the $10,000 limit"
+      },
+      "correct": "B",
+      "key_concept": "A risk owner needs the authority and resources to decide the response; when the named owner lacks them, senior management names another.",
+      "pre_read": "Notice what each option does to who decides the response.",
+      "correct_explanation": "A risk owner is the person with the authority and accountability to make risk-based decisions. The lead cannot fund any response, so the risk would sit above appetite with no one able to decide; senior management assigns owners, so it names one who can, such as the engineering director. Escalating each spending request is the runner-up: it gets money approved, but the lead stays accountable for choices someone else makes.",
+      "wrong_explanations": {
+        "A": "IT can fund and run controls, but the risk sits with the business whose designs are at stake; paying for a fix does not make IT the decider.",
+        "C": "Escalation gets each request approved, but the lead stays accountable for decisions the director makes; ownership belongs with whoever holds the authority.",
+        "D": "Splitting a response to fit under an approval limit defeats the limit and still leaves the overall choice with someone who cannot make it."
+      },
+      "tips": [
+        "Eliminate: A hands a business risk's decisions to IT because IT holds a budget, and D carves the response up to slip under an approval limit.",
+        "Final two: B beats C because a risk owner holds both accountability and authority; escalating each request leaves the lead answerable for decisions someone else makes.",
+        "Exam cue: when the named owner cannot decide or fund any response, have senior management name an owner who can; do not work around the limit."
+      ],
+      "framework_ref": "ISACA Glossary (risk owner); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Risk ownership",
+        "Decision authority",
+        "Accountability"
+      ],
+      "_provenance": "Authored from concept: notes 1A2.3 (RACI and Accountability, Including AI: accountability sits with someone who has authority and resources, usually a business manager) and 1A2.2 (the risk owner is a business manager with authority over the affected objective; the practitioner proposes and validates owners, and ownership holds once senior management confirms it). No notes change: both bullets already teach the point. Round 13, 12 Nov 2026: original scenario (a ferry builder names its CAD team lead as owner of a hull-design ransomware risk above appetite, and every response option costs more than the lead's $10,000 approval limit) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 13 asks covered: a keyed lone owner option (only the key names an owner; the runner-up escalates without naming one); key opener 'Ask'; no stock-tell distractor; setting ferry builder. Neighbours checked: crisc_d1_005 (a committee proposes to own an unowned risk; it keys the same senior-management assignment from a different trigger, so keep apart in practice sets), crisc_d1_003 (who accepts residual risk), crisc_d1_052 (two accountable names), crisc_d1_060 (owner asks the analyst to choose), crisc_d1_117 (owner who does not decide), crisc_d1_136 (decisions above the executive committee), crisc_d3_023 (IT lead named owner of a business risk), crisc_d3_052 (owner moved after a reorganization; same assignment key, different trigger), crisc_d3_024 (acceptance above delegated authority), crisc_d3_090 (IT recorded as risk owner), crisc_d4_030 (records no department claims), crisc_d1_041 (limit beyond capacity), CISA d4_098 (DR capacity funded short of the BIA). None asks what to do when the named owner's approval limit is below the cost of every response option.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_145",
+      "domain": 1,
+      "subtopic": "1B4 Risk appetite and risk tolerance. Indicator after a tolerance change",
+      "principle_id": "appetite-drives-response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A credit bureau's board approved a faster-release strategy and raised its failed-change tolerance from 2% to 5%; failures run at 3%, but the KRI turns red above 2%. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Report each red result to the risk owner as a breach",
+        "B": "Keep the 2% red level as an early warning for the board",
+        "C": "Ask the risk owner to bring failures back under 2%",
+        "D": "Draft new KRI thresholds for the risk owner to agree"
+      },
+      "correct": "D",
+      "key_concept": "When leaders change a tolerance, KRI thresholds are re-aligned to the new limit, with an early-warning level set below it.",
+      "pre_read": "Compare the indicator's red level with the limit now in force.",
+      "correct_explanation": "KRI thresholds carry the tolerance into day-to-day monitoring, so they follow the limit the board now sets. The board raised it to 5% to support an approved strategy, so the analyst drafts thresholds, with an amber level below 5%, for the risk owner to agree. Keeping the 2% red level is the runner-up: it feels cautious, but red would flag results the board has accepted, and staff soon learn to ignore it.",
+      "wrong_explanations": {
+        "A": "Failures at 3% sit inside the 5% tolerance, so there is no breach; reporting one misstates the risk position to the owner.",
+        "B": "An early warning belongs below the new 5% limit, set on purpose; red at the old limit flags accepted results and teaches staff to ignore red.",
+        "C": "The board accepted up to 5% to pursue its strategy; forcing failures back under the old limit overrides that decision and slows the releases it approved."
+      },
+      "tips": [
+        "Eliminate: C holds failures to a limit the board has replaced, and A reports results inside the new tolerance as breaches.",
+        "Final two: D beats B because thresholds track the tolerance in force; an early-warning level is set on purpose below 5%, not left at the old limit.",
+        "Exam cue: when leaders move a tolerance, up or down, re-align the KRI thresholds with the risk owner; old thresholds signal a limit that no longer applies."
+      ],
+      "framework_ref": "ISACA Glossary (key risk indicator); NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained); NIST IR 8286C Rev. 1 Section 5.1 (Key CSRM Mechanisms: risk tolerance is translated into security controls, KPIs and KRIs)",
+      "related_concepts": [
+        "Risk tolerance",
+        "KRI thresholds",
+        "Strategy change"
+      ],
+      "_provenance": "Authored from concept: notes 1B4.2 (Setting and Expressing Risk Appetite: statements are built into KRI thresholds; bullet added in round 13: when leaders change a tolerance, up or down, KRI thresholds are re-aligned with the risk owner, keeping an early-warning level below the new limit). Round 13, 12 Nov 2026: original scenario (a credit bureau's board approved a faster-release strategy and raised its failed-change tolerance from 2% to 5%; failures run at 3% while the KRI still turns red above 2%) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 13 asks covered: the legitimate upward threshold change (the board raised the tolerance after an approved strategy change; the practitioner drafts matching KRI thresholds for the risk owner to agree), keyed without 'raise the threshold' wording; owner shape k=3 with the key among the owners and the runner-up the one option without an owner; key opener 'Draft'; setting credit bureau. Distinct from crisc_d3_175 (a threshold re-set on documented volume evidence after a merger) and crisc_d1_067 (appetite lowered; its decoys are the yearly review, the committee setting each threshold and IT owners accepting the gap, none reused here). Neighbours checked: crisc_d1_067 (appetite lowered while IT thresholds stay at the old level), crisc_d3_175 (threshold re-set on volume evidence after a merger), crisc_d3_125 (amber level under a yearly tolerance), crisc_d3_040 (indicator drop after a data-feed change), crisc_d1_018 (KRI above tolerance with a routine ticket), crisc_d1_132 (recurring tolerance breaches), crisc_d1_143 (monthly limit and yearly report), crisc_d3_160 (rolling average hides red months), crisc_d1_007 (pressure to change a report), CISA d3_013 (change board approving failed changes). None keys re-aligning KRI thresholds after leaders raise a tolerance for an approved strategy.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_146",
+      "domain": 1,
+      "subtopic": "1A3 Organizational culture and ethics. Overrides of an AI tool after a sign-off rule",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Once a title insurer required manager sign-off to override its AI title-search tool, but none to accept it, overrides fell from 9% to 1% and missed defects rose. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Give accepted and overridden findings the same sampled review",
+        "B": "Have the process owner set a minimum override rate per examiner",
+        "C": "Have the model owner tune the tool to catch the missed defects",
+        "D": "Ask the process owner to brief examiners on challenging acceptances"
+      },
+      "correct": "A",
+      "key_concept": "Human oversight of AI works only if challenging the tool is as easy as agreeing with it; extra friction on overrides teaches staff to agree.",
+      "pre_read": "Ask what the new rule made easier and what it made harder.",
+      "correct_explanation": "Overrides fell after the sign-off rule, not after any change to the tool: challenging the AI now costs examiners effort and scrutiny while agreeing costs nothing, so they agree. Giving both kinds of decision the same sampled review removes that pull and still checks quality. Tuning the tool is the runner-up: fewer misses would help, but examiners would keep passing whatever errors the model still makes.",
+      "wrong_explanations": {
+        "B": "An override quota pushes examiners to override for the number, not on the merits, swapping one distortion for another.",
+        "C": "Tuning helps the tool, but missed defects rose when the sign-off rule began; examiners would still pass the errors any model makes.",
+        "D": "A briefing leaves the sign-off rule in place, so challenging the tool still costs examiners more than agreeing with it."
+      },
+      "tips": [
+        "Eliminate: B sets an override quota that rewards the count over judgment, and D briefs examiners while keeping the rule that discourages overrides.",
+        "Final two: A beats C because misses rose when the rule made challenge costly; removing that pull fixes the cause, while tuning leaves examiners passing future errors.",
+        "Exam cue: when behavior shifts right after a rule or incentive changes, fix the rule; training and tooling leave the pull in place."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) GOVERN 4.1 (organizational policies and practices foster a critical thinking and safety-first mindset in the design, development, deployment and uses of AI systems); NIST AI 100-1 (AI RMF 1.0) GOVERN 3.2 (roles and responsibilities for human-AI configurations and oversight of AI systems are defined); ISACA Glossary (risk culture)",
+      "related_concepts": [
+        "Risk culture",
+        "Human oversight of AI",
+        "Automation bias"
+      ],
+      "_provenance": "Authored from concept: notes 1A3.2 (Incentives, Speaking Up and Escalation; bullet added in round 13: review effort shapes behavior, so when overriding an AI tool needs a sign-off and agreeing needs none, staff stop challenging it) and 1A3.3 (ethical AI use includes human oversight). Round 13, 12 Nov 2026: original scenario (once a title insurer required a manager's sign-off to override its AI title-search tool but none to accept it, overrides fell from 9% to 1% and missed defects rose) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 13 asks covered: the batch's one AI item (not a vendor tool ranking applications); owner shape k=3 with the key the one option that names no owner and the runner-up an owner option; key opener 'Give'; setting title insurer. Neighbours checked: crisc_d1_006 (bonus for calls closed per hour), crisc_d1_024 (near-miss reports counted against staff), crisc_d1_055 (praise for skipping a review), crisc_d1_113 (fairness concern closed on accuracy), crisc_d1_137 (a unit with no near misses), crisc_d3_040 (indicator drop after a feed change), crisc_d3_045 (rising KCI below red), crisc_d2_092 (risk moved to another channel), AAIA aaia_d2_035 (override reason codes nobody reviews), aaia_d3_061 (override strata in an audit sample), aaia_d1_007 (AI drafts sent out unedited), CISA d1_108 (overrides doubled for a new population), CC cc_d2_019 (overrides rising past amber). None keys equal review of accepted and overridden AI findings after a rule made overriding costly.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_147",
+      "domain": 1,
+      "subtopic": "1A4 Policies and standards. Policy issued under the CIO's signature",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A fund administrator's CIO issued an enterprise data-handling policy under their own signature, and two business heads say it does not bind their units. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Log the two units as exceptions to the policy",
+        "B": "Enforce the policy through IT's technical controls",
+        "C": "Have each unit's process owner adopt it for their unit",
+        "D": "Have the policy's owner seek senior management approval"
+      },
+      "correct": "D",
+      "key_concept": "An enterprise policy states management's intent, so senior management approves it; a policy one executive issues alone lacks authority over other units.",
+      "pre_read": "Recall who approves each layer of the policy hierarchy.",
+      "correct_explanation": "A policy states management's overall intent and binds the enterprise once senior management approves it. The CIO can draft and own a data-handling policy but cannot impose it on other units alone, so the owner takes it to senior management for approval. Having each unit adopt it is the runner-up: it wins local buy-in, but units could decline or vary it, leaving several rules where the enterprise needs one approved intent.",
+      "wrong_explanations": {
+        "A": "Exceptions are owned, time-limited departures from an approved policy; this one lacks approval, and refusing it wholesale is not an exception.",
+        "B": "Technical enforcement without approval imposes IT's rule on the business; controls should carry out a policy that leaders have approved.",
+        "C": "Unit-by-unit adoption lets each head decline or vary the policy, leaving several rules where the enterprise needs one approved intent."
+      },
+      "tips": [
+        "Eliminate: A treats refusal of an unapproved policy as exceptions, and B uses IT controls to enforce a rule that has no enterprise authority.",
+        "Final two: D beats C because enterprise policy takes its authority from senior management approval; unit-by-unit adoption splits one intent into several rules.",
+        "Exam cue: enterprise-wide policy is approved by senior management; IT may draft and own it, but cannot make it binding on the business alone."
+      ],
+      "framework_ref": "ISACA Glossary (policy); NIST CSF 2.0 GV.PO-01 (policy for managing cybersecurity risks is established based on organizational context, cybersecurity strategy and priorities and is communicated and enforced); COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance)",
+      "related_concepts": [
+        "Policy approval",
+        "Policy hierarchy",
+        "Management intent"
+      ],
+      "_provenance": "Authored from concept: notes 1A4.1 (The Policy Hierarchy: policies state management's intent and are approved by senior management; bullet extended in round 13: one executive's signature alone does not make a policy bind other units). Round 13, 12 Nov 2026: original scenario (a fund administrator's CIO issued an enterprise data-handling policy under their own signature, and two business heads say it does not bind their units) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 13 asks covered: owner shape k=2 with the key in the pair and the runner-up the other owner option; key opener 'Have' (also opens the runner-up); the batch's foundational item; setting fund administrator. Neighbours checked: crisc_d1_008 (where to state management intent), crisc_d1_013 (approver for the risk framework), crisc_d1_051 (one taxonomy for senior management approval), crisc_d1_085 (acquired firm on a weaker policy), crisc_d1_115 (two approved policies in conflict), crisc_d1_069 (policy behind a business change), crisc_d1_025 and crisc_d1_135 (exception registers), crisc_d1_009 (no AI policy), CISA d2_185 (a CISO wrote and approved the security policy alone: an auditor's concern item; this item is the practitioner's recommendation after business units refuse the policy, with exception, local-adoption and technical-enforcement decoys; keep apart in mixed sets), CISA d2_054 (procedures compiled into policies), CISA d4_072 (management mandate in a continuity policy). No CRISC item keys senior management approval of a policy one executive issued alone.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_148",
+      "domain": 1,
+      "subtopic": "1B1 Enterprise risk management (ERM). IT treatment order and enterprise priorities",
+      "principle_id": "objectives-first",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A mortgage servicer's executive committee ranks escrow payment errors its top enterprise risk, but IT funds treatments by its own ratings, placing the escrow system 14th of 30. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Have the escrow system's owner fund its fixes first",
+        "B": "Have IT's system owners re-rank their risks with fresh tests",
+        "C": "Rank IT treatments by the enterprise risks they reduce",
+        "D": "Ask the escrow risk's owner to rate it on IT's scale"
+      },
+      "correct": "C",
+      "key_concept": "IT risk treatments are prioritized by their effect on enterprise risks and objectives, so local spending follows enterprise priorities.",
+      "pre_read": "Look for why one risk ranks so differently at two levels.",
+      "correct_explanation": "In ERM, IT risk matters through its effect on enterprise objectives, and enterprise priorities flow down to guide local spending. IT ranks the escrow system 14th because its own scale misses the enterprise impact, so any of its 30 treatments may be funded in the wrong order. Funding the escrow fixes first is the runner-up: it closes today's gap, but the other 29 treatments stay ranked on IT's own scale.",
+      "wrong_explanations": {
+        "A": "This fixes the one visible mismatch, but IT would still fund its other treatments on a scale that misses enterprise impact.",
+        "B": "Fresh tests update the ratings, but on the same IT-only scale, so the ranking would still miss the enterprise impact.",
+        "D": "This moves the enterprise view onto a local scale, the wrong way round; local ratings should map up to enterprise priorities."
+      },
+      "tips": [
+        "Eliminate: B refreshes ratings on the same IT-only scale, and D pulls an enterprise risk down onto IT's local scale.",
+        "Final two: C beats A because the ranking method causes the mismatch; funding one system first fixes today's case and leaves 29 treatments in IT's order.",
+        "Exam cue: when local priorities clash with enterprise ones, fix how local risks are ranked against enterprise objectives, not just the one case that surfaced."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 2.2 (The Gap Between CSRM Output and ERM Input: practitioners consider how cybersecurity risks influence the enterprise's strategic, operations, reporting and compliance objectives); NIST CSF 2.0 GV.RM-03 (cybersecurity risk management activities and outcomes are included in enterprise risk management processes); COBIT 2019 EDM03 (Ensured Risk Optimization)",
+      "related_concepts": [
+        "ERM integration",
+        "Risk prioritization",
+        "Enterprise objectives"
+      ],
+      "_provenance": "Authored from concept: notes 1B1.1 (IT Risk Within Enterprise Risk: decisions on IT risk flow back down as guidance; bullet extended in round 13: IT ranks and funds treatments by the enterprise risks they reduce). Round 13, 12 Nov 2026: original scenario (a mortgage servicer's executive committee ranks escrow payment errors its top enterprise risk, while IT funds treatments by its own ratings, which put the escrow system 14th of 30) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 13 asks covered: owner shape k=3 with the key the one option that names no owner and the runner-up an owner option; key opener 'Rank' (a wrong option says 're-rank'); setting mortgage servicer. Neighbours checked: crisc_d1_012 (IT and enterprise ratings that do not match), crisc_d1_033 (IT register kept apart), crisc_d1_088 (which local risks reach the enterprise register), crisc_d1_120 (impact scale missing safety), crisc_d1_077 (investments approved without risk input), crisc_d1_067 (appetite change and IT thresholds), crisc_d3_158 (regional outages rolled into one line), crisc_d3_133 (complaints ranked without a rate), crisc_d4_111 (mortgage servicer's architecture repository), crisc_d2_123 (mortgage servicer's payment scope). None keys ranking IT's treatment spending by the enterprise risks each treatment reduces.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_149",
+      "domain": 1,
+      "subtopic": "1B5 Risk frameworks, legal, regulatory and contractual requirements. Unlimited liability in a renewal",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A debt collector's bank client wants renewal terms making the collector liable without limit for any breach of the bank's debtor data, signed this week. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Have the account's owner seek a liability cap before signing",
+        "B": "Estimate the exposure the term adds for the account's owner",
+        "C": "Ask the risk owner to buy cyber cover for the new liability",
+        "D": "Advise declining the renewal as beyond risk capacity"
+      },
+      "correct": "B",
+      "key_concept": "A new contract term is a source of risk: estimate the exposure it adds before anyone negotiates, insures or declines.",
+      "pre_read": "Ask what the owner needs to know before choosing any response.",
+      "correct_explanation": "Contract terms are a source of risk, and unlimited liability for the bank's debtor data could exceed what the collector can absorb. Before anyone negotiates, insures or declines, the analyst estimates the exposure the term adds, so the account's owner decides with figures. Seeking a liability cap is the runner-up: it may well be the right response, but without the exposure the owner cannot judge what cap would be acceptable.",
+      "wrong_explanations": {
+        "A": "A cap may be the right response, but without the exposure figure the owner cannot judge what cap is acceptable or whether to sign.",
+        "C": "Insurance is chosen before the exposure is known, and cyber cover can exclude liability a firm takes on by contract.",
+        "D": "Whether the term exceeds capacity is unknown until the exposure is estimated; declining now gives up the client before the facts are in."
+      },
+      "tips": [
+        "Eliminate: C buys insurance before the exposure is sized, and D declares the term beyond capacity before anyone has estimated it.",
+        "Final two: B beats A because the owner needs the exposure figure to judge any cap; negotiating first means bargaining without knowing what is at stake.",
+        "Exam cue: a new contract term, law or obligation is a risk source; estimate what it adds before choosing to negotiate, transfer or decline."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed); COBIT 2019 APO12.02 (Analyze Risk); ISACA Glossary (risk owner)",
+      "related_concepts": [
+        "Contractual requirements",
+        "Risk analysis",
+        "Liability"
+      ],
+      "_provenance": "Authored from concept: notes 1B5.3 (Contractual Requirements and Service Level Agreements: customer contracts create obligations with owners; bullet extended in round 13: a term adding liability is sized before the owner signs). Round 13, 12 Nov 2026: original scenario (a debt collector's bank client wants renewal terms, to be signed this week, making the collector liable without limit for any breach of the bank's debtor data) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 13 asks covered: owner shape k=3 with the key among the owners and the runner-up another owner option; a FIRST key that estimates exposure (D1 FIRST keys stay well under 60% assess-type); key opener 'Estimate'; setting debt collector. Neighbours checked: crisc_d1_059 (a client contract's 24-hour notice term against a 72-hour procedure; keep apart), crisc_d1_043 (supplier SLA short of the RTO), crisc_d1_081 (supplier liability cap), crisc_d1_103 (insurance condition not met), crisc_d1_070 (risk handed to a provider), crisc_d1_122 (sales terms the platform cannot meet), crisc_d3_054 (vendor contract with no notice or assurance terms), crisc_d3_116 (insurance against a loss within appetite), crisc_d4_080 (renewing an old acceptance), CC cc_d1_122 (cyber insurance to cap a loss). None keys sizing the exposure an inbound contract term adds before the owner negotiates, insures or declines.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_150",
+      "domain": 1,
+      "subtopic": "1B2 Lines of defense. Request to write the response to an audit finding",
+      "principle_id": "lines-of-defense",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Internal audit found a glassworks' furnace-control backups had never been restore-tested; the plant director asks the risk team to write management's response and action plan. What is the risk analyst's BEST advice?",
+      "options": {
+        "A": "Help the plant director draft the response and action plan",
+        "B": "Write the response for the plant director to sign",
+        "C": "Ask internal audit, as the finding's owner, to set the plan",
+        "D": "Make the risk team the owner of the backup restore tests"
+      },
+      "correct": "A",
+      "key_concept": "Management owns its response to an audit finding; the second line helps shape it but does not write management's commitments.",
+      "pre_read": "Sort the options by which line would end up doing the work.",
+      "correct_explanation": "A management response commits the first line to actions, owners and dates, so the plant director must own it. The risk team can advise on the risk and help shape a realistic plan, keeping its role of challenging progress later. Writing the response for the director to sign is the runner-up: it is quick, but the second line would author the first line's commitments and then monitor a plan it wrote.",
+      "wrong_explanations": {
+        "B": "Signing a plan someone else wrote weakens the director's ownership, and the risk team would later challenge commitments it drafted itself.",
+        "C": "Internal audit reports findings and later checks the fix; setting management's plan would compromise its independence when it follows up.",
+        "D": "Running the restore tests would put the second line in charge of a first-line control it must later challenge objectively."
+      },
+      "tips": [
+        "Eliminate: C asks internal audit to design the fix it must later verify, and D gives the second line a first-line control to run.",
+        "Final two: A beats B because management owns its response; the risk team helps shape it, but writing it would leave the team monitoring its own plan.",
+        "Exam cue: the second line advises, facilitates and challenges; asked to write or own first-line work, it helps the owner do it instead."
+      ],
+      "framework_ref": "ISACA Journal 2018 Volume 4 (Roles of Three Lines of Defense for Information Security and Governance); NIST IR 8286 Rev. 1 Section 3.1.1 (Notional Risk Management Roles: the auditor provides independent and formal verification of the achievement of enterprise objectives and the application of ERM processes); COBIT 2019 MEA04 (Managed Assurance)",
+      "related_concepts": [
+        "Lines of defense",
+        "Audit findings",
+        "Management response"
+      ],
+      "_provenance": "Authored from concept: notes 1B2.2 (Independence, Challenge and Coordination Across Lines: the second line advises and leaves decisions with owners; bullet extended in round 13: it helps owners draft, not write, audit responses; definition shortened to keep the subtopic within 380 words). Round 13, 12 Nov 2026: original scenario (internal audit found a glassworks' furnace-control backups had never been restore-tested, and the plant director asks the risk team to write management's response and action plan) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 13 asks covered: owner shape k=2 with the key outside the pair (the owner pair sits on the two easy options, C and D; key and runner-up name no owner); key opener 'Help'; setting glassworks. Neighbours checked: crisc_d1_014 (audit offers to design controls), crisc_d1_036 (second line running a first-line review), crisc_d1_141 (second line asked to own a model's risk), crisc_d1_065 and crisc_d1_102 (second-line challenge), crisc_d1_128 (audit relying on second-line tests), crisc_d2_125 (risk team chose responses before owners saw them; keep apart), crisc_d3_029 (audit fix missing due dates), crisc_d3_171 (finding closed on acceptance), crisc_d3_113 (audit plan from the profile), crisc_d3_157 (closing a finished plan), CISA d1_167 (audit committee adds an audit). None asks who writes management's response to an audit finding.",
       "style_version": 2
     }
   ]
