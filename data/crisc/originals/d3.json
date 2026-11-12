@@ -9184,6 +9184,302 @@
       ],
       "_provenance": "Authored from concept: notes 3C5.2 (Reporting for the Audience and the Decision: control owners and operations get control failures, test results and remediation tasks). Round 21, 12 Nov 2026: original scenario (a hospice operator whose IT manager owns the backup and access controls over patient records but receives only the board's quarterly risk summary, rating both controls amber), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 21 (crisc_d3_241 to 248). Round 21 asks: the key names IT in its own role, as owner of the technical controls it fixes; a lone owner option on the runner-up (C); 'every' on an eliminated wrong option (D) in an item whose key carries none. Not 'failures reported against risks' (crisc_d3_239, paused): that keys the committee's view; ours keys the control owner's own report. Not 'technical or AI scores restated in business terms' or 'the board cannot see part of the profile' (paused). Neighbours checked (stems, options, key, key_concept, correct_explanation and Exam cue of every 3C5 item): crisc_d3_019, 047, 048, 079, 080, 081 (each risk owner gets their own risks and actions: the closest lesson; ours is the control owner's report, and the Exam cue is worded apart), 082, 112, 113, 127, 141, 160, 168, 181, 191, 200, 215, 224, 239; crisc_d3_045 (a worsening KCI goes to the control owner, 3C4). crisc_d1_076 (what IT decides on its own as custodian, 1A) and AAIA aaia_d3_011 (top TF-IDF matches, 0.27 and below, wording only). None keys sending a control owner the test results and remediation tasks in place of a board summary. Keep apart in practice sets from crisc_d3_081.",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d3_249",
+      "domain": 3,
+      "subtopic": "3A1 Risk response options. Card payments moved to a group team",
+      "principle_id": "transfer-keeps-accountability",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A chocolate maker's online shop moved card payments to the group's payments team under an internal agreement with penalty charges, then recorded its card breach risk as transferred. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Keep the risk in the register, rated on the payments team's controls",
+        "B": "Count the internal penalty charges as the share of the loss transferred",
+        "C": "Record the card risk as transferred out of the shop's register",
+        "D": "Get the risk owner to insure the online shop's card breach risk"
+      },
+      "correct": "A",
+      "key_concept": "Transfer assigns risk to another enterprise; moving work to a team in the same group keeps the risk in-house, rated on the controls now running.",
+      "pre_read": "Trace where a breach's costs would finally land once the work has moved.",
+      "correct_explanation": "Risk transfer assigns risk to another enterprise, such as an insurer. The payments team belongs to the same group, so a card breach still costs the group; the move may lower the risk, so it stays in the register, rated on the controls the payments team runs. Counting the penalty charges is the runner-up: they look like cover to the shop, but they move money between units and leave the group's loss unchanged.",
+      "wrong_explanations": {
+        "B": "Penalty charges shift cost between the shop and the payments team; the group still pays the whole breach, so no loss leaves the enterprise.",
+        "C": "A team inside the same group is not another enterprise, so nothing is transferred; dropping the shop's entry would hide a risk the group still carries.",
+        "D": "Insurance could later cover part of the loss, but buying it now treats a risk that has not been rated since the work moved."
+      },
+      "tips": [
+        "Eliminate: C treats a team inside the group as another enterprise, and D buys insurance for a risk nobody has rated since the work moved.",
+        "Final two: A beats B because penalty charges move money between units of one group; the group's loss is unchanged, so the risk stays in the register, rated on the new controls.",
+        "Exam cue: when work moves to another unit of the same group, nothing is transferred; rate the risk on the controls that now run it."
+      ],
+      "framework_ref": "ISACA Glossary (risk transfer); NIST SP 800-39 Section 3.3 (Responding to Risk: accept, avoid, mitigate, share or transfer)",
+      "related_concepts": [
+        "Risk transfer",
+        "Internal service agreements",
+        "Residual risk"
+      ],
+      "_provenance": "Authored from concept: notes 3A1.1 (The Four Risk Responses: transfer moves money, not accountability; responses combine). Round 22, 12 Nov 2026: original scenario (a chocolate maker's online shop that moved card payments to the group's shared payments team under an internal agreement with penalty charges and marked its card breach risk transferred), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 22 (crisc_d3_249 to 256). Round 22 asks: 'Share of' on a wrong option (B, the runner-up); a lone owner on an eliminated option (D). Not 'insurance credit re-rated when cover fails' or 'residual risk above zero after controls' (paused): the item turns on what counts as a transfer at all. Neighbours checked (stems, options, key, key_concept, correct_explanation and Exam cue of every 3A1 item): crisc_d3_001 (transfer shifts money, not ownership: consistent), 002, 003, 004, 010, 021, 024, 086, 087, 088, 116, 145, 161, 169, 185, 198, 209, 225, 236; crisc_d1_081 (a supplier's liability cap marked transferred leaves residual risk; ours involves no other enterprise at all; keep apart in practice sets) and crisc_d1_070 (outsourcing transfers part of the risk, not accountability); notes 3A1.1 to 3A1.3 recommend and decides lines; every older Exam cue in D1 to D4 matched against each option (none keys a wrong option). TF-IDF scan of all four banks: top matches crisc_d1_081 0.29, cc_d1_059, crisc_d3_139 (none a mirror).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_250",
+      "domain": 3,
+      "subtopic": "3A3 Vendor/supply chain risk management. More data sent than the vendor was vetted for",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A vineyard's wine club gave a marketing vendor, vetted as low risk at onboarding, members' names and emails; the club now also sends birth dates and purchase histories. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Add data protection terms to the club's contract with the vendor",
+        "B": "Take the vendor's privacy certificate as cover for the new data",
+        "C": "Get the risk owner to repeat the vendor's due diligence",
+        "D": "Re-tier the vendor by the club's spend with it"
+      },
+      "correct": "C",
+      "key_concept": "Due diligence depth follows the data a vendor holds; when the business sends it more sensitive data, the vendor is vetted again at that depth.",
+      "pre_read": "Compare what the vendor was vetted for with what it now receives.",
+      "correct_explanation": "Due diligence is scaled to what a vendor holds, and this vendor was vetted only for names and emails. Birth dates and purchase histories put it in a higher tier, so the risk owner, who answers for the vendor risk, has its due diligence repeated at that depth. Contract terms are the runner-up: they will likely be needed, but which terms, and whether the vendor can meet them, depend on that review.",
+      "wrong_explanations": {
+        "A": "Data protection terms are likely needed, but writing them before the review means choosing terms without knowing what the vendor can protect.",
+        "B": "A certificate covers the scope its auditor tested, which may leave out this service and data; it does not replace due diligence at the new tier.",
+        "D": "Vendors are tiered by the data they hold and the processes they support, not by spend; a cheap vendor can hold the most sensitive data."
+      },
+      "tips": [
+        "Eliminate: B lets a general certificate stand in for due diligence on this data, and D tiers the vendor by spend instead of by the data it holds.",
+        "Final two: C beats A because the vendor was vetted for less data than it now holds; repeated due diligence shows which terms are needed and whether the vendor can meet them.",
+        "Exam cue: when the business sends a vendor more sensitive data than it was vetted for, vet the vendor again at the new tier before choosing fixes."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.SC-04 (suppliers are known and prioritized by criticality); NIST SP 800-53 Rev. 5 SR-6 (Supplier Assessments and Reviews)",
+      "related_concepts": [
+        "Vendor tiering",
+        "Due diligence depth",
+        "Ongoing vendor monitoring"
+      ],
+      "_provenance": "Authored from concept: notes 3A3.1 (Vendor Due Diligence and Contracts: tier vendors by criticality, not spend; scale due diligence to the tier; record vendor risk under the business owner using the service) and 3A3.2 (reassess after changes). Round 22, 12 Nov 2026: original scenario (a vineyard's wine club that now sends a marketing vendor, vetted as low risk for names and emails, members' birth dates and purchase histories), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 22 (crisc_d3_249 to 256). Round 22 asks: the batch's keyed lone owner (C), neither the longest nor the shortest option by words (10 against 9, 11, 11) or characters; 'Take' on an eliminated option (B). FIRST keys a review, not assess, record or reassess wording. Not 'assurance reports after a change of site, scope or period', 'vendor exit planning' or 'supplier terms clashing with customer commitments' (paused): the trigger is the customer's own change in what it sends. Neighbours checked (stems, options, key, key_concept, correct_explanation and Exam cue of every 3A3 item): crisc_d3_006, 025, 026, 027, 054 (terms before signing: ours is after signing), 055, 056, 091, 092, 118, 135 (a vendor event triggers reassessment; ours is the customer's own change in what it sends), 144, 154, 170 (tier by criticality and scale due diligence: the rule ours applies after a change in use), 183, 196, 210, 227, 242; CISA d2_135 (tiering criteria, auditor lens); AAIA aaia_d1_038 (a vendor passing data to a fourth party); notes 3A3.1 and 3A3.2 recommend and decides lines (the business owner of the service owns the vendor risk). TF-IDF scan of all four banks: top matches cc_d1_222 0.30, cc_d1_181, crisc_d2_057 (none a mirror).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_251",
+      "domain": 3,
+      "subtopic": "3A4 Issues, findings, exceptions and exemptions management. Issue re-rated by its action owner",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A sign maker's action owner re-rated an open issue from high to medium in the tracker, recording no reason, which moved its due date out by 90 days. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Restore the issue's high rating and its original due date",
+        "B": "Notify the board that issue ratings are being changed",
+        "C": "Keep the medium rating the action owner entered in the tracker",
+        "D": "Review the change with the risk owner against the criteria"
+      },
+      "correct": "D",
+      "key_concept": "An issue's rating follows the enterprise's rating criteria; an unexplained change is checked against them with the risk owner before it stands or is reversed.",
+      "pre_read": "Note who changed the rating, what the change did and what basis came with it.",
+      "correct_explanation": "Issue ratings follow the enterprise's criteria, not the view of whoever holds the issue, and this change gave the fix 90 more days with no reason recorded. Reviewing it against the criteria with the risk owner, who agrees any due-date extension, shows whether something such as an interim control lowered the risk. Restoring the old rating is the runner-up: it follows if no basis holds, but doing it first assumes the change was wrong.",
+      "wrong_explanations": {
+        "A": "Restoring the rating is right if the change has no basis, but doing it first skips checking whether something really lowered the risk.",
+        "B": "One unexplained re-rating is not yet a board matter; it is checked with the risk owner first, and escalation follows the policy's set points.",
+        "C": "Accepting the new rating lets the person whose fix is due decide its deadline; ratings follow the enterprise's criteria, not the issue holder."
+      },
+      "tips": [
+        "Eliminate: B takes one unexplained re-rating to the board, and C lets the person whose fix is due set its own deadline.",
+        "Final two: D beats A because a rating change is tested against the criteria before it is kept or reversed; restoring it first assumes the change had no basis.",
+        "Exam cue: when an issue's rating drops with no recorded reason, check it against the rating criteria with the risk owner before keeping or reversing it."
+      ],
+      "framework_ref": "NIST IR 8286C Rev. 1 Section 2.2 (Normalization of Cybersecurity Risk Registers: the same rating criteria enable comparison and tracking); NIST SP 800-53 Rev. 5 CA-5 (Plan of Action and Milestones)",
+      "related_concepts": [
+        "Issue tracking",
+        "Rating criteria",
+        "Remediation due dates"
+      ],
+      "_provenance": "Authored from concept: notes 3A4.1 (Tracking Issues and Findings to Closure: log every issue linked to the risk it affects and rated by that risk's rating; the risk owner agrees the action plan and any extension of the due date). Round 22, 12 Nov 2026: original scenario (a sign maker's action owner who re-rated an open issue from high to medium with no recorded reason, moving its due date out by 90 days), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 22 (crisc_d3_249 to 256). Round 22 asks: the batch's split owner pair, key plus an eliminated option (D and C name an owner; runner-up A and B do not); the Tell-family word on a wrong option (B, Notify). FIRST keys a review with the owner, not assess, record or reassess. Not 'who closes an audit finding', 'who approves exceptions' or 'restating ratings after a scale or method change' (paused): the scale is unchanged and the item turns on one holder's unexplained change. Neighbours checked (stems, options, key, key_concept, correct_explanation and Exam cue of every 3A4 item): crisc_d3_007, 028, 029 (overdue actions go to the risk owner: consistent), 030, 057, 058, 093, 094, 095 (an owner cannot waive an escalation the policy sets; the stem names no escalation point, and ours checks first whether the re-rating has a basis), 119, 136, 146, 163 (rank findings by the affected risk's rating: the criteria ours checks against), 171, 186, 202, 211, 218, 233; CISA d1_050 and d1_129 (management disputing an auditor's rating: audit lens); notes 3A4.1 decides line (the risk owner agrees any extension of the due date). TF-IDF scan of all four banks: top matches crisc_d3_029 0.28, crisc_d3_024, crisc_d2_110 (none a mirror).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_252",
+      "domain": 3,
+      "subtopic": "3B1 Control frameworks, types and standards. Automatic rollback of an AI pricing model",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A perfume retailer's AI pricing service reverts automatically to the last approved model version when a release's price errors exceed their limit. Which of the following is the risk analyst's BEST classification of this rollback?",
+      "options": {
+        "A": "A preventive control that stops a faulty release going live",
+        "B": "A corrective control that restores a known good version",
+        "C": "A detective control that finds a release's price errors",
+        "D": "A compensating control that stands in for release testing"
+      },
+      "correct": "B",
+      "key_concept": "A control that restores a known good state after a fault is corrective; the check that spots the fault is the detective part.",
+      "pre_read": "Ask when the rollback acts: before the release, as errors are found, or after.",
+      "correct_explanation": "A corrective control fixes errors once they are detected. The rollback acts after a faulty release is live, restoring the last approved version so wrong prices stop spreading; the error limit that triggers it is the detective part. Detective is the runner-up: the rollback depends on that check, but finding the errors is not what the rollback itself does; it acts on what the check found.",
+      "wrong_explanations": {
+        "A": "The faulty release is already live when the rollback fires, so it cannot stop the release going out; testing before release would be preventive.",
+        "C": "The error limit check detects the fault, but the rollback is the step that acts on it; each part is classified by what it does.",
+        "D": "A compensating control stands in for a missing or weak control; the rollback adds recovery and replaces nothing."
+      },
+      "tips": [
+        "Eliminate: A acts after the release is live, so it cannot stop it going out, and D replaces no missing control, so it does not compensate.",
+        "Final two: B beats C because the rollback restores the approved version after the fault; the limit check that triggers it is the detective part.",
+        "Exam cue: when an AI or automated service reverts itself to a known good version after a fault, the reversal is corrective; the check that triggers it detects."
+      ],
+      "framework_ref": "ISACA Glossary (corrective control); NIST AI 100-1 (AI RMF 1.0) MANAGE 2.4 (mechanisms are in place to supersede, disengage or deactivate AI systems whose performance or outcomes are inconsistent with intended use); NIST IR 8286B-upd1 Section 2.3.4 (Risk Mitigation: preventive, deterrent, detective, corrective and compensating controls)",
+      "related_concepts": [
+        "Control types",
+        "Corrective controls",
+        "AI model rollback"
+      ],
+      "_provenance": "Authored from concept: notes 3B1.1 (Control Types by Function: classify a control by what it does to the risk event; corrective controls mainly reduce impact after an event) and 3B1.2 (automated controls). Round 22, 12 Nov 2026: original scenario (a perfume retailer's AI pricing service that reverts to the last approved model version when a new release's price errors pass a set limit), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 22 (crisc_d3_249 to 256). Round 22 asks: the batch's AI item, a control-type classification keying corrective (not detective); the batch's first 'Which of the following' stem; no owner options. The release is the retailer's own, not a faulty vendor update. Not 'automated validation of AI output' (crisc_d3_194, preventive) or 'AI override trends before retraining' (paused). Neighbours checked (stems, options, key, key_concept, correct_explanation and Exam cue of every 3B1 item): crisc_d3_008 (before preventive, after detective, repairing corrective: consistent), 031, 032, 059, 060, 061, 096 (corrective backup restore among ransomware controls; ours splits an AI self-rollback from the check that triggers it), 097, 120, 131, 140, 155, 164, 178, 194 (preventive validation of AI output, not keyed here), 203, 212, 228, 237; CISA d1_012 and d1_155 (classification items, auditor lens); AAIA aaia_d2_089 (a kill switch whose fallback shares the same feeds: different lesson). TF-IDF scan of all four banks: top matches d1_012 0.27, crisc_d3_008, crisc_d4_050, cc_d1_041 (none a mirror).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_253",
+      "domain": 3,
+      "subtopic": "3B2 Control design, selection, implementation and analysis. Refunds split under the approval limit",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A boiler servicing firm's agents need a manager's approval for refunds over $500, but some pay one customer several $450 to $499 refunds in one day. Which change should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Add a control owner review of refunds close to the limit",
+        "B": "Train agents to pay just one refund per complaint",
+        "C": "Apply the approval limit to a customer's combined refunds",
+        "D": "Report refunds near the limit to the risk owner as a trend"
+      },
+      "correct": "C",
+      "key_concept": "A limit checked one payment at a time can be dodged by splitting; that design gap closes when the check acts on the combined amount.",
+      "pre_read": "Compare how the refunds were paid with what the approval rule actually checks.",
+      "correct_explanation": "The rule checks each refund on its own, so one large refund split into several under $500 never needs approval: a design gap. Applying the limit to a customer's combined refunds over a set period closes it at the cause, so split refunds still need approval before payment. A control owner review near the limit is the runner-up: it would catch some splits, but only after the money is paid, and agents could split lower.",
+      "wrong_explanations": {
+        "A": "A review near the limit finds some splits after payment, and agents can split further below it; the gap in the rule stays open.",
+        "B": "Training sets an expectation but cannot stop agents who split refunds on purpose; the rule itself still lets them through.",
+        "D": "A trend report tells the risk owner the rule is being dodged but changes nothing about the rule; it watches the gap rather than closing it."
+      },
+      "tips": [
+        "Eliminate: B relies on training where the rule itself lets split refunds through, and D reports the pattern to the risk owner without changing the rule.",
+        "Final two: C beats A because applying the limit to combined refunds stops split refunds before payment; a review near the limit finds some afterward and misses splits further below it.",
+        "Exam cue: when a per-payment limit is dodged by splitting, the gap is in the design; redesign the check to act on the combined amount."
+      ],
+      "framework_ref": "ISACA Glossary (preventive control); NIST SP 800-53 Rev. 5 CA-2 (Control Assessments)",
+      "related_concepts": [
+        "Design gaps",
+        "Approval limits",
+        "Preventive controls"
+      ],
+      "_provenance": "Authored from concept: notes 3B2.3 (Control Gap Analysis: separate design gaps, where the control could not work as built, from operating gaps) and 3B2.1 (prefer controls that fix the cause). Round 22, 12 Nov 2026: original scenario (a boiler servicing firm whose agents pay one customer several refunds of $450 to $499 in a day under a $500 approval limit), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 22 (crisc_d3_249 to 256). Round 22 asks: a split owner pair on the runner-up and an eliminated option (A and D name an owner; key C and B do not); restrictive 'just' on an eliminated option (B); 'Train' on a wrong option only. Not 'an unrecorded override or return path' or 'a control owner weakens or drops a control' (paused): the control is followed exactly and its design lets split payments through. Neighbours checked (stems, options, key, key_concept, correct_explanation and Exam cue of every 3B2 item): crisc_d3_009 (change the step rather than check its output: consistent), 011, 033, 034, 062, 063, 064 (design versus operating gaps), 098, 099, 100 (a control that cannot see the risk as built needs redesign: consistent), 121, 147, 156, 172, 188, 204, 219, 229 (override or return path, paused: not keyed), 243; crisc_d4_155 (one administrator issues refunds and reconciles: separation of duties, paused); cc_d1_138, cc_d3_019, cc_d3_133 and aaia_d2_017 (refund wording only). TF-IDF scan of all four banks: top match cc_d3_019 0.49 (an AI agent's refund rights: wording overlap, different lesson), then cc_d1_138, crisc_d4_155.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_254",
+      "domain": 3,
+      "subtopic": "3B3 Control testing methodologies. Automated check that has flagged nothing",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A shipping agent's new automated check has flagged no unapproved customs entries over $10,000 since going live; the risk analyst plans to rely on it instead of sample tests. What should the analyst do FIRST?",
+      "options": {
+        "A": "Run entries known to lack approval through the new check",
+        "B": "Compare the check's results with a manual sample of entries",
+        "C": "Get the control owner's confirmation the check covers every entry",
+        "D": "Treat the check's clean results as passed control tests"
+      },
+      "correct": "A",
+      "key_concept": "A check that has flagged nothing is proven by putting through cases it should catch; clean results alone cannot show it works.",
+      "pre_read": "Ask what the check's results so far can and cannot show about whether it works.",
+      "correct_explanation": "A check that has flagged nothing may be working, or may be unable to see the problem. Running entries known to lack approval through it shows whether it flags them, which the analyst needs before it replaces sample tests. Comparing it with a manual sample is the runner-up: running both side by side is sound practice, but if both find no exceptions, their agreement says nothing about what the check would miss.",
+      "wrong_explanations": {
+        "B": "Parallel running is sound practice, but a manual sample that also finds no unapproved entries cannot show whether the check would flag one.",
+        "C": "The control owner's confirmation is inquiry; it does not show that the check flags an unapproved entry, which is what reliance needs.",
+        "D": "Clean results are also what a broken check would report; treating them as passed tests credits the check before it is shown to work."
+      },
+      "tips": [
+        "Eliminate: C rests on the control owner's word, which is inquiry, and D credits clean results that a broken check would also produce.",
+        "Final two: A beats B because known failing entries show whether the check catches them; a manual sample that also finds none cannot show what the check misses.",
+        "Exam cue: before a new automated check that has flagged nothing replaces sample tests, put through cases it should catch and see it flag them."
+      ],
+      "framework_ref": "NIST SP 800-53A Rev. 5 Section 2.4.2 (Assessment Methods: examine, interview and test, with depth and coverage); NIST SP 800-137 Section 3.6 (Review and Update the Monitoring Program and Strategy: the accuracy of measurements and the usefulness of collected data are reviewed, and collection found not useful is reconsidered)",
+      "related_concepts": [
+        "Continuous control monitoring",
+        "Test methods",
+        "Evidence strength"
+      ],
+      "_provenance": "Authored from concept: notes 3B3.1 (Testing Techniques and Evidence Strength: inquiry is weakest; no exceptions proves nothing) and 3B3.2 (design and operating testing). Round 22, 12 Nov 2026: original scenario (a shipping agent's new automated check that has flagged no unapproved customs entries over $10,000, which the risk analyst plans to rely on instead of sample tests), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 22 (crisc_d3_249 to 256). Round 22 asks: a lone owner on an eliminated option (C); 'every' on that wrong option only, with no key carrying each, every, all or any. FIRST keys a test, not assess, record or reassess. Not 'operating tests needing runs', 'feeding a check the authoritative source', 'automated validation of AI output' or 'test data that protects people' (paused): the check has run for some time and the item turns on proving it can catch a failure. Neighbours checked (stems, options, key, key_concept, correct_explanation and Exam cue of every 3B3 item): crisc_d3_012, 035, 036, 037, 065, 066, 067, 101, 102, 122, 134, 148, 149, 173 (an automated control with nothing to act on is tested through its setting and change log; ours had entries to examine and flagged none, and its Exam cue is limited to a new check that has flagged nothing), 189, 199 (system-generated information tested as part of the control: consistent), 213, 220, 238; 3C4 crisc_d3_126, 180, 195 (a monitoring feed gone quiet: data flow checked first) and 223 (feeding the authoritative source, paused); CC cc_d5_147 (simulated attacks through AI alert suppression: same principle in a security operations setting); CISA d3_030 (mutation testing) and d5_152. TF-IDF scan of all four banks: top matches crisc_d2_038 0.28, d5_338, crisc_d2_125 (none a mirror).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_255",
+      "domain": 3,
+      "subtopic": "3C1 Risk action plans. Three teams each report their action done",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A petrol station chain's anti-skimming plan had operations fit pump seals, IT add tamper alerts and managers add daily checks; each team showed its part done. Which of the following BEST validates the response?",
+      "options": {
+        "A": "The teams' evidence that their own actions are complete",
+        "B": "The risk owner's sign-off that the plan is finished",
+        "C": "A re-rating of the skimming risk at target by its owner",
+        "D": "A joint test of seals, alerts and checks at sampled stations"
+      },
+      "correct": "D",
+      "key_concept": "When a plan's actions sit with different teams and depend on each other, validation tests them working together, not only each part done.",
+      "pre_read": "Note how the three actions depend on one another to stop skimming.",
+      "correct_explanation": "The response works only if its parts work together: a broken seal must raise an alert that someone acts on, and the checks must catch what the alerts miss. A joint test at sampled stations shows whether skimming would be stopped. The teams' evidence is the runner-up: validation usually starts there, but it shows three parts done, not that they work as one response.",
+      "wrong_explanations": {
+        "A": "Each team's evidence shows its own action was done, which validation needs, but not that seals, alerts and checks work together to stop skimming.",
+        "B": "The risk owner signs off a plan once it is validated; a sign-off is a decision, not evidence that the response works.",
+        "C": "Re-rating at target credits the result the plan promised before anyone has shown the combined response reduces skimming."
+      },
+      "tips": [
+        "Eliminate: B treats the risk owner's sign-off as evidence, and C re-rates the risk at target before the response is shown to work.",
+        "Final two: D beats A because the response depends on its parts working together; each team's evidence proves its own action, not the combined effect.",
+        "Exam cue: when a plan's actions sit with different teams and depend on each other, validate them working together, not only part by part."
+      ],
+      "framework_ref": "NIST SP 800-39 Section 3.4 (Monitoring Risk: compliance, response effectiveness and risk-impacting changes); NIST SP 800-53 Rev. 5 CA-5 (Plan of Action and Milestones)",
+      "related_concepts": [
+        "Validating risk responses",
+        "Action plan closure",
+        "End-to-end testing"
+      ],
+      "_provenance": "Authored from concept: notes 3C1.2 (Validating Execution and Tracking to Closure: confirm the control is implemented, then that it operates, before treating the action as complete). Round 22, 12 Nov 2026: original scenario (a petrol station chain's anti-skimming plan split across operations, IT and station managers, each showing its own part done), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 22 (crisc_d3_249 to 256). Round 22 asks: the batch's eliminated owner pair (B and C name an owner; key D and runner-up A do not); the batch's second 'Which of the following' stem; the D3 floor key, naturally the longest option by characters. Not 'action-plan progress in risk terms', 'a plan that cannot reach its target', 'the risk owner approving the plan' or 'PIR before crediting controls' (paused): the plan is approved and finished, and the item turns on validating interdependent actions together. Neighbours checked (stems, options, key, key_concept, correct_explanation and Exam cue of every 3C1 item): crisc_d3_013 (done is a claim until evidence shows the control in place and working: consistent), 038, 039, 068, 069, 070, 103, 104, 123, 130, 142, 157 (close on evidence, then the owner's sign-off: consistent with option B's explanation), 165, 174, 184, 197, 214, 230, 240; crisc_d1_053 and crisc_d1_160 (cross-team continuity plans); CISA d4_124 and d4_176 (components each passing while the whole fails); cc_d1_119 (a skimming detector bought before rating). TF-IDF scan of all four banks: all matches below 0.21.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_256",
+      "domain": 3,
+      "subtopic": "3C2 Data collection, aggregation, analysis and validation. Branch counts to different cut-offs",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A locksmith firm's monthly KRI for lost master keys adds branch figures; three of 12 branches report counts to the 15th, when their old system closes its month. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Exclude the three branches from the KRI total",
+        "B": "Ask the three branches for counts to the month-end cut-off",
+        "C": "Report the total to the risk owner with the branches' dates noted",
+        "D": "Show the KRI as the share of branches reporting a loss"
+      },
+      "correct": "B",
+      "key_concept": "Figures added into one KRI must cover the same period; a cut-off mismatch that can be fixed at source is fixed before adding them.",
+      "pre_read": "Check whether every branch's count covers the same days before they are added.",
+      "correct_explanation": "Counts that run to the 15th cover different days from the rest, so the total mixes two periods and misstates the month. Asking the three branches for counts to the month-end cut-off comes first, as the figure may be fixable at source before it is added. Reporting with the dates noted is the runner-up: stating a limit suits a gap that cannot be closed in time, but this one can be.",
+      "wrong_explanations": {
+        "A": "Leaving out three branches makes the total incomplete, and keys lost there would vanish from the KRI instead of being counted.",
+        "C": "Noting the mismatch suits a gap that cannot be closed in time; nobody has yet asked whether these branches can count to month-end.",
+        "D": "A share of branches with a loss still mixes counts from different periods and hides how many keys were lost; it changes the measure, not the data."
+      },
+      "tips": [
+        "Eliminate: A drops three branches from the KRI, and D changes the measure while still mixing counts from different periods.",
+        "Final two: B beats C because the branches can supply counts to the common cut-off before reporting; a noted limit suits a gap that cannot be fixed in time.",
+        "Exam cue: when figures from several sources are added into one KRI, check that each covers the same period, and fix a mismatch at the source when it can be fixed."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Section 3.1.4 (Data Quality: a validation process checks the integrity, accuracy and structure of data before any analysis is done); ISACA Glossary (data integrity)",
+      "related_concepts": [
+        "Data validation",
+        "Reporting periods",
+        "KRI aggregation"
+      ],
+      "_provenance": "Authored from concept: notes 3C2.3 (Validating Data Before Reporting: currency, data dates match the reporting period; known limitations are stated) and 3C2.2 (aggregating risk data). Round 22, 12 Nov 2026: original scenario (a locksmith firm whose three of 12 branches send lost master key counts to the 15th of the month because their old system closes its month then), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 22 (crisc_d3_249 to 256). Round 22 asks: the batch's 'Ask' key (B); a lone owner on the runner-up (C); 'Share of' on an eliminated option (D). FIRST keys a data request, not assess, record or reassess. Not 'combining overlapping records', 'data dictionaries and figure lineage', 'count vs share or rate indicators' or 'recurring capture flaws fixed at source' (paused): the trigger is a reporting-period mismatch, and the share option is only an eliminated distractor. Neighbours checked (stems, options, key, key_concept, correct_explanation and Exam cue of every 3C2 item): crisc_d3_014, 040, 041 (missing data reported on time with the limit stated; ours is a mismatch that may be fixable, as in 205), 071 (one definition, source and formula), 072, 073, 105, 106, 124, 133, 139, 158, 166, 179, 187, 205 (fix a fixable flaw before reporting, state limits only for gaps that cannot be closed: consistent), 221, 231, 244; crisc_d3_195 (a monitoring feed gone quiet). TF-IDF scan of all four banks: top matches d3_032 0.28, d2_190, d5_284 (none a mirror).",
+      "style_version": 2
     }
   ]
 }
