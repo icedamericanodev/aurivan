@@ -481,17 +481,18 @@
             "crisc_d2_077",
             "crisc_d2_093",
             "crisc_d2_095",
-            "crisc_d2_116"
+            "crisc_d2_116",
+            "crisc_d2_138"
           ],
           "definition": "A vulnerability is a weakness in the design, implementation, operation or internal control of a process or system that a threat could exploit.",
           "why_it_matters": "Many serious losses combine a technical flaw with a process gap or human error; scanner output alone leaves process and people weaknesses unmanaged.",
           "how_it_works": [
-            "People weaknesses include missing skills, weak security awareness, key-person dependency and too few staff for a critical task.",
+            "People weaknesses include missing skills, weak awareness, key-person dependency and too few staff for critical tasks.",
             "Process weaknesses include missing approvals, poor segregation of duties, untested recovery plans and undocumented procedures.",
             "Technology weaknesses include unpatched software, misconfigurations, default passwords, unsupported systems and over-broad access, which an AI assistant searching with users' rights makes easy to reach.",
             "A control deficiency found in testing or audit is a vulnerability; one with a shared cause, such as a standard install, is recorded against that cause.",
             "Predisposing conditions, such as a flood-prone site, change likelihood even when nothing is broken.",
-            "Walkthroughs and control tests with staff find process and people weaknesses; documents and self-assessments show intent; scanners find technical flaws but, without credentials, miss many in installed software."
+            "Walkthroughs and control tests find process and people weaknesses; documents and self-assessments show intent; uncredentialed scans miss many installed-software flaws; a rare-item AI detector is judged by its misses."
           ],
           "compare": {
             "columns": [
@@ -687,7 +688,8 @@
             "crisc_d2_007",
             "crisc_d2_054",
             "crisc_d2_119",
-            "crisc_d2_128"
+            "crisc_d2_128",
+            "crisc_d2_139"
           ],
           "definition": "A risk scenario is a specific, assessable description of how a threat could cause an event that affects an asset and harms business objectives.",
           "why_it_matters": "A vague entry such as 'cyberattack' cannot be rated, owned or treated. A specific scenario shows which controls matter and lets the owner compare it with appetite.",
@@ -696,7 +698,7 @@
             "Event: what happens, such as malicious encryption, disclosure, an error or an outage.",
             "Asset: the process, system, data or people affected.",
             "Time: when or how long, such as payroll week or outages over four hours; when harm depends on timing, rate the credible time that hurts most.",
-            "Consequence: the effect on objectives in business terms, such as lost revenue, fines or harm to patients.",
+            "Consequence: the effect on objectives in business terms, such as lost revenue, fines or harm to patients; harm from altered data grows until someone notices.",
             "NIST IR 8286A Rev. 1 suggests a cause-and-effect sentence: an actor exploits a weakness in an asset, resulting in a business impact."
           ],
           "example": "An airline's register lists 'third-party risk' as high, with no detail. Chen Wei, the risk analyst, rewrites it: a ransomware attack on the baggage-handling vendor stops bag tracking at the main hub for more than six hours in peak season, causing missed connections, compensation claims and regulator scrutiny. Chen rates the rewritten scenario and asks the ground operations director to confirm it.",
@@ -892,7 +894,8 @@
             "crisc_d2_069",
             "crisc_d2_078",
             "crisc_d2_096",
-            "crisc_d2_103"
+            "crisc_d2_103",
+            "crisc_d2_140"
           ],
           "definition": "Risk is the chance that an event happens, weighed with how much it would affect objectives; the ISACA Glossary frames it as likelihood combined with impact.",
           "why_it_matters": "Rating only impact makes every disaster look urgent; rating only likelihood ignores rare but severe events. Both together let owners compare risks fairly against appetite.",
@@ -900,7 +903,7 @@
             "Likelihood combines the chance a threat event starts and the chance it causes harm, over a stated time frame.",
             "For adversaries, likelihood weighs capability, intent and targeting; other sources use recorded history, from regional or industry records when local history is short, with expert judgment filling gaps.",
             "Impact is the effect on objectives: financial, operational, legal, reputational, safety or customer harm.",
-            "Existing controls and predisposing conditions change likelihood, so they are understood before rating.",
+            "Controls and predisposing conditions change likelihood and are understood before rating; when one changes, such as more heat, older history may stop predicting.",
             "ISO 31000, named here as context only, describes risk as the effect of uncertainty on objectives, which can include upside opportunity.",
             "When a scenario harms several kinds of objective, the most severe credible harm sets the impact level; ordinal levels are not averaged."
           ],
@@ -1033,12 +1036,13 @@
             "crisc_d2_081",
             "crisc_d2_097",
             "crisc_d2_106",
-            "crisc_d2_113"
+            "crisc_d2_113",
+            "crisc_d2_141"
           ],
           "definition": "A business impact analysis (BIA) finds the critical business processes, how their impact grows over time when disrupted, and the resources and dependencies they need to recover.",
           "why_it_matters": "Recovery money and effort are limited. The BIA tells the enterprise what to restore first, and it gives risk assessments the impact data they need.",
           "how_it_works": [
-            "Process owners describe each process, its outputs and the harm of losing it at intervals such as one hour, one day and one week.",
+            "Process owners rate the harm of losing each process at intervals such as an hour, a day and a week; a new system's BIA precedes its recovery design.",
             "Impact includes lost revenue, regulatory breaches, safety, contract penalties and reputation; it rises as an outage lengthens and is rated for the process's peak period, not an average.",
             "Dependencies are traced: systems, data, people, facilities, suppliers and other processes, including cloud and AI services.",
             "A BIA assumes the disruption happens and skips likelihood, so it is not a risk assessment; its recovery ranks reflect outage harm, not leaks or tampering.",
@@ -1335,12 +1339,13 @@
             "crisc_d2_014",
             "crisc_d2_094",
             "crisc_d2_108",
-            "crisc_d2_118"
+            "crisc_d2_118",
+            "crisc_d2_142"
           ],
           "definition": "The enterprise risk profile is the combined view of an enterprise's significant risks, built by normalizing and aggregating unit and IT risk registers for senior management and the board.",
           "why_it_matters": "Leaders cannot read hundreds of entries. Consistent registers that roll up show which risks threaten enterprise objectives and where appetite is exceeded.",
           "how_it_works": [
-            "Units use common categories, scales and time frames, so entries can be compared and combined.",
+            "Units use common categories, scales and time frames, so entries can be compared and combined; a category field from one agreed list lets the board see, say, all supplier risks.",
             "Normalization puts every unit on one scale; a scenario recorded in two registers is merged into one entry and owner, linked to both sources, not added up.",
             "Risks across units that share a cause, such as the same weakness, are aggregated, which can reveal a risk that is small locally but large in total.",
             "The IT risk register feeds the enterprise risk register and risk profile, as NIST IR 8286 Rev. 1 describes.",
@@ -1401,13 +1406,14 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d2_042",
-            "crisc_d2_084"
+            "crisc_d2_084",
+            "crisc_d2_143"
           ],
           "definition": "Qualitative analysis rates likelihood and impact on defined word scales, such as low to very high; semi-quantitative analysis maps those levels to numbered bins or scores.",
           "why_it_matters": "Most enterprises lack reliable loss data for many risks. Well-defined scales give fast, comparable ratings decision makers understand, as long as everyone uses them the same way.",
           "how_it_works": [
             "Each level needs a clear definition and example, such as high impact meaning a loss over $1 million or a regulator investigation.",
-            "Without defined levels, different experts produce very different ratings for the same risk.",
+            "Without defined levels, different experts produce very different ratings for the same risk; defining the levels, not averaging or one person's pick, fixes it.",
             "Semi-quantitative scales, such as 1 to 5 or bins of 0 to 100, allow finer ranking than words alone.",
             "Scores on these scales show order, not true size: a 4 is not exactly twice as bad as a 2.",
             "Equal scores can hide different shapes: frequent small losses and rare severe ones may need different responses, so report likelihood and impact, not only the combined score.",

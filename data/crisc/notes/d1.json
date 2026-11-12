@@ -115,19 +115,20 @@
             "crisc_d1_083",
             "crisc_d1_104",
             "crisc_d1_111",
-            "crisc_d1_138"
+            "crisc_d1_138",
+            "crisc_d1_164"
           ],
           "definition": "The COBIT 2019 goals cascade links stakeholder needs to enterprise goals, then to technology alignment goals, so every technology goal serves a business goal.",
-          "why_it_matters": "IT goals set on their own let technology spend drift from business needs. Strategic change also changes the risk profile and must be assessed early.",
+          "why_it_matters": "IT goals set alone let technology spend drift from business needs, and strategic change shifts the risk profile, so it is assessed early.",
           "how_it_works": [
             "Stakeholder needs and drivers shape enterprise goals, such as customer trust or compliance with laws.",
             "Enterprise goals cascade to alignment goals for information and technology (I&T), which point to the governance and management objectives that deliver them.",
-            "Risk to an alignment goal is reported through the enterprise goal above; an IT goal that harms that goal is revisited with the business owners.",
+            "Risk to an alignment goal is reported through the enterprise goal above; an IT goal that harms it is revisited with business owners.",
             "A new strategy, merger, market, technology or failed key assumption triggers a fresh look at each affected goal's risks and planned treatments.",
-            "AI initiatives start from a business purpose, with a risk owner and appetite fit agreed before they scale.",
+            "AI initiatives start from a business purpose, with a risk owner and appetite fit agreed before scaling; their risk is rated against that purpose, not the tool's own metric.",
             "Risk input counts most while leaders compare strategic options; each chosen objective then needs a measure, set by its owner, before risk to it is rated."
           ],
-          "example": "A university plans to grow online enrollment by 20%. The IT director proposes moving every system to the cloud. Kenji, the risk practitioner, maps the cloud goal to the enrollment goal, shows that only the student portal and learning platform support it, and asks the provost's office to confirm priorities before assessing a full migration's risks.",
+          "example": "A university plans to grow online enrollment by 20%. The IT director proposes moving every system to the cloud. Kenji, the risk practitioner, maps the cloud goal to the enrollment goal, finds that only the student portal and learning platform support it, and asks the provost's office to confirm priorities before assessing a full migration.",
           "audit_focus": {
             "review": [
               "Map each major IT goal to the enterprise goal it supports",
@@ -140,11 +141,11 @@
             "recommend": "Have senior management confirm which enterprise goal each IT goal and new initiative supports.",
             "decides": "Senior management sets enterprise goals and approves new strategic initiatives"
           },
-          "isaca_rule": "IT goals are means, not ends. When a technology goal or initiative appears, ask which enterprise goal it serves, assess and report its risk through that goal, and reassess risk whenever strategy changes, including when AI is adopted.",
+          "isaca_rule": "IT goals are means, not ends. For any technology goal or initiative, ask which enterprise goal it serves, assess and report its risk through that goal, and reassess whenever strategy changes, AI adoption included.",
           "exam_traps": [
             {
               "trap": "IT goals such as 99.99% uptime are worth pursuing for their own sake.",
-              "why": "Uptime matters only as far as a business goal needs it. Unneeded targets add cost and crowd out risks that matter more."
+              "why": "Uptime matters only as far as a business goal needs it; unneeded targets add cost and crowd out bigger risks."
             },
             {
               "trap": "A new AI tool is only a technology project, so the IT team owns its risk.",
@@ -469,7 +470,8 @@
             "crisc_d1_084",
             "crisc_d1_097",
             "crisc_d1_122",
-            "crisc_d1_146"
+            "crisc_d1_146",
+            "crisc_d1_166"
           ],
           "definition": "Incentives are the rewards and pressures that shape risk-taking; speaking up means staff raise concerns without fear, through open channels and protected whistleblowing routes.",
           "why_it_matters": "Pay and targets that reward volume or speed alone push people to take risks outside appetite. If reporting brings blame, issues stay hidden until they become losses.",
@@ -477,7 +479,7 @@
             "Balanced scorecards pair performance targets with risk and control measures.",
             "Rewards for risk-taking roles can be deferred, and reduced if losses emerge later.",
             "Several reporting channels exist, including an anonymous route that bypasses line managers.",
-            "People who raise issues in good faith are protected from retaliation, and leaders thank them visibly.",
+            "People who raise issues in good faith are protected from retaliation, and leaders thank them visibly; suspected retaliation goes first to the speak-up policy's owner, as it silences other reporters.",
             "Reported concerns are logged, assessed like any risk event and closed with feedback to the reporter; without feedback, people decide reporting is pointless.",
             "Review effort shapes behavior: when overriding an AI tool needs a sign-off and agreeing needs none, staff stop challenging it, so both get the same review."
           ],
@@ -595,14 +597,15 @@
             "crisc_d1_074",
             "crisc_d1_098",
             "crisc_d1_126",
-            "crisc_d1_147"
+            "crisc_d1_147",
+            "crisc_d1_167"
           ],
           "definition": "The policy hierarchy runs from policies (management intent) to standards (mandatory specifics), procedures (step-by-step tasks) and guidelines (advisory good practice).",
           "why_it_matters": "Each layer has a different approver and force. Confusing them leads to treating advice as a rule, or to IT approving what only senior management can.",
           "how_it_works": [
             "Policies state management's intent and direction, are approved by senior management and change rarely; one executive's signature alone does not make a policy bind other units.",
             "Standards make a policy measurable, such as a minimum encryption strength, and are mandatory.",
-            "Procedures give the steps to meet a standard and are owned by the teams that perform them.",
+            "Procedures give the steps to meet a standard and are owned by the teams that perform them; a rewrite that still meets the standard is approved by their manager.",
             "Guidelines recommend good practice; people may depart from them for a sound reason, and such a departure is not a compliance finding.",
             "Every layer should trace back to risk appetite, so rules are as strict as the risk requires.",
             "A lower layer may tighten a higher one, still meeting every higher requirement, but not relax it; a team owns its procedure, but changing a standard is its owner's decision."
@@ -872,16 +875,17 @@
             "crisc_d1_086",
             "crisc_d1_118",
             "crisc_d1_139",
-            "crisc_d1_160"
+            "crisc_d1_160",
+            "crisc_d1_168"
           ],
           "definition": "A business continuity plan (BCP) keeps critical business processes running during disruption; a disaster recovery plan (DRP) restores the IT systems those processes depend on.",
-          "why_it_matters": "Both plans reduce the impact of disruptive risk scenarios. A DRP without a BCP restores servers but not the business, and untested plans give leaders false comfort.",
+          "why_it_matters": "Both plans cut the impact of disruptive scenarios. A DRP without a BCP restores servers but not the business; untested plans give false comfort.",
           "how_it_works": [
             "The BCP is scoped by business processes and owned by the business; the DRP is a supporting, system-focused plan.",
             "Recovery targets in both plans come from business needs agreed by process owners.",
             "Plans are tested regularly and after major change, as close to real conditions as practical; new responders are trained promptly, and a minor staff change awaits the next scheduled exercise.",
             "Test results go to the process owners and feed the register: each gap is rated at its current level; its owner approves a plan or, within appetite, accepts it.",
-            "Plans are kept current as people, suppliers and systems change; plans one event can trigger together must not share responders.",
+            "Plans are kept current as people, suppliers and systems change; plans one event can trigger together share no responders, and copies sit away from the systems they recover.",
             "A continuity plan mainly cuts a disruption's impact, not its likelihood; a workaround counts only if it carries the service level the owner needs."
           ],
           "compare": {
@@ -913,7 +917,7 @@
               }
             ]
           },
-          "example": "A hospital's DRP restores its electronic health record in four hours, and IT calls the test a success. Ines, the risk practitioner, finds the wards had no paper procedures for those hours. They record the gap as a continuity risk owned by the chief nursing officer and recommend a joint exercise.",
+          "example": "A hospital's DRP restores its electronic health record in four hours, and IT calls the test a success. Ines, the risk practitioner, finds the wards had no paper procedures for those hours, records a continuity risk owned by the chief nursing officer and recommends a joint exercise.",
           "audit_focus": {
             "review": [
               "Compare BCP scope with the list of critical processes",
@@ -934,7 +938,7 @@
             },
             {
               "trap": "A walkthrough of the plan document is enough testing.",
-              "why": "Paper reviews find documentation gaps, not real-world failures. More realistic tests are needed as criticality rises."
+              "why": "Paper reviews find documentation gaps, not real-world failures; realism should rise with criticality."
             }
           ],
           "key_terms": [
@@ -1033,7 +1037,8 @@
             "crisc_d1_030",
             "crisc_d1_031",
             "crisc_d1_058",
-            "crisc_d1_119"
+            "crisc_d1_119",
+            "crisc_d1_165"
           ],
           "definition": "Asset classification labels assets by sensitivity and criticality; valuation estimates what an asset is worth to the business. Both are inputs to rating risk.",
           "why_it_matters": "Impact cannot be rated without knowing an asset's value. Purchase cost understates assets such as customer data, whose loss can cost far more in fines, lost trust and downtime.",
@@ -1042,7 +1047,8 @@
             "Valuation considers replacement cost, revenue dependence, legal exposure, reputation and the processes the asset supports.",
             "Higher classification and value drive stronger protection and higher impact ratings in risk analysis.",
             "Values and classes are reviewed when an asset's use, data or regulation changes.",
-            "An AI model is valued by the decisions it drives, not its build cost; a rating that rests on build or purchase cost is revalued before anyone accepts the risk."
+            "An AI model is valued by the decisions it drives, not its build cost; a rating that rests on build or purchase cost is revalued before anyone accepts the risk.",
+            "When assessment time is short, start with the assets whose loss or compromise would most harm the business, judged by the BIA's criticality and sensitivity, not flaw counts or cost."
           ],
           "example": "A clinic group values its patient scheduling database at its $20,000 license cost, so it ranks low in the risk register. Marco, the risk practitioner, shows that a week without scheduling would cancel thousands of visits and expose patient records, and asks the database's business owner to revalue and reclassify it.",
           "audit_focus": {
@@ -1205,7 +1211,8 @@
             "crisc_d1_051",
             "crisc_d1_088",
             "crisc_d1_120",
-            "crisc_d1_134"
+            "crisc_d1_134",
+            "crisc_d1_169"
           ],
           "definition": "A risk taxonomy is a shared set of risk categories, and common rating scales define likelihood and impact the same way in every unit, so risks can be compared.",
           "why_it_matters": "If IT rates impact on a 1 to 5 technical scale and finance uses money bands, their high risks cannot be ranked against each other or combined into one profile.",
@@ -1214,7 +1221,7 @@
             "Impact scales use business measures, such as money, customers affected, safety and regulatory standing, defined once for everyone; bands follow the enterprise's current size and capacity.",
             "Likelihood scales use the same time frame and ranges in every unit.",
             "Local scales are mapped to the enterprise scale before risks are rolled up.",
-            "Senior management approves the taxonomy and scales as part of the risk framework.",
+            "Senior management approves the taxonomy and scales as part of the risk framework, which sets when bands are re-based; a change that meets no trigger waits for the scheduled review.",
             "Local risks rise to the enterprise register by thresholds on the enterprise scale, not by a quota per unit or by local ratings."
           ],
           "example": "A pharmaceutical distributor's three regional IT teams each rate risk on their own 1 to 10 scale. When the CRO asks for a combined view, an 8 in one region means a far smaller loss than a 6 in another. Zara, a risk analyst, builds a mapping from each regional scale to the enterprise impact bands and has the regions re-rate their top risks.",
