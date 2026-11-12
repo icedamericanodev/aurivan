@@ -55,14 +55,15 @@
             "crisc_d2_136",
             "crisc_d2_156",
             "crisc_d2_166",
-            "crisc_d2_182"
+            "crisc_d2_182",
+            "crisc_d2_193"
           ],
           "definition": "A risk event is something that happened, or nearly happened, that shows a risk scenario can occur. Loss events cause harm; near misses stop just short of it.",
           "why_it_matters": "Events are the best evidence of real likelihood and impact; counting only losses hides how often controls were nearly beaten, understating risk.",
           "how_it_works": [
-            "An incident need not cause loss; a loss event does, however routine, such as an outage that staff covered with paid overtime.",
+            "An incident need not cause loss; a loss event does, however routine, such as an outage staff covered with paid overtime.",
             "Each event is linked to the scenario its review's root cause points to, not the first guess logged, and feeds that scenario's likelihood or impact.",
-            "Fixing the immediate cause closes the incident ticket, not the risk; an event whose cause fits no scenario shows a register gap, filled with the process owner.",
+            "Fixing or containing an event closes the incident, not the risk entry, which names what could happen; an event fitting no scenario shows a gap, filled with its process owner.",
             "Impact counts primary and secondary losses, such as missed orders, lost customers, penalties and customer harm, even those arriving after closure; the process owner, not IT's incident record, supplies it."
           ],
           "example": "At a water utility, an alarm stops an operator opening the wrong valve in a remote session. Priya Raman, the risk analyst, logs a near miss against the remote operation error scenario and asks its owner, the operations manager, to review likelihood.",
@@ -78,7 +79,7 @@
             "recommend": "Have the incident manager route every closed incident and near miss to the relevant risk owner for scenario review.",
             "decides": "The risk owner agrees any rating change the event supports and decides the response"
           },
-          "isaca_rule": "Treat every loss event and near miss as scenario evidence. Closing the incident is not closing the risk: link the event to its scenario, reassess unless the rating already expected it, and let the risk owner decide on any change.",
+          "isaca_rule": "Treat every loss event and near miss as scenario evidence. Closing the incident is not closing the risk: link the event to its scenario, reassess unless the rating already expected it, and let the risk owner decide any change.",
           "exam_traps": [
             {
               "trap": "A near miss caused no loss, so it does not need to be recorded.",
@@ -92,7 +93,7 @@
           "key_terms": [
             {
               "term": "Loss event",
-              "definition": "A threat event that actually causes loss, such as lost money, data or service; the ISACA Glossary credits the term to the FAIR taxonomy."
+              "definition": "A threat event that actually causes loss, such as lost money, data or service; the ISACA Glossary credits it to the FAIR taxonomy."
             },
             {
               "term": "Near miss",
@@ -240,16 +241,17 @@
             "crisc_d2_066",
             "crisc_d2_092",
             "crisc_d2_177",
-            "crisc_d2_188"
+            "crisc_d2_188",
+            "crisc_d2_194"
           ],
           "definition": "A threat source is anyone or anything that could cause harm; a threat event is what that source does, such as phishing staff or flooding a data center.",
           "why_it_matters": "Scenarios built only around outside hackers miss insiders, errors, equipment failures and disasters. A full taxonomy keeps identification complete and keeps threats separate from weaknesses.",
           "how_it_works": [
             "NIST SP 800-30 Rev. 1 Table D-2 sorts threat sources by cause: intent (adversarial), human error (accidental), failing equipment or software (structural), and disasters or outside outages (environmental).",
             "Adversary likelihood weighs capability, intent and targeting, the last two shaped by what the enterprise holds or does; other sources use history.",
-            "One threat source can cause many events, and one event can come from several sources.",
+            "One source can cause many events, and one event several sources; third parties using logins customers hand them are sources too.",
             "A threat acts on a vulnerability: the threat is the actor or force, the vulnerability is the weakness it uses.",
-            "Each scenario names its threat source and threat event, so the right likelihood evidence can be gathered.",
+            "Each scenario names its threat source and event, so the right likelihood evidence can be gathered.",
             "Adversaries shift target, timing, method or path when blocked, so a control's effect is rated across every path."
           ],
           "types": [
@@ -270,7 +272,7 @@
               "meaning": "Natural disasters and outages of infrastructure outside the enterprise's control, such as power or telecommunications."
             }
           ],
-          "example": "At a hospital network, the risk lead, Daniel Kim, reviews the scenarios for the electronic health record and finds all eight assume an external hacker. Using the four source types, Daniel drafts scenarios for a clinician's misdirected bulk export, a failed storage array and regional flooding, then asks the clinical systems director to confirm which are credible.",
+          "example": "At a hospital network, the risk lead, Daniel Kim, finds all eight electronic health record scenarios assume an external hacker. Using the four source types, Daniel drafts scenarios for a clinician's misdirected bulk export, a failed storage array and regional flooding, then asks the clinical systems director to confirm which are credible.",
           "audit_focus": {
             "review": [
               "Compare the scenario list against all four threat source types",
@@ -494,10 +496,11 @@
             "crisc_d2_116",
             "crisc_d2_138",
             "crisc_d2_149",
-            "crisc_d2_178"
+            "crisc_d2_178",
+            "crisc_d2_195"
           ],
           "definition": "A vulnerability is a weakness in the design, implementation, operation or internal control of a process or system that a threat could exploit.",
-          "why_it_matters": "Many serious losses combine a technical flaw with a process gap or human error; scanner output alone leaves process and people weaknesses unmanaged.",
+          "why_it_matters": "Many serious losses combine a technical flaw with a process gap or human error; scanner output alone misses process and people weaknesses.",
           "how_it_works": [
             "People weaknesses include weak awareness, missing skills, key-person dependency and too few staff, weighed by what those people can reach.",
             "Process weaknesses include missing approvals, poor segregation of duties, untested recovery plans and undocumented procedures.",
@@ -531,7 +534,7 @@
               }
             ]
           },
-          "example": "A food manufacturer's control test finds that recipe changes in the production system need no second approval. Yusuf Haddad, the risk analyst, records the gap as a process vulnerability under the unauthorized recipe change scenario and asks the plant quality manager, who owns the scenario, to review its likelihood rating.",
+          "example": "A food manufacturer's control test finds recipe changes in the production system need no second approval. Yusuf Haddad, the risk analyst, records it as a process vulnerability under the unauthorized recipe change scenario and asks the plant quality manager, who owns the scenario, to review its likelihood rating.",
           "audit_focus": {
             "review": [
               "Compare scenario vulnerability lists against scan, control test and audit results",
@@ -544,7 +547,7 @@
             "recommend": "Have control owners report every confirmed control deficiency to the risk function, which records it as a vulnerability against the affected scenarios.",
             "decides": "The risk owner decides how the weakness changes the scenario's response"
           },
-          "isaca_rule": "Vulnerabilities are not only technical. A missing approval, an untrained team or a failed control test weakens protection as much as a missing patch; record each one against the scenarios it affects.",
+          "isaca_rule": "Vulnerabilities are not only technical: a missing approval, untrained team or failed control test weakens protection like a missing patch, and AI-written code is scanned and reviewed like any other. Record each against the scenarios affected.",
           "exam_traps": [
             {
               "trap": "The vulnerability scanner report is the complete list of the enterprise's vulnerabilities.",
@@ -552,7 +555,7 @@
             },
             {
               "trap": "A data center in a flood zone is the threat source in its outage scenario.",
-              "why": "The flood is the environmental threat. The site's location is a predisposing condition: it acts on nothing, but it raises the likelihood that a flood causes harm (NIST SP 800-30 Rev. 1 Section 2.3.1)."
+              "why": "The flood is the environmental threat. The site's location is a predisposing condition: it acts on nothing but raises the likelihood that a flood causes harm (NIST SP 800-30 Rev. 1 Section 2.3.1)."
             }
           ],
           "key_terms": [
@@ -1070,7 +1073,8 @@
             "crisc_d2_113",
             "crisc_d2_141",
             "crisc_d2_147",
-            "crisc_d2_165"
+            "crisc_d2_165",
+            "crisc_d2_196"
           ],
           "definition": "A business impact analysis (BIA) finds the critical business processes, how their impact grows over time when disrupted, and the resources and dependencies they need to recover.",
           "why_it_matters": "Recovery money and effort are limited. The BIA tells the enterprise what to restore first, and it gives risk assessments the impact data they need.",
@@ -1078,7 +1082,7 @@
             "Process owners rate harm at intervals such as an hour, a day and a week, not a flat hourly rate; a new system's BIA precedes its recovery design.",
             "Impact includes lost revenue, regulatory breaches, safety, contract penalties and reputation; it rises as an outage lengthens and is rated for the process's peak period, not an average.",
             "Dependencies are traced: systems, data, people, facilities, suppliers and other processes, including cloud and AI services.",
-            "A BIA assumes the disruption happens and skips likelihood, so it is not a risk assessment; its recovery ranks reflect outage harm, not leaks or tampering.",
+            "A BIA assumes the disruption and skips likelihood, so it is no risk assessment; its ranks reflect outage harm before insurance, not leaks or tampering.",
             "Results set recovery priorities and feed continuity plans and scenario impact ratings; a scenario takes the figure for the outage length it names, and cumulative figures are not added together.",
             "A supporting system takes the priority of the most critical process that depends on it, however few people use it or revenue it earns."
           ],
@@ -1603,19 +1607,20 @@
             "crisc_d2_153",
             "crisc_d2_170",
             "crisc_d2_181",
-            "crisc_d2_192"
+            "crisc_d2_192",
+            "crisc_d2_197"
           ],
           "definition": "Choosing a method means matching the analysis to the decision it must support and the quality of the data available, from simple scales to FAIR models and Monte Carlo simulation.",
-          "why_it_matters": "A precise-looking number built on guesses misleads decision makers more than an honest qualitative rating. The method must fit the data and the decision.",
+          "why_it_matters": "A precise-looking number built on guesses misleads decision makers more than an honest qualitative rating.",
           "how_it_works": [
-            "Ask what the decision needs: ranking risks, funding a control, or capital and insurance plans.",
+            "Ask what the decision needs: ranking risks, funding a control, or capital and insurance plans; harm with no credible price, such as illness, is rated beside the money figure.",
             "Check data reliability: loss history, benchmarks, expert estimates; gather estimates privately first (Delphi), and judge experts by how often past ranges held actual results.",
             "FAIR, an Open Group standard, splits risk into loss event frequency and loss magnitude; secondary losses, such as fines, get their own frequency: the share of events that trigger them.",
             "Monte Carlo runs thousands of trials from estimated ranges; a yearly loss limit is tested on the tail of simulated yearly losses, not the mean or one event's loss.",
             "Ranges beat single points: with no loss history, validated error rate times volume gives a frequency range; if too wide, sensitivity analysis finds the input to improve.",
             "Screen qualitatively, quantify top risks; event trees run forward from one event, fault trees back from one outcome."
           ],
-          "example": "A biotech firm's board asks how much cyber insurance to buy. The last analysis gave one guessed ALE. Olu Adeyemi, the risk practitioner, gathers ranges from claims data and experts, runs a Monte Carlo simulation and shows the board a loss distribution, including a one-in-twenty-year loss of about $9 million, with every assumption listed.",
+          "example": "A biotech firm's board asks how much cyber insurance to buy. Olu Adeyemi, the risk practitioner, replaces a guessed ALE with ranges from claims data and experts, runs a Monte Carlo simulation and shows a loss distribution, including a one-in-twenty-year loss of about $9 million, listing every assumption.",
           "audit_focus": {
             "review": [
               "Evaluate whether input data quality supports the precision of the results",
@@ -1682,16 +1687,17 @@
             "crisc_d2_160",
             "crisc_d2_171",
             "crisc_d2_176",
-            "crisc_d2_187"
+            "crisc_d2_187",
+            "crisc_d2_198"
           ],
           "definition": "Inherent risk is risk before any management action; current risk reflects controls already in place; residual risk is what remains after the chosen response is implemented.",
-          "why_it_matters": "Comparing inherent risk with appetite overstates the need for new controls; counting planned controls as working understates real exposure.",
+          "why_it_matters": "Comparing inherent risk with appetite overstates the need for new controls; counting planned controls as working understates exposure.",
           "how_it_works": [
-            "Inherent risk credits no control, even standard ones, so it shows how much a scenario depends on controls; a high rating marks controls that must not fail.",
-            "Residual risk uses inherent risk's scales and method, crediting what each control changes, not how many controls there are.",
+            "Inherent risk credits no control, even standard ones, so it shows a scenario's reliance on controls; a high rating marks controls that must not fail.",
+            "Residual risk uses inherent risk's scales and method, crediting what each control changes, not how many there are.",
             "Current risk, counting only implemented, working responses, is compared with appetite now; a planned response's future residual risk shows whether the plan is enough.",
             "Controls leave residual risk above zero, so 100% effectiveness inputs need a range; layered controls multiply each layer's pass-through share, not add effectiveness rates.",
-            "Before design, inherent risk ranks which scenarios need the strongest controls; target risk then checks whether the design is enough.",
+            "Before design, inherent risk, rated realistically per scenario rather than all at the top, ranks where controls matter most; target risk checks the design.",
             "Loss history under today's controls shows current, not inherent, likelihood; crediting them again double counts."
           ],
           "compare": {
@@ -1735,7 +1741,7 @@
             "recommend": "Have the risk function record inherent, current and target ratings separately, crediting only implemented, working controls in current risk, for owners to confirm.",
             "decides": "The risk owner compares current risk with appetite and decides further treatment"
           },
-          "isaca_rule": "Inherent risk shows reliance on controls; current risk is today's exposure; residual risk is what an implemented response leaves. Compare current risk with appetite, and check that a plan's target risk falls within it. Never compare inherent risk with appetite or count planned controls as working.",
+          "isaca_rule": "Inherent risk shows reliance on controls; current risk is today's exposure; residual risk is what an implemented response leaves. Compare current risk with appetite, and check a plan's target risk falls within it. Never compare inherent risk with appetite or count planned controls as working.",
           "exam_traps": [
             {
               "trap": "Compare inherent risk with appetite to decide whether to add controls.",
