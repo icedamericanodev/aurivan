@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026. Round 3 crisc_d4_046 to crisc_d4_065, 4 Nov 2026. Round 5 crisc_d4_066 to crisc_d4_075, 4 Nov 2026. Round 6 crisc_d4_076 to crisc_d4_079, 4 Nov 2026. Round 7 crisc_d4_080 to crisc_d4_085, 4 Nov 2026. Round 8 crisc_d4_086 to crisc_d4_090, 5 Nov 2026. Round 9 crisc_d4_091 to crisc_d4_095, 5 Nov 2026. Round 10 crisc_d4_096 to crisc_d4_100, 5 Nov 2026. Round 11 crisc_d4_101 to crisc_d4_105, 5 Nov 2026. Round 12 crisc_d4_106 to crisc_d4_110, 5 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026. Round 3 crisc_d4_046 to crisc_d4_065, 4 Nov 2026. Round 5 crisc_d4_066 to crisc_d4_075, 4 Nov 2026. Round 6 crisc_d4_076 to crisc_d4_079, 4 Nov 2026. Round 7 crisc_d4_080 to crisc_d4_085, 4 Nov 2026. Round 8 crisc_d4_086 to crisc_d4_090, 5 Nov 2026. Round 9 crisc_d4_091 to crisc_d4_095, 5 Nov 2026. Round 10 crisc_d4_096 to crisc_d4_100, 5 Nov 2026. Round 11 crisc_d4_101 to crisc_d4_105, 5 Nov 2026. Round 12 crisc_d4_106 to crisc_d4_110, 5 Nov 2026. Round 13 crisc_d4_111 to crisc_d4_115, 5 Nov 2026.",
     "schema_version": 1
   },
   "domain": 4,
@@ -4075,6 +4075,191 @@
         "Drones and cameras"
       ],
       "_provenance": "Authored from concept: notes 4B3.2 (Privacy by Design and Privacy Impact Assessment: privacy by design sets protective defaults; data needed only in the moment is processed on the device, not collected). Round 12, 5 Nov 2026: original scenario (a drone delivery operator whose drones use camera video only to avoid obstacles but by default upload video of every route, including people in yards, to the cloud) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_043 (evidence of privacy by design: defaults that collect only what each feature needs), crisc_d4_044 (de-identified trip records), crisc_d4_019 (a new use of loyalty data), crisc_d4_100 (separate consent for AI training), crisc_d4_037 (a drone delivery platform's exit terms), crisc_d4_063 (stored face templates); CISA d5_029 (fields collected in case analytics needs them), d2_084 (a privacy assessment before facial recognition); CC cc_d1_157 (ceiling cameras that count swimmers), cc_d2_120 (deleting expired video); AAIA aaia_d1_040 (plate-camera records reused for route prediction). Options compared with every 4B3 item; an early encryption distractor was replaced, as encryption already appears as a wrong option in five 4B3 items. Judged distinct: no bank item keys processing on the device so that no data is collected; the final two is minimizing at the source against blurring video that is still uploaded and kept. Owner pattern: k=2, the data owner appears only in the easy distractors (A, D); the key and the runner-up name no owner. Review fixes 5 Nov 2026 (round 12 audit, concept review and blind test): 'gardens' changed to 'yards' (US usage).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_111",
+      "domain": 4,
+      "subtopic": "4A1 Technology roadmaps and enterprise architecture (EA). An architecture map older than an acquisition",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A mortgage servicer's risk analyst is scoping a loan-boarding risk assessment from the enterprise architecture repository, which predates the purchase of two platforms that now board loans. What should the analyst do FIRST?",
+      "options": {
+        "A": "Confirm loan boarding's current system links with its process owner",
+        "B": "Assess loan boarding from the repository's application map",
+        "C": "Ask the architecture team to remap the whole enterprise first",
+        "D": "Exclude the two platforms until the repository is updated"
+      },
+      "correct": "A",
+      "key_concept": "Enterprise architecture helps only while it is current; before an assessment relies on it, links changed since its last update are confirmed for the scope.",
+      "pre_read": "Compare the repository's age with what has changed since, before reading the options.",
+      "correct_explanation": "The repository predates the two platforms that now board loans, so its map misses links the assessment must cover. Confirming loan boarding's current system links with the process owner gives the assessment a sound scope now; NIST PM-7 expects an architecture that is maintained, not drawn once. Remapping the whole enterprise is the runner-up: the repository does need it, but that work is far wider than one assessment and would hold it up.",
+      "wrong_explanations": {
+        "B": "The map predates the two platforms that now board loans, so an assessment built on it would miss their links and the risks they bring.",
+        "C": "The repository does need updating, but remapping every system is far wider than this assessment and delays it; the process owner can confirm loan boarding's links now.",
+        "D": "The two platforms now board loans, so leaving them out drops the newest and least understood links from the assessment instead of covering them."
+      },
+      "tips": [
+        "Eliminate: B builds the assessment on a map that misses the two platforms, and D leaves out systems that now board loans; both scope it on outdated architecture.",
+        "Final two: A beats C because the assessment needs loan boarding's links now; an enterprise-wide remap fixes the repository but is far wider than this scope.",
+        "Exam cue: before an assessment relies on an architecture map, check that it is current for the scope, and confirm changed links with the people who run the process."
+      ],
+      "framework_ref": "ISACA Glossary (enterprise architecture); NIST SP 800-53 Rev. 5 PM-7 (Enterprise Architecture)",
+      "related_concepts": [
+        "Enterprise architecture",
+        "Risk assessment scope",
+        "Acquisitions"
+      ],
+      "_provenance": "Authored from concept: notes 4A1.1 (Enterprise Architecture and Architecture Review: EA maps processes, data, applications and technology and their links; before an assessment relies on it, links changed since its last update are confirmed). Round 13, 5 Nov 2026: original scenario (a mortgage servicer's risk analyst scoping a loan-boarding risk assessment from an enterprise architecture repository that predates the purchase of two platforms that now board loans) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_046 (the EA's links among processes and data to judge an integration's impact), crisc_d4_080 (reassessing a portal after a cloud move before an acceptance is renewed), crisc_d4_001 (a cloud survey tool found outside the roadmap), crisc_d4_021 (an AI service outside the target architecture), crisc_d4_066 (a logging standard set in the EA), crisc_d4_102 (a change that broke a system its impact assessment did not name), crisc_d4_091 (an acceptance above the director's authority); crisc_d2_010 (a provider's new subcontractor after an approved assessment); CISA d2_152 (architecture standards five years old and waiver trends), d2_165 (control mappings three years out of date); AAIA and CC: no item on a stale architecture map. Option skeletons compared with the three 4A1 FIRST items (d4_001, d4_080, d4_091): none keys confirming current links for the scope, and none uses an enterprise-wide remap or a scope exclusion as a decoy. Judged distinct: no bank item asks what to do when the architecture repository is older than an acquisition. Owner pattern: k=1, a keyed lone owner option (rule 21); the runner-up C names the architecture team, not an owner; 'assess' sits in the stem and distractor B, not the key.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_112",
+      "domain": 4,
+      "subtopic": "4A2 Operations management. An AI coding agent in the build pipeline",
+      "principle_id": "final-two",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A credit bureau's build pipeline lets an AI coding agent write fixes for failed builds and merge each fix itself once the automated tests pass. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Weekly review of the agent's merged fixes by the service owner",
+        "B": "More automated tests for agent fixes, chosen by the service owner",
+        "C": "An engineer's approval before each agent fix is merged",
+        "D": "Removal of the agent from the pipeline, decided by the service owner"
+      },
+      "correct": "C",
+      "key_concept": "Separation of duties in a pipeline covers AI agents: a change an agent writes still needs approval by someone else before it is merged.",
+      "pre_read": "Trace one fix from the failed build to production before reading the options.",
+      "correct_explanation": "When the agent merges its own fixes, the same actor writes and approves each change, so passing tests are the only check. An engineer's approval before each merge restores separation of duties in the pipeline, as for code people write. A weekly review by the service owner is the runner-up: it is a real check, but it comes after the fixes are merged and released, when a faulty or unsafe change may already be running.",
+      "wrong_explanations": {
+        "A": "A weekly review finds problems only after the fixes are merged and released, so a faulty or unsafe change can run in production for days first.",
+        "B": "More tests widen what the agent's fixes must pass, but the agent still approves its own changes, and tests check only what they were written to check.",
+        "D": "Removing the agent gives up its benefit when an approval step can control the risk; banning a new tool outright is rarely the proportionate response."
+      },
+      "tips": [
+        "Eliminate: B adds tests yet leaves the agent approving its own changes, and D bans a useful tool when an approval step can control the risk.",
+        "Final two: C beats A because approval before merging stops a bad fix reaching production; a weekly review finds it only after it has run.",
+        "Exam cue: separation of duties applies to AI agents too; whoever, or whatever, writes a change should not be the one that approves it."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-5 (Separation of Duties); NIST SP 800-53 Rev. 5 CM-5 (Access Restrictions for Change); NIST AI 100-1 (AI RMF 1.0) GOVERN 3.2 (roles and responsibilities for human-AI configurations and oversight of AI systems are defined)",
+      "related_concepts": [
+        "Separation of duties",
+        "CI/CD pipeline",
+        "AI coding agents"
+      ],
+      "_provenance": "Authored from concept: notes 4A2.3 (DevOps and Pipeline Controls: separation of duties needs a second person to approve code before merge, including code an AI agent writes; passing tests do not replace that approval). Round 13, 5 Nov 2026: original scenario (a credit bureau's build pipeline that lets an AI coding agent write fixes for failed builds and merge each fix itself once the automated tests pass) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_050 (a CTO asks the risk analyst to approve every release in a pipeline that already enforces peer review), crisc_d4_067 (evidence that a peer-review gate administrators can switch off works), crisc_d4_026 (chatbot instruction edits treated as changes), crisc_d4_048 (limits on an AI maintenance agent acting on its own), crisc_d4_087 (an AI assistant's edit rights to risk ratings), crisc_d4_006 (a vendor's AI model swap); CISA d3_136 (data scientists who retrain and deploy a pricing model themselves), d4_153 (developers merging straight into the release branch); CC cc_d3_013 (one developer writes and releases code), cc_d4_155 (developers copying models into production); AAIA aaia_d2_004 (an MLOps pipeline that promotes any retrained model once code tests pass). Options compared with every 4A2 item and with crisc_d4_048's decoys: no vendor-liability, certification or KRI decoy is reused. Judged distinct: no bank item has an AI agent approving its own code changes; the final two is approval before merge against a weekly review after release. Consistent with crisc_d4_050 (the first line runs the gate; the risk function does not approve releases) and crisc_d4_087 (removing a right the AI should not hold). Owner pattern: k=3, the key is the one option without an owner; the runner-up A and both easy distractors (B, D) name the service owner.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_113",
+      "domain": 4,
+      "subtopic": "4A4 Data lifecycle management. One wiping method for every retired drive",
+      "principle_id": "proportionate-response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A satellite imagery firm overwrites every retired drive once, whether it held public sample images or restricted defense imagery, and whether it is reissued or sold. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Physical destruction of each retired drive, approved by the data owners",
+        "B": "Methods set by the data owner's class and each drive's next use",
+        "C": "A second overwrite pass on each drive the firm sells",
+        "D": "Data owners told of each drive sold and its overwrite result"
+      },
+      "correct": "B",
+      "key_concept": "Sanitization is set by the data's classification and where the media goes next, so effort and cost match the harm a disclosure would cause.",
+      "pre_read": "Picture the different drives this one rule covers before reading the options.",
+      "correct_explanation": "One overwrite pass treats restricted defense imagery like public samples, and a sold drive like a reissued one. Setting the method by the data's class and each drive's next use matches effort to risk, as NIST SP 800-88 advises: purge or destroy for restricted imagery leaving the firm, a lighter method for low-risk reuse. Destroying every drive is the runner-up: it protects the imagery, but scraps reusable drives and spends money where risk is low.",
+      "wrong_explanations": {
+        "A": "Destruction protects restricted imagery but also scraps drives that held only public images, wasting reusable media and money; the method should match each drive's risk.",
+        "C": "A second pass repeats one method on every sold drive, whatever it held; extra overwrite passes add little, and overwriting can leave data behind on flash drives.",
+        "D": "Telling data owners about each sale reports the problem without fixing it; restricted imagery still leaves the firm after a single overwrite pass."
+      },
+      "tips": [
+        "Eliminate: C repeats a method chosen without regard to the data, and D informs owners while restricted imagery still leaves after one pass.",
+        "Final two: B beats A because destroying every drive also scraps ones that held only public images; matching method to class and next use puts effort where risk is.",
+        "Exam cue: sanitization depends on how sensitive the data is and whether the media leaves the firm; one method for everything is too weak or too costly."
+      ],
+      "framework_ref": "NIST SP 800-88 Rev. 2 Section 4.1 (Storage Sanitization Policy: align the data classification scheme with minimum acceptable sanitization methods, and set requirements for disposal and reuse); NIST SP 800-88 Rev. 2 Section 4.3 (Storage Sanitization and Disposition Decision Framework: decisions are commensurate with the confidentiality of the information, and purge may suit better than destroy for lease returns, reuse, resale or cost)",
+      "related_concepts": [
+        "Media sanitization",
+        "Data classification",
+        "Cost-benefit"
+      ],
+      "_provenance": "Authored from concept: notes 4A4.2 (Retention and Sanitization: NIST SP 800-88 methods follow data class and the media's next use; media type shapes the technique). Round 13, 5 Nov 2026: original scenario (a satellite imagery firm that overwrites every retired drive once, whether it held public sample images or restricted defense imagery, and whether it is reissued or sold) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_008 (recordings kept past the schedule), crisc_d4_103 (customer phone copies kept after repair), crisc_d4_078 (an archive tied to a retiring system), crisc_d4_068 (a replaced system's database left running); CISA d4_121 (leased backup disks returned to the lessor: purge keyed, destroy-and-reimburse a distractor), d4_125 (key destruction as evidence for a retired cloud bucket), d4_281 (overwrites on reissued HR laptops never checked); CC cc_d5_002 (purging donated laptop SSDs), cc_d5_136 (clearing a drive reissued on the same team), cc_d5_047 (a failed SSD under warranty swap), cc_d5_093 (degaussing SSDs), cc_d5_106 (a printer drive sent for repair), cc_d1_171 (a skipped wipe check). Judged distinct: those items choose one technique for one drive; this one asks the practitioner to fix a standard that ignores class and destination, with blanket destruction as the over-control runner-up (cost-benefit). No CRISC item has keyed sanitization before. Owner pattern: k=3, the key B and the runner-up A name data owners, and easy distractor D does too; C names none.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_114",
+      "domain": 4,
+      "subtopic": "4A5 Portfolio and project management. Judging a finished risk-reduction project",
+      "principle_id": "residual-counts-working-controls",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A fund administrator's portfolio board funded a project to cut payment-fraud risk to a level set in its business case. Which measure BEST shows the risk practitioner whether the project delivered?",
+      "options": {
+        "A": "Residual fraud risk now against the business case's target risk",
+        "B": "Current fraud risk against its rating before the project began",
+        "C": "Delivery against the business case's schedule and budget",
+        "D": "Payment controls now in production against the project plan"
+      },
+      "correct": "A",
+      "key_concept": "A risk-reduction project has delivered when residual risk, with its controls working, reaches the target risk its business case promised.",
+      "pre_read": "Note exactly what the board paid for before reading the options.",
+      "correct_explanation": "The board funded a cut to a stated level, so the test of delivery is today's residual risk, with the new controls working, against the target risk the business case promised. Comparing current fraud risk with its rating before the project is the runner-up: it shows that risk fell, but not whether it fell as far as the board paid for, so a small drop would look like success.",
+      "wrong_explanations": {
+        "B": "A before-and-after comparison shows that fraud risk fell, but not whether it reached the level the board funded; a small drop would still look like success.",
+        "C": "On-time, on-budget delivery shows the project was run well, not that fraud risk reached the level the board paid for.",
+        "D": "Controls in production are outputs; they show what was built, not whether fraud risk now sits at the level the business case promised."
+      },
+      "tips": [
+        "Eliminate: C measures how the project was run and D counts what it built; neither shows whether fraud risk reached the funded level.",
+        "Final two: A beats B because the board paid for a stated level; a fall from the old rating can still stop short of it.",
+        "Exam cue: judge a risk-reduction investment by residual risk against the target it promised, not by delivery, outputs or any fall at all."
+      ],
+      "framework_ref": "COBIT 2019 APO05 (Managed Portfolio); ISACA Glossary (residual risk); ISACA Glossary (risk response)",
+      "related_concepts": [
+        "Benefits realization",
+        "Residual risk",
+        "Target risk"
+      ],
+      "_provenance": "Authored from concept: notes 4A5.1 (Portfolio Management by Value and Risk: a project's risk reduction counts in scoring, and after delivery residual risk is compared with the target its business case promised). Round 13, 5 Nov 2026: original scenario (a fund administrator's portfolio board that funded a project to cut payment-fraud risk to a level set in its business case and wants to know whether it delivered) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_009 (each project's effect on the enterprise risk profile), crisc_d4_104 (a project whose customer has left), crisc_d4_070 and crisc_d4_079 (project log scope), crisc_d4_040 (current risk during a partial Zero Trust rollout); crisc_d3_069 (an action plan complete but short of target), crisc_d3_088 (each option's cost and the target risk it leaves), crisc_d2_104 (inherent risk to guide a new app's controls), crisc_d1_116 (risks left out of the profile while in treatment); CISA d3_016 (realized benefits not measured against the business case), d3_088 (who owns a benefit shortfall), d2_111 (outcome-based benefits in a business case). Judged distinct: CISA d3_016 is an auditor's finding on financial benefits; crisc_d3_069 is the action after a shortfall. Here the practitioner picks the measure, with a 'Current risk' option that is wrong because the question asks about the promised target (round 13 ask). Keep apart from crisc_d3_069 in practice sets. Owner pattern: k=0, no option names an owner; 'business' appears in the key and in distractor C.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_115",
+      "domain": 4,
+      "subtopic": "4A7 Emerging technologies. Field controllers with a short patch period",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A smart-farm operator plans to buy 8,000 wireless valve controllers it expects to run for ten years; the vendor patches their firmware for three years. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "A separate network for the controllers after patches stop",
+        "B": "Patch support for the planned life as a purchase term",
+        "C": "Encrypted radio links between the controllers and the farm hub",
+        "D": "Penetration testing of the controllers before they go live"
+      },
+      "correct": "B",
+      "key_concept": "For long-lived connected devices, the vendor's patch support should cover the planned years of use; a gap is best closed before purchase.",
+      "pre_read": "Compare the two time spans in the stem before reading the options.",
+      "correct_explanation": "The controllers would run seven years after the vendor's patches stop, so flaws found then stay open in devices that steer the farm's water. Making patch support for the planned ten years a purchase term closes that gap at its cause, while the operator still has buying leverage. A separate network is the runner-up: it limits who can reach the controllers, but leaves seven years of flaws unfixed in devices that can still be misused.",
+      "wrong_explanations": {
+        "A": "Isolation limits who can reach the controllers, but seven years of flaws would still go unfixed; it suits devices already bought, not a purchase still open.",
+        "C": "Encrypting the radio links protects data in transit, but flaws in the controllers' own firmware would still go unpatched after the third year.",
+        "D": "Testing before go-live finds today's flaws; it cannot fix the ones found after the third year, when no patches will come."
+      },
+      "tips": [
+        "Eliminate: C guards the radio traffic and D finds today's flaws, but the risk lies in firmware flaws found after year three, when no patches come.",
+        "Final two: B beats A because a support term closes the gap before purchase; a separate network only limits who can reach controllers left unpatched.",
+        "Exam cue: before adopting long-lived devices, compare the vendor's support period with the planned years of use, and close any gap in the purchase terms."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SA-4 (Acquisition Process); NIST SP 800-53 Rev. 5 SA-22 (Unsupported System Components)",
+      "related_concepts": [
+        "Internet of Things (IoT)",
+        "Vendor support life cycle",
+        "Acquisition requirements"
+      ],
+      "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: check vendor claims, including patch support periods, through evidence, and propose conditions before adoption; IoT patch support can end years before the devices retire). Round 13, 5 Nov 2026: original scenario (a smart-farm operator that plans to buy 8,000 wireless valve controllers it expects to run for ten years, from a vendor that patches their firmware for three) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_101 (installed lithography controllers the vendor no longer patches, where isolation is keyed), crisc_d4_002 (a legacy system that has never failed), crisc_d4_037 (exit terms for a young drone platform vendor), crisc_d4_013 (a tamper-proof claim), crisc_d4_036 (pause conditions for a headset pilot), crisc_d4_072 (scaling a 5G pilot), crisc_d4_095 (a digital twin with remote control), crisc_d4_048 (an AI agent's limits); CISA d4_060 (firewalls reaching end of support before their replacement), d4_145 (servers past end of support); CC cc_d5_070 (a ten-year VPN appliance and quantum risk), cc_d1_017 (a scanner firmware fix); AAIA: no item on a device support period. The vendor-certification decoy, used in six 4A7 items, was avoided. Judged distinct: no bank item compares a vendor's patch period with a device's planned life before purchase. Counterpart to crisc_d4_101: there the controllers are installed and unsupported, so isolation is right; here the purchase is still open, so the support term comes first. Keep the two together in teaching, apart in practice sets. Owner pattern: k=0, no option names an owner.",
       "style_version": 2
     }
   ]
