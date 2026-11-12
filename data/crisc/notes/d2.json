@@ -51,15 +51,16 @@
             "crisc_d2_072",
             "crisc_d2_087",
             "crisc_d2_100",
-            "crisc_d2_121"
+            "crisc_d2_121",
+            "crisc_d2_136"
           ],
           "definition": "A risk event is something that happened, or nearly happened, that shows a risk scenario can occur. Loss events cause harm; near misses stop just short of it.",
           "why_it_matters": "Events are the best evidence of real likelihood and impact. Counting only losses hides how often controls were nearly beaten, so the register understates risk.",
           "how_it_works": [
             "An incident breaks, or nearly breaks, security policy; it need not cause loss.",
-            "Each event is linked to the scenario its review's root cause points to, not the first guess logged, and used to re-rate that scenario's likelihood or impact.",
+            "Each event is linked to the scenario its review's root cause points to, not the first guess logged, and feeds that scenario's likelihood or impact.",
             "Fixing the immediate cause closes the incident ticket, not the risk; an event whose cause fits no scenario shows a register gap, filled with the process owner.",
-            "Impact counts every loss: primary, such as missed orders or recovery time; secondary, such as lost customers or penalties; and harm to customers."
+            "Impact counts primary and secondary losses, such as missed orders, lost customers, penalties and customer harm; the process owner, not IT's incident record, supplies it."
           ],
           "example": "At a water utility, an alarm stops an operator from opening the wrong valve after a remote session times out. Priya Raman, the risk analyst, logs a near miss against the remote operation error scenario, notes the alarm was the last barrier, and asks the operations manager, its risk owner, to review the likelihood rating.",
           "audit_focus": {
@@ -392,7 +393,8 @@
             "crisc_d2_025",
             "crisc_d2_050",
             "crisc_d2_076",
-            "crisc_d2_127"
+            "crisc_d2_127",
+            "crisc_d2_137"
           ],
           "definition": "AI-specific threats attack the parts unique to AI systems: the prompts they accept, the data they learn from and the trained model itself.",
           "why_it_matters": "Firewalls and malware tools do not see a malicious instruction hidden in a document an AI assistant reads. Missing these threats leaves AI scenarios out of the register.",
@@ -400,7 +402,7 @@
             "AI threats target three new assets: the prompt channel, the training data pipeline and the model's learned parameters.",
             "Indirect prompt injection is planted by a third party in content the model reads, such as an email; who can send it sets likelihood, and the tool's permissions set impact.",
             "Poisoning can enter through third-party datasets and pre-trained models, so the AI supply chain is part of the threat surface.",
-            "Extraction and inversion attacks need only query access, so a public interface is enough to attempt them.",
+            "Extraction and inversion attacks need only query access, so a public interface is enough to attempt them; a shared model copy also allows membership inference, revealing whose records trained it.",
             "NIST AI 100-2 E2025 names and classifies these attacks; the practitioner turns the relevant ones into scenarios with a business owner.",
             "Targeted and backdoor poisoning change outputs for a small set of inputs, so an overall accuracy check can look normal while chosen results are skewed."
           ],
@@ -1113,14 +1115,15 @@
             "crisc_d2_035",
             "crisc_d2_037",
             "crisc_d2_080",
-            "crisc_d2_124"
+            "crisc_d2_124",
+            "crisc_d2_133"
           ],
           "definition": "MTO is a critical function's longest tolerable disruption; RTO, the time allowed to recover a function or resource; RPO, the earliest restore point that tolerable data loss allows.",
-          "why_it_matters": "These numbers drive recovery design and cost. Set by IT alone, they reflect the technology, not what the business can survive.",
+          "why_it_matters": "These numbers drive recovery design and cost. Set by IT alone, they reflect technology, not what the business can survive.",
           "how_it_works": [
             "Process owners and leadership set the maximum tolerable outage (MTO; other sources say MTD) from impact-over-time results.",
             "The recovery time objective (RTO) for each supporting function or resource must normally be shorter than the MTO, leaving time to reprocess work.",
-            "The recovery point objective (RPO) is the earliest point data must be recoverable to; a four-hour RPO allows four hours of lost data.",
+            "The recovery point objective (RPO) is the earliest point data must be recoverable to; a four-hour RPO allows four hours of lost data; data that cannot be recreated sets it.",
             "The service delivery objective (SDO) sets the service level, such as share of normal volume, needed in alternate mode.",
             "Shorter objectives cost more; a workable manual process lets a system's RTO run longer, and when tested recovery misses the MTO, the owner weighs cost against impact.",
             "Owners' outage limits rest on impact evidence; when nearly every process claims the shortest limit, the practitioner challenges each with its owner."
@@ -1189,7 +1192,7 @@
             },
             {
               "term": "Acceptable interruption window (AIW)",
-              "definition": "ISACA term: the business's downtime limit for a system, set where a longer outage would start to put business objectives at risk."
+              "definition": "ISACA term: the longest a system can be down before business objectives are put at risk."
             },
             {
               "term": "Service delivery objective (SDO)",
@@ -1220,19 +1223,20 @@
             "crisc_d2_062",
             "crisc_d2_082",
             "crisc_d2_098",
-            "crisc_d2_125"
+            "crisc_d2_125",
+            "crisc_d2_134"
           ],
-          "definition": "A risk register is the working record of risk scenarios, with the owner, ratings, controls, chosen response and status for each one.",
-          "why_it_matters": "The register is how risk is tracked and decided on. An entry with no owner has nobody to accept, treat or monitor it, so it drifts.",
+          "definition": "A risk register is the working record of risk scenarios, with the owner, ratings, controls, chosen response and status of each.",
+          "why_it_matters": "The register is where risk is tracked and decided. An entry with no owner has nobody to accept, treat or monitor it, so it drifts.",
           "how_it_works": [
             "Core fields: ID, scenario, category, risk owner, inherent and current ratings (with the target rating for any planned response), existing controls, response, action plan, status, KRIs and review date.",
             "The risk owner is an accountable business manager with authority to decide the response, not the person who found the risk.",
             "Control owners (often the manager whose team runs the control) and action owners are recorded separately; answering for a control differs from owning the risk.",
-            "Ratings use the enterprise's common scales so entries can be compared and combined.",
+            "Ratings use common scales so entries can be compared and combined; risks with uncontrollable causes, such as weather, are rated too.",
             "IT or the risk function may maintain the register, but business owners own the entries in it.",
             "Each control is linked to every entry that credits it, so one failed test can be traced to all the ratings it changes."
           ],
-          "example": "A shipping line's register has 30 entries owned by IT Security. Noor Al-Amin, the risk practitioner, maps each scenario to the business process it harms, proposes the accountable manager as owner, such as the head of vessel operations for navigation system outages, and records the IT security manager as control owner where that manager answers for the controls. Noor then asks the executive committee to confirm the proposed owners.",
+          "example": "A shipping line's register has 30 entries owned by IT Security. Noor Al-Amin, the risk practitioner, maps each scenario to the process it harms, proposes its accountable manager as owner, such as the vessel operations head for navigation outages, and records the IT security manager as control owner where they answer for the controls. Noor then asks the executive committee to confirm them.",
           "audit_focus": {
             "review": [
               "Sample entries for a named owner with authority over the harmed process",
@@ -1263,7 +1267,7 @@
             },
             {
               "term": "Action owner",
-              "definition": "The person responsible for completing a specific risk treatment task by its due date."
+              "definition": "The person who completes a specific risk treatment task by its due date."
             },
             {
               "term": "Risk detail record",
@@ -1707,14 +1711,15 @@
             "crisc_d2_019",
             "crisc_d2_063",
             "crisc_d2_086",
-            "crisc_d2_110"
+            "crisc_d2_110",
+            "crisc_d2_135"
           ],
           "definition": "Control effectiveness is how well a control actually reduces a risk's likelihood or impact; it sets the gap between inherent and residual risk.",
           "why_it_matters": "A residual rating that assumes controls work, without evidence, can hide a risk far above appetite. Effectiveness must be shown, not assumed.",
           "how_it_works": [
             "Design effectiveness asks whether the control, run as intended, would address the scenario's cause.",
             "Operating effectiveness asks whether it actually ran as designed over the period, shown by testing or monitoring.",
-            "Evidence includes control test results, key control indicators (KCIs), audit findings and incident history.",
+            "Evidence includes control test results, key control indicators (KCIs), audit findings and incident history; a detective control's clean record proves little until a test shows it would catch an event.",
             "An untested or failed control earns little or no reduction in the current rating; one that repeated tests show working earns its credit without waiting for a review.",
             "When test results or a control's scope change, such as a system replaced after the test, residual risk is re-rated and the risk owner is told.",
             "Design is judged first: a control that misses the scenario's cause earns little credit, and one that reaches only some items, such as a one-in-ten sample, earns credit for those."

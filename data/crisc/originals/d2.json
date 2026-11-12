@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review). Repair round 1, 31 Oct 2026 (independent verification). Round 3 crisc_d2_046 to crisc_d2_065, 4 Nov 2026. Round 7 crisc_d2_091 to crisc_d2_094, 4 Nov 2026. Round 8 crisc_d2_095 to crisc_d2_099, 5 Nov 2026. Round 9 crisc_d2_100 to crisc_d2_104, 5 Nov 2026. Round 10 crisc_d2_105 to crisc_d2_110, 5 Nov 2026. Round 11 crisc_d2_111 to crisc_d2_115, 5 Nov 2026. Round 12 crisc_d2_116 to crisc_d2_121, 5 Nov 2026. Round 14 crisc_d2_127 to crisc_d2_132, 12 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review). Repair round 1, 31 Oct 2026 (independent verification). Round 3 crisc_d2_046 to crisc_d2_065, 4 Nov 2026. Round 7 crisc_d2_091 to crisc_d2_094, 4 Nov 2026. Round 8 crisc_d2_095 to crisc_d2_099, 5 Nov 2026. Round 9 crisc_d2_100 to crisc_d2_104, 5 Nov 2026. Round 10 crisc_d2_105 to crisc_d2_110, 5 Nov 2026. Round 11 crisc_d2_111 to crisc_d2_115, 5 Nov 2026. Round 12 crisc_d2_116 to crisc_d2_121, 5 Nov 2026. Round 14 crisc_d2_127 to crisc_d2_132, 12 Nov 2026. Round 15 crisc_d2_133 to crisc_d2_137, 12 Nov 2026.",
     "schema_version": 1
   },
   "domain": 2,
@@ -4889,6 +4889,191 @@
         "Internal and external sources"
       ],
       "_provenance": "Authored from concept: notes 2A1.2 (Internal and External Event Sources: events logged in several places are matched and counted once; external events inform ratings when local history is short). Round 14, 12 Nov 2026: original scenario (a food bank's help desk and warehouse team each log inventory-system outages; the logs overlap and each misses some) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 14 asks: a FIRST key that validates data rather than assessing; an outside-data option that stays wrong because the firm's own records exist. Owner shape: k=2 with the key outside; the easy distractors A (warehouse owner) and D (IT owner) name owners, and the key B and runner-up C name none. Neighbours checked (stems and options): crisc_d2_047 (event log entries with date and loss only), crisc_d2_046 (a loss threshold in event data), crisc_d2_096 (fault and repair records over a maintenance lead's view), crisc_d2_103 (ten-year area records for a new site), crisc_d2_107 (an industry rate scaled to the studio), crisc_d2_021 (peer events adjusted for exposure), crisc_d1_137 (a unit logging no near misses), CC cc_d5_096 (fields in a sign-in log); no mirror in CISA or AAIA. Keep apart from crisc_d2_096 and crisc_d2_103 in practice sets. Audit 12 Nov 2026 (round 14 standards audit): key no longer carries its own reason (\"so each outage is counted once\") or opens \"Merge\" (keyed 3 of 4).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_133",
+      "domain": 2,
+      "subtopic": "2B2 Business impact analysis (BIA). Data that sets the recovery point",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A farm cooperative's grain-intake system holds truck weights, also printed on drivers' tickets, and protein results from samples discarded after testing. Which data should MOST shape the recovery point objective the risk analyst recommends?",
+      "options": {
+        "A": "Protein results from samples discarded after testing",
+        "B": "Truck weights that the payments owner uses to pay members",
+        "C": "Member bank details held for the payment runs",
+        "D": "Intake summary reports built from the other records"
+      },
+      "correct": "A",
+      "key_concept": "The RPO follows the data the business can least afford to lose; records that can be entered again from another source tolerate a longer gap.",
+      "pre_read": "For each kind of data, ask what would happen to the records written since the last backup.",
+      "correct_explanation": "An RPO is set by how much data loss the business can tolerate. Protein results written since the last backup would be gone for good, because their samples were discarded, so they need the most recent restore point and set the RPO. Truck weights are the runner-up: they drive member payments, but any weights lost from the system can be keyed in again from the drivers' printed tickets.",
+      "wrong_explanations": {
+        "B": "Weights matter for member payments, but lost entries can be keyed in again from the drivers' printed tickets, so they tolerate more data loss than the protein results.",
+        "C": "Bank details change little between backups, so a restore loses almost none; their sensitivity calls for confidentiality controls, not the most recent restore point.",
+        "D": "Summary reports are built from the underlying records, so they can be produced again after a restore; they do not set how recent the restore point must be."
+      },
+      "tips": [
+        "Eliminate: C changes little between backups, so a restore loses almost nothing, and D can be rebuilt from the records beneath it; neither sets how recent the restore point must be.",
+        "Final two: A beats B because weights lost from the system can be keyed in again from the printed tickets, while protein results are lost with the discarded samples.",
+        "Exam cue: the RPO is set by the data the business can least afford to lose; ask whether lost records could be entered again from another source."
+      ],
+      "framework_ref": "ISACA Glossary (recovery point objective); NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO)",
+      "related_concepts": [
+        "Recovery point objective",
+        "Tolerable data loss",
+        "Business impact analysis"
+      ],
+      "_provenance": "Authored from concept: notes 2B2.2 (MTO, RTO and RPO: the RPO reflects how much data loss the process can tolerate; data that cannot be recreated sets the RPO). Round 15, 12 Nov 2026: original scenario (a farm cooperative's grain-intake system holds truck weights, also printed on drivers' tickets, and protein results from samples discarded after testing) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 15 asks: a lone owner on the runner-up (B, the payments owner), which keeps the batch's final two even; a short 'Which' stem; no period word on any option. Owner shape: k=1, the lone owner option is the runner-up. Neighbours checked (stems and options): crisc_d2_034 (a one-hour RPO recorded for ticket sales), crisc_d2_124 (an RTO revisited for manual closings), crisc_d2_035 (tested recovery past the MTO), crisc_d2_012 (an RTO for an AI service), crisc_d2_113 (a change that calls for a BIA revision), crisc_d4_117 (backups that miss the RPO), crisc_d4_071 (restore points kept longer than intruders stay hidden), CC cc_d2_006 (RPO defined), CISA d4_270 (restore plus catch-up work past the MTD; a first draft on that angle was dropped as a mirror); no mirror found.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_134",
+      "domain": 2,
+      "subtopic": "2B3 Risk register. Risk with a cause beyond control",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A wind farm operator's IT manager has kept lightning damage to turbine-control links out of the risk register, saying no one can control the weather. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Note lightning as an assumption behind the other ratings",
+        "B": "Ask the operations owner to insure the links before rating",
+        "C": "Have lightning damage entered and rated like other risks",
+        "D": "Keep the register to risks whose causes the firm controls"
+      },
+      "correct": "C",
+      "key_concept": "A risk whose cause the enterprise cannot control still belongs in the register, because its impact can be reduced, shared or planned for.",
+      "pre_read": "Before agreeing to leave a risk out, ask what the register is for and who relies on it.",
+      "correct_explanation": "The register records risks by their effect on objectives, not by whether the cause can be prevented. Lightning cannot be stopped, but surge protection, backup links, spares and insurance can cut its impact, and the owner can weigh them only once the risk is rated. Noting lightning as an assumption is the runner-up: it keeps the hazard in view, but an assumption gets no rating, owner or response.",
+      "wrong_explanations": {
+        "A": "An assumption is noted, not rated, so lightning damage would get no likelihood, impact, owner or response, however large its harm.",
+        "B": "Insurance is one possible response, but choosing it before the risk is rated skips the analysis that shows whether insurance, protection or acceptance fits.",
+        "D": "Weather is an environmental threat source; risks are kept by their effect on objectives, and a register limited to controllable causes hides real exposure."
+      },
+      "tips": [
+        "Eliminate: D leaves out environmental threat sources, which belong in the register like any other, and B picks a response before the risk has been rated.",
+        "Final two: C beats A because a rated register entry gets an owner and a response, while an assumption keeps lightning in view without either.",
+        "Exam cue: a cause beyond the enterprise's control is no reason to leave a risk out; its impact can still be reduced, transferred or planned for."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Appendix D Table D-2 (Taxonomy of Threat Sources: adversarial, accidental, structural and environmental); ISACA Glossary (risk register); NIST IR 8286 Rev. 1 Section 3.5 Table 2 (Response types for negative cybersecurity risks: transfer shares a portion of the consequences, such as through cybersecurity insurance)",
+      "related_concepts": [
+        "Risk register",
+        "Environmental threat sources",
+        "Risk response options"
+      ],
+      "_provenance": "Authored from concept: notes 2B3.1 (Register Fields and Ownership: risks are rated on common scales, and risks with causes beyond the enterprise's control, such as weather, are entered and rated too). Round 15, 12 Nov 2026: original scenario (a wind farm operator's IT manager keeps lightning damage to turbine-control links out of the register because no one controls the weather) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 15 asks: a lone owner on an easy distractor, acting too early (B, the operations owner insuring before any rating); the stock no-change 'Keep ...' option is wrong (D); a 'Have' key; no period word on any option. Owner shape: k=1, the lone owner option is an easy distractor. Neighbours checked (stems and options): crisc_d2_028 (a flood zone as a condition raising likelihood), crisc_d2_066 (staff error missing from threat sources), crisc_d2_003 (classifying a threat source), crisc_d2_094 and crisc_d2_118 (what a register entry should state), crisc_d2_007 (a generic register entry), crisc_d4_002 (an unsupported system kept off the register because it has not failed), crisc_d3_152 (a peer's outage recorded as emerging risk), CISA d5_352 (environmental events for a server room); no mirror in CISA, CC or AAIA.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_135",
+      "domain": 2,
+      "subtopic": "2B5 Inherent and residual risk. Credit for a review that found nothing",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A copper mine's risk owner wants the assay-fraud scenario's residual rating lowered, as the lab's audit-trail review has found no altered results in three years. What is the risk analyst's GREATEST concern?",
+      "options": {
+        "A": "No new control has been added to justify a lower rating",
+        "B": "A three-year clean record is too short to rely on",
+        "C": "The control owner, not the risk owner, should request it",
+        "D": "A broken review would show the same clean record"
+      },
+      "correct": "D",
+      "key_concept": "A detective control's clean record earns credit only once a test shows it would catch the event; a broken one also reports nothing.",
+      "pre_read": "Ask what each piece of evidence can and cannot show about how well the control works.",
+      "correct_explanation": "The review is a detective control, and three years without findings fits two stories: no one altered results, or the review cannot catch them. Silence alone cannot tell these apart, so it earns no extra credit until a test, such as planting altered records, shows the review finds them. The short record is the runner-up: a longer clean run would carry the same doubt, since the gap is in what the evidence shows.",
+      "wrong_explanations": {
+        "A": "A rating can fall without a new control when evidence shows an existing one works, as restore-tested backups do; the doubt here is the evidence itself.",
+        "B": "More clean years would not help: a review that cannot catch altered results stays silent for any length of time, so the record's length is not the issue.",
+        "C": "A risk owner may ask for a re-rating and bring evidence; who asks matters less than whether the evidence shows the review works."
+      },
+      "tips": [
+        "Eliminate: A ties a lower rating to a new control, though tested existing controls also earn credit, and C fixes on who asked rather than on what the evidence shows.",
+        "Final two: D beats B because a broken detective control stays silent however long you wait; only a test that it catches altered results can earn the credit.",
+        "Exam cue: for a detective control, 'nothing found' proves little; ask for a test showing it would catch the event before giving it credit."
+      ],
+      "framework_ref": "ISACA Glossary (residual risk); NIST SP 800-53A Rev. 5 Section 2.4.2 (Assessment Methods: examine, interview and test, with depth and coverage)",
+      "related_concepts": [
+        "Residual risk",
+        "Detective controls",
+        "Operating effectiveness"
+      ],
+      "_provenance": "Authored from concept: notes 2B5.2 (Control Effectiveness and the Residual Gap: a detective control's clean record proves little until a test shows it would catch an event). Round 15, 12 Nov 2026: original scenario (a copper mine's risk owner wants the assay-fraud scenario's residual rating lowered because the lab's audit-trail review has found no altered results in three years) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 15 asks: a lone owner on an easy distractor, the wrong owner deciding (C, the control owner as the only one who may ask); the hard item of the batch. Owner shape: k=1, the lone owner option is an easy distractor. Neighbours checked (stems and options): crisc_d2_019 (untested encryption: coverage reports first), crisc_d2_110 (restore-tested backups earn credit; this item's option A rests on the same lesson), crisc_d2_063 (effective in operation, not in design), crisc_d2_086 (an access review after a system move), crisc_d2_044 (testing a control behind a large gap), crisc_d1_065 (unchallenged self-assessments), crisc_d4_002 (no failures as a reason to skip an entry), AAIA aaia_d3_070 (an AI review that found no exceptions, tested by sampling); no mirror in CISA or CC.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_136",
+      "domain": 2,
+      "subtopic": "2A1 Risk events. Impact of a booking outage",
+      "principle_id": "objectives-first",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "IT closed a container shipping line's six-hour booking-system outage as low impact because no data was lost. Which is the BEST source for the risk analyst's record of the event's impact?",
+      "options": {
+        "A": "The booking owner's tally of missed sailings and penalties",
+        "B": "The impact assessment in IT's incident report",
+        "C": "An estimate from the outage length and average bookings",
+        "D": "Booking-outage losses reported by other shipping lines"
+      },
+      "correct": "A",
+      "key_concept": "An event's business loss comes from the owner of the process it hit; IT's incident record shows the technical side, such as data lost.",
+      "pre_read": "Ask who would actually see each kind of loss the outage caused.",
+      "correct_explanation": "A loss event is recorded with its full business impact, and IT sees only the technical side: no data lost. The booking owner can count the actual harm, such as containers that missed their sailing and penalties paid to customers. An estimate from outage length and average bookings is the runner-up: it is a fair fallback when no record exists, but it cannot show what this outage actually cost.",
+      "wrong_explanations": {
+        "B": "IT's report measures technical impact, such as data lost and time to restore; it does not see missed sailings or customer penalties, which fall on the business.",
+        "C": "An average-based estimate is a fallback when actual figures are missing; it smooths over this outage's timing, such as whether a sailing closed during it.",
+        "D": "Peer losses help rate a scenario when local history is thin, but this event happened at the line itself, and its own losses can be counted directly."
+      },
+      "tips": [
+        "Eliminate: B records only the technical side, such as data lost, and D draws on other lines' events when this one happened at the line and can be counted directly.",
+        "Final two: A beats C because the owner can count what this outage actually cost; an average-based estimate misses its timing and is for when no record exists.",
+        "Exam cue: an event's impact is the business loss it caused; get it from the owner of the affected process, not from IT's restore record or an average."
+      ],
+      "framework_ref": "ISACA Glossary (loss event); NIST IR 8286 Rev. 1 Section 3.3.2 (Techniques for Estimating Likelihood and Impact of Consequences: secondary losses, such as lost customers and contract penalties, are captured with primary losses to show total impact); COBIT 2019 APO12.01 (Collect Data)",
+      "related_concepts": [
+        "Loss event",
+        "Business impact",
+        "Event data"
+      ],
+      "_provenance": "Authored from concept: notes 2A1.1 (Loss Events, Incidents and Near Misses: impact counts primary and secondary losses, and the process owner, not IT's incident record, supplies it). Round 15, 12 Nov 2026: original scenario (IT closes a container shipping line's six-hour booking-system outage as low impact because no data was lost) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 15 asks: the keyed lone owner of the batch (about a third of lone-owner items); the next 'Estimate' wording goes on a wrong option (C, the runner-up); short 'Which' stem. Owner shape: k=1, the lone owner option is the key; counted apart from the lens-word cap (calibration rule 21). Neighbours checked (stems and options): crisc_d2_087 (losses missing from a ransomware event record: what to add, not who supplies it), crisc_d2_117 (BIA figures as the source for scenario impact ratings), crisc_d2_131 (an untested assumption about retailers' patience), crisc_d2_088 (a supplier outage as the firm's own loss event), crisc_d2_121 (customers' harm in a loss event), crisc_d2_132 (merging two outage logs), crisc_d2_108 (a shipping line's duplicate register entries, different activity); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_087 in practice sets.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_137",
+      "domain": 2,
+      "subtopic": "2A2 Threat modeling and threat landscape. Sharing a model trained on patient reports",
+      "principle_id": "emerging-and-ai-risk-owned",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A generic drug maker plans to give university researchers a copy of its model trained on patients' adverse-reaction reports. Which AI-specific threat in this plan should MOST concern the risk analyst?",
+      "options": {
+        "A": "Model extraction by researchers sending repeated queries",
+        "B": "Membership inference revealing whose reports trained the model",
+        "C": "Data poisoning through false adverse-reaction reports",
+        "D": "Evasion inputs crafted to make the copy misjudge cases"
+      },
+      "correct": "B",
+      "key_concept": "Sharing a model trained on personal data lets its holders test whether a person's record was in the training set, exposing private facts.",
+      "pre_read": "Work out what holders of a copy could do that outsiders could not do before.",
+      "correct_explanation": "With a copy in hand, the researchers, or anyone the copy reaches, can run membership inference: testing whether a person's report was in the training data, which reveals that the person had a drug reaction. The plan creates this exposure, and patients bear the harm. Data poisoning through false reports is the runner-up: it is a real AI threat, but it targets training data whether or not the model is shared.",
+      "wrong_explanations": {
+        "A": "Extraction rebuilds a model from its answers to many queries; the researchers are being given the model itself, so this plan leaves nothing to extract.",
+        "C": "False reports could skew future training, but that threat exists with or without sharing; the plan's new exposure is to patients' privacy through the copy.",
+        "D": "Evasion makes a model misjudge crafted inputs, which would mislead only whoever relies on the researchers' copy; it exposes no patient data."
+      },
+      "tips": [
+        "Eliminate: A attacks a model the researchers will already hold, and D misleads only users of the copy's outputs; neither touches the patients behind the training data.",
+        "Final two: B beats C because sharing a copy opens a new privacy attack on the patients, while poisoning through false reports exists whether or not the model is shared.",
+        "Exam cue: when a change gives others a model, ask what that access newly allows; a model trained on personal data can reveal who was in it."
+      ],
+      "framework_ref": "NIST AI 100-2 E2025 Section 2.4.2 (Membership Inference: learning that an individual's record was in the training set can itself expose private information, as in a medical study); NIST AI 100-2 E2025 Section 2.4.4 (Model Extraction)",
+      "related_concepts": [
+        "Membership inference",
+        "AI privacy attacks",
+        "AI-specific threats"
+      ],
+      "_provenance": "Authored from concept: notes 2A2.3 (AI-Specific Threats: a shared model copy also allows membership inference, revealing whose records trained it). Round 15, 12 Nov 2026: original scenario (a generic drug maker plans to give university researchers a copy of its model trained on patients' adverse-reaction reports) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 15 asks: the batch's one AI item, on a fresh angle (membership inference from a shared model copy; not prompt injection, coding agents, suggested packages, human review of output or vendor ranking tools); the key is naturally the longest option. Owner shape: no option names an owner. Neighbours checked (stems and options): crisc_d2_025 (model extraction through a public pricing API: there extraction is the key; here it is wrong because the researchers receive the model itself, so keep the two apart in practice sets), crisc_d2_050 (poisoning through an openly editable dataset), crisc_d2_076 (AI attack classes added to STRIDE), crisc_d2_127 (prompt injection likelihood), crisc_d2_004 (resumes with hidden instructions), AAIA aaia_d1_043 (tests for memorized details in a generative model), AAIA aaia_d2_018 (rebuilding a model through an API), AAIA aaia_d2_043 (a pre-trained model from a public hub; a first draft on that angle was dropped as a mirror), CISA d5_248 (a diagnostic AI revealing memorized patient records); no mirror found.",
       "style_version": 2
     }
   ]
