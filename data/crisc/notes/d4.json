@@ -233,12 +233,13 @@
             "crisc_d4_082",
             "crisc_d4_102",
             "crisc_d4_122",
-            "crisc_d4_132"
+            "crisc_d4_132",
+            "crisc_d4_143"
           ],
           "definition": "Change management is the controlled process for requesting, assessing, approving, testing, implementing and reviewing changes, with configuration management keeping an accurate record of approved settings.",
-          "why_it_matters": "Many outages and incidents follow a change. Controlled change keeps risk within appetite: someone has judged the impact, can undo the change and knows what the system should look like.",
+          "why_it_matters": "Many outages follow a change. Controlled change keeps risk within appetite: someone has judged the impact, can undo the change and knows what the system should look like.",
           "how_it_works": [
-            "Each change has a request, an impact assessment, an approval suited to its risk, a test result and a back-out plan.",
+            "Each change has a request, impact assessment, risk-based approval, test and back-out plan; expected harm to a business process is its owner's call.",
             "Emergency changes, including urgent fixes during a freeze, get emergency approval, proportionate testing and a back-out plan, then a full review as soon as practical.",
             "A configuration management database (CMDB) records configuration items and the dependencies impact assessments rely on; assets missing from it miss patching, change and backup, so counts are reconciled.",
             "Comparing live settings with the baseline finds unauthorized changes, which are investigated, not quietly reversed; a needed deviation is approved by its business owner, recorded and reviewed.",
@@ -461,19 +462,20 @@
             "crisc_d4_059",
             "crisc_d4_068",
             "crisc_d4_086",
-            "crisc_d4_137"
+            "crisc_d4_137",
+            "crisc_d4_144"
           ],
           "definition": "The system development life cycle (SDLC) is the sequence of phases from initiation through design, build, testing, implementation, operation and disposal, each with its own risk activities.",
-          "why_it_matters": "A design flaw costs little to fix; after go-live it costs far more and may have caused harm. Risk work in every phase keeps the project within appetite.",
+          "why_it_matters": "A design flaw costs little to fix; after go-live it costs far more and may cause harm. Risk work in every phase keeps the project within appetite.",
           "how_it_works": [
             "Initiation: confirm the business case, owner, data sensitivity and initial risk assessment, updated when scope or data change.",
             "Requirements and design: define security, privacy and control requirements alongside functional ones; for a purchased system, put them in the selection criteria and contract.",
-            "Build and test: verify requirements are met; business users, not developers, sign off acceptance testing.",
+            "Build and test: tests verify requirements, security ones through cases written from them; business users, not developers, sign off UAT.",
             "Implementation: before go-live, the owner accepts residual risk within appetite or orders more treatment; the assessment is updated first only if scope, data or threats changed.",
             "Post-implementation review: check whether benefits arrived, risks stayed within appetite and assumed controls work; quiet months do not show that.",
             "Disposal is planned: the data owner has old data archived or securely destroyed, and servers and access are retired."
           ],
-          "example": "A retailer is rebuilding its loyalty app, and its only security review is two weeks before launch. Teo, the risk analyst, shows the sponsor that a late finding could force a costly redesign or a launch with open risk, and proposes security and privacy requirements at the design phase gate.",
+          "example": "A retailer is rebuilding its loyalty app; its only security review is two weeks before launch. Teo, the risk analyst, shows the sponsor that a late finding could force a costly redesign or a launch with open risk, and proposes security and privacy requirements at the design gate.",
           "audit_focus": {
             "review": [
               "Trace each project phase gate to a completed risk assessment",
@@ -528,7 +530,7 @@
           "how_it_works": [
             "The SSDF's four practice areas are prepare, protect, produce and respond; responding includes a disclosure policy and a public route for outside flaw reports.",
             "Security requirements are defined early, including secure defaults such as a unique password per device, and checked through threat modeling, code review and testing.",
-            "Testing combines static analysis, dynamic testing and, for high-risk systems, penetration testing.",
+            "Testing combines static analysis, dynamic testing and, for high-risk systems, penetration testing, which seeks ways in but does not confirm each requirement.",
             "Third-party and open-source components come from vetted sources and are tracked and checked for known flaws; a package an AI assistant names may be fake or planted.",
             "When a vulnerability is found, its root cause is analyzed so the process improves, not just the code; a flaw that recurs across releases signals a process gap.",
             "Requirements come from the new system's own risk assessment or threat model; a list copied from another product misses threats the old one never faced."
@@ -643,7 +645,8 @@
             "crisc_d4_030",
             "crisc_d4_047",
             "crisc_d4_069",
-            "crisc_d4_093"
+            "crisc_d4_093",
+            "crisc_d4_145"
           ],
           "definition": "Data lifecycle management controls data through each stage, create, store, use, share, archive and destroy, according to its classification and its owner's rules.",
           "why_it_matters": "Data risk changes at each stage: sharing brings new parties, archives get forgotten and old copies outlive their purpose. Classification and a named owner make protection match value and sensitivity.",
@@ -651,7 +654,7 @@
             "The data owner, a business manager, classifies data when it is created or collected and decides who may access it and for how long.",
             "The data custodian, often IT, applies the owner's rules through storage, backup and access controls.",
             "Classification levels set handling rules, such as encryption, sharing limits and retention; joined data sets are classified for what they reveal together, which can exceed each source.",
-            "A data inventory shows where each class of data lives, including copies in test and analytics systems.",
+            "A data inventory shows where each class of data lives, including test, analytics and archive copies, which keep the class's handling rules unless the owner reclassifies them.",
             "Each stage has controls: input checks at creation, access control in use, and owner-approved agreements that set a partner's permitted use when data is shared.",
             "Data that no business unit claims is reported so senior management can assign an owner; IT protects it as custodian in the meantime."
           ],
@@ -864,13 +867,14 @@
             "crisc_d4_009",
             "crisc_d4_051",
             "crisc_d4_104",
-            "crisc_d4_114"
+            "crisc_d4_114",
+            "crisc_d4_141"
           ],
           "definition": "Portfolio management selects, prioritizes and balances the organization's programs and projects by their expected value, risk and fit with strategy.",
           "why_it_matters": "Money and people are limited. A portfolio view stops low-value, high-risk projects from consuming resources and shows senior management the combined risk of everything in flight.",
           "how_it_works": [
             "Each proposal states its business value, cost, risks and link to strategic objectives.",
-            "Proposals are scored on value and risk together, not on cost or sponsor influence alone.",
+            "Proposals are scored on value and risk together, not cost or sponsor influence alone; at stage gates, such as an AI pilot going live, builders present but do not decide.",
             "The portfolio is reviewed regularly; projects whose value falls or risk rises are changed, paused or stopped.",
             "Continuing a project rests on the value and risk of the spend still to come; money already spent is no reason to finish a project whose value has gone.",
             "Projects can also reduce risk, such as retiring a weak system; that benefit counts in scoring, and after delivery residual risk is compared with the target the business case promised.",
@@ -887,9 +891,9 @@
               "Committee minutes recording funding choices and stated reasons"
             ],
             "recommend": "Have the investment committee score every proposal on value and risk together and review the portfolio quarterly.",
-            "decides": "The investment committee approves, prioritizes and stops investments"
+            "decides": "The portfolio board or investment committee approves, prioritizes and stops investments"
           },
-          "isaca_rule": "Portfolio decisions balance value and risk against strategy. The practitioner supplies the risk view, including the risks a project would reduce, so senior management can prioritize; the investment committee decides.",
+          "isaca_rule": "Portfolio decisions balance value and risk against strategy. The practitioner supplies the risk view, including the risks a project would reduce, so senior management can prioritize; the portfolio board or investment committee decides.",
           "exam_traps": [
             {
               "trap": "Ranking projects by cost or return alone and leaving risk to each project team.",
@@ -1715,7 +1719,8 @@
             "crisc_d4_019",
             "crisc_d4_060",
             "crisc_d4_100",
-            "crisc_d4_120"
+            "crisc_d4_120",
+            "crisc_d4_142"
           ],
           "definition": "Privacy principles are rules for fair handling of personal data, including purpose limitation, data minimization, a lawful basis such as consent, transparency and individual rights.",
           "why_it_matters": "Privacy harm affects people and brings regulatory, legal and trust consequences. A secure system can still breach privacy if it collects too much or uses data for an undisclosed purpose.",
@@ -1723,7 +1728,7 @@
             "The purpose is decided and stated before collection, and data is not used later in ways incompatible with it.",
             "Only data the purpose needs is collected, kept or disclosed; old records stay personal data at least while the people in them live.",
             "People are told what happens to their data, and the organization has a valid basis; consent counts only if people can refuse an unrelated use and still be served.",
-            "People can access, correct or delete their data, as the applicable law allows.",
+            "People can access, correct or delete their data as law allows, and challenge data used in decisions about them.",
             "Rights requests can be met only when every system holding a person's data is known, analytics copies and vendor tools included.",
             "Security protects data from unauthorized access; privacy also governs authorized use."
           ],
@@ -1756,7 +1761,7 @@
               }
             ]
           },
-          "example": "A fitness app's product team proposes selling users' location history to advertisers, arguing the data is encrypted. Kenji, the privacy risk analyst, explains encryption does not change the purpose users agreed to, and asks the product owner and privacy officer to assess it against the stated purpose and consent.",
+          "example": "A fitness app's product team proposes selling users' location history to advertisers, arguing the data is encrypted. Kenji, the privacy risk analyst, explains encryption does not change the agreed purpose, and asks the product owner and privacy officer to assess the sale against it.",
           "audit_focus": {
             "review": [
               "Compare data collected with the purposes in the privacy notice",
