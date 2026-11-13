@@ -36,6 +36,17 @@ cause in the app, and slots it into the plan below.
 | FB-003 | 2026-11-06 | Beta reply email | Phone · Nickname setup | UX | Medium | New learners | Implemented, native keyboard/a11y checks pending | 2.1 |
 | FB-006 | 2026-11-12 | Closed-testing message (no report code) | Phone · every screen with serif text (questions, options, headings) | UX (typography) | Low | Whole app | Implemented in a pull request; waiting for the owner's decision on the typeface change | 2.1 (owner decision needed) |
 
+## Feedback quoted on the website
+
+A tester's words go on kaisip.com only with that tester's own yes to the exact
+text and name, kept by the owner outside the repo (privacy.html section 3e).
+Every quote card carries `data-quote-permission="recorded"` and the reward
+disclosure; `scripts/build_site.sh` refuses a home page quote without them.
+
+| Quote | Shown as | Permission | Where |
+|---|---|---|---|
+| "The app is user friendly … wasn't tiring to answer." (translated from Filipino, excerpt; the original's comparison with ISACA's question product left out) | Ken L., KaiSip beta tester | Given directly to the owner, 13 Nov 2026 (reply kept privately by the owner). The tester also opted in to credit on the beta form, which covers only the in-app thank-you screen. | `home.html` (not live) |
+
 ## Next update plan (phone app, proposed 2.1.0)
 
 | # | Change | From | Size |
