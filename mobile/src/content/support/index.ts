@@ -66,6 +66,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
       'Focus on your review with clearer study progress and fewer distractions.',
       'Find feature guidance behind information buttons for calmer screens.',
     ],
+    fixed: ['The letter f in questions and headings now has a familiar, easier-to-read shape.'],
   },
   {
     version: '2.1.0',

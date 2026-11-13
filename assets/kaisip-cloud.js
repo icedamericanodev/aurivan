@@ -8529,9 +8529,9 @@ exports.domainPalette = {
 exports.space = { xs: 4, sm: 8, md: 12, lg: 16, gutter: 20, xl: 24, xxl: 32, xxxl: 48 };
 exports.radius = { sm: 8, md: 16, lg: 24, sheet: 28, pill: 999 };
 exports.font = {
-    serif400: 'Fraunces_400Regular',
+    serif400: 'KaiSipSerif_400Regular',
     serif400Italic: 'Fraunces_400Regular_Italic',
-    serif500: 'Fraunces_500Medium',
+    serif500: 'KaiSipSerif_500Medium',
     sans400: 'Figtree_400Regular',
     sans500: 'Figtree_500Medium',
     sans600: 'Figtree_600SemiBold',
@@ -10502,7 +10502,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "59b1d6a3d614487b";
+  api.sourceHash = "c1438b4f49e5f77a";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

@@ -57,10 +57,12 @@ matter, a clean sans for everything you tap — and a grove that visibly grows a
 
 | Role | Family | Weights loaded | Package export |
 |---|---|---|---|
-| Display / reading moments | **Fraunces** (SIL OFL) | 400, 400 italic, 500 | `Fraunces_400Regular`, `Fraunces_400Regular_Italic`, `Fraunces_500Medium` |
+| Display / reading moments | **Fraunces** (SIL OFL), upright weights as **KaiSip Serif** (see below) | 400, 400 italic, 500 | `KaiSipSerif_400Regular`, `Fraunces_400Regular_Italic`, `KaiSipSerif_500Medium` |
 | UI and body | **Figtree** (SIL OFL) | 400, 500, 600 | `Figtree_400Regular`, `Figtree_500Medium`, `Figtree_600SemiBold` |
 
 Six files total (~350 KB). **v2 adds `Fraunces_400Regular_Italic` (86 KB) for the coaching voice**, same package, no new dependency. Plus Jakarta Sans is removed.
+
+**KaiSip Serif (mobile 2.1, FB-006, pending the owner's sign-off).** Fraunces' upright lowercase "f" has a flat, heavy hook that learners read as odd, and Fraunces has no alternate. The two upright weights therefore load from `mobile/assets/fonts/` as "KaiSip Serif": Fraunces with only the "f" replaced by Literata's conventional "f", scaled to Fraunces' x-height and stem thickness, at the same advance width (so no text reflows). Everything else is Fraunces; the italic is unchanged. Both fonts are SIL OFL 1.1 and both licence files ship beside the font. Details and the rebuild command: `mobile/assets/fonts/README.md`. Where this document says "Fraunces" for upright text, it means this file. The web app, `beta.html` and the landing page still load plain Fraunces and should get the same fix.
 
 **Why two families when the owner asked for one:** the "one font" wish was really a wish for
 *consistency*. Today's single family at 600 everywhere is what reads as template. A serif used only
