@@ -163,7 +163,8 @@
             "Representativeness compares the data's mix of people, places and conditions with the population the model will serve.",
             "Historical data can carry past bias, such as decisions that disadvantaged a group, which the model will learn and repeat.",
             "Adding more data of the same kind does not fix a skewed mix; targeted collection or reweighting does.",
-            "Data fitness is rechecked in production, because the population a model serves can change after launch."
+            "Data fitness is rechecked in production, because the population a model serves can change after launch.",
+            "Dropping records that lack a label can remove the outcomes a model most needs when the label is missing because of that outcome, such as cases that ended early."
           ],
           "example": "A Kenyan microinsurance firm builds a crop-claims model from claim photos labeled by two contractors. Spot checks show the contractors disagree on a third of the photos, and almost none come from the dry northern counties the product will cover. The IS auditor reports both gaps to the product owner before the model goes to validation.",
           "audit_focus": {
@@ -199,6 +200,10 @@
             {
               "term": "Historical bias",
               "definition": "Unfairness built into past decisions or records that a model learns and repeats."
+            },
+            {
+              "term": "Selection bias",
+              "definition": "Bias from training only on cases a past decision let through, such as hired applicants; outcomes for those turned away are never recorded."
             }
           ]
         },
@@ -226,11 +231,11 @@
           "why_it_matters": "If test data overlaps training data, the model is graded on answers it has already seen. Reported accuracy then overstates real performance, and management approves a model on false evidence.",
           "how_it_works": [
             "Splits are made and recorded before modeling starts, so the test set stays untouched until the final evaluation.",
-            "Leakage occurs when the same person, record or future information appears on both sides of a split.",
-            "Records about one customer stay on one side; splitting by person, not by row, prevents hidden overlap.",
+            "Leakage means a person or record on both sides of a split, or inputs holding later facts, such as a past score rebuilt by a newer model.",
+            "Each customer's records stay on one side; splitting by person, not by row, prevents hidden overlap.",
             "Out-of-time testing holds back the most recent period, showing whether the model works on data from after training.",
             "The test set is not reused for tuning; once it shapes design choices, it is no longer an unseen check.",
-            "Steps that learn from data, such as choosing inputs, and steps that copy it, such as augmentation, run after the split, on training data only."
+            "Steps that learn from or copy data, such as choosing inputs or augmentation, run after the split, on training data only."
           ],
           "example": "A Brazilian logistics firm predicts parcel damage. Its data scientist, Tomás, reports 98% accuracy, but the IS auditor finds that one input field is filled in only after a damage claim is filed, so the model sees the answer it should predict. The auditor reports that the accuracy figure cannot be relied on.",
           "audit_focus": {
@@ -252,6 +257,10 @@
             {
               "trap": "High accuracy on the test set proves the model is ready.",
               "why": "If the test set leaked into training or tuning, the score measures memory, not performance on new cases."
+            },
+            {
+              "trap": "A test set written by the model that generated the training data is an unseen test.",
+              "why": "It shares the generator's phrasing and blind spots, so it flatters the score."
             }
           ],
           "key_terms": [
@@ -307,7 +316,7 @@
           "how_it_works": [
             "Design states the purpose, intended users, impact on people and success criteria before any data is gathered.",
             "Machine learning operations (MLOps) automate training, testing and deployment; the automation should carry the gates, not skip them.",
-            "Each gate asks for evidence: data fitness, retrieved documents included, performance against agreed criteria, fairness results and owner sign-off.",
+            "Each gate asks for evidence: data fitness (checked before training, since the model keeps what it learns), retrieved documents included, performance against agreed criteria, fairness results and owner sign-off.",
             "Experiment tracking records the data, code and settings of each training run so results can be reproduced.",
             "Higher-impact uses get stricter gates and more independent review than low-impact internal tools.",
             "A new use, or a live trial whose outputs take effect, re-enters the gates; unvalidated models run in shadow mode."
@@ -354,6 +363,10 @@
             {
               "term": "Shadow mode",
               "definition": "A new model scores live cases beside the current one without its outputs deciding them."
+            },
+            {
+              "term": "Machine unlearning",
+              "definition": "Removing what a model learned from specific records; deleting the records does not do it, so the usual route is retraining without them."
             }
           ]
         },
@@ -407,6 +420,10 @@
             {
               "trap": "A vendor's model is the vendor's responsibility, so its documentation is the vendor's concern.",
               "why": "The organization using the model answers for its decisions. It needs enough documentation to judge fitness and explain outcomes."
+            },
+            {
+              "trap": "A language model's account of how it scored a case shows what drove the score.",
+              "why": "It may not. Where people are owed reasons, faithful reasons are a selection requirement."
             }
           ],
           "key_terms": [
@@ -571,6 +588,14 @@
             {
               "term": "Decision threshold",
               "definition": "The score at which a model's output triggers an action, such as an alert, referral or decline."
+            },
+            {
+              "term": "Model routing",
+              "definition": "Sending each request to one of several models, by rule or by the AI's own judgment, which is tested as part of any change."
+            },
+            {
+              "term": "Input dependency",
+              "definition": "A system or feed a model reads; its owner's changes can alter the model's results, so they trigger AI review."
             }
           ]
         },
@@ -625,6 +650,10 @@
             {
               "trap": "The source code repository is enough to track model versions.",
               "why": "Code history misses the data snapshot and settings that shape the model. Two models built from the same code can behave very differently."
+            },
+            {
+              "trap": "A hosted model's previous version is a lasting rollback target.",
+              "why": "The vendor retires it on its own schedule, so the plan also needs a tested fallback."
             }
           ],
           "key_terms": [
@@ -706,6 +735,10 @@
             {
               "term": "Regression test",
               "definition": "Rerunning a fixed set of cases with known expected results to detect unwanted changes."
+            },
+            {
+              "term": "Generation settings",
+              "definition": "Values sent with each request, such as temperature (higher gives more varied output) and maximum length (too low cuts answers off)."
             }
           ]
         }
@@ -919,6 +952,10 @@
             {
               "trap": "Publishing how the model works gives affected people enough protection.",
               "why": "Transparency helps, but it does not correct a wrong decision. People need a route to a person who can review and reverse it."
+            },
+            {
+              "trap": "Once an appeal is upheld, the case is settled.",
+              "why": "The model's next run can reimpose the decision. An upheld appeal holds unless new evidence arrives; otherwise automation quietly overrules the reviewer."
             }
           ],
           "key_terms": [
@@ -1137,6 +1174,10 @@
             {
               "trap": "The IS auditor should validate the model because auditors are independent.",
               "why": "Validating or approving the model would make the auditor part of the control and impair independence. Management arranges validation; the auditor assesses it."
+            },
+            {
+              "trap": "Passing a public jailbreak library shows a model resists jailbreaks.",
+              "why": "Models are often trained against public attack lists, so a pass can come from memory; red teams add fresh attacks."
             }
           ],
           "key_terms": [
@@ -1391,6 +1432,14 @@
             {
               "term": "Non-human identity",
               "definition": "An account used by software, such as a service, model or agent, rather than by a person."
+            },
+            {
+              "term": "Action preview",
+              "definition": "The exact action and values an approver sees from the tool layer before an agent acts, not the agent's own summary."
+            },
+            {
+              "term": "Egress allowlist",
+              "definition": "A network rule letting an agent connect only to approved destinations, so planted links cannot reach internal systems."
             }
           ]
         }
@@ -1536,6 +1585,10 @@
             {
               "term": "Rollback target",
               "definition": "The earlier version restored during an incident; after data poisoning, it must predate the poisoned data, as lineage records show."
+            },
+            {
+              "term": "Vendor-held evidence",
+              "definition": "A hosted AI system's chats, outputs and version records, kept under the provider's retention period; preservation is requested at once."
             }
           ]
         },

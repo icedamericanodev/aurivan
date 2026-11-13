@@ -74,7 +74,8 @@
             "Start from the organization's AI inventory, then add AI found in procurement records, software contracts and expense claims.",
             "Include AI features embedded in purchased software and cloud services, not only models the data science team built.",
             "Rank each use by the likelihood and impact of harm to people and the business, how autonomous its decisions are and how strong its controls are.",
-            "Refresh the universe when new AI uses, incidents or regulations appear, not only once a year."
+            "Refresh the universe when new AI uses, incidents or regulations appear, not only once a year.",
+            "A model that only feeds other models is ranked by the decisions its outputs drive; audits of the receiving models usually take its scores as given."
           ],
           "example": "At a wine group in Chile, IS audit manager Rafael reviews the AI audit universe of nine AI uses. A colleague proposes auditing the newest first, a deep-learning vine-disease detector. Rafael ranks a simpler payroll feature that flags seasonal pickers for pay deductions higher, because it decides about workers with little human review.",
           "audit_focus": {
@@ -133,10 +134,10 @@
             "aaia_d3_118"
           ],
           "definition": "Scoping an artificial intelligence (AI) audit sets which parts of the system, its data, its decisions and its suppliers the engagement will test, and against which criteria.",
-          "why_it_matters": "An AI system's risk sits as much in its data, prompts and human use as in the model. A scope limited to the algorithm can pass a system that harms people through bad data or careless use.",
+          "why_it_matters": "An AI system's risk sits as much in its data, prompts, thresholds and human use as in the model. A scope limited to the algorithm can pass a system that harms people.",
           "how_it_works": [
-            "Cover the lifecycle stages in play: data sourcing, design, validation, deployment, monitoring, change and retirement.",
-            "Include the decision process around the model: who acts on outputs, how they override and how affected people appeal.",
+            "Cover the lifecycle stages in play, from data sourcing and labeling to retirement; a model retrained only on cases it flagged never learns what it misses.",
+            "Include the decision process: who sets the cutoffs that turn scores into decisions, who acts on outputs and how people override and appeal.",
             "For an AI agent that acts, such as changing records, scope its permissions, limits and human approval points, not only its logs.",
             "For a vendor model, scope what the organization controls: its data, prompts, configuration, oversight and vendor management.",
             "Set criteria before fieldwork, such as internal AI policy, the AI Risk Management Framework (AI RMF) from the US National Institute of Standards and Technology (NIST), and regulation."
@@ -160,7 +161,7 @@
           "exam_traps": [
             {
               "trap": "Scope the audit to the model's algorithm and its accuracy.",
-              "why": "Accuracy says little about poor input data, misuse of outputs or missing oversight, which cause much of the harm AI systems do."
+              "why": "Accuracy says little about poor input data, misuse of outputs or missing oversight, where much AI harm starts."
             },
             {
               "trap": "A vendor-supplied model is out of scope because the vendor owns it.",
@@ -174,7 +175,7 @@
             },
             {
               "term": "Large language model (LLM)",
-              "definition": "An AI model trained on vast text that generates language, used in chat assistants and drafting tools."
+              "definition": "An AI model trained on vast text to generate language, as in chat assistants."
             },
             {
               "term": "Retrieval-augmented generation (RAG)",
@@ -197,15 +198,16 @@
             "aaia_d3_120"
           ],
           "definition": "Specialists, skills and independence concern whether the audit team has the artificial intelligence (AI) expertise it needs, and whether those people are objective about the system audited.",
-          "why_it_matters": "AI audits often need data science skills the audit function lacks. Borrowing them from the team that built the model, or relying on a specialist without checking their work, undermines the audit's conclusion.",
+          "why_it_matters": "AI audits often need data science skills the audit function lacks. Borrowing the model's builders, or relying on a specialist without checking their work, undermines the audit's conclusion.",
           "how_it_works": [
-            "Compare the skills the engagement needs, such as statistics, machine learning and privacy, with the team's skills.",
-            "Fill gaps with training, co-sourcing or an outside specialist whose competence and objectivity the audit function evaluates.",
+            "Compare the skills the engagement needs, such as statistics, machine learning and privacy, with the team's.",
+            "Fill gaps with training, co-sourcing or an outside specialist whose competence and objectivity the auditor evaluates.",
             "Evaluate a specialist's method and data, such as whether test sets represent the people the model affects, before relying on results.",
-            "Keep auditors off model design teams; they may advise on the evidence a model should keep without making design decisions.",
-            "Check whose labels trained an audit AI tool: trained on the auditee's ratings of its own work, it reviews with the auditee's judgment."
+            "Keep auditors off model design teams; they may advise on evidence a model should keep without making design decisions.",
+            "Check whose labels trained an audit AI tool: trained on the auditee's ratings of its own work, it reviews with the auditee's judgment.",
+            "Builders may explain their model and supply raw data to check, but independent staff choose fairness test records and group labels and run the tests."
           ],
-          "example": "A ports operator in Malaysia uses a computer-vision model to pick containers for inspection. IS audit lead Hana hires a machine-learning specialist, confirms the specialist never worked for the model's vendor and agrees the test plan in advance. When results arrive, Hana reviews how the specialist chose the test images before relying on the findings.",
+          "example": "A ports operator in Malaysia uses a computer-vision model to pick containers for inspection. IS audit lead Hana hires a machine-learning specialist and confirms they never worked for the model's vendor. When results arrive, Hana reviews how the specialist chose the test images before relying on them.",
           "audit_focus": {
             "review": [
               "Inspect the staffing plan for gaps against the engagement's technical demands",
@@ -224,11 +226,11 @@
           "exam_traps": [
             {
               "trap": "An external specialist's AI test result can be relied on as delivered.",
-              "why": "External does not mean adequate. The auditor still evaluates the method and the data, such as whether a test set represents the people affected."
+              "why": "External does not mean adequate. The auditor still evaluates the specialist's method and data before relying on the result."
             },
             {
               "trap": "Use the model's lead developer as the audit's technical expert.",
-              "why": "The developer's own work is under review. Their help is useful context, but their conclusions are not independent evidence."
+              "why": "Their work is under review, so they cannot choose the records or labels the audit tests."
             }
           ],
           "key_terms": [
@@ -266,14 +268,14 @@
             "aaia_d3_122"
           ],
           "definition": "Planning the audit's own use of artificial intelligence (AI) means deciding which audit tasks may use AI tools, and under what controls, before any engagement relies on them.",
-          "why_it_matters": "AI can speed planning, testing and reporting, but it can also leak confidential audit data, invent content and invite over-reliance. Unmanaged use puts the audit's credibility and its conclusions at risk.",
+          "why_it_matters": "AI can speed audit work, but it can also leak confidential data, invent content and invite over-reliance, putting the audit's credibility at risk.",
           "how_it_works": [
-            "Weigh each proposed use's benefits against its risks to confidentiality, accuracy, independence and reproducibility.",
+            "Weigh each use's benefits against risks to confidentiality, accuracy, independence and reproducibility; a checker on the same model as the AI it checks tends to share its errors.",
             "Approve tools and uses in the audit methodology, with data rules saying which audit data each tool may receive.",
             "Plan how each tool will be validated, how its output will be reviewed and how its use will be documented.",
             "Train auditors on the approved uses, the tools' limits and their duty to review all output.",
             "A generative audit tool reading content the auditee writes or supplies can be steered by instructions hidden in it, so weigh prompt injection before approving that use.",
-            "Weigh what training data from past audits leaves out: a model learns where audits looked, so areas never audited can rank as low risk."
+            "A model trained on past audits learns where audits looked, so areas never audited can rank as low risk."
           ],
           "example": "The internal audit team of a cooperative bank in Portugal has approved an AI translation tool for foreign-language documents, but only for data rated internal. Before a fraud investigation, chief audit executive Inês checks the methodology, sees the documents are rated confidential and has a qualified human translator used instead.",
           "audit_focus": {
@@ -293,7 +295,7 @@
           "isaca_rule": "Using AI in the audit is a risk decision for audit management. Assess risks and benefits, approve uses and data limits, and plan validation and review before any engagement relies on the tool.",
           "exam_traps": [
             {
-              "trap": "Pilot an attractive AI tool on live engagements first, then write rules once its value is proven.",
+              "trap": "Pilot an attractive AI tool on live engagements, then write rules once its value is proven.",
               "why": "A live pilot already sends real audit data through the tool. Risk assessment and approved uses come before any use."
             },
             {
@@ -347,11 +349,11 @@
           "definition": "Testing controls over an artificial intelligence (AI) system means checking that they are well designed and actually operate, including the human review of its outputs.",
           "why_it_matters": "A control can exist on paper while people simply approve whatever the model says. If oversight fails, harmful AI decisions reach people with no real check.",
           "how_it_works": [
-            "Test design by walking each control through the risk it should address, such as drift, bias or misuse.",
+            "Test design by walking each control through the risk it should address; a review against an AI-made record cannot catch errors both share.",
             "Test operation over the period with logs and records, not the control owner's description.",
             "Measure human review with override rates, time spent per case and agreement with the model.",
             "Seed cases with known right answers, agreed with the model owner so no one is affected, to test whether reviewers actually catch wrong outputs.",
-            "Map risks to controls independently, including some data scientists may not mention, such as training-data access and retraining approval.",
+            "Map risks to controls independently, including some data scientists may not mention, such as label editing and retraining approval.",
             "Test AI guardrails, such as output filters, by attempting reworded and disguised bypasses in an agreed setting; counts of blocked items show only catches."
           ],
           "example": "At a food-safety agency in Canada, a model ranks restaurants for inspection, and policy lets inspectors change any ranking with a reason. IS auditor Amara tests a year of logs: inspectors changed no rankings at all, and none could see why a restaurant ranked high. Amara reports that the oversight control is not effective: reviewers cannot see the reasons behind rankings, a design gap, and records show they never challenge them.",
@@ -515,7 +517,7 @@
           "key_terms": [
             {
               "term": "Reperformance",
-              "definition": "The auditor independently repeating a control, calculation or decision to see if the same result occurs."
+              "definition": "The auditor independently repeating a control, calculation or judgment; rerunning a model shows only whether it repeats, not whether it was right."
             },
             {
               "term": "False negative",
@@ -627,7 +629,7 @@
           "how_it_works": [
             "Rank evidence: what the auditor reperforms or a system produces, then documents, then statements from owners.",
             "Tie every item to the model version and period under audit; retraining makes a different model.",
-            "Prefer records over time, such as alert histories, to screenshots or dashboards showing one moment.",
+            "Prefer records over time, such as alert histories, to one-moment screenshots; a monitor that never alerts proves little unless its limits could catch drift all period.",
             "Read vendor attestations for scope: a System and Organization Controls (SOC) 2 report rarely covers model behavior.",
             "Ask owners to preserve versions, configurations and logs before planned changes overwrite them.",
             "Weights alone cannot rerun a decision; preserve the code that prepared the inputs, and the settings, with each model version."
@@ -695,7 +697,8 @@
             "Sampling the tool's statements and checking them against the underlying documents gives a measured error rate.",
             "Understand how the output was produced: the tool, version, prompt, settings and input data.",
             "Record in the work papers what the tool did and what the auditor verified.",
-            "Generated answers lean toward how a question is framed: a prompt asking for confirmation tends to get it."
+            "Generated answers lean toward how a question is framed: a prompt asking for confirmation tends to get it, and one asking for faults tends to find some.",
+            "A generative tool given documents can add plausible rules from its training, even with every file supplied; find each statement in the source."
           ],
           "example": "An audit team in South Africa uses an AI tool to transcribe and summarize walkthrough meetings. Reviewing one summary, IS auditor Thabo finds a control step credited to the wrong team. Thabo now compares each summary with its recording before use, notes the corrections and records the tool and version in the work papers.",
           "audit_focus": {
@@ -817,7 +820,7 @@
             },
             {
               "term": "Content reconciliation",
-              "definition": "Checking content, not just counts, against the source; cut-off exports and AI tidying alter it silently."
+              "definition": "Checking content, not only counts, against the source; truncated exports and AI tidying can change it."
             }
           ]
         },
@@ -888,6 +891,10 @@
             {
               "term": "False positive",
               "definition": "An item a tool flags that turns out to be normal."
+            },
+            {
+              "term": "Run-to-run variation",
+              "definition": "Different results from a generative tool given the same input; one run's result is a single draw, not a rate."
             }
           ]
         },
@@ -908,12 +915,12 @@
             "aaia_d3_140"
           ],
           "definition": "Reproducibility means another auditor can rerun work done with artificial intelligence (AI) tools and get the same, or an explainable, result; confidentiality keeps audit data inside approved tools.",
-          "why_it_matters": "Results nobody can reproduce cannot be reviewed or defended. Audit data pasted into an unapproved AI service may be kept or reused by the provider, exposing the organization and the people in it.",
+          "why_it_matters": "Results nobody can reproduce cannot be reviewed or defended. Audit data sent to an unapproved AI service may be kept or reused, exposing the organization and its people.",
           "how_it_works": [
             "AI tools are not fixed: vendors update models, and settings that allow randomness can change answers between runs.",
-            "A rerun can match only when the tool version, settings, prompts and input data all match the original.",
-            "Hosted models can vary even with fixed settings, and vendors retire versions; keep the output with its recorded conditions, and re-verify against sources if a rerun differs.",
-            "Providers of public AI services may keep submitted data or use it to train their models.",
+            "A rerun matches only when the tool version, settings, input data and every prompt match; in a chat, earlier messages are input too.",
+            "Hosted models can vary even with fixed settings, and vendors retire versions; keep output with its recorded conditions and re-verify against sources if a rerun differs.",
+            "Public AI services may keep or train on inputs; a no-training contract can still allow retention and staff review for abuse.",
             "Contract terms and data classification decide which audit data an AI service may receive.",
             "Platform administrators can read logged prompts and outputs, revealing what auditors asked and found."
           ],
@@ -950,7 +957,7 @@
             },
             {
               "term": "Data snapshot",
-              "definition": "A fixed copy of input data, often hashed, kept so an analysis can be rerun on exactly the same data."
+              "definition": "A fixed, often hashed copy of input data, kept so an analysis can be rerun."
             },
             {
               "term": "Training on inputs",
@@ -991,9 +998,10 @@
           "how_it_works": [
             "Condition: what the auditor found against the criteria, such as accuracy or group approval rates outside an approved limit, or a control that policy requires but is missing.",
             "Criteria: the policy, framework, regulation or approved threshold the condition is measured against.",
-            "Cause: why it happened, named as the control gap, such as no drift monitoring, unrepresentative data or missing oversight.",
+            "Cause: why it happened, named as the control gap, such as no drift monitoring, unrepresentative data or missing oversight; one gap behind several failures is one finding.",
             "Effect: the consequence for people and the business, such as unfair denials, losses or complaints.",
-            "Recommendation: the outcome management should achieve and who owns it, not a model fix the auditor designed."
+            "Recommendation: the outcome management should achieve and who owns it, not a model fix the auditor designed.",
+            "State an AI test result with its basis: model version, period and test set."
           ],
           "example": "At a court service in Scotland, an AI tool translates hearing notices. IS auditor Morag finds that 7% of notices in two languages carry date errors. Morag's finding gives the cause, no native-speaker review; the effect, people missing hearings; and a recommendation that the service owner add review for high-risk documents.",
           "audit_focus": {
@@ -1014,7 +1022,7 @@
           "exam_traps": [
             {
               "trap": "Report the accuracy drop as the finding's effect.",
-              "why": "A metric decline is the condition. Drift is the mechanism; the cause names the control gap that let it go unchecked, such as no monitoring. The effect is what the decline does to customers, staff or the organization."
+              "why": "A metric decline is the condition. Drift is the mechanism; the cause names the control gap that let it go unchecked. The effect is what the decline does to customers, staff or the organization."
             },
             {
               "trap": "Recommend the exact retraining approach the auditor would use.",
@@ -1057,9 +1065,10 @@
           "how_it_works": [
             "Rate findings by the likelihood and impact of harm to people and the business, weighing autonomy, scale and whether affected people can appeal.",
             "Explain technical findings in plain business terms, with one example of real harm where possible.",
-            "Record management's response with a named owner, actions and target dates.",
+            "Record management's response with a named internal owner, actions and target dates, even when a vendor will make the fix.",
+            "Check that the action reaches the cause: a missing pre-release test must cover every release, vendor updates included; a retrain that cuts one error type needs limits for both.",
             "Follow up with production evidence, not reports or statements: retested outcomes or, for a missing control, records showing it now operates.",
-            "Report live, ongoing harm to the owner and management at once, rather than holding it for the final report."
+            "Report live, ongoing harm to the model owner and management at once, rather than holding it for the final report."
           ],
           "example": "A Turkish airline's chatbot gave wrong baggage-fee answers, a high-rated finding. Management reports the knowledge base was corrected. At follow-up, IS auditor Elif asks 50 fee questions drawn from real customer chats, compares the answers with the fee schedule, finds 3 still wrong and keeps the finding open.",
           "audit_focus": {
@@ -1123,7 +1132,8 @@
             "Review every AI-drafted statement against the evidence before it enters a report.",
             "Disclose material use of AI in the audit, such as AI-assisted testing or drafting, as the methodology requires.",
             "Keep work papers that show what the tool did and what the auditor verified.",
-            "Never present an AI tool's output as a conclusion without the auditor's own judgment."
+            "Never present an AI tool's output as a conclusion without the auditor's own judgment.",
+            "An AI tool may suggest finding ratings, but auditors set each rating from the evidence and own it."
           ],
           "example": "A Philippine government audit office used an AI tool to scan 2 million benefit payments for duplicates. Before issue, IS auditor Maricel confirms that each duplicate named in the report was checked against payment records, and adds a note explaining how the tool was used and validated and what the auditors verified themselves.",
           "audit_focus": {
