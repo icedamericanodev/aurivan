@@ -14,6 +14,7 @@ Owner requirement recorded 9 Nov 2026: the next Android App Bundle must have ver
 | Unified support and feedback | cd977573 | Integrated with review fixes; email/share retained; direct send disabled |
 | Restore signed-in public feature suggestion route | Live integration review | Implemented with cloud-enabled regression test |
 | Show exact direct-send message separately from fitted email preview | Live integration review | Implemented; transport activation still blocked on backend |
+| Build-tool security update: minimatch to 11.0.8 (Dependabot alert #11, a moderate denial-of-service in a build and test tool, not app code) | npm override in `mobile/package.json` | Implemented; `npm run check` passed (7,143 tests), Expo fingerprint and Android export passed |
 
 ## Work in progress
 
