@@ -430,9 +430,9 @@ version bump today.
 | Domain | Questions | Tagged | Untagged |
 |---|---|---|---|
 | D1 | 140 | 103 | 37 |
-| D2 | 260 | 219 | 41 |
-| D3 | 114 | 104 | 10 |
-| All | 514 | 426 | 88 |
+| D2 | 302 | 256 | 46 |
+| D3 | 146 | 131 | 15 |
+| All | 588 | 490 | 98 |
 
 New principle `independence-of-ai-assurance` (role family): seeds and tags
 aaia_d2_014, aaia_d3_024 and aaia_d3_043, moved from
@@ -685,3 +685,39 @@ aaia_d2_222 aaia_d2_226 aaia_d2_228 aaia_d2_229 aaia_d2_231 aaia_d2_232
 aaia_d2_234 aaia_d2_235 aaia_d2_236 aaia_d2_237 aaia_d2_238 aaia_d2_247
 aaia_d2_251 aaia_d2_254 aaia_d2_255 aaia_d2_256 aaia_d2_257 aaia_d2_258
 aaia_d2_260.
+
+### Batch 8 (13 November 2026)
+aaia_d2_261-302 and aaia_d3_115-146 were read against the rule above. None
+is a seed. Changed: aaia_d2_265 moved from `test-the-ai-as-used` to
+`accuracy-is-not-assurance` (the runner-up rechecks the same data: staff
+check answers to generated test pairs); aaia_d2_266 moved from
+`independence-of-ai-assurance` to `test-the-ai-as-used` (final review: the
+vendor rescores every past payment with a model trained on later fraud, so
+only scores recorded as they arrive test the model as it is used live);
+aaia_d2_300 moved from `contain-and-preserve-ai` to `ai-deciding-fact` (both
+options roll back, so the stated six weeks of planted reports removes last
+week's version). Newly tagged: aaia_d3_123 `rank-ai-risk-by-harm` (the Final
+two calls misstated loss history the smaller harm) and aaia_d3_144
+`named-human-owner` (high: a vendor's fix date names no one at the pharmacy
+to answer for it; the card's domains omit D3, so the lint warns, as
+aaia_d1_068). Four tags removed (below).
+
+**Untagged new items (low confidence):**
+- aaia_d2_262: data-lineage knowledge (no source per record, so rights cannot be shown or honored); the runner-up, names in ad text, loses on breadth, not harm or a stated fact.
+- aaia_d2_278: was `rank-ai-risk-by-harm`; the runner-up loses because a jailbroken model can encode figures past an output filter (attack knowledge, as aaia_d2_016), and the key, a model patch, is not a limit outside the model.
+- aaia_d2_288: label-bias knowledge (equal error rates against biased ratings); the runner-up weighs a survey against a measurement, which no AAIA principle covers.
+- aaia_d2_291: was `ai-deciding-fact`; the Final two compares what each control covers, not a stated fact or harm, so attack knowledge decides (model inversion from precise scores, as aaia_d2_081).
+- aaia_d2_295: link-following knowledge (internal addresses are on no blocklist); both options are enforced outside the model (as aaia_d2_084).
+- aaia_d3_118: the auditor's own scoping (as aaia_d3_053); `ai-changes-are-changes` (thresholds are changes) is close, but its domains omit D3.
+- aaia_d3_131: limits in force over the period against a fieldwork export is CISA `proven-not-configured` (as aaia_d3_009).
+- aaia_d3_136: both options check the tool's output against the source; a full comparison against a sample is method choice, not an AAIA principle.
+- aaia_d3_137: was `accuracy-is-not-assurance`; metric knowledge (precision falls with the base rate, as aaia_d3_077), and the runner-up, unseen kinds of fakes, is an accuracy concern the facts never raise (`ai-deciding-fact`'s domains omit D3).
+- aaia_d3_138: was `ai-in-audit-stays-yours`; both options critique the tool's validation, so generative-variability knowledge decides (as aaia_d3_094).
+
+**Medium confidence (tagged, review first):** aaia_d2_261 aaia_d2_264
+aaia_d2_265 aaia_d2_266 aaia_d2_267 aaia_d2_268 aaia_d2_269 aaia_d2_272
+aaia_d2_274 aaia_d2_276 aaia_d2_277 aaia_d2_279 aaia_d2_282 aaia_d2_284
+aaia_d2_286 aaia_d2_287 aaia_d2_289 aaia_d2_290 aaia_d2_292 aaia_d2_296
+aaia_d2_297 aaia_d2_298 aaia_d2_300 aaia_d3_115 aaia_d3_119 aaia_d3_121
+aaia_d3_122 aaia_d3_123 aaia_d3_125 aaia_d3_128 aaia_d3_135 aaia_d3_139
+aaia_d3_142 aaia_d3_143 aaia_d3_146.
