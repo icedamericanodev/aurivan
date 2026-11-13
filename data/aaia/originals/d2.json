@@ -9775,9 +9775,10 @@
       "id": "aaia_d2_266",
       "domain": 2,
       "subtopic": "2A Data management for AI. A vendor score as a model input",
+      "principle_id": "test-the-ai-as-used",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Vietnamese bank never stores the vendor score its card-fraud model uses, so retests have the vendor rescore past payments with a model trained on later fraud. What should the IS auditor recommend as BEST?",
+      "question": "A Vietnamese bank's card-fraud model uses a vendor score; for each retest, the vendor rescores past payments with its current model, trained on later fraud. What is the IS auditor's BEST recommendation?",
       "options": {
         "A": "Ask the vendor for an independent report on its scoring model",
         "B": "Record each vendor score with its payment as it arrives",
@@ -10369,7 +10370,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Indian IT-services firm checks its IT-helpdesk assistant monthly against 200 fixed questions; its logs hold every staff conversation. What should the IS auditor recommend as BEST?",
+      "question": "An Indian IT-services firm checks its generative IT-helpdesk assistant monthly against 200 fixed questions; its logs hold every staff conversation. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Track staff ratings on each logged conversation",
         "B": "Expand the fixed set to cover every helpdesk topic",
@@ -11013,7 +11014,7 @@
       },
       "tips": [
         "Eliminate: A fixes before preserving evidence, and D restores service with a disclaimer that fixes nothing.",
-        "Final two: C beats B because the firm's transcripts show the wrong answers but not the model version or settings behind them; only the vendor holds those, and only for 30 days.",
+        "Final two: C beats B because the firm's transcripts show the wrong answers but not the model version or settings behind them; those sit with the vendor, whose chat records go after 30 days.",
         "Exam cue: for hosted AI incidents, preservation includes the vendor's records. Ask before its retention clock runs out."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 IR-4 (Incident Handling); NIST SP 800-53 Rev. 5 SA-9 (External System Services)",
@@ -11069,7 +11070,7 @@
       "principle_id": "fix-the-control-not-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Hungarian postal address-reading model misrouted parcels for three months at high confidence; its closed problem record names a changed scanner feed and counts delays. What is the GREATEST gap the IS auditor should report?",
+      "question": "A Hungarian postal service's address-reading model misrouted parcels for three months at high confidence; its closed problem record cites a changed scanner feed, since fixed. What is the GREATEST gap the IS auditor should report?",
       "options": {
         "A": "It closed before the model was retrained on fixed data",
         "B": "Nothing explains why monitoring did not flag the errors",
