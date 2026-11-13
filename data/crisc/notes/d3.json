@@ -147,7 +147,8 @@
             "crisc_d3_185",
             "crisc_d3_225",
             "crisc_d3_236",
-            "crisc_d3_289"
+            "crisc_d3_289",
+            "crisc_d3_305"
           ],
           "definition": "Response selection is choosing the option expected to bring risk within appetite at a cost proportionate to the loss it prevents, while supporting business objectives.",
           "why_it_matters": "Spending more on a control than the loss it prevents destroys value, as does treating a risk within appetite; proportion keeps budget for risks that matter.",
@@ -718,13 +719,14 @@
             "crisc_d3_211",
             "crisc_d3_218",
             "crisc_d3_259",
-            "crisc_d3_275"
+            "crisc_d3_275",
+            "crisc_d3_306"
           ],
           "definition": "An exception is a temporary, approved deviation from a policy or standard; an exemption is an approved exclusion from a requirement that does not apply or cannot apply.",
-          "why_it_matters": "Business sometimes cannot meet a requirement on time. Managed, a deviation stays visible, compensated and time-bound; unmanaged, it becomes a permanent, hidden gap.",
+          "why_it_matters": "Business sometimes cannot meet a requirement on time. Managed, a deviation stays visible, compensated and time-bound; unmanaged, it becomes a hidden gap.",
           "how_it_works": [
             "Requests come before deviating, stating the requirement, reason and risk; a deviation already running is logged as an issue, not backdated.",
-            "The practitioner assesses the risk and proposes compensating controls acting on the same risk, such as restricting access to an unpatched flaw.",
+            "The practitioner assesses the risk and proposes compensating controls acting on the same risk, such as restricting access to an unpatched flaw; renewal weighs their cost against complying.",
             "The risk owner approves at a level matching the risk; policy may require senior management for high ratings.",
             "Exceptions carry a fixed expiry date, not an unscheduled event, and a plan; exemptions are reviewed periodically. One in date, within authority and compensated waits for review.",
             "Keep deviations in one register, reported in aggregate, so combined risk shows and repeated requests point to a cause.",
@@ -778,7 +780,7 @@
           "exam_traps": [
             {
               "trap": "The risk practitioner can grant a short exception for a low risk.",
-              "why": "Granting a deviation means accepting its risk, which is the risk owner's decision. The practitioner assesses the risk and proposes compensating controls."
+              "why": "Granting a deviation accepts its risk, the risk owner's decision; the practitioner assesses it and proposes compensating controls."
             },
             {
               "trap": "An exception can stay open until the business is ready.",
@@ -989,13 +991,14 @@
             "crisc_d3_203",
             "crisc_d3_228",
             "crisc_d3_237",
-            "crisc_d3_267"
+            "crisc_d3_267",
+            "crisc_d3_307"
           ],
           "definition": "Control frameworks are published models and catalogs, such as COBIT 2019, NIST SP 800-53 Rev. 5 and NIST CSF 2.0, that organizations tailor into their own control set.",
           "why_it_matters": "A framework gives a tested starting point and a common language with auditors and regulators. Adopting it whole spends money on controls that do not fit the risks.",
           "how_it_works": [
             "COBIT 2019 sets governance and management objectives for enterprise I&T, tailored through design factors, such as strategy and threat landscape, that set objective priorities and target capability levels.",
-            "NIST SP 800-53 Rev. 5 is a security and privacy control catalog; SP 800-53B holds its baselines, and overlays, such as SP 800-82's for OT, tailor them.",
+            "SP 800-53 Rev. 5 is a control catalog; SP 800-53B holds impact-level security baselines plus a privacy baseline for personal data; overlays, like SP 800-82's for OT, tailor them.",
             "CSF 2.0 lists outcomes under six functions, Govern among them, without prescribing the controls that achieve them.",
             "Tailor by scoping out what does not apply, setting parameter values from the organization's own risk and operations, and adding controls for risks the baseline misses.",
             "Map internal controls to every framework and regulation that applies, AI RMF outcomes included, so one control meets several; re-map after material revisions.",
@@ -1173,14 +1176,15 @@
             "crisc_d3_229",
             "crisc_d3_253",
             "crisc_d3_268",
-            "crisc_d3_276"
+            "crisc_d3_276",
+            "crisc_d3_308"
           ],
           "definition": "Control gap analysis compares the current controls on a risk with the controls needed to bring it within appetite, judging both how they are designed and how they operate.",
           "why_it_matters": "Gaps show where residual risk is higher than the register claims. Finding them before an incident lets the risk owner fund the most important fixes first.",
           "how_it_works": [
             "Define the desired state from appetite, policy, regulation or a framework profile.",
             "Describe the current state from control test results, not policies, owners' statements or old ratings.",
-            "Separate design gaps (cannot work as built: unrecorded return paths, limits dodged by splitting or changed by those checked, routes around the check) from operating gaps (built right, not performed).",
+            "Separate design gaps, which cannot work as built (unrecorded return paths, limits split or changed by those checked, bypass routes, approvers blind to what they grant), from operating gaps.",
             "Rank gaps by the risk they leave open, not by how easy they are to fix.",
             "Turn agreed gaps into action plans with owners and dates.",
             "Before removing a control as a duplicate, compare what each catches: a range check passes wrong values that look plausible, which a check against the source finds."
@@ -1616,14 +1620,15 @@
             "crisc_d3_187",
             "crisc_d3_231",
             "crisc_d3_244",
-            "crisc_d3_270"
+            "crisc_d3_270",
+            "crisc_d3_309"
           ],
           "definition": "Risk data collection is gathering the facts behind ratings and reports, such as incidents, losses, test results and metrics, from defined and trusted sources.",
           "why_it_matters": "Ratings are only as good as their inputs. Data from inconsistent or unknown sources leads owners to fund the wrong risks and miss the right ones.",
           "how_it_works": [
             "Define each data element, its source, formula, owner, frequency and format before collecting it, and keep them in a data dictionary so any reported figure can be traced.",
             "Prefer system-generated data over hand-kept spreadsheets, and record where each figure came from; a recurring capture flaw is fixed at source by the data's owner.",
-            "Combine internal data, such as incidents and test results, with external data, such as threat reports and industry losses.",
+            "Combine internal and external data, such as incidents and industry losses; when a figure judges the people reporting it, have someone independent of them collect it.",
             "Collect at a frequency that matches how fast the risk changes: flaws exploited within days need weekly figures from system records, not a quarterly survey.",
             "To check that a KRI warns early, compare its past values with when related incidents or losses occurred.",
             "Check each feed for completeness as data arrives: an automatic alert when a source stops sending keeps silence from being reported as zero events."
@@ -1963,19 +1968,20 @@
             "crisc_d3_109",
             "crisc_d3_125",
             "crisc_d3_159",
-            "crisc_d3_175"
+            "crisc_d3_175",
+            "crisc_d3_310"
           ],
           "definition": "KRI thresholds are preset limits, linked to risk appetite and tolerance, that trigger review, escalation or action when an indicator crosses them.",
           "why_it_matters": "Without thresholds, a climbing KRI is just a number. Limits tied to tolerance tell the owner when to act and who must be told.",
           "how_it_works": [
             "Set thresholds from tolerance: green within appetite, amber approaching tolerance, red at or beyond it.",
-            "Define the action and escalation for each level before any breach happens.",
+            "Define each level's action and escalation before any breach; in a composite index, keep each measure's own threshold, as a blend can stay green while one breaches.",
             "When appetite, tolerance, the business or the risk changes, such as volume doubling while the rate holds, the practitioner proposes revised thresholds for the risk owner and tolerance approver.",
             "For AI systems, track drift, error rates, outcome gaps between groups, override rates and complaints, with limits set by the model's business owner.",
             "A breach, or a proposal to move a threshold, goes to the risk owner and, through the agreed escalation path, to the level that set it.",
             "For human review of AI outputs, KCIs such as override rates and time spent per review warn when reviewers start approving by habit."
           ],
-          "example": "An insurer's claims-triage model flags claims for fast payment. Aisha, the risk analyst, proposes indicators for it: the share of fast-tracked claims later found invalid, the rate of staff overrides and weekly drift in the input data. Each gets amber and red limits agreed with the claims director; red means claims return to manual triage until the model is reviewed.",
+          "example": "An insurer's claims-triage model flags claims for fast payment. Aisha, the risk analyst, proposes indicators: fast-tracked claims later found invalid, staff overrides and weekly input drift, each with amber and red limits agreed with the claims director; red returns claims to manual triage until the model is reviewed.",
           "audit_focus": {
             "review": [
               "Compare each threshold with the documented tolerance for its risk",
@@ -1988,7 +1994,7 @@
             "recommend": "Have the business owner sign off each limit and the response it triggers, and review limits yearly.",
             "decides": "The risk owner agrees thresholds within senior management's tolerance and decides breach responses"
           },
-          "isaca_rule": "Thresholds turn metrics into decisions. Link them to appetite and tolerance, agree the action for each level in advance and route breaches to the risk owner. AI models need indicators for drift, errors and complaints like any other risk.",
+          "isaca_rule": "Thresholds turn metrics into decisions. Link them to appetite and tolerance, agree the action for each level in advance and route breaches to the risk owner. AI models need indicators for drift, errors and complaints.",
           "exam_traps": [
             {
               "trap": "Set thresholds from industry averages.",
@@ -2042,7 +2048,8 @@
             "crisc_d3_195",
             "crisc_d3_223",
             "crisc_d3_286",
-            "crisc_d3_303"
+            "crisc_d3_303",
+            "crisc_d3_311"
           ],
           "definition": "Continuous monitoring is keeping ongoing awareness of security, vulnerabilities and threats to support risk decisions, using automated feeds and assessments at a frequency set by risk.",
           "why_it_matters": "Yearly reviews miss what changes between them. Ongoing monitoring catches control failures and new exposure while there is time to respond, provided someone acts on the alerts.",
@@ -2432,19 +2439,20 @@
             "crisc_d3_192",
             "crisc_d3_232",
             "crisc_d3_247",
-            "crisc_d3_288"
+            "crisc_d3_288",
+            "crisc_d3_312"
           ],
           "definition": "Recording emerging risk means entering it in the register with its uncertainty, an owner and a review date, then reporting it so leaders can prepare without overreacting.",
-          "why_it_matters": "Leaders need early sight of what may change the risk profile; overstating an uncertain risk wastes money, and leaving it out leaves them unprepared.",
+          "why_it_matters": "Leaders need early sight of what may change the risk profile; overstating an uncertain risk wastes money, and omitting it leaves them unprepared.",
           "how_it_works": [
-            "Record the risk as a scenario of how it would affect objectives, with a confidence level and the assumptions behind any rating.",
+            "Record the risk as a scenario of its effect on objectives, with the assumptions behind any rating; report confidence apart from impact, so thin evidence is not read as minor.",
             "Use ranges or alternative scenarios rather than single scores while uncertainty is high; with no loss data, build them in a workshop of experts and the owner.",
             "Set short review dates and agree with the owner the signs that would show the risk growing, so each review checks evidence.",
             "Report emerging risks in their own section: what is known, what is not, what is being done; one bearing on a pending decision reaches its deciders before they commit.",
             "Move the risk into the main profile once it can be rated normally; if evidence shows it does not apply, the owner closes it with the reason.",
             "Respond in stages: low-cost steps to learn more, prepared options and agreed triggers for larger spending; when one is reached, the risk owner decides."
           ],
-          "example": "A logistics firm begins trials of driverless yard trucks. Mateo, the risk analyst, records a safety and liability risk with low confidence, a range of possible impacts and a two-month review date, with the yard operations director confirmed as owner. In the quarterly report, they list it under emerging risks and state what the trials should reveal.",
+          "example": "A logistics firm begins trials of driverless yard trucks. Mateo, the risk analyst, records a safety and liability risk with low confidence, a range of possible impacts and a two-month review date, with the yard operations director as owner. Their report lists it as emerging, stating what the trials should reveal.",
           "audit_focus": {
             "review": [
               "Inspect emerging risk entries for stated assumptions and next review dates",
@@ -2461,7 +2469,7 @@
           "exam_traps": [
             {
               "trap": "Rate an emerging risk as critical to make sure it gets attention.",
-              "why": "Overstating certainty misdirects resources and damages trust. State the uncertainty, give a range and update it with evidence."
+              "why": "Overstating certainty misdirects resources and trust; state the uncertainty, give a range and update it with evidence."
             },
             {
               "trap": "An emerging AI risk belongs to IT because AI is technology.",
