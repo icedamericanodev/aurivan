@@ -141,7 +141,7 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
     await page.goto(BASE);
     const quotes = await page.evaluate(() => [...document.querySelectorAll('.quote-card')].map(c => ({
       permission: c.dataset.quotePermission,
-      disclosure: /offered free Premium access/.test(c.textContent),
+      disclosure: /CISA Premium free/.test(c.textContent),
     })));
     check(quotes.length >= 1, 'no feedback quote found');
     check(quotes.every(q => q.permission === 'recorded'), 'every quote needs data-quote-permission="recorded"');

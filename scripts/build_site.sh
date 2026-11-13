@@ -148,11 +148,13 @@ if re.search(r"\sstyle\s*=", page, I): bad.append("a style attribute")
 if re.search(r"\son[a-z]+\s*=", page, I): bad.append("an inline event handler")
 srcs = re.findall(r"<script\b[^>]*\ssrc\s*=\s*[\"']([^\"']+)[\"']", page, I)
 if srcs != ["assets/home.js"]: bad.append("scripts other than assets/home.js: %r" % srcs)
-urls = re.findall(r"\s(?:src|href|action|poster|formaction)\s*=\s*[\"']([^\"']*)[\"']", page, I)
+urls = [a or b or c for a, b, c in re.findall(r"\s(?:src|href|action|poster|formaction|data|imagesrcset|xlink:href)\s*=\s*(?:\"([^\"]*)\"|'([^']*)'|([^\s>]+))", page, I)]
 for v in re.findall(r"\ssrcset\s*=\s*[\"']([^\"']*)[\"']", page, I):
     urls += [part.strip().split()[0] for part in v.split(",") if part.strip()]
+if re.search(r"http-equiv\s*=\s*[\"']?refresh", page, I): bad.append("a meta refresh")
 for url in urls:
-    if re.match(r"(?:[a-z][a-z0-9+.-]*:)?//", url, re.I) and not re.match(r"https://kaisip\.com/", url):
+    url = url.replace("\\", "/")
+    if (re.match(r"//", url) or re.match(r"[a-z][a-z0-9+.-]*:", url, re.I)) and not re.match(r"(?:https://kaisip\.com/|mailto:)", url):
         bad.append("an address on another site: " + url)
     if url.startswith(("design-notes/", "marketing/", "mobile/", "docs/", "../")):
         bad.append("a file that is not published: " + url)
@@ -160,21 +162,28 @@ if bad:
     print("build_site: home.html has " + "; ".join(bad), file=sys.stderr)
     sys.exit(1)
 # Draft or not. Approval is explicit; the wording checks are a second layer.
-m = re.search(r'<meta\s+name="kaisip-home-status"\s+content="([a-z]+)"', page)
-status = m.group(1) if m else "missing"
+# Comments are ignored, so an example in a comment cannot approve the page.
+page = re.sub(r"<!--.*?-->", "", page, flags=re.S)
+ms = re.findall(r'<meta\s+name="kaisip-home-status"\s+content="([a-z]+)"', page)
+status = ms[0] if len(ms) == 1 else ("missing" if not ms else "duplicated")
 if status != "approved":
     draft.append("its status is " + status + ", not approved")
 if re.search(r"fictional|sample learner|sample-badge|sample-disclosure|sample text|placeholder quote", page, re.I):
     draft.append("sample feedback")
 if re.search(r'data-waitlist\s*=\s*["\']?mockup|design preview|does not send or save|mockup', page, re.I):
     draft.append("the waitlist mockup")
-cards = re.findall(r'<figure\b[^>]*class="[^"]*\bquote-card\b[^"]*"[^>]*>', page, re.I)
-if any('data-quote-permission="recorded"' not in c for c in cards):
+# Every quote must sit in a quote card with recorded permission and the
+# tester reward disclosure (docs/beta/TESTER_FEEDBACK.md).
+blocks = [b for _, b in re.findall(r'<(\w+)\b([^>]*\bclass\s*=\s*["\']?[^"\'>]*\bquote-card\b[^>]*>.*?)</\1>', page, re.I | re.S)]
+n_quotes = len(re.findall(r"<blockquote\b", page, re.I))
+if n_quotes != len(blocks) or any(not re.search(r'data-quote-permission\s*=\s*["\']?recorded\b', b, re.I) for b in blocks):
     draft.append("a quote without recorded permission")
+if any("CISA Premium free" not in b for b in blocks):
+    draft.append("a quote without the reward disclosure")
 robots = re.search(r'<meta\s+name="robots"\s+content="([^"]*)"', page, re.I)
 robots = robots.group(1) if robots else ""
 if draft and "noindex" not in robots:
-    print("build_site: a draft home.html must carry <meta name=\"robots\" content=\"noindex, nofollow\">", file=sys.stderr)
+    print("build_site: home.html is still a draft (" + ", ".join(draft) + "), so it must carry <meta name=\"robots\" content=\"noindex, nofollow\">", file=sys.stderr)
     sys.exit(1)
 if not draft and "noindex" in robots:
     print("build_site: home.html is approved but still says noindex in its robots meta", file=sys.stderr)

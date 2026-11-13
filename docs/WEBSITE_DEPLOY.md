@@ -104,9 +104,10 @@ A draft refuses to build in `SITE_MODE=home`. `HOME_ALLOW_DRAFT=1` builds it
 anyway, served `noindex`, for local review and CI. The build refuses that
 switch on Cloudflare's build machines (it checks `CF_PAGES` and `WORKERS_CI`).
 
-Merging the home page code changes only two public files in the live build:
-the font `assets/fonts/KaiSipSerif_400Regular.woff2` and its licence
-`assets/fonts/OFL-Literata.txt`.
+Merging the home page code adds only two public files to the live build: the
+font `assets/fonts/KaiSipSerif_400Regular.woff2` and its licence
+`assets/fonts/OFL-Literata.txt`. (The same pull request also adds one sentence
+to privacy.html section 3e, about asking before quoting a tester.)
 
 Review it locally with the real headers:
 
