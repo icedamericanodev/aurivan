@@ -7924,6 +7924,228 @@
       ],
       "_provenance": "Authored from concept: notes 2B5.1 (Inherent, Current and Residual Risk; current-risk bullet extended in round 29: current risk does not count controls switched off). Round 29, 13 Nov 2026: original scenario (an adhesive maker will switch off dual approval of formula changes for six weeks during an ERP move; its formula-tampering rating credits that approval) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 29 asks: the 2B5 item (application); adhesive maker setting (manufacturing); key B; scenario stem; the batch's final-two owner pair (risk owner in key B, control owner in runner-up C; eliminated A and D name no owner); no same-opener pair; key 46 characters against 44 to 54 and 10 words against 7 to 10 (neither longest nor shortest). Not the paused families (a credited control not working: here the approval works and a planned switch-off is rated before it happens, so the risk owner can still decide on the window; a control owner weakens or drops a control: the ERP move pauses it for a set period; who approves exceptions; the current/target/inherent trio: D's explanation uses inherent risk alone). Neighbours checked: crisc_d1_037 (1B3: re-rate risks without a control found not operating, before the owner's fix; consistent, this item applies the same order to a planned pause), crisc_d3_217 (a credited review that never ran goes to the risk owner first), crisc_d3_007 (assess the risk of running without encryption before an exception), crisc_d3_039 (interim controls keyed for a long plan already known to leave risk above appetite; C's explanation names the distinguishing fact: here the move-period risk is not yet rated), crisc_d3_219 (trace manual checks into a new workflow), crisc_d2_019, crisc_d2_110 and crisc_d2_154 (credit follows evidence of a working control; consistent), crisc_d2_071 and crisc_d2_104 (inherent risk credits no controls; consistent with D), CISA and CC (no item on rating a planned control switch-off; closest CC cc_d2_095, a check's evidence sent to its control owner). Runner-up check: C (an interim check designed with the control owner); the stem facts that rule C out are that the rating still credits the approval and the switch-off has not been rated, so the risk owner cannot yet judge whether an interim check is needed. Each new wrong option and key was run against every older Exam cue, key and wrong option in all four CRISC domains (TF-IDF, scratch tools wrongcue, cue2key and key2wrong); none of the matches pulls toward a new wrong option on meaning. No restrictive word (only, all, never, just, alone, limited to) in any option; no wait or defer option; no option gives its own reason; no stem word repeated only in the key; stem counted in code. Review 13 Nov 2026 (round 29): lead decision KEEP (standards P7, concept P4). Concept P4 applied: the key concept, correct explanation, Final two and Exam cue now teach what is new here, that the switch-off is planned, so the window is rated with the risk owner before the change goes ahead and the owner can still decide on the window and any interim measures; they no longer restate crisc_d1_037's lesson (re-rate at once a credited control found not operating, the owner's fix alongside). Options and key B unchanged. Round 30: add 'control credit while a control is off (failed, never ran or switched off)' to the pause list. Round 29 cross-domain gate, 13 Nov 2026: also checked crisc_d4_121; consistent.",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d2_215",
+      "domain": 2,
+      "subtopic": "2A2 Threat modeling and threat landscape. Booking app modeled after launch at a towage company",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A towage company is designing an online booking app for shipping lines, and its developers plan to model threats after launch, using live traffic. Which of the following should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "A threat model of the app before it is built",
+        "B": "Threat intelligence on attacks against other booking apps",
+        "C": "Threat modeling based on the first month of live traffic",
+        "D": "Penetration tests of the app's hosting platform before launch"
+      },
+      "correct": "A",
+      "key_concept": "Threat modeling is done while a system is being designed, so its findings shape the controls built in; live data refines the model later.",
+      "pre_read": "Look at when each option would find the app's weaknesses, and what could still change at that point.",
+      "correct_explanation": "Threat modeling pays most while the design can still change: it shows how the app could be attacked, so controls are built in rather than added later. NIST SP 800-30 places a system's first risk assessment ideally in the initiation phase, and SP 800-218 uses threat modeling to assess software risk at design. Modeling from live traffic is the runner-up: real data helps later, but design weaknesses found after launch are costly to fix.",
+      "wrong_explanations": {
+        "B": "Intelligence shows what attackers do to other apps; it informs a threat model but cannot show how this app's own design could be attacked.",
+        "C": "Live traffic adds real data later, but waiting for it means design weaknesses surface once the app is built and running, when they are costly to change.",
+        "D": "Testing the hosting platform checks what is already built; it says nothing about how the new app's design could be attacked."
+      },
+      "tips": [
+        "Eliminate: B treats an intelligence feed as the analysis, and D tests the hosting platform, not the new app's design; neither models how this app could be attacked.",
+        "Final two: A beats C because threats found in the design can be designed out before build; waiting for live traffic finds the same weaknesses when they are costly to fix.",
+        "Exam cue: model threats to a new system while it is still being designed; live data and later tests refine the model, but do not replace the early one."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.4.3 (Risk Assessments at the Information System Tier: initial risk assessments are ideally performed in the Initiation phase of the system development life cycle); NIST SP 800-218 Version 1.1 PW.1.1 (use forms of risk modeling, such as threat modeling, attack modeling or attack surface mapping, to help assess the security risk for the software)",
+      "related_concepts": [
+        "Threat modeling",
+        "Secure by design",
+        "System development life cycle"
+      ],
+      "_provenance": "Authored from concept: notes 2A2.2 (Threat Intelligence and Threat Modeling; STRIDE bullet extended in round 30: threat modeling starts at design, before build, so its findings shape controls). Round 30, 13 Nov 2026: original scenario (a towage company designing an online booking app for shipping lines, whose developers plan to model threats after launch from live traffic) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 30 asks: the 2A2 item (application); towage company setting (transport); key A; 'Which of the following' stem; no owner option; same-opener non-key pair 'Threat' on runner-up C and eliminated B. Key 44 characters and 10 words against 56 to 61 and 8 to 10 (not the longest; tied at 10 words, so not strictly the wordiest or shortest by words). Not the paused families (requirement-based security tests vs pen tests: D is an eliminated platform test and the key is a design-stage threat model; builders deciding their own gate; objectives first for a new technology). Neighbours checked: crisc_d2_024 (a feed offered as the threat analysis for a new connection; consistent with eliminated B), crisc_d2_076 (STRIDE alone for an AI chatbot), crisc_d2_194 (a threat model updated when misuse appears after launch; consistent, as the key concept says live data refines the model later), crisc_d2_101 and crisc_d2_164 (credible paths, attack tree vs STRIDE), crisc_d2_104 (inherent risk ranks where a new app's controls are needed; consistent), crisc_d4_144 (security requirements tested before go-live; consistent with D's explanation). Cross-bank mirrors: CISA d5_131 (STRIDE applied during design for the MOST value) teaches the same timing to an IS auditor; here the risk analyst weighs a design-stage model against the developers' post-launch plan and an intelligence feed. CC cc_d5_162 (trust boundary in a planned link) and AAIA aaia_d2_166 (no AI threat model for an offline model) are consistent. Runner-up check: C (threat modeling based on the first month of live traffic); the stem fact that rules it out is that the app is still being designed, so a model now can change the design. No restrictive word (only, all, never, just, alone, limited to) and no each, every or any in any option; no option gives its own reason; no wait or defer option; no internal-audit or IT option; no Have, Ask or Tell-family option; no stem word repeated only in the key (checked in code); stem counted in code. Each new wrong option and the key were read against every older Exam cue, key and key concept in all four CRISC domains (TF-IDF scan plus keyword greps); none of the matches pulls toward a new wrong option on meaning. Review 13 Nov 2026 (round 30): runner-up C reworded from 'Threat model built from the first month of live traffic' to 'Threat modeling based on the first month of live traffic' (standards fix 2), so the final two no longer differ in grammar (C had dropped the article the key has); still 10 words and now 56 characters, so the 'Threat' non-key pair with B, the key's length position (not longest; not strictly wordiest or shortest by words) and D2's strict key-longest count of 34 are unchanged. C re-checked against the cue rules (round 30 check script on the file): no restrictive word, no each/every/all/any, no period word, no reason given in the option, and the 'Threat' pair stays the item's only same-opener pair. The exact-word echo check now lists 'model' (stem 'model threats') as in the key alone, but the five-letter stem check finds no key-only echo because C carries 'modeling', and C also holds the stem's 'live traffic', so the stem still points at least as much toward C; kept as the reviewer's exact text. The explanations and tips paraphrase C ('modeling from live traffic', 'waiting for live traffic') and needed no change. Cross-domain gate 13 Nov 2026: same skeleton as crisc_d2_141 (BIA before the design settles; after-go-live figures as runner-up), different technique; consistent. Family paused after 1,000.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_216",
+      "domain": 2,
+      "subtopic": "2A3 Vulnerability management. Reach of vulnerability identification at a solar panel maker",
+      "principle_id": "priority-word-decides",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which of the following does a solar panel maker's risk analyst need FIRST for vulnerability identification to reach all of the firm's systems?",
+      "options": {
+        "A": "Rate of critical flaws patched within the target time",
+        "B": "Vendor advisories giving CVSS scores for their products",
+        "C": "Vendor reports on groups that target solar panel makers",
+        "D": "A current inventory of hardware and software in use"
+      },
+      "correct": "D",
+      "key_concept": "Vulnerability identification reaches only the assets the firm knows it has, so a current hardware and software inventory comes first.",
+      "pre_read": "Ask what each option depends on before it can show a weakness in one of the firm's systems.",
+      "correct_explanation": "Vulnerability identification covers only what the firm knows it has: scans, advisories and reviews are matched against a current list of hardware and software, and anything missing from it goes unchecked. CSF 2.0 places these inventories under Asset Management, beside identifying vulnerabilities in assets. Vendor advisories are the runner-up: they report flaws in products, but without the inventory the analyst cannot tell which advisories apply to the firm.",
+      "wrong_explanations": {
+        "A": "A patching rate measures how fast known flaws are fixed; it says nothing about weaknesses in systems no one has listed.",
+        "B": "Advisories describe flaws in vendors' products; until the analyst knows which products the firm runs, they cannot tell which advisories apply.",
+        "C": "Reports on attacker groups describe threats, not weaknesses; they help rate likelihood but do not show which systems have flaws."
+      },
+      "tips": [
+        "Eliminate: A measures how fast known flaws are fixed, not where weaknesses are, and C describes threats, not vulnerabilities.",
+        "Final two: D beats B because advisories matter only once the analyst knows which products the firm runs; the inventory comes first, and advisories are matched against it.",
+        "Exam cue: vulnerability identification starts from knowing what you have; a current hardware and software inventory sets its reach, and unlisted systems go unchecked."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.AM-01 (inventories of hardware managed by the organization are maintained); NIST CSF 2.0 ID.AM-02 (inventories of software, services and systems managed by the organization are maintained); NIST CSF 2.0 ID.RA-01 (vulnerabilities in assets are identified, validated and recorded)",
+      "related_concepts": [
+        "Asset inventory",
+        "Vulnerability identification",
+        "Vendor advisories"
+      ],
+      "_provenance": "Authored from concept: notes 2A3.3 (Risk-Based Remediation Priority; component-list bullet extended in round 30: a current inventory sets identification's reach). Round 30, 13 Nov 2026: original scenario (a solar panel maker's risk analyst needing vulnerability identification to reach all of the firm's systems) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 30 asks: the 2A3 item (foundational); solar panel maker setting (manufacturing); key D; 'Which of the following' stem; no owner option; one wrong 'Rate' option (eliminated A, 'Rate' used as a noun); same-opener non-key pair 'Vendor' on runner-up B and eliminated C (moved here from crisc_d2_220, where a pair would need a second 'Quantitative' or 'Rate' option). The optional IT key was declined: crisc_d1_140 teaches that an inventory built from IT's network scans can miss plant controllers, so 'kept by IT' would sit badly in a key about reaching all of a manufacturer's systems. Key 51 characters and 9 words against 53 to 55 and 8 to 9 (not strictly shortest by words). Neighbours checked: crisc_d2_051 (for a new shared-component flaw, first find where it runs; consistent, the inventory makes that possible), crisc_d2_114 (a met patch target can hide risk; consistent with A), crisc_d2_101 and crisc_d2_122 (intelligence on groups targeting the sector informs threats, consistent with C), crisc_d2_005 and crisc_d2_027 (CVSS as one input), crisc_d1_130, crisc_d1_140, crisc_d1_087 and crisc_d1_212 (1A6: an inventory must be complete and current before ratings rely on it; consistent). Cross-bank mirrors: CISA d4_007 and d4_202 and CC cc_d5_157 (assets missing from an inventory) are consistent; none keys the inventory as the first need for vulnerability identification. Runner-up check: B (vendor advisories with CVSS scores); advisories describe products, and only the inventory shows which products the firm runs. No restrictive word (only, all, never, just, alone, limited to) and no each, every or any in any option; no option gives its own reason; no wait or defer option; no internal-audit or IT option; no Have, Ask or Tell-family option; no stem word repeated only in the key (checked in code); stem counted in code. Each new wrong option and the key were read against every older Exam cue, key and key concept in all four CRISC domains (TF-IDF scan plus keyword greps); none of the matches pulls toward a new wrong option on meaning.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_217",
+      "domain": 2,
+      "subtopic": "2A1 Risk events. Supplier ransomware absorbed by stock at a noodle maker",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Ransomware halted a noodle maker's sole flour supplier for nine days, but the maker's three weeks of stock kept its lines running and it lost nothing. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Take the nine days without loss as proof the scenario is covered",
+        "B": "Record the attack as the supplier's incident, not the maker's",
+        "C": "Review the near miss with the supply scenario's risk owner",
+        "D": "Qualify a second flour supplier through procurement"
+      },
+      "correct": "C",
+      "key_concept": "A supplier incident absorbed by the firm's own buffer is the firm's near miss, weighed in its scenario with the risk owner.",
+      "pre_read": "Decide what kind of event this was for the noodle maker before choosing what to do about it.",
+      "correct_explanation": "The supplier's outage reached the maker's process and was absorbed only by stock, so for the maker it is a near miss: evidence about how often supply stops and how long stock lasts. Reviewing it with the supply scenario's risk owner lets the owner weigh the rating and decide any response. Qualifying a second supplier is the runner-up: it may well follow, but choosing it before the near miss is weighed is acting before analysis.",
+      "wrong_explanations": {
+        "A": "Losing nothing this time does not show the stock is enough; a longer outage would outlast three weeks of stock, and the near miss is evidence to weigh.",
+        "B": "The supplier's outage reached the maker's own lines; for the maker it is a near miss against its own supply scenario, not another firm's event.",
+        "D": "A second supplier may be the right response once the near miss is weighed; choosing it first skips the analysis the risk owner needs to decide."
+      },
+      "tips": [
+        "Eliminate: A counts only realized losses, and B files an outage that reached the maker's lines as the supplier's event, outside the maker's own records.",
+        "Final two: C beats D because the near miss is new evidence about the supply scenario; the risk owner weighs it first, then decides whether a second supplier is worth its cost.",
+        "Exam cue: when a supplier's incident reaches your process but a buffer absorbs it, treat it as your own near miss and weigh it in the scenario with its risk owner before choosing a fix."
+      ],
+      "framework_ref": "ISACA Glossary (threat event); ISACA Glossary (loss event); NIST CSF 2.0 GV.SC-07 (the risks posed by a supplier, their products and services and other third parties are understood, recorded, prioritized, assessed, responded to and monitored)",
+      "related_concepts": [
+        "Near miss",
+        "Supplier disruption",
+        "Risk owner"
+      ],
+      "_provenance": "Authored from concept: notes 2A1.1 (Loss Events, Incidents and Near Misses; bullet added in round 30: a supplier outage absorbed by the enterprise's stock is its near miss, weighed with the risk owner). Round 30, 13 Nov 2026: original scenario (ransomware halted a noodle maker's sole flour supplier for nine days; three weeks of stock kept its lines running and it lost nothing) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 30 asks: the 2A1 item (application); noodle maker setting (food and drink); key C; scenario stem, FIRST; the batch's lone-owner key (only C names an owner; no lone wrong owner); one wrong 'Take' option (eliminated A); 'scenario' also sits in eliminated A, so no non-owner lens word is key-only. Key 58 characters and 10 words against 51 to 64 and 7 to 12 (neither the longest nor the shortest by words or characters; not a floor key). Not the paused families (an outside outage whose cause does not apply: here the outage reached the maker's own lines; vendor exit planning: D is dual sourcing, the runner-up, rejected as acting before analysis; internal records over complaints). Neighbours checked: crisc_d2_001 (a contained near miss is weighed in its scenario first; consistent), crisc_d2_088 (a supplier outage that harmed the firm is its own loss event; this item is the absorbed counterpart), crisc_d2_021 (peer events scaled to own exposure), crisc_d2_048 and crisc_d2_182 (near misses stopped by a control or by chance), crisc_d2_199 (a near miss as impact evidence), crisc_d3_152 (outside events can trigger an emerging-risk entry; consistent with B being wrong, as this event reached the maker). Cross-bank mirrors: none found in CISA, CC or AAIA for a supplier incident absorbed by stock; closest CC cc_d5_145 (classifying an AI disclosure as an incident), consistent. Runner-up check: D (qualify a second flour supplier); the stem facts that rule it out are that the event is new and unweighed and that no loss occurred, so the risk owner first weighs the near miss in the supply scenario. No restrictive word (only, all, never, just, alone, limited to) and no each, every or any in any option; no option gives its own reason; no wait or defer option; no internal-audit or IT option; no Have, Ask or Tell-family option; no stem word repeated only in the key (checked in code); stem counted in code. Each new wrong option and the key were read against every older Exam cue, key and key concept in all four CRISC domains (TF-IDF scan plus keyword greps); none of the matches pulls toward a new wrong option on meaning.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_218",
+      "domain": 2,
+      "subtopic": "2B1 Risk assessment concepts and standards. Impact of an AI referral-ordering tool at a sleep clinic",
+      "principle_id": "objectives-first",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A sleep clinic's AI tool orders referred patients for overnight studies; its risk assessment counts only the clinic's own losses, such as fines and lost fees. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Include harm to patients it wrongly delays in the impact",
+        "B": "Count harm to patients through the fines and claims it brings",
+        "C": "Test the tool's order against clinicians' own judgment",
+        "D": "Test the tool's order for bias between patient groups"
+      },
+      "correct": "A",
+      "key_concept": "An AI tool's risk assessment counts harm to the people it decides about as an impact in itself, not only through the firm's losses.",
+      "pre_read": "Look for what the assessment's figures leave out before choosing what to add.",
+      "correct_explanation": "An AI tool that decides about people can harm them directly, so its assessment counts that harm on the impact side, not just the clinic's losses. AI RMF MAP 5.1 asks for the likelihood and magnitude of each identified impact, and the framework names individuals among those harmed. Counting patient harm through fines and claims is the runner-up: it captures only harm that returns as cost, and much of it never becomes a claim.",
+      "wrong_explanations": {
+        "B": "Fines and claims show only the harm that returns to the clinic as cost; a patient whose study is wrongly delayed is harmed whether or not they claim.",
+        "C": "Comparing the tool with clinicians shows how often it misorders patients, which informs likelihood; the assessment would still leave patients' harm out of its impact.",
+        "D": "A bias test shows whether some groups are misordered more, which informs likelihood and fairness; the patients' harm would still be missing from the impact."
+      },
+      "tips": [
+        "Eliminate: C and D test how often the tool misorders patients; that informs likelihood but leaves the gap on the impact side, the harm to patients themselves.",
+        "Final two: A beats B because a wrongly delayed patient is harmed whether or not they claim; counting harm through fines and claims rates only what comes back to the clinic as cost.",
+        "Exam cue: when an AI tool makes decisions about people, rate the harm to those people as an impact in its own right, not only through the fines or claims they might bring."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MAP 5.1 (likelihood and magnitude of each identified impact, beneficial and harmful, based on expected use and other data, are identified and documented); NIST AI 100-1 (AI RMF 1.0) Section 1.1 (Understanding and Addressing Risks, Impacts, and Harms: negative impact or harm can be experienced by individuals, groups, communities, organizations, society, the environment and the planet)",
+      "related_concepts": [
+        "AI impact",
+        "Affected individuals",
+        "Impact rating"
+      ],
+      "_provenance": "Authored from concept: notes 2B1.1 (Likelihood, Impact and Risk; last bullet extended in round 30: harm to people an AI tool decides about counts directly, not only via claims). Round 30, 13 Nov 2026: original scenario (a sleep clinic's AI tool orders referred patients for overnight studies; its risk assessment counts only the clinic's own losses, such as fines and lost fees) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 30 asks: the D2 AI item, in 2B1 (analysis), on the planned angle (an AI tool's assessment leaves out harm to the people it decides about; the impact side covers affected individuals, AI RMF MAP 5.1); sleep clinic setting (healthcare, not a BIA stem); key A; scenario stem; no owner option; same-opener non-key pair 'Test' on eliminated C and D. Key 56 characters and 10 words against 53 to 61 and 8 to 11 (neither longest nor shortest). Not the paused families (human review of AI decisions; automated validation of AI output; an AI tool meets its own metric while harming an objective; AI brought into the register). Neighbours checked, as the plan asks: crisc_d2_121 (customers' harm recorded in a loss event that happened; here the assessment's impact side before any event), crisc_d2_078 (harm to people served sets a utility scenario's impact level; this item is about whose harm an AI decision tool's assessment counts, and how), crisc_d2_150 (a bias scenario names the group harmed; consistent with D's explanation), crisc_d2_155 (context of use), crisc_d2_174 (scope covers the people acting on outputs), crisc_d2_190 (foreseeable misuse), crisc_d3_159 (a fairness KRI compares groups), crisc_d2_165 (harm to patients changes in kind over an outage; consistent with B's explanation). Cross-bank mirrors: AAIA aaia_d1_012 (an auditor asks whether a tenant-flagging model's rating weighs harm to tenants), aaia_d2_088 (severity of harm to people in an AI incident scale) and aaia_d2_225 (impact-assessment trigger based on effects on people) teach the same direction to an AI auditor; this item gives the risk analyst's version, with harm counted only through fines and claims as the runner-up. Runner-up check: B (count patient harm through fines and claims); the stem fact that rules it out is that the tool decides about patients, who are harmed by a wrong delay whether or not they claim. No restrictive word (only, all, never, just, alone, limited to) and no each, every or any in any option; no option gives its own reason; no wait or defer option; no internal-audit or IT option; no Have, Ask or Tell-family option; no stem word repeated only in the key (checked in code); stem counted in code. Each new wrong option and the key were read against every older Exam cue, key and key concept in all four CRISC domains (TF-IDF scan plus keyword greps); none of the matches pulls toward a new wrong option on meaning.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_219",
+      "domain": 2,
+      "subtopic": "2B3 Risk register. Ratings overwritten at each review at a coroner's office",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A coroner's office overwrites its risk register's ratings at each review; its board wants future reports to show whether risks are rising or falling. Which of the following should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "A KRI chart for the highest-rated risks over time",
+        "B": "Risk owners' own accounts of how much their risks have moved",
+        "C": "Heat maps of the latest ratings for the board",
+        "D": "Past ratings kept, dated, with the owners who approved them"
+      },
+      "correct": "D",
+      "key_concept": "A risk register keeps past ratings, dated and tied to the owners who approved them, so reports can show which risks are rising or falling.",
+      "pre_read": "Find the cause of the board's problem before judging which option fixes it.",
+      "correct_explanation": "Keeping past ratings, dated and tied to the owners who approved them, lets reports show which risks are rising or falling. IR 8286 Rev. 1 defines the register as risk information understood over time, with a detail report behind each entry that can hold its history and who is accountable. A KRI chart is the runner-up: indicators signal change, but they cover only the top risks and are not the ratings.",
+      "wrong_explanations": {
+        "A": "KRIs signal change for the risks they track, but they are not the ratings and cover only the top risks, so the board still cannot see how ratings moved.",
+        "B": "Owners' recollections are opinions, given differently by each owner; they cannot show reliably how far ratings have moved.",
+        "C": "A heat map shows where risks sit at one moment; without past ratings it cannot show whether any risk is rising or falling."
+      },
+      "tips": [
+        "Eliminate: B relies on owners' memories rather than a record, and C shows ratings at one moment, so neither can show movement over time.",
+        "Final two: D beats A because the board asked how the risks themselves are moving; dated past ratings answer that for the whole register, while a KRI chart tracks indicators for the top risks.",
+        "Exam cue: when a register overwrites its ratings and future reports must show trends, keep a dated history with who approved each change; trend reports and accountability both depend on it."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Appendix B (Glossary: a risk register is a repository of risk information, including the data understood about risks over time); NIST IR 8286 Rev. 1 Section 3.9 (Cybersecurity Risk Data Conditioned for Enterprise Risk Roll-Up: a risk detail report can add historical information and individual and organizational accountability)",
+      "related_concepts": [
+        "Risk register",
+        "Rating history",
+        "Risk reporting"
+      ],
+      "_provenance": "Authored from concept: notes 2B3.2 (Keeping the Register Current; status bullet extended in round 30: past ratings are kept, dated, with the approving owner, so reports show trends). Round 30, 13 Nov 2026: original scenario (a coroner's office overwrites its register's ratings at each review; its board wants future reports to show whether risks are rising or falling) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 30 asks: the 2B3 item (application); coroner's office setting (public sector); key D; 'Which of the following' stem; split owner pair, the key (owners who approved the ratings) plus eliminated B (risk owners' accounts), with runner-up A and eliminated C naming no owner; no lone 'register' wrong option. Key 59 characters and 10 words against 45 to 60 and 9 to 11 (not the longest by either measure). Not the paused families (restating ratings after a scale or method change; profile-update triggers; the board cannot see part of the profile: here the board sees every entry but no history). Neighbours checked: crisc_d1_129 (1B3: compare the same risks' ratings across periods to show whether risk fell; consistent, and its distractor of owners' views matches B, explained the same way), crisc_d3_079 (report the profile against appetite with trend, not averaged scores), crisc_d2_039 (a current register shows ratings revised after events), crisc_d2_169 (entries as summaries linked to detail records; consistent, history can sit in the detail), crisc_d2_082 (controls linked to entries), crisc_d3_141 (heat-map colors). Cross-bank mirrors: CISA d2_112 (a register tool's lifecycle workflow with named owners and an audit trail) is the auditor's version of the same idea and consistent. Runner-up check: A (a KRI chart for the highest-rated risks); the stem facts that rule it out are that the board asked about the risks themselves and that the cause is ratings being overwritten. No restrictive word (only, all, never, just, alone, limited to) and no each, every or any in any option; no option gives its own reason; no wait or defer option; no internal-audit or IT option; no Have, Ask or Tell-family option; no stem word repeated only in the key (checked in code); stem counted in code. Each new wrong option and the key were read against every older Exam cue, key and key concept in all four CRISC domains (TF-IDF scan plus keyword greps); none of the matches pulls toward a new wrong option on meaning. Sibling in round 30: crisc_d3_320 (overwritten KRI values rebuilt from source records for this year's trend; 'start a dated history now' is its runner-up). Consistent: this stem asks for future reports and no source records survive. Review 13 Nov 2026 (round 30): correct_explanation's IR 8286 sentence corrected (concept P-3) from 'IR 8286 Rev. 1 describes the register as risk information held over time, with history and accountability behind each entry.' to 'IR 8286 Rev. 1 defines the register as risk information understood over time, with a detail report behind each entry that can hold its history and who is accountable.', because Section 3.9 puts historical and accountability information in the risk detail report behind each register entry, not in the register itself; the opening clause 'A register holds what is known about risks over time;' was dropped to keep the explanation within 75 words, since the corrected IR 8286 sentence now carries that definition; sibling cross-reference to crisc_d3_320 added (concept O-2). No option, key, tip or framework_ref changed, so owner shape, lengths and D2's strict key-longest count of 34 are unchanged. Round 30 cross-domain gate, 13 Nov 2026: tips[2] reworded.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_220",
+      "domain": 2,
+      "subtopic": "2B4 Risk analysis methodologies. Simulated fraud range for a factoring firm's board",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A factoring firm's Monte Carlo analysis, built on two fraud managers' estimated ranges, puts yearly invoice-fraud losses at $1,000,000 to $9,000,000. What MOST belongs beside this range in the risk analyst's board report?",
+      "options": {
+        "A": "Quantitative point estimate for the board to budget against",
+        "B": "The inputs' sources and the assumptions behind them",
+        "C": "Rate of fraud losses reported by peer factoring firms",
+        "D": "Trial count and run time of the simulation"
+      },
+      "correct": "B",
+      "key_concept": "A quantitative result goes to decision makers with its input sources and assumptions, so they can judge how far to rely on it.",
+      "pre_read": "Consider what each addition would tell the board about the range in front of it.",
+      "correct_explanation": "A simulated range is only as sound as its inputs, and here every input is two managers' judgment; the board needs their sources and assumptions to judge how far to rely on it. SP 800-30 notes that quantitative results may need explaining, particularly their assumptions and constraints. A peer fraud rate is the runner-up: it offers a comparison, but needs scaling to the firm and does not show what this range rests on.",
+      "wrong_explanations": {
+        "A": "A single figure suggests a precision the managers' estimates cannot support and hides the spread the board needs to see.",
+        "C": "A peer rate gives a rough comparison but must be scaled to the firm's volume and mix, and it does not show what this range rests on.",
+        "D": "More trials make a simulation's output steadier, not its inputs sounder; the trial count tells the board nothing about the managers' estimates."
+      },
+      "tips": [
+        "Eliminate: A turns the range into a falsely precise single figure, and D reports the simulation's mechanics, which say nothing about the quality of its inputs.",
+        "Final two: B beats C because the board must judge how far to rely on a range built on two managers' estimates; a peer rate still needs scaling and does not explain the inputs.",
+        "Exam cue: report a quantitative result with where its inputs came from and what it assumes; when the inputs are judgment, that context matters more than extra precision or benchmarks."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.2 (Assessment Approaches: quantitative results may need explaining, particularly the assumptions and constraints on using them); NIST SP 800-30 Rev. 1 Section 2.3.2 (Assessment Approaches: subjective inputs or high uncertainty lessen quantitative rigor)",
+      "related_concepts": [
+        "Monte Carlo simulation",
+        "Assumptions",
+        "Risk reporting"
+      ],
+      "_provenance": "Authored from concept: notes 2B4.2 (Quantitative Analysis: SLE, ARO and ALE; last bullet extended in round 30: report each figure's source, assumptions and uncertainty). Round 30, 13 Nov 2026: original scenario (a factoring firm's Monte Carlo analysis, built on two fraud managers' estimated ranges, puts yearly invoice-fraud losses at $1,000,000 to $9,000,000) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 30 asks: the 2B4 item (analysis); factoring firm setting (finance); key B; scenario stem, MOST; no owner option; one wrong 'Quantitative ...' option (eliminated A, not in any pair) and one wrong 'Rate' option (runner-up C, 'Rate' used as a noun). Plan conflict resolved: this slot also asked for a same-opener non-key pair, but with one 'Quantitative' and one 'Rate' option a pair would need a second of either, breaking the plan's counts; the pair moved to crisc_d2_216, so D2 still adds three non-key pairs (215, 216, 218). Key 51 characters and 8 words against 42 to 59 and 8 to 9 (tied for fewest words with D, so not strictly the shortest). Not the paused families (a forecast's bias tested against actuals; expert workshops for risks with no loss history; emerging risk shown with confidence or ranges: here an analyzed range is reported with its inputs' basis). Neighbours checked: crisc_d2_017 (ranges with stated assumptions over an exact figure; consistent with A), crisc_d2_115 (more trials do not fix a driving input; consistent with D), crisc_d2_107 (scale a peer figure to the firm's exposure; consistent with C's explanation), crisc_d2_181 (judge experts by how often their ranges held), crisc_d2_041 and crisc_d2_129 (simulated tails against a limit), crisc_d2_057 (report missing evidence and how it limits the rating), crisc_d2_131 (an untested assumption confirmed with its owner), crisc_d3_049 (an emerging risk rated as a range with stated confidence). Cross-bank mirrors: none found in CISA, CC or AAIA for reporting a simulation's input sources and assumptions; closest CRISC crisc_d2_017. Runner-up check: C (a peer factoring firms' fraud rate); the stem fact that rules it out is that every input is two managers' judgment, so the board first needs that basis, while a peer rate still needs scaling. No restrictive word (only, all, never, just, alone, limited to) and no each, every or any in any option; no option gives its own reason; no wait or defer option; no internal-audit or IT option; no Have, Ask or Tell-family option; no stem word repeated only in the key (checked in code); stem counted in code. Each new wrong option and the key were read against every older Exam cue, key and key concept in all four CRISC domains (TF-IDF scan plus keyword greps); none of the matches pulls toward a new wrong option on meaning.",
+      "style_version": 2
     }
   ]
 }
