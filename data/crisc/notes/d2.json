@@ -126,7 +126,7 @@
             "Internal sources: incident and problem records, audit and control test exceptions (failures no one reported), complaints, losses and staff reports.",
             "External sources: industry loss databases, sector information sharing groups, regulator notices, insurer data and public breach reports.",
             "External events are adjusted for differences in size, controls and exposure before they inform the enterprise's own ratings.",
-            "Event data is recorded consistently, with date, scenario, cause, source and impact before insurance, recoveries shown apart; events logged in several places are matched and counted once.",
+            "Event data is recorded consistently: when it began and was found, scenario, cause, source and impact before insurance, recoveries apart; duplicates across logs are counted once.",
             "Underreporting is a known weakness; blame-free reporting helps, and system records of every transaction count events no one reports.",
             "A supplier outage that harms the enterprise, such as fees it must repay to staff, is its own loss event, recorded against its own scenario, not an external peer event."
           ],
@@ -723,8 +723,8 @@
           "definition": "A risk scenario is a specific, assessable description of how a threat could cause an event that affects an asset and harms business objectives.",
           "why_it_matters": "A vague entry such as 'cyberattack' cannot be rated, owned or treated. A specific scenario shows which controls matter and lets the owner compare it with appetite.",
           "how_it_works": [
-            "Actor: who or what causes it, such as a criminal group, a careless user, a failed cooling unit, or groups feeding false input to a model that learns from it.",
-            "Event: what happens, such as malicious encryption, disclosure, an error or an outage.",
+            "Actor: who or what causes it, such as a criminal group, careless user, failed cooling unit, or groups feeding a learning model false input.",
+            "Event: what happens, such as malicious encryption, disclosure, an error or an outage; for an AI agent, what injected instructions could make it do.",
             "Asset: the process, system, data or people affected; an AI bias scenario names the group the model treats unfairly, not just 'some applicants'.",
             "Time: when or how long, such as payroll week, outages over four hours or AI drift until the next accuracy check; rate the credible time that hurts most.",
             "Consequence: the effect on objectives in business terms, such as lost revenue, fines or harm to patients; harm from altered data grows until someone notices.",
@@ -934,12 +934,12 @@
           "definition": "Risk is the chance that an event happens, weighed with how much it would affect objectives; the ISACA Glossary frames it as likelihood combined with impact.",
           "why_it_matters": "Rating only impact makes every disaster look urgent; rating only likelihood ignores rare but severe events. Both together let owners compare risks fairly against appetite.",
           "how_it_works": [
-            "Likelihood combines the chance a threat event starts and then causes harm, over a stated time frame; threat and weakness ratings give likelihood, not impact.",
+            "Likelihood is the chance a threat event starts and causes harm over a time frame fitting the decision, such as contract terms; threat and weakness ratings give likelihood, not impact.",
             "For adversaries, likelihood weighs capability, intent and targeting; other sources use recorded history, from regional or industry records when local history is short, with expert judgment filling gaps.",
             "Impact is the effect on objectives, such as financial, operational, legal, reputational or safety harm; a supplier's AI rating for another use is redone for the enterprise's own use.",
             "Controls and predisposing conditions change likelihood and are understood before rating; when one changes, such as more heat, older history may stop predicting.",
-            "ISO 31000, named here as context only, describes risk as the effect of uncertainty on objectives, which can include upside opportunity.",
-            "When a scenario harms several kinds of objective, the most severe credible harm sets the impact level; ordinal levels are not averaged."
+            "ISO 31000, named as context only, describes risk as the effect of uncertainty on objectives, upside included.",
+            "When a scenario harms several objectives, the most severe credible harm sets the impact level; ordinal levels are not averaged."
           ],
           "example": "A ski resort's register rates a ticketing system outage as high because it would stop sales. Kofi Mensah, the risk analyst, adds the missing half: two outages in five years and a working offline sales mode. Kofi re-rates both over 12 months with the commercial director.",
           "audit_focus": {
@@ -1087,8 +1087,8 @@
           "how_it_works": [
             "Process owners rate harm at intervals such as an hour, a day and a week, not a flat hourly rate; a new system's BIA precedes its recovery design.",
             "Impact includes lost revenue, regulatory breaches, safety, contract penalties and reputation; it rises as an outage lengthens and is rated for the process's peak period, not an average.",
-            "Dependencies are traced: systems, data, people, facilities, suppliers and other processes, including cloud and AI services.",
-            "A BIA assumes the disruption and skips likelihood, so it is no risk assessment; its ranks reflect outage harm before insurance, not leaks or tampering.",
+            "Dependencies are traced: systems, data, people, facilities, suppliers, other processes, and cloud and AI services.",
+            "A BIA assumes the disruption, whatever its cause, and skips likelihood, so it is no risk assessment; its ranks reflect outage harm before insurance, not leaks or tampering.",
             "Results set recovery priorities and feed continuity plans and scenario impact ratings; a scenario takes the figure for the outage length it names, and cumulative figures are not added together.",
             "A supporting system takes the priority of the most critical process that depends on it, however few people use it or revenue it earns."
           ],
@@ -1704,10 +1704,10 @@
           "why_it_matters": "Comparing inherent risk with appetite overstates the need for new controls; counting planned controls as working understates exposure.",
           "how_it_works": [
             "Inherent risk credits no control, even standard ones, so it shows a scenario's reliance on controls; a high rating marks controls that must not fail.",
-            "Residual risk uses inherent risk's scales and method, crediting what each control changes, not how many there are.",
-            "Current risk, counting only implemented, working responses, is compared with appetite now; a planned response's future residual risk shows whether the plan is enough.",
+            "Residual risk uses inherent risk's scales and method, crediting what each control changes, not their number.",
+            "Current risk counts implemented, working responses, not controls switched off, and is compared with appetite now; a planned response's future residual risk shows whether the plan is enough.",
             "Controls leave residual risk above zero, so 100% effectiveness inputs need a range; layered controls multiply each layer's pass-through share, not add effectiveness rates.",
-            "Before design, inherent risk, rated realistically per scenario rather than all at the top, ranks where controls matter most; target risk checks the design.",
+            "Before design, inherent risk, rated realistically per scenario, not all at the top, ranks where controls matter most; target risk checks the design.",
             "Loss history under today's controls shows current, not inherent, likelihood; crediting them again double counts."
           ],
           "compare": {
