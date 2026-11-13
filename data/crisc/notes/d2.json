@@ -59,25 +59,26 @@
             "crisc_d2_193",
             "crisc_d2_199"
           ],
-          "definition": "A risk event is something that happened, or nearly happened, that shows a risk scenario can occur. Loss events cause harm; near misses stop short of it.",
-          "why_it_matters": "Events are the best evidence of real likelihood and impact; counting only losses hides how often controls were nearly beaten, understating risk.",
+          "definition": "A risk event is something that happened, or nearly did, showing a risk scenario can occur. Loss events cause harm; near misses stop short of it.",
+          "why_it_matters": "Events are the best evidence of real likelihood and impact; counting only losses hides near misses and understates risk.",
           "how_it_works": [
-            "An incident need not cause loss; a loss event does, however routine, such as an outage staff covered with paid overtime.",
+            "An incident need not cause loss; a loss event does, however routine, such as an outage covered with paid overtime.",
             "Each event links to the scenario its root cause points to, not a first guess, and feeds its likelihood or impact, a near miss through the loss it nearly caused.",
             "Fixing or containing an event closes the incident, not the risk entry, which names what could happen; an event fitting no scenario shows a gap, filled with its process owner.",
-            "Impact counts primary and secondary losses, such as missed orders, lost customers, penalties and customer harm, even those arriving after closure; the process owner, not IT's incident record, supplies it."
+            "Impact counts primary and secondary losses, such as missed orders, lost customers, penalties and customer harm, even those arriving after closure; the process owner, not IT's incident record, supplies it.",
+            "A supplier outage absorbed by the enterprise's own stock is its near miss, weighed with the risk owner."
           ],
-          "example": "At a water utility, an alarm stops an operator opening the wrong valve remotely. Priya Raman, the risk analyst, logs a near miss against the remote operation error scenario and asks its owner, the operations manager, to review likelihood.",
+          "example": "An alarm stops a water utility operator opening the wrong valve remotely; Priya Raman, the risk analyst, logs a near miss against that scenario and asks its owner to review likelihood.",
           "audit_focus": {
             "review": [
               "Trace recent incidents and near misses to the risk scenarios they affect",
-              "Compare scenario likelihood ratings with the event history since the last review"
+              "Compare scenario likelihood ratings with recent event history"
             ],
             "evidence": [
               "Incident and near-miss log entries linked to register scenario IDs",
               "Register change history showing ratings updated after events"
             ],
-            "recommend": "Have the incident manager route every closed incident and near miss to the relevant risk owner for scenario review.",
+            "recommend": "Have the incident manager route closed incidents and near misses to the risk owner for scenario review.",
             "decides": "The risk owner agrees any rating change the event supports and decides the response"
           },
           "isaca_rule": "Treat every loss event and near miss as scenario evidence. Closing the incident is not closing the risk: link the event to its scenario, reassess unless the rating already expected it, and let the risk owner decide any change.",
@@ -88,13 +89,13 @@
             },
             {
               "trap": "Once the root cause is fixed, the incident and its register entry can both be closed.",
-              "why": "The fix may lower the risk, but the scenario is reassessed first; the risk owner then decides whether the change is enough."
+              "why": "The fix may lower the risk, but the scenario is reassessed first and its risk owner decides if that is enough."
             }
           ],
           "key_terms": [
             {
               "term": "Loss event",
-              "definition": "A threat event that actually causes loss, such as lost money, data or service; the ISACA Glossary credits it to the FAIR taxonomy."
+              "definition": "A threat event that causes loss, such as lost money, data or service; the ISACA Glossary credits the term to FAIR."
             },
             {
               "term": "Near miss",
@@ -329,7 +330,7 @@
           "how_it_works": [
             "Intelligence comes from vendors, sharing groups and alerts; reports on actors' aims, methods and targets inform scenarios, and indicators of compromise feed detection tools.",
             "Intelligence is filtered for relevance: does the actor target this sector, and does the enterprise use the targeted technology?",
-            "STRIDE prompts six threat types against a design: spoofing, tampering, repudiation, information disclosure, denial of service and elevation of privilege; AI systems also need AI attack classes added.",
+            "Threat modeling starts at design, before build, so findings shape controls; STRIDE prompts spoofing, tampering, repudiation, information disclosure, denial of service and elevation of privilege; AI adds attack classes.",
             "Attack trees break an attacker's goal into paths, including through staff, suppliers and transport; uncontrolled paths show where exposure sits, and a control blocking several is a key control.",
             "MITRE ATT&CK catalogs tactics and techniques seen in real attacks; those used by groups that target the sector show which attack paths are credible.",
             "Modeling results feed risk scenarios, rated with the risk owner; a new technique that beats a credited control, such as live deepfake video, means re-rating the existing scenario."
@@ -652,7 +653,7 @@
             "Add exploitability: public exploit code, active attacks or a listing in a known-exploited vulnerabilities catalog.",
             "Fix time frames by risk tier sit in a management-approved policy; a medium flaw with no reachable path or known exploitation takes the next routine cycle, not an emergency change.",
             "When a fix cannot meet its time frame, raise an exception with compensating controls for the risk owner to accept or reject.",
-            "For a new flaw in a shared component, first find where it runs and which business services rely on it, from component lists for in-house, commercial and AI software."
+            "A current inventory sets identification's reach; for a shared-component flaw, first find where it runs and which business services rely on it, from in-house, commercial and AI component lists."
           ],
           "example": "A city transit agency has 1,200 open findings and patches them in the order they arrive. Marcus Bell, the risk lead, groups them by the service each asset supports, flags the internet-facing fare payment servers that have public exploits, and drafts risk tiers with fix deadlines for management approval.",
           "audit_focus": {
@@ -935,16 +936,16 @@
             "crisc_d2_212"
           ],
           "definition": "Risk is the chance that an event happens, weighed with how much it would affect objectives; the ISACA Glossary frames it as likelihood combined with impact.",
-          "why_it_matters": "Rating only impact makes every disaster look urgent; rating only likelihood ignores rare but severe events. Both together let owners compare risks fairly against appetite.",
+          "why_it_matters": "Rating only impact makes every disaster look urgent; rating only likelihood ignores rare, severe events. Both let owners compare risks against appetite.",
           "how_it_works": [
             "Likelihood is the chance a threat event starts and causes harm over a stated time frame, the register's or a decision's own; threat and weakness ratings give likelihood, not impact.",
             "For adversaries, likelihood weighs capability, intent and targeting; other sources use recorded history, from regional or industry records when local history is short, with expert judgment filling gaps.",
             "Impact is the effect on objectives, such as financial, operational, legal, reputational or safety harm; a supplier's AI rating for another use is redone for the enterprise's own use.",
             "Controls and predisposing conditions change likelihood and are understood before rating; when one changes, such as more heat, older history may stop predicting.",
             "ISO 31000, named as context only, describes risk as the effect of uncertainty on objectives, upside included.",
-            "When a scenario harms several objectives, the most severe credible harm sets the impact level; ordinal levels are not averaged."
+            "The most severe credible harm across objectives sets impact, not an average; harm to people an AI tool decides about counts directly, not only via claims."
           ],
-          "example": "A ski resort's register rates a ticketing system outage as high because it would stop sales. Kofi Mensah, the risk analyst, adds the missing half: two outages in five years and a working offline sales mode. Kofi re-rates both over 12 months with the commercial director.",
+          "example": "A ski resort rates a ticketing outage high because it would stop sales. Kofi Mensah, the risk analyst, adds the missing half, two outages in five years and an offline sales mode, and re-rates both over 12 months with the commercial director.",
           "audit_focus": {
             "review": [
               "Sample register ratings for a separate likelihood and impact rationale",
@@ -1350,7 +1351,7 @@
           "why_it_matters": "Decisions are only as good as the register behind them. A stale register reports risks as treated that are not, and hides risks that have grown.",
           "how_it_works": [
             "Update triggers include serious incidents, out-of-range events, control test results, audit findings, new threats, projects, reorganizations and a new AI model release, so entries record the release rated.",
-            "Status follows evidence: an entry moves to treated only when the response is implemented and working, not when it is planned.",
+            "Status follows evidence, moving to treated only once the response is implemented and working; past ratings are kept, dated, with the approving owner, so reports show trends.",
             "Current and residual ratings credit a control only after it is implemented and tested, not on the day it is approved.",
             "Owners review entries on a cycle set by rating; a stated trigger, such as a KRI breach, brings review forward, and a request alone is not one.",
             "An entry closes, with a reason and the owner's approval, once its risk ends, as with a retired asset; working controls do not end it. Closed entries stay as history.",
@@ -1561,7 +1562,7 @@
             "ALE equals SLE times ARO, the expected yearly loss; for rare, severe events, also show the SLE, as one event can far exceed ALE.",
             "Worked example: an $800,000 asset with a 25% exposure factor has an SLE of $200,000; at an ARO of 0.5, ALE is $100,000.",
             "A control is cost-justified when the yearly drop in ALE, before minus after, exceeds its yearly cost, with a one-off cost spread over its life.",
-            "Results are only as good as the inputs: scale an outside rate to the enterprise's exposure, and state each figure's source and uncertainty."
+            "Results are only as good as inputs: scale an outside rate to the enterprise's exposure, and report each figure's source, assumptions and uncertainty."
           ],
           "example": "Each crane control outage at a port terminal loses $300,000; two in five years give an ARO of 0.4, so ALE is $120,000. A redundant controller costing $50,000 a year would cut the ARO to 0.1, giving $30,000. Mei, the risk analyst, shows the manager a $90,000 yearly reduction against $50,000 a year.",
           "audit_focus": {
