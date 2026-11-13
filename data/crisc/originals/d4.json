@@ -6883,6 +6883,196 @@
       ],
       "_provenance": "Authored from concept: notes 4A5.2 (Project Risk and Agile Delivery: sprint reviews update risk status; bullet extended in round 27: a story adding AI or personal data revises the project's risk assessment before it ships) and 4A3.1 (the initial risk assessment is updated when scope or data change). Round 27, 12 Nov 2026: original scenario (a planning department whose Agile team added a story, due next sprint, for an AI service to summarize residents' objection letters with their names and addresses, after the project risk assessment was done) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_028 (a scope change in design: update the risk assessment before the next phase gate; this is its Agile and AI form, before a story ships, with a definition-of-done runner-up in place of backlog controls), crisc_d4_020 (a privacy impact assessment updated for new sharing), crisc_d4_031 (security criteria in the definition of done; its cue keeps one-off risk work out of the definition of done, consistent with B being wrong here), crisc_d4_165 (AI project risks rated before portfolio ranking), crisc_d4_141 (builders deciding their own gate, paused, not used), crisc_d4_154, crisc_d4_134 and crisc_d4_084 (Agile risk decisions), crisc_d1_031 (an owner revisits the class when an asset's data changes); cross-bank mirrors: AAIA aaia_d1_131 (a privacy assessment that does not reach an agent's outside services) and CISA d2_097 (early screening of each project, scaled to risk). Runner-up B (privacy criteria in the definition of done): closest older cues in lesson are crisc_d4_031 (definition of done for recurring criteria) and crisc_d4_028 (assess before choosing controls); the stem fact 'the project's risk assessment predates it' decides. Owner pattern: no option names an owner. Lens word 'assessment' sits in the key and in eliminated D. Round 27 asks: D4's AI item, in 4A5 on the plan's angle (AI processing of personal data added mid-project; the project's risk assessment revised before the story ships), avoiding crisc_d4_141 and crisc_d4_165; key A; application; key not strictly longest or shortest by words (9 against 11, 8 and 8) or characters (57 against 59, 52 and 50).",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d4_186",
+      "domain": 4,
+      "subtopic": "4A6 Technology resilience and disaster response/recovery. Which model version a restore returns",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A candy maker's recovery test restored its AI demand-forecasting model within the RTO; the backup store also holds rejected candidate versions, and nobody checked which came back. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "A shorter RTO for the model, set by its business owner",
+        "B": "Pass criteria confirming the restored version is the approved one",
+        "C": "Checksums showing the model files were restored without damage",
+        "D": "Replication of each model version to a second region"
+      },
+      "correct": "B",
+      "key_concept": "When the backup store also holds rejected versions, a recovery test of an AI model passes when the restored version matches the approved release.",
+      "pre_read": "Notice what the test measured and what else sits in the backup store.",
+      "correct_explanation": "The test timed the restore but never confirmed which model came back; with rejected candidates in the same store, a restore can return a version its owner never approved, and forecasts would still run. Pass criteria that check the restored version against the approved release make the test prove a known, approved state. Checksums are the runner-up: they prove the files restored without damage, but a rejected candidate's files restore intact too.",
+      "wrong_explanations": {
+        "A": "The model already came back within the RTO, so speed is not the gap; a shorter target would still pass a test that restores the wrong version.",
+        "C": "Checksums show the files were not damaged in backup or restore, but a rejected candidate's files are intact too, so they cannot show the approved version returned.",
+        "D": "Replication adds copies of every version, rejected candidates included; it improves availability but does not check which version a restore returns."
+      },
+      "tips": [
+        "Eliminate: A shortens a target the test already met, and D copies every version to another region; neither checks which version the restore returned.",
+        "Final two: B beats C because the store also holds rejected candidates; checksums prove the files are undamaged, while pass criteria tied to the approved release prove the right model is back.",
+        "Exam cue: when a recovery test restores an AI model from a store that also holds rejected versions, have the test pass on the approved version coming back, not on restore time or intact files."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CP-10 (System Recovery and Reconstitution: recover and reconstitute the system to a known state within a period consistent with recovery time and recovery point objectives); NIST SP 800-53 Rev. 5 CP-4 (Contingency Plan Testing)",
+      "related_concepts": [
+        "Recovery testing",
+        "AI model versions",
+        "Known state",
+        "Backup integrity"
+      ],
+      "_provenance": "Authored from concept: notes 4A6.3 (Testing Recovery Capability: observers record how long recovery took until users could work again; bullet extended in round 28: a restored AI model must match its approved version) and 4A6.1 (trained AI models are recovery assets). Round 28, 13 Nov 2026: original scenario (a candy maker whose recovery test restored its AI demand-forecasting model within the RTO from a backup store that also holds rejected candidate versions, with no check of which version came back) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_107 (offsite copies of each released model version; avoided as key and as an option), crisc_d4_172 (a tested rollback in a retraining pipeline; avoided), crisc_d4_076 (a standby AI vendor within appetite; avoided), crisc_d4_156 (a failover test judged by servers starting; its cue keys users working on recovered systems, and no option here is a user test, so the two do not collide), crisc_d4_127 (hand-back tested), crisc_d4_034 (test scenario against the top risk), crisc_d4_088 (a restore test that leaves out ransomware containment), crisc_d4_012 (verify the backup is clean before restoring, a ransomware trigger; runner-up C checks damage, not malware, and the stem has no attack), crisc_d4_029 (model versions linked to training data), crisc_d3_252 (automatic reversion to the last approved model version, a control-type item); cross-bank mirrors: CC cc_d2_029 (versioned copies of a model in backups), AAIA aaia_d2_009, aaia_d2_107, aaia_d2_150 and aaia_d2_234 (model and prompt versions kept for rollback), CISA d5_311 (rebuild from known-good media). This item differs: the copies exist and restore on time; the gap is that the test never checks the restored version is the approved one. Runner-up C (checksums): NIST CSF 2.0 RC.RP-03 asks for backup integrity checks before restoring, consistent with C being sound practice yet not enough here, since a rejected candidate is intact too. Owner pattern: one lone owner, eliminated (A, business owner); key and runner-up name no owner. Round 28 asks: D4's AI item, in 4A6 on the plan's angle (a recovery test restores an AI model on time, but nobody checks the restored version is the approved one); key B; analysis; D4's floor key, naturally longest by characters (66 against 62, 54 and 52) and not longest by words (10 against 11, 9 and 9); 'each' on wrong option D; no same-opener pair.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_187",
+      "domain": 4,
+      "subtopic": "4A7 Emerging technologies. Starting a post-quantum move",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An invoice finance firm's CIO wants its post-quantum move to start with the customer portal, its most visible system; no record shows which systems use quantum-vulnerable algorithms. What should the risk practitioner recommend FIRST?",
+      "options": {
+        "A": "Inventory of the systems where vulnerable algorithms protect data",
+        "B": "Migration order set by how long each system's data must stay secret",
+        "C": "Post-quantum algorithms on the customer portal, as planned",
+        "D": "A gateway its vendor says makes old algorithms quantum-safe"
+      },
+      "correct": "A",
+      "key_concept": "With no record of where quantum-vulnerable algorithms are used, post-quantum migration starts with a cryptographic inventory; ranking by how long data must stay secret follows.",
+      "pre_read": "Ask what the firm must know before any migration order can be judged.",
+      "correct_explanation": "No record shows where quantum-vulnerable algorithms are used, so neither the CIO's plan nor any other order can be judged against the firm's real exposure. An inventory of the systems and the data those algorithms protect comes first, as NIST's transition guidance advises. Ordering by how long each system's data must stay secret is the runner-up: it is how migration is prioritized, but it can rank only systems known to use vulnerable algorithms.",
+      "wrong_explanations": {
+        "B": "Ordering by how long data must stay secret is how migration is prioritized, but it needs the inventory first; no record shows which systems use vulnerable algorithms.",
+        "C": "Starting with the most visible system orders the move by appearance, not exposure; without an inventory, the portal may not be where long-lived data is at risk.",
+        "D": "Relying on a vendor's quantum-safe claim is adoption on vendor claims, and a gateway covers traffic through it, not systems nobody has listed."
+      },
+      "tips": [
+        "Eliminate: C picks the first system by visibility, and D relies on a vendor's quantum-safe claim; neither starts from knowing where vulnerable algorithms protect data.",
+        "Final two: A beats B because no record shows which systems use vulnerable algorithms; ranking by how long data must stay secret comes once the inventory exists.",
+        "Exam cue: when a post-quantum move is planned with no record of where vulnerable algorithms are used, recommend the cryptographic inventory first; prioritizing by data lifetime comes next."
+      ],
+      "framework_ref": "NIST IR 8547 Section 1 (Introduction: organizations should treat the migration to post-quantum cryptography as a current priority, beginning with cryptographic inventories and migration planning); NIST IR 8547 Section 3 (Migration Considerations: the harvest now, decrypt later threat makes migration urgent for data that must stay secure for many years)",
+      "related_concepts": [
+        "Post-quantum cryptography",
+        "Cryptographic inventory",
+        "Harvest now, decrypt later",
+        "Migration planning"
+      ],
+      "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: what exists is inventoried before risk can be assessed; bullet extended in round 28: post-quantum migration starts from an inventory of quantum-vulnerable algorithms and the data they protect). Round 28, 13 Nov 2026: original scenario (an invoice finance firm whose CIO wants the post-quantum move to start with the most visible system, the customer portal, while no record shows which systems use quantum-vulnerable algorithms) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d3_049 (rating a distant quantum threat with ranges and stated confidence; a rating item, not migration), crisc_d4_055 (inventory low-code apps FIRST; same inventory-first rule on a different trigger, consistent), crisc_d4_115 (vendor patch support for long-lived devices), crisc_d4_167 (custody of signing keys), crisc_d4_013, crisc_d4_157 and crisc_d4_036 (vendor claims, trials and pilots; their cues do not key B, C or D here), crisc_d1_213 (value lost by slow adoption); cross-bank mirrors: CISA d5_079 (inventory first for a post-quantum plan; same rule, here framed against a CIO's visibility-led start), CISA d5_074 and CC cc_d5_024 (with an inventory done, rank by how long data must stay secret: consistent with B being the right next step but not first here), CISA d5_338 (validating an inventory by discovery scan), CISA d2_174 (an executive owner for a stalled migration), CC cc_d5_070 (a vendor upgrade path for a VPN). Runner-up B (order by data lifetime): closest older keys in lesson are CISA d5_074 and CC cc_d5_024, both set after the inventory exists; the stem fact 'no record shows which systems use quantum-vulnerable algorithms' decides. Not an AI item. Owner pattern: no option names an owner. Round 28 asks: D4's 4A7 item; key A; application; key not strictly longest or shortest by words (9 against 12, 8 and 9) or characters (65 against 67, 58 and 59); 'each' on wrong option B; no same-opener pair; no restricted or rarely keyed opener.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_188",
+      "domain": 4,
+      "subtopic": "4B1 Security concepts, frameworks and standards. One administrator holding a master key",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "One IT administrator at an ink maker can obtain and use the master key to its encrypted formula archive without anyone else. Which of the following should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "A renewed background check on the IT administrator",
+        "B": "A tamper-evident log of each use of the master key",
+        "C": "Backup copy of the master key held in a separate secure location",
+        "D": "Two-person control over retrieving and using the master key"
+      },
+      "correct": "D",
+      "key_concept": "When one person can obtain and use a key to critical data alone, two-person control applies separation of duties, so key use needs two people.",
+      "pre_read": "Note what one person can do with the key, and what each option changes about that.",
+      "correct_explanation": "One administrator can obtain and use the key to the formula archive with no one else involved, so a single person could decrypt and copy the formulas. Two-person control applies separation of duties to the key: retrieving and using it needs a second person, stopping misuse by one. A tamper-evident log is the runner-up: it records each use, but it reveals misuse after the formulas are copied, and a leaked formula cannot be recalled.",
+      "wrong_explanations": {
+        "A": "Screening lowers the chance of hiring someone untrustworthy, but trusted people can still misuse access; the administrator could still use the key with no one else involved.",
+        "B": "A tamper-evident log detects misuse after it happens; it does not stop one administrator decrypting and copying the formulas, which cannot be recalled once leaked.",
+        "C": "A second copy guards against losing the key, not against misuse; it adds another place the key can be taken from."
+      },
+      "tips": [
+        "Eliminate: A screens the person and C keeps a spare key elsewhere; neither stops one administrator from using the key with no one else involved.",
+        "Final two: D beats B because a log shows misuse after the formulas are copied, while two-person control needs a second person before the key can be used.",
+        "Exam cue: when one person can obtain and use the key to a critical asset with no one else involved, apply separation of duties to the key through two-person control, not logs."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-3(2) (Access Enforcement | Dual Authorization: dual authorization, also known as two-person control, needs two authorized people to act and reduces insider risk); NIST SP 800-53 Rev. 5 AC-5 (Separation of Duties)",
+      "related_concepts": [
+        "Separation of duties",
+        "Two-person control",
+        "Key management",
+        "Insider risk"
+      ],
+      "_provenance": "Authored from concept: notes 4B1.1 (Core Security Principles: critical tasks are split so no one can complete and hide a harmful action alone; exam trap added in round 28: relying on logs when one person can use the key to critical data alone). Round 28, 13 Nov 2026: original scenario (an ink maker where one IT administrator can obtain and use the master key to the encrypted formula archive with no one else involved) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_015 (separation of duties named as the violated principle; definitional), crisc_d4_155 (an independent review where a small team cannot split duties; here nothing says duties cannot be split, and runner-up B is a log, not an independent review), crisc_d4_168 (a count of users holding conflicting roles), crisc_d4_097 (backup keys kept only at the main site; an availability lesson, which is why C is wrong here), crisc_d4_039 and crisc_d4_087 (least privilege), crisc_d4_053 and crisc_d4_073 (defense in depth); cross-bank mirrors: CC cc_d3_106 (two-person control told apart from separation of duties, definitional), CISA d5_068 (keys moved into a hardware security module), CISA d1_219 (a limitation of two-person approval). This item differs: the decision is the BEST control for one person's sole use of a key to the most sensitive data. Runner-up B (a tamper-evident log): no older cue keys a log over a preventive split; crisc_d4_053's cue asks for detection beside prevention, consistent with D here because prevention is what is missing. Owner pattern: no option names an owner; 'IT' named on wrong option A only. Round 28 asks: D4's 4B1 item; key D; analysis; 'Which of the following' stem (1 of D4's 2); D4's one same-opener pair, the article 'A', on eliminated A and runner-up B; 'each' on wrong option B; key not strictly longest or shortest by words (9 against 8, 10 and 12) or characters (59 against 50, 50 and 64).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_189",
+      "domain": 4,
+      "subtopic": "4B2 Security/risk awareness and training. A leader's words about staff",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A visa office's director opens awareness campaigns by calling staff the weakest link; survey comments cite this as why staff now hide mistakes. Which of the following should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Discipline for staff found hiding their mistakes",
+        "B": "Messages from the director that welcome reported mistakes",
+        "C": "Campaigns fronted by the security team instead of the director",
+        "D": "Refresher course on the duty to report mistakes"
+      },
+      "correct": "B",
+      "key_concept": "When survey comments trace hidden mistakes to a leader calling staff the weakest link, the fix is the leader's message, which sets the reporting tone.",
+      "pre_read": "Find what the survey comments say caused the hiding.",
+      "correct_explanation": "Survey comments trace the hiding to the director's own words, so the cause is the tone set at the top. Messages from the director that welcome reported mistakes change that tone where it was set, and staff take their cue on blame from their leader. Campaigns fronted by the security team are the runner-up: they remove the harmful line from the campaigns, but the director's view of staff stays as it was.",
+      "wrong_explanations": {
+        "A": "Disciplining staff for hiding mistakes adds blame to the fear that caused the hiding; staff learn to hide mistakes better, not to report them.",
+        "C": "A new presenter removes the line from the campaigns, but the director's view stays, and staff take their cue on blame from their leader.",
+        "D": "A course on the duty to report treats a knowledge gap; the survey comments show staff hide mistakes from fear of blame, not ignorance of the duty."
+      },
+      "tips": [
+        "Eliminate: A disciplines staff, which deepens the fear behind the hiding, and D teaches a duty staff already know; neither changes the director's words the survey comments cite.",
+        "Final two: B beats C because the survey comments cite the director's words; swapping the presenter hides the message, while the director's own new message resets the tone.",
+        "Exam cue: when survey comments trace hidden mistakes to how a leader talks about staff, change the leader's message; culture follows what leaders say and do, more than training or discipline."
+      ],
+      "framework_ref": "NIST SP 800-50 Rev. 1 Section 2.7.3 (Training Content: senior leaders are given messaging that helps them avoid harmful language, such as calling users the weakest link); NIST CSF 2.0 GV.RR-01 (organizational leadership is responsible and accountable for cybersecurity risk and fosters a culture that is risk-aware, ethical and continually improving)",
+      "related_concepts": [
+        "Tone at the top",
+        "Risk culture",
+        "Reporting mistakes",
+        "Leadership messaging"
+      ],
+      "_provenance": "Authored from concept: notes 4B2.1 (Risk-Aware Culture and Role-Based Training: leaders set the tone; bullet extended in round 28: leaders calling staff the weakest link makes people hide or delay reports). Round 28, 13 Nov 2026: original scenario (a visa office whose director opens awareness campaigns by calling staff the weakest link, with survey comments citing this as why staff now hide mistakes) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_049 (executives exempt from sign-in checks; tone set by leaders' actions; this item is tone set by leaders' words, and its cue 'change that behavior rather than training staff' agrees with B), crisc_d4_041 (executive accountability for culture), crisc_d4_042 (a process fix before blame), crisc_d4_169 (a charge that delays loss reports; its cue looks for what reporting costs people, consistent with B), crisc_d4_159, crisc_d4_140 and crisc_d4_179 (awareness measures and simulations), crisc_d1_109 (consequences by rank), crisc_d1_191, crisc_d1_084 and crisc_d1_166 (speak-up routes, paused; no option here is a reporting channel); cross-bank mirrors: CC cc_d2_040 (a cruel simulation lure) and CC cc_d2_139 (feedback to staff who report emails), both on other causes. Runner-up C (security team fronts the campaigns): no older cue keys a change of presenter; the stem fact that survey comments cite the director's words decides. Owner pattern: no option names an owner. Round 28 asks: D4's 4B2 item; key B; foundational; 'Which of the following' stem (2 of D4's 2); training option D wrong; no Have or Ask key; key not strictly longest or shortest by words (8 against 7, 10 and 8) or characters (57 against 48, 62 and 47).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_190",
+      "domain": 4,
+      "subtopic": "4B3 Data privacy and data protection principles. Tracking drivers' own phones",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An asphalt plant's dispatch app, which truck drivers install on their own phones to receive loads, records each phone's location around the clock. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Location tracking that stops when drivers go off shift",
+        "B": "Drivers' consent to the tracking at installation",
+        "C": "Retention rules for the location history, set by the data owner",
+        "D": "Reviews of who can view the location history, by the system owner"
+      },
+      "correct": "A",
+      "key_concept": "A dispatch app on drivers' own phones tracks location during shifts; off-shift collection is cut at the source, not consented to or protected.",
+      "pre_read": "Compare what dispatch needs with what the app collects.",
+      "correct_explanation": "Dispatch needs drivers' locations while they deliver loads; recording their own phones around the clock also collects where they go off duty, which serves no work purpose. Minimization stops tracking when the shift ends, cutting the excess at the source. Drivers' consent is the runner-up: it looks like a lawful basis, but drivers must install the app to get loads, so the choice is not free, and consent would not make off-shift tracking necessary.",
+      "wrong_explanations": {
+        "B": "Drivers must install the app to receive loads, so their consent is not a free choice, and consenting does not make off-shift locations necessary for dispatch.",
+        "C": "The data owner rightly sets retention, but keeping the history for a set time still collects drivers' off-shift movements that dispatch never needed.",
+        "D": "Access reviews by the system owner protect the history from the wrong viewers, a security control; the off-shift locations are still collected."
+      },
+      "tips": [
+        "Eliminate: C sets how long the history is kept and D reviews who can see it; both protect location data the app should not collect off shift.",
+        "Final two: A beats B because drivers must install the app to get loads; consent given under that condition is not free and leaves the off-shift collection in place.",
+        "Exam cue: when a work app on staff's own devices collects personal data beyond working time, recommend collecting what the purpose needs, rather than consent, retention or access rules."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SA-8(33) (Security and Privacy Engineering Principles | Minimization); NIST SP 800-53 Rev. 5 PT-3 (Personally Identifiable Information Processing Purposes)",
+      "related_concepts": [
+        "Data minimization",
+        "Employee monitoring",
+        "Purpose limitation",
+        "Consent"
+      ],
+      "_provenance": "Authored from concept: notes 4B3.1 (Privacy Principles: only data the purpose needs is collected, kept or disclosed, staff included; bullet extended in round 28: tracking workers stops off shift). Round 28, 13 Nov 2026: original scenario (an asphalt plant whose dispatch app, installed by truck drivers on their own phones to receive loads, records each phone's location around the clock) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_110 (drone video processed on board, minimization at the source; its cue agrees with A), crisc_d4_180 (supervisors shown absence dates without medical reasons; its cue 'consent or logging does not cure disclosure beyond the purpose' agrees with B and D being wrong), crisc_d4_100 (consent tied to the core service is no real choice; agrees with B wrong), crisc_d4_150 and crisc_d4_019 (purpose set before collection, a paused family; here the purpose, dispatch, is set and the excess is in time), crisc_d4_125 and crisc_d4_089 (location data in other uses), crisc_d4_043 (protective defaults); cross-bank mirrors: CISA d2_223 (precise location no feature uses, sent to an impact assessment), CC cc_d1_198 (location tags stripped before publishing), AAIA aaia_d1_137 (emotion recognition at work banned by law). This item differs: the purpose is set and lawful in working time; the gap is collection outside it. Runner-up B (consent): closest older cues are crisc_d4_100 and crisc_d4_180, both against consent as the cure; the stem fact 'install on their own phones to receive loads' decides. Owner pattern: an Eliminate owner pair written in from the start (C, data owner; D, system owner), both eliminated; key and runner-up name no owner. Round 28 asks: D4's 4B3 item; key A; application; key not strictly longest or shortest by words (9 against 7, 11 and 12) or characters (54 against 48, 63 and 65); no same-opener pair; no 'Access to' or rarely keyed opener.",
+      "style_version": 2
     }
   ]
 }
