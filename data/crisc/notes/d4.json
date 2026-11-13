@@ -1036,7 +1036,7 @@
           "how_it_works": [
             "Through the business impact analysis, process owners set each critical process's MTO, an RTO within it, and an RPO from the data loss they can tolerate.",
             "The strategy must meet RTO and RPO by design, even at peak load, at a cost the owner accepts.",
-            "An alternate site shares no hazard or dependency, such as a carrier, identity service or power feed, and its contract covers the whole outage.",
+            "An alternate site must share no hazard or dependency, such as a carrier, identity service or power feed; its contract covers the whole outage.",
             "Cloud recovery is shared: the contract sets who restores what, often the platform but not data the customer's users delete; the customer stays accountable.",
             "Trained AI models are recovery assets too: retraining takes far longer than a restore, so released model versions are kept offsite."
           ],
@@ -1449,7 +1449,7 @@
           "why_it_matters": "These principles let a practitioner judge controls without knowing every product; one control guarding everything signals concentrated risk.",
           "how_it_works": [
             "CIA (confidentiality, integrity, availability) names what an event harms, shaping the impact rating; encryption mainly guards confidentiality, not integrity, which includes non-repudiation.",
-            "Layers of different kinds, such as answer screening behind an AI prompt filter, stop one failure exposing the asset; layers sharing a vendor, design or rule set fail together.",
+            "Layers of different kinds, such as answer screening behind an AI prompt filter, stop one failure exposing the asset; layers sharing a vendor, design or rule set can fail together.",
             "Each user, system and AI tool gets only the access its task needs, only while needed; a secret address is not access control.",
             "Critical tasks, key use included (two-person control), are split so no one can act and hide harm alone; counting conflicting rights shows exposure; independent review compensates where splitting fails.",
             "Failing open keeps a service available; failing secure guards assets. With both costs known, the risk owner chooses, within any life-safety rule.",
