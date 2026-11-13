@@ -62,6 +62,7 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
     }
     const links = await page.evaluate(() => [...document.querySelectorAll('a[href]')].map(a => a.getAttribute('href')));
     for (const href of [...new Set(links)]) {
+      if (href === '#') continue; // back to the top of the page
       if (href.startsWith('#')) {
         check(await page.evaluate(id => !!document.getElementById(id), href.slice(1)), 'anchor ' + href + ' has no target');
         continue;
