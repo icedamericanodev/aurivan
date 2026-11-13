@@ -96,29 +96,51 @@ Desk and the unlisted app preview stay exactly as in landing mode. The home
 page's files are copied only in this mode, so in landing and app mode they are
 not public.
 
-**Draft guard.** While `home.html` contains fictional sample feedback or the
-waitlist mockup, `SITE_MODE=home` refuses to build. `HOME_ALLOW_DRAFT=1` builds
-it anyway, marked `noindex`, for local review and CI. Never set that on
-Cloudflare.
+**Draft guard.** The page is a draft until its
+`<meta name="kaisip-home-status">` says `approved`. It also stays a draft while
+it holds sample feedback, the waitlist mockup (`data-waitlist="mockup"`, the
+"Design preview" note) or a quote card without `data-quote-permission="recorded"`.
+A draft refuses to build in `SITE_MODE=home`. `HOME_ALLOW_DRAFT=1` builds it
+anyway, served `noindex`, for local review and CI. The build refuses that
+switch on Cloudflare's build machines (it checks `CF_PAGES` and `WORKERS_CI`).
+
+Merging the home page code changes only two public files in the live build:
+the font `assets/fonts/KaiSipSerif_400Regular.woff2` and its licence
+`assets/fonts/OFL-Literata.txt`.
 
 Review it locally with the real headers:
 
 ```bash
-SITE_MODE=home HOME_ALLOW_DRAFT=1 bash scripts/build_site.sh
-node scripts/home_page/serve_site.cjs _site 8787 &
+SITE_MODE=home HOME_ALLOW_DRAFT=1 SITE_OUT=/tmp/site-home bash scripts/build_site.sh
+node scripts/home_page/serve_site.cjs /tmp/site-home 8787 &
 node scripts/home_page/check.cjs     # needs Playwright (dev only)
 ```
 
+Use a scratch `SITE_OUT` so `_site/` keeps the deployable landing build.
+
+**Quotes.** Only real feedback, each with the person's own yes to the exact
+text and name, recorded in `docs/beta/TESTER_FEEDBACK.md` ("Feedback quoted on
+the website"). Every tester quote card says testers are offered free Premium.
+
 **To go live (owner approval first):**
 
-1. Replace the sample feedback with real, permission-based quotes, or remove
-   the section.
-2. Connect the waitlist to an approved destination, or point the buttons at
-   the beta sign-up.
-3. Recheck the Android, web and iOS wording.
-4. Confirm `SITE_MODE=home bash scripts/build_site.sh` passes with no draft
-   switch, and run the checks above.
-5. Change the default in `scripts/build_site.sh` from `landing` to `home`, in
+1. Waitlist: connect the form to the email service the owner chose, with
+   double opt-in, and change `form-action` in `HOME_CSP` (and the matching
+   check in the build script) to that service's address only. Add privacy.html
+   section 3f (what is collected, the service and its country, retention,
+   unsubscribe, 18+) before the form goes live. Remove `data-waitlist="mockup"`,
+   the "Design preview" note and the mockup script block; the button becomes
+   "Join the waitlist".
+2. Recheck the Android, web and iPhone wording and the FAQ answers (price,
+   iPhone, beta).
+3. Decide on Cloudflare Web Analytics: if it is off, drop
+   `static.cloudflareinsights.com` from `HOME_CSP`; if it is on, describe it in
+   privacy.html.
+4. Set `kaisip-home-status` to `approved` and the robots meta to
+   `index, follow` in `home.html`.
+5. Confirm `SITE_MODE=home bash scripts/build_site.sh` passes with no draft
+   switch, and `scripts/home_page/check.cjs` passes against it.
+6. Change the default in `scripts/build_site.sh` from `landing` to `home`, in
    its own pull request. Merging that pull request is the launch.
 
 **To roll back:** change the default back to `landing` (or revert that one

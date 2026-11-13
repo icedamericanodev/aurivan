@@ -74,11 +74,13 @@ PREVIEW_DIR="preview-u63raxyfxc"
 #     (home.html, with assets/home.css, assets/home.js and assets/home/) is
 #     the home page; /beta, the legal pages and the unlisted app preview stay
 #     exactly as in landing mode. Its files are left out of the other two
-#     modes, so merging them publishes nothing. While home.html still holds
-#     draft content (fictional sample feedback, or the waitlist mockup that
-#     sends nothing) this mode refuses to build unless HOME_ALLOW_DRAFT=1 is
-#     set, and then marks the page noindex. That switch is for local review
-#     and CI only: never set it on Cloudflare.
+#     modes, so merging them publishes nothing.
+#     The page is a DRAFT unless its <meta name="kaisip-home-status"> says
+#     "approved", and also while it holds draft wording (sample feedback, the
+#     waitlist mockup) or a quote without recorded permission. A draft refuses
+#     to build unless HOME_ALLOW_DRAFT=1 is set, and then it is served noindex.
+#     That switch is for local review and CI only: the build refuses it on
+#     Cloudflare's build machines.
 case "$SITE_MODE" in
   landing|app|home) ;;
   *) echo "build_site: SITE_MODE must be landing, app or home (got: $SITE_MODE)" >&2; exit 1 ;;
@@ -133,33 +135,60 @@ fi
 if [ "$SITE_MODE" = "home" ]; then
   [ -f home.html ] || fail "missing home.html"
   # The page must work under style-src 'self' and script-src 'self': no inline
-  # script, no style attribute or <style>, and only its own script file.
-  python3 - <<'PYHOME' || fail "home.html does not fit its strict policy (see above)"
+  # script, no style attribute or <style>, and only its own script file. The
+  # same step decides whether the page is a draft (it prints the reasons).
+  draft="$(python3 - <<'PYHOME'
 import re, sys
 page = open("home.html").read()
-bad = []
-if re.search(r"<script(?![^>]*\ssrc=)[^>]*>", page): bad.append("an inline <script>")
-if re.search(r"<style[\s>]", page): bad.append("a <style> block")
-if re.search(r"\sstyle\s*=", page): bad.append("a style attribute")
-if re.search(r"\son[a-z]+\s*=", page): bad.append("an inline event handler")
-srcs = re.findall(r'<script[^>]*\ssrc="([^"]+)"', page)
+bad, draft = [], []
+I = re.I | re.S
+if re.search(r"<script\b(?![^>]*\ssrc\s*=)[^>]*>", page, I): bad.append("an inline <script>")
+if re.search(r"<style[\s>]", page, I): bad.append("a <style> block")
+if re.search(r"\sstyle\s*=", page, I): bad.append("a style attribute")
+if re.search(r"\son[a-z]+\s*=", page, I): bad.append("an inline event handler")
+srcs = re.findall(r"<script\b[^>]*\ssrc\s*=\s*[\"']([^\"']+)[\"']", page, I)
 if srcs != ["assets/home.js"]: bad.append("scripts other than assets/home.js: %r" % srcs)
-for url in re.findall(r'(?:src|href)="([^"]+)"', page):
-    if re.match(r"(?:[a-z]+:)?//", url) and not re.match(r"https://kaisip\.com/", url):
+urls = re.findall(r"\s(?:src|href|action|poster|formaction)\s*=\s*[\"']([^\"']*)[\"']", page, I)
+for v in re.findall(r"\ssrcset\s*=\s*[\"']([^\"']*)[\"']", page, I):
+    urls += [part.strip().split()[0] for part in v.split(",") if part.strip()]
+for url in urls:
+    if re.match(r"(?:[a-z][a-z0-9+.-]*:)?//", url, re.I) and not re.match(r"https://kaisip\.com/", url):
         bad.append("an address on another site: " + url)
     if url.startswith(("design-notes/", "marketing/", "mobile/", "docs/", "../")):
         bad.append("a file that is not published: " + url)
 if bad:
     print("build_site: home.html has " + "; ".join(bad), file=sys.stderr)
     sys.exit(1)
+# Draft or not. Approval is explicit; the wording checks are a second layer.
+m = re.search(r'<meta\s+name="kaisip-home-status"\s+content="([a-z]+)"', page)
+status = m.group(1) if m else "missing"
+if status != "approved":
+    draft.append("its status is " + status + ", not approved")
+if re.search(r"fictional|sample learner|sample-badge|sample-disclosure|sample text|placeholder quote", page, re.I):
+    draft.append("sample feedback")
+if re.search(r'data-waitlist\s*=\s*["\']?mockup|design preview|does not send or save|mockup', page, re.I):
+    draft.append("the waitlist mockup")
+cards = re.findall(r'<figure\b[^>]*class="[^"]*\bquote-card\b[^"]*"[^>]*>', page, re.I)
+if any('data-quote-permission="recorded"' not in c for c in cards):
+    draft.append("a quote without recorded permission")
+robots = re.search(r'<meta\s+name="robots"\s+content="([^"]*)"', page, re.I)
+robots = robots.group(1) if robots else ""
+if draft and "noindex" not in robots:
+    print("build_site: a draft home.html must carry <meta name=\"robots\" content=\"noindex, nofollow\">", file=sys.stderr)
+    sys.exit(1)
+if not draft and "noindex" in robots:
+    print("build_site: home.html is approved but still says noindex in its robots meta", file=sys.stderr)
+    sys.exit(1)
+print(", ".join(draft))
 PYHOME
-  # Launch blockers. Fictional feedback must never be public, and the waitlist
-  # mockup collects nothing, so the page is a draft while either is there.
-  draft=""
-  grep -q 'Fictional sample' home.html && draft="fictional sample feedback"
-  grep -q 'data-waitlist="mockup"' home.html && draft="${draft:+$draft and }the waitlist mockup"
+)" || fail "home.html is not ready to build (see above)"
   if [ -n "$draft" ]; then
-    [ "${HOME_ALLOW_DRAFT:-}" = "1" ] || fail "home.html still has $draft, so it cannot be published. Replace or remove them first. (Local review and CI only: HOME_ALLOW_DRAFT=1 builds it marked noindex.)"
+    # Never on Cloudflare's build machines (Pages sets CF_PAGES, Workers
+    # Builds sets WORKERS_CI), so a dashboard setting cannot publish a draft.
+    if [ -n "${CF_PAGES:-}${WORKERS_CI:-}" ]; then
+      fail "home.html is a draft ($draft). HOME_ALLOW_DRAFT is never allowed on Cloudflare."
+    fi
+    [ "${HOME_ALLOW_DRAFT:-}" = "1" ] || fail "home.html is a draft ($draft), so it cannot be published. (Local review and CI only: HOME_ALLOW_DRAFT=1 builds it marked noindex. Launch steps: docs/WEBSITE_DEPLOY.md.)"
     HOME_DRAFT=1
     echo "build_site: DRAFT home page ($draft). Built noindex for review. Do not deploy this build." >&2
   fi
@@ -188,10 +217,10 @@ while IFS= read -r -d '' f; do
   # The two scripts on the list: the plant companion and the accounts client.
   case "$f" in assets/kaisip-plant.js|assets/kaisip-cloud.js) cp "$f" "$OUT/$f"; continue;; esac
   case "$f" in assets/beta-desk.js) [ -n "$DESK" ] && cp "$f" "$OUT/$f"; continue;; esac
-  # The home page's own files travel only with the home page (SITE_MODE=home,
-  # top level only): its stylesheet, its one script and its pictures.
+  # The home page's own files travel only with the home page (SITE_MODE=home):
+  # its stylesheet, its one script and its pictures.
   case "$f" in assets/home.css|assets/home.js|assets/home/*)
-    if [ "$SITE_MODE" = "home" ] && [ -z "${SITE_OUT:-}" ]; then
+    if [ "$SITE_MODE" = "home" ]; then
       case "$f" in assets/home.js) cp "$f" "$OUT/$f"; continue;; esac
     else
       continue

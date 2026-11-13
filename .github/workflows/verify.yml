@@ -57,14 +57,18 @@ jobs:
       # always ready to reopen.
       - name: Website build, web app mode (kept ready for launch)
         run: SITE_MODE=app bash scripts/build_site.sh
-      # The new marketing home page (home.html) is not live. This builds it as
-      # a noindex draft so its files, allowlist and strict policy stay healthy,
-      # and proves the plain build refuses while draft content is still there.
+      # The new marketing home page (home.html) is not live. While it is a
+      # draft, the plain home build must refuse it with the draft message; the
+      # draft build (noindex) keeps its files, allowlist and strict policy
+      # healthy. Its browser checks (scripts/home_page/check.cjs) need
+      # Playwright and run locally, not here. The draft build goes to a scratch
+      # folder so _site/ keeps the deployable landing build.
       - name: Website build, home page mode (draft, not deployed)
         run: |
-          if SITE_MODE=home SITE_OUT=/tmp/site-home-nodraft bash scripts/build_site.sh >/dev/null 2>&1; then
-            if grep -q 'Fictional sample\|data-waitlist="mockup"' home.html; then
-              echo "The home page built for publishing while it still has draft content"; exit 1
+          if ! grep -q '<meta name="kaisip-home-status" content="approved">' home.html; then
+            if out="$(SITE_MODE=home SITE_NO_PREVIEW=1 SITE_OUT=/tmp/site-home-nodraft bash scripts/build_site.sh 2>&1)"; then
+              echo "The draft home page built for publishing"; exit 1
             fi
+            echo "$out" | grep -q 'is a draft' || { echo "$out"; exit 1; }
           fi
-          SITE_MODE=home HOME_ALLOW_DRAFT=1 bash scripts/build_site.sh
+          SITE_MODE=home HOME_ALLOW_DRAFT=1 SITE_OUT=/tmp/site-home-draft bash scripts/build_site.sh

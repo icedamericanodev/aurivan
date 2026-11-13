@@ -2,7 +2,15 @@
    link and screenshot is readable with JavaScript switched off. It makes no
    network request and stores nothing. */
 
-// Header: gain a soft backdrop once the page has scrolled.
+// Older Safari (before 14) has addListener instead of addEventListener on
+// media queries.
+const onMediaChange = (query, handler) => {
+  if (query.addEventListener) query.addEventListener('change', handler);
+  else if (query.addListener) query.addListener(handler);
+};
+
+// Header: a hairline appears once the page has scrolled. Its background is in
+// the stylesheet, so it stays readable without this script.
 (() => {
   const header = document.querySelector('.site-header');
   const sentinel = document.querySelector('.header-sentinel');
@@ -10,23 +18,6 @@
   new IntersectionObserver(([entry]) => {
     header.classList.toggle('is-stuck', !entry.isIntersecting);
   }).observe(sentinel);
-})();
-
-// Section reveals. Browsers with scroll-driven animations handle these in CSS;
-// this is the fallback. Nothing is pre-hidden, so a failed script cannot strand
-// an invisible section.
-(() => {
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  if (window.CSS && CSS.supports('animation-timeline: view()')) return;
-  if (!('IntersectionObserver' in window)) return;
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      if (!reduced.matches) entry.target.classList.add('is-in');
-      observer.unobserve(entry.target);
-    });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 })();
 
 // Story: on wide screens the five screenshots share one sticky phone and
@@ -50,7 +41,7 @@
     list.style.setProperty('--progress', (index + 1) / steps.length);
   };
   const update = () => {
-    observer?.disconnect();
+    if (observer) observer.disconnect();
     if (wide.matches) {
       images.forEach(image => holder.append(image));
       stage.hidden = false;
@@ -67,80 +58,18 @@
     }
   };
   update();
-  wide.addEventListener('change', update);
+  onMediaChange(wide, update);
 })();
 
-// Voices: one flowing row. The copy stays in normal document flow; the moving
-// duplicate is hidden from assistive technology and cannot take focus.
+// Waitlist. While the form is marked as a mockup it validates in the browser
+// only: no request, no storage. A real destination will replace this block.
 (() => {
-  const section = document.querySelector('.voices');
-  if (!section) return;
-  const controls = section.querySelector('.motion-controls');
-  const pause = section.querySelector('.pause-quotes');
-  const read = section.querySelector('.read-quotes');
-  const viewport = section.querySelector('.quote-viewport');
-  const group = section.querySelector('.quote-group');
-  if (!controls || !pause || !read || !viewport || !group) return;
-  // Without visibility observation, keep the readable static grid.
-  if (!('IntersectionObserver' in window)) return;
-  const preference = matchMedia('(prefers-reduced-motion: reduce)');
-  const duplicate = group.cloneNode(true);
-  duplicate.setAttribute('aria-hidden', 'true');
-  duplicate.setAttribute('inert', '');
-  group.after(duplicate);
-  const setPaused = value => {
-    section.classList.toggle('user-paused', value);
-    pause.setAttribute('aria-pressed', String(value));
-    pause.textContent = value ? 'Resume motion' : 'Pause motion';
-  };
-  pause.addEventListener('click', () => setPaused(!section.classList.contains('user-paused')));
-  read.addEventListener('click', () => {
-    const reading = section.classList.toggle('is-reading');
-    read.setAttribute('aria-pressed', String(reading));
-    read.textContent = reading ? 'Return to moving cards' : 'Read all feedback';
-    pause.hidden = reading;
-    syncFocusable();
-  });
-  // A touch or pen contact pauses until the learner chooses to resume.
-  viewport.addEventListener('pointerdown', event => {
-    if (event.pointerType === 'touch' || event.pointerType === 'pen') setPaused(true);
-  }, { passive: true });
-  // While moving, the row is a keyboard stop: focusing it holds it still.
-  const syncFocusable = () => {
-    const moving = section.classList.contains('is-moving') && !section.classList.contains('is-reading');
-    if (moving) {
-      viewport.tabIndex = 0;
-      viewport.setAttribute('role', 'group');
-      viewport.setAttribute('aria-label', 'Sample feedback, moving row. Motion pauses while focused.');
-    } else {
-      viewport.removeAttribute('tabindex');
-      viewport.removeAttribute('role');
-      viewport.removeAttribute('aria-label');
-    }
-  };
-  const updatePreference = () => {
-    section.classList.toggle('is-moving', !preference.matches);
-    controls.hidden = preference.matches;
-    syncFocusable();
-  };
-  updatePreference();
-  preference.addEventListener('change', updatePreference);
-  const updateVisibility = () => section.classList.toggle('tab-hidden', document.hidden);
-  document.addEventListener('visibilitychange', updateVisibility);
-  updateVisibility();
-  new IntersectionObserver(([entry]) => {
-    section.classList.toggle('in-view', entry.isIntersecting);
-  }, { threshold: 0.08 }).observe(section);
-})();
-
-// Waitlist mockup: validates in the browser only. No request, no storage.
-(() => {
-  const form = document.querySelector('.waitlist-form');
+  const form = document.querySelector('.waitlist-form[data-waitlist="mockup"]');
   if (!form) return;
   const status = form.querySelector('.waitlist-status');
   form.addEventListener('submit', event => {
     event.preventDefault();
-    status.textContent = 'Preview complete. In the live version, this would request launch updates. Your information has not been sent or saved.';
+    status.textContent = 'Preview complete. In the live version, this would add you to the launch list. Your information has not been sent or saved.';
   });
   form.addEventListener('input', () => { status.textContent = ''; });
   // Disabled in the static HTML so a no-JavaScript visit cannot submit an email.

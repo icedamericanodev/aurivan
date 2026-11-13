@@ -2,7 +2,7 @@
    test it: the rules in _site/_headers are applied (values for the same header
    name from every matching rule are JOINED, as Cloudflare does), /x serves
    x.html, and a missing address gets 404.html with status 404.
-   Dev-only, no dependencies:  node scripts/home_page/serve_site.cjs [_site] [8787] */
+   Listens on this machine only (127.0.0.1). Dev-only, no dependencies:  node scripts/home_page/serve_site.cjs [_site] [8787] */
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -33,10 +33,12 @@ function headersFor(urlPath) {
   return joined;
 }
 function resolve(urlPath) {
-  const clean = path.normalize(decodeURIComponent(urlPath)).replace(/^(\.\.[/\\])+/, '');
+  let decoded;
+  try { decoded = decodeURIComponent(urlPath); } catch { return null; }
+  const clean = path.normalize(decoded).replace(/^(\.\.[/\\])+/, '');
   for (const candidate of [clean, clean + '.html', path.join(clean, 'index.html')]) {
     const file = path.join(root, candidate);
-    if (file.startsWith(root) && fs.existsSync(file) && fs.statSync(file).isFile()) return file;
+    if (file.startsWith(root + path.sep) && fs.existsSync(file) && fs.statSync(file).isFile()) return file;
   }
   return null;
 }
@@ -49,4 +51,4 @@ http.createServer((req, res) => {
   headers['Content-Type'] = TYPES[path.extname(file).slice(1)] || 'application/octet-stream';
   res.writeHead(status, headers);
   fs.createReadStream(file).pipe(res);
-}).listen(port, () => console.log(`serving ${root} with its _headers on http://localhost:${port}`));
+}).listen(port, '127.0.0.1', () => console.log(`serving ${root} with its _headers on http://127.0.0.1:${port}`));
