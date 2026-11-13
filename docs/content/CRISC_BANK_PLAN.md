@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 28 done 13 Nov 2026 (bank 950, exactly on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 29 done 13 Nov 2026 (bank 975; round 30 completes the 1,000). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 950 reviewed (247 / 209 / 304 / 190) after round 28, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 975 reviewed (254 / 214 / 312 / 195) after round 29, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -1093,6 +1093,39 @@ control on a master key (d4_188); board-profile oversight does not move ownershi
 - Owner shapes: round 28 keyed no owner and left every lone owner eliminated, so round 29 keys owners in about half of owner items and keys one or two lone owners.
 - Length floors: one key naturally longest by characters in every domain.
 - Remaining strike tells to balance: IT, internal audit, "accept" and fixed-period words on wrong options.
+
+### Round 29 (13 Nov 2026): 25 items, bank 975
+
+Round 29 added 7 D1 (`crisc_d1_248`–`254`), 5 D2 (`crisc_d2_210`–`214`),
+8 D3 (`crisc_d3_305`–`312`) and 5 D4 (`crisc_d4_191`–`195`) items, taking the
+bank to 975. One AI item per domain: AI features a SaaS vendor switched on are
+rated in the register behind the board profile (d1_252); a scenario for an AI
+agent with refund rights rates its actions under prompt injection, not only its
+wrong answers (d2_211); drift alerts that went to a data scientist who left are
+assigned to the model owner's role with a response time (d3_311); and a count of
+training-store recordings past the retention period shows whether deletion
+reaches copies (d4_194). Other highlights: plan invocation criteria set inside
+the RTO (d1_249); a risk judged against the appetite for its own type (d1_253);
+a loss event dated by when it started, not when it was found (d2_210); a planned
+control switch-off rated before it starts so the risk owner can set the window
+(d2_214); the privacy baseline applies at every impact level (d3_307); KRI data
+collected independently where a bonus depends on it (d3_309); requirements
+traced to rated risks (d4_193).
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 (21 sure); 4 nits: a role word and a length outlier on d3_311, an absolute discovery-date claim (d2_210), a stem word that supported d1_254's runner-up |
+| Standards audit | 0 HARD ERRORS, 12 PRECISION: stem-to-key echo removed (d1_252); d1_249's cue narrowed to agree with the deputy item d1_200; pre_reads that answered d2_211 and d2_213 reworded; d4_193's pen-test runner-up (paused family) replaced; a keyed "as well" removed (d4_195); d3_309 and d3_311 cues narrowed to their new points |
+| Concept review | 0 HARD ERRORS, 7 PRECISION; every new library section checked in fresh downloads. Invocation set point inside the RTO (d1_249); d2_214 refocused on the planned window; d3_311 re-angled to alerts going to a role; the moderate baseline no longer said to "cover" CSF Protect (d3_307); approved longer retention allowed for in d4_194 |
+| Re-blind | 17/17 (14 sure); two owner-word nits declined, as both are planned lone-owner keys and the bank's owner pick and skip are level |
+| Cross-domain gate | 0 HARD ERRORS, 3 PRECISION: "bonus or appraisal" in d3_309 and 3C2.1 (so "rating" is not read as a risk rating against d1_251); d3_018 now says a responder named by role; notes 2B1.1 links the register's time frame with a decision's own |
+| Gates | All lints 0 errors; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes; keys within 1 per domain; longest-key floors 15.1–15.9% |
+
+**Next round (round 30, +25 to 1,000, the last):** D1 +6, D2 +6, D3 +8, D4 +5, landing exactly on 260 / 220 / 320 / 200. Codes, keys, difficulty (every domain to 15/55/30), AI angles and owner shapes are in `r29_cross_domain.json`.
+- Floor keys: D3 needs one more strict longest key; one extra in D1 for margin.
+- Owner shapes: D1's missing split pair (runner-up plus eliminated) goes in round 30.
+- Settled: no internal-audit option at all; no keyed "just"; "Quantitative" on one D2 wrong option; "Rate" on two D2 wrong options.
+- After 1,000: a wording-only cue pass on older items (keyed only/all, threshold-move options).
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`
