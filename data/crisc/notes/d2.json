@@ -56,17 +56,18 @@
             "crisc_d2_156",
             "crisc_d2_166",
             "crisc_d2_182",
-            "crisc_d2_193"
+            "crisc_d2_193",
+            "crisc_d2_199"
           ],
-          "definition": "A risk event is something that happened, or nearly happened, that shows a risk scenario can occur. Loss events cause harm; near misses stop just short of it.",
+          "definition": "A risk event is something that happened, or nearly happened, that shows a risk scenario can occur. Loss events cause harm; near misses stop short of it.",
           "why_it_matters": "Events are the best evidence of real likelihood and impact; counting only losses hides how often controls were nearly beaten, understating risk.",
           "how_it_works": [
             "An incident need not cause loss; a loss event does, however routine, such as an outage staff covered with paid overtime.",
-            "Each event is linked to the scenario its review's root cause points to, not the first guess logged, and feeds that scenario's likelihood or impact.",
+            "Each event links to the scenario its root cause points to, not a first guess, and feeds its likelihood or impact, a near miss through the loss it nearly caused.",
             "Fixing or containing an event closes the incident, not the risk entry, which names what could happen; an event fitting no scenario shows a gap, filled with its process owner.",
             "Impact counts primary and secondary losses, such as missed orders, lost customers, penalties and customer harm, even those arriving after closure; the process owner, not IT's incident record, supplies it."
           ],
-          "example": "At a water utility, an alarm stops an operator opening the wrong valve in a remote session. Priya Raman, the risk analyst, logs a near miss against the remote operation error scenario and asks its owner, the operations manager, to review likelihood.",
+          "example": "At a water utility, an alarm stops an operator opening the wrong valve remotely. Priya Raman, the risk analyst, logs a near miss against the remote operation error scenario and asks its owner, the operations manager, to review likelihood.",
           "audit_focus": {
             "review": [
               "Trace recent incidents and near misses to the risk scenarios they affect",
@@ -101,7 +102,7 @@
             },
             {
               "term": "Incident",
-              "definition": "(Security sense) An event harming, or about to harm, the confidentiality, integrity or availability of information, or breaching law or security rules."
+              "definition": "(Security sense) An event harming or threatening the confidentiality, integrity or availability of information, or breaching law or security rules."
             }
           ],
           "memory_aid": "Loss hurt, near miss nearly hurt: both are rating evidence."
@@ -714,12 +715,13 @@
             "crisc_d2_139",
             "crisc_d2_150",
             "crisc_d2_161",
-            "crisc_d2_184"
+            "crisc_d2_184",
+            "crisc_d2_200"
           ],
           "definition": "A risk scenario is a specific, assessable description of how a threat could cause an event that affects an asset and harms business objectives.",
           "why_it_matters": "A vague entry such as 'cyberattack' cannot be rated, owned or treated. A specific scenario shows which controls matter and lets the owner compare it with appetite.",
           "how_it_works": [
-            "Actor: who or what causes it, such as a criminal group, a careless user or a failed cooling unit.",
+            "Actor: who or what causes it, such as a criminal group, a careless user, a failed cooling unit, or groups feeding false input to a model that learns from it.",
             "Event: what happens, such as malicious encryption, disclosure, an error or an outage.",
             "Asset: the process, system, data or people affected; an AI bias scenario names the group the model treats unfairly, not just 'some applicants'.",
             "Time: when or how long, such as payroll week, outages over four hours or AI drift until the next accuracy check; rate the credible time that hurts most.",
@@ -993,19 +995,20 @@
             "crisc_d2_151",
             "crisc_d2_174",
             "crisc_d2_185",
-            "crisc_d2_190"
+            "crisc_d2_190",
+            "crisc_d2_201"
           ],
-          "definition": "A risk assessment identifies, estimates and prioritizes risk. NIST SP 800-30 runs it in four steps: prepare, conduct, communicate the results and maintain the assessment.",
+          "definition": "A risk assessment identifies, estimates and prioritizes risk. NIST SP 800-30 runs it in four steps: prepare, conduct, communicate and maintain.",
           "why_it_matters": "Skipping preparation means assessing the wrong things against the wrong criteria. Skipping communication or maintenance leaves decisions resting on unseen or outdated results.",
           "how_it_works": [
             "Prepare: set purpose, scope, assumptions (checking with owners any that decide a rating), constraints, sources, risk model and approach (threat-, impact- or vulnerability-oriented), chosen partly by where information is strongest.",
             "Conduct: identify threat sources and events, vulnerabilities and predisposing conditions, then rate likelihood and impact, which a checklist of required controls does not.",
-            "Communicate: give decision makers results they can act on, like a briefing, report or dashboard.",
+            "Communicate: give decision makers results they can act on, like a briefing, report or dashboard; among equal ratings, a risk that makes others likelier ranks higher.",
             "Maintain: monitor risk factors; without a significant change, update just the factors that changed.",
             "The requesting official sets scope, ruling on third-party parts outside it; an AI system's scope covers its training-data pipeline, the people using outputs and foreseeable misuse.",
-            "In ISO 31000, ISO/IEC 27005 and the ISACA Glossary, risk evaluation compares each rating with the criteria and appetite; NIST SP 800-30 leaves this to decision makers."
+            "In ISO 31000, ISO/IEC 27005 and the ISACA Glossary, risk evaluation compares ratings with the criteria and appetite; NIST SP 800-30 leaves this to decision makers."
           ],
-          "example": "A hotel group's CIO asks for a cloud migration risk assessment. Before collecting threats, Isabel Duarte, the risk practitioner, agrees the scope with the CIO: the booking platform and payment data only, a three-year horizon, the group's five-point rating scales and the decisions the results must support.",
+          "example": "A hotel group's CIO asks for a cloud migration risk assessment. Before collecting threats, Isabel Duarte, the risk practitioner, agrees the scope with the CIO: the booking platform and payment data only, a three-year horizon, five-point rating scales and the decisions the results must support.",
           "audit_focus": {
             "review": [
               "Confirm scope, purpose and criteria were agreed before analysis began",
@@ -1026,7 +1029,7 @@
             },
             {
               "trap": "A completed assessment stays valid until the next annual cycle.",
-              "why": "The maintain step updates the assessment whenever risk factors change, such as a new threat, a system change or a reorganization."
+              "why": "The maintain step updates it whenever risk factors change, such as a new threat, system change or reorganization."
             }
           ],
           "key_terms": [
@@ -1040,7 +1043,7 @@
             },
             {
               "term": "Risk evaluation",
-              "definition": "The step after analysis: setting each rated risk against the criteria and appetite to decide whether, and how urgently, it needs a response."
+              "definition": "The step after analysis: setting rated risks against the criteria and appetite to decide whether, and how urgently, they need a response."
             }
           ],
           "memory_aid": "Prepare, conduct, communicate, maintain: scope before threats."
@@ -1386,7 +1389,8 @@
             "crisc_d2_108",
             "crisc_d2_118",
             "crisc_d2_142",
-            "crisc_d2_191"
+            "crisc_d2_191",
+            "crisc_d2_202"
           ],
           "definition": "The enterprise risk profile is the combined view of an enterprise's significant risks, built by normalizing and aggregating unit and IT risk registers for senior management and the board.",
           "why_it_matters": "Leaders cannot read hundreds of entries. Consistent registers that roll up show which risks threaten enterprise objectives and where appetite is exceeded.",
@@ -1394,7 +1398,7 @@
             "Units use common categories, scales and time frames, so entries can be compared and combined; a category field from one agreed list lets the board see, say, all supplier risks.",
             "Normalization puts every unit on one scale; a scenario recorded in two registers is merged into one entry and owner, linked to both sources, not added up.",
             "Risks across units that share a cause, such as the same weakness, are aggregated, which can reveal a risk that is small locally but large in total.",
-            "The IT risk register feeds the enterprise risk register and risk profile, as NIST IR 8286 Rev. 1 describes.",
+            "The IT risk register feeds the enterprise register and profile, as NIST IR 8286 Rev. 1 describes, recommending automated roll-up over error-prone spreadsheets.",
             "The profile is compared with the appetite set by senior management and the board; tracing critical processes and assets to entries shows gaps.",
             "An entry states a risk, an event and its effect on objectives, not a missing control or a scanner finding, so it can be rated against appetite and combined."
           ],
@@ -1415,7 +1419,7 @@
           "exam_traps": [
             {
               "trap": "If every unit rates a risk as low, the enterprise-level risk is low.",
-              "why": "The same weakness in many units can add up to a significant total exposure. Aggregation is needed to see it."
+              "why": "The same weakness in many units can add up to significant total exposure; aggregation shows it."
             }
           ],
           "key_terms": [
@@ -1608,7 +1612,8 @@
             "crisc_d2_170",
             "crisc_d2_181",
             "crisc_d2_192",
-            "crisc_d2_197"
+            "crisc_d2_197",
+            "crisc_d2_203"
           ],
           "definition": "Choosing a method means matching the analysis to the decision it must support and the quality of the data available, from simple scales to FAIR models and Monte Carlo simulation.",
           "why_it_matters": "A precise-looking number built on guesses misleads decision makers more than an honest qualitative rating.",
@@ -1620,7 +1625,7 @@
             "Ranges beat single points: with no loss history, validated error rate times volume gives a frequency range; if too wide, sensitivity analysis finds the input to improve.",
             "Screen qualitatively, quantify top risks; event trees run forward from one event, fault trees back from one outcome."
           ],
-          "example": "A biotech firm's board asks how much cyber insurance to buy. Olu Adeyemi, the risk practitioner, replaces a guessed ALE with ranges from claims data and experts, runs a Monte Carlo simulation and shows a loss distribution, including a one-in-twenty-year loss of about $9 million, listing every assumption.",
+          "example": "A biotech firm's board asks how much cyber insurance to buy. Olu Adeyemi, the risk practitioner, replaces a guessed ALE with ranges from claims data and experts, runs a Monte Carlo simulation and shows a loss distribution, including a one-in-twenty-year loss of about $9 million.",
           "audit_focus": {
             "review": [
               "Evaluate whether input data quality supports the precision of the results",
@@ -1637,7 +1642,7 @@
           "exam_traps": [
             {
               "trap": "A quantitative result is always more accurate than a qualitative one.",
-              "why": "Numbers built on guesses carry false precision. Accuracy depends on input quality, and NIST SP 800-30 warns that buried subjective inputs weaken quantitative rigor."
+              "why": "Numbers built on guesses carry false precision; NIST SP 800-30 warns that buried subjective inputs weaken quantitative rigor."
             }
           ],
           "key_terms": [
@@ -1655,7 +1660,7 @@
             },
             {
               "term": "Three-point estimate",
-              "definition": "An estimate given as a minimum, most likely and maximum value."
+              "definition": "An estimate given as a minimum, most likely and maximum value; its beta-weighted mean is (minimum + 4 × most likely + maximum) / 6."
             }
           ]
         }

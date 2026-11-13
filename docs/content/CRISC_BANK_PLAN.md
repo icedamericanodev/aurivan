@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 26 done 12 Nov 2026 (bank 900, exactly on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 27 done 13 Nov 2026 (bank 925, on the outline weights). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 900 reviewed (234 / 198 / 288 / 180) after round 26, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 925 reviewed (241 / 203 / 296 / 185) after round 27, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -1031,6 +1031,37 @@ rule held: no option uses only, all, never, just, alone or limited to.
 - Length floors: D1, D2 and D3 each need one key naturally longest by characters; D4 needs none.
 - Owner shapes: one Eliminate pair, no split pairs (round 26 had six splits).
 - Words to watch: "beside" or "alongside" and "like … other" on wrong options only.
+
+### Round 27 (13 Nov 2026): 25 items, bank 925
+
+Round 27 added 7 D1 (`crisc_d1_235`–`241`), 5 D2 (`crisc_d2_199`–`203`),
+8 D3 (`crisc_d3_289`–`296`) and 5 D4 (`crisc_d4_181`–`185`) items, taking the
+bank to 925. One AI item per domain: a process redesigned around an AI tool means
+the process owner revises the continuity plan (d1_237); coordinated false reports
+that poison a self-learning model are built into the scenario as threat source and
+event (d2_200); red-team findings on an unreleased AI tool go into the issue log,
+rated and owned, while the builders' backlog schedules fixes (d3_292); and AI added
+to personal data mid-project means the risk assessment is revised before the story
+ships (d4_185). Other highlights: a near miss as impact evidence (d2_199); coupled
+risks rank higher among equal scores, per SP 800-30 Appendix J (d2_201); a
+beta-weighted three-point estimate (d2_203); start the RMF with the Prepare tasks
+(d1_241); confirm deletion, backups included, before closing an action (d3_294);
+legal counsel releases a hold when its matter ends (d4_184).
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 (17 sure); three stem-to-key echoes found |
+| Standards audit | 0 HARD ERRORS, 10 PRECISION and the round's Eliminate owner pair (reshaped into d3_295); d2_048's near-miss cue narrowed for d2_199; diaries replaced by official agendas as evidence (d3_293); a vendor's word replaced by its evidence (d3_291) |
+| Concept review | 0 HARD ERRORS, 7 PRECISION: Categorize is the first step after Prepare (d1_241); the AI tool is unreleased (d3_292); "separately rated" coupled risks (d2_201); overstated "unseen" removed (d4_182) |
+| Re-blind | 9/9 (8 sure); d3_295's runner-up moved to the other impact measure |
+| Cross-domain gate | 0 HARD ERRORS, 5 PRECISION: key concepts aligned with their reviewed explanations (d3_291, d3_293); d2_001 and d1_110 narrowed to their triggers; threat source and event separated in d2_200 |
+| Gates | All lints 0 errors; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes; keys level; balance 26/22/32/20; longest-key floors 15.2–15.8%; same-opener key-holding down from 57.7% to 55.9% |
+
+**Next round (round 28, +25 to 950):** D1 +6, D2 +6, D3 +8, D4 +5 (247/209/304/190, exactly on the weights). Code placement, key letters, difficulty, AI angles and settings are in `r27_cross_domain.json`.
+- Length floors: every domain needs one key naturally longest by characters (D1 and D3 fall below 15% at 950 without one).
+- Owner shapes: two or three owner pairs, at least one Eliminate pair written in from the start, no split pairs.
+- Openers: an "Access to …" key in D3 or D4 (unmet for two rounds); same-opener pairs off the key.
+- Pause: "MOST appropriate owner of a risk" stems, 4A1 "fix the standard" keys, and the round 27 lessons in `r27_cross_domain.json`.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`

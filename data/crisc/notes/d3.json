@@ -146,18 +146,20 @@
             "crisc_d3_116",
             "crisc_d3_185",
             "crisc_d3_225",
-            "crisc_d3_236"
+            "crisc_d3_236",
+            "crisc_d3_289"
           ],
           "definition": "Response selection is choosing the option expected to bring risk within appetite at a cost proportionate to the loss it prevents, while supporting business objectives.",
-          "why_it_matters": "Spending more on a control than the loss it prevents destroys value, and so does treating a risk already within appetite. Proportion keeps budget on the risks that matter most.",
+          "why_it_matters": "Spending more on a control than the loss it prevents destroys value, as does treating a risk within appetite; proportion keeps budget for risks that matter.",
           "how_it_works": [
             "Start with the current rating against appetite and tolerance; a risk within them, even at its worst plausible loss, usually needs acceptance and monitoring, not new spending or insurance.",
             "Estimate each option's cost over its life: purchase, staff time, training, maintenance and any business slowdown.",
             "Estimate each option's benefit as the reduction in expected loss, summed across every risk it reduces (counting a shared loss once), plus any legal or contractual requirement it meets.",
             "Prefer the option that meets appetite at the lowest total cost, unless a law or contract demands a specific control.",
-            "Rank by exposure: risks furthest above appetite get resources first; lower ones are scheduled later, not dropped."
+            "Rank by exposure: risks furthest above appetite get resources first; lower ones are scheduled later, not dropped.",
+            "Insurance suits rare, severe losses; cut many small, regular losses above appetite at the cause, as cover is priced on expected claims."
           ],
-          "example": "A university research office plans to store genomic data from a partner hospital. Kenji, a risk analyst, finds the breach risk above tolerance. Encrypting the dataset and limiting access to named researchers costs about a tenth of the expected annual loss; a dedicated data center would cost more than the loss itself. Kenji recommends the first option to the research dean, showing both figures.",
+          "example": "A university research office will store a partner hospital's genomic data, and Kenji, its risk analyst, finds the breach risk above tolerance. Encryption with access for named researchers costs a tenth of the expected annual loss; a dedicated data center would cost more than the loss. Kenji recommends the first to the research dean, with both figures.",
           "audit_focus": {
             "review": [
               "Compare each proposed control's cost with its expected loss reduction",
@@ -170,11 +172,11 @@
             "recommend": "Have the risk owner approve responses with documented cost, benefit and target risk before funding starts.",
             "decides": "The risk owner selects and funds the response; senior management approves spending above their authority"
           },
-          "isaca_rule": "A response is justified when it is expected to bring risk within appetite and its cost does not exceed its benefit. The strongest control is not the best answer if a cheaper one meets appetite, and a risk already within appetite needs monitoring, not new controls.",
+          "isaca_rule": "A response is justified when it is expected to bring risk within appetite and its cost does not exceed its benefit. The strongest control is not best if a cheaper one meets appetite; a risk within appetite needs monitoring, not new controls.",
           "exam_traps": [
             {
               "trap": "Pick the control that reduces the risk the most.",
-              "why": "The most effective control can cost more than the loss it prevents. CRISC items look for the option that meets appetite in proportion to the risk."
+              "why": "The most effective control can cost more than the loss it prevents; the best option meets appetite in proportion to the risk."
             },
             {
               "trap": "Add controls to a risk already within appetite, just to be safe.",
@@ -188,7 +190,7 @@
             },
             {
               "term": "Total cost of ownership",
-              "definition": "All costs of a control over its life, including staff time, maintenance and any drag on business speed."
+              "definition": "All costs of a control over its life, including staff time, maintenance and business slowdown."
             }
           ]
         },
@@ -280,7 +282,8 @@
             "crisc_d3_241",
             "crisc_d3_258",
             "crisc_d3_265",
-            "crisc_d3_274"
+            "crisc_d3_274",
+            "crisc_d3_290"
           ],
           "definition": "A risk owner is the person given the authority and accountability to make decisions about a risk, and who answers for the loss if it happens.",
           "why_it_matters": "A risk without a capable owner drifts: nobody decides its response, funds the controls or answers when it happens. Ownership at the wrong level gives the decision to people who cannot act on it.",
@@ -289,10 +292,10 @@
             "Match authority to reach and rating: the owner funds treatment and accepts residual risk; low-rated departmental risks sit with process owners, and lasting re-ratings beyond authority move up.",
             "Name one accountable person with authority to fund and accept, not a committee, department, joint owners or a coordinator; others act as action or control owners.",
             "Revalidate ownership regularly and after reorganizations, departures or process changes.",
-            "IT usually owns technology controls; the business owns the risk those controls treat.",
+            "IT usually owns technology controls; the business owns the risk they treat, while advisers such as a data protection officer monitor it.",
             "Ownership takes hold when the person given it accepts the role; judge owners by the response choices they signed, not the register."
           ],
-          "example": "A city council's payroll risk is listed under 'Finance and IT' with no single name. Lina, the council's risk analyst, maps the payroll process and finds that the payroll manager runs it but can approve only small purchases. Lina proposes the finance director as risk owner and the payroll manager as control owner, and asks senior management to confirm the assignment, with the director accepting the role in writing.",
+          "example": "A city council's payroll risk is listed under 'Finance and IT' with no single name. Lina, the risk analyst, finds the payroll manager runs payroll but can approve only small purchases. Lina proposes the finance director as risk owner and the payroll manager as control owner, for senior management to confirm, with the director accepting the role in writing.",
           "audit_focus": {
             "review": [
               "Compare each register owner with the delegation of authority limits",
@@ -515,18 +518,20 @@
             "crisc_d3_154",
             "crisc_d3_183",
             "crisc_d3_210",
-            "crisc_d3_242"
+            "crisc_d3_242",
+            "crisc_d3_291"
           ],
           "definition": "Ongoing vendor monitoring is reviewing a supplier's performance, controls and risk, using assurance reports, SLA results, incidents and changes in its suppliers.",
-          "why_it_matters": "A vendor that was sound at onboarding can change owners, cut staff, add subcontractors or suffer a breach. Monitoring catches drift in time to respond.",
+          "why_it_matters": "A vendor sound at onboarding can change owners, cut staff, add subcontractors or suffer a breach; monitoring catches the drift in time.",
           "how_it_works": [
             "Read assurance reports for scope: services, locations, controls and period tested; where one stops, internal audit can use the contract's audit rights.",
             "Act on report exceptions and complementary user entity controls, the customer's own duties; when scope fits and neither is open, rely on the report.",
-            "Track fourth parties: the vendor's own subcontractors, especially those holding your data.",
+            "Track fourth parties, the vendor's subcontractors, especially those holding your data.",
             "Watch concentration: services on one provider or region, even via different vendors, can fail together; rate that as one scenario.",
-            "Scale review depth and frequency to criticality; reassess after a breach, sale, missed SLAs, a new subcontractor, or more sensitive data sent than was vetted."
+            "Scale review depth and frequency to criticality; reassess after a breach, sale, missed SLAs, a new subcontractor, or more sensitive data sent than was vetted.",
+            "A falling outside security rating is a signal: get the vendor's evidence before re-rating."
           ],
-          "example": "An insurer relies on a claims vendor whose SOC 2 Type 2 report covers its main data center but not the overseas site now handling the insurer's claims. Chen, a risk analyst, notices the scope gap and two access-review exceptions. They update the vendor entry and ask the claims director to seek coverage of that site.",
+          "example": "An insurer's claims vendor has a SOC 2 Type 2 report covering its main data center, not the overseas site now handling the insurer's claims. Chen, a risk analyst, spots the gap and two access-review exceptions, updates the vendor entry and asks the claims director to seek coverage of that site.",
           "audit_focus": {
             "review": [
               "Compare each report's scope and period with the services actually used",
@@ -545,7 +550,7 @@
           "exam_traps": [
             {
               "trap": "Any clean SOC 2 report fully covers the vendor.",
-              "why": "A report covers only the scope and period stated. Services, sites or subcontractors outside it, and the customer's own required controls, still need assurance."
+              "why": "A report covers only its stated scope and period; services, sites or subcontractors outside it, and the customer's own controls, still need assurance."
             },
             {
               "trap": "Due diligence at onboarding is enough for a long contract.",
@@ -555,7 +560,7 @@
           "key_terms": [
             {
               "term": "SOC 2 Type 2 report",
-              "definition": "An independent report on a service organization's controls that includes testing of how they operated over a period."
+              "definition": "An independent report on a service organization's controls, testing how they operated over a period."
             },
             {
               "term": "Complementary user entity controls",
@@ -649,12 +654,13 @@
             "crisc_d3_171",
             "crisc_d3_202",
             "crisc_d3_233",
-            "crisc_d3_251"
+            "crisc_d3_251",
+            "crisc_d3_292"
           ],
           "definition": "Issue management is logging each control weakness, audit finding or incident lesson with an owner, an action and a due date, then tracking it until closure is validated.",
           "why_it_matters": "Findings logged but never fixed leave the risk open while reports show progress; overdue items often breed the next incident.",
           "how_it_works": [
-            "Log every issue in one tracker, linked to the risk it affects and ranked by that risk's rating, since audits, regulators and reviews rate on their own scales.",
+            "Log every issue in one tracker, red-team findings included, linked to the risk it affects and ranked by its rating, since audits, regulators and reviews rate differently.",
             "Give each issue one owner, an agreed action and a due date; repeats of one problem, such as an AI tool's errors, become one finding at their cause.",
             "Escalate overdue or slipping items to the risk owner, and past a set point to senior management; an unexplained rating drop is checked with that owner.",
             "Close an issue on evidence the fix works, not the owner's word, or, within appetite, on the risk owner's recorded acceptance.",
@@ -1050,19 +1056,20 @@
             "crisc_d3_121",
             "crisc_d3_147",
             "crisc_d3_156",
-            "crisc_d3_243"
+            "crisc_d3_243",
+            "crisc_d3_293"
           ],
           "definition": "Control selection is choosing controls that address the cause of a risk, fit its size and cost less than the loss they prevent.",
-          "why_it_matters": "Controls aimed at symptoms leave the cause in place, so the risk comes back. Controls out of proportion to the risk use budget that other risks need.",
+          "why_it_matters": "Controls aimed at symptoms leave the cause, so the risk returns; controls out of proportion use budget other risks need.",
           "how_it_works": [
             "Start from the analyzed risk scenario and its root cause, not a product, a vendor's pitch or a peer's control list.",
             "List candidate controls with their effect on likelihood or impact and full cost; favor those acting on what drives the rating.",
-            "Prefer controls that fix the cause; use detective or compensating controls where the cause cannot yet be removed.",
+            "Prefer controls that fix the cause, or detective or compensating ones where it cannot; when items pass a rule but fail its purpose, test the purpose independently.",
             "Check that the control fits the work it protects and weigh the risks it brings, such as one faulty update stopping every device.",
             "For AI systems, scale input checks, output checks and human review to a wrong output's impact; route inputs the model cannot judge, such as blurred photos, to a person.",
             "Where an AI output states facts that can be checked, such as amounts or reference numbers, check them automatically against the source before use."
           ],
-          "example": "A hospital finds dosing errors keep reaching patients because nurses retype orders from the electronic record into infusion pumps. Farah, the clinical risk analyst, notes that more training targets the symptom. They recommend to the nursing director a direct record-to-pump interface, with a pharmacist check on doses above a set limit, and attach the cost-benefit comparison.",
+          "example": "A hospital's dosing errors keep reaching patients because nurses retype orders from the electronic record into infusion pumps. Farah, the clinical risk analyst, notes that more training targets the symptom; they recommend to the nursing director a record-to-pump interface, with a pharmacist check on doses above a set limit, plus the cost-benefit comparison.",
           "audit_focus": {
             "review": [
               "Follow each new control back to the scenario it was chosen for",
@@ -1536,13 +1543,14 @@
             "crisc_d3_165",
             "crisc_d3_214",
             "crisc_d3_255",
-            "crisc_d3_284"
+            "crisc_d3_284",
+            "crisc_d3_294"
           ],
           "definition": "Validating execution is confirming, with evidence, that the actions in a risk plan were carried out as agreed and reduced the risk as expected.",
           "why_it_matters": "Status reports often say done when a control is installed but untested. Validation stops the register from showing a lower risk than really exists.",
           "how_it_works": [
             "Ask for evidence at each milestone, not only a status color, and watch the risk's indicators: if completed, working actions do not move them, check what drives the risk.",
-            "Confirm the control is implemented, then that it operates, before treating the action as complete; interdependent actions run by different teams are tested working together.",
+            "Confirm the control is implemented, then operates, before calling an action complete; for avoidance, confirm the exposure is gone, such as stored data deleted; test interdependent actions together.",
             "Re-rate the risk after validation and report progress as risk reduced toward the plan's target, not the share of actions done.",
             "Measure slippage against the dates first agreed, since moved dates hide it; escalate slipping or blocked actions to the risk owner, and past agreed limits to senior management.",
             "Close the plan once evidence and the owner's sign-off show the risk at target, or the owner records a new decision on the current rating, not the target.",
@@ -1879,14 +1887,15 @@
             "crisc_d3_245",
             "crisc_d3_261",
             "crisc_d3_271",
-            "crisc_d3_278"
+            "crisc_d3_278",
+            "crisc_d3_295"
           ],
           "definition": "An effective KRI is relevant to a specific risk, reliably measurable, predictive of change, set against thresholds and owned by someone who acts on it.",
           "why_it_matters": "Too many indicators drown the signal, and lagging ones warn only after the loss. A few well-chosen leading KRIs give owners time to act.",
           "how_it_works": [
             "Relevant: the KRI tracks a driver of a top-priority scenario, not just easy data; find candidates in its past events' causes, then check generic lists.",
             "Measurable: the data is available, consistent and cheap to collect; count items when each is its own path to harm, as a share of a growing base can hide growth.",
-            "Predictive: it moves before the risk event, early enough for the planned response to work.",
+            "Predictive: it moves before the risk event, early enough for the planned response to work; impact drivers count too, such as more orders riding on one system.",
             "Thresholds and owner: each KRI has limits tied to tolerance and a person who acts on a breach.",
             "Keep the set small, focused on the top risks and reviewed as they change; a KRI green while its risk occurred is replaced if off the losses' path, otherwise retuned.",
             "Check the KRI sits on the scenario's own path: for data copied before staff leave, watch downloads during notice, not account removal afterward."
@@ -1901,7 +1910,7 @@
               "meaning": "Tracks outcomes after the fact, such as the number of incidents or losses last quarter."
             }
           ],
-          "example": "A courier company tracks van accidents per month as its key risk indicator for driver-fatigue risk. Yusuf, the risk analyst, points out that accidents are the outcome, not the warning. They propose tracking the share of drivers exceeding shift-hour limits, taken from the vehicle telematics system, with an amber limit at 3% and red at 5%, owned by the fleet manager.",
+          "example": "A courier company tracks monthly van accidents as its KRI for driver-fatigue risk. Yusuf, the risk analyst, notes that accidents are the outcome, not the warning, and proposes the share of drivers exceeding shift-hour limits, from telematics, with amber at 3% and red at 5%, owned by the fleet manager.",
           "audit_focus": {
             "review": [
               "Evaluate each KRI against relevance, measurability, prediction and ownership",
@@ -2355,12 +2364,13 @@
             "crisc_d3_208",
             "crisc_d3_216",
             "crisc_d3_264",
-            "crisc_d3_272"
+            "crisc_d3_272",
+            "crisc_d3_296"
           ],
           "definition": "Horizon scanning is the regular search for new or changing risks from technology, regulation, markets, threats and society, before they are well understood or measurable.",
           "why_it_matters": "Emerging risks give the least warning and the most surprise. Spotting them early leaves time to study them, prepare and take up any opportunity they bring.",
           "how_it_works": [
-            "Use many sources: threat intelligence, regulators' consultations, industry groups, vendors, research and front-line staff; look as far ahead as the plans and assets the scan informs.",
+            "Draw on threat intelligence, regulators' consultations, industry groups, vendors, research, front-line staff and the regions key supplies come from; look as far ahead as the plans and assets it informs.",
             "Look for opportunities too, such as a new technology that could cut cost or risk.",
             "Screen signals for relevance and potential impact on objectives, not likelihood alone; rank them for senior management's choice of what to study; judge the scan by risks flagged before harm.",
             "Treat as emerging only what is still uncertain, not merely distant; give each such risk an owner to watch it, and rate dated, understood changes normally.",

@@ -10664,6 +10664,302 @@
       ],
       "_provenance": "Authored from concept: notes 3C6.2 (Recording and Reporting Emerging Risk: use ranges or alternative scenarios rather than single scores while uncertainty is high; prepare options with the owner). Round 26, 12 Nov 2026: original scenario (a meteorological office's forecasts depend on free satellite data from a foreign agency, which is consulting on keeping it free, charging for it or ending access), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 26 (crisc_d3_281 to 288). Round 26 asks: 3C6 slot (key B, application); the batch's keyed lone owner (B), neither longest nor shortest by words or characters; 'scenario' sits in a wrong option (A) as well as the key. Neighbours checked: crisc_d3_049 (a range of ratings with stated confidence; consistent, and no option here is a range), 115 (staged steps with triggers; consistent with wrong D), 176 (agreed trigger reached), 143 (signs of growth), 264, 050; 192 (new evidence on an entry), 232 (expert workshops for no loss history), 020 and 152 (record the emerging risk now), all paused families, not used; the key's scenarios are agreed with the risk owner, not built for lack of loss data; AAIA aaia_d1_116 (TF-IDF top 0.20; different). Runner-up C against the two closest older cues in lesson: crisc_d3_049 (neither ignored nor inflated) and crisc_d3_115 (spending grows with evidence); C falls on the stem's three distinct outcomes, which need different responses. Key against older wrong options: top 0.20 (crisc_d4_038 B; unrelated). Lens word 'scenario' also sits in wrong A; 'owner' is the lone-owner key. Review 12 Nov 2026 (round 26 concept and blind review): wrong D now reads 'Commercial satellite data under contract as a backup' (52 characters), breaking the three 'A ...' openers that left the plural key B as the odd one out (blind fix 3). Key B (60) stays below C (61); wrong D explanation and tips still fit.",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d3_289",
+      "domain": 3,
+      "subtopic": "3A1 Risk response options. Many small card-fraud losses",
+      "principle_id": "proportionate-response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A bookstore chain's online store has about 600 card-fraud chargebacks a year, averaging $300, and their yearly total is above appetite; the finance director proposes insurance. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Buy an insurance policy that covers chargeback losses",
+        "B": "Stop taking card payments in the online store",
+        "C": "Run fraud checks on online orders before dispatch",
+        "D": "Budget for the losses like other trading costs"
+      },
+      "correct": "C",
+      "key_concept": "Insurance suits rare, severe losses; many small, predictable losses above appetite are better cut at their cause, as cover is priced on expected claims.",
+      "pre_read": "Note how often the losses happen and how large each one is.",
+      "correct_explanation": "The losses are many, small and predictable, and together above appetite. Fraud checks on orders before dispatch act on the cause and cut how often the losses happen. Insurance covering chargebacks is the runner-up: transfer is a real response, but cover for losses this regular is priced on the claims the insurer expects, plus its own costs, so the chain pays for its fraud through premiums while the fraud carries on.",
+      "wrong_explanations": {
+        "A": "Cover for losses this frequent is priced on the claims the insurer expects, plus its costs; it moves money without reducing the fraud behind the losses.",
+        "B": "Card payments are how the online store sells; ending them gives up that revenue to remove a risk that a control at the cause could reduce.",
+        "D": "The yearly total is above appetite, so budgeting for the losses like other costs keeps a level of risk the appetite does not allow; acceptance fits risks within it."
+      },
+      "tips": [
+        "Eliminate: B gives up the store's card sales when a control could cut the risk, and D budgets for losses above appetite like other costs.",
+        "Final two: C beats A because the losses are many and small; checks cut them at the cause, while cover for such regular losses is priced on the claims it repays.",
+        "Exam cue: insurance fits rare, severe losses the business cannot absorb; when many small losses add up above appetite, reduce them at the cause."
+      ],
+      "framework_ref": "NIST IR 8286B-upd1 Section 2.4.1 (Risk Response Cost: the cost of a response is compared with the risk exposure to support a cost-benefit analysis); NIST SP 800-39 Section 3.3 Task 3-2 (Evaluation of Alternatives: effectiveness, feasibility and cost)",
+      "related_concepts": [
+        "Risk transfer",
+        "Risk mitigation",
+        "Loss frequency and severity"
+      ],
+      "_provenance": "Authored from concept: notes 3A1.2 (Choosing a Response by Appetite and Cost-Benefit: prefer the option that meets appetite at the lowest total cost; insurance suits rare, severe losses, while many small ones are cut at the cause). Round 27, 12 Nov 2026: original scenario (a bookstore chain's online store has about 600 card-fraud chargebacks a year, averaging $300, with a yearly total above appetite, and the finance director proposes insurance), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 27 (crisc_d3_289 to 296). Round 27 asks: 3A1 slot (key C, analysis); 'like ... other' on an eliminated option (D), as the lead asked; no owner option (k=0); 'Run' key opener (4/16), no same-opener pair; no restrictive, period or defer words. Neighbours checked: crisc_d3_116 (insurance is for losses the business cannot absorb; within appetite, accept; consistent, here the total is above appetite so acceptance fails and the key mitigates), 086 (transfer part of what remains once controls stop being cost-effective; consistent, the cause is not yet treated here), 001, 198, 273, 249, 087 (avoid a little-used page; here card sales are the store's channel, so avoidance B is wrong), 010, 225, 236; crisc_d3_139 (card-fraud losses omitted from a rating; different lesson, TF-IDF options 0.32); crisc_d1_215 and crisc_d1_197 (appetite limits; different); crisc_d2_046, crisc_d2_085, CISA d5_222 (TF-IDF under 0.25; different). Runner-up A against the closest older cues in lesson: crisc_d3_116 and crisc_d3_227 (insurance backs up but does not replace a control); A falls on the stem's many small, regular losses, which cover is priced to repay. Key against older wrong options: top 0.23 crisc_d1_197 C (insurance above the board's appetite; consistent). The frequency-and-severity point is a teachable risk-financing pattern, not a quoted ISACA rule.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_290",
+      "domain": 3,
+      "subtopic": "3A2 Risk and control ownership. Patient data in a booking app",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A physiotherapy clinic chain needs an owner for the risk of patient data leaking from its new online booking app. Which of the following should the risk analyst propose as the MOST appropriate owner?",
+      "options": {
+        "A": "The operations director who runs patient bookings",
+        "B": "The project manager who led the app's build",
+        "C": "The IT manager whose team hosts the app",
+        "D": "The data protection officer for the chain"
+      },
+      "correct": "A",
+      "key_concept": "A risk is owned by the manager who runs the affected service and can fund its controls; a data protection officer advises and monitors instead.",
+      "pre_read": "Ask what each role does for the app once it is in use.",
+      "correct_explanation": "The risk belongs with the manager who runs the service it affects and has the authority and budget to treat it: the operations director who runs patient bookings. The data protection officer is the runner-up: the role advises on and monitors how patient data is handled, but it does not run bookings or fund their controls, and owning the risk would leave it overseeing its own decisions.",
+      "wrong_explanations": {
+        "B": "The project manager answers for delivering the app; the project role ends once the app is in use, which would leave the live risk with nobody.",
+        "C": "IT hosts the app and may own technical controls on it, but the harm of leaked patient data falls on the bookings service, which IT does not run.",
+        "D": "The data protection officer advises on and monitors patient-data handling; owning the risk would mean overseeing its own decisions, without authority over bookings."
+      },
+      "tips": [
+        "Eliminate: B's project role ends once the app is in use, and C hosts the app without running the service whose patients would be harmed.",
+        "Final two: A beats D because the operations director runs bookings and can fund their controls; the data protection officer advises and monitors, which owning the risk would compromise.",
+        "Exam cue: a risk to personal data is owned by the manager who runs the service using it; builders, hosts and advisory roles such as a data protection officer support that owner."
+      ],
+      "framework_ref": "ISACA Glossary (risk owner); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Risk owner",
+        "Data protection officer",
+        "Advisory roles"
+      ],
+      "_provenance": "Authored from concept: notes 3A2.1 (Assigning Risk Owners: assign the owner by business accountability, the manager whose objectives, process or budget the risk affects; advisory roles, such as a data protection officer, support but do not own). Round 27, 12 Nov 2026: original scenario (a physiotherapy clinic chain needs an owner for the risk of patient data leaking from its new online booking app), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 27 (crisc_d3_289 to 296). Round 27 asks: 3A2 slot (key A, foundational); 'Which of the following' stem (1 of 2); the batch's floor key, naturally longest by characters (49 against 43, +6), with no owner word in any option (k=0, role options). Neighbours checked: crisc_d1_004 (AI model risk owned by the admissions director, runner-up a governance committee; a paused family for AI or RACI accountability, so this item's runner-up is a data protection officer, an advisory role whose ownership would compromise its oversight, and it carries no AI or RACI angle), crisc_d3_023 (IT lead versus distribution director), 085 (emerging AI risk: not IT or the risk team), 265 (procurement), 258 (coordinator), 226 and 005 (control owners), 129; crisc_d4_032 (open project risks move to the enterprise register with a business owner at closure; the project frame was removed in drafting to avoid mirroring it, and option B stays consistent with it); crisc_d4_007 and crisc_d1_076 (data owner versus IT custodian; consistent); CISA d3_021 and d3_001 (project authority; different). Runner-up D against the closest older cues in lesson: crisc_d1_004 (committees oversee but cannot own) and crisc_d3_085; D falls because the role advises and monitors and holds no authority over bookings. Lone-owner and lens rules: no option names an owner. Audit 13 Nov 2026 (round 27 standards audit): Ruling on the paused 'AI or other RACI accountability with the business owner' family (crisc_d1_004, crisc_d1_189, crisc_d1_052, crisc_d1_141): same stem form and option skeleton as crisc_d1_004 and crisc_d3_117, so it adds to the 'MOST appropriate owner of a risk keys the business manager' pattern; kept for round 27 as D3's foundational item and floor key because its runner-up, a data protection officer who advises and monitors, is new to the bank. Pause 'MOST appropriate owner of a risk' stems from round 28.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_291",
+      "domain": 3,
+      "subtopic": "3A3 Vendor/supply chain risk management. An outside rating falls",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An accreditation body subscribes to a service that rates vendors' security from their internet-facing systems; the score of the vendor hosting its online exams has dropped sharply. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Start moving the exams to another hosting vendor",
+        "B": "Re-rate the vendor's risk using the new score",
+        "C": "Report the score's drop to the board's risk committee",
+        "D": "Seek the vendor's explanation of the score's drop"
+      },
+      "correct": "D",
+      "key_concept": "An outside security rating is a signal; when a vendor's score drops, get the cause and its evidence from the vendor before re-rating its risk.",
+      "pre_read": "Ask what the rating service can see, and what it cannot.",
+      "correct_explanation": "The service rates the vendor from what it sees online, so the drop is a signal with no known cause: a real weakness, a minor issue or systems wrongly linked to the vendor. Seeking the vendor's explanation through its relationship owner, with evidence, gives the facts to reassess on. Re-rating the vendor's risk using the new score is the runner-up: a reassessment is due, but resting it on the score alone may misstate the risk.",
+      "wrong_explanations": {
+        "A": "Moving the exams is costly and disruptive, and the drop has no known cause; acting before learning it may answer a problem that does not exist.",
+        "B": "The score comes from an outside view and can misread systems or weigh minor issues; re-rating on it before learning the cause may misstate the risk.",
+        "C": "Taking an unexplained score to the risk committee asks leaders to weigh a signal nobody has checked; the cause should be known first."
+      },
+      "tips": [
+        "Eliminate: A starts a costly vendor move on an unexplained signal, and C takes an unchecked score to the risk committee.",
+        "Final two: D beats B because the score is an outside view of the vendor's systems; the vendor's explanation, with evidence, gives the reassessment facts, while the score alone may misstate the risk.",
+        "Exam cue: when an outside rating of a vendor drops with no known event behind it, ask the vendor for the cause and its evidence first, then reassess on what that shows."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.SC-07 (the risks posed by a supplier, their products and services and other third parties are understood, recorded, prioritized, assessed, responded to and monitored); NIST SP 800-53 Rev. 5 SR-6 (Supplier Assessments and Reviews)",
+      "related_concepts": [
+        "Vendor monitoring",
+        "Security ratings",
+        "Vendor reassessment"
+      ],
+      "_provenance": "Authored from concept: notes 3A3.2 (Ongoing Vendor Monitoring and Assurance Reports: vendor risk is monitored for the life of the relationship; an outside security rating is a signal to follow up with the vendor before reassessing). Round 27, 12 Nov 2026: original scenario (an accreditation body subscribes to a service that rates vendors' security from their internet-facing systems, and the score of the vendor hosting its online exams has dropped sharply), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 27 (crisc_d3_289 to 296). Round 27 asks: 3A3 slot (key D, analysis); FIRST stem keying a follow-up, not an assess or record step; 'Seek' key opener (2/4); no owner option (k=0). Neighbours checked: crisc_d3_135 (a confirmed vendor event, a sale and move, triggers reassessment before it takes effect; consistent, the distinguishing fact here is an unexplained outside signal, named in both explanations), 183, 250, 242, 281, 154, 006; crisc_d2_005 (a CVSS score is one input, not the rating; supports wrong B); crisc_d3_246 (rising AI overrides explained with the owner before a fix; same signal-before-fix pattern in 3C4, different setting); crisc_d4_138 (an outside outage whose cause does not apply; paused family, not used as key or runner-up); AAIA aaia_d2_177, CC cc_d1_020, CISA d2_217 and d5_245 (TF-IDF under 0.28; different lessons). Runner-up B against the closest older cues in lesson: crisc_d3_135 (reassess before the change) and crisc_d1_213; B falls on the stem fact that the service rates the vendor only from its internet-facing systems, so the drop has no known cause. Key against older wrong options: top 0.27 crisc_d2_005 C (consistent). Audit 13 Nov 2026 (round 27 standards audit): Exam cue asks for the vendor's evidence, as the explanation does, so it does not read as taking the vendor's word; consistent with CISA d2_160 (independent evidence over self-reporting) and crisc_d3_296 C (supplier questionnaires in the supplier's own words). Notes 3A3 bullet aligned. Review 13 Nov 2026 (round 27 concept and blind review): Explanation names the usual channel: the vendor's explanation is sought through its relationship owner ('on the internet' shortened to 'online' to stay within 75 words). Cross-domain gate 13 Nov 2026 (round 27): Key concept now carries the evidence the reviewed Exam cue asks for, so it no longer reads as taking the vendor's word. Neighbours added: crisc_d3_025 (independent assurance over a vendor's own questionnaire), crisc_d3_250 (vet again when more data is sent); CISA d2_160 settled as consistent: the outside rating is the trigger it recommends, and fresh evidence is the reassessment it triggers.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_292",
+      "domain": 3,
+      "subtopic": "3A4 Issues, findings, exceptions and exemptions management. Red-team findings on an AI tool",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An ad tech firm's red team found nine weaknesses in its unreleased AI ad writer, such as leaking other clients' briefs; its developers queued them in their backlog. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Keep the ad writer out of client campaigns",
+        "B": "Enter the findings in the issue log with owners and ratings",
+        "C": "Keep the findings in the developers' backlog, ranked by severity",
+        "D": "Add an output filter that hides other clients' details from its ads"
+      },
+      "correct": "B",
+      "key_concept": "Red-team findings on an AI tool are issues: logged, rated by the risk they affect and owned; the builders' backlog schedules the fixes.",
+      "pre_read": "Ask who can see the weaknesses, and on what scale, once they sit in the backlog.",
+      "correct_explanation": "Red-team findings are weaknesses like audit findings. In the issue log, they are rated by the risk they affect, given owners and due dates, escalated when late and closed on evidence. Keeping them in the developers' backlog, ranked by severity, is the runner-up: the backlog can still schedule the fixes, but its severity scale says nothing about business risk, and the risk owner never sees a leak of clients' briefs.",
+      "wrong_explanations": {
+        "A": "Holding the ad writer back from client campaigns comes before anyone has rated the weaknesses; the response should follow the rated risk, and the findings still need tracking.",
+        "C": "The backlog schedules fixes, but outside the issue log the weaknesses have no risk rating or accountable owner, so the risk owner cannot see or escalate them.",
+        "D": "An output filter may treat one weakness, but it is a fix chosen before the nine are rated, and the other weaknesses stay untracked."
+      },
+      "tips": [
+        "Eliminate: A holds the tool back before anyone has rated the weaknesses, and D picks one fix before the nine are rated and leaves the rest untracked.",
+        "Final two: B beats C because the backlog gives the findings a technical severity and no accountable owner; in the issue log they are rated by risk, owned and tracked.",
+        "Exam cue: when a red team finds weaknesses in an AI tool, log them in the issue log with owners and risk ratings; the builders' backlog schedules fixes but does not show the risk."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CA-8(2) (Penetration Testing | Red Team Exercises: exercises simulate adversaries' attempts to compromise systems, and their results can be used to assess control effectiveness); NIST SP 800-53 Rev. 5 CA-5 (Plan of Action and Milestones)",
+      "related_concepts": [
+        "Red-team findings",
+        "Issue log",
+        "AI risk"
+      ],
+      "_provenance": "Authored from concept: notes 3A4.1 (Tracking Issues and Findings to Closure: log every issue in one tracker, linked to the risk it affects, with one owner, an agreed action and a due date, red-team findings on AI tools included). Round 27, 12 Nov 2026: original scenario (an ad tech firm's red team found nine weaknesses in its AI ad writer, such as leaking other clients' briefs, and its developers queued them in their own backlog), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 27 (crisc_d3_289 to 296). Round 27 asks: 3A4 slot and the batch's AI item (key B, application) on the planned angle, AI red-team findings logged, rated and owned like audit findings rather than left in the builders' backlog; the batch's keyed lone owner (B: 59 characters and 11 words, neither longest nor shortest by either; D has 12 words and 67 characters, A 8 words and 42 characters); same-opener pair 1 of 2 on the runner-up (C) and an eliminated option (A), both 'Keep'. The nine weaknesses are of different kinds (client-brief leaks among them), so crisc_d3_233 (repeated AI issues as one finding at their cause, paused) does not apply. Neighbours checked: crisc_d3_094 (one issue log linking each item to its risk; same rule, different source and runner-up), 163 (rank by the affected risk's rating), 218, 251, 136; crisc_d2_118 (findings stay in their tracker, linked to scenarios, not loaded into the register; consistent, the key uses the issue log, not the register); crisc_d4_154 (an approved fix must become a backlog item) and CISA d3_028 (DevSecOps feeds findings into team backlogs with severity-based deadlines): consistent, since the backlog can still schedule the fixes, as the correct explanation says, while the issue log gives them a risk rating and an accountable owner; AAIA aaia_d2_164 (open red-team findings at launch, auditor lens; different). Runner-up C against those cues: C falls on the stem fact that the findings sit in the developers' own backlog, where nothing rates them by risk or gives them an owner the risk process tracks. Audit 13 Nov 2026 (round 27 standards audit): Key concept and Exam cue no longer set the issue log against the backlog as either/or: crisc_d4_154 keys putting an approved fix into the team's backlog, and CISA d3_028 keys feeding scan findings into team backlogs; both stand, since the backlog schedules the work while the issue log rates, owns and escalates it (the explanation already said so). Review 13 Nov 2026 (round 27 concept and blind review): Stem says the ad writer is unreleased (35 words; 'their own backlog' became 'their backlog'), so no live leak makes containment (A) defensible; wrong A and the Eliminate tip now say 'holding back' rather than 'pulling'.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_293",
+      "domain": 3,
+      "subtopic": "3B2 Control design, selection, implementation and analysis. Travel claims within the limits",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A review found members' travel claims at a parliamentary office were within allowed amounts but covered private trips; the office handles about 400 claims a month. Which control should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "A claims officer's check of trips against official agendas",
+        "B": "Rules that flag claims above set amounts for review",
+        "C": "Signed statements from members that their trips were official",
+        "D": "Publication of members' names alongside their claim totals"
+      },
+      "correct": "A",
+      "key_concept": "A control should test the condition that failed, here a trip's purpose, against records the claimant does not keep, at a volume people can check.",
+      "pre_read": "Ask which condition the private trips broke and which control actually tests it.",
+      "correct_explanation": "The claims passed because nobody checked what the trips were for. A claims officer comparing trips with the office's official agendas tests that purpose against records the claimant does not keep, and at about 400 claims a month a person can do it. Signed statements from members are the runner-up: they may deter, but they ask the people who made the private claims to vouch for their own trips.",
+      "wrong_explanations": {
+        "B": "The private trips were within the allowed amounts, so a rule on amounts would pass them; it tests the condition that held, not the purpose that failed.",
+        "C": "A signed statement relies on the members who made the private claims to judge their own trips; it may deter, but it adds no independent check of purpose.",
+        "D": "Publishing names and totals shows how much members claim, not what the trips were for; claims within the allowed amounts would look normal."
+      },
+      "tips": [
+        "Eliminate: B tests amounts, which the private trips already met, and D publishes totals that say nothing about what a trip was for.",
+        "Final two: A beats C because a statement from the claimant is not an independent check; an officer comparing trips with official agendas tests purpose against records the claimant does not keep.",
+        "Exam cue: when a control passes items that meet its rule but fail its purpose, choose a check of that purpose against independent evidence, not the claimant's word."
+      ],
+      "framework_ref": "NIST SP 800-39 Section 3.3 Task 3-2 (Evaluation of Alternatives: effectiveness, feasibility and cost); NIST IR 8286B-upd1 Section 2.3.4 (Risk Mitigation: preventive, deterrent, detective, corrective and compensating controls)",
+      "related_concepts": [
+        "Control selection",
+        "Independent evidence",
+        "Judgment-based controls"
+      ],
+      "_provenance": "Authored from concept: notes 3B2.1 (Selecting Controls by Root Cause and Cost-Benefit: favor controls acting on what drives the risk; when items meet a rule but fail its purpose, test the purpose against evidence the claimant does not control). Round 27, 12 Nov 2026: original scenario (a review found members' travel claims at a parliamentary office were within allowed amounts but covered private trips, with about 400 claims a month), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 27 (crisc_d3_289 to 296). Round 27 asks: 3B2 slot (key A, analysis); no owner option (k=0); 'alongside' on an eliminated option (D); options are noun phrases. Neighbours checked: crisc_d3_009 (root cause over symptom), 243, 268 (a route around a check), 253 (splitting a limit), 276 (limits set by those checked), 193 (no owner of a check on their own work; supports wrong C), 063, 204, 229; crisc_d4_176, crisc_d3_055 and crisc_d4_081 (a required step added where a gap opens; paused family, and this key is a purpose check, not a process step); crisc_d3_230 (TF-IDF options 0.26; different); CC cc_d3_032, AAIA aaia_d3_008 and aaia_d3_062, CISA d4_027 (under 0.21; different). Runner-up C against the closest older cues in lesson: crisc_d3_193 and crisc_d3_276 (the checked party must not control its own check); C falls on the stem fact that the members made the private claims. The 400-a-month volume is stated so the explanation's point that a person can do the check rests on the stem. Audit 13 Nov 2026 (round 27 standards audit): Key changed from members' diaries to official agendas: a member keeps their own diary, so 'evidence the claimant does not control' was untrue and the gap to runner-up C (the member's own statement) narrowed. Key 58 characters and 9 words, as before; not longest, not strictly wordiest. Cross-domain gate 13 Nov 2026 (round 27): Key concept aligned with the reviewed option, explanation and Final two: records the claimant does not keep. Neighbours added: crisc_d3_172 (an owner's statement is self-reported; consistent), crisc_d3_025 (a self-completed questionnaire is the provider's own claim; consistent).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_294",
+      "domain": 3,
+      "subtopic": "3C1 Risk action plans. A shop closed to avoid a risk",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A cereal maker closed its web shop to avoid a breach of the card details it stored; the action owner reports the plan done with the site offline. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Record the card breach risk as avoided in the register",
+        "B": "Put the plan's closure to the risk owner for sign-off",
+        "C": "Confirm the stored card details have been deleted",
+        "D": "Record the plan as complete in the risk report"
+      },
+      "correct": "C",
+      "key_concept": "An avoidance plan is complete when the exposure is gone, such as stored card details deleted, not when the visible activity stops.",
+      "pre_read": "Separate the activity that stopped from the exposure the risk describes.",
+      "correct_explanation": "Avoidance removes the exposure behind a risk. Taking the site offline stops new orders, but the risk is a breach of the card details the shop stored, which may still sit in its database. Confirming they have been deleted, backups included, shows the exposure is gone. Putting the plan's closure to the risk owner for sign-off is the runner-up: the owner signs once evidence shows it worked, and an offline site is not that evidence.",
+      "wrong_explanations": {
+        "A": "Recording the risk as avoided rests on the action owner's report; the stored card details, the exposure itself, may still exist.",
+        "B": "The risk owner signs closure on evidence that the plan worked; asking now puts an unchecked claim in front of them.",
+        "D": "Reporting the plan complete passes the action owner's unchecked claim to readers, while the stored card details may still exist."
+      },
+      "tips": [
+        "Eliminate: A records the risk as avoided on the action owner's word, and D reports the plan complete on the same unchecked claim.",
+        "Final two: C beats B because the risk owner signs closure on evidence; an offline site stops new orders but says nothing about the card details already stored.",
+        "Exam cue: when an avoidance plan is reported done, confirm the exposure itself is gone, such as stored data deleted, before anyone signs or reports it closed."
+      ],
+      "framework_ref": "NIST IR 8286B-upd1 Section 2.3.2 (Risk Avoidance: not conducting the activity when exposure exceeds tolerance); NIST SP 800-39 Section 3.4 (Monitoring Risk: compliance, response effectiveness and risk-impacting changes)",
+      "related_concepts": [
+        "Risk avoidance",
+        "Validating action plans",
+        "Stored card data"
+      ],
+      "_provenance": "Authored from concept: notes 3C1.2 (Validating Execution and Tracking to Closure: implementation is not completion; for avoidance, confirm the exposure itself is gone, such as stored data deleted, before closure). Round 27, 12 Nov 2026: original scenario (a cereal maker closed its web shop to avoid a breach of the card details it stored, and the action owner reports the plan done with the site offline), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 27 (crisc_d3_289 to 296). Round 27 asks: 3C1 slot (key C, application); FIRST stem keying a validation step; the batch's runner-up lone owner (B); same-opener pair 2 of 2 on two eliminated options (A and D, both 'Record'). Neighbours checked: crisc_d3_013 (validate a reported-complete plan with evidence before reporting; same rule, here applied to avoidance, where the evidence is the exposure gone), 157 (close on evidence plus the owner's sign-off; supports runner-up B being premature), 068, 255, 214, 240, 284 (paused families not used); crisc_d3_257 (a USB ban recorded as avoidance; consistent, avoidance removes the exposure itself); crisc_d2_013 (a tool approved but not deployed shown as closed; consistent); crisc_d3_249, crisc_d4_028, CC cc_d1_023 (TF-IDF under 0.28; different). Runner-up B against the closest older cue in lesson: crisc_d3_157 (sign-off once evidence shows the target met); B falls because no evidence yet shows the stored card details are gone. Review 13 Nov 2026 (round 27 concept and blind review): Blind mild giveaway: A now names the card breach risk, so 'card' and 'breach' are no longer stem-and-key words (A/D 'Record' pair stays on two eliminated options; A, 54 characters, is now the longest option; key C is neither longest nor shortest). Explanation adds 'backups included' so the exposure lesson is complete (75 words).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_295",
+      "domain": 3,
+      "subtopic": "3C3 Risk and control metrics. More orders riding on one system",
+      "principle_id": "kris-that-predict",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A trucking firm's dispatch system fails as often as ever, but more orders carry same-day delivery promises. Which of the following should the risk analyst propose as the BEST KRI for its outage risk?",
+      "options": {
+        "A": "Dispatch outages the system owner has logged",
+        "B": "Orders now booked for same-day delivery slots",
+        "C": "Share of dispatch servers missing current patches",
+        "D": "Same-day deliveries the risk owner's team logged as missed in outages"
+      },
+      "correct": "B",
+      "key_concept": "KRIs can track drivers of impact: when more business rides on a system, a KRI of that exposure shows an outage would cost more.",
+      "pre_read": "Ask which part of the risk the stem says is changing.",
+      "correct_explanation": "The outages happen as often as before, so the risk is growing through its impact: more orders carry same-day promises that an outage would break. A KRI of orders booked for same-day delivery tracks that exposure and moves before the next outage costs more. Missed same-day deliveries are the runner-up: they also measure impact, but they rise after an outage has broken promises, not ahead of the next one.",
+      "wrong_explanations": {
+        "A": "Logged outages are past events, and the stem says they come no more often; a count of them cannot show that the next one would cost more.",
+        "C": "Patch gaps drive how often the system fails, but the outages come as often as ever; the growth is in what an outage would break.",
+        "D": "Missed deliveries logged in outages count harm already done; they rise after an outage breaks promises, not as more orders come to carry them."
+      },
+      "tips": [
+        "Eliminate: A counts outages and C tracks patch gaps that drive them; both measure how often the system fails, which the stem says has not changed.",
+        "Final two: B beats D because D counts missed deliveries after an outage strikes; B rises with same-day bookings before the next outage costs more.",
+        "Exam cue: when a risk grows through what an event would cost, such as more business riding on one system, choose a KRI of that exposure, not of how often it fails."
+      ],
+      "framework_ref": "ISACA Glossary (key risk indicator); NIST SP 800-55v1 Section 4.4 (Evaluating Methods for Supporting Continuous Improvement: leading and lagging indicators)",
+      "related_concepts": [
+        "Key risk indicator",
+        "Impact drivers",
+        "Exposure"
+      ],
+      "_provenance": "Authored from concept: notes 3C3.2 (Selecting Effective KRIs: relevant, the KRI tracks a driver of a top-priority scenario; drivers of impact count too, such as orders that depend on one system). Round 27, 12 Nov 2026: original scenario (a trucking firm's dispatch system fails as often as ever, but more orders carry same-day delivery promises), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 27 (crisc_d3_289 to 296). Round 27 asks: 3C3 slot (key B, application); 'Which of the following' stem (2 of 2); 'Share of' on the runner-up (C), key none; the batch's eliminated lone owner (D); no 'Number of' anywhere. First drafted as a test of a KRI's history, but that mirrored crisc_d3_124 (line up past KRI rises with incident dates), so it was re-angled to impact drivers. Neighbours checked: crisc_d3_124, 015, 150, 190, 108 (drivers of likelihood), 245 (counts versus shares), 271 (lead time), 234 (KRI off the losses' path; paused, not used), 074, 261, 278; crisc_d4_138 and crisc_d1_159 (dispatch settings; different lessons); crisc_d2_179 (shared database RPO; different); crisc_d4_048 D (a KRI on an AI agent's orders warns only after the act; different context); crisc_d4_025 (unowned servers; wrong C's wording overlaps by TF-IDF only). Runner-up C against the closest older cues in lesson: crisc_d3_015 and crisc_d3_190 (track a driver of the risk); C is a sound likelihood driver, and falls on the stem fact that outages come as often as ever while the orders an outage would break grow. Audit 13 Nov 2026 (round 27 standards audit): Owner shape: A now names the system owner, so A and D form the round's one Eliminate owner pair (both owner options eliminated; key B and runner-up C ownerless), meeting round 27 point 6; D's lone owner is no longer lone. Key B (45 characters, 7 words) stays neither longest nor strictly shortest (A 44 characters). Review 13 Nov 2026 (round 27 concept and blind review): Blind giveaway fixed: D now carries 'same-day' and deliveries, so key B is no longer the only option repeating the stem's same-day delivery phrase. D keeps its owner ('the risk owner's team'), so the audit's Eliminate owner pair with A stands (both owner options eliminated; key B and runner-up C ownerless). New D is 11 words and opens 'Same-day', so no same-opener pair with key B ('Orders'). Wrong D and the Eliminate tip follow. Re-blind 13 Nov 2026 (round 27): runner-up moved from C to D (the stem rules out C: outages come as often as ever); key B reworded so 'carry' is not shared only by stem and key; wrong D corrected (missed deliveries rise after outages, not ahead of them).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_296",
+      "domain": 3,
+      "subtopic": "3C6 Monitoring and reporting of emerging risks. A scan that misses the supply regions",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A rubber goods maker's horizon scan watches technology and regulation, yet most of its natural rubber comes from plantations in two regions. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Hire more analysts to read the current sources",
+        "B": "Score signals on likelihood before they are reported",
+        "C": "Send questionnaires to its rubber suppliers on their risks",
+        "D": "Widen the scan to conditions in both growing regions"
+      },
+      "correct": "D",
+      "key_concept": "A horizon scan's sources should follow what the enterprise depends on, such as the regions its key raw material comes from.",
+      "pre_read": "Compare what the scan watches with what the business depends on.",
+      "correct_explanation": "The scan watches technology and regulation, but the business depends on rubber from two regions, where crop disease, weather or export rules could cut supply. Widening the scan to conditions there catches those changes early. Questionnaires to the rubber suppliers are the runner-up: they assess each supplier's current controls, as reported by the supplier, but they do not watch for changes across a region that no single supplier controls.",
+      "wrong_explanations": {
+        "A": "More analysts reading the same sources cover the same ground; the gap is what the scan watches, not how many people read it.",
+        "B": "Emerging risks are often unlikely but severe, so screening on likelihood drops signals that matter; it also leaves the supply regions unwatched.",
+        "C": "Supplier questionnaires report each supplier's current controls in its own words; they do not watch for regional changes, such as disease or export rules, that no supplier controls."
+      },
+      "tips": [
+        "Eliminate: A adds readers to the same sources, and B screens signals on likelihood alone, which drops unlikely but severe ones.",
+        "Final two: D beats C because the gap is the scan's coverage of the two regions; supplier questionnaires assess current controls, not regional changes no single supplier controls.",
+        "Exam cue: when a horizon scan's sources miss something the business depends on, such as where a key material comes from, widen the scan to cover it."
+      ],
+      "framework_ref": "NIST IR 8286A Rev. 1 Section 2.2.5 (Recording Identified Risks: developing or emerging risks are yet to be fully defined but might disrupt enterprise objectives in the future); NIST CSF 2.0 ID.RA-03 (internal and external threats to the organization are identified and recorded)",
+      "related_concepts": [
+        "Horizon scanning",
+        "Supply dependencies",
+        "Emerging risk"
+      ],
+      "_provenance": "Authored from concept: notes 3C6.1 (Horizon Scanning and Emerging Risk Sources: scan widely, with sources that follow what the enterprise depends on, such as where its key materials come from). Round 27, 12 Nov 2026: original scenario (a rubber goods maker's horizon scan watches technology and regulation, yet most of its natural rubber comes from plantations in two regions), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 27 (crisc_d3_289 to 296). Round 27 asks: 3C6 slot (key D, application); no owner option (k=0); 'Widen' key opener (1/3); no 'record the emerging risk now' key. Neighbours checked: crisc_d3_128 (front-line teams feed the scan; its runner-up 'a second commercial news service' was kept apart from wrong A, which adds readers, not feeds), 208 (how far ahead to scan; not used as a wrong option), 083 (screen against objectives), 272 (screen on impact as well as likelihood; supports wrong B), 182, 143, 216; crisc_d1_206 (overlapping questionnaires; different); the round 19 paused family 'a threat model following the asset through suppliers' (D2) is a different technique, threat modeling rather than horizon scanning; crisc_d3_144 and NIST SP 800-161 Rev. 1 SR-3(1) items on supplier concentration (consistent: concentration is rated, while this scan watches the regions). Runner-up C against the closest older cues in lesson: crisc_d3_183 (recurring vendor reviews scaled to criticality) and crisc_d3_250; C falls on the stem fact that the dependency is on two growing regions, whose changes no single supplier controls. Cross-domain gate 13 Nov 2026 (round 27): Neighbour added: crisc_d3_272 (screen horizon signals on impact as well as likelihood), whose key is the lesson behind eliminated B; consistent.",
+      "style_version": 2
     }
   ]
 }

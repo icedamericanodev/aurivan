@@ -52,19 +52,20 @@
             "crisc_d4_111",
             "crisc_d4_136",
             "crisc_d4_151",
-            "crisc_d4_171"
+            "crisc_d4_171",
+            "crisc_d4_181"
           ],
-          "definition": "Enterprise architecture (EA) is the documented model of how business processes, data, applications and technology fit together to deliver the organization's strategy.",
+          "definition": "Enterprise architecture (EA) is the documented model of how business processes, data, applications and technology fit together to deliver strategy.",
           "why_it_matters": "EA shows where a new system, vendor or AI service touches critical data and processes, so risk is judged before money is committed; without it, decisions go project by project.",
           "how_it_works": [
             "EA describes layers: business processes, data, applications and technology, and their links; before an assessment relies on it, links changed since its last update are confirmed.",
-            "The architecture review board checks proposals against approved principles, standards and the target architecture before funding, informed by the practitioner's risk results.",
+            "The architecture review board checks proposals against approved principles, standards and the target architecture before funding, informed by risk results; standards show support end dates, so expiring products drop out.",
             "Security and privacy requirements are built into the architecture, so each new system inherits them instead of reinventing them.",
             "AI services are EA components: data flows, model hosting and integrations belong in it; one added outside can escape its rules, such as no vendor training on inputs.",
             "Deviations from a standard are recorded as exceptions with an owner, reason and expiry; for technology the standards omit, the architecture review board adds approved patterns.",
             "A major architecture change, such as a cloud move or new integrations, leaves earlier ratings out of date, so affected risks are reassessed before any acceptance is renewed."
           ],
-          "example": "A utility plans to connect a vendor's AI chatbot to its billing database. Mateo, the risk analyst, finds in the architecture that the chatbot would bypass the integration layer that logs and filters customer data. Mateo takes the deviation and its risk to the review board.",
+          "example": "A utility plans to connect a vendor's AI chatbot to its billing database. Mateo, the risk analyst, finds in the architecture that the chatbot would bypass the integration layer that logs and filters customer data, and takes the deviation and its risk to the review board.",
           "audit_focus": {
             "review": [
               "Compare recent projects with the target architecture and approved standards",
@@ -81,7 +82,7 @@
           "exam_traps": [
             {
               "trap": "Treating enterprise architecture as an IT documentation exercise with no link to risk decisions.",
-              "why": "EA earns its value when it shows the business impact of a change. A diagram nobody consults before approving projects reduces no risk."
+              "why": "EA earns its value by showing a change's business impact; a diagram nobody consults before approving projects reduces no risk."
             }
           ],
           "key_terms": [
@@ -91,7 +92,7 @@
             },
             {
               "term": "Target architecture",
-              "definition": "The future state the organization plans to reach, used to judge whether new investments move toward it."
+              "definition": "The planned future state, used to judge whether new investments move toward it."
             },
             {
               "term": "Architecture exception",
@@ -398,19 +399,20 @@
             "crisc_d4_050",
             "crisc_d4_067",
             "crisc_d4_112",
-            "crisc_d4_172"
+            "crisc_d4_172",
+            "crisc_d4_182"
           ],
           "definition": "DevOps joins development and operations so software moves to production through an automated continuous integration and continuous delivery (CI/CD) pipeline.",
-          "why_it_matters": "Pipelines can push changes many times a day, so manual approvals cannot keep up. If controls are not built into the pipeline, one person or one stolen account can put unreviewed code straight into production.",
+          "why_it_matters": "Pipelines can push changes many times a day, so manual approvals cannot keep up. Without controls built into the pipeline, one person or one stolen account can put unreviewed code straight into production.",
           "how_it_works": [
             "Controls move into the pipeline: automated tests, security scans and policy checks gate each release; a pipeline redeploying AI models needs a tested rollback its team owns.",
             "Separation of duties is kept by requiring a second person to review and approve code before merge, including code an AI agent writes; passing tests do not replace that approval.",
-            "Pipeline accounts, secrets and build tools are protected, because whoever controls the pipeline controls production.",
+            "Pipeline accounts, secrets and build tools are protected, because whoever controls the pipeline controls production; access to alter reviewed code bypasses every gate.",
             "Infrastructure as code puts server and network settings under the same review and version control as software.",
             "Pipeline logs record every change; a gate is shown to work by testing real releases, as internal audit may do with a sample, not by its setting alone.",
             "Engineering, as the first line, owns and runs the pipeline's gates; the risk function monitors gate results and exceptions rather than approving releases itself."
           ],
-          "example": "Hana, a risk analyst at a payments start-up, learns that any of the five engineers can merge their own code and deploy it, and the pipeline's deployment key is shared in a chat channel. Hana maps the risk to the fraud-loss scenario in the register and works with the engineering lead, as control owner, on peer review and secret storage options.",
+          "example": "Hana, a risk analyst at a payments start-up, learns that any of the five engineers can merge and deploy their own code, and the pipeline's deployment key is shared in a chat channel. Hana maps the risk to the register's fraud-loss scenario and works with the engineering lead, as control owner, on peer review and secret storage.",
           "audit_focus": {
             "review": [
               "Inspect pipeline settings for self-approval or bypass of required reviews",
@@ -427,7 +429,7 @@
           "exam_traps": [
             {
               "trap": "Assuming automated testing alone makes DevOps safe.",
-              "why": "Tests check only what they were written to check. Without independent review and protected pipeline access, one person can still push harmful or unauthorized code."
+              "why": "Tests check only what they were written for. Without independent review and protected pipeline access, one person can still push harmful or unauthorized code."
             }
           ],
           "key_terms": [
@@ -471,13 +473,14 @@
             "crisc_d4_137",
             "crisc_d4_144",
             "crisc_d4_152",
-            "crisc_d4_163"
+            "crisc_d4_163",
+            "crisc_d4_183"
           ],
           "definition": "The system development life cycle (SDLC) is the sequence of phases from initiation through design, build, testing, implementation, operation and disposal, each with risk activities.",
           "why_it_matters": "A design flaw is cheap to fix early and costly, even harmful, after go-live. Risk work in every phase keeps the project within appetite.",
           "how_it_works": [
             "Initiation: confirm the business case, owner, data sensitivity and initial risk assessment, updated when scope or data change; a demo gone live enters the gates it skipped.",
-            "Requirements and design: define security, privacy and business control requirements alongside functional ones; for a purchased system, put them in the selection criteria and contract.",
+            "Requirements and design: define security, privacy and business control requirements, and misuse cases, alongside functional ones; for a purchased system, put them in the selection criteria and contract.",
             "Build and test: tests verify requirements, security ones through cases written from them; business users, not developers, sign off UAT.",
             "Implementation: before go-live, the owner accepts residual risk within appetite or orders more treatment; the assessment is updated first only if scope, data or threats changed.",
             "Post-implementation review: check whether benefits arrived, risks stayed within appetite and assumed controls work; quiet months do not show that.",
@@ -504,7 +507,7 @@
             },
             {
               "trap": "Letting developers perform user acceptance testing.",
-              "why": "Developers test their own understanding; business users confirm the system meets their needs, an independent check."
+              "why": "Developers test their own understanding; business users independently confirm it meets their needs."
             }
           ],
           "key_terms": [
@@ -738,13 +741,14 @@
             "crisc_d4_113",
             "crisc_d4_153",
             "crisc_d4_164",
-            "crisc_d4_174"
+            "crisc_d4_174",
+            "crisc_d4_184"
           ],
           "definition": "Retention sets how long each type of data is kept, and sanitization makes data on media unrecoverable once no longer needed.",
           "why_it_matters": "Data kept past its purpose adds breach impact, legal exposure and cost with no business value. Data removed the wrong way can be recovered from equipment reused, sold or discarded.",
           "how_it_works": [
             "Retention periods follow legal, regulatory and business needs by data type, from the event the need depends on, such as a worker leaving; task copies end with the task.",
-            "At the period's end, data is disposed of unless a legal hold pauses deletion of a dispute's records until it ends.",
+            "At the period's end, data is disposed of unless a legal hold pauses deletion of a dispute's records; when the matter ends, legal counsel releases the hold.",
             "Deleting a file usually removes only its pointer; the data often stays recoverable.",
             "NIST SP 800-88 methods follow data class and the media's next use; media type shapes the technique.",
             "Sanitization is verified and recorded, including by disposal vendors, and covers any device leaving the firm's control, such as resold cars.",
@@ -764,7 +768,7 @@
               "meaning": "Shreds, melts or pulverizes media so recovery is infeasible and the media cannot be reused."
             }
           ],
-          "example": "A dental practice group keeps every patient record since 1998. Lena, the risk consultant, shows the practice director that the oldest records are past their legal retention periods but would still count in a breach, and proposes a retention schedule with verified disposal.",
+          "example": "A dental practice group keeps every patient record since 1998. Lena, the risk consultant, shows the practice director the oldest records are past their legal retention periods yet would count in a breach, and proposes a retention schedule with verified disposal.",
           "audit_focus": {
             "review": [
               "Compare stored data ages with the approved retention schedule",
@@ -781,7 +785,7 @@
           "exam_traps": [
             {
               "trap": "Keeping all data indefinitely in case it is needed later.",
-              "why": "Every extra record adds breach impact and legal discovery exposure. Retention should end when the legal or business need ends."
+              "why": "Every extra record adds breach impact and legal discovery exposure; retention ends with the legal or business need."
             },
             {
               "trap": "Treating file deletion or a quick reformat as secure disposal of media being reused, sold or discarded.",
@@ -795,7 +799,7 @@
             },
             {
               "term": "Legal hold",
-              "definition": "A requirement to preserve data relevant to litigation or an investigation, overriding normal disposal."
+              "definition": "A requirement to preserve data relevant to litigation or investigation, overriding normal disposal."
             },
             {
               "term": "Certificate of sanitization",
@@ -944,19 +948,20 @@
             "crisc_d4_094",
             "crisc_d4_124",
             "crisc_d4_134",
-            "crisc_d4_154"
+            "crisc_d4_154",
+            "crisc_d4_185"
           ],
-          "definition": "Project risk is uncertainty that can affect a project's scope, time, cost or quality; Agile manages it in short, repeated cycles.",
-          "why_it_matters": "Project risks often become operational IT risks after go-live. Tracked only inside the project, or dropped to meet a date, they leave exposure no one approved.",
+          "definition": "Project risk is uncertainty that can affect a project's scope, time, cost or quality; Agile manages it in short cycles.",
+          "why_it_matters": "Project risks often become operational IT risks after go-live; tracked only inside the project, or dropped for a date, they leave unapproved exposure.",
           "how_it_works": [
             "Project risks are logged with owners; those that may outlast the project or threaten enterprise objectives join the enterprise register.",
             "Project risk covers delivery and the finished system's operating risks, even under a vendor's fixed-price contract; Agile backlogs prioritize work on both.",
             "The definition of done includes security, privacy and control criteria; within limits the risk owner sets, the product owner orders security work against features.",
-            "Sprint reviews update risk status; growing deferred security work is an early warning.",
+            "Sprint reviews update risk status; a story adding AI or personal data gets the risk assessment revised before it ships; growing deferred security work warns early.",
             "Agile reduces heavy documents, not risk records: decisions and accepted risks are still recorded.",
             "At closure, open risks continuing into operation move to the enterprise register with an operational owner."
           ],
-          "example": "A bank's mobile team has postponed its fraud-control stories for four sprints to hit a launch date. Zara, the IT risk analyst, raises the deferred stories as a project risk that will become an operational fraud risk at launch, and asks the product owner to review it with the business owner of fraud risk.",
+          "example": "A bank's mobile team has postponed fraud-control stories for four sprints to hit a launch date. Zara, the risk analyst, raises them as a project risk that becomes an operational fraud risk at launch and asks the product owner to review it with the fraud risk owner.",
           "audit_focus": {
             "review": [
               "Trace deferred security and control stories to a recorded risk decision",
@@ -977,13 +982,13 @@
             },
             {
               "trap": "Leaving a risk that will outlast the project only in the project risk log.",
-              "why": "Risks that outlive the project, such as a weak control at launch, belong in the enterprise register; delivery risks ending at closure stay in the project log."
+              "why": "Risks outliving the project, such as a weak control at launch, belong in the enterprise register; delivery risks ending at closure stay in the project log."
             }
           ],
           "key_terms": [
             {
               "term": "Backlog",
-              "definition": "The prioritized list of work items, including features, fixes and approved risk responses, that an Agile team builds from."
+              "definition": "The prioritized list of work items, including features, fixes and approved risk responses, an Agile team builds from."
             },
             {
               "term": "Definition of done",
