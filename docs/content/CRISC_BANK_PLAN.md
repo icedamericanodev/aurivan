@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 27 done 13 Nov 2026 (bank 925, on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 28 done 13 Nov 2026 (bank 950, exactly on the outline weights). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 925 reviewed (241 / 203 / 296 / 185) after round 27, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 950 reviewed (247 / 209 / 304 / 190) after round 28, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -1062,6 +1062,37 @@ legal counsel releases a hold when its matter ends (d4_184).
 - Owner shapes: two or three owner pairs, at least one Eliminate pair written in from the start, no split pairs.
 - Openers: an "Access to …" key in D3 or D4 (unmet for two rounds); same-opener pairs off the key.
 - Pause: "MOST appropriate owner of a risk" stems, 4A1 "fix the standard" keys, and the round 27 lessons in `r27_cross_domain.json`.
+
+### Round 28 (13 Nov 2026): 25 items, bank 950
+
+Round 28 added 6 D1 (`crisc_d1_242`–`247`), 6 D2 (`crisc_d2_204`–`209`),
+8 D3 (`crisc_d3_297`–`304`) and 5 D4 (`crisc_d4_186`–`190`) items, taking the
+bank to 950, exactly on the outline weights. One AI item per domain: an AI use
+inventory kept outside ERM is brought into the enterprise register under business
+owners (d1_246); the register records the vendor model release that was rated
+(d2_207); a bias-testing action is done when the tests run, not when the tool is
+licensed (d3_301); and a restored AI model must match its approved version
+(d4_186). Other highlights: the first keyed "Access to …" option, a shared login
+issued through a vault that changes the password after each use (d3_299); the
+first post-quantum item, starting with a cryptographic inventory (d4_187, NIST IR
+8547 final); passive monitoring for OT controllers that halt when probed (d2_205);
+COBIT 2019 capability level 4 as quantitatively measured (d3_300); two-person
+control on a master key (d4_188); board-profile oversight does not move ownership
+(d1_247).
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 (19 sure); a stem that named the gap (d2_207) and a weak runner-up (d1_246) |
+| Standards audit | 1 HARD ERROR: d4_189 cited SP 800-50 Rev. 1 Section 2.7.3; the "weakest link" line is in Section 2.11, corrected in the item and library. 12 PRECISION: one of four Eliminate owner pairs reshaped; "each"/"every" off three runners-up; d4_190's consent runner-up replaced; d2_110's cue narrowed; the 3C1.2 deletion example restored |
+| Concept review | 0 HARD ERRORS, 7 PRECISION: a vault restores accountability only if it rotates the password (d3_299); COBIT level 1 is an incomplete set of activities, not "no written steps" (d3_300); d2_207's stem no longer names the gap |
+| Re-blind | 9/9 (8 sure); two pre_reads that pointed at the key reworded |
+| Cross-domain gate | 0 HARD ERRORS, 5 PRECISION: d1_246's runner-up moved to D (correctness over the owner-shape target); a causal "since" taken off a key (d2_209); d2_110, d3_304 and d1_247 cues narrowed to their triggers |
+| Gates | All lints 0 errors; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes; keys level; balance exactly 26/22/32/20; longest-key floors 15.1–15.8%; same-opener key-holding 53.4% |
+
+**Next round (round 29, +25 to 975):** D1 +7, D2 +5, D3 +8, D4 +5. Code placement, key letters, difficulty, AI angles and settings are in `r28_cross_domain.json`.
+- Owner shapes: round 28 keyed no owner and left every lone owner eliminated, so round 29 keys owners in about half of owner items and keys one or two lone owners.
+- Length floors: one key naturally longest by characters in every domain.
+- Remaining strike tells to balance: IT, internal audit, "accept" and fixed-period words on wrong options.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`
