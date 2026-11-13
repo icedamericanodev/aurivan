@@ -34,7 +34,7 @@ cause in the app, and slots it into the plan below.
 | FB-005 | 2026-11-09 | Owner emulator review | Phone · Save backup | UX | Medium | Android backup export | Implemented; isolated native save/restore passed | 2.1 |
 | FB-004 | 2026-11-09 | Owner emulator review | Phone · Reset CISA progress | Bug/UX | High | Confirmed full CISA reset | Implemented; isolated native reset/restart passed | 2.1 |
 | FB-003 | 2026-11-06 | Beta reply email | Phone · Nickname setup | UX | Medium | New learners | Implemented, native keyboard/a11y checks pending | 2.1 |
-| FB-006 | 2026-11-12 | Closed-testing message (no report code) | Phone · every screen with serif text (questions, options, headings) | UX (typography) | Low | Whole app | Implemented in a pull request; waiting for the owner's decision on the typeface change | 2.1 (owner decision needed) |
+| FB-006 | 2026-11-12 | Closed-testing message (no report code) | Phone · every screen with serif text (questions, options, headings) | UX (typography) | Low | Whole app | Owner agreed 13 Nov 2026. Phone fix merged (#247), website fix in its own pull request. Not shipped yet; real-phone check pending | 2.1 |
 
 ## Next update plan (phone app, proposed 2.1.0)
 
@@ -150,8 +150,10 @@ A closed-testing Android tester wrote: "Just an observation, does the letter 'f'
 
 `mobile-ui-designer`, `mobile-ux-reviewer` and `design-manager` each recommended A: it is the only one that meets the owner's wish that the f looks normal everywhere. Their one shared finding (the hook sat too close to a few following characters) was fixed before the pull request.
 
-**Implemented (A), waiting for the owner:** `mobile/assets/fonts/` (the two font files, both licences, a README), `mobile/scripts/fonts/build_kaisip_serif.py` (how they are made), `mobile/src/theme/tokens.ts` and `mobile/src/app/_layout.tsx` (the app loads them), `mobile/app.json` (the home-screen widgets use them). The new "f" is exactly as wide as the old one: a before/after comparison of 91 screens in light and in dark shows changes only at the letter itself. Not yet checked on a real Android phone or iPhone (the screenshots come from the app's web build, which draws the same font file).
+**Owner's decision (13 Nov 2026):** yes to A for the whole phone app, and the same fix for the website.
 
-**Still to do after the owner agrees:** the same fix on the web app (`index.html`), `beta.html`, the landing and legal pages, which still load plain Fraunces.
+**Implemented (A):** `mobile/assets/fonts/` (the two font files, both licences, a README), `mobile/scripts/fonts/build_kaisip_serif.py` (how they are made), `mobile/src/theme/tokens.ts` and `mobile/src/app/_layout.tsx` (the app loads them), `mobile/app.json` (the home-screen widgets use them). The new "f" is exactly as wide as the old one: a before/after comparison of 91 screens in light and in dark shows changes only at the letter itself. Not yet checked on a real Android phone or iPhone (the screenshots come from the app's web build, which draws the same font file).
+
+**Website (web v13.0.1):** the web app (`index.html`), `beta.html`, Beta Desk, Help, How questions are made and the legal pages load the same two fonts as `.woff2` files (`assets/fonts/KaiSipSerif_*.woff2`, made by the same script with `--web`), with Literata's licence beside them.
 
 **Reply to the tester when shipped:** "Thanks for spotting the f. It was the typeface's own design, not a glitch. From the next update the letter has a more familiar shape everywhere in the app."

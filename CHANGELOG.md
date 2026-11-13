@@ -28,9 +28,15 @@ For internal/technical history, see git log and PR descriptions.
 - Learners expected setup after resetting CISA; confirmed resets now save the fresh start and return to setup while preserving other exams.
 - Learners had trouble finding nickname setup; an optional local nickname is now offered during setup.
 - Learners reported missing options in explanations; each option now stays beside its explanation.
+- A learner noticed that the letter f looked unusual in many questions; it now has a familiar shape in questions and headings.
 - Learners reported unreadable questions after Coach me; question text now uses one readable layer.
 
 These fixes are in development review. Isolated Android reset, restart, and local backup save/restore checks passed. Coach me was readable in the checked native high-contrast light and 200% dark views; Samsung-specific and screen-reader acceptance remain pending.
+
+## [v13.0.1] A more familiar letter f
+
+### Fixed
+- The letter f in questions and headings now has a familiar, easier-to-read shape.
 
 ## [v13] Welcome to the new KaiSip
 
