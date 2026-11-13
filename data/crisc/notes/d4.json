@@ -1185,7 +1185,8 @@
             "crisc_d4_056",
             "crisc_d4_127",
             "crisc_d4_138",
-            "crisc_d4_156"
+            "crisc_d4_156",
+            "crisc_d4_186"
           ],
           "definition": "Recovery testing checks that disaster recovery capability, and the technology side of continuity plans, works, using methods from checklist reviews and tabletop exercises to full interruption tests.",
           "why_it_matters": "An untested plan is an assumption. Tests show whether RTO and RPO are met, whether people know their roles and where gaps lie, so owners can fix them before a real event.",
@@ -1193,7 +1194,7 @@
             "Tests are chosen by risk and plan maturity, starting with low-disruption methods and building to realistic ones that cover the whole cycle, including the return to the main site.",
             "A test that could disrupt operations is a business decision: the owner of the affected process accepts or limits the disruption, informed by what a failed test could cost.",
             "Each test has objectives tied to RTO, RPO and register scenarios; tests run on schedule and after set triggers, not after unrelated outside outages.",
-            "Observers record what worked, what failed and how long recovery took until users could work again, not until servers started.",
+            "Observers record what failed and how long recovery took until users could work again, not until servers started; a restored AI model must match its approved version.",
             "Findings go into a corrective action plan with owners and dates, and the plan is retested.",
             "A restore test times only the restore; under ransomware, containment and malware checks come first, so real recovery takes longer than the test shows."
           ],
@@ -1219,7 +1220,7 @@
               "meaning": "Production is actually moved to recovery systems; the most realistic and most disruptive test."
             }
           ],
-          "example": "A city water utility runs its first ransomware tabletop exercise. Within an hour the team finds no one knows who may authorize switching treatment controls to manual operation. Aiko, the risk analyst, records the gap, links it to the ransomware scenario in the register and asks the operations director to assign the decision authority.",
+          "example": "A city water utility's first ransomware tabletop exercise finds that no one knows who may authorize switching treatment controls to manual operation. Aiko, the risk analyst, records the gap, links it to the ransomware scenario in the register and asks the operations director to assign that authority.",
           "audit_focus": {
             "review": [
               "Compare tested scenarios with the top-rated scenarios in the register",
@@ -1281,7 +1282,8 @@
             "crisc_d4_135",
             "crisc_d4_148",
             "crisc_d4_157",
-            "crisc_d4_167"
+            "crisc_d4_167",
+            "crisc_d4_187"
           ],
           "definition": "Evaluating emerging technology means assessing a new technology's threats, vulnerabilities and opportunities for the business before and during adoption.",
           "why_it_matters": "New technology can create advantage, exposure or both. The ISACA Glossary's enterprise risk management exploits risk as well as controlling it, to increase stakeholder value, so leaders weigh both instead of banning by reflex or adopting blind.",
@@ -1289,7 +1291,7 @@
             "Start from the objective it serves; known benefits belong in the business case, uncertain ones in the register as opportunities.",
             "Identify new threats: weak integrations, vendor flaws, irreversible harms (stolen biometrics or signing keys, public-blockchain personal data) and cloud paths to physical controls.",
             "Check vendor claims, including patch support periods, through evidence, pilots and independent assessments; confirm lab figures by a trial in working conditions.",
-            "Apps staff build on low-code platforms are inventoried with owners and data, not banned or ignored.",
+            "Low-code apps staff build are inventoried with owners and data, not banned or ignored; a post-quantum move starts by inventorying quantum-vulnerable algorithms and the data they protect.",
             "Weigh exposure against appetite, propose conditions such as a pilot or exit terms, and reassess when the technology matures, use scales or an earlier rejection's reason changes.",
             "With little data, record an emerging risk with stated uncertainty, a proposed owner and a review date, not waiting for losses."
           ],
@@ -1311,7 +1313,7 @@
               "meaning": "Future computing power that could break today's public-key encryption, so cryptography inventories and migration plans matter."
             }
           ],
-          "example": "A farm cooperative's operations head wants soil sensors linked to a cloud dashboard to cut fertilizer costs, while some board members want it blocked. Luca, the risk analyst, assesses savings and risks and proposes a limited pilot with conditions for the board.",
+          "example": "A farm cooperative's operations head wants cloud-linked soil sensors to cut fertilizer costs; some directors want them blocked. Luca, the risk analyst, assesses savings and risks and proposes a pilot with conditions.",
           "audit_focus": {
             "review": [
               "Compare the technology's business case with its risk assessment",
@@ -1332,7 +1334,7 @@
             },
             {
               "trap": "Judging a new platform on vendor claims, certifications and features alone.",
-              "why": "Claims and certifications describe the product, not its fit with the organization's data and appetite, or a way out if a young vendor fails. That needs evidence and exit terms."
+              "why": "Claims and certifications describe the product, not its fit with the organization's data and appetite, or an exit if a young vendor fails; that needs evidence and exit terms."
             }
           ],
           "key_terms": [
@@ -1432,7 +1434,8 @@
             "crisc_d4_155",
             "crisc_d4_158",
             "crisc_d4_168",
-            "crisc_d4_178"
+            "crisc_d4_178",
+            "crisc_d4_188"
           ],
           "definition": "Core security principles are the design rules behind controls: protect confidentiality, integrity and availability, layer defenses, grant least privilege, separate duties.",
           "why_it_matters": "These principles let a practitioner judge controls without knowing every product; one control guarding everything signals concentrated risk.",
@@ -1440,11 +1443,11 @@
             "CIA (confidentiality, integrity, availability) names what an event harms, shaping the impact rating; encryption mainly guards confidentiality, not integrity, which includes non-repudiation.",
             "Layered controls of different kinds mean one failure does not expose the asset; back an AI assistant's prompt filter with answer screening and retrieval limits.",
             "Each user, system and AI tool gets only the access its task needs, only while needed; a secret address is not access control.",
-            "Critical tasks are split so no one can complete and hide a harmful action alone; counting users with conflicting rights shows exposure; independent review compensates where splitting fails.",
+            "Critical tasks, key use included (two-person control), are split so no one can act and hide harm alone; counting conflicting rights shows exposure; independent review compensates where splitting fails.",
             "Layers sharing a vendor, design or rule set can fail together, giving less depth than their number suggests; diversity costs effort, weighed against risk.",
             "Failing open keeps a service available; failing secure guards assets. With both costs known, the risk owner chooses, within any life-safety rule."
           ],
-          "example": "A credit union guards its member database with a perimeter firewall; every staff account reads all records. Farah, the risk analyst, shows the chief operating officer one phished account exposes everything and proposes role-based access and monitoring.",
+          "example": "A credit union guards its database with a perimeter firewall; every staff account reads all records. Farah, the risk analyst, shows the chief operating officer one phished account exposes everything and proposes role-based access and monitoring.",
           "audit_focus": {
             "review": [
               "Compare access rights with job roles to find excess privilege",
@@ -1627,7 +1630,8 @@
             "crisc_d4_119",
             "crisc_d4_129",
             "crisc_d4_149",
-            "crisc_d4_169"
+            "crisc_d4_169",
+            "crisc_d4_189"
           ],
           "definition": "A risk-aware culture is one where people at every level understand the risks in their work, speak up about them and act within appetite, supported by targeted training.",
           "why_it_matters": "Most controls depend on people. Where staff fear blame or see risk as someone else's job, problems stay hidden until they become incidents; where they speak up, risk is found early.",
@@ -1636,10 +1640,10 @@
             "Awareness reaches everyone with access, contractors included; role-based training gives deeper skills to people with specific risk duties, such as new risk owners learning the decisions their role holds.",
             "Training content follows the risk profile, such as payment fraud for finance staff, secure coding for developers or risk oversight for directors, in a language and format each audience follows.",
             "Reporting channels are easy and safe, and reports get visible follow-up.",
-            "Mistakes lead to process fixes first; discipline is for willful or repeated misconduct; charging people who report a loss delays reports.",
+            "Mistakes lead to process fixes first; discipline is for willful or repeated misconduct; charging for reported losses, or leaders calling staff the weakest link, makes people hide or delay reports.",
             "A supplier's general course does not teach the organization's own policies, systems and reporting routes, so contractors with access join its program."
           ],
-          "example": "At a pharmaceutical distributor, help desk staff know password resets skip identity checks at busy times but stopped reporting it after past reports led to blame. Rosa, the risk analyst, raises this with the service desk director as a culture risk and proposes a no-blame reporting channel with visible fixes.",
+          "example": "A pharmaceutical distributor's help desk staff stopped reporting that password resets skip identity checks at busy times after past reports led to blame. Rosa, the risk analyst, raises this culture risk with the service desk director and proposes a no-blame channel with visible fixes.",
           "audit_focus": {
             "review": [
               "Compare training content with the top risks for each role",
@@ -1760,13 +1764,14 @@
             "crisc_d4_142",
             "crisc_d4_150",
             "crisc_d4_160",
-            "crisc_d4_180"
+            "crisc_d4_180",
+            "crisc_d4_190"
           ],
           "definition": "Privacy principles are rules for fair handling of personal data, including purpose limitation, data minimization, a lawful basis such as consent, transparency and individual rights.",
           "why_it_matters": "Privacy harm affects people and brings regulatory, legal and trust consequences. A secure system can still breach privacy by collecting too much or using data for an undisclosed purpose.",
           "how_it_works": [
             "The purpose is decided and stated before collection, and data is not used later in ways incompatible with it.",
-            "Only data the purpose needs is collected, kept or disclosed, staff included; old records stay personal data at least while their subjects live.",
+            "Only data the purpose needs is collected, kept or disclosed, staff included; tracking workers stops off shift; old records stay personal data at least while their subjects live.",
             "People are told what happens to their data, and the organization has a valid basis; consent counts only if people can refuse an unrelated use and still be served.",
             "People can access, correct or delete their data as law allows, and challenge data used in decisions about them.",
             "Rights requests can be met only when every system holding a person's data is known, analytics copies and vendor tools included.",
@@ -1801,7 +1806,7 @@
               }
             ]
           },
-          "example": "A fitness app's product team proposes selling users' location history to advertisers, arguing the data is encrypted. Kenji, the risk analyst, explains encryption does not change the agreed purpose and asks the product owner and privacy officer to assess the sale.",
+          "example": "A fitness app's product team proposes selling users' location history to advertisers, as the data is encrypted. Kenji, the risk analyst, explains encryption does not change the agreed purpose and asks the product owner and privacy officer to assess it.",
           "audit_focus": {
             "review": [
               "Compare data collected with the purposes in the privacy notice",
@@ -1818,7 +1823,7 @@
           "exam_traps": [
             {
               "trap": "Assuming encrypted data has no privacy risk.",
-              "why": "Encryption stops outsiders reading data. It does nothing about an organization using data beyond what people agreed to."
+              "why": "Encryption stops outsiders reading data, not an organization using it beyond what people agreed to."
             },
             {
               "trap": "Collecting data first and deciding how to use it later.",

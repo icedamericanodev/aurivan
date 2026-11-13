@@ -243,13 +243,14 @@
             "crisc_d2_092",
             "crisc_d2_177",
             "crisc_d2_188",
-            "crisc_d2_194"
+            "crisc_d2_194",
+            "crisc_d2_204"
           ],
           "definition": "A threat source is anyone or anything that could cause harm; a threat event is what that source does, such as phishing staff or flooding a data center.",
           "why_it_matters": "Scenarios built only around outside hackers miss insiders, errors, equipment failures and disasters. A full taxonomy keeps identification complete and keeps threats separate from weaknesses.",
           "how_it_works": [
             "NIST SP 800-30 Rev. 1 Table D-2 sorts threat sources by cause: intent (adversarial), human error (accidental), failing equipment or software (structural), and disasters or outside outages (environmental).",
-            "Adversary likelihood weighs capability, intent and targeting, the last two shaped by what the enterprise holds or does; other sources use history.",
+            "Adversary likelihood weighs capability, intent and targeting, the last two shaped by what the enterprise holds or does; rented attack kits can lend capability; other sources use history.",
             "One source can cause many events, and one event several sources; third parties using logins customers hand them are sources too.",
             "A threat acts on a vulnerability: the threat is the actor or force, the vulnerability is the weakness it uses.",
             "Each scenario names its threat source and event, so the right likelihood evidence can be gathered.",
@@ -273,7 +274,7 @@
               "meaning": "Natural disasters and outages of infrastructure outside the enterprise's control, such as power or telecommunications."
             }
           ],
-          "example": "At a hospital network, the risk lead, Daniel Kim, finds all eight electronic health record scenarios assume an external hacker. Using the four source types, Daniel drafts scenarios for a clinician's misdirected bulk export, a failed storage array and regional flooding, then asks the clinical systems director to confirm which are credible.",
+          "example": "At a hospital network, risk lead Daniel Kim finds all eight health record scenarios assume an external hacker. Using the four source types, Daniel drafts scenarios for a clinician's misdirected bulk export, a failed storage array and regional flooding, then asks the clinical systems director which are credible.",
           "audit_focus": {
             "review": [
               "Compare the scenario list against all four threat source types",
@@ -290,11 +291,11 @@
           "exam_traps": [
             {
               "trap": "An unpatched server is a threat to the business.",
-              "why": "The missing patch is a vulnerability. The threat is the source that could exploit it, such as a ransomware group or a careless administrator."
+              "why": "The missing patch is a vulnerability; the threat is the source that could exploit it, such as a ransomware group or careless administrator."
             },
             {
               "trap": "Threat identification means listing the external attackers likely to target the enterprise.",
-              "why": "NIST SP 800-30 also lists accidental, structural and environmental sources. Errors and equipment failures often cause more events than attackers do."
+              "why": "NIST SP 800-30 also lists accidental, structural and environmental sources. Errors and equipment failures often cause more events than attackers."
             }
           ],
           "key_terms": [
@@ -498,17 +499,18 @@
             "crisc_d2_138",
             "crisc_d2_149",
             "crisc_d2_178",
-            "crisc_d2_195"
+            "crisc_d2_195",
+            "crisc_d2_205"
           ],
           "definition": "A vulnerability is a weakness in the design, implementation, operation or internal control of a process or system that a threat could exploit.",
           "why_it_matters": "Many serious losses combine a technical flaw with a process gap or human error; scanner output alone misses process and people weaknesses.",
           "how_it_works": [
-            "People weaknesses include weak awareness, missing skills, key-person dependency and too few staff, weighed by what those people can reach.",
+            "People weaknesses include weak awareness, missing skills, key-person dependency and too few staff, weighed by what they can reach.",
             "Process weaknesses include missing approvals, poor segregation of duties, untested recovery plans and undocumented procedures.",
             "Technology weaknesses include unpatched software, misconfigurations (a SaaS customer's own settings too), default passwords, unsupported systems and over-broad access, easy to reach through an AI assistant using users' rights.",
             "A control deficiency found in testing or audit is a vulnerability; one with a shared cause, such as a standard install, is recorded against that cause.",
             "Predisposing conditions, such as a flood-prone site, change likelihood even when nothing is broken.",
-            "Walkthroughs and control tests find process and people weaknesses; documents and self-assessments show intent; uncredentialed scans miss many installed-software flaws; rare-item AI detectors are judged by misses."
+            "Walkthroughs and tests find process weaknesses; documents and self-assessments show intent; uncredentialed scans miss many installed-software flaws; probe-sensitive OT devices get passive monitoring; rare-item AI detectors are judged by misses."
           ],
           "compare": {
             "columns": [
@@ -535,7 +537,7 @@
               }
             ]
           },
-          "example": "A food manufacturer's control test finds recipe changes in the production system need no second approval. Yusuf Haddad, the risk analyst, records it as a process vulnerability under the unauthorized recipe change scenario and asks the plant quality manager, who owns the scenario, to review its likelihood rating.",
+          "example": "A food manufacturer's control test finds recipe changes need no second approval. Yusuf Haddad, the risk analyst, records it as a process vulnerability under the unauthorized recipe change scenario and asks the plant quality manager, who owns the scenario, to review its likelihood rating.",
           "audit_focus": {
             "review": [
               "Compare scenario vulnerability lists against scan, control test and audit results",
@@ -1077,7 +1079,8 @@
             "crisc_d2_141",
             "crisc_d2_147",
             "crisc_d2_165",
-            "crisc_d2_196"
+            "crisc_d2_196",
+            "crisc_d2_206"
           ],
           "definition": "A business impact analysis (BIA) finds the critical business processes, how their impact grows over time when disrupted, and the resources and dependencies they need to recover.",
           "why_it_matters": "Recovery money and effort are limited. The BIA tells the enterprise what to restore first, and it gives risk assessments the impact data they need.",
@@ -1336,12 +1339,13 @@
             "crisc_d2_152",
             "crisc_d2_162",
             "crisc_d2_175",
-            "crisc_d2_180"
+            "crisc_d2_180",
+            "crisc_d2_207"
           ],
           "definition": "Keeping the register current means updating ratings, controls, responses and status whenever events, assessments, control tests or business changes alter a risk.",
           "why_it_matters": "Decisions are only as good as the register behind them. A stale register reports risks as treated that are not, and hides risks that have grown.",
           "how_it_works": [
-            "Update triggers include serious incidents, events outside a rating's expected range, control test results, audit findings, new threats, projects and reorganizations.",
+            "Update triggers include serious incidents, out-of-range events, control test results, audit findings, new threats, projects, reorganizations and a new AI model release, so entries record the release rated.",
             "Status follows evidence: an entry moves to treated only when the response is implemented and working, not when it is planned.",
             "Current and residual ratings credit a control only after it is implemented and tested, not on the day it is approved.",
             "Owners review entries on a cycle set by rating; a stated trigger, such as a KRI breach, brings review forward, and a request alone is not one.",
@@ -1613,19 +1617,20 @@
             "crisc_d2_181",
             "crisc_d2_192",
             "crisc_d2_197",
-            "crisc_d2_203"
+            "crisc_d2_203",
+            "crisc_d2_208"
           ],
           "definition": "Choosing a method means matching the analysis to the decision it must support and the quality of the data available, from simple scales to FAIR models and Monte Carlo simulation.",
           "why_it_matters": "A precise-looking number built on guesses misleads decision makers more than an honest qualitative rating.",
           "how_it_works": [
             "Ask what the decision needs: ranking risks, funding a control, or capital and insurance plans; harm with no credible price, such as illness, is rated beside the money figure.",
-            "Check data reliability: loss history, benchmarks, expert estimates; gather estimates privately first (Delphi), and judge experts by how often past ranges held actual results.",
+            "Check data reliability: loss history, benchmarks, expert estimates; gather estimates privately first (Delphi); judge experts by how often past ranges held actuals; repeated one-way forecast misses expose a biased assumption.",
             "FAIR, an Open Group standard, splits risk into loss event frequency and loss magnitude; secondary losses, such as fines, get their own frequency: the share of events that trigger them.",
             "Monte Carlo runs thousands of trials from estimated ranges; a yearly loss limit is tested on the tail of simulated yearly losses, not the mean or one event's loss.",
             "Ranges beat single points: with no loss history, validated error rate times volume gives a frequency range; if too wide, sensitivity analysis finds the input to improve.",
             "Screen qualitatively, quantify top risks; event trees run forward from one event, fault trees back from one outcome."
           ],
-          "example": "A biotech firm's board asks how much cyber insurance to buy. Olu Adeyemi, the risk practitioner, replaces a guessed ALE with ranges from claims data and experts, runs a Monte Carlo simulation and shows a loss distribution, including a one-in-twenty-year loss of about $9 million.",
+          "example": "A biotech firm's board asks how much cyber insurance to buy. Olu Adeyemi, the risk practitioner, replaces a guessed ALE with ranges from claims data and experts, runs a Monte Carlo simulation showing a loss distribution, including a one-in-twenty-year loss near $9 million.",
           "audit_focus": {
             "review": [
               "Evaluate whether input data quality supports the precision of the results",
@@ -1642,17 +1647,17 @@
           "exam_traps": [
             {
               "trap": "A quantitative result is always more accurate than a qualitative one.",
-              "why": "Numbers built on guesses carry false precision; NIST SP 800-30 warns that buried subjective inputs weaken quantitative rigor."
+              "why": "Numbers built on guesses carry false precision; NIST SP 800-30 warns buried subjective inputs weaken quantitative rigor."
             }
           ],
           "key_terms": [
             {
               "term": "FAIR",
-              "definition": "Factor Analysis of Information Risk: an Open Group model that quantifies risk from loss event frequency and loss magnitude."
+              "definition": "Factor Analysis of Information Risk: an Open Group model quantifying risk from loss event frequency and magnitude."
             },
             {
               "term": "Monte Carlo simulation",
-              "definition": "Repeated random sampling from input ranges to estimate the spread of possible outcomes."
+              "definition": "Repeated random sampling from input ranges to estimate the spread of outcomes."
             },
             {
               "term": "False precision",
@@ -1783,15 +1788,16 @@
             "crisc_d2_110",
             "crisc_d2_135",
             "crisc_d2_144",
-            "crisc_d2_154"
+            "crisc_d2_154",
+            "crisc_d2_209"
           ],
           "definition": "Control effectiveness is how well a control actually reduces a risk's likelihood or impact; it sets the gap between inherent and residual risk.",
           "why_it_matters": "A residual rating that assumes controls work, without evidence, can hide a risk far above appetite. Effectiveness must be shown, not assumed.",
           "how_it_works": [
-            "Design effectiveness asks whether the control, run as intended, would cut the scenario's likelihood or impact, and which: backups cut an attack's impact, not its likelihood.",
+            "Design effectiveness asks whether the control, run as intended, would cut likelihood or impact, and which: backups cut an attack's impact, not likelihood; a check after the loss cuts little.",
             "Operating effectiveness asks whether it actually ran as designed over the period, shown by testing or monitoring.",
             "Evidence includes control test results, key control indicators (KCIs), audit findings and incident history; a detective control's clean record proves little until a test shows it would catch an event.",
-            "An untested or failed control earns little or no reduction in the current rating; one that repeated tests show working earns its credit without waiting for a review.",
+            "An untested or failed control earns little or no reduction in the current rating; a well-designed one repeated tests show working earns credit without waiting for review.",
             "When test results, a control's scope or the data it protects change, such as a replaced system or newly added sensitive records, residual risk is re-rated and the owner told.",
             "Design is judged first: a control that misses the scenario's cause earns little credit, and one that reaches only some items, such as a one-in-ten sample, earns credit for those."
           ],
