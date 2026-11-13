@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 29 done 13 Nov 2026 (bank 975; round 30 completes the 1,000). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 30 done 13 Nov 2026: **bank complete at 1,000 reviewed questions**, exactly on the outline weights; release-ready (the course stays switched off until the paywall). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 975 reviewed (254 / 214 / 312 / 195) after round 29, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 1,000 reviewed (260 / 220 / 320 / 200) after round 30, the release target, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -1126,6 +1126,36 @@ traced to rated risks (d4_193).
 - Owner shapes: D1's missing split pair (runner-up plus eliminated) goes in round 30.
 - Settled: no internal-audit option at all; no keyed "just"; "Quantitative" on one D2 wrong option; "Rate" on two D2 wrong options.
 - After 1,000: a wording-only cue pass on older items (keyed only/all, threshold-move options).
+
+### Round 30 (13 Nov 2026): 25 items, bank 1,000 (complete)
+
+Round 30 added 6 D1 (`crisc_d1_255`–`260`), 6 D2 (`crisc_d2_215`–`220`),
+8 D3 (`crisc_d3_313`–`320`) and 5 D4 (`crisc_d4_196`–`200`) items, taking the
+bank to exactly 1,000 at 26/22/32/20. One AI item per domain: generative AI
+label artwork is rated for infringement exposure before printing (d1_260);
+harm to the patients an AI scheduler wrongly delays counts in the impact
+(d2_218); AI vendor due diligence asks how the vendor tests and announces model
+changes (d3_314); and payment approvers drill call-backs against cloned-voice
+requests (d4_199). Other highlights: a risk is owned by the manager whose output
+it threatens, not whoever found or patches it (d3_313); a provider's outage
+counts against the enterprise's tolerance (d1_259); a register keeps dated past
+ratings with their approvers (d2_219); insurance cover is judged against the
+plan's target before closure (d3_316); large payments checked in full plus a
+random sample (d3_319); telling people about a disclosure the law requires
+(d4_200).
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 (22 sure); 7 nits, 5 applied (stem-key echoes, an absolute, an insurance tip), 2 declined (planned lone-owner keys) |
+| Concept review | 0 HARD ERRORS, 7 PRECISION: d3_314 now cites AI RMF MANAGE 3.1 (GOVERN 6.1 is about IP); d2_219 attributes history to the risk detail report (IR 8286 Rev. 1 Section 3.9); tolerance wording agrees with d1_240; d4_200's cue no longer overreaches |
+| Standards audit | 0 HARD ERRORS, 8 PRECISION: stem-key echoes (d1_256, d4_198); an Encrypt decoy replaced (d4_200); a sweeping cue narrowed (d4_197); SP 800-55v1 page corrected (11, not 14); hedged notes wording restored. Plan deviation (a same-opener pair moved from d2_220 to d2_216) ruled acceptable |
+| Re-blind | 12/12 (all sure); a key-only "provider" removed from d1_259's floor key; d3_316's wrong-A explanation now answers what A says |
+| Cross-domain gate | 0 HARD ERRORS, 7 PRECISION: four cues narrowed to their triggers so they cannot key older items' runners-up (d4_198 bypass causes, d4_196 full-outage cover, d1_259 tolerance default, d2_219 future trends); two notes bullets aligned (4A6.1, 3B2.3) |
+| Gates | All lints 0 errors; practice links in sync (1,000 resolve); app pack dry run 0 problems; `verify_repo.sh` passes |
+
+**Release check at 1,000 (counted in code):** 260/220/320/200; keys level in every domain (65/55/80/50 per letter), no run of three; strict longest-key 15.38 / 15.45 / 15.00 / 15.50%; difficulty exactly 15/55/30 in every domain; same-opener key-holding 49.0%; owner pick 0.251, skip 0.251; all 43 outline codes covered; 2,163 framework_ref parts, none missing; no duplicate ids. D3 sits exactly on its length floor and D1 has one to spare, so no later edit may shorten a floor key.
+
+**After 1,000 (follow-ups, details in `r30_cross_domain.json`):** a wording-only cue pass on older items: keyed "only"/"all" (9/9), threshold moves (0/9), lone "register" (0/63) and "assess" (0/41) options, openers never keyed (Staff, Disciplinary, Penetration, Accept, Encrypt) or always keyed (Recovery, Restate); D2's key-only lens words (4 against a cap of 3); British words ("lift", "crisp", "cancelled", "petrol", "car park"); and crisc_d3_218 D giving its own reason. Pause 15 more saturated families before any new items.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`
