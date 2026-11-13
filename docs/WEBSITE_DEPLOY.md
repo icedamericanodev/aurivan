@@ -75,6 +75,55 @@ that touches data, check that `https://kaisip.com/data/domain1.json` returns
 the app page and not JSON (look at the body: the single-page fallback
 answers 200).
 
+## The new home page (`home.html`, not live yet)
+
+Added 13 Nov 2026. A marketing home page (the "Fieldwork" design from
+`design-notes/landing-round-four/`) that will replace the beta page at
+`kaisip.com/` when the owner approves it. Until then **nothing about the live
+site changes**: Cloudflare still runs the plain build, which is landing mode.
+
+| Thing | Where |
+|---|---|
+| The page | `home.html` (no inline script or style) |
+| Its stylesheet, script and pictures | `assets/home.css`, `assets/home.js`, `assets/home/` |
+| Its font | `assets/fonts/KaiSipSerif_400Regular.woff2` (the phone app's serif with a conventional f) |
+| Its build mode | `SITE_MODE=home bash scripts/build_site.sh` |
+| Its policy | `HOME_CSP` in `scripts/build_site.sh` (swapped into the `/` and `/index.html` rules) |
+| Its checks | `scripts/home_page/check.cjs`, served by `scripts/home_page/serve_site.cjs` |
+
+How the mode works: `/` becomes `home.html`; `/beta`, the legal pages, the Beta
+Desk and the unlisted app preview stay exactly as in landing mode. The home
+page's files are copied only in this mode, so in landing and app mode they are
+not public.
+
+**Draft guard.** While `home.html` contains fictional sample feedback or the
+waitlist mockup, `SITE_MODE=home` refuses to build. `HOME_ALLOW_DRAFT=1` builds
+it anyway, marked `noindex`, for local review and CI. Never set that on
+Cloudflare.
+
+Review it locally with the real headers:
+
+```bash
+SITE_MODE=home HOME_ALLOW_DRAFT=1 bash scripts/build_site.sh
+node scripts/home_page/serve_site.cjs _site 8787 &
+node scripts/home_page/check.cjs     # needs Playwright (dev only)
+```
+
+**To go live (owner approval first):**
+
+1. Replace the sample feedback with real, permission-based quotes, or remove
+   the section.
+2. Connect the waitlist to an approved destination, or point the buttons at
+   the beta sign-up.
+3. Recheck the Android, web and iOS wording.
+4. Confirm `SITE_MODE=home bash scripts/build_site.sh` passes with no draft
+   switch, and run the checks above.
+5. Change the default in `scripts/build_site.sh` from `landing` to `home`, in
+   its own pull request. Merging that pull request is the launch.
+
+**To roll back:** change the default back to `landing` (or revert that one
+pull request). The beta page returns to `/` on the next deploy.
+
 ## Security headers (`_headers`)
 
 - **Every response:** HTTPS only for a year (HSTS, no "preload" yet), no
