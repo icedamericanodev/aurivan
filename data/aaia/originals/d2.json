@@ -10370,25 +10370,25 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Indian IT-services firm checks its generative IT-helpdesk assistant monthly against 200 fixed questions; its logs hold every staff conversation. What should the IS auditor recommend as BEST?",
+      "question": "An Indian IT-services firm's generative helpdesk assistant, which answers any typed question, passes monthly checks on 200 fixed IT questions; its logs hold every staff conversation. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Track staff ratings on each logged conversation",
-        "B": "Expand the fixed set to cover every helpdesk topic",
+        "B": "Check sampled conversations' answers against the IT knowledge base",
         "C": "Track the assistant's uptime and response times monthly",
         "D": "Sample staff conversations to see what they really ask"
       },
       "correct": "D",
       "key_concept": "People use generative assistants for tasks no one planned; monitoring must look at real use, not only a fixed test set.",
       "pre_read": "Ask what the monthly check can and cannot show.",
-      "correct_explanation": "A fixed set of 200 questions shows how the assistant answers what its designers expected. Staff often take a generative assistant further, for example into HR, legal or security advice, and none of that appears in the fixed set. Sampling real conversations shows what it is actually used for and how it answers. Expanding the fixed set still covers only topics someone foresaw.",
+      "correct_explanation": "The monthly checks test only the 200 IT questions someone planned. Because the assistant answers any typed question, staff can take it into HR, legal or security matters no check covers. Sampling real conversations shows what it is actually used for, so those new uses and their risks can be assessed. Checking sampled answers against the IT knowledge base tests real answers, but only on the IT use already foreseen.",
       "wrong_explanations": {
         "A": "Tempting because users notice errors. But staff often cannot tell a confident wrong answer, and ratings show nothing about off-topic use.",
-        "B": "Tempting because wider coverage helps. But every added question is still one someone foresaw; real use can go well beyond helpdesk topics.",
+        "B": "Tempting because it checks real answers, not a fixed set. But an IT knowledge base can judge only IT answers; it cannot show what else staff ask.",
         "C": "Tempting because availability is routine IT monitoring. But uptime and speed say nothing about whether answers are right or what staff use the assistant for."
       },
       "tips": [
         "Eliminate: A relies on ratings from staff who may not spot wrong answers, and C watches the service, not its answers or how staff use it.",
-        "Final two: D beats B because any fixed set covers only foreseen topics; sampling real conversations shows how the assistant is actually used.",
+        "Final two: D beats B because checking answers against the IT knowledge base covers only the planned IT use; sampling what staff really ask reveals the unplanned uses.",
         "Exam cue: monitor generative AI for how it is used, not only how it scores. Real use drifts beyond intended purpose."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 2.4 (Functionality and behavior monitored in production); NIST AI 100-1 MEASURE 3.1 (Existing, unanticipated and emergent risks tracked)",
@@ -10992,38 +10992,38 @@
     {
       "id": "aaia_d2_299",
       "domain": 2,
-      "subtopic": "2G AI incident response. Chat records the vendor deletes",
+      "subtopic": "2G AI incident response. A hosted chatbot before a vendor update",
       "principle_id": "contain-and-preserve-ai",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A South African vehicle-tracking firm disengaged its hosted billing chatbot for quoting wrong late-payment penalties; its portal keeps transcripts, but the vendor deletes chat records after 30 days. What should the IS auditor recommend FIRST?",
+      "question": "A South African vehicle-tracking firm disengaged its hosted billing chatbot over wrong late-payment penalties; its portal keeps text-only transcripts, and the vendor's update replaces the model on Friday. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Retrain the chatbot on the correct penalty rules",
-        "B": "Export the full chat transcripts that the firm's portal keeps",
-        "C": "Ask the vendor now to preserve the chats and model version",
+        "B": "Export the chat transcripts that the firm's own portal keeps",
+        "C": "Ask the vendor to keep the version and settings now in use",
         "D": "Have the vendor restart it with a disclaimer on penalties"
       },
       "correct": "C",
-      "key_concept": "For hosted AI, much of the evidence sits with the vendor; ask for it to be preserved before its retention period ends.",
+      "key_concept": "For hosted AI, the model version and settings sit with the vendor; ask for them to be kept before an update replaces them.",
       "pre_read": "Ask where each record of the incident lives.",
-      "correct_explanation": "The firm's portal keeps the transcripts, which show what customers were told but not which model version and settings produced the wrong penalties; those sit with the vendor, which deletes chat records after 30 days. Asking the vendor now to preserve its records and the model version keeps the evidence root cause work needs. The firm's transcripts stay under its control and can be exported later.",
+      "correct_explanation": "The firm's portal keeps text-only transcripts, which show what customers were told but not which model version and settings produced the wrong penalties. Once the vendor's update replaces the model on Friday, that version may be gone. Asking the vendor to keep the version and settings now in use preserves what root cause work needs. The firm's own transcripts stay under its control and can be exported later.",
       "wrong_explanations": {
         "A": "Tempting because it fixes the error. But retraining before preserving evidence risks losing what root cause analysis needs.",
-        "B": "Tempting because full transcripts are strong evidence. But they show what was said, not which model version or settings said it, and the vendor's records go after 30 days.",
-        "D": "Tempting because it restores service. But a disclaimer does not fix wrong penalties, and the chats are still deleted after 30 days."
+        "B": "Tempting because transcripts are strong evidence. But text-only records show what was said, not which version or settings said it, and Friday's update replaces that version.",
+        "D": "Tempting because it restores service. But a disclaimer does not fix wrong penalties, and Friday's update still replaces the version behind them."
       },
       "tips": [
         "Eliminate: A fixes before preserving evidence, and D restores service with a disclaimer that fixes nothing.",
-        "Final two: C beats B because the firm's transcripts show the wrong answers but not the model version or settings behind them; those sit with the vendor, whose chat records go after 30 days.",
-        "Exam cue: for hosted AI incidents, preservation includes the vendor's records. Ask before its retention clock runs out."
+        "Final two: C beats B because the firm's transcripts show the wrong answers but not the version or settings behind them; only the vendor holds those, and Friday's update replaces them.",
+        "Exam cue: for hosted AI incidents, the version in use is evidence the vendor holds. Ask for it to be kept before a vendor update replaces it."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 IR-4 (Incident Handling); NIST SP 800-53 Rev. 5 SA-9 (External System Services)",
       "related_concepts": [
         "Evidence preservation",
         "Hosted AI",
-        "Vendor records"
+        "Vendor updates"
       ],
-      "_provenance": "Authored from concept: notes 2G.2 Containment: Disengage, Roll Back and Preserve Evidence (for hosted AI, evidence sits with the vendor and must be preserved before its retention period ends). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2G.2 Containment: Disengage, Roll Back and Preserve Evidence (for hosted AI, the model version and settings sit with the vendor and must be preserved before a vendor update replaces them). Re-angled in the final review from a 30-day vendor chat-deletion frame that repeated aaia_d3_035. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
       "style_version": 2
     },
     {
@@ -11079,7 +11079,7 @@
       },
       "correct": "B",
       "key_concept": "AI often fails silently; a root cause analysis should ask why detection took so long, not only what broke.",
-      "pre_read": "Read the timeline in the stem before the options.",
+      "pre_read": "Separate what the closed record explains from what it leaves out.",
       "correct_explanation": "The feed fix removed this cause, but the model misrouted parcels for three months with high confidence scores, so monitoring missed it. AI errors are often silent, and without knowing why monitoring did not flag them, the next fault of any kind could run as long. Whether the feed fix went through change control matters, but it does not stop the next silent failure.",
       "wrong_explanations": {
         "A": "Tempting because retraining often follows errors. But the model was fed bad input; once the feed is fixed, retraining is not the gap.",
@@ -11087,7 +11087,7 @@
         "D": "Tempting because accountability matters. But a root cause analysis names causes and control gaps, not people to blame."
       },
       "tips": [
-        "Eliminate: D names a person rather than a cause, and A assumes a retrain is needed after an input fix.",
+        "Eliminate: D wants a person blamed rather than a cause found, and A assumes a retrain is needed after an input fix.",
         "Final two: B beats C because change control governs this one fix; the detection gap lets the next silent failure run just as long.",
         "Exam cue: AI fails silently. A root cause analysis should ask why detection took so long, not only what broke."
       ],

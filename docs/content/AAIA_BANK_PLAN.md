@@ -235,6 +235,7 @@ the notice is part of the description.
 | Batch 5 (5 Nov 2026) | +30 | +42 | — | 368 |
 | Batch 6 (5 Nov 2026) | — | +42 | +32 | 442 |
 | Batch 7 (12 Nov 2026) | +30 | +42 | — | 514 |
+| Batch 8 (13 Nov 2026) | — | +42 | +32 | 588 |
 
 Pilot review, 30 Oct 2026:
 - **Blind tests:** 60/60 picks matched the keys on the first pass. After the
@@ -356,18 +357,34 @@ Batch 7 review, 12 Nov 2026 (D1 and D2 only):
   earlier setting and frame; eleven drafts were dropped or reworked because they mirrored an existing lesson.
 - **Five reviewers per domain:** first blind pass 72/72 and one HARD ERROR (D2, fixed without changing a key).
   PRECISION findings went through three fix rounds, the cross-domain gate (7) and the completeness critic
-  (6 gaps: four reused settings and one reused frame, all fixed and re-tested blind; the D1 length-tell aim is
-  carried, since the gate passes). A final fix round cleared the rest; aaia_d2_230's runner-up now rests on the agent's
+  (6 gaps: four reused settings, one reused frame and the D1 length-tell aim, all closed and re-tested blind). A final fix round cleared the rest; aaia_d2_230's runner-up now rests on the agent's
   own log, so only the AI fact (coaxing can skew an agent's own record) separates the final two.
 - **Notes:** short additions where a key relied on something the note did not teach (reliability in the NIST
   AI RMF, homogenization, version pinning versus vendor features, isolating model files that run code on load).
 - **Citations:** nine added by the citation librarian after checking the opened texts (NIST AI 100-1 Sections
   3.1 and 3.3; NIST AI 600-1 Sections 2, 2.1 and 2.3; MITRE ATLAS AML.T0011.000, AML.T0011.002 and
   AML.T0018.002; NIST SP 800-53 SI-15). OWASP LLM entries stay unverified (source blocked).
-- Length tell: D1 16.8%, D2 20.8% (inside the 15–24% band; D1 under the 20% aim, to lift in the next D1 round).
-  Tags: 426 of 514.
+- Length tell: D1 20.4%, D2 20.8% after the final fix round (both inside the 15–24% band). Tags: 426 of 514.
 
 **Next round:** D2 and D3.
+
+Batch 8 review, 13 Nov 2026 (D2 and D3 only):
+- **Authors:** two new items per notes subtopic in D2 (42) and D3 (32); 11 or more of D3's are on using AI
+  inside the audit. Every setting was checked by grep against all AAIA files, the 1,000 CRISC items, the
+  notes examples and the CISA AI items; sixteen D2 drafts were moved before writing because they collided.
+- **Five reviewers per domain:** first blind pass 73/74 (the one split was fixed and re-tested). Three HARD
+  ERRORs in D2, all fixed without changing a key. PRECISION findings went through three fix rounds, the
+  cross-domain gate (7), the completeness critic (3 gaps: reused frames and one item general audit sense
+  answered) and a final fix round, which re-angled aaia_d2_299 (a vendor update about to replace the model,
+  not a 30-day log deletion that repeated aaia_d3_035) and gave four runner-ups a careful CISA auditor's move
+  that only the AI fact defeats. Every changed item was re-tested blind and re-audited.
+- **Notes:** short key terms and bullets added where a key relied on something the note did not teach (for
+  example retrieval logs, rollback targets, label bias, tool citations in audit work); the D2 subtopics were
+  then trimmed back under the 380-word target.
+- **Citations:** none added; every reference uses an existing library bullet.
+- Length tell: D2 21.4%, D3 17.7%. Tags: 490 of 588.
+
+**Next round:** D1 and D2, a small round to reach 600, then the release audit.
 
 ## 10. Follow-ups outside this plan's scope
 

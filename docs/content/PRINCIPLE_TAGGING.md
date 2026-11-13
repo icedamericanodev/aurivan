@@ -688,11 +688,12 @@ aaia_d2_260.
 
 ### Batch 8 (13 November 2026)
 aaia_d2_261-302 and aaia_d3_115-146 were read against the rule above. None
-is a seed. Changed: aaia_d2_265 moved from `test-the-ai-as-used` and
-aaia_d2_266 from `independence-of-ai-assurance` to
-`accuracy-is-not-assurance` (each runner-up rechecks the same data: staff
-check answers to generated test pairs; validators rerun the builders'
-already-used test set, which is that card's trap, as aaia_d3_003);
+is a seed. Changed: aaia_d2_265 moved from `test-the-ai-as-used` to
+`accuracy-is-not-assurance` (the runner-up rechecks the same data: staff
+check answers to generated test pairs); aaia_d2_266 moved from
+`independence-of-ai-assurance` to `test-the-ai-as-used` (final review: the
+vendor rescores every past payment with a model trained on later fraud, so
+only scores recorded as they arrive test the model as it is used live);
 aaia_d2_300 moved from `contain-and-preserve-ai` to `ai-deciding-fact` (both
 options roll back, so the stated six weeks of planted reports removes last
 week's version). Newly tagged: aaia_d3_123 `rank-ai-risk-by-harm` (the Final

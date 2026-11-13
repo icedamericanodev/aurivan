@@ -4449,13 +4449,13 @@
       "options": {
         "A": "Rely on the vendor's published accuracy for drafting test steps",
         "B": "Have auditors rerun each draft to confirm it comes out the same",
-        "C": "Restrict it to low-risk audits until auditors gain experience",
+        "C": "Restrict it to low-risk audits and widen use as auditors gain experience",
         "D": "Train auditors on its typical errors and require each draft reviewed"
       },
       "correct": "D",
       "key_concept": "Over-reliance on audit AI is automation bias; plan training on the tool's limits and required review of every output before rollout.",
       "pre_read": "Picture the tool in use on an ordinary audit.",
-      "correct_explanation": "Adopting most drafts unchanged can signal automation bias: fluent, plausible drafts invite acceptance, and the gaps a tool leaves are easy to miss. Training auditors on the errors this tool tends to make, and requiring review of every draft against the process, works on the behavior itself. Limiting the tool to low-risk audits reduces what over-reliance can damage, but auditors there can still adopt flawed drafts unchecked.",
+      "correct_explanation": "Adopting most drafts unchanged can signal automation bias: fluent, plausible drafts invite acceptance, and the gaps a tool leaves are easy to miss. Training auditors on the errors this tool tends to make, and requiring review of every draft before use, works on the behavior itself. Limiting the tool to low-risk audits reduces what over-reliance can damage, but auditors there can still adopt flawed drafts unchecked.",
       "wrong_explanations": {
         "A": "Tempting because vendors publish accuracy. But a vendor figure is an input, not validation, and does nothing about over-reliance.",
         "B": "Tempting because consistency feels like checking. But a repeated draft can repeat the same gap; reruns test consistency, not correctness.",
@@ -4472,7 +4472,7 @@
         "Over-reliance",
         "Automation bias"
       ],
-      "_provenance": "Authored from concept: notes 3A.4 Planning the Audit's Own Use of AI (train auditors on the approved uses, the tools' limits and their duty to review all output). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3A.4 Planning the Audit's Own Use of AI (train auditors on the approved uses, the tools' limits and their duty to review all output). Re-audit, 13 Nov 2026: C given the same two-part shape as the key, so the key is no longer the only two-part and single longest option. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
       "style_version": 2
     },
     {
@@ -4515,29 +4515,29 @@
     {
       "id": "aaia_d3_123",
       "domain": 3,
-      "subtopic": "3B Testing and sampling. Label edits in a claims system",
+      "subtopic": "3B Testing and sampling. Label edits in a click-fraud system",
       "principle_id": "rank-ai-risk-by-harm",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Testing controls over a Flemish motor insurer's claims-fraud model, retrained weekly on investigators' fraud labels, an IS auditor finds any claims handler can edit those labels without a record. What makes this exception MOST significant?",
+      "question": "Testing controls over a Flemish ad network's click-fraud model, retrained weekly on analysts' fraud labels, an IS auditor finds any account manager can edit those labels without a record. What makes this exception MOST significant?",
       "options": {
-        "A": "Unrecorded edits would make each weekly retrain too hard to explain",
-        "B": "Staff could quietly teach the model to pass chosen claims",
-        "C": "Edited labels on closed claims could then misstate past fraud losses",
-        "D": "Edits to labels about claimants would need the claimants' consent"
+        "A": "Edited labels could cut the model's overall accuracy after retraining",
+        "B": "Staff could teach the model to pass their chosen fake clicks",
+        "C": "Edited labels on billed clicks could misstate past advertiser refunds",
+        "D": "Edits to labels about users' clicks would need the users' consent"
       },
       "correct": "B",
       "key_concept": "Training labels shape the model: edits nobody records can poison the next retrain, so label changes need access limits and a trail.",
       "pre_read": "Weigh each consequence by its likelihood and impact before choosing.",
-      "correct_explanation": "Labels are the model's teacher. Because any handler can change them without a trace, someone could relabel a run of fraudulent claims as genuine, and the next weekly retrain would learn to pass claims like them. That is insider poisoning of training data, and with no record nobody could find it afterward. Misstated loss figures are a real reporting issue, but the poisoned model would keep paying fraud week after week.",
+      "correct_explanation": "Labels are the model's teacher. Because any account manager can change them without a trace, someone could relabel a favored publisher's fake clicks as genuine, and the next weekly retrain would learn to pass clicks like them. That is insider poisoning of training data, and with no record it is hard to detect. Misstated refunds are a real reporting issue, but the poisoned model would keep billing advertisers for fraud week after week.",
       "wrong_explanations": {
-        "A": "Tempting because edits and frequent retrains both add change. But neither makes the model unexplainable; the danger is what edited labels teach the next retrain.",
-        "C": "Tempting because loss figures matter. But the larger harm is forward-looking: each retrain learns from the edited labels and starts passing similar fraud.",
-        "D": "Tempting because the labels concern claimants. But consent is rarely the lawful basis for fraud work, and the gap here is who can change the labels unrecorded."
+        "A": "Tempting because bad labels can degrade a model. But edits aimed at chosen clicks barely move overall accuracy; the harm is what the model learns to pass.",
+        "C": "Tempting because refund figures matter. But the larger harm is forward-looking: each retrain learns from the edited labels and starts passing similar fake clicks.",
+        "D": "Tempting because clicks come from people. But consent is rarely the lawful basis for fraud screening, and the gap here is who can change labels unrecorded."
       },
       "tips": [
-        "Eliminate: A blames the edits for explainability rather than for what they teach, and D turns an integrity gap into a consent question.",
-        "Final two: B beats C because edited labels flow into every later retrain, teaching the model to pass fraud; misstated history is the smaller harm.",
+        "Eliminate: A expects the edits to show as lower overall accuracy, though targeted relabeling barely moves it, and D turns an integrity gap into a consent question.",
+        "Final two: B beats C because edited labels flow into every later retrain, teaching the model to pass fraud; misstated refund history is the smaller harm.",
         "Exam cue: training labels are a control point. Anyone who can change them unrecorded can change the model at its next retrain."
       ],
       "framework_ref": "NIST AI 100-2e2025 Section 2.3.2 (Targeted Poisoning); NIST SP 800-53 Rev. 5 AU-2 (Event Logging)",
@@ -4546,7 +4546,7 @@
         "Data poisoning",
         "Control design"
       ],
-      "_provenance": "Authored from concept: notes 3B.1 Testing AI Controls and Human Oversight (map risks to controls independently, including training-data access and retraining approval). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3B.1 Testing AI Controls and Human Oversight (map risks to controls independently, including training-data access and retraining approval). Batch 8 re-audit: moved from an insurer's claims-fraud model retrained on investigators' labels, which repeated the setting of crisc_d2_174, to an ad network's click-fraud model; option A now turns on the targeted-poisoning fact that overall accuracy barely moves. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
       "style_version": 2
     },
     {
@@ -4928,22 +4928,22 @@
       "question": "Asked whether 80 firewall rule changes at a Sardinian airport were approved, an IS auditor's approved AI tool said all were; asked which lacked approval, it named six. What is the auditor's BEST response?",
       "options": {
         "A": "Ask the tool which of its two answers is right",
-        "B": "Treat the six as exceptions, since that prompt was more skeptical",
+        "B": "Treat the six as unapproved, since that prompt was more skeptical",
         "C": "Check every change against the approval records directly",
-        "D": "Rerun both questions and keep whichever answer repeats"
+        "D": "Have the tool cite the approval record for each change"
       },
       "correct": "C",
       "key_concept": "Generated answers lean toward a question's framing, so two prompts can yield opposite results; neither is evidence until checked against records.",
       "pre_read": "Ask what the difference between the two answers reveals about both.",
-      "correct_explanation": "Generated answers tend to follow the framing of the question: asked to confirm, a model leans toward confirming; asked to find faults, it leans toward finding some. Neither answer is evidence. With only 80 changes, the auditor checks each against the approval records. Trusting the six because that prompt sounded skeptical mistakes framing for scrutiny: some may be invented, and the other 74 stay untested.",
+      "correct_explanation": "Generated answers tend to follow the framing of the question: asked to confirm, a model leans toward confirming; asked to find faults, it leans toward finding some. Neither answer is evidence. With only 80 changes, the auditor checks each against the approval records. Having the tool cite a record for each change only adds generated text that framing can steer; a cited record proves nothing until opened.",
       "wrong_explanations": {
         "A": "Tempting because the tool produced both answers. But its verdict on itself is more generated text, not evidence.",
         "B": "Tempting because a fault-finding question looks like professional skepticism. But framing steers generated answers: some of the six may be invented, and the other 74 stay untested.",
-        "D": "Tempting because repetition feels like confirmation. But a repeated answer can be repeatedly wrong; reruns test consistency only."
+        "D": "Tempting because a cited record looks traceable. But a generated citation is more generated text: it can follow the framing or name a record that says otherwise."
       },
       "tips": [
-        "Eliminate: A asks the tool to judge itself, and D treats a repeated answer as a verified one.",
-        "Final two: C beats B because a fault-finding prompt is framing, not skepticism; some of the six may be invented and the other 74 are untested.",
+        "Eliminate: A asks the tool to judge itself, and B mistakes a fault-finding prompt for professional skepticism.",
+        "Final two: C beats D because a citation the tool writes is more generated text, which framing can steer; only the approval records themselves are evidence.",
         "Exam cue: when rewording a prompt changes the answer, neither answer is evidence. Go to the source records."
       ],
       "framework_ref": "NIST AI 600-1 Section 2.2 (Confabulation); ISACA IT Audit Standard 1205 (Evidence)",
@@ -4952,7 +4952,7 @@
         "Prompt framing",
         "Corroboration"
       ],
-      "_provenance": "Authored from concept: notes 3C.3 Evidence Produced by AI Tools (neither asking the tool to check itself nor rerunning it proves accuracy; only the sources do). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3C.3 Evidence Produced by AI Tools (neither asking the tool to check itself nor rerunning it proves accuracy; only the sources do). Final round, 13 Nov 2026: B and D now carry the stem terms \"approved\" and \"change\", so the key no longer echoes them alone. Re-audit, 13 Nov 2026: D (rerun) replaced with a tool-citation option a careful CISA auditor might choose, so the framing and confabulation fact decides the final two; B is now eliminated. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
       "style_version": 2
     },
     {
@@ -5070,17 +5070,17 @@
       "subtopic": "3D Data quality and analytics. Validating a generative checker",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Before relying on a generative AI shipping-document checker, a Moroccan argan-oil exporter's audit team ran it once over 200 documents, each holding one independently planted error; it caught 190. What is the GREATEST concern?",
+      "question": "Before relying on a generative AI checker for every shipment, a Moroccan argan-oil exporter's auditors ran it once on 150 documents, each with one independently planted error; it caught 141. What is the GREATEST concern?",
       "options": {
         "A": "A repeat on the same documents could catch different errors",
-        "B": "Two hundred documents are too few to measure a reliable rate",
+        "B": "A 150-document test is too small to measure a reliable rate",
         "C": "The vendor's benchmark would be a better validation source",
         "D": "Documents with planted errors cannot validate an audit tool"
       },
       "correct": "A",
       "key_concept": "Generative tools can vary run to run; validating one on a single run measures one draw, not how reliably it catches errors.",
       "pre_read": "Judge the test as a reviewer of the work paper would.",
-      "correct_explanation": "Generative tools can give different results on the same input from run to run, so one run's 190 catches is a single draw, not a measured rate. Validation should repeat the runs and record how much the catches vary before the team relies on the tool. More documents would narrow the estimate for one run but would not show how much results shift between runs.",
+      "correct_explanation": "Generative tools can give different results on the same input from run to run, so one run's 141 catches is a single draw, not a measured rate. Validation should repeat the runs and record how much the catches vary before the team relies on the tool. More documents would narrow the estimate for one run but would not show how much results shift between runs.",
       "wrong_explanations": {
         "B": "Tempting because small tests give loose estimates. But a larger single run still hides how much results vary between runs.",
         "C": "Tempting because benchmarks are published. But a vendor benchmark is an input, not validation on this audit's data.",
@@ -5097,7 +5097,7 @@
         "Run-to-run variation",
         "Synthetic test data"
       ],
-      "_provenance": "Authored from concept: notes 3D.2 AI-Assisted Audit Analytics and Tool Validation (validate the tool before relying on it; generative tools can vary between runs, so validate over repeated runs). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3D.2 AI-Assisted Audit Analytics and Tool Validation (validate the tool before relying on it; generative tools can vary between runs, so validate over repeated runs). Final round, 13 Nov 2026: numbers and the sample-size distractor reworded so the stem no longer mirrors aaia_d3_073. Re-audit, 13 Nov 2026: stem now says the tool will be relied on for every shipment, so repeated use, not sample size, decides it. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
       "style_version": 2
     },
     {
@@ -5292,25 +5292,25 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Lithuanian online pharmacy's response to a finding that its vendor-hosted prescription-check model blocks valid orders: a vendor retrain next quarter to block fewer orders, with no target. What should the IS auditor do FIRST?",
+      "question": "Responding to a finding that its vendor-hosted prescription-check model blocks valid orders, a Lithuanian online pharmacy commits to a vendor retrain next quarter to block fewer orders. What should the IS auditor do FIRST?",
       "options": {
         "A": "Record the vendor's date and retest blocked orders at follow-up",
-        "B": "Ask which internal manager sets the error limits for the retrain",
+        "B": "Ask which internal manager sets limits for both error types",
         "C": "Accept the response, as the hosted model belongs to the vendor",
         "D": "Lower the finding's rating, since a retrain is now scheduled"
       },
       "correct": "B",
       "key_concept": "Retraining a model to cut one error can raise the other, so the organization's owner sets limits for both before a vendor's fix.",
       "pre_read": "Read the response for what it commits to and what it leaves open.",
-      "correct_explanation": "Retraining a model to block fewer orders shifts its errors: fewer valid orders are blocked, but more invalid prescriptions may pass. Only the pharmacy can decide how much of each error is acceptable, so the action needs a pharmacy owner who sets both limits before the vendor retrains. Retesting blocked orders at follow-up checks one error only, and with no limits set there is nothing to judge the retrained model against.",
+      "correct_explanation": "Retraining a model to block fewer orders can shift its errors: fewer valid orders are blocked, but more invalid prescriptions may pass. Only the pharmacy can decide how much of each error is acceptable, so the action needs an internal owner who sets limits for both before the vendor retrains. Retesting blocked orders at follow-up checks only one error, with no limit to judge the retrained model against.",
       "wrong_explanations": {
-        "A": "Tempting because retesting is sound follow-up. But with no target set, a retest has nothing to judge against, and it ignores invalid prescriptions a retrained model may pass.",
+        "A": "Tempting because retesting is sound follow-up. But it checks only blocked orders; a model retrained to block fewer may pass invalid prescriptions, and the response limits neither error.",
         "C": "Tempting because the vendor controls the model. But the pharmacy answers for orders decided with it; accountability cannot pass to the vendor.",
         "D": "Tempting because action is planned. But ratings follow the likelihood and impact of harm, and valid orders stay blocked until a retrain works."
       },
       "tips": [
         "Eliminate: C hands accountability to the vendor, and D lowers a rating because a retrain is promised.",
-        "Final two: B beats A because a retrain to block fewer orders may pass more invalid prescriptions, so an internal owner sets limits for both errors first; with no target, a retest proves nothing.",
+        "Final two: B beats A because a retrain to block fewer orders may pass more invalid prescriptions, so an internal owner sets limits for both errors first; a retest of blocked orders checks one.",
         "Exam cue: a model retrained to cut one error often raises the other. Before accepting the action, ask who in the organization sets limits for both."
       ],
       "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); NIST AI 100-1 MAP 1.5 (Organizational risk tolerances determined and documented)",
@@ -5319,7 +5319,7 @@
         "Error trade-offs",
         "Vendor-hosted models"
       ],
-      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (record management's response with a named internal owner, actions and dates; a retrain that cuts one error needs limits for both). Review round 1, 13 Nov 2026: the deciding fact is now the error trade-off of a retrain to block fewer orders, not general vendor accountability. Review round 2, 13 Nov 2026: stem now states no target is set; key reworded so no stem word is echoed only in it. Review round 3, 13 Nov 2026: stem ends \"with no target\" so the stem verb \"set\" no longer appears only in the key. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (record management's response with a named internal owner, actions and dates; a retrain that cuts one error needs limits for both). Review round 1, 13 Nov 2026: the deciding fact is now the error trade-off of a retrain to block fewer orders, not general vendor accountability. Review round 2, 13 Nov 2026: stem now states no target is set; key reworded so no stem word is echoed only in it. Review round 3, 13 Nov 2026: stem ends \"with no target\" so the stem verb \"set\" no longer appears only in the key. Final round, 13 Nov 2026: \"with no target\" removed from the stem so the error trade-off, not a missing target, decides the item; key reworded to name both error types. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
       "style_version": 2
     },
     {
@@ -5332,22 +5332,22 @@
       "question": "A Monaco casino group's draft IS audit report rates each finding as the audit's approved, validated AI tool suggested, with no auditor's reasoning recorded for any rating. What is the chief audit executive's BEST action?",
       "options": {
         "A": "Keep the ratings, since the tool was validated on past audit findings",
-        "B": "Disclose in the report that an AI tool suggested the ratings",
+        "B": "Have auditors disclose in the report that AI suggested the ratings",
         "C": "Have auditors set each rating from likelihood and impact",
         "D": "Ask the tool's vendor to confirm the ratings are accurate"
       },
       "correct": "C",
       "key_concept": "A finding's rating is an audit judgment; an AI tool may suggest one, but auditors set and own each rating from the evidence.",
       "pre_read": "Read the draft as the audit committee will rely on it.",
-      "correct_explanation": "A rating tells leaders how urgently to act, and it is the auditors' judgment, made from each finding's likelihood and impact. Ratings adopted with no recorded reasoning suggest reviewers deferred to the tool rather than judging. Approval lets the team use the tool; it does not make its suggestions the audit's conclusions. Disclosing that AI suggested the ratings tells readers the method but leaves the ratings unjudged.",
+      "correct_explanation": "A rating tells leaders how urgently to act, and it is the auditors' judgment, made from each finding's likelihood and impact. Ratings adopted with no recorded reasoning suggest the auditors deferred to the tool. Validation on past findings shows the tool's suggestions tend to fit; it does not judge each finding's evidence, so keeping the ratings leaves them unjudged.",
       "wrong_explanations": {
         "A": "Tempting because a validated audit tool's output is usually relied on. But a rating is a judgment; validation makes the suggestion useful input, not the auditors' conclusion.",
         "B": "Tempting because material AI use should be disclosed. But disclosure describes the method; it does not make ratings nobody judged the audit's own.",
         "D": "Tempting because vendors know their tools. But accountability for audit ratings stays with the audit function, never the vendor."
       },
       "tips": [
-        "Eliminate: A treats a validated tool's suggestion as the auditors' judgment, and D shifts accountability to the vendor.",
-        "Final two: C beats B because disclosure tells readers AI suggested the ratings; only auditors rating each finding make the ratings the audit's own.",
+        "Eliminate: B describes how the ratings were made without judging any of them, and D shifts accountability to the vendor.",
+        "Final two: C beats A because validation makes the tool's suggestions useful input, not judgments; auditors must rate each finding from its own likelihood and impact.",
         "Exam cue: AI may suggest, auditors conclude. Ratings, like findings, are judgments the audit owns."
       ],
       "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); NIST AI 100-1 Section 3.4 (Accountable and Transparent)",
@@ -5356,7 +5356,7 @@
         "Accountability",
         "Automation bias"
       ],
-      "_provenance": "Authored from concept: notes 3E.3 Disclosing AI Use and Owning Conclusions (never present an AI tool's output as a conclusion without the auditor's own judgment). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3E.3 Disclosing AI Use and Owning Conclusions (never present an AI tool's output as a conclusion without the auditor's own judgment). Final round, 13 Nov 2026: A (the validated tool) is now the runner-up in tip 2 and the explanation; B (disclosure) is eliminated. Re-audit, 13 Nov 2026: B reworded to \"Have auditors disclose...\" so the stem word \"auditor\" is no longer echoed only in the key. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
       "style_version": 2
     },
     {

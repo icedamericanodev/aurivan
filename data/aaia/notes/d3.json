@@ -353,7 +353,7 @@
             "Test operation over the period with logs and records, not the control owner's description.",
             "Measure human review with override rates, time spent per case and agreement with the model.",
             "Seed cases with known right answers, agreed with the model owner so no one is affected, to test whether reviewers actually catch wrong outputs.",
-            "Map risks to controls independently, including some data scientists may not mention, such as label editing and retraining approval.",
+            "Map risks to controls independently, such as label editing and retraining approval; targeted label edits barely move overall accuracy.",
             "Test AI guardrails, such as output filters, by attempting reworded and disguised bypasses in an agreed setting; counts of blocked items show only catches."
           ],
           "example": "At a food-safety agency in Canada, a model ranks restaurants for inspection, and policy lets inspectors change any ranking with a reason. IS auditor Amara tests a year of logs: inspectors changed no rankings at all, and none could see why a restaurant ranked high. Amara reports that the oversight control is not effective: reviewers cannot see the reasons behind rankings, a design gap, and records show they never challenge them.",
@@ -693,7 +693,7 @@
           "definition": "Evidence produced by artificial intelligence (AI) tools is audit evidence that such a tool helped create, such as summaries, classifications, transcripts or flagged items.",
           "why_it_matters": "AI tools can misread, omit or invent content while sounding certain. Evidence the auditor cannot trace to source records or explain cannot support a conclusion.",
           "how_it_works": [
-            "Treat AI output as a lead until it is corroborated against source records.",
+            "Treat AI output as a lead until it is corroborated against source records; a source the tool cites is part of its output, so open the record itself.",
             "Sampling the tool's statements and checking them against the underlying documents gives a measured error rate.",
             "Understand how the output was produced: the tool, version, prompt, settings and input data.",
             "Record in the work papers what the tool did and what the auditor verified.",
