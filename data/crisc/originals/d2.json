@@ -7517,6 +7517,228 @@
       ],
       "_provenance": "Authored from concept: notes 2B4.3 (Choosing a Method: Data, Decisions, FAIR and Monte Carlo; key term 'Three-point estimate' extended in round 27 with the beta-weighted mean, after NIST IR 8286A Rev. 1 Section 2.3.2.2). Round 27, 12 Nov 2026: original scenario (a bullion dealer's three-point estimates for a stolen gold shipment's loss: $100,000 best, $1,000,000 most likely, $1,060,000 worst, with the most likely weighted four times) written for KaiSip; figures differ from NIST's phishing example; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 27 asks: the 2B4 item (application); bullion dealer setting (finance); key C; scenario stem, not 'Which of the following'; numeric options in ascending order, the key not the longest by characters (8 against 8 to 10, below the $1,000,000 option) nor strictly the shortest by words (all one word); no owner option. Arithmetic: ($100,000 + 4 x $1,000,000 + $1,060,000) / 6 = $860,000; the equal-weight mean is $720,000; the best-worst midpoint $580,000. Not the paused families (range against midpoint, crisc_d2_170 and crisc_d2_017: the midpoint sits on eliminated A only; a priced choice calls for quantitative analysis; cost-benefit time basis). Neighbours checked: crisc_d2_083 (Monte Carlo inputs as low, likely and high values; consistent), crisc_d2_017 (ranges over exact-looking figures; the item asks for the expected value of experts' range, and its explanations keep the range's ends in view), crisc_d2_120 (SLE beside ALE for rare events), crisc_d2_043 and crisc_d2_015 (ALE arithmetic), crisc_d2_181 (calibrated experts), CISA d3_131 (three-point durations in project scheduling, a different use), CC cc_d1_121 and cc_d1_084 (ALE arithmetic); no mirror found. Runner-up check: D (the $1,000,000 most likely value); the closest older cue in lesson is crisc_d2_083 (most likely is one of three inputs); the stem fact that rules D out is the stated four-times weighting, which with the low best case puts the expected loss below the most likely value. Each new wrong option and key was run against every older Exam cue, key and wrong option in all four CRISC domains (TF-IDF, scratch tools wrongcue, cue2key and key2wrong); none of the matches pulls toward a new wrong option on meaning. No restrictive word (only, all, never, just, alone, limited to) in any option. Audit 13 Nov 2026 (round 27 standards audit): Stem now asks for 'the BEST estimate of expected loss', so the priority word cannot be read as the $100,000 best case; 'gold' dropped to stay at 35 words (the setting already says bullion). Arithmetic re-checked: ($100,000 + 4 x $1,000,000 + $1,060,000) / 6 = $860,000; midpoint of best and worst $580,000; equal-weight mean $720,000; options ascending. Cross-domain gate 13 Nov 2026 (round 27): Neighbour added: crisc_d2_041 (a tail limit is tested on the tail, not the mean); consistent, as this stem asks for the expected loss itself.",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d2_204",
+      "domain": 2,
+      "subtopic": "2A2 Threat modeling and threat landscape. Rented ransomware kits at a tribunal service",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A tribunal service's risk analyst rated ransomware unlikely because local groups lacked the skill; such groups can now rent ready-made ransomware kits with support. Which of the following does this MOST change?",
+      "options": {
+        "A": "The groups' capability to mount an attack",
+        "B": "The groups' targeting of public bodies",
+        "C": "The service's vulnerability to ransomware attacks",
+        "D": "The impact of an attack on hearings"
+      },
+      "correct": "A",
+      "key_concept": "Adversary likelihood rests on capability, intent and targeting; rented ready-made attack kits give low-skill groups capability, undoing a rating based on their lack of skill.",
+      "pre_read": "Find the reason the scenario was rated unlikely, then ask which threat characteristic the new fact touches.",
+      "correct_explanation": "NIST SP 800-30 bases adversarial likelihood on capability, intent and targeting. The rating rested on local groups lacking skill, and kits rented with support give them that skill, so the likelihood needs re-rating with the risk owner. Targeting is the runner-up: rented kits may bring more attempts, but they change what the groups can do, not which victims they choose, and the stem gives no sign their choice of targets has shifted.",
+      "wrong_explanations": {
+        "B": "Targeting is about which victims attackers choose; rented kits change what low-skill groups can do, and nothing in the stem says their choice of targets has shifted.",
+        "C": "Vulnerability is the service's own weakness, which rented kits do not change; treating a threat as a vulnerability points to the wrong evidence.",
+        "D": "Impact depends on what an attack would do to hearings, which is unchanged; the new fact is about who can attack, a likelihood factor."
+      },
+      "tips": [
+        "Eliminate: C is a vulnerability, the service's own weakness rather than a trait of the threat, and D is impact, which rented kits leave unchanged.",
+        "Final two: A beats B because the rating rested on the groups lacking skill, which rented kits supply; targeting is whom they choose, and the stem leaves it unchanged.",
+        "Exam cue: when a likelihood rating rests on attackers lacking skill and that skill can now be rented or bought, their capability has changed, so revisit the rating."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: adversarial likelihood is based on intent, capability and targeting); NIST SP 800-30 Rev. 1 Appendix D Table D-3 (Assessment Scale, Characteristics of Adversary Capability: rated by the adversary's expertise, resources and opportunities)",
+      "related_concepts": [
+        "Adversary capability",
+        "Threat source characteristics",
+        "Ransomware"
+      ],
+      "_provenance": "Authored from concept: notes 2A2.1 (Threat Sources and Threat Events; adversary-likelihood bullet extended in round 28: rented attack kits can lend capability). Round 28, 13 Nov 2026: original scenario (a tribunal service's risk analyst rated ransomware unlikely because local groups lacked the skill; such groups can now rent ready-made kits with support) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 28 asks: the 2A2 item (foundational, the batch's one foundational item); tribunal service setting (public sector); key A; one of the batch's three 'Which of the following' stems; all four options open 'The', so the item is exempt from the same-opener count; no owner option; key 41 characters against 35 to 49 (not the longest) and 7 words against 6 to 7 (not strictly shortest or wordiest). Not the paused families (adversaries drawn by a new prize, crisc_d2_188, is targeting and sits on runner-up B only as the wrong characteristic; threat model following the asset through suppliers; Zero Trust). Neighbours checked: crisc_d2_056 (2B1: adversarial likelihood from capability, intent and targeting; this item applies it to a change in one factor), crisc_d2_188 (targeting changes with what the firm holds; consistent with B's explanation, as the stem gives no new prize), crisc_d2_122 and crisc_d2_101 (intelligence on capability, intent and targeting), crisc_d2_109 (a new technique that beats a credited control; a different change), crisc_d2_096 (non-adversarial failures rated from history; consistent), crisc_d2_177 and crisc_d2_023 (threat kept apart from vulnerability; consistent with C's explanation), CISA, AAIA and CC (no item on rented attack kits changing adversary capability); no mirror found. Runner-up check: B (targeting); the stem fact that rules B out is that the rating rested on the groups lacking skill, which the kits supply, with no fact about their choice of targets. Each new wrong option and key was run against every older Exam cue, key and wrong option in all four CRISC domains (TF-IDF, scratch tools wrongcue, cue2key and key2wrong); none of the matches pulls toward a new wrong option on meaning. No restrictive word (only, all, never, just, alone, limited to) in any option; no wait or defer option; no stem word repeated only in the key.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_205",
+      "domain": 2,
+      "subtopic": "2A3 Vulnerability management. Scanning plan for a dam's gate controllers",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A reservoir operator's IT team plans its usual active network scan of the dam's gate controllers, which run continuously and can halt when probed. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Exclusion of the controllers from scope, approved by the process owner",
+        "B": "Passive monitoring of the network traffic to and from the controllers",
+        "C": "An active network scan in the hours of lowest demand",
+        "D": "The system owner's statement that firmware is up to date"
+      },
+      "correct": "B",
+      "key_concept": "Probing can halt sensitive OT devices; passive monitoring of their traffic finds makers and firmware versions to check against advisories without probing them.",
+      "pre_read": "Weigh what each method would do to controllers that must keep running before judging how much it would find.",
+      "correct_explanation": "Probing controllers that run continuously risks halting the dam's gates, a safety harm the scan would cause. NIST SP 800-82 Rev. 3 notes passive monitoring adds no traffic yet can reveal makers and firmware versions to check against known flaws, though it sees less than a scan. An active scan in low-demand hours is the runner-up: it lowers the cost of a halt, but the gates still run, so a probe can still stop them.",
+      "wrong_explanations": {
+        "A": "Leaving the controllers out of scope keeps their flaws unknown; critical assets still need their weaknesses identified, by a method that is safe for them.",
+        "C": "Low demand does not stop the gates running, so a probe can still halt them; NIST advises scheduling active scans in planned outages, which continuous gates lack.",
+        "D": "A statement is not evidence of the firmware's state; known flaws are found by observing the devices, not by accepting someone's word."
+      },
+      "tips": [
+        "Eliminate: A leaves critical controllers' flaws unidentified, and D accepts an owner's statement as evidence of the firmware's state.",
+        "Final two: B beats C because the gates run continuously, so any probe risks halting them; passive monitoring finds firmware versions without sending traffic.",
+        "Exam cue: when probing a device could halt a process that must keep running, identify its flaws by passive monitoring rather than an active scan."
+      ],
+      "framework_ref": "NIST SP 800-82 Rev. 3 Appendix E.2.2 (Passive Scanning: inspects existing traffic without adding any, suits OT devices that may behave unexpectedly when probed, and can reveal makers and firmware versions); NIST SP 800-82 Rev. 3 Appendix E.2.3 (Active Scanning: probes may cause device instability or disturb the process state, so active scans are scheduled in planned OT outages whenever possible)",
+      "related_concepts": [
+        "Operational technology",
+        "Passive monitoring",
+        "Vulnerability identification"
+      ],
+      "_provenance": "Authored from concept: notes 2A3.1 (Vulnerabilities in People, Process and Technology; identification-methods bullet extended in round 28: probe-sensitive OT devices get passive monitoring). Round 28, 13 Nov 2026: original scenario (a reservoir operator's IT team plans its usual active scan of the dam's gate controllers, which run continuously and can halt when probed) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 28 asks: the 2A3 item (application); reservoir operator setting (utilities); key B; scenario stem, not 'Which of the following'; the round's Eliminate owner pair, written in from the start (A names the process owner, D the system owner, both eliminated; key B and runner-up C name no owner); no same-opener pair; key 69 characters against 52 to 70 (not the longest) and 11 words against 10 to 11 (not strictly shortest or wordiest). Not the paused families (OT overlays and tailoring, crisc_d3_237; authorized hardware channels; requirement-based security tests against pen tests). Neighbours checked: crisc_d2_093 (scans without credentials understate exposure; its cue, check how the data was gathered, is consistent: the correct explanation says passive monitoring sees less than a scan and the stem's halting fact decides), crisc_d2_195 and crisc_d2_178 (claims are not evidence; consistent with D), crisc_d2_130 (claimed isolation confirmed as current), crisc_d4_101 (isolation of unpatchable fab controllers, a response, not identification), crisc_d1_234 (hydroelectric contractor access), CISA d5_348 (scans limited to registered devices), CC cc_d4_050 (unknown device commanding furnace controllers, an incident step); no mirror found. Runner-up check: C (an active scan in low-demand hours); the stem fact that rules C out is that the controllers run continuously and can halt when probed, so low demand gives no outage in which to probe safely. Each new wrong option and key was run against every older Exam cue, key and wrong option in all four CRISC domains (TF-IDF, scratch tools wrongcue, cue2key and key2wrong); none of the matches pulls toward a new wrong option on meaning. No restrictive word (only, all, never, just, alone, limited to) in any option; no wait or defer option; no stem word repeated only in the key.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_206",
+      "domain": 2,
+      "subtopic": "2B2 Business impact analysis (BIA). Impact rated by revenue at a fertility clinic",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A fertility clinic's BIA rates each process's outage impact by revenue lost, so embryo storage monitoring, which bills little, ranks last. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Rating criteria for patient harm, legal duties and trust",
+        "B": "A cost estimate for repeat treatment after a storage failure",
+        "C": "Storage monitoring moved up the ranking on the analyst's judgment",
+        "D": "A likelihood rating for each cause of outage"
+      },
+      "correct": "A",
+      "key_concept": "A BIA rates outage impact on income, legal duties, safety and public confidence, so a low-earning process can still rank among the most critical.",
+      "pre_read": "Ask what kinds of harm a BIA is meant to capture before judging a ranking built on one measure.",
+      "correct_explanation": "The ISACA Glossary's BIA entry captures income loss, unexpected expense, legal issues and loss of public confidence, not revenue alone. Storage monitoring earns little, but a failure can destroy patients' embryos, breach licensing duties and damage trust, so the criteria must rate those harms. A cost estimate for repeat treatment is the runner-up: it prices one part of the harm, but leaves the loss to patients, the legal duties and trust unrated.",
+      "wrong_explanations": {
+        "B": "Pricing repeat treatment captures one money cost; the irreversible loss to patients, the legal duties and the damage to trust stay outside a revenue ranking.",
+        "C": "Moving one process by the analyst's judgment leaves the criteria unchanged, so other processes with non-financial harm stay misranked; owners rate impact against defined criteria.",
+        "D": "A BIA assumes the outage and measures its impact over time; likelihood belongs to the risk assessment and does not fix a ranking that ignores non-financial harm."
+      },
+      "tips": [
+        "Eliminate: C moves one process on the analyst's judgment and leaves the criteria flawed, and D adds likelihood, which a BIA does not rate.",
+        "Final two: A beats B because a storage failure's main harms fall on patients, legal duties and trust; a repeat-treatment cost prices one part and leaves the rest unrated.",
+        "Exam cue: when a BIA ranks processes on revenue alone, add criteria for legal, safety and public-confidence harm, so a critical process that earns little is not ranked last."
+      ],
+      "framework_ref": "ISACA Glossary (business impact analysis: the scope note lists income loss, unexpected expense, legal issues, interdependent processes and loss of public reputation or confidence); NIST SP 800-30 Rev. 1 Appendix H Table H-2 (Examples of Adverse Impacts: harm to operations, assets, individuals, other organizations and the Nation)",
+      "related_concepts": [
+        "Business impact analysis",
+        "Non-financial impact",
+        "Impact criteria"
+      ],
+      "_provenance": "Authored from concept: notes 2B2.1 (BIA Purpose, Dependencies and AI Systems; bullet 2: impact includes lost revenue, regulatory breaches, safety, contract penalties and reputation). Round 28, 13 Nov 2026: original scenario (a fertility clinic's BIA rates each process's outage impact by revenue lost, so embryo storage monitoring, which bills little, ranks last) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 28 asks: the 2B2 item (application); fertility clinic setting (healthcare); key A; scenario stem; same-opener pair 'A' on runner-up B and eliminated D (one of the batch's two pairs, none holding the key); the batch's one each/every/any word, on eliminated D; no owner option; key 56 characters against 44 to 65 (not the longest) and 9 words against 8 to 10. Not the paused families (BIA intervals and harm over time, crisc_d2_165 and crisc_d2_081: the stem's flaw is the kind of harm rated, not the time profile; BIA revision triggers; BIA timing for a new system; asset value or outage impact from dependent processes, crisc_d1_238 and crisc_d1_194: no option values a process by what depends on it; seasonal or peak impact). Neighbours checked: crisc_d2_197 (2B4: harm with no credible price rated on the impact scale beside the ALE; its cue is consistent with A, and this item's runner-up prices one part of the harm, as there), crisc_d2_073 (supporting system takes the priority of the process it serves), crisc_d2_011 (BIA ignores likelihood; consistent with D), crisc_d2_117 (BIA as the impact source for outage scenarios), crisc_d2_196 (impact before insurance), crisc_d2_097 (recovery rank measures outage harm only), crisc_d2_078 (2B1: a cheap failure with harm to people rated high; consistent), CISA, AAIA and CC (no BIA item on revenue-only impact criteria); no mirror found. Runner-up check: B (a repeat-treatment cost); the stem fact that rules B out is that the ranking rests on revenue alone, so pricing one cost leaves the harm to patients, legal duties and trust unrated. Each new wrong option and key was run against every older Exam cue, key and wrong option in all four CRISC domains (TF-IDF, scratch tools wrongcue, cue2key and key2wrong); none of the matches pulls toward a new wrong option on meaning. No restrictive word (only, all, never, just, alone, limited to) in any option; no wait or defer option; no stem word repeated only in the key.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_207",
+      "domain": 2,
+      "subtopic": "2B3 Risk register. Vendor chatbot releases swapped silently",
+      "principle_id": "emerging-and-ai-risk-owned",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An export credit agency's register entry for a vendor chatbot omits the release rated; releases change silently, but the vendor's portal names the live one. What is the risk analyst's BEST addition to the entry?",
+      "options": {
+        "A": "Accuracy figures the vendor publishes for the chatbot",
+        "B": "A KRI on the chatbot's live error rate",
+        "C": "The chatbot release the current rating describes",
+        "D": "Vendor release notes kept beside the rating"
+      },
+      "correct": "C",
+      "key_concept": "An AI rating holds for the release assessed, so the register entry records it; a silent swap then shows as a mismatch to re-rate.",
+      "pre_read": "Ask what the entry would need for anyone to tell whether its rating still describes the model in use.",
+      "correct_explanation": "The rating describes the release that was assessed. Recording it lets anyone compare it with the release the portal names, so a silent swap shows and the entry is re-rated; NIST AI 600-1 lists model versions among inventory details. A KRI on live errors is the runner-up: it catches some releases that raise errors, but a release can change data use or bias without moving the error rate.",
+      "wrong_explanations": {
+        "A": "The vendor's accuracy figures describe the vendor's own tests and change silently too; they do not tie the agency's rating to the release that was assessed.",
+        "B": "Error monitoring catches some harmful releases after they run, but changes to data use, bias or security can leave it flat, and the entry still lacks the rated release.",
+        "D": "Releases change silently, so notes may never arrive; filing them does not show which release the agency's own rating rests on."
+      },
+      "tips": [
+        "Eliminate: A relies on the vendor's own accuracy figures, which describe its tests, not the agency's rating, and D relies on notes that silent swaps do not produce.",
+        "Final two: C beats B because the recorded release can be checked against the portal at any time; a KRI catches some releases only after errors rise.",
+        "Exam cue: for a vendor AI model that changes silently, the register entry records the release its rating rests on, so any swap shows and triggers re-rating."
+      ],
+      "framework_ref": "NIST AI 600-1 GV-1.6-003 (GAI system inventory entries can record underlying foundation models, versions of underlying models and access modes); NIST AI 100-1 (AI RMF 1.0) MANAGE 3.1 (AI risks and benefits from third-party resources are regularly monitored and risk controls are applied and documented)",
+      "related_concepts": [
+        "Risk register",
+        "Third-party AI",
+        "Model version"
+      ],
+      "_provenance": "Authored from concept: notes 2B3.2 (Keeping the Register Current; update-trigger bullet extended in round 28: a new AI model release is a trigger, so entries record the release rated). Round 28, 13 Nov 2026: original scenario (an export credit agency's register entry for a vendor chatbot omits the release rated; releases change silently, but the vendor's portal names the live one) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 28 asks: the batch's one AI item, on the planned 2B3 angle (a register entry for a vendor AI model records no model version); analysis; export credit agency setting (finance); key C; scenario stem (the planned 'Which of the following' form did not fit in 35 words, so the batch's third such stem moved to crisc_d2_208); 'beside' on eliminated D; no owner option; no same-opener pair ('A' on B and 'The' on C differ); key 48 characters against 38 to 53 (not the longest) and 7 words against 7 to 8 (not strictly shortest). Not the paused families (a new AI feature gets its own linked entry, crisc_d2_180; a stated level of uncertainty, crisc_d2_061; supplier's AI rating for another use; vendor AI training on inputs; automated validation of AI output; faulty-vendor-update scenarios: the stem reports a silent change, not a faulty one). Neighbours checked: crisc_d1_032 (1A6: the rating holds only for the version assessed; its cue is consistent and this item adds the register field that makes a swap visible), crisc_d4_006 (validate a vendor's new model before use), crisc_d4_029 (no record linking model versions to training data), crisc_d3_252 (rollback to a known good version), crisc_d2_152 (a request is not a trigger; the swap here is a change of the rated asset), CC cc_d1_040 (log each AI reply's model version, a decision record), CISA d3_138 (model version recorded with each automated decision), AAIA aaia_d2_194 and aaia_d2_152 (call or pin a named model version) and AAIA aaia_d1_085 (a retiring model version needs revalidation); none keys a register entry recording the release its rating rests on. Runner-up check: B (a KRI on live errors); the stem fact that rules B out is that the portal names the live release, so a recorded rated release shows any swap at once, while a release can change data use or bias without moving the error rate. Each new wrong option and key was run against every older Exam cue, key and wrong option in all four CRISC domains (TF-IDF, scratch tools wrongcue, cue2key and key2wrong); none of the matches pulls toward a new wrong option on meaning. No restrictive word (only, all, never, just, alone, limited to) in any option; no wait or defer option; no stem word repeated only in the key.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_208",
+      "domain": 2,
+      "subtopic": "2B4 Risk analysis methodologies. Forecasts below actual outage losses",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "For three years, a yeast producer's actual losses from fermentation-control outages ran about 40% above its ALE forecast. Which of the following should the risk analyst do FIRST?",
+      "options": {
+        "A": "Test the forecast's inputs against the outage records",
+        "B": "Add a 40% uplift to the outage forecast",
+        "C": "Replace the ALE with a qualitative rating",
+        "D": "Switch the forecast to sector-average outage losses"
+      },
+      "correct": "A",
+      "key_concept": "When forecasts miss actual losses in the same direction year after year, test each input against what happened to find the assumption that undershoots.",
+      "pre_read": "Before choosing a fix, ask what you would need to know about why the forecast keeps missing.",
+      "correct_explanation": "A miss in the same direction three years running points to a biased assumption, such as outage frequency or duration. NIST IR 8286A Rev. 1 recommends tracking actuals against forecasts to find where assumptions consistently undershoot, so the analyst tests each input against the outage records first. A 40% uplift is the runner-up: it matches the past gap on average, but leaves the faulty input in place and can misfire when conditions change.",
+      "wrong_explanations": {
+        "B": "A flat uplift copies the past gap without finding its cause; if the miss comes from outage frequency or duration, the faulty assumption stays and the gap can recur.",
+        "C": "A qualitative rating is not more accurate here; it gives up a measure that can be corrected once the biased input is found.",
+        "D": "Sector averages ignore this producer's own exposure, while its own outage records already show the losses the forecast missed."
+      },
+      "tips": [
+        "Eliminate: C gives up a correctable estimate for a coarser rating, and D swaps the producer's own outage records for sector averages that do not reflect its exposure.",
+        "Final two: A beats B because a repeated miss in one direction points to a faulty input; a flat uplift matches the past gap but leaves that input wrong.",
+        "Exam cue: when actual losses beat the forecast in the same direction year after year, test each input against outcomes before adjusting the figure."
+      ],
+      "framework_ref": "NIST IR 8286A Rev. 1 Section 2.3.2 (Techniques for Estimating Likelihood and Impact: tracking actuals against forecasts shows where assumptions consistently under- or over-shoot); NIST IR 8286A Rev. 1 Section 2.3.1 (Selecting Risk Analysis Methodologies)",
+      "related_concepts": [
+        "Quantitative risk analysis",
+        "Estimation bias",
+        "Annualized loss expectancy"
+      ],
+      "_provenance": "Authored from concept: notes 2B4.3 (Choosing a Method: Data, Decisions, FAIR and Monte Carlo; data-reliability bullet extended in round 28: repeated one-way forecast misses expose a biased assumption). Round 28, 13 Nov 2026: original scenario (for three years, a yeast producer's actual losses from fermentation-control outages ran about 40% above its ALE forecast) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 28 asks: the 2B4 item (application); yeast producer setting (food and drink); key A; one of the batch's three 'Which of the following' stems; no owner option; no same-opener pair; the batch's floor key: A is naturally the longest option by characters (53 against 51 for D, 2 over), tied with B on 8 words, so not strictly the wordiest; key opener 'Test' (6/23 keyed before; 'Trace', 1/1, was dropped to avoid a 2/2 tell). Not the paused families (three-point estimate arithmetic, crisc_d2_203; own history against changed conditions: the stem gives no changed conditions; expert workshops for risks with no loss history; a priced choice calls for quantitative analysis). Neighbours checked: crisc_d2_181 (experts judged by how often their ranges held actual losses; this item judges the forecast's inputs, not the experts), crisc_d2_115 (better data on the input that drives a model's spread; consistent), crisc_d2_107 (an outside rate scaled to local exposure; consistent with D's explanation), crisc_d2_017 and crisc_d2_197 (ranges and unpriceable harm; consistent with C's explanation), crisc_d3_124 (line a KRI's history up against incidents, another code), crisc_d3_199 (a 'Test ... against ... records' key in 3x on report completeness; a different lesson), CISA, AAIA and CC (no item on forecasts that miss actual losses in one direction); no mirror found. Runner-up check: B (a 40% uplift); the stem fact that rules B out is the same-direction miss three years running, which points to a faulty input that a flat uplift leaves in place. Each new wrong option and key was run against every older Exam cue, key and wrong option in all four CRISC domains (TF-IDF, scratch tools wrongcue, cue2key and key2wrong); none of the matches pulls toward a new wrong option on meaning. No restrictive word (only, all, never, just, alone, limited to) in any option; no wait or defer option; no stem word repeated only in the key.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_209",
+      "domain": 2,
+      "subtopic": "2B5 Inherent and residual risk. Monthly review against fast payment fraud",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A varnish maker's supplier bank-detail fraud rating credits a monthly review of master-data changes, yet changed accounts are paid within two days. Which of the following is the risk analyst's BEST view of the review?",
+      "options": {
+        "A": "Credit as the control owner judges it",
+        "B": "Credit in the scenario's inherent rating",
+        "C": "Full credit, backed by tests showing it spots changes",
+        "D": "Little credit against money already lost"
+      },
+      "correct": "D",
+      "key_concept": "A detective control's credit depends on catching harm in time; a monthly review finding changed accounts after payment cuts little of the loss.",
+      "pre_read": "Line up when the review runs against when the money leaves before weighing how well the review works.",
+      "correct_explanation": "Design comes first: would the review, run as intended, cut the scenario's loss? Fraudulent payments leave within two days of a change, while the review runs monthly, so it usually finds the change after the money has gone and earns little credit against that loss. Full credit backed by tests is the runner-up: tests show the review spots changes, but finding them weeks after payment does not reduce what is already lost.",
+      "wrong_explanations": {
+        "A": "A control owner's judgment is not evidence of what the review achieves; credit rests on its design and test results weighed against the scenario.",
+        "B": "Inherent risk credits no controls, so the review cannot enter that rating; any credit it earns belongs in the current rating.",
+        "C": "Tests prove the review finds changes, but it runs weeks after payments leave; a working control that acts too late earns little against this loss."
+      },
+      "tips": [
+        "Eliminate: A rests credit on an owner's judgment rather than evidence, and B places a control in the inherent rating, which credits none.",
+        "Final two: D beats C because payments leave within two days and the review runs monthly; tests prove it finds changes, not that it finds them in time.",
+        "Exam cue: before crediting a detective control, compare when it runs with how fast the harm happens; one that finds the loss after it is complete earns little."
+      ],
+      "framework_ref": "ISACA Glossary (design effectiveness); ISACA Glossary (detective control)",
+      "related_concepts": [
+        "Design effectiveness",
+        "Detective control",
+        "Residual risk"
+      ],
+      "_provenance": "Authored from concept: notes 2B5.2 (Control Effectiveness and the Residual Gap; design bullet extended in round 28: a check run after the loss cuts little). Round 28, 13 Nov 2026: original scenario (a varnish maker's supplier bank-detail fraud rating credits a monthly review of master-data changes, yet changed accounts are paid within two days) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 28 asks: the 2B5 item (analysis); varnish maker setting (manufacturing); key D; one of the batch's three 'Which of the following' stems; the batch's one lone owner option, on eliminated A (control owner); same-opener pair 'Credit' on eliminated A and B (one of the batch's two pairs, none holding the key); key 40 characters against 37 to 53 (not the longest; tied with B below the top) and 6 words against 6 to 9 (tied with B, not strictly shortest). Not the paused families (a credited control not working: the review works, but too late; credit on the factor a control changes, crisc_d2_154: the key turns on timing, not on likelihood against impact; operating tests needing runs; self-assessment evidence, which sits on eliminated A only; residual risk above zero; PIR before crediting controls). Neighbours checked: crisc_d2_063 (design before operation: a control aimed at the wrong cause earns little; this item's design gap is timing), crisc_d2_135 (a detective control needs a test showing it would catch the event; its cue sets a condition, not full credit, and this item's explanations name the timing fact that keeps C from full credit), crisc_d2_110 (repeated tests earn a control its credit now; 'its credit' is what its design can cut, consistent), crisc_d2_086 and crisc_d2_126 (credit limited to scope covered), crisc_d2_176 (credit follows what a control changes; consistent with D), crisc_d2_071 and crisc_d2_104 (inherent risk credits no controls; consistent with B), crisc_d3_155 and crisc_d3_008 (a log review classed as detective), CISA, AAIA and CC (no item on a detective control slower than the harm it is credited against); no mirror found. Runner-up check: C (full credit backed by tests); the stem fact that rules C out is that payments leave within two days while the review runs monthly. Each new wrong option and key was run against every older Exam cue, key and wrong option in all four CRISC domains (TF-IDF, scratch tools wrongcue, cue2key and key2wrong); none of the matches pulls toward a new wrong option on meaning. No restrictive word (only, all, never, just, alone, limited to) in any option; no wait or defer option; no stem word repeated only in the key.",
+      "style_version": 2
     }
   ]
 }
