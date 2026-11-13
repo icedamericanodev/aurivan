@@ -59,3 +59,8 @@ python3 scripts/fonts/build_kaisip_serif.py --literata "/path/to/Literata[opsz,w
 
 Needs fontTools (`pip install fonttools`). The same inputs always give the
 same bytes.
+
+Add `--web` to also write the website's copies, `assets/fonts/KaiSipSerif_*.woff2`
+at the repo root (the same fonts, compressed; needs `pip install brotli`). Every
+web page loads those in place of the upright Fraunces files, under the CSS
+family name "Fraunces" so no style rule had to change.

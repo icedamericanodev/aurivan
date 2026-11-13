@@ -28,6 +28,9 @@ USAGE (from mobile/, after npm ci)
 OUTPUT
   assets/fonts/KaiSipSerif_400Regular.ttf   (from Fraunces_400Regular)
   assets/fonts/KaiSipSerif_500Medium.ttf    (from Fraunces_500Medium)
+  With --web: the same two fonts as compressed .woff2 files for the website,
+  in ../assets/fonts/ (needs the brotli module: pip install brotli). The .woff2
+  bytes depend on the brotli version, so --check compares only the .ttf files.
 """
 import argparse
 import hashlib
@@ -382,6 +385,7 @@ def main():
     ap.add_argument('--literata', required=True, help='path to Literata[opsz,wght].ttf')
     ap.add_argument('--check', action='store_true', help='fail if the committed files differ from a fresh build')
     ap.add_argument('--out', default=OUT)
+    ap.add_argument('--web', action='store_true', help='also write the .woff2 files for the website (../assets/fonts)')
     args = ap.parse_args()
     os.makedirs(args.out, exist_ok=True)
     bad = False
@@ -397,6 +401,12 @@ def main():
             with open(path, 'wb') as fh:
                 fh.write(data)
             print(f'✓ wrote {path} ({len(data)} bytes, sha256 {digest})')
+            if args.web:
+                web = os.path.normpath(os.path.join(MOBILE, '..', 'assets', 'fonts', out_stem + '.woff2'))
+                wf = TTFont(io.BytesIO(data), recalcBBoxes=False, recalcTimestamp=False)
+                wf.flavor = 'woff2'
+                wf.save(web)
+                print(f'✓ wrote {web} ({os.path.getsize(web)} bytes)')
         print('  ' + ', '.join(f'{k}={v}' for k, v in info.items()))
     sys.exit(1 if bad else 0)
 
