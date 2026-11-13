@@ -11552,6 +11552,302 @@
       ],
       "_provenance": "Authored from concept: notes 3C6.2 (Recording and Reporting Emerging Risk: report confidence apart from possible impact, so thin evidence is not read as minor). Round 29, 13 Nov 2026: original scenario (a mortgage broker's board report labels emerging risks low, medium or high by the strength of their evidence, and directors read the 'low' ones as minor), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 29 (crisc_d3_305 to 312). Round 29 asks: 3C6 slot (key D, application); 'alongside' on runner-up A, key carries none; 'Share of' on eliminated B (the D3 'Share of' ask); no owner option. Neighbours checked: crisc_d3_049 (a distant threat rated as a range with stated confidence; same principle, here a report whose single label mixes confidence with harm), crisc_d3_114 (emerging risks in their own section; its runner-up 'Ranked on the usual scale' is not reused), crisc_d3_132 (scenario tied to objectives), crisc_d3_143 (signs to watch), crisc_d3_272 (screen on impact as well as likelihood), crisc_d1_090 (a count of high risks does not show their size). Cross-bank: CISA d1_037 (ranking risks for an audit plan; wording only).",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d3_313",
+      "domain": 3,
+      "subtopic": "3A2 Risk and control ownership. Who found the risk",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A foam maker's curing-oven controllers accept unsigned firmware, a risk the risk analyst found; the manager who runs the ovens says its finder should own it. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Make the oven line's manager owner of the firmware risk",
+        "B": "Give the firmware risk to the maintenance manager who patches ovens",
+        "C": "Keep the risk under the analysts who discovered it",
+        "D": "Hand the risk to the vendor that supplied the oven controllers"
+      },
+      "correct": "A",
+      "key_concept": "A risk is owned by the manager accountable for the process it threatens, not by whoever found it; the risk team identifies and facilitates.",
+      "pre_read": "Ask whose process and output the firmware risk threatens, then who found it.",
+      "correct_explanation": "Ownership follows accountability for the process a risk threatens, not who found it. The oven line's manager runs the ovens and answers for their output, so they decide and fund the response, while the risk team keeps facilitating. Giving the risk to the maintenance manager who patches the ovens is the runner-up: they may run the fix as a control owner, but they do not answer for the line's output the risk threatens.",
+      "wrong_explanations": {
+        "B": "The maintenance manager may run the fix as a control owner, but they do not answer for the line's output or decide how much risk it carries.",
+        "C": "Finding a risk does not make the risk team its owner; it identifies and facilitates, while decisions on treating the risk sit with the business.",
+        "D": "The vendor supplied the controllers, but the risk to the foam maker's output stays with the foam maker, whoever made the equipment."
+      },
+      "tips": [
+        "Eliminate: C hands the risk to the team that found it, which facilitates but does not decide, and D gives the foam maker's risk to an outside supplier.",
+        "Final two: A beats B because the oven line's manager answers for the output the risk threatens; the maintenance manager may run the fix but does not own that output.",
+        "Exam cue: when someone argues that whoever found a risk should own it, give ownership to the manager accountable for the process it threatens; those who find or fix it support that owner."
+      ],
+      "framework_ref": "ISACA Glossary (risk owner); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Risk owner",
+        "Control owner",
+        "Role of the risk function"
+      ],
+      "_provenance": "Authored from concept: notes 3A2.1 (Assigning Risk Owners: assign the owner by business accountability, the manager whose objectives, process or budget the risk affects, not whoever found it). Round 30, 13 Nov 2026: original scenario (a foam maker's curing-oven controllers accept unsigned firmware, a risk the risk analyst found, and the manager who runs the ovens says the risk's finder should own it), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 30 (crisc_d3_313 to 320). Round 30 asks: 3A2 slot (key A, application); D3's lone-owner key (A is the only option naming an owner), neither longest nor shortest by words (10 against 9 to 11) or characters (55 against 50 to 67), not a floor key; no Have or Ask option; no restrictive, each/every, period or own-reason word in any option; no IT or internal-audit option. First drafted as open project risks handed to an operational owner at project closure, but that mirrored crisc_d4_032 (a closing project's open risks go to a business owner in the enterprise register), so it was re-angled to the 'whoever found it owns it' misconception. Avoids the paused 'MOST appropriate owner' stem, 'senior management assigns the owner', 'control owner = manager whose team runs it' and 'what a control owner answers for' (runner-up B is wrong because it does not own the line's output, not because of who runs a control). Neighbours checked: crisc_d3_023 (IT lead named owner, director runs and funds bookings; same rule, here the trigger is who found the risk), crisc_d3_005 (risk owner and control owner differ; consistent with wrong B), crisc_d3_290 (personal-data risk owned by the manager running the service; advisers support), crisc_d3_265 (wrong D there, the risk team taking risks into its own portfolio, is this item's wrong C; consistent), crisc_d3_031 (the IT manager running a system does not own its business risk; consistent), crisc_d3_258, crisc_d3_226, crisc_d3_129, crisc_d3_274. Cross-bank: no CRISC, CISA, CC or AAIA item keys or tests 'the finder owns the risk' (searched found/discovered/identified/raised with own/owner); CC cc_d4_081, cc_d1_017 and crisc_d4_115 (TF-IDF under 0.24; wording only).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_314",
+      "domain": 3,
+      "subtopic": "3A3 Vendor/supply chain risk management. Due diligence on a fatigue camera",
+      "principle_id": "emerging-and-ai-risk-owned",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A coach operator's due diligence on a vendor's AI driver-fatigue camera, whose model the vendor retrains quarterly, covers only security controls. What should the risk analyst recommend adding as BEST?",
+      "options": {
+        "A": "The accuracy results the vendor measured for the model at launch",
+        "B": "A penetration test of the portal the cameras report to",
+        "C": "Questions on how the vendor tests and announces model changes",
+        "D": "An indemnity for crashes the cameras fail to warn drivers about"
+      },
+      "correct": "C",
+      "key_concept": "AI vendor due diligence asks how the vendor tests and announces model changes; security answers and launch results miss a model that keeps changing.",
+      "pre_read": "Ask what will keep changing in the vendor's product after the contract is signed.",
+      "correct_explanation": "The fatigue model is retrained every quarter, so the model the operator relies on next year will not be the one it evaluates now. Asking how the vendor tests each new version and tells customers about changes shows whether warnings will stay reliable. The vendor's launch accuracy is the runner-up: it describes one version, measured the vendor's own way, and says nothing about the versions that replace it.",
+      "wrong_explanations": {
+        "A": "Launch results describe one version, measured the vendor's way; quarterly retraining replaces it, and the results say nothing about how later versions are tested.",
+        "B": "The due diligence already covers security; a further test of the portal still leaves the model's warnings, and how they change, unexamined.",
+        "D": "An indemnity moves part of a crash's cost to the vendor; missed warnings, the harm to passengers and the operator's accountability stay."
+      },
+      "tips": [
+        "Eliminate: B adds more security testing, which the due diligence already covers, and D moves part of a crash's cost without showing the warnings work.",
+        "Final two: C beats A because the model is retrained quarterly; launch accuracy describes one version, while the vendor's testing and notice of changes cover each version that follows.",
+        "Exam cue: due diligence on an AI vendor reaches the model as well as security: how the vendor tests model changes and tells customers, since one set of results ages with each update."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) GOVERN 6.1 (policies and procedures address AI risks from third-party entities, including infringement of a third party's intellectual property or other rights); NIST AI 100-1 (AI RMF 1.0) Section 1.2.1 (Risk Measurement: the organization developing a third-party AI system may use risk metrics that differ from the deployer's and may not be transparent about them)",
+      "related_concepts": [
+        "AI vendor due diligence",
+        "Model change",
+        "Third-party AI"
+      ],
+      "_provenance": "Authored from concept: notes 3A3.3 (AI Vendors and the Model Supply Chain: ask what model sits behind the service, how the vendor tests it and how it announces changes; security answers alone do not cover a model it keeps retraining). Round 30, 13 Nov 2026: original scenario (a coach operator's due diligence on a vendor's AI driver-fatigue camera, whose model the vendor retrains quarterly, covers only security controls), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 30 (crisc_d3_313 to 320). Round 30 asks: 3A3 slot and D3's one AI item (key C, application), on the planned angle: due diligence on an AI vendor asks only security questions; it should also reach how the vendor tests and changes its model and tells customers (AI RMF GOVERN 6.1, Section 1.2.1). No owner option; no Have or Ask option; no restrictive, each/every, period or own-reason word in any option; key not longest (61 against 54 to 64 characters). Avoids the paused 'vendor AI training on inputs' (crisc_d3_118) and 'a vendor AI release in the register' (crisc_d2_207, crisc_d1_032), crisc_d4_006 (validate a vendor's model change before members rely on it; this item is due diligence before signing), crisc_d3_281 (subcontractor notice), crisc_d3_170 (review depth by access), crisc_d3_027 (service credits and own sampling), crisc_d3_056 (manual fallback), the fourth-party items crisc_d3_006 and crisc_d3_210, human review of AI decisions (paused) and round 29's AI angles. Neighbours checked: crisc_d3_250 (more data sent than vetted for: vet again), crisc_d3_283 (a vendor's benchmark is someone else's conditions; consistent with wrong A), crisc_d3_062 (vendor-reported accuracy as a wrong runner-up; consistent), crisc_d3_224, crisc_d3_226, crisc_d3_054 (terms before signing), crisc_d3_154. Cross-bank: AAIA aaia_d2_068 (hosted model with unannounced updates: regression tests and output monitoring after signing; consistent, a later stage), AAIA aaia_d2_103 and CC cc_d1_157, cc_d4_112 (fatigue-model and camera wording only, TF-IDF under 0.37); CISA d3_137 (independent model testing before release; different stage).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_315",
+      "domain": 3,
+      "subtopic": "3B3 Control testing methodologies. A step that leaves no record",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which of the following should the risk analyst use as the BEST test of whether staff at a maternity hospital escort visitors onto the newborn ward, a step that leaves no record?",
+      "options": {
+        "A": "Visitors' answers on leaving about whether they were escorted",
+        "B": "Unannounced observation of the ward door on several days",
+        "C": "Staff answers to a questionnaire on escorting ward visitors",
+        "D": "Staff training records covering the visitor escort rule"
+      },
+      "correct": "B",
+      "key_concept": "A control that leaves no record is tested by watching it run; unannounced visits on several days limit staff acting differently while observed.",
+      "pre_read": "Ask what evidence the step leaves behind, then which technique can still see it happen.",
+      "correct_explanation": "Escorting leaves no record to inspect, so the evidence has to come from seeing the step happen. Observing the ward door unannounced, on several days, shows whether staff escort visitors in practice, and repeat visits limit the change in behavior that being watched can cause. Visitors' answers on leaving are the runner-up: they come from outside the team, but they are still inquiry, resting on recall from people who may not know the rule.",
+      "wrong_explanations": {
+        "A": "Visitors are independent of the staff, but their answers are still inquiry, resting on recall, and many will not know what the escort rule requires.",
+        "C": "A questionnaire asks staff to describe their own practice; inquiry alone shows what people say they do, not whether visitors are escorted.",
+        "D": "Training records show staff were taught the rule, not that they follow it at the ward door."
+      },
+      "tips": [
+        "Eliminate: C asks staff to describe their own practice, which is inquiry alone, and D shows the rule was taught, not that it is followed.",
+        "Final two: B beats A because watching the door shows the step happening; visitors' answers come from outside the team but remain recall, from people who may not know the rule.",
+        "Exam cue: when a control leaves no record to inspect, test it by observation, repeated and unannounced; interviews, even of independent people, stay weaker evidence."
+      ],
+      "framework_ref": "NIST SP 800-53A Rev. 5 Section 2.4.2 (Assessment Methods: examine, interview and test, with depth and coverage); NIST SP 800-53A Rev. 5 Appendix C (Assessment Method Descriptions: examine includes observing activities, such as physical security measures, to obtain evidence)",
+      "related_concepts": [
+        "Observation",
+        "Testing techniques",
+        "Evidence strength"
+      ],
+      "_provenance": "Authored from concept: notes 3B3.1 (Testing Techniques and Evidence Strength: observation shows one moment, so a step that leaves no record is observed unannounced, repeatedly). Round 30, 13 Nov 2026: original scenario (staff at a maternity hospital escort visitors onto the newborn ward, a step that leaves no record, and the analyst needs the best test of whether they do), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 30 (crisc_d3_313 to 320). Round 30 asks: 3B3 slot (key B, foundational); 'Which of the following' stem (D3 1 of 2); same-opener non-key pair 'Staff' on eliminated C and D (D3 pair 1 of 2), key opener 'Unannounced' unique; no owner option; no restrictive, each/every or own-reason word in any option; 'several days' on the key only, as the explanation turns on repeat visits. Avoids the paused 'a manual control tested at each site', 'self-assessment evidence' and 'operating tests needing runs'. Neighbours checked: crisc_d3_012 (prefer evidence over the period that the tester selects, inspects or reperforms over statements or one-time observation; consistent: here no record exists, and observation is repeated and unannounced), crisc_d3_134 (records made after an announced test: seek system records from the period; consistent), crisc_d3_149 and crisc_d3_189 (reperformance for a calculation or review), crisc_d3_173 (inspect a rule's live setting), crisc_d3_277, crisc_d3_066. Cross-bank mirror listed: CISA d2_150 (a clean-desk policy is best shown by unannounced after-hours walkthroughs) states the same observation principle from the auditor's side, with a different control, stem and options; CISA d1_214 (a guard's ID check is then inspected in sign-in records across the year) is consistent, as that control leaves a record; CC cc_d3_017 and cc_d5_064 (hospital and ward wording only).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_316",
+      "domain": 3,
+      "subtopic": "3C1 Risk action plans. An insurance action reported done",
+      "principle_id": "transfer-keeps-accountability",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A bond trader's plan to insure its trading-outage risk is reported done; the policy pays restoration costs, but most of the scenario's loss is lost trading revenue. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Credit the new policy in the trading-outage risk's rating",
+        "B": "Mark the plan closed on the action owner's report",
+        "C": "Get a broker's quote to insure the trading revenue loss",
+        "D": "Show the risk owner the loss the policy leaves uncovered"
+      },
+      "correct": "D",
+      "key_concept": "An insurance action is complete when the cover matches the scenario's loss; a gap goes to the risk owner before the plan closes.",
+      "pre_read": "Compare what the policy pays with what the scenario says the loss would be.",
+      "correct_explanation": "The plan was to transfer the outage risk, but the policy pays restoration costs while most of the loss is lost trading revenue, so the risk is still largely held. The risk owner decides what happens next: more cover, other treatment or a decision on the risk as it stands, so the gap goes to them first. A broker's quote is the runner-up: it presumes more insurance before the owner has chosen.",
+      "wrong_explanations": {
+        "A": "Crediting the policy now treats the plan as delivered, yet it pays restoration costs while most of the scenario's loss, lost revenue, stays with the bond trader.",
+        "B": "The action owner's report shows a policy was bought, not that the risk reached its target; a plan whose transfer misses most of the loss is not complete.",
+        "C": "A quote prices one response before the risk owner has seen the gap; insuring lost revenue may cost more than other treatment."
+      },
+      "tips": [
+        "Eliminate: A credits cover that misses most of the loss, and B closes a plan on the action owner's report when its transfer has not happened.",
+        "Final two: D beats C because the risk owner chooses the next response; a quote assumes more insurance before anyone has weighed cover against other treatment.",
+        "Exam cue: when an insurance action is reported done, set what the policy pays against the loss the scenario expects; take any uncovered loss to the risk owner before the plan closes."
+      ],
+      "framework_ref": "ISACA Glossary (risk transfer); NIST IR 8286B-upd1 Section 2.3.3 Table 4 (Example of risk transfer: cover reimburses some direct losses, while reputational and other consequences remain)",
+      "related_concepts": [
+        "Risk transfer",
+        "Cyber insurance",
+        "Validating action plans"
+      ],
+      "_provenance": "Authored from concept: notes 3C1.2 (Validating Execution and Tracking to Closure: validated actions that leave the risk above target, like cover missing the scenario's main loss, go to the risk owner). Round 30, 13 Nov 2026: original scenario (a bond trader's plan to insure its trading-outage risk is reported done, but the policy pays restoration costs while most of the scenario's loss is lost trading revenue), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 30 (crisc_d3_313 to 320). Round 30 asks: 3C1 slot (key D, analysis); D3's split owner pair, key plus an eliminated option (D names the risk owner, eliminated B the action owner; runner-up C and eliminated A name none), written in from the start; no Have or Ask option (eliminated B opens 'Mark'); no restrictive, each/every, period or own-reason word in any option. Avoids the paused 'insurance credit re-rated when cover fails' (crisc_d3_198: an insurer's exclusion after the fact) and 'the risk owner approving the plan': this item validates a transfer action against the scenario's loss before the plan closes. Neighbours checked: crisc_d3_001 (insurance shifts part of the financial loss), crisc_d3_273 (an indemnity recorded as a partial transfer, the rest kept by the risk owner; consistent), crisc_d3_198, crisc_d3_116 and crisc_d3_289 (insurance as a response choice), crisc_d3_069 (validated actions short of target go to the risk owner; same rule, here the shortfall is cover that misses the main loss), crisc_d3_157 and crisc_d3_013 (close on evidence), crisc_d3_294 (avoidance exposure gone; paused family not used). Wrong C read against crisc_d2_120 (pricing insurance chooses a response before the owner sees the problem; wrong there too, consistent). Cross-bank: CISA d4_264 and d5_315, crisc_d1_089 (TF-IDF under 0.24; wording only).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_317",
+      "domain": 3,
+      "subtopic": "3C5 Risk and control reporting techniques. A committee reopening settled risks",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A wind turbine maker's executive committee keeps reopening risks it settled months ago; its risk reports never show what followed its rulings. Which of the following should the risk analyst recommend adding as BEST?",
+      "options": {
+        "A": "A heat map placing the top risks by likelihood and impact",
+        "B": "Detailed control test results for the top risks",
+        "C": "Where the committee's earlier risk decisions now stand",
+        "D": "Risk owners' updates to the committee on their own risks"
+      },
+      "correct": "C",
+      "key_concept": "Reports to a deciding body show where its earlier risk decisions stand, so settled questions are not reopened and stalled decisions are seen.",
+      "pre_read": "Ask what the committee cannot see that sends it back over old ground.",
+      "correct_explanation": "The committee reopens risks because nothing in its reports shows what happened after it decided. Showing where its earlier risk decisions stand, done, under way or stalled, closes that loop and shows which ones need its attention again. Risk owners' updates on their own risks are the runner-up: they report each owner's risks, but not necessarily against what the committee decided, so the loop can stay open.",
+      "wrong_explanations": {
+        "A": "A heat map shows where the top risks sit now, not what was done after the committee's rulings on them.",
+        "B": "Control test detail suits the people who fix controls; it does not tell the committee whether its earlier rulings were carried out.",
+        "D": "Owners' updates follow each owner's own risks and priorities, not the committee's rulings, so whether those rulings were carried out can still go unseen."
+      },
+      "tips": [
+        "Eliminate: A shows where risks sit, not what followed the rulings, and B gives the committee control detail meant for the people who fix controls.",
+        "Final two: C beats D because the committee needs its own decisions followed up; owners' updates report their risks on their own terms, which may skip what the committee ruled.",
+        "Exam cue: when leaders keep revisiting risks they already decided, report where their earlier decisions stand; a report that closes the loop on decisions keeps settled questions settled."
+      ],
+      "framework_ref": "NIST IR 8286C Rev. 1 Section 3 (Determining Top-Down Priority: the risk profile and registers enable periodic reviews, such as previous-quarter or year-over-year comparisons, of stakeholder decisions, disclosures and budget adjustments); NIST IR 8286C Rev. 1 Section 5.3 (Evaluating Risks: frequent and transparent communication of risk options, decisions, changes and adjustments improves the information used in enterprise-level decisions)",
+      "related_concepts": [
+        "Risk reporting",
+        "Decision follow-up",
+        "Executive committee"
+      ],
+      "_provenance": "Authored from concept: notes 3C5.2 (Reporting for the Audience and the Decision: the board and senior management see the decisions needed and where their earlier ones stand). Round 30, 13 Nov 2026: original scenario (a wind turbine maker's executive committee keeps reopening risks it settled months ago because its risk reports never show what followed its rulings), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 30 (crisc_d3_313 to 320). Round 30 asks: 3C5 slot (key C, application); 'Which of the following' stem (D3 2 of 2); D3's lone owner on the runner-up (D, risk owners' updates; key and eliminated options name none); no Have or Ask option; no restrictive, each/every, period or own-reason word in any option. Avoids the paused 'action-plan progress in risk terms' (the key reports where decisions stand, not a progress measure), 'the board cannot see part of the profile', 'technical or AI scores restated in business terms' and 'acceptances' review dates in owners' reports'. A first idea, risks grouped under the strategic objectives they threaten, mirrored crisc_d1_209 (map each reported risk to the board objective it threatens) and was dropped. Neighbours checked: crisc_d1_158 (committee risk decisions sent down to the teams that act on them; consistent, this item reports their status back up), crisc_d3_019 and crisc_d3_081 (board gets the profile and asks, owners their risks and actions; wrong D is owners' updates to the committee, not reports to owners), crisc_d3_082 (decision needed with options), crisc_d3_280 (report before the decision), crisc_d3_200, crisc_d3_304, crisc_d3_214 (paused; not used), crisc_d3_248. Cross-bank: CISA d2_144 and d2_007 (committee reporting wording only, TF-IDF under 0.24).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_318",
+      "domain": 3,
+      "subtopic": "3A4 Issues, findings, exceptions and exemptions management. Exceptions in a vendor's report",
+      "principle_id": "transfer-keeps-accountability",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A library service's vendor review accepted its e-lending vendor's SOC 2 Type 2 report, which lists two exceptions in removing leavers' access, and recorded nothing further. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Log the two exceptions as issues against the e-lending risk",
+        "B": "Note the vendor's planned fixes for the two exceptions in the file",
+        "C": "Re-test every control that the vendor's assurance report covers",
+        "D": "End the e-lending contract and choose a different vendor"
+      },
+      "correct": "A",
+      "key_concept": "Exceptions in a vendor's assurance report are issues to log against the risk they affect and track until a fix is shown.",
+      "pre_read": "Ask who will follow up the two exceptions once the review file is closed.",
+      "correct_explanation": "The exceptions mean the vendor's own leavers kept access longer than its control allows, and nobody is now following them up. Logging them as issues against the e-lending risk gives each an owner, a date and a rating, tracked until the vendor shows the fix works. Noting the vendor's planned fixes in the review file is the runner-up: it records the promise, but no one is set to check it.",
+      "wrong_explanations": {
+        "B": "A note in the review file records the vendor's promise, but no one follows it up, so the exceptions can still be open at the next review.",
+        "C": "Re-testing the report's controls repeats the service auditor's work, and the two known exceptions still have no one following them up.",
+        "D": "Ending the contract over two exceptions gives up the service before anyone has rated the gap or seen whether the vendor fixes it."
+      },
+      "tips": [
+        "Eliminate: C repeats the service auditor's testing while the two known exceptions stay unfollowed, and D ends the service before the gap is rated or a fix sought.",
+        "Final two: A beats B because a logged issue has an owner, a date and a rating tracked to closure; a note in the review file records a promise no one checks.",
+        "Exam cue: exceptions in a vendor's assurance report belong in the issue log against the risk they affect, followed until the fix is shown; accepting the report does not close them."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.SC-07 (the risks posed by a supplier, their products and services and other third parties are understood, recorded, prioritized, assessed, responded to and monitored); NIST SP 800-53 Rev. 5 SR-6 (Supplier Assessments and Reviews)",
+      "related_concepts": [
+        "Issue management",
+        "Assurance report exceptions",
+        "Vendor monitoring"
+      ],
+      "_provenance": "Authored from concept: notes 3A4.1 (Tracking Issues and Findings to Closure: log every issue in one tracker, red-team findings and vendor report exceptions included, linked to the risk it affects). Round 30, 13 Nov 2026: original scenario (a library service's vendor review accepted its e-lending vendor's SOC 2 Type 2 report, which lists two exceptions in removing leavers' access, and recorded nothing further), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 30 (crisc_d3_313 to 320). Round 30 asks: 3A4 slot (key A, application); 'every' on eliminated C (D3's each/every/any wrong option), key carries none; no owner option; no Have or Ask option; no restrictive, period or own-reason word in any option. Avoids the paused 'who approves exceptions', 'exemption scope for new assets', 'backdated exceptions', 'repeated issues as one finding' and 'who closes an audit finding'. Neighbours checked: crisc_d3_026 (customer controls a clean report expects), crisc_d3_154 (rely on a clean report that checks out; consistent with wrong C), crisc_d3_242 (processing moved after the report period), crisc_d3_266 (audit rights where the report stops), crisc_d3_094 (one issue log linked to risks; same log, here the source is a vendor's report), crisc_d3_163 (rank findings by the risk they affect), crisc_d3_292 (red-team findings belong in the issue log, not the builders' backlog; same principle, new source), crisc_d3_136 (close on evidence the fix works). Cross-bank: CISA d4_191 (an IS auditor first assesses how SOC 2 exceptions affect the firm's own audit risks; consistent, the logged issue here carries a rating against the e-lending risk, and its wrong re-performance option matches this item's wrong C); crisc_d1_135 (approved exceptions kept in an IT spreadsheet are linked to their risk owners' register entries; related, but those were already tracked, while here a vendor's control exceptions have no follow-up at all, and the lesson is tracking them to closure; the paused 'separate list brought into the register' is not the key's point), crisc_d1_029 (option wording only).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_319",
+      "domain": 3,
+      "subtopic": "3B2 Control design, selection, implementation and analysis. Frauds among the largest payments",
+      "principle_id": "proportionate-response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A fertilizer maker reviews a random 2% of 20,000 yearly supplier payments; both frauds it missed last year were among its 40 payments over $100,000. Which change should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "A random sample drawing more of the payments over $100,000",
+        "B": "An independent reviewer from outside the finance team",
+        "C": "Same-day review of the payments the random draw selects",
+        "D": "Payments over $100,000 checked in full, plus a random sample"
+      },
+      "correct": "D",
+      "key_concept": "Design a sample-based review around where losses concentrate: check a small high-value group in full and sample the rest at random.",
+      "pre_read": "Compare where the frauds happened with what the random draw is likely to pick.",
+      "correct_explanation": "A random 2% draws about one of the 40 large payments a year, yet both frauds sat among them. Checking the 40 in full, with a random sample of the rest, puts the review where losses concentrate at little extra effort. A random sample drawing more large payments is the runner-up: it points the right way, but with 40 such payments, checking them all costs little and leaves none unreviewed.",
+      "wrong_explanations": {
+        "A": "Drawing more large payments improves the odds, but some of the 40 still go unchecked, though there are few enough to review them all.",
+        "B": "A new reviewer changes who looks, not what is looked at; the 2% draw still rarely reaches the large payments where the frauds sat.",
+        "C": "Reviewing sooner speeds up the check of the same random draw, which still rarely includes a payment over $100,000."
+      },
+      "tips": [
+        "Eliminate: B changes who reviews and C how soon, while the random draw still rarely reaches the 40 large payments where both frauds sat.",
+        "Final two: D beats A because 40 payments are few enough to check in full; drawing more of them still leaves some unchecked where the losses concentrate.",
+        "Exam cue: when a sample-based check misses losses that cluster in a small, high-value group, check that group in full and sample the rest; a bigger or fairer draw still leaves gaps."
+      ],
+      "framework_ref": "ISACA Glossary (detective control); NIST SP 800-39 Section 3.3 Task 3-2 (Evaluation of Alternatives: effectiveness, feasibility and cost)",
+      "related_concepts": [
+        "Control design",
+        "Detective control",
+        "Risk-based selection"
+      ],
+      "_provenance": "Authored from concept: notes 3B2.3 (Control Gap Analysis: when losses cluster in a few large items a random review rarely draws, check those items in full). Round 30, 13 Nov 2026: original scenario (a fertilizer maker reviews a random 2% of 20,000 yearly supplier payments, and both frauds it missed last year were among its 40 payments over $100,000), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 30 (crisc_d3_313 to 320). Round 30 asks: 3B2 slot (key D, analysis); D3's required floor key, naturally longest by characters (60 against 58, +2), not a lone owner, not strictly wordiest (10, tied with A); no owner option; no Have or Ask option; no restrictive, each/every or own-reason word in any option. Avoids the paused 'a working control that acts too late earns little credit' and 'many small chances across units'. Neighbours checked: crisc_d3_286 (a bigger random sample still leaves most changes unseen when the whole population can be checked; consistent with wrong A), crisc_d2_063 (a review of every refund over $5,000 misses frauds under $500: effective in operation, not design; consistent, the key keeps a random sample of the rest), crisc_d3_156 (a random 2% inspector review as the wrong runner-up; consistent), crisc_d3_098, crisc_d3_253 (split limits), crisc_d3_268 (a route around a check), crisc_d1_165 (random sampling suits testing a population, not choosing where risk is greatest; consistent). Cross-bank: CISA d3_070 (automated duplicate-payment check; different design question), AAIA aaia_d2_055 and CC cc_d1_121 (TF-IDF under 0.30; wording only). The stem gives 2% of 40 large payments (about one a year) so the explanation's arithmetic rests on stem facts.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_320",
+      "domain": 3,
+      "subtopic": "3C2 Data collection, aggregation, analysis and validation. A KRI overwritten each month",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A vinegar maker's KRI for overdue allergen checks is one spreadsheet cell, overwritten monthly; each check is logged in its quality system. To show this year's trend, what should the risk analyst do FIRST?",
+      "options": {
+        "A": "Report the current value beside its red threshold",
+        "B": "Rebuild the KRI's past values from the recorded checks",
+        "C": "Start keeping a dated history of the KRI from now",
+        "D": "Report the quality manager's view of whether checks have slipped"
+      },
+      "correct": "B",
+      "key_concept": "Keep a KRI's values as dated history so trends show; when only the latest survives, rebuild past values from the source records.",
+      "pre_read": "Ask where the KRI's past values can still be found.",
+      "correct_explanation": "A trend needs the KRI's past values, and the spreadsheet keeps only the latest. Each check is still logged in the quality system, so the year's monthly values can be rebuilt from that log and the trend shown from the source. Starting a dated history now is the runner-up: it should follow, but it shows nothing about this year until months of new values build up.",
+      "wrong_explanations": {
+        "A": "One value beside its threshold shows where the KRI stands now, not whether the risk has worsened over the year.",
+        "C": "A history kept from now is needed too, but it holds nothing yet, so it cannot show this year's trend.",
+        "D": "A manager's view is an impression, when the check log can give the actual values month by month."
+      },
+      "tips": [
+        "Eliminate: A shows the current value against its threshold, which is no trend, and D swaps the recorded checks for one manager's impression.",
+        "Final two: B beats C because the quality system's log already holds the year's data; a history started now will show a trend only after months of new values.",
+        "Exam cue: when a trend is asked for but past KRI values were overwritten, rebuild them from the source records that still exist, then keep a dated history from then on."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Section 2.4 (Metrics: keeping metrics consistent over time lets organizations evaluate long-term trends by tracking measurements over a continuous period, such as quarter to quarter or year to year); NIST IR 8286C Rev. 1 Section 5.2 (Monitoring Risks: KRIs are observed for trends such as rising likelihood or failing controls)",
+      "related_concepts": [
+        "Key risk indicators",
+        "Trend analysis",
+        "Data lineage"
+      ],
+      "_provenance": "Authored from concept: notes 3C2.1 (Collecting Risk and Control Data: keep each period's KRI value with its date, rebuilding overwritten ones from source records). Round 30, 13 Nov 2026: original scenario (a vinegar maker's KRI for overdue allergen checks is one spreadsheet cell, overwritten monthly, while each check is logged in its quality system, and this year's trend is needed), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 30 (crisc_d3_313 to 320). Round 30 asks: 3C2 slot (key B, application); same-opener non-key pair 'Report' on eliminated A and D (D3 pair 2 of 2), key opener 'Rebuild' unique; 'beside' on eliminated A (D3's beside/alongside wrong option), key carries none; no owner option; no Have or Ask option; no restrictive, each/every or own-reason word and no period word in any option. Avoids the paused 'recurring capture flaws fixed at source', 'KRI off the losses' path', 'independent collection of conflicted KRI data' and 'normalize unit figures before ranking'. Neighbours checked: crisc_d3_124 (line up a KRI's history with incident dates; consistent, it needs the history this item rebuilds), crisc_d3_205 and crisc_d3_256 (fix a data flaw before reporting when it can be fixed; consistent), crisc_d3_072 (system records over hand-kept spreadsheets), crisc_d3_040, crisc_d3_047 and crisc_d3_160 (trend in reports), crisc_d3_234 (option wording only). Cross-bank: AAIA aaia_d2_107 (keep each approved prompt version so it can be restored; same keep-the-history idea for a different object), CISA d2_190 and d4_035 (KRI and log-retention wording only, TF-IDF under 0.35).",
+      "style_version": 2
     }
   ]
 }

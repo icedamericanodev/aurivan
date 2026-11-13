@@ -285,12 +285,13 @@
             "crisc_d3_265",
             "crisc_d3_274",
             "crisc_d3_290",
-            "crisc_d3_297"
+            "crisc_d3_297",
+            "crisc_d3_313"
           ],
           "definition": "A risk owner is the person given the authority and accountability to make decisions about a risk, and who answers for the loss if it happens.",
-          "why_it_matters": "A risk without a capable owner drifts: nobody decides its response, funds the controls or answers when it happens. Ownership at the wrong level gives the decision to people who cannot act on it.",
+          "why_it_matters": "A risk without a capable owner drifts: nobody decides its response, funds controls or answers for it. Ownership at the wrong level gives decisions to people who cannot act.",
           "how_it_works": [
-            "Assign the owner by business accountability: the manager whose objectives, process or budget it affects.",
+            "Assign the owner by business accountability: the manager whose objectives, process or budget it affects, not whoever found the risk.",
             "Match authority to reach and rating: the owner funds treatment and accepts residual risk; low-rated departmental risks sit with process owners; lasting re-ratings beyond authority move up.",
             "Name one person with authority to fund and accept, not a committee, department, joint owners or coordinator; others act as action or control owners.",
             "Revalidate ownership regularly and after reorganizations, departures or process changes; HR job-change notices catch moves promptly.",
@@ -586,12 +587,13 @@
           "practice_ids": [
             "crisc_d3_027",
             "crisc_d3_056",
-            "crisc_d3_118"
+            "crisc_d3_118",
+            "crisc_d3_314"
           ],
           "definition": "AI supply chain risk is the risk from third-party models, training data, AI services and tools, which can change, fail or behave unexpectedly outside the organization's control.",
           "why_it_matters": "A vendor can retrain or swap the model behind a service without notice, and its training data may be unknown. The business still owns any harm the AI output causes.",
           "how_it_works": [
-            "Ask what model and data sit behind the service, how the vendor tests them and how it announces changes.",
+            "Ask what model and data sit behind the service, how the vendor tests them and how it announces changes; security answers alone do not cover a model it keeps retraining.",
             "Put AI terms in the contract: change notice, performance commitments, data use limits and incident reporting; rate any gap like other vendor risk, which the business owner may accept.",
             "Monitor the vendor's model in production as part of your own monitoring, especially after vendor updates.",
             "Plan contingency for a high-risk AI service failing, including a manual or non-AI fallback.",
@@ -658,12 +660,13 @@
             "crisc_d3_202",
             "crisc_d3_233",
             "crisc_d3_251",
-            "crisc_d3_292"
+            "crisc_d3_292",
+            "crisc_d3_318"
           ],
           "definition": "Issue management is logging each control weakness, audit finding or incident lesson with an owner, an action and a due date, then tracking it until closure is validated.",
           "why_it_matters": "Findings logged but never fixed leave the risk open while reports show progress; overdue items often breed the next incident.",
           "how_it_works": [
-            "Log every issue in one tracker, red-team findings included, linked to the risk it affects and ranked by its rating, since audits, regulators and reviews rate differently.",
+            "Log every issue in one tracker, red-team findings and vendor report exceptions included, linked to its risk and ranked by rating, since audits, regulators and reviews rate differently.",
             "Give each issue one owner, an agreed action and a due date; repeats of one problem, such as an AI tool's errors, become one finding at their cause.",
             "Escalate overdue or slipping items to the risk owner, and past a set point to senior management; an unexplained rating drop is checked with that owner.",
             "Close an issue on evidence the fix works, not the owner's word, or, within appetite, on the risk owner's recorded acceptance.",
@@ -1177,7 +1180,8 @@
             "crisc_d3_253",
             "crisc_d3_268",
             "crisc_d3_276",
-            "crisc_d3_308"
+            "crisc_d3_308",
+            "crisc_d3_319"
           ],
           "definition": "Control gap analysis compares the current controls on a risk with the controls needed to bring it within appetite, judging both how they are designed and how they operate.",
           "why_it_matters": "Gaps show where residual risk is higher than the register claims. Finding them before an incident lets the risk owner fund the most important fixes first.",
@@ -1186,7 +1190,7 @@
             "Describe the current state from control test results, not policies, owners' statements or old ratings.",
             "Separate design gaps, which cannot work as built (unrecorded return paths, limits split or changed by those checked, bypass routes, approvers blind to what they grant), from operating gaps.",
             "Rank gaps by the risk they leave open, not by how easy they are to fix.",
-            "Turn agreed gaps into action plans with owners and dates.",
+            "Turn agreed gaps into action plans with owners and dates; when losses cluster in a few large items a random review rarely draws, check those items in full.",
             "Before removing a control as a duplicate, compare what each catches: a range check passes wrong values that look plausible, which a check against the source finds."
           ],
           "example": "A credit union's target profile requires multifactor sign-in for all remote access. Hana, the risk analyst, compares it with the latest assessment and finds two gaps: the contractors' remote tool has no multifactor option, and the quarterly review of exempt accounts was skipped twice. They label one a design gap and one an operating gap, and rank both by exposure for the member services director.",
@@ -1251,12 +1255,13 @@
             "crisc_d3_189",
             "crisc_d3_254",
             "crisc_d3_260",
-            "crisc_d3_283"
+            "crisc_d3_283",
+            "crisc_d3_315"
           ],
           "definition": "Control testing techniques are the ways evidence about a control is gathered: asking people, watching it run, inspecting records, or performing it again independently.",
           "why_it_matters": "Techniques give very different assurance. A control rated effective on interviews alone may never actually run, and the rating then hides real exposure from the risk owner.",
           "how_it_works": [
-            "Inquiry is weakest on its own, and observation shows one moment when people may act differently; combine either with another technique for key controls.",
+            "Inquiry is weakest on its own, and observation shows one moment when people may act differently; combine either with another technique, or observe a step leaving no record unannounced, repeatedly.",
             "Inspection of records shows the control ran over time, if the records are complete and genuine; records made after the fact need system evidence from the period.",
             "Reperformance gives the strongest evidence, because the tester reaches the result independently.",
             "NIST SP 800-53A groups methods as examine, interview and test; test under conditions like deployment, such as an AI guardrail against attacks drawn from the firm's own use.",
@@ -1553,7 +1558,8 @@
             "crisc_d3_255",
             "crisc_d3_284",
             "crisc_d3_294",
-            "crisc_d3_301"
+            "crisc_d3_301",
+            "crisc_d3_316"
           ],
           "definition": "Validating execution is confirming, with evidence, that the actions in a risk plan were carried out as agreed and reduced the risk as expected.",
           "why_it_matters": "Status reports often say done when a control is installed but untested. Validation stops the register from showing a lower risk than really exists.",
@@ -1563,9 +1569,9 @@
             "Re-rate the risk after validation and report progress as risk reduced toward the plan's target, not the share of actions done.",
             "Measure slippage against the dates first agreed, since moved dates hide it; escalate slipping or blocked actions to the risk owner, and past agreed limits to senior management.",
             "Close the plan once evidence and the owner's sign-off show the risk at target, or the owner records a new decision on the current rating, not the target.",
-            "If validated actions leave the risk above target, report the shortfall to the risk owner, who decides on further treatment, acceptance within their authority or elevation."
+            "If validated actions leave risk above target, as cover missing a scenario's main loss can, report the shortfall to the risk owner, who decides treatment, acceptance within authority or elevation."
           ],
-          "example": "A port operator's plan to separate its crane-control network from the office network is reported complete. Arjun, the risk analyst, asks the network team for a connection test from an office laptop, which still reaches two cranes. They mark the action incomplete, record the test result and inform the operations director with a proposed new date.",
+          "example": "A port operator's plan to separate its crane-control network from the office network is reported complete. Arjun, the risk analyst, asks the network team for a connection test from an office laptop, which still reaches two cranes. They mark the action incomplete, record the test result and inform the operations director with a new date.",
           "audit_focus": {
             "review": [
               "Reperform a sample of completion checks behind closed actions",
@@ -1621,7 +1627,8 @@
             "crisc_d3_231",
             "crisc_d3_244",
             "crisc_d3_270",
-            "crisc_d3_309"
+            "crisc_d3_309",
+            "crisc_d3_320"
           ],
           "definition": "Risk data collection is gathering the facts behind ratings and reports, such as incidents, losses, test results and metrics, from defined and trusted sources.",
           "why_it_matters": "Ratings are only as good as their inputs. Data from inconsistent or unknown sources leads owners to fund the wrong risks and miss the right ones.",
@@ -1630,7 +1637,7 @@
             "Prefer system-generated data over hand-kept spreadsheets, and record where each figure came from; a recurring capture flaw is fixed at source by the data's owner.",
             "Combine internal and external data, such as incidents and industry losses; when a figure sets the reporters' bonus or appraisal, have someone independent of them collect it where possible.",
             "Collect at a frequency that matches how fast the risk changes: flaws exploited within days need weekly figures from system records, not a quarterly survey.",
-            "To check that a KRI warns early, compare its past values with when related incidents or losses occurred.",
+            "Keep each period's KRI value with its date, rebuilding overwritten ones from source records; to check a KRI warns early, compare past values with when incidents or losses occurred.",
             "Check each feed for completeness as data arrives: an automatic alert when a source stops sending keeps silence from being reported as zero events."
           ],
           "example": "A grocery chain's monthly risk report takes store incident counts from emails sent by store managers. Isabela, a risk analyst, finds that some stores report only serious incidents. They propose taking counts directly from the incident ticketing system, with one shared definition of an incident and a named data owner, before the next quarterly report to the operations committee.",
@@ -2306,19 +2313,20 @@
             "crisc_d3_248",
             "crisc_d3_263",
             "crisc_d3_280",
-            "crisc_d3_304"
+            "crisc_d3_304",
+            "crisc_d3_317"
           ],
           "definition": "Audience-based reporting gives each stakeholder what they need for their own decisions: the board sees the risk profile against appetite, and owners see their risks and actions.",
           "why_it_matters": "A report the reader cannot act on is noise. Technical detail swamps the board, and summary colors starve the people who must fix things.",
           "how_it_works": [
-            "Board and senior management: the profile against appetite, accepted risks, breaches, trends and decisions needed, in business terms; AI risk as harm, not model scores.",
+            "Board and senior management: the profile against appetite, accepted risks, breaches, trends, decisions needed and where earlier ones stand, in business terms; AI risk as harm, not model scores.",
             "Risk owners: their risks, indicator status, overdue actions and acceptances nearing their review dates.",
             "Control owners and operations: failures, test results, fixes and exploitable detail such as server names.",
             "Send each report, naming the decision needed, to someone who can decide, before it is taken; escalate breaches or critical risks outside the cycle.",
             "Report ratings as assessed; if an owner disputes one without new evidence, show their view beside the unchanged rating.",
             "Share the risk profile with internal audit so its plan covers the top risks; audit sets its plan, approved by the audit committee."
           ],
-          "example": "A national charity's board IT risk report lists 140 vulnerability findings by server name. Samir, the risk analyst, rewrites it for the board as the three risks outside appetite, their trend and the funding decision needed for one of them. They send the server-level detail to the infrastructure manager as an action list.",
+          "example": "A national charity's board IT risk report lists 140 vulnerability findings by server name. Samir, the risk analyst, rewrites it for the board as the three risks outside appetite, their trend and the funding decision needed. They send the server-level detail to the infrastructure manager as an action list.",
           "audit_focus": {
             "review": [
               "Compare each report's content with the decisions its audience makes",
