@@ -109,7 +109,8 @@
             "crisc_d4_001",
             "crisc_d4_054",
             "crisc_d4_121",
-            "crisc_d4_161"
+            "crisc_d4_161",
+            "crisc_d4_191"
           ],
           "definition": "A technology roadmap is a time-based plan showing which technologies the organization will adopt, upgrade or retire, and how each supports business goals.",
           "why_it_matters": "A roadmap lets risk be planned: end-of-support dates, skills and funding are known years ahead. Technology bought outside it often arrives with no risk review, no support model and no owner.",
@@ -119,7 +120,7 @@
             "It flags known risk events in advance, such as vendor end of support or contract renewals; systems whose support ends before their planned replacement are gaps to count.",
             "Business-led purchases outside the roadmap still need a risk assessment and a named owner.",
             "Each roadmap milestone carries a risk assessment, not just a budget line, including interim stages when old and new systems run side by side.",
-            "Slippage is itself a risk signal when it delays the retirement of weak technology."
+            "Slippage is itself a risk signal when it delays retiring weak technology; a temporary fix kept past its date, like a desktop script, leaves processes outside managed operations."
           ],
           "example": "Ayo, a risk analyst at a logistics firm, sees that the sales team has signed up for a route-planning software service with a corporate card. It is not on the technology roadmap and it holds customer addresses. Ayo asks the sales director, as business owner, to sponsor a risk assessment and logs the tool in the risk register while the assessment runs.",
           "audit_focus": {
@@ -238,14 +239,15 @@
             "crisc_d4_102",
             "crisc_d4_122",
             "crisc_d4_132",
-            "crisc_d4_143"
+            "crisc_d4_143",
+            "crisc_d4_192"
           ],
           "definition": "Change management is the controlled process for requesting, assessing, approving, testing, implementing and reviewing changes, with configuration management keeping an accurate record of approved settings.",
           "why_it_matters": "Many outages follow a change. Controlled change keeps risk within appetite: someone has judged the impact, can undo the change and knows what the system should look like.",
           "how_it_works": [
             "Each change has a request, impact assessment, risk-based approval, test and back-out plan; expected harm to a business process is its owner's call.",
             "Emergency changes, including urgent fixes during a freeze, get emergency approval, proportionate testing and a back-out plan, then a full review as soon as practical.",
-            "A configuration management database (CMDB) records configuration items and the dependencies impact assessments rely on; assets missing from it miss patching, change and backup, so counts are reconciled.",
+            "A configuration management database (CMDB) records items, accountable owners and the dependencies impact assessments use; unowned or missing assets miss patching, change and backup, so counts are reconciled.",
             "Comparing live settings with the baseline finds unauthorized changes, which are investigated, not quietly reversed; a needed deviation is approved by its business owner, recorded and reviewed.",
             "Proven, low-risk, repeatable changes can be pre-approved as standard changes, tested and recorded but not re-reviewed until a run fails, the system changes or a scheduled review.",
             "A growing share of emergency changes is analyzed for its cause, such as slow normal approvals or poor planning, before more approval steps are added."
@@ -535,7 +537,8 @@
             "crisc_d4_106",
             "crisc_d4_116",
             "crisc_d4_126",
-            "crisc_d4_173"
+            "crisc_d4_173",
+            "crisc_d4_193"
           ],
           "definition": "Secure development builds security into how software is designed, coded, tested and maintained, following a framework such as the NIST Secure Software Development Framework (SSDF).",
           "why_it_matters": "Most exploitable flaws start as design or coding mistakes. A secure process lowers the number of vulnerabilities released and shows owners, customers and regulators that software risk is managed.",
@@ -545,7 +548,7 @@
             "Testing combines static analysis, dynamic testing and, for high-risk systems, penetration testing, which seeks ways in but does not confirm each requirement.",
             "Third-party components come from vetted sources, tracked for known flaws; an AI-suggested package may be planted; an unmaintained one rated above appetite is replaced or supported.",
             "When a vulnerability is found, its root cause is analyzed so the process improves, not just the code; a flaw that recurs across releases signals a process gap.",
-            "Requirements come from the new system's own risk assessment or threat model; a list copied from another product misses threats the old one never faced."
+            "Requirements come from the system's own risk assessment or threat model, traced to its risks to show coverage; copied lists miss the new system's threats."
           ],
           "example": "A health insurer's developers keep fixing the same input-validation flaw in different apps after each penetration test. Wei, the IT risk analyst, notes the repeat findings in the risk register and asks the head of development, as control owner, to treat the cause: secure coding standards, training and an automated check in the build.",
           "audit_focus": {
@@ -816,7 +819,8 @@
             "crisc_d4_058",
             "crisc_d4_085",
             "crisc_d4_123",
-            "crisc_d4_131"
+            "crisc_d4_131",
+            "crisc_d4_194"
           ],
           "definition": "AI training data management applies the data lifecycle to data used to train, test and tune models, from sourcing and labeling through retention and deletion.",
           "why_it_matters": "A model reflects its data. Poor, biased, poisoned or unlawfully sourced training data becomes poor or unlawful decisions, and personal data inside a model can be hard to remove later.",
@@ -825,7 +829,7 @@
             "Preparation: check quality, labeling accuracy and coverage of real cases before training; tests can use hand-built synthetic records with planted cases, which expose no one and give known answers.",
             "Protection: restrict access to training sets and watch for tampering, which can poison the model.",
             "Lineage: link each model version to the exact data version used to train it.",
-            "Retention and deletion: apply the retention schedule to training sets and plan how deletion requests affect trained models.",
+            "Retention and deletion: the retention schedule covers training sets, shown by counting copies past their period, and deletion requests' effect on trained models is planned.",
             "Use: access rules do not travel into a trained model, which can repeat what it learned, so training data is limited to what all its users may see."
           ],
           "example": "A recruitment platform wants to train a candidate-matching model on ten years of past hiring decisions. Ravi, the risk analyst, points out that the history may encode past bias and holds personal data collected for a different purpose. Ravi asks the product owner to sponsor a data review and a privacy assessment before training starts.",
@@ -886,12 +890,13 @@
             "crisc_d4_114",
             "crisc_d4_141",
             "crisc_d4_165",
-            "crisc_d4_175"
+            "crisc_d4_175",
+            "crisc_d4_195"
           ],
           "definition": "Portfolio management selects, prioritizes and balances the organization's programs and projects by their expected value, risk and fit with strategy.",
           "why_it_matters": "Money and people are limited. A portfolio view stops low-value, high-risk projects from consuming resources and shows senior management the combined risk of everything in flight.",
           "how_it_works": [
-            "Each proposal states its business value, cost, risks and link to strategic objectives; an AI project's risks are rated before ranking, with a business owner.",
+            "Each proposal states its value, cost, risks and strategic fit; AI projects' risks are rated before ranking, with a business owner; risk as well as cost triggers board review.",
             "Proposals are scored on value and risk together, not cost or sponsor influence alone; at stage gates, such as an AI pilot going live, builders present but do not decide.",
             "The portfolio is reviewed regularly; projects whose value falls or risk rises are changed, paused or stopped; funding stays within delivery capacity, as overloaded teams delay projects.",
             "Continuing a project rests on the value and risk of the spend still to come; money already spent is no reason to finish a project whose value has gone.",

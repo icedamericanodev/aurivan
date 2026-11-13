@@ -7073,6 +7073,196 @@
       ],
       "_provenance": "Authored from concept: notes 4B3.1 (Privacy Principles: only data the purpose needs is collected, kept or disclosed, staff included; bullet extended in round 28: tracking workers stops off shift). Round 28, 13 Nov 2026: original scenario (an asphalt plant whose dispatch app, installed by truck drivers on their own phones to receive loads, records each phone's location around the clock) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_110 (drone video processed on board, minimization at the source, with a data-owner pair also eliminated; its cue agrees with A; this item's trigger is collection outside working time on workers' own devices, and its runner-up is consent, not masking), crisc_d4_180 (supervisors shown absence dates without medical reasons; its cue 'consent or logging does not cure disclosure beyond the purpose' agrees with B and D being wrong), crisc_d4_100 (consent tied to the core service is no real choice; agrees with B wrong), crisc_d4_150 and crisc_d4_019 (purpose set before collection, a paused family; here the purpose, dispatch, is set and the excess is in time), crisc_d4_125 and crisc_d4_089 (location data in other uses), crisc_d4_043 (protective defaults); cross-bank mirrors: CISA d2_223 (precise location no feature uses, sent to an impact assessment), CC cc_d1_198 (location tags stripped before publishing), AAIA aaia_d1_137 (emotion recognition at work banned by law). This item differs: the purpose is set and lawful in working time; the gap is collection outside it. Runner-up B (consent): closest older cues are crisc_d4_100 and crisc_d4_180, both against consent as the cure; the stem fact 'install on their own phones to receive loads' decides. Owner pattern: an Eliminate owner pair written in from the start (C, data owner; D, system owner), both eliminated; key and runner-up name no owner. Round 28 asks: D4's 4B3 item; key A; application; key not strictly longest or shortest by words (9 against 7, 11 and 12) or characters (54 against 48, 63 and 65); no same-opener pair; no 'Access to' or rarely keyed opener. Audit 13 Nov 2026 (round 28 standards audit): Runner-up changed from drivers' consent to a pause switch drivers can use off shift: consent repeated crisc_d4_180's runner-up and its 'consent asked by an employer is not free' reasoning in the same code, matched crisc_d4_150 C's skeleton ('Tenants' consent ... given at sign-up'), and would have left consent keyed 1 of 5 times in 4B3. The new runner-up sets collection that stops by default against a control each driver must remember, consistent with crisc_d4_043 (privacy by design shows in protective defaults). Explanations, Final two, Exam cue, key concept and a related concept follow; key A 54 characters and 9 words against B 45 and 9, C 63 and 11, D 65 and 12. Ruling on the third minimization item in 4B3 (crisc_d4_110 at the source, crisc_d4_180 disclosure beyond need): kept as a new trigger (collection outside working time); pause 'minimization keyed over consent, retention or access' in 4B3 from round 29. Owner shape unchanged: C and D stay the round's Eliminate pair. Review 13 Nov 2026 (round 28 concept and blind review): Option C and its wrong explanation say the data owner approves retention, the bank's decider verb (concept review); C 68 characters and 11 words, D 65 and 12, key A 54 and 9, B 45 and 9, so the key is neither longest nor shortest. Cross-domain gate 13 Nov 2026 (round 28): Neighbour added: crisc_d4_126 (prefer a secure default to a step each customer must take); consistent with the pause switch as runner-up. Pause 'protective defaults over a user's own action' (crisc_d4_043, crisc_d4_126, crisc_d4_190) with the minimization family. Re-blind 13 Nov 2026 (round 28): option C mentions off-shift history so A and B no longer stand out as the only shift options.",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d4_191",
+      "domain": 4,
+      "subtopic": "4A1 Technology roadmaps and enterprise architecture (EA). A temporary script still running billing",
+      "principle_id": "objectives-first",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A bridge operator's toll billing still relies on a temporary script the roadmap planned to retire in 2023; it runs nightly on an engineer's desktop, copying roadside transactions. What is the risk practitioner's GREATEST concern?",
+      "options": {
+        "A": "A retirement date for the billing script that passed in 2023",
+        "B": "Script code that nobody has documented or reviewed",
+        "C": "Billing that rests on a desktop outside managed operations",
+        "D": "Engineer time spent keeping the desktop script working"
+      },
+      "correct": "C",
+      "key_concept": "A temporary script outliving its planned retirement leaves toll billing on a desktop outside managed operations; that exposure outweighs the missed date.",
+      "pre_read": "Note what the business relies on and how, before reading the options.",
+      "correct_explanation": "Toll billing now rests on a script running from one engineer's desktop, outside the backups, change control, monitoring and support that managed systems get. If the desktop fails or the engineer is away, billing stops or copies wrong data unnoticed; that business exposure is the GREATEST concern. The passed retirement date is the runner-up: slippage is a real warning sign, but it shows the plan failed, while the exposure is what threatens billing.",
+      "wrong_explanations": {
+        "A": "The missed date warns that the plan slipped, but it is a planning symptom; the concern is billing resting on an unmanaged desktop in the meantime.",
+        "B": "Undocumented, unreviewed code is harder to maintain, a technical debt symptom; it does not show how billing would stop or be corrupted.",
+        "D": "Engineer effort is a cost of keeping the workaround alive, not the risk to billing; it says nothing about what happens when the desktop fails."
+      },
+      "tips": [
+        "Eliminate: B is a documentation gap and D is staff effort; both describe the script's upkeep, not what happens to toll billing if the desktop or its engineer is unavailable.",
+        "Final two: C beats A because billing relies on the script today; the passed date shows the plan slipped, while billing on an unmanaged desktop is the exposure itself.",
+        "Exam cue: when a temporary fix outlives its planned retirement and now carries a business process, the GREATEST concern is that process's exposure outside managed operations, not the missed date or the code's upkeep."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.AM-08 (systems, hardware, software, services and data are managed throughout their life cycles); ISACA Glossary (workaround)",
+      "related_concepts": [
+        "Technical debt",
+        "Legacy workarounds",
+        "Roadmap slippage",
+        "End-user computing"
+      ],
+      "_provenance": "Authored from concept: notes 4A1.2 (Technology Roadmaps: slippage is a risk signal when it delays retiring weak technology; bullet extended in round 29: a temporary fix kept past its date, like a desktop script, leaves processes outside managed operations) and 4A1.3 (debt builds from quick fixes, and the risk lies in the process a system supports). Round 29, 13 Nov 2026: original scenario (a bridge operator whose toll billing still relies on a temporary script the roadmap planned to retire in 2023, run nightly from an engineer's desktop to copy roadside transactions) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_022 (a retirement slip means the legacy risk lasts longer and is re-rated; consistent, since here the slip is the runner-up concern and the exposure is the key), crisc_d4_136 (look past a deviation to the business exposure the stem makes certain; same reading habit on a different trigger, an AI service outside the architecture), crisc_d4_002 ('it still works' is no assessment), crisc_d4_054 (strategy outrunning the roadmap), crisc_d4_064 (debt restated in business terms), crisc_d4_121 (interim stages of a move), crisc_d4_161 (systems whose support ends before replacement), crisc_d4_068 (a database left running after replacement, an SDLC disposal lesson), crisc_d2_116 (one engineer able to maintain control software; a key-person item kept apart: no option here turns on one person's skills); cross-bank mirrors: CISA d4_027 (a claims database built by one analyst on a desktop tool, keyed to migration to a managed platform; this item asks for the GREATEST concern, not the fix), CISA d4_150 (change controls scaled to how critical a user-built tool is). Runner-up A (the missed retirement date): crisc_d4_022's cue treats slippage as a reason to re-rate, consistent with A being a real concern that ranks below the exposure; the stem fact 'toll billing still relies on' the script decides. Owner pattern: no option names an owner. Round 29 asks: D4's 4A1 item, not a 'fix the standard' key; key C; analysis; no 'Which of the following' stem; key not strictly longest or shortest by words or characters; no restricted, rarely keyed or Have/Ask opener; no defer option; the 2023 date on A is the stem's own and the explanation turns on it; key 9 words and 58 characters against 11 and 60 (A), 8 and 50 (B), 8 and 54 (D).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_192",
+      "domain": 4,
+      "subtopic": "4A2 Operations management. Patches waiting on a downtime decision",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An ophthalmology clinic's IT team has delayed critical patches to its imaging servers for five months; each department manager says approving the downtime is someone else's call. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Have IT patch the imaging servers after business hours",
+        "B": "Seek the clinic director's approval for this round of downtime",
+        "C": "Scan the imaging servers and report the open flaws to IT",
+        "D": "Name a business owner who answers for the imaging servers"
+      },
+      "correct": "D",
+      "key_concept": "When patch downtime stalls because no department manager will decide it, name an accountable business owner for the imaging servers.",
+      "pre_read": "Find why the patches are waiting before weighing the fixes.",
+      "correct_explanation": "Every manager passing the decision on shows the imaging servers have no accountable business owner, so downtime, patch timing and any choice to run unpatched have no one to decide them. An owner named by the clinic's leadership gives these decisions a home for this and each later patch. The director's approval for this round is the runner-up: it clears today's patches, but the next round stalls the same way.",
+      "wrong_explanations": {
+        "A": "IT runs the servers but cannot judge clinical impact alone; patching after hours without a business decision leaves IT deciding downtime and risk for the clinic.",
+        "B": "The director can clear this round, but the servers still have no accountable owner, so the next patches, and any decision to defer them, stall again.",
+        "C": "Scanning confirms the flaws but lowers no risk while patches wait; the gap is that no one in the business will decide the downtime."
+      },
+      "tips": [
+        "Eliminate: A leaves IT deciding clinical downtime by itself, and C scans flaws that stay unpatched; neither gives the patching decision to someone accountable in the business.",
+        "Final two: D beats B because each manager says the call is someone else's; the director's approval clears one round, while an accountable owner decides this and every later patch.",
+        "Exam cue: when decisions on a system stall because no one in the business will make them, recommend an accountable business owner; a one-off approval or IT acting alone leaves the next one stuck."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced); NIST SP 800-53 Rev. 5 SI-2 (Flaw Remediation: test updates for effectiveness and side effects before installation, install security-relevant updates within an organization-defined time period, and incorporate flaw remediation into configuration management)",
+      "related_concepts": [
+        "Asset ownership",
+        "Patch management",
+        "Accountability",
+        "Operational risk decisions"
+      ],
+      "_provenance": "Authored from concept: notes 4A2.1 (Change, configuration and asset management: the inventory records accountable owners; bullet revised in round 29: unowned or missing assets miss patching, change and backup) and 4A2.2 (IT does not accept risk by default). Round 29, 13 Nov 2026: original scenario (an ophthalmology clinic whose IT team has delayed critical patches to its imaging servers for five months because each department manager says approving the downtime is someone else's call) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_025 (servers no owner patches, changes or backs up; consistent), crisc_d4_030 (data no department claims is reported so an owner is assigned; this item does not key who assigns, and the paused 'senior management assigns the owner' family is not used), crisc_d4_092 (an owner-approved workaround monitored until a fix), crisc_d4_122 (an exploited flaw routed through the emergency change process), crisc_d4_143 (a change's business harm decided by the process owner, paused; here no owner exists to decide), crisc_d4_077 (a baseline deviation approved by its business owner), crisc_d3_186 (risk owners approve patching exceptions, consistent), crisc_d1_053 (one owner named for a process that spans teams; the same 'Name ...' key form in D1 on another trigger, continuity plans), crisc_d1_048 (an AI dataset missing from the inventory: establish its business owner first; consistent), crisc_d1_005 (a risk with no owner: senior management assigns one; consistent, as the explanation has the clinic's leadership name the owner, and the paused 'senior management assigns the owner' key is not used), crisc_d3_274 (refer one-off decisions upward, move lasting ones to an owner who can decide; consistent, since five months of stalled rounds make this decision recurring, so B's one-off referral loses), crisc_d3_048 (unpatched terminals reported to the director who funds the fix); cross-bank mirrors: CISA d4_037 (deferring a patch with business sign-off), CC cc_d5_107 (rolling back a patch under the plan); none turns on a system with no business owner. Runner-up B (the director's approval for this round): no older cue keys a one-off senior approval over an accountable owner; the stem fact that each manager says the call is someone else's decides. Owner pattern: one lone owner, keyed (D); no other option names an owner; 'business' also sits on A, so no lens word is key-only. Round 29 asks: D4's lone-owner key (not longest or shortest by words or characters, not the floor key); D4's Have option on an eliminated wrong option (A); Seek on a wrong option (B, the runner-up; not Have or Ask); key D, 10 words and 57 characters against 9 and 54 (A), 10 and 62 (B) and 11 and 56 (C), so neither longest nor shortest; application; no restricted or rarely keyed key opener; no Tell-family option; no IT-named key. Review 13 Nov 2026 (round 29): concept O3 applied so the stem is consistent: 'each clinic manager' became 'each department manager' (key concept likewise), keeping the assigned single-clinic setting rather than the review's 'ophthalmology group', which would drift from the assigned setting and sit beside D1's orthodontic group this round; 'named by the clinic's leadership' and 'for the clinic' now read correctly as they stand. Stem still 32 words; no option changed.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_193",
+      "domain": 4,
+      "subtopic": "4A3 System development life cycle (SDLC). Showing a design covers its assessed risks",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A label printer is designing a customer ordering portal, and its initiation risk assessment rated nine risks. Which of the following BEST shows the risk practitioner that the design addresses those risks?",
+      "options": {
+        "A": "The architect's signed approval of the portal's design",
+        "B": "Design requirements traced to the risks the assessment rated",
+        "C": "A section of the design document listing the nine rated risks",
+        "D": "Developers' secure coding skills, rated by a training assessment"
+      },
+      "correct": "B",
+      "key_concept": "Requirements traced to the risks an assessment rated show a design treats each one; a list of those risks shows only that they were seen.",
+      "pre_read": "Decide what the evidence must prove before reading the options.",
+      "correct_explanation": "The practitioner needs to know whether the design treats the nine rated risks. Requirements traced to those risks show which requirement treats each risk and expose any risk left without one, while the design can still change. A section listing the nine risks is the runner-up: it shows the designers saw them, but not that anything in the design treats them.",
+      "wrong_explanations": {
+        "A": "An approval shows the design was reviewed and signed, not which of the nine rated risks it treats; a signature is not evidence of coverage.",
+        "C": "Listing the nine risks in the design shows they were seen; it does not show which requirement, if any, treats each of them.",
+        "D": "Coding skills affect how well the portal is built, not whether its design treats the risks the assessment rated."
+      },
+      "tips": [
+        "Eliminate: A is a sign-off on the design and D measures the developers' skills; neither shows which of the nine rated risks the design treats.",
+        "Final two: B beats C because the question is design coverage of nine rated risks; listing them in the design shows they were seen, while the trace shows each has a requirement treating it.",
+        "Exam cue: to show a design addresses the risks an assessment rated, look for requirements traced to those risks; sign-offs, skills records and lists of the risks answer other questions."
+      ],
+      "framework_ref": "NIST SP 800-218 Version 1.1 PW.1.2 (track and maintain the software's security requirements, risks and design decisions); NIST SP 800-53 Rev. 5 SA-3 (System Development Life Cycle)",
+      "related_concepts": [
+        "Requirements traceability",
+        "Security requirements",
+        "Secure design",
+        "Initiation risk assessment"
+      ],
+      "_provenance": "Authored from concept: notes 4A3.2 (Secure development: requirements come from the system's own risk assessment or threat model; bullet revised in round 29: requirements are traced to its risks to show coverage) and 4A3.1 (risk assessed at every SDLC phase, starting at initiation). Round 29, 13 Nov 2026: original scenario (a label printer designing a customer ordering portal whose initiation risk assessment rated nine risks) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_096 (requirements set from the new system's own assessment; consistent, this item asks how coverage is shown), crisc_d4_144 (requirements are proven by tests written from them; its cue that other tests answer a different question agrees with C as runner-up), crisc_d4_163 (control requirements added before coding), crisc_d4_183 (misuse cases in requirements), crisc_d4_027 (requirements in vendor selection), crisc_d4_028 (scope change updates the assessment), crisc_d3_219 (checks traced from paper into a workflow, the paused 'tracing manual checks into automation' family; this key traces assessed risks to design requirements, a different link); cross-bank mirrors: CISA d3_007 (a traceability matrix linking requirements to test results, to confirm requirements were built and tested; this item links rated risks to design requirements before build), CISA d3_017 (signed, traceable requirements in hybrid agile). Runner-up C (originally a penetration test scoped by the assessment; replaced in review, see below): the stem's question, whether the design addresses the nine rated risks, decides. Owner pattern: no option names an owner. Round 29 asks: D4's 4A3 item; 'Which of the following' stem (1 of D4's 2); key B; application; key not strictly longest or shortest by words (9 against 8, 11 and 9) or characters (60 against 54, 66 and 58; see the review clause for the final counts); no same-opener pair; no restricted opener on the key ('Design'). Review 13 Nov 2026 (round 29): standards P10 applied: runner-up C was a penetration test scoped by the assessment, which repeated the paused round 19 family 'requirement-based security tests vs pen tests' (crisc_d4_144, crisc_d4_137); C is now 'A section of the design document listing the nine rated risks', with the correct explanation, wrong C explanation, Final two, Exam cue and key concept rewritten to the review's text. Concept O4 (example risks differing between the explanations, 'order fraud or data retention' against 'misuse or retention') is resolved because neither explanation now names example risks, and no other field does. D's 'training test' became 'training assessment' so 'assessment' is not shared by the stem and key alone once C dropped 'risk assessment'. New C checked against crisc_d3_141's wrong option 'A note under the map that lists the risks above appetite' (a heat-map reporting lesson, no collision) and the bank for 'design document' options (none). Lengths now: key B 9 words and 60 characters against A 8 and 54, C 11 and 61, D 9 and 64, so the key is neither longest nor shortest; openers The / Design / A / Developers', no pair; no restrictive word, own reason or period word on the changed options.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_194",
+      "domain": 4,
+      "subtopic": "4A4 Data lifecycle management. Recording copies in an AI training store",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A pension regulator's retention schedule deletes helpline recordings at 90 days; copies also feed its AI call-summary model's training store. Which of the following BEST shows the risk practitioner whether deletion reaches the copies?",
+      "options": {
+        "A": "Percentage of recordings the call platform deletes at 90 days",
+        "B": "Growth in the training store's total storage use",
+        "C": "Number of training-store recordings older than 90 days",
+        "D": "Erasure requests from callers that the helpline completed"
+      },
+      "correct": "C",
+      "key_concept": "A count of training-store recordings older than 90 days shows whether the retention schedule reaches AI training copies; a source deletion rate cannot.",
+      "pre_read": "Check what each measure actually counts, and where.",
+      "correct_explanation": "The question is whether the schedule reaches copies stored elsewhere. Counting training-store recordings older than 90 days measures that where the copies sit: unless the data owner has approved a longer period for training copies, the figure should be zero, and each recording counted is a copy the schedule missed. The call platform's deletion rate is the runner-up: it shows deletion working at the source but cannot see copies held in the training store.",
+      "wrong_explanations": {
+        "A": "This shows deletion working on the call platform, where the schedule was set up; copies already moved into the training store fall outside the figure.",
+        "B": "Storage growth reflects volume, not age; the store can hold recordings past 90 days whether its storage use grows or shrinks.",
+        "D": "Erasure requests cover callers who ask; the 90-day schedule covers every recording, so completed requests cannot show whether old copies remain."
+      },
+      "tips": [
+        "Eliminate: B tracks storage volume, which says nothing about age, and D counts callers' erasure requests, a different duty from the 90-day schedule.",
+        "Final two: C beats A because the copies sit in the training store; a deletion rate on the call platform cannot see them, while a count of over-age copies there shows any the schedule misses.",
+        "Exam cue: to check that a retention schedule reaches copies, such as an AI training store, measure data past its period where the copies sit, not deletion on the source system."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention); NIST CSF 2.0 ID.AM-07 (inventories of data and corresponding metadata for designated data types are maintained)",
+      "related_concepts": [
+        "Data retention",
+        "AI training data",
+        "Retention monitoring",
+        "Data copies"
+      ],
+      "_provenance": "Authored from concept: notes 4A4.3 (Training data: the retention schedule covers training sets; bullet revised in round 29: shown by counting copies past their period) and 4A4.2 (review: compare stored data ages with the approved retention schedule). Round 29, 13 Nov 2026: original scenario (a pension regulator whose retention schedule deletes helpline recordings at 90 days while copies also feed its AI call-summary model's training store) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_058 (training copies of chat logs kept with no end date; the data owner rules on keeping them longer; this item measures whether deletion reaches the copies and keys no decision, so the two do not collide; its cue that training copies fall under the source schedule agrees with C), crisc_d4_008 (call recordings kept past an approved schedule because deletion was never set up; consistent), crisc_d4_085 (a license to train) and crisc_d4_123 (access rules stay with files), both avoided as the plan asked, crisc_d4_145 (data keeping its class when archived, a paused family not used), crisc_d4_029 (lineage), crisc_d4_060 (deletion requests that miss copies in other systems; D here is erasure as a wrong measure of retention, consistent), crisc_d4_161 (a 'Number of' key counting where a risk starts), crisc_d4_035 (a backup KCI), crisc_d3_042 and crisc_d3_182 (indicator items); cross-bank mirrors: CC cc_d1_004 (chatbot transcripts kept indefinitely: how much and how long), CC cc_d5_116 (a purged batch still in a test copy), AAIA aaia_d1_014 and aaia_d1_103 (erased data and trained models); none measures retention reach into a training store. Runner-up A (the call platform's deletion rate): no older cue keys a source-system deletion rate; the stem fact that copies also feed the training store decides. Owner pattern: no option names an owner. Round 29 asks: D4's AI item, in 4A4 on the plan's angle (the retention schedule must reach copies of call recordings in an AI training store); D4's keyed 'Number of', where a count is the right measure (over-age copies should number zero); no new wrong 'Number of'; 'Which of the following' stem (2 of D4's 2); key C; application; key not strictly longest or shortest by words (8 against 10, 8 and 8) or characters (54 against 61, 48 and 57); the key's period word is the stem's 90-day schedule, and the explanation turns on it. Review 13 Nov 2026 (round 29): concept P6 applied so the item agrees with crisc_d4_058's data-owner ruling: the correct explanation's 'the figure should be zero' now reads 'unless the data owner has approved a longer period for training copies, the figure should be zero'. To stay within 75 words, the first sentence now reads 'The question is whether the schedule reaches copies stored elsewhere.', and the runner-up sentence now reads 'it shows deletion working at the source but cannot see copies held in the training store' (same point, shorter). Options unchanged.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_195",
+      "domain": 4,
+      "subtopic": "4A5 Portfolio and project management. A low-cost project that escaped review",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A soup maker's portfolio board reviews projects over $250,000; a plant manager's unreviewed $60,000 app now controls recipe batching at two plants. What should the risk practitioner recommend to BEST prevent a repeat?",
+      "options": {
+        "A": "Board review triggered by a project's risk or its cost",
+        "B": "A risk assessment of the recipe app at the two plants",
+        "C": "A smaller cost threshold for portfolio board review",
+        "D": "Plant budgets barred from funding software projects"
+      },
+      "correct": "A",
+      "key_concept": "Portfolio review triggered by cost misses cheap, high-impact projects; to prevent a repeat, a project's risk as well as its cost triggers review.",
+      "pre_read": "Find what let the app avoid review before choosing a fix.",
+      "correct_explanation": "The app avoided review because cost is the board's entry test, yet a cheap app now controls recipe batching, where errors reach products and customers. Triggering review by a project's risk as well as its cost brings low-cost, high-impact projects to the board. A smaller cost threshold is the runner-up: it would catch this $60,000 app, but cost still decides, so a cheaper app with the same impact slips through.",
+      "wrong_explanations": {
+        "B": "Assessing the recipe app deals with this one project; the board's entry test still looks at cost, so the next cheap, high-impact project escapes review too.",
+        "C": "A lower bar catches this app, but cost still decides what the board sees; a cheaper project with the same impact slips through, and low-risk spend crowds the agenda.",
+        "D": "Barring plant budgets stops useful local projects too and pushes the work out of sight; the gap is what triggers review, not who pays."
+      },
+      "tips": [
+        "Eliminate: B assesses this one app and D bans plant-funded software; neither changes what brings a project before the portfolio board.",
+        "Final two: A beats C because the app escaped on cost; a smaller threshold still lets cost decide, while a risk trigger brings any project that could harm operations to the board.",
+        "Exam cue: when a low-cost project with high business impact escapes portfolio oversight, recommend review triggered by risk as well as cost; a lower cost bar still misses what matters."
+      ],
+      "framework_ref": "COBIT 2019 APO05 (Managed Portfolio); ISACA Glossary (portfolio)",
+      "related_concepts": [
+        "Portfolio governance",
+        "Project selection",
+        "Value and risk",
+        "Shadow projects"
+      ],
+      "_provenance": "Authored from concept: notes 4A5.1 (Portfolio Management: proposals are scored on value and risk together, not cost alone; bullet revised in round 29: board review is triggered by risk as well as cost). Round 29, 13 Nov 2026: original scenario (a soup maker whose portfolio board reviews projects over $250,000, while a plant manager's unreviewed $60,000 app now controls recipe batching at two plants) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_175 (funding by a benefit threshold overloads engineers; its cue to rank on value and risk is consistent, while this item's trigger is which projects reach the board at all), crisc_d4_165 (an AI project ranked before its risks are rated), crisc_d4_009 (risk a project reduces counts in ranking), crisc_d4_104 (sunk cost), crisc_d4_141 (builders not deciding their own gate, paused family not used), crisc_d4_001 (a tool bought outside the roadmap; a 4A1 response to one instance, while this item fixes the portfolio's entry test), crisc_d1_148 (IT treatments ranked by enterprise risks), crisc_d3_253 (an approval limit split across payments; a different control); cross-bank mirrors: CISA d4_150 (change controls scaled to how critical a user-built tool is; the same criticality-over-size idea for change control), CISA d4_027 (a desktop claims database as system of record). Runner-up C (a smaller cost threshold): no older cue keys a cost threshold; the stem fact that the app escaped on cost decides. Owner pattern: no option names an owner. Round 29 asks: D4's 4A5 item; key A; analysis; D4's floor key, naturally longest by characters (54 against 53, 51 and 51) and not longest by words (10 against 11, 8 and 7); D4's one same-opener pair, B and C ('A ...'), an eliminated option and the runner-up, with the key outside it; 'portfolio board' on a wrong option (C); no restricted, rarely keyed or Have/Ask opener; no defer option. Review 13 Nov 2026 (round 29): standards P11 applied: key A 'Board review triggered by project risk as well as cost' became 'Board review triggered by a project's risk or its cost', removing the keyed 'as well' (also keyed on crisc_d1_251 this round). Still D4's floor key: 54 characters against 53 (B), 51 (C) and 51 (D), +1, and 10 words against 11, 8 and 7, so not the wordiest; no restrictive word or own reason; the explanation and cue keep 'as well as', as the review allows.",
+      "style_version": 2
     }
   ]
 }
