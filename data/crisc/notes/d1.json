@@ -269,7 +269,7 @@
           "how_it_works": [
             "The risk owner is a business manager with authority over the affected objective who accepts, mitigates, transfers or avoids the risk.",
             "Control owners are often the managers whose teams run the controls; when a supplier runs a control, an internal manager stays its owner, often the one managing the contract.",
-            "One person can own a risk while several control owners answer for its controls; a change weakening a control goes to the risk owner.",
+            "One person owns a risk while control owners keep its controls working as intended; a change weakening a control goes to the risk owner.",
             "Practitioners bring owners costed options; the control's first-line team carries out the owner's choice.",
             "Ownership is recorded in the register, written into owners' role descriptions and reviewed when people or structures change.",
             "The practitioner proposes and validates owners; ownership holds once senior management confirms it and the owner acknowledges the risk, such as by signing its entry."
@@ -852,7 +852,7 @@
           "definition": "A business process is a set of activities that produces a business outcome; its process owner is accountable for its performance, risks and controls from end to end.",
           "why_it_matters": "Risk lands on processes, not on servers. Knowing which processes are critical, and who owns them, shows where disruption hurts most and who decides on resilience spending.",
           "how_it_works": [
-            "Each critical process has one owner who answers for its outcome across departments; its plan names who may invoke it, with a deputy.",
+            "Each critical process has one owner answering for it across departments; its plan names who may invoke it, with a deputy, and when, such as an outage outlasting the RTO.",
             "Critical processes are those whose failure most harms objectives, customers, safety or compliance; the business impact analysis (BIA, see 2B2) ranks them, and the ranking can shift by season.",
             "Processes depend on people, suppliers, data and systems; mapping them end to end with the owner shows single points of failure a plan built around one system misses.",
             "Process owners set recovery needs, including an AI service's manual fallback, that IT, suppliers and upstream process owners meet; when owners clash, the plan's owner orders recovery by impact.",
@@ -1393,10 +1393,10 @@
           "why_it_matters": "Clear lines prevent gaps and overlaps. When audit designs controls or the risk function owns business risk, independence and accountability are both lost.",
           "how_it_works": [
             "First line: business and operational management identify, own and manage risks and run controls, with their own testers, such as a model unit's validators; other lines do not replace these.",
-            "Second line: risk management, compliance and similar functions set methods, monitor, challenge and report; challenge shows it works when ratings or plans change because of it.",
+            "Second line: risk, compliance and similar functions set methods, monitor, challenge and report; challenge works when ratings change because of it, sampling below any fixed cut-off.",
             "Third line: internal audit gives independent, objective assurance to the board or audit committee; its follow-up confirms fixes to its own findings.",
             "The board oversees all three; senior management is accountable for the first and second lines.",
-            "The IIA's 2020 update renamed the model and stresses cooperation; owning, overseeing and independently assuring risk stay distinct, though first- and second-line roles may combine within management.",
+            "The IIA's 2020 update renamed the model and stresses cooperation; owning, overseeing and assuring risk stay distinct, though first- and second-line roles may combine within management.",
             "Internal audit also gives the board independent assurance that risk management works, which the second line, as its operator, cannot."
           ],
           "compare": {
@@ -1573,7 +1573,7 @@
             "The profile combines register risks, outsourced work included, into exposure by objective or category; maturity scores show capability, not exposure.",
             "The profile sets current risk, counting only responses in place, against today's appetite, showing exposure too high or too low; a changed appetite moves the comparison, not the ratings.",
             "In NIST terms, the profile is a prioritized subset of the enterprise register; with a limit per category, headroom in one does not offset another's breach.",
-            "AI use enters the profile through register entries mapped to the objectives and categories it affects, not as a count of tools or models.",
+            "AI use, features vendors switch on included, enters the profile through register entries mapped to the objectives and categories it affects, not as tool counts.",
             "Check ratings are current before reporting, refreshing any predating a major change with owners; listing in the profile does not move ownership."
           ],
           "compare": {
@@ -1737,10 +1737,10 @@
           "why_it_matters": "These thresholds turn analysis into decisions: a risk inside appetite can be accepted, one outside needs a response, and limits beyond capacity put survival at stake.",
           "how_it_works": [
             "Capacity is the outer limit: the loss the enterprise could survive, bounded by finances, regulation and reputation; insurance adds only for covered events, within its limits.",
-            "Appetite sits inside capacity and reflects strategy and culture, such as low appetite for safety risk.",
+            "Appetite sits inside capacity and reflects strategy and culture.",
             "Tolerance sets measurable limits per objective or metric, such as four hours of outage a month, monitored monthly: a yearly figure can hide a breach.",
-            "Tolerance must never extend past capacity; a rare scenario whose worst case exceeds capacity still goes to leaders.",
-            "Appetite can differ by risk type: an enterprise may welcome innovation risk but avoid compliance risk.",
+            "Tolerance stays inside capacity; a rare scenario whose worst case exceeds capacity still goes to leaders.",
+            "Appetite can differ by risk type, high for innovation, low for data breaches; judge each of an initiative's risks against its type's appetite.",
             "A risk owner may set a limit stricter than tolerance within their authority and budget; a looser one goes to whoever set it."
           ],
           "compare": {
@@ -1967,7 +1967,7 @@
             "Frameworks can be combined, such as COBIT 2019 for governance with NIST CSF 2.0; NIST's RMF prepares at organization level, with roles, strategy and tolerance, before system steps.",
             "ISO 31000:2018 and COSO ERM (2017) are common enterprise-level references that IT frameworks align with.",
             "Senior management approves the tailored framework; a voluntary framework's new version is weighed at the scheduled review unless an obligation, material content change, threat or business change makes it urgent.",
-            "In NIST CSF 2.0, tailoring runs through Current and Target Profiles shaped by the mission, risks and requirements; a sector Community Profile can be the Target Profile's starting point."
+            "In NIST CSF 2.0, tailoring runs through Current and Target Profiles built on executives' priorities and risk direction; a sector Community Profile can be the Target Profile's starting point."
           ],
           "types": [
             {
