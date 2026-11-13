@@ -10960,6 +10960,302 @@
       ],
       "_provenance": "Authored from concept: notes 3C6.1 (Horizon Scanning and Emerging Risk Sources: scan widely, with sources that follow what the enterprise depends on, such as where its key materials come from). Round 27, 12 Nov 2026: original scenario (a rubber goods maker's horizon scan watches technology and regulation, yet most of its natural rubber comes from plantations in two regions), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 27 (crisc_d3_289 to 296). Round 27 asks: 3C6 slot (key D, application); no owner option (k=0); 'Widen' key opener (1/3); no 'record the emerging risk now' key. Neighbours checked: crisc_d3_128 (front-line teams feed the scan; its runner-up 'a second commercial news service' was kept apart from wrong A, which adds readers, not feeds), 208 (how far ahead to scan; not used as a wrong option), 083 (screen against objectives), 272 (screen on impact as well as likelihood; supports wrong B), 182, 143, 216; crisc_d1_206 (overlapping questionnaires; different); the round 19 paused family 'a threat model following the asset through suppliers' (D2) is a different technique, threat modeling rather than horizon scanning; crisc_d3_144 and NIST SP 800-161 Rev. 1 SR-3(1) items on supplier concentration (consistent: concentration is rated, while this scan watches the regions). Runner-up C against the closest older cues in lesson: crisc_d3_183 (recurring vendor reviews scaled to criticality) and crisc_d3_250; C falls on the stem fact that the dependency is on two growing regions, whose changes no single supplier controls. Cross-domain gate 13 Nov 2026 (round 27): Neighbour added: crisc_d3_272 (screen horizon signals on impact as well as likelihood), whose key is the lesson behind eliminated B; consistent.",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d3_297",
+      "domain": 3,
+      "subtopic": "3A2 Risk and control ownership. Owners who left or moved",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Twice this year, a soft drink maker's register named risk owners who had left or changed jobs, leaving risks undecided for months. Which of the following should the risk analyst recommend as the BEST fix?",
+      "options": {
+        "A": "Job-change notices from HR routed to the risk team",
+        "B": "A reminder for managers to report their own job changes",
+        "C": "Departments named as risk owners in the register",
+        "D": "Deputies named as second owners of the risks"
+      },
+      "correct": "A",
+      "key_concept": "Ownership stays current when HR's job-change notices reach the risk team, so a departure or move prompts reassignment as it happens.",
+      "pre_read": "Pin down what went wrong twice before judging the options.",
+      "correct_explanation": "Owners left or moved without the register showing it, so ownership checks need a trigger where those changes are first recorded. Job-change notices from HR, routed to the risk team, flag each departure or move as it happens, so the risk can be reassigned. A reminder for managers is the runner-up: it relies on each manager remembering to report a move while leaving or starting a new role, so some still go unreported.",
+      "wrong_explanations": {
+        "B": "Self-reporting depends on each manager remembering to tell the risk team while leaving or starting a new role, so moves can still go unnoticed.",
+        "C": "A department cannot be held to account or accept a risk; ownership needs one named person with authority, so the risks would still have nobody to decide them.",
+        "D": "Two owners per risk blur who must decide, and a deputy can leave or move unnoticed too; it adds names without catching the changes."
+      },
+      "tips": [
+        "Eliminate: C hands risks to departments, which cannot be held to account, and D adds second owners, which blurs who decides and still misses moves.",
+        "Final two: A beats B because HR records each job change where it happens; a reminder relies on every manager remembering to report a move, so some slip through.",
+        "Exam cue: when named owners leave or move without the register noticing, tie ownership checks to HR's job-change records, not to people reporting their own moves."
+      ],
+      "framework_ref": "ISACA Glossary (risk owner); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Risk owner",
+        "Ownership revalidation",
+        "Movers and leavers"
+      ],
+      "_provenance": "Authored from concept: notes 3A2.1 (Assigning Risk Owners: revalidate ownership regularly and after reorganizations, departures or process changes; HR job-change notices catch moves promptly). Round 28, 13 Nov 2026: original scenario (twice in a year a soft drink maker's register named risk owners who had left or changed jobs, leaving risks undecided for months), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 28 (crisc_d3_297 to 304). Round 28 asks: 3A2 slot (key A, foundational); 'Which of the following' stem (1 of 2); the round's Eliminate owner pair, written in from the start (C and D name owners and are both eliminated; key A and runner-up B ownerless); no owner in the key, no Have or Ask option, no restrictive word. Avoids the paused 'MOST appropriate owner' stem and the 'The X who ...' skeleton: the item asks how ownership stays current, not who should own. Neighbours checked: crisc_d3_052 (owner moved after a reorganization: senior management reassigns; this item is the trigger that finds the move, not who reassigns), crisc_d3_241 (owners confirm the role), crisc_d3_022, crisc_d3_177 (joint owners, behind wrong D), crisc_d3_258 and crisc_d3_201 (owners who cannot decide, behind wrong C), crisc_d3_075 (linking change and incident processes to reassessment; the same trigger idea, applied here to ownership), crisc_d2_060 (owners proposed by the risk function, assigned by senior management; consistent). Cross-bank: CISA d4_213 (a leaver's account still running batch jobs), CC cc_d3_139 (a mover's access) and AAIA aaia_d2_087 (vendor notices routed to intake): wording overlap only, different lessons.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_298",
+      "domain": 3,
+      "subtopic": "3A3 Vendor/supply chain risk management. A vendor's four-hour recovery promise",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A medicines regulator's case-management SaaS vendor promises in its contract to recover the service within four hours, matching the regulator's RTO. What should the risk analyst ask the vendor for as the BEST assurance?",
+      "options": {
+        "A": "A written recovery plan for the service",
+        "B": "Penalty terms for late recovery of the service",
+        "C": "The latest recovery test results for the service",
+        "D": "Uptime figures the vendor reports for the service"
+      },
+      "correct": "C",
+      "key_concept": "A vendor's promised recovery time is backed by its recovery test results; a plan, uptime figures or penalty terms cannot show the promise holds.",
+      "pre_read": "Separate what the vendor says from what it has shown.",
+      "correct_explanation": "A contract promise and a plan say what the vendor intends; a test shows whether the service actually comes back within four hours. The latest recovery test results give the regulator evidence that its RTO can be met, and show any gaps to raise with the vendor. A written recovery plan is the runner-up: it shows how recovery is meant to work, but until it is tested nobody knows whether it does.",
+      "wrong_explanations": {
+        "A": "A plan shows how the vendor means to recover, which is design; without test results it cannot show the service returns within four hours.",
+        "B": "Penalty terms pay the regulator something when recovery is late; they shift some cost but neither show nor improve the vendor's ability to recover in time.",
+        "D": "Uptime shows how rarely the service has failed, not how fast it returns when it does; a strong record says nothing about the four-hour promise."
+      },
+      "tips": [
+        "Eliminate: B prices a late recovery without showing the promise can be met, and D measures how rarely the service fails, not how fast it recovers.",
+        "Final two: C beats A because test results show recovery working in practice; a written plan shows how the vendor intends to recover, not that it can.",
+        "Exam cue: when the business relies on a vendor's promised recovery time, seek results of the vendor's recovery tests; plans, uptime and penalties do not prove the promise."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SR-6 (Supplier Assessments and Reviews); NIST SP 800-53 Rev. 5 CP-4 (Contingency Plan Testing)",
+      "related_concepts": [
+        "Vendor assurance",
+        "Recovery time objective",
+        "Recovery testing"
+      ],
+      "_provenance": "Authored from concept: notes 3A3.2 (Ongoing Vendor Monitoring and Assurance Reports: get the vendor's evidence before re-rating; recovery promises need test results, not plans or uptime). Round 28, 13 Nov 2026: original scenario (a medicines regulator's case-management SaaS vendor promises in its contract to recover the service within four hours, matching the regulator's RTO), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 28 (crisc_d3_297 to 304). Round 28 asks: 3A3 slot (key C, application); no owner option; key opens 'The', the only article opener in the item; no restrictive word. Neighbours checked: crisc_d3_154, crisc_d3_026 and crisc_d3_242 (assurance report scope, user controls and period), crisc_d3_291 (outside rating, paused family; not used), crisc_d3_056 (tested manual fallback for an AI service outage), crisc_d4_033 (SaaS backup of user-deleted records), crisc_d1_029 and crisc_d4_156 (a recovery test passes when the process runs; consistent), crisc_d1_118 (test results to process owners), crisc_d2_012 (RTO set from business need, not the vendor's restore time; consistent: here the RTO is the regulator's own), crisc_d4_088 and crisc_d4_127 (what a recovery test covers). Cross-bank: CISA d4_321 (scenario test against impact tolerance) and CISA d4_143 (availability figures that exclude maintenance): related, different keys.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_299",
+      "domain": 3,
+      "subtopic": "3B1 Control frameworks, types and standards. A login that cannot be named",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A pathology lab network's analyzers run maker-validated software with one built-in administrator login that cannot be split into named accounts. Which control should the risk analyst recommend as the BEST compensating control?",
+      "options": {
+        "A": "A paper log of setting changes kept beside the analyzers",
+        "B": "Access to the shared login through a vault logging its users",
+        "C": "Password changes for the login after staff leave",
+        "D": "Review of setting changes by the lab supervisor"
+      },
+      "correct": "B",
+      "key_concept": "A compensating control covers the weakness it stands in for; when a shared login cannot be split, a vault that records each checkout restores accountability.",
+      "pre_read": "Name the weakness first, then ask which option covers it.",
+      "correct_explanation": "The weakness is that one shared login hides who made each change. A vault that hands the login to named staff and records each checkout restores that link and controls who can use it, compensating for the missing named accounts. A paper log kept beside the analyzers is the runner-up: it aims at the same gap, but depends on staff writing in it, so a change made without an entry stays untraceable.",
+      "wrong_explanations": {
+        "A": "A paper log targets the right gap, but it depends on people writing in it; a change made without an entry still cannot be traced to anyone.",
+        "C": "Changing the password after leavers shuts out former staff, but current staff still share one login, so no change can be tied to a person.",
+        "D": "A supervisor's review finds setting changes after they happen, but the shared login still hides who made them, which is the gap to cover."
+      },
+      "tips": [
+        "Eliminate: C shuts out leavers while current staff still share the login, and D spots setting changes without showing who made them.",
+        "Final two: B beats A because the vault records each user as it hands out the login; a paper log depends on staff choosing to write in it.",
+        "Exam cue: a compensating control must cover the weakness it stands in for; when a login cannot be split into named accounts, pick the option that ties each use to a person."
+      ],
+      "framework_ref": "ISACA Glossary (compensating control); NIST IR 8286B-upd1 Section 2.3.4 (Risk Mitigation: preventive, deterrent, detective, corrective and compensating controls)",
+      "related_concepts": [
+        "Compensating control",
+        "Shared accounts",
+        "Privileged access vault"
+      ],
+      "_provenance": "Authored from concept: notes 3B1.1 (Control Types by Function: a compensating control, alternative or interim, covers the weakness, such as a vault logging who uses a shared login; the gap stays recorded and reviewed). Round 28, 13 Nov 2026: original scenario (a pathology lab network's analyzers run maker-validated software with one built-in administrator login that cannot be split into named accounts), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 28 (crisc_d3_297 to 304). Round 28 asks: 3B1 slot (key B, application); the round's 'Access to ...' key (a must for D3 or D4; taken here as a restricted-access noun phrase, no 'limited to'); D3's one floor key, naturally longest by characters (60 against 56, +4) and the batch's one strict-wordiest key; 'beside' on runner-up A; no owner option. A selection item, not a control-type classification item, and it keys a compensating control, as round 28 point 8 asks of any type item. Neighbours checked: crisc_d3_031 (a compensating check keeps the gap open; consistent), crisc_d3_275 (a compensating control must act on the risk the missing requirement covered; consistent), crisc_d4_155 (independent review compensating for duties that cannot be split), crisc_d4_101, crisc_d3_129 (ownership of a privileged-access vault), crisc_d3_252 and crisc_d3_282 (type items). Cross-bank: CC cc_d3_063 (keep an admin password in the vault, checked out per task), CC cc_d3_159 (named accounts for shared-tablet staff; its wrong 'one shared login with a written shift log' matches this item's runner-up and is wrong there too), CC cc_d3_108 and cc_d1_003 (named accounts): here the stem rules named accounts out, so the lesson is the compensating control.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_300",
+      "domain": 3,
+      "subtopic": "3B3 Control testing methodologies. Evidence of capability level 4",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A locomotive overhaul works set COBIT 2019 capability level 4 as the target for its change management process. Which of the following BEST shows the risk analyst the process has reached it?",
+      "options": {
+        "A": "A documented change process that the teams follow",
+        "B": "Records showing changes were approved before release",
+        "C": "Experienced staff who run changes without written steps",
+        "D": "Quantitative measures kept of how the process performs"
+      },
+      "correct": "D",
+      "key_concept": "On COBIT 2019's capability scale, level 4 adds quantitative measurement of performance to a well-defined process; a followed procedure shows level 3.",
+      "pre_read": "Recall what each capability level adds to the one below it.",
+      "correct_explanation": "On COBIT 2019's scale, level 4 means the process achieves its purpose, is well defined and has its performance quantitatively measured. Quantitative measures kept of how the process performs are the evidence that sets level 4 apart. A documented change process that the teams follow is the runner-up: it shows a well-defined process, which is level 3, but without measurement it cannot show level 4.",
+      "wrong_explanations": {
+        "A": "A defined process that the teams follow marks level 3; level 4 also needs the process's performance measured, which a procedure does not show.",
+        "B": "Approval records show a basic, complete set of activities being performed, about level 2; they show neither a defined process nor measurement.",
+        "C": "Staff working from experience with no written steps show an initial, intuitive process at level 1, the opposite of a measured one."
+      },
+      "tips": [
+        "Eliminate: C describes an intuitive process with nothing written down, and B shows approvals being performed; both sit well below a measured process.",
+        "Final two: D beats A because level 4 adds quantitative measurement to a well-defined process; a procedure that the teams follow shows level 3.",
+        "Exam cue: on COBIT 2019's capability scale, look for performed activities at level 2, a defined process at 3, quantitative measurement at 4 and continuous improvement at 5."
+      ],
+      "framework_ref": "ISACA Industry News 18 March 2019 (Defining Target Capability Levels in COBIT 2019: level 4 means a process achieves its purpose, is well defined and its performance is quantitatively measured); ISACA Glossary (maturity)",
+      "related_concepts": [
+        "Capability levels",
+        "Control maturity",
+        "COBIT 2019"
+      ],
+      "_provenance": "Authored from concept: notes 3B3.3 (Assessing Control Maturity: use one published scale consistently, such as COBIT 2019's 0 to 5 capability levels: performed at 2, defined at 3, quantitatively measured at 4). Round 28, 13 Nov 2026: original scenario (a locomotive overhaul works set COBIT 2019 capability level 4 as the target for its change management process), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 28 (crisc_d3_297 to 304). Round 28 asks: 3B3 slot (key D, foundational); 'Which of the following' stem (2 of 2); no owner option; one new library bullet (ISACA Industry News 18 March 2019, opened and read). First drafted as tracing a signed review's flagged items to resolution, but that mirrored CISA d1_118 (supervisors' sign-offs on an exception report; key: exceptions tracked to resolution), so it was re-angled to capability-level evidence. Neighbours checked: crisc_d3_035 (target maturity set by risk), crisc_d3_037 (effective now but low maturity), crisc_d3_067 (levels built in order, defined procedures before measurement; consistent), crisc_d3_203 (COBIT 2019 design factors), crisc_d1_219 (maturity levels do not show the risk carried). Cross-bank mirror listed: CISA d2_222 (a self-rated level 4 with no performance data is overstated) states the same level-4 fact from the auditor's side; this item asks which evidence shows level 4, with a different scenario and key. CISA d2_221 (target level from business need) is consistent.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_301",
+      "domain": 3,
+      "subtopic": "3C1 Risk action plans. Bias testing reported done at licensing",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "HR reports a lumber yard chain's plan to add bias testing to its AI applicant screener as done, because the testing tool is now licensed. What should the risk analyst request FIRST?",
+      "options": {
+        "A": "Confirmation of the license for the bias-testing tool",
+        "B": "Confirmation that the testing tool is linked to the screener",
+        "C": "Bias test results from the screener's recent decisions",
+        "D": "The risk owner's sign-off that the plan is complete"
+      },
+      "correct": "C",
+      "key_concept": "An action plan adding AI bias testing is complete once tests run on live decisions and results reach the risk owner, not at licensing.",
+      "pre_read": "Separate buying a tool from the work the plan promised.",
+      "correct_explanation": "A licensed tool is a purchase, not a control at work. The plan is complete when bias tests actually run on the screener's decisions and their results reach the risk owner, so results from recent screening are the evidence to request first. Confirmation that the tool is linked to the screener is the runner-up: it shows the tool is installed, but not that any test has run or what it found.",
+      "wrong_explanations": {
+        "A": "A license shows the tool was bought; it says nothing about whether any bias test has run on the screener's decisions.",
+        "B": "A link shows the tool is installed and can reach the screener; installed is not operating, and there are still no results for anyone to act on.",
+        "D": "The risk owner approves closing the plan, but signing off an unchecked claim adds no evidence; the sign-off follows the test results, not before them."
+      },
+      "tips": [
+        "Eliminate: A proves a purchase, not a test, and D asks the risk owner to sign off a claim before any evidence backs it.",
+        "Final two: C beats B because results show bias tests running on real screening decisions; a link to the screener shows the tool is installed, not used.",
+        "Exam cue: an action that adds a check is done when the check runs and its results reach the owner; a bought or installed tool is not yet a working control."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CA-5 (Plan of Action and Milestones); NIST AI 100-1 (AI RMF 1.0) MEASURE 2.11 (fairness and bias as identified in the MAP function are evaluated and results are documented)",
+      "related_concepts": [
+        "Action plan validation",
+        "AI bias testing",
+        "Implemented versus operating"
+      ],
+      "_provenance": "Authored from concept: notes 3C1.2 (Validating Execution and Tracking to Closure: confirm the control is implemented, then operates, bias tests run and not a tool licensed, before calling an action complete). Round 28, 13 Nov 2026: original scenario (HR reports a lumber yard chain's plan to add bias testing to its AI applicant screener as done because the testing tool is now licensed), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 28 (crisc_d3_297 to 304). Round 28 asks: 3C1 slot and D3's one AI item (key C, application), on the planned angle: bias testing reported done once the testing tool is licensed; completion needs tests running and results reaching the owner. Same-opener pair 'Confirmation' on runner-up B and eliminated A (D3 pair 1 of 2). The batch's one eliminated lone owner (D). Avoids crisc_d3_142 and crisc_d3_130 (interim controls) and crisc_d3_294 (avoidance completeness, paused). Neighbours checked: crisc_d3_013 (evidence a reported MFA plan is enforced; same validation lesson, new AI angle and implemented-versus-operating runner-up), crisc_d3_157 (a plan closes on evidence and the owner's sign-off; wrong D is that sign-off before any evidence, and its explanation says so), crisc_d3_255 (joint test of linked actions), crisc_d4_014 (bias tests on the council's own data before use), crisc_d4_085 (license for training data; wrong A here is a tool license, a different point), crisc_d3_224 (AI harm reported in appetite terms). Cross-bank: CISA d3_137 (independent model testing before release): related, different stage.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_302",
+      "domain": 3,
+      "subtopic": "3C2 Data collection, aggregation, analysis and validation. Plants logging losses from different amounts",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Two of a faucet maker's four plants log every loss over $1,000; the other two log only losses over $25,000. To rank the plants by this quarter's losses, what should the risk analyst do FIRST?",
+      "options": {
+        "A": "Use losses over $25,000 from the four plants",
+        "B": "Require the two plants to log losses over $1,000",
+        "C": "Rank the four plants' totals, thresholds noted alongside",
+        "D": "Estimate losses under $25,000 at the two plants"
+      },
+      "correct": "A",
+      "key_concept": "Unit figures logged above different amounts are not comparable; compare units on the highest amount they all record before ranking or adding them.",
+      "pre_read": "Check whether the four plants' figures measure the same thing.",
+      "correct_explanation": "The plants record losses above different amounts, so their totals do not compare: the two logging from $1,000 look worse simply because they record more. Using losses over $25,000 from the four plants puts them on one basis before ranking. Ranking the totals with the thresholds noted alongside is the runner-up: stating a limitation suits a gap that cannot be closed, but this one can, and a note leaves the ranking itself skewed.",
+      "wrong_explanations": {
+        "B": "One $1,000 threshold suits future quarters, but two plants hold no records of this quarter's smaller losses, so it cannot fix this ranking.",
+        "C": "A note states the flaw but leaves it in the ranking; the plants logging from $1,000 still look worse, though a common basis is available now.",
+        "D": "Estimating losses nobody recorded adds guessed figures to the ranking, when recorded losses above a shared amount already give a fair comparison."
+      },
+      "tips": [
+        "Eliminate: B changes future logging but cannot recover this quarter's small losses, and D fills the gap with estimates nobody measured.",
+        "Final two: A beats C because the gap can be closed now by ranking on losses over $25,000 at every plant; a note leaves the skewed ranking in place.",
+        "Exam cue: before ranking or adding units' figures, put them on one basis, such as the same recording threshold; state as a limitation a gap that cannot be closed."
+      ],
+      "framework_ref": "NIST IR 8286C Rev. 1 Section 2.2 (Normalization of Cybersecurity Risk Registers: the same rating criteria enable comparison and tracking); NIST SP 800-55v1 Section 3.1.5 Table 3 (Data cleaning methods for reducing uncertainty: normalization converts information into consistent representations and categorizations)",
+      "related_concepts": [
+        "Loss data",
+        "Normalization",
+        "Data consistency"
+      ],
+      "_provenance": "Authored from concept: notes 3C2.3 (Validating Data Before Reporting: consistency, definitions, scales and recording thresholds match across sources; compare losses logged above different amounts on the highest amount all of them record). Round 28, 13 Nov 2026: original scenario (two of a faucet maker's four plants log every loss over $1,000 and the other two only losses over $25,000, and the plants are to be ranked by this quarter's losses), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 28 (crisc_d3_297 to 304). Round 28 asks: 3C2 slot (key A, analysis); 'alongside' on runner-up C; no owner option; restrictive 'only' kept to the stem. Neighbours checked: crisc_d3_205 (fix a fixable data flaw before reporting; note only what cannot be closed; consistent, and this item's runner-up falls on that rule), crisc_d3_256 (cut-off mismatch fixed at source), crisc_d3_133 (rates on a common base), crisc_d3_014 (one rating scale), crisc_d3_285 (rank after combining full registers), crisc_d2_046 (a loss database's threshold omits small losses; this item is about comparing units logged above different amounts), crisc_d1_197, crisc_d3_198 and crisc_d4_072 (option wording overlap only).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_303",
+      "domain": 3,
+      "subtopic": "3C4 Risk and control monitoring techniques. A surveillance rule above every limit",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An energy trading firm's limit-breach monitor flags trades over $50 million and flagged none this year; traders' approved limits run from $5 million to $20 million. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "A single $20 million threshold for every trade",
+        "B": "The clean year taken as evidence the approved limits hold",
+        "C": "Confirmation from the vendor that the monitor runs correctly",
+        "D": "Trade thresholds tied to the traders' approved limits"
+      },
+      "correct": "D",
+      "key_concept": "A monitoring rule is set from the limits it polices; a threshold above every limit stays silent while breaches pass.",
+      "pre_read": "Compare the monitor's setting with the limits it is supposed to watch.",
+      "correct_explanation": "The monitor flags what its rule asks for, and a $50 million threshold sits above every trader's limit, so a breach can pass unflagged and a silent year proves nothing. Trade thresholds tied to the traders' approved limits make the rule test what the limits forbid. A single $20 million threshold is the runner-up: it matches the largest limit, but a trader with a $5 million limit could exceed it by $15 million unseen.",
+      "wrong_explanations": {
+        "A": "One threshold at the largest limit still lets traders with $5 million limits trade up to $20 million unflagged; the rule has to follow the limits.",
+        "B": "A rule set above every limit cannot flag a breach, so its silence is no evidence that traders keep to their limits.",
+        "C": "The monitor may run exactly as built; the gap is the rule's setting, which sits above the limits it is meant to police."
+      },
+      "tips": [
+        "Eliminate: B takes the rule's silence as proof, and C checks that the monitor runs when the gap is its setting, which sits above every limit.",
+        "Final two: D beats A because thresholds tied to the approved limits flag a breach at any size; one $20 million threshold misses traders with smaller limits.",
+        "Exam cue: when monitoring stays silent, ask what its rule could ever flag; set alert rules from the limits or tolerances they police, not a round figure."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CA-7 (Continuous Monitoring); NIST SP 800-137 Section 3.6 (Review and Update the Monitoring Program and Strategy: the accuracy of measurements and the usefulness of collected data are reviewed, and collection found not useful is reconsidered)",
+      "related_concepts": [
+        "Continuous monitoring",
+        "Alert thresholds",
+        "Trading limits"
+      ],
+      "_provenance": "Authored from concept: notes 3C4.1 (Continuous Monitoring and Automated Alerts: the monitoring strategy includes alert rules set from the limits they police). Round 28, 13 Nov 2026: original scenario (an energy trading firm's limit-breach monitor flags trades over $50 million and flagged none in a year, while traders' approved limits run from $5 million to $20 million), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 28 (crisc_d3_297 to 304). Round 28 asks: 3C4 slot (key D, analysis); 'every' on runner-up A, key carries none; no owner option. Neighbours checked: crisc_d3_254 (a check that has flagged nothing is proven with cases it should catch; here the rule's setting is visibly above every limit, so the fix is the setting), crisc_d3_195 and crisc_d3_270 (silence first checked as a data failure), crisc_d3_180 (tuning mostly false alerts), crisc_d3_223 (feeding a check the authoritative source), crisc_d3_016 and crisc_d3_141 (thresholds and bands from tolerance and appetite, not tool defaults; consistent), crisc_d3_107 (moving a breached threshold), crisc_d1_109 (dealing-limit breaches as a culture lesson). Cross-bank: CC cc_d2_109 (attacks blocked say little about risk) and CISA d3_148: wording overlap only.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_304",
+      "domain": 3,
+      "subtopic": "3C5 Risk and control reporting techniques. Accepted risks past their review dates",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A password manager vendor's monthly reports to risk owners list their risks, KRIs and open actions, yet four accepted risks passed their review dates unnoticed. What should the risk analyst add as BEST?",
+      "options": {
+        "A": "Share of accepted risks past their review dates",
+        "B": "The upcoming review dates of their accepted risks",
+        "C": "Board reports listing accepted risks once a year",
+        "D": "Board dashboards marking lapsed acceptances in red"
+      },
+      "correct": "B",
+      "key_concept": "Reports to risk owners show their accepted risks coming up for review, with the dates, so owners decide again before an acceptance lapses.",
+      "pre_read": "Ask what an owner needs to see before a date passes.",
+      "correct_explanation": "The reviews lapsed because owners did not see the dates coming, so their own reports should show them in time. The upcoming review dates of their accepted risks let each owner decide again, renew, change or end the acceptance, before it lapses. Share of accepted risks past their review dates is the runner-up: it measures the problem, but counts lapses after they happen and does not tell an owner which risk to review next.",
+      "wrong_explanations": {
+        "A": "A share of lapsed reviews shows the problem after dates have passed; it does not point an owner to the acceptance falling due next.",
+        "C": "The board does need accepted risks in view, but a yearly report reaches the board, not the owners, and too late to prompt a review before its date.",
+        "D": "Marking lapses red shows them after the dates have passed, and on a board dashboard, not in the reports read by the owners who must act."
+      },
+      "tips": [
+        "Eliminate: C reports accepted risks to the board once a year, not to the owners, and D flags acceptances once they have already lapsed.",
+        "Final two: B beats A because upcoming dates prompt each owner before a review falls due; a share of lapsed reviews counts the failures after they happen.",
+        "Exam cue: give risk owners what they must act on next, such as acceptances coming up for review; measures of past lapses show the problem after the fact."
+      ],
+      "framework_ref": "NIST IR 8286B-upd1 Section 2.3.1 (Risk Acceptance: exposure within risk tolerance is still reported, monitored and managed); NIST SP 800-137 Section 3.4 (Analyze Data and Report Findings: recipients, content, format and frequency of reports)",
+      "related_concepts": [
+        "Risk acceptance",
+        "Reporting to risk owners",
+        "Review dates"
+      ],
+      "_provenance": "Authored from concept: notes 3C5.2 (Reporting for the Audience and the Decision: risk owners get their risks, indicator status, overdue actions and acceptances nearing their review dates). Round 28, 13 Nov 2026: original scenario (a password manager vendor's monthly reports to risk owners list their risks, KRIs and open actions, yet four accepted risks passed their review dates unnoticed), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 28 (crisc_d3_297 to 304). Round 28 asks: 3C5 slot (key B, application); 'Share of' on runner-up A (D3's one), key none; same-opener pair 'Board' on eliminated C and D (D3 pair 2 of 2); no owner option. First drafted on amber KRIs flooding executives, but that restated crisc_d1_123, crisc_d3_127 and crisc_d1_220 (escalate out of cycle only on a breach), so it was re-angled to acceptances lapsing in owners' reports. Neighbours checked: crisc_d3_200 (accepted risks belong in the board report; wrong C grants that and its explanation names the different gap), crisc_d3_081 (each owner gets a report on their own risks and actions), crisc_d4_084 (acceptances need a reason and review date), crisc_d1_025 (an expired exception goes back to the risk owner), crisc_d3_110, crisc_d3_284 (slippage against first dates), crisc_d1_171 (acceptances within appetite left to owners). Cross-bank: CC cc_d2_150 (amber to the risk owner, red to senior management): consistent.",
+      "style_version": 2
     }
   ]
 }
