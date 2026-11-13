@@ -2,7 +2,9 @@
  * Root layout — runs once when the app opens.
  * 1. Keeps the splash screen up while fonts and saved progress load.
  *    Grove v2 uses two families (docs/mobile/DESIGN_SYSTEM.md §1):
- *    Fraunces 400 / 400 italic / 500 for reading moments and numbers,
+ *    Fraunces 400 / 400 italic / 500 for reading moments and numbers
+ *    (the two upright weights load as "KaiSip Serif": Fraunces with a
+ *    conventional lowercase f, see theme/tokens.ts `font`),
  *    Figtree 400 / 500 / 600 for everything you tap or scan.
  * 2. Wraps every screen in a navigation "stack" (screens slide in/out).
  * 3. Mounts MotionRoot: Reduce Motion (the phone's, live, or Settings →
@@ -26,9 +28,7 @@
 import { Figtree_400Regular } from '@expo-google-fonts/figtree/400Regular';
 import { Figtree_500Medium } from '@expo-google-fonts/figtree/500Medium';
 import { Figtree_600SemiBold } from '@expo-google-fonts/figtree/600SemiBold';
-import { Fraunces_400Regular } from '@expo-google-fonts/fraunces/400Regular';
 import { Fraunces_400Regular_Italic } from '@expo-google-fonts/fraunces/400Regular_Italic';
-import { Fraunces_500Medium } from '@expo-google-fonts/fraunces/500Medium';
 import { useFonts } from 'expo-font';
 import { Stack, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -71,9 +71,10 @@ initNotifications();
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
-    Fraunces_400Regular,
+    // The upright serif is KaiSip Serif: Fraunces with a conventional "f" (see theme/tokens.ts `font`).
+    KaiSipSerif_400Regular: require('../../assets/fonts/KaiSipSerif_400Regular.ttf'),
     Fraunces_400Regular_Italic,
-    Fraunces_500Medium,
+    KaiSipSerif_500Medium: require('../../assets/fonts/KaiSipSerif_500Medium.ttf'),
     Figtree_400Regular,
     Figtree_500Medium,
     Figtree_600SemiBold,

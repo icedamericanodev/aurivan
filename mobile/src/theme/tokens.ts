@@ -217,11 +217,18 @@ export const radius = { sm: 8, md: 16, lg: 24, sheet: 28, pill: 999 } as const;
  * Two families (spec §1). Weight is chosen by family name, never by
  * `fontWeight` (Android ignores fontWeight for custom fonts).
  * Fraunces = the moments you read; Figtree = everything you tap or scan.
+ *
+ * The two UPRIGHT serif weights are "KaiSip Serif" (mobile 2.1, FB-006): Fraunces
+ * with one glyph changed, a conventional lowercase "f" in place of Fraunces' flat,
+ * heavy-hooked one that learners read as odd. Every other letter and all the
+ * spacing are Fraunces. The files are in assets/fonts/ (with both licences) and
+ * are made by scripts/fonts/build_kaisip_serif.py. The italic is plain Fraunces
+ * (its "f" is conventional already).
  */
 export const font = {
-  serif400: 'Fraunces_400Regular',
+  serif400: 'KaiSipSerif_400Regular',
   serif400Italic: 'Fraunces_400Regular_Italic',
-  serif500: 'Fraunces_500Medium',
+  serif500: 'KaiSipSerif_500Medium',
   sans400: 'Figtree_400Regular',
   sans500: 'Figtree_500Medium',
   sans600: 'Figtree_600SemiBold',

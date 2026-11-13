@@ -10935,9 +10935,9 @@ exports.domainPalette = {
 exports.space = { xs: 4, sm: 8, md: 12, lg: 16, gutter: 20, xl: 24, xxl: 32, xxxl: 48 };
 exports.radius = { sm: 8, md: 16, lg: 24, sheet: 28, pill: 999 };
 exports.font = {
-    serif400: 'Fraunces_400Regular',
+    serif400: 'KaiSipSerif_400Regular',
     serif400Italic: 'Fraunces_400Regular_Italic',
-    serif500: 'Fraunces_500Medium',
+    serif500: 'KaiSipSerif_500Medium',
     sans400: 'Figtree_400Regular',
     sans500: 'Figtree_500Medium',
     sans600: 'Figtree_600SemiBold',
@@ -11443,6 +11443,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "c12d85b263bde86b";
+  api.sourceHash = "480a4614dcadbebd";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);
