@@ -5260,7 +5260,7 @@
         "A": "The test would use past claims rather than the model's live decisions",
         "B": "Validators may not see the vendor's training data for the fairness test",
         "C": "The vendor model may be less accurate for local crop types",
-        "D": "Later monthly versions would reach claimants with no fairness test"
+        "D": "Each later version would reach claimants without a fairness test"
       },
       "correct": "D",
       "key_concept": "Each vendor model update is a release, so an action plan for a missing pre-release test must cover every version, not just the first.",
@@ -5282,7 +5282,7 @@
         "Vendor model updates",
         "Fairness testing"
       ],
-      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (record management's response with owners, actions and dates; the action must reach the cause, and each vendor update is a release). Review round 1, 13 Nov 2026: re-angled from a follow-up closure after model replacement (the frame of aaia_d3_048) to evaluating management's action plan. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (record management's response with owners, actions and dates; the action must reach the cause, and each vendor update is a release). Review round 1, 13 Nov 2026: re-angled from a follow-up closure after model replacement (the frame of aaia_d3_048) to evaluating management's action plan. Review round 2, 13 Nov 2026: option D reworded so no stem word is echoed only in the key. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
       "style_version": 2
     },
     {
@@ -5292,10 +5292,10 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Lithuanian online pharmacy's response to a finding that its vendor-hosted prescription-check model blocks valid orders: the vendor will retrain it next quarter to block fewer orders. What should the IS auditor do FIRST?",
+      "question": "A Lithuanian online pharmacy's response to a finding that its vendor-hosted prescription-check model blocks valid orders: a vendor retrain next quarter to block fewer orders, with no target. What should the IS auditor do FIRST?",
       "options": {
         "A": "Record the vendor's date and retest blocked orders at follow-up",
-        "B": "Ask which pharmacy manager sets the error limits for the retrain",
+        "B": "Ask which internal manager sets the error limits for the retrain",
         "C": "Accept the response, as the hosted model belongs to the vendor",
         "D": "Lower the finding's rating, since a retrain is now scheduled"
       },
@@ -5304,13 +5304,13 @@
       "pre_read": "Read the response for what it commits to and what it leaves open.",
       "correct_explanation": "Retraining a model to block fewer orders shifts its errors: fewer valid orders are blocked, but more invalid prescriptions may pass. Only the pharmacy can decide how much of each error is acceptable, so the action needs a pharmacy owner who sets both limits before the vendor retrains. Retesting blocked orders at follow-up checks one error only, and with no limits set there is nothing to judge the retrained model against.",
       "wrong_explanations": {
-        "A": "Tempting because retesting is sound follow-up. But it checks only blocked orders; a model retrained to block fewer may pass invalid prescriptions, and no limit says how many is acceptable.",
+        "A": "Tempting because retesting is sound follow-up. But with no target set, a retest has nothing to judge against, and it ignores invalid prescriptions a retrained model may pass.",
         "C": "Tempting because the vendor controls the model. But the pharmacy answers for orders decided with it; accountability cannot pass to the vendor.",
         "D": "Tempting because action is planned. But ratings follow the likelihood and impact of harm, and valid orders stay blocked until a retrain works."
       },
       "tips": [
         "Eliminate: C hands accountability to the vendor, and D lowers a rating because a retrain is promised.",
-        "Final two: B beats A because a model retrained to block fewer orders may pass more invalid prescriptions, so the pharmacy must set limits for both errors first; a retest of blocked orders checks one.",
+        "Final two: B beats A because a retrain to block fewer orders may pass more invalid prescriptions, so an internal owner sets limits for both errors first; with no target, a retest proves nothing.",
         "Exam cue: a model retrained to cut one error often raises the other. Before accepting the action, ask who in the organization sets limits for both."
       ],
       "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); NIST AI 100-1 MAP 1.5 (Organizational risk tolerances determined and documented)",
@@ -5319,7 +5319,7 @@
         "Error trade-offs",
         "Vendor-hosted models"
       ],
-      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (record management's response with a named internal owner, actions and dates; a retrain that cuts one error needs limits for both). Review round 1, 13 Nov 2026: the deciding fact is now the error trade-off of a retrain to block fewer orders, not general vendor accountability. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (record management's response with a named internal owner, actions and dates; a retrain that cuts one error needs limits for both). Review round 1, 13 Nov 2026: the deciding fact is now the error trade-off of a retrain to block fewer orders, not general vendor accountability. Review round 2, 13 Nov 2026: stem now states no target is set; key reworded so no stem word is echoed only in it. Review round 3, 13 Nov 2026: stem ends \"with no target\" so the stem verb \"set\" no longer appears only in the key. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
       "style_version": 2
     },
     {

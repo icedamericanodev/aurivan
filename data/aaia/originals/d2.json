@@ -9775,29 +9775,28 @@
       "id": "aaia_d2_266",
       "domain": 2,
       "subtopic": "2A Data management for AI. A vendor score as a model input",
-      "principle_id": "accuracy-is-not-assurance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Vietnamese bank's card-fraud model takes a vendor's risk score as input; test payments carry scores from the vendor's current model, trained on fraud confirmed after them. What should the IS auditor recommend as BEST?",
+      "question": "A Vietnamese bank never stores the vendor score its card-fraud model uses, so retests have the vendor rescore past payments with a model trained on later fraud. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Ask the vendor for an independent report on its scoring model",
-        "B": "Retest using scores as the vendor gave them at payment time",
-        "C": "Compare the model's results with and without the vendor's score",
-        "D": "Have validators rerun the test on a fresh random sample of payments"
+        "B": "Record each vendor score with its payment as it arrives",
+        "C": "Monitor the vendor score's distribution for drift each month",
+        "D": "Have validators rerun the test on another random sample of past payments"
       },
       "correct": "B",
-      "key_concept": "An input computed after the outcomes, such as a score from a model trained on later fraud, can carry the answer; test with point-in-time values.",
+      "key_concept": "An input rebuilt after the outcome, like a score from a model trained on later fraud, can carry the answer; keep inputs as received.",
       "pre_read": "Trace how each input value in the test data was produced.",
-      "correct_explanation": "The vendor's current model learned from fraud confirmed after the test payments, so its scores for those payments may already reflect their outcomes, and the bank's model scores well partly by reading them. Live, the score comes before anyone knows the outcome. Retesting with scores as given at payment time shows real performance. A fresh random sample from the same test data, option D, still carries those later scores, so the inflated result repeats.",
+      "correct_explanation": "A model trained on fraud confirmed after these payments may already reflect their outcomes, so rescored values can flatter the bank's model. Live, the score arrives before anyone knows the outcome. Recording each score as it arrives gives every later retest the values the model really saw. Another random sample, option D, is rescored the same way, so any inflation repeats.",
       "wrong_explanations": {
-        "A": "Tempting because vendor evidence is standard for outsourced components. But a report on the vendor's model says nothing about scores computed after the test payments' outcomes were known.",
-        "C": "Tempting because removing an input shows its weight. But a genuinely useful score would also lift results, so the comparison cannot show whether the lift comes from known outcomes.",
-        "D": "Tempting because independent reperformance on new records is sound evidence. But a fresh sample still carries scores from the vendor's current model, so the inflated result repeats."
+        "A": "Tempting because vendor evidence is standard for outsourced components. But a report on the vendor's model says nothing about scores rebuilt after the payments' outcomes were known.",
+        "C": "Tempting because inputs can drift and need watching. But drift monitoring tracks live scores; it does nothing about retests on rescored values that may carry the outcomes.",
+        "D": "Tempting because independent reperformance on new records is sound evidence. But the vendor rescores any past payment with its model trained on later fraud, so any inflation repeats."
       },
       "tips": [
-        "Eliminate: A seeks the vendor's evidence on its own model, not on how these test scores were made, and C measures the score's weight, which a genuine input would also show.",
-        "Final two: B beats D because any sample of these payments carries scores made after the outcomes; only scores as given at payment time match live use.",
-        "Exam cue: for every input, ask whether its value could be known when the prediction is made. Inputs computed later can carry the answer."
+        "Eliminate: A seeks the vendor's evidence on its own model, not on how retest scores are made, and C watches live drift, which does not touch rescored test values.",
+        "Final two: B beats D because any past payment the vendor rescores carries what its model learned later; only scores recorded as they arrive match live use.",
+        "Exam cue: for every input, ask whether its value could be known when the prediction is made. Inputs rebuilt later can carry the answer."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 2.3 (Performance measured in conditions similar to deployment); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
       "related_concepts": [
@@ -9805,7 +9804,7 @@
         "Point-in-time data",
         "Third-party data"
       ],
-      "_provenance": "Authored from concept: notes 2A.3 Training, Validation and Test Separation (an input computed after the outcome, such as a vendor score from a model trained on later fraud, leaks the answer into the test). Re-angled in batch 8 review round 1 from a test-set custody frame that repeated aaia_d2_025. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2A.3 Training, Validation and Test Separation (an input rebuilt after the outcome, such as a vendor score from a model trained on later fraud, leaks the answer into retests). Re-angled in batch 8 review round 1 from a test-set custody frame that repeated aaia_d2_025, and in round 2 from a point-in-time revalidation frame that repeated aaia_d1_083. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
       "style_version": 2
     },
     {

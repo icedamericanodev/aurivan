@@ -231,7 +231,7 @@
           "why_it_matters": "If test data overlaps training data, the model is graded on answers it has already seen. Reported accuracy then overstates real performance, and management approves a model on false evidence.",
           "how_it_works": [
             "Splits are made and recorded before modeling starts, so the test set stays untouched until the final evaluation.",
-            "Leakage means a person or record on both sides of a split, or inputs holding later facts, such as a past score rebuilt by a newer model.",
+            "Leakage means a person or record on both sides of a split, or inputs holding later facts, such as scores rebuilt by a newer model; store inputs as received.",
             "Each customer's records stay on one side; splitting by person, not by row, prevents hidden overlap.",
             "Out-of-time testing holds back the most recent period, showing whether the model works on data from after training.",
             "The test set is not reused for tuning; once it shapes design choices, it is no longer an unseen check.",
