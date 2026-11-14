@@ -15,11 +15,12 @@
  * `soft` fill of the teaching tags, never the `control` outline that means
  * "tap me". The pills are one screen-reader stop that reads every trigger.
  */
+import { useState } from 'react';
 import { View } from 'react-native';
-import { Gap, Section, T } from './ui';
+import { Gap, Section, T, useFontScale } from './ui';
 import { ExamTraps, IsacaRule } from './notes';
 import type { Principle } from '../content/principles/types';
-import { radius, space } from '../theme/tokens';
+import { LARGE_TEXT, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 /** The first heading under the rule sits a little closer than a full section gap. */
@@ -31,29 +32,35 @@ const FIRST = { marginTop: space.xl };
  * trigger as a quiet pill; they wrap at large text.
  */
 export function TriggerChips({ triggers }: { triggers: string[] }) {
-  const { c } = useTheme();
   return (
     <View
       accessible
       accessibilityLabel={`Words that signal it: ${triggers.join('; ')}`}
       style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, marginTop: space.sm }}
     >
-      {triggers.map((t) => (
-        <View
-          key={t}
-          style={{
-            minHeight: 32,
-            maxWidth: '100%',
-            justifyContent: 'center',
-            paddingHorizontal: space.md,
-            paddingVertical: space.xs,
-            borderRadius: radius.pill,
-            backgroundColor: c.soft,
-          }}
-        >
-          <T v="meta" color={c.ink}>{t}</T>
-        </View>
-      ))}
+      {triggers.map((t) => <TriggerChip key={t} text={t} />)}
+    </View>
+  );
+}
+
+/** A long teaching label needs a rectangular reading area when it wraps. */
+function TriggerChip({ text }: { text: string }) {
+  const { c } = useTheme();
+  const large = useFontScale() >= LARGE_TEXT;
+  const [multiline, setMultiline] = useState(false);
+  return (
+    <View
+      style={{
+        minHeight: 32,
+        maxWidth: '100%',
+        justifyContent: 'center',
+        paddingHorizontal: space.md,
+        paddingVertical: space.xs,
+        borderRadius: large || multiline ? radius.md : radius.pill,
+        backgroundColor: c.soft,
+      }}
+    >
+      <T v="meta" color={c.ink} onTextLayout={(e) => setMultiline(e.nativeEvent.lines.length > 1)}>{text}</T>
     </View>
   );
 }

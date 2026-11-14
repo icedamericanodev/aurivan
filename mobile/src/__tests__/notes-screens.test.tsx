@@ -14,8 +14,9 @@
  * `act(() => store.action())` — use braces.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { AccessibilityInfo, Dimensions } from 'react-native';
+import { AccessibilityInfo, Dimensions, View } from 'react-native';
 import { NoteBody, onThisPageFits } from '../components/notes';
+import { TopicCard } from '../components/topicCard';
 import { Screen } from '../components/ui';
 import { clearNotesCache, findNote, getNotes } from '../content/notes';
 import type { NoteSubtopic } from '../content/notes/types';
@@ -116,6 +117,24 @@ afterEach(() => {
 });
 
 describe('NoteBody: every section renders', () => {
+  it('fits diagrams to the measured topic card and keeps the complete note readable', () => {
+    const n = note('1A1.1');
+    mount(<TopicCard><NoteBody note={n} /></TopicCard>);
+    const measure = root().findByType(TopicCard).findAll((x) => x.type === View && typeof x.props.onLayout === 'function')[0];
+    act(() => {
+      measure.props.onLayout({ nativeEvent: { layout: { x: 0, y: 0, width: 280, height: 1000 } } });
+    });
+    const image = root().findAll((x) => x.props.accessibilityRole === 'image')[0];
+    // The figure's own plate takes 16pt on each side of the measured reading area.
+    expect(image.props.style.width).toBe(248);
+    expect(allText()).toContain(n.definition);
+    expect(allText()).toContain(n.whyItMatters);
+    expect(allText()).toContain(n.example);
+    for (const step of n.howItWorks) expect(allText()).toContain(step);
+    for (const section of SECTIONS) expect(allText()).toContain(section);
+    expect(allText()).toContain('Tap to enlarge');
+  });
+
   it.each(['light', 'dark'] as const)('4B1.2 and 1A1.1 in %s, in schema order', (theme) => {
     useSettings.setState({ theme });
     for (const id of ['4B1.2', '1A1.1']) {

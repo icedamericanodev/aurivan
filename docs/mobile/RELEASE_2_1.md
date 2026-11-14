@@ -6,6 +6,7 @@ Owner requirement recorded 9 Nov 2026: the next Android App Bundle must have ver
 
 | Change | Source checkpoint | State |
 |---|---|---|
+| One-topic reading cards for Mistakes, Study notes, lessons, Principles and Concept Lab | Approved card design, 9 Nov | Implemented in development; existing Learn title tiles and course content preserved; full checks and eight screenshot configurations passed; native review ready in PR #242 |
 | Optional local onboarding nickname | PR #234, ba1147c | Integrated; native keyboard and screen-reader checks pending |
 | All answer options beside explanations | PR #235, cb66b30 | Integrated; original-letter mapping tests passed |
 | Coach me question text readability | PR #236, fbe2eea | Integrated; native high-contrast matrix pending |

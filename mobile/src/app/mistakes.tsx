@@ -47,6 +47,7 @@ import { EmptyScreen } from '../components/emptyScreen';
 import { StickyFooter } from '../components/quiz';
 import { BookOpen, Compass, ICON_STROKE } from '../components/icons';
 import { ReportLink } from '../components/support';
+import { TopicCard } from '../components/topicCard';
 import { useMotion } from '../components/motion';
 import { Button, Chip, Gap, ICON_SIZE, PushedHeader, Row, Section, T } from '../components/ui';
 import { findQuestion } from '../content/loader';
@@ -61,7 +62,7 @@ import { canPlay } from '../lib/games';
 import { useAvailableGames } from '../components/drills';
 import { slipCoach, type SlipInput } from '../engine/slipCoach';
 import { useProgress, type MistakeEntry, type ThinkingSlip } from '../store/progress';
-import { space } from '../theme/tokens';
+import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 /** The tags, each with one example (the chip's spoken hint and the "What do these mean?" sheet). */
@@ -158,9 +159,11 @@ const MistakeCard = memo(function MistakeCard({
   }, [isTagging, m.slip]);
   if (!q || !target) return null;
   return (
-    <View style={{ paddingVertical: space.lg, borderBottomWidth: 1, borderBottomColor: c.line }}>
+    <TopicCard testID={`mistake-card-${id}`} style={{ marginTop: space.md }}>
       <T v="caption" num>{`${m.resolved ? 'Fixed · ' : ''}${shortDate(m.at)}`}</T>
       <Gap h={space.xs} />
+      <T v="headline" accessibilityRole="header">{q.subtopic}</T>
+      <Gap h={space.sm} />
       <T v="body">{q.stem}</T>
       <Gap h={space.md} />
       {m.picked && (
@@ -170,8 +173,10 @@ const MistakeCard = memo(function MistakeCard({
           <Gap h={space.sm} />
         </>
       )}
-      <T v="caption" color={c.correct}>Best answer</T>
-      <T v="small">{q.options[q.correct]}</T>
+      <View style={{ backgroundColor: c.soft, borderRadius: radius.md, padding: space.md }}>
+        <T v="caption" color={c.correct}>Best answer</T>
+        <T v="small">{q.options[q.correct]}</T>
+      </View>
       {note && (
         // The ghost pads 8pt each side: pulled left so its icon lines up with the text above.
         <Button
@@ -195,7 +200,7 @@ const MistakeCard = memo(function MistakeCard({
             <>
               <Row gap={space.xs} style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
                 <T v="meta">Why did you slip?</T>
-                <Button kind="ghost" label="What do these mean?" accessibilityHint="Shows one example for each tag" onPress={onOpenTags} style={{ marginRight: -space.sm }} />
+                <Button kind="ghost" label="What do these mean?" accessibilityHint="Shows one example for each tag" onPress={onOpenTags} style={{ maxWidth: '100%', flexShrink: 1 }} />
               </Row>
               {/* One group with a name, so a screen reader says which question the six tags are for. */}
               <View
@@ -207,6 +212,8 @@ const MistakeCard = memo(function MistakeCard({
                 {SLIPS.map((s) => (
                   <Chip
                     key={s.id}
+                    shape="rounded"
+                    fullWidth
                     label={s.label}
                     accessibilityLabel={`Tag: ${s.label}`}
                     accessibilityHint={`For example: ${s.example}`}
@@ -234,7 +241,7 @@ const MistakeCard = memo(function MistakeCard({
           )}
         </>
       )}
-    </View>
+    </TopicCard>
   );
 });
 

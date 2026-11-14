@@ -530,11 +530,14 @@ export function TipsCard({
 export const recapRoom = (windowWidth: number) => windowWidth - 222;
 /** "Not quite · Best answer D" at 1.0 text, in the meta face (Figtree 14): about 161pt. */
 export const RECAP_LONG_W = 161;
+const RECAP_MAX_SCALE = 1.3;
+/** CrossFade overlays this recap; reserve room for two lines when large text wraps. */
+export const recapHeight = (scale: number) => Math.max(44, 2 * type.meta.lineHeight! * Math.min(Math.max(scale, 1), RECAP_MAX_SCALE));
 
 /**
  * Mobile 1.22 (design spec §6.4): the answer screen's outcome, kept in the
  * header once the verdict has scrolled away: an 18pt disc (`wrong` with an
- * ✗, or `correct` with a ✓) and one `meta` line, "Not quite · Best answer
+ * ✗, or `correct` with a ✓) and wrapping `meta` text, "Not quite · Best answer
  * D" ("Not quite · D" at large text). One screen-reader stop with every word.
  */
 export function AnswerRecap({ correct, letter }: { correct: boolean; letter: Letter }) {
@@ -544,14 +547,14 @@ export function AnswerRecap({ correct, letter }: { correct: boolean; letter: Let
   // Large text (×1.3+): the short form fits the bar ("Not quite · D"); the spoken label keeps every word.
   // Release bug hunt round 1: also when the bar is too narrow for the long form, so the letter always
   // shows (360dp, 320dp, or a 390dp phone at ×1.15 cut it to "Not quite · Best ans…").
-  const short = scale >= LARGE_TEXT || recapRoom(width) < RECAP_LONG_W * Math.min(scale, 1.3);
+  const short = scale >= LARGE_TEXT || recapRoom(width) < RECAP_LONG_W * Math.min(scale, RECAP_MAX_SCALE);
   const words = `${correct ? 'Correct' : 'Not quite'} · ${short ? '' : 'Best answer '}${letter}`;
   return (
     <View accessible accessibilityLabel={`${correct ? 'Correct' : 'Not quite'}. Best answer ${letter}`} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: space.sm }}>
       <View style={{ width: 18, height: 18, borderRadius: 9, backgroundColor: correct ? c.correct : c.wrong, alignItems: 'center', justifyContent: 'center' }}>
         {correct ? <Check size={12} color={c.bg} strokeWidth={2.75} /> : <X size={12} color={c.bg} strokeWidth={2.75} />}
       </View>
-      <T v="meta" color={c.ink} numberOfLines={1} maxFontSizeMultiplier={1.3} style={{ flexShrink: 1 }}>{words}</T>
+      <T v="meta" color={c.ink} maxFontSizeMultiplier={RECAP_MAX_SCALE} style={{ flexShrink: 1 }}>{words}</T>
     </View>
   );
 }

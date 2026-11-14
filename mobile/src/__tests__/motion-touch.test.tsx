@@ -11,12 +11,13 @@
  */
 import { cloneElement } from 'react';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import { StateLayer } from '../components/motion';
 import { OptionCard } from '../components/quiz';
-import { Chip, SegmentBar, Segmented } from '../components/ui';
+import { Button, Chip, ChipRow, EmptyState, SegmentBar, Segmented } from '../components/ui';
 import { useSettings } from '../store/settings';
+import { radius } from '../theme/tokens';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -87,14 +88,14 @@ describe('Segmented with motion on', () => {
     mount(el(10));
     const group = r!.root.findByProps({ accessibilityRole: 'radiogroup' });
     act(() => {
-      group.props.onLayout({ nativeEvent: { layout: { width: 306, height: 50 } } });
+      group.props.onLayout({ nativeEvent: { layout: { width: 366, height: 50 } } });
     });
     settle(el(50));
     settle(el(50));
-    // (306 − 2 × 3 inset − 2 × 3 gap) / 3 = 98 wide; the third segment starts 2 × (98 + 3) in.
-    const thumb = r!.root.findAll((n) => typeof n.type !== 'string' && style(n).position === 'absolute' && style(n).width === 98);
+    // A roomy numeric track: (366 − 2 × 3 inset − 2 × 3 gap) / 3 = 118 wide.
+    const thumb = r!.root.findAll((n) => typeof n.type !== 'string' && style(n).position === 'absolute' && style(n).width === 118);
     expect(thumb).toHaveLength(1);
-    expect(xOf(style(thumb[0]))).toBe(202);
+    expect(xOf(style(thumb[0]))).toBe(242);
     expect(r!.root.findAll((n) => n.props.accessibilityRole === 'radio' && n.props.accessibilityState?.checked && typeof n.props.onPress === 'function')).toHaveLength(1);
   });
 
@@ -119,7 +120,7 @@ describe('Segmented under Reduce Motion', () => {
     mount(el);
     const group = r!.root.findByProps({ accessibilityRole: 'radiogroup' });
     act(() => {
-      group.props.onLayout({ nativeEvent: { layout: { width: 306, height: 50 } } });
+      group.props.onLayout({ nativeEvent: { layout: { width: 366, height: 50 } } });
     });
     settle(el);
     expect(r!.root.findAll((n) => typeof n.type !== 'string' && style(n).position === 'absolute' && typeof style(n).width === 'number')).toHaveLength(0);
@@ -145,5 +146,77 @@ describe('selection layers keep the row still', () => {
     mount(<Chip label="All domains" selected onPress={() => {}} />);
     expect(r!.root.findAllByType(StateLayer).map((l) => l.props.on)).toEqual([true]);
     expect(r!.root.findAll((n) => n.props.accessibilityState?.selected === true && typeof n.props.onPress === 'function')).toHaveLength(1);
+  });
+});
+
+
+describe('controls keep complete labels at narrow widths', () => {
+  it('numeric segments reflow on a narrow track and recover when there is room, preserving choices', () => {
+    const onChange = jest.fn();
+    const options = [10, 20, 50].map((n) => ({ value: n, numeral: String(n), label: 'questions' }));
+    mount(<Segmented accessibilityLabel="Questions" value={20} onChange={onChange} options={options} />);
+    const group = () => r!.root.findByProps({ accessibilityRole: 'radiogroup' });
+    const resize = (width: number) => act(() => group().props.onLayout({ nativeEvent: { layout: { width, height: 50 } } }));
+    resize(280); // 320pt phone minus gutters
+    expect(style(group()).flexDirection).toBe('column');
+    const choice = r!.root.findAll((n) => n.props.accessibilityRole === 'radio' && n.props.accessibilityLabel === '50 questions')[0];
+    act(() => choice.props.onPress());
+    expect(onChange).toHaveBeenCalledWith(50);
+    resize(353); // 393pt phone minus gutters
+    expect(style(group()).flexDirection).toBe('row');
+    const checked = r!.root.findAll((n) => n.props.accessibilityRole === 'radio' && n.props.accessibilityState?.checked)[0];
+    expect(checked.props.accessibilityLabel).toBe('20 questions');
+  });
+
+  it('short numeric units keep the compact row when they fit', () => {
+    mount(<Segmented accessibilityLabel="Minutes" value={10} onChange={() => {}} options={[5, 10, 15].map((n) => ({ value: n, numeral: String(n), label: 'min' }))} />);
+    const group = r!.root.findByProps({ accessibilityRole: 'radiogroup' });
+    act(() => group.props.onLayout({ nativeEvent: { layout: { width: 280, height: 50 } } }));
+    expect(style(group).flexDirection).toBe('row');
+  });
+
+  it('large-text ChipRow gives selected labels a stable width and clear corners; normal chips stay compact', () => {
+    const onPress = jest.fn();
+    mount(<ChipRow><Chip label="Information Systems Operations" selected onPress={onPress} /></ChipRow>);
+    const chip = () => r!.root.findAll((n) => n.props.accessibilityRole === 'button' && n.props.accessibilityLabel === 'Information Systems Operations')[0];
+    expect(style(chip()).width).toBeUndefined();
+    expect(style(chip()).borderRadius).toBe(radius.pill);
+    setFontScale(2);
+    expect(style(chip()).width).toBe('100%');
+    expect(style(chip()).borderRadius).toBe(radius.md);
+    const label = chip().findAllByType(Text).find((n) => n.props.children === 'Information Systems Operations')!;
+    expect(style(label)).toMatchObject({ flex: 1, minWidth: 0 });
+    expect(label.props.numberOfLines).toBeUndefined();
+    expect(chip().props.accessibilityState.selected).toBe(true);
+    act(() => chip().props.onPress());
+    expect(onPress).toHaveBeenCalledTimes(1);
+    setFontScale(1);
+    expect(style(chip()).width).toBeUndefined();
+    expect(style(chip()).borderRadius).toBe(radius.pill);
+  });
+
+  it('a standalone compact chip is unaffected by large text', () => {
+    setFontScale(2);
+    mount(<Chip label="Mon" selected={false} onPress={() => {}} />);
+    const chip = r!.root.findAll((n) => n.props.accessibilityRole === 'button')[0];
+    expect(style(chip).width).toBeUndefined();
+    expect(style(chip).borderRadius).toBe(radius.pill);
+  });
+
+  it('long ghost actions are bounded and may wrap without changing the caller’s alignment', () => {
+    mount(<Button kind="ghost" label="What do these mean?" onPress={() => {}} style={{ alignSelf: 'flex-start' }} />);
+    const button = r!.root.findAll((n) => n.props.accessibilityRole === 'button')[0];
+    expect(style(button)).toMatchObject({ maxWidth: '100%', minWidth: 0, flexShrink: 1, alignSelf: 'flex-start' });
+    expect(button.findAllByType(Text)[0].props.numberOfLines).toBeUndefined();
+  });
+
+  it('empty-state teaching labels use a known width and grow to fit all words', () => {
+    mount(<EmptyState title="No mistakes yet" body="Your review appears here." tags={['Tool before policy']} />);
+    const label = r!.root.findAllByType(Text).find((n) => n.props.children === 'Tool before policy')!;
+    expect(label.props.numberOfLines).toBeUndefined();
+    expect(style(label)).toMatchObject({ flex: 1, minWidth: 0 });
+    const tag = r!.root.findAllByType(View).find((n) => style(n).minHeight === 32)!;
+    expect(style(tag)).toMatchObject({ width: '100%', borderRadius: radius.md });
+    expect(style(tag).height).toBeUndefined();
   });
 });

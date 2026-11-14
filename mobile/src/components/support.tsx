@@ -184,7 +184,7 @@ function ReportLinkButton({ target, reportedAt, onPress }: { target: ReportTarge
       {reportedAt ? (
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }}>
           <Check size={14} color={c.muted} strokeWidth={2.5} />
-          <T v="label" color={c.muted}>{`Report started ${shortDate(reportedAt)}`}</T>
+          <T v="label" color={c.muted} style={{ flexShrink: 1, minWidth: 0 }}>{`Report started ${shortDate(reportedAt)}`}</T>
         </View>
       ) : (
         <T v="label" color={c.accentText}>{REPORT_LABEL}</T>
@@ -415,7 +415,7 @@ export function ReportSheet({ visible, certId, target, reportedAt, onClose, onOp
               <GroupLabel>Which part? (optional)</GroupLabel>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
                 {partChoices.map((p) => (
-                  <Chip key={p.code} checkbox label={p.label} selected={parts.includes(p.code)} onPress={() => toggle(p.code)} />
+                  <Chip key={p.code} checkbox fullWidth shape="rounded" label={p.label} selected={parts.includes(p.code)} onPress={() => toggle(p.code)} />
                 ))}
               </View>
             </>
@@ -479,7 +479,7 @@ export function ReportSheet({ visible, certId, target, reportedAt, onClose, onOp
             <View style={showDetails ? { transform: [{ rotate: '180deg' }] } : undefined}>
               <ChevronDown size={18} color={c.accentText} strokeWidth={ICON_STROKE} />
             </View>
-            <T v="label" color={c.accentText}>What we’ll send</T>
+            <T v="label" color={c.accentText} style={{ flexShrink: 1, minWidth: 0 }}>What we’ll send</T>
           </Pressable>
           {showDetails && (
             <View style={{ borderRadius: radius.md, borderWidth: 1.5, borderColor: isDark ? c.line : c.control, backgroundColor: c.raised, padding: space.md }}>
@@ -846,7 +846,7 @@ export function UnifiedSupportSheet({ visible, certId, from = 'Help', initialCat
         <>
           <GroupLabel>What’s it about?</GroupLabel>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
-            {SUPPORT_CATEGORIES.map((item) => <Chip key={item.code} label={item.label} selected={category === item.code} onPress={() => setCategory(item.code)} />)}
+            {SUPPORT_CATEGORIES.map((item) => <Chip key={item.code} fullWidth shape="rounded" label={item.label} selected={category === item.code} onPress={() => setCategory(item.code)} />)}
           </View>
           <GroupLabel>Your message</GroupLabel>
           <T v="small" color={c.ink2} style={{ marginBottom: space.sm }}>{selected?.prompt ?? 'Choose a category, then tell us what’s on your mind.'}</T>

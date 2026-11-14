@@ -3,7 +3,7 @@
  * fixed schema-v2 order (docs/content/NOTES_SCHEMA_V2.md), drawn with the
  * Grove v2 primitives (docs/mobile/DESIGN_SYSTEM.md).
  *
- * Surface rules used here: text sits on the paper; lists use hairlines;
+ * The reader groups this content in one TopicCard; lists use hairlines;
  * "The IS auditor’s lens" is the key-idea recipe (3px accent rule + italic
  * quote, never a card); exam traps are the one tinted block (tipBg).
  *
@@ -36,11 +36,13 @@ import { ICON_STROKE, Maximize2, X } from './icons';
 import { tween, useMotion, useScreenFocus } from './motion';
 import { nativeFigureFor, NativeFigureView } from './noteFigures';
 import { BigNum, Card, Gap, IconButton, ICON_SIZE, Section, T, useFontScale, useScreenScroll } from './ui';
+import { useTopicCardWidth } from './topicCard';
 
 /** Content column: screen minus the 20pt gutters, never wider than 560 (spec §2). */
 export function useColumnWidth(): number {
   const { width } = useWindowDimensions();
-  return Math.min(width - space.gutter * 2, 560);
+  const cardWidth = useTopicCardWidth();
+  return Math.min(cardWidth ?? width - space.gutter * 2, 560);
 }
 
 // ── Small pieces ───────────────────────────────────────────────────────

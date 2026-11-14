@@ -30,6 +30,7 @@ import { useRef, useState } from 'react';
 import { View } from 'react-native';
 import { EmptyScreen } from '../../components/emptyScreen';
 import { PrincipleBody } from '../../components/principles';
+import { TopicCard, TOPIC_CARD_INSET } from '../../components/topicCard';
 import { ReportRow } from '../../components/support';
 import { Button, Enter, PushedHeader, Screen, T } from '../../components/ui';
 import { CERTIFICATIONS, getCertification } from '../../content/certifications';
@@ -92,40 +93,42 @@ export default function PrincipleScreen() {
       onScroll={onScroll}
       header={<PushedHeader title={principle.title} showTitle={titleUnder} onBack={goBack} />}
     >
-      <Enter i={0}>
-        <View onLayout={(e) => (titleBottom.current = space.lg + e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
-          {family && <T v="caption" color={c.accentText}>{`Principle · ${family.title}`}</T>}
-          <T v="hero" accessibilityRole="header" style={{ marginTop: space.xs }}>{principle.title}</T>
-        </View>
-      </Enter>
+      <TopicCard testID="principle-topic-card">
+        <Enter i={0}>
+          <View onLayout={(e) => (titleBottom.current = space.lg + TOPIC_CARD_INSET + e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
+            {family && <T v="caption" color={c.accentText}>{`Principle · ${family.title}`}</T>}
+            <T v="hero" accessibilityRole="header" style={{ marginTop: space.xs }}>{principle.title}</T>
+          </View>
+        </Enter>
 
-      <Enter i={1} style={{ marginTop: space.lg }}>
-        <PrincipleBody principle={principle} />
-      </Enter>
+        <Enter i={1} style={{ marginTop: space.lg }}>
+          <PrincipleBody principle={principle} />
+        </Enter>
 
-      {n > 0 && (
-        // The helper line sits right under its button, so they read as one.
-        <View style={{ marginTop: space.xxl, gap: space.xs }}>
-          <Button
-            label="Practice this principle"
-            accessibilityHint={`Starts a set of ${Math.min(n, PRINCIPLE_SET_SIZE)} questions on ${principle.title}, new and missed ones first`}
-            onPress={practise}
+        {n > 0 && (
+          // The helper line sits right under its button, so they read as one.
+          <View style={{ marginTop: space.xxl, gap: space.xs }}>
+            <Button
+              label="Practice this principle"
+              accessibilityHint={`Starts a set of ${Math.min(n, PRINCIPLE_SET_SIZE)} questions on ${principle.title}, new and missed ones first`}
+              onPress={practise}
+            />
+            <T v="meta" center>
+              {n > PRINCIPLE_SET_SIZE
+                ? `${n} questions on this idea. Each set asks ${PRINCIPLE_SET_SIZE}, new and missed ones first.`
+                : `${n} ${n === 1 ? 'question' : 'questions'} on this idea. Your answers count toward your progress.`}
+            </T>
+          </View>
+        )}
+        {/* The source row (as on a study note): its code, and Report a problem. */}
+        <View style={{ marginTop: n > 0 ? space.xl : space.xxl }}>
+          <ReportRow
+            certId={cert.id}
+            meta={`Code ${principle.id}`}
+            target={{ kind: 'principle', id: principle.id, name: principle.title, where: 'Principle' }}
           />
-          <T v="meta" center>
-            {n > PRINCIPLE_SET_SIZE
-              ? `${n} questions on this idea. Each set asks ${PRINCIPLE_SET_SIZE}, new and missed ones first.`
-              : `${n} ${n === 1 ? 'question' : 'questions'} on this idea. Your answers count toward your progress.`}
-          </T>
         </View>
-      )}
-      {/* The source row (as on a study note): its code, and Report a problem. */}
-      <View style={{ marginTop: n > 0 ? space.xl : space.xxl }}>
-        <ReportRow
-          certId={cert.id}
-          meta={`Code ${principle.id}`}
-          target={{ kind: 'principle', id: principle.id, name: principle.title, where: 'Principle' }}
-        />
-      </View>
+      </TopicCard>
     </Screen>
   );
 }

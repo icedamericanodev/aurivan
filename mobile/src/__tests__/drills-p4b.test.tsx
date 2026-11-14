@@ -27,7 +27,7 @@ import FieldNotes from '../app/field-notes';
 import Daylight from '../app/game/daylight';
 import Forecast from '../app/game/sprint';
 import { PaceStrip } from '../components/pace';
-import { Segmented } from '../components/ui';
+import { Segmented, T } from '../components/ui';
 import { DrillAnswer } from '../components/drillAnswer';
 import { LevelMarkers, levelSpoken, seedlingHintDue, SNARE_HINT, stepSpoken, Twig, twigMode, twigSpoken, TWIG_MAX } from '../components/drillKit';
 import { Drills } from '../components/drills';
@@ -363,6 +363,38 @@ describe('Call It First: the folded options', () => {
 
 // ── The intro (6.2) ──────────────────────────────────────────────────────
 describe('the intro (6.2)', () => {
+  it('large-text level choices stack with bounded, complete captions and retain selection', () => {
+    const onPick = jest.fn();
+    mount(<LevelMarkers level="seedling" picked="sapling" onPick={onPick} />);
+    expect(styleOf(host('level-markers')[0]).flexDirection).toBe('row');
+    setScale(2);
+    expect(styleOf(host('level-markers')[0]).flexDirection).toBe('column');
+    const radios = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'radio');
+    expect(radios.map((n) => n.props.accessibilityState.checked)).toEqual([false, true, false]);
+    for (const radio of radios) {
+      expect(styleOf(radio).flex).toBeUndefined();
+      expect(styleOf(radio).minHeight).toBeGreaterThanOrEqual(48);
+      const caption = radio.findByType(T);
+      expect(styleOf(caption)).toMatchObject({ flex: 1, minWidth: 0 });
+      expect(caption.props.numberOfLines).toBeUndefined();
+    }
+    expect(radios.map(textOf)).toEqual(['Beginner', 'Practised', 'Skilled']);
+    act(() => root().findAll((n) => n.props.testID === 'level-heartwood' && typeof n.props.onPress === 'function')[0].props.onPress());
+    expect(onPick).toHaveBeenCalledWith('heartwood');
+    setScale(1);
+    expect(styleOf(host('level-markers')[0]).flexDirection).toBe('row');
+  });
+
+  it('large recap labels stack but small decorative markers stay compact', () => {
+    setScale(2);
+    mount(<LevelMarkers level="sapling" />);
+    expect(styleOf(host('level-markers')[0]).flexDirection).toBe('column');
+    expect(host('level-markers')[0].props.accessibilityLabel).toBe('Level: Practised. Skilled not reached.');
+    act(() => r!.update(<LevelMarkers level="sapling" small decorative />));
+    expect(styleOf(host('level-markers')[0]).flexDirection).toBe('row');
+    expect(allText()).not.toContain('Practised');
+  });
+
   it('back row "Practice", the name as the one display title, the strong-round line, the markers as radios', () => {
     const onTier = jest.fn();
     mount(

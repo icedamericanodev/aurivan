@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=grovedrills|grovebadges|groveplant|grove|motion2|fieldguide|forms|m149|m146|m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=textfit|topics|labs|grovedrills|grovebadges|groveplant|grove|motion2|fieldguide|forms|m149|m146|m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -76,7 +76,13 @@ if [ -x /opt/pw-browsers/chromium-1194/chrome-linux/chrome ]; then export CHROME
 # SHOTS=data captures Settings → Your data: backup, restore preview, errors (shoot_data.mjs).
 # SHOTS=pace captures the Build D timer screens: mock start sheet, pace checks,
 # pacing results, timed practice, Study defaults and Daylight (shoot_pace.mjs).
-if [ "${SHOTS:-}" = labs ]; then
+if [ "${SHOTS:-}" = textfit ]; then
+  # Broad offline route/modal audit, four text-size/theme configurations, synthetic saves only.
+  node scripts/screenshots/shoot_textfit.mjs "$TMP/seed.json" "$OUT"
+elif [ "${SHOTS:-}" = topics ]; then
+  # One-topic cards, preserved Learn titles, all reader types and large/narrow layouts.
+  node scripts/screenshots/shoot_topics.mjs "$TMP/seed.json" "$OUT"
+elif [ "${SHOTS:-}" = labs ]; then
   node scripts/screenshots/shoot_labs.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = notes ]; then
   node scripts/screenshots/shoot_notes.mjs "$TMP/seed.json" "$OUT" "$THEME"
