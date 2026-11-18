@@ -146,6 +146,9 @@ the website"). Every tester quote card says testers are offered free Premium.
    both redirect addresses start `https://kaisip.com/` (no `www.`); spam
    protection on the form is on; and whether Kit adds `ck_subscriber_id` to
    the confirm redirect (if it does, that id appears in Cloudflare's logs).
+   Verified live 18 Nov 2026: the owner's real sign-up reached Kit, the
+   confirm email arrived, both redirect pages worked, and the Cloudflare
+   Web Analytics script is on kaisip.com.
    **Monthly in Kit (owner):** Kit deletes nobody by itself. Delete
    subscribers who have not confirmed after 30 days and anyone who
    unsubscribed more than 30 days ago (Subscribers, filter by status, select,
