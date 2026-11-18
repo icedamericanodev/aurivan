@@ -156,7 +156,7 @@ exports.CERTIFICATIONS = [
     {
         id: 'aaia',
         name: 'AAIA',
-        fullName: 'Advanced in AI Audit',
+        fullName: 'AI audit exam',
         issuer: exports.ISACA,
         mindset: 'Think like a senior auditor applied to AI: governance, accountability, ' +
             'and evidence over hype. ' + ISACA_MINDSET,
@@ -10508,7 +10508,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "d3be56ad31a3a9ac";
+  api.sourceHash = "44077103fe516d32";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

@@ -190,10 +190,11 @@ payment, never renews). Notes, lessons, principles and games stay free.
   - iOS in-app purchase description (44 of 45): **6 months of AAIA exam practice. Never renews**
 - AAIA is an unregistered ISACA trademark: never AAIA®. ISACA® keeps its ®.
   Never "Pass", never a pass promise or rate, never implied ISACA endorsement.
-- **Maintainer decision before launch:** the app shows the full name "Advanced
-  in AI Audit", which ISACA writes as "ISACA Advanced in AI Audit™" (a US
-  application for the composite mark is pending). Either drop that subtitle or
-  extend the notice to "AAIA and Advanced in AI Audit are trademarks of ISACA."
+- **Maintainer decision, 18 Nov 2026: the full name is dropped.** ISACA writes
+  it as "ISACA Advanced in AI Audit™" and a US application for the composite mark
+  is pending, so learner copy says "AAIA" or "the AAIA exam from ISACA®" only. The
+  app's subtitle is the descriptive "AI audit exam"; the notice stays "AAIA is a
+  trademark of ISACA."
 - **Originality is a legal must** for a paid course: never copy or closely
   paraphrase ISACA's AAIA review manual, QAE database, online course or practice
   quiz, or any prep bank. Every item carries a `_provenance` note; reviewers
@@ -443,11 +444,11 @@ Release audit, 18 Nov 2026 (whole course, AAIA still switched off):
 - **Decided by experts:** the paid copy says "mocks" without a count (each is a new draw); the final review
   week stays free (section 6); iOS restore of the 6-month purchase is a launch-time test; ITAF 4th-edition
   numbers stay, labelled, with a re-map trigger in the blueprint's open items.
-- **Owner decision still open:** the full name "Advanced in AI Audit" (section 7). The reconciler and
-  compliance reviewer recommend extending the notice; the product manager recommends dropping the full name.
+- **Owner decision:** the full name "Advanced in AI Audit" is dropped from learner copy (maintainer,
+  18 Nov 2026; section 7).
 - Length tell: D1 20.3%, D2 20.7%, D3 17.0%. Tags: 497 of 603.
 
-**Next round:** the owner's trademark decision, then D1 and D2 rounds toward the targets.
+**Next round:** D1 and D2 rounds toward the targets.
 
 ## 10. Follow-ups outside this plan's scope
 

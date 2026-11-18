@@ -113,7 +113,7 @@ export const CERTIFICATIONS: Certification[] = [
   {
     id: 'aaia',
     name: 'AAIA',
-    fullName: 'Advanced in AI Audit',
+    fullName: 'AI audit exam',
     issuer: ISACA,
     mindset:
       'Think like a senior auditor applied to AI: governance, accountability, ' +
