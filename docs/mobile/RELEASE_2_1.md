@@ -2,6 +2,18 @@
 
 Owner requirement recorded 9 Nov 2026: the next Android App Bundle must have version name **2.1**, include every completed change from this development cycle plus changes completed before the build, and use a version code greater than the last uploaded build. Update this inventory after every completed change and reconcile it at build freeze. This is a development tracker, not a declaration that a release has shipped.
 
+## Build freeze · 18 Nov 2026 (closed-testing update)
+
+Owner decisions (18 Nov 2026): this bundle is a **closed-testing update**, not a production candidate. Scope is everything on main plus the two tester fixes below; open PRs #240 (Mistake DNA), #242 (topic cards), #243 (Today dashboard) and #244 (more Concept Labs) wait for a later update. Version name is **exactly "2.1"** (app.json; the 2.2.0 set by #239 was never shipped). Claude builds the signed AAB; the owner uploads it in Play Console.
+
+- **Play state (from Expo's records, 18 Nov):** one store build exists, 2.0.0 version code **2** (EAS build fa0abd76, commit f4202a5, 6 Nov), uploaded by hand (no EAS submissions). Play Console itself was not readable from this session: the owner confirms in Play Console that 2 is the highest code before uploading.
+- **Two-part version name:** backups, problem reports and the sync table accept only x.y.z, so `fullVersion()` saves "2.1" as "2.1.0" everywhere a version is stored or sent; Settings and Play show "2.1". A 2.1 phone restores 2.0.0 backups; a 2.0.0 phone refuses a 2.1 backup as "newer" (unchanged rule). Internal 2.2.0 preview backups are refused as newer (internal builds only).
+- **FB-008 / R-QHER:** sticky footers that sit directly on the screen now reserve the navigation-bar space; footers inside an inner box (session, lessons, drills) opt out to avoid a double gap. Browser check with a simulated 48px bar: onboarding and mock start overlapped by 36px on main, clear now; practice identical. Native Pixel three-button/gesture check still to do on the AAB.
+- **FB-007 / R-ZJ67:** d5_205 states management's requirement; key D, options and order unchanged; blind re-test picked D.
+- **What's New:** the 2.1.0 and 2.2.0 development entries are one 2.1 entry. Play release notes (442 characters) are in the PR description.
+- **Gates:** see the PR for the exact-commit results (typecheck, lint, both Jest modes, Android export, OFF bundle, size, release config, repo health, exam-style lint) and the AAB record (build id, version code, SHA-256).
+- **Expert review:** code review (found the double-gap issue, fixed), blind question test (PASS), Play policy review (GO; no new permissions, Data safety unchanged, target SDK 36). Owner action: remove the retired plant from the Play listing text and screenshot 8.
+
 ## Included in the integrated review workspace
 
 | Change | Source checkpoint | State |
@@ -31,8 +43,10 @@ Draft release notes; retain this exact section heading separately from other imp
 - **Android backups:** Learners could only find sharing destinations. A separate folder picker now saves and verifies a new backup file while preserving sharing.
 - **Answer explanations:** Learners reported having to remember missing answer options. The answer and mock-review screens now keep each option beside its explanation.
 - **Nickname setup:** Learners reported having to search for username setup. The existing setup screen now offers an optional local nickname; this does not introduce accounts or sign-in.
-- **The letter f (FB-006, waiting for the owner's decision; do not promote before she agrees):** A learner noticed that the letter f looked unusual in many questions. It was the reading typeface's own design. The upright f now has a familiar shape in questions, headings and the home-screen widgets; no other letter and no layout changed. Check on a real Android phone before release.
+- **The letter f (FB-006, merged in #247):** A learner noticed that the letter f looked unusual in many questions. It was the reading typeface's own design. The upright f now has a familiar shape in questions, headings and the home-screen widgets; no other letter and no layout changed. Check on a real Android phone before release.
 - **Coach me readability:** Learners reported that question text became unreadable after opening Coach me. The duplicate question layer was removed so the question uses one readable text layer. Native high-contrast verification remains pending.
+- **Bottom buttons (FB-008):** A learner saw Android's navigation buttons covering the buttons at the bottom of a screen. Bottom buttons now sit above the navigation bar.
+- **Password policy question (FB-007):** A learner found that a question relied on a fact it did not state. It now says management requires the controls; the answer is unchanged.
 
 The verified anonymous entries are now bundled in `mobile/src/content/support/fixes.json` for the integrated 2.1 preview. They describe implemented changes, not completed native acceptance or a published release. Keep tester-log entries In review until shipment; do not claim inbox delivery or that a release has shipped.
 
