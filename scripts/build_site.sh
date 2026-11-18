@@ -56,15 +56,18 @@ OUT="${SITE_OUT:-_site}"
 
 # SITE_MODE (owner, 4 Nov 2026): the website is CLOSED to a landing page
 # until the phone app is in the stores.
-#   landing (the default, what Cloudflare publishes): kaisip.com shows the beta
+#   home (the default since 18 Nov 2026, what Cloudflare publishes): kaisip.com
+#     shows the marketing home page (home.html) with the Kit waitlist; the
+#     beta page stays at /beta. To roll back, set the default to landing.
+#   landing (the default 4 to 18 Nov 2026): kaisip.com shows the beta
 #     landing page (beta.html, also at /beta) plus Privacy, Terms, Help and
 #     How questions are made. The
 #     web study app and every data file are not published; any other address
 #     gets the not-found page (404.html, status 404).
 #   app: the full web study app as before (index.html + the free sample).
 #     CI and the smoke tester build this too, so the app stays deployable.
-# To reopen the web app at launch: change "landing" to "app" on the next line.
-SITE_MODE="${SITE_MODE:-landing}"
+# To reopen the web app at launch: change "home" to "app" on the next line.
+SITE_MODE="${SITE_MODE:-home}"
 # While the site is closed, the web study app is still built into this
 # unlisted folder, so the owner can preview it at https://kaisip.com/<folder>/
 # (free sample only, never the full bank; marked noindex in _headers). Keep the

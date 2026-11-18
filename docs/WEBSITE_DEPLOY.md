@@ -6,8 +6,10 @@ is in `docs/ARCHITECTURE_E2E.md` (sections 2, 4 and 5).
 
 ## Current setup (16 Oct 2026)
 
-- **Closed to a landing page (owner, 4 Nov 2026)** until the phone app is in
-  the stores. `scripts/build_site.sh` defaults to `SITE_MODE=landing`:
+- **The new home page is live (owner, 18 Nov 2026).** `scripts/build_site.sh`
+  defaults to `SITE_MODE=home`: kaisip.com shows `home.html` with the Kit
+  waitlist, and the beta page stays at `/beta`. See "The new home page"
+  below. Before that, from 4 Nov 2026, it defaulted to `SITE_MODE=landing`:
   kaisip.com shows the beta landing page (`beta.html`, also at `/beta`) and
   any other address shows it too; Privacy, Terms and Help stay public (the
   phone app and the store listings link to them). The web study app and every
@@ -160,7 +162,7 @@ the website"). Every tester quote card says testers are offered free Premium.
    `index, follow` in `home.html`.
 5. Confirm `SITE_MODE=home bash scripts/build_site.sh` passes with no draft
    switch, and `scripts/home_page/check.cjs` passes against it.
-6. Change the default in `scripts/build_site.sh` from `landing` to `home`, in
+6. (Done 18 Nov 2026.) Change the default in `scripts/build_site.sh` from `landing` to `home`, in
    its own pull request. Merging that pull request is the launch.
 
 **To roll back:** change the default back to `landing` (or revert that one
