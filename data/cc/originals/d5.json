@@ -5874,6 +5874,366 @@
    ],
    "_provenance": "Authored from concept: 'a phishing test records that a password was entered, never the password itself' (notes 5.5.5 Physical and Social Engineering Penetration Tests). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 7, 12 Nov 2026.",
    "style_version": 2
+  },
+  {
+   "id": "cc_d5_164",
+   "domain": 5,
+   "subtopic": "5.4 Asset protection. AI service settings",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A vendor update changed a subtitling studio's AI notetaker to keep transcripts forever, against its 30-day baseline; the studio director owns them, and procedure has the system administrator fix drift. Which action is BEST?",
+   "options": {
+    "A": "Return retention to 30 days, then record the correction",
+    "B": "Keep the new setting and record it for the director's decision",
+    "C": "Raise a change to adopt the vendor's setting as the baseline",
+    "D": "Suspend the notetaker studio-wide and open a vendor ticket"
+   },
+   "correct": "A",
+   "key_concept": "A vendor update that changes an approved setting is drift; the assigned administrator restores the baseline and records it.",
+   "pre_read": "Ask whether the new setting came through an approved change, and who the procedure assigns to correct it.",
+   "correct_explanation": "A baseline records the approved settings, so a vendor update that quietly changes one is drift, not an approved change. The procedure gives drift fixes to the system administrator, and the director's choice is already in the baseline, so restoring 30-day retention and recording it is in role. Keeping the new setting for the director to decide is the runner-up: owners matter, but transcripts pile up while a settled question waits.",
+   "wrong_explanations": {
+    "B": "Closest choice: the director owns the transcripts. But the baseline already records the director's choice, and the procedure assigns drift fixes to the administrator; waiting lets transcripts build up.",
+    "C": "Tempting because baselines do change through change management. But a vendor default is not an approved decision, and keeping transcripts forever adds the risk the baseline was set to avoid.",
+    "D": "Tempting because it stops the problem at once. But one drifted setting has a simple, assigned fix; suspending the tool for everyone disrupts work without need."
+   },
+   "tips": [
+    "Eliminate: C lets a vendor default rewrite the approved baseline, and D shuts down a working tool when one setting can simply be restored.",
+    "Final two: A beats B because the procedure assigns drift fixes to the administrator, and the baseline already reflects the owner's approved choice.",
+    "Exam cue: a setting that differs from the baseline without an approved change is drift. When the procedure assigns the fix, restore it and record it."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 CM-2 (Baseline Configuration); NIST SP 800-128 Section 3.4 (SecCM Monitoring: monitoring confirms the existing configuration is identical to the current approved baseline configuration)",
+   "related_concepts": [
+    "Configuration drift",
+    "Secure baselines",
+    "AI service settings"
+   ],
+   "_provenance": "Authored from concept: 'a setting changed by a vendor update is drift, which the assigned administrator restores to the baseline' (notes 5.4.4 Configuration Management and Secure Baselines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 8, 13 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_165",
+   "domain": 5,
+   "subtopic": "5.4 Asset protection. Patch timing and safety",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "An emergency patch for an actively exploited flaw, tested and approved as an emergency change, requires restarting a concert hall's stage-lift controller while performers rehearse on the lift. What should the system administrator do FIRST?",
+   "options": {
+    "A": "Restart the controller now, as attackers are already exploiting the flaw",
+    "B": "Install the patch now and leave the restart for next month",
+    "C": "Tell the stage manager the lift is exempt from patching",
+    "D": "Ask the stage manager to clear the lift, then restart the controller"
+   },
+   "correct": "D",
+   "key_concept": "Even an urgent patch waits until people are clear of equipment its restart could affect; then it goes ahead without delay.",
+   "pre_read": "Picture what the restart does to the equipment, and who is standing on it.",
+   "correct_explanation": "People's safety comes before systems and data, so the restart waits until no one is on the lift. The stage manager runs the stage, so the administrator asks them to clear it, then restarts the controller under the emergency change; the delay is minutes. Restarting at once is the runner-up: the flaw is urgent, but a controller restarting under performers could move or halt the lift without warning.",
+   "wrong_explanations": {
+    "A": "Closest choice: an actively exploited flaw does need fast action. But a restart under performers could move or halt the lift; clearing the stage first costs only minutes.",
+    "B": "Tempting because it seems to get the fix in quickly. But a patch that needs a restart does not take effect until the restart, so the flaw stays open.",
+    "C": "Tempting because safety equipment must stay stable. But it still needs patching, tested and timed with care; leaving the flaw open keeps the lift exposed to attackers."
+   },
+   "tips": [
+    "Eliminate: B leaves the patch inactive without its restart, and C leaves an actively exploited flaw open on equipment people ride.",
+    "Final two: D beats A because people come first; a restart under performers risks injury, and clearing the lift costs only minutes.",
+    "Exam cue: when an urgent security fix could hurt someone, make people safe first, then act fast. Safety sets the order, not the urgency."
+   ],
+   "framework_ref": "NIST SP 800-82 Rev. 3 Section 2.4 (Comparing OT and IT System Security: human safety is paramount, followed by protection of the process); NIST SP 800-82 Rev. 3 Section 6.2.11 (Flaw Remediation and Patch Management: test OT patches before applying)",
+   "related_concepts": [
+    "Patch scheduling",
+    "Human safety first",
+    "Operational technology"
+   ],
+   "_provenance": "Authored from concept: 'an urgent patch restart waits until people are clear of the equipment it affects' (notes 5.4.5 Patch Management). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 8, 13 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_166",
+   "domain": 5,
+   "subtopic": "5.4 Asset protection. Pre-approved changes",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A bell foundry's procedure makes renewing an expiring web certificate a pre-approved standard change for the system administrator; the certificate expires Friday, and the change board next meets Monday. Which action is BEST?",
+   "options": {
+    "A": "Ask the change board to approve the standard change before Friday",
+    "B": "Raise an emergency change for the on-call approver today",
+    "C": "Renew the certificate by the standard steps and record it",
+    "D": "Use a self-signed certificate and record it as a stopgap"
+   },
+   "correct": "C",
+   "key_concept": "A standard change is pre-approved by procedure, so the practitioner makes it without further sign-off but still records it.",
+   "pre_read": "Check what approval this kind of change already has before choosing a route.",
+   "correct_explanation": "A standard change is low risk and approved in advance by the procedure, so the system administrator makes it by the set steps without further sign-off, but still records it. Renewing now keeps the site trusted before Friday. Raising an emergency change is the runner-up: the deadline feels urgent, but the emergency route is for unplanned fixes, and this renewal already has its approval.",
+   "wrong_explanations": {
+    "B": "Closest choice: the deadline is close and the board meets after it. But the emergency route is for urgent, unplanned fixes; this renewal already has its approval.",
+    "A": "Tempting because significant changes do go to the change board. But this renewal is a standard change the procedure has already approved, so no special meeting is needed.",
+    "D": "Tempting because it keeps the site encrypted. But browsers do not trust self-signed certificates, so visitors get warnings; the approved renewal is available now."
+   },
+   "tips": [
+    "Eliminate: A asks the board to approve a change the procedure already approved, and D swaps in a certificate browsers do not trust.",
+    "Final two: C beats B because a standard change carries its approval in advance; the emergency route is for urgent, unplanned fixes, not routine work with a deadline.",
+    "Exam cue: a standard change carries its approval in the procedure. Make it by the set steps, and record it like any other change."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control); NIST SP 800-128 Section 3.3.2 (Implement the Configuration Change Control Process: a pre-approved change is noted on the change request and made without further analysis or approval)",
+   "related_concepts": [
+    "Standard changes",
+    "Change records",
+    "Certificate renewal"
+   ],
+   "_provenance": "Authored from concept: 'a standard change carries its approval in the procedure, so it is made without waiting but still recorded' (notes 5.4.6 Change Management). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 8, 13 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_167",
+   "domain": 5,
+   "subtopic": "5.4 Asset protection. Scope of an approved change",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Midway through a change-board-approved upgrade of a bus operator's AI triage assistant's model, its system owner asks the system administrator to also extend the 7-day decision log to 90 days. Which action is BEST?",
+   "options": {
+    "A": "Include the log change at the system owner's request",
+    "B": "Treat the log change as an emergency change and make it now",
+    "C": "Undo the approved update, then redo it with the log change",
+    "D": "Finish the approved steps, then raise a new change for the log"
+   },
+   "correct": "D",
+   "key_concept": "A change approval covers only the requested work; extra work, even when the system owner asks for it, gets its own request.",
+   "pre_read": "Look at who approved the change and what it covered, and whether the owner's request changes that.",
+   "correct_explanation": "The change board approved only the model upgrade it reviewed, and a request made mid-window does not extend that approval, whoever makes it. So the administrator completes the approved update and raises a new change for the log setting. Including the log change at the owner's request is the runner-up: the request is sensible and comes from the right person, but an untested change would ride on an approval that never covered it.",
+   "wrong_explanations": {
+    "A": "Closest choice: the owner speaks for the system. But the change board approved only the model upgrade; the log change was never reviewed or tested.",
+    "B": "Tempting because the emergency route is fast. But it is for urgent fixes such as exploited flaws; a longer log is useful, not urgent, so it needs a normal request.",
+    "C": "Tempting because it keeps the work together. But undoing a tested, approved update wastes it and adds risk; the log change can follow on its own request."
+   },
+   "tips": [
+    "Eliminate: B sends a useful but non-urgent setting down the emergency route, and C undoes a tested, approved update for no gain.",
+    "Final two: D beats A because the board's approval covers only what was requested; even the system owner's request needs its own change.",
+    "Exam cue: asked to add something during a change window? Finish the approved scope, then raise a new request, whoever is asking."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control); NIST SP 800-53 Rev. 5 CM-3(2) (Configuration Change Control | Testing, Validation, and Documentation of Changes)",
+   "related_concepts": [
+    "Change scope",
+    "Change approval",
+    "AI tool configuration"
+   ],
+   "_provenance": "Authored from concept: 'an approval covers only the requested change; extra work, even at the owner's request, gets its own request' (notes 5.4.6 Change Management, exam trap on seniority). Original scenario and wording, re-angled away from the notes worked example; no prep-bank, CBK or certification-body training text used. CC D5 batch 8, 13 Nov 2026. Final fix round (18 Nov 2026): stem names the change board as approver (cross-domain tension with system-owner approval in D4); A and C reworded to drop the 'too' and 'so' word tells, and 'then' now also sits on distractor C.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_168",
+   "domain": 5,
+   "subtopic": "5.5 Security testing. Authorizing tests of shared spaces",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A spice importer's director has signed approval for a tailgating test at its shared building's main entrance, and the landlord's building manager agreed to it by phone. What should the importer's security manager do FIRST?",
+   "options": {
+    "A": "Get the building manager's written permission for the test",
+    "B": "Proceed, as the director and building manager both agreed",
+    "C": "Run the entrance test, then send the landlord the results",
+    "D": "Tell the other tenants the test date before testing begins"
+   },
+   "correct": "A",
+   "key_concept": "Test permission must come from whoever controls the target and be in writing; a phone agreement leaves the scope unproven and the testers unprotected.",
+   "pre_read": "Notice who controls the place being tested, and what form their agreement takes.",
+   "correct_explanation": "Authorization must come from whoever controls the target, and it must be in writing. The landlord controls the entrance, so its agreement is needed, but a phone call records no scope, dates or contacts, and gives testers nothing to show if guards stop them. Proceeding on both agreements is the runner-up: the right people did agree, but an unrecorded agreement can be disputed or misremembered once the test begins.",
+   "wrong_explanations": {
+    "B": "Closest choice: the right people did agree. But a phone agreement records no scope or dates, and testers stopped by guards would have no letter to show.",
+    "C": "Tempting because it keeps the landlord informed. But a report afterward is not written permission; without it, guards could treat the testers as real intruders.",
+    "D": "Tempting because neighbors should not be alarmed. But telling tenants is not written authorization, and announcing the date can spoil the test; the landlord's permission is still needed."
+   },
+   "tips": [
+    "Eliminate: C reports to the landlord only after testing without written permission, and D tells tenants the date without fixing the missing authorization.",
+    "Final two: A beats B because test permission must be written; a phone agreement records no scope and protects no one if guards stop the testers.",
+    "Exam cue: before any test, ask who controls the target and whether their permission is in writing. Both must be true before testing starts."
+   ],
+   "framework_ref": "NIST SP 800-115 Section 6.5 (Assessment Plan Development: when the organization does not control part of what is tested, that part's owner usually must also consent in writing); NIST SP 800-115 Section 6.6 (Legal Considerations: potential legal concerns are evaluated before the assessment begins)",
+   "related_concepts": [
+    "Test authorization",
+    "Physical penetration tests",
+    "Rules of engagement"
+   ],
+   "_provenance": "Authored from concept: 'permission for a test must be written and come from whoever controls the target' (notes 5.5.5 Physical and Social Engineering Penetration Tests). Original scenario and wording, re-angled away from cc_d1_043; no prep-bank, CBK or certification-body training text used. CC D5 batch 8, 13 Nov 2026. Final fix round (18 Nov 2026): setting renamed from a mapmaking firm (cross-domain settings overlap); 'before' moved off the key and 'afterward' off C (timing-word tells); D re-angled to a pre-test notice so it competes on timing.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_169",
+   "domain": 5,
+   "subtopic": "5.5 Security testing. When to threat model",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A fencing federation is planning a members' booking app, and its treasurer suggests threat modeling it after launch. What timing should the security analyst advise as MOST useful?",
+   "options": {
+    "A": "During design, then again every time the design changes",
+    "B": "After launch, when real attack data from users is available",
+    "C": "After coding ends, then again at each penetration test",
+    "D": "During design, then reuse that model for later releases"
+   },
+   "correct": "A",
+   "key_concept": "Threat modeling is most useful during design, when fixes are cheap, and is revisited whenever the design changes.",
+   "pre_read": "Think about when a design flaw is cheapest to fix, and what a design change does to the threats.",
+   "correct_explanation": "Threat modeling asks what could go wrong with a design, so it pays most while the design is still on paper and changes are cheap. New features change the threats, so the model is revisited each time the design changes. Modeling once at design and reusing it is the runner-up: the timing is right, but a model made for the first design misses threats that later changes bring.",
+   "wrong_explanations": {
+    "D": "Closest choice: design is the right time to start. But new features bring new threats, so a model from the first design goes stale; revisit it whenever the design changes.",
+    "B": "Tempting because live data feels realistic. But after launch, members' data is already exposed to any design flaw, and changing the design costs far more.",
+    "C": "Tempting because it still happens before launch. But once the code is written, design flaws are built in; a penetration test checks the build, while threat modeling shapes the design."
+   },
+   "tips": [
+    "Eliminate: B waits until members' data is already exposed, and C starts only after coding, when design flaws are built in and costly to fix.",
+    "Final two: A beats D because threat modeling follows the design; each design change can bring threats the first model never covered.",
+    "Exam cue: threat model early, while the design can still change cheaply, and revisit the model whenever the design changes."
+   ],
+   "framework_ref": "NIST SP 800-218 (SSDF v1.1) PW.1.1 (use forms of risk modeling, such as threat modeling, to assess the software's security risk, with risks addressed during design); NIST SP 800-53 Rev. 5 SA-11(2) (Developer Testing and Evaluation | Threat Modeling and Vulnerability Analyses)",
+   "related_concepts": [
+    "Threat modeling",
+    "Secure design",
+    "Software development life cycle"
+   ],
+   "_provenance": "Authored from concept: 'threat modeling pays most during design and is revisited when the design changes' (notes 5.5.4 Threat Modeling). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 8, 13 Nov 2026. Final fix round (18 Nov 2026): D re-angled to an early but one-time model so the key no longer wins on timing alone (blind precision); the finding suggested C, but changing C would have left 'then' only on the key.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_170",
+   "domain": 5,
+   "subtopic": "5.5 Security testing. Scanning AI services",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A fish market's ordering chatbot answers customers from its order database, and a vulnerability scan of its server found no flaws. What does the clean scan MOST accurately show?",
+   "options": {
+    "A": "No known server flaws were found; chatbot answers were inside the scan",
+    "B": "No known server flaws were found; no penetration test is needed",
+    "C": "No known server flaws were found; AI risks need a server patch",
+    "D": "No known server flaws were found; AI behavior was outside the scan"
+   },
+   "correct": "D",
+   "key_concept": "A vulnerability scan finds known software flaws; an AI chatbot's behavior under crafted prompts needs its own testing.",
+   "pre_read": "Ask what a vulnerability scanner actually checks, and what else the chatbot could get wrong.",
+   "correct_explanation": "A vulnerability scan compares a system with lists of known software flaws, so a clean result means the scanner found none of those on the server, though scans can miss some. It cannot show how the chatbot's model handles crafted prompts that pull out other customers' orders; that needs AI-specific testing such as prompt injection attempts. Patching is the runner-up: it matters, but model manipulation is not a patchable flaw.",
+   "wrong_explanations": {
+    "C": "Closest choice: an unpatched server would be a real risk. But prompt injection works through how the model handles input, which no server patch fixes; it needs its own tests.",
+    "A": "Tempting because the scan was clean. But scanners check for known software flaws; they do not try crafted prompts, so the chatbot's answers were never tested.",
+    "B": "Tempting because a clean scan feels complete. But a scan lists known flaws without exploiting them, while a penetration test shows what an attacker could achieve; neither replaces the other."
+   },
+   "tips": [
+    "Eliminate: A assumes a server scan also tested the chatbot's answers, and B lets a clean scan replace a penetration test, which exploits weaknesses rather than listing them.",
+    "Final two: D beats C because model manipulation is not a software flaw that patching closes; the chatbot's AI behavior needs its own testing.",
+    "Exam cue: match the test to the risk. A clean scan covers known software flaws, not how an AI model responds to crafted input."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 RA-5 (Vulnerability Monitoring and Scanning); OWASP Top 10 for LLM Applications 2025 LLM01 (Prompt Injection: conduct adversarial testing and attack simulations, treating the model as an untrusted user)",
+   "related_concepts": [
+    "Vulnerability scanning",
+    "Prompt injection",
+    "AI security testing"
+   ],
+   "_provenance": "Authored from concept: 'a clean vulnerability scan says nothing about how an AI model handles crafted prompts' (notes 5.5.6 Testing AI-Integrated Defenses). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 8, 13 Nov 2026. Final fix round (18 Nov 2026): options rebuilt as parallel scope claims with one shared opener, so the key is no longer the only cautious option (blind giveaway finding).",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_171",
+   "domain": 5,
+   "subtopic": "5.3 Incident response. Signs found during routine work",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Working a slow-laptop ticket at a sailmaker, a help desk technician finds an unknown remote-access tool and a new admin account; procedure sends suspected incidents to the security team. What should the technician do FIRST?",
+   "options": {
+    "A": "Uninstall the tool and delete the account, then tell the security team",
+    "B": "Run a full antivirus scan and close the ticket if clean",
+    "C": "Leave the laptop as found and alert the security team",
+    "D": "Restart the laptop to see whether the tool starts again"
+   },
+   "correct": "C",
+   "key_concept": "Signs of intrusion found during routine support go to incident responders before anyone removes or restarts anything.",
+   "pre_read": "Decide whether this is still a repair job or now something else, and who handles that.",
+   "correct_explanation": "An unknown remote-access tool and a new admin account are signs of a possible intrusion, so the job moves from repair to incident handling, which the procedure gives to the security team. Leaving the laptop as found keeps evidence and lets responders scope the attack. Removing the tool and account first is the runner-up: it feels like fixing, but it destroys evidence and skips analysis of how far the attacker got.",
+   "wrong_explanations": {
+    "A": "Closest choice: the tool and account must go eventually, and the team does hear of it. But removing them first destroys evidence and skips analysis of other access.",
+    "B": "Tempting because a clean scan feels reassuring. But antivirus tools often miss legitimate remote-access software that attackers misuse, and closing the ticket hides a likely incident.",
+    "D": "Tempting because it looks like a quick check. But a restart wipes memory evidence, may trigger the attacker's tools, and delays the security team's response."
+   },
+   "tips": [
+    "Eliminate: B trusts a clean antivirus scan to rule out misused remote-access software, and D's restart wipes memory evidence.",
+    "Final two: C beats A because signs of intrusion go to the team the procedure names; removing traces first destroys evidence and skips scoping.",
+    "Exam cue: routine work that turns up signs of an attack stops being routine. Preserve what you found and hand it to incident responders."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 IR-6 (Incident Reporting); NIST SP 800-61 Rev. 3 Table 1 (Previous incident response life cycle model's phases and corresponding CSF 2.0 Functions)",
+   "related_concepts": [
+    "Incident escalation",
+    "Evidence preservation",
+    "Detection and analysis"
+   ],
+   "_provenance": "Authored from concept: 'signs of intrusion found during routine work go to incident responders before anything is removed' (notes 5.3.2 The Incident Response Lifecycle and CSF 2.0). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 8, 13 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_172",
+   "domain": 5,
+   "subtopic": "5.3 Incident response. Planning an exercise",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A rope maker's incident response lead is planning its first ransomware tabletop exercise. What should the lead decide FIRST?",
+   "options": {
+    "A": "A scoring sheet that grades each participant's answers",
+    "B": "The objectives, such as testing who may order isolation",
+    "C": "A detailed scenario based on a recent ransomware news story",
+    "D": "A live restore test to prove the backups work"
+   },
+   "correct": "B",
+   "key_concept": "An exercise starts from clear objectives, which then shape its scope, participants and scenario.",
+   "pre_read": "Think about what the other planning choices depend on.",
+   "correct_explanation": "Objectives come first because they decide everything else: who takes part, what the scenario must cover and how success is judged. An objective such as testing who may order systems isolated tells the team what the tabletop must test. A detailed news-based scenario is the runner-up: scenarios matter, but one written before the objectives may be vivid yet miss what the plan needs testing.",
+   "wrong_explanations": {
+    "C": "Closest choice: a realistic scenario keeps people engaged. But it is built to serve the objectives; written first, it may miss the decisions the exercise needs to test.",
+    "A": "Tempting because results should be recorded. But a tabletop tests the plan, roles and decisions, not individuals; grading people discourages the open discussion that finds gaps.",
+    "D": "Tempting because recovery matters. But a tabletop is a discussion and touches no systems; proving a restore needs a hands-on test, planned separately."
+   },
+   "tips": [
+    "Eliminate: A grades people when a tabletop tests the plan, and D asks a discussion exercise to prove a restore, which needs a hands-on test.",
+    "Final two: B beats C because objectives decide what the scenario must cover; a vivid scenario chosen first can miss the decisions that need testing.",
+    "Exam cue: plan any exercise from its objectives. Scope, participants and scenario all follow from what the exercise must show."
+   ],
+   "framework_ref": "NIST SP 800-84 Section 4 (Tabletop Exercises: discussion-based events); NIST SP 800-84 Section 4.2.3 (Identify the Objectives: tabletop objectives validate the plan's content, participants' roles and responsibilities, and interdependencies)",
+   "related_concepts": [
+    "Exercise objectives",
+    "Tabletop exercises",
+    "Exercise design"
+   ],
+   "_provenance": "Authored from concept: 'an exercise is planned from its objectives, which shape its scope, participants and scenario' (notes 5.3.7 Incident Response Exercises and Tabletops). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 8, 13 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_173",
+   "domain": 5,
+   "subtopic": "5.1 Data security. Choosing classification levels",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A plant breeder's research director, who owns its trial data, wants every new file labeled Restricted, the top level, to be safe, though most are routine schedules. Which response from the security analyst is BEST?",
+   "options": {
+    "A": "Label each new file Restricted, then review the levels yearly",
+    "B": "Advise setting each file's level by the harm of its disclosure",
+    "C": "Review each file's content and set its level on the director's behalf",
+    "D": "Advise Internal labels, as trial data is rarely targeted"
+   },
+   "correct": "B",
+   "key_concept": "Classification levels follow the harm each item's disclosure would cause; marking everything top level wastes protection and weakens labels.",
+   "pre_read": "Ask what the classification levels are for, and what happens when everything gets the same one.",
+   "correct_explanation": "Levels exist to match protection to harm. Marking everything Restricted spends the strongest controls on routine files, slows work and teaches staff to ignore labels, so the analyst advises the director to classify each file by the harm its disclosure would cause; the director still decides. Labeling everything Restricted and reviewing yearly is the runner-up: a review would catch some errors, but a year of blanket top-level labels already defeats the scheme.",
+   "wrong_explanations": {
+    "A": "Closest choice: it follows the director's wish and adds a yearly check. But until then every file carries the top level, which wastes protection and teaches staff to ignore labels.",
+    "C": "Tempting because the analyst can read the files. But classification is the data owner's decision; security staff advise on levels and protect data, but do not set them.",
+    "D": "Tempting because it avoids heavy controls. But advising a low level on a guess, without weighing harm, could leave valuable research exposed; the level must fit the data."
+   },
+   "tips": [
+    "Eliminate: C has the analyst set levels the data owner decides, and D lowers protection on a guess about who targets the data.",
+    "Final two: B beats A because levels should follow each file's harm from the start; a yearly review leaves a year of blanket over-labeling.",
+    "Exam cue: classification matches protection to harm. Too low exposes data; too high everywhere wastes controls and teaches people to ignore labels."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 RA-2 (Security Categorization); NIST SP 800-12 Rev. 1 Section 3.4 (Information Owner/Steward)",
+   "related_concepts": [
+    "Data classification",
+    "Over-classification",
+    "Data owner role"
+   ],
+   "_provenance": "Authored from concept: 'classification levels follow the harm of disclosure, so a blanket top level defeats the scheme' (notes 5.1.1 Data Classification and Labeling). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 8, 13 Nov 2026.",
+   "style_version": 2
   }
  ]
 }

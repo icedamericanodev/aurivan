@@ -62,7 +62,8 @@
             "cc_d5_004",
             "cc_d5_066",
             "cc_d5_091",
-            "cc_d5_139"
+            "cc_d5_139",
+            "cc_d5_173"
           ],
           "definition": "Data classification sorts information into sensitivity levels, such as public, internal, confidential and restricted, so each level gets protection that fits its value.",
           "why_it_matters": "Without classification, secrets get too little protection and public brochures too much. Labels make the level visible, so people and tools apply the right handling rules.",
@@ -1541,7 +1542,8 @@
             "cc_d5_010",
             "cc_d5_036",
             "cc_d5_076",
-            "cc_d5_099"
+            "cc_d5_099",
+            "cc_d5_171"
           ],
           "definition": "The incident response lifecycle runs from preparation through detection and analysis, containment, eradication and recovery to lessons learned, which feed back into preparation.",
           "why_it_matters": "Steps out of order cause harm: wiping before containment lets the attacker carry on elsewhere, and restoring before eradication brings them back.",
@@ -1862,7 +1864,8 @@
             "cc_d5_035",
             "cc_d5_058",
             "cc_d5_104",
-            "cc_d5_126"
+            "cc_d5_126",
+            "cc_d5_172"
           ],
           "definition": "Incident response exercises test the plan and the people before a real incident, ranging from discussion-based tabletops to hands-on, full-scale exercises.",
           "why_it_matters": "A plan nobody has practiced fails under pressure: numbers are wrong, roles unclear and decisions stall. Exercises find these gaps while mistakes cost nothing.",
@@ -2112,7 +2115,8 @@
             "cc_d5_040",
             "cc_d5_082",
             "cc_d5_109",
-            "cc_d5_129"
+            "cc_d5_129",
+            "cc_d5_164"
           ],
           "definition": "Configuration management keeps systems in a known, approved state by defining secure baselines, applying them consistently, and detecting and correcting drift from them.",
           "why_it_matters": "Defaults are built for easy setup, and attackers know them. Without baselines, every system differs and weaknesses hide.",
@@ -2167,7 +2171,8 @@
             "cc_d5_061",
             "cc_d5_083",
             "cc_d5_107",
-            "cc_d5_130"
+            "cc_d5_130",
+            "cc_d5_165"
           ],
           "definition": "Patch management finds, tests, approves and installs software updates that fix flaws, then confirms they worked, across every system in the inventory.",
           "why_it_matters": "Many breaches use flaws that already had a patch. Patching quickly closes those doors, but careless patching can break critical systems, so speed and testing are balanced.",
@@ -2223,7 +2228,9 @@
             "cc_d5_084",
             "cc_d5_108",
             "cc_d5_131",
-            "cc_d5_156"
+            "cc_d5_156",
+            "cc_d5_166",
+            "cc_d5_167"
           ],
           "definition": "Change management is the controlled process for requesting, assessing, approving, testing, making and reviewing changes to systems, so changes do not cause outages or security gaps.",
           "why_it_matters": "Unplanned, untested changes are a leading cause of outages, and an unapproved change can quietly open a security hole.",
@@ -2255,8 +2262,8 @@
               "why": "They use a faster route with a designated approver, but are still recorded and reviewed afterward."
             },
             {
-              "trap": "A small configuration change by a senior engineer needs no approval.",
-              "why": "Small changes can cause big outages. Seniority does not replace review, testing and a rollback plan."
+              "trap": "Extra work asked for during an approved change, by a senior engineer or even the system owner, can ride on that approval.",
+              "why": "An approval covers only the work it reviewed. Seniority does not replace review, testing and a rollback plan, so extra work gets its own request."
             }
           ],
           "key_terms": [
@@ -2570,7 +2577,8 @@
             "cc_d5_064",
             "cc_d5_089",
             "cc_d5_113",
-            "cc_d5_162"
+            "cc_d5_162",
+            "cc_d5_169"
           ],
           "definition": "Threat modeling is a structured way to find what could go wrong with a system's design, rank those threats, and choose defenses before the system is built or changed.",
           "why_it_matters": "Design flaws are costly to fix after building. Thinking like an attacker at the whiteboard finds them early.",
@@ -2622,8 +2630,8 @@
           "isaca_rule": "Find design threats before building, when fixes are cheapest. Draw the system, look hardest at trust boundaries, use a prompt list such as STRIDE, and give every threat an approved response.",
           "exam_traps": [
             {
-              "trap": "Threat modeling is done once the system is finished, as a final check.",
-              "why": "It is most valuable during design, when changes are cheap."
+              "trap": "Threat modeling is done once, either at design or as a final check when the system is finished.",
+              "why": "It is most valuable during design, when changes are cheap, and is revisited whenever the design changes, because new features bring new threats."
             },
             {
               "trap": "Threat modeling is a job for expert penetration testers only.",
@@ -2650,7 +2658,8 @@
             "cc_d5_065",
             "cc_d5_111",
             "cc_d5_134",
-            "cc_d5_163"
+            "cc_d5_163",
+            "cc_d5_168"
           ],
           "definition": "Physical and social engineering penetration tests check, with written permission, whether people and premises resist tricks such as phishing, baiting, tailgating and impersonation.",
           "why_it_matters": "Attackers often find people and doors easier than firewalls. These tests show whether staff challenge strangers and report suspicious messages.",
@@ -2659,7 +2668,7 @@
             "Tailgating and piggybacking tests check whether a tester can slip in behind staff unnoticed, or be let in without a badge.",
             "Impersonation tests use a pretext, such as a delivery driver or IT contractor, to see whether staff verify identity.",
             "Baiting tests leave tempting items, such as labeled memory sticks, to see whether staff plug them in or hand them to security (see 2.3.3).",
-            "Testers carry a signed authorization letter and stop if anyone's safety is at risk.",
+            "Permission comes in writing from whoever controls the target, such as a landlord for a shared entrance. Testers carry the signed letter and stop if anyone's safety is at risk.",
             "A letter can be forged, so staff confirm a claimed tester with the team that arranged the test, not through a number printed on the letter."
           ],
           "types": [
@@ -2691,7 +2700,7 @@
               "Phishing report rates and speed after each simulation"
             ],
             "recommend": "Report suspected tailgating or impersonation to the security team immediately, even if you think it may be a test.",
-            "decides": "Management authorizes physical and social engineering tests and their scope"
+            "decides": "Management authorizes tests and their scope; shared spaces also need their owner's written permission"
           },
           "isaca_rule": "Be courteous but verify: no badge, no entry, and confirm identity through a known channel, not the person's own story. Report it even if it may be a test.",
           "exam_traps": [
@@ -2724,12 +2733,14 @@
             "cc_d5_045",
             "cc_d5_090",
             "cc_d5_115",
-            "cc_d5_135"
+            "cc_d5_135",
+            "cc_d5_170"
           ],
           "definition": "Testing AI-integrated defenses checks whether security tools that rely on artificial intelligence (AI) can be fooled, manipulated or made to fail, and whether people can override them.",
           "why_it_matters": "AI now filters email and ranks alerts. If an attacker can trick the model, the defense fails silently.",
           "how_it_works": [
             "Testers try known AI attacks and check whether other defenses catch what the model misses.",
+            "A clean vulnerability scan of an AI tool's server says nothing about how the model handles crafted prompts; that needs AI-specific tests.",
             "Red teams replay attacks after each model update to confirm the detector still alerts.",
             "Testers confirm the AI has only the access it needs, logs its actions and lets a person stop high-impact actions.",
             "Treat an AI's replies as untrusted input: encode or check them before a web page or another system uses them.",
