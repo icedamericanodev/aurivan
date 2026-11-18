@@ -72,6 +72,11 @@ jobs:
           echo "$(ls "$RUNNER_TEMP/shots" | wc -l) screenshots taken."
       - name: Keep the pictures (a download on this run, 7 days)
         if: always()
+        # The pictures are a convenience for review; the screenshot step above is the check.
+        # When the account's Actions storage is full, GitHub refuses the upload ("Artifact
+        # storage quota has been hit", 18 Nov 2026): the job warns here instead of failing a
+        # pull request whose screens all passed. A failing screenshot step still fails the job.
+        continue-on-error: true
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: shots-${{ matrix.set }}
