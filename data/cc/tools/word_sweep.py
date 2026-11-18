@@ -19,7 +19,10 @@ Usage:
   python3 data/cc/tools/word_sweep.py                  # bank table: p-value, excess per domain
   python3 data/cc/tools/word_sweep.py --plan PLAN.json # write per-domain targets (run once, before edits)
   python3 data/cc/tools/word_sweep.py 3 --plan PLAN.json   # domain 3: progress against its targets + candidate items
-Words are those under P_TARGET bank-wide when the plan is made.
+Words are those under P_TARGET bank-wide when the plan is made; punctuation shapes
+(shown as [,+ing] for ", logging it", [;], [:], [,], [dash]) are planned the same way
+against P_TARGET_SHAPE, because swapping "and" for a comma-ing tail or a semicolon on
+keys only moves the tell.
 """
 import json
 import math
@@ -29,10 +32,17 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from check_cc import _tail  # noqa: E402
+from check_cc import _tail, PATTERNS  # noqa: E402
 
 CC = Path(__file__).resolve().parent.parent
 P_TARGET = 1e-3   # aim every word at or above this (the gate fails under 1e-4)
+P_TARGET_SHAPE = 1e-2  # punctuation shapes, shown as [;] etc. (the gate fails under 1e-3)
+SHAPES = {"[,+ing]": PATTERNS["a comma then an -ing word (', logging it')"], "[;]": PATTERNS["a semicolon"],
+          "[:]": PATTERNS["a colon"], "[,]": PATTERNS["a comma"], "[dash]": PATTERNS["a dash"]}
+
+
+def goal_for(w):
+    return P_TARGET_SHAPE if w.startswith("[") else P_TARGET
 MIN_ITEMS = 10
 MARGIN = 1.2      # plan 20% more movement than the bare minimum
 
@@ -45,7 +55,13 @@ def load():
 
 
 def option_words(q):
-    return {k: {w.lower() for w in re.findall(r"[A-Za-z']+", v)} for k, v in q["options"].items()}
+    """Words in each option, plus shape tokens such as [;] for punctuation patterns."""
+    out = {}
+    for k, v in q["options"].items():
+        s = {w.lower() for w in re.findall(r"[A-Za-z']+", v)}
+        s |= {name for name, rx in SHAPES.items() if re.search(rx, v)}
+        out[k] = s
+    return out
 
 
 def stats(qs):
@@ -73,11 +89,11 @@ def p_value(n, k, p):
     return _tail(n, k, p, upper=k > n * p)
 
 
-def shift_needed(n, k, p):
-    """How far the win count must move (chance fixed) to reach P_TARGET."""
+def shift_needed(n, k, p, goal=P_TARGET):
+    """How far the win count must move (chance fixed) to reach the goal p-value."""
     up = k > n * p
     kk = k
-    while p_value(n, kk, p) < P_TARGET and 0 <= kk <= n:
+    while p_value(n, kk, p) < goal and 0 <= kk <= n:
         kk += -1 if up else 1
     return abs(k - kk)
 
@@ -90,10 +106,10 @@ def make_plan(path):
         if n[w] < MIN_ITEMS:
             continue
         p = chance[w] / n[w]
-        if p_value(n[w], won[w], p) >= P_TARGET:
+        if p_value(n[w], won[w], p) >= goal_for(w):
             continue
         up = won[w] > n[w] * p
-        need = math.ceil(shift_needed(n[w], won[w], p) * MARGIN)
+        need = math.ceil(shift_needed(n[w], won[w], p, goal_for(w)) * MARGIN)
         contrib = Counter(int(i[4]) for i, c, k in items[w] if k == up)
         total = sum(contrib.values()) or 1
         plan[w] = {"direction": "wins too often" if up else "loses too often",
@@ -108,12 +124,12 @@ def show(domain, plan_path):
     n, won, chance, dex, items = stats(qs)
     plan = json.load(open(plan_path)) if plan_path else {}
     words = sorted(plan) if plan else sorted(w for w in n if n[w] >= MIN_ITEMS
-                                              and p_value(n[w], won[w], chance[w] / n[w]) < P_TARGET)
+                                              and p_value(n[w], won[w], chance[w] / n[w]) < goal_for(w))
     print(f"{'word':10} {'bank p':>8}  {'n':>4} {'wins':>5} {'chance':>7}   per-domain excess (wins - chance)")
     for w in words:
         p = chance[w] / n[w] if n[w] else 0
         pv = p_value(n[w], won[w], p) if n[w] else 1
-        ok = "ok " if pv >= P_TARGET else "   "
+        ok = "ok " if pv >= goal_for(w) else "   "
         per = "  ".join(f"D{d} {dex[w][d]:+6.1f}" for d in range(1, 6))
         print(f"{ok}{w:7} {pv:8.1e}  {n[w]:4} {won[w]:5} {chance[w]:7.1f}   {per}")
     if not domain:

@@ -18,7 +18,8 @@ Runs the gates every CC batch must pass before review, in one place:
     option's first word, such as "Refer" or "Agree", winning far more or
     less often than chance across the whole bank, checked when all five
     domains run, and the same for whole words anywhere in an option at
-    under 0.01%, since the Nov 2026 word-tell sweep); --new N shows both rates
+    under 0.01%, and punctuation shapes such as ', logging it' or a semicolon
+    at under 0.1%, since the Nov 2026 word-tell sweep); --new N shows both rates
     for one batch alone
   - coverage: notes sub-topics with no question
   - lens: CC notes' rule and "In practice" fields never speak as an auditor
@@ -54,6 +55,14 @@ LAG_MIN, LAG_MAX, MAX_RUN = 0.15, 0.35, 3  # stored key order must look random (
 OPENER_MIN_ITEMS, OPENER_P = 5, 0.01  # an option's first word must not predict the key
 OPENER_SAME = {"agreed": "agree", "disagreed": "disagree"}
 WORD_MIN_ITEMS, WORD_P = 10, 0.0001  # a word anywhere in an option (many words tested, so stricter)
+PATTERN_P = 0.001  # punctuation and phrasing shapes (few tested, so less strict than words)
+PATTERNS = {  # name -> regex on the option text
+    "a comma then an -ing word (', logging it')": r",\s+[a-z]+ing\b",
+    "a semicolon": r";",
+    "a colon": r":",
+    "a comma": r",",
+    "a dash": r"\s[-\u2013\u2014]\s",
+}
 
 
 def opener(text):
@@ -123,6 +132,32 @@ def word_tells(qs):
         if tail < WORD_P:
             out.append((tail, w, n, k, p))
     return [o[1:] for o in sorted(out)]
+
+
+def pattern_tells(qs):
+    """Punctuation and phrasing shapes whose options win far more or less often than chance.
+
+    Rewording "do X and log Y" as "do X, logging Y" or "do X; log Y" on keys only swaps one
+    tell for another, so shapes are checked like words: chance is the share of options
+    with the shape in each item where it appears on 1-3 options."""
+    out = []
+    for name, rx in PATTERNS.items():
+        n = k = 0
+        chance = 0.0
+        for q in qs:
+            has = {l: bool(re.search(rx, v)) for l, v in q["options"].items()}
+            c = sum(has.values())
+            if c in (0, 4):
+                continue
+            n += 1
+            chance += c / 4
+            k += has[q["correct"]]
+        if n < WORD_MIN_ITEMS:
+            continue
+        p = chance / n
+        if _tail(n, k, p, upper=k > n * p) < PATTERN_P:
+            out.append((name, n, k, p))
+    return out
 
 
 def key_order(keys):
@@ -337,6 +372,10 @@ def main(argv):
         for w, n, k, exp in word_tells(bank):
             print(f"ERROR bank: options containing '{w}' win {k} of {n} items (chance about {exp * n:.0f}); "
                   "reword some options (data/cc/tools/word_sweep.py lists the items) so the word does not predict the key")
+            errors += 1
+        for name, n, k, exp in pattern_tells(bank):
+            print(f"ERROR bank: options containing {name} win {k} of {n} items (chance about {exp * n:.0f}); "
+                  "give the same shape to some distractors or reword some keys (data/cc/tools/word_sweep.py)")
             errors += 1
     if "--similarity" in argv:
         similarity()
