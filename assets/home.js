@@ -1,6 +1,7 @@
 /* KaiSip home page (home.html). Progressive enhancement only: every section,
-   link and screenshot is readable with JavaScript switched off. It makes no
-   network request and stores nothing. */
+   link and screenshot is readable, and the waitlist form works, with
+   JavaScript switched off. This script makes no network request and stores
+   nothing; the form posts straight to Kit. */
 
 // Older Safari (before 14) has addListener instead of addEventListener on
 // media queries.
@@ -59,19 +60,4 @@ const onMediaChange = (query, handler) => {
   };
   update();
   onMediaChange(wide, update);
-})();
-
-// Waitlist. While the form is marked as a mockup it validates in the browser
-// only: no request, no storage. A real destination will replace this block.
-(() => {
-  const form = document.querySelector('.waitlist-form[data-waitlist="mockup"]');
-  if (!form) return;
-  const status = form.querySelector('.waitlist-status');
-  form.addEventListener('submit', event => {
-    event.preventDefault();
-    status.textContent = 'Preview complete. In the live version, this would add you to the launch list. Your information has not been sent or saved.';
-  });
-  form.addEventListener('input', () => { status.textContent = ''; });
-  // Disabled in the static HTML so a no-JavaScript visit cannot submit an email.
-  form.querySelector('.waitlist-fields').disabled = false;
 })();

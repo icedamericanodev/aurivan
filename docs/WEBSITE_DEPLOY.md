@@ -98,8 +98,8 @@ not public.
 
 **Draft guard.** The page is a draft until its
 `<meta name="kaisip-home-status">` says `approved`. It also stays a draft while
-it holds sample feedback, the waitlist mockup (`data-waitlist="mockup"`, the
-"Design preview" note) or a quote card without `data-quote-permission="recorded"`.
+it holds sample feedback, a waitlist mockup (`data-waitlist="mockup"`), a form
+that posts anywhere but Kit, a form without privacy.html section 3f, or a quote card without `data-quote-permission="recorded"`.
 A draft refuses to build in `SITE_MODE=home`. `HOME_ALLOW_DRAFT=1` builds it
 anyway, served `noindex`, for local review and CI. The build refuses that
 switch on Cloudflare's build machines (it checks `CF_PAGES` and `WORKERS_CI`).
@@ -125,13 +125,20 @@ the website"). Every tester quote card says testers are offered free Premium.
 
 **To go live (owner approval first):**
 
-1. Waitlist: connect the form to the email service the owner chose, with
-   double opt-in, and change `form-action` in `HOME_CSP` (and the matching
-   check in the build script) to that service's address only. Add privacy.html
-   section 3f (what is collected, the service and its country, retention,
-   unsubscribe, 18+) before the form goes live. Remove `data-waitlist="mockup"`,
-   the "Design preview" note and the mockup script block; the button becomes
-   "Join the waitlist".
+1. Waitlist (done in code, 18 Nov 2026): the form posts straight to Kit
+   (form 10207004, fields `email_address` and `fields[phone_type]`; the
+   consent box has no name and is not sent). The build refuses any other
+   form address, and in home mode adds `'self' https://app.kit.com` to the
+   site-wide `form-action` too, because the browser enforces every policy on
+   `/`. privacy.html section 3f describes the list; the build refuses to
+   publish the form without it. In Kit, the owner keeps: Confirmation email
+   on, Auto-confirm off, General > redirect to `https://kaisip.com/waitlist-thanks`
+   ("Check your email"), Confirmation email > after confirming redirect to
+   `https://kaisip.com/waitlist-confirmed` ("You're on the list"), and
+   Advanced > "Send subscriber data to thank you page" off (it would put the
+   email in the address). Both pages are published only in home mode.
+   Before launch, the owner signs up once from a real browser on a preview
+   and checks the email arrives (Gmail, Yahoo, Outlook).
 2. Recheck the Android, web and iPhone wording and the FAQ answers (price,
    iPhone, beta).
 3. Decide on Cloudflare Web Analytics: if it is off, drop

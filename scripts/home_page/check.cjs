@@ -36,7 +36,9 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
     const h = response.headers();
     const own = (h['content-security-policy'] || '').split(',').pop();
     const scriptSrc = ((own.match(/script-src ([^;]*)/) || [])[1] || '').trim();
-    check(/default-src 'none'/.test(own) && /style-src 'self';/.test(own) && /form-action 'none'/.test(own) && /frame-ancestors 'none'/.test(own), 'home policy missing from / : ' + own);
+    check(/default-src 'none'/.test(own) && /style-src 'self';/.test(own) && /form-action 'self' https:\/\/app\.kit\.com;/.test(own) && /frame-ancestors 'none'/.test(own), 'home policy missing from / : ' + own);
+    const formActions = (h['content-security-policy'] || '').split(',').map(p => ((p.match(/form-action ([^;]*)/) || [])[1] || '').trim());
+    check(formActions.every(a => /'self'/.test(a) && /https:\/\/app\.kit\.com/.test(a)), 'every policy on / must let the form post to the page itself and to Kit: ' + formActions.join(' | '));
     check(scriptSrc === HOME_SCRIPT_SRC && !/unsafe/.test(own), 'home policy script-src is not the strict one: ' + scriptSrc);
     check(h['x-frame-options'] === 'DENY' && /max-age/.test(h['strict-transport-security'] || '') && h['x-content-type-options'] === 'nosniff', 'site-wide security headers missing');
     check(!isDraft || /noindex/.test(h['x-robots-tag'] || ''), 'a draft home page must be served noindex');
@@ -148,6 +150,7 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
     check(quotes.every(q => q.permission === 'recorded'), 'every quote needs data-quote-permission="recorded"');
     check(quotes.every(q => q.disclosure), 'every tester quote needs the reward disclosure on the card');
     check(!/fictional|sample learner/i.test(html), 'sample feedback is still on the page');
+    check(!isMockup, 'the waitlist is still a mockup');
     await page.close();
   }
 
@@ -205,24 +208,45 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
     await context.close();
   }
 
-  // Waitlist mockup: validation works and nothing leaves the browser.
-  if (isMockup) {
+  // Waitlist: the form posts only to Kit, sends exactly the email and phone
+  // type (never the consent box), and the policy lets Kit redirect back to
+  // the thank-you page. Kit itself is stubbed, so no real sign-up is made.
+  if (!isMockup) {
     const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    const violations = [];
+    await page.exposeFunction('__cspReport2', v => violations.push(v));
+    await page.addInitScript(() => document.addEventListener('securitypolicyviolation', e => window.__cspReport2(e.violatedDirective + ' ' + e.blockedURI)));
+    const posted = [];
+    await page.route('https://app.kit.com/**', route => {
+      const req = route.request();
+      posted.push({ url: req.url(), method: req.method(), body: req.postData() || '' });
+      route.fulfill({ status: 302, headers: { Location: ORIGIN + '/waitlist-thanks' } });
+    });
     await page.goto(BASE);
-    await page.waitForLoadState('networkidle');
-    const requests = [];
-    page.on('request', r => { if (!/\.(webp|woff2|svg)$/.test(r.url())) requests.push(r.method() + ' ' + r.url()); });
-    const before = page.url();
-    check(!(await page.isChecked('input[name=launch_updates_consent]')), 'consent must start unchecked');
+    check(!(await page.isChecked('#waitlist-consent')), 'consent must start unchecked');
     await page.click('.waitlist-form button[type=submit]');
-    check(await page.textContent('.waitlist-status') === '', 'empty form must not report success');
+    await page.waitForTimeout(300);
+    check(!posted.length, 'an empty form must not be sent');
     await page.fill('#waitlist-email', 'reviewer@example.com');
-    await page.check('input[value=android]', { force: true });
-    await page.check('input[name=launch_updates_consent]');
+    await page.check('input[value=Android]', { force: true });
     await page.click('.waitlist-form button[type=submit]');
-    check(/has not been sent or saved/.test(await page.textContent('.waitlist-status')), 'valid form should show the preview message');
+    await page.waitForTimeout(300);
+    check(!posted.length, 'the form must not be sent without the consent box');
+    await page.check('#waitlist-consent');
+    await Promise.all([page.waitForURL('**/waitlist-thanks', { timeout: 10000 }).catch(() => {}), page.click('.waitlist-form button[type=submit]')]);
+    const sent = posted[0] || {};
+    const fields = new URLSearchParams(sent.body || '');
+    check(posted.length === 1 && sent.method === 'POST' && sent.url === 'https://app.kit.com/forms/10207004/subscriptions', 'form must post once to Kit form 10207004: ' + JSON.stringify(posted));
+    check(fields.get('email_address') === 'reviewer@example.com' && fields.get('fields[phone_type]') === 'Android' && [...fields.keys()].length === 2, 'form must send only email_address and fields[phone_type]: ' + (sent.body || ''));
+    check(/\/waitlist-thanks$/.test(page.url()), 'after Kit, the visitor must land on /waitlist-thanks: ' + page.url());
+    check(/Check your/.test(await page.textContent('h1').catch(() => '')), 'the thank-you page must load');
+    check(!violations.length, 'policy violations during sign-up: ' + violations.join(' | '));
+    // Where the confirm link in Kit's email lands.
+    const confirmed = await page.goto(ORIGIN + '/waitlist-confirmed');
+    check(confirmed.status() === 200 && /on\s+the list/i.test(await page.textContent('h1')), 'the confirmed page must load');
+    check(/noindex/.test(await page.getAttribute('meta[name=robots]', 'content')), 'the confirmed page must be noindex');
     const stored = await page.evaluate(() => localStorage.length + sessionStorage.length + document.cookie.length);
-    check(!requests.length && page.url() === before && stored === 0, `mockup must not send or store anything: ${requests} ${page.url()} stored ${stored}`);
+    check(stored === 0, 'the page must not store anything: ' + stored);
     await page.close();
   }
 
