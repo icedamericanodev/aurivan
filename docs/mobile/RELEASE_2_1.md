@@ -14,6 +14,20 @@ Owner decisions (18 Nov 2026): this bundle is a **closed-testing update**, not a
 - **Gates:** see the PR for the exact-commit results (typecheck, lint, both Jest modes, Android export, OFF bundle, size, release config, repo health, exam-style lint) and the AAB record (build id, version code, SHA-256).
 - **Expert review:** code review (found the double-gap issue, fixed), blind question test (PASS), Play policy review (GO; no new permissions, Data safety unchanged, target SDK 36). Owner action: remove the retired plant from the Play listing text and screenshot 8.
 
+## Built bundle · 18 Nov 2026 (ready for the owner to upload)
+
+| Field | Value |
+|---|---|
+| Source commit | `1e5d8f3450d959ad810429e07c2148b9bf342a9c` (main, squash of #274) |
+| EAS build | `e71f0b84-5c94-4af8-ad4d-f167b65f9769` (production profile, started by the repo's "Phone build (EAS Build)" workflow, upload to Play off) |
+| File | `application-e71f0b84-….aab`, 72,280,633 bytes |
+| SHA-256 | `c920d1b3c3096049e9c070bf43ccee639e507ec26e3d0e09e62738bf7dbf4730` |
+| Read from the bundle's manifest | package `com.kaisip.app`, versionName **2.1**, versionCode **3**, minSdk 24, targetSdk 36, `expo.modules.updates.ENABLED` false |
+| Previous Play build | 2.0.0, versionCode 2 (EAS `fa0abd76`, the only earlier store build in Expo's records; owner confirms in Play Console) |
+| Permissions and services vs 2.0.0 | identical (none added or removed), so no new Play declarations |
+
+Not done from the cloud session (no Android emulator): installing a bundle-derived APK, upgrading from 2.0.0 with saved progress, and the three-button / gesture navigation check. The owner does these on a phone from the closed-testing track before promoting further.
+
 ## Included in the integrated review workspace
 
 | Change | Source checkpoint | State |
