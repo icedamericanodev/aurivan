@@ -75,6 +75,78 @@ that touches data, check that `https://kaisip.com/data/domain1.json` returns
 the app page and not JSON (look at the body: the single-page fallback
 answers 200).
 
+## The new home page (`home.html`, not live yet)
+
+Added 13 Nov 2026. A marketing home page (the "Fieldwork" design from
+`design-notes/landing-round-four/`) that will replace the beta page at
+`kaisip.com/` when the owner approves it. Until then **nothing about the live
+site changes**: Cloudflare still runs the plain build, which is landing mode.
+
+| Thing | Where |
+|---|---|
+| The page | `home.html` (no inline script or style) |
+| Its stylesheet, script and pictures | `assets/home.css`, `assets/home.js`, `assets/home/` |
+| Its font | `assets/fonts/KaiSipSerif_400Regular.woff2` (the phone app's serif with a conventional f) |
+| Its build mode | `SITE_MODE=home bash scripts/build_site.sh` |
+| Its policy | `HOME_CSP` in `scripts/build_site.sh` (swapped into the `/` and `/index.html` rules) |
+| Its checks | `scripts/home_page/check.cjs`, served by `scripts/home_page/serve_site.cjs` |
+
+How the mode works: `/` becomes `home.html`; `/beta`, the legal pages, the Beta
+Desk and the unlisted app preview stay exactly as in landing mode. The home
+page's files are copied only in this mode, so in landing and app mode they are
+not public.
+
+**Draft guard.** The page is a draft until its
+`<meta name="kaisip-home-status">` says `approved`. It also stays a draft while
+it holds sample feedback, the waitlist mockup (`data-waitlist="mockup"`, the
+"Design preview" note) or a quote card without `data-quote-permission="recorded"`.
+A draft refuses to build in `SITE_MODE=home`. `HOME_ALLOW_DRAFT=1` builds it
+anyway, served `noindex`, for local review and CI. The build refuses that
+switch on Cloudflare's build machines (it checks `CF_PAGES` and `WORKERS_CI`).
+
+Merging the home page code adds only two public files to the live build: the
+font `assets/fonts/KaiSipSerif_400Regular.woff2` and its licence
+`assets/fonts/OFL-Literata.txt`. (The same pull request also adds one sentence
+to privacy.html section 3e, about asking before quoting a tester.)
+
+Review it locally with the real headers:
+
+```bash
+SITE_MODE=home HOME_ALLOW_DRAFT=1 SITE_OUT=/tmp/site-home bash scripts/build_site.sh
+node scripts/home_page/serve_site.cjs /tmp/site-home 8787 &
+node scripts/home_page/check.cjs     # needs Playwright (dev only)
+```
+
+Use a scratch `SITE_OUT` so `_site/` keeps the deployable landing build.
+
+**Quotes.** Only real feedback, each with the person's own yes to the exact
+text and name, recorded in `docs/beta/TESTER_FEEDBACK.md` ("Feedback quoted on
+the website"). Every tester quote card says testers are offered free Premium.
+
+**To go live (owner approval first):**
+
+1. Waitlist: connect the form to the email service the owner chose, with
+   double opt-in, and change `form-action` in `HOME_CSP` (and the matching
+   check in the build script) to that service's address only. Add privacy.html
+   section 3f (what is collected, the service and its country, retention,
+   unsubscribe, 18+) before the form goes live. Remove `data-waitlist="mockup"`,
+   the "Design preview" note and the mockup script block; the button becomes
+   "Join the waitlist".
+2. Recheck the Android, web and iPhone wording and the FAQ answers (price,
+   iPhone, beta).
+3. Decide on Cloudflare Web Analytics: if it is off, drop
+   `static.cloudflareinsights.com` from `HOME_CSP`; if it is on, describe it in
+   privacy.html.
+4. Set `kaisip-home-status` to `approved` and the robots meta to
+   `index, follow` in `home.html`.
+5. Confirm `SITE_MODE=home bash scripts/build_site.sh` passes with no draft
+   switch, and `scripts/home_page/check.cjs` passes against it.
+6. Change the default in `scripts/build_site.sh` from `landing` to `home`, in
+   its own pull request. Merging that pull request is the launch.
+
+**To roll back:** change the default back to `landing` (or revert that one
+pull request). The beta page returns to `/` on the next deploy.
+
 ## Security headers (`_headers`)
 
 - **Every response:** HTTPS only for a year (HSTS, no "preload" yet), no

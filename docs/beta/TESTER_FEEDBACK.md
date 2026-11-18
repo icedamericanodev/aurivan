@@ -37,6 +37,20 @@ cause in the app, and slots it into the plan below.
 | FB-006 | 2026-11-12 | Closed-testing message (no report code) | Phone · every screen with serif text (questions, options, headings) | UX (typography) | Low | Whole app | Implemented in a pull request; waiting for the owner's decision on the typeface change | 2.1 (owner decision needed) |
 | FB-007 | 2026-11-13 | R-ZJ67 | Phone · Mock review (question d5_205) | Content | Medium | One question | Reviewed: key D stays, question needs one missing fact | Next update |
 
+## Feedback quoted on the website
+
+A tester's words go on kaisip.com only with that tester's own yes to the exact
+text and name, kept by the owner outside the repo (privacy.html section 3e).
+Every quote card carries `data-quote-permission="recorded"` and the reward
+disclosure ("CISA Premium free"); `scripts/build_site.sh` treats a home page
+quote without them as a draft, which cannot be published. For a translated or
+trimmed quote, the tester says yes to the English wording shown, not only to
+the original.
+
+| Quote | Shown as | Permission | Where |
+|---|---|---|---|
+| "The app is user friendly … wasn't tiring to answer." (translated from Filipino, excerpt; the original's comparison with ISACA's question product left out) | Ken L., KaiSip beta tester | Given directly to the owner, 13 Nov 2026, for the English wording shown (owner confirmed 18 Nov 2026; reply kept privately by the owner). The tester also opted in to credit on the beta form, which covers only the in-app thank-you screen. | `home.html` (not live) |
+
 ## Next update plan (phone app, proposed 2.1.0)
 
 | # | Change | From | Size |
