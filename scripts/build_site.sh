@@ -87,7 +87,15 @@ case "$SITE_MODE" in
 esac
 # The home page's own Content-Security-Policy (SITE_MODE=home). Stricter than
 # /beta: no inline script or style at all. Its one script is assets/home.js.
-HOME_CSP="default-src 'none'; style-src 'self'; img-src 'self'; font-src 'self'; script-src 'self' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+# The waitlist form posts straight to Kit (the owner's email service). This is
+# the only address it may send to; Kit then redirects back to
+# /waitlist-thanks, so 'self' is allowed for that redirect. Only this one
+# Kit form is allowed, not every Kit account's forms.
+KIT_FORM_ACTION="https://app.kit.com/forms/10207004/subscriptions"
+HOME_FORM_ACTION="form-action 'self' $KIT_FORM_ACTION"
+# The two waitlist pages Kit redirects to: no script of their own, no form.
+THANKS_CSP="default-src 'none'; style-src 'self'; img-src 'self'; font-src 'self'; script-src https://static.cloudflareinsights.com; connect-src https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+HOME_CSP="default-src 'none'; style-src 'self'; img-src 'self'; font-src 'self'; script-src 'self' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; $HOME_FORM_ACTION; frame-ancestors 'none'"
 HOME_DRAFT=""
 PAGES=(index.html 404.html privacy.html terms.html support.html how-questions-are-made.html beta.html)
 DATA=(data/free/cisa_d1.json data/free/cisa_d2.json data/free/cisa_d3.json data/free/cisa_d4.json data/free/cisa_d5.json data/cisa_notes.json data/mindset/principles.json data/exam/cisa_exam_guide.json data/exam/final_review_week.json)
@@ -137,8 +145,8 @@ if [ "$SITE_MODE" = "home" ]; then
   # The page must work under style-src 'self' and script-src 'self': no inline
   # script, no style attribute or <style>, and only its own script file. The
   # same step decides whether the page is a draft (it prints the reasons).
-  draft="$(python3 - <<'PYHOME'
-import re, sys
+  draft="$(KIT_FORM_ACTION="$KIT_FORM_ACTION" python3 - <<'PYHOME'
+import os, re, sys
 page = open("home.html").read()
 bad, draft = [], []
 I = re.I | re.S
@@ -152,6 +160,18 @@ urls = [a or b or c for a, b, c in re.findall(r"\s(?:src|href|action|poster|form
 for v in re.findall(r"\ssrcset\s*=\s*[\"']([^\"']*)[\"']", page, I):
     urls += [part.strip().split()[0] for part in v.split(",") if part.strip()]
 if re.search(r"http-equiv\s*=\s*[\"']?refresh", page, I): bad.append("a meta refresh")
+# The one form must post to Kit's form address, and nowhere else.
+kit = os.environ["KIT_FORM_ACTION"]
+forms = re.findall(r"<form\b[^>]*>", page, I)
+for f in forms:
+    act = re.search(r"\saction\s*=\s*[\"']([^\"']*)[\"']", f, I)
+    methods = re.findall(r"\smethod\s*=\s*[\"']?([a-z]+)", f, I)
+    if not act or act.group(1) != kit or [m.lower() for m in methods] != ["post"]:
+        bad.append("a form that does not post to " + kit)
+# A button may not change where or how the form is sent.
+if re.search(r"\sform(?:action|method|enctype|target|novalidate)\b", page, I):
+    bad.append("a button that overrides the form")
+urls = [u for u in urls if u != kit]
 for url in urls:
     url = url.replace("\\", "/")
     if (re.match(r"//", url) or re.match(r"[a-z][a-z0-9+.-]*:", url, re.I)) and not re.match(r"(?:https://kaisip\.com/|mailto:)", url):
@@ -180,6 +200,9 @@ if n_quotes != len(blocks) or any(not re.search(r'data-quote-permission\s*=\s*["
     draft.append("a quote without recorded permission")
 if any("CISA Premium free" not in b for b in blocks):
     draft.append("a quote without the reward disclosure")
+# The waitlist needs its own section in the privacy policy before it goes live.
+if forms and 'id="s3f"' not in open("privacy.html").read():
+    draft.append("privacy.html has no waitlist section (3f)")
 robots = re.search(r'<meta\s+name="robots"\s+content="([^"]*)"', page, re.I)
 robots = robots.group(1) if robots else ""
 if draft and "noindex" not in robots:
@@ -202,6 +225,9 @@ PYHOME
     echo "build_site: DRAFT home page ($draft). Built noindex for review. Do not deploy this build." >&2
   fi
   cp home.html "$OUT/index.html"
+  # Kit sends new sign-ups here ("Redirect to an external page" on the form).
+  cp waitlist-thanks.html "$OUT/waitlist-thanks.html"
+  cp waitlist-confirmed.html "$OUT/waitlist-confirmed.html"
   DATA=()
   rmdir "$OUT/data"
 fi
@@ -267,9 +293,10 @@ done
 # its theme script by hash, form-action 'none'). App: that policy would block
 # the web app's inline scripts, so it is dropped from _site/_headers here and
 # the build checks it is gone.
-python3 - "$OUT/_headers" "$SITE_MODE" "$HOME_CSP" "$HOME_DRAFT" <<'PY' || fail "_headers: the home page policy does not fit SITE_MODE=$SITE_MODE (see above)"
+python3 - "$OUT/_headers" "$SITE_MODE" "$HOME_CSP" "$HOME_DRAFT" "$HOME_FORM_ACTION" "$THANKS_CSP" <<'PY' || fail "_headers: the home page policy does not fit SITE_MODE=$SITE_MODE (see above)"
 import re, sys, hashlib, base64
-path, mode, home_csp, home_draft = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
+path, mode, home_csp, home_draft, home_form, thanks_csp = sys.argv[1:7]
+THANKS = ["/waitlist-thanks", "/waitlist-thanks.html", "/waitlist-confirmed", "/waitlist-confirmed.html"]
 lines = open(path).read().split("\n")
 m = re.search(r"<script>(.*?)</script>", open("beta.html").read(), re.S)
 h = "'sha256-" + base64.b64encode(hashlib.sha256(m.group(1).encode()).digest()).decode() + "'" if m else None
@@ -289,12 +316,28 @@ for ln in lines:
         if home_draft:
             out.append("  X-Robots-Tag: noindex, nofollow")
         continue
+    elif mode == "home" and cur == "/*" and s.lower().startswith("content-security-policy:"):
+        # Browsers enforce every matching policy, so the site-wide one must
+        # also let the home page's form reach Kit (and Kit redirect back).
+        fa = re.search(r"form-action [^;]*", ln)
+        if not fa:
+            print("build_site: the /* policy has no form-action", file=sys.stderr); sys.exit(1)
+        extra = [t for t in home_form.split()[1:] if t not in fa.group(0).split()]
+        out.append(ln.replace(fa.group(0), fa.group(0) + "".join(" " + t for t in extra)))
+        continue
     out.append(ln)
+if mode == "home":
+    # The waitlist pages exist only in home mode, so their rules do too (in
+    # landing mode these addresses show 404.html, whose inline styles a joined
+    # strict policy would block).
+    for r in THANKS:
+        out += ["", r, "  Cache-Control: public, max-age=0, must-revalidate",
+                "  X-Robots-Tag: noindex, nofollow", "  Content-Security-Policy: " + thanks_csp]
 if mode in ("app", "home"):
     open(path, "w").write("\n".join(out))
 def strict_home(v):
     v = v.strip()
-    return (v == home_csp and "default-src 'none'" in v and "form-action 'none'" in v
+    return (v == home_csp and "default-src 'none'" in v and home_form + ";" in v
             and "style-src 'self';" in v and "script-src 'self' " in v and "unsafe" not in v)
 rules, cur = {}, None
 for ln in out:
@@ -316,6 +359,16 @@ for r in HOME:
         bad.append(r + ": needs the home page policy (HOME_CSP in scripts/build_site.sh)")
     if mode == "home" and home_draft and "X-Robots-Tag: noindex, nofollow" not in rules.get(r, []):
         bad.append(r + ": a draft home page must be noindex")
+if mode == "home":
+    site = [x for x in rules.get("/*", []) if x.lower().startswith("content-security-policy:")]
+    if not site or not all(t in re.search(r"form-action [^;]*", site[0]).group(0).split() for t in home_form.split()[1:]):
+        bad.append("/*: its form-action must also allow the home page's form (" + home_form + ")")
+    for r in THANKS:
+        got = [x.split(":", 1)[1].strip() for x in rules.get(r, []) if x.lower().startswith("content-security-policy:")]
+        if got != [thanks_csp] or "unsafe" in thanks_csp or "X-Robots-Tag: noindex, nofollow" not in rules.get(r, []):
+            bad.append(r + ": needs the strict waitlist page policy and noindex")
+elif any(r in rules for r in THANKS):
+    bad.append("the waitlist pages' rules belong to SITE_MODE=home only")
 if bad:
     print("build_site: " + "; ".join(bad), file=sys.stderr)
     sys.exit(1)
@@ -409,6 +462,7 @@ while IFS= read -r -d '' f; do
   case "$rel" in
     index.html|404.html|privacy.html|terms.html|support.html|how-questions-are-made.html|beta.html|_headers|_redirects|favicon.ico) ;;
     beta-desk.html) [ -n "$DESK" ] || fail "the Beta Desk must not be in the preview folder" ;;
+    waitlist-thanks.html|waitlist-confirmed.html) [ "$SITE_MODE" = "home" ] || fail "$rel belongs to SITE_MODE=home only" ;;
     data/free/cisa_d[1-5].json|data/cisa_notes.json|data/mindset/principles.json) ;;
     data/exam/cisa_exam_guide.json|data/exam/final_review_week.json) ;;
     assets/home.css|assets/home.js|assets/home/*) [ "$SITE_MODE" = "home" ] || fail "the home page's files must not be published in SITE_MODE=$SITE_MODE: $rel" ;;
