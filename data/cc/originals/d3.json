@@ -6774,6 +6774,438 @@
       ],
       "_provenance": "Authored from concept: 'find the decider: one fixed rule for everyone is rule-based' (notes 3.2.13 Access Model Scenarios: Worked Examples). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 7, 12 Nov 2026.",
       "style_version": 2
+    },
+    {
+      "id": "cc_d3_189",
+      "domain": 3,
+      "subtopic": "3.1 Identity life cycle. Non-human identities",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An energy firm's AI pilot was closed by its owner, and procedure has the access analyst retire its agent account; a data scientist wants it kept for a restart. What should the analyst do FIRST?",
+      "options": {
+        "A": "Disable the agent's account, revoking its access keys",
+        "B": "Ask the pilot's owner whether a restart is still likely",
+        "C": "Keep the account and rotate its keys for a restart",
+        "D": "Store the agent's keys in the vault for later use"
+      },
+      "correct": "A",
+      "key_concept": "When a project closes, its AI agent's identity is retired: the account is disabled and its keys revoked.",
+      "pre_read": "Recall what happens to a non-human identity at the end of its life cycle.",
+      "correct_explanation": "A closed project's agent identity is retired, so nothing left behind can be misused: the account is disabled and its keys revoked. The procedure gives this task to the access analyst once the owner closes the pilot. Asking the owner about a restart is the runner-up, because owners decide about their agents, but this owner has already closed the pilot; a restart would go through a new, approved request.",
+      "wrong_explanations": {
+        "B": "Closest choice: asking the owner fits when nobody knows if an account is still needed. But this owner closed the pilot; a restart gets a new request.",
+        "C": "Tempting because rotating keys sounds secure. But the unused account stays live with its rights, waiting for a restart nobody has approved.",
+        "D": "Tempting because a vault protects secrets. But the keys still work, leaving the idle agent's access open."
+      },
+      "tips": [
+        "Eliminate: C keeps an unused account live with fresh keys, and D vaults keys that still work instead of revoking them.",
+        "Final two: A beats B because the owner has already closed the pilot and the procedure assigns retirement to the analyst; a restart is a new request.",
+        "Exam cue: when a project ends, its non-human identities end too; disable the account and revoke its secrets, and let any restart come through a new approved request."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-2 (Account Management); NIST AI 100-1 (AI RMF 1.0) GOVERN 1.7 (processes and procedures are in place for decommissioning and phasing out AI systems safely)",
+      "related_concepts": [
+        "Non-human identities",
+        "Deprovisioning",
+        "AI agents"
+      ],
+      "_provenance": "Authored from concept: 'retire a non-human identity when its project ends; any restart comes through a new approved request' (notes 3.1.12 Non-Human Identities Through the Life Cycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_190",
+      "domain": 3,
+      "subtopic": "3.1 Identity life cycle. Access requests",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A housing association's planning manager owns a new AI agent that needs read access to tenancy records, which the housing director owns. Who should MOST appropriately approve the access request?",
+      "options": {
+        "A": "The housing director, as the owner of the tenancy records",
+        "B": "The planning manager, who owns the agent and its tasks",
+        "C": "The help desk analyst who will grant the tenancy records access",
+        "D": "The agent's vendor, which knows what data the agent reads"
+      },
+      "correct": "A",
+      "key_concept": "Access to data is approved by the data's owner, even when the requester is an AI agent owned by someone else.",
+      "pre_read": "Recall the roles in an access request: requester, approver and fulfiller.",
+      "correct_explanation": "The owner of the data approves access to it, whoever or whatever asks. The tenancy records belong to the housing director, so the director approves the agent's read access. The planning manager is the runner-up, because they own the agent and know its job, but owning the requester gives no authority over someone else's data; the manager requests, and the director decides.",
+      "wrong_explanations": {
+        "B": "Closest choice: the planning manager owns the agent and knows its tasks. But owning the requester gives no authority over another owner's data; the manager requests, the director approves.",
+        "C": "Tempting because the help desk knows the systems. But the help desk fulfills approved requests; approving access it then grants would remove the check.",
+        "D": "Tempting because the vendor built the agent. But a vendor has no say over the association's data; the data's owner decides."
+      },
+      "tips": [
+        "Eliminate: C has the person who fulfills the request also approve it, and D hands an access decision to an outside vendor.",
+        "Final two: A beats B because the data's owner approves access to it; the agent's owner only requests it.",
+        "Exam cue: for any access request, from a person or an AI agent, find who owns the resource being reached; that owner approves."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-2 (Account Management); NIST AI 100-1 (AI RMF 1.0) GOVERN 3.2 (roles and responsibilities for human-AI configurations and oversight of AI systems are defined)",
+      "related_concepts": [
+        "Access requests",
+        "Data owner",
+        "AI agents"
+      ],
+      "_provenance": "Authored from concept: 'the resource owner approves an access request, even when an AI agent is the requester' (notes 3.1.14 Access Requests and Approvals). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_191",
+      "domain": 3,
+      "subtopic": "3.1 Identity life cycle. Provisioning",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A beekeeping supplier's contractor, working under a sponsored guest account, is hired as staff, and human resources (HR) sends a start record for Monday. Which setup should the access analyst arrange as BEST?",
+      "options": {
+        "A": "Keep the guest account and add the start record's role to it",
+        "B": "Keep both accounts active through the first month as staff",
+        "C": "Open a staff account from the start record, closing the guest one",
+        "D": "Open a staff account holding the guest account's current rights"
+      },
+      "correct": "C",
+      "key_concept": "A contractor hired as staff gets a staff account from the HR start record, and the guest account is closed.",
+      "pre_read": "Recall what starts provisioning, and what a change of employment type means for access.",
+      "correct_explanation": "A move from contractor to staff is a leaver plus a joiner. The staff account is created from the HR start record, the trusted trigger, with the approved role, and the guest account is closed so the contractor-era access ends. Keeping the guest account and adding the new role is the runner-up, because it keeps continuity, but the old project rights and the sponsor-based life cycle stay attached.",
+      "wrong_explanations": {
+        "A": "Closest choice: it adds the approved role. But the guest account keeps its contractor-era rights and sponsor-based life cycle, and is not tied to the HR record.",
+        "B": "Tempting because it avoids disruption. But one person with two live identities blurs who acted, and the guest account's old rights stay open.",
+        "D": "Tempting because nothing the person uses breaks. But it copies rights the contractor's project needed, not what the staff role approves."
+      },
+      "tips": [
+        "Eliminate: B leaves one person with two live identities, and D carries contractor-era rights onto the new staff account.",
+        "Final two: C beats A because staff access starts from the start record on a staff account; a converted guest account keeps its old rights and life cycle.",
+        "Exam cue: a change of employment type is a leaver plus a joiner; end the old identity's access and provision the new one from the trusted record."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-2 (Account Management); NIST SP 800-53 Rev. 5 PS-7 (External Personnel Security)",
+      "related_concepts": [
+        "Provisioning",
+        "Guest accounts",
+        "Joiner-mover-leaver"
+      ],
+      "_provenance": "Authored from concept: 'provision staff access from the start record; a contractor turned staff member is a leaver plus a joiner' (notes 3.1.3 Provisioning and Identity Proofing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_192",
+      "domain": 3,
+      "subtopic": "3.1 Identity life cycle. Job changes",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A regional airport's system administrator becomes a project manager today with no approved handover access, and the IT manager says their domain administrator rights go today. Which reply from the access analyst is MOST accurate?",
+      "options": {
+        "A": "Disagree, as former administrators may keep access for emergencies",
+        "B": "Disagree, as the rights can stay if each use is logged",
+        "C": "Agree, but keep the rights in a separate admin account",
+        "D": "Agree, since old-role access ends at the move, admin rights included"
+      },
+      "correct": "D",
+      "key_concept": "A mover's privileged rights from the old job end at the move unless a dated handover is approved.",
+      "pre_read": "Recall what a mover keeps and loses when their job changes.",
+      "correct_explanation": "A mover keeps only what the new job needs, and privileged rights matter most. With no approved handover, the domain administrator rights end at the move, like any old-role access. Agreeing but keeping the rights in a separate admin account is the runner-up, because dedicated admin accounts are good practice, but they are for people whose job is administration; a project manager has no such job.",
+      "wrong_explanations": {
+        "A": "Tempting because past administrators know the systems. But emergencies go through approved break-glass access, not standing rights kept by someone who no longer does the job.",
+        "B": "Tempting because logging records each use. But it shows misuse only after it happens; the unneeded rights stay open.",
+        "C": "Closest choice: separate admin accounts are good practice. But they suit people whose job is administration; a project manager needs no admin rights at all."
+      },
+      "tips": [
+        "Eliminate: A keeps standing admin rights for emergencies that break-glass access covers, and B logs rights that should not exist.",
+        "Final two: D beats C because a separate admin account still keeps admin rights the new job does not need.",
+        "Exam cue: at a move, ask whether the new job needs each right; privileged rights from the old job are the first to go."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 PS-5 (Personnel Transfer); NIST SP 800-53 Rev. 5 AC-6 (Least Privilege)",
+      "related_concepts": [
+        "Movers",
+        "Privileged access",
+        "Privilege creep"
+      ],
+      "_provenance": "Authored from concept: 'a mover's old privileged access ends at the move; standing admin rights are not kept for emergencies' (notes 3.1.9 Movers and Privilege Creep). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_193",
+      "domain": 3,
+      "subtopic": "3.1 Identity life cycle. IAM tools",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "To clear a request backlog, an online bookshop's IT manager wants its governance tool's AI to approve any request it scores low risk, bypassing data owners. What should the access analyst propose as BEST?",
+      "options": {
+        "A": "Let owners set what the AI may approve, deciding the rest themselves",
+        "B": "Let the AI approve these requests, sending owners weekly grant reports",
+        "C": "Have the help desk confirm each AI approval before granting",
+        "D": "Let the AI approve once requesters confirm a business need for access"
+      },
+      "correct": "A",
+      "key_concept": "An AI feature may approve access only within limits each data owner sets; owners keep approval authority.",
+      "pre_read": "Recall who approves access requests, and what AI features in IAM tools may decide.",
+      "correct_explanation": "Approval belongs to each data owner, and AI can speed it up only inside limits the owner sets. Letting owners pick which low-risk entitlements the AI may approve, while they decide every other request themselves, clears the backlog and keeps their authority. Letting the AI approve everything with weekly reports is the runner-up, because owners still see the grants, but they learn of risky access only after it is live.",
+      "wrong_explanations": {
+        "B": "Closest choice: owners still see what the AI granted. But they learn of a risky grant only after it is live, and the decision has moved to the tool.",
+        "C": "Tempting because a person checks each grant. But the help desk fulfills requests and owns no data, so it cannot approve access to it.",
+        "D": "Tempting because a stated need sounds like justification. But judging that need is the owner's job; a requester vouching for themselves while the AI approves still leaves the owner out."
+      },
+      "tips": [
+        "Eliminate: C gives approval to the help desk, which fulfills requests but owns no data, and D lets requesters vouch for their own access.",
+        "Final two: A beats B because owners decide in advance what the AI may approve; weekly reports tell them only after access is granted.",
+        "Exam cue: AI can speed up access decisions, but only inside limits the accountable owner has set; reports after the fact do not replace approval."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-2 (Account Management); NIST AI 100-1 (AI RMF 1.0) GOVERN 3.2 (roles and responsibilities for human-AI configurations and oversight of AI systems are defined)",
+      "related_concepts": [
+        "Identity governance",
+        "Access approval",
+        "AI in IAM"
+      ],
+      "_provenance": "Authored from concept: 'IAM tools and their AI features automate the owner's decisions; they do not take over the owner's authority' (notes 3.1.13 IAM Frameworks and Tools). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_194",
+      "domain": 3,
+      "subtopic": "3.1 Identity life cycle. Third-party access",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A school fire alarm contractor's guest account expired; its sponsor approved a two-day extension for a repair, and the security manager's policy lets the access analyst grant it. Which action is BEST?",
+      "options": {
+        "A": "Extend the account by 90 days, the usual guest period",
+        "B": "Extend the account by two days for the repair",
+        "C": "Let the contractor use the sponsor's own account for the repair",
+        "D": "Ask the security manager to approve the two-day extension first"
+      },
+      "correct": "B",
+      "key_concept": "Guest access is extended as the sponsor approves; when policy delegates the step, the analyst acts within that approval without extra sign-offs.",
+      "pre_read": "Recall who sponsors guest accounts and how their access is extended.",
+      "correct_explanation": "The procedure decides who acts: the sponsor approved a two-day extension, and the security manager's policy lets the analyst grant it, so the analyst extends the account by exactly that. The work is a fire alarm repair, so needless delay also keeps people at risk. Asking the security manager to approve first is the runner-up, as they own the policy, but it already delegates this step; an extra sign-off adds delay and no control.",
+      "wrong_explanations": {
+        "A": "Tempting because it avoids another lapse. But the sponsor approved two days; granting more than was approved goes beyond the request.",
+        "C": "Tempting because the repair could start at once. But a shared login hides who acted and gives the contractor all of the sponsor's rights.",
+        "D": "Closest choice: the security manager owns the guest-access policy. But that policy already lets the analyst act on a sponsor's approval, and waiting delays a safety repair."
+      },
+      "tips": [
+        "Eliminate: A grants far more time than the sponsor approved, and C has the contractor work under the sponsor's identity.",
+        "Final two: B beats D because the policy already lets the analyst act on the sponsor's approval; an extra sign-off only delays a life-safety repair.",
+        "Exam cue: when the right person has approved and the procedure authorizes you, act within that approval; do not add sign-offs or widen it, above all when the work protects people."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 PS-7 (External Personnel Security); NIST SP 800-53 Rev. 5 AC-2 (Account Management)",
+      "related_concepts": [
+        "Guest accounts",
+        "Sponsors",
+        "Safety first"
+      ],
+      "_provenance": "Authored from concept: 'guest access is extended on the sponsor's approval; act promptly when the procedure assigns it and safety depends on it' (notes 3.1.15 Third-Party, Guest and Federated Access). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_195",
+      "domain": 3,
+      "subtopic": "3.2 Logical access. Least privilege",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A grocery cooperative's marketing analyst requests read access to the full member table, including names and emails, to chart how many members live in each town. Which access should the access analyst propose as BEST?",
+      "options": {
+        "A": "Read-only access to the full table, names and emails included",
+        "B": "A report giving member counts per town, drawn from the table",
+        "C": "Edit access to the member table for a one-month project",
+        "D": "A copy of the member table by town on the analyst's laptop"
+      },
+      "correct": "B",
+      "key_concept": "Least privilege limits the data a task can see as well as what it can change; give the smallest view that does the job.",
+      "pre_read": "Recall what least privilege and need to know limit.",
+      "correct_explanation": "Least privilege gives only the access a task requires. Charting members per town needs counts, not who the members are, so a report of counts by town does the job without exposing personal details. Read-only access to the full table is the runner-up, because it cannot change data, but it still reveals every member's name and email, which the task never uses.",
+      "wrong_explanations": {
+        "A": "Closest choice: read-only access cannot change data. But it still shows every member's name and email, which charting counts by town never uses.",
+        "C": "Tempting because a time limit sounds careful. But the task only reads data, and edit rights for a month exceed it.",
+        "D": "Tempting because a copy leaves the live table untouched. But it puts every personal detail on a laptop, outside the table's controls."
+      },
+      "tips": [
+        "Eliminate: C grants edit rights to a task that only reads data, and D copies every personal detail onto a laptop.",
+        "Final two: B beats A because least privilege limits what data is seen, not just what can be changed; counts by town reveal no member.",
+        "Exam cue: read-only is not automatically least privilege; ask what data the task actually uses and grant just that view."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-6 (Least Privilege); NIST SP 800-53 Rev. 5 SA-8(33) (Security and Privacy Engineering Principles | Minimization)",
+      "related_concepts": [
+        "Least privilege",
+        "Need to know",
+        "Data minimization"
+      ],
+      "_provenance": "Authored from concept: 'least privilege and need to know limit what data a task sees, not only what it can change' (notes 3.2.2 Least Privilege and Need to Know). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_196",
+      "domain": 3,
+      "subtopic": "3.2 Logical access. Separation of duties",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A recycling firm's only payments approver is on two weeks' leave while invoices fall due; the operations manager proposes a second, approving account for the payment-entry clerk. What should the access analyst propose as BEST?",
+      "options": {
+        "A": "Give the clerk the second account, logging each approval it makes",
+        "B": "Give the clerk's own account payment approval rights during the leave",
+        "C": "Hold supplier payments while the approver is away, paying them on return",
+        "D": "Have a finance manager from outside payments approve during the leave"
+      },
+      "correct": "D",
+      "key_concept": "Cover for an absent approver comes from another person with no conflicting duty; the split need not stop the work.",
+      "pre_read": "Recall how separation of duties handles cover when an approver is away.",
+      "correct_explanation": "Separation of duties needs a second person, and cover for an absent approver should keep payments moving without joining the duties. A finance manager from outside payments approving during the leave does both. Holding payments until the approver returns is the runner-up, because it keeps the split, but invoices fall due during the leave, and another person with no conflicting duty can approve safely.",
+      "wrong_explanations": {
+        "A": "Tempting because logging records each approval. But one person would still enter and approve the same payment; a second account splits nothing, and the log only shows it later.",
+        "B": "Tempting because the rights end with the leave. But for two weeks one person can enter and approve their own payments.",
+        "C": "Closest choice: it keeps entry and approval apart. But invoices fall due during the leave, and halting payments harms suppliers when another person with no conflicting duty can approve."
+      },
+      "tips": [
+        "Eliminate: A and B both let the clerk enter and approve the same payment; a second account or a temporary right for one person splits nothing.",
+        "Final two: D beats C because both keep the duties apart, but D keeps payments moving while invoices fall due; the split need not stop the business.",
+        "Exam cue: when an approver is away, cover comes from another person with no conflicting duty; extra accounts or logs for the same person separate nothing."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-5 (Separation of Duties); NIST SP 800-53 Rev. 5 AC-6 (Least Privilege)",
+      "related_concepts": [
+        "Separation of duties",
+        "Leave cover",
+        "Backup approvers"
+      ],
+      "_provenance": "Authored from concept: 'a second account for the same person splits nothing; separation of duties needs a second person' (notes 3.2.3 Separation of Duties and Two-Person Control). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026. Re-angled in fix-up round 2 so the runner-up is holding payments, away from the lesson of cc_d3_013.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_197",
+      "domain": 3,
+      "subtopic": "3.2 Logical access. Mandatory access control",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A mapping agency using mandatory access control has its security manager set clearances after vetting. A cartographer's manager asks the access analyst for Secret now, before vetting ends; what should the analyst do FIRST?",
+      "options": {
+        "A": "Give the cartographer Secret clearance for 30 days while vetting runs",
+        "B": "Let the cartographer view the files in the manager's session",
+        "C": "Pass the clearance request to the security manager to decide",
+        "D": "Ask the security manager to relabel the files to the cartographer's level"
+      },
+      "correct": "C",
+      "key_concept": "Under mandatory access control, the central security authority sets clearances after vetting; managers and access staff cannot.",
+      "pre_read": "Recall who sets labels and clearances under mandatory access control.",
+      "correct_explanation": "Under mandatory access control, clearances and labels come from the central security authority, here the security manager, and only after vetting. The analyst passes the clearance request to the security manager and changes nothing meanwhile. Asking the security manager to relabel the files to the cartographer's level is the runner-up, because it goes to the right person, but lowering correct labels to suit one person exposes Secret data to everyone cleared at the lower level.",
+      "wrong_explanations": {
+        "A": "Tempting because it is time-limited. But the analyst cannot set clearances; under this model the security manager sets them, after vetting.",
+        "B": "Tempting because the manager would watch the work. But a borrowed session lets someone not cleared for Secret read Secret data, bypassing the label check and hiding who read it.",
+        "D": "Closest choice: it goes to the security manager, who sets labels. But lowering correct labels to suit one person exposes Secret data to everyone cleared at the lower level."
+      },
+      "tips": [
+        "Eliminate: A has the analyst grant a clearance the security manager sets, and B lets someone not cleared for Secret read Secret data through another person's session.",
+        "Final two: C beats D because both reach the security manager, but D lowers correct labels; C leaves the clearance decision where mandatory control puts it.",
+        "Exam cue: under mandatory control, only the security authority grants clearances and sets labels, on its vetting rules; access staff never bridge a gap with a temporary grant, borrowed session or lowered label."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-3(3) (Access Enforcement | Mandatory Access Control); NIST SP 800-53 Rev. 5 PS-3 (Personnel Screening)",
+      "related_concepts": [
+        "Mandatory access control",
+        "Clearances",
+        "Security labels"
+      ],
+      "_provenance": "Authored from concept: 'under MAC, a central authority sets clearances and labels; neither managers nor access staff can' (notes 3.2.6 Mandatory Access Control (MAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_198",
+      "domain": 3,
+      "subtopic": "3.2 Logical access. Role-based access control",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A street-lighting firm's app uses role-based access control; all 40 technicians hold the Technician role. If the role owner approves adding work-order closing to it, which outcome should the access analyst expect as MOST accurate?",
+      "options": {
+        "A": "Technicians can close work orders after each one requests it",
+        "B": "Later joiners gain the right, not technicians holding the role today",
+        "C": "Every technician who holds the role today can close work orders",
+        "D": "Each site manager must confirm the right before it applies"
+      },
+      "correct": "C",
+      "key_concept": "In role-based access control, a change to a role's rights reaches every current member at once.",
+      "pre_read": "Recall how role-based access control attaches rights to people.",
+      "correct_explanation": "In role-based access control, rights sit on the role and people get them through membership. Once the role owner adds work-order closing to the Technician role, all 40 technicians can close work orders, with no change to their accounts. The runner-up, that only later joiners gain the right, treats a role like a template copied at hiring; members stay linked to the role, so a change reaches those holding it today too.",
+      "wrong_explanations": {
+        "A": "Tempting because access usually starts with a request. But the role owner's approval has already decided; members get the role's rights without asking.",
+        "B": "Closest choice: it treats the role as a template copied at hiring. But members stay linked to the role, so a change reaches current and future holders alike.",
+        "D": "Tempting because managers often approve access. But the role owner has approved the change, and the system applies it to every member with no second step."
+      },
+      "tips": [
+        "Eliminate: A has each technician request a right the role already grants, and D adds a site-manager step after the role owner has approved.",
+        "Final two: C beats B because members stay linked to the role; a change to it reaches everyone who holds it now, not only new holders.",
+        "Exam cue: in role-based control, changing a role changes access for everyone in it; check who holds a role before adding a right to it."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-3(7) (Access Enforcement | Role-based Access Control)",
+      "related_concepts": [
+        "Role-based access control",
+        "Role membership",
+        "Least privilege"
+      ],
+      "_provenance": "Authored from concept: 'in RBAC rights sit on the role, so a change to a role reaches every current member at once' (notes 3.2.7 Role-Based Access Control (RBAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026. Re-angled in fix-up round 2 away from the refund scenario of cc_d3_133.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_199",
+      "domain": 3,
+      "subtopic": "3.2 Logical access. Attribute-based access control",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A paper mill's system administrator tells a new colleague that attribute-based access control is just role-based access control with many more roles. Which reply from the access analyst is MOST accurate?",
+      "options": {
+        "A": "Agree, as both models grant access by job title and team",
+        "B": "Disagree, as attribute-based control checks attributes on each request",
+        "C": "Agree, as each attribute combination works like one more role",
+        "D": "Disagree, as attribute-based control lets each data owner decide access"
+      },
+      "correct": "B",
+      "key_concept": "Attribute-based access control checks user, resource and context attributes on each request; it is not role-based control with more roles.",
+      "pre_read": "Recall how attribute-based and role-based access control make decisions.",
+      "correct_explanation": "Attribute-based access control decides each request by checking a policy against attributes of the user, the resource and the context, such as time or device, so one policy covers many combinations without a role for each. Agreeing because each attribute combination works like a role is the runner-up, since the results can look alike, but attribute-based control builds no such roles; one policy decides each request from its attributes.",
+      "wrong_explanations": {
+        "A": "Tempting because many policies start from a job. But attribute-based control also weighs the resource and the context, which job titles alone cannot express.",
+        "C": "Closest choice: attribute rules can look like many small roles. But attribute-based control builds no role per combination; one policy checks user, resource and context attributes on each request.",
+        "D": "Tempting because both differ from role-based control. But letting owners decide is discretionary access control; attribute-based control applies central policy."
+      },
+      "tips": [
+        "Eliminate: A reduces attribute-based control to job titles, and D describes discretionary access control, where owners decide.",
+        "Final two: B beats C because attribute-based control builds no role per combination; one policy weighs user, resource and context attributes on each request.",
+        "Exam cue: if the decision mixes facts about the person, the data and the situation at request time, think attribute-based; if it follows the job alone, think role-based."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-3(13) (Access Enforcement | Attribute-based Access Control); NIST SP 800-162 (Guide to Attribute Based Access Control (ABAC) Definition and Considerations)",
+      "related_concepts": [
+        "Attribute-based access control",
+        "Role-based access control",
+        "Access control models"
+      ],
+      "_provenance": "Authored from concept: 'ABAC checks subject, object and environment attributes per request; it is not RBAC with more roles' (notes 3.2.8 Attribute-Based Access Control (ABAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d3_200",
+      "domain": 3,
+      "subtopic": "3.2 Logical access. Choosing a model",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A state geology survey holds 40 files that a national security agreement says need system-enforced labels and clearances, among 30,000 everyday files. Which model choice should the security analyst advise as BEST?",
+      "options": {
+        "A": "Role-based access control everywhere, with a Secret role for the 40",
+        "B": "Mandatory access control across the board, labeling the 30,000 files too",
+        "C": "Discretionary access control everywhere, with owners sharing the 40 carefully",
+        "D": "Mandatory access control for the 40 files, role-based for the rest"
+      },
+      "correct": "D",
+      "key_concept": "Mixing models is normal: use mandatory access control where labels and clearances are required, and simpler models elsewhere.",
+      "pre_read": "Recall what each access control model needs and costs to run.",
+      "correct_explanation": "Choose the model that fits each set of data. The agreement demands system-enforced labels and clearances, which mandatory access control provides, so it covers the 40 files, while role-based control suits the everyday files. A Secret role everywhere is the runner-up, because it limits who holds the role, but roles do not compare labels with clearances, which the agreement requires.",
+      "wrong_explanations": {
+        "A": "Closest choice: a Secret role limits who can open the 40 files. But roles do not compare labels with clearances, and the agreement requires the system to enforce exactly that.",
+        "B": "Tempting because mandatory control is the strictest model. But labeling 30,000 everyday files adds great cost and rigidity for no required gain.",
+        "C": "Tempting because owners know their files. But owner choice is what the agreement rules out; it requires system-enforced labels and clearances."
+      },
+      "tips": [
+        "Eliminate: B forces the costliest model onto 30,000 files that do not require it, and C leaves the 40 files to owners' choice.",
+        "Final two: D beats A because mandatory control compares labels with clearances, as the agreement requires; roles alone cannot.",
+        "Exam cue: models can be mixed; use the strict model where the data demands it and a simpler one for everything else."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-3(3) (Access Enforcement | Mandatory Access Control); NIST SP 800-53 Rev. 5 AC-3(7) (Access Enforcement | Role-based Access Control)",
+      "related_concepts": [
+        "Choosing an access control model",
+        "Mandatory access control",
+        "Role-based access control"
+      ],
+      "_provenance": "Authored from concept: 'choose the model that fits each set of data; MAC only where labels and clearances are required' (notes 3.2.10 Choosing an Access Control Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026.",
+      "style_version": 2
     }
   ]
 }

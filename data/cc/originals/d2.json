@@ -5874,6 +5874,366 @@
       ],
       "_provenance": "Authored from concept: 'The NIST (National Institute of Standards and Technology) AI Risk Management Framework can structure this work' (notes 2.1.8 Governing AI Use). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): the security manager now proposes and leaders choose (matches cc_d1_206 and notes 1.3); D carries its document number like A to C; C no longer uses the series title.",
       "style_version": 2
+    },
+    {
+      "id": "cc_d2_164",
+      "domain": 2,
+      "subtopic": "2.1 GRC. Accountability and RACI",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A five-person tile shop's RACI chart for its yearly website certificate renewal marks the office manager both Responsible and Accountable. How should the IT coordinator BEST treat this entry?",
+      "options": {
+        "A": "Keep it; it meets RACI's one-Accountable rule",
+        "B": "Split it; it breaks RACI's separate-roles rule",
+        "C": "Add the shop's owner as a second Accountable person",
+        "D": "Mark the office manager Consulted, not Responsible"
+      },
+      "correct": "A",
+      "key_concept": "One person can be both Responsible and Accountable; RACI requires exactly one Accountable person per task, not different people for the two roles.",
+      "pre_read": "Recall what each letter in a RACI chart means for one task.",
+      "correct_explanation": "RACI requires exactly one Accountable person per task. It does not require the doer and the answerer to be different people, and in a small team one person often holds both, so this entry meets the rule. Splitting the roles is the runner-up: it sounds like extra control, but RACI has no separate-roles rule. Separating duties is a different control, kept for high-risk tasks such as payments.",
+      "wrong_explanations": {
+        "B": "Closest choice: separating roles can add oversight. But RACI has no separate-roles rule; its rule is one Accountable person per task, and that person may also do the work.",
+        "C": "Tempting because the owner runs the shop. But two Accountable people for one task leaves each assuming the other will act.",
+        "D": "Tempting because input is part of the task. But Consulted means advising before the work, and the office manager does the renewal."
+      },
+      "tips": [
+        "Eliminate: C gives one task two Accountable people, and D labels the person who does the work as only giving input.",
+        "Final two: A beats B because RACI needs exactly one Accountable person, not two different people for R and A; small teams often combine them.",
+        "Exam cue: RACI's hard rule is one A per task; R and A may sit with the same person."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "RACI chart",
+        "Accountability",
+        "Small-team roles"
+      ],
+      "_provenance": "Authored from concept: 'In a small team one person can be both Responsible and Accountable for a task' (notes 2.1.3 GRC Accountability: RACI and Reporting Lines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 8, 13 Nov 2026. Batch 8 final fix round (18 Nov 2026): key concept no longer says one Accountable person is RACI's only rule.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_165",
+      "domain": 2,
+      "subtopic": "2.1 GRC. Compliance evidence",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A coding academy's contract allows only its approved AI tool; for this term's proof, the security analyst exported just the last week of gateway logs, though a year is kept. Which step is BEST?",
+      "options": {
+        "A": "Send last week's logs, noting the rest was normal",
+        "B": "Send the AI use policy and the term's staff training records",
+        "C": "Send logs that cover every week of the term instead",
+        "D": "Send the AI tool vendor's latest security certificate"
+      },
+      "correct": "C",
+      "key_concept": "Compliance evidence must cover the whole period an obligation applies to; a sample from part of it cannot prove the rest.",
+      "pre_read": "Recall what makes compliance evidence convincing.",
+      "correct_explanation": "The contract applies all term, so the proof must cover all term. The gateway still holds a year of logs, so the analyst pulls and sends the full period. Sending the last week with a note is the runner-up: it is real operating evidence, but it says nothing about the other weeks, and the note only claims they were similar.",
+      "wrong_explanations": {
+        "A": "Closest choice: logs do show the control operating. But one week cannot prove the rest of the term, and a note is a claim, not evidence.",
+        "B": "Tempting because policy and training are required. But they show the rule was set and taught, not that staff followed it.",
+        "D": "Tempting because the vendor runs the approved tool. But its certificate covers the vendor's controls, not which AI services staff used."
+      },
+      "tips": [
+        "Eliminate: B shows the rule exists and was taught, not that it was followed, and D covers the vendor, not staff use.",
+        "Final two: C beats A because evidence must span the whole period the contract covers; one week plus a note leaves most of the term unproven.",
+        "Exam cue: check that the evidence covers the full period and scope of the obligation, not just the part that is easy to pull."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed); NIST CSF 2.0 DE.CM-03 (personnel activity and technology usage are monitored to find potentially adverse events)",
+      "related_concepts": [
+        "Compliance evidence",
+        "Evidence coverage period",
+        "AI acceptable use"
+      ],
+      "_provenance": "Authored from concept: 'Collect evidence as work happens, such as logs, tickets and test results' (notes 2.1.4 Compliance Obligations and Evidence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_166",
+      "domain": 2,
+      "subtopic": "2.2 Redundancy. Business impact analysis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A cut-flower grower's continuity coordinator finished a business impact analysis (BIA) ranking every function's recovery order, and the IT manager offers to sign it off. What is the coordinator's BEST next step?",
+      "options": {
+        "A": "Accept the IT manager's sign-off and begin recovery planning",
+        "B": "Ask each function owner to approve their own ratings instead",
+        "C": "Submit the BIA results to senior management for approval",
+        "D": "Choose recovery sites now and seek approval afterward"
+      },
+      "correct": "C",
+      "key_concept": "Senior management approves BIA results, because ranking functions for recovery sets priorities for the whole organization.",
+      "pre_read": "Recall what a business impact analysis produces and how its results are used.",
+      "correct_explanation": "A BIA that ranks the recovery order of every function sets priorities across the whole business, so senior management approves its results before recovery strategies are chosen. Function owners rate harm in their own areas, but none of them can settle trade-offs between functions. That is why their separate approvals, the runner-up, are not enough: approval must come from the level that answers for the whole organization.",
+      "wrong_explanations": {
+        "A": "Tempting because IT will run much of the recovery. But the IT manager speaks for one function and cannot set priorities for the whole business.",
+        "B": "Closest choice: function owners rated the harm in their own areas. But separate approvals of their own ratings leave no one to settle the order across functions.",
+        "D": "Tempting because sites take time to arrange. But sites are matched to approved recovery targets; choosing first risks paying for the wrong ones."
+      },
+      "tips": [
+        "Eliminate: A gives one function's manager a whole-business decision, and D picks sites before the targets they must meet are approved.",
+        "Final two: C beats B because ranking functions against each other is a business-wide trade-off that only senior management can settle; owners speak for their own areas.",
+        "Exam cue: when a result sets priorities across the whole organization, approval belongs to senior management, not to any one department."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.2 (Conduct the Business Impact Analysis (BIA): BIA results feed strategy development for the BCP and DRP); NIST CSF 2.0 GV.RR-01 (organizational leadership is responsible and accountable for cybersecurity risk and fosters a culture that is risk-aware, ethical and continually improving)",
+      "related_concepts": [
+        "Business impact analysis",
+        "Recovery priorities",
+        "Senior management approval"
+      ],
+      "_provenance": "Authored from concept: 'Set each function's maximum tolerable downtime (MTD) and recovery targets, then rank functions; senior management approves the results' (notes 2.2.3 Business Impact Analysis (BIA)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_167",
+      "domain": 2,
+      "subtopic": "2.2 Redundancy. Recovery sites",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bike retailer's recovery plan, owned by the IT manager, has the system administrator hold the warm site to the main site's baseline, but its servers lack endpoint protection. What should the administrator do FIRST?",
+      "options": {
+        "A": "Ask the IT manager to accept the baseline gap for now",
+        "B": "Treat the warm site as safe while it stays idle",
+        "C": "Install endpoint protection to match the main-site baseline",
+        "D": "Propose a hot site whose provider supplies endpoint protection"
+      },
+      "correct": "C",
+      "key_concept": "A recovery site needs security controls equivalent to the main site's, in place before it is ever used.",
+      "pre_read": "Recall what a recovery site must have besides equipment and data.",
+      "correct_explanation": "A recovery site needs controls equivalent to the main site's, because it will run real work and data the moment it is used. The plan assigns this task to the administrator, so installing endpoint protection to the baseline is in-role and comes first. Asking the IT manager to accept the gap is the runner-up: escalation suits decisions outside one's authority, but this fix is already assigned.",
+      "wrong_explanations": {
+        "A": "Closest choice: the IT manager owns the plan. But the plan assigns this fix to the administrator; acceptance with a review date is for risks deliberately kept, not assigned work.",
+        "B": "Tempting because an idle site holds no live work. But a disaster can strike at any time, and the site must be secure from its first minute of use.",
+        "D": "Tempting because hot sites are the readiest. But readiness is about recovery speed; the missing control is a gap the administrator can close at the warm site."
+      },
+      "tips": [
+        "Eliminate: B leaves a site unprotected that must run securely the moment it is used, and D pays for a faster site to fix one missing control.",
+        "Final two: C beats A because the plan assigns this fix to the administrator; asking for acceptance hands back work that is already theirs.",
+        "Exam cue: a recovery site gets the same security controls as the main site, and when a procedure assigns the fix to you, you carry it out."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CP-7 (Alternate Processing Site); NIST SP 800-34 Rev. 1 Section 3.4.3 (Alternate Sites)",
+      "related_concepts": [
+        "Recovery sites",
+        "Security baselines",
+        "Role and authority"
+      ],
+      "_provenance": "Authored from concept: 'Give the recovery site the same security controls as the main site, including monitoring, from the moment it runs' (notes 2.2.6 Recovery Sites). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_168",
+      "domain": 2,
+      "subtopic": "2.2 Redundancy. AI monitoring and resilience",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A plant nursery chain's IT manager says its new AI threat-monitoring tool must not run on the server cluster it watches, though that would cost less. How should the security analyst BEST respond?",
+      "options": {
+        "A": "Disagree; the tool spots threats faster beside the cluster",
+        "B": "Agree; a cluster outage would also take down the monitoring",
+        "C": "Agree; separate hosting makes the tool's alerts more accurate",
+        "D": "Disagree; its alerts already reach analysts' phones off-site"
+      },
+      "correct": "B",
+      "key_concept": "Detection should run where a failure of the monitored systems cannot also take it down, so it keeps working during the outage.",
+      "pre_read": "Recall how monitoring supports resilience during an outage.",
+      "correct_explanation": "Monitoring that shares the cluster it watches fails in the same outage, leaving the team blind just when attackers can exploit the confusion. Separate hosting keeps detection working through the event it warns about, so the IT manager is right. Sending alerts to analysts' phones off-site is the runner-up: the alerts travel elsewhere, but the tool that raises them would still stop in the outage.",
+      "wrong_explanations": {
+        "A": "Tempting because nearby tools seem quicker. But alert speed hardly depends on where the tool runs; the real issue is that one failure would stop both.",
+        "C": "Tempting because it agrees with the IT manager. But hosting does not change how accurate detections are; the reason is surviving a cluster outage.",
+        "D": "Closest choice: the alerts do leave the cluster. But the tool that raises them runs on the cluster, so an outage stops the alerts at their source."
+      },
+      "tips": [
+        "Eliminate: A relies on a speed gain that location barely gives, and C credits separate hosting with an accuracy gain it does not bring.",
+        "Final two: B beats D because the tool itself must keep running through the outage; sending alerts off-site does not help once the tool has stopped.",
+        "Exam cue: ask whether a safeguard survives the failure it is meant to catch; a monitor on the platform it watches does not."
+      ],
+      "framework_ref": "NIST CSF 2.0 PR.IR-03 (mechanisms are implemented to achieve resilience requirements in normal and adverse situations)",
+      "related_concepts": [
+        "AI-assisted detection",
+        "Single points of failure",
+        "Resilience"
+      ],
+      "_provenance": "Authored from concept: 'Run monitoring where a main-site failure cannot take it down, and restore it early' (notes 2.2.9 AI-Assisted Detection and Resilience). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_169",
+      "domain": 2,
+      "subtopic": "2.3 Security awareness. Culture and leadership",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A moving company's executives praise security in newsletters but have rejected every awareness plan needing staff time or money for two years; staff call security just talk. What should the awareness lead propose as BEST?",
+      "options": {
+        "A": "Leaders writing more security articles for the newsletter",
+        "B": "Leaders giving the program the resources it needs",
+        "C": "A required yearly course with completion rates by team",
+        "D": "Monthly rankings of teams by phishing clicks"
+      },
+      "correct": "B",
+      "key_concept": "Leaders shape security culture through their actions, including funding the program, not only through their words.",
+      "pre_read": "Recall how leaders set the tone for security culture.",
+      "correct_explanation": "Culture follows what leaders do, not only what they say: praising security while turning down every plan to act on it tells staff it does not matter. Giving the program the resources it needs shows the praise is meant. A required course tracked by completion rates is the runner-up: it builds skills, but it cannot fix a message from the top, and completing a course does not prove changed behavior.",
+      "wrong_explanations": {
+        "A": "Tempting because it keeps leaders' voices visible. But staff already hear the praise; more words without resources deepen the sense that it is just talk.",
+        "C": "Closest choice: required training builds skills, and completion rates are easy to track. But staff would still see leaders refusing to back the work, so the culture problem stays.",
+        "D": "Tempting because rankings create pressure. But public shaming makes people hide mistakes, which weakens the reporting a healthy culture depends on."
+      },
+      "tips": [
+        "Eliminate: A adds more of the talk staff already discount, and D uses shaming that drives mistakes into hiding.",
+        "Final two: B beats C because culture follows leaders' actions, including funding; a required course trains staff without changing what leaders signal.",
+        "Exam cue: when staff doubt that leaders mean it, look for the option where leaders act, by following the rules or by funding the work."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RR-01 (organizational leadership is responsible and accountable for cybersecurity risk and fosters a culture that is risk-aware, ethical and continually improving); NIST SP 800-50 Rev. 1 Section 1.6.1 (Head of Organization: the program is well-supported by resources, including personnel and funding)",
+      "related_concepts": [
+        "Security culture",
+        "Leadership support",
+        "Awareness program funding"
+      ],
+      "_provenance": "Authored from concept: 'Leaders set the tone: they follow the same rules, talk about security and fund it' (notes 2.3.1 Security Culture and Leadership). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 8, 13 Nov 2026. Batch 8 final fix round (18 Nov 2026): stem restores what leaders withheld (staff time or money), so the key no longer rests on an inference. Option D shortened so the key is not the lone shortest option.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_170",
+      "domain": 2,
+      "subtopic": "2.4 Measuring effectiveness. Measures and metrics",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An orchard cooperative is moving staff from personal AI accounts to its approved assistant in uneven waves over ten months; it tracks the share moved. Which addition BEST shows early if it is on pace?",
+      "options": {
+        "A": "Monthly reports of the share moved to date",
+        "B": "A monthly count of prompts sent to the assistant",
+        "C": "A list of the personal AI tools that staff have tried",
+        "D": "A quarterly interim target ahead of the final goal"
+      },
+      "correct": "D",
+      "key_concept": "Metrics for long efforts use interim targets as well as the final one, so progress can be judged along the way.",
+      "pre_read": "Recall what turns a raw measure into a metric that tracks progress.",
+      "correct_explanation": "A metric tracks progress against a target, and a long effort needs interim targets. Because teams move in uneven waves, a straight line to 100% says little; quarterly targets set from the wave plan show whether the move is on pace in time to act. Monthly reports of the share moved are the runner-up: they arrive sooner, but with no interim target, 20% in month three cannot show the pace.",
+      "wrong_explanations": {
+        "A": "Closest choice: monthly figures arrive sooner. But a share alone is a measure; with uneven waves and no interim target to compare it with, no one can tell the pace.",
+        "B": "Tempting because it shows the assistant is used. But prompt volume is activity, not the share of staff who have left personal accounts.",
+        "C": "Tempting because it shows what staff use. But an inventory is a list, not a measure judged against any target."
+      },
+      "tips": [
+        "Eliminate: B counts activity rather than the share of staff who have moved, and C is an inventory with no target to judge progress against.",
+        "Final two: D beats A because an interim target says where the share should be by each point; more frequent figures without one cannot show whether the move is on pace.",
+        "Exam cue: for goals that take months, pair the final target with interim ones, so the metric warns early."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Section 1.4 (Document Terminology: measures are quantifiable values and metrics track progress with respect to a set target); NIST SP 800-55v1 Section 3.1.1 (Measures Documentation: final and interim targets can be recorded to track progress toward a stated goal)",
+      "related_concepts": [
+        "Metrics and targets",
+        "Interim targets",
+        "Approved AI tools"
+      ],
+      "_provenance": "Authored from concept: 'For goals that take months, add interim targets on the way to the final one' (notes 2.4.1 Measures and Metrics: The Basics). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 8, 13 Nov 2026. Batch 8 final fix round (18 Nov 2026): setting changed from a survey firm (cross-domain settings overlap with cc_d1_233); stem adds uneven waves so a straight line from the final goal cannot stand in for interim targets. Option C lengthened so the key is not the lone longest option.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_171",
+      "domain": 2,
+      "subtopic": "2.4 Measuring effectiveness. KPIs and KRIs",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A dance school chain's backup KPI met its 99% on-schedule target, but its KRI, systems with no restore test in a year, rose from 3 to 11. Which conclusion is BEST?",
+      "options": {
+        "A": "Backups met their target, which means recovery risk stays low",
+        "B": "The KRI rose because the 99% target was set too low",
+        "C": "Backups ran on time, but the untested systems now exceed tolerance",
+        "D": "The backups ran on time, but more systems lack proven recovery"
+      },
+      "correct": "D",
+      "key_concept": "A KPI can meet its target while a KRI shows a risk growing, because they measure performance and exposure separately.",
+      "pre_read": "Recall what a KPI and a KRI each measure.",
+      "correct_explanation": "A key performance indicator (KPI) and a key risk indicator (KRI) answer different questions. The backup KPI shows the jobs ran on schedule, while the KRI shows more systems whose recovery is unproven. Both readings are true at once. Concluding that a green KPI means recovery risk stays low is the runner-up and the classic trap: performance can look fine while risk grows.",
+      "wrong_explanations": {
+        "A": "Closest choice: the KPI is green. But a met KPI shows the process ran, not that recovery risk stays low; the KRI shows untested systems almost quadrupled.",
+        "B": "Tempting because a stricter target sounds safer. But the KPI counts backup jobs run on schedule; raising it tests no restores, so the untested systems would still grow.",
+        "C": "Tempting because the KRI nearly quadrupled. But no threshold is given; a KRI warns as exposure nears a tolerance limit, and a rise alone does not show it passed."
+      },
+      "tips": [
+        "Eliminate: B blames the KRI's rise on the KPI target, though more on-time jobs test no restores, and C declares tolerance passed with no threshold given; a rising KRI is a warning.",
+        "Final two: D beats A because a met KPI says backups ran, not that recovery is proven; the KRI shows more systems lack a restore test.",
+        "Exam cue: read a KPI as 'are we performing?' and a KRI as 'is risk growing?'; both answers can be true at once."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Section 2.4 (Metrics: key risk indicators and key performance indicators)",
+      "related_concepts": [
+        "Key performance indicators",
+        "Key risk indicators",
+        "Restore testing"
+      ],
+      "_provenance": "Authored from concept: 'KPIs show performance; KRIs warn of risk' (notes 2.4.3 Key Performance and Key Risk Indicators). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 8, 13 Nov 2026. Batch 8 final fix round (18 Nov 2026): C no longer contradicts the stem's met target (now a real misconception: a rising KRI read as a passed tolerance), and the key now states the insight (recovery unproven for more systems) instead of restating the stem.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_172",
+      "domain": 2,
+      "subtopic": "2.4 Measuring effectiveness. Reporting to leaders",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A car-wash chain's operations team wants its live security dashboard, which names each site's unpatched systems, on a waiting-room screen to reassure customers. What should the security analyst propose as BEST?",
+      "options": {
+        "A": "Show the full dashboard as is and let openness build trust",
+        "B": "Show it with a notice that fixes are under way",
+        "C": "Show customers the systems at the site they visit",
+        "D": "Show staff the full view and customers a summary"
+      },
+      "correct": "D",
+      "key_concept": "Match a metrics view to its audience: detail that helps attackers stays with the staff who act on it; the public gets a summary.",
+      "pre_read": "Recall how a metrics view is matched to its audience.",
+      "correct_explanation": "A dashboard naming unpatched systems is built for the staff who fix them; on a public screen it tells attackers where to look. Showing staff the full view and customers a plain summary serves both audiences. Showing customers only the systems at their own site is the runner-up: it trims the view, but it still names that site's unpatched systems to the people standing in it.",
+      "wrong_explanations": {
+        "A": "Tempting because openness can build trust. But publishing the systems you have not patched hands attackers a target list.",
+        "B": "Tempting because a notice could reassure customers, the team's goal. But the screen would still list the unpatched systems, and the notice tells attackers they are not fixed yet.",
+        "C": "Closest choice: it trims the view to one site. But it still names that site's unpatched systems to the people standing in it, which is the detail an attacker wants."
+      },
+      "tips": [
+        "Eliminate: A publishes a target list, and B adds a reassuring notice while still listing the weak systems.",
+        "Final two: D beats C because trimming the view to one site still names its weak systems to the people standing there; detail that helps attackers stays with the staff who fix it.",
+        "Exam cue: choose the format and the detail for the audience; information that helps attackers never goes on a public display."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-22 (Publicly Accessible Content)",
+      "related_concepts": [
+        "Dashboards",
+        "Matching the audience",
+        "Publicly accessible content"
+      ],
+      "_provenance": "Authored from concept: 'Know the audience first: the board, senior management, risk owners or technical teams' (notes 2.4.5 Dashboards, Scorecards and Reports). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 8, 13 Nov 2026. Batch 8 final fix round (18 Nov 2026): runner-up C no longer states its own flaw and now shares 'customers' with the key; A gains an 'and' so only the key does not join two parts.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d2_173",
+      "domain": 2,
+      "subtopic": "2.3 Security awareness. Awareness and training",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A community sports center will move member bookings to a new cloud system next month, but front-desk staff's role-based training still covers the old one. What is the awareness lead's BEST action?",
+      "options": {
+        "A": "Update their training before the system goes live",
+        "B": "Add the new system to next year's refresher",
+        "C": "Send all staff a general security reminder",
+        "D": "Give staff the vendor's user guide and a login"
+      },
+      "correct": "A",
+      "key_concept": "Role-based training is updated when a system changes, before staff start using it, not at the next scheduled refresh.",
+      "pre_read": "Recall what role-based training covers and for whom.",
+      "correct_explanation": "Role-based training must keep pace with the systems a role uses, so a new booking system calls for updated training before staff work in it. Waiting for next year's refresher is the runner-up: the topic would be covered eventually, but staff would handle member data in the new system for months without its security steps.",
+      "wrong_explanations": {
+        "B": "Closest choice: the refresher will cover it eventually. But staff would use the new system for months without knowing its security steps.",
+        "C": "Tempting because reminders are cheap. But a general message for everyone does not teach the job steps of a new system.",
+        "D": "Tempting because vendors document their product. But a user guide teaches features, not the center's own rules for handling member data."
+      },
+      "tips": [
+        "Eliminate: C gives everyone a general message instead of role skills, and D swaps training for a product manual.",
+        "Final two: A beats B because role-based training changes when the system does; waiting a year leaves staff untrained on a system they use every day.",
+        "Exam cue: a new system, role or duty triggers role-based training before the work starts, not at the next scheduled cycle."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AT-3 (Role-based Training); NIST CSF 2.0 PR.AT-02 (individuals in specialized roles are provided with awareness and training to perform relevant tasks with cybersecurity risks in mind)",
+      "related_concepts": [
+        "Role-based training",
+        "Training triggers",
+        "System changes"
+      ],
+      "_provenance": "Authored from concept: 'Role-based training is also updated when a system a role uses changes, before staff work in it' (notes 2.3.2 Awareness, Training and Education). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 8, 13 Nov 2026.",
+      "style_version": 2
     }
   ]
 }
