@@ -50,7 +50,7 @@ the original.
 
 | Quote | Shown as | Permission | Where |
 |---|---|---|---|
-| "The app is user friendly … wasn't tiring to answer." (translated from Filipino, excerpt; the original's comparison with ISACA's question product left out) | Ken L., KaiSip beta tester | Given directly to the owner, 13 Nov 2026, for the English wording shown (owner confirmed 18 Nov 2026; reply kept privately by the owner). The tester also opted in to credit on the beta form, which covers only the in-app thank-you screen. | `home.html` (live from 18 Nov 2026) |
+| "The app is user friendly … wasn't tiring to answer." (translated from Filipino, excerpt; the original's comparison with ISACA's question product left out) | Ken L., KaiSip beta tester | Given directly to the owner, 13 Nov 2026, for the English wording shown (owner confirmed 18 Nov 2026; reply kept privately by the owner). The owner confirmed he was offered 6 months of CISA Premium, as the page's disclosure says. The tester also opted in to credit on the beta form, which covers only the in-app thank-you screen. | `home.html` (live from 18 Nov 2026) |
 
 ## Next update plan (phone app 2.1, closed testing, build of 18 Nov 2026)
 
