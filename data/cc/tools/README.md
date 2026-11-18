@@ -5,7 +5,7 @@ section 3). They read and write only `data/cc/`.
 
 | Script | Use |
 |---|---|
-| `check_cc.py` | Structural gate for every batch: item shape, IDs, notes and library links, tip structure, key spread, the "pick the longest" rate (15–24%, ties shared), notes coverage. `--list` names the items where the key is longest or tied. With all five domains it also fails on option first words that predict the key and warns on whole words anywhere in an option that do (see the word-tell sweep in the plan). |
+| `check_cc.py` | Structural gate for every batch: item shape, IDs, notes and library links, tip structure, key spread, the "pick the longest" rate (15–24%, ties shared), notes coverage. `--list` names the items where the key is longest or tied. With all five domains it also fails on option first words, and on whole words anywhere in an option, that predict the key (see the word-tell sweep in the plan). |
 | `word_sweep.py` | Worklist for evening out word tells: the bank table of words whose options win or lose too often, per-domain excess, a frozen per-domain plan (`--plan FILE`, written on first run) and the candidate items in one domain. |
 | `blind_copy.py` | Answer-free copy of chosen items for `qa-question-tester`. |
 | `merge_library.py` | Merge a staged citation file into `originals/_framework_library.md` when several authors work in parallel. |

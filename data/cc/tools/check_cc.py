@@ -17,8 +17,8 @@ Runs the gates every CC batch must pass before review, in one place:
     characters longer than the longest distractor, and opener tells (an
     option's first word, such as "Refer" or "Agree", winning far more or
     less often than chance across the whole bank, checked when all five
-    domains run, plus a WARNING for whole words anywhere in an option that
-    do the same at under 0.01%); --new N shows both rates
+    domains run, and the same for whole words anywhere in an option at
+    under 0.01%, since the Nov 2026 word-tell sweep); --new N shows both rates
     for one batch alone
   - coverage: notes sub-topics with no question
   - lens: CC notes' rule and "In practice" fields never speak as an auditor
@@ -100,8 +100,8 @@ def word_tells(qs):
     """Whole words, anywhere in an option, whose options win far more or less often than chance.
 
     The opener gate sees only the first word; this sees "named", "until", "and" in mid-option.
-    A word on all four options of an item tells nothing there and is skipped. Reported as a
-    WARNING (the older bank still carries some), so new batches can avoid adding to one."""
+    A word on all four options of an item tells nothing there and is skipped. An ERROR since
+    the Nov 2026 sweep evened the bank out; word_sweep.py lists the items to reword."""
     used, won, chance = Counter(), Counter(), Counter()
     for q in qs:
         sets = {k: {w.lower() for w in re.findall(r"[A-Za-z']+", v)} for k, v in q["options"].items()}
@@ -335,8 +335,9 @@ def main(argv):
                   "reword some openers so the first word does not predict the key")
             errors += 1
         for w, n, k, exp in word_tells(bank):
-            print(f"WARNING bank: options containing '{w}' win {k} of {n} items (chance about {exp * n:.0f}); "
-                  "new items should not add to this")
+            print(f"ERROR bank: options containing '{w}' win {k} of {n} items (chance about {exp * n:.0f}); "
+                  "reword some options (data/cc/tools/word_sweep.py lists the items) so the word does not predict the key")
+            errors += 1
     if "--similarity" in argv:
         similarity()
     sys.exit(1 if errors else 0)
