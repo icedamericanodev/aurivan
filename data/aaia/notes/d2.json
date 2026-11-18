@@ -93,7 +93,7 @@
           "how_it_works": [
             "Each dataset records its source, owner, collection date, license or consent basis and any limits on use.",
             "Lineage records every transformation, such as cleaning, labeling, joining and sampling, so each model version traces to an exact data snapshot.",
-            "Third-party and open datasets need the same evidence as internal data; a broker's warranty does not replace provenance.",
+            "Third-party, open and model-generated data need the same evidence; a broker's warranty is not provenance, and model output terms may bar training on generated data.",
             "Documents used for retrieval-augmented generation (RAG), where a model looks up content at answer time, also need an owner and access rights matching their sensitivity.",
             "Pipelines check integrity, for example with approved sources and file hashes, so unexpected or tampered records are caught before training."
           ],
@@ -159,7 +159,7 @@
           "definition": "Data quality for AI means training data is accurate, complete, consistently labeled and representative of the people and conditions the model will meet in use.",
           "why_it_matters": "A model reproduces the patterns in its data. Mislabeled or one-sided data produces confident but wrong or unfair decisions, often hurting the groups the data underrepresents.",
           "how_it_works": [
-            "Labels, the answers a model learns from, need written guidelines, trained labelers and checks on how often labelers agree.",
+            "Labels, the answers a model learns from, need written guidelines, trained labelers and checks on how often labelers agree; labels made or pre-filled by a model inherit its errors.",
             "Representativeness compares the data's mix of people, places and conditions with the population the model will serve.",
             "Historical data can carry past bias, such as decisions that disadvantaged a group, which the model will learn and repeat.",
             "Adding more data of the same kind does not fix a skewed mix; targeted collection or reweighting does.",
@@ -231,10 +231,10 @@
           "why_it_matters": "If test data overlaps training data, the model is graded on answers it has already seen. Reported accuracy then overstates performance, and management approves a model on false evidence.",
           "how_it_works": [
             "Splits are made and recorded before modeling starts, so the test set stays untouched until the final evaluation.",
-            "Leakage means a person or record on both sides of a split, or inputs holding later facts, such as scores a newer model rebuilt; store inputs as received.",
+            "Leakage means a person or record on both sides of a split, or inputs holding later facts, such as scores recalculated after the outcome; store inputs as received.",
             "Each customer's records stay on one side; splitting by person, not by row, prevents hidden overlap.",
-            "Out-of-time testing holds back the most recent period, showing whether the model works on data from after training.",
-            "The test set is not reused for tuning; once it shapes design choices, it is no longer an unseen check.",
+            "Out-of-time testing holds back the latest period, showing whether the model works on later data.",
+            "The test set is not reused for tuning, and a public benchmark may already sit in a large model's training data; neither is an unseen check.",
             "Steps that learn from or copy data, such as choosing inputs or augmentation, run after the split, on training data only."
           ],
           "example": "A Brazilian logistics firm predicts parcel damage. Its data scientist, Tomás, reports 98% accuracy, but the IS auditor finds that one input field is filled in only after a damage claim is filed, so the model sees the answer it should predict. The auditor reports that the accuracy figure cannot be relied on.",
@@ -333,7 +333,7 @@
               "Training run records that reproduce the released version's results"
             ],
             "recommend": "Have the AI governance committee define lifecycle gates that require data and performance evidence, scaled to impact.",
-            "decides": "The model owner approves each release under gate policy set by the governance committee"
+            "decides": "The model owner approves each release under gate policy set by the AI governance committee"
           },
           "isaca_rule": "Treat a model as data plus code. Every gate demands evidence on data and model behavior, scaled to impact, and owner sign-off. Automation speeds the gates; it never removes them.",
           "exam_traps": [
@@ -393,8 +393,8 @@
           "why_it_matters": "Without documentation, nobody can judge whether a model fits a new use or explain its decisions. Bought and pre-trained models need it too; the buyer stays accountable.",
           "how_it_works": [
             "A model card summarizes intended and out-of-scope uses, performance by group, training data and known limitations.",
-            "Building in-house gives full documentation but needs skills; buying is faster but depends on what the vendor discloses.",
-            "Tuning a pre-trained model on the organization's own data inherits the base model's unknowns.",
+            "Building in-house allows full documentation but needs skills; buying is faster but depends on what the vendor discloses.",
+            "Tuning inherits the base model's unknowns and can weaken its safety; open weights often carry their own license, apart from the code's.",
             "Contracts for bought models should require documentation, notice of changes, testing access and cooperation on incidents.",
             "A tuned model can repeat content from any file it learned to any user, so it is as sensitive as its most restricted training file."
           ],
@@ -467,9 +467,9 @@
           "why_it_matters": "Retired models may still need to explain decisions under appeal, audit or legal hold. Careless retirement either destroys that evidence or leaves forgotten models, keys and data running.",
           "how_it_works": [
             "Retirement is triggered by replacement, poor performance, a changed purpose or regulation, and is approved by the model owner.",
-            "Downstream systems that call the model are identified and moved off it before it is switched off.",
+            "Downstream systems are moved off the model, and the manual fallback, including staff skills eroded by reliance, is shown to work before switch-off.",
             "Model versions, inputs, outputs and decision logs are kept as long as decisions can be challenged, then disposed of on schedule.",
-            "Access rights, credentials and application programming interface (API) keys for the model, its data and its tools are revoked.",
+            "Access rights, credentials and application programming interface (API) keys for the model, its data and its tools are revoked, including access users delegated to an agent.",
             "The AI inventory records the system's status and kept records, with one entry per use when a model serves several, so retiring one use leaves others monitored.",
             "For vendor-hosted or vendor-tuned models, retirement also covers the vendor's copies of the model and its tuning data, with a recorded keep-or-delete decision."
           ],
@@ -545,10 +545,10 @@
           "definition": "An AI change is any edit that can alter a system's outputs: new code, retraining, new data, fine-tuning, prompt or threshold edits, and configuration settings.",
           "why_it_matters": "Many AI behavior changes involve no code at all. If only code goes through change control, a retrain or one-line prompt edit can change thousands of decisions unseen.",
           "how_it_works": [
-            "Retraining on fresh data produces a new model with new behavior, even when the code is identical.",
-            "A system prompt edit can change behavior as much as a code release.",
-            "Decision threshold edits change outcomes directly.",
+            "Retraining on fresh data makes a new model, even with identical code.",
+            "A system prompt or threshold edit can change outcomes as much as a code release.",
             "Each change gets an impact assessment, testing against acceptance criteria, owner approval and a rollback plan, scaled to risk.",
+            "Routine retrains qualify as pre-approved standard changes only when preset, independently approved tests gate each run.",
             "Emergency changes may skip prior approval, but are tested as far as time allows, documented, and independently reviewed and approved soon after.",
             "Swapping a data source or feed, or connecting a new tool, changes what the model sees or does: a change even when the model itself is unchanged."
           ],
@@ -696,10 +696,10 @@
           "definition": "Vendor model updates are changes a provider makes to a hosted or embedded AI model, sometimes silently, that alter outputs inside the customer's processes.",
           "why_it_matters": "When a provider swaps or retrains its model, the customer's controls and decisions change without any internal change ticket. The organization still answers for the outcomes.",
           "how_it_works": [
-            "Hosted services may update the model on their own schedule unless a fixed version is requested.",
-            "Version pinning keeps the model fixed until the customer decides to move; it does not freeze server-side filters, default settings or new features, such as memory.",
+            "Hosted services may update the model on their own schedule unless a fixed version is requested; a swapped embedding model needs every document reindexed.",
+            "Pinning fixes the model until the customer moves or the provider retires it; it does not freeze server-side filters, defaults or new features, such as memory.",
             "Contracts can require advance notice, release notes, a test window and the right to stay on a version for a set period.",
-            "Before adopting an update, the model owner reruns regression tests, cases with known expected results, kept current as the inputs the model receives change.",
+            "Before adopting an update, the model owner reruns regression tests, kept current as inputs change.",
             "When one model serves several uses, the owner of each use tests an update on that use's own work and accepts it.",
             "Monitoring output patterns, such as approval or flag rates, detects silent changes the contract did not prevent."
           ],
@@ -779,7 +779,8 @@
             "The oversight model is chosen by impact: the more a decision affects people's rights or money, the closer the human.",
             "Effective reviewers have training, enough time per case, the reasons behind each output and authority to override without penalty.",
             "Override rates, reasons and review times are tracked, analyzed and fed back into model monitoring.",
-            "Near-zero overrides combined with very short review times suggest rubber-stamping rather than judgment."
+            "Near-zero overrides combined with very short review times suggest rubber-stamping rather than judgment.",
+            "Showing a model's output before reviewers judge anchors them; recording their own judgment first keeps the review independent."
           ],
           "types": [
             {
@@ -808,7 +809,7 @@
               "Reviewer training records and documented override authority"
             ],
             "recommend": "Have the model owner give reviewers time, reasons and override authority, and analyze overrides regularly.",
-            "decides": "The model owner sets the oversight model within the AI policy and the governance committee's standards"
+            "decides": "The model owner sets the oversight model within AI policy and the AI governance committee's standards"
           },
           "isaca_rule": "Oversight must work, not just exist. For high-impact decisions, a person must understand the output, have time to judge it and be able to override or stop the system. Very high agreement with very little review time is a warning sign, not reassurance.",
           "exam_traps": [
@@ -856,7 +857,7 @@
             "Key performance indicators (KPIs) track value, such as accuracy; key risk indicators (KRIs) track warning signs, such as drift, group error rates and complaints.",
             "Each indicator has a threshold the owner sets within the tolerance senior management approved; a breach triggers review, retraining through change control or disengagement.",
             "Impacts are monitored too: how people use the system, effects on people and connected systems, and energy and resource use.",
-            "Reports go to the owner and, for high-impact systems, to the governance committee and board, showing trends rather than single readings.",
+            "Reports go to the owner and, for high-impact systems, to the AI governance committee and board, showing trends, not single readings.",
             "When true outcomes arrive late, input and prediction drift act as early warnings until outcome checks are possible."
           ],
           "example": "A Singapore port operator uses a model to predict crane maintenance needs. Its dashboard shows 99.9% availability, but technicians report more surprise breakdowns since new crane types arrived. The IS auditor compares the past year's predictions with actual failures and reports that no indicator tracks accuracy or input drift.",
@@ -1007,10 +1008,10 @@
           "why_it_matters": "Criteria chosen after the results are seen can be bent to pass anything. Tests run only on data unlike production, or only before launch, give a false picture of how the system will behave.",
           "how_it_works": [
             "Acceptance criteria cover accuracy, fairness, robustness and explainability, and trace back to the business need and the tolerances senior management set.",
-            "Tests use data and conditions similar to deployment, including holdout and out-of-time samples.",
+            "Verification shows the system meets its specification; validation shows it fits its intended use, tested with domain experts on data and conditions like deployment, including holdout and out-of-time samples.",
             "Test sets, metrics, tools and results are documented so another team could rerun them.",
             "Testing continues after launch through monitoring and periodic revalidation, not only at release.",
-            "Generative AI is tested with scenario sets and human review for accuracy, harmful content and confabulation.",
+            "Generative AI is tested with scenario sets and human review for accuracy, harmful content and confabulation, running each case several times because output varies.",
             "A compressed, quantized or converted model is a new version; acceptance tests are rerun on the form that will run."
           ],
           "example": "A Chilean water regulator's analysts build a model to flag billing errors. Their test plan names accuracy as the only measure and gives no pass mark. The IS auditor compares the plan with the system's impact assessment and reports that a pass mark, and limits on false flags against households, must be agreed before testing starts.",
@@ -1077,7 +1078,7 @@
           "definition": "Fairness testing compares an AI system's outcomes and error rates across groups of people, such as age, gender, ethnicity or region, to find unequal harm.",
           "why_it_matters": "One overall accuracy figure can hide much worse results for a smaller group. Unequal errors can breach anti-discrimination law and harm the people an organization serves.",
           "how_it_works": [
-            "Results are broken out by relevant group: approval or flag rates, false positives, false negatives and accuracy for each.",
+            "Results are broken out by group, including combined groups such as age with language, each with enough cases to judge: approval or flag rates, false positives, false negatives and accuracy.",
             "Fairness measures can conflict; the owner chooses and documents which apply and why, with legal and ethics input.",
             "Proxy variables, such as a postal code standing in for ethnicity, can carry bias even when protected attributes are left out.",
             "Fairness is tested before release and monitored in production, because group mixes and behavior change.",
@@ -1166,7 +1167,7 @@
             "recommend": "Have management assign validators independent of the builders and require robustness testing scaled to impact.",
             "decides": "The model owner decides on release; management accepts any unremediated findings"
           },
-          "isaca_rule": "Builders do not grade their own model. Expect validation by people independent of development, testing under stress and attack, and fresh validation after material change. The auditor assesses that validation; the auditor never performs or approves it.",
+          "isaca_rule": "Builders do not grade their own model. Expect validation by people independent of development, testing under stress and attack, and fresh validation after material change. The auditor assesses that validation and never performs or approves it; the auditor's own probing tests are audit evidence, not a substitute.",
           "exam_traps": [
             {
               "trap": "The IS auditor should validate the model because auditors are independent.",
@@ -1228,12 +1229,12 @@
           "definition": "Attacks on data and models target how AI learns or answers: poisoning corrupts training, evasion fools a trained model, and extraction or inference steals the model or its data.",
           "why_it_matters": "These attacks arrive through normal data feeds and queries, so perimeter controls rarely see them. A poisoned or copied model can fail, leak data or lose its value without any system breach.",
           "how_it_works": [
-            "NIST AI 100-2e2025, the National Institute of Standards and Technology (NIST) adversarial machine learning taxonomy, classifies attacks by attacker goals, capabilities, knowledge and lifecycle stage; MITRE ATLAS catalogs real techniques.",
-            "Poisoning is countered by provenance checks, limits on who can add training data or feedback, and anomaly checks before retraining.",
+            "Poisoning is countered by provenance checks, limits on who adds training data or feedback, and anomaly checks; clean-label poison, correctly labeled, passes label review.",
             "Extraction, membership inference (learning whether a person's data trained the model) and data reconstruction are made harder by query limits, monitoring of query patterns and less detailed outputs.",
-            "Downloaded models, libraries and datasets stay untrusted until source and integrity are verified; even signed, a model file that runs code on load opens only in isolation.",
+            "Downloaded models, libraries and datasets stay untrusted until source and integrity are checked; some model formats run code when opened, so even signed files open in isolation.",
             "An AI threat model covers data, model files, interfaces and suppliers, and is updated when the system changes; leaked model files let attackers rehearse evasions offline.",
-            "Backdoor poisoning plants a hidden trigger during training; the model behaves normally on ordinary tests, so training data no one can inspect is a risk in itself."
+            "Backdoor poisoning plants a hidden trigger during training; the model behaves normally on ordinary tests, so training data no one can inspect is a risk in itself.",
+            "The National Institute of Standards and Technology (NIST) adversarial machine learning taxonomy, NIST AI 100-2e2025, sorts attacks by attacker goal, access, knowledge and lifecycle stage; MITRE ATLAS lists real techniques."
           ],
           "types": [
             {
@@ -1534,7 +1535,7 @@
           "why_it_matters": "A harmful model keeps making decisions until someone stops it. But restarting, retraining or deleting logs too early can destroy the inputs, outputs and versions investigators need.",
           "how_it_works": [
             "Disengagement mechanisms, such as a kill switch, a feature flag or a manual fallback process, are designed and assigned before deployment.",
-            "Rolling back restores a previous approved version; it is a containment step, not a fix.",
+            "Rollback restores an approved version, with any live learning paused; it is containment, not a fix.",
             "Preserved evidence includes inputs, outputs, prompts, model and data versions, configuration and logs, with timestamps and chain of custody; generative outputs cannot be reliably regenerated later.",
             "Affected people are identified from the decision logs so harm can be assessed and remedied.",
             "Disengaging an agent means suspending its credentials, tools and scheduled jobs, not just closing its interface."
@@ -1610,7 +1611,7 @@
             "Investigators compare preserved inputs, outputs and versions with the last known good state to locate what changed.",
             "Causes are traced across layers: data (drift, poisoning, labeling), model, prompt or configuration, integration and human oversight.",
             "Once service is restored, a problem record carries the cause; the fix goes through change control and is checked to confirm it worked.",
-            "Incidents are reported to owners, the governance committee and, where required, regulators and affected people.",
+            "Incidents are reported to owners, the AI governance committee and, where required, regulators and affected people.",
             "Lessons learned, including why detection took as long as it did, update the threat model, monitoring tolerances, tests and training.",
             "When the cause sits with a vendor and the fix is months away, the problem stays open as a known error, with a tested workaround outside the model."
           ],
@@ -1629,7 +1630,7 @@
             "recommend": "Have the problem manager link every AI incident of unknown cause to a problem register entry tracked to a tested fix.",
             "decides": "The model owner decides remediation; management decides external reporting with legal counsel"
           },
-          "isaca_rule": "A rollback or prompt patch restores service; it does not remove the cause. An ordinary fault's incident may close once service is confirmed, while a problem record carries root cause analysis to a verified fix. Deliberate manipulation, such as poisoning, stays open until the cause is removed.",
+          "isaca_rule": "A rollback or prompt patch restores service; it does not remove the cause. An ordinary fault's incident may close once service is confirmed, while a problem record carries root cause analysis to a verified fix. Suspected or deliberate manipulation, such as poisoning, stays open until the cause is removed.",
           "exam_traps": [
             {
               "trap": "Once outputs return to normal after a rollback, the AI failure is resolved.",

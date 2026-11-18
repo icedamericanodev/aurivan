@@ -154,7 +154,7 @@
               "AI policy and regulatory obligations mapped to the system",
               "Supplier agreements and monitoring reports for the purchased model"
             ],
-            "recommend": "Have the audit manager select the audit criteria, agree scope with the engagement sponsor and record each exclusion and its reason.",
+            "recommend": "Have the audit manager select the audit criteria and scope, discuss them with the engagement sponsor and record any unavoidable limitation and its reason.",
             "decides": "The chief audit executive approves the engagement scope"
           },
           "isaca_rule": "Scope an AI audit around where risk sits: data, design, decisions, oversight and suppliers across the lifecycle. For a vendor model, audit what the organization controls and how it manages the vendor, not weights it can never see.",
@@ -349,11 +349,11 @@
           "definition": "Testing controls over an artificial intelligence (AI) system means checking that they are well designed and actually operate, including the human review of its outputs.",
           "why_it_matters": "A control can exist on paper while people simply approve whatever the model says. If oversight fails, harmful AI decisions reach people with no real check.",
           "how_it_works": [
-            "Test design by walking each control through the risk it should address; a review against an AI-made record cannot catch errors both share.",
+            "Test design by walking each control through its risk; checking AI output against another record the same AI made cannot catch shared errors.",
             "Test operation over the period with logs and records, not the control owner's description.",
             "Measure human review with override rates, time spent per case and agreement with the model.",
             "Seed cases with known right answers, agreed with the model owner so no one is affected, to test whether reviewers actually catch wrong outputs.",
-            "Map risks to controls independently, such as label editing and retraining approval; targeted label edits barely move overall accuracy.",
+            "Map risks to controls yourself, such as who edits labels or approves retraining; planted label edits barely move accuracy.",
             "Test AI guardrails, such as output filters, by attempting reworded and disguised bypasses in an agreed setting; counts of blocked items show only catches."
           ],
           "example": "At a food-safety agency in Canada, a model ranks restaurants for inspection, and policy lets inspectors change any ranking with a reason. IS auditor Amara tests a year of logs: inspectors changed no rankings at all, and none could see why a restaurant ranked high. Amara reports that the oversight control is not effective: reviewers cannot see the reasons behind rankings, a design gap, and records show they never challenge them.",
@@ -369,7 +369,7 @@
               "Control descriptions with owners and frequencies"
             ],
             "recommend": "Have the model owner give reviewers the reasons behind outputs and monitor override rates and review times.",
-            "decides": "The model owner decides whether the model may keep deciding unaided"
+            "decides": "The model owner decides the fix and whether the model keeps running meanwhile"
           },
           "isaca_rule": "Test AI controls like any control, design then operation, but treat human oversight as a control in its own right. Oversight counts only when reviewers can understand, challenge and override outputs, and records show they do.",
           "exam_traps": [
@@ -419,7 +419,8 @@
             "Stratify by affected group so each group, including small ones, has enough cases to compare outcomes.",
             "Add strata for low-confidence scores, human overrides and recent model versions, where errors tend to gather.",
             "Size each stratum for the confidence the objective needs, and document the design and its reasons.",
-            "For ranking or recommendation models, the population is everything ranked, since harm falls on those placed too low to be seen."
+            "For ranking or recommendation models, the population is everything ranked, since harm falls on those placed too low to be seen.",
+            "For an AI agent, sample whole tasks and trace each tool call; when answers vary between runs, a wrong answer in any run is an exception."
           ],
           "example": "A video platform in Brazil uses a model to remove posts that break its rules, in 12 languages. IS auditor Tiago learns that posts in Guarani are under 1% of removals. Tiago stratifies the sample by language, takes enough Guarani removals to compare error rates and adds a stratum of removals that users appealed.",
           "audit_focus": {
@@ -563,8 +564,8 @@
             "Data lineage traces each training or input dataset to its sources and transformations.",
             "Model cards and datasheets, written by the builders, describe intended use, limits, training data and known weaknesses.",
             "Validation, fairness and adversarial (red-team) test reports show testing before release; monitoring reports show behavior afterward.",
-            "Decision, override and prompt logs, with model version and configuration history, show what happened in production.",
-            "Vendor attestations cover only their stated scope, which often leaves out model behavior.",
+            "Decision, override, prompt and retrieval logs, with model version and configuration history, show what happened in production; passage logs separate source from generation errors.",
+            "Vendor attestations cover only their stated scope, often not model behavior; a model identifier logged with each response, not release notes, ties an answer to a version.",
             "An AI agent's real capabilities are the permissions its credentials hold in connected systems; its tool list describes intent, not limits."
           ],
           "example": "An online bookstore in Ireland uses a recommender model. Asked how it was trained, the owner offers a slide deck. IS auditor Niamh instead requests the pipeline's lineage records, the model card, the latest validation report and three months of decision logs with model versions, and maps each record to the question it answers.",
@@ -627,8 +628,8 @@
           "definition": "Sufficient, reliable AI evidence is enough relevant proof, from trustworthy sources and the right model version, to support the auditor's conclusion over the whole period.",
           "why_it_matters": "AI systems change often and produce persuasive screens. Evidence tied to the wrong version, or showing one moment, can support a confident but wrong conclusion.",
           "how_it_works": [
-            "Rank evidence: what the auditor reperforms or a system produces, then documents, then statements from owners.",
-            "Tie every item to the model version and period under audit; retraining makes a different model.",
+            "Rank evidence: what the auditor reperforms or a system produces, then documents, then statements from owners; a model-prefilled reason a reviewer keeps is the model's text, not human judgment.",
+            "Tie every item to the model version and period under audit; retraining makes a different model, and a continuously learning one needs regular snapshots and the update data between them.",
             "Prefer records over time, such as alert histories, to one-moment screenshots; a monitor that never alerts proves little unless its limits could catch drift all period.",
             "Read vendor attestations for scope: a System and Organization Controls (SOC) 2 report rarely covers model behavior.",
             "Ask owners to preserve versions, configurations and logs before planned changes overwrite them.",
@@ -671,7 +672,7 @@
             },
             {
               "term": "Model drift",
-              "definition": "A decline in a model's performance as real-world data moves away from its training data."
+              "definition": "A decline in a model's performance as real-world conditions move away from its training conditions."
             }
           ]
         },
@@ -792,7 +793,7 @@
               "Platform logging configuration showing what is kept and for how long"
             ],
             "recommend": "Have the model owner log every AI decision and keep logs unfiltered for the required retention period.",
-            "decides": "The data owner sets which AI decisions must be logged and kept"
+            "decides": "The model owner sets which AI decisions are logged, within the AI governance committee's record standards"
           },
           "isaca_rule": "Never trust an extract just because a system produced it. Reconcile it to the source and learn how the population was formed; if a model or filter chose the records, what it missed is outside the data.",
           "exam_traps": [
@@ -842,11 +843,11 @@
           "definition": "AI-assisted audit analytics applies artificial intelligence (AI) tools, such as anomaly detection or natural language processing (NLP), to find audit data items worth testing.",
           "why_it_matters": "These tools can examine whole populations quickly, but they make errors in both directions. Relying on one without validating it moves the tool's blind spots straight into the audit opinion.",
           "how_it_works": [
-            "Validate the tool before relying on it by running it on data whose correct answers are already known.",
+            "Before relying on the tool, validate it on known answers found independently of the tool and held back from tuning.",
             "When no past cases exist, plant realistic synthetic exceptions in a copy of the data and measure how many the tool finds.",
             "Measure both errors: false positives waste effort, while false negatives let real exceptions pass unseen.",
-            "Treat each flag as a lead and follow it up with evidence before calling it a finding.",
-            "Revalidate when the tool, its model version or the type of data changes.",
+            "Treat each flag as a lead until it is followed up.",
+            "Revalidate when the tool, its model version, its prompt or the type of data changes.",
             "Precision measured on a test set rich in exceptions overstates live precision when real exceptions are rare."
           ],
           "example": "A Mexican retailer's audit team adopts an anomaly-detection tool for payroll. Before relying on it, IS auditor Lucía runs it on last year's payroll, which holds 14 known ghost-employee cases from a past investigation. The tool finds 9. Lucía documents the miss rate, uses the tool for leads only and keeps a separate ghost-employee test.",
@@ -953,7 +954,7 @@
           "key_terms": [
             {
               "term": "Reproducibility",
-              "definition": "The ability to rerun an analysis under the same conditions and get the same result."
+              "definition": "The ability to rerun an analysis under recorded conditions and get the same result, or explain any difference."
             },
             {
               "term": "Data snapshot",
@@ -1065,7 +1066,7 @@
           "how_it_works": [
             "Rate findings by the likelihood and impact of harm to people and the business, weighing autonomy, scale and whether affected people can appeal.",
             "Explain technical findings in plain business terms, with one example of real harm where possible.",
-            "Record management's response with a named internal owner, actions and dates, even for a vendor's fix. Actions must reach the cause: test each vendor update; set limits on both errors.",
+            "Record management's response with a named internal owner, actions and dates; actions must reach the cause, such as testing each vendor update and limiting both error types in a retrain.",
             "Follow up with production evidence, not reports or statements: retested outcomes or, for a missing control, records showing it now operates.",
             "Report live, ongoing harm to the model owner and management at once, rather than holding it for the final report."
           ],
@@ -1193,12 +1194,12 @@
     "Data lineage": "A record of where data came from and every transformation it passed through.",
     "Model card": "A short document from a model's builders describing its purpose, data, performance and limits.",
     "Model version": "A uniquely identified release of a trained model; retraining creates a new version.",
-    "Model drift": "A decline in a model's performance as real-world data moves away from its training data.",
+    "Model drift": "A decline in a model's performance as real-world conditions move away from its training conditions.",
     "Confabulation": "Confidently stated but false content produced by a generative AI system.",
     "Corroboration": "Confirming evidence with another independent source, such as the original record.",
     "Population": "The complete set of items about which the auditor wants to reach a conclusion.",
     "Known-outcome test": "Running a tool on data where the right answers are known, to measure its errors.",
-    "Reproducibility": "The ability to rerun an analysis under the same conditions and get the same result.",
+    "Reproducibility": "The ability to rerun an analysis under recorded conditions and get the same result, or explain any difference.",
     "Training on inputs": "A provider using submitted prompts and data to improve its models.",
     "Finding attributes": "Condition, criteria, cause, effect and recommendation: the parts of an audit finding.",
     "Appeal route": "A way for people affected by an AI decision to challenge it and have a person review it.",

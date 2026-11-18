@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "title": "KaiSip AAIA exam mindset principles",
-  "updated": "2026-10-31",
+  "updated": "2026-11-18",
   "description": "The reasoning patterns AAIA questions reward, grouped into the same six families as KaiSip's CISA principles, which they extend to auditing AI and using AI in the audit. AAIA course pack, not wired into the apps yet. Schema: docs/content/PRINCIPLES_SCHEMA.md. Lint: python3 scripts/lint_principles.py --cert aaia.",
   "families": [
     {
@@ -112,7 +112,7 @@
       },
       "example": {
         "scenario": "A city's parking-permit model was bought by IT, built by a vendor and is watched by an analyst. When residents complain about refusals, nobody can say who may change its cutoff score.",
-        "answer": "Report the missing owner. Recommend naming the permits business manager as owner, with authority to set the cutoff within tolerance, decide overrides and pause the model."
+        "answer": "Report the missing owner. Recommend that management name a business owner, such as the head of permits, with authority to set the cutoff within tolerance, decide overrides and pause the model."
       },
       "check": {
         "scenario": "A distributor's demand model sets reorder quantities automatically. The supply chain director says the data science team owns it, since they built it and retrain it. Who should the IS auditor expect to own it?",
@@ -136,7 +136,7 @@
         "aaia_d1_005",
         "aaia_d1_024",
         "aaia_d1_030",
-        "aaia_d1_044"
+        "aaia_d2_071"
       ],
       "slip_pattern": null,
       "legacy_ids": [],
@@ -212,7 +212,7 @@
       },
       "example": {
         "scenario": "A hospital's sepsis-alert vendor supplies a fairness rating computed on patient records it selected, and the informatics team that tuned the alert thresholds signed the validation.",
-        "answer": "Rely on neither as it stands. Recommend that management assign validators separate from the tuning team. Before relying on the vendor's rating, test it on a sample of the hospital's own recent records."
+        "answer": "Rely on neither as it stands. Recommend that management assign validators separate from the tuning team, and have them recheck the vendor's rating on the hospital's own recent records before anyone relies on it."
       },
       "check": {
         "scenario": "Testing a publisher's plagiarism-check model, an IS auditor is offered 40 manuscripts the editorial team picked as typical, to compare its flags with confirmed cases.",
@@ -222,10 +222,12 @@
       },
       "nuance": "Independent does not mean the IS auditor: validators may sit in management, such as a second-line team, if separate from the builders. Auditee data and expert work can be used once checked against sources.",
       "domains": [
+        1,
         2,
         3
       ],
       "subtopics": [
+        "1C.3",
         "2E.3",
         "3A.3",
         "3D.3"
@@ -363,8 +365,8 @@
         "why_wrong": "A stricter figure, or the same figure checked by someone else on the same data, still hides who bears the errors and how the model does on new data."
       },
       "example": {
-        "scenario": "A transit agency's fare-evasion camera model scores 93% on its validation set, so the owner wants it to issue fines automatically.",
-        "answer": "Ask how often it wrongly flags paying riders, by station and rider group, on recent data, against a limit set before testing. A 93% overall score says nothing about who is wrongly fined."
+        "scenario": "A marathon organizer's photo model, which flags runners for cutting the course, scores 93% on its validation set, so the owner wants it to disqualify runners automatically.",
+        "answer": "Ask how often it wrongly flags honest runners, by age group and pace, on recent races, against a limit set before testing. A 93% overall score says nothing about who is wrongly disqualified."
       },
       "check": {
         "scenario": "A lender's income-verification model scored 95% when its builders tested it two years ago. Management wants the IS auditor to cite that figure as evidence the model still works.",
@@ -372,7 +374,7 @@
         "trap": "Ask an independent team to recompute the 95% score on the builders' original test set.",
         "why": "Independence does not refresh old data. Recent error rates by group, judged against limits set first, show whether the model still meets its purpose."
       },
-      "nuance": "Accuracy still matters as one input. The IS auditor selects audit criteria for suitability, and a tolerance approved for this use usually beats a general benchmark.",
+      "nuance": "Accuracy still matters as one input. The model owner sets acceptance limits; the IS auditor checks that they suit this use and tests against them. A limit approved for this use usually beats a general benchmark.",
       "domains": [
         1,
         2,
@@ -478,7 +480,7 @@
       ],
       "trap": {
         "move": "Rerunning a past case through today's model, or relying on source code, outcome logs or a developer's description as the record.",
-        "why_wrong": "After retraining, today's model is a different model, and code or outcomes cannot recreate what the deciding version saw and did. That is the CISA-only slip of treating AI like ordinary code."
+        "why_wrong": "After retraining, today's model is a different model, and code or outcomes cannot recreate what the deciding version saw and did. That is the habit CISA holders bring: treating a model like ordinary code."
       },
       "example": {
         "scenario": "A tax office's audit-selection model is retrained each quarter. A taxpayer disputes being selected last year, and the log shows only the selection date.",
@@ -639,7 +641,7 @@
       ],
       "trap": {
         "move": "Treating the change as routine because no code changed, then relying on monitoring to notice any effect.",
-        "why_wrong": "That is the CISA-only slip. Monitoring finds the effect after people are affected; a change gate tests the new behavior before it reaches anyone."
+        "why_wrong": "That is the CISA habit of judging change by code alone. Monitoring finds the effect after people are affected; a change gate tests the new behavior before it reaches anyone."
       },
       "example": {
         "scenario": "A clinic's triage chatbot runs on a vendor model. The vendor announces it will move all customers to a new model version next month.",
@@ -651,7 +653,7 @@
         "trap": "Let the team apply it now as a settings tweak, then compare missed fraud against last month's figures.",
         "why": "A threshold decides which cases are caught, so changing it changes outcomes. Testing first shows the cost in missed fraud before customers bear it."
       },
-      "nuance": "Low-risk, well-understood changes can follow a lighter standard path once tested, but only when their effect on outputs is known in advance.",
+      "nuance": "Low-risk changes can follow a lighter standard path once tested, when their effect on outputs is known in advance or every run must pass preset, independently approved tests.",
       "domains": [
         1,
         2
@@ -882,8 +884,8 @@
       "family": "response",
       "order": 2,
       "title": "Triage by harm; find the real cause",
-      "rule": "Triage AI incidents by impact on people and the business; problem records carry the cause, and suspected manipulation stays open.",
-      "why": "A live model breaching its error tolerance is an incident, not a backlog item, and a quiet breach in a high-impact model can outrank a visible jailbreak. An ordinary incident closes once service is confirmed, while the problem record traces the real cause. Suspected poisoning stays open until the bad data and the gap that let it in are found.",
+      "rule": "Triage AI incidents by harm to people and business; a problem record carries the cause; suspected-manipulation incidents stay open.",
+      "why": "A live model breaching its error tolerance is an incident, not a backlog item, and a quiet breach in a high-impact model can outrank a visible jailbreak. An ordinary incident closes once service is confirmed, while the problem record traces the real cause. Suspected poisoning stays open until the bad data and the gap that let it in are removed.",
       "triggers": [
         "logged as a backlog item",
         "several incident reports at once",
@@ -902,7 +904,7 @@
       },
       "check": {
         "scenario": "A court service's translation model has produced wrong verb tenses in some documents for two weeks, above its error tolerance. The data team has added it to next quarter's improvement list.",
-        "right": "Raise it as an AI incident now and triage it by the harm to people in court cases.",
+        "right": "Recommend that it be raised as an AI incident now and triaged by the harm to people in court cases.",
         "trap": "Keep it on the improvement list, and raise its priority within next quarter's model work.",
         "why": "Errors above tolerance in a live model are harming people now, which makes this an incident. Waiting for planned model work leaves wrong translations in court documents."
       },
@@ -934,10 +936,11 @@
       "triggers": [
         "FIRST",
         "BEST",
-        "MOST important",
+        "MOST",
         "GREATEST",
         "PRIMARY",
-        "MOST LIKELY"
+        "MOST LIKELY",
+        "LEAST"
       ],
       "trap": {
         "move": "Choosing a strong control that belongs later in the sequence, such as testing before the criteria or the source are settled.",
