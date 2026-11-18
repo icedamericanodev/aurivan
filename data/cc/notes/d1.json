@@ -110,7 +110,7 @@
             "svg": "<svg viewBox='0 0 480 270' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='The CIA triad as a triangle: confidentiality asks who can see it and fails by disclosure; integrity asks whether it is still correct and fails by alteration; availability asks whether it can be used when needed and fails by destruction or denial'><path d='M240,44 L90,200 M240,44 L390,200 M165,217 L315,217' stroke='var(--border2)' stroke-width='1.5' fill='none'/><rect x='165' y='10' width='150' height='34' rx='4' fill='var(--accent-fill)'/><text x='240' y='31' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Confidentiality</text><text x='325' y='24' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>Who can see it?</text><text x='325' y='37' text-anchor='start' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>FAILS BY DISCLOSURE</text><rect x='15' y='200' width='150' height='34' rx='4' fill='var(--accent-fill)'/><text x='90' y='221' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Integrity</text><text x='90' y='248' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>Is it still correct?</text><text x='90' y='261' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>FAILS BY ALTERATION</text><rect x='315' y='200' width='150' height='34' rx='4' fill='var(--accent-fill)'/><text x='390' y='221' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Availability</text><text x='390' y='248' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>Can we use it when needed?</text><text x='390' y='261' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>FAILS BY DESTRUCTION OR DENIAL</text><text x='240' y='148' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>Every asset needs all three,</text><text x='240' y='162' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='600' fill='var(--text2)'>in its own balance</text></svg>",
             "caption": "Each goal asks its own question and fails in its own way. Name the goal that was harmed before choosing a control."
           },
-          "example": "A school's grading system goes offline in exam week after a power failure, and a teacher notices a student's grade changed overnight. Dana, a junior analyst, records two problems in the incident ticket, an availability failure and an integrity failure, and follows the incident procedure instead of correcting the grade directly.",
+          "example": "A school's grading system goes offline in exam week after a power failure, and a teacher notices a student's grade changed overnight. Dana, a security analyst, records two problems in the incident ticket, an availability failure and an integrity failure, and follows the incident procedure instead of correcting the grade directly.",
           "audit_focus": {
             "review": [
               "Name the goal an alert harms before choosing a response",
@@ -251,7 +251,7 @@
               }
             ]
           },
-          "example": "A hospital pharmacy system shows that a patient's dose changed overnight, and the change log links the edit to no approved request. Separately, a supplier invoice arrives intact but from a look-alike email domain. A junior analyst records the first as an integrity failure and the second as an authenticity failure, and reports both to the system owner and the security team.",
+          "example": "A hospital pharmacy system shows that a patient's dose changed overnight, and the change log links the edit to no approved request. Separately, a supplier invoice arrives intact but from a look-alike email domain. A security analyst records the first as an integrity failure and the second as an authenticity failure, and reports both to the system owner and the security team.",
           "audit_focus": {
             "review": [
               "Compare a file's hash with the trusted published value",
@@ -369,7 +369,7 @@
               "meaning": "A body trait, such as a fingerprint or face."
             }
           ],
-          "example": "At a hardware wholesaler, handheld stock scanners accept an employee number with no PIN, so anyone can record stock moves under a colleague's number. Priya, a junior analyst, records this as identification without authentication and raises a change request with the system owner.",
+          "example": "At a hardware wholesaler, handheld stock scanners accept an employee number with no PIN, so anyone can record stock moves under a colleague's number. Priya, a security analyst, records this as identification without authentication and raises a change request with the system owner.",
           "audit_focus": {
             "review": [
               "Flag sign-ins that accept an ID without any proof",
@@ -599,7 +599,7 @@
               }
             ]
           },
-          "example": "A community radio station is designing a listener app. The draft asks for each listener's full date of birth and shares their location by default. At the design review, Dev, a junior analyst, suggests asking only whether listeners are over 16 and keeping location off until a listener turns it on. Dev records both points in the privacy impact assessment for the data owner.",
+          "example": "A community radio station is designing a listener app. The draft asks for each listener's full date of birth and shares their location by default. At the design review, Dev, a security analyst, suggests asking only whether listeners are over 16 and keeping location off until a listener turns it on. Dev records both points in the privacy impact assessment for the data owner.",
           "audit_focus": {
             "review": [
               "Compare personal fields collected with what the feature needs",
@@ -690,7 +690,7 @@
               }
             ]
           },
-          "example": "An energy company wants to retrain its support chatbot on last year's chat transcripts. Kai, a junior analyst asked to upload them, notices they hold account numbers and home addresses. Before uploading anything, Kai asks the data owner whether the personal data may be used at all.",
+          "example": "An energy company wants to retrain its support chatbot on last year's chat transcripts. Kai, a security analyst asked to upload them, notices they hold account numbers and home addresses. Before uploading anything, Kai asks the data owner whether the personal data may be used at all.",
           "audit_focus": {
             "review": [
               "Ask where each training dataset came from and who approved it",
@@ -1388,7 +1388,7 @@
               }
             ]
           },
-          "example": "During a breach exercise at an online retailer with EU customers, Wen, a junior analyst, sees the plan allows seven days to tell regulators. GDPR generally requires notice within 72 hours of becoming aware of a reportable breach. Wen logs the gap in the exercise report.",
+          "example": "During a breach exercise at an online retailer with EU customers, Wen, a security analyst, sees the plan allows seven days to tell regulators. GDPR generally requires notice within 72 hours of becoming aware of a reportable breach. Wen logs the gap in the exercise report.",
           "audit_focus": {
             "review": [
               "Note which data types and locations a system handles",
@@ -1539,7 +1539,7 @@
             "Exceptions go through a formal process: recorded, time-limited and reviewed.",
             "Policies are reviewed on a schedule and after major changes, such as new technology, laws or ways of working."
           ],
-          "example": "A mining company starts letting site workers use their own phones for its shift app. Its mobile device policy, last reviewed four years ago, covers only company phones. Pat, a junior analyst, neither stretches the old rules nor invents new ones. Pat flags the gap to the policy's owner, the IT director, who starts a review of the policy.",
+          "example": "A mining company starts letting site workers use their own phones for its shift app. Its mobile device policy, last reviewed four years ago, covers only company phones. Pat, a security analyst, neither stretches the old rules nor invents new ones. Pat flags the gap to the policy's owner, the IT director, who starts a review of the policy.",
           "audit_focus": {
             "review": [
               "Find the policy behind a rule before enforcing it or routing an exception",
@@ -2559,7 +2559,7 @@
             "Be honest about AI's role where it matters, such as in reports.",
             "Never use AI to deceive or impersonate outside an authorized test. Imitating a real person's voice or face needs their consent and a clear AI label."
           ],
-          "example": "Tara, a junior analyst at a consulting firm, uses an approved AI assistant to summarize a client's scan results. The summary says a server is fully patched, but the raw data shows a critical patch is missing. Tara corrects the report before sending it and tells the team lead.",
+          "example": "Tara, a security analyst at a consulting firm, uses an approved AI assistant to summarize a client's scan results. The summary says a server is fully patched, but the raw data shows a critical patch is missing. Tara corrects the report before sending it and tells the team lead.",
           "audit_focus": {
             "review": [
               "Confirm a tool is approved for the data before pasting it in",

@@ -13,7 +13,7 @@
    "subtopic": "4.1 Network security. OSI layers",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A junior analyst notes that the office Wi-Fi uses WPA3 to encrypt traffic between laptops and the access point. At which OSI layer does this encryption MOST accurately sit?",
+   "question": "A security analyst notes that the office Wi-Fi uses WPA3 to encrypt traffic between laptops and the access point. At which OSI layer does this encryption MOST accurately sit?",
    "options": {
     "A": "Layer 1, the physical layer",
     "B": "Layer 2, the data link layer",
@@ -40,7 +40,7 @@
     "Data link layer",
     "Wi-Fi encryption"
    ],
-   "_provenance": "Authored from concept: 'each control protects its own layer; Wi-Fi encryption works at the data link layer' (notes 4.1.2 The OSI Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'each control protects its own layer; Wi-Fi encryption works at the data link layer' (notes 4.1.2 The OSI Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Word-tell sweep, 18 Nov 2026: role names aligned with the canonical list.",
    "style_version": 2
   },
   {
@@ -85,7 +85,7 @@
    "subtopic": "4.1 Network security. Virtual private networks",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A clinic's staff will work from home over the clinic's VPN, and the manager asks a junior analyst what it protects. Which answer is MOST accurate?",
+   "question": "A clinic's staff will work from home over the clinic's VPN, and the manager asks a help desk analyst what it protects. Which answer is MOST accurate?",
    "options": {
     "A": "It encrypts traffic in the tunnel but does not secure the laptop",
     "B": "It scans incoming files for malware before they reach the laptop",
@@ -112,7 +112,7 @@
     "Endpoint security",
     "Remote access"
    ],
-   "_provenance": "Authored from concept: 'a VPN protects the path, not the device at either end' (notes 4.1.6 Virtual Private Networks (VPNs)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Cross-review fix (31 Oct 2026): D now has the same 'X, not Y' form as the key, so the contrast no longer marks the key (CD-16); it states the beginner's overclaim that a VPN also encrypts stored files. Fix-up round 1 (31 Oct 2026): C now states a limitation like the key and D no longer shares the key's opening words, so neither the cautious form nor the shared wording marks A. Fix-up round 2 (31 Oct 2026): C now states the common belief that a connected laptop becomes a trusted internal device (the notes 4.1.6 exam trap), a stronger runner-up than the earlier wording.",
+   "_provenance": "Authored from concept: 'a VPN protects the path, not the device at either end' (notes 4.1.6 Virtual Private Networks (VPNs)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Cross-review fix (31 Oct 2026): D now has the same 'X, not Y' form as the key, so the contrast no longer marks the key (CD-16); it states the beginner's overclaim that a VPN also encrypts stored files. Fix-up round 1 (31 Oct 2026): C now states a limitation like the key and D no longer shares the key's opening words, so neither the cautious form nor the shared wording marks A. Fix-up round 2 (31 Oct 2026): C now states the common belief that a connected laptop becomes a trusted internal device (the notes 4.1.6 exam trap), a stronger runner-up than the earlier wording. Word-tell sweep, 18 Nov 2026: role names aligned with the canonical list.",
    "style_version": 2
   },
   {
@@ -121,7 +121,7 @@
    "subtopic": "4.1 Network security. IDS and IPS",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A council's network lead wants attacks hidden in allowed web traffic to its payment server stopped automatically, not just reported. Which control should the junior analyst suggest as BEST?",
+   "question": "A council's IT manager wants attacks hidden in allowed web traffic to its payment server stopped automatically, not just reported. Which control should the security analyst suggest as BEST?",
    "options": {
     "A": "A network IDS watching a copy of the traffic",
     "B": "A firewall rule closing the server's unused ports",
@@ -148,7 +148,7 @@
     "Inline versus passive",
     "Intrusion detection"
    ],
-   "_provenance": "Authored from concept: 'an IDS alerts while an inline IPS can block' (notes 4.1.8 Intrusion Detection and Prevention Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'an IDS alerts while an inline IPS can block' (notes 4.1.8 Intrusion Detection and Prevention Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Word-tell sweep, 18 Nov 2026: role names aligned with the canonical list.",
    "style_version": 2
   },
   {
@@ -229,12 +229,12 @@
    "subtopic": "4.1 Network security. Embedded and control systems",
    "difficulty": "analysis",
    "bloom_level": "Analysis",
-   "question": "A hospital's ventilation controllers, owned by the facilities manager and running around the clock, have a newly announced critical flaw. What should the junior security analyst do FIRST?",
+   "question": "A hospital's ventilation controllers, owned by the facilities manager and running around the clock, have a newly announced critical flaw. What should the security analyst do FIRST?",
    "options": {
-    "A": "Install the vendor's patch on the live controllers tonight",
+    "A": "Install the patch on the live controllers tonight",
     "B": "Ask the facilities manager to stop ventilation until patched",
     "C": "Record the flaw as low risk for the isolated control network",
-    "D": "Ask the facilities manager to test the patch and schedule the fix"
+    "D": "Ask the facilities manager to schedule a tested patch"
    },
    "correct": "D",
    "key_concept": "Controllers that run physical processes are patched only after their owner tests and schedules the fix, because untested patches or shutdowns can endanger people.",
@@ -256,7 +256,7 @@
     "Patch testing",
     "Safety first"
    ],
-   "_provenance": "Authored from concept: 'protect people and the physical process first; test and schedule controller patches through the owner' (notes 4.1.11 Embedded Systems and Industrial Control Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'protect people and the physical process first; test and schedule controller patches through the owner' (notes 4.1.11 Embedded Systems and Industrial Control Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Word-tell sweep, 18 Nov 2026: role names aligned with the canonical list. Word-tell sweep round 2, 18 Nov 2026: distractor A drops 'vendor's' (vendor sat only on distractors). Word-tell sweep polish, 18 Nov 2026: key D trimmed (was the longest option and the only one with 'and').",
    "style_version": 2
   },
   {
@@ -265,12 +265,12 @@
    "subtopic": "4.1 Network security. IoT placement",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A student residence with a staff network and a residents' Wi-Fi network is adding a smart door-lock hub. Where should the IT technician propose placing it to BEST limit risk?",
+   "question": "A student residence with a staff network and a residents' Wi-Fi network is adding a smart door-lock hub. Where should the network technician propose placing it to BEST limit risk?",
    "options": {
     "A": "On the staff network, behind the edge firewall",
     "B": "On the staff network, with its default password changed",
     "C": "On the residents' Wi-Fi network, apart from staff systems",
-    "D": "On its own segment, allowing only the traffic it needs"
+    "D": "On its own segment, limited to the traffic it needs"
    },
    "correct": "D",
    "key_concept": "IoT devices often lack strong built-in security, so they go on their own segment with only the traffic they need allowed.",
@@ -292,7 +292,7 @@
     "Flat networks",
     "Least functionality"
    ],
-   "_provenance": "Authored from concept: 'treat connected devices as untrusted and put them on their own segment' (notes 4.1.12 Internet of Things (IoT) Security). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Key letter moved from B to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
+   "_provenance": "Authored from concept: 'treat connected devices as untrusted and put them on their own segment' (notes 4.1.12 Internet of Things (IoT) Security). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Key letter moved from B to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Word-tell sweep, 18 Nov 2026: role names aligned with the canonical list. Word-tell sweep round 2, 18 Nov 2026: key D recast from ', allowing' to ', which allows'. Word-tell sweep polish, 18 Nov 2026: key D trimmed so it is no longer the longest option.",
    "style_version": 2
   },
   {
@@ -625,7 +625,7 @@
    "subtopic": "4.3 Cloud security. Deployment models",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A provider runs a cloud platform in its own data center for one logistics firm, and no other customer uses any part of it. Which deployment model should the junior analyst record as MOST accurate?",
+   "question": "A provider runs a cloud platform in its own data center for one logistics firm, and no other customer uses any part of it. Which deployment model should the security analyst record as MOST accurate?",
    "options": {
     "A": "A public cloud",
     "B": "A private cloud",
@@ -652,7 +652,7 @@
     "Public cloud",
     "Deployment models"
    ],
-   "_provenance": "Authored from concept: 'identify the deployment model by who shares the infrastructure' (notes 4.3.4 Cloud Deployment Models). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'identify the deployment model by who shares the infrastructure' (notes 4.3.4 Cloud Deployment Models). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Word-tell sweep, 18 Nov 2026: role names aligned with the canonical list.",
    "style_version": 2
   },
   {
@@ -661,17 +661,17 @@
    "subtopic": "4.3 Cloud security. Cloud access security brokers",
    "difficulty": "analysis",
    "bloom_level": "Analysis",
-   "question": "A cloud access security broker (CASB) report shows law-firm staff uploading client files to an unapproved file-sharing app; the security manager owns cloud-use policy and approves any blocking. What should the junior analyst do FIRST?",
+   "question": "A cloud access security broker (CASB) report shows law-firm staff uploading client files to an unapproved file-sharing app; the security manager owns cloud-use policy and approves any blocking. What should the security analyst do FIRST?",
    "options": {
     "A": "Have the network team close port 443 for those staff",
     "B": "Approve the app after confirming that it uses TLS encryption",
     "C": "Block uploads through the CASB, then tell the security manager",
-    "D": "Share the CASB findings and usage data with the security manager"
+    "D": "Send the CASB upload findings to the security manager"
    },
    "correct": "D",
    "key_concept": "A CASB reveals and can control cloud app use, but the policy owner decides what use is allowed and whether to block it.",
    "pre_read": "Note what the report shows and what each option would change for the firm.",
-   "correct_explanation": "The CASB has done its job: it found shadow IT, with client files leaving for an unapproved app. Deciding what cloud use is allowed belongs to the security manager, so the analyst reports the findings with the usage data. Blocking first and telling the manager afterward is the runner-up: it uses the right tool, but it makes the owner's policy call for them.",
+   "correct_explanation": "The CASB has done its job: it found shadow IT, with client files leaving for an unapproved app. Deciding what cloud use is allowed belongs to the security manager, so the analyst reports the CASB findings to them. Blocking first and telling the manager afterward is the runner-up: it uses the right tool, but it makes the owner's policy call for them.",
    "wrong_explanations": {
     "A": "Tempting because firewalls block traffic. But port 443 carries nearly all secure web traffic; closing it breaks every site and cannot single out one app.",
     "B": "Tempting because TLS protects files in transit. But client files would still sit in personal accounts, outside the firm's control and policy.",
@@ -688,7 +688,7 @@
     "Shadow IT",
     "Policy ownership"
    ],
-   "_provenance": "Authored from concept: 'a CASB finds shadow IT and enforces cloud policy that its owner sets' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Cross-review fix (31 Oct 2026): CASB spelled out at first use in the stem (CD-32); 'approves any blocking' now covers the port block in A as well as CASB blocking.",
+   "_provenance": "Authored from concept: 'a CASB finds shadow IT and enforces cloud policy that its owner sets' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Cross-review fix (31 Oct 2026): CASB spelled out at first use in the stem (CD-32); 'approves any blocking' now covers the port block in A as well as CASB blocking. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells; role names aligned with the canonical list. Word-tell sweep round 2, 18 Nov 2026: key D made one plain action, no comma. Word-tell sweep polish, 18 Nov 2026: key D trimmed so it is no longer the longest option.",
    "style_version": 2
   },
   {
@@ -769,7 +769,7 @@
    "subtopic": "4.1 Network security. TCP and UDP",
    "difficulty": "foundational",
    "bloom_level": "Foundational",
-   "question": "A radio station's junior analyst sees a log showing SYN, then SYN-ACK, then ACK between a laptop and the music server. What does this sequence MOST accurately show?",
+   "question": "A radio station's security analyst sees a log showing SYN, then SYN-ACK, then ACK between a laptop and the music server. What does this sequence MOST accurately show?",
    "options": {
     "A": "A TCP connection being set up",
     "B": "A UDP sender confirming each datagram arrived",
@@ -796,7 +796,7 @@
     "TCP versus UDP",
     "Transport layer"
    ],
-   "_provenance": "Authored from concept: 'TCP opens connections with a three-way handshake while UDP sends without one' (notes 4.1.3 The TCP/IP Model, TCP and UDP). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'TCP opens connections with a three-way handshake while UDP sends without one' (notes 4.1.3 The TCP/IP Model, TCP and UDP). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Word-tell sweep, 18 Nov 2026: role names aligned with the canonical list.",
    "style_version": 2
   },
   {
@@ -877,7 +877,7 @@
    "subtopic": "4.1 Network security. Firewall rule sets",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A bus company's old firewall allows all traffic except a list of known-bad ports, and the network lead asks a junior technician to draft rules for its replacement. Which approach is BEST?",
+   "question": "A bus company's old firewall allows all traffic except a list of known-bad ports, and the IT manager asks a network technician to draft rules for its replacement. Which approach is BEST?",
    "options": {
     "A": "Allow traffic by default and have the IDS alert",
     "B": "Allow whatever traffic uses the well-known service ports",
@@ -904,7 +904,7 @@
     "Implicit deny",
     "Blocklists"
    ],
-   "_provenance": "Authored from concept: 'allow only what the business needs and deny the rest' (notes 4.1.7 Firewalls: Ports and Applications). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'allow only what the business needs and deny the rest' (notes 4.1.7 Firewalls: Ports and Applications). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Word-tell sweep, 18 Nov 2026: role names aligned with the canonical list.",
    "style_version": 2
   },
   {
@@ -915,7 +915,7 @@
    "bloom_level": "Application",
    "question": "A cinema chain's IT manager says internal network segments add nothing, because the edge firewall already blocks outside attackers. Which reply from the security analyst is BEST?",
    "options": {
-    "A": "Segments limit how far an attacker who gets inside can reach",
+    "A": "Segments limit the reach of an attacker who gets inside",
     "B": "Segments allow the edge firewall to be removed safely",
     "C": "Segments encrypt the traffic that passes between them",
     "D": "Segments give attacks from outside a second barrier to cross"
@@ -940,7 +940,7 @@
     "Lateral movement",
     "East-west traffic"
    ],
-   "_provenance": "Authored from concept: 'segmentation limits how far an intruder already inside can reach' (notes 4.2.1 Network Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'segmentation limits how far an intruder already inside can reach' (notes 4.2.1 Network Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -990,7 +990,7 @@
     "A": "The AI assistant, based on the task it was given",
     "B": "The network firewall, based on the assistant's IP address",
     "C": "The enforcement point that received the request",
-    "D": "The policy engine, weighing the request against policy"
+    "D": "The policy engine, which weighs the request against policy"
    },
    "correct": "D",
    "key_concept": "In Zero Trust the policy engine decides each request and the enforcement point carries out the decision, for people and AI agents alike.",
@@ -1012,7 +1012,7 @@
     "Policy enforcement point",
     "AI agents as subjects"
    ],
-   "_provenance": "Authored from concept: 'a decision point judges each request and enforcement points carry it out, for person and non-person subjects' (notes 4.2.7 Zero Trust Architecture Components). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Key letter moved from B to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
+   "_provenance": "Authored from concept: 'a decision point judges each request and enforcement points carry it out, for person and non-person subjects' (notes 4.2.7 Zero Trust Architecture Components). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Key letter moved from B to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Word-tell sweep round 2, 18 Nov 2026: key D recast from ', weighing' to ', which weighs'.",
    "style_version": 2
   },
   {
@@ -1381,7 +1381,7 @@
    "subtopic": "4.2 Network security architecture. Micro-segmentation",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A game studio's operations team will micro-segment its 30 build and test servers, and the team lead asks a junior engineer to start. What should the engineer do FIRST?",
+   "question": "A game studio's operations team will micro-segment its 30 build and test servers, and the IT manager asks a system administrator to start. What should the administrator do FIRST?",
    "options": {
     "A": "Map the traffic each server actually sends and receives",
     "B": "Copy the perimeter firewall's rules onto every server",
@@ -1408,7 +1408,7 @@
     "Traffic mapping",
     "Workload policy"
    ],
-   "_provenance": "Authored from concept: 'map real traffic first, then allow only the needed flows' (notes 4.2.4 Micro-Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'map real traffic first, then allow only the needed flows' (notes 4.2.4 Micro-Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Word-tell sweep, 18 Nov 2026: role names aligned with the canonical list.",
    "style_version": 2
   },
   {
@@ -1561,25 +1561,25 @@
    "subtopic": "4.3 Cloud security. Cloud posture management",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A payroll firm's procedure lets its junior engineer fix baseline failures that cloud security posture management (CSPM) finds; one is a test server with SSH open to the internet. What should the engineer do FIRST?",
+   "question": "A payroll firm's procedure lets its system administrator fix baseline failures that cloud security posture management (CSPM) finds; one is a test server with SSH open to the internet. What should the administrator do FIRST?",
    "options": {
     "A": "Open a ticket asking the cloud provider to fix the setting",
-    "B": "Restrict SSH to the admin team's addresses and record the change",
+    "B": "Restrict SSH to the admin team's addresses, then document it",
     "C": "Report the SSH exposure to the server's owner and await a decision",
     "D": "Accept the finding as low risk for a test server"
    },
    "correct": "B",
    "key_concept": "When a procedure assigns you a fix, make it and record it; access settings on a customer's own cloud servers are the customer's job.",
    "pre_read": "Picture the test server's next few hours under each option.",
-   "correct_explanation": "The procedure gives the engineer authority to fix findings that break the baseline, so this is a pre-approved change: the engineer restricts SSH to the approved admin addresses now and records the change. Reporting to the server's owner is the runner-up: escalation suits decisions outside one's role, but here the procedure assigns the fix, and waiting leaves SSH open to the internet.",
+   "correct_explanation": "The procedure gives the administrator authority to fix findings that break the baseline, so this is a pre-approved change: the administrator restricts SSH to the approved admin addresses now and records the change. Reporting to the server's owner is the runner-up: escalation suits decisions outside one's role, but here the procedure assigns the fix, and waiting leaves SSH open to the internet.",
    "wrong_explanations": {
     "A": "Tempting because the server runs on the provider's platform. But who may reach the customer's own servers is a customer setting; the provider will not change it.",
-    "C": "Closest choice: owners decide on changes outside the procedure. But this fix is assigned to the engineer, and waiting leaves SSH exposed to the internet.",
-    "D": "Tempting because test servers seem low value. But accepting risk is the owner's call, not the engineer's, and attackers scan the internet for open SSH on any server."
+    "C": "Closest choice: owners decide on changes outside the procedure. But this fix is assigned to the administrator, and waiting leaves SSH exposed to the internet.",
+    "D": "Tempting because test servers seem low value. But accepting risk is the owner's call, not the administrator's, and attackers scan the internet for open SSH on any server."
    },
    "tips": [
     "Eliminate: A hands a customer setting to the provider, and D treats a test server as safe to expose.",
-    "Final two: B beats C because the procedure assigns this fix to the engineer; escalating a task you own only prolongs the exposure.",
+    "Final two: B beats C because the procedure assigns this fix to the administrator; escalating a task you own only prolongs the exposure.",
     "Exam cue: escalate what is outside your authority, and act on what the procedure assigns to you."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 CM-2 (Baseline Configuration); NIST SP 800-53 Rev. 5 CA-7 (Continuous Monitoring)",
@@ -1588,7 +1588,7 @@
     "Configuration baselines",
     "In-role action"
    ],
-   "_provenance": "Authored from concept: 'CSPM compares settings to a baseline; fix assigned drift promptly because cloud settings are the customer's' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): framed as a pre-approved change so it agrees with the change-control items in D2 and D5. Cross-review fix (31 Oct 2026): CSPM spelled out at first use in the stem (CD-32); runner-up C now names the SSH exposure, so the key is no longer the only option echoing the stem's SSH or the longest option (CD-14); relabeled application, since one stated fact (the procedure assigns the fix) decides it (CD-21).",
+   "_provenance": "Authored from concept: 'CSPM compares settings to a baseline; fix assigned drift promptly because cloud settings are the customer's' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): framed as a pre-approved change so it agrees with the change-control items in D2 and D5. Cross-review fix (31 Oct 2026): CSPM spelled out at first use in the stem (CD-32); runner-up C now names the SSH exposure, so the key is no longer the only option echoing the stem's SSH or the longest option (CD-14); relabeled application, since one stated fact (the procedure assigns the fix) decides it (CD-21). Word-tell sweep, 18 Nov 2026: options reworded to even out word tells; role names aligned with the canonical list. Word-tell sweep round 2, 18 Nov 2026: key B recast from a semicolon to ', then'.",
    "style_version": 2
   },
   {
@@ -1745,7 +1745,7 @@
    "options": {
     "A": "Company traffic would cross the internet without encryption",
     "B": "It would lower risk, since less traffic crosses the tunnel",
-    "C": "Web browsing would bypass company filtering and monitoring",
+    "C": "Web browsing would bypass company filtering, since it skips the tunnel",
     "D": "Staff could sign in to the VPN without multifactor authentication"
    },
    "correct": "C",
@@ -1768,7 +1768,7 @@
     "VPN",
     "Web filtering"
    ],
-   "_provenance": "Authored from concept: 'split tunneling sends non-company traffic around company filtering and monitoring' (notes 4.1.6 Virtual Private Networks (VPNs)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'split tunneling sends non-company traffic around company filtering and monitoring' (notes 4.1.6 Virtual Private Networks (VPNs)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -1854,7 +1854,7 @@
     "A": "By IP address order, filling each subnet in turn",
     "B": "By office floor, so each floor's devices share one segment",
     "C": "By device type, so like devices share the same rules",
-    "D": "By trust level and purpose, so rules fit each group"
+    "D": "By trust level, so the rules fit each group's purpose"
    },
    "correct": "D",
    "key_concept": "Segments group systems that share a trust level and purpose, so rules between them can allow only the traffic each group needs.",
@@ -1876,7 +1876,7 @@
     "Trust levels",
     "East-west traffic"
    ],
-   "_provenance": "Authored from concept: 'systems are grouped by trust level and purpose, with controls on the traffic between them' (notes 4.2.1 Network Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Fix-up round 2 (31 Oct 2026): C no longer echoes the stem's 'systems' and now carries a reason clause like the other options. Final pass (31 Oct 2026): the stem now names the staff, guest and payment devices the explanations argue from, and the pre-read no longer echoes the key. Audit fix-up (31 Oct 2026): D (device maker) was a strawman; it is now grouping by device type, a plausible rival with its own rules clause, and the tips and explanations name D as the runner-up. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
+   "_provenance": "Authored from concept: 'systems are grouped by trust level and purpose, with controls on the traffic between them' (notes 4.2.1 Network Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Fix-up round 2 (31 Oct 2026): C no longer echoes the stem's 'systems' and now carries a reason clause like the other options. Final pass (31 Oct 2026): the stem now names the staff, guest and payment devices the explanations argue from, and the pre-read no longer echoes the key. Audit fix-up (31 Oct 2026): D (device maker) was a strawman; it is now grouping by device type, a plausible rival with its own rules clause, and the tips and explanations name D as the runner-up. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -1996,8 +1996,8 @@
    "question": "A card issuer's fraud model retrains nightly on a dataset that every developer account can edit, because its AI development segment is treated as trusted. Which control should the security analyst propose as BEST?",
    "options": {
     "A": "Isolate the segment further from the office network",
-    "B": "Scan the dataset for malware and log each nightly retraining run",
-    "C": "Restrict edits to approved data engineers and log every change",
+    "B": "Scan the dataset for malware; log each retraining run and its result",
+    "C": "Limit edits to the approved engineers; log every change",
     "D": "Encrypt the dataset so that edits cannot alter the model"
    },
    "correct": "C",
@@ -2020,7 +2020,7 @@
     "Data poisoning",
     "Least privilege"
    ],
-   "_provenance": "Authored from concept: 'training data gets Zero Trust treatment, named users with least privilege and a log of every change, because tampering can poison the model' (notes 4.2.9 Segmenting AI Development Environments). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): re-angled to Zero Trust inside the AI segment (4.2.9): the stem says the segment is treated as trusted, A is a plain network-isolation distractor without a reason clause, new exam cue. Cross-domain gate (31 Oct 2026): B gains a same-form log clause so oversight wording is not on the key alone.",
+   "_provenance": "Authored from concept: 'training data gets Zero Trust treatment, named users with least privilege and a log of every change, because tampering can poison the model' (notes 4.2.9 Segmenting AI Development Environments). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): re-angled to Zero Trust inside the AI segment (4.2.9): the stem says the segment is treated as trusted, A is a plain network-isolation distractor without a reason clause, new exam cue. Cross-domain gate (31 Oct 2026): B gains a same-form log clause so oversight wording is not on the key alone. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: runner-up B now shares the key's semicolon form (blind-tester flag).",
    "style_version": 2
   },
   {
@@ -2141,7 +2141,7 @@
    "options": {
     "A": "Re-encrypt the files under new keys before deleting them",
     "B": "Destroy the encryption keys that protect the files",
-    "C": "Delete every case file and its old encrypted versions",
+    "C": "Delete every case file and its old stored versions",
     "D": "Cancel the subscription so the provider erases the disks"
    },
    "correct": "B",
@@ -2164,7 +2164,7 @@
     "Leaving a cloud service",
     "Key control"
    ],
-   "_provenance": "Authored from concept: 'at exit, customers cannot wipe the provider's disks, so they delete data and destroy its keys' (notes 4.3.7 Protecting Data in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Audit fix-up (31 Oct 2026): the stem now says the files were moved first, so destroying the keys loses nothing the charity must keep, and uses the canonical role 'system administrator'; B no longer echoes the stem's 'stored'.",
+   "_provenance": "Authored from concept: 'at exit, customers cannot wipe the provider's disks, so they delete data and destroy its keys' (notes 4.3.7 Protecting Data in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Audit fix-up (31 Oct 2026): the stem now says the files were moved first, so destroying the keys loses nothing the charity must keep, and uses the canonical role 'system administrator'; B no longer echoes the stem's 'stored'. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -2173,25 +2173,25 @@
    "subtopic": "4.1 Network security. Secure protocols",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "A parking garage operator's switches answer SNMPv2c monitoring queries using the community string 'public', and the network lead approves all switch changes. What should the junior network technician do FIRST?",
+   "question": "A parking garage operator's switches answer SNMPv2c monitoring queries using the community string 'public', and the IT manager approves all switch changes. What should the network technician do FIRST?",
    "options": {
     "A": "Move SNMP to an unusual port so scanners miss it",
     "B": "Change the community string from 'public' to 'private'",
-    "C": "Ask the network lead to approve moving the switches to SNMPv3",
-    "D": "Move every switch to SNMPv3 tonight, then tell the network lead"
+    "C": "Ask the IT manager to approve moving the switches to SNMPv3",
+    "D": "Move every switch to SNMPv3 tonight, then tell the IT manager"
    },
    "correct": "C",
    "key_concept": "SNMP versions 1 and 2c send community strings in cleartext; SNMPv3 adds authentication and encryption. Device changes go through whoever approves them.",
    "pre_read": "Picture what an eavesdropper on the network sees during each monitoring query.",
-   "correct_explanation": "SNMPv2c sends its community string, in effect a password, in cleartext, and 'public' is a well-known default, so SNMPv3 with authentication and encryption is the right fix. The network lead approves switch changes, so the technician asks the lead to approve the move to SNMPv3. Changing every switch tonight is the runner-up because it applies the right fix, but doing it without approval bypasses change control and risks breaking monitoring.",
+   "correct_explanation": "SNMPv2c sends its community string, in effect a password, in cleartext, and 'public' is a well-known default, so SNMPv3 with authentication and encryption is the right fix. The IT manager approves switch changes, so the technician asks the IT manager to approve the move to SNMPv3. Changing every switch tonight is the runner-up because it applies the right fix, but doing it without approval bypasses change control and risks breaking monitoring.",
    "wrong_explanations": {
     "A": "Tempting because an odd port looks hidden. But scanners find services on any port, and the community string still crosses the network in cleartext.",
     "B": "Tempting because it removes the default value. But 'private' is another well-known default, and SNMPv2c still sends it in cleartext.",
-    "D": "Closest choice: SNMPv3 is the right protocol. But the network lead approves switch changes, and an unapproved change across every switch could break monitoring or the network."
+    "D": "Closest choice: SNMPv3 is the right protocol. But the IT manager approves switch changes, and an unapproved change across every switch could break monitoring or the network."
    },
    "tips": [
     "Eliminate: A relies on an unusual port, and B swaps one well-known, cleartext community string for another.",
-    "Final two: C beats D because the network lead approves switch changes; even the right fix goes through the person who approves it.",
+    "Final two: C beats D because the IT manager approves switch changes; even the right fix goes through the person who approves it.",
     "Exam cue: pick the encrypted version of the protocol (SNMPv3, SSH, SFTP), then route the change through whoever approves it."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 SC-8(1) (Transmission Confidentiality and Integrity | Cryptographic Protection); NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control)",
@@ -2200,7 +2200,7 @@
     "Cleartext protocols",
     "Change control"
    ],
-   "_provenance": "Authored from concept: 'choose the encrypted protocol for the same job, and report cleartext protocols to the owner' (notes 4.1.5 Ports, Protocols and Secure Alternatives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): key C reworded from Report to Ask (bank-wide Report/Ask tell); meaning unchanged.",
+   "_provenance": "Authored from concept: 'choose the encrypted protocol for the same job, and report cleartext protocols to the owner' (notes 4.1.5 Ports, Protocols and Secure Alternatives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): key C reworded from Report to Ask (bank-wide Report/Ask tell); meaning unchanged. Word-tell sweep, 18 Nov 2026: role names aligned with the canonical list.",
    "style_version": 2
   },
   {
@@ -2249,7 +2249,7 @@
    "options": {
     "A": "Ask the finance director if the laptop's connections are expected",
     "B": "Close the alert, as the monitor cannot read encrypted traffic",
-    "C": "Review the connections in the laptop's logs and flow records",
+    "C": "Review the laptop's logs alongside flow records of the encrypted traffic",
     "D": "Let the monitor block the laptop, then close the alert"
    },
    "correct": "C",
@@ -2272,7 +2272,7 @@
     "Encrypted traffic",
     "In-role action"
    ],
-   "_provenance": "Authored from concept: 'AI models still analyze timing, volume and destinations when traffic is encrypted; treat AI detection as an assistant whose alerts are verified' (notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Fix-up round 2 (31 Oct 2026): the stem now says the pattern looks like a malware check-in, so asking the laptop's user first is clearly weaker. Final pass (31 Oct 2026): A now names the laptop too, so the stem's 'laptop' is not echoed only in the key. Audit fix-up (31 Oct 2026): the stem names the analyst instead of 'they', and D is shortened (and no longer echoes the stem's 'checking') so the key is no longer the longest option. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
+   "_provenance": "Authored from concept: 'AI models still analyze timing, volume and destinations when traffic is encrypted; treat AI detection as an assistant whose alerts are verified' (notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Fix-up round 2 (31 Oct 2026): the stem now says the pattern looks like a malware check-in, so asking the laptop's user first is clearly weaker. Final pass (31 Oct 2026): A now names the laptop too, so the stem's 'laptop' is not echoed only in the key. Audit fix-up (31 Oct 2026): the stem names the analyst instead of 'they', and D is shortened (and no longer echoes the stem's 'checking') so the key is no longer the longest option. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -2317,10 +2317,10 @@
    "subtopic": "4.1 Network security. IDS and IPS",
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "An online toy store's security team is installing its first inline intrusion prevention system (IPS) before the holiday rush. Which starting setup should the junior analyst propose as BEST?",
+   "question": "An online toy store's security team is installing its first inline intrusion prevention system (IPS) before the holiday rush. Which starting setup should the security analyst propose as BEST?",
    "options": {
     "A": "Install it in place of the store's firewall",
-    "B": "Run it alert-only, logging what it would block",
+    "B": "Run it in alert-only mode until its rules are tuned",
     "C": "Turn on blocking for the vendor's recommended rule set",
     "D": "Rely on its automatic blocking, with no alert review"
    },
@@ -2344,7 +2344,7 @@
     "Alert-only mode",
     "False positives"
    ],
-   "_provenance": "Authored from concept: 'teams run new rules in alert mode first, because untuned blocking stops real business traffic' (notes 4.1.8 Intrusion Detection and Prevention Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): B uses the notes' alert-mode term, C is a non-absolute untuned-blocking option, and D loses its reason clause.",
+   "_provenance": "Authored from concept: 'teams run new rules in alert mode first, because untuned blocking stops real business traffic' (notes 4.1.8 Intrusion Detection and Prevention Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): B uses the notes' alert-mode term, C is a non-absolute untuned-blocking option, and D loses its reason clause. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells; role names aligned with the canonical list. Word-tell sweep round 2, 18 Nov 2026: key B recast from ', logging' to 'to log'. Word-tell sweep polish, 18 Nov 2026: key B trimmed so it is no longer the longest option.",
    "style_version": 2
   },
   {
@@ -2499,7 +2499,7 @@
    "bloom_level": "Foundational",
    "question": "At a bicycle maker adopting Zero Trust, an engineer passes multifactor sign-in at 9 a.m., and at noon their laptop's malware protection is switched off. What should MOST appropriately happen to the engineer's access?",
    "options": {
-    "A": "It is rechecked and limited until the laptop is healthy again",
+    "A": "It is limited after a recheck, until the laptop is healthy again",
     "B": "It stays open, since the laptop is on the office network",
     "C": "It is cut off, and the engineer's account is disabled",
     "D": "It is rechecked, and the morning's sign-in still covers it"
@@ -2524,7 +2524,7 @@
     "Continuous verification",
     "Device health"
    ],
-   "_provenance": "Authored from concept: 'access is granted per session with least privilege, and checked again as conditions change' (notes 4.2.6 Zero Trust Principles). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Audit fix-up (31 Oct 2026): D shortened (same misconception) so the key is not always shorter than its look-alike rival.",
+   "_provenance": "Authored from concept: 'access is granted per session with least privilege, and checked again as conditions change' (notes 4.2.6 Zero Trust Principles). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Audit fix-up (31 Oct 2026): D shortened (same misconception) so the key is not always shorter than its look-alike rival. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -2717,7 +2717,7 @@
    "options": {
     "A": "Its encryption also confirms that each user really works there",
     "B": "A password alone is fine if the VPN uses IPsec, not TLS",
-    "C": "A stolen password would still let an attacker connect inside",
+    "C": "If a password is stolen, an attacker could still connect inside",
     "D": "Multifactor sign-in matters for staff on public Wi-Fi, not at home"
    },
    "correct": "C",
@@ -2740,7 +2740,7 @@
     "Multifactor authentication",
     "Remote access"
    ],
-   "_provenance": "Authored from concept: 'VPN sign-ins need multifactor authentication (MFA), because a stolen VPN password gives an attacker an inside connection' (notes 4.1.6 Virtual Private Networks (VPNs)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 4, 1 Nov 2026.",
+   "_provenance": "Authored from concept: 'VPN sign-ins need multifactor authentication (MFA), because a stolen VPN password gives an attacker an inside connection' (notes 4.1.6 Virtual Private Networks (VPNs)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -2896,9 +2896,9 @@
    "question": "A bakery's oven-line vendor, a day's travel away, asks for an always-on remote link to the line's controllers to fix faults faster. Which setup should the network technician propose to the system owner as BEST?",
    "options": {
     "A": "No remote access, so the vendor visits the bakery for every fault",
-    "B": "A permanent link the owner approves, with MFA for the vendor",
+    "B": "A permanent link the owner approves, plus MFA for the vendor",
     "C": "Vendor access over the staff VPN, logged under a shared account",
-    "D": "Remote sessions opened for each approved job, with MFA and logging"
+    "D": "Approved per-job vendor sessions using MFA, each one logged"
    },
    "correct": "D",
    "key_concept": "Remote vendor access to control systems is opened per approved job, with MFA and logging, not left always on or banned outright.",
@@ -2920,7 +2920,7 @@
     "Operational technology",
     "Multifactor authentication"
    ],
-   "_provenance": "Authored from concept: 'Remote vendor access is a common way in, so it is time-limited, uses multifactor authentication (MFA) and is logged' (notes 4.1.11 Embedded Systems and Industrial Control Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 4, 1 Nov 2026.",
+   "_provenance": "Authored from concept: 'Remote vendor access is a common way in, so it is time-limited, uses multifactor authentication (MFA) and is logged' (notes 4.1.11 Embedded Systems and Industrial Control Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key D drops ', using' and names the vendor, as every distractor does. Word-tell sweep polish, 18 Nov 2026: key D trimmed so it is no longer the longest option.",
    "style_version": 2
   },
   {
@@ -3076,8 +3076,8 @@
    "question": "A cider maker's IT manager proposes retiring the internet edge firewall now that every server has micro-segmentation rules. Which reply from the system administrator is MOST accurate?",
    "options": {
     "A": "Agreed, since workload rules already block outside attackers",
-    "B": "Keep both, since each one filters different traffic",
-    "C": "Agreed, if the workload rules are reviewed every month",
+    "B": "Keep both, since the two filter different traffic",
+    "C": "Agreed, as long as workload rules get a monthly review",
     "D": "Swap the workload rules for VLANs and keep the edge firewall"
    },
    "correct": "B",
@@ -3100,7 +3100,7 @@
     "Perimeter firewall",
     "Defense in depth"
    ],
-   "_provenance": "Authored from concept: 'It adds to perimeter controls. Defense in depth keeps both the edge and the workload rules' (notes 4.2.4 Micro-Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 4, 1 Nov 2026.",
+   "_provenance": "Authored from concept: 'It adds to perimeter controls. Defense in depth keeps both the edge and the workload rules' (notes 4.2.4 Micro-Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -3113,7 +3113,7 @@
    "options": {
     "A": "A second email filter from another vendor, run in series",
     "B": "A next-generation firewall to replace the current firewall",
-    "C": "Monitoring to spot attacks, and backups to restore its data",
+    "C": "Monitoring to spot attacks, along with backups to restore its data",
     "D": "Stricter edge firewall rules, with the vendor monitoring them"
    },
    "correct": "C",
@@ -3136,7 +3136,7 @@
     "Detective and recovery controls",
     "Backups"
    ],
-   "_provenance": "Authored from concept: 'Prevention is paired with detection and recovery, such as monitoring and tested backups, for the day prevention fails' (notes 4.2.5 Defense in Depth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 4, 1 Nov 2026.",
+   "_provenance": "Authored from concept: 'Prevention is paired with detection and recovery, such as monitoring and tested backups, for the day prevention fails' (notes 4.2.5 Defense in Depth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -3150,7 +3150,7 @@
     "A": "The policy engine still judges each request the agent sends that way",
     "B": "The agent needs no checks, since it runs on the internal network",
     "C": "The path is safe enough if the agent's account has least privilege",
-    "D": "Nothing along that path applies the policy to the agent's requests"
+    "D": "That path has nothing applying the policy, so requests go unchecked"
    },
    "correct": "D",
    "key_concept": "A Zero Trust policy protects only resources behind an enforcement point; any path around it, used by people or AI agents, escapes the policy.",
@@ -3172,7 +3172,7 @@
     "AI agents",
     "Zero Trust architecture"
    ],
-   "_provenance": "Authored from concept: 'A resource with no enforcement point in front of it sits outside the policy's protection' (notes 4.2.7 Zero Trust Architecture Components). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 4, 1 Nov 2026.",
+   "_provenance": "Authored from concept: 'A resource with no enforcement point in front of it sits outside the policy's protection' (notes 4.2.7 Zero Trust Architecture Components). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -3401,7 +3401,7 @@
    "options": {
     "A": "Assume the provider handles anything the contract does not list",
     "B": "Have the firm's team do every task, the provider's included",
-    "C": "Match each task to its owner in the provider's responsibility matrix",
+    "C": "Check the provider's responsibility matrix to assign each task",
     "D": "Rely on the provider's independent audit report to settle it"
    },
    "correct": "C",
@@ -3424,7 +3424,7 @@
     "Responsibility matrix",
     "Cloud contracts"
    ],
-   "_provenance": "Authored from concept: 'The contract and provider documentation set the exact split for each service' (notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 4, 1 Nov 2026.",
+   "_provenance": "Authored from concept: 'The contract and provider documentation set the exact split for each service' (notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -3579,9 +3579,9 @@
    "bloom_level": "Analysis",
    "question": "At a car wash chain, the security manager owns firewall policy, and procedure has the network technician remove rules whose approval has expired. What should the technician do FIRST about an expired 'allow any' rule?",
    "options": {
-    "A": "Remove the expired rule from the list, and record the change",
+    "A": "Remove the expired rule from the list, then record the change",
     "B": "Ask the security manager to approve removing the expired rule",
-    "C": "Keep the rule, and record the traffic it allows for a month",
+    "C": "Keep the rule, and record the traffic it allows for 30 days",
     "D": "Move the rule to the bottom so narrower rules match first"
    },
    "correct": "A",
@@ -3590,11 +3590,11 @@
    "correct_explanation": "The procedure already assigns removing expired rules to the technician, so they remove this one and record the change; an 'allow any' rule with no current approval is exactly what the review exists to catch. Asking the security manager is the runner-up because they own firewall policy, but the procedure set under that policy already decides this task, and waiting leaves the broad rule open.",
    "wrong_explanations": {
     "B": "Closest choice: the security manager does own firewall policy. But the procedure already gives this removal to the technician, so asking again only delays it.",
-    "C": "Tempting because watching traffic first sounds careful. But it leaves an unapproved 'allow any' rule open for a month while the procedure says remove it.",
+    "C": "Tempting because watching traffic first sounds careful. But it leaves an unapproved 'allow any' rule open for 30 days while the procedure says remove it.",
     "D": "Tempting because rule order matters. But at the bottom, 'allow any' still allows everything the rules above it do not block, canceling the default deny."
    },
    "tips": [
-    "Eliminate: C leaves an unapproved broad rule open for a month, and D keeps 'allow any' in force at the bottom of the list.",
+    "Eliminate: C leaves an unapproved broad rule open for 30 days, and D keeps 'allow any' in force at the bottom of the list.",
     "Final two: A beats B because the procedure, set under the owner's policy, already assigns this removal to the technician.",
     "Exam cue: in firewall reviews, rules whose approval has lapsed are removed through the agreed process, not kept just in case."
    ],
@@ -3604,7 +3604,7 @@
     "Change records",
     "Role and authority"
    ],
-   "_provenance": "Authored from concept: 'Allow only what the business needs with the narrowest rule, deny the rest, and change rules only through change management' (notes 4.1.7 Firewalls: Ports and Applications). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 4, 1 Nov 2026.",
+   "_provenance": "Authored from concept: 'Allow only what the business needs with the narrowest rule, deny the rest, and change rules only through change management' (notes 4.1.7 Firewalls: Ports and Applications). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key A recast from ', recording' to ', then record'.",
    "style_version": 2
   },
   {
@@ -3690,7 +3690,7 @@
     "A": "IPv6 encrypts its traffic by itself, so no setup is needed",
     "B": "IPsec is an IPv4 feature, so IPv6 traffic cannot use it",
     "C": "TLS in each app already covers the traffic, so IPsec is unneeded",
-    "D": "IPv6 supports IPsec, but someone must still set it up"
+    "D": "IPsec is merely available in IPv6, so someone must set it up"
    },
    "correct": "D",
    "key_concept": "IPv6 was designed with IPsec in mind, but IPsec protects traffic only after someone configures and uses it.",
@@ -3712,7 +3712,7 @@
     "IPsec",
     "Secure configuration"
    ],
-   "_provenance": "Authored from concept: 'IPv6 is secure by default because it includes IPsec' (exam trap, notes 4.1.4 IPv4 and IPv6). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026.",
+   "_provenance": "Authored from concept: 'IPv6 is secure by default because it includes IPsec' (exam trap, notes 4.1.4 IPv4 and IPv6). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -3904,17 +3904,17 @@
    "question": "A roofing contractor's office manager owns its Wi-Fi and approved a checklist that has the IT technician disable unneeded features. What should the technician do FIRST about a new access point's WPS PIN pairing?",
    "options": {
     "A": "Ask the office manager to approve turning off WPS pairing",
-    "B": "Turn off WPS PIN pairing, and note it in the setup record",
-    "C": "Keep WPS on, and change and record its PIN each month",
+    "B": "Turn off WPS PIN pairing, then tell the office manager",
+    "C": "Keep WPS on, and change and record its PIN each quarter",
     "D": "Keep WPS on, and hide the network's name from scans instead"
    },
    "correct": "B",
    "key_concept": "Turn off WPS PIN pairing, which attackers can guess; when an approved checklist assigns hardening, the technician does it and records it.",
    "pre_read": "Check what the approved checklist already lets the technician do.",
-   "correct_explanation": "Wi-Fi Protected Setup (WPS) PIN pairing can be guessed by attackers, and the checklist the office manager approved already tells the technician to turn off features like it, so the technician does that and records it. Asking the office manager is the runner-up: they own the Wi-Fi, but their approved checklist has already made this decision.",
+   "correct_explanation": "Wi-Fi Protected Setup (WPS) PIN pairing can be guessed by attackers, and the checklist the office manager approved already tells the technician to turn off features like it, so the technician turns it off, records the change and tells the office manager. Asking the office manager is the runner-up: they own the Wi-Fi, but their approved checklist has already made this decision.",
    "wrong_explanations": {
     "A": "Closest choice: the office manager does own the Wi-Fi. But their approved checklist already assigns this step to the technician, so asking again only delays it.",
-    "C": "Tempting because changing secrets sounds careful. But a WPS PIN can be guessed in hours, long before a monthly change comes around.",
+    "C": "Tempting because changing secrets sounds careful. But a WPS PIN can be guessed in hours, long before a quarterly change comes around.",
     "D": "Tempting because a hidden name feels harder to find. But free tools reveal hidden network names, and the guessable PIN stays open."
    },
    "tips": [
@@ -3928,7 +3928,7 @@
     "Least functionality",
     "Role and authority"
    ],
-   "_provenance": "Authored from concept: 'Turn off Wi-Fi Protected Setup (WPS) PIN pairing, which can be guessed' (notes 4.1.10 Wireless Security: Wi-Fi and Bluetooth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026.",
+   "_provenance": "Authored from concept: 'Turn off Wi-Fi Protected Setup (WPS) PIN pairing, which can be guessed' (notes 4.1.10 Wireless Security: Wi-Fi and Bluetooth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key B made one action with no semicolon. Word-tell sweep polish, 18 Nov 2026: key B no longer the only option repeating the stem word 'checklist'.",
    "style_version": 2
   },
   {
@@ -4048,7 +4048,7 @@
    "question": "A mattress factory's IT manager calls its office, warehouse and payment subnets segmented, though the router passes all traffic between them. Which reply from the network technician is MOST accurate?",
    "options": {
     "A": "They are segmented, since traffic between them crosses the router",
-    "B": "They count as segments only once rules limit traffic between them",
+    "B": "They are not segments yet, since no rules limit traffic between them",
     "C": "They count as segments only once each moves to its own switch",
     "D": "They are segmented, since the edge firewall keeps outsiders out"
    },
@@ -4072,7 +4072,7 @@
     "Subnets",
     "Traffic filtering"
    ],
-   "_provenance": "Authored from concept: 'A network is segmented once systems sit on different subnets' (exam trap, notes 4.2.1 Network Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026.",
+   "_provenance": "Authored from concept: 'A network is segmented once systems sit on different subnets' (exam trap, notes 4.2.1 Network Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -4193,7 +4193,7 @@
    "options": {
     "A": "Depth comes from independent layers of varied control types",
     "B": "More tools add depth if each blocks a different kind of threat",
-    "C": "Depth comes from stacking several tools at the same layer",
+    "C": "Depth comes from how many tools are stacked at one layer",
     "D": "More tools add depth if each is kept fully patched and current"
    },
    "correct": "A",
@@ -4216,7 +4216,7 @@
     "Independent controls",
     "Control types"
    ],
-   "_provenance": "Authored from concept: 'Defense in depth means buying many security products' (exam trap, notes 4.2.5 Defense in Depth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026.",
+   "_provenance": "Authored from concept: 'Defense in depth means buying many security products' (exam trap, notes 4.2.5 Defense in Depth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -4229,7 +4229,7 @@
    "options": {
     "A": "Segments can go, since every request will be verified anyway",
     "B": "Segments can go once Zero Trust adds multifactor sign-in for staff",
-    "C": "Zero Trust keeps segments, drawing boundaries closer to resources",
+    "C": "Segments stay, since Zero Trust draws boundaries closer to resources",
     "D": "Segments stay, but only to keep outside attackers off the network"
    },
    "correct": "C",
@@ -4252,7 +4252,7 @@
     "Segmentation",
     "Assume breach"
    ],
-   "_provenance": "Authored from concept: 'Zero Trust removes the need for network segmentation' (exam trap, notes 4.2.6 Zero Trust Principles). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026.",
+   "_provenance": "Authored from concept: 'Zero Trust removes the need for network segmentation' (exam trap, notes 4.2.6 Zero Trust Principles). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -4518,7 +4518,7 @@
     "A": "The provider, because the files were stored on its platform",
     "B": "The provider, because its own staff made the mistake",
     "C": "The agency and provider equally, since accountability is shared",
-    "D": "The agency, because accountability for its data stays with it"
+    "D": "The agency, since it stays accountable for its clients' files"
    },
    "correct": "D",
    "key_concept": "Moving data to the cloud shares duties but not accountability; the customer stays accountable for its data even when the provider errs.",
@@ -4540,7 +4540,7 @@
     "Accountability",
     "Cloud contracts"
    ],
-   "_provenance": "Authored from concept: 'Moving to the cloud transfers accountability for a data breach to the provider' (exam trap, notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026.",
+   "_provenance": "Authored from concept: 'Moving to the cloud transfers accountability for a data breach to the provider' (exam trap, notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -4588,9 +4588,9 @@
    "question": "A ramen chain's data owner labels its AI training data Restricted; procedure has the system administrator encrypt Restricted buckets with the customer-managed key. What should the administrator do FIRST about that data's unencrypted bucket?",
    "options": {
     "A": "Report the unencrypted bucket to the data owner and await a decision",
-    "B": "Encrypt the bucket with the customer-managed key, and record it",
+    "B": "Encrypt the bucket using the customer-managed key, logging the change",
     "C": "Delete the bucket's files, as unencrypted data is already exposed",
-    "D": "Encrypt the bucket with the provider-managed key, and record it"
+    "D": "Encrypt the bucket using the provider-managed key, logging the change"
    },
    "correct": "B",
    "key_concept": "Protecting the customer's data, AI training data included, is the customer's job in every cloud model, so apply the encryption the procedure assigns.",
@@ -4612,7 +4612,7 @@
     "Customer-managed keys",
     "AI training data"
    ],
-   "_provenance": "Authored from concept: 'Classify, encrypt, control the keys and back up: the data is the customer's job in every model' (notes 4.3.7 Protecting Data in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026.",
+   "_provenance": "Authored from concept: 'Classify, encrypt, control the keys and back up: the data is the customer's job in every model' (notes 4.3.7 Protecting Data in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -4623,7 +4623,7 @@
    "bloom_level": "Foundational",
    "question": "A paint store chain's IT manager says its new cloud access security broker (CASB) just repeats what the network firewall already does. Which reply from the security analyst is MOST accurate?",
    "options": {
-    "A": "A CASB sees which cloud apps staff use and applies data rules",
+    "A": "A CASB applies policy to the cloud apps it sees staff using",
     "B": "A CASB filters cloud traffic by IP address and port number",
     "C": "A CASB blocks web pages by category, such as gambling sites",
     "D": "A CASB encrypts the traffic between the stores and head office"
@@ -4648,7 +4648,7 @@
     "Web filtering",
     "Shadow IT"
    ],
-   "_provenance": "Authored from concept: 'A CASB does the same job as a network firewall' (exam trap, notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026.",
+   "_provenance": "Authored from concept: 'A CASB does the same job as a network firewall' (exam trap, notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key A recast with no comma.",
    "style_version": 2
   },
   {
@@ -4698,7 +4698,7 @@
     "A": "A laptop copying another's MAC address to join the network",
     "B": "An outsider guessing the Wi-Fi passphrase from the car park",
     "C": "An insider changing the web server's records on the DNS server",
-    "D": "A rogue server sending devices a fake gateway or DNS server"
+    "D": "A rogue server pointing devices at an attacker's gateway"
    },
    "correct": "D",
    "key_concept": "DHCP gives each device its address, gateway and DNS settings, so a rogue DHCP server can quietly redirect a device's traffic.",
@@ -4720,7 +4720,7 @@
     "Rogue servers",
     "Network building blocks"
    ],
-   "_provenance": "Authored from concept: 'Dynamic Host Configuration Protocol (DHCP) hands out IP addresses; the Domain Name System (DNS) turns names into IP addresses' (notes 4.1.1 Network Building Blocks). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "_provenance": "Authored from concept: 'Dynamic Host Configuration Protocol (DHCP) hands out IP addresses; the Domain Name System (DNS) turns names into IP addresses' (notes 4.1.1 Network Building Blocks). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -4806,7 +4806,7 @@
     "A": "TCP drops log entries that arrive out of order on busy links",
     "B": "UDP encrypts each entry, and some fail to decrypt in time",
     "C": "A three-way handshake times out when the server is busy",
-    "D": "UDP sends each entry once, with no delivery check or resend"
+    "D": "UDP sends each entry just once, never confirming it arrived"
    },
    "correct": "D",
    "key_concept": "UDP sends each datagram once with no acknowledgment or resend, so lost data is simply gone; TCP confirms delivery.",
@@ -4828,7 +4828,7 @@
     "TCP",
     "Log delivery"
    ],
-   "_provenance": "Authored from concept: 'The User Datagram Protocol (UDP) sends each datagram alone, with no delivery check' (notes 4.1.3 The TCP/IP Model, TCP and UDP). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "_provenance": "Authored from concept: 'The User Datagram Protocol (UDP) sends each datagram alone, with no delivery check' (notes 4.1.3 The TCP/IP Model, TCP and UDP). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -4878,12 +4878,12 @@
     "A": "Only TLS 1.3, since every earlier version is retired",
     "B": "All four, so every visitor's browser can still connect",
     "C": "All four, with the oldest two moved to an unusual port",
-    "D": "TLS 1.2 and TLS 1.3, switching every older version off"
+    "D": "The newest two, with every older version switched off"
    },
    "correct": "D",
    "key_concept": "Servers should offer TLS 1.2 and 1.3 and turn off SSL and early TLS; TLS 1.2 is still current, not retired.",
    "pre_read": "Sort the four versions into current and retired before choosing.",
-   "correct_explanation": "NIST's TLS guide says public servers must support TLS 1.2 and, since 2024, TLS 1.3, must not allow SSL 3.0, and discourages TLS 1.0; it allows switching 1.2 off only where it is confirmed unneeded. So this server keeps 1.2 and 1.3 and turns the older versions off. TLS 1.3 alone is the runner-up: it is the strongest version, but TLS 1.2 is still current, and many visitors' browsers and devices still rely on it.",
+   "correct_explanation": "NIST's TLS guide says public servers must support TLS 1.2 and, since 2024, TLS 1.3, must not allow SSL 3.0, and discourages TLS 1.0; it allows switching 1.2 off only where it is confirmed unneeded. So this server keeps the newest two, 1.2 and 1.3, and switches off the rest. TLS 1.3 alone is the runner-up: it is the strongest version, but TLS 1.2 is still current, and many visitors' devices still rely on it.",
    "wrong_explanations": {
     "A": "Closest choice: TLS 1.3 is the strongest version. But TLS 1.2 is not retired; it is still approved, and many visitors' devices need it.",
     "B": "Tempting because compatibility matters. But keeping SSL 3.0 and TLS 1.0 lets attackers push connections down to weak versions.",
@@ -4900,7 +4900,7 @@
     "Protocol downgrade",
     "Secure protocols"
    ],
-   "_provenance": "Authored from concept: 'Transport Layer Security (TLS): use version 1.2 or 1.3, never the retired Secure Sockets Layer (SSL)' (notes 4.1.5 Ports, Protocols and Secure Alternatives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "_provenance": "Authored from concept: 'Transport Layer Security (TLS): use version 1.2 or 1.3, never the retired Secure Sockets Layer (SSL)' (notes 4.1.5 Ports, Protocols and Secure Alternatives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key D recast from a semicolon to 'with'. Word-tell sweep polish, 18 Nov 2026: key D reworded for a smoother read, in parallel with C.",
    "style_version": 2
   },
   {
@@ -5127,15 +5127,15 @@
    "bloom_level": "Application",
    "question": "A cable TV company's vendor says its artificial intelligence (AI) firewall would let the company drop night-shift analysts, since the AI blocks attacks itself. Which reply from the security manager is MOST accurate?",
    "options": {
-    "A": "It will still miss some attacks and flag some safe traffic",
-    "B": "After a month of learning normal traffic, the cut is likely safe",
+    "A": "The AI can miss attacks and flag safe traffic, so analysts stay",
+    "B": "After weeks of learning normal traffic, the cut is likely safe",
     "C": "It blocks known attacks well, so one analyst on call is enough",
-    "D": "AI firewalls only alert, so analysts do all the blocking"
+    "D": "AI firewalls only alert and leave all the blocking to analysts"
    },
    "correct": "A",
    "key_concept": "AI detection is a strong assistant, not a final judge: it still makes false positives and false negatives, and attackers try to evade it.",
    "pre_read": "Ask what the vendor's claim assumes about how the AI will behave once it is running.",
-   "correct_explanation": "Machine learning still produces false positives and false negatives, and attackers deliberately try to evade it, so AI detection is a strong assistant, not a final judge. People must review its alerts and decide high-impact actions. A month of baseline is the runner-up: learning normal traffic helps accuracy, but no baseline removes misses, false alarms or evasion.",
+   "correct_explanation": "Machine learning still produces false positives and false negatives, and attackers deliberately try to evade it, so AI detection is a strong assistant, not a final judge. People must review its alerts and decide high-impact actions. Weeks of baseline are the runner-up: learning normal traffic helps accuracy, but no baseline removes misses, false alarms or evasion.",
    "wrong_explanations": {
     "B": "Closest choice: a good baseline does improve accuracy. But no amount of learning removes false alarms, misses or attackers' attempts to evade the model.",
     "C": "Tempting because it keeps a person in the loop. But one on-call analyst cannot review the misses and false alarms an AI firewall still produces overnight.",
@@ -5152,7 +5152,7 @@
     "Human oversight",
     "Evasion"
    ],
-   "_provenance": "Authored from concept: 'An AI-powered firewall removes the need for analysts' (exam trap, notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Blind re-test fix (5 Nov 2026): C given a measured but still wrong claim, so the key is not the only cautious option.",
+   "_provenance": "Authored from concept: 'An AI-powered firewall removes the need for analysts' (exam trap, notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Blind re-test fix (5 Nov 2026): C given a measured but still wrong claim, so the key is not the only cautious option. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key A finishes the point about the analysts (blind-tester flag); distractor D reworded so 'and' is not on the key alone. Word-tell sweep polish, 18 Nov 2026: key A says 'can miss' instead of the absolute 'will miss', and is no longer the lone longest option.",
    "style_version": 2
   },
   {
@@ -5164,9 +5164,9 @@
    "question": "A roller rink's owner wants to keep its old access point on Wired Equivalent Privacy (WEP), using the longest key it allows, to save money. Which reply from the IT technician is MOST accurate?",
    "options": {
     "A": "A full 128-bit WEP key is strong enough for a small business",
-    "B": "Changing the WEP key every month will keep attackers out",
+    "B": "Changing the WEP key weekly will keep attackers out",
     "C": "Switching to the first WPA on the same device is enough",
-    "D": "WEP is broken at any key length; upgrade to WPA3 or WPA2"
+    "D": "WEP fails at every key length, so move to WPA3 if possible"
    },
    "correct": "D",
    "key_concept": "WEP is broken by design, whatever its key length; use WPA3, or WPA2 where devices cannot do WPA3.",
@@ -5174,7 +5174,7 @@
    "correct_explanation": "WEP's design is broken, so attackers can recover its key with free tools whatever the key length; NIST notes it was deprecated in 2004. The access point should move to WPA3, or WPA2 where devices cannot do WPA3. A long 128-bit key is the runner-up because longer keys usually mean stronger encryption, but WEP's flaw is in how it uses the key, not its size.",
    "wrong_explanations": {
     "A": "Closest choice: longer keys usually do mean stronger encryption. But WEP's weakness is in its design, so even its longest key is quickly broken.",
-    "B": "Tempting because changing keys often limits exposure. But free tools recover a WEP key from captured traffic in minutes, long before any monthly change.",
+    "B": "Tempting because changing keys often limits exposure. But free tools recover a WEP key from captured traffic in minutes, long before any weekly change.",
     "C": "Tempting because WPA was built to replace WEP. But the first WPA was a stopgap built on WEP's cipher and is retired too; use WPA3, or WPA2."
    },
    "tips": [
@@ -5188,7 +5188,7 @@
     "Wi-Fi security",
     "WPA3"
    ],
-   "_provenance": "Authored from concept: 'Wired Equivalent Privacy (WEP) and the first Wi-Fi Protected Access (WPA) are broken; use WPA3, or WPA2 where devices cannot do WPA3' (notes 4.1.10 Wireless Security: Wi-Fi and Bluetooth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "_provenance": "Authored from concept: 'Wired Equivalent Privacy (WEP) and the first Wi-Fi Protected Access (WPA) are broken; use WPA3, or WPA2 where devices cannot do WPA3' (notes 4.1.10 Wireless Security: Wi-Fi and Bluetooth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key D recast from a semicolon to ', so'. Word-tell sweep polish, 18 Nov 2026: key D reworded for a smoother read.",
    "style_version": 2
   },
   {
@@ -5199,10 +5199,10 @@
    "bloom_level": "Analysis",
    "question": "A road tunnel operator's IT manager says the ventilation control network needs no malware defenses, because it has no link to the internet. Which reply from the security analyst is MOST accurate?",
    "options": {
-    "A": "Malware cannot reach a network that has no internet link",
-    "B": "USB drives and vendor laptops still bring in malware by hand",
+    "A": "Malware cannot reach a network with no internet link",
+    "B": "USB drives can still carry malware in, as can vendor laptops",
     "C": "It needs only a yearly check that no internet link exists",
-    "D": "It needs weekly patching, the same as the office laptops"
+    "D": "It needs weekly patching, the same as the staff laptops"
    },
    "correct": "B",
    "key_concept": "An air gap narrows the ways in but does not close them: removable media, vendor laptops and forgotten links have carried malware into control networks.",
@@ -5211,10 +5211,10 @@
    "wrong_explanations": {
     "A": "Tempting because the internet is the usual route in. But malware has reached isolated plants on USB drives and vendor laptops, with no internet link at all.",
     "C": "Closest choice: checking that the gap still holds is useful. But it covers only internet links, not the drives and laptops people carry across it.",
-    "D": "Tempting because patching protects office laptops. But control system patches are tested and scheduled first, since an untested patch can stop the fans."
+    "D": "Tempting because patching protects staff laptops. But control system patches are tested and scheduled first, since an untested patch can stop the fans."
    },
    "tips": [
-    "Eliminate: A assumes no internet link means no way in, and D puts control systems on the office laptops' patch schedule, which risks stopping the fans.",
+    "Eliminate: A assumes no internet link means no way in, and D puts control systems on the staff laptops' patch schedule, which risks stopping the fans.",
     "Final two: B beats C because a yearly link check keeps the gap intact but misses the USB drives and vendor laptops that people carry across it.",
     "Exam cue: an air gap is a strong control, not a guarantee; ask what people carry across it."
    ],
@@ -5224,7 +5224,7 @@
     "Removable media",
     "Operational technology"
    ],
-   "_provenance": "Authored from concept: 'An ICS network with no internet link cannot be attacked' (exam trap, notes 4.1.11 Embedded Systems and Industrial Control Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "_provenance": "Authored from concept: 'An ICS network with no internet link cannot be attacked' (exam trap, notes 4.1.11 Embedded Systems and Industrial Control Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key B smoothed (blind-tester flag).",
    "style_version": 2
   },
   {
@@ -5487,7 +5487,7 @@
    "bloom_level": "Application",
    "question": "A community college's network access control (NAC) policy lists its new badge printers, which cannot do 802.1X sign-in, as approved devices. How should the network technician set up NAC for them as BEST?",
    "options": {
-    "A": "Identify them by profile and give them printing access only",
+    "A": "Use device profiling to limit them to printing access",
     "B": "Admit them to the staff network, since printers hold no data",
     "C": "Admit them on the staff network by MAC address alone",
     "D": "Block them from the network until they support 802.1X"
@@ -5512,7 +5512,7 @@
     "802.1X",
     "Limited access"
    ],
-   "_provenance": "Authored from concept: 'Devices that cannot use 802.1X, like printers, are identified by profiling and given limited access, not a free pass' (notes 4.2.8 Network Access Control (NAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "_provenance": "Authored from concept: 'Devices that cannot use 802.1X, like printers, are identified by profiling and given limited access, not a free pass' (notes 4.2.8 Network Access Control (NAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key A recast from ', giving' to 'to grant'. Word-tell sweep polish, 18 Nov 2026: key A reworded for a smoother read.",
    "style_version": 2
   },
   {
@@ -5631,10 +5631,10 @@
    "bloom_level": "Application",
    "question": "A phone insurance startup's developer says a public container image with millions of downloads is safe to deploy without review. Which reply from the system administrator is MOST accurate?",
    "options": {
-    "A": "Popular images are safe, since many users would spot flaws",
+    "A": "Popular images are safe; their many users would spot any flaws",
     "B": "Popularity proves nothing; scan it and use trusted sources",
     "C": "It is safe once run in a container, not a virtual machine",
-    "D": "Its signature proves it is free of flaws and malware"
+    "D": "Check its signature; a valid one rules out flaws and malware"
    },
    "correct": "B",
    "key_concept": "Every public image is outside software: scan it and run only images from trusted, maintained sources; popularity and signatures do not prove it is flaw-free.",
@@ -5656,7 +5656,7 @@
     "Trusted registries",
     "Image signing"
    ],
-   "_provenance": "Authored from concept: 'Secure the template, not just the copy: harden and patch images, and pull them only from approved sources' (notes 4.3.2 Virtualization and Containers in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "_provenance": "Authored from concept: 'Secure the template, not just the copy: harden and patch images, and pull them only from approved sources' (notes 4.3.2 Virtualization and Containers in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: distractor A now shares the key's semicolon form (blind-tester flag). Word-tell sweep polish, 18 Nov 2026: key B trimmed so it is no longer the longest option; distractor D now also opens with a check, so the key is not the only cautious option.",
    "style_version": 2
   },
   {
@@ -5739,7 +5739,7 @@
    "bloom_level": "Application",
    "question": "A distillery is moving payroll from its infrastructure as a service (IaaS) virtual machines to a software as a service (SaaS) product. Which duty can its system administrator MOST clearly drop?",
    "options": {
-    "A": "Patching the operating system and payroll software",
+    "A": "Patching the operating system, plus the payroll software itself",
     "B": "Deciding which staff accounts may view salary records",
     "C": "Setting the payroll service's sharing and export options",
     "D": "Answering to staff if salary records are ever exposed"
@@ -5764,7 +5764,7 @@
     "IaaS to SaaS",
     "Customer duties"
    ],
-   "_provenance": "Authored from concept: 'The provider owns security of the cloud; the customer owns security in the cloud' (notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "_provenance": "Authored from concept: 'The provider owns security of the cloud; the customer owns security in the cloud' (notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -5919,10 +5919,10 @@
    "bloom_level": "Application",
    "question": "A guitar maker's procedure has the system administrator enable logging on new cloud services; its managed artificial intelligence (AI) service can log prompts and replies, but logging is off. What should the administrator do FIRST?",
    "options": {
-    "A": "Turn on logging, with read access for named staff only",
+    "A": "Turn on logging, but limit read access to the named staff",
     "B": "Turn on logging for replies only, leaving prompts unrecorded",
     "C": "Keep logging off, since the provider monitors its platform",
-    "D": "Turn on logging, and give every staff account read access"
+    "D": "Turn on logging, plus give every staff account read access"
    },
    "correct": "A",
    "key_concept": "Watching its own use of a cloud AI service is the customer's job: turn logging on and protect the logs, which can hold sensitive prompts.",
@@ -5944,7 +5944,7 @@
     "Customer duties",
     "Log protection"
    ],
-   "_provenance": "Authored from concept: 'Training data and tuned models are customer assets needing access control, encryption and logging' (notes 4.3.9 Shared Responsibility for AI Workloads). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "_provenance": "Authored from concept: 'Training data and tuned models are customer assets needing access control, encryption and logging' (notes 4.3.9 Shared Responsibility for AI Workloads). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key A recast from ', limiting' to ', but limit'.",
    "style_version": 2
   },
   {
@@ -6066,7 +6066,7 @@
     "A": "Extend the alert rules so that they also match IPv6 addresses",
     "B": "Keep the alert rules, since the firewall already filters IPv6",
     "C": "Rely on IPv6's built-in IPsec to block harmful traffic instead",
-    "D": "Keep the alert rules, since private IPv4 addresses hide the laptops"
+    "D": "Keep the alert rules, because private IPv4 addresses hide the laptops"
    },
    "correct": "A",
    "key_concept": "Prevention and detection must each cover both IPv4 and IPv6; a firewall that filters IPv6 does not make IPv4-only alerts see it.",
@@ -6088,7 +6088,7 @@
     "Prevention and detection",
     "Alert coverage"
    ],
-   "_provenance": "Authored from concept: 'Many systems enable IPv6 by default, so rules and monitoring must cover both versions' (notes 4.1.4 IPv4 and IPv6). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "_provenance": "Authored from concept: 'Many systems enable IPv6 by default, so rules and monitoring must cover both versions' (notes 4.1.4 IPv4 and IPv6). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -6101,7 +6101,7 @@
    "options": {
     "A": "Disagree; TLS scans each uploaded file before storing it",
     "B": "Disagree; harmful files cannot travel to a site on port 443",
-    "C": "Agree; HTTPS protects files in transit, not what they contain",
+    "C": "Agree; HTTPS protects files in transit, not the content inside them",
     "D": "Agree, but HTTPS stops them if plain HTTP gets switched off"
    },
    "correct": "C",
@@ -6124,7 +6124,7 @@
     "Malware scanning",
     "Encryption in transit"
    ],
-   "_provenance": "Authored from concept: 'Encryption protects data in transit, but every open port is still a way in, so expose only what the business needs' (notes 4.1.5 Ports, Protocols and Secure Alternatives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "_provenance": "Authored from concept: 'Encryption protects data in transit, but every open port is still a way in, so expose only what the business needs' (notes 4.1.5 Ports, Protocols and Secure Alternatives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -6137,8 +6137,8 @@
    "options": {
     "A": "Keep both ports open, moving remote desktop to a high port",
     "B": "Keep both ports open, since staff already connect over the VPN",
-    "C": "Close both ports, and give the vendor remote desktop over the VPN",
-    "D": "Close port 445, and allow 3389 only from the vendor's own addresses"
+    "C": "Close both ports, then move the vendor's remote desktop onto the VPN",
+    "D": "Close port 445, plus allow 3389 only from the vendor's own addresses"
    },
    "correct": "C",
    "key_concept": "Expose only what the business needs: close services nobody outside uses, and route occasional remote access through a VPN rather than an open port.",
@@ -6151,7 +6151,7 @@
    },
    "tips": [
     "Eliminate: A relies on an unusual port, and B assumes a VPN protects ports that stay open; scanners find any port, and the VPN covers only its own traffic.",
-    "Final two: C beats D because a monthly vendor visit fits the VPN; an address-limited remote desktop port still faces the internet directly.",
+    "Final two: C beats D because a monthly vendor session fits the VPN; an address-limited remote desktop port still faces the internet directly.",
     "Exam cue: sort exposed ports by who uses them; close what only on-site staff need, and an address list still leaves a service facing the internet."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 CM-7 (Least Functionality); NIST SP 800-53 Rev. 5 AC-17 (Remote Access)",
@@ -6160,7 +6160,7 @@
     "Remote desktop",
     "Least functionality"
    ],
-   "_provenance": "Authored from concept: 'Remote Desktop Protocol (RDP) is reached through a VPN or gateway with MFA, and Server Message Block (SMB) never faces the internet' (notes 4.1.5 Ports, Protocols and Secure Alternatives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "_provenance": "Authored from concept: 'Remote Desktop Protocol (RDP) is reached through a VPN or gateway with MFA, and Server Message Block (SMB) never faces the internet' (notes 4.1.5 Ports, Protocols and Secure Alternatives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key C recast from ', moving' to ', then move'; the Final two tip now says vendor 'session', not 'visit', since the vendor connects remotely (blind-tester flag).",
    "style_version": 2
   },
   {
@@ -6172,7 +6172,7 @@
    "question": "A wildlife charity lets volunteers join its virtual private network (VPN) from their own laptops, and every sign-in already uses multifactor authentication (MFA). Which added control should the network technician propose as BEST?",
    "options": {
     "A": "Stronger encryption on the tunnel between laptops and the office",
-    "B": "A health check of each laptop before its VPN session is allowed",
+    "B": "A health check of every laptop before the VPN session is allowed",
     "C": "Split tunneling, so that less volunteer traffic crosses the VPN",
     "D": "A second MFA prompt every hour while volunteers stay connected"
    },
@@ -6196,7 +6196,7 @@
     "Device health checks",
     "Personal devices"
    ],
-   "_provenance": "Authored from concept: 'A VPN protects the path, not the device at either end' (notes 4.1.6 Virtual Private Networks (VPNs)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "_provenance": "Authored from concept: 'A VPN protects the path, not the device at either end' (notes 4.1.6 Virtual Private Networks (VPNs)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -6351,10 +6351,10 @@
    "bloom_level": "Analysis",
    "question": "A children's museum's trial of an artificial intelligence (AI) traffic monitor would upload full packet captures, including unencrypted payroll traffic, to the vendor's cloud. Which setup should the security analyst propose as BEST?",
    "options": {
-    "A": "Send full captures, since the upload is encrypted in transit",
+    "A": "Send full captures, since the upload travels over TLS",
     "B": "Skip the trial, since any data sent to an AI service leaks",
-    "C": "Send only flow records, such as timing, volume and addresses",
-    "D": "Send full captures, under a contract barring vendor reuse"
+    "C": "Send only flow records, not the packet payloads",
+    "D": "Send full captures, under a contract that bars their reuse"
    },
    "correct": "C",
    "key_concept": "Send an AI service only the data it needs: traffic models work from flow patterns, so full captures with sensitive content add risk without need.",
@@ -6376,7 +6376,7 @@
     "Data minimization",
     "Flow records"
    ],
-   "_provenance": "Authored from concept: 'The model learns a traffic baseline (who talks to whom, when and how much) and scores new activity against it' (notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "_provenance": "Authored from concept: 'The model learns a traffic baseline (who talks to whom, when and how much) and scores new activity against it' (notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key C recast from ', leaving out' to ', not'; distractor D drops 'vendor'.",
    "style_version": 2
   },
   {
@@ -6387,7 +6387,7 @@
    "bloom_level": "Application",
    "question": "A stock photo agency's artificial intelligence (AI) monitor, tuned in alert-only mode, can now cut off devices it scores as risky, payment servers included. Which setup should the security manager choose as BEST?",
    "options": {
-    "A": "Auto-block laptops; analysts confirm any block of a server",
+    "A": "Auto-block laptops but have analysts confirm any server block",
     "B": "Auto-block any device it scores as risky, the servers included",
     "C": "Let the vendor's defaults decide which devices it may block",
     "D": "Auto-block devices it scores in its highest risk band"
@@ -6412,7 +6412,7 @@
     "Human oversight",
     "Impact-based response"
    ],
-   "_provenance": "Authored from concept: 'Scores feed intrusion detection system (IDS) alerts or analyst queues; high-impact automatic blocks get a human check first' (notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "_provenance": "Authored from concept: 'Scores feed intrusion detection system (IDS) alerts or analyst queues; high-impact automatic blocks get a human check first' (notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026. Word-tell sweep round 2, 18 Nov 2026: key A recast from a semicolon to 'but'.",
    "style_version": 2
   },
   {
@@ -6459,10 +6459,10 @@
    "bloom_level": "Foundational",
    "question": "A city's traffic team is ranking security goals for the controllers that run its traffic signals. Which goal should the security analyst place FIRST?",
    "options": {
-    "A": "Preventing unsafe signal states, such as green lights both ways",
+    "A": "Preventing unsafe states, like the lights showing green both ways",
     "B": "Keeping the signal timing plans confidential from outsiders",
     "C": "Keeping every controller running without any interruption",
-    "D": "Patching every controller as quickly as the office laptops"
+    "D": "Patching every controller as quickly as the staff laptops"
    },
    "correct": "A",
    "key_concept": "In industrial and control systems, people's safety comes first, then keeping the process running, then protecting the data.",
@@ -6484,7 +6484,7 @@
     "Control system priorities",
     "Traffic signal controllers"
    ],
-   "_provenance": "Authored from concept: 'With systems that move physical things, protect people first, then keep the process running' (notes 4.1.11 Embedded Systems and Industrial Control Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "_provenance": "Authored from concept: 'With systems that move physical things, protect people first, then keep the process running' (notes 4.1.11 Embedded Systems and Industrial Control Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -6711,7 +6711,7 @@
    "bloom_level": "Application",
    "question": "At a fashion house adopting Zero Trust, the security analyst finds the payroll app admits any office Wi-Fi device unchecked; its system owner approves the app's access rules. What should the analyst do FIRST?",
    "options": {
-    "A": "Flag the gap to the system owner, proposing a device check",
+    "A": "Report the office Wi-Fi gap so the owner can add device checks",
     "B": "Change the rule to require device checks, then tell the system owner",
     "C": "Leave the rule, since the office Wi-Fi is an internal network",
     "D": "Block every office Wi-Fi device from the app until it is fixed"
@@ -6736,7 +6736,7 @@
     "Zero Trust principles",
     "System owner approval"
    ],
-   "_provenance": "Authored from concept: 'Never trust, always verify: being on the office network or a virtual private network (VPN) earns no access by itself' (notes 4.2.6 Zero Trust Principles). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "_provenance": "Authored from concept: 'Never trust, always verify: being on the office network or a virtual private network (VPN) earns no access by itself' (notes 4.2.6 Zero Trust Principles). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key A recast from ', proposing' to 'so ... can'.",
    "style_version": 2
   },
   {
@@ -6783,10 +6783,10 @@
    "bloom_level": "Foundational",
    "question": "A planetarium's IT manager says the switches' list of allowed media access control (MAC) addresses is no substitute for network access control (NAC). Which reply from the security analyst is MOST accurate?",
    "options": {
-    "A": "Disagree; a MAC list suffices if each port admits one address",
+    "A": "Disagree; a MAC list suffices when each port admits one address",
     "B": "Disagree; a MAC address is fixed in hardware and cannot be faked",
     "C": "Agree; NAC also encrypts traffic between each device and the switch",
-    "D": "Agree; NAC also verifies each device's credentials and health"
+    "D": "Agree; NAC checks each device's identity as well as its health"
    },
    "correct": "D",
    "key_concept": "A MAC list checks only an address the device announces; NAC authenticates devices with credentials or certificates and checks their health.",
@@ -6799,7 +6799,7 @@
    },
    "tips": [
     "Eliminate: B treats MAC addresses as fixed, though software can change them, and C credits NAC with encryption, which is not its job.",
-    "Final two: D beats A because NAC checks credentials and health; limiting each port to one address still admits a copied address.",
+    "Final two: D beats A because NAC checks each device's identity and health; limiting each port to one address still admits a copied address.",
     "Exam cue: when asked whether one control can replace another, list what each actually verifies; a stand-in that checks less is not a substitute."
    ],
    "framework_ref": "NIST SP 800-41 Rev. 1 Section 2.1.7 (Network Access Control: health checks and limited access for remediation); NIST SP 800-94 Section 5.1.2 (WLAN Components: SSIDs are broadcast in plaintext, so any listening device can learn them, and MAC addresses are relatively trivial to spoof)",
@@ -6808,7 +6808,7 @@
     "MAC filtering",
     "802.1X"
    ],
-   "_provenance": "Authored from concept: 'Media access control (MAC) address filtering protects as well as NAC is a trap: MAC addresses are easy to copy, while NAC authenticates and checks health' (notes 4.2.8 Network Access Control (NAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "_provenance": "Authored from concept: 'Media access control (MAC) address filtering protects as well as NAC is a trap: MAC addresses are easy to copy, while NAC authenticates and checks health' (notes 4.2.8 Network Access Control (NAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key D tightened, no doubled 'also ... as well as' (blind-tester flag). Word-tell sweep polish, 18 Nov 2026: key D reworded for a smoother read.",
    "style_version": 2
   },
   {
@@ -6893,7 +6893,7 @@
    "options": {
     "A": "Scan every image for known flaws, and keep privileged mode",
     "B": "Keep privileged mode, since containers are as isolated as VMs",
-    "C": "Drop privileged mode only for the containers facing the internet",
+    "C": "Drop privileged mode only for those containers facing the internet",
     "D": "Run them unprivileged, with only the rights each one needs"
    },
    "correct": "D",
@@ -6916,7 +6916,7 @@
     "Shared kernel",
     "Least privilege"
    ],
-   "_provenance": "Authored from concept: 'Containers are as isolated from each other as virtual machines is a trap: containers share the host's kernel, so one kernel flaw can affect them all' (notes 4.3.2 Virtualization and Containers in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "_provenance": "Authored from concept: 'Containers are as isolated from each other as virtual machines is a trap: containers share the host's kernel, so one kernel flaw can affect them all' (notes 4.3.2 Virtualization and Containers in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -7146,7 +7146,7 @@
     "A": "Rotate the key, so any copy of the old one stops working",
     "B": "Leave the key, since the provider retires unused keys itself",
     "C": "Cut the key to read-only rights, and record it on the scan",
-    "D": "Delete the key, and record the change on the scan finding"
+    "D": "Delete the key, then note the change on the scan finding"
    },
    "correct": "D",
    "key_concept": "An unused cloud key should be removed, not rotated or weakened; when the procedure assigns removal, the analyst does it and records it.",
@@ -7168,7 +7168,7 @@
     "Cloud misconfiguration",
     "Key rotation"
    ],
-   "_provenance": "Authored from concept: 'Common mistakes are public storage, management ports open to the internet and accounts with more rights than they need' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "_provenance": "Authored from concept: 'Common mistakes are public storage, management ports open to the internet and accounts with more rights than they need' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key D recast from a semicolon to 'before'. Word-tell sweep polish, 18 Nov 2026: key D reworded for a smoother read.",
    "style_version": 2
   },
   {
@@ -7182,7 +7182,7 @@
     "A": "Ask the provider to keep the firm's prompts in its home country",
     "B": "Encrypt prompts sent to the service, which keeps them within the rules",
     "C": "Leave the processing region as is, since the provider decides it",
-    "D": "Set the AI service's processing region to the firm's home country"
+    "D": "Set the region to the home country, since the firm controls it"
    },
    "correct": "D",
    "key_concept": "Where a cloud AI service processes data is often a customer setting, and meeting data-location duties stays the customer's job.",
@@ -7204,7 +7204,7 @@
     "AI service settings",
     "Customer duties"
    ],
-   "_provenance": "Authored from concept: 'An AI service is still a cloud service: the provider secures the platform, and the customer owns its data, models, access and settings' (notes 4.3.9 Shared Responsibility for AI Workloads). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026.",
+   "_provenance": "Authored from concept: 'An AI service is still a cloud service: the provider secures the platform, and the customer owns its data, models, access and settings' (notes 4.3.9 Shared Responsibility for AI Workloads). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -7324,7 +7324,7 @@
    "question": "In an approved test after a honey producer segmented its payment servers, a staff laptop still reaches the payment database; the system owner approves segment rules. What should the security analyst do FIRST?",
    "options": {
     "A": "Record a test pass, as the payment servers have their own subnet",
-    "B": "Report the open path to the system owner, attaching the test results",
+    "B": "Send the system owner the test results showing the open path",
     "C": "Block the laptop's path at the firewall, then tell the system owner",
     "D": "Rate the open path low risk, as the database needs a sign-in"
    },
@@ -7348,7 +7348,7 @@
     "Inside traffic",
     "System owner"
    ],
-   "_provenance": "Authored from concept: 'Boundaries are enforced by firewalls, network access control lists (ACLs) or software policy that allow only needed traffic.' (notes 4.2.1 Network Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 8, 13 Nov 2026. Final fix round: asset changed from payroll to card payments to separate it from cc_d4_187, and D re-angled from a twin of A.",
+   "_provenance": "Authored from concept: 'Boundaries are enforced by firewalls, network access control lists (ACLs) or software policy that allow only needed traffic.' (notes 4.2.1 Network Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 8, 13 Nov 2026. Final fix round: asset changed from payroll to card payments to separate it from cc_d4_187, and D re-angled from a twin of A. Word-tell sweep round 2, 18 Nov 2026: key B recast from ', attaching' to one plain action.",
    "style_version": 2
   },
   {
@@ -7649,7 +7649,7 @@
    "options": {
     "A": "Copy the data to another account, then tell the data owner",
     "B": "Inform the data owner that the data lacks a separate backup copy",
-    "C": "Treat the version history as the backup, as it keeps old copies",
+    "C": "Tell the data owner the version history already serves as the backup",
     "D": "Switch the bucket to customer-managed keys to protect the data"
    },
    "correct": "B",
@@ -7672,7 +7672,7 @@
     "AI training data",
     "Data owner"
    ],
-   "_provenance": "Authored from concept: 'Keep independent backups, because many services restore deleted or ransomed files only for a short window.' (notes 4.3.7 Protecting Data in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 8, 13 Nov 2026.",
+   "_provenance": "Authored from concept: 'Keep independent backups, because many services restore deleted or ransomed files only for a short window.' (notes 4.3.7 Protecting Data in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 8, 13 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   },
   {
@@ -7683,7 +7683,7 @@
    "bloom_level": "Application",
    "question": "A quarry operator approves one artificial intelligence (AI) chatbot for staff, but its policy bans uploading files labeled Confidential to it. Which control should the security analyst propose to BEST enforce the ban?",
    "options": {
-    "A": "A cloud access security broker (CASB) rule blocking those uploads",
+    "A": "A cloud access security broker (CASB) rule blocking these uploads",
     "B": "A web filter rule blocking the chatbot's website for all staff",
     "C": "A cloud security posture management (CSPM) check of company cloud settings",
     "D": "A firewall rule allowing chatbot uploads only from company addresses"
@@ -7708,7 +7708,7 @@
     "Data loss prevention",
     "AI chatbot use"
    ],
-   "_provenance": "Authored from concept: 'A cloud access security broker (CASB) sits between users and cloud services, showing which are in use and enforcing data rules.' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 8, 13 Nov 2026. Re-angled in audit from a cc_d4_019 retell to CASB data rules.",
+   "_provenance": "Authored from concept: 'A cloud access security broker (CASB) sits between users and cloud services, showing which are in use and enforcing data rules.' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 8, 13 Nov 2026. Re-angled in audit from a cc_d4_019 retell to CASB data rules. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells.",
    "style_version": 2
   }
  ]

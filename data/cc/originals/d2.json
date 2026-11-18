@@ -17,7 +17,7 @@
       "options": {
         "A": "Showing the organization is secure against the threats it faces",
         "B": "Rating threats to business goals and choosing treatments",
-        "C": "Checking that obligations are met and keeping evidence to prove it",
+        "C": "Proving through records that the organization meets its obligations",
         "D": "Setting security direction and naming who is accountable for it"
       },
       "correct": "C",
@@ -40,7 +40,7 @@
         "Compliance evidence",
         "Obligations"
       ],
-      "_provenance": "Authored from concept: 'compliance proves obligations are met; it is not the same as security' (notes 2.1.1 GRC Purpose and Importance, compare table and trap). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Audit fix 29 Oct 2026: option B shortened so the key is not always out-worded.",
+      "_provenance": "Authored from concept: 'compliance proves obligations are met; it is not the same as security' (notes 2.1.1 GRC Purpose and Importance, compare table and trap). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Audit fix 29 Oct 2026: option B shortened so the key is not always out-worded. Word-tell sweep, 18 Nov 2026: key reworded without 'and'.",
       "style_version": 2
     },
     {
@@ -88,9 +88,9 @@
       "question": "A governance, risk and compliance (GRC) platform flags that the screen lock is off on a front-desk computer that a technician keeps to its approved baseline. What is the technician's BEST response?",
       "options": {
         "A": "Pause the platform's screen lock check on that computer until review",
-        "B": "Turn the screen lock back on and record the change",
+        "B": "Turn the screen lock back on, then log what turned it off",
         "C": "Close the alert and point to the computer's clean audit last year",
-        "D": "Send the alert to the risk committee to decide on a fix"
+        "D": "Log the alert for the risk committee to decide on a fix"
       },
       "correct": "B",
       "key_concept": "When monitoring flags drift from an approved setting, whoever maintains it confirms the drift, restores the setting and records the change with its cause.",
@@ -112,7 +112,7 @@
         "Approved baseline",
         "Change control"
       ],
-      "_provenance": "Authored from concept: 'a tool supports governance; confirm a flagged gap, act within procedure and leave a record' (notes 2.1.6 GRC Tools and Automation). A harmless setting drift (screen lock) chosen so the item is not a possible security incident, and to avoid the notes' laptop encryption example. Calibration: in-role key over escalation. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Cross-review fix (31 Oct 2026): key no longer says 'normal change process', since restoring an approved baseline is a pre-approved change (CD-04). Fix-up round 1 (31 Oct 2026): key now says 'record the change', and the explanation and cue call the restore a standard change that needs no new approval because it returns to the baseline, matching notes 5.4.6. Fix-up round 2 (31 Oct 2026): key concept, explanation and cue add recording the cause of the drift, matching notes 5.4.4 and the CD-01 ruling, so the restore is not a quiet revert.",
+      "_provenance": "Authored from concept: 'a tool supports governance; confirm a flagged gap, act within procedure and leave a record' (notes 2.1.6 GRC Tools and Automation). A harmless setting drift (screen lock) chosen so the item is not a possible security incident, and to avoid the notes' laptop encryption example. Calibration: in-role key over escalation. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Cross-review fix (31 Oct 2026): key no longer says 'normal change process', since restoring an approved baseline is a pre-approved change (CD-04). Fix-up round 1 (31 Oct 2026): key now says 'record the change', and the explanation and cue call the restore a standard change that needs no new approval because it returns to the baseline, matching notes 5.4.6. Fix-up round 2 (31 Oct 2026): key concept, explanation and cue add recording the cause of the drift, matching notes 5.4.4 and the CD-01 ruling, so the restore is not a quiet revert. Word-tell sweep, 18 Nov 2026: key reworded as one action. Word-tell sweep round 2, 18 Nov 2026: key reworded as 'X, then Y' so the comma-ing shape no longer points to it. Word-tell sweep polish, 18 Nov 2026: blind-tester flag: key lengthened to log the cause, as the explanation says; distractor D now logs too, so recording no longer points to the key.",
       "style_version": 2
     },
     {
@@ -157,7 +157,7 @@
       "subtopic": "2.1 GRC. Compliance obligations",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A clinic certified to ISO/IEC 27001 last year becomes subject to a new law requiring 72-hour breach notice, and the privacy officer owns the breach notification policy. What should the compliance analyst do FIRST?",
+      "question": "A clinic certified to ISO/IEC 27001 last year becomes subject to a new law requiring 72-hour breach notice, and the privacy officer owns the breach notification policy. What should the security analyst do FIRST?",
       "options": {
         "A": "Log the law as an obligation and alert the privacy officer",
         "B": "Rely on last year's certification to show the duty is covered",
@@ -184,7 +184,7 @@
         "Obligations list",
         "Policy ownership"
       ],
-      "_provenance": "Authored from concept: 'compliance is proven, not claimed; a voluntary framework never replaces a legal duty' (notes 2.1.4 Compliance Obligations and Evidence, with 2.1.3 accountability). Calibration: the stem names the policy owner. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026.",
+      "_provenance": "Authored from concept: 'compliance is proven, not claimed; a voluntary framework never replaces a legal duty' (notes 2.1.4 Compliance Obligations and Evidence, with 2.1.3 accountability). Calibration: the stem names the policy owner. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Word-tell sweep, 18 Nov 2026: role 'compliance analyst' became 'security analyst'.",
       "style_version": 2
     },
     {
@@ -303,10 +303,10 @@
       "bloom_level": "Application",
       "question": "A school's nightly backups have reported success for a year, and its backup procedure assigns test restores to the system administrator, though none has been done. What should the administrator do FIRST?",
       "options": {
-        "A": "Report the untested backups to the system owner as a risk",
+        "A": "Report the untested backups to the system owner, recording the risk",
         "B": "Add a second nightly backup job to the same storage",
         "C": "Ask the vendor about a faster backup appliance and support plan",
-        "D": "Restore a sample of files and record how long it takes"
+        "D": "Run a trial restore of sample files, then record the time taken"
       },
       "correct": "D",
       "key_concept": "A backup counts only when a restore has been tested and timed; whoever the procedure assigns runs the test.",
@@ -328,7 +328,7 @@
         "Backup evidence",
         "Acting within your role"
       ],
-      "_provenance": "Authored from concept: 'a backup never restored is a hope, not a control' (notes 2.2.5 Backups: Types, the 3-2-1 Rule and Restore Testing). Calibration: in-role key over escalation; the stem states the procedure assigns the task. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Batch 7 final fix round (12 Nov 2026): 'IT technician' became 'system administrator' (canonical role names).",
+      "_provenance": "Authored from concept: 'a backup never restored is a hope, not a control' (notes 2.2.5 Backups: Types, the 3-2-1 Rule and Restore Testing). Calibration: in-role key over escalation; the stem states the procedure assigns the task. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Batch 7 final fix round (12 Nov 2026): 'IT technician' became 'system administrator' (canonical role names). Word-tell sweep, 18 Nov 2026: key reworded as one action. Word-tell sweep round 2, 18 Nov 2026: key reworded as 'X, then Y' (blind-tester flag on 'then'), recording the time as the explanation describes. Word-tell sweep polish, 18 Nov 2026: blind-tester flag: distractor A now records the risk too, so a record step no longer points to the key.",
       "style_version": 2
     },
     {
@@ -340,7 +340,7 @@
       "question": "A new disaster recovery plan has never been tested, and a system administrator suggests shutting down the main data center for a day to prove it. What is the continuity coordinator's BEST response?",
       "options": {
         "A": "Run the full shutdown test as the administrator suggests",
-        "B": "Begin with a tabletop walkthrough to find basic errors",
+        "B": "Run a tabletop walkthrough to see if any details are wrong",
         "C": "Run the shutdown on a weekend, when fewer people need the systems",
         "D": "Approve the plan as written, since IT drafted it"
       },
@@ -364,7 +364,7 @@
         "Parallel test",
         "Full interruption test"
       ],
-      "_provenance": "Authored from concept: 'test in order of risk; a full interruption needs senior management approval' (notes 2.2.7 Testing and Maintaining BC and DR Plans). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Cross-review fix (31 Oct 2026): role names follow the canonical list: system administrator, continuity coordinator (CD-26).",
+      "_provenance": "Authored from concept: 'test in order of risk; a full interruption needs senior management approval' (notes 2.2.7 Testing and Maintaining BC and DR Plans). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Cross-review fix (31 Oct 2026): role names follow the canonical list: system administrator, continuity coordinator (CD-26). Word-tell sweep, 18 Nov 2026: key reworded.",
       "style_version": 2
     },
     {
@@ -521,8 +521,8 @@
       "options": {
         "A": "Keep naming clickers until click rates fall even further",
         "B": "Require a course for each clicker before bonuses are paid",
-        "C": "Use no-blame follow-up and track report rates by team",
-        "D": "Pause simulations until the real report rate recovers"
+        "C": "Adopt no-blame follow-up, then track report rates by team",
+        "D": "Pause simulations, waiting for the real report rate to recover"
       },
       "correct": "C",
       "key_concept": "Blame lowers reporting; a no-blame approach and report-rate tracking show whether people act on phishing.",
@@ -544,7 +544,7 @@
         "Phishing simulations",
         "Report rate"
       ],
-      "_provenance": "Authored from concept: 'report early, report always; track report rates, not just clicks' (notes 2.3.7 Reporting Culture and Phishing Simulations, with 2.3.1 trap on punishment). Two trends to weigh. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026.",
+      "_provenance": "Authored from concept: 'report early, report always; track report rates, not just clicks' (notes 2.3.7 Reporting Culture and Phishing Simulations, with 2.3.1 trap on punishment). Two trends to weigh. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'and'. Word-tell sweep round 2, 18 Nov 2026: distractor D given a comma-ing tail so that shape does not point only to the key. Word-tell sweep polish, 18 Nov 2026: blind-tester flag: key's 'since the switch' had no referent; now 'since naming ends'.",
       "style_version": 2
     },
     {
@@ -625,7 +625,7 @@
       "subtopic": "2.4 Measuring effectiveness. Thresholds",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A key risk indicator (KRI) for departed staff's active accounts turns red, which by rule must reach the risk owner within a day; the identity team removes accounts. What should the reporting analyst do FIRST?",
+      "question": "A key risk indicator (KRI) for departed staff's active accounts turns red, which by rule must reach the risk owner within a day; the identity team removes accounts. What should the security analyst do FIRST?",
       "options": {
         "A": "Add the result to the risk owner's next monthly report",
         "B": "Move the red threshold up until the result shows amber",
@@ -652,7 +652,7 @@
         "Escalation",
         "Risk owner"
       ],
-      "_provenance": "Authored from concept: 'thresholds turn numbers into action; escalate at once and never move the line' (notes 2.4.4 Thresholds, Targets and Escalation). Leaver-accounts KRI chosen to avoid the notes' laptop-updates example. Calibration: the stem states the rule and who removes accounts. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Cross-review fix (31 Oct 2026): B's explanation matches notes 2.4.4 on who changes a threshold.",
+      "_provenance": "Authored from concept: 'thresholds turn numbers into action; escalate at once and never move the line' (notes 2.4.4 Thresholds, Targets and Escalation). Leaver-accounts KRI chosen to avoid the notes' laptop-updates example. Calibration: the stem states the rule and who removes accounts. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Cross-review fix (31 Oct 2026): B's explanation matches notes 2.4.4 on who changes a threshold. Word-tell sweep, 18 Nov 2026: role 'reporting analyst' became 'security analyst'.",
       "style_version": 2
     },
     {
@@ -664,7 +664,7 @@
       "question": "Underwriters now override a bank's AI loan-scoring tool on 12% of applications, up from 3%, crossing its amber threshold, and the model owner decides on retraining. What should the analyst tracking this do FIRST?",
       "options": {
         "A": "Retrain the model on the latest applications",
-        "B": "Send the rising trend and figures to the model owner",
+        "B": "Send the model owner the rising trend with its figures",
         "C": "Tell the model owner the risk is low, given 99.9% uptime",
         "D": "Tell underwriters to stop overriding the tool's scores"
       },
@@ -688,7 +688,7 @@
         "Override rate",
         "Model drift"
       ],
-      "_provenance": "Authored from concept: 'measure AI like any critical risk; a model can look healthy on uptime while drifting' (notes 2.4.7 AI Risk Indicators, with 2.2.8 model drift). Loan scoring chosen to avoid the notes' insurer example. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026.",
+      "_provenance": "Authored from concept: 'measure AI like any critical risk; a model can look healthy on uptime while drifting' (notes 2.4.7 AI Risk Indicators, with 2.2.8 model drift). Loan scoring chosen to avoid the notes' insurer example. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'and'. Word-tell sweep round 2, 18 Nov 2026: blind-tester flag: key reworded for clarity ('the rising trend with its figures'; 'override' kept off the key as a stem word).",
       "style_version": 2
     },
     {
@@ -702,7 +702,7 @@
         "A": "Report all green and flag the rising KRI once it reaches amber",
         "B": "Attach the full operations dashboard with every chart included",
         "C": "Lower the KRI's amber threshold for this report",
-        "D": "Show the KRI's rising trend and what it means for services"
+        "D": "Show the KRI's rising trend in terms of its effect on services"
       },
       "correct": "D",
       "key_concept": "Board reports show trends heading toward limits, not just current colors; green shows only where a number stands today.",
@@ -724,7 +724,7 @@
         "Trends",
         "Key risk indicator (KRI)"
       ],
-      "_provenance": "Authored from concept: 'fit the format to the audience; an all-green dashboard does not mean nothing to report' (notes 2.4.5 Dashboards, Scorecards and Reports, with 2.4.4 thresholds). Two facts to weigh: green KPIs and a rising KRI. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Fix-up round 1 (31 Oct 2026): C's explanation and the Eliminate tip say only the threshold's named owner changes it, with a recorded reason, matching notes 2.4.4 and cc_d2_018 and cc_d2_044; C falls mainly because it bends a threshold for one report. Fix-up round 2 (31 Oct 2026): option A names the rising KRI, so the stem's 'risen' is no longer echoed only in the key (rule 10).",
+      "_provenance": "Authored from concept: 'fit the format to the audience; an all-green dashboard does not mean nothing to report' (notes 2.4.5 Dashboards, Scorecards and Reports, with 2.4.4 thresholds). Two facts to weigh: green KPIs and a rising KRI. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Fix-up round 1 (31 Oct 2026): C's explanation and the Eliminate tip say only the threshold's named owner changes it, with a recorded reason, matching notes 2.4.4 and cc_d2_018 and cc_d2_044; C falls mainly because it bends a threshold for one report. Fix-up round 2 (31 Oct 2026): option A names the rising KRI, so the stem's 'risen' is no longer echoed only in the key (rule 10). Word-tell sweep, 18 Nov 2026: key reworded without 'and'/'what'.",
       "style_version": 2
     },
     {
@@ -733,12 +733,12 @@
       "subtopic": "2.1 GRC. Planning a GRC program",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A regional energy cooperative's new governance, risk and compliance (GRC) program has one year of funding, and its lead asks a junior analyst where work should start. Which proposal is BEST?",
+      "question": "A regional energy cooperative's new governance, risk and compliance (GRC) program has one year of funding, and its lead asks a security analyst where work should start. Which proposal is BEST?",
       "options": {
         "A": "Cover every department to the same depth in the first year",
         "B": "Buy a GRC platform first and load a control library into it",
         "C": "Start with the IT department that runs most of the systems",
-        "D": "Start with the services and data that carry the most risk"
+        "D": "Start from the business services that carry the most risk"
       },
       "correct": "D",
       "key_concept": "A GRC program is scoped by risk: limited effort goes first to the services and data whose loss would harm the organization most.",
@@ -760,7 +760,7 @@
         "Risk-based planning",
         "Critical services"
       ],
-      "_provenance": "Authored from concept: 'set scope, owners and obligations first, so effort goes where risk is greatest' (notes 2.1.2 Planning a GRC Program). Angle: risk-based scoping of limited effort, not the notes example of listing obligations before buying tools. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
+      "_provenance": "Authored from concept: 'set scope, owners and obligations first, so effort goes where risk is greatest' (notes 2.1.2 Planning a GRC Program). Angle: risk-based scoping of limited effort, not the notes example of listing obligations before buying tools. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Word-tell sweep, 18 Nov 2026: key reworded; role 'junior analyst' became 'security analyst'.",
       "style_version": 2
     },
     {
@@ -769,17 +769,17 @@
       "subtopic": "2.1 GRC. Frameworks and mapping",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A small landscape design firm is mapping its controls to the NIST Cybersecurity Framework (CSF), and one outcome covers secure software development, though the firm writes no software. What should the junior analyst do FIRST?",
+      "question": "A small landscape design firm is mapping its controls to the NIST Cybersecurity Framework (CSF), and one outcome covers secure software development, though the firm writes no software. What should the security analyst do FIRST?",
       "options": {
-        "A": "Mark the outcome not applicable and record the reason for review",
-        "B": "Write a secure coding policy so every outcome has its own control",
-        "C": "Ask the firm's owner to accept the outcome as a risk",
+        "A": "Mark the outcome not applicable and note the reason",
+        "B": "Write a secure coding policy to give each outcome its own control",
+        "C": "Record the outcome as a risk for the firm's owner to accept",
         "D": "Switch to another framework that has no software outcomes"
       },
       "correct": "A",
       "key_concept": "Frameworks are tailored to the organization: an item that does not apply may be excluded, with the reason recorded for review.",
       "pre_read": "Notice what the firm does and does not do, and ask what a later reviewer would need to see.",
-      "correct_explanation": "Frameworks expect tailoring: an outcome that does not fit the organization can be excluded, with the reason written down so reviewers can see it was a decision, not an oversight. Asking the owner to accept it as a risk is the runner-up: owner sign-off feels proper, but acceptance is for a real risk left untreated, and a firm that writes no software carries no secure-development risk to accept.",
+      "correct_explanation": "Frameworks expect tailoring: an outcome that does not fit the organization can be excluded, with the reason written down so reviewers can see it was a decision, not an oversight. Recording it as a risk for the owner to accept is the runner-up: owner sign-off feels proper, but acceptance is for a real risk left untreated, and a firm that writes no software carries no secure-development risk to accept.",
       "wrong_explanations": {
         "B": "Tempting because full coverage looks thorough. But frameworks expect tailoring; a policy for work the firm never does adds paperwork, not protection.",
         "C": "Closest choice: involving the owner feels proper. But acceptance is for a real risk left untreated; the firm writes no software, so this outcome simply does not apply.",
@@ -796,7 +796,7 @@
         "Statement of applicability",
         "Framework mapping"
       ],
-      "_provenance": "Authored from concept: 'tailoring is expected, but every exclusion needs a recorded reason' (notes 2.1.5 Choosing and Mapping Frameworks in GRC). Angle: tailoring an inapplicable outcome, not the notes example of a crosswalk between two frameworks. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): runner-up is no longer a subset of the key. Cross-review fix (31 Oct 2026): option B reworded so the key no longer ties for longest (CD-14).",
+      "_provenance": "Authored from concept: 'tailoring is expected, but every exclusion needs a recorded reason' (notes 2.1.5 Choosing and Mapping Frameworks in GRC). Angle: tailoring an inapplicable outcome, not the notes example of a crosswalk between two frameworks. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): runner-up is no longer a subset of the key. Cross-review fix (31 Oct 2026): option B reworded so the key no longer ties for longest (CD-14). Word-tell sweep, 18 Nov 2026: key and option B reworded; role 'junior analyst' became 'security analyst'. Word-tell sweep round 2, 18 Nov 2026: key reworded without a comma-ing tail ('and note the reason'). Word-tell sweep polish, 18 Nov 2026: blind-tester flag: distractor C now records the outcome as a risk, so recording no longer points to the key; explanation updated.",
       "style_version": 2
     },
     {
@@ -805,7 +805,7 @@
       "subtopic": "2.1 GRC. Risk register and tolerances",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "While updating an airport's risk register, a junior analyst finds a risk the IT director accepted 18 months ago, with a 12-month review date that has passed. What should the analyst do FIRST?",
+      "question": "While updating an airport's risk register, a risk analyst finds a risk the IT director accepted 18 months ago, with a 12-month review date that has passed. What should the analyst do FIRST?",
       "options": {
         "A": "Ask the IT director to mark the risk closed",
         "B": "Set the review date another 12 months ahead",
@@ -832,7 +832,7 @@
         "Risk register",
         "Risk review"
       ],
-      "_provenance": "Authored from concept: 'accepted risks carry a reason and a review date; an accepted risk is not closed for good' (notes 2.1.7 Tolerances and the Risk Register in GRC). Angle: an overdue acceptance review, not the notes example of a KRI moving a risk above tolerance. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'accepted risks carry a reason and a review date; an accepted risk is not closed for good' (notes 2.1.7 Tolerances and the Risk Register in GRC). Angle: an overdue acceptance review, not the notes example of a KRI moving a risk above tolerance. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Word-tell sweep, 18 Nov 2026: role 'junior analyst' became 'risk analyst'.",
       "style_version": 2
     },
     {
@@ -845,7 +845,7 @@
       "options": {
         "A": "The provider's team that runs the backup jobs",
         "B": "The hotel group's IT manager",
-        "C": "The backup software's vendor",
+        "C": "The backup software's maker",
         "D": "Each hotel's front-desk manager"
       },
       "correct": "B",
@@ -854,7 +854,7 @@
       "correct_explanation": "Accountability stays inside the organization: the IT manager owns the booking system, so they answer for whether its backups protect the business, even when someone else runs them. The provider is the runner-up: it does the work, which makes it Responsible, but hiring a provider hands over tasks, not accountability. Overseeing the contract and the results remains the owner's job.",
       "wrong_explanations": {
         "A": "Closest choice: the provider does run the backups. That makes it Responsible; outsourcing hands over the work, but the owner still answers for the result.",
-        "C": "Tempting because the vendor's software makes the copies. But a product supplier has no role in this hotel group's backup results or decisions.",
+        "C": "Tempting because the maker's software creates the copies. But a product supplier has no role in this hotel group's backup results or decisions.",
         "D": "Tempting because front-desk staff depend on bookings. But people who use a system are Consulted or Informed; they do not answer for its backups."
       },
       "tips": [
@@ -868,7 +868,7 @@
         "Outsourcing",
         "Accountability"
       ],
-      "_provenance": "Authored from concept: 'delegating a task does not hand over the accountability' (notes 2.1.3 GRC Accountability: RACI and Reporting Lines). Angle: Responsible versus Accountable when work is outsourced; the pilot item tests the number of Accountable people. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'delegating a task does not hand over the accountability' (notes 2.1.3 GRC Accountability: RACI and Reporting Lines). Angle: Responsible versus Accountable when work is outsourced; the pilot item tests the number of Accountable people. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Word-tell sweep round 2, 18 Nov 2026: distractor C says 'maker' instead of 'vendor'; its explanation matched.",
       "style_version": 2
     },
     {
@@ -877,7 +877,7 @@
       "subtopic": "2.1 GRC. Compliance evidence",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A regulator asks a car rental firm to prove its quarterly access reviews happened last year. Which item should the compliance analyst send as the BEST evidence?",
+      "question": "A regulator asks a car rental firm to prove its quarterly access reviews happened last year. Which item should the security analyst send as the BEST evidence?",
       "options": {
         "A": "The access policy that requires a review every quarter",
         "B": "A signed statement from the IT manager that reviews happened",
@@ -904,7 +904,7 @@
         "Access review",
         "Control operation"
       ],
-      "_provenance": "Authored from concept: 'collect evidence as work happens, such as logs, tickets and test results' (notes 2.1.4 Compliance Obligations and Evidence). Angle: quality of evidence; the pilot item tests logging a new legal obligation. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'collect evidence as work happens, such as logs, tickets and test results' (notes 2.1.4 Compliance Obligations and Evidence). Angle: quality of evidence; the pilot item tests logging a new legal obligation. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Word-tell sweep, 18 Nov 2026: role 'compliance analyst' became 'security analyst'.",
       "style_version": 2
     },
     {
@@ -987,7 +987,7 @@
       "bloom_level": "Application",
       "question": "A national parks agency's business impact analysis (BIA) coordinator is short of time, and IT offers to fill in each function's tolerable downtime from server records. What is the coordinator's BEST response?",
       "options": {
-        "A": "Ask each function's owner how harm grows as an outage lengthens",
+        "A": "Ask the function managers to rate harm as an outage lengthens",
         "B": "Use IT's server figures, then ask owners to confirm them",
         "C": "Rank the agency's servers by how many people use each one",
         "D": "Rank functions by how likely each kind of disaster is"
@@ -1012,7 +1012,7 @@
         "Maximum tolerable downtime",
         "Function owners"
       ],
-      "_provenance": "Authored from concept: 'function owners rate how harm grows at several outage lengths' (notes 2.2.3 Business Impact Analysis (BIA)). Angle: IT offering to supply the figures, not the notes example of surveying a registrar. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'function owners rate how harm grows at several outage lengths' (notes 2.2.3 Business Impact Analysis (BIA)). Angle: IT offering to supply the figures, not the notes example of surveying a registrar. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Word-tell sweep, 18 Nov 2026: key reworded.",
       "style_version": 2
     },
     {
@@ -1061,8 +1061,8 @@
       "options": {
         "A": "Keep the plan's order and restore monitoring after a week",
         "B": "Tighten the firewall rules at the recovery site to cover the gap",
-        "C": "Hold booking and check-in until monitoring is fully restored",
-        "D": "Restore monitoring early, together with booking and check-in"
+        "C": "Hold booking and check-in until monitoring runs again",
+        "D": "Restore monitoring in the first wave, beside booking"
       },
       "correct": "D",
       "key_concept": "Security monitoring must recover early, beside the critical systems; a recovery site should keep controls equivalent to the main site.",
@@ -1084,7 +1084,7 @@
         "Security monitoring",
         "Equivalent controls"
       ],
-      "_provenance": "Authored from concept: 'run monitoring where a main-site failure cannot take it down, and restore it early' (notes 2.2.9 AI-Assisted Detection and Resilience). Angle: restore order for AI monitoring, not the notes example of AI catching ransomware early. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Cross-review fix (31 Oct 2026): stem drops the lowercase 'first' beside BEST (worded 'within hours' rather than 'earliest', which would echo the key's 'early') and says 'propose'; option B no longer a second 'wait until' option (CD-27, CD-28, CD-29). Notes 2.2.6 now state that a recovery site keeps controls equal to the main site. Fix-up round 1 (31 Oct 2026): stem restated with both verbs and no unclear 'them', and the question reads 'BEST proposal'.",
+      "_provenance": "Authored from concept: 'run monitoring where a main-site failure cannot take it down, and restore it early' (notes 2.2.9 AI-Assisted Detection and Resilience). Angle: restore order for AI monitoring, not the notes example of AI catching ransomware early. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Cross-review fix (31 Oct 2026): stem drops the lowercase 'first' beside BEST (worded 'within hours' rather than 'earliest', which would echo the key's 'early') and says 'propose'; option B no longer a second 'wait until' option (CD-27, CD-28, CD-29). Notes 2.2.6 now state that a recovery site keeps controls equal to the main site. Fix-up round 1 (31 Oct 2026): stem restated with both verbs and no unclear 'them', and the question reads 'BEST proposal'. Word-tell sweep, 18 Nov 2026: key and option C reworded.",
       "style_version": 2
     },
     {
@@ -1165,7 +1165,7 @@
       "subtopic": "2.2 Redundancy. Backups",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A studio takes a full backup every Sunday night and a differential on all other nights. Its server fails Thursday morning; which restore is MOST efficient for the IT technician to recover Wednesday night's data?",
+      "question": "A studio takes a full backup every Sunday night and a differential on all other nights. Its server fails Thursday morning; which restore is MOST efficient for the system administrator to recover Wednesday night's data?",
       "options": {
         "A": "Sunday's full backup",
         "B": "Sunday's full and the Monday, Tuesday and Wednesday differentials",
@@ -1192,7 +1192,7 @@
         "Incremental backup",
         "Restore sets"
       ],
-      "_provenance": "Authored from concept: 'an incremental restore needs the full plus every incremental; a differential restore needs the full plus the latest differential' (notes 2.2.5 Backups: Types, the 3-2-1 Rule and Restore Testing). Angle: backup types; the pilot item tests restore testing and the notes example covers immutable copies. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): stem asks for the most efficient restore and no longer says 'every other night'.",
+      "_provenance": "Authored from concept: 'an incremental restore needs the full plus every incremental; a differential restore needs the full plus the latest differential' (notes 2.2.5 Backups: Types, the 3-2-1 Rule and Restore Testing). Angle: backup types; the pilot item tests restore testing and the notes example covers immutable copies. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): stem asks for the most efficient restore and no longer says 'every other night'. Word-tell sweep, 18 Nov 2026: role 'IT technician' became 'system administrator'.",
       "style_version": 2
     },
     {
@@ -1205,7 +1205,7 @@
       "options": {
         "A": "A hot site with equipment and the latest data loaded",
         "B": "A cold site that has space, power and cooling in place",
-        "C": "A warm site with equipment ready and data to restore",
+        "C": "A warm site that has the hardware but must restore backups",
         "D": "A spare room in the head office with spare servers"
       },
       "correct": "C",
@@ -1220,7 +1220,7 @@
       "tips": [
         "Eliminate: B must be equipped from scratch, usually a week or more, missing the target, and D shares the main site, so one disaster hits both.",
         "Final two: C beats A because both meet two days, but the warm site does it at lower cost; match the site to the RTO.",
-        "Exam cue: hot sites recover in hours or less, warm in about a day to a few days, cold in weeks. Pick the cheapest that still meets the RTO."
+        "Exam cue: hot sites recover in hours, warm in about a day or two, cold in a week or more. Pick the cheapest that still meets the RTO."
       ],
       "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.4.3 (Alternate Sites); NIST SP 800-53 Rev. 5 CP-7 (Alternate Processing Site)",
       "related_concepts": [
@@ -1228,7 +1228,7 @@
         "Hot site",
         "Cost against recovery time"
       ],
-      "_provenance": "Authored from concept: 'match the site to the RTO from the BIA, not to habit or budget' (notes 2.2.6 Recovery Sites). Angle: the cheapest site that meets a two-day RTO; the pilot item tests an over-ready hot site for a three-week RTO. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): two-day RTO sits inside the warm-site band; stem says orders run at head office. Cross-review fix (31 Oct 2026): leaders ask the IT manager to propose the site, since senior management chooses it (cc_d2_008), and the stem now holds the 'cheapest' request the explanations use; option B drops 'only' and is no longer shorter than the key (CD-08, CD-14). Fix-up round 1 (31 Oct 2026): pre_read points to what the leaders asked for, since the stem no longer states a cost limit. Fix-up round 2 (31 Oct 2026): B's explanation and the Eliminate tip say a cold site usually takes a week or more, matching the cue and notes 2.2.6 ('weeks means cold'), so 'days' no longer suggests it could meet two days. Final pass (31 Oct 2026): option A says the hot site has the latest data loaded, matching notes 2.2.6 and SP 800-34 Section 5.1.5, instead of 'live copies of current data'.",
+      "_provenance": "Authored from concept: 'match the site to the RTO from the BIA, not to habit or budget' (notes 2.2.6 Recovery Sites). Angle: the cheapest site that meets a two-day RTO; the pilot item tests an over-ready hot site for a three-week RTO. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): two-day RTO sits inside the warm-site band; stem says orders run at head office. Cross-review fix (31 Oct 2026): leaders ask the IT manager to propose the site, since senior management chooses it (cc_d2_008), and the stem now holds the 'cheapest' request the explanations use; option B drops 'only' and is no longer shorter than the key (CD-08, CD-14). Fix-up round 1 (31 Oct 2026): pre_read points to what the leaders asked for, since the stem no longer states a cost limit. Fix-up round 2 (31 Oct 2026): B's explanation and the Eliminate tip say a cold site usually takes a week or more, matching the cue and notes 2.2.6 ('weeks means cold'), so 'days' no longer suggests it could meet two days. Final pass (31 Oct 2026): option A says the hot site has the latest data loaded, matching notes 2.2.6 and SP 800-34 Section 5.1.5, instead of 'live copies of current data'. Word-tell sweep, 18 Nov 2026: key reworded. Word-tell sweep round 2, 18 Nov 2026: blind-tester flag: Exam cue aligned with the explanation's recovery times.",
       "style_version": 2
     },
     {
@@ -1313,8 +1313,8 @@
       "options": {
         "A": "Hold the door and help carry the ladder inside",
         "B": "Check the contractor's ID card, then hold the door",
-        "C": "Direct them to reception to sign in and be collected",
-        "D": "Let them in, then report it if they act oddly"
+        "C": "Send them to the reception desk to be signed in",
+        "D": "Let them in, then report any odd behavior"
       },
       "correct": "C",
       "key_concept": "Never let unbadged people through a controlled door; send them to reception, because uniforms and ID cards are easy to fake.",
@@ -1336,7 +1336,7 @@
         "Visitor check-in",
         "Pretexting"
       ],
-      "_provenance": "Authored from concept: 'verify through a separate known channel and follow procedure' (notes 2.3.3 Social Engineering Tactics). Angle: in-person piggybacking; the pilot items test quid pro quo and phone requests. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): re-set away from cc_d5_043's courier prop. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
+      "_provenance": "Authored from concept: 'verify through a separate known channel and follow procedure' (notes 2.3.3 Social Engineering Tactics). Angle: in-person piggybacking; the pilot items test quid pro quo and phone requests. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): re-set away from cc_d5_043's courier prop. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Word-tell sweep, 18 Nov 2026: key and option D reworded.",
       "style_version": 2
     },
     {
@@ -1420,8 +1420,8 @@
       "question": "During a restructuring at a car manufacturer, the awareness lead drafts a phishing simulation announcing surprise job cuts, expecting high engagement. Which step for the plan is BEST?",
       "options": {
         "A": "Send the job-cut lure only to staff who clicked before",
-        "B": "Announce the test date so staff know to watch for it",
-        "C": "Replace it with a realistic lure, such as a parcel notice",
+        "B": "Announce the test date and tell everyone to watch for it",
+        "C": "Swap the job-cut lure for a realistic parcel notice",
         "D": "Keep the job-cut lure, since realistic tests teach the most"
       },
       "correct": "C",
@@ -1444,7 +1444,7 @@
         "Reporting culture",
         "Ethical test design"
       ],
-      "_provenance": "Authored from concept: 'simulations avoid lures that cause real distress and treat a click as a teaching moment' (notes 2.3.7 Reporting Culture and Phishing Simulations). Angle: lure design; the pilot item tests naming clickers. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): key no longer the only negated option; citation paraphrase matches what the section says. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
+      "_provenance": "Authored from concept: 'simulations avoid lures that cause real distress and treat a click as a teaching moment' (notes 2.3.7 Reporting Culture and Phishing Simulations). Angle: lure design; the pilot item tests naming clickers. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): key no longer the only negated option; citation paraphrase matches what the section says. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Word-tell sweep, 18 Nov 2026: key and option B reworded.",
       "style_version": 2
     },
     {
@@ -1453,7 +1453,7 @@
       "subtopic": "2.4 Measuring effectiveness. Measures and metrics",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A software reseller's phishing report rate jumped from 20% to 55% once reports from a new email button were counted with help desk calls. What should the reporting analyst do FIRST?",
+      "question": "A software reseller's phishing report rate jumped from 20% to 55% once reports from a new email button were counted with help desk calls. What should the security analyst do FIRST?",
       "options": {
         "A": "Present the rise as proof that awareness training is working",
         "B": "Report the new count as usual, as the data is more complete",
@@ -1480,7 +1480,7 @@
         "Baseline",
         "Trend breaks"
       ],
-      "_provenance": "Authored from concept: 'collect data the same way every period, so trends mean something' (notes 2.4.1 Measures and Metrics: The Basics). Angle: a method change breaking a trend, not the notes example of replacing a vanity count. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Key letter moved from B to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
+      "_provenance": "Authored from concept: 'collect data the same way every period, so trends mean something' (notes 2.4.1 Measures and Metrics: The Basics). Angle: a method change breaking a trend, not the notes example of replacing a vanity count. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Key letter moved from B to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Word-tell sweep, 18 Nov 2026: role 'reporting analyst' became 'security analyst'.",
       "style_version": 2
     },
     {
@@ -1669,7 +1669,7 @@
       "subtopic": "2.1 GRC. Planning a GRC program",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A theater company's program owner sets its governance, risk and compliance (GRC) scope, and a junior analyst finds volunteers' ID scans in a fundraising tool left out of it. What should the analyst do FIRST?",
+      "question": "A theater company's program owner sets its governance, risk and compliance (GRC) scope, and a security analyst finds volunteers' ID scans in a fundraising tool left out of it. What should the analyst do FIRST?",
       "options": {
         "A": "Add the fundraising tool to the program's GRC scope",
         "B": "Keep the scope the program owner approved and close the finding",
@@ -1696,7 +1696,7 @@
         "Data inventory",
         "Program ownership"
       ],
-      "_provenance": "Authored from concept: 'Set the scope, meaning which units, systems and data are covered' (notes 2.1.2 Planning a GRC Program). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): data type changed from donor card details to volunteers' ID scans so the item no longer retells the notes 2.1.7 example; option A no longer uses the 'act, then inform the owner' wording shared with cc_d2_064; options B and C lost their reason clauses (rule 3).",
+      "_provenance": "Authored from concept: 'Set the scope, meaning which units, systems and data are covered' (notes 2.1.2 Planning a GRC Program). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): data type changed from donor card details to volunteers' ID scans so the item no longer retells the notes 2.1.7 example; option A no longer uses the 'act, then inform the owner' wording shared with cc_d2_064; options B and C lost their reason clauses (rule 3). Word-tell sweep, 18 Nov 2026: role 'junior analyst' became 'security analyst'.",
       "style_version": 2
     },
     {
@@ -1705,9 +1705,9 @@
       "subtopic": "2.1 GRC. Frameworks and mapping",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A payroll software firm maps its ISO/IEC 27001 controls to the NIST Cybersecurity Framework (CSF) 2.0 and finds four outcomes that apply but lack a control. What should the compliance analyst propose as BEST?",
+      "question": "A payroll software firm maps its ISO/IEC 27001 controls to the NIST Cybersecurity Framework (CSF) 2.0 and finds four outcomes that apply but lack a control. What should the security analyst propose as BEST?",
       "options": {
-        "A": "Plan new or extended controls to cover those four outcomes",
+        "A": "Plan controls to close the gaps in the four outcomes",
         "B": "Build a separate CSF control set beside the existing controls",
         "C": "Mark the four outcomes not applicable to complete the mapping",
         "D": "Buy a compliance tool that maps the CSF outcomes automatically"
@@ -1732,7 +1732,7 @@
         "Gap analysis",
         "Tailoring"
       ],
-      "_provenance": "Authored from concept: 'A crosswalk maps one framework to another, so one control shows progress against both' (notes 2.1.5 Choosing and Mapping Frameworks in GRC). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): option A drops the limiting word 'only'. Fix-up (31 Oct 2026): stem names the existing ISO/IEC 27001 control set so the lesson is the crosswalk, not cc_d2_022's tailoring; runner-up is now B (separate CSF control set), the option testers weigh.",
+      "_provenance": "Authored from concept: 'A crosswalk maps one framework to another, so one control shows progress against both' (notes 2.1.5 Choosing and Mapping Frameworks in GRC). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): option A drops the limiting word 'only'. Fix-up (31 Oct 2026): stem names the existing ISO/IEC 27001 control set so the lesson is the crosswalk, not cc_d2_022's tailoring; runner-up is now B (separate CSF control set), the option testers weigh. Word-tell sweep, 18 Nov 2026: key reworded; role 'compliance analyst' became 'security analyst'.",
       "style_version": 2
     },
     {
@@ -1815,8 +1815,8 @@
       "bloom_level": "Application",
       "question": "After recruiters at an agency pasted candidate resumes into free AI chatbots to speed up their daily screening, the chief executive wants every AI tool banned. Which approach should the security manager propose as BEST?",
       "options": {
-        "A": "Approve vetted AI tools with clear data rules and usage monitoring",
-        "B": "Block every AI service on the network and monitor for any workarounds",
+        "A": "Approve vetted AI tools under clear data rules, monitoring their use",
+        "B": "Block every AI service on the network, monitoring for workarounds",
         "C": "Remind staff by email not to paste candidate data into chatbots",
         "D": "Let each team pick its own AI tools once names are removed"
       },
@@ -1840,7 +1840,7 @@
         "Shadow AI",
         "Approved tools list"
       ],
-      "_provenance": "Authored from concept: 'An AI acceptable use policy (AUP), approved by senior management, sets the rules', with the trap 'ban every AI tool so the risk disappears' (notes 2.1.8 Governing AI Use). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Fix-up (31 Oct 2026): stem now states staff rely on AI for daily work, the fact that makes a blanket ban the weaker answer (rule 1).",
+      "_provenance": "Authored from concept: 'An AI acceptable use policy (AUP), approved by senior management, sets the rules', with the trap 'ban every AI tool so the risk disappears' (notes 2.1.8 Governing AI Use). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Fix-up (31 Oct 2026): stem now states staff rely on AI for daily work, the fact that makes a blanket ban the weaker answer (rule 1). Word-tell sweep, 18 Nov 2026: key reworded without 'and'/'with'. Word-tell sweep round 2, 18 Nov 2026: runner-up B given the same comma-ing shape as the key.",
       "style_version": 2
     },
     {
@@ -1853,8 +1853,8 @@
       "options": {
         "A": "Give the technician an on-call phone and a spare work laptop",
         "B": "Add a second standby server next to the existing one",
-        "C": "Take ticketing database backups every hour instead of nightly",
-        "D": "Write failover instructions and cross-train a colleague"
+        "C": "Take ticketing database backups hourly instead of nightly",
+        "D": "Write up the failover so a second colleague can run it"
       },
       "correct": "D",
       "key_concept": "A single point of failure can be a person; documented steps and a trained alternate keep failover working.",
@@ -1876,7 +1876,7 @@
         "Key person dependency",
         "Failover"
       ],
-      "_provenance": "Authored from concept: 'Find single points of failure, such as one server, one internet link or one key person' (notes 2.2.1 Redundancy and High Availability). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: 'Find single points of failure, such as one server, one internet link or one key person' (notes 2.2.1 Redundancy and High Availability). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Word-tell sweep, 18 Nov 2026: key and option C reworded.",
       "style_version": 2
     },
     {
@@ -1959,15 +1959,15 @@
       "bloom_level": "Application",
       "question": "A translation agency's nightly backups go to a storage server that its domain administrator accounts can delete, and ransomware groups now target backups. Which change should the system administrator propose to BEST protect the backups?",
       "options": {
-        "A": "Encrypt every backup file before it is written to storage",
+        "A": "Encrypt each backup file before writing it to storage",
         "B": "Run the backups every hour instead of every night",
         "C": "Keep one backup copy immutable for a fixed retention period",
-        "D": "Add a nightly copy to a domain-joined server at another office"
+        "D": "Add a nightly copy to a domain-joined server at another site"
       },
       "correct": "C",
       "key_concept": "At least one backup copy should be offline or immutable, so ransomware or a stolen administrator account cannot alter or delete it.",
       "pre_read": "Notice who can delete the backups today and what attackers go after.",
-      "correct_explanation": "Ransomware crews look for backups and use stolen administrator accounts to delete or encrypt them before striking. A copy that is immutable, or offline, cannot be changed even by an administrator account, so a clean restore stays possible. Copying to a domain-joined server at another office is the runner-up: it adds an offsite copy, as the 3-2-1 rule asks, but the same domain administrator accounts could still delete it.",
+      "correct_explanation": "Ransomware crews look for backups and use stolen administrator accounts to delete or encrypt them before striking. A copy that is immutable, or offline, cannot be changed even by an administrator account, so a clean restore stays possible. Copying to a domain-joined server at another site is the runner-up: it adds an offsite copy, as the 3-2-1 rule asks, but the same domain administrator accounts could still delete it.",
       "wrong_explanations": {
         "A": "Tempting because encryption keeps backups from being read. But attackers who can delete or overwrite the copies do not need to read them.",
         "B": "Tempting because more frequent copies lose less data. But every copy sits on the same deletable server, so ransomware can still wipe them all.",
@@ -1975,7 +1975,7 @@
       },
       "tips": [
         "Eliminate: A protects confidentiality when the threat is deletion, and B changes how much data could be lost, not whether the copies survive.",
-        "Final two: C beats D because an immutable copy survives a stolen administrator account; a domain-joined server at another office does not.",
+        "Final two: C beats D because an immutable copy survives a stolen administrator account; a domain-joined server at another site does not.",
         "Exam cue: 3-2-1 is a start. Keep at least one copy offline or immutable, beyond the reach of any account an attacker could steal."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 CP-9 (System Backup); NIST CSF 2.0 PR.DS-11 (backups of data are created, protected, maintained and tested)",
@@ -1984,7 +1984,7 @@
         "3-2-1 rule",
         "Ransomware"
       ],
-      "_provenance": "Authored from concept: 'Keep at least one copy offline or immutable, so ransomware or a stolen admin account cannot change it' (notes 2.2.5 Backups: Types, the 3-2-1 Rule and Restore Testing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): option A lost its reason clause (rule 3); stem ending reworded.",
+      "_provenance": "Authored from concept: 'Keep at least one copy offline or immutable, so ransomware or a stolen admin account cannot change it' (notes 2.2.5 Backups: Types, the 3-2-1 Rule and Restore Testing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): option A lost its reason clause (rule 3); stem ending reworded. Word-tell sweep, 18 Nov 2026: options A and D reworded.",
       "style_version": 2
     },
     {
@@ -2105,8 +2105,8 @@
       "options": {
         "A": "Publish one simple reporting route with examples of what to report",
         "B": "Formally warn the employee for reporting the loss two days late",
-        "C": "Add a module on looking after devices to every employee's yearly course",
-        "D": "Turn on remote wipe for every work phone the studio issues"
+        "C": "Add a module on looking after devices to each employee's yearly course",
+        "D": "Turn on remote wipe and tracking for every work phone"
       },
       "correct": "A",
       "key_concept": "Reporting must be easy: one clear route and plain examples of what counts get incidents reported fast.",
@@ -2128,7 +2128,7 @@
         "Security culture",
         "Reporting channels"
       ],
-      "_provenance": "Authored from concept: 'Reporting is easy and safe, with thanks instead of blame for honest mistakes', using the 'easy' half (notes 2.3.1 Security Culture and Leadership). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: 'Reporting is easy and safe, with thanks instead of blame for honest mistakes', using the 'easy' half (notes 2.3.1 Security Culture and Leadership). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Word-tell sweep, 18 Nov 2026: key and options C, D reworded. Word-tell sweep round 2, 18 Nov 2026: key reworded with 'with' instead of a comma-ing tail.",
       "style_version": 2
     },
     {
@@ -2140,7 +2140,7 @@
       "question": "A city transit agency's awareness lead learns that a fake parcel-delivery text is targeting staff phones this week; the yearly course runs in six months. Which step is BEST for reaching all staff?",
       "options": {
         "A": "Rerun the full yearly security course for all staff this month",
-        "B": "Send all staff a short alert now picturing the fake text",
+        "B": "Send all staff an alert with a picture of the fake text",
         "C": "Give the help desk team role-based training on the parcel scam",
         "D": "Ask staff to forward the fake text to coworkers as a warning"
       },
@@ -2149,7 +2149,7 @@
       "pre_read": "Notice who is targeted and how soon they need to know.",
       "correct_explanation": "Awareness activities run all year and respond to current threats with short, timely messages for everyone. A brief alert now, showing what the text looks like and how to report it, reaches all staff while the scam is live. Rerunning the full course is the runner-up: it reaches everyone too, but it is slow and heavy for one new scam, and training time is better aimed at specific roles.",
       "wrong_explanations": {
-        "A": "Closest choice: it does reach every employee. But a full course is slow to organize and heavy for one live scam; a short alert does the job this week.",
+        "A": "Closest choice: it does reach every employee. But a full course is slow to organize and heavy for one live scam; a quick alert does the job this week.",
         "C": "Tempting because role-based training builds skills. But this text targets every employee's phone, so training one team leaves everyone else unwarned.",
         "D": "Tempting because it spreads the warning. But forwarding passes on the live lure and its link; warnings should come from the awareness lead."
       },
@@ -2164,7 +2164,7 @@
         "Awareness versus training",
         "Smishing"
       ],
-      "_provenance": "Authored from concept: 'Awareness reaches everyone through short, frequent messages, such as reminders and brief campaigns' (notes 2.3.2 Awareness, Training and Education). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: 'Awareness reaches everyone through short, frequent messages, such as reminders and brief campaigns' (notes 2.3.2 Awareness, Training and Education). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Word-tell sweep, 18 Nov 2026: key reworded. Word-tell sweep round 2, 18 Nov 2026: blind-tester flag: key reworded for clarity ('with a picture of the fake text'). Word-tell sweep polish, 18 Nov 2026: blind-tester flag: key lengthened so it is no longer clearly the shortest.",
       "style_version": 2
     },
     {
@@ -2355,7 +2355,7 @@
       "bloom_level": "Foundational",
       "question": "An e-scooter rental firm's chief executive asks the security analyst how to tell whether its new governance, risk and compliance (GRC) program is working. Which sign is BEST?",
       "options": {
-        "A": "Security decisions trace to business goals, each with a named owner",
+        "A": "Named owners now tie every security decision to the business goals",
         "B": "The firm passes every compliance assessment it schedules this year",
         "C": "Policies and risks now sit in one purchased GRC platform",
         "D": "Each team keeps its own risk list in its preferred format"
@@ -2363,7 +2363,7 @@
       "correct": "A",
       "key_concept": "GRC works when security decisions serve business goals with clear owners; passed audits or a new platform alone do not show that.",
       "pre_read": "Recall the three parts of GRC and what joins them.",
-      "correct_explanation": "GRC joins governance, risk management and compliance so security work serves business goals, with clear accountability and one shared view of risk. Decisions traced to goals, each with a named owner, show that joining at work. Passing every compliance assessment is the runner-up: it shows set obligations were met, but compliance is only one part, and risks outside those rules can still go unmanaged.",
+      "correct_explanation": "GRC joins governance, risk management and compliance so security work serves business goals, with clear accountability and one shared view of risk. Named owners tying each decision to a goal show that joining at work. Passing every compliance assessment is the runner-up: it shows set obligations were met, but compliance is only one part, and risks outside those rules can still go unmanaged.",
       "wrong_explanations": {
         "B": "Closest choice: compliance is one part of GRC. But passing assessments proves only that set obligations were met, not that risks are managed or that security serves business goals.",
         "C": "Tempting because GRC platforms are common. But a tool only stores records; without owners and decisions behind them, a platform changes nothing.",
@@ -2380,7 +2380,7 @@
         "Alignment",
         "Accountability"
       ],
-      "_provenance": "Authored from concept: 'GRC exists so security serves business goals. Its value is alignment, clear accountability and one shared view of risk, not any single tool' (notes 2.1.1 GRC Purpose and Importance). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'GRC exists so security serves business goals. Its value is alignment, clear accountability and one shared view of risk, not any single tool' (notes 2.1.1 GRC Purpose and Importance). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded.",
       "style_version": 2
     },
     {
@@ -2425,7 +2425,7 @@
       "subtopic": "2.1 GRC. Compliance evidence",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A fence builder's payment processor contract requires monthly firewall reviews, owned by the network manager; the compliance analyst, who logs findings by procedure, sees 2 of 12 months unrecorded. What should the analyst do FIRST?",
+      "question": "A fence builder's payment processor contract requires monthly firewall reviews, owned by the network manager; the security analyst, who logs findings by procedure, sees 2 of 12 months unrecorded. What should the analyst do FIRST?",
       "options": {
         "A": "Record the control as met for the year, with no finding",
         "B": "Record a finding with a due date for the network manager",
@@ -2452,7 +2452,7 @@
         "Findings",
         "Contract obligations"
       ],
-      "_provenance": "Authored from concept: 'Check on a schedule, and track each gap as a finding with an owner and due date' (notes 2.1.4 Compliance Obligations and Evidence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'Check on a schedule, and track each gap as a finding with an owner and due date' (notes 2.1.4 Compliance Obligations and Evidence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: role 'compliance analyst' became 'security analyst'.",
       "style_version": 2
     },
     {
@@ -2465,7 +2465,7 @@
       "options": {
         "A": "The framework the IT manager used at a previous employer",
         "B": "The framework listing the most separate controls",
-        "C": "NIST CSF 2.0, using its current and target profiles",
+        "C": "NIST CSF 2.0 with its current and target profiles",
         "D": "ISO/IEC 27001 certification, with a CSF 2.0 mapping later"
       },
       "correct": "C",
@@ -2488,7 +2488,7 @@
         "Customer requirements",
         "NIST CSF 2.0"
       ],
-      "_provenance": "Authored from concept: 'Start from what leaders, customers or contracts ask to see' (notes 2.1.5 Choosing and Mapping Frameworks in GRC). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026. Batch 7 final fix round (12 Nov 2026): 'IT lead' became 'IT manager' (canonical role names).",
+      "_provenance": "Authored from concept: 'Start from what leaders, customers or contracts ask to see' (notes 2.1.5 Choosing and Mapping Frameworks in GRC). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026. Batch 7 final fix round (12 Nov 2026): 'IT lead' became 'IT manager' (canonical role names). Word-tell sweep round 2, 18 Nov 2026: key reworded with 'with' instead of a comma-ing tail.",
       "style_version": 2
     },
     {
@@ -2646,7 +2646,7 @@
         "A": "The agreement will cost more each year than a warm site",
         "B": "Each vineyard's staff could see the other's customer data",
         "C": "Reciprocal sites hold no equipment, like a cold site",
-        "D": "One flood or wildfire could shut down both sites at once"
+        "D": "A single regional hazard could shut down both sites at once"
       },
       "correct": "D",
       "key_concept": "A recovery site must sit outside the hazards that could hit the main site; a nearby partner can fail in the same event.",
@@ -2668,7 +2668,7 @@
         "Geographic separation",
         "Alternate sites"
       ],
-      "_provenance": "Authored from concept: 'Keep it far enough away that one regional event, such as a flood, cannot hit both sites' (notes 2.2.6 Recovery Sites). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'Keep it far enough away that one regional event, such as a flood, cannot hit both sites' (notes 2.2.6 Recovery Sites). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded.",
       "style_version": 2
     },
     {
@@ -2716,14 +2716,14 @@
       "question": "A dental lab's client chatbot runs on an outside provider's AI model, and its recovery plan covers only the lab's own servers. Which addition should the continuity coordinator propose as BEST?",
       "options": {
         "A": "More frequent backups of the lab's own web servers",
-        "B": "A fallback way to answer clients if the provider fails",
+        "B": "A fallback way to answer clients if the AI vendor fails",
         "C": "Versioned backups of the chatbot's prompts and settings",
         "D": "An alert that fires when the provider's model slows or stops"
       },
       "correct": "B",
       "key_concept": "When an AI service depends on an outside provider, the recovery plan needs a fallback for the provider's outage, not just backups of local parts.",
       "pre_read": "List what the chatbot needs in order to work.",
-      "correct_explanation": "The chatbot needs the provider's model, which the lab cannot restore from its own backups. A fallback, such as a staffed queue or a simple answer page, keeps clients served when the provider fails. Versioned backups of prompts and settings are the runner-up: they help rebuild the chatbot, but they cannot run it while the provider's model is unavailable.",
+      "correct_explanation": "The chatbot needs the provider's model, which the lab cannot restore from its own backups. A fallback, such as a staffed queue or a simple answer page, keeps clients served when the AI vendor fails. Versioned backups of prompts and settings are the runner-up: they help rebuild the chatbot, but they cannot run it while the provider's model is unavailable.",
       "wrong_explanations": {
         "A": "Tempting because backups support recovery. But the lab's servers are not the weak point; the chatbot stops whenever the provider's model is unreachable.",
         "C": "Closest choice: prompts and settings should be backed up and versioned. But they need the provider's model to run, so they cannot keep clients served during its outage.",
@@ -2740,7 +2740,7 @@
         "Fallback process",
         "AI service continuity"
       ],
-      "_provenance": "Authored from concept: 'Plan a fallback, such as an earlier model version or a manual process' (notes 2.2.8 Backing Up AI Systems and Model Drift). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'Plan a fallback, such as an earlier model version or a manual process' (notes 2.2.8 Backing Up AI Systems and Model Drift). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026. Word-tell sweep round 2, 18 Nov 2026: key says 'AI vendor' instead of 'provider' so 'vendor' is not only on distractors; explanation matched.",
       "style_version": 2
     },
     {
@@ -2751,10 +2751,10 @@
       "bloom_level": "Foundational",
       "question": "An art supply wholesaler's awareness lead must tell leaders whether a year-long security culture program is working. Which sign is BEST?",
       "options": {
-        "A": "Every employee finished this year's awareness course on time",
+        "A": "Every employee finished and passed this year's awareness course",
         "B": "Most staff rated security as important in the yearly survey",
-        "C": "The security team has grown from two people to five",
-        "D": "Staff report their own mistakes quickly and unprompted"
+        "C": "The security team grew from two people to five",
+        "D": "Staff report their own mistakes quickly, without being asked"
       },
       "correct": "D",
       "key_concept": "Culture shows in what people do unprompted, such as reporting their own mistakes; completions, survey answers and team size show less.",
@@ -2776,7 +2776,7 @@
         "Behavior measures",
         "Self-reporting"
       ],
-      "_provenance": "Authored from concept: 'Culture is judged by behavior, such as reporting rates, not course completion' (notes 2.3.1 Security Culture and Leadership). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'Culture is judged by behavior, such as reporting rates, not course completion' (notes 2.3.1 Security Culture and Leadership). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: key and options A, C reworded.",
       "style_version": 2
     },
     {
@@ -3219,9 +3219,9 @@
       "bloom_level": "Analysis",
       "question": "A container port's AI model predicts crane faults, and the model owner wants an early-warning key risk indicator (KRI) that its predictions are getting worse. Which measure should the security analyst propose as BEST?",
       "options": {
-        "A": "Number of fault predictions the model makes each month",
+        "A": "Number of fault predictions the model makes per week",
         "B": "Average time the model takes to return each live prediction",
-        "C": "Crane faults missed last quarter, against the training-test rate",
+        "C": "Crane faults missed last quarter, compared with test accuracy",
         "D": "Monthly shift in live inputs away from the training data"
       },
       "correct": "D",
@@ -3231,7 +3231,7 @@
       "wrong_explanations": {
         "A": "Tempting because a busy model looks healthy. But the number of predictions shows only that it is working, not whether those predictions are right.",
         "B": "Tempting because slow predictions are a problem. But speed says nothing about whether the predictions are accurate or drifting.",
-        "C": "Closest choice: comparing missed faults with the training-test rate does reveal falling accuracy. But misses appear only after harm, so the indicator lags; a shift in live inputs warns earlier."
+        "C": "Closest choice: comparing missed faults with test accuracy does reveal falling accuracy. But misses appear only after harm, so the indicator lags; a shift in live inputs warns earlier."
       },
       "tips": [
         "Eliminate: A and B measure volume and speed, which can look healthy while the model's predictions drift.",
@@ -3244,7 +3244,7 @@
         "Data drift",
         "Leading indicators"
       ],
-      "_provenance": "Authored from concept: 'Accuracy on recent, labeled live data, and shifts in live inputs away from the training data, tracked over time, signal model drift' (notes 2.4.7 AI Risk Indicators). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026. Re-angled in fix-up round 2 (uptime framing removed) so it does not repeat cc_d2_019.",
+      "_provenance": "Authored from concept: 'Accuracy on recent, labeled live data, and shifts in live inputs away from the training data, tracked over time, signal model drift' (notes 2.4.7 AI Risk Indicators). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026. Re-angled in fix-up round 2 (uptime framing removed) so it does not repeat cc_d2_019. Word-tell sweep, 18 Nov 2026: option A reworded. Word-tell sweep round 2, 18 Nov 2026: blind-tester flag: distractor C reworded for clarity ('compared with test accuracy'); explanation matched.",
       "style_version": 2
     },
     {
@@ -3361,10 +3361,10 @@
       "subtopic": "2.1 GRC. Compliance obligations",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A language school's card-payment rules and a major client contract both require yearly staff security training, and the school already runs a yearly course. What should the compliance analyst do BEST?",
+      "question": "A language school's card-payment rules and a major client contract both require yearly staff security training, and the school already runs a yearly course. What should the security analyst do BEST?",
       "options": {
         "A": "Set up a separate yearly course to meet the client contract",
-        "B": "Skip the contract, since it is not a legal duty",
+        "B": "Treat the contract clause as optional, not a legal duty",
         "C": "Ask the client to remove the training clause from the contract",
         "D": "Map each obligation to the existing course and its records"
       },
@@ -3388,7 +3388,7 @@
         "Control mapping",
         "Contract obligations"
       ],
-      "_provenance": "Authored from concept: 'Map each obligation to the controls that meet it; one control can cover several' (notes 2.1.4 Compliance Obligations and Evidence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'Map each obligation to the controls that meet it; one control can cover several' (notes 2.1.4 Compliance Obligations and Evidence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: option B reworded; role 'compliance analyst' became 'security analyst'.",
       "style_version": 2
     },
     {
@@ -3438,7 +3438,7 @@
         "A": "Ask the board to raise its appetite so both views fit",
         "B": "Ask leaders to set a measurable tolerance for the risk",
         "C": "Have both teams meet and agree one view of the risk",
-        "D": "Record it as outside appetite, since the stricter view is safer"
+        "D": "Record it as outside appetite and go with the stricter view"
       },
       "correct": "B",
       "key_concept": "A broad appetite statement needs a measurable tolerance for each risk, set by leaders, so everyone judges the same way whether the risk is acceptable.",
@@ -3460,7 +3460,7 @@
         "Risk tolerance",
         "Risk register"
       ],
-      "_provenance": "Authored from concept: 'Broad statements need measurable tolerances and thresholds, or two teams will judge the same risk differently' (notes 2.1.7 Tolerances and the Risk Register in GRC). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'Broad statements need measurable tolerances and thresholds, or two teams will judge the same risk differently' (notes 2.1.7 Tolerances and the Risk Register in GRC). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: option D reworded.",
       "style_version": 2
     },
     {
@@ -3508,8 +3508,8 @@
       "question": "A weather service's failover tests show services run at its cloud site but never check that the AI threat-monitoring copy raises alerts. Which addition to the next test should the security manager propose as BEST?",
       "options": {
         "A": "Check the cloud site's monitoring copy is configured to send alerts",
-        "B": "Trigger test alerts at the cloud site and confirm analysts receive them",
-        "C": "Leave monitoring out of failover tests, since services come first",
+        "B": "Trigger test alerts at the cloud site to confirm analysts get them",
+        "C": "Leave monitoring out of failover tests to put services first",
         "D": "Rely on the cloud provider's own monitoring during the test"
       },
       "correct": "B",
@@ -3532,7 +3532,7 @@
         "Recovery testing",
         "Alternate processing site"
       ],
-      "_provenance": "Authored from concept: 'Run monitoring where a main-site failure cannot take it down, and restore it early' (notes 2.2.9 AI-Assisted Detection and Resilience). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026; re-angled to testing monitoring at the recovery site after the cross-domain gate (cc_d2_030 and cc_d2_058 teach where and when monitoring runs).",
+      "_provenance": "Authored from concept: 'Run monitoring where a main-site failure cannot take it down, and restore it early' (notes 2.2.9 AI-Assisted Detection and Resilience). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026; re-angled to testing monitoring at the recovery site after the cross-domain gate (cc_d2_030 and cc_d2_058 teach where and when monitoring runs). Word-tell sweep, 18 Nov 2026: key and option C reworded. Word-tell sweep round 2, 18 Nov 2026: key reworded as 'to confirm' instead of a comma-ing tail.",
       "style_version": 2
     },
     {
@@ -3577,11 +3577,11 @@
       "subtopic": "2.2 Redundancy. Backups",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An architecture practice backs up its file server nightly to two USB disks kept in the server's own cabinet. Which change should the IT technician propose to BEST meet the 3-2-1 rule?",
+      "question": "An architecture practice backs up its file server nightly to two USB disks kept in the server's own cabinet. Which change should the system administrator propose to BEST meet the 3-2-1 rule?",
       "options": {
         "A": "Add a third USB backup disk to the same cabinet each night",
         "B": "Mirror the server's own drives so one disk failure loses nothing",
-        "C": "Keep one of the backup copies offsite, such as in cloud storage",
+        "C": "Keep one of the backup copies offsite, for instance in the cloud",
         "D": "Move the second backup disk to a shelf across the server room"
       },
       "correct": "C",
@@ -3604,7 +3604,7 @@
         "Offsite backup",
         "Alternate storage site"
       ],
-      "_provenance": "Authored from concept: 'Follow the 3-2-1 rule: three copies, on two types of storage, with one offsite' (notes 2.2.5 Backups: Types, the 3-2-1 Rule and Restore Testing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'Follow the 3-2-1 rule: three copies, on two types of storage, with one offsite' (notes 2.2.5 Backups: Types, the 3-2-1 Rule and Restore Testing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded; role 'IT technician' became 'system administrator'.",
       "style_version": 2
     },
     {
@@ -3617,7 +3617,7 @@
       "options": {
         "A": "Report and record both numbers for the IT manager to correct",
         "B": "Rerun the tabletop to confirm the two numbers are really wrong",
-        "C": "Correct the two numbers in the plan and record the change",
+        "C": "Correct both numbers in the plan and record the change",
         "D": "Schedule a full interruption test to find any other errors"
       },
       "correct": "C",
@@ -3640,7 +3640,7 @@
         "Tabletop exercise",
         "Contact lists"
       ],
-      "_provenance": "Authored from concept: 'Update the plan after every test, real event and major change; senior management approves disruptive tests' (notes 2.2.7 Testing and Maintaining BC and DR Plans). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'Update the plan after every test, real event and major change; senior management approves disruptive tests' (notes 2.2.7 Testing and Maintaining BC and DR Plans). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded. Word-tell sweep round 2, 18 Nov 2026: key reworded with 'and', which distractor A also has, instead of a comma-ing tail.",
       "style_version": 2
     },
     {
@@ -3687,7 +3687,7 @@
       "bloom_level": "Foundational",
       "question": "A vehicle inspection agency's awareness lead wants a low-cost way to keep one habit, locking screens, in every employee's mind all year. Which activity BEST fits this goal?",
       "options": {
-        "A": "A short monthly screen-lock reminder sent to all staff",
+        "A": "A brief monthly screen-lock reminder sent to all staff",
         "B": "A hands-on half-day screen-lock workshop for every team",
         "C": "A role-based screen-lock course for the IT support staff",
         "D": "A one-time screen-lock module added to the onboarding course"
@@ -3712,7 +3712,7 @@
         "Training",
         "Education"
       ],
-      "_provenance": "Authored from concept: 'Awareness reaches everyone through short, frequent messages, such as reminders and brief campaigns' (notes 2.3.2 Awareness, Training and Education). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'Awareness reaches everyone through short, frequent messages, such as reminders and brief campaigns' (notes 2.3.2 Awareness, Training and Education). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded.",
       "style_version": 2
     },
     {
@@ -3723,10 +3723,10 @@
       "bloom_level": "Application",
       "question": "At a television studio's staff entrance, a stranger who slipped in behind an employee becomes angry and threatening when asked to sign in. What should the employee do FIRST?",
       "options": {
-        "A": "Block the doorway until the stranger shows a staff badge",
+        "A": "Block the doorway, demanding the stranger's staff badge",
         "B": "Follow the stranger at a safe distance to see where they go",
         "C": "Firmly ask the stranger again to sign in",
-        "D": "Move away to a safe spot and call building security"
+        "D": "Move away from the stranger, then call building security"
       },
       "correct": "D",
       "key_concept": "When a social engineering attempt turns threatening, personal safety comes first: get clear and let trained security staff handle it.",
@@ -3748,7 +3748,7 @@
         "Personal safety",
         "Physical security"
       ],
-      "_provenance": "Authored from concept: 'At a badge door, never let in anyone who cannot badge in, whatever uniform or ID card they show; send them to reception to sign in' (notes 2.3.3 Social Engineering Tactics). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'At a badge door, never let in anyone who cannot badge in, whatever uniform or ID card they show; send them to reception to sign in' (notes 2.3.3 Social Engineering Tactics). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded. Word-tell sweep round 2, 18 Nov 2026: key reworded as 'X, then Y' (blind-tester flag on 'then'); distractor A given a comma-ing tail.",
       "style_version": 2
     },
     {
@@ -3796,7 +3796,7 @@
       "question": "A seed bank's lab technician gets a fluent email, likely AI-written, naming their manager, their dog and a recent team outing, and asking them to open a file. What is the technician's MOST accurate conclusion?",
       "options": {
         "A": "It is likely genuine, since such personal details are rarely public",
-        "B": "It is unproven, since those details could come from public posts",
+        "B": "It is unproven, since the details could come from public posts",
         "C": "It is safe to open once antivirus has scanned the file",
         "D": "It is malicious, since the email was likely written by AI"
       },
@@ -3820,7 +3820,7 @@
         "Open-source intelligence (OSINT)",
         "Spear phishing"
       ],
-      "_provenance": "Authored from concept: 'Generative AI writes fluent, personalized lures in many languages, at scale' (notes 2.3.5 AI-Boosted Phishing and Deepfakes). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'Generative AI writes fluent, personalized lures in many languages, at scale' (notes 2.3.5 AI-Boosted Phishing and Deepfakes). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded.",
       "style_version": 2
     },
     {
@@ -3832,9 +3832,9 @@
       "question": "A gallery's events coordinator learns that a fitness app they use was breached; their work email password is the app's password with one digit changed. What should the coordinator do FIRST?",
       "options": {
         "A": "Change the fitness app's password and tell the security team",
-        "B": "Watch the work account closely for signs of misuse before acting",
-        "C": "Change the work password and report the leak to the security team",
-        "D": "Keep the work password, since it differs from the leaked one"
+        "B": "Watch the work account closely, waiting for signs of misuse",
+        "C": "Change the work password, then report the leak to security",
+        "D": "Keep the work password, which differs from the leaked one"
       },
       "correct": "C",
       "key_concept": "A leaked password exposes every account that uses it or a close variant: change the work password and report it at once.",
@@ -3856,7 +3856,7 @@
         "Credential stuffing",
         "Reporting exposure"
       ],
-      "_provenance": "Authored from concept: 'Never share a password, even with IT or a manager, and report any exposure at once' (notes 2.3.6 Password and Passphrase Habits). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'Never share a password, even with IT or a manager, and report any exposure at once' (notes 2.3.6 Password and Passphrase Habits). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: option D reworded. Word-tell sweep round 2, 18 Nov 2026: key reworded as 'X, then Y' (blind-tester flag on 'then'); distractor B given a comma-ing tail.",
       "style_version": 2
     },
     {
@@ -4047,15 +4047,15 @@
       "bloom_level": "Foundational",
       "question": "A paper mill's quarterly security report to leaders lists 12 metrics with no commentary, and leaders ask what they are expected to do. Which addition is BEST for the security manager to make?",
       "options": {
-        "A": "A short section on causes and the decisions leaders face",
-        "B": "A color-coded status showing each metric against its target",
-        "C": "A link to the live dashboard so leaders can drill down",
+        "A": "A brief section on causes, naming the decisions leaders face",
+        "B": "A color-coded status and target beside each metric",
+        "C": "A link to the live dashboard, letting leaders drill down",
         "D": "An appendix holding the raw data behind every metric"
       },
       "correct": "A",
       "key_concept": "Reports for leaders explain causes and state the decisions needed; status grids, live dashboards and raw data serve other needs.",
       "pre_read": "Consider what the leaders asked for, and which format delivers it.",
-      "correct_explanation": "Leaders asked what they need to do, and a report's strength is context, causes and recommendations. A short section explaining what drives the results and naming the decisions needed answers them directly. Color-coded status against targets is the runner-up: it shows at a glance which metrics are off track, but not why, or what the leaders should decide.",
+      "correct_explanation": "Leaders asked what they need to do, and a report's strength is context, causes and recommendations. A brief section explaining what drives the results and naming the decisions needed answers them directly. Color-coded status against targets is the runner-up: it shows at a glance which metrics are off track, but not why, or what the leaders should decide.",
       "wrong_explanations": {
         "B": "Closest choice: status at a glance helps leaders spot problems. But it shows which metrics are off track, not why, or what decision leaders must make.",
         "C": "Tempting because drill-down shows everything. But live dashboards suit teams acting daily; leaders need conclusions and decisions, not more charts to explore.",
@@ -4072,7 +4072,7 @@
         "Scorecards",
         "Dashboards"
       ],
-      "_provenance": "Authored from concept: 'Scorecards suit periodic reviews against targets; reports explain trends, causes and the decisions needed' (notes 2.4.5 Dashboards, Scorecards and Reports). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'Scorecards suit periodic reviews against targets; reports explain trends, causes and the decisions needed' (notes 2.4.5 Dashboards, Scorecards and Reports). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: key and option B reworded. Word-tell sweep round 2, 18 Nov 2026: distractor C given a comma-ing tail so that shape does not point only to the key.",
       "style_version": 2
     },
     {
@@ -4083,8 +4083,8 @@
       "bloom_level": "Application",
       "question": "A tram operator's average time to disable leavers' accounts doubled in March after a steady year, and the IT manager urges buying an identity governance tool at once. What should the security analyst propose FIRST?",
       "options": {
-        "A": "Find out what drove the March figure up",
-        "B": "Buy the tool, since leaver handling has clearly worsened",
+        "A": "Find the cause behind the March figure's rise",
+        "B": "Buy the tool now and replace the manual leaver steps",
         "C": "Raise the leaver target so the March figure falls within it",
         "D": "Drop March from the trend as a one-month outlier"
       },
@@ -4108,7 +4108,7 @@
         "Root cause",
         "Trend analysis"
       ],
-      "_provenance": "Authored from concept: 'Look at trends, not one month alone, and ask why a number moved before acting' (notes 2.4.6 Using Measurement to Improve). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026; re-set from patch times to leaver accounts after the cross-domain gate (cc_d2_042 uses patch times). Batch 7 final fix round (12 Nov 2026): 'metrics analyst' became 'security analyst' (canonical role names).",
+      "_provenance": "Authored from concept: 'Look at trends, not one month alone, and ask why a number moved before acting' (notes 2.4.6 Using Measurement to Improve). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 5, 4 Nov 2026; re-set from patch times to leaver accounts after the cross-domain gate (cc_d2_042 uses patch times). Batch 7 final fix round (12 Nov 2026): 'metrics analyst' became 'security analyst' (canonical role names). Word-tell sweep, 18 Nov 2026: key and option B reworded.",
       "style_version": 2
     },
     {
@@ -4299,9 +4299,9 @@
       "bloom_level": "Application",
       "question": "A laundry chain's video policy, owned by its operations director, keeps video 30 days unless legally held and assigns its deletion to the system administrator. How should the administrator BEST handle expired, unheld video?",
       "options": {
-        "A": "Archive the expired video offline and record where it is kept",
+        "A": "Archive the expired video offline, recording its location",
         "B": "Ask the operations director to approve each deletion first",
-        "C": "Delete the expired video on schedule and record the deletion",
+        "C": "Delete the expired video on schedule, logging each deletion",
         "D": "Move the expired video to cheaper cloud storage for a year"
       },
       "correct": "C",
@@ -4324,7 +4324,7 @@
         "Legal hold",
         "Compliance obligations"
       ],
-      "_provenance": "Authored from concept: 'Identify each obligation, its source and what it requires, and meet it as work happens, including retention limits' (notes 2.1.4 Compliance Obligations and Evidence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026. Batch 7 final fix round (12 Nov 2026): 'IT technician' became 'system administrator' (canonical role names).",
+      "_provenance": "Authored from concept: 'Identify each obligation, its source and what it requires, and meet it as work happens, including retention limits' (notes 2.1.4 Compliance Obligations and Evidence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026. Batch 7 final fix round (12 Nov 2026): 'IT technician' became 'system administrator' (canonical role names). Word-tell sweep, 18 Nov 2026: key and option A reworded. Word-tell sweep round 2, 18 Nov 2026: distractor A given a comma-ing tail so that shape does not point only to the key.",
       "style_version": 2
     },
     {
@@ -4513,7 +4513,7 @@
       "subtopic": "2.2 Redundancy. Recovery sites",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A ceramics wholesaler's IT team built its order system's recovery in a cloud provider's region, and the IT manager tells the junior analyst it still needs regular failover tests. How should the analyst BEST respond?",
+      "question": "A ceramics wholesaler's IT team built its order system's recovery in a cloud provider's region, and the IT manager tells the security analyst it still needs regular failover tests. How should the analyst BEST respond?",
       "options": {
         "A": "Disagree, as the provider's uptime promise covers recovery",
         "B": "Agree, but leave the testing to the provider under contract",
@@ -4540,7 +4540,7 @@
         "Recovery testing",
         "Shared responsibility"
       ],
-      "_provenance": "Authored from concept: 'Cloud recovery means paying mainly for stored copies until a failover, and it still needs testing' (notes 2.2.6 Recovery Sites). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026. Fix-up round 2 (5 Nov 2026): stem states the wholesaler's own team built the setup (rules out a provider-run service as a second answer); key says a test shows recovery works rather than makes it work. Fix-up round 3 (5 Nov 2026): the claim now comes from the IT manager instead of 'a colleague', so the speaker's role no longer predicts whether a claim is right (cross-domain role tell); correct explanation now leads with the tested principle instead of the notes' cost line.",
+      "_provenance": "Authored from concept: 'Cloud recovery means paying mainly for stored copies until a failover, and it still needs testing' (notes 2.2.6 Recovery Sites). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026. Fix-up round 2 (5 Nov 2026): stem states the wholesaler's own team built the setup (rules out a provider-run service as a second answer); key says a test shows recovery works rather than makes it work. Fix-up round 3 (5 Nov 2026): the claim now comes from the IT manager instead of 'a colleague', so the speaker's role no longer predicts whether a claim is right (cross-domain role tell); correct explanation now leads with the tested principle instead of the notes' cost line. Word-tell sweep, 18 Nov 2026: role 'junior analyst' became 'security analyst'.",
       "style_version": 2
     },
     {
@@ -4551,8 +4551,8 @@
       "bloom_level": "Application",
       "question": "A tea house chain's key risk indicator (KRI) dashboard turned red last month and no one acted; its legend explains only what each color means. Which fix should the security analyst propose as BEST?",
       "options": {
-        "A": "Give each band a named owner and a set response",
-        "B": "Lower the red line so warnings come sooner",
+        "A": "Assign each band a named responder plus a set action",
+        "B": "Lower the red line and send warnings sooner",
         "C": "Email each red reading to the whole company",
         "D": "Ask the risk owner to check the dashboard each week"
       },
@@ -4576,7 +4576,7 @@
         "Escalation",
         "Key risk indicators"
       ],
-      "_provenance": "Authored from concept: 'Color bands show how close a metric is to its limit; each band names an action and an owner' (notes 2.4.4 Thresholds, Targets and Escalation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026. Fix-up round 3 (5 Nov 2026): 'metrics analyst' became 'security analyst' (canonical role, auditor rule 11).",
+      "_provenance": "Authored from concept: 'Color bands show how close a metric is to its limit; each band names an action and an owner' (notes 2.4.4 Thresholds, Targets and Escalation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026. Fix-up round 3 (5 Nov 2026): 'metrics analyst' became 'security analyst' (canonical role, auditor rule 11). Word-tell sweep, 18 Nov 2026: key and option B reworded.",
       "style_version": 2
     },
     {
@@ -4624,14 +4624,14 @@
       "question": "A visitor tells a student housing provider's desk clerk they are a fire inspector needing a list of residents' rooms; procedure says only the data owner releases resident data. What is the clerk's BEST response?",
       "options": {
         "A": "Print the list now and tell the data owner afterward",
-        "B": "Check the visitor's inspector badge, then print the list",
-        "C": "Call the inspector's office on its published number, then print the list",
+        "B": "Check the visitor's inspector badge and print the list",
+        "C": "Call the fire department on its published number, then print the list",
         "D": "Decline politely and pass the request to the data owner"
       },
       "correct": "D",
       "key_concept": "Pretexting uses a believable story and claimed authority; the defense is following procedure, such as sending data releases to the data owner.",
       "pre_read": "Think about the tactic a visitor claiming official authority is using.",
-      "correct_explanation": "Claimed authority and a believable story are classic pretexting pressure, and the procedure leaves releases of resident data to the data owner. So the clerk declines politely and passes the request on, whoever the visitor turns out to be. Calling the inspector's office is the runner-up: checking through a published number is sound, but even a real inspector's request still goes to the data owner for release.",
+      "correct_explanation": "Claimed authority and a believable story are classic pretexting pressure, and the procedure leaves releases of resident data to the data owner. So the clerk declines politely and passes the request on, whoever the visitor turns out to be. Calling the fire department is the runner-up: checking through a published number is sound, but even a real inspector's request still goes to the data owner for release.",
       "wrong_explanations": {
         "A": "Tempting because the owner still hears of it. But telling the owner after the release skips the approval the procedure requires, and inspections are a common pretext.",
         "B": "Tempting because a badge looks like proof. But badges are easy to fake, and the clerk is not the person who may release resident data.",
@@ -4648,7 +4648,7 @@
         "Data owner",
         "Social engineering"
       ],
-      "_provenance": "Authored from concept: 'Attackers build a believable story and apply pressure such as authority; the defense is to follow procedure' (notes 2.3.3 Social Engineering Tactics). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'Attackers build a believable story and apply pressure such as authority; the defense is to follow procedure' (notes 2.3.3 Social Engineering Tactics). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: key and options B, C reworded. Word-tell sweep round 2, 18 Nov 2026: key reworded with 'and', which A and B also have, instead of a comma-ing tail.",
       "style_version": 2
     },
     {
@@ -4660,7 +4660,7 @@
       "question": "A dog-walking app relies on an outside provider's AI model to match walkers with clients, and its risk owner wants a key risk indicator (KRI) for continuity risk from that dependency. Which measure BEST fits?",
       "options": {
         "A": "Accuracy of the provider's AI model on a weekly labeled sample",
-        "B": "Frequency and length of the provider's AI service outages",
+        "B": "Outage hours of the provider's AI service each month",
         "C": "Uptime of the app's own web servers each month",
         "D": "Share of clients who rate their walker five stars"
       },
@@ -4684,7 +4684,7 @@
         "Third-party AI",
         "Continuity risk"
       ],
-      "_provenance": "Authored from concept: 'Use of unapproved AI tools shows policy risk; AI service outages, including at providers, show continuity risk' (notes 2.4.7 AI Risk Indicators). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'Use of unapproved AI tools shows policy risk; AI service outages, including at providers, show continuity risk' (notes 2.4.7 AI Risk Indicators). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded.",
       "style_version": 2
     },
     {
@@ -4770,7 +4770,7 @@
         "A": "Keep it private and point the manager to IT for access",
         "B": "Share it, then change the password after returning from leave",
         "C": "Leave it in a sealed envelope in the manager's desk drawer",
-        "D": "Share it, since the manager already oversees the bookings"
+        "D": "Share it with the manager, who already oversees the bookings"
       },
       "correct": "A",
       "key_concept": "Passwords are never shared, even with a manager; someone who needs access gets it in their own name from IT.",
@@ -4792,7 +4792,7 @@
         "Delegated access",
         "Accountability"
       ],
-      "_provenance": "Authored from concept: 'Never share a password, even with IT or a manager' (notes 2.3.6 Password and Passphrase Habits). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'Never share a password, even with IT or a manager' (notes 2.3.6 Password and Passphrase Habits). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: option D reworded.",
       "style_version": 2
     },
     {
@@ -4803,9 +4803,9 @@
       "bloom_level": "Foundational",
       "question": "A timber merchant's monthly security scorecard for department managers shows only this month's figures. Which change BEST helps the managers judge progress?",
       "options": {
-        "A": "Show each figure beside its target and its recent months",
+        "A": "Show each figure beside its target, plus the last few months",
         "B": "Replace the monthly scorecard with a live hourly dashboard",
-        "C": "Add every server-level figure so that nothing is left out",
+        "C": "Add server-level figures to leave nothing out",
         "D": "Color each figure green or red and drop the numbers"
       },
       "correct": "A",
@@ -4828,7 +4828,7 @@
         "Trends",
         "Targets"
       ],
-      "_provenance": "Authored from concept: 'Scorecards suit periodic reviews against targets; show trends, not single snapshots' (notes 2.4.5 Dashboards, Scorecards and Reports). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'Scorecards suit periodic reviews against targets; show trends, not single snapshots' (notes 2.4.5 Dashboards, Scorecards and Reports). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: key and option C reworded.",
       "style_version": 2
     },
     {
@@ -4837,11 +4837,11 @@
       "subtopic": "2.1 GRC. Frameworks and mapping",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "While mapping a hot sauce maker's controls to the NIST Cybersecurity Framework (CSF) 2.0, its compliance analyst finds backups run but no restore has been tested. How should the analyst BEST record the backup outcome?",
+      "question": "While mapping a hot sauce maker's controls to the NIST Cybersecurity Framework (CSF) 2.0, its security analyst finds backups run but no restore has been tested. How should the analyst BEST record the backup outcome?",
       "options": {
         "A": "As fully met, since a backup control is linked",
-        "B": "As partly met, with untested restores logged as a gap",
-        "C": "As not applicable, since backups already run every night",
+        "B": "As partly met, with the untested restores listed as a gap",
+        "C": "As not applicable, since backups already run nightly",
         "D": "As met, with a note asking IT to begin restore tests soon"
       },
       "correct": "B",
@@ -4864,7 +4864,7 @@
         "CSF outcomes",
         "Gap tracking"
       ],
-      "_provenance": "Authored from concept: 'Load the framework, link each control to the items it meets, and treat only real gaps as needing new work' (notes 2.1.5 Choosing and Mapping Frameworks in GRC). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'Load the framework, link each control to the items it meets, and treat only real gaps as needing new work' (notes 2.1.5 Choosing and Mapping Frameworks in GRC). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: key and option C reworded; role 'compliance analyst' became 'security analyst'. Word-tell sweep round 2, 18 Nov 2026: key reworded with 'with' instead of a comma-ing tail.",
       "style_version": 2
     },
     {
@@ -4875,10 +4875,10 @@
       "bloom_level": "Application",
       "question": "Ransomware has encrypted a music streaming startup's main subscriber database, the plan's trigger for disaster recovery, which the IT director declares. What should the incident response lead do FIRST?",
       "options": {
-        "A": "Tell the IT director the trigger is met; keep containing",
+        "A": "Keep containing and tell the IT director the trigger is met",
         "B": "Finish containment and eradication, then tell the IT director",
         "C": "Restore the database from last night's backup straight away",
-        "D": "Declare the disaster themselves, as the trigger has been met"
+        "D": "Declare the disaster themselves; the trigger has been met"
       },
       "correct": "A",
       "key_concept": "Activation triggers move a response into disaster recovery; the incident lead reports a met trigger to whoever declares, while containment continues.",
@@ -4900,7 +4900,7 @@
         "Disaster declaration",
         "Incident response and recovery"
       ],
-      "_provenance": "Authored from concept: 'An incident that meets a plan's trigger goes to whoever declares; containment carries on while recovery starts' (notes 2.2.2 Business Continuity vs Disaster Recovery). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026. Fix-up round 3 (5 Nov 2026): relabeled from the AI-assisted resilience sub-topic (2.2.9) and the 'flagged by AI monitoring' phrase removed, because the AI fact played no part in the decision; the item tests plan activation, now taught in 2.2.2.",
+      "_provenance": "Authored from concept: 'An incident that meets a plan's trigger goes to whoever declares; containment carries on while recovery starts' (notes 2.2.2 Business Continuity vs Disaster Recovery). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026. Fix-up round 3 (5 Nov 2026): relabeled from the AI-assisted resilience sub-topic (2.2.9) and the 'flagged by AI monitoring' phrase removed, because the AI fact played no part in the decision; the item tests plan activation, now taught in 2.2.2. Word-tell sweep round 2, 18 Nov 2026: key reworded without a semicolon; distractor D now carries one.",
       "style_version": 2
     },
     {
@@ -4984,9 +4984,9 @@
       "question": "A science center's staff report suspicious emails with a button but never hear what happened next, and reports have fallen for three months. Which change should the awareness lead propose as BEST?",
       "options": {
         "A": "Make reporting mandatory, with penalties for misses",
-        "B": "Thank each reporter and share what their reports caught",
+        "B": "Thank each reporter, sharing the threats their reports caught",
         "C": "Swap the button for a longer form that asks for more detail",
-        "D": "Run more phishing simulations so that staff practice reporting"
+        "D": "Run more phishing simulations, giving staff practice at reporting"
       },
       "correct": "B",
       "key_concept": "Reporting grows when it is quick, safe and acknowledged; thanking reporters and sharing results keeps staff reporting.",
@@ -5008,7 +5008,7 @@
         "Feedback",
         "Phishing reports"
       ],
-      "_provenance": "Authored from concept: 'Give people one simple way to report, then thank them and share the outcome' (notes 2.3.7 Reporting Culture and Phishing Simulations). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'Give people one simple way to report, then thank them and share the outcome' (notes 2.3.7 Reporting Culture and Phishing Simulations). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: key and option D reworded. Word-tell sweep round 2, 18 Nov 2026: distractor D given a comma-ing tail so that shape does not point only to the key.",
       "style_version": 2
     },
     {
@@ -5091,10 +5091,10 @@
       "bloom_level": "Application",
       "question": "An adult missing from a camp's parent-signed pickup list comes for a child, naming the coach and saying a parent sent them; procedure releases children only to listed adults. What should the counselor do FIRST?",
       "options": {
-        "A": "Release the child, since the adult knows the coach by name",
+        "A": "Release the child to the adult who knows the coach by name",
         "B": "Ask the child whether a parent sent this adult, then decide",
         "C": "Ask the camp director to add the adult to the list now",
-        "D": "Keep the child with staff and call a parent on the list"
+        "D": "Keep the child with office staff while calling a parent"
       },
       "correct": "D",
       "key_concept": "Pretexting uses a believable story; where a person's safety is involved, staff follow the release procedure exactly, whatever the story.",
@@ -5116,7 +5116,7 @@
         "People safety",
         "Following procedure"
       ],
-      "_provenance": "Authored from concept: 'They build a believable story, such as a new IT contractor or a supplier' (notes 2.3.3 Social Engineering Tactics). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: 'They build a believable story, such as a new IT contractor or a supplier' (notes 2.3.3 Social Engineering Tactics). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: key and option A reworded. Word-tell sweep round 2, 18 Nov 2026: key reworded with 'while' instead of a comma-ing tail.",
       "style_version": 2
     },
     {
@@ -5237,7 +5237,7 @@
       "options": {
         "A": "A fault in the servers that host and run the model",
         "B": "Poisoning of its training data by an outside attacker",
-        "C": "Drift between live rental demand and its training data",
+        "C": "Drift as live rental demand moved away from the training data",
         "D": "Prompt injection hidden in the text of customers' online bookings"
       },
       "correct": "C",
@@ -5260,7 +5260,7 @@
         "Data poisoning",
         "AI service resilience"
       ],
-      "_provenance": "Authored from concept: 'Model drift is a gradual drop in accuracy as real-world data moves away from what the model learned' (notes 2.2.8 Backing Up AI Systems and Model Drift). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): 'IT technician' became 'system administrator' (canonical role names).",
+      "_provenance": "Authored from concept: 'Model drift is a gradual drop in accuracy as real-world data moves away from what the model learned' (notes 2.2.8 Backing Up AI Systems and Model Drift). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): 'IT technician' became 'system administrator' (canonical role names). Word-tell sweep, 18 Nov 2026: key reworded.",
       "style_version": 2
     },
     {
@@ -5344,8 +5344,8 @@
       "question": "A podcast studio's staff are moving their work passwords into the company's password manager. Which protection for each person's vault should the help desk analyst stress as MOST important?",
       "options": {
         "A": "Reuse the strong work email password as the master password",
-        "B": "Change the master password each month",
-        "C": "Use a long master passphrase and turn on MFA",
+        "B": "Change the master password each quarter",
+        "C": "Use a long master passphrase backed by MFA",
         "D": "Use a long master passphrase and a short auto-lock timer"
       },
       "correct": "C",
@@ -5358,7 +5358,7 @@
         "D": "Closest choice: auto-lock protects a vault left open on an unattended device. But a phished or captured passphrase still opens the vault from anywhere; only a second factor stops that."
       },
       "tips": [
-        "Eliminate: A ties the vault to a password used elsewhere, and B forces monthly changes that push people toward predictable variants.",
+        "Eliminate: A ties the vault to a password used elsewhere, and B forces quarterly changes that push people toward predictable variants.",
         "Final two: C beats D because MFA stops a phished or captured passphrase from opening the vault; auto-lock only covers an unattended device.",
         "Exam cue: guard the one secret that protects all the others most strongly: a long passphrase plus MFA, changed on any sign of exposure."
       ],
@@ -5368,7 +5368,7 @@
         "Passphrase",
         "Multifactor authentication"
       ],
-      "_provenance": "Authored from concept: 'A password manager stores unique passwords; protect it with a strong passphrase and multifactor authentication (MFA)' (notes 2.3.6 Password and Passphrase Habits). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): D no longer a subset of the key (auto-lock runner-up); B loses 'every'.",
+      "_provenance": "Authored from concept: 'A password manager stores unique passwords; protect it with a strong passphrase and multifactor authentication (MFA)' (notes 2.3.6 Password and Passphrase Habits). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Batch 7 final fix round (12 Nov 2026): D no longer a subset of the key (auto-lock runner-up); B loses 'every'. Word-tell sweep, 18 Nov 2026: key and option B reworded.",
       "style_version": 2
     },
     {
@@ -5668,7 +5668,7 @@
       "question": "A milliner's AI monitor predicts a storage array failure, and the array's logs agree; the IT manager's runbook has the administrator switch to the tested standby on confirmed warnings. What should the administrator do FIRST?",
       "options": {
         "A": "Wait for a real failure, as AI predictions can be wrong",
-        "B": "Keep running and restore from backup if the array fails",
+        "B": "Keep running and restore from backup after any failure",
         "C": "Ask the IT manager to approve a move to the standby array",
         "D": "Move service to the standby array in a planned switch"
       },
@@ -5692,7 +5692,7 @@
         "Planned failover",
         "Resilience"
       ],
-      "_provenance": "Authored from concept: 'Artificial intelligence (AI) assisted detection spots trouble early; for resilience, it must catch events before they disrupt the business' (notes 2.2.9 AI-Assisted Detection and Resilience). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: 'Artificial intelligence (AI) assisted detection spots trouble early; for resilience, it must catch events before they disrupt the business' (notes 2.2.9 AI-Assisted Detection and Resilience). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: option B reworded.",
       "style_version": 2
     },
     {

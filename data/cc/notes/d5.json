@@ -825,7 +825,7 @@
             "Logs go to a central store that ordinary administrators cannot change, so intruders cannot cover their tracks.",
             "A security information and event management (SIEM) system collects logs, normalizes them and applies rules to raise alerts."
           ],
-          "example": "At a regional bank, a file server's security log is cleared overnight. Because the server also sends logs to the SIEM, Dana, a junior analyst in the security operations center, can still see that a new administrator account was created just before. Dana opens a ticket with these findings and escalates it.",
+          "example": "At a regional bank, a file server's security log is cleared overnight. Because the server also sends logs to the SIEM, Dana, a security analyst in the security operations center, can still see that a new administrator account was created just before. Dana opens a ticket with these findings and escalates it.",
           "audit_focus": {
             "review": [
               "Confirm each new system sends logs to the SIEM before it goes live",
@@ -1114,7 +1114,7 @@
               "meaning": "Specific indicators, such as hashes and addresses, used directly by security tools."
             }
           ],
-          "example": "A water utility's sector ISAC shares a TLP:AMBER report on ransomware entering utilities through an unpatched remote access appliance. Noor, a junior analyst, confirms the same appliance is in use and searches the logs for its indicators. Noor shares the report only as the label allows and briefs the security manager.",
+          "example": "A water utility's sector ISAC shares a TLP:AMBER report on ransomware entering utilities through an unpatched remote access appliance. Noor, a security analyst, confirms the same appliance is in use and searches the logs for its indicators. Noor shares the report only as the label allows and briefs the security manager.",
           "audit_focus": {
             "review": [
               "Search your logs and tools for indicators from new trusted reports",
@@ -1207,7 +1207,7 @@
               }
             ]
           },
-          "example": "After a phishing incident, a museum's security manager asks Quinn, a junior analyst, to map it to ATT&CK. Quinn lists each step against its tactic: the email (initial access), a malicious macro (execution), a scheduled task (persistence) and a large upload (exfiltration), then marks which steps raised no alert.",
+          "example": "After a phishing incident, a museum's security manager asks Quinn, a security analyst, to map it to ATT&CK. Quinn lists each step against its tactic: the email (initial access), a malicious macro (execution), a scheduled task (persistence) and a large upload (exfiltration), then marks which steps raised no alert.",
           "audit_focus": {
             "review": [
               "Tag alerts and incident notes with the matching ATT&CK technique",
@@ -1767,7 +1767,7 @@
             "The incident record notes which data types were affected, such as personal or payment data, because that drives legal duties.",
             "Only designated roles, such as communications and legal counsel, speak to customers, regulators or the media."
           ],
-          "example": "During a suspected data theft at a travel agency, a reporter calls asking whether customer passport details were exposed. A colleague asks Leah, a junior analyst helping the response, to 'just tell them it isn't true'. Leah declines, takes the reporter's details for the communications lead and keeps working only in the restricted case folder.",
+          "example": "During a suspected data theft at a travel agency, a reporter calls asking whether customer passport details were exposed. A colleague asks Leah, a security analyst helping the response, to 'just tell them it isn't true'. Leah declines, takes the reporter's details for the communications lead and keeps working only in the restricted case folder.",
           "audit_focus": {
             "review": [
               "Store incident files only in the approved restricted case location",
@@ -1894,7 +1894,7 @@
               "meaning": "Many teams, sometimes with outside partners, respond as close to real operations as is safe."
             }
           ],
-          "example": "A food distribution company runs its first ransomware tabletop. Halfway through, the facilitator adds an inject: email is down. The team realizes nobody has the incident response lead's mobile number, and the contact list lives only in email. Mika, the junior analyst taking notes, records the gap for the after-action report.",
+          "example": "A food distribution company runs its first ransomware tabletop. Halfway through, the facilitator adds an inject: email is down. The team realizes nobody has the incident response lead's mobile number, and the contact list lives only in email. Mika, the security analyst taking notes, records the gap for the after-action report.",
           "audit_focus": {
             "review": [
               "Play the role you would hold in a real incident",
@@ -1962,7 +1962,7 @@
             "AI assets include models, training data, prompts and outside AI services, tracked like any other asset.",
             "Unknown devices or services are investigated, then brought under management or removed through procedure."
           ],
-          "example": "A network scan at an elementary school finds a device nobody recognizes: an old camera recorder still using its factory password. Jesse, the IT technician, adds it to the inventory, asks the facilities manager to confirm ownership, and logs the default password as a finding for the owner to fix.",
+          "example": "A network scan at an elementary school finds a device nobody recognizes: an old camera recorder still using its factory password. Jesse, the system administrator, adds it to the inventory, asks the facilities manager to confirm ownership, and logs the default password as a finding for the owner to fix.",
           "audit_focus": {
             "review": [
               "Add new assets to the inventory before or as they are deployed",

@@ -60,7 +60,7 @@
             "Each device also gets an Internet Protocol (IP) address, which routers use to move packets (data plus a delivery address) between networks.",
             "Dynamic Host Configuration Protocol (DHCP) hands out IP addresses; the Domain Name System (DNS) turns names into IP addresses."
           ],
-          "example": "At a veterinary clinic, staff typing the bank's usual address land on a fake site. Kenji, the junior IT technician, finds every laptop got its DNS setting from an unknown DHCP server plugged in at reception. Following the incident procedure, Kenji photographs it and calls the IT lead before touching it.",
+          "example": "At a veterinary clinic, staff typing the bank's usual address land on a fake site. Kenji, the IT technician, finds every laptop got its DNS setting from an unknown DHCP server plugged in at reception. Following the incident procedure, Kenji photographs it and calls the incident response lead before touching it.",
           "audit_focus": {
             "review": [
               "Look up any device you don't recognize in the asset inventory",
@@ -320,7 +320,7 @@
               }
             ]
           },
-          "example": "A logistics firm blocks remote desktop in its IPv4 firewall rules. Weeks later, Amara, a junior analyst, sees remote desktop sessions reaching a warehouse server over IPv6, which has no rules. Amara escalates the log entries to the network lead rather than switching IPv6 off.",
+          "example": "A logistics firm blocks remote desktop in its IPv4 firewall rules. Weeks later, Amara, a security analyst, sees remote desktop sessions reaching a warehouse server over IPv6, which has no rules. Amara escalates the log entries to the network lead rather than switching IPv6 off.",
           "audit_focus": {
             "review": [
               "Check IPv6 rules match the IPv4 ones, even where nobody turned IPv6 on",
@@ -450,7 +450,7 @@
               "meaning": "Remote control of a desktop; reach it through a virtual private network (VPN) or gateway with multifactor authentication (MFA)."
             }
           ],
-          "example": "A school's heating contractor asks Leila, a new IT technician, to open Telnet so they can manage the boiler from home. Telnet sends the login in cleartext, so Leila declines and points them to the school's remote-access request process, noting that SSH over the VPN could work.",
+          "example": "A school's heating contractor asks Leila, a new network technician, to open Telnet so they can manage the boiler from home. Telnet sends the login in cleartext, so Leila declines and points them to the school's remote-access request process, noting that SSH over the VPN could work.",
           "audit_focus": {
             "review": [
               "List the services each host runs and who still uses them",
@@ -829,7 +829,7 @@
             "Baselines go stale as the business changes, so models need retraining.",
             "Learn the baseline from trusted traffic: an intruder active while the model learns becomes part of normal, so retrain after a compromise."
           ],
-          "example": "A hospital's AI tool flags an infusion pump sending data to an unknown address at 3 a.m. Diego, a junior analyst, cannot tell if it is an update or an attack. Patients depend on the pump, so Diego does not let the tool block it; as the playbook says, Diego pages the incident response lead and clinical engineering.",
+          "example": "A hospital's AI tool flags an infusion pump sending data to an unknown address at 3 a.m. Diego, the on-shift analyst, cannot tell if it is an update or an attack. Patients depend on the pump, so Diego does not let the tool block it; as the playbook says, Diego pages the incident response lead and clinical engineering.",
           "audit_focus": {
             "review": [
               "Know which responses the tool may trigger without a person",
@@ -1102,7 +1102,7 @@
             "Buy devices with secure updates, unique passwords and a stated support period, as the National Institute of Standards and Technology (NIST) urges makers.",
             "Change default passwords at installation, and replace devices the maker no longer supports."
           ],
-          "example": "A hotel adds smart televisions to every room. Olu, a junior IT technician, finds them already in service on the same network as the front-desk payment terminals, all with the installer's default admin password. Olu adds each one to the device inventory and, because the televisions are already live, raises a change request for a separate segment and new passwords.",
+          "example": "A hotel adds smart televisions to every room. Olu, a network technician, finds them already in service on the same network as the front-desk payment terminals, all with the installer's default admin password. Olu adds each one to the device inventory and, because the televisions are already live, raises a change request for a separate segment and new passwords.",
           "audit_focus": {
             "review": [
               "Match devices found by a discovery tool to registered owners",
@@ -1173,7 +1173,7 @@
             "Segments can be physical, with separate switches, or logical, sharing hardware but kept apart by configuration.",
             "Traffic between internal segments is east-west; traffic into and out of the network is north-south."
           ],
-          "example": "Ransomware (malicious software that locks files until a ransom is paid) reaches a design firm through one laptop. Because staff, server and backup segments have strict rules between them, only the staff segment is hit. As the incident response lead directs, Noor, a junior analyst, checks the backup segment, finds no unusual traffic and reports back.",
+          "example": "Ransomware (malicious software that locks files until a ransom is paid) reaches a design firm through one laptop. Because staff, server and backup segments have strict rules between them, only the staff segment is hit. As the incident response lead directs, Noor, a security analyst, checks the backup segment, finds no unusual traffic and reports back.",
           "audit_focus": {
             "review": [
               "Ask what traffic each new rule between segments is for",
@@ -2431,7 +2431,7 @@
               }
             ]
           },
-          "example": "A marketing agency keeps client files in an online file-sharing service. Ransomware hits through a compromised staff account, and the provider can restore only 30 days of versions. Sofia, a junior IT technician, runs the restore as the incident response lead directs and records, for the lessons-learned review, that there was no separate backup.",
+          "example": "A marketing agency keeps client files in an online file-sharing service. Ransomware hits through a compromised staff account, and the provider can restore only 30 days of versions. Sofia, the agency's IT technician, runs the restore as the incident response lead directs and records, for the lessons-learned review, that there was no separate backup.",
           "audit_focus": {
             "review": [
               "Identify who controls each encryption key",

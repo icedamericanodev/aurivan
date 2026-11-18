@@ -52,7 +52,7 @@
       "question": "A courier firm wants proof that each driver confirmed each delivery, so that no driver can later credibly deny it. Which approach BEST provides this?",
       "options": {
         "A": "Each driver signs confirmations with their own private key",
-        "B": "Confirmations are encrypted with one key the drivers share",
+        "B": "Confirmations use encryption with one key the drivers share",
         "C": "Each confirmation is stored with a plain hash to detect changes",
         "D": "Confirmations carry a keyed hash using a key shared with the depot"
       },
@@ -76,7 +76,7 @@
         "Hash-based message authentication code (HMAC)",
         "Integrity vs authenticity"
       ],
-      "_provenance": "Authored from concept: notes 1.1.7 Non-Repudiation (shared secrets cannot give non-repudiation), with the plain hash vs keyed hash distinction from 1.1.3. Original courier delivery scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read.",
+      "_provenance": "Authored from concept: notes 1.1.7 Non-Repudiation (shared secrets cannot give non-repudiation), with the plain hash vs keyed hash distinction from 1.1.3. Original courier delivery scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Word-tell sweep, 18 Nov 2026: reworded option B; option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -123,8 +123,8 @@
       "bloom_level": "Application",
       "question": "A city council team is building an AI chatbot for residents' tax questions and plans to keep every full chat transcript indefinitely for future training. What should the security analyst raise FIRST?",
       "options": {
-        "A": "Whether the stored transcripts will be encrypted while at rest",
-        "B": "Whether that much personal data is needed, and for how long",
+        "A": "Whether the stored transcript data will be encrypted at rest",
+        "B": "Whether the personal data kept indefinitely is truly needed",
         "C": "Whether rate limits stop the chatbot from being overloaded",
         "D": "Whether each chatbot action is logged under a named account"
       },
@@ -148,7 +148,7 @@
         "Data minimization",
         "AI training data"
       ],
-      "_provenance": "Authored from concept: notes 1.1.8 Privacy and Personal Data (data minimization, retention, exam trap 'if personal data is encrypted, privacy is taken care of') and 1.1.9 AI and the Core Security Concepts (personal data in training data). Original city council chatbot scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Audit fix 29 Oct 2026: distractor wording shortened so the key is not always out-worded.",
+      "_provenance": "Authored from concept: notes 1.1.8 Privacy and Personal Data (data minimization, retention, exam trap 'if personal data is encrypted, privacy is taken care of') and 1.1.9 AI and the Core Security Concepts (personal data in training data). Original city council chatbot scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Audit fix 29 Oct 2026: distractor wording shortened so the key is not always out-worded. Word-tell sweep, 18 Nov 2026: reworded option A, option B (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -198,12 +198,12 @@
         "A": "Sign the acceptance and copy the risk owner",
         "B": "Hold the launch until the residual risk is gone",
         "C": "Escalate the acceptance to the school board for sign-off",
-        "D": "Document the risk and route the acceptance to the risk owner"
+        "D": "Send the acceptance to the risk owner to sign"
       },
       "correct": "D",
       "key_concept": "Within tolerance, only the risk owner accepts residual risk; the practitioner documents it and routes it there, never accepting it.",
       "pre_read": "Notice who is asking, who is being asked to sign, and who owns the risk.",
-      "correct_explanation": "Accepting risk commits the organization, so only someone with that authority may do it: within tolerance, the risk owner, here the IT director. The analyst's role is to document the residual risk clearly and route the acceptance to that owner. Signing and then copying the owner is the tempting runner-up, but the analyst would still be making the owner's decision.",
+      "correct_explanation": "Accepting risk commits the organization, so only someone with that authority may do it: within tolerance, the risk owner, here the IT director. The analyst's role is to document the residual risk clearly and send the acceptance to that owner to sign. Signing and then copying the owner is the tempting runner-up, but the analyst would still be making the owner's decision.",
       "wrong_explanations": {
         "A": "Closest choice: the risk owner is told. But being told is not deciding; the analyst's signature would commit the organization without authority.",
         "B": "Tempting because removing all risk sounds safest. But controls rarely remove all risk; risk within tolerance can be formally accepted instead.",
@@ -220,7 +220,7 @@
         "Risk owner",
         "Risk tolerance"
       ],
-      "_provenance": "Authored from concept: notes 1.2.6 Risk Appetite, Tolerance and Acceptance (practitioners never accept risk; within tolerance the risk owner accepts, above it senior management decides). Original school district parent portal scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Audit fix 29 Oct 2026: distractor wording shortened so the key is not always out-worded. Fix-up round 2 (31 Oct 2026, audit): key_concept now limits the risk owner's acceptance to risk within tolerance, matching notes 1.2.6, where senior management decides beyond it. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
+      "_provenance": "Authored from concept: notes 1.2.6 Risk Appetite, Tolerance and Acceptance (practitioners never accept risk; within tolerance the risk owner accepts, above it senior management decides). Original school district parent portal scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Audit fix 29 Oct 2026: distractor wording shortened so the key is not always out-worded. Fix-up round 2 (31 Oct 2026, audit): key_concept now limits the risk owner's acceptance to risk within tolerance, matching notes 1.2.6, where senior management decides beyond it. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Word-tell sweep, 18 Nov 2026: reworded option D (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -629,9 +629,9 @@
       "question": "A consulting firm's tester finds that outsiders can change a city's traffic signals, and the city asks for the flaw to be left out of the report. What is the tester's BEST response?",
       "options": {
         "A": "Honor the city's request and leave the flaw out of the report",
-        "B": "Report the flaw accurately and explain its public safety risk",
+        "B": "Report the flaw accurately so its public safety risk is clear",
         "C": "Change the signal settings to close the flaw before reporting",
-        "D": "Publish the flaw online so the city is pushed to fix it"
+        "D": "Publish the flaw online to push the city into fixing it"
       },
       "correct": "B",
       "key_concept": "Serving principals never requires dishonesty; the ethical choice is honest, legal, protects people and uses proper channels.",
@@ -653,7 +653,7 @@
         "Principals",
         "Public safety"
       ],
-      "_provenance": "Authored from concept: notes 1.5.4 Applying the Canons to Dilemmas (reject deceptive options even if a principal asks; protect people where safety is at stake; stay within your authority) and 1.5.3 (no ranking rule; not keyed on canon order). Original traffic-signal scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Key letter moved from D to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
+      "_provenance": "Authored from concept: notes 1.5.4 Applying the Canons to Dilemmas (reject deceptive options even if a principal asks; protect people where safety is at stake; stay within your authority) and 1.5.3 (no ranking rule; not keyed on canon order). Original traffic-signal scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Key letter moved from D to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Word-tell sweep, 18 Nov 2026: reworded option B (key), option D; option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance. Word-tell sweep round 2, 18 Nov 2026: key B reworded from a comma-ing tail to a 'so' clause.",
       "style_version": 2
     },
     {
@@ -662,10 +662,10 @@
       "subtopic": "1.5 Professional conduct. Ethical AI use",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A junior analyst at a consulting firm wants a free public AI chatbot to review a client's firewall rules quickly. What is the BEST way for the analyst to proceed?",
+      "question": "A security analyst at a consulting firm wants a free public AI chatbot to review a client's firewall rules quickly. What is the BEST way for the analyst to proceed?",
       "options": {
         "A": "Paste the rules after removing the client's company name",
-        "B": "Paste the rules into an AI tool approved for client data",
+        "B": "Paste the rules into an AI tool approved for client work",
         "C": "Paste the rules, then have the AI's advice approved before use",
         "D": "Paste the rules, then tell the client once the review is done"
       },
@@ -689,7 +689,7 @@
         "Confidentiality of client data",
         "Approved tools"
       ],
-      "_provenance": "Authored from concept: notes 1.5.6 Ethical Use of AI at Work (keep principals' confidential data out of AI tools not approved for it; check AI output). Cross-link 5.1.8 owns the data-leakage teaching; this item keeps the ethics angle. Original firewall-rules scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Key letter moved from C to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
+      "_provenance": "Authored from concept: notes 1.5.6 Ethical Use of AI at Work (keep principals' confidential data out of AI tools not approved for it; check AI output). Cross-link 5.1.8 owns the data-leakage teaching; this item keeps the ethics angle. Original firewall-rules scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Key letter moved from C to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Word-tell sweep, 18 Nov 2026: key reworded off a winning word (data); stem role junior analyst renamed security analyst.",
       "style_version": 2
     },
     {
@@ -808,7 +808,7 @@
       "bloom_level": "Application",
       "question": "A florist's online shop runs on one server, and a failed disk took it offline for a day, though its backups were intact. What should the IT manager propose to BEST avoid another day offline?",
       "options": {
-        "A": "Add a standby server that will take over automatically",
+        "A": "Add a standby server so the shop survives a disk failure",
         "B": "Encrypt the server's disks so stolen data stays unreadable",
         "C": "Back up the shop's data every hour instead of nightly",
         "D": "Turn on file integrity monitoring for the shop's web pages"
@@ -833,7 +833,7 @@
         "Redundancy",
         "Failover"
       ],
-      "_provenance": "Authored from concept: 'redundancy removes single points of failure; match the availability control to the cause of downtime' (notes 1.1.4 Availability). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): runner-up is now more frequent backups, the real beginner confusion. Final fix round, 12 Nov 2026: role sweep: 'IT lead' became 'IT manager'. A lengthened so the key is not the lone shortest.",
+      "_provenance": "Authored from concept: 'redundancy removes single points of failure; match the availability control to the cause of downtime' (notes 1.1.4 Availability). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): runner-up is now more frequent backups, the real beginner confusion. Final fix round, 12 Nov 2026: role sweep: 'IT lead' became 'IT manager'. A lengthened so the key is not the lone shortest. Word-tell sweep, 18 Nov 2026: reworded option A (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -989,7 +989,7 @@
       "question": "A hotel chain collected guests' mobile numbers to send booking confirmations, and its marketing team now wants to text them sales offers. What should the security analyst raise FIRST?",
       "options": {
         "A": "Whether the texting provider has passed a security review",
-        "B": "Whether guests were told of, or agreed to, marketing texts",
+        "B": "Whether guests were told about or agreed to marketing texts",
         "C": "Whether marketing staff have finished their privacy training",
         "D": "Whether guests' numbers will be kept for less than a year"
       },
@@ -1013,7 +1013,7 @@
         "Consent and notice",
         "Personally identifiable information (PII)"
       ],
-      "_provenance": "Authored from concept: 'use personal data only for the stated purpose; privacy is more than secrecy' (notes 1.1.8 Privacy and Personal Data). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): distractors no longer copy pilot cc_d1_004's set. Cross-review fix (31 Oct 2026, CD-18): option A is a provider security review instead of encryption, a distractor Domain 1 had overused. Fix-up round 1 (31 Oct 2026, blind test): option B names marketing texts instead of 'this new use', a callback to the stem that only the key carried. Fix-up round 2 (31 Oct 2026, blind test): option D now says 'guests' numbers', so the stem word 'guests' no longer appears only in the key.",
+      "_provenance": "Authored from concept: 'use personal data only for the stated purpose; privacy is more than secrecy' (notes 1.1.8 Privacy and Personal Data). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): distractors no longer copy pilot cc_d1_004's set. Cross-review fix (31 Oct 2026, CD-18): option A is a provider security review instead of encryption, a distractor Domain 1 had overused. Fix-up round 1 (31 Oct 2026, blind test): option B names marketing texts instead of 'this new use', a callback to the stem that only the key carried. Fix-up round 2 (31 Oct 2026, blind test): option D now says 'guests' numbers', so the stem word 'guests' no longer appears only in the key. Word-tell sweep round 2, 18 Nov 2026: key B loses its commas.",
       "style_version": 2
     },
     {
@@ -1024,7 +1024,7 @@
       "bloom_level": "Application",
       "question": "A logistics firm treated its payment-fraud risk with staff training last year, and now cloned-voice calls posing as executives are hitting similar firms. What should the risk analyst do FIRST?",
       "options": {
-        "A": "Reassess the risk with the new threat and update the register",
+        "A": "Reassess the risk, since the new threat raises its likelihood",
         "B": "Close the risk, since its treatment was completed last year",
         "C": "Buy a voice-verification tool for the payments team at once",
         "D": "Leave the risk as it stands until the next scheduled yearly review"
@@ -1049,7 +1049,7 @@
         "Reassessment triggers",
         "Risk register"
       ],
-      "_provenance": "Authored from concept: 'risk management repeats: new threats, changes and incidents send risks back to assessment' (notes 1.2.2 The Risk Management Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'risk management repeats: new threats, changes and incidents send risks back to assessment' (notes 1.2.2 The Risk Management Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Word-tell sweep, 18 Nov 2026: reworded option A (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -1094,12 +1094,12 @@
       "subtopic": "1.2 Risk management. Raising a risk",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A junior analyst at a museum finds its donation page loads a script from an expired domain anyone could buy, and the marketing director owns the website. What should the analyst do FIRST?",
+      "question": "A security analyst at a museum finds its donation page loads a script from an expired domain anyone could buy, and the marketing director owns the website. What should the analyst do FIRST?",
       "options": {
-        "A": "Remove the live page's script today, then tell the marketing director",
-        "B": "Rate the risk as low, since no attack has happened yet",
+        "A": "Remove the live script today, then tell the marketing director",
+        "B": "Rate the risk as low, because no attack happened yet",
         "C": "Add the finding to the next quarterly project report",
-        "D": "Log the risk in the register and alert the marketing director today"
+        "D": "Log the risk, then alert the marketing director today"
       },
       "correct": "D",
       "key_concept": "Anyone can raise a risk, but its owner decides the treatment; record it through the agreed channel instead of fixing it quietly.",
@@ -1121,7 +1121,7 @@
         "Risk owner",
         "Change control"
       ],
-      "_provenance": "Authored from concept: 'anyone can raise a risk; the owner decides; record it through the agreed channel' (notes 1.2.7 Risk Register, Ownership and Reporting). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): key now alerts the owner today as well as logging the risk (blind test); neutral subtopic.",
+      "_provenance": "Authored from concept: 'anyone can raise a risk; the owner decides; record it through the agreed channel' (notes 1.2.7 Risk Register, Ownership and Reporting). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): key now alerts the owner today as well as logging the risk (blind test); neutral subtopic. Word-tell sweep, 18 Nov 2026: key reworded without 'and'; distractor B reworded without 'since'/'has'; stem role junior analyst renamed security analyst. Word-tell sweep round 2, 18 Nov 2026: key D now 'X, then Y', the same shape as distractor A; distractor A shortened. Word-tell sweep polish, 18 Nov 2026: key D trimmed so it is no longer the lone longest option.",
       "style_version": 2
     },
     {
@@ -1348,7 +1348,7 @@
       "bloom_level": "Application",
       "question": "A firm installed a data-loss prevention tool two years ago; its rules still date from installation, and nobody is responsible for it. What should the security team do FIRST?",
       "options": {
-        "A": "Assign an owner to test and tune the tool regularly",
+        "A": "Assign an owner to review the tool's tuning every month",
         "B": "Run a single test of the tool's rules this month",
         "C": "Ask management to replace it with a newer product",
         "D": "Remove the tool, since it has reported no incidents"
@@ -1356,7 +1356,7 @@
       "correct": "A",
       "key_concept": "A control keeps reducing risk only if someone owns it, tests it and updates it; an unowned control quietly stops working.",
       "pre_read": "Ask why the tool may no longer be reducing risk, and what would keep it working from now on.",
-      "correct_explanation": "Controls need an owner who tests and updates them, or they drift out of step with the data and threats they were bought for. Assigning an owner with a regular test-and-tune duty fixes the cause. A single test this month, the runner-up, shows how far the rules have drifted, but with nobody responsible afterward nothing keeps them current, and the same gap returns.",
+      "correct_explanation": "Controls need an owner who tests and updates them, or they drift out of step with the data and threats they were bought for. Assigning an owner to review its tuning every month fixes the cause. A single test this month, the runner-up, shows how far the rules have drifted, but with nobody responsible afterward nothing keeps them current, and the same gap returns.",
       "wrong_explanations": {
         "B": "Closest choice: testing shows whether the rules still work. But one test with nobody responsible afterward leaves the tool to drift again.",
         "C": "Tempting because newer products sound stronger. But a new tool without upkeep would decay the same way; the gap is ownership.",
@@ -1373,7 +1373,7 @@
         "Control owner",
         "Control monitoring"
       ],
-      "_provenance": "Authored from concept: 'controls need owners, testing and monitoring, or they quietly stop working' (notes 1.4.1 What a Security Control Is). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'controls need owners, testing and monitoring, or they quietly stop working' (notes 1.4.1 What a Security Control Is). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Word-tell sweep, 18 Nov 2026: reworded option A (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -1384,7 +1384,7 @@
       "bloom_level": "Application",
       "question": "A charity gives new volunteers donor database access on day one, but nobody explains how donor data may be used. What should the volunteer manager add as the BEST administrative control?",
       "options": {
-        "A": "Rules for using donor data, signed by each volunteer before first use",
+        "A": "Rules for using donor data that each volunteer signs before first use",
         "B": "Encryption of the donor database on the charity's server",
         "C": "A locked office for the computer that holds donor data",
         "D": "A donor-data session in each volunteer's yearly awareness training"
@@ -1409,7 +1409,7 @@
         "Rules of behavior",
         "Acceptable use"
       ],
-      "_provenance": "Authored from concept: 'administrative controls are the policies, procedures and people practices that direct how security is handled' (notes 1.4.3 Administrative Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'administrative controls are the policies, procedures and people practices that direct how security is handled' (notes 1.4.3 Administrative Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Word-tell sweep round 2, 18 Nov 2026: key A reworded without a comma.",
       "style_version": 2
     },
     {
@@ -1637,8 +1637,8 @@
       "question": "A help desk analyst, whose procedure covers fixing over-broad permissions, finds the accounts manager's Confidential folder of landlords' bank details open to all staff on an encrypted file server. What should the analyst do FIRST?",
       "options": {
         "A": "Relabel the folder Internal and record the change in a ticket",
-        "B": "Leave the access as is, since the server encrypts stored files",
-        "C": "Restrict the folder to approved users and record it in a ticket",
+        "B": "Leave the access as is, relying on the server's encryption",
+        "C": "Restrict the folder to approved users, logging it in a ticket",
         "D": "Copy the bank details to a restricted drive the help desk controls"
       },
       "correct": "C",
@@ -1661,7 +1661,7 @@
         "Need to know",
         "Encryption at rest versus access control"
       ],
-      "_provenance": "Authored from concept: 'access control, guided by need to know and least privilege, keeps the reader list short' (notes 1.1.2 Confidentiality). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Fix-up round 1 (31 Oct 2026, audit): re-angled from 'the procedure assigns the fix, so do it' (a lesson cc_d4_044 already teaches) to a confidentiality point, that encryption at rest does not replace access control; the audit's suggested preventive-versus-detective runner-up was not used because cc_d3_038 already teaches it. Cross-domain gate (31 Oct 2026): option A now also records its change in a ticket, so the record clause is no longer on the key alone.",
+      "_provenance": "Authored from concept: 'access control, guided by need to know and least privilege, keeps the reader list short' (notes 1.1.2 Confidentiality). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Fix-up round 1 (31 Oct 2026, audit): re-angled from 'the procedure assigns the fix, so do it' (a lesson cc_d4_044 already teaches) to a confidentiality point, that encryption at rest does not replace access control; the audit's suggested preventive-versus-detective runner-up was not used because cc_d3_038 already teaches it. Cross-domain gate (31 Oct 2026): option A now also records its change in a ticket, so the record clause is no longer on the key alone. Word-tell sweep, 18 Nov 2026: reworded option C (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance. Word-tell sweep round 2, 18 Nov 2026: distractor B given the key's comma-ing shape.",
       "style_version": 2
     },
     {
@@ -1782,7 +1782,7 @@
       "options": {
         "A": "The purchasing lead cannot deny it, since their private key made it",
         "B": "The write-off is genuine, since the signed record is unchanged",
-        "C": "The signature cannot show the purchasing lead signed the write-off",
+        "C": "The signature cannot prove who signed, since others could use the key",
         "D": "Encrypting write-offs with a shared key would have named the signer"
       },
       "correct": "C",
@@ -1805,7 +1805,7 @@
         "Digital signatures",
         "Protecting private keys"
       ],
-      "_provenance": "Authored from concept: 'non-repudiation needs something only one person controls, plus a record nobody can quietly change' (notes 1.1.7 Non-Repudiation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Final pass (31 Oct 2026, audit merge): re-angled from five shift leads sharing one certificate (the shape of cc_d1_003) to a private key left where the whole office can copy it; A now names the purchasing lead too, so the stem's role is not echoed in the key alone.",
+      "_provenance": "Authored from concept: 'non-repudiation needs something only one person controls, plus a record nobody can quietly change' (notes 1.1.7 Non-Repudiation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Final pass (31 Oct 2026, audit merge): re-angled from five shift leads sharing one certificate (the shape of cc_d1_003) to a private key left where the whole office can copy it; A now names the purchasing lead too, so the stem's role is not echoed in the key alone. Word-tell sweep, 18 Nov 2026: reworded option C (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -1994,7 +1994,7 @@
       "subtopic": "1.2 Risk management. Risk register",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An auction house's junior analyst sees that the fix for a risk the head of sales owns is installed; the register lets only risk owners close entries. What should the analyst do FIRST?",
+      "question": "An auction house's security analyst sees that the fix for a risk the head of sales owns is installed; the register lets only risk owners close entries. What should the analyst do FIRST?",
       "options": {
         "A": "Mark the entry closed and note the evidence in the register",
         "B": "Delete the entry, since the risk no longer needs tracking",
@@ -2008,7 +2008,7 @@
       "wrong_explanations": {
         "A": "Closest choice: the evidence would be recorded. But the register lets only risk owners close entries, and the owner may want testing or residual risk noted first.",
         "B": "Tempting because the fix is in. But deleting erases the history of the risk and its treatment, which later reviews and reports rely on.",
-        "C": "Tempting because the risk does look smaller. But the risk owner signs off ratings; a junior analyst re-rating before the owner reviews it bypasses them."
+        "C": "Tempting because the risk does look smaller. But the risk owner signs off ratings; an analyst re-rating before the owner reviews it bypasses them."
       },
       "tips": [
         "Eliminate: B erases the record that reviews rely on, and C changes a rating the risk owner must sign off.",
@@ -2021,7 +2021,7 @@
         "Risk ownership",
         "Closing risks"
       ],
-      "_provenance": "Authored from concept: 'anyone can raise a risk; the owner decides what happens to it' (notes 1.2.7 Risk Register, Ownership and Reporting). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Final pass (31 Oct 2026, audit merge): key_concept and Exam cue now teach closure as the risk owner's decision, distinct from cc_d1_031 (raising a risk); C names the head of sales too, and D is no longer the shortest option.",
+      "_provenance": "Authored from concept: 'anyone can raise a risk; the owner decides what happens to it' (notes 1.2.7 Risk Register, Ownership and Reporting). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Final pass (31 Oct 2026, audit merge): key_concept and Exam cue now teach closure as the risk owner's decision, distinct from cc_d1_031 (raising a risk); C names the head of sales too, and D is no longer the shortest option. Word-tell sweep, 18 Nov 2026: stem and explanation role junior analyst renamed security analyst.",
       "style_version": 2
     },
     {
@@ -2035,7 +2035,7 @@
         "A": "Avoided, since no incident has happened in two years",
         "B": "Unmanaged, since no response to it has been chosen yet",
         "C": "Accepted, since the office has kept using the software",
-        "D": "Transferred, since the vendor ended support for the software"
+        "D": "Transferred, since the maker no longer supports the software"
       },
       "correct": "B",
       "key_concept": "Acceptance is a documented decision by someone with authority; a risk left alone by default is unmanaged, not accepted.",
@@ -2044,10 +2044,10 @@
       "wrong_explanations": {
         "A": "Tempting because nothing has gone wrong yet. But avoidance means stopping the risky activity, and the office still runs the software.",
         "C": "Closest choice: accepting a risk can mean taking no further action. But only after someone with authority decides that and records it; here no one has even reviewed the risk.",
-        "D": "Tempting because the vendor caused the support gap. But transfer shifts financial impact to another party, such as an insurer; an ended contract shifts nothing."
+        "D": "Tempting because the software's maker caused the support gap. But transfer shifts financial impact to another party, such as an insurer; an ended contract shifts nothing."
       },
       "tips": [
-        "Eliminate: D calls a vendor's exit a transfer, and A calls continued use avoidance; neither fits what the office did.",
+        "Eliminate: D calls the maker ending support a transfer, and A calls continued use avoidance; neither fits what the office did.",
         "Final two: B beats C because acceptance is a documented decision by someone with authority; carrying on by default is not one.",
         "Exam cue: a risk nobody has decided on is unmanaged, not accepted. Look for a named approver and a record before calling any risk accepted."
       ],
@@ -2057,7 +2057,7 @@
         "Risk acceptance",
         "Unmanaged risk"
       ],
-      "_provenance": "Authored from concept: 'ignoring a risk is not acceptance; acceptance is a documented decision by whoever holds the authority' (notes 1.2.5 Risk Treatment Options). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Fix-up round 1 (31 Oct 2026, blind test): the stem no longer negates the runner-up directly ('no acceptance'); it states only that no one has reviewed the risk. Fix-up round 2, second pass (31 Oct 2026, blind test and audit): key B no longer carries the key-only word 'authorized'. Batch 3 fix-up (31 Oct 2026, blind test and audit): the stem states plainly that no manager has decided how to handle the risk; C's explanation and the correct explanation now meet the 'acceptance means taking no action' reading head on.",
+      "_provenance": "Authored from concept: 'ignoring a risk is not acceptance; acceptance is a documented decision by whoever holds the authority' (notes 1.2.5 Risk Treatment Options). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Fix-up round 1 (31 Oct 2026, blind test): the stem no longer negates the runner-up directly ('no acceptance'); it states only that no one has reviewed the risk. Fix-up round 2, second pass (31 Oct 2026, blind test and audit): key B no longer carries the key-only word 'authorized'. Batch 3 fix-up (31 Oct 2026, blind test and audit): the stem states plainly that no manager has decided how to handle the risk; C's explanation and the correct explanation now meet the 'acceptance means taking no action' reading head on. Word-tell sweep round 2, 18 Nov 2026: distractor D says 'maker' instead of 'vendor'.",
       "style_version": 2
     },
     {
@@ -2213,7 +2213,7 @@
       "question": "A small design studio's leaders adopted selected ISO/IEC 27002 controls as its security standard, and a designer calls them optional because no law requires them. Which reply from the IT coordinator is MOST accurate?",
       "options": {
         "A": "They are optional, since no law or contract requires them",
-        "B": "They bind staff as internal rules, with or without a law",
+        "B": "They bind staff as the studio's rules even if no law applies",
         "C": "They bind each person once they finish training on them",
         "D": "They become binding once the studio is certified to ISO/IEC 27001"
       },
@@ -2237,7 +2237,7 @@
         "Adopting a standard",
         "Mandatory versus voluntary"
       ],
-      "_provenance": "Authored from concept: 'it is voluntary until adopted, or until a law or contract requires it' (notes 1.3.5 Standards, Procedures and Guidelines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Fix-up round 1 (31 Oct 2026, blind test and audit): re-angled from 'is the studio legally required' to whether an adopted standard binds staff; the key no longer echoes the stem's 'adopted'. Fix-up round 2 (31 Oct 2026, blind test and audit): key B no longer repeats the stem's wording about the studio's leaders. Batch 3 fix-up (31 Oct 2026, blind test and audit): D names ISO/IEC 27001, the standard organizations certify to, so the distractor no longer implies certification to 27002. Final fix round, 12 Nov 2026: stem says 'small', since IT coordinator is kept only for small offices with no specialists.",
+      "_provenance": "Authored from concept: 'it is voluntary until adopted, or until a law or contract requires it' (notes 1.3.5 Standards, Procedures and Guidelines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Fix-up round 1 (31 Oct 2026, blind test and audit): re-angled from 'is the studio legally required' to whether an adopted standard binds staff; the key no longer echoes the stem's 'adopted'. Fix-up round 2 (31 Oct 2026, blind test and audit): key B no longer repeats the stem's wording about the studio's leaders. Batch 3 fix-up (31 Oct 2026, blind test and audit): D names ISO/IEC 27001, the standard organizations certify to, so the distractor no longer implies certification to 27002. Final fix round, 12 Nov 2026: stem says 'small', since IT coordinator is kept only for small offices with no specialists. Word-tell sweep, 18 Nov 2026: reworded option B (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -2287,7 +2287,7 @@
         "A": "A firewall detects attacks but cannot block any traffic",
         "B": "A firewall is a physical control, not a technical one",
         "C": "It has not yet been tested against the firm's current traffic",
-        "D": "It does nothing to stop the way this fraud happens"
+        "D": "It has no effect on the way this kind of fraud happens"
       },
       "correct": "D",
       "key_concept": "A control must treat the assessed risk; a strong control aimed at the wrong risk leaves the top risk open.",
@@ -2309,7 +2309,7 @@
         "Control selection",
         "Risk-based control choice"
       ],
-      "_provenance": "Authored from concept: 'pick the control that directly addresses the assessed risk at a sensible cost. A strong control aimed at the wrong risk does nothing' (notes 1.4.1 What a Security Control Is). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Fix-up round 1 (31 Oct 2026, audit): the key no longer echoes the stem's 'risk assessment ranks ... top risk'. Fix-up round 2, second pass (31 Oct 2026, blind test and audit): 'actually' removed from the key. Batch 3 fix-up (31 Oct 2026, blind test and audit): pre_read no longer paraphrases the key.",
+      "_provenance": "Authored from concept: 'pick the control that directly addresses the assessed risk at a sensible cost. A strong control aimed at the wrong risk does nothing' (notes 1.4.1 What a Security Control Is). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Fix-up round 1 (31 Oct 2026, audit): the key no longer echoes the stem's 'risk assessment ranks ... top risk'. Fix-up round 2, second pass (31 Oct 2026, blind test and audit): 'actually' removed from the key. Batch 3 fix-up (31 Oct 2026, blind test and audit): pre_read no longer paraphrases the key. Word-tell sweep, 18 Nov 2026: reworded option D (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -2609,8 +2609,8 @@
       "question": "An analyst can prove a coworker with the same credential sold client scan results; the firm fired the coworker and calls it closed. What does the code of ethics MOST clearly expect of the analyst?",
       "options": {
         "A": "Post the evidence online to warn the coworker's future employers",
-        "B": "Treat the matter as closed, since the employer has acted",
-        "C": "File a complaint with the certifying body's ethics committee",
+        "B": "Treat the matter as closed, since the employer already acted",
+        "C": "Report the coworker to the certifying body's ethics committee",
         "D": "Leave any ethics complaint to the client, who was the one harmed"
       },
       "correct": "C",
@@ -2633,7 +2633,7 @@
         "Duty to report",
         "Standing"
       ],
-      "_provenance": "Authored from concept: 'members who see another member breach the code are expected to report it; staying silent may breach canon 4' (notes 1.5.5 Ethics Complaints and Enforcement). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Fix-up round 1 (31 Oct 2026, audit): wrong_explanations.D now states the published standing rule exactly. Fix-up round 2, second pass (31 Oct 2026, blind test and audit): the stem now says the coworker holds the same credential, the fact the duty to complain depends on, and no longer repeats 'certified'. Final pass (31 Oct 2026, audit merge): D now says 'ethics complaint', so the stem's 'ethics' is not echoed in the key alone.",
+      "_provenance": "Authored from concept: 'members who see another member breach the code are expected to report it; staying silent may breach canon 4' (notes 1.5.5 Ethics Complaints and Enforcement). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Fix-up round 1 (31 Oct 2026, audit): wrong_explanations.D now states the published standing rule exactly. Fix-up round 2, second pass (31 Oct 2026, blind test and audit): the stem now says the coworker holds the same credential, the fact the duty to complain depends on, and no longer repeats 'certified'. Final pass (31 Oct 2026, audit merge): D now says 'ethics complaint', so the stem's 'ethics' is not echoed in the key alone. Word-tell sweep, 18 Nov 2026: reworded option B, option C (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -2788,7 +2788,7 @@
       "bloom_level": "Application",
       "question": "A yoga studio chain's members agreed to research use of anonymized attendance data, and the export drops names but keeps birth date, home postal code and gender. Which concern should the security analyst raise FIRST?",
       "options": {
-        "A": "Whether the export file is encrypted before it is sent",
+        "A": "Whether encryption protects the export file in transit",
         "B": "Whether the fields kept still identify members in combination",
         "C": "Whether the partner will delete members' data once the study ends",
         "D": "Whether the attendance counts are accurate enough for research"
@@ -2813,7 +2813,7 @@
         "Quasi-identifiers",
         "De-identification"
       ],
-      "_provenance": "Authored from concept: 'personally identifiable information (PII) identifies a person, alone or combined with other data' (notes 1.1.8 Privacy and Personal Data). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'personally identifiable information (PII) identifies a person, alone or combined with other data' (notes 1.1.8 Privacy and Personal Data). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option A; option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -2825,8 +2825,8 @@
       "question": "A tour operator's AI itinerary assistant stops answering customers whenever one automated client sends it thousands of long requests an hour. Which control should the security team propose as BEST?",
       "options": {
         "A": "Filter each request for hidden instructions before the model reads it",
-        "B": "Add servers so the assistant can serve every client's requests",
-        "C": "Cap how many requests each client can send in a set time",
+        "B": "Add servers so the assistant can absorb such floods of requests",
+        "C": "Cap the number of requests each client can send an hour",
         "D": "Encrypt every chat between customers and the assistant"
       },
       "correct": "C",
@@ -2849,7 +2849,7 @@
         "Rate limiting",
         "AI service abuse"
       ],
-      "_provenance": "Authored from concept: 'AI service flooded with requests: availability; rate limits and spare capacity' (notes 1.1.9 AI and the Core Security Concepts). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'AI service flooded with requests: availability; rate limits and spare capacity' (notes 1.1.9 AI and the Core Security Concepts). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option B, option C (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -2932,7 +2932,7 @@
       "bloom_level": "Foundational",
       "question": "A water park treated a ticket-fraud risk by adding a daily sales reconciliation. In the monitoring step of the risk lifecycle, what should its risk team check MOST?",
       "options": {
-        "A": "Whether the reconciliation works and the risk stays within tolerance",
+        "A": "Whether the reconciliation keeps the risk within tolerance",
         "B": "Whether the original assessment used the correct rating scale",
         "C": "Whether a cheaper control could now replace the reconciliation",
         "D": "Whether the risk's register entry can be closed, as a control exists"
@@ -2957,7 +2957,7 @@
         "Risk lifecycle",
         "Control effectiveness"
       ],
-      "_provenance": "Authored from concept: 'Monitor, and repeat on a schedule and after major changes or incidents' (notes 1.2.2 The Risk Management Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'Monitor, and repeat on a schedule and after major changes or incidents' (notes 1.2.2 The Risk Management Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option A (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -3077,9 +3077,9 @@
       "question": "A surf school's booking-kiosk risk is within tolerance, yet its risk owner wants a cheap card-reader cover, and a colleague says tolerable risks must be accepted. Which reply from the security analyst is MOST accurate?",
       "options": {
         "A": "Agree, since within tolerance means the risk must be accepted",
-        "B": "Agree, unless the owner gets senior management to approve treating it",
+        "B": "Agree, unless senior management approves treating it instead",
         "C": "Disagree, since every risk must be treated until it is gone",
-        "D": "Disagree, as the owner chooses whether to accept or treat it"
+        "D": "Disagree, as the owner may also choose to treat a tolerable risk"
       },
       "correct": "D",
       "key_concept": "Tolerance caps the risk that may be accepted but does not force acceptance; within it, the risk owner may accept or treat the risk.",
@@ -3101,7 +3101,7 @@
         "Risk acceptance",
         "Risk ownership"
       ],
-      "_provenance": "Authored from concept: 'Residual risk within tolerance can be formally accepted by its owner; anything beyond goes to senior leaders' (notes 1.2.6 Risk Appetite, Tolerance and Acceptance). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'Residual risk within tolerance can be formally accepted by its owner; anything beyond goes to senior leaders' (notes 1.2.6 Risk Appetite, Tolerance and Acceptance). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option D (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance. Word-tell sweep round 2, 18 Nov 2026: blind-tester flag: distractor B reworded to read cleanly.",
       "style_version": 2
     },
     {
@@ -3148,7 +3148,7 @@
       "bloom_level": "Analysis",
       "question": "A gym's procedure says whoever finds a risk logs it. A help desk technician finds unsupported booking software, whose owner asks them not to log it before an upgrade; what should the technician do FIRST?",
       "options": {
-        "A": "Hold off logging the risk until the owner's upgrade is done",
+        "A": "Wait for the owner's upgrade, keeping the risk off the register",
         "B": "Upgrade the booking system to a supported version tonight",
         "C": "Log the risk, noting the owner's planned upgrade in the entry",
         "D": "Move the booking system behind a stricter firewall rule"
@@ -3156,7 +3156,7 @@
       "correct": "C",
       "key_concept": "When procedure gives logging to the finder, an owner's request cannot keep a risk off the register; record the owner's plan in the entry.",
       "pre_read": "Separate what the procedure requires of the finder from what the owner gets to decide.",
-      "correct_explanation": "The procedure makes logging the finder's duty, and the register is how risks stay visible to the people who oversee them. The owner decides the treatment, here the upgrade, so the technician logs the risk and records the planned fix in the entry. Holding off logging it, the runner-up, defers to the owner, but owners decide what to do about a risk, not whether it is recorded.",
+      "correct_explanation": "The procedure makes logging the finder's duty, and the register is how risks stay visible to the people who oversee them. The owner decides the treatment, here the upgrade, so the technician logs the risk and records the planned fix in the entry. Waiting for the upgrade, the runner-up, defers to the owner, but owners decide what to do about a risk, not whether it is recorded.",
       "wrong_explanations": {
         "A": "Closest choice: the owner does decide about the system. But the procedure requires logging, and an unlogged risk is hidden from oversight even if a fix is planned.",
         "B": "Tempting because upgrading removes the weakness. But it changes a system the technician does not own, outside change control, and takes over the owner's decision.",
@@ -3173,7 +3173,7 @@
         "Risk ownership",
         "Unsupported software"
       ],
-      "_provenance": "Authored from concept: 'Anyone can raise a risk; the owner decides what happens to it' (notes 1.2.7 Risk Register, Ownership and Reporting). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026. Final fix round (4 Nov 2026): key concept re-angled away from cc_d1_031.",
+      "_provenance": "Authored from concept: 'Anyone can raise a risk; the owner decides what happens to it' (notes 1.2.7 Risk Register, Ownership and Reporting). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026. Final fix round (4 Nov 2026): key concept re-angled away from cc_d1_031. Word-tell sweep round 2, 18 Nov 2026: runner-up A given the key's comma-ing shape.",
       "style_version": 2
     },
     {
@@ -3185,7 +3185,7 @@
       "question": "At a piano maker, the sales director decides who may see customer contracts, and a system administrator configures and backs up the contract database. Which role is the administrator MOST accurately performing?",
       "options": {
         "A": "Data owner, because they control the contract database's access settings",
-        "B": "Data custodian, because they apply and maintain the owner's rules",
+        "B": "Data custodian, because they carry out the owner's rules",
         "C": "Risk owner, because they manage the contract system's risks",
         "D": "Data user, because they handle the contracts in their work"
       },
@@ -3209,7 +3209,7 @@
         "Data custodian",
         "Roles and responsibilities"
       ],
-      "_provenance": "Authored from concept: 'The custodian applies access settings; the data owner decides who gets access' (notes 1.3.1 Security Governance and Its Roles). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'The custodian applies access settings; the data owner decides who gets access' (notes 1.3.1 Security Governance and Its Roles). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option B (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -3258,7 +3258,7 @@
       "options": {
         "A": "Run the deletion job as the approved retention policy requires",
         "B": "Edit the retention policy to six years, then run the job",
-        "C": "Pause the deletion job and refer the conflict to legal counsel",
+        "C": "Pause the deletion job until legal counsel resolves the conflict",
         "D": "Change the job to keep files six years, as the accountant advises"
       },
       "correct": "C",
@@ -3281,7 +3281,7 @@
         "Data retention",
         "Legal counsel"
       ],
-      "_provenance": "Authored from concept: 'Laws outrank internal preference ... never interpret the law alone' (notes 1.3.2 Laws and Regulations). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'Laws outrank internal preference ... never interpret the law alone' (notes 1.3.2 Laws and Regulations). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option C (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -3400,10 +3400,10 @@
       "bloom_level": "Application",
       "question": "An escape room company's help desk technician finds a faster order for the steps in the documented new-laptop setup procedure, which the IT manager owns. What should the technician do FIRST?",
       "options": {
-        "A": "Follow the procedure and suggest the faster order to its owner",
+        "A": "Follow the procedure, then suggest the faster order to the IT manager",
         "B": "Use the faster order, since procedures are recommended steps",
-        "C": "Use the faster order, since the finished laptop ends up the same",
-        "D": "Rewrite the procedure document, then tell its owner"
+        "C": "Use the faster order, because the finished laptop ends up the same",
+        "D": "Rewrite the procedure document, then tell the IT manager"
       },
       "correct": "A",
       "key_concept": "Procedures are mandatory steps; improvements go to the procedure's owner, who approves changes, rather than being applied on one's own.",
@@ -3425,7 +3425,7 @@
         "Document ownership",
         "Change approval"
       ],
-      "_provenance": "Authored from concept: 'Procedures list the exact steps for a task, such as setting up a new user' (notes 1.3.5 Standards, Procedures and Guidelines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'Procedures list the exact steps for a task, such as setting up a new user' (notes 1.3.5 Standards, Procedures and Guidelines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option A (key), option C, option D; option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance. Word-tell sweep round 2, 18 Nov 2026: key A semicolon replaced by ', then', the same shape as distractor D.",
       "style_version": 2
     },
     {
@@ -3509,14 +3509,14 @@
       "question": "After a change to a bowling alley chain's firewall, which the network manager owns, the change procedure has the network technician confirm the new blocks work. What should the technician do FIRST?",
       "options": {
         "A": "Ask the network manager to confirm that the new blocks work",
-        "B": "Try the blocked connections from outside and record the results",
+        "B": "Try the blocked connections from outside to confirm they fail",
         "C": "Check that the console shows the change without errors, and record it",
         "D": "Watch intrusion detection alerts for any traffic that gets through"
       },
       "correct": "B",
       "key_concept": "A technical control is proven by testing what it does; when the procedure assigns the test, the practitioner runs it.",
       "pre_read": "Note what the change procedure assigns to the technician, and how a block is best shown to work.",
-      "correct_explanation": "The procedure gives the technician the job of confirming the blocks, and the reliable way is to test them: attempt the blocked connections from outside and record what happens. Asking the network manager to confirm, the runner-up, routes the task to the owner, but the procedure assigned this check to the technician, and the owner would still need a test to know.",
+      "correct_explanation": "The procedure gives the technician the job of confirming the blocks, and the reliable way is to test them: attempt the blocked connections from outside and confirm they fail. Asking the network manager to confirm, the runner-up, routes the task to the owner, but the procedure assigned this check to the technician, and the owner would still need a test to know.",
       "wrong_explanations": {
         "A": "Closest choice: the network manager owns the firewall. But the procedure assigns the check to the technician, and the owner's view is no substitute for a test.",
         "C": "Tempting because it looks at the change itself. But a change can apply without errors and still block the wrong thing; only a test shows the effect.",
@@ -3533,7 +3533,7 @@
         "Change validation",
         "Control testing"
       ],
-      "_provenance": "Authored from concept: 'All depend on correct configuration; a wrong firewall rule opens the path it should close' (notes 1.4.2 Technical Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'All depend on correct configuration; a wrong firewall rule opens the path it should close' (notes 1.4.2 Technical Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option B (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance. Word-tell sweep round 2, 18 Nov 2026: key B reworded without a comma or a 'recording' tail.",
       "style_version": 2
     },
     {
@@ -3654,7 +3654,7 @@
       "options": {
         "A": "Install antivirus scanning on the six old laptops",
         "B": "Require longer sign-in passwords on the six old laptops",
-        "C": "Keep client files on the central server, not the laptops",
+        "C": "Keep client files on the central server rather than laptops",
         "D": "Remind staff each year to keep the old laptops with them"
       },
       "correct": "C",
@@ -3677,7 +3677,7 @@
         "Full-disk encryption",
         "Policy exceptions"
       ],
-      "_provenance": "Authored from concept: 'When a required control is impossible, a compensating control reduces the same risk another way' (notes 1.4.6 Layering and Compensating Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'When a required control is impossible, a compensating control reduces the same risk another way' (notes 1.4.6 Layering and Compensating Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026. Word-tell sweep round 2, 18 Nov 2026: key C reworded without a comma.",
       "style_version": 2
     },
     {
@@ -3871,12 +3871,12 @@
         "A": "Break in, since the stolen data belongs to the retailer",
         "B": "Break in just to delete the stolen files, touching nothing else",
         "C": "Decline, and ask the attacker's hosting provider to shut the server",
-        "D": "Decline, and hand what they know to the incident response lead"
+        "D": "Decline, and refer the request to the incident response lead"
       },
       "correct": "D",
       "key_concept": "Hacking back is illegal whatever the motive; an ethical practitioner declines and routes evidence through the incident response process.",
       "pre_read": "Test each option for legality first, then for whether it uses the proper channel.",
-      "correct_explanation": "Breaking into the attacker's server is unauthorized access, which is illegal however good the motive, so the analyst declines. Handing what they know to the incident response lead keeps evidence and decisions in the proper channel, where the lead can involve legal counsel and law enforcement. Contacting the hosting provider directly, the runner-up, is legal, but outside contact during an incident is the lead's decision.",
+      "correct_explanation": "Breaking into the attacker's server is unauthorized access, which is illegal however good the motive, so the analyst declines. Declining and referring the request to the incident response lead keeps evidence and decisions in the proper channel, where the lead can involve legal counsel and law enforcement. Contacting the hosting provider directly, the runner-up, is legal, but outside contact during an incident is the lead's decision.",
       "wrong_explanations": {
         "A": "Tempting because the data is the retailer's. But owning the stolen data gives no right to enter someone else's server; that is still unauthorized access.",
         "B": "Tempting because it limits the intrusion. But any unauthorized access is illegal, however narrow, and it can destroy evidence investigators need.",
@@ -3893,7 +3893,7 @@
         "Legal conduct",
         "Incident escalation"
       ],
-      "_provenance": "Authored from concept: 'Stay within your authority: test only with the system owner's written permission, whoever is paying, and never hack back' (notes 1.5.4 Applying the Canons to Dilemmas). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'Stay within your authority: test only with the system owner's written permission, whoever is paying, and never hack back' (notes 1.5.4 Applying the Canons to Dilemmas). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option D (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance. Word-tell sweep round 2, 18 Nov 2026: key D now one action, no semicolon. Word-tell sweep polish, 18 Nov 2026: key D now opens 'Decline,' like distractor C, so it states the refusal the explanation and Exam cue rely on; explanation updated to match.",
       "style_version": 2
     },
     {
@@ -4015,7 +4015,7 @@
         "A": "Agreed, since nobody can alter data they are unable to read",
         "B": "Agreed, since encryption protects all three security goals at once",
         "C": "Not quite; it does if the files use the client's public key",
-        "D": "Not quite; altered files can go unnoticed without an integrity check"
+        "D": "Not quite, since encryption alone cannot reveal altered files"
       },
       "correct": "D",
       "key_concept": "Encryption hides content; detecting alteration needs an integrity check, such as a keyed hash, a signature or the built-in check of authenticated encryption.",
@@ -4037,7 +4037,7 @@
         "Limits of encryption",
         "Digital signatures"
       ],
-      "_provenance": "Authored from concept: 'If data is encrypted, nobody could have changed it (exam trap): attackers can alter encrypted data without reading it' (notes 1.1.3 Integrity and Authenticity). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'If data is encrypted, nobody could have changed it (exam trap): attackers can alter encrypted data without reading it' (notes 1.1.3 Integrity and Authenticity). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option D (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -4050,7 +4050,7 @@
       "options": {
         "A": "Swap the long lockout for waits that grow after each failure",
         "B": "Remove the failed sign-in limit so managers cannot be locked out",
-        "C": "Lengthen the lockout to a week so that attackers stop guessing",
+        "C": "Lengthen the lockout to a week to stop attackers guessing",
         "D": "Require every manager to set a longer, more complex password"
       },
       "correct": "A",
@@ -4073,7 +4073,7 @@
         "Denial of service",
         "Rate limiting"
       ],
-      "_provenance": "Authored from concept: 'Availability is one of the three security goals; denial of service attacks it directly' (notes 1.1.4 Availability). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'Availability is one of the three security goals; denial of service attacks it directly' (notes 1.1.4 Availability). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option C; option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -4123,7 +4123,7 @@
         "A": "Authentication, because it confirmed the coordinator's identity",
         "B": "Identification, because the coordinator claimed an account name",
         "C": "Accounting, because the refusal was written to the access log",
-        "D": "Authorization, because it grants or refuses each user's access"
+        "D": "Authorization, because it decides each signed-in user's access"
       },
       "correct": "D",
       "key_concept": "An access denied message after a successful sign-in is authorization at work: it decides, resource by resource, what a proven identity may open.",
@@ -4145,7 +4145,7 @@
         "AAA",
         "Least privilege"
       ],
-      "_provenance": "Authored from concept: 'Authentication proves identity only; authorization is a separate decision for each resource' (notes 1.1.6 Authorization and Accounting). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'Authentication proves identity only; authorization is a separate decision for each resource' (notes 1.1.6 Authorization and Accounting). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option D (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -4266,7 +4266,7 @@
       "options": {
         "A": "Buy the detectors, since any added control lowers the risk",
         "B": "Accept the skimming risk, since the detectors cost too much",
-        "C": "Assess the risk's likelihood and impact before choosing a fix",
+        "C": "Assess the skimming risk to see if a detector is justified",
         "D": "Fit detectors on half the machines as a trial, then decide"
       },
       "correct": "C",
@@ -4289,7 +4289,7 @@
         "Risk assessment",
         "Choosing a treatment"
       ],
-      "_provenance": "Authored from concept: 'Identify, assess, treat and monitor run in order; each risk is assessed before it is treated' (notes 1.2.2 The Risk Management Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'Identify, assess, treat and monitor run in order; each risk is assessed before it is treated' (notes 1.2.2 The Risk Management Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option C (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -4553,7 +4553,7 @@
       "question": "A genealogy website's team wants to move members' family-tree data to a cheaper cloud region abroad, and national law limits sending personal data overseas. What should the system administrator do FIRST?",
       "options": {
         "A": "Move the data, since encrypting it meets the law's limits",
-        "B": "Ask legal counsel to confirm what the law allows for the move",
+        "B": "Ask legal counsel to check the move, since the law limits transfers",
         "C": "Refer it to the data owner to approve moving records without names",
         "D": "Move the data, since the provider holds a security certificate"
       },
@@ -4577,7 +4577,7 @@
         "Privacy law",
         "Legal counsel"
       ],
-      "_provenance": "Authored from concept: 'Laws apply by location, industry and data type, so one organization may face several' (notes 1.3.2 Laws and Regulations). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'Laws apply by location, industry and data type, so one organization may face several' (notes 1.3.2 Laws and Regulations). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option B (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -4699,7 +4699,7 @@
         "A": "Tell the customer that AI training data is exempt from privacy law",
         "B": "Delete the account records and tell the privacy officer it is closed",
         "C": "Retrain the hint model themselves, leaving out the customer's data",
-        "D": "Send the request to the privacy officer, noting the training data"
+        "D": "Send the privacy officer the request with a note on training data"
       },
       "correct": "D",
       "key_concept": "Privacy law reaches personal data in AI training sets too; route rights requests to the privacy owner, naming every place the data sits.",
@@ -4721,7 +4721,7 @@
         "AI training data",
         "Privacy officer"
       ],
-      "_provenance": "Authored from concept: 'Privacy law still covers personal data in prompts, training data and outputs' (notes 1.3.6 Laws and Rules That Apply to AI). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'Privacy law still covers personal data in prompts, training data and outputs' (notes 1.3.6 Laws and Rules That Apply to AI). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026. Word-tell sweep round 2, 18 Nov 2026: key D reworded without a comma.",
       "style_version": 2
     },
     {
@@ -4733,7 +4733,7 @@
       "question": "A furniture rental firm's AI chatbot told several customers they could cancel without fees, against the firm's terms. Which statement should the IT manager accept as MOST accurate?",
       "options": {
         "A": "The firm likely owes nothing, since the chatbot, not staff, promised",
-        "B": "Consumer and contract law can hold the firm to those answers",
+        "B": "Existing consumer law can hold the firm to its chatbot's answers",
         "C": "The firm's written terms override the chatbot, so fees apply",
         "D": "The firm is bound once an AI-specific law covers chatbots"
       },
@@ -4757,7 +4757,7 @@
         "AI accountability",
         "Chatbot answers"
       ],
-      "_provenance": "Authored from concept: 'Employment and consumer laws also reach AI decisions about people; only-AI-laws-apply is an exam trap' (notes 1.3.6 Laws and Rules That Apply to AI). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'Employment and consumer laws also reach AI decisions about people; only-AI-laws-apply is an exam trap' (notes 1.3.6 Laws and Rules That Apply to AI). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option B (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -5128,7 +5128,7 @@
       "bloom_level": "Analysis",
       "question": "A tulip grower's web shop was scanned for flaws at launch three years ago and never since; attackers used a flaw published last year. Which statement should the security analyst record as MOST accurate?",
       "options": {
-        "A": "It fell short of due diligence, as checking stopped at launch",
+        "A": "It failed due diligence, as checking stopped at launch",
         "B": "It met due diligence, since it scanned the shop at launch",
         "C": "It met due care, since the flaw was unknown at launch",
         "D": "Only the shop software's vendor failed, as the flaw was its code"
@@ -5136,7 +5136,7 @@
       "correct": "A",
       "key_concept": "Due diligence is ongoing: one check at launch cannot reveal flaws published later, so diligence keeps checking for as long as the system runs.",
       "pre_read": "Recall what due diligence and due care each cover, and over what time span.",
-      "correct_explanation": "Due diligence means finding out what a prudent organization should know, and new flaws are published all the time, so checking must continue. A single scan at launch could not reveal a flaw published two years later, and the year with no scan is the gap. The launch scan, the runner-up, was diligent at that moment, but diligence is ongoing, not a one-time event.",
+      "correct_explanation": "Due diligence means finding out what a prudent organization should know, and new flaws are published all the time, so checking must continue. A single scan at launch could not reveal a flaw published two years later, and the years without a scan are the gap. The launch scan, the runner-up, was diligent at that moment, but diligence is ongoing, not a one-time event.",
       "wrong_explanations": {
         "B": "Closest choice: the launch scan was diligent at the time. But diligence keeps checking; three years without a scan missed a flaw that was public for a year.",
         "C": "Tempting because nobody knew of the flaw at launch. But it became public last year, and a reasonable owner would have found and fixed it since.",
@@ -5153,7 +5153,7 @@
         "Ongoing assessment",
         "Vulnerability scanning"
       ],
-      "_provenance": "Authored from concept: 'Both are ongoing: diligence keeps checking, care keeps acting on the results' (notes 1.5.2 Due Care and Due Diligence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'Both are ongoing: diligence keeps checking, care keeps acting on the results' (notes 1.5.2 Due Care and Due Diligence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option A (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance. Word-tell sweep round 2, 18 Nov 2026: blind-tester flag: explanation now says 'years', matching the stem.",
       "style_version": 2
     },
     {
@@ -5274,7 +5274,7 @@
       "options": {
         "A": "The ethics committee that reviewed the studio's complaint",
         "B": "The board of the consultant's employer, which manages their work",
-        "C": "The certifying body's board, acting on the committee's advice",
+        "C": "The certifying body's board, on advice from the committee",
         "D": "The studio, as the principal that filed the complaint"
       },
       "correct": "C",
@@ -5297,7 +5297,7 @@
         "Ethics committee",
         "Disciplinary action"
       ],
-      "_provenance": "Authored from concept: 'The committee weighs submitted evidence and recommends action to the board, which can revoke certification' (notes 1.5.5 Ethics Complaints and Enforcement). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'The committee weighs submitted evidence and recommends action to the board, which can revoke certification' (notes 1.5.5 Ethics Complaints and Enforcement). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026. Word-tell sweep round 2, 18 Nov 2026: key C loses its -ing tail.",
       "style_version": 2
     },
     {
@@ -5453,8 +5453,8 @@
       "question": "A ballet company's vendor asks the system administrator for the full staff file to fix 12 failed records; the data owner allows vendors only what a fix needs, masked. What should the administrator do FIRST?",
       "options": {
         "A": "Ask the data owner to approve sharing the full file",
-        "B": "Send the full file to the vendor in an encrypted archive",
-        "C": "Mask just the problem entries, then share those alone",
+        "B": "Encrypt the full file, then send it to the vendor",
+        "C": "Mask just the problem entries, then send them alone",
         "D": "Mask the bank details, then share the whole staff file"
       },
       "correct": "C",
@@ -5477,7 +5477,7 @@
         "Data masking",
         "Sharing with vendors"
       ],
-      "_provenance": "Authored from concept: 'Access control, guided by need to know and least privilege, keeps the reader list short' (notes 1.1.2 Confidentiality). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026; re-angled from data deletion to need to know, final fix round.",
+      "_provenance": "Authored from concept: 'Access control, guided by need to know and least privilege, keeps the reader list short' (notes 1.1.2 Confidentiality). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026; re-angled from data deletion to need to know, final fix round. Word-tell sweep, 18 Nov 2026: reworded option B, option C (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -5563,7 +5563,7 @@
         "A": "Identifying the meter by the name its certificate carries",
         "B": "Authorizing the meter, granting it rights to submit payments",
         "C": "Accounting for each payment that the meter takes in",
-        "D": "Authenticating the meter, verifying its claimed identity"
+        "D": "Authenticating the meter by verifying its claimed identity"
       },
       "correct": "D",
       "key_concept": "Authentication proves a claimed identity with evidence; devices prove theirs too, for example by showing they hold a certificate's private key.",
@@ -5585,7 +5585,7 @@
         "Identification",
         "AAA"
       ],
-      "_provenance": "Authored from concept: 'Identification claims; authentication proves' (notes 1.1.5 Authentication). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'Identification claims; authentication proves' (notes 1.1.5 Authentication). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026. Word-tell sweep round 2, 18 Nov 2026: key D now 'X by Ying' with no comma.",
       "style_version": 2
     },
     {
@@ -5597,9 +5597,9 @@
       "question": "A cooperative's traders confirm sales with codes from a secret key each shares with the cooperative, and its IT manager says the codes cannot prove who made a disputed one. Which reply is MOST accurate?",
       "options": {
         "A": "Disagree; only that trader and the cooperative hold the key",
-        "B": "Agree; the cooperative holds the same key and could make it",
+        "B": "Agree; the cooperative holds the same key, so it could make one",
         "C": "Disagree; a valid code shows that the confirmation was not altered",
-        "D": "Agree, but only because the codes are not also encrypted"
+        "D": "Agree, but only because the codes lack encryption"
       },
       "correct": "B",
       "key_concept": "A shared secret key cannot prove which holder made a message, so non-repudiation needs a private key only the signer controls.",
@@ -5621,7 +5621,7 @@
         "Non-repudiation",
         "Message authentication codes"
       ],
-      "_provenance": "Authored from concept: 'Shared secrets cannot give non-repudiation: either key holder could have made the message' (notes 1.1.7 Non-Repudiation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'Shared secrets cannot give non-repudiation: either key holder could have made the message' (notes 1.1.7 Non-Repudiation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option B (key), option D; option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -5776,7 +5776,7 @@
       "bloom_level": "Analysis",
       "question": "A credit union turns on phishing-resistant multifactor authentication (MFA) for staff email. How should its risk analyst MOST accurately update the rating for an email account takeover that leads to fraud?",
       "options": {
-        "A": "Lower the likelihood, leaving the impact of a takeover as it was",
+        "A": "Lower the likelihood but leave a takeover's impact as it was",
         "B": "Lower the impact, since each stolen account would now cost far less",
         "C": "Lower both the likelihood and the impact by one level each",
         "D": "Remove the risk, since MFA makes account takeover impossible"
@@ -5801,7 +5801,7 @@
         "Impact",
         "Crediting controls"
       ],
-      "_provenance": "Authored from concept: 'Credit each control only with the factor it changes' (notes 1.2.3 Assessing Likelihood and Impact). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'Credit each control only with the factor it changes' (notes 1.2.3 Assessing Likelihood and Impact). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026. Word-tell sweep round 2, 18 Nov 2026: key A reworded without a comma.",
       "style_version": 2
     },
     {
@@ -5813,7 +5813,7 @@
       "question": "A flower wholesaler's owner must decide whether a $40,000-a-year backup cold-room system is worth buying, and five years of outage cost records exist. Which approach is BEST for its risk analyst?",
       "options": {
         "A": "Rate the outage risk as high, medium or low for the owner",
-        "B": "Estimate the yearly loss in money and compare it with the cost",
+        "B": "Compare the system's cost to the yearly outage loss in money",
         "C": "Run a penetration test on the cold rooms' controllers",
         "D": "Copy the choice that similar wholesalers made last year"
       },
@@ -5837,7 +5837,7 @@
         "Cost-benefit",
         "Annualized loss expectancy"
       ],
-      "_provenance": "Authored from concept: 'Use numbers when a spending decision needs them and levels when speed matters' (notes 1.2.4 Qualitative and Quantitative Analysis). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'Use numbers when a spending decision needs them and levels when speed matters' (notes 1.2.4 Qualitative and Quantitative Analysis). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option B (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -5958,8 +5958,8 @@
       "options": {
         "A": "Return it to the risk owner to renew the acceptance",
         "B": "Extend the acceptance a year, then inform senior management",
-        "C": "Close the entry, since the risk was already accepted once",
-        "D": "Escalate it to senior management, copying the risk owner"
+        "C": "Close the entry: the risk was already accepted once",
+        "D": "Escalate it to senior management, then inform the risk owner"
       },
       "correct": "D",
       "key_concept": "A risk owner may accept risk only within tolerance; when a lapsed acceptance covers a risk now beyond tolerance, senior management decides.",
@@ -5981,7 +5981,7 @@
         "Expired acceptance",
         "Escalation"
       ],
-      "_provenance": "Authored from concept: 'Residual risk within tolerance can be formally accepted by its owner; anything beyond goes to senior leaders' (notes 1.2.6 Risk Appetite, Tolerance and Acceptance). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026; re-angled from owner renewal to the tolerance check, final fix round.",
+      "_provenance": "Authored from concept: 'Residual risk within tolerance can be formally accepted by its owner; anything beyond goes to senior leaders' (notes 1.2.6 Risk Appetite, Tolerance and Acceptance). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026; re-angled from owner renewal to the tolerance check, final fix round. Word-tell sweep, 18 Nov 2026: reworded option C; option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance. Word-tell sweep round 2, 18 Nov 2026: key D now 'X, then Y', the same shape as distractor B.",
       "style_version": 2
     },
     {
@@ -6175,7 +6175,7 @@
         "A": "Disagree; the Act sets the same duties for every AI tool",
         "B": "Disagree; the Act covers only AI tools built inside the EU",
         "C": "Agree, so the agency is barred from using such a tool",
-        "D": "Agree; it may be used, but it carries strict legal duties"
+        "D": "Agree; it is allowed, but the Act places strict duties on it"
       },
       "correct": "D",
       "key_concept": "The EU AI Act sets duties by risk level; hiring uses are high risk, which means strict duties, not a ban.",
@@ -6197,7 +6197,7 @@
         "High-risk AI",
         "AI in hiring"
       ],
-      "_provenance": "Authored from concept: 'The EU AI Act sets duties by risk level, strictest for high-risk uses such as hiring' (notes 1.3.6 Laws and Rules That Apply to AI). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'The EU AI Act sets duties by risk level, strictest for high-risk uses such as hiring' (notes 1.3.6 Laws and Rules That Apply to AI). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option D (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -6210,7 +6210,7 @@
       "options": {
         "A": "The Toronto service is covered, as the certificate names the vendor",
         "B": "The certificate shows that the vendor passed a penetration test",
-        "C": "The Toronto service sits outside the certificate's scope",
+        "C": "The Toronto service is outside the vendor certificate's scope",
         "D": "The certificate is invalid unless it lists every vendor site"
       },
       "correct": "C",
@@ -6233,7 +6233,7 @@
         "Certification scope",
         "Vendor assurance"
       ],
-      "_provenance": "Authored from concept: 'ISO/IEC 27001 sets certifiable requirements for an information security management system' (notes 1.3.3 Security Frameworks and Guidelines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'ISO/IEC 27001 sets certifiable requirements for an information security management system' (notes 1.3.3 Security Frameworks and Guidelines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026. Word-tell sweep round 2, 18 Nov 2026: key C now names the vendor, like the distractors.",
       "style_version": 2
     },
     {
@@ -6316,7 +6316,7 @@
       "bloom_level": "Foundational",
       "question": "At a printing works, maintenance contractors from outside firms walk into the press control room on their own. Which administrative control should the security manager propose as BEST?",
       "options": {
-        "A": "A rule that contractors sign in and are escorted on site",
+        "A": "A sign-in rule requiring an escort for every contractor",
         "B": "A confidentiality agreement each contractor signs before work",
         "C": "A camera recording every contractor who enters the control room",
         "D": "Blocked USB ports on each of the press room's controllers"
@@ -6341,7 +6341,7 @@
         "Visitor escort",
         "Contractors"
       ],
-      "_provenance": "Authored from concept: 'Administrative controls are the policies, procedures, training and people practices that direct how security is handled' (notes 1.4.3 Administrative Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'Administrative controls are the policies, procedures, training and people practices that direct how security is handled' (notes 1.4.3 Administrative Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option A (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -6390,7 +6390,7 @@
       "options": {
         "A": "Weekly email reminders asking staff to install their updates",
         "B": "A monthly manager check of each laptop's update status",
-        "C": "Device settings that force updates after a short grace period",
+        "C": "Device settings that force updates after a brief grace period",
         "D": "A new line in the acceptable use policy about updates"
       },
       "correct": "C",
@@ -6413,7 +6413,7 @@
         "Enforcing policy",
         "Patch management"
       ],
-      "_provenance": "Authored from concept: 'Use technical controls to enforce what policy requires, especially where people forget or bypass rules' (notes 1.4.2 Technical Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'Use technical controls to enforce what policy requires, especially where people forget or bypass rules' (notes 1.4.2 Technical Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option C (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -6571,7 +6571,7 @@
         "A": "Say nothing to the security team, as one week is minor",
         "B": "Rebuild the missing entries by hand from other records",
         "C": "Restore the deleted logs from backup and carry on with the cleanup",
-        "D": "Tell the security team what was deleted and when"
+        "D": "Tell the security team exactly which week of logs was lost"
       },
       "correct": "D",
       "key_concept": "Professional conduct means owning mistakes openly: tell the people who rely on the affected records rather than fixing things quietly.",
@@ -6593,7 +6593,7 @@
         "Owning mistakes",
         "Log integrity"
       ],
-      "_provenance": "Authored from concept: 'Common themes are honesty, avoiding conflicts of interest and protecting confidential information' (notes 1.5.1 Professional Code of Conduct). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'Common themes are honesty, avoiding conflicts of interest and protecting confidential information' (notes 1.5.1 Professional Code of Conduct). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option D (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -6676,7 +6676,7 @@
       "bloom_level": "Analysis",
       "question": "Testing a client's network under contract, a certified tester finds a serious flaw in a router model used by many organizations. What is the tester's BEST response?",
       "options": {
-        "A": "Tell the client, and with the client's consent, alert the maker",
+        "A": "Tell the client first so they can approve alerting the maker",
         "B": "Report it in the client's findings only, as the contract is private",
         "C": "Post the details online so every organization can protect itself",
         "D": "Scan other networks for the router to show how widespread it is"
@@ -6701,7 +6701,7 @@
         "Ethical dilemmas",
         "Client confidentiality"
       ],
-      "_provenance": "Authored from concept: 'Report flaws to the owner first; publishing before a fix hands attackers a way in' (notes 1.5.4 Applying the Canons to Dilemmas). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'Report flaws to the owner first; publishing before a fix hands attackers a way in' (notes 1.5.4 Applying the Canons to Dilemmas). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option A (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance. Word-tell sweep round 2, 18 Nov 2026: key A semicolon replaced by a 'so' clause.",
       "style_version": 2
     },
     {
@@ -6746,9 +6746,9 @@
       "subtopic": "1.5 Professional conduct. Ethical AI use",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A junior analyst submitted a firewall rule an approved AI assistant wrote, without checking it; the change board approved it, and it caused an outage. Which statement is MOST accurate?",
+      "question": "A security analyst submitted a firewall rule an approved AI assistant wrote, without checking it; the change board approved it, and it caused an outage. Which statement is MOST accurate?",
       "options": {
-        "A": "The analyst stays accountable for the rule they chose to submit",
+        "A": "The analyst is accountable for the rule they chose to submit",
         "B": "The tool's approver is accountable, having approved the AI assistant",
         "C": "The change board alone is accountable, having approved it",
         "D": "The firewall's system owner is accountable for every rule on it"
@@ -6773,7 +6773,7 @@
         "Verifying AI work",
         "Change approval"
       ],
-      "_provenance": "Authored from concept: 'AI is a tool; the professional stays accountable' (notes 1.5.6 Ethical Use of AI at Work). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'AI is a tool; the professional stays accountable' (notes 1.5.6 Ethical Use of AI at Work). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded with 'is' (now on all options); stem role junior analyst renamed security analyst.",
       "style_version": 2
     },
     {
@@ -7072,10 +7072,10 @@
       "bloom_level": "Application",
       "question": "A podcast app's data owner says that because every listener profile is encrypted, the app's privacy duties are handled. Which reply from the security analyst is MOST accurate?",
       "options": {
-        "A": "Agree, provided only the app's own staff hold the encryption keys",
+        "A": "Agree; letting only the app's own staff hold the keys is enough",
         "B": "Agree; privacy and confidentiality are two names for one goal",
         "C": "Disagree; encryption has no part to play in protecting privacy",
-        "D": "Disagree; privacy also covers what is collected, why and how long"
+        "D": "Disagree; privacy is also about collecting just what the app needs"
       },
       "correct": "D",
       "key_concept": "Privacy covers what personal data is collected, why and for how long; encryption protects only its secrecy.",
@@ -7097,7 +7097,7 @@
         "Data minimization",
         "Encryption limits"
       ],
-      "_provenance": "Authored from concept: 'Encryption protects secrecy. Privacy also asks whether data should be collected, and how it is used and kept' (notes 1.1.8 Privacy and Personal Data). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: 'Encryption protects secrecy. Privacy also asks whether data should be collected, and how it is used and kept' (notes 1.1.8 Privacy and Personal Data). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option D (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance. Word-tell sweep round 2, 18 Nov 2026: runner-up A given the semicolon shape of the other options.",
       "style_version": 2
     },
     {
@@ -7180,7 +7180,7 @@
       "bloom_level": "Foundational",
       "question": "A newly formed taxi cooperative asks its first security analyst to set up risk management from scratch, following NIST's risk management process. Which step should come FIRST?",
       "options": {
-        "A": "Agree on priorities, legal duties and appetite with leaders",
+        "A": "Agree on the risk context, including appetite, with leaders",
         "B": "List the cooperative's assets and the threats facing each one",
         "C": "Rate each risk's likelihood and impact on an agreed scale",
         "D": "Choose controls with leaders for the most serious risks"
@@ -7205,7 +7205,7 @@
         "Risk management lifecycle",
         "Risk appetite"
       ],
-      "_provenance": "Authored from concept: 'Frame the context: what the organization values, its legal duties and its risk appetite' (notes 1.2.2 The Risk Management Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026. Final fix round, 12 Nov 2026: D also involves leaders, so owner wording is not only on the key; A lengthened so the key is not the lone shortest.",
+      "_provenance": "Authored from concept: 'Frame the context: what the organization values, its legal duties and its risk appetite' (notes 1.2.2 The Risk Management Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026. Final fix round, 12 Nov 2026: D also involves leaders, so owner wording is not only on the key; A lengthened so the key is not the lone shortest. Word-tell sweep, 18 Nov 2026: reworded option A (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -7362,8 +7362,8 @@
       "options": {
         "A": "Report the overdue treatment privately to the head of logistics",
         "B": "Carry out the overdue treatment on the logistics system",
-        "C": "Close the register entry, since its due date has already passed",
-        "D": "Add the overdue treatment to this month's risk report"
+        "C": "Close the register entry now that its due date has passed",
+        "D": "Add the overdue treatment to the risk report this month"
       },
       "correct": "D",
       "key_concept": "Risk reporting shows leaders top risks and overdue actions; use the agreed channel for overdue treatments rather than a private word.",
@@ -7385,7 +7385,7 @@
         "Risk register",
         "Overdue treatments"
       ],
-      "_provenance": "Authored from concept: 'Leaders see top risks and overdue actions; 2.4 covers indicators and dashboards' (notes 1.2.7 Risk Register, Ownership and Reporting). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: 'Leaders see top risks and overdue actions; 2.4 covers indicators and dashboards' (notes 1.2.7 Risk Register, Ownership and Reporting). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option C, option D (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -7540,7 +7540,7 @@
       "bloom_level": "Application",
       "question": "An animation studio's AI standard limits its approved tool to Public data, but a newer prompt guideline suggests pasting Internal scripts. A producer asks which to follow; what is the security analyst's BEST answer?",
       "options": {
-        "A": "The standard, with the clash reported to the guideline's owner",
+        "A": "The standard, then report the clash to whoever owns the guideline",
         "B": "The guideline, since it is the newer and more specific advice",
         "C": "Either one, since both documents were properly approved",
         "D": "Neither, until the two documents' owners agree which applies"
@@ -7565,7 +7565,7 @@
         "Standards",
         "Document conflicts"
       ],
-      "_provenance": "Authored from concept: 'Each document must agree with the one above it; if they conflict, follow the higher one where your role allows and report the conflict to the lower document's owner' (notes 1.3.5 Standards, Procedures and Guidelines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: 'Each document must agree with the one above it; if they conflict, follow the higher one where your role allows and report the conflict to the lower document's owner' (notes 1.3.5 Standards, Procedures and Guidelines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option A (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance. Word-tell sweep round 2, 18 Nov 2026: key A now 'X, then Y'.",
       "style_version": 2
     },
     {
@@ -7613,7 +7613,7 @@
       "question": "An AI vendor tells a Portuguese estate agency that its lead-scoring model needs no privacy review because it learned only from people's public social media posts. Which reply from the security analyst is MOST accurate?",
       "options": {
         "A": "Agree; posts people make public fall outside privacy law",
-        "B": "Agree, once the tool passes a review under the EU AI Act",
+        "B": "Agree; a review under the EU AI Act covers it instead",
         "C": "Disagree; only signed consent makes AI training lawful",
         "D": "Disagree; personal data is still personal data when public"
       },
@@ -7637,7 +7637,7 @@
         "AI training data",
         "EU AI Act"
       ],
-      "_provenance": "Authored from concept: 'Privacy law still covers personal data in prompts, training data and outputs' (notes 1.3.6 Laws and Rules That Apply to AI). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: 'Privacy law still covers personal data in prompts, training data and outputs' (notes 1.3.6 Laws and Rules That Apply to AI). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026. Word-tell sweep round 2, 18 Nov 2026: runner-up B given the semicolon shape of the other options.",
       "style_version": 2
     },
     {
@@ -7723,7 +7723,7 @@
         "A": "Install a camera above the cash office counter before the move",
         "B": "Encrypt the refunds database before the worker gains access",
         "C": "Have the worker sign the cash office's conduct rules",
-        "D": "Screen the worker for the cash role before granting access"
+        "D": "Screen the worker for the cash office role before granting access"
       },
       "correct": "D",
       "key_concept": "Personnel screening is an administrative control; screen people again when they move into a more sensitive role.",
@@ -7745,7 +7745,7 @@
         "Personnel screening",
         "Role changes"
       ],
-      "_provenance": "Authored from concept: 'Hiring practices include background checks and prompt access removal when people leave' (notes 1.4.3 Administrative Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: 'Hiring practices include background checks and prompt access removal when people leave' (notes 1.4.3 Administrative Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option D (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -7756,7 +7756,7 @@
       "bloom_level": "Analysis",
       "question": "A film post-production house is adding gas fire suppression to its equipment room, where editors often work late. Which feature should the security analyst insist on FIRST?",
       "options": {
-        "A": "A warning alarm and delay so people can leave before release",
+        "A": "A pre-release alarm so people can leave the room in time",
         "B": "Doors that lock during release to hold the gas in the room",
         "C": "Release at the first sign of smoke to save the equipment",
         "D": "A camera feed of the room for the security desk"
@@ -7781,7 +7781,7 @@
         "Fire suppression",
         "Physical controls"
       ],
-      "_provenance": "Authored from concept: 'Life safety comes first: escape-route doors must let people out, even when that weakens security' (notes 1.4.4 Physical Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026. Final fix round, 12 Nov 2026: role sweep: 'security technician' became 'security analyst'.",
+      "_provenance": "Authored from concept: 'Life safety comes first: escape-route doors must let people out, even when that weakens security' (notes 1.4.4 Physical Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026. Final fix round, 12 Nov 2026: role sweep: 'security technician' became 'security analyst'. Word-tell sweep, 18 Nov 2026: reworded option A (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -7829,8 +7829,8 @@
       "question": "A paint maker's endpoint standard requires antivirus on every PC, but the vendor of its color-matching PC forbids installing any. Which compensating control should the security analyst propose as BEST?",
       "options": {
         "A": "Encrypt the PC's disk so stolen color data stays unreadable",
-        "B": "Record the malware risk as accepted, as the vendor forbids changes",
-        "C": "Scan the other office PCs twice as often instead",
+        "B": "Record the malware risk as accepted, as installs are forbidden",
+        "C": "Scan the paint maker's other PCs for malware twice as often",
         "D": "Isolate the PC on its own network without internet or email"
       },
       "correct": "D",
@@ -7853,7 +7853,7 @@
         "Legacy systems",
         "Network isolation"
       ],
-      "_provenance": "Authored from concept: 'When a required control is impossible, a compensating control reduces the same risk another way' (notes 1.4.6 Layering and Compensating Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: 'When a required control is impossible, a compensating control reduces the same risk another way' (notes 1.4.6 Layering and Compensating Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option C; option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance. Word-tell sweep round 2, 18 Nov 2026: distractor B no longer names the vendor. Word-tell sweep polish, 18 Nov 2026: distractor C completed (names the scan target and purpose) so it no longer reads unfinished.",
       "style_version": 2
     },
     {
@@ -7936,10 +7936,10 @@
       "bloom_level": "Foundational",
       "question": "A coffee roaster's security analyst reviews the payroll share's access list monthly and finds a former employee still listed; the help desk technician then removes the entry. How are these steps MOST accurately described?",
       "options": {
-        "A": "The review is due care, and the removal is due diligence",
-        "B": "The review is due diligence, and the removal is due care",
-        "C": "Both are due care, as both protect the payroll share",
-        "D": "Both are due diligence, as both follow from the review"
+        "A": "The review is due care; the removal is due diligence",
+        "B": "The review is due diligence; the removal is due care",
+        "C": "Both are due care; both protect the payroll share",
+        "D": "Both are due diligence; both follow from the review"
       },
       "correct": "B",
       "key_concept": "Due diligence investigates and verifies; due care acts on what was found, as a prudent person would.",
@@ -7961,7 +7961,7 @@
         "Due care",
         "Access reviews"
       ],
-      "_provenance": "Authored from concept: 'Both are ongoing: diligence keeps checking, care keeps acting on the results' (notes 1.5.2 Due Care and Due Diligence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026. Final fix round, 12 Nov 2026: re-set from vendor patches (cc_d1_017, cc_d1_184) to a monthly access review and removal; lesson and key B kept.",
+      "_provenance": "Authored from concept: 'Both are ongoing: diligence keeps checking, care keeps acting on the results' (notes 1.5.2 Due Care and Due Diligence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 7, 12 Nov 2026. Final fix round, 12 Nov 2026: re-set from vendor patches (cc_d1_017, cc_d1_184) to a monthly access review and removal; lesson and key B kept. Word-tell sweep, 18 Nov 2026: reworded option A, option B (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance. Word-tell sweep round 2, 18 Nov 2026: distractors C and D given the semicolon shape of A and B.",
       "style_version": 2
     },
     {
@@ -8152,7 +8152,7 @@
       "bloom_level": "Foundational",
       "question": "A flooring wholesaler plans to treat emailed orders as binding when they arrive unsigned from a customer's usual address over an encrypted connection. What should the security analyst MOST accurately conclude?",
       "options": {
-        "A": "Such orders would not prove which of its customers sent them",
+        "A": "These orders would not prove which of its customers sent them",
         "B": "The encrypted connection would prove the customer sent each one",
         "C": "The usual sender address would stop a customer denying one",
         "D": "A disputed order could not be checked, as it has no signature"
@@ -8177,7 +8177,7 @@
         "Digital signatures",
         "Email spoofing"
       ],
-      "_provenance": "Authored from concept: 'Non-repudiation is evidence strong enough that a person cannot credibly deny sending a message, signing a document or performing an action' (notes 1.1.7 Non-Repudiation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: 'Non-repudiation is evidence strong enough that a person cannot credibly deny sending a message, signing a document or performing an action' (notes 1.1.7 Non-Repudiation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 8, 13 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option A (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -8191,7 +8191,7 @@
         "A": "A vulnerability, since a weakness need not be a coding bug",
         "B": "A vulnerability only once a customer has abused it",
         "C": "Not a vulnerability, since the chatbot works as it was built",
-        "D": "A threat, since it could cost the chain money"
+        "D": "A threat, given that it could cost the chain money"
       },
       "correct": "A",
       "key_concept": "A missing limit or human check is a vulnerability even when the tool works exactly as built and before anyone abuses it.",
@@ -8214,7 +8214,7 @@
         "Excessive agency",
         "Secure design"
       ],
-      "_provenance": "Authored from concept: 'A vulnerability is a weakness a threat can use, such as unpatched software' (notes 1.2.1 Threats, Vulnerabilities and Risk). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: 'A vulnerability is a weakness a threat can use, such as unpatched software' (notes 1.2.1 Threats, Vulnerabilities and Risk). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 8, 13 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option D; option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {
@@ -8227,7 +8227,7 @@
       "options": {
         "A": "Schedule the location-data re-rating for next year, when fines start",
         "B": "Keep last quarter's ratings, as no location data has leaked",
-        "C": "Re-rate the location-data risks to reflect the coming fines",
+        "C": "Re-rate the location-data risks, since the law has raised impact",
         "D": "Buy insurance to cover fines for location-data leaks"
       },
       "correct": "C",
@@ -8250,7 +8250,7 @@
         "Reassessment",
         "Impact"
       ],
-      "_provenance": "Authored from concept: 'Risk management never finishes. After a big change, an incident or a new threat, go back to identifying and assessing' (notes 1.2.2 The Risk Management Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: 'Risk management never finishes. After a big change, an incident or a new threat, go back to identifying and assessing' (notes 1.2.2 The Risk Management Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 8, 13 Nov 2026. Word-tell sweep, 18 Nov 2026: reworded option C (key); option wording evened out so connector words ('and', 'with', 'since', 'the' and others) do not predict the key; key, teaching point and explanations unchanged in substance.",
       "style_version": 2
     },
     {

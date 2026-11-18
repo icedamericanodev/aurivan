@@ -471,12 +471,28 @@ enforces; label-based blocking of AI uploads (CASB in D4, DLP in D5); KPI
 versus KRI (6 items); preserve the scene and report; "a stronger version of
 the same layer" as a runner-up (4.2.5 is at target).
 
-Next: the bank-wide word-tell sweep ("and", "with", "or" win too often;
-"since", "so", "office", "the" lose too often; also "record" and "then"),
-after which the `check_cc.py` word WARNING becomes an ERROR. The same pass can
-map the remaining legacy role names (junior analyst, risk analyst, compliance
-analyst, reporting analyst, junior engineer) to canonical roles and check
-older "IT technician" items set in larger organizations.
+**Word-tell sweep (18 Nov 2026).** A test-wise learner could learn surface
+rules from the older bank: options containing "and" won 247 of 421 items
+(about 150 by chance), and options containing "since" won only 24 of 165 (about 56). The
+sweep reworded options, not lessons:
+- Round 1: each domain expert worked a frozen per-domain plan from
+  `data/cc/tools/word_sweep.py` until all 21 flagged words sat at p >= 0.001
+  bank-wide. The same pass mapped legacy role names (junior, compliance,
+  reporting and IT asset analysts; junior engineers; IT technicians outside
+  small offices) to the canonical ones in items and notes.
+- Round 2: round 1 had swapped many "X and Y" keys for "X, logging Y" or
+  "X; log Y", which became new tells (comma-ing tails won 65 of 93). Distractors
+  got the same shapes and keys were spread across varied forms; comma-ing tails
+  now win 19 of 57 and semicolons 10 of 18, both near chance.
+- A polish round fixed the blind testers' wording flags. Blind re-tests of
+  every changed item matched every key.
+
+`check_cc.py` now fails (not warns) on a whole word in an option that predicts
+the key at under 0.01%, and on a punctuation shape (comma-ing tail, semicolon,
+colon, comma, dash) at under 0.1%. New batches should spread joining forms:
+"and" on keys and distractors alike, and no single replacement ("plus",
+"then", "before", ", logging") used mostly on keys. Words to watch, under the
+gate but close: "plus" (wins 7 of 10), "year", "request", "longer", "email".
 
 ## 7. Follow-ups outside this plan's scope
 
