@@ -88,26 +88,26 @@
       "principle_id": "ai-governance-before-tooling",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Welsh botanical garden's charter for a generative AI assistant drafting plant-care plans for gardeners names the vendor and model but not what the assistant must achieve. What should the IS auditor recommend FIRST?",
+      "question": "A Welsh botanical garden's charter for a generative assistant that drafts plant-care plans names the vendor, the model and a target of 95% accurate sample plans. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Have the head gardener define the assistant's intended purpose and limits",
-        "B": "Have IT confirm the vendor's model fits the enterprise architecture",
+        "B": "Have the project team test the assistant's sample plans against the target",
         "C": "Have the vendor supply accuracy results from several comparable botanical gardens",
-        "D": "Have the project team pilot the assistant with volunteer gardeners"
+        "D": "Have IT confirm the vendor's model fits the enterprise architecture"
       },
       "correct": "A",
-      "key_concept": "Business purpose, limits and acceptance criteria come before model, vendor or architecture choices for an AI system.",
-      "pre_read": "Read what the charter contains and what it leaves out before weighing each recommendation.",
-      "correct_explanation": "Requirements come before technology. Until the head gardener states what the assistant is for, which uses are out of bounds and how success is judged, nobody can test whether the chosen model fits. Architecture review, option B, is the runner-up: it is a real requirement, but fit can only be judged against a stated purpose, so it follows the business requirement.",
+      "key_concept": "For generative AI, purpose, users and limits come before testing or architecture choices; an accuracy target cannot bound what the system must never produce.",
+      "pre_read": "Read the charter's contents and the assistant's task before weighing each recommendation.",
+      "correct_explanation": "A generative assistant writes open-ended plans, so a 95% accuracy target on samples cannot show what it must never advise, such as unsafe pesticide use. The head gardener must first state its purpose, users and limits, which tests then check. Testing sample plans against the target, option B, is the runner-up: it checks the one stated criterion, but cannot cover risks nobody has bounded.",
       "wrong_explanations": {
-        "B": "Tempting because enterprise architecture fit is a genuine AI requirement. But the review needs a stated purpose and limits to assess against, so it comes second.",
-        "C": "Tempting because evidence from similar customers sounds reassuring. But vendor results are inputs, not assurance, and they cannot show fit to a purpose nobody has defined.",
-        "D": "Tempting because pilots reduce risk. But a pilot without stated outcomes has nothing to measure, so it cannot show whether the assistant works."
+        "B": "Tempting because the charter sets a measurable target. But a generative assistant's open-ended output needs stated limits first; an accuracy rate on samples cannot show what it must never advise.",
+        "C": "Tempting because evidence from similar gardens sounds reassuring. But vendor results are inputs, not assurance, and they cannot show fit to a purpose this garden has not defined.",
+        "D": "Tempting because enterprise architecture fit is a genuine AI requirement. But fit is judged against a stated purpose and limits, so the review comes after the business requirement."
       },
       "tips": [
-        "Eliminate: C relies on vendor results, which are inputs rather than assurance, and D pilots without success criteria, so the pilot has nothing to measure.",
-        "Final two: A beats B because architecture fit is judged against the business requirement; the owner's purpose and limits must exist before IT can assess fit.",
-        "Exam cue: when a project names a model or vendor before a purpose, recommend that the business owner define purpose, limits and acceptance criteria first."
+        "Eliminate: C relies on vendor results, which are inputs rather than assurance, and D checks architecture fit, which is judged against a purpose not yet stated.",
+        "Final two: A beats B because a generative assistant's open-ended output needs a stated purpose and limits before testing; an accuracy target cannot show what it must never advise.",
+        "Exam cue: when a generative AI charter has only an accuracy target, recommend that the business owner define purpose, users and limits before testing begins."
       ],
       "framework_ref": "NIST AI 100-1 MAP 1.1 (Intended purposes, context and laws documented); NIST AI 100-1 MAP 1.6 (System requirements elicited from relevant AI actors)",
       "related_concepts": [
@@ -115,7 +115,7 @@
         "Enterprise architecture",
         "Acceptance criteria"
       ],
-      "_provenance": "Authored from concept: notes 1A.3 Business Requirements and Architecture Fit (requirements before technology; architecture fit follows purpose). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Release audit fix, 18 Nov 2026: setting moved from a university tutor to a botanical-garden assistant (no AAIA or CRISC item uses a botanical garden); the notes 1A.3 example moved to an open architecture-review condition so item and note no longer share a requirements-first scenario.",
+      "_provenance": "Authored from concept: notes 1A.3 Business Requirements and Architecture Fit (requirements before technology; architecture fit follows purpose). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. Release audit fix, 18 Nov 2026: setting moved from a university tutor to a botanical-garden assistant (no AAIA or CRISC item uses a botanical garden); the notes 1A.3 example moved to an open architecture-review condition so item and note no longer share a requirements-first scenario. Final release fix, 18 Nov 2026: the stem no longer names the missing purpose outright; it gives a 95% accuracy target, option B (testing against it) replaces the pilot as the runner-up and architecture fit moves to D, so the generative-output fact decides; the pre_read no longer points at what the charter leaves out. AAIA pilot, 30 Oct 2026.",
       "style_version": 2
     },
     {
@@ -1380,7 +1380,7 @@
       "subtopic": "1C AI risk management. Vendors using other AI providers",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Bahraini wealth manager's vendor has another firm's language model draft commentary from client portfolio data, on that firm's standard terms; the vendor's controls report covers that firm. What should the IS auditor confirm FIRST?",
+      "question": "A Bahraini wealth manager's vendor drafts commentary from client portfolios with another firm's language model, on that firm's standard terms; the vendor's controls-report scope includes that firm. What should the IS auditor confirm FIRST?",
       "options": {
         "A": "Whether the model provider may keep or train on client data",
         "B": "Whether the controls report's opinion on the model provider is clean",
@@ -1389,8 +1389,8 @@
       },
       "correct": "A",
       "key_concept": "When a vendor passes data to another AI provider, first confirm whether that provider may retain or train on it; accountability stays with the buyer.",
-      "pre_read": "Read what changed in the vendor's service before weighing each option.",
-      "correct_explanation": "Client data now reaches a fourth party on its standard terms, outside the original due diligence. Many model providers' standard terms let them keep inputs or use them to improve their models, which could expose confidential portfolios far beyond the original purpose. A clean controls-report opinion, option B, is the runner-up: it shows the provider's controls work as described, but not whether its terms permit training on client data.",
+      "pre_read": "Read the stem's facts about the vendor's service before weighing each option.",
+      "correct_explanation": "Client data reaches a fourth party on that firm's standard terms. Many model providers' standard terms let them keep inputs or use them to improve their models, which could expose confidential portfolios far beyond the purpose they were shared for. A clean controls-report opinion, option B, is the runner-up: it shows the provider's controls work as described, but not whether its terms permit training on client data.",
       "wrong_explanations": {
         "B": "Tempting because a clean opinion is standard vendor assurance. But it tests controls as the provider describes them, not whether its terms let it keep or train on client data.",
         "C": "Tempting because encryption protects data in transit. But it secures delivery; it does not limit what the provider may do with data once received.",
@@ -1407,7 +1407,7 @@
         "Data use terms",
         "Supply chain"
       ],
-      "_provenance": "Authored from concept: notes 1C.3 Third-Party and Supply-Chain AI Risk (supply chains run deep, and contracts define what vendors may do with data; accountability stays with the buyer). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Release audit fix, 18 Nov 2026: the stem now says the vendor's controls report covers the model provider and option B asks about a clean opinion, so B no longer competes as a coverage question.",
+      "_provenance": "Authored from concept: notes 1C.3 Third-Party and Supply-Chain AI Risk (supply chains run deep, and contracts define what vendors may do with data; accountability stays with the buyer). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. Release audit fix, 18 Nov 2026: the stem now says the vendor's controls report covers the model provider and option B asks about a clean opinion, so B no longer competes as a coverage question. Final release fix, 18 Nov 2026: the stem says plainly that the controls report's scope includes the model provider; the explanation and pre_read no longer imply a service change the stem does not state. AAIA batch 2, 31 Oct 2026.",
       "style_version": 2
     },
     {
@@ -2884,7 +2884,7 @@
       "subtopic": "1E Ethics, regulations and standards. Widening a summarizer's risk assessment",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Norwegian patent office follows the NIST AI Risk Management Framework, yet its filing-summary assistant's risk assessment lists only accuracy and drift. Which source should the IS auditor recommend as BEST for widening it?",
+      "question": "A Norwegian patent office follows the NIST AI Risk Management Framework, yet its generative filing-summary assistant's risk assessment lists only accuracy and drift. Which source should the IS auditor recommend as BEST for widening it?",
       "options": {
         "A": "The vendor's model card listing the model's benchmark test results",
         "B": "The NIST Cybersecurity Framework used as the security baseline",
@@ -2894,15 +2894,15 @@
       "correct": "D",
       "key_concept": "The NIST Generative AI Profile extends the AI RMF to generative AI risks, such as confabulation and information integrity, that predictive-style assessments miss.",
       "pre_read": "Read what the assessment lists and what the assistant does before weighing each source.",
-      "correct_explanation": "The NIST AI 600-1 Generative AI Profile applies the AI RMF to generative AI and describes risks a predictive-style assessment misses, such as confabulation, information integrity and intellectual property, all relevant to summaries of patent filings. The vendor's model card, option A, is the runner-up: it describes the model's tested limits, but in general terms, not the risks of this use.",
+      "correct_explanation": "The NIST AI 600-1 Generative AI Profile applies the AI RMF to generative AI and describes risks a predictive-style assessment misses, such as confabulation, information integrity and intellectual property, all relevant to summaries of patent filings. The vendor's model card, option A, is the runner-up: its benchmark results are scores on tests the vendor chose, not a structured set of risks to check the assessment against.",
       "wrong_explanations": {
-        "A": "Tempting because model cards list known limits. But they describe the vendor's model in general, not the risks of summarizing patent filings for this office.",
+        "A": "Tempting because model cards document a model's tested limits. But benchmark results are scores on tests the vendor chose, not a set of risks to widen the assessment against.",
         "B": "Tempting because NIST frameworks work together. But the Cybersecurity Framework organizes security outcomes, not risks such as invented facts in summaries.",
         "C": "Tempting because AI law sets firm limits. But banned practices mark uses that are prohibited outright; they do not list the risks of a lawful summarizing assistant."
       },
       "tips": [
         "Eliminate: C lists banned practices, not the risks of a lawful assistant, and B organizes cybersecurity outcomes, not risks such as invented facts.",
-        "Final two: D beats A because the profile sets out generative AI risks to map against this use; a model card describes the vendor's model in general.",
+        "Final two: D beats A because the profile is a structured set of generative AI risks to check the assessment against; benchmark results are scores on tests the vendor chose.",
         "Exam cue: for generative AI, widen risk work with the NIST Generative AI Profile; risks such as confabulation fall outside predictive-model checks."
       ],
       "framework_ref": "NIST AI 600-1 Section 2.2 (Confabulation); NIST AI 600-1 Section 2.8 (Information Integrity)",
@@ -2911,7 +2911,7 @@
         "Generative AI risks",
         "AI RMF profiles"
       ],
-      "_provenance": "Authored from concept: notes 1E.3 Frameworks and Standards for AI (a companion NIST profile applies the AI RMF to generative AI and describes risks such as confabulation). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026. Round 3 review: key names the document, not its title, so it tests knowledge of AI 600-1.",
+      "_provenance": "Authored from concept: notes 1E.3 Frameworks and Standards for AI (a companion NIST profile applies the AI RMF to generative AI and describes risks such as confabulation). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. Round 3 review: key names the document, not its title, so it tests knowledge of AI 600-1. Final release fix, 18 Nov 2026: the stem now says the assistant is generative, the fact the Generative AI Profile key depends on. Final release fix 2, 18 Nov 2026: the runner-up now loses because benchmark scores are not a structured risk set, not because the model card is general, since the profile is general too. AAIA batch 3, 31 Oct 2026.",
       "style_version": 2
     },
     {
@@ -2992,25 +2992,25 @@
       "subtopic": "1A AI models and requirements. Classifying a vendor-supplied checker",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Sri Lankan export bank's inventory lists its vendor-supplied letter-of-credit checker as an AI model; the checker applies a fixed decision table that staff wrote. What should the IS auditor recommend as BEST?",
+      "question": "A Sri Lankan export bank's inventory lists its letter-of-credit checker as an AI model, matching the vendor's brochure; it applies a fixed decision table staff wrote. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have the owner record it as rules-based software and test its rules",
         "B": "Drop it from IS audit coverage, since no AI is involved",
-        "C": "Keep it listed as an AI model and request its training data",
+        "C": "Keep it listed as an AI model and schedule its model validation",
         "D": "Accept the vendor's product description as the basis for its risk rating"
       },
       "correct": "A",
       "key_concept": "Rules engines run fixed, human-written logic and never learn from data; classify systems by how they work, not by marketing, to choose controls.",
       "pre_read": "Read the stem's facts about the checker before weighing each recommendation.",
-      "correct_explanation": "A fixed decision table written by staff is a rules engine: it learns nothing from data, so it has no training data, drift or model validation to review. Its risk sits in the rules themselves, which are tested against the bank's trade-finance requirements like any software logic. Keeping it listed as a model and requesting training data, option C, follows the vendor's label and asks for evidence that cannot exist.",
+      "correct_explanation": "A fixed decision table written by staff is a rules engine: it learns nothing from data, so it has no training data or drift to review. Its risk sits in the rules, which are tested against the bank's trade-finance requirements like any software logic. Model validation, option C, is the runner-up: it looks cautious, but it follows the vendor's label and examines training data and drift this checker does not have.",
       "wrong_explanations": {
         "B": "Tempting because the system is not machine learning. But software that checks trade documents still needs its logic tested; the method changes, not the need for assurance.",
-        "C": "Tempting because it is the cautious choice. But a decision table has no training data; requesting it follows the vendor's label rather than how the system works.",
+        "C": "Tempting because validating anything labeled AI looks cautious. But model validation examines training data and drift; a fixed decision table has neither, so its rules need testing instead.",
         "D": "Tempting because vendors know their products. But marketing labels are claims, not evidence; the classification should follow what the system actually does."
       },
       "tips": [
         "Eliminate: B confuses a change of method with no need for assurance, and D lets a marketing claim set the rating instead of evidence of how it works.",
-        "Final two: A beats C because a fixed decision table learns nothing from data, so its rules are what must be tested; training data cannot exist.",
+        "Final two: A beats C because a fixed decision table learns nothing from data, so model validation has no training data or drift to examine; its rules are what must be tested.",
         "Exam cue: classify a system by how it works, learned from data or written as rules, and choose the evidence to match."
       ],
       "framework_ref": "NIST AI 100-1 GOVERN 1.6 (Mechanisms to inventory AI systems); NIST AI 100-1 MAP 2.1 (Tasks and methods the AI system supports are defined)",
@@ -3019,7 +3019,7 @@
         "Machine learning",
         "AI inventory"
       ],
-      "_provenance": "Authored from concept: notes 1A.1 Kinds of AI Systems (rules engines run fixed logic people wrote and do not learn from data; classify a system by how it works). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1A.1 Kinds of AI Systems (rules engines run fixed logic people wrote and do not learn from data; classify a system by how it works). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. Final release fix, 18 Nov 2026: the stem now says the AI label matches the vendor's brochure, so the explanations' references to the vendor's label rest on a stated fact. Final release fix 2, 18 Nov 2026: option C now keeps the AI label and sends the checker to model validation, a cautious step only the rules-engine fact defeats, replacing a request for training data that plainly cannot exist. AAIA batch 5, 5 Nov 2026.",
       "style_version": 2
     },
     {
@@ -3203,7 +3203,7 @@
         "Business alignment",
         "Environmental impact"
       ],
-      "_provenance": "Authored from concept: notes 1B.1 AI Strategy, Policy and Inventory (an AI strategy must fit the organization's objectives, including commitments such as emissions targets that AI's energy use can affect). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026. Release audit fix, 18 Nov 2026: 'assessed on cost alone' replaced by a costed business case, so the stem no longer pairs the pledge with a cost-only cue.",
+      "_provenance": "Authored from concept: notes 1B.1 AI Strategy, Policy and Inventory (an AI strategy must fit the organization's objectives, including commitments such as emissions targets that AI's energy use can affect). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. Release audit fix, 18 Nov 2026: 'assessed on cost alone' replaced by a costed business case, so the stem no longer pairs the pledge with a cost-only cue. AAIA batch 5, 5 Nov 2026.",
       "style_version": 2
     },
     {
@@ -3373,12 +3373,12 @@
       "pre_read": "Read what the program reports and the override figure before weighing each recommendation.",
       "correct_explanation": "Three overrides in 40,000 could mean an excellent model or officers accepting valuations without real review, and training completion cannot tell the two apart. Seeding known-wrong valuations and measuring how many officers catch them shows whether oversight works and where training is not taking hold. Repeating training for officers with the fewest overrides, option B, assumes both the problem and its location before anyone knows whether review fails.",
       "wrong_explanations": {
-        "A": "Tempting because model accuracy matters. But retesting the model says nothing about whether officers question its output, which is what the program claims to have trained.",
+        "A": "Tempting because model accuracy matters. But it measures the model, not the officers; the program's training claim needs a direct measure of whether officers catch wrong valuations.",
         "B": "Tempting because training may not have stuck. But it treats few overrides as proof of weak review, which nobody has shown; the program first needs a measure of review quality.",
         "C": "Tempting because overrides seem healthy. But quotas push officers to disagree for the sake of it, producing worse decisions rather than real review."
       },
       "tips": [
-        "Eliminate: C sets a quota that forces disagreement rather than judgment, and A retests the model, which shows nothing about whether officers catch its errors.",
+        "Eliminate: C sets a quota that forces disagreement rather than judgment, and A measures the model rather than whether officers catch its errors.",
         "Final two: D beats B because seeded cases show whether officers catch errors; retraining low overriders assumes an answer the metrics cannot yet give.",
         "Exam cue: program metrics should show whether human oversight catches AI errors, not just that people were trained."
       ],
@@ -3388,7 +3388,7 @@
         "Override rates",
         "Human oversight"
       ],
-      "_provenance": "Authored from concept: notes 1B.3 Program Metrics, Awareness and Workforce Impact (AI program metrics should show outcomes, such as whether reviewers catch the model's errors, not only training completion). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1B.3 Program Metrics, Awareness and Workforce Impact (AI program metrics should show outcomes, such as whether reviewers catch the model's errors, not only training completion). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. Final release fix, 18 Nov 2026: option A's explanation and tip 1 now say it measures the model rather than the officers, instead of claiming it shows nothing. AAIA batch 5, 5 Nov 2026.",
       "style_version": 2
     },
     {
@@ -4011,7 +4011,7 @@
         "Profiles",
         "Gap analysis"
       ],
-      "_provenance": "Authored from concept: notes 1E.3 Frameworks and Standards for AI (the NIST AI RMF uses current and target profiles to find gaps and plan improvements by priority). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026. Release audit fix, 18 Nov 2026: the stem now asks how to rank improvements across all twelve uses, so applying the Generative AI Profile to seven of them is plainly partial.",
+      "_provenance": "Authored from concept: notes 1E.3 Frameworks and Standards for AI (the NIST AI RMF uses current and target profiles to find gaps and plan improvements by priority). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. Release audit fix, 18 Nov 2026: the stem now asks how to rank improvements across all twelve uses, so applying the Generative AI Profile to seven of them is plainly partial. AAIA batch 5, 5 Nov 2026.",
       "style_version": 2
     },
     {
@@ -4465,20 +4465,20 @@
         "A": "Drone flights may cost more than the field inspections did",
         "B": "Growers may object to flags made without anyone visiting",
         "C": "The on-call crew may be too small to cover a long outage",
-        "D": "No ground truth will remain to check or retrain the model"
+        "D": "No ground truth will remain to check flags or label data"
       },
       "correct": "D",
-      "key_concept": "Models are checked and retrained against correct answers people supply; a workforce plan that removes those people leaves drift undetected.",
+      "key_concept": "Models are checked and retrained against correct answers people supply; a workforce plan that removes those people leaves the model's accuracy unmeasured.",
       "pre_read": "Read the model's history and the workforce plan before weighing each concern.",
-      "correct_explanation": "The model learned from inspectors' reports, and those reports are also how anyone checks its flags and gathers labels to retrain it. Ending field inspections leaves no ground truth, so drift as fields, crops or cameras change would go unseen. The on-call crew's size, option C, matters in an outage, but the crew is called only once a failure is noticed, and drift raises no alarm.",
+      "correct_explanation": "The model learned from inspectors' reports, and those reports are also how anyone checks its flags and gathers labels to retrain it. Ending field inspections leaves no ground truth, so falling accuracy as fields, crops or cameras change would go unmeasured. The on-call crew's size, option C, matters in an outage, but the crew is called only once a failure is noticed, and a model that slowly grows less accurate causes no outage.",
       "wrong_explanations": {
         "A": "Tempting because running costs matter. But cost does not change the model's reliability; the loss that matters is the field truth it is checked against.",
-        "B": "Tempting because growers deserve a fair process. But objections can still be heard; the deeper gap is that no one could show whether the flags are right.",
-        "C": "Tempting because continuity capacity matters. But the crew is called only once a failure is noticed, and with no field reports the model's drift would never be detected."
+        "B": "Tempting because growers deserve a fair process. But settling an objection needs facts; with no field reports, no one could show whether the flags are right.",
+        "C": "Tempting because continuity capacity matters. But the crew is called only once a failure is noticed, and with no field reports nobody could measure the model's falling accuracy."
       },
       "tips": [
         "Eliminate: A weighs drone costs, which do not affect the model's reliability, and B centers growers' objections rather than whether the flags are right.",
-        "Final two: D beats C because field reports are the ground truth that shows drift and supplies labels for retraining; an on-call crew acts only after someone notices a failure.",
+        "Final two: D beats C because field reports are the ground truth that measures the model's accuracy and supplies labels for retraining; an on-call crew acts only after someone notices a failure.",
         "Exam cue: when AI replaces the people whose judgments trained it, ask who will supply the correct answers needed to check and retrain it."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 4.2 (Trustworthiness results validated with domain experts); NIST AI 100-1 MEASURE 2.4 (Functionality and behavior monitored in production)",
@@ -4487,7 +4487,7 @@
         "Ground truth",
         "Drift monitoring"
       ],
-      "_provenance": "Authored from concept: notes 1B.3 Program Metrics, Awareness and Workforce Impact (assess AI's effect on the workforce: models need people who supply correct answers to check and retrain them). Cross-domain gate fix, 12 Nov 2026: re-angled because the earlier version restated the notes 2G.1 example and aaia_d2_088 (AI output problems with no place in IT incident categories). Release audit fix, 18 Nov 2026: an on-call crew added to the stem and option C changed to its size, so the manual-fallback runner-up no longer mirrors aaia_d1_031. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1B.3 Program Metrics, Awareness and Workforce Impact (assess AI's effect on the workforce: models need people who supply correct answers to check and retrain them). Cross-domain gate fix, 12 Nov 2026: re-angled because the earlier version restated the notes 2G.1 example and aaia_d2_088 (AI output problems with no place in IT incident categories). Release audit fix, 18 Nov 2026: an on-call crew added to the stem and option C changed to its size, so the manual-fallback runner-up no longer mirrors aaia_d1_031. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. Final release fix, 18 Nov 2026: explanation, key_concept and tip 2 now say accuracy goes unmeasured, not that drift goes undetected, since input drift can still be watched without labels (D2 notes). Final release fix 2, 18 Nov 2026: option D no longer echoes 'trained' or names the model, so matching stem words cannot find the key. AAIA batch 7, 12 Nov 2026.",
       "style_version": 2
     },
     {

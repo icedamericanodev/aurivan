@@ -3631,7 +3631,7 @@
       "subtopic": "2B AI lifecycle. Shrimp-feed release gate",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Belizean shrimp farm's feed-ration models pass validation each sprint, but its deployment gate never asks who will monitor each model, or against what limits. What should the IS auditor recommend as BEST?",
+      "question": "A Belizean shrimp farm's deployment gate releases each feed-ration model once it passes validation on the latest pond data; the gate's checklist ends at release. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept the gate, since each model passes validation before release",
         "B": "Check each model against its limits at a 30-day monitoring review",
@@ -3640,7 +3640,7 @@
       },
       "correct": "D",
       "key_concept": "A deployment gate should require a monitoring plan with an owner and limits; a validation pass describes the model only at release.",
-      "pre_read": "Ask what the gate checks about the model's life after release, not just at release.",
+      "pre_read": "Read each option as a change to the gate, then ask what it would catch and when.",
       "correct_explanation": "A validation pass shows a model met its criteria on the day it was tested; water, feed and stock conditions keep changing, so it can drift soon after release. A deployment gate should pass a model only with a monitoring plan naming who watches it and the limits that trigger action. A 30-day monitoring review adds one more snapshot, but drift that starts sooner would set rations unnoticed until then.",
       "wrong_explanations": {
         "A": "Tempting because validation is the main gate. But it describes the model at release; nothing then shows when drift starts setting wrong rations.",
@@ -3658,7 +3658,7 @@
         "Monitoring plan",
         "Drift"
       ],
-      "_provenance": "Authored from concept: notes 2B.1 The AI Lifecycle and Stage Gates (gates run through deployment and monitoring, not only build and validation). Re-angled at the batch 4 cross-domain gate: the earlier version mirrored the 2B.1 notes example (intended use and acceptable error not set before build). Release audit, 18 Nov 2026: distractor C recast from the IS auditor monitoring to wider validation, so only drift after release defeats it. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2B.1 The AI Lifecycle and Stage Gates (gates run through deployment and monitoring, not only build and validation). Re-angled at the batch 4 cross-domain gate: the earlier version mirrored the 2B.1 notes example (intended use and acceptable error not set before build). Release audit, 18 Nov 2026: distractor C recast from the IS auditor monitoring to wider validation, so only drift after release defeats it. Release audit final fix, 18 Nov 2026: the stem no longer names the missing owner and limits that key D supplies, and the pre_read is a neutral habit. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2
     },
     {
@@ -5613,21 +5613,21 @@
     {
       "id": "aaia_d2_153",
       "domain": 2,
-      "subtopic": "2D AI supervision. Fracture-model agreement rates",
+      "subtopic": "2D AI supervision. Biopsy-model agreement rates",
       "principle_id": "real-human-oversight",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Georgian hospital radiologists' agreement with an unchanged fracture model's flags rose from 70% to 96% once the flags began appearing before the X-ray image. What should the IS auditor recommend as BEST?",
+      "question": "A Tbilisi lab's pathologists agreed with an unchanged biopsy model's flags 96% of the time, up from 70%, once each flag showed ahead of the slide image. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Remove the radiologists' step, since they agree with the model anyway",
-        "B": "Have radiologists record their own reading before the flag appears",
-        "C": "Remind radiologists in training that the model's flags can be wrong",
-        "D": "Retrain the model on radiologists' readings to align them further"
+        "A": "Remove the pathologists' step, since they agree with the model anyway",
+        "B": "Have pathologists record their own reading before the flag appears",
+        "C": "Use refresher training to remind pathologists that flags can be wrong",
+        "D": "Retrain the model on pathologists' readings to align them further"
       },
       "correct": "B",
       "key_concept": "Showing a model's output before reviewers judge anchors them; recording an independent judgment first counters automation bias.",
-      "pre_read": "Read every change the stem describes before judging what the agreement figure means.",
-      "correct_explanation": "The model did not change; only when its flag appears did. A jump from 70% to 96% agreement then suggests radiologists anchor on the flag rather than read each image afresh. Having them record their own reading before seeing the flag keeps their judgment independent and lets the owner measure real disagreement. A training reminder raises awareness, but it does not change the screen that pulls radiologists toward the flag.",
+      "pre_read": "Before choosing, ask what the figure in the stem actually measures and what could move it.",
+      "correct_explanation": "The model did not change; only the moment its flag appears did. A jump from 70% to 96% agreement then suggests pathologists anchor on the flag rather than read each slide afresh. Having them record their own reading before seeing the flag keeps their judgment independent and lets the lab measure real disagreement. A training reminder raises awareness, but it does not change the screen that pulls pathologists toward the flag.",
       "wrong_explanations": {
         "A": "Tempting because high agreement suggests the review adds little. But the jump came from the display change, so it signals anchoring, not a model fit to run alone.",
         "C": "Tempting because awareness is part of oversight. But knowing flags can be wrong does little against anchoring when the flag is the first thing shown.",
@@ -5644,7 +5644,7 @@
         "Anchoring",
         "Human oversight"
       ],
-      "_provenance": "Authored from concept: notes 2D.1 Human Oversight and Automation Bias (showing the model's output first anchors reviewers). Release audit, 18 Nov 2026: neutral subtopic label. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2D.1 Human Oversight and Automation Bias (showing the model's output first anchors reviewers). Release audit, 18 Nov 2026: neutral subtopic label. Release audit final fix, 18 Nov 2026: key B no longer alone echoes the stem's \"before\" and \"appearing\"; distractor C reworded so it cannot be read as trainee radiologists only. Release audit re-check, 18 Nov 2026: setting moved from a hospital fracture X-ray model reviewed by radiologists (shared with CISA d1_108) to a Tbilisi pathology lab's prostate-biopsy model; neutral pre_read. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
       "style_version": 2
     },
     {
@@ -6030,7 +6030,7 @@
         "D": "Launch once a filter blocks the three jailbreak prompts"
       },
       "correct": "B",
-      "key_concept": "Red teams report findings; the model owner decides on launch within tolerance, since blocking known jailbreak prompts does not remove the weakness.",
+      "key_concept": "Red teams report findings and the model owner decides on launch within tolerance; filtering known jailbreak prompts leaves reworded ones open.",
       "pre_read": "Ask who in this story is allowed to accept the remaining risk.",
       "correct_explanation": "A red team tests and reports; it does not decide whether residual risk is acceptable. The model owner, within senior management's tolerance, decides on launch with the three open findings in view and can require fixes or limits first; management formally accepts any findings left open. Blocking the three known prompts looks like closure, but reworded jailbreaks often pass such filters, and the launch decision would still have no owner.",
       "wrong_explanations": {
@@ -6049,7 +6049,7 @@
         "Residual risk",
         "Model owner"
       ],
-      "_provenance": "Authored from concept: notes 2E.3 Independent Validation, Robustness and Red Teaming (red teams report; the owner decides on residual risk). Release audit, 18 Nov 2026: key B reworded so it no longer reads as permission to launch with the findings open. Release audit fix, 18 Nov 2026: distractor A recast from deferring to the red team lead to a single rerun, which only output variability defeats. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2E.3 Independent Validation, Robustness and Red Teaming (red teams report; the owner decides on residual risk). Release audit, 18 Nov 2026: key B reworded so it no longer reads as permission to launch with the findings open. Release audit fix, 18 Nov 2026: distractor A recast from deferring to the red team lead to a single rerun, which only output variability defeats. Release audit final fix, 18 Nov 2026: key_concept no longer joins its two facts with a false \"since\". Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
       "style_version": 2
     },
     {
@@ -6367,11 +6367,11 @@
       "correct_explanation": "Rollback restored a good version, but this model keeps learning from live readings, so the restored version will relearn the fault from the same faulty sensors. Stopping its learning is the first containment step, and keeping the suspect readings intact supports root cause analysis. Replacing the sensors fixes the source, but until parts arrive the model keeps learning from bad readings.",
       "wrong_explanations": {
         "A": "Tempting because the live model is good again. But it keeps learning from the faulty readings, so it will drift back to the fault.",
-        "B": "Tempting because clean data avoids the bad readings. But an unplanned retrain before root cause is an untested change made under pressure.",
+        "B": "Tempting because clean data avoids the bad readings. But the retrained model would keep learning from the same faulty sensors, and a rushed retrain is an untested change.",
         "C": "Tempting because it fixes the cause. But until the sensors are replaced, the self-updating model keeps learning from bad readings."
       },
       "tips": [
-        "Eliminate: A trusts a rollback while the model keeps learning from faulty readings, and B rushes an untested retrain before the cause is known.",
+        "Eliminate: A trusts a rollback while the model keeps learning from faulty readings, and B rushes an untested retrain that would relearn the fault from the same sensors.",
         "Final two: D beats C because the model learns from faulty readings until the sensors are replaced; stopping its learning contains the fault now.",
         "Exam cue: a model that learns in production is not contained by rollback alone; stop its learning until its inputs are trusted."
       ],
@@ -6381,7 +6381,7 @@
         "Online learning",
         "Rollback"
       ],
-      "_provenance": "Authored from concept: notes 2G.2 Containment: Disengage, Roll Back and Preserve Evidence (containment covers the retraining pipeline). Release audit, 18 Nov 2026: key D no longer alone echoes the stem's \"readings\". Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2G.2 Containment: Disengage, Roll Back and Preserve Evidence (containment covers the retraining pipeline). Release audit, 18 Nov 2026: key D no longer alone echoes the stem's \"readings\". Release audit final fix, 18 Nov 2026: distractor B's explanation and tip no longer say the cause is unknown, since the stem names the faulty sensors. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
       "style_version": 2
     },
     {
@@ -8676,7 +8676,7 @@
       "bloom_level": "Analysis",
       "question": "A vendor model update made an Indonesian theme park's booking agent grant twice as many free fast-track passes, each within limits; replies read the same. Which control should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Test the agent's actions, not only its replies, before updates apply",
+        "A": "Test the agent's tool actions before each update applies",
         "B": "Rely on vendor release notes to flag behavior changes",
         "C": "Compare samples of replies before and after each update applies",
         "D": "Lower the agent's pass limit after each vendor update"
@@ -8701,7 +8701,7 @@
         "AI agents",
         "Regression testing"
       ],
-      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (a vendor model update can change an agent's actions while its text looks the same; update tests must cover tool use). Release audit, 18 Nov 2026: neutral subtopic label. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (a vendor model update can change an agent's actions while its text looks the same; update tests must cover tool use). Release audit, 18 Nov 2026: neutral subtopic label. Release audit final fix, 18 Nov 2026: key A no longer carries a contrast clause naming the stem's gap. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
       "style_version": 2
     },
     {
@@ -10268,7 +10268,7 @@
       },
       "correct": "C",
       "key_concept": "Oversight should be proportionate to impact; reviewing every low-impact output breeds rubber-stamping that weakens review where it matters.",
-      "pre_read": "Compare the uses listed in the stem.",
+      "pre_read": "Read every number in the stem, then ask what it shows about how the review works.",
       "correct_explanation": "One design for every use spends the same officer time on meeting summaries as on repayment notices that can hurt families, and approvals taking seconds show rubber-stamping. Matching oversight to impact cuts the volume of low-stakes approvals and focuses real review on high-impact notices. Requiring a reason for each approval adds evidence, but under the same volume reasons become boilerplate and automation bias persists.",
       "wrong_explanations": {
         "A": "Tempting because recorded reasons evidence real review. But officers approving every output face the same volume, so reasons turn to boilerplate; the design drives the rubber-stamping.",
@@ -10286,7 +10286,7 @@
         "Automation bias",
         "Proportionate oversight"
       ],
-      "_provenance": "Authored from concept: notes 2D.1 Human Oversight and Automation Bias (oversight is matched to impact; approving every output breeds rubber-stamping, shown by approvals taking seconds). Release audit, 18 Nov 2026: distractor D recast from the vendor deciding to a second approver, which automation bias defeats. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2D.1 Human Oversight and Automation Bias (oversight is matched to impact; approving every output breeds rubber-stamping, shown by approvals taking seconds). Release audit, 18 Nov 2026: distractor D recast from the vendor deciding to a second approver, which automation bias defeats. Release audit final fix, 18 Nov 2026: neutral pre_read. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
       "style_version": 2
     },
     {

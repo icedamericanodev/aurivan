@@ -317,7 +317,7 @@
             "Design states the purpose, intended users, impact on people and success criteria before any data is gathered.",
             "Machine learning operations (MLOps) automation should carry the gates, not skip them.",
             "Each gate asks for evidence: data fitness (checked before training, since the model keeps what it learns), retrieved documents included, performance against agreed criteria, fairness results and owner sign-off.",
-            "Higher-impact uses get stricter gates and more independent review than low-impact internal tools.",
+            "Higher-impact uses get stricter gates and more independent review; release also needs an owned monitoring plan with limits.",
             "A new use, or a live trial whose outputs take effect, re-enters the gates; unvalidated models run in shadow mode."
           ],
           "example": "A Dutch hospital trust's rostering team builds a model to predict nurse staffing. Six weeks in, nobody has recorded its intended use, who it affects or what error is acceptable. The IS auditor reports that the design gate was skipped, so later tests have no criteria to meet.",
@@ -699,11 +699,11 @@
             "Hosted services may update the model on their own schedule unless a fixed version is requested; a swapped embedding model needs every document reindexed.",
             "Pinning fixes the model until the customer moves or the provider retires it; it does not freeze server-side filters, defaults or new features, such as memory.",
             "Contracts can require advance notice, release notes, a test window and the right to stay on a version for a set period.",
-            "Before adopting an update, the model owner reruns regression tests, kept current as inputs change.",
+            "Before adopting an update, the model owner reruns current regression tests, checking an agent's actions as well as its text.",
             "When one model serves several uses, the owner of each use tests an update on that use's own work and accepts it.",
             "Monitoring output patterns, such as approval or flag rates, detects silent changes the contract did not prevent."
           ],
-          "example": "A Mexican freight company's contract gives 30 days' notice and a test window before its vendor moves the hosted language model that reads shipping invoices to a new version. The model owner skips regression tests because the release notes claim better accuracy. After the switch, dates come out in a new format and payments fail. The IS auditor reports that the notice term worked but the owner never tested the update on the company's own invoices.",
+          "example": "A Mexican freight company's contract gives 30 days' notice and a test window before its vendor moves its invoice-reading language model to a new version. The model owner skips regression tests because the release notes claim better accuracy. After the switch, dates come out in a new format and payments fail. The IS auditor reports that the notice term worked but the owner never tested the update on the company's own invoices.",
           "audit_focus": {
             "review": [
               "Inspect contracts for version pinning, update notice and testing rights",

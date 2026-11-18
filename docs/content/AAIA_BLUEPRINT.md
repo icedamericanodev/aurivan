@@ -267,6 +267,10 @@ ISACA product) may be cited by name and number, never quoted.
 - Store copy that names the June 2025 outline must be re-checked with the
   outline (every six months and before each release).
 - The trademark decision on the full name "Advanced in AI Audit" (see Trademarks).
+- ITAF 5th edition was published on 26 Feb 2026; ten D3 framework_ref parts still use 4th-edition
+  numbers (labelled "ITAF 4th edition, 2020" in the library; no learner text cites an ITAF number).
+  Re-map them when the course goes on sale or when ISACA moves the AAIA outline or review manual to
+  the 5th edition, whichever comes first (release audit, 18 Nov 2026).
 - Allowing iso.org, eur-lex.europa.eu and genai.owasp.org would let ISO/IEC
   42001, the EU AI Act and the OWASP 2025 list become Verified citations.
 

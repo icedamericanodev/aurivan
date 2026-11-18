@@ -415,6 +415,40 @@ Batch 9 review, 18 Nov 2026 (D1 only, to pass 600):
 **Next round:** the AAIA release audit across the whole course (bank, notes, glossary, principles, exam
 guide, final review week, mocks), then D1 and D2 rounds toward the targets.
 
+Release audit, 18 Nov 2026 (whole course, AAIA still switched off):
+- **Scope:** a blind test of all 603 items, plus eight reviews: the bank by each domain expert (D2 in two
+  halves), cross-domain, notes and glossary concepts, the course pieces against ISACA's current AAIA pages,
+  trademark and claims, and a first-time learner's read. One reconciler checked every finding against the
+  files and sorted them into fix lists (D1 22, D2 32, D3 25, course 23 entries, 3 key checks); 26 findings
+  were rejected with reasons.
+- **Blind test:** 603/603 picks matched the keys on the first pass. 65 matched items carried a flagged flaw;
+  the real ones were fixed. Every changed item was re-tested blind and re-audited (three fix rounds and a
+  final fix round, then my own last pass on aaia_d1_003, d1_122, d2_153 and d3_024). No key letter and no
+  item principle tag changed.
+- **Items:** 124 changed (D1 57, D2 44, D3 23), 40 of them in the stem or options. Most changes are neutral
+  pre_reads and subtopic labels in older items (pilot to batch 7) that pointed at the key; others clear a
+  stem word echoed only in the key, an explanation claiming a fact the stem never gives, or a runner-up that
+  general audit sense beat. aaia_d1_003 and aaia_d2_153 moved to new settings (d2_153 shared CISA d1_108's
+  X-ray scene); aaia_d3_097 was re-angled away from aaia_d2_283.
+- **Notes:** facts that keys relied on were added in all three domains (for example calibration, ground
+  truth, NIST AI 600-1 by number, standard-change retraining, embedding reindexing, benchmark contamination,
+  agent actions in update tests); the 2C.1 standard-change rule and the 3A.2 recommend line no longer
+  contradict keyed items. Every subtopic is still within 380 words.
+- **Course:** exam languages now include Japanese (ISACA candidate guide modified 5 Nov 2026); glossary
+  definitions aligned with notes and keys (Generalization, Standard change, Incident closure, Reproducibility,
+  Reperformance, Risk tolerance, Model owner, EU AI Act); seven principles clarified (named-human-owner
+  practice_ids: aaia_d1_044 replaced by aaia_d2_071; independence-of-ai-assurance now covers D1 and 1C.3);
+  cheat sheet, day 3 and day 5 wording match how the app picks the next focus. AAIA_BLUEPRINT.md languages
+  row, S1 source date and "Newer outline?" date updated (outside data/aaia/, on the fix list).
+- **Decided by experts:** the paid copy says "mocks" without a count (each is a new draw); the final review
+  week stays free (section 6); iOS restore of the 6-month purchase is a launch-time test; ITAF 4th-edition
+  numbers stay, labelled, with a re-map trigger in the blueprint's open items.
+- **Owner decision still open:** the full name "Advanced in AI Audit" (section 7). The reconciler and
+  compliance reviewer recommend extending the notice; the product manager recommends dropping the full name.
+- Length tell: D1 20.3%, D2 20.7%, D3 17.0%. Tags: 497 of 603.
+
+**Next round:** the owner's trademark decision, then D1 and D2 rounds toward the targets.
+
 ## 10. Follow-ups outside this plan's scope
 
 - An AAIA mode for `scripts/lint_originals.py` (library match for `data/aaia/`)
