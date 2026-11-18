@@ -35,6 +35,7 @@ cause in the app, and slots it into the plan below.
 | FB-004 | 2026-11-09 | Owner emulator review | Phone · Reset CISA progress | Bug/UX | High | Confirmed full CISA reset | Implemented; isolated native reset/restart passed | 2.1 |
 | FB-003 | 2026-11-06 | Beta reply email | Phone · Nickname setup | UX | Medium | New learners | Implemented, native keyboard/a11y checks pending | 2.1 |
 | FB-006 | 2026-11-12 | Closed-testing message (no report code) | Phone · every screen with serif text (questions, options, headings) | UX (typography) | Low | Whole app | Implemented in a pull request; waiting for the owner's decision on the typeface change | 2.1 (owner decision needed) |
+| FB-007 | 2026-11-13 | R-ZJ67 | Phone · Mock review (question d5_205) | Content | Medium | One question | Reviewed: key D stays, question needs one missing fact | Next update |
 
 ## Feedback quoted on the website
 
@@ -55,6 +56,7 @@ the original.
 | # | Change | From | Size |
 |---|---|---|---|
 | 1 | Show all four options with their wording on the answer screen, each with its ✓/✗ and its own "why" line, so the explanation and tips can be read against the actual text | FB-001 | Medium (app only, no content change) |
+| 2 | Question d5_205: say in the question that management rates weak passwords as a high risk, so the marked answer (move the rules into a mandatory standard) no longer rests on an unstated fact. Key stays D | FB-007 | Small (one question, plus a web What's New entry) |
 
 ## Later
 
@@ -169,3 +171,63 @@ A closed-testing Android tester wrote: "Just an observation, does the letter 'f'
 **Still to do after the owner agrees:** the same fix on the web app (`index.html`), `beta.html`, the landing and legal pages, which still load plain Fraunces.
 
 **Reply to the tester when shipped:** "Thanks for spotting the f. It was the typeface's own design, not a glitch. From the next update the letter has a more familiar shape everywhere in the app."
+
+### FB-007 · Password rules in a guideline: is the marked answer right?
+
+**Tester said (13 Nov 2026):**
+
+> The password requirement is a guideline in this instance. An auditor would
+> have to understand the management's risk assessment to recommend moving it
+> to policy or standard.
+
+Report footer: Question d5_205 (Info Protection) · Part: Answer key · Reason:
+the marked answer looks wrong · Pick: bank A shown as C · Shown order (screen
+= bank): A=C, B=D, C=A, D=B · Mock review · Mini mock · KaiSip 2.0.0
+(Android 16) · Ref R-ZJ67.
+
+**The question today:** "An IS auditor finds password length and lockout
+requirements are written in a guideline, and several teams have chosen not to
+follow them. Which recommendation is BEST?" A. Add the password requirements
+to the annual awareness training program · B. Discipline teams that do not
+follow the guideline · C. Let each team's manager approve its own password
+rules · **D. Move the requirements into a mandatory standard under the policy
+(key)**.
+
+**Review (13 Nov 2026), three reviewers, all agree:**
+
+- Blind test-taker (no key, no complaint shown): picked D at 80% confidence.
+  Its doubt was the tester's point: the question never says management wants
+  these rules mandatory.
+- Domain 5 standards auditor: keep D. Precision finding, not a hard error.
+  The explanation leans on "requirements the organization treats as
+  mandatory", but the question never states it, and our own style rule says
+  the question must hold every fact the answer needs.
+- Exam reviewer: keep D, minimal question fix. The tester's point shows a
+  missing fact, not a wrong key: no option says "check management's risk
+  assessment", and training (the tester's pick) leaves the rule just as
+  optional, so it is not better than D. B (discipline) is the right runner-up.
+- Earlier sign: when the bank was tagged with its exam principles, taggers
+  disagreed on d5_205 and left it untagged.
+
+**Agreed fix (Next update):**
+
+- Question: "Management's risk assessment rates weak passwords as a high
+  risk, but an IS auditor finds the length and lockout rules sit only in a
+  guideline that several teams ignore. Which recommendation is BEST?"
+- Options and key unchanged (D).
+- Explanation, key idea and Exam cue tip say that the rules are mandatory
+  because management rated the risk high, and that the auditor recommends
+  while management decides.
+- Optional: add ISO/IEC 27002:2022 Control 5.17 (Authentication information)
+  to the source line; correct the item's out-of-date internal history note.
+- Check the CRISC question written from this one (crisc_d1_074) for the same
+  gap.
+- Gates: regenerate domain 5, exam-style lint, repo check, a blind re-test of
+  the new wording; web version bump and What's New entry, as for any content
+  change.
+
+**Reply to the tester when shipped:** "Thanks for report R-ZJ67. You were
+right that the question did not say how management rates the risk; it now
+does. The answer stays the same: training would leave an advisory rule just as
+optional, so moving the rule into a mandatory standard is still the best
+recommendation."

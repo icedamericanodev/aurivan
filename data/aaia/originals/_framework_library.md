@@ -116,6 +116,8 @@ The bracket is a short paraphrase of the subcategory statement.
   - Verified 30 Oct 2026: the seven characteristics (valid and reliable; safe; secure and resilient; accountable and transparent; explainable and interpretable; privacy-enhanced; fair with harmful bias managed).
 - NIST AI 100-1 Section 3.1 (Valid and Reliable)
   - Verified 12 Nov 2026: "3.1 Valid and Reliable" in the table of contents (page 13) and as the section heading; it defines validation as "confirmation, through the provision of objective evidence, that the requirements for a specific intended use or application have been fulfilled" and reliability as the "ability of an item to perform as required, without failure, for a given time interval, under given conditions". The Fig. 4 caption (in Section 3) says Valid & Reliable "is a necessary condition of trustworthiness and is shown as the base for other trustworthiness characteristics".
+- NIST AI 100-1 Section 3.2 (Safe)
+  - Verified 18 Nov 2026: "3.2 Safe" in the table of contents (page 14) and as the section heading; it says AI systems should not "lead to a state in which human life, health, property, or the environment is endangered", and (page 15) that practical approaches to AI safety include "rigorous simulation and in-domain testing, real-time monitoring, and the ability to shut down, modify, or have human intervention into systems that deviate from intended or expected functionality".
 - NIST AI 100-1 Section 3.3 (Secure and Resilient)
   - Verified 12 Nov 2026: "3.3 Secure and Resilient" in the table of contents (page 15) and as the section heading; it says "Common security concerns relate to adversarial examples, data poisoning, and the exfiltration of models, training data, or other intellectual property through AI system endpoints", and that security encompasses "protocols to avoid, protect against, respond to, or recover from attacks".
 - NIST AI 100-1 Section 3.4 (Accountable and Transparent)
@@ -130,6 +132,8 @@ The bracket is a short paraphrase of the subcategory statement.
   - Verified 31 Oct 2026: Section 5.2 is "Map" in the table of contents; its text says "Outcomes in the MAP function are the basis for the MEASURE and MANAGE functions", and Section 5 says most users start with MAP and continue to MEASURE or MANAGE.
 - NIST AI 100-1 Section 6 (AI RMF Profiles)
   - Verified 5 Nov 2026: "6 AI RMF Profiles" in the table of contents (page 33); the text says a Current Profile "indicates how AI is currently being managed", a Target Profile "indicates the outcomes needed", "Comparing Current and Target Profiles likely reveals gaps to be addressed", and "Prioritization of gap mitigation is driven by the user's needs and risk management processes".
+- NIST AI 100-1 Appendix B (How AI Risks Differ from Traditional Software Risks)
+  - Verified 18 Nov 2026: "Appendix B: How AI Risks Differ from Traditional Software Risks" in the table of contents (page 38) and as the heading; it names the NIST Cybersecurity Framework, the NIST Privacy Framework, the NIST Risk Management Framework and the Secure Software Development Framework as guidance that may inform security and privacy considerations, then says existing frameworks and guidance "are unable to: adequately manage the problem of harmful bias in AI systems", confront generative AI risks, or comprehensively address machine learning attacks (page 39).
 
 ## NIST AI 600-1, AI RMF Generative Artificial Intelligence Profile, Jul 2024
 
@@ -168,6 +172,8 @@ https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf (table of contents a
 - NIST AI 100-2e2025 Section 2.4.2 (Membership Inference)
   - Verified 31 Oct 2026: "2.4.2. Membership Inference" in the table of contents and as the section heading [NISTAML.033]; the attacker's goal is to determine whether a particular record was part of the training dataset.
 - NIST AI 100-2e2025 Section 2.4.4 (Model Extraction)
+- NIST AI 100-2e2025 Section 2.4.5 (Mitigations)
+  - Verified 18 Nov 2026: "2.4.5. Mitigations" in the table of contents (page 32) under 2.4 Privacy Attacks and Mitigations, and as the section heading; it covers differential privacy and model-extraction defenses, and describes machine unlearning as "either exact (i.e., retraining the model from scratch or from a certain checkpoint) or approximate (i.e., updating the model parameters to remove the influence of the unlearned records)", "with exact unlearning methods offering stronger privacy, at additional computational cost".
 - NIST AI 100-2e2025 Section 3.2 (Supply Chain Attacks and Mitigations)
 - NIST AI 100-2e2025 Section 3.3 (Direct Prompting Attacks and Mitigations)
 - NIST AI 100-2e2025 Section 3.3.2 (Information Extraction)
@@ -273,6 +279,8 @@ https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf (Appendix A, the Core).
 - NIST CSF 2.0 DE.CM-09 (Hardware, software, runtime environments and data monitored)
 - NIST CSF 2.0 RS.AN-03 (Root cause of the incident established)
 - NIST CSF 2.0 ID.IM-01 (Improvements identified from evaluations)
+- NIST CSF 2.0 Section 3.2 (CSF Tiers)
+  - Verified 18 Nov 2026: "3.2. CSF Tiers" as the section heading (page 7) under Section 3, "Introduction to CSF Profiles and Tiers" (the table of contents lists only Section 3); it says Tiers "characterize the rigor of an organization's cybersecurity risk governance and management practices" as "Partial (Tier 1), Risk Informed (Tier 2), Repeatable (Tier 3), and Adaptive (Tier 4)". Appendix B gives a notional illustration. There is no Section 3.3 in CSF 2.0.
 
 ## ISACA IT Audit and Assurance Standards (ITAF 4th edition, 2020)
 
