@@ -49,7 +49,7 @@ the original.
 
 | Quote | Shown as | Permission | Where |
 |---|---|---|---|
-| "The app is user friendly … wasn't tiring to answer." (translated from Filipino, excerpt; the original's comparison with ISACA's question product left out) | Ken L., KaiSip beta tester | Given directly to the owner, 13 Nov 2026 (reply kept privately by the owner). The tester also opted in to credit on the beta form, which covers only the in-app thank-you screen. | `home.html` (not live) |
+| "The app is user friendly … wasn't tiring to answer." (translated from Filipino, excerpt; the original's comparison with ISACA's question product left out) | Ken L., KaiSip beta tester | Given directly to the owner, 13 Nov 2026, for the English wording shown (owner confirmed 18 Nov 2026; reply kept privately by the owner). The tester also opted in to credit on the beta form, which covers only the in-app thank-you screen. | `home.html` (not live) |
 
 ## Next update plan (phone app, proposed 2.1.0)
 
