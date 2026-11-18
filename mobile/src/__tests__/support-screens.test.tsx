@@ -166,8 +166,9 @@ describe('the Help screen', () => {
     expect(text).toContain('KaiSip is independent and not affiliated with or endorsed by ISACA.');
     // The version the store build carries (app.json), written short ("1.8", "1.8.1"),
     // checked against the file itself, not against the list Help reads it from.
+    // The Play name may be two parts ("2.1", owner rule for the 2.1 bundle) or three.
     const shipped = appJson.expo.version;
-    expect(shipped).toMatch(/^\d+\.\d+\.\d+$/);
+    expect(shipped).toMatch(/^\d+\.\d+(\.\d+)?$/);
     expect(text).toContain(`Version ${shipped.replace(/\.0$/, '')}`);
     expect(text).not.toMatch(/Version \d+\.\d+\.0\b/);
   });

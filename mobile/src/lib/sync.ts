@@ -35,6 +35,7 @@
  * never read or written.
  */
 import Constants from 'expo-constants';
+import { fullVersion } from '../engine/support';
 import { AppState } from 'react-native';
 import { getBackend } from '../cloud/backend';
 import { errorCode, type AccountInfo } from '../cloud/types';
@@ -102,7 +103,7 @@ const device: Device = {
   busy: () => BUSY_ROUTE.test(route),
 };
 
-const appVersion = (): string | null => Constants.expoConfig?.version || null;
+const appVersion = (): string | null => fullVersion(Constants.expoConfig?.version) ?? null;
 
 // ── One at a time ────────────────────────────────────────────────────────
 let running: Promise<void> | null = null;

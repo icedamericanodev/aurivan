@@ -18,6 +18,7 @@
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
+import { fullVersion } from '../engine/support';
 import * as DocumentPicker from 'expo-document-picker';
 import { Directory, File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
@@ -107,7 +108,7 @@ const asStudied = <T extends SummaryInput>(d: T): T => ({ ...d, settings: { ...d
  * has no expoConfig version). Unknown means "don't compare": the "made by a
  * newer version" check must never refuse every file because of a missing value.
  */
-const knownAppVersion = (): string | undefined => Constants.expoConfig?.version || undefined;
+const knownAppVersion = (): string | undefined => fullVersion(Constants.expoConfig?.version);
 const appVersion = () => knownAppVersion() ?? 'unknown';
 
 /**

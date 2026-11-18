@@ -33,6 +33,7 @@
 import { useEffect, useRef, useState, type ReactNode, type Ref, type RefObject } from 'react';
 import { Platform, Pressable, useWindowDimensions, View, type LayoutChangeEvent } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay } from 'react-native-reanimated';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { LETTERS, type Letter, type PackQuestion } from '../content/types';
 import { renderText, type Permutation } from '../engine/shuffle';
@@ -1059,7 +1060,14 @@ export function AnswerContext({ question, perm, picked }: { question: PackQuesti
 //
 // `rule` (premium round 2, the Field Guide footer in practice and review, question and answer): a 1pt `line` hairline across the top
 // instead of the paper fade, and the button sits a little below it, as on a guide's page foot.
-export function StickyFooter({ children, onHeight, rule }: { children: ReactNode; onHeight: (h: number) => void; rule?: boolean }) {
+//
+// `safeArea` (default on, FB-008 / R-QHER): the footer is absolutely positioned, so a footer that
+// is a DIRECT child of the screen's SafeAreaView ignores that view's bottom padding, and Android's
+// three-button navigation bar covered its buttons. The action surface therefore reserves the bottom
+// and side insets itself. Pass `safeArea={false}` when the footer sits inside an inner flex box that
+// already ends above the system bar (practice/mock session, lessons, drills): the native inset is
+// the whole window's, so adding it there would leave an empty band above the buttons.
+export function StickyFooter({ children, onHeight, rule, safeArea = true }: { children: ReactNode; onHeight: (h: number) => void; rule?: boolean; safeArea?: boolean }) {
   const { c } = useTheme();
   const onLayout = (e: LayoutChangeEvent) => onHeight(e.nativeEvent.layout.height);
   return (
@@ -1075,7 +1083,11 @@ export function StickyFooter({ children, onHeight, rule }: { children: ReactNode
           <Rect x="0" y="0" width="100%" height="22" fill="url(#footerFade)" />
         </Svg>
       )}
-      <View
+      {/* Absolute positioning bypasses the screen's safe-area padding. The action surface
+          owns its bottom/side insets, including Android's three-button navigation bar.
+          Keep it inside the measured footer so scroll clearance includes those insets. */}
+      <SafeAreaView
+        edges={safeArea ? ['bottom', 'left', 'right'] : []}
         testID={rule ? 'footer-rule' : undefined}
         style={[
           { backgroundColor: c.bg, paddingHorizontal: space.gutter, paddingBottom: space.md, gap: space.md },
@@ -1083,7 +1095,7 @@ export function StickyFooter({ children, onHeight, rule }: { children: ReactNode
         ]}
       >
         {children}
-      </View>
+      </SafeAreaView>
     </View>
   );
 }

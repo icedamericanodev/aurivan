@@ -10,14 +10,15 @@ import appJson from '../../app.json';
 import { CERTIFICATIONS } from '../content/certifications';
 import * as support from '../content/support';
 import { FAQ, FIXES, shortVersion, WHATS_NEW, WHATS_NEW_FOOTER } from '../content/support';
-import { fixesProblems, SUPPORT_TOPICS } from '../engine/support';
+import { fixesProblems, fullVersion, SUPPORT_TOPICS } from '../engine/support';
 
 const lines = WHATS_NEW.flatMap((e) => [...(e.new ?? []), ...(e.improved ?? []), ...(e.fixed ?? [])]);
 
 describe('What’s new', () => {
   it('the newest entry is this app version, and versions are newest first', () => {
     expect(WHATS_NEW[0].version).toBe(appJson.expo.version);
-    const parts = (v: string) => v.split('.').map(Number);
+    // Play names can be two parts ("2.1"); compare them as "2.1.0".
+    const parts = (v: string) => fullVersion(v)!.split('.').map(Number);
     for (let i = 1; i < WHATS_NEW.length; i++) {
       const [a, b] = [parts(WHATS_NEW[i - 1].version), parts(WHATS_NEW[i].version)];
       expect(a[0] * 1e6 + a[1] * 1e3 + a[2]).toBeGreaterThan(b[0] * 1e6 + b[1] * 1e3 + b[2]);

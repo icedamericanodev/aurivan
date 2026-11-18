@@ -12,6 +12,7 @@
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
+import { fullVersion } from '../engine/support';
 import { File, Directory, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { AppState, Platform } from 'react-native';
@@ -387,7 +388,7 @@ export async function downloadMyData(now = Date.now()): Promise<Result<{ outcome
   let text: string;
   const b = backend();
   try {
-    text = await b.auth.exportMyData({ appVersion: Constants.expoConfig?.version });
+    text = await b.auth.exportMyData({ appVersion: fullVersion(Constants.expoConfig?.version) });
   } catch (e) {
     // The session ended (or its account is gone): signed out here, and the screen says sign in again.
     if (e instanceof CloudError && (e.code === 'unauthorized' || e.code === 'gone')) await sessionEnded(b);

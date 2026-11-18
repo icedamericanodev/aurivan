@@ -1119,7 +1119,7 @@ export default function SessionScreen() {
 
         {/* Sticky bottom action, within thumb reach */}
         {/* Practice and review (premium round 2): the plate button over a hairline. A mock keeps its footer. */}
-        <StickyFooter onHeight={setFooterH} rule={!isMock}>
+        <StickyFooter onHeight={setFooterH} rule={!isMock} safeArea={false}>
           {compactMockFooter ? (
             <View style={{ gap: space.sm }}>
               <Row gap={space.sm}>

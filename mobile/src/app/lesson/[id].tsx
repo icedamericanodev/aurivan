@@ -376,7 +376,7 @@ export default function LessonPlayer() {
 
         {showingDone && huge ? null : (
           // The sticky footer with the paper fade above it (spec §6), as on the question screen.
-          <StickyFooter onHeight={setFooterH}>
+          <StickyFooter onHeight={setFooterH} safeArea={false}>
             {showingDone ? (
               <CompleteActions lesson={lesson} domain={domain} />
             ) : (

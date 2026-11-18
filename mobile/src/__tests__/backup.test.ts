@@ -788,3 +788,27 @@ describe('when the app does not know its own version', () => {
     }
   });
 });
+
+// The 2.1 Play bundle is named exactly "2.1" (owner rule, 9 Nov 2026). Backups
+// only accept three-part versions, so the app saves it as "2.1.0". Without
+// that, a backup saved on 2.1 was refused as bad data on the same phone.
+describe('when the Play version name has two parts ("2.1")', () => {
+  it('saves "2.1.0" and restores its own backup, plus a 2.0.0 one', () => {
+    const constants = jest.requireMock('expo-constants') as { default: { expoConfig: { version?: string } } };
+    studiedLearner();
+    const saved = constants.default.expoConfig.version;
+    constants.default.expoConfig.version = '2.1';
+    try {
+      const file = currentBackup(NOW);
+      expect(file.appVersion).toBe('2.1.0');
+      expect(checkBackupText(JSON.stringify(file)).kind).toBe('ok');
+      // A tester's backup from the 2.0.0 launch build still restores.
+      expect(checkBackupText(JSON.stringify({ ...file, appVersion: '2.0.0' })).kind).toBe('ok');
+      // A file from a later release is still refused as newer.
+      const later = checkBackupText(JSON.stringify({ ...file, appVersion: '2.2.0' }));
+      expect(later.kind).toBe('error');
+    } finally {
+      constants.default.expoConfig.version = saved;
+    }
+  });
+});

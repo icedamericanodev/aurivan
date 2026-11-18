@@ -551,6 +551,18 @@ export function parseVersion(v: string | undefined): [number, number, number] | 
   return m ? [Number(m[1]), Number(m[2]), Number(m[3])] : null;
 }
 
+/**
+ * The app version in the three-part form every saved file uses ("2.1" →
+ * "2.1.0"). The Play version name can be two parts (owner rule: the 2.1
+ * bundle is named exactly "2.1"), but backups, problem reports and the sync
+ * database only accept "major.minor.patch". Without this, a backup saved on
+ * 2.1 would be refused as bad data. Anything else unreadable → undefined.
+ */
+export function fullVersion(v: string | null | undefined): string | undefined {
+  const m = /^(\d{1,4})(?:\.(\d{1,4}))?(?:\.(\d{1,4}))?$/.exec((v ?? '').trim());
+  return m ? `${Number(m[1])}.${Number(m[2] ?? 0)}.${Number(m[3] ?? 0)}` : undefined;
+}
+
 /** True when version `a` is older than version `b` ("1.7.0" < "1.10.0"). */
 export function versionBefore(a: [number, number, number], b: [number, number, number]): boolean {
   for (let i = 0; i < 3; i++) if (a[i] !== b[i]) return a[i] < b[i];
