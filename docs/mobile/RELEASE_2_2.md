@@ -16,7 +16,9 @@ A development tracker for the next phone update after 2.1, not a record of a shi
 - `SHOTS=wide npm run shots` (`scripts/screenshots/shoot_wide.mjs`): tablet landscape 1280x800, tablet portrait 800x1280 and the phone; fails on sideways scrolling or on anything wider than the column. Against the 2.1 code it fails on every screen (1240pt wide); on this change it passes.
 - `src/__tests__/large-screens.test.tsx`: the phone lock stays, the plugin is registered and writes the feature once as optional, the column maths, `useContentWidth` and `ContentColumn`.
 
-**Evidence.** Phone portrait (393x852) screenshots of 13 key screens compared pixel by pixel with 2.1: 11 identical, 2 with sub-threshold animation-timing differences (no pixel changed visibly). At 1280x800 the question, all four options and "Check answer" fit without scrolling. `npm run check` (363 suites, 7,190 passed, 2 skipped), Android export, release-config and size-budget checks passed.
+**Evidence.** Phone portrait (393x852) screenshots of 13 key screens compared pixel by pixel with 2.1: 11 identical, 2 with sub-threshold animation-timing differences (no pixel changed visibly). At 1280x800 the question, all four options and "Check answer" fit without scrolling. `npm run check` (363 suites, 7,191 passed, 2 skipped), Android export, release-config and size-budget checks passed.
+
+**Review (PR #283).** Code review found one phone regression, fixed: in the Report a problem sheet the column had gone between the safe area and the keyboard view, and Android's keyboard maths reads that view's position from its parent, so the bottom field could slip under the keyboard (a test now pins the nesting). UX review: the tab bar now follows the column (it was capped at 520, narrower than the 560 cards, so card corners showed beside it); the load-failure and crash screen centres itself; the wide set now shows an open Settings sheet. Play review: GO, with the release note softened from "every page" to "pages" (the diagram viewer stays full width). Copy left for later: onboarding's "Everything stays on your phone" reads oddly on a tablet ("on this device" would fit both).
 
 **Still to verify on the built AAB (cannot be done from the cloud session: no emulator).**
 - [ ] Read the merged manifest in the AAB: `android.hardware.screen.portrait` with `required="false"`, MainActivity still `portrait`.
@@ -28,4 +30,4 @@ A development tracker for the next phone update after 2.1, not a record of a shi
 
 ## Play release notes (draft)
 
-Improved: on tablets and other large screens, every page now sits in a comfortable reading width instead of stretching across the screen.
+Improved: on tablets and other large screens, pages now sit in a comfortable reading width instead of stretching across the screen.

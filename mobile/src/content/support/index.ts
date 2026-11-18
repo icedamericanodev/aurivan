@@ -63,7 +63,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     // date is set again at build freeze.
     version: '2.2',
     date: '2026-11-18',
-    improved: ['On tablets and other large screens, every page now sits in a comfortable reading width instead of stretching across the screen.'],
+    improved: ['On tablets and other large screens, pages now sit in a comfortable reading width instead of stretching across the screen.'],
   },
   {
     // The first update after the launch. Testers only ever had 2.0.0, so the

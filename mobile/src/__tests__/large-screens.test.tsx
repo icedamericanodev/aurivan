@@ -10,7 +10,7 @@
  * - on a tablet the app draws in a centred column no wider than COLUMN_MAX,
  *   and on a phone the column is the whole window (nothing changes there).
  */
-import { render } from '@testing-library/react-native';
+import { act, render } from '@testing-library/react-native';
 import { Dimensions, Text } from 'react-native';
 import { columnWidth, COLUMN_MAX, CONTENT_MAX, ContentColumn, useContentWidth } from '../components/layout';
 import { space } from '../theme/tokens';
@@ -27,9 +27,9 @@ type Manifest = { manifest: { 'uses-feature'?: Feature[] } };
 const portraitFeatures = (m: Manifest) => (m.manifest['uses-feature'] ?? []).filter((f) => f.$['android:name'] === plugin.FEATURE);
 
 const start = Dimensions.get('window');
-const setWindow = (width: number, height: number) => {
+const setWindow = async (width: number, height: number) => {
   const w = { ...start, width, height, fontScale: 1 };
-  Dimensions.set({ window: w, screen: w });
+  await act(async () => Dimensions.set({ window: w, screen: w }));
 };
 afterAll(() => Dimensions.set({ window: start, screen: start }));
 
@@ -81,10 +81,10 @@ describe('the screen column', () => {
       seen = useContentWidth();
       return null;
     };
-    setWindow(393, 852);
+    await setWindow(393, 852);
     await render(<Probe />);
     expect(seen).toBe(393);
-    setWindow(1280, 800);
+    await setWindow(1280, 800);
     await render(<Probe />);
     expect(seen).toBe(COLUMN_MAX);
   });

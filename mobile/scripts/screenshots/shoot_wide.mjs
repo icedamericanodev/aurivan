@@ -68,6 +68,12 @@ for (const size of pick) {
     await page.waitForTimeout(1500);
     await snap(name);
   }
+  // A Settings bottom sheet (Daily time): the card centred over the full-window dim.
+  await page.goto(base + '/settings', { waitUntil: 'networkidle' });
+  await page.waitForTimeout(1500);
+  await page.getByRole('button', { name: /^Daily time, / }).first().click();
+  await page.waitForTimeout(900);
+  await snap('settings-sheet');
   // A practice question, then its answer screen (option A, then Check answer).
   await page.goto(base + '/session', { waitUntil: 'networkidle' });
   await page.waitForTimeout(1500);

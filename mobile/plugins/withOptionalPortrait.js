@@ -20,7 +20,7 @@
  * The lock itself is unchanged on phones. On large screens (smallest width
  * 600dp or more) Android 16 ignores it anyway for apps targeting SDK 36, and
  * the app lays out in a centred column there (src/components/layout.tsx).
- * Native: needs a store build. Checked by src/__tests__/large-screens.test.ts.
+ * Native: needs a store build. Checked by src/__tests__/large-screens.test.tsx.
  */
 const { withAndroidManifest } = require('expo/config-plugins');
 
