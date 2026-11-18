@@ -36,9 +36,9 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
     const h = response.headers();
     const own = (h['content-security-policy'] || '').split(',').pop();
     const scriptSrc = ((own.match(/script-src ([^;]*)/) || [])[1] || '').trim();
-    check(/default-src 'none'/.test(own) && /style-src 'self';/.test(own) && /form-action 'self' https:\/\/app\.kit\.com;/.test(own) && /frame-ancestors 'none'/.test(own), 'home policy missing from / : ' + own);
+    check(/default-src 'none'/.test(own) && /style-src 'self';/.test(own) && /form-action 'self' https:\/\/app\.kit\.com\/forms\/10207004\/subscriptions;/.test(own) && /frame-ancestors 'none'/.test(own), 'home policy missing from / : ' + own);
     const formActions = (h['content-security-policy'] || '').split(',').map(p => ((p.match(/form-action ([^;]*)/) || [])[1] || '').trim());
-    check(formActions.every(a => /'self'/.test(a) && /https:\/\/app\.kit\.com/.test(a)), 'every policy on / must let the form post to the page itself and to Kit: ' + formActions.join(' | '));
+    check(formActions.every(a => /'self'/.test(a) && /https:\/\/app\.kit\.com\/forms\/10207004\/subscriptions(\s|$)/.test(a)), 'every policy on / must let the form post to the page itself and to Kit: ' + formActions.join(' | '));
     check(scriptSrc === HOME_SCRIPT_SRC && !/unsafe/.test(own), 'home policy script-src is not the strict one: ' + scriptSrc);
     check(h['x-frame-options'] === 'DENY' && /max-age/.test(h['strict-transport-security'] || '') && h['x-content-type-options'] === 'nosniff', 'site-wide security headers missing');
     check(!isDraft || /noindex/.test(h['x-robots-tag'] || ''), 'a draft home page must be served noindex');
@@ -205,6 +205,16 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
     check(shots === 5 && stageHidden && quote, `no-JS: shots ${shots}, stage hidden ${stageHidden}, quote visible ${quote}`);
     check(headerBg !== 'rgba(0, 0, 0, 0)', 'no-JS: the sticky header needs its own background');
     if (isMockup) check(await page.locator('#waitlist-email').isDisabled(), 'no-JS: the mockup form must stay disabled');
+    if (!isMockup) {
+      // The form must still send, with Kit stubbed, when JavaScript is off.
+      let body = null;
+      await page.route('https://app.kit.com/**', route => { body = route.request().postData(); route.fulfill({ status: 302, headers: { Location: ORIGIN + '/waitlist-thanks' } }); });
+      await page.fill('#waitlist-email', 'nojs@example.com');
+      await page.check('input[value=iPhone]', { force: true });
+      await page.check('#waitlist-consent');
+      await Promise.all([page.waitForURL('**/waitlist-thanks', { timeout: 10000 }).catch(() => {}), page.click('.waitlist-form button[type=submit]')]);
+      check(new URLSearchParams(body || '').get('fields[phone_type]') === 'iPhone' && /\/waitlist-thanks$/.test(page.url()), 'no-JS: the waitlist form must still send: ' + body + ' ' + page.url());
+    }
     await context.close();
   }
 
@@ -240,11 +250,15 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
     check(fields.get('email_address') === 'reviewer@example.com' && fields.get('fields[phone_type]') === 'Android' && [...fields.keys()].length === 2, 'form must send only email_address and fields[phone_type]: ' + (sent.body || ''));
     check(/\/waitlist-thanks$/.test(page.url()), 'after Kit, the visitor must land on /waitlist-thanks: ' + page.url());
     check(/Check your/.test(await page.textContent('h1').catch(() => '')), 'the thank-you page must load');
+    // A blocked redirect does not always raise this event; the URL check
+    // above is the real proof that the policy lets Kit send people back.
     check(!violations.length, 'policy violations during sign-up: ' + violations.join(' | '));
     // Where the confirm link in Kit's email lands.
     const confirmed = await page.goto(ORIGIN + '/waitlist-confirmed');
     check(confirmed.status() === 200 && /on\s+the list/i.test(await page.textContent('h1')), 'the confirmed page must load');
     check(/noindex/.test(await page.getAttribute('meta[name=robots]', 'content')), 'the confirmed page must be noindex');
+    const ch = confirmed.headers();
+    check(/form-action 'none'/.test(ch['content-security-policy'] || '') && /noindex/.test(ch['x-robots-tag'] || ''), 'the waitlist pages need their own strict policy and noindex header: ' + ch['content-security-policy']);
     const stored = await page.evaluate(() => localStorage.length + sessionStorage.length + document.cookie.length);
     check(stored === 0, 'the page must not store anything: ' + stored);
     await page.close();

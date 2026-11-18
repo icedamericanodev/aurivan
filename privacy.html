@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
 <title>Privacy Policy — KaiSip</title>
-<meta name="description" content="How KaiSip, the CISA exam-prep app, handles your data: privacy-first, no accounts, analytics only with your consent.">
+<meta name="description" content="How KaiSip, the CISA exam-prep app, handles your data: privacy-first, no accounts, cookie-free visit counts, and Google Analytics only with your consent.">
 <link rel="icon" href="assets/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
@@ -103,8 +103,8 @@
   <div class="lead">
     <p>KaiSip is a CISA exam-preparation app, free during the beta and built privacy-first. There
     are <strong>no accounts</strong>, and your study progress
-    <strong>never leaves your device</strong>. On the website we use anonymous
-    analytics only if you accept it; the mobile app has no analytics at all. This policy explains exactly what happens to your data.</p>
+    <strong>never leaves your device</strong>. On the website we count visits
+    without cookies, and use Google Analytics only if you accept it; the mobile app has no analytics at all. This policy explains exactly what happens to your data.</p>
   </div>
 
   <nav class="toc" aria-label="Contents">
@@ -171,11 +171,16 @@
   <p>We keep these messages for up to 12 months after your issue is resolved,
   then delete them, or sooner if you ask.</p>
 
-  <h3>3d. Hosting logs</h3>
+  <h3 id="s3d">3d. Hosting logs and visit counts</h3>
   <p>The website is hosted on Cloudflare. As with any website, the hosting
   provider may automatically process technical request data (such as IP
   address and browser type) to deliver the site and protect against abuse.
   This is handled by the hosting provider under its own terms.</p>
+  <p>We also use Cloudflare Web Analytics to count visits to the website and
+  see how fast pages load: which pages are viewed, the site that sent you,
+  your browser and device type, and your country. It sets no cookies, stores
+  nothing on your device and does not follow you across sites or over time,
+  so it runs without asking. We see only totals, never individual visitors.</p>
 
   <h3 id="s3e">3e. Beta tester sign-up (optional)</h3>
   <p>If you sign up to test KaiSip before launch, you fill in a Google Form
@@ -223,7 +228,8 @@
   <h3 id="s3f">3f. Launch waitlist (optional)</h3>
   <p>If you join the launch waitlist on kaisip.com, we collect your email
   address and the phone you chose (iPhone, Android or both). We use them only
-  to email you about KaiSip's web, Android and iPhone launches, because you
+  to email you about KaiSip's web, Android and iPhone launches and about new
+  KaiSip courses for other IT audit and risk certifications, because you
   agreed to that when you joined. You must be 18 or older to join. If we
   learn that someone under 18 joined, we delete their details.</p>
   <p>The list is kept by Kit (our email service), in the United States. Kit
@@ -232,14 +238,17 @@
   emails and click their links (with your IP address and rough location). We
   use this only to check that our emails arrive. Every email has
   an unsubscribe link, or you can email certprep.support@gmail.com.</p>
-  <p>We delete your details within 30 days after you unsubscribe, and delete
-  the whole list 12 months after the last launch it covers. The waitlist is
+  <p>If you do not confirm within 30 days, we delete your sign-up. We delete
+  your details within 30 days after you unsubscribe or ask us to, and delete
+  the whole list 12 months after the last launch it covers, or 2 years after
+  you joined, whichever comes first. The waitlist is
   separate from the beta tester sign-up in 3e and does not include the tester
   reward. If you live in the EU or UK, our legal basis is your consent, which
   you can withdraw at any time.</p>
 
   <h2 id="s4">4. Cookies and consent</h2>
-  <p>The App itself sets no cookies. The only cookie scenario is Google
+  <p>The App itself sets no cookies, and Cloudflare Web Analytics (section
+  3d) sets none either. The only cookie scenario is Google
   Analytics, described in section 3b, and it is used <strong>only after you
   accept</strong> on the cookie banner. Until you make a choice, analytics
   storage is disabled by default.</p>
@@ -257,7 +266,7 @@
     <tr><td>Google Play Console</td><td>The Android test tester list</td><td>Only if you join the Android test</td></tr>
     <tr><td>Supabase</td><td>Stores the private beta tester tracker, in Singapore (only the maintainer can open it)</td><td>Only if you sign up to test</td></tr>
     <tr><td>GitHub</td><td>Runs the nightly job that makes encrypted backups of KaiSip's database</td><td>Only if you sign up to test</td></tr>
-    <tr><td>Cloudflare</td><td>Website hosting, and keeping those encrypted backups for 30 days</td><td>Every visit (technical logs); backups hold your details only if you sign up to test</td></tr>
+    <tr><td>Cloudflare</td><td>Website hosting, cookie-free visit counts (Web Analytics), and keeping those encrypted backups for 30 days</td><td>Every visit (technical logs and visit counts); backups hold your details only if you sign up to test</td></tr>
     <tr><td>Expo (EAS Update)</td><td>Delivering updates to test versions of the mobile app</td><td>Each time a test version of the mobile app opens (never the Google Play version)</td></tr>
     <tr><td>Kit</td><td>Keeps the launch waitlist and sends its emails, in the United States</td><td>Only if you join the waitlist</td></tr>
     <tr><td>Ko-fi</td><td>Optional donations</td><td>Only if you follow a "Support on Ko-fi" link (website only; never in the mobile app)</td></tr>

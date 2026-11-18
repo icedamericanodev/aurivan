@@ -137,13 +137,25 @@ the website"). Every tester quote card says testers are offered free Premium.
    `https://kaisip.com/waitlist-confirmed` ("You're on the list"), and
    Advanced > "Send subscriber data to thank you page" off (it would put the
    email in the address). Both pages are published only in home mode.
-   Before launch, the owner signs up once from a real browser on a preview
-   and checks the email arrives (Gmail, Yahoo, Outlook).
+   Before launch, the owner signs up once from a real browser and checks the
+   email arrives (Gmail, Yahoo, Outlook). It has to be on kaisip.com itself:
+   a `*.pages.dev` or `workers.dev` address cannot redirect back under
+   `'self'`. Also check in Kit: the custom field key is exactly `phone_type`;
+   both redirect addresses start `https://kaisip.com/` (no `www.`); spam
+   protection on the form is on; and whether Kit adds `ck_subscriber_id` to
+   the confirm redirect (if it does, that id appears in Cloudflare's logs).
+   **Monthly in Kit (owner):** Kit deletes nobody by itself. Delete
+   subscribers who have not confirmed after 30 days and anyone who
+   unsubscribed more than 30 days ago (Subscribers, filter by status, select,
+   delete). This is what privacy.html 3f promises.
 2. Recheck the Android, web and iPhone wording and the FAQ answers (price,
    iPhone, beta).
-3. Decide on Cloudflare Web Analytics: if it is off, drop
-   `static.cloudflareinsights.com` from `HOME_CSP`; if it is on, describe it in
-   privacy.html.
+3. Cloudflare Web Analytics is on (owner, 18 Nov 2026) and privacy.html 3d
+   describes it. After launch, view the source of kaisip.com and search for
+   `cloudflareinsights`. If the dashboard says it is on but the script is
+   missing (automatic setup may not reach Workers static assets), choose
+   "Enable with JS snippet" and add that external script before `</body>` in
+   `home.html`; `HOME_CSP` already allows it.
 4. Set `kaisip-home-status` to `approved` and the robots meta to
    `index, follow` in `home.html`.
 5. Confirm `SITE_MODE=home bash scripts/build_site.sh` passes with no draft
