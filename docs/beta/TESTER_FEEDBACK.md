@@ -220,7 +220,7 @@ rules · **D. Move the requirements into a mandatory standard under the policy
 from a high risk rating. A high rating alone does not make a particular control
 mandatory; management's decision does. The shipped question therefore says:
 "Management requires consistent password length and lockout controls following
-a risk assessment, but several teams depart from the guideline containing them.
+a risk assessment, but several teams depart from the guideline that sets them out.
 Which recommendation is BEST for the IS auditor?" The explanation, key idea and
 Exam cue say the same, and note that discipline does not follow automatically.
 Options, order and key (D) are unchanged. Source references were kept as they

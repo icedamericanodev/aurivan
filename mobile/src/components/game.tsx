@@ -197,7 +197,7 @@ export function GameFrame({
           <Enter key={index}>{children}</Enter>
         </ScrollView>
         {footer && (
-          <StickyFooter onHeight={setFooterH}>
+          <StickyFooter onHeight={setFooterH} safeArea={false}>
             <View style={{ gap: space.sm }}>{footer}</View>
           </StickyFooter>
         )}
@@ -459,7 +459,7 @@ export function RoundEnd({
           {/* Mobile 1.40: ONE "Report a problem" at the foot of the recap, not one under every item. */}
           <RecapReport certId={certId} game={game} misses={misses} />
         </ScrollView>
-        <StickyFooter onHeight={setFooterH}>
+        <StickyFooter onHeight={setFooterH} safeArea={false}>
           {/* Play again (solid) and Done (ghost), side by side; one above the other from text scale 1.3. */}
           <View style={{ flexDirection: large ? 'column' : 'row', gap: space.sm }}>
             <Button label="Play again" onPress={onAgain} style={large ? undefined : { flex: 1 }} />
@@ -665,7 +665,7 @@ export function GameIntro<V extends string>({
             </>
           )}
         </ScrollView>
-        <StickyFooter onHeight={setFooterH}>
+        <StickyFooter onHeight={setFooterH} safeArea={false}>
           <Button label="Start" onPress={onStart} icon={(col) => <PlayIcon size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />} />
         </StickyFooter>
       </View>

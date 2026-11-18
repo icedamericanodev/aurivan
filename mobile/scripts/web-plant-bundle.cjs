@@ -235,7 +235,9 @@ function stampProblems({ bundleVersion, liveVersion, appVersion, liveStores, sou
     out.push(`mobile/LIVE_VERSION must be one x.y.z line (the app version live on Google Play), found "${liveVersion}"`);
     return out;
   }
-  if (SEMVER.test(appVersion) && cmpVersion(liveVersion, appVersion) > 0) out.push(`mobile/LIVE_VERSION ${liveVersion} is ahead of app.json's expo.version ${appVersion}`);
+  // The Play name may be two parts ("2.1", the 2.1 bundle): compare it as "2.1.0", never skip the check.
+  const appFull = typeof appVersion === 'string' && /^\d+\.\d+$/.test(appVersion) ? `${appVersion}.0` : appVersion;
+  if (SEMVER.test(appFull) && cmpVersion(liveVersion, appFull) > 0) out.push(`mobile/LIVE_VERSION ${liveVersion} is ahead of app.json's expo.version ${appVersion}`);
   if (bundleVersion !== null && bundleVersion !== undefined) {
     if (!SEMVER.test(bundleVersion)) out.push(`assets/kaisip-cloud.js has no valid version stamp`);
     else if (cmpVersion(bundleVersion, liveVersion) > 0) out.push(`assets/kaisip-cloud.js stamps ${bundleVersion}, newer than the Play release in mobile/LIVE_VERSION (${liveVersion}): phones would pause sync`);

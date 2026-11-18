@@ -75,3 +75,35 @@ it.each([false, true])('owns bottom and side safe areas with rule=%s', (rule) =>
   act(() => button.props.onPress());
   expect(onPress).toHaveBeenCalledTimes(1);
 });
+
+// Footers inside an inner flex box (practice/mock session, lessons, drills) already end above the
+// system bar; they opt out so the bar's height is not added a second time.
+it('adds no insets when the screen already keeps the footer clear (safeArea={false})', () => {
+  act(() => {
+    tree = create(
+      <StickyFooter onHeight={jest.fn()} safeArea={false}>
+        <Pressable accessibilityRole="button" accessibilityLabel="Next" onPress={jest.fn()} />
+      </StickyFooter>,
+    );
+  });
+  const surface = tree!.root.findByType(SafeAreaView);
+  expect(surface.props.edges).toEqual([]);
+  expect(StyleSheet.flatten(surface.props.style).paddingBottom).toBe(space.md);
+});
+
+// Which screens opt out is a layout fact, so pin it: a direct child of the screen's SafeAreaView
+// must keep the insets (the R-QHER overlap), a footer inside an inner flex box must not double them.
+it.each([
+  ['src/app/session.tsx', 1],
+  ['src/app/lesson/[id].tsx', 1],
+  ['src/components/game.tsx', 3],
+  ['src/app/onboarding.tsx', 0],
+  ['src/app/mock-start.tsx', 0],
+  ['src/app/fit.tsx', 0],
+  ['src/components/emptyScreen.tsx', 0],
+  ['src/components/firstSet.tsx', 0],
+])('%s opts out of footer insets %i time(s)', (file, count) => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const src: string = require('fs').readFileSync(require('path').join(__dirname, '..', '..', file), 'utf8');
+  expect(src.split('safeArea={false}').length - 1).toBe(count);
+});
