@@ -12,7 +12,7 @@ status=0
 # 1. JSON validity + tip coverage --------------------------------------------
 # v9.0+: tips live inline in data/originals/d{N}.json (single source of truth).
 # `scripts/originals_to_domain.py` regenerates data/domain{N}.json from originals.
-# The old tips_overrides/ layer and xlsm converter are retired (archive/question-bank-v8/).
+# The old tips_overrides/ layer and xlsm converter are retired (removed 18 Nov 2026; see git history).
 python3 - <<'PY' || status=1
 import json, sys
 counts = {1: 220, 2: 226, 3: 156, 4: 324, 5: 353}

@@ -79,8 +79,8 @@ answers 200).
 
 ## The new home page (`home.html`, not live yet)
 
-Added 13 Nov 2026. A marketing home page (the "Fieldwork" design from
-`design-notes/landing-round-four/`) that will replace the beta page at
+Added 13 Nov 2026. A marketing home page (the "Fieldwork" design, whose
+draft folder was removed on 18 Nov 2026 once ported) that will replace the beta page at
 `kaisip.com/` when the owner approves it. Until then **nothing about the live
 site changes**: Cloudflare still runs the plain build, which is landing mode.
 

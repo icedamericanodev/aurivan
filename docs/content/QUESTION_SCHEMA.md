@@ -12,7 +12,7 @@ tip order, option parity) are in `docs/content/EXAM_STYLE_V2.md` and are checked
 by `scripts/lint_exam_style_v2.py`.
 
 Moved here on 26 Oct 2026 from the retired relaunch checklist
-(`archive/RELAUNCH_CHECKLIST.md`).
+(the relaunch checklist, removed 18 Nov 2026; see git history).
 
 ## File shape
 

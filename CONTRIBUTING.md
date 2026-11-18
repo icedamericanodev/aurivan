@@ -31,7 +31,7 @@ After install, every `git commit` runs `verify_repo.sh` first and aborts the com
 
 ### Rebuild planning files (retired)
 
-The question-bank rebuild has shipped. Its planning files (the concept queue, the per-domain coverage trackers and the retrospectives) are kept for history in `archive/question-bank-rebuild/` and are no longer updated.
+The question-bank rebuild has shipped. Its planning files (the concept queue, the per-domain coverage trackers and the retrospectives) were removed on 18 Nov 2026 and survive only in git history.
 
 ## Hard rules
 

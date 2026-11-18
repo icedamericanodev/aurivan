@@ -55,7 +55,7 @@ beta runs on Supabase's Free plan, Resend's free email plan and Cloudflare
 R2's free tier: $0 a month up to about 3,000 learners if the free limits
 hold (`SCALING.md`).
 
-### Why Supabase (and not the custom backend in `archive/design-notes/BACKEND_ARCHITECTURE.md`)?
+### Why Supabase (and not the custom backend proposal, removed 18 Nov 2026 and kept in git history)?
 That proposal was written for the web app. For a solo beginner shipping
 mobile, Supabase gives Sign in with Apple (mandatory if you offer Google
 sign-in on iOS), row-level security, backups and storage pre-built. It is

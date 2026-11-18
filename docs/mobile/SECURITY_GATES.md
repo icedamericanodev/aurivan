@@ -205,7 +205,7 @@ could build a fake KaiSip APK with that key, and Android would install it as an
 update over a tester's real app, with access to all its saved data.
 
 **Status: retired on 26 Oct 2026** (owner decision). The workflow now lives in
-`archive/github-workflows/android-apk.yml`; GitHub only runs workflows inside
+`archive/github-workflows/android-apk.yml` (deleted 18 Nov 2026; in git history); GitHub only runs workflows inside
 `.github/workflows/`, so it can no longer run. Test APKs come from the
 "Phone build (EAS Build)" workflow with the **preview** profile (Actions →
 "Phone build (EAS Build)" → Run workflow → profile `preview`), signed with the
