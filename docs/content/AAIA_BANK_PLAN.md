@@ -174,6 +174,10 @@ payment, never renews). Notes, lessons, principles and games stay free.
   from the sample, never from the paid bank.
 - The sample is fixed per release (a `free: true` flag on each item at Stage
   2.7), and changes only with a new reviewed release.
+- **Final review week stays free** (release audit, 18 Nov 2026, product-manager): the paywall never
+  shows during exam week. When the paywall is built, a learner without paid access who opens day 7's
+  full mock gets the free 30-item short mock instead, labelled as the short mock; paid learners get
+  the full 90. Day 4's pace check may use the same short mock.
 - **Before launch:** while the bank is still small, the sample is at least 100
   items; the course is not sold until the bank reaches about 600 reviewed items
   (two thirds of the target), so paid learners get a real bank.
@@ -210,8 +214,8 @@ the notice is part of the description.
 > checklist, plus a sample of practice questions, a diagnostic and a short
 > timed mock.
 >
-> 6-month access unlocks the full bank of original practice questions and a
-> full-length timed mock to practice your pacing. Every question explains each
+> 6-month access unlocks the full bank of original practice questions and
+> full-length timed mocks, each a new mix from the full bank, to practice your pacing. Every question explains each
 > option and adds three coaching tips. It is one payment for 6 months that
 > never renews.
 >
