@@ -303,9 +303,9 @@
       "bloom_level": "Analysis",
       "question": "A buyer who raises purchase orders moves to accounts payable, which releases supplier payments, and keeps their purchasing rights. What is the access analyst's BEST action?",
       "options": {
-        "A": "Leave the old purchasing rights in place until the next access review",
+        "A": "Leave the old purchasing rights in place, pending the next access review",
         "B": "Have the data owner spot-check the buyer's payments",
-        "C": "Let the buyer keep the old rights to help their former team",
+        "C": "Let the buyer keep the old rights, helping their former team",
         "D": "Request removal of the old rights, alerting the data owner"
       },
       "correct": "D",
@@ -328,7 +328,7 @@
         "Separation of duties",
         "Handover access"
       ],
-      "_provenance": "Authored from concept: 'a transfer is a leaver plus a joiner; remove conflicting old access at the move' (notes 3.1.9 Movers and Privilege Creep). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'and'; same key and teaching point.",
+      "_provenance": "Authored from concept: 'a transfer is a leaver plus a joiner; remove conflicting old access at the move' (notes 3.1.9 Movers and Privilege Creep). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'and'; same key and teaching point. Word-tell sweep round 2, 18 Nov 2026: distractors A and C reworded so the key is not the only option with a comma clause; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -337,7 +337,7 @@
       "subtopic": "3.1 Identity life cycle. Non-human identities",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A system administrator finds the application programming interface (API) key for the company's AI chatbot, which only the platform team can rotate, pasted in a busy team chat channel. What should the administrator do FIRST?",
+      "question": "A system administrator finds the application programming interface (API) key for the AI chatbot, which only the platform team can revoke or rotate, pasted in a busy team chat. What should the administrator do FIRST?",
       "options": {
         "A": "Report the key to the platform and security teams at once",
         "B": "Post a reminder in the team channel not to share keys",
@@ -364,7 +364,7 @@
         "Service accounts",
         "AI agents"
       ],
-      "_provenance": "Authored from concept: 'a leaked machine secret is reported so its owner and security can rotate it' (notes 3.1.12 Non-Human Identities Through the Life Cycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit). Stem now states that the platform team owns the key. Fix-up 31 Oct 2026 (blind test and audit): the reason clause left the key, and the D explanation now matches who coordinates rotation. Fix-up round 2, 31 Oct 2026 (blind test and audit): A now reports to the platform team as well, so A and D both reach the owner and differ only on revoking a key the engineer does not own; the explanations no longer claim that revoking skips the misuse check. Word-tell sweep, 18 Nov 2026: legacy 'junior engineer' renamed system administrator; option C reworded without 'so'; same key and teaching point.",
+      "_provenance": "Authored from concept: 'a leaked machine secret is reported so its owner and security can rotate it' (notes 3.1.12 Non-Human Identities Through the Life Cycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit). Stem now states that the platform team owns the key. Fix-up 31 Oct 2026 (blind test and audit): the reason clause left the key, and the D explanation now matches who coordinates rotation. Fix-up round 2, 31 Oct 2026 (blind test and audit): A now reports to the platform team as well, so A and D both reach the owner and differ only on revoking a key the engineer does not own; the explanations no longer claim that revoking skips the misuse check. Word-tell sweep, 18 Nov 2026: legacy 'junior engineer' renamed system administrator; option C reworded without 'so'; same key and teaching point. Word-tell sweep round 2, 18 Nov 2026: stem now says only the platform team can revoke or rotate the key (blind-test flag); same key and teaching point.",
       "style_version": 2
     },
     {
@@ -1061,8 +1061,8 @@
       "options": {
         "A": "Encrypt them and have the support lead approve each lookup",
         "B": "Store the passwords as salted, slow hashes, resetting forgotten ones",
-        "C": "Encode the passwords in Base64 to make them look unreadable",
-        "D": "Store the passwords as fast SHA-256 hashes to keep sign-in quick"
+        "C": "Encode the passwords in Base64, making them look unreadable",
+        "D": "Store the passwords as fast SHA-256 hashes, keeping sign-in quick"
       },
       "correct": "B",
       "key_concept": "Store passwords as salted, slow hashes and reset forgotten ones; never keep them in a form that can be read back.",
@@ -1084,7 +1084,7 @@
         "Salting",
         "Account recovery"
       ],
-      "_provenance": "Authored from concept: 'store passwords as salted, slow hashes and reset rather than recover them' (notes 3.1.6 Passwords and Modern Password Standards). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Fix-up 31 Oct 2026 (audit): D now shares the verb 'store' with the key, and the explanation no longer says an approval step limits who can decrypt. Fix-up round 2, 31 Oct 2026 (blind test and audit): D now names SHA-256, testing the belief that a strong, well-known hash is good enough for passwords, and the key is no longer the longest option. Word-tell sweep, 18 Nov 2026: key reworded without 'and'; 'so' taken off option C; same key and teaching point.",
+      "_provenance": "Authored from concept: 'store passwords as salted, slow hashes and reset rather than recover them' (notes 3.1.6 Passwords and Modern Password Standards). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Fix-up 31 Oct 2026 (audit): D now shares the verb 'store' with the key, and the explanation no longer says an approval step limits who can decrypt. Fix-up round 2, 31 Oct 2026 (blind test and audit): D now names SHA-256, testing the belief that a strong, well-known hash is good enough for passwords, and the key is no longer the longest option. Word-tell sweep, 18 Nov 2026: key reworded without 'and'; 'so' taken off option C; same key and teaching point. Word-tell sweep round 2, 18 Nov 2026: distractors C and D reworded so the key is not the only option with a comma clause; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -1134,12 +1134,12 @@
         "A": "Keep the claims access until the handler confirms handovers are done",
         "B": "Ask the underwriting manager to approve keeping the old access",
         "C": "Keep the claims access, because both teams belong to the insurer",
-        "D": "Make the claims access temporary, ending on a set date"
+        "D": "Set an end date on the claims access for the handover"
       },
       "correct": "D",
       "key_concept": "When a mover needs old access for a handover, grant it as approved, temporary access that expires on a set date.",
       "pre_read": "Note what the claims manager asked for and for how long.",
-      "correct_explanation": "Handover access is a real need, but it must be approved for a set period and then expire, or the mover keeps old rights indefinitely. Making it temporary, with a two-week end date, meets the need and removes it automatically. Keeping it until the handler says they are done is the runner-up: it depends on someone remembering, and leftover access tends to stay.",
+      "correct_explanation": "Handover access is a real need, but it must be approved for a set period and then expire, or the mover keeps old rights indefinitely. Setting an end date on it, two weeks out, meets the need and removes it automatically. Keeping it until the handler says they are done is the runner-up: it depends on someone remembering, and leftover access tends to stay.",
       "wrong_explanations": {
         "A": "Closest choice: it allows for handovers. But with no end date, removal depends on someone remembering, and leftover rights become privilege creep.",
         "B": "Tempting because the new manager approves new access. But the claims manager decides about claims access, and this keeps the old access with no end date.",
@@ -1156,7 +1156,7 @@
         "Privilege creep",
         "Temporary access"
       ],
-      "_provenance": "Authored from concept: 'handover access for a mover is approved separately and expires' (notes 3.1.9 Movers and Privilege Creep). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Word-tell sweep, 18 Nov 2026: key reworded without 'record' or 'with'; 'since' taken off option C; same key and teaching point.",
+      "_provenance": "Authored from concept: 'handover access for a mover is approved separately and expires' (notes 3.1.9 Movers and Privilege Creep). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Word-tell sweep, 18 Nov 2026: key reworded without 'record' or 'with'; 'since' taken off option C; same key and teaching point. Word-tell sweep round 2, 18 Nov 2026: key reworded as one action without a comma clause; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -1203,10 +1203,10 @@
       "bloom_level": "Analysis",
       "question": "A council's role-based system has 380 roles for 400 staff, mostly one-offs created for single requests, though staff fall into about 15 job types. Which fix should the access analyst propose as BEST?",
       "options": {
-        "A": "Consolidate into standard roles, adding time-limited extras",
+        "A": "Consolidate into standard roles plus time-limited extras",
         "B": "Keep the custom roles and review each one yearly",
         "C": "Replace the roles with attribute-based access control",
-        "D": "Let managers edit their own team's roles whenever needed"
+        "D": "Let managers edit their own team's roles, adding rights when needed"
       },
       "correct": "A",
       "key_concept": "Role-based access control works when roles mirror jobs; one-off needs are temporary requests, not new custom roles.",
@@ -1228,7 +1228,7 @@
         "Role-based access control",
         "Attribute-based access control"
       ],
-      "_provenance": "Authored from concept: 'roles should mirror jobs, with one-off needs handled as temporary requests' (notes 3.2.7 Role-Based Access Control (RBAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): stem now says why the roles exist, so attribute-based control is no longer defensible; B is no longer a strawman.",
+      "_provenance": "Authored from concept: 'roles should mirror jobs, with one-off needs handled as temporary requests' (notes 3.2.7 Role-Based Access Control (RBAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): stem now says why the roles exist, so attribute-based control is no longer defensible; B is no longer a strawman. Word-tell sweep round 2, 18 Nov 2026: key reworded without a comma clause; distractor D given one; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -2142,7 +2142,7 @@
         "A": "Add multifactor authentication to every staff member's sign-in",
         "B": "Deny by default, granting each screen only to roles that need it",
         "C": "Restrict each screen holding sensitive inventory data to staff who need it",
-        "D": "Log every screen each staff member opens, with user and time"
+        "D": "Log every screen each staff member opens, recording user and time"
       },
       "correct": "B",
       "key_concept": "Logical access controls start from default deny: anything not explicitly allowed is refused.",
@@ -2164,7 +2164,7 @@
         "Authorization",
         "Logical access controls"
       ],
-      "_provenance": "Authored from concept: 'anything not explicitly allowed is refused' (notes 3.2.1 Logical Access Controls and Access Decisions). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: 'anything not explicitly allowed is refused' (notes 3.2.1 Logical Access Controls and Access Decisions). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 3, 31 Oct 2026. Word-tell sweep round 2, 18 Nov 2026: distractor D reworded with a comma clause like the key's; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -2752,7 +2752,7 @@
       "question": "A software vendor tells a science center that its AI sign-in scoring makes staff MFA unnecessary, since unusual sign-ins get flagged. What should the security analyst advise as BEST?",
       "options": {
         "A": "Drop MFA for everyone and let the AI flag unusual sign-ins",
-        "B": "Keep MFA for everyone; high scores trigger extra checks",
+        "B": "Use the scoring to add checks on top of MFA for everyone",
         "C": "Keep MFA for administrators and let the scoring cover other staff",
         "D": "Drop MFA once the model learns each person's habits"
       },
@@ -2776,7 +2776,7 @@
         "AI behavior analysis",
         "Multifactor authentication"
       ],
-      "_provenance": "Authored from concept: 'AI risk scoring adds to MFA and never replaces it' (notes 3.1.8 Adaptive Authentication and AI Behavior Analysis). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'with'; distractors reworded to drop 'since' and 'has'; same key and teaching point.",
+      "_provenance": "Authored from concept: 'AI risk scoring adds to MFA and never replaces it' (notes 3.1.8 Adaptive Authentication and AI Behavior Analysis). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'with'; distractors reworded to drop 'since' and 'has'; same key and teaching point. Word-tell sweep round 2, 18 Nov 2026: key reworded without a semicolon; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -2933,13 +2933,13 @@
       "options": {
         "A": "Add MFA to the service account, requiring a code for each backup",
         "B": "Change the service account's password and give it to the admins",
-        "C": "Block human sign-in to the account; give admins named accounts",
+        "C": "Give admins named accounts before blocking human sign-in to the account",
         "D": "Log each interactive sign-in by the account and review them weekly"
       },
       "correct": "C",
       "key_concept": "People should never sign in with a service account; block interactive sign-in and use named, MFA-protected admin accounts.",
       "pre_read": "Think about who a service account is meant for.",
-      "correct_explanation": "A service account is for software, not people. When administrators sign in with it, their actions cannot be traced to a person and they dodge the MFA their own accounts require. Blocking human sign-in and giving admins named accounts fixes both. Logging and a weekly review is the runner-up: it would show the misuse, but the shared, MFA-free sign-ins keep happening.",
+      "correct_explanation": "A service account is for software, not people. When administrators sign in with it, their actions cannot be traced to a person and they dodge the MFA their own accounts require. Giving admins named accounts, then blocking human sign-in to the service account, fixes both. Logging and a weekly review is the runner-up: it would show the misuse, but the shared, MFA-free sign-ins keep happening.",
       "wrong_explanations": {
         "A": "Tempting because MFA is the missing control. But the backup software signs in unattended and cannot answer an MFA prompt, so the backups would fail.",
         "B": "Tempting because a new password limits who knows it. But admins would still share one MFA-free login, and actions would still not trace to a person.",
@@ -2956,7 +2956,7 @@
         "Non-human identities",
         "Accountability"
       ],
-      "_provenance": "Authored from concept: 'people must not sign in with service accounts' (notes 3.1.12 Non-Human Identities Through the Life Cycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'and' or 'with'; 'so' taken off option A; same key and teaching point.",
+      "_provenance": "Authored from concept: 'people must not sign in with service accounts' (notes 3.1.12 Non-Human Identities Through the Life Cycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'and' or 'with'; 'so' taken off option A; same key and teaching point. Word-tell sweep round 2, 18 Nov 2026: key reworded without a semicolon, as an ordered 'before' step; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -3507,7 +3507,7 @@
       "bloom_level": "Application",
       "question": "Before go-live, an orchard cooperative's AI purchasing agent must stop for staff approval before paying any supplier. Which check should the security analyst run as BEST evidence the control works?",
       "options": {
-        "A": "Read the vendor's design document that shows the approval step",
+        "A": "Read the agent's design document showing the approval step",
         "B": "Get the vendor's signed statement that its tests passed",
         "C": "Send test payments, some meant to trick it, and see it pause",
         "D": "Confirm the agent's payment logs are kept for a whole year"
@@ -3532,7 +3532,7 @@
         "Human approval",
         "Control testing"
       ],
-      "_provenance": "Authored from concept: 'test that an AI agent really stops at its approval step' (notes 3.2.11 Least Privilege and SoD for Automated Systems and AI Agents). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'test that an AI agent really stops at its approval step' (notes 3.2.11 Least Privilege and SoD for Automated Systems and AI Agents). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 4, 1 Nov 2026. Word-tell sweep round 2, 18 Nov 2026: distractor A no longer names the vendor; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -3544,7 +3544,7 @@
       "question": "During an outage, a harbor pilot service's on-call engineer used the sealed break-glass account as the runbook allows, and the incident is recorded. What is the system administrator's BEST next step?",
       "options": {
         "A": "Keep the same password, since this use was approved and recorded",
-        "B": "Seal away a newly reset password, since the old one is exposed",
+        "B": "Reseal it with a new password, since the old one is exposed",
         "C": "Give the engineer the account for future outages",
         "D": "Disable the account, since normal sign-in is working again"
       },
@@ -3568,7 +3568,7 @@
         "Emergency accounts",
         "Credential rotation"
       ],
-      "_provenance": "Authored from concept: 'after break-glass use, change and reseal the password' (notes 3.2.12 Just-in-Time and Break-Glass Access). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'and', now giving its reason; same key and teaching point.",
+      "_provenance": "Authored from concept: 'after break-glass use, change and reseal the password' (notes 3.2.12 Just-in-Time and Break-Glass Access). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'and', now giving its reason; same key and teaching point. Word-tell sweep round 2, 18 Nov 2026: key reworded per blind-test flag (the old wording read backwards); same key and teaching point.",
       "style_version": 2
     },
     {
@@ -4407,8 +4407,8 @@
       "bloom_level": "Application",
       "question": "A kite maker's designer leaves on good terms; procedure disables leavers on their last day, but the manager wants the account kept a month for its cloud files. Which action is BEST for the technician?",
       "options": {
-        "A": "Disable it on the last day, moving its files to the manager",
-        "B": "Keep it active a month, with a new password the manager holds",
+        "A": "Give the manager its files before disabling it on the last day",
+        "B": "Keep it active a month, giving the manager a new password",
         "C": "Delete the account on the last day so nothing is left behind",
         "D": "Disable it now, days before the designer's last day"
       },
@@ -4432,7 +4432,7 @@
         "Leaver timing",
         "File handover"
       ],
-      "_provenance": "Authored from concept: 'disable a leaver on schedule and meet ongoing needs without keeping the account live' (notes 3.1.11 Deprovisioning Leavers). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 5, 4 Nov 2026.",
+      "_provenance": "Authored from concept: 'disable a leaver on schedule and meet ongoing needs without keeping the account live' (notes 3.1.11 Deprovisioning Leavers). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 5, 4 Nov 2026. Word-tell sweep round 2, 18 Nov 2026: key reworded as 'X before Y' without a comma clause; distractor B given one; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -4912,7 +4912,7 @@
       "question": "A tea importer's security manager owns a password standard that has the help desk force resets on proof of compromise. Three staff passwords leak in a breach; what should the help desk do FIRST?",
       "options": {
         "A": "Ask the security manager to approve resets for the three staff",
-        "B": "Force resets of the three passwords, telling the staff why",
+        "B": "Force resets of the three passwords, then tell the staff why",
         "C": "Leave the passwords, as current guidance bans forced changes",
         "D": "Force every employee to reset their password this week"
       },
@@ -4936,7 +4936,7 @@
         "Compromised credentials",
         "Help desk procedure"
       ],
-      "_provenance": "Authored from concept: 'force a change on evidence of compromise, never on a schedule' (notes 3.1.6 Passwords and Modern Password Standards). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'and'; same key and teaching point.",
+      "_provenance": "Authored from concept: 'force a change on evidence of compromise, never on a schedule' (notes 3.1.6 Passwords and Modern Password Standards). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'and'; same key and teaching point. Word-tell sweep round 2, 18 Nov 2026: key reworded as 'X, then Y' without an -ing clause; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -5524,7 +5524,7 @@
       "question": "A change record approved by the finance director, who owns the after-hours ledger rule, has the access analyst remove its year-end evening exception when close ends. Close ended yesterday; what should the analyst do FIRST?",
       "options": {
         "A": "Ask the finance director to approve removing the exception",
-        "B": "Delete the evening exception, restoring the after-hours block",
+        "B": "Delete the evening exception so the after-hours block applies again",
         "C": "Keep the exception in case finance needs to work late again",
         "D": "Switch off the whole after-hours rule, since year-end close is over"
       },
@@ -5548,7 +5548,7 @@
         "Exceptions",
         "Change records"
       ],
-      "_provenance": "Authored from concept: 'an exception the rule's owner approves covers only the person, place and period that need it, then expires' (notes 3.2.9 Rule-Based Access Control). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: 'an exception the rule's owner approves covers only the person, place and period that need it, then expires' (notes 3.2.9 Rule-Based Access Control). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 6, 5 Nov 2026. Word-tell sweep round 2, 18 Nov 2026: key reworded as 'X so Y' without a comma clause; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -5595,7 +5595,7 @@
       "bloom_level": "Application",
       "question": "A florist's invoice-entry AI agent can also edit suppliers' bank details, and the vendor says the agent's instructions forbid it. Which assessment should the security analyst give as MOST accurate?",
       "options": {
-        "A": "Safe, as the vendor tested the agent's instructions thoroughly",
+        "A": "Safe, as the agent's instructions were tested thoroughly",
         "B": "Safe enough, once invoices are screened for hidden instructions",
         "C": "Unsafe, as instructions guide the agent but enforce nothing",
         "D": "Unsafe, as AI agents should be limited to read access"
@@ -5620,7 +5620,7 @@
         "Excessive agency",
         "Indirect prompt injection"
       ],
-      "_provenance": "Authored from concept: 'an AI agent's instructions are not access control; limit it with its account's permissions' (notes 3.2.11 Least Privilege and SoD for Automated Systems and AI Agents). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 6, 5 Nov 2026. Fix-up round 1 (5 Nov 2026): re-angled from removing an unneeded agent right (cc_d3_068, cc_d5_045) to instructions versus enforced permissions; setting moved off 'garden center'; key letter unchanged. Shares the 'instructions are not a control' point with cc_d5_045 (fixing a test finding, 5.5); this item instead tests judging a vendor's claim against the agent's actual permissions. Fix-up round 2 (5 Nov 2026): exam cue now targets judging a vendor's claim against the agent's permissions.",
+      "_provenance": "Authored from concept: 'an AI agent's instructions are not access control; limit it with its account's permissions' (notes 3.2.11 Least Privilege and SoD for Automated Systems and AI Agents). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 6, 5 Nov 2026. Fix-up round 1 (5 Nov 2026): re-angled from removing an unneeded agent right (cc_d3_068, cc_d5_045) to instructions versus enforced permissions; setting moved off 'garden center'; key letter unchanged. Shares the 'instructions are not a control' point with cc_d5_045 (fixing a test finding, 5.5); this item instead tests judging a vendor's claim against the agent's actual permissions. Fix-up round 2 (5 Nov 2026): exam cue now targets judging a vendor's claim against the agent's permissions. Word-tell sweep round 2, 18 Nov 2026: distractor A no longer names the vendor; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -5991,7 +5991,7 @@
       "bloom_level": "Application",
       "question": "In a quarterly review, a broadcaster's music-archive data owner confirms a sound engineer keeps delete rights, noting the engineer runs the archive's clean-ups. Which action is BEST for the access analyst running the review?",
       "options": {
-        "A": "Remove the delete rights, as archive deletions are high-risk",
+        "A": "Remove the delete rights, citing the risk of archive deletions",
         "B": "Ask the sound engineer to confirm and record they still use them",
         "C": "Accept the owner's confirmation, logging the reason they gave",
         "D": "Ask the security manager to check the owner's decision first"
@@ -6016,7 +6016,7 @@
         "Data owner",
         "Recertification"
       ],
-      "_provenance": "Authored from concept: 'in a review, the accountable owner confirms each right and the person running it records the decision' (notes 3.1.10 Access Reviews and Recertification). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'and' or 'record'; same key and teaching point.",
+      "_provenance": "Authored from concept: 'in a review, the accountable owner confirms each right and the person running it records the decision' (notes 3.1.10 Access Reviews and Recertification). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'and' or 'record'; same key and teaching point. Word-tell sweep round 2, 18 Nov 2026: distractor A reworded with a comma clause like the key's; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -6641,13 +6641,13 @@
       "options": {
         "A": "Have the vendor commit to halting the agent within one hour",
         "B": "Cap the number of rebookings the agent can make each hour",
-        "C": "Give on-call staff a switch to suspend the agent's account",
+        "C": "Let on-call staff suspend the agent without vendor help",
         "D": "Retest the agent's model each time the vendor updates it"
       },
       "correct": "C",
       "key_concept": "An agent that acts for the organization runs under an identity the organization itself can suspend, not one only the vendor controls.",
       "pre_read": "Recall which safeguards an AI agent that acts on its own needs.",
-      "correct_explanation": "An agent acting on its own can repeat a fault hundreds of times, and like any account acting for the organization, its identity must be one the organization can suspend itself. A switch that suspends the agent's account lets on-call staff stop it within seconds. Capping rebookings each hour is the runner-up, because it slows the damage, but wrong rebookings keep coming until the vendor answers the ticket.",
+      "correct_explanation": "An agent acting on its own can repeat a fault hundreds of times, and like any account acting for the organization, its identity must be one the organization can suspend itself. Letting on-call staff suspend the agent's account themselves, without vendor help, stops it within seconds. Capping rebookings each hour is the runner-up, because it slows the damage, but wrong rebookings keep coming until the vendor answers the ticket.",
       "wrong_explanations": {
         "A": "Tempting because a promised response time sounds firm. But a faulty agent can rebook many passengers in an hour, and halting it still depends on the vendor.",
         "B": "Closest choice: a cap slows the damage. But wrong rebookings keep coming each hour until the vendor answers, and staff still cannot stop the agent themselves.",
@@ -6655,7 +6655,7 @@
       },
       "tips": [
         "Eliminate: A still leaves halting the agent to the vendor, and D tests for faults but gives no way to stop one that slips through.",
-        "Final two: C beats B because a stop switch ends the harm; a cap only slows it until the vendor acts.",
+        "Final two: C beats B because suspending the agent ends the harm; a cap only slows it until the vendor acts.",
         "Exam cue: any identity that acts for the organization, human or AI, must be one the organization can suspend itself; a vendor's promise or a rate cap does not replace that."
       ],
       "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MANAGE 2.4 (mechanisms are in place and responsibilities assigned to supersede, disengage or deactivate AI systems that perform inconsistently with intended use); NIST SP 800-53 Rev. 5 AC-2 (Account Management)",
@@ -6664,7 +6664,7 @@
         "Stop switch",
         "Agent identity"
       ],
-      "_provenance": "Authored from concept: 'automation keeps its own identity and a stop switch the organization controls' (notes 3.2.11 Least Privilege and SoD for Automated Systems and AI Agents). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: 'automation keeps its own identity and a stop switch the organization controls' (notes 3.2.11 Least Privilege and SoD for Automated Systems and AI Agents). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 7, 12 Nov 2026. Word-tell sweep round 2, 18 Nov 2026: key reworded to name the vendor it removes from the loop; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -6783,10 +6783,10 @@
       "bloom_level": "Application",
       "question": "An energy firm's AI pilot was closed by its owner, and procedure has the access analyst retire its agent account; a data scientist wants it kept for a restart. What should the analyst do FIRST?",
       "options": {
-        "A": "Disable the agent's account, revoking its access keys",
+        "A": "Disable the agent's account and revoke its access keys",
         "B": "Ask the pilot's owner whether a restart is still likely",
         "C": "Keep the account and rotate its keys for a restart",
-        "D": "Store the agent's keys in the vault for later use"
+        "D": "Store the agent's keys in the vault, keeping them for later use"
       },
       "correct": "A",
       "key_concept": "When a project closes, its AI agent's identity is retired: the account is disabled and its keys revoked.",
@@ -6808,7 +6808,7 @@
         "Deprovisioning",
         "AI agents"
       ],
-      "_provenance": "Authored from concept: 'retire a non-human identity when its project ends; any restart comes through a new approved request' (notes 3.1.12 Non-Human Identities Through the Life Cycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: 'retire a non-human identity when its project ends; any restart comes through a new approved request' (notes 3.1.12 Non-Human Identities Through the Life Cycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026. Word-tell sweep round 2, 18 Nov 2026: key reworded without a comma clause; distractor D given one; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -6858,7 +6858,7 @@
         "A": "Keep the guest account and add the start record's role to it",
         "B": "Keep both accounts active while the new hire settles in",
         "C": "Open a staff account from the start record, closing the guest one",
-        "D": "Open a staff account holding the guest account's current rights"
+        "D": "Open a staff account, copying the guest account's current rights"
       },
       "correct": "C",
       "key_concept": "A contractor hired as staff gets a staff account from the HR start record, and the guest account is closed.",
@@ -6880,7 +6880,7 @@
         "Guest accounts",
         "Joiner-mover-leaver"
       ],
-      "_provenance": "Authored from concept: 'provision staff access from the start record; a contractor turned staff member is a leaver plus a joiner' (notes 3.1.3 Provisioning and Identity Proofing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026. Word-tell sweep, 18 Nov 2026: 'month' taken off option B; same key and teaching point.",
+      "_provenance": "Authored from concept: 'provision staff access from the start record; a contractor turned staff member is a leaver plus a joiner' (notes 3.1.3 Provisioning and Identity Proofing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026. Word-tell sweep, 18 Nov 2026: 'month' taken off option B; same key and teaching point. Word-tell sweep round 2, 18 Nov 2026: distractor D reworded with a comma clause like the key's; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -6930,7 +6930,7 @@
         "A": "Let owners set what the AI may approve, deciding the rest themselves",
         "B": "Let the AI approve these requests, sending owners weekly grant reports",
         "C": "Have the help desk confirm each AI approval before granting",
-        "D": "Let the AI approve once requesters confirm a business need for access"
+        "D": "Let the AI approve, requiring requesters to state a business need"
       },
       "correct": "A",
       "key_concept": "An AI feature may approve access only within limits each data owner sets; owners keep approval authority.",
@@ -6952,7 +6952,7 @@
         "Access approval",
         "AI in IAM"
       ],
-      "_provenance": "Authored from concept: 'IAM tools and their AI features automate the owner's decisions; they do not take over the owner's authority' (notes 3.1.13 IAM Frameworks and Tools). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: 'IAM tools and their AI features automate the owner's decisions; they do not take over the owner's authority' (notes 3.1.13 IAM Frameworks and Tools). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 8, 13 Nov 2026. Word-tell sweep round 2, 18 Nov 2026: distractor D reworded with a comma clause like the key and B; same key and teaching point.",
       "style_version": 2
     },
     {
