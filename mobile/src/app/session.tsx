@@ -73,7 +73,6 @@ import {
   Pressable,
   ScrollView,
   View,
-  useWindowDimensions,
   type NativeScrollEvent,
   type NativeSyntheticEvent,
 } from 'react-native';
@@ -140,6 +139,7 @@ import { batchSaves } from '../store/storage';
 import { useSession } from '../store/session';
 import { LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
+import { ContentColumn, useContentWidth } from '../components/layout';
 
 // Stable empty array: a new [] on every render would make the store re-render forever.
 const NO_BOOKMARKS: string[] = [];
@@ -285,7 +285,7 @@ export default function SessionScreen() {
   const lessonsDone = useProgress((s) => (active ? selectCert(s, active.certId).lessonsDone : NO_LESSONS));
   // The phone's text size through useFontScale (the screenshot harness can set it on web too).
   const fontScale = useFontScale();
-  const { width: screenW } = useWindowDimensions();
+  const screenW = useContentWidth();
   // Lines under the verdict start under its word; at ×1.3 text, at the gutter (mobile 1.43).
   const verdictIndent = useVerdictIndent();
   // Reduce Motion: the navigator sheet fades in instead of sliding.
@@ -1217,53 +1217,55 @@ export default function SessionScreen() {
           in a footer that stays put (it used to sit under the grid, up to 25 rows down). */}
       <Modal visible={navOpen} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={() => setNavOpen(false)}>
         <SafeAreaView style={{ flex: 1, backgroundColor: c.raised2 }}>
-          <ScrollView contentContainerStyle={{ padding: space.lg, paddingBottom: navFooterH + space.xl }}>
-            <Row style={{ justifyContent: 'space-between' }}>
-              <T v="hero" accessibilityRole="header">Questions</T>
-              <Button kind="ghost" label="Close" onPress={() => setNavOpen(false)} />
-            </Row>
-            <T v="small" num color={c.ink}>{navSummary}</T>
-            <T v="meta" style={{ marginTop: space.xs }} accessibilityLabel="Filled means answered, empty means not answered, a flag means flagged">● answered · ○ not answered · ⚑ flagged</T>
-            {/* No report button during a live mock (it stays exam-like); the review has one. */}
-            <T v="meta" style={{ marginTop: space.xs }}>To report a question, open it in the review after you submit.</T>
-            <Gap />
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
-              {active.questionIds.map((id, i) => {
-                const done = Boolean(active.responses[id]);
-                const flag = active.flagged.includes(id);
-                const current = i === active.index;
-                return (
-                  <Pressable
-                    key={id}
-                    accessibilityRole="button"
-                    accessibilityLabel={`Question ${i + 1}, ${done ? 'answered' : 'not answered'}${flag ? ', flagged' : ''}${current ? ', current' : ''}`}
-                    accessibilityState={{ selected: current }}
-                    onPress={() => {
-                      goTo(i);
-                      setNavOpen(false);
-                    }}
-                    style={{
-                      minWidth: 52,
-                      minHeight: 52,
-                      paddingHorizontal: space.xs,
-                      borderRadius: radius.sm,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      borderWidth: current ? 2 : 1,
-                      borderColor: current ? c.accent : flag ? c.tip : c.line,
-                      // Answered = ink fill (never green: green means "correct").
-                      backgroundColor: done ? c.ink : c.raised,
-                    }}
-                  >
-                    <T v="label" num color={done ? c.raised : c.ink}>{`${flag ? '⚑' : ''}${done ? '●' : '○'}${i + 1}`}</T>
-                  </Pressable>
-                );
-              })}
-            </View>
-          </ScrollView>
-          <StickyFooter onHeight={setNavFooterH}>
-            <Button label="Submit exam" onPress={() => { setNavOpen(false); confirmSubmitExam(); }} />
-          </StickyFooter>
+          <ContentColumn>
+            <ScrollView contentContainerStyle={{ padding: space.lg, paddingBottom: navFooterH + space.xl }}>
+              <Row style={{ justifyContent: 'space-between' }}>
+                <T v="hero" accessibilityRole="header">Questions</T>
+                <Button kind="ghost" label="Close" onPress={() => setNavOpen(false)} />
+              </Row>
+              <T v="small" num color={c.ink}>{navSummary}</T>
+              <T v="meta" style={{ marginTop: space.xs }} accessibilityLabel="Filled means answered, empty means not answered, a flag means flagged">● answered · ○ not answered · ⚑ flagged</T>
+              {/* No report button during a live mock (it stays exam-like); the review has one. */}
+              <T v="meta" style={{ marginTop: space.xs }}>To report a question, open it in the review after you submit.</T>
+              <Gap />
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+                {active.questionIds.map((id, i) => {
+                  const done = Boolean(active.responses[id]);
+                  const flag = active.flagged.includes(id);
+                  const current = i === active.index;
+                  return (
+                    <Pressable
+                      key={id}
+                      accessibilityRole="button"
+                      accessibilityLabel={`Question ${i + 1}, ${done ? 'answered' : 'not answered'}${flag ? ', flagged' : ''}${current ? ', current' : ''}`}
+                      accessibilityState={{ selected: current }}
+                      onPress={() => {
+                        goTo(i);
+                        setNavOpen(false);
+                      }}
+                      style={{
+                        minWidth: 52,
+                        minHeight: 52,
+                        paddingHorizontal: space.xs,
+                        borderRadius: radius.sm,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderWidth: current ? 2 : 1,
+                        borderColor: current ? c.accent : flag ? c.tip : c.line,
+                        // Answered = ink fill (never green: green means "correct").
+                        backgroundColor: done ? c.ink : c.raised,
+                      }}
+                    >
+                      <T v="label" num color={done ? c.raised : c.ink}>{`${flag ? '⚑' : ''}${done ? '●' : '○'}${i + 1}`}</T>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            </ScrollView>
+            <StickyFooter onHeight={setNavFooterH}>
+              <Button label="Submit exam" onPress={() => { setNavOpen(false); confirmSubmitExam(); }} />
+            </StickyFooter>
+          </ContentColumn>
         </SafeAreaView>
       </Modal>
     </SafeAreaView>

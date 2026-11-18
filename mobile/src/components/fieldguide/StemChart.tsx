@@ -38,7 +38,7 @@
  * Reduce Motion: the finished plate.
  */
 import { useEffect, useState } from 'react';
-import { useWindowDimensions, View } from 'react-native';
+import { View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay } from 'react-native-reanimated';
 import Svg, { Ellipse, G, Path } from 'react-native-svg';
 import { THIN_WORDS, thinFigure, type Stem } from '../../engine/fieldGuide';
@@ -48,6 +48,7 @@ import { useTheme } from '../../theme/useTheme';
 import { ease, tween, useMotion } from '../motion';
 import { BigNum, T, useFontScale } from '../ui';
 import { FieldText } from './FieldText';
+import { useContentWidth } from '../layout';
 
 export type { Stem };
 
@@ -226,7 +227,7 @@ export function StemChart({
   // grow (or shrink) with them, so a name never truncates between ×1.15 and ×1.29 (UX review H2).
   const fs = Math.min(scale, LARGE_TEXT);
   // A first guess before layout (the phone's width less the gutters and a tight plate's edge and padding), so the first frame is drawn.
-  const { width: screen } = useWindowDimensions();
+  const screen = useContentWidth();
   const [w, setW] = useState(() => chartFirstWidth(screen));
   const gap = stems.length ? (w - gutterFor(fs)) / stems.length : 0;
   // The words under the soil: placed once here, so a chart whose words would still meet shows the list.

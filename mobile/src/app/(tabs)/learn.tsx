@@ -30,7 +30,7 @@ import { FeatureInfo } from '../../components/featureInfo';
 import * as Router from 'expo-router';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { AccessibilityInfo, useWindowDimensions, View } from 'react-native';
+import { AccessibilityInfo, View } from 'react-native';
 import { Dandelion, DomainRing } from '../../components/glyphs';
 import { AreaDot, CardDivider, CardHead, GlyphTile, HeroKicker, HubCard, HubTile, MintPill } from '../../components/groveHub';
 import { HeroCard } from '../../components/groveToday';
@@ -54,6 +54,7 @@ import { heroInk } from '../../theme/grove';
 import { LARGE_TEXT, motion, radius, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 import { useActiveCertId } from '../../lib/activeCert';
+import { useContentWidth } from '../../components/layout';
 
 /**
  * Why the cover offers this lesson (ui.md L3), as a code. Exported for tests.
@@ -449,7 +450,7 @@ const LookItUp = memo(function LookItUp({
   const all = lookUpItems(cert, notesRead, { showNotes, showGlossary, showPrinciples, showGuide, showWeek });
   const week = all.find((i) => i.key === 'week');
   // Two columns while the text is under 1.3 and each tile keeps 160pt; otherwise one column of rows.
-  const { width } = useWindowDimensions();
+  const width = useContentWidth();
   const large = useFontScale() >= LARGE_TEXT;
   const twoUp = !large && (width - space.gutter * 2 - space.sm) / 2 >= TILE_MIN_WIDTH;
   const rows = tileRows(
@@ -563,7 +564,7 @@ const LessonGroups = memo(function LessonGroups({
 }) {
   const { c, g, isDark } = useTheme();
   const scale = useFontScale();
-  const { width } = useWindowDimensions();
+  const width = useContentWidth();
   const lessons = lessonsFor(cert.id);
   const done = (id: string) => lessonsDone.includes(id);
   const freshIds = fresh ? fresh.split(',') : [];

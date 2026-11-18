@@ -6,8 +6,8 @@
 //
 // Besides the pictures it CHECKS the layout and exits 1 when a check fails:
 //   - no sideways scrolling (the page is never wider than the window);
-//   - on a wide window, no button or text block is wider than the reading
-//     column (CONTENT_MAX in src/components/layout.ts, plus a little slack).
+//   - on a wide window, no button or text block is wider than the screen
+//     column (COLUMN_MAX in src/components/layout.tsx).
 // Usage: node shoot_wide.mjs seed.json outDir [dark|light]   (run.sh does this)
 import { createRequire } from 'module';
 import fs from 'fs';
@@ -17,14 +17,14 @@ const seed = JSON.parse(fs.readFileSync(process.argv[2]));
 const out = process.argv[3];
 const base = 'http://127.0.0.1:8093';
 // The widest a text block or a button may be on a wide window. Keep in step
-// with CONTENT_MAX (src/components/layout.ts); +2 for hairline borders.
-const COLUMN = Number(process.env.WIDE_COLUMN || 640) + 2;
+// with COLUMN_MAX (src/components/layout.tsx); +2 for hairline borders.
+const COLUMN = Number(process.env.WIDE_COLUMN || 600) + 2;
 const sizes = { tl: [1280, 800], tp: [800, 1280], pp: [393, 852], pl: [852, 393] };
 const pick = (process.env.WIDE_SIZES || 'tl,tp,pp').split(',');
 const routes = [
   ['today', '/home'], ['learn', '/learn'], ['practice', '/practice'], ['you', '/you'],
   ['mock-start', '/mock-start'], ['lesson', '/lesson/cisa-l-d1-charter'], ['notes', '/notes'],
-  ['note', '/notes/subtopic/4B1.2'], ['labs', '/labs'], ['settings', '/settings'], ['onboarding', '/onboarding'],
+  ['note', '/notes/subtopic/4B1.2'], ['labs', '/labs'], ['settings', '/settings'],
 ];
 const problems = [];
 // Widest visible button / text block, ignoring full-bleed backgrounds (the
@@ -77,6 +77,16 @@ for (const size of pick) {
   await page.waitForTimeout(1300);
   await snap('answer');
   await ctx.close();
+  // Onboarding, as a new learner sees it (no saved data: a seeded learner is sent to Today).
+  const fresh = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  const first = await fresh.newPage();
+  first.on('pageerror', (e) => problems.push(`${size}: page error ${e.message}`));
+  await first.goto(base + '/onboarding', { waitUntil: 'networkidle' });
+  await first.waitForTimeout(1500);
+  await first.screenshot({ path: `${out}/wide-${size}-onboarding.png` });
+  await check(first, size, 'onboarding');
+  console.log('shot', size, 'onboarding');
+  await fresh.close();
 }
 await browser.close();
 if (problems.length) {

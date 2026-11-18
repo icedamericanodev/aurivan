@@ -33,6 +33,7 @@ import { useTheme } from '../theme/useTheme';
 import { Bell, BookOpen, ChevronRight, CircleQuestionMark, Flag, ICON_STROKE, LayoutGrid, ListChecks, MessagesSquare, Palette as PaletteIcon, RefreshCw, ShieldCheck, SproutIcon, UserRound } from './icons';
 import { AnimatedPressable, FadeIn, usePressScale } from './motion';
 import { Button, groveCard, ICON_SIZE, RadioRow, T, useFontScale } from './ui';
+import { COLUMN_MAX } from './layout';
 
 // ── Categories ────────────────────────────────────────────────────────
 /**
@@ -441,7 +442,8 @@ const styles = StyleSheet.create({
   card: { marginTop: space.xl, paddingHorizontal: space.lg, paddingTop: space.xs },
   cardHead: { flexDirection: 'row', alignItems: 'center', gap: space.sm, minHeight: 48, paddingVertical: space.sm, borderBottomWidth: 1 },
   sheetHost: { flex: 1, justifyContent: 'flex-end' },
-  sheet: { borderTopLeftRadius: radius.sheet, borderTopRightRadius: radius.sheet, overflow: 'hidden' },
+  // Large screens (mobile 2.2): never wider than the screen column, centred over the full-window dim.
+  sheet: { width: '100%', maxWidth: COLUMN_MAX, alignSelf: 'center', borderTopLeftRadius: radius.sheet, borderTopRightRadius: radius.sheet, overflow: 'hidden' },
   sheetHead: { flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.gutter, paddingTop: space.lg, paddingBottom: space.xs },
   sheetScroll: { flexGrow: 0, flexShrink: 1 },
   sheetContent: { paddingHorizontal: space.gutter, paddingBottom: space.lg },

@@ -12,7 +12,7 @@
  * - DomainReportRow: one domain, one screen-reader stop.
  * - ExamWeekCard: the key-idea recipe (a 3px accent rule, no card).
  */
-import { useWindowDimensions, View } from 'react-native';
+import { View } from 'react-native';
 import Svg, { Circle, Line, Path } from 'react-native-svg';
 import { domainColor, domainLabel } from '../content/certifications';
 import { chartScale, domainSpoken, evidenceLine, mockLine, readinessLine, type DomainRow, type TrendPoint } from '../engine/readinessReport';
@@ -22,6 +22,7 @@ import type { MockResult } from '../store/progress';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Button, Row, T } from './ui';
+import { useContentWidth } from './layout';
 
 /** Shown under the framing quote, always (the honest limits of the number). */
 export const FRAMING_LINE =
@@ -67,7 +68,7 @@ const leaf = (x: number, y: number) =>
 
 /** The width a chart gets on this phone: the screen minus the gutters, never wider than 420. */
 export function useChartWidth(): number {
-  const { width } = useWindowDimensions();
+  const width = useContentWidth();
   return Math.max(160, Math.min(CHART.maxWidth, width - 2 * space.gutter));
 }
 

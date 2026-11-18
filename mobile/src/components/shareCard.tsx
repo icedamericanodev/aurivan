@@ -20,7 +20,7 @@
  */
 import * as Sharing from 'expo-sharing';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { Modal, Platform, ScrollView, Share, Text, useWindowDimensions, View } from 'react-native';
+import { Modal, Platform, ScrollView, Share, Text, View } from 'react-native';
 import { moveFocus } from '../lib/a11y';
 import { useMotion } from './motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -34,6 +34,7 @@ import { KaisipLockup } from './brand';
 import { GrowthRings } from './glyphs';
 import { ICON_STROKE, Share2 } from './icons';
 import { Button, Chip, ChipRow, ICON_SIZE, Row, T } from './ui';
+import { ContentColumn, useContentWidth } from './layout';
 
 /** The card's fixed size on screen (points). 4:5 portrait. */
 export const CARD_W = 320;
@@ -176,7 +177,7 @@ export function ShareProgressSheet({
 }) {
   const { c } = useTheme();
   const { reduced: reduceMotion } = useMotion();
-  const screenWidth = useWindowDimensions().width;
+  const screenWidth = useContentWidth();
   const options = shareOptions(input);
   const [kind, setKind] = useState<ShareKind | null>(null);
   // The learner's pick, if it still applies; otherwise the best honest option.
@@ -204,56 +205,58 @@ export function ShareProgressSheet({
   return (
     <Modal visible={visible} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={onClose}>
       <SafeAreaView style={{ flex: 1, backgroundColor: c.raised2 }}>
-        <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xxxl }}>
-          <Row style={{ justifyContent: 'space-between' }}>
-            <T v="hero" accessibilityRole="header">Share progress</T>
-            <Button kind="ghost" label="Close" onPress={onClose} accessibilityLabel="Close share preview" />
-          </Row>
-          <T v="meta" style={{ marginTop: space.xs }}>Only what is on the card is shared.</T>
+        <ContentColumn>
+          <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xxxl }}>
+            <Row style={{ justifyContent: 'space-between' }}>
+              <T v="hero" accessibilityRole="header">Share progress</T>
+              <Button kind="ghost" label="Close" onPress={onClose} accessibilityLabel="Close share preview" />
+            </Row>
+            <T v="meta" style={{ marginTop: space.xs }}>Only what is on the card is shared.</T>
 
-          {options.length > 1 && (
-            <View style={{ marginTop: space.lg }}>
-              <T v="caption" color={c.ink2} style={{ marginBottom: space.sm }}>Headline</T>
-              <ChipRow>
-                {options.map((o) => (
-                  <Chip key={o.kind} label={KIND_LABEL[o.kind]} selected={o.kind === headline.kind} onPress={() => setKind(o.kind)} />
-                ))}
-              </ChipRow>
-            </View>
-          )}
+            {options.length > 1 && (
+              <View style={{ marginTop: space.lg }}>
+                <T v="caption" color={c.ink2} style={{ marginBottom: space.sm }}>Headline</T>
+                <ChipRow>
+                  {options.map((o) => (
+                    <Chip key={o.kind} label={KIND_LABEL[o.kind]} selected={o.kind === headline.kind} onPress={() => setKind(o.kind)} />
+                  ))}
+                </ChipRow>
+              </View>
+            )}
 
-          {/* The preview IS the image: what you see is what gets captured. */}
-          <View style={{ alignItems: 'center', marginTop: space.xl }}>
-            {/* Outer box: takes the scaled size in the layout and rounds the
-                preview's corners. Not captured, so the PNG stays square. */}
-            <View style={{ width: CARD_W * scale, height: CARD_H * scale, borderRadius: radius.lg, overflow: 'hidden' }}>
-              <View
-                ref={cardRef}
-                collapsable={false} // Android must keep this view to capture it
-                accessible
-                accessibilityRole="image"
-                accessibilityLabel={`Share card preview. KaiSip, ${cert.name}. ${headline.spoken} ${cert.trademarkNotice}`}
-                style={{
-                  width: CARD_W,
-                  height: CARD_H,
-                  // Scale around the top-left corner so it fills the outer box exactly.
-                  transform: [{ translateX: (CARD_W * (scale - 1)) / 2 }, { translateY: (CARD_H * (scale - 1)) / 2 }, { scale }],
-                }}
-              >
-                <ShareCard cert={cert} readiness={readiness} headline={headline} />
+            {/* The preview IS the image: what you see is what gets captured. */}
+            <View style={{ alignItems: 'center', marginTop: space.xl }}>
+              {/* Outer box: takes the scaled size in the layout and rounds the
+                  preview's corners. Not captured, so the PNG stays square. */}
+              <View style={{ width: CARD_W * scale, height: CARD_H * scale, borderRadius: radius.lg, overflow: 'hidden' }}>
+                <View
+                  ref={cardRef}
+                  collapsable={false} // Android must keep this view to capture it
+                  accessible
+                  accessibilityRole="image"
+                  accessibilityLabel={`Share card preview. KaiSip, ${cert.name}. ${headline.spoken} ${cert.trademarkNotice}`}
+                  style={{
+                    width: CARD_W,
+                    height: CARD_H,
+                    // Scale around the top-left corner so it fills the outer box exactly.
+                    transform: [{ translateX: (CARD_W * (scale - 1)) / 2 }, { translateY: (CARD_H * (scale - 1)) / 2 }, { scale }],
+                  }}
+                >
+                  <ShareCard cert={cert} readiness={readiness} headline={headline} />
+                </View>
               </View>
             </View>
-          </View>
 
-          <Button
-            label={sharing ? 'Sharing…' : IMAGE_SHARE ? 'Share image' : 'Share'}
-            onPress={onShare}
-            disabled={sharing}
-            accessibilityHint={IMAGE_SHARE ? 'Opens the share sheet with this card as an image' : 'Opens the share sheet with this progress as text'}
-            icon={(col) => <Share2 size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
-            style={{ marginTop: space.xl }}
-          />
-        </ScrollView>
+            <Button
+              label={sharing ? 'Sharing…' : IMAGE_SHARE ? 'Share image' : 'Share'}
+              onPress={onShare}
+              disabled={sharing}
+              accessibilityHint={IMAGE_SHARE ? 'Opens the share sheet with this card as an image' : 'Opens the share sheet with this progress as text'}
+              icon={(col) => <Share2 size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+              style={{ marginTop: space.xl }}
+            />
+          </ScrollView>
+        </ContentColumn>
       </SafeAreaView>
     </Modal>
   );
@@ -303,7 +306,7 @@ export function BadgeShareCard({ text, art }: { text: BadgeCardText; art: ReactN
  */
 export function BadgeSharePanel({ text, art, onBack }: { text: BadgeCardText; art: ReactNode; onBack: () => void }) {
   const { c } = useTheme();
-  const screenWidth = useWindowDimensions().width;
+  const screenWidth = useContentWidth();
   const cardRef = useRef<View>(null);
   const title = useRef<View>(null);
   const busy = useRef(false);

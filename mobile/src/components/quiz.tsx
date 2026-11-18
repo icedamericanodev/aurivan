@@ -56,6 +56,7 @@ import { AnimatedPressable, Collapse, ease, FadeIn, Pop, StateLayer, tween, useM
 import { ReportRow } from './support';
 import { Sheet } from './settings';
 import { cardLift, Chip, Gap, groveCard, IconButton, ListRow, Row, T, useFontScale } from './ui';
+import { useContentWidth } from './layout';
 
 /** The Field Guide verdict leaf: 34pt (with a 16 gap, the lines under it still start at VERDICT_INDENT). */
 const FIELD_LEAF = 34;
@@ -541,7 +542,7 @@ export const RECAP_LONG_W = 161;
 export function AnswerRecap({ correct, letter }: { correct: boolean; letter: Letter }) {
   const { c } = useTheme();
   const scale = useFontScale();
-  const { width } = useWindowDimensions();
+  const width = useContentWidth();
   // Large text (×1.3+): the short form fits the bar ("Not quite · D"); the spoken label keeps every word.
   // Release bug hunt round 1: also when the bar is too narrow for the long form, so the letter always
   // shows (360dp, 320dp, or a 390dp phone at ×1.15 cut it to "Not quite · Best ans…").
@@ -762,7 +763,7 @@ export function StemRecap({
   // Folded, the stem is shortened HERE, at a whole word with one "…" (engine/textClip.ts), to what two lines
   // of this box hold at this text size. The platform's own cut-off would end "peer …" on one screen and
   // "processe…" on another. numberOfLines stays as a safety stop only. First guess: the screen less its gutters.
-  const { width: screen } = useWindowDimensions();
+  const screen = useContentWidth();
   const [boxW, setBoxW] = useState(() => Math.max(0, screen - 2 * space.lg));
   const textScale = useFontScale();
   const size = field ? (fieldRole.recap?.style.fontSize ?? 18) : (type.small.fontSize ?? 15);
