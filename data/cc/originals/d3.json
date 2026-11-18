@@ -1060,7 +1060,7 @@
       "question": "An online bookshop's developer plans to store customer passwords encrypted, so support staff can read forgotten ones back to customers. Which approach should the security analyst propose as BEST?",
       "options": {
         "A": "Encrypt them and have the support lead approve each lookup",
-        "B": "Store the passwords as salted, slow hashes, resetting forgotten ones",
+        "B": "Store salted, slow hashes, replacing lost ones through resets",
         "C": "Encode the passwords in Base64, making them look unreadable",
         "D": "Store the passwords as fast SHA-256 hashes, keeping sign-in quick"
       },
@@ -1084,7 +1084,7 @@
         "Salting",
         "Account recovery"
       ],
-      "_provenance": "Authored from concept: 'store passwords as salted, slow hashes and reset rather than recover them' (notes 3.1.6 Passwords and Modern Password Standards). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Fix-up 31 Oct 2026 (audit): D now shares the verb 'store' with the key, and the explanation no longer says an approval step limits who can decrypt. Fix-up round 2, 31 Oct 2026 (blind test and audit): D now names SHA-256, testing the belief that a strong, well-known hash is good enough for passwords, and the key is no longer the longest option. Word-tell sweep, 18 Nov 2026: key reworded without 'and'; 'so' taken off option C; same key and teaching point. Word-tell sweep round 2, 18 Nov 2026: distractors C and D reworded so the key is not the only option with a comma clause; same key and teaching point.",
+      "_provenance": "Authored from concept: 'store passwords as salted, slow hashes and reset rather than recover them' (notes 3.1.6 Passwords and Modern Password Standards). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Fix-up 31 Oct 2026 (audit): D now shares the verb 'store' with the key, and the explanation no longer says an approval step limits who can decrypt. Fix-up round 2, 31 Oct 2026 (blind test and audit): D now names SHA-256, testing the belief that a strong, well-known hash is good enough for passwords, and the key is no longer the longest option. Word-tell sweep, 18 Nov 2026: key reworded without 'and'; 'so' taken off option C; same key and teaching point. Word-tell sweep round 2, 18 Nov 2026: distractors C and D reworded so the key is not the only option with a comma clause; same key and teaching point. Word-tell sweep polish, 18 Nov 2026: key reworded so it no longer repeats the stem's 'forgotten' alone and is no longer the longest option; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -1134,12 +1134,12 @@
         "A": "Keep the claims access until the handler confirms handovers are done",
         "B": "Ask the underwriting manager to approve keeping the old access",
         "C": "Keep the claims access, because both teams belong to the insurer",
-        "D": "Set an end date on the claims access for the handover"
+        "D": "Keep the claims access until a fixed end date for the handover"
       },
       "correct": "D",
       "key_concept": "When a mover needs old access for a handover, grant it as approved, temporary access that expires on a set date.",
       "pre_read": "Note what the claims manager asked for and for how long.",
-      "correct_explanation": "Handover access is a real need, but it must be approved for a set period and then expire, or the mover keeps old rights indefinitely. Setting an end date on it, two weeks out, meets the need and removes it automatically. Keeping it until the handler says they are done is the runner-up: it depends on someone remembering, and leftover access tends to stay.",
+      "correct_explanation": "Handover access is a real need, but it must be approved for a set period and then expire, or the mover keeps old rights indefinitely. Keeping it only until a fixed end date, two weeks out, meets the need and removes it automatically. Keeping it until the handler says they are done is the runner-up: it depends on someone remembering, and leftover access tends to stay.",
       "wrong_explanations": {
         "A": "Closest choice: it allows for handovers. But with no end date, removal depends on someone remembering, and leftover rights become privilege creep.",
         "B": "Tempting because the new manager approves new access. But the claims manager decides about claims access, and this keeps the old access with no end date.",
@@ -1156,7 +1156,7 @@
         "Privilege creep",
         "Temporary access"
       ],
-      "_provenance": "Authored from concept: 'handover access for a mover is approved separately and expires' (notes 3.1.9 Movers and Privilege Creep). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Word-tell sweep, 18 Nov 2026: key reworded without 'record' or 'with'; 'since' taken off option C; same key and teaching point. Word-tell sweep round 2, 18 Nov 2026: key reworded as one action without a comma clause; same key and teaching point.",
+      "_provenance": "Authored from concept: 'handover access for a mover is approved separately and expires' (notes 3.1.9 Movers and Privilege Creep). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Word-tell sweep, 18 Nov 2026: key reworded without 'record' or 'with'; 'since' taken off option C; same key and teaching point. Word-tell sweep round 2, 18 Nov 2026: key reworded as one action without a comma clause; same key and teaching point. Word-tell sweep polish, 18 Nov 2026: key reworded to open like A and C so it is no longer the shortest or the odd one out; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -2933,13 +2933,13 @@
       "options": {
         "A": "Add MFA to the service account, requiring a code for each backup",
         "B": "Change the service account's password and give it to the admins",
-        "C": "Give admins named accounts before blocking human sign-in to the account",
-        "D": "Log each interactive sign-in by the account and review them weekly"
+        "C": "Give admins named logins, then block people from the service account",
+        "D": "Log each interactive sign-in by the service account and review them weekly"
       },
       "correct": "C",
       "key_concept": "People should never sign in with a service account; block interactive sign-in and use named, MFA-protected admin accounts.",
       "pre_read": "Think about who a service account is meant for.",
-      "correct_explanation": "A service account is for software, not people. When administrators sign in with it, their actions cannot be traced to a person and they dodge the MFA their own accounts require. Giving admins named accounts, then blocking human sign-in to the service account, fixes both. Logging and a weekly review is the runner-up: it would show the misuse, but the shared, MFA-free sign-ins keep happening.",
+      "correct_explanation": "A service account is for software, not people. When administrators sign in with it, their actions cannot be traced to a person and they dodge the MFA their own accounts require. Giving admins named logins of their own, then blocking people from the service account, fixes both. Logging and a weekly review is the runner-up: it would show the misuse, but the shared, MFA-free sign-ins keep happening.",
       "wrong_explanations": {
         "A": "Tempting because MFA is the missing control. But the backup software signs in unattended and cannot answer an MFA prompt, so the backups would fail.",
         "B": "Tempting because a new password limits who knows it. But admins would still share one MFA-free login, and actions would still not trace to a person.",
@@ -2956,7 +2956,7 @@
         "Non-human identities",
         "Accountability"
       ],
-      "_provenance": "Authored from concept: 'people must not sign in with service accounts' (notes 3.1.12 Non-Human Identities Through the Life Cycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'and' or 'with'; 'so' taken off option A; same key and teaching point. Word-tell sweep round 2, 18 Nov 2026: key reworded without a semicolon, as an ordered 'before' step; same key and teaching point.",
+      "_provenance": "Authored from concept: 'people must not sign in with service accounts' (notes 3.1.12 Non-Human Identities Through the Life Cycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'and' or 'with'; 'so' taken off option A; same key and teaching point. Word-tell sweep round 2, 18 Nov 2026: key reworded without a semicolon, as an ordered 'before' step; same key and teaching point. Word-tell sweep polish, 18 Nov 2026: key now names the service account it blocks, and D names it too so the key is not the longest option; same key and teaching point.",
       "style_version": 2
     },
     {
@@ -4407,7 +4407,7 @@
       "bloom_level": "Application",
       "question": "A kite maker's designer leaves on good terms; procedure disables leavers on their last day, but the manager wants the account kept a month for its cloud files. Which action is BEST for the technician?",
       "options": {
-        "A": "Give the manager its files before disabling it on the last day",
+        "A": "Move the files to the manager, then disable it on schedule",
         "B": "Keep it active a month, giving the manager a new password",
         "C": "Delete the account on the last day so nothing is left behind",
         "D": "Disable it now, days before the designer's last day"
@@ -4432,7 +4432,7 @@
         "Leaver timing",
         "File handover"
       ],
-      "_provenance": "Authored from concept: 'disable a leaver on schedule and meet ongoing needs without keeping the account live' (notes 3.1.11 Deprovisioning Leavers). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 5, 4 Nov 2026. Word-tell sweep round 2, 18 Nov 2026: key reworded as 'X before Y' without a comma clause; distractor B given one; same key and teaching point.",
+      "_provenance": "Authored from concept: 'disable a leaver on schedule and meet ongoing needs without keeping the account live' (notes 3.1.11 Deprovisioning Leavers). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 5, 4 Nov 2026. Word-tell sweep round 2, 18 Nov 2026: key reworded as 'X before Y' without a comma clause; distractor B given one; same key and teaching point. Word-tell sweep polish, 18 Nov 2026: key reworded to say the files are moved, matching the explanation and tips; same key and teaching point.",
       "style_version": 2
     },
     {

@@ -234,7 +234,7 @@
     "A": "Install the patch on the live controllers tonight",
     "B": "Ask the facilities manager to stop ventilation until patched",
     "C": "Record the flaw as low risk for the isolated control network",
-    "D": "Ask the facilities manager to test the patch and schedule the fix"
+    "D": "Ask the facilities manager to schedule a tested patch"
    },
    "correct": "D",
    "key_concept": "Controllers that run physical processes are patched only after their owner tests and schedules the fix, because untested patches or shutdowns can endanger people.",
@@ -256,7 +256,7 @@
     "Patch testing",
     "Safety first"
    ],
-   "_provenance": "Authored from concept: 'protect people and the physical process first; test and schedule controller patches through the owner' (notes 4.1.11 Embedded Systems and Industrial Control Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Word-tell sweep, 18 Nov 2026: role names aligned with the canonical list. Word-tell sweep round 2, 18 Nov 2026: distractor A drops 'vendor's' (vendor sat only on distractors).",
+   "_provenance": "Authored from concept: 'protect people and the physical process first; test and schedule controller patches through the owner' (notes 4.1.11 Embedded Systems and Industrial Control Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Word-tell sweep, 18 Nov 2026: role names aligned with the canonical list. Word-tell sweep round 2, 18 Nov 2026: distractor A drops 'vendor's' (vendor sat only on distractors). Word-tell sweep polish, 18 Nov 2026: key D trimmed (was the longest option and the only one with 'and').",
    "style_version": 2
   },
   {
@@ -270,7 +270,7 @@
     "A": "On the staff network, behind the edge firewall",
     "B": "On the staff network, with its default password changed",
     "C": "On the residents' Wi-Fi network, apart from staff systems",
-    "D": "On its own segment, which allows only the traffic it needs"
+    "D": "On its own segment, limited to the traffic it needs"
    },
    "correct": "D",
    "key_concept": "IoT devices often lack strong built-in security, so they go on their own segment with only the traffic they need allowed.",
@@ -292,7 +292,7 @@
     "Flat networks",
     "Least functionality"
    ],
-   "_provenance": "Authored from concept: 'treat connected devices as untrusted and put them on their own segment' (notes 4.1.12 Internet of Things (IoT) Security). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Key letter moved from B to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Word-tell sweep, 18 Nov 2026: role names aligned with the canonical list. Word-tell sweep round 2, 18 Nov 2026: key D recast from ', allowing' to ', which allows'.",
+   "_provenance": "Authored from concept: 'treat connected devices as untrusted and put them on their own segment' (notes 4.1.12 Internet of Things (IoT) Security). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Key letter moved from B to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged. Word-tell sweep, 18 Nov 2026: role names aligned with the canonical list. Word-tell sweep round 2, 18 Nov 2026: key D recast from ', allowing' to ', which allows'. Word-tell sweep polish, 18 Nov 2026: key D trimmed so it is no longer the longest option.",
    "style_version": 2
   },
   {
@@ -666,7 +666,7 @@
     "A": "Have the network team close port 443 for those staff",
     "B": "Approve the app after confirming that it uses TLS encryption",
     "C": "Block uploads through the CASB, then tell the security manager",
-    "D": "Send the CASB findings on these uploads to the security manager"
+    "D": "Send the CASB upload findings to the security manager"
    },
    "correct": "D",
    "key_concept": "A CASB reveals and can control cloud app use, but the policy owner decides what use is allowed and whether to block it.",
@@ -688,7 +688,7 @@
     "Shadow IT",
     "Policy ownership"
    ],
-   "_provenance": "Authored from concept: 'a CASB finds shadow IT and enforces cloud policy that its owner sets' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Cross-review fix (31 Oct 2026): CASB spelled out at first use in the stem (CD-32); 'approves any blocking' now covers the port block in A as well as CASB blocking. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells; role names aligned with the canonical list. Word-tell sweep round 2, 18 Nov 2026: key D made one plain action, no comma.",
+   "_provenance": "Authored from concept: 'a CASB finds shadow IT and enforces cloud policy that its owner sets' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Cross-review fix (31 Oct 2026): CASB spelled out at first use in the stem (CD-32); 'approves any blocking' now covers the port block in A as well as CASB blocking. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells; role names aligned with the canonical list. Word-tell sweep round 2, 18 Nov 2026: key D made one plain action, no comma. Word-tell sweep polish, 18 Nov 2026: key D trimmed so it is no longer the longest option.",
    "style_version": 2
   },
   {
@@ -2320,7 +2320,7 @@
    "question": "An online toy store's security team is installing its first inline intrusion prevention system (IPS) before the holiday rush. Which starting setup should the security analyst propose as BEST?",
    "options": {
     "A": "Install it in place of the store's firewall",
-    "B": "Run it in alert-only mode to log the traffic it would block",
+    "B": "Run it in alert-only mode until its rules are tuned",
     "C": "Turn on blocking for the vendor's recommended rule set",
     "D": "Rely on its automatic blocking, with no alert review"
    },
@@ -2344,7 +2344,7 @@
     "Alert-only mode",
     "False positives"
    ],
-   "_provenance": "Authored from concept: 'teams run new rules in alert mode first, because untuned blocking stops real business traffic' (notes 4.1.8 Intrusion Detection and Prevention Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): B uses the notes' alert-mode term, C is a non-absolute untuned-blocking option, and D loses its reason clause. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells; role names aligned with the canonical list. Word-tell sweep round 2, 18 Nov 2026: key B recast from ', logging' to 'to log'.",
+   "_provenance": "Authored from concept: 'teams run new rules in alert mode first, because untuned blocking stops real business traffic' (notes 4.1.8 Intrusion Detection and Prevention Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): B uses the notes' alert-mode term, C is a non-absolute untuned-blocking option, and D loses its reason clause. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells; role names aligned with the canonical list. Word-tell sweep round 2, 18 Nov 2026: key B recast from ', logging' to 'to log'. Word-tell sweep polish, 18 Nov 2026: key B trimmed so it is no longer the longest option.",
    "style_version": 2
   },
   {
@@ -2898,7 +2898,7 @@
     "A": "No remote access, so the vendor visits the bakery for every fault",
     "B": "A permanent link the owner approves, plus MFA for the vendor",
     "C": "Vendor access over the staff VPN, logged under a shared account",
-    "D": "Vendor sessions opened per approved job, MFA-protected, each one logged"
+    "D": "Approved per-job vendor sessions using MFA, each one logged"
    },
    "correct": "D",
    "key_concept": "Remote vendor access to control systems is opened per approved job, with MFA and logging, not left always on or banned outright.",
@@ -2920,7 +2920,7 @@
     "Operational technology",
     "Multifactor authentication"
    ],
-   "_provenance": "Authored from concept: 'Remote vendor access is a common way in, so it is time-limited, uses multifactor authentication (MFA) and is logged' (notes 4.1.11 Embedded Systems and Industrial Control Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key D drops ', using' and names the vendor, as every distractor does.",
+   "_provenance": "Authored from concept: 'Remote vendor access is a common way in, so it is time-limited, uses multifactor authentication (MFA) and is logged' (notes 4.1.11 Embedded Systems and Industrial Control Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 4, 1 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key D drops ', using' and names the vendor, as every distractor does. Word-tell sweep polish, 18 Nov 2026: key D trimmed so it is no longer the longest option.",
    "style_version": 2
   },
   {
@@ -3904,14 +3904,14 @@
    "question": "A roofing contractor's office manager owns its Wi-Fi and approved a checklist that has the IT technician disable unneeded features. What should the technician do FIRST about a new access point's WPS PIN pairing?",
    "options": {
     "A": "Ask the office manager to approve turning off WPS pairing",
-    "B": "Turn off WPS PIN pairing as the office checklist directs",
+    "B": "Turn off WPS PIN pairing, then tell the office manager",
     "C": "Keep WPS on, and change and record its PIN each quarter",
     "D": "Keep WPS on, and hide the network's name from scans instead"
    },
    "correct": "B",
    "key_concept": "Turn off WPS PIN pairing, which attackers can guess; when an approved checklist assigns hardening, the technician does it and records it.",
    "pre_read": "Check what the approved checklist already lets the technician do.",
-   "correct_explanation": "Wi-Fi Protected Setup (WPS) PIN pairing can be guessed by attackers, and the checklist the office manager approved already tells the technician to turn off features like it, so the technician turns it off and records the change. Asking the office manager is the runner-up: they own the Wi-Fi, but their approved checklist has already made this decision.",
+   "correct_explanation": "Wi-Fi Protected Setup (WPS) PIN pairing can be guessed by attackers, and the checklist the office manager approved already tells the technician to turn off features like it, so the technician turns it off, records the change and tells the office manager. Asking the office manager is the runner-up: they own the Wi-Fi, but their approved checklist has already made this decision.",
    "wrong_explanations": {
     "A": "Closest choice: the office manager does own the Wi-Fi. But their approved checklist already assigns this step to the technician, so asking again only delays it.",
     "C": "Tempting because changing secrets sounds careful. But a WPS PIN can be guessed in hours, long before a quarterly change comes around.",
@@ -3928,7 +3928,7 @@
     "Least functionality",
     "Role and authority"
    ],
-   "_provenance": "Authored from concept: 'Turn off Wi-Fi Protected Setup (WPS) PIN pairing, which can be guessed' (notes 4.1.10 Wireless Security: Wi-Fi and Bluetooth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key B made one action with no semicolon.",
+   "_provenance": "Authored from concept: 'Turn off Wi-Fi Protected Setup (WPS) PIN pairing, which can be guessed' (notes 4.1.10 Wireless Security: Wi-Fi and Bluetooth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key B made one action with no semicolon. Word-tell sweep polish, 18 Nov 2026: key B no longer the only option repeating the stem word 'checklist'.",
    "style_version": 2
   },
   {
@@ -4878,12 +4878,12 @@
     "A": "Only TLS 1.3, since every earlier version is retired",
     "B": "All four, so every visitor's browser can still connect",
     "C": "All four, with the oldest two moved to an unusual port",
-    "D": "TLS 1.2 plus 1.3 with every older version switched off"
+    "D": "The newest two, with every older version switched off"
    },
    "correct": "D",
    "key_concept": "Servers should offer TLS 1.2 and 1.3 and turn off SSL and early TLS; TLS 1.2 is still current, not retired.",
    "pre_read": "Sort the four versions into current and retired before choosing.",
-   "correct_explanation": "NIST's TLS guide says public servers must support TLS 1.2 and, since 2024, TLS 1.3, must not allow SSL 3.0, and discourages TLS 1.0; it allows switching 1.2 off only where it is confirmed unneeded. So this server keeps 1.2 and 1.3 and turns the older versions off. TLS 1.3 alone is the runner-up: it is the strongest version, but TLS 1.2 is still current, and many visitors' browsers and devices still rely on it.",
+   "correct_explanation": "NIST's TLS guide says public servers must support TLS 1.2 and, since 2024, TLS 1.3, must not allow SSL 3.0, and discourages TLS 1.0; it allows switching 1.2 off only where it is confirmed unneeded. So this server keeps the newest two, 1.2 and 1.3, and switches off the rest. TLS 1.3 alone is the runner-up: it is the strongest version, but TLS 1.2 is still current, and many visitors' devices still rely on it.",
    "wrong_explanations": {
     "A": "Closest choice: TLS 1.3 is the strongest version. But TLS 1.2 is not retired; it is still approved, and many visitors' devices need it.",
     "B": "Tempting because compatibility matters. But keeping SSL 3.0 and TLS 1.0 lets attackers push connections down to weak versions.",
@@ -4900,7 +4900,7 @@
     "Protocol downgrade",
     "Secure protocols"
    ],
-   "_provenance": "Authored from concept: 'Transport Layer Security (TLS): use version 1.2 or 1.3, never the retired Secure Sockets Layer (SSL)' (notes 4.1.5 Ports, Protocols and Secure Alternatives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key D recast from a semicolon to 'with'.",
+   "_provenance": "Authored from concept: 'Transport Layer Security (TLS): use version 1.2 or 1.3, never the retired Secure Sockets Layer (SSL)' (notes 4.1.5 Ports, Protocols and Secure Alternatives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key D recast from a semicolon to 'with'. Word-tell sweep polish, 18 Nov 2026: key D reworded for a smoother read, in parallel with C.",
    "style_version": 2
   },
   {
@@ -5127,7 +5127,7 @@
    "bloom_level": "Application",
    "question": "A cable TV company's vendor says its artificial intelligence (AI) firewall would let the company drop night-shift analysts, since the AI blocks attacks itself. Which reply from the security manager is MOST accurate?",
    "options": {
-    "A": "The AI will miss attacks and flag safe traffic, so analysts stay",
+    "A": "The AI can miss attacks and flag safe traffic, so analysts stay",
     "B": "After weeks of learning normal traffic, the cut is likely safe",
     "C": "It blocks known attacks well, so one analyst on call is enough",
     "D": "AI firewalls only alert and leave all the blocking to analysts"
@@ -5152,7 +5152,7 @@
     "Human oversight",
     "Evasion"
    ],
-   "_provenance": "Authored from concept: 'An AI-powered firewall removes the need for analysts' (exam trap, notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Blind re-test fix (5 Nov 2026): C given a measured but still wrong claim, so the key is not the only cautious option. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key A finishes the point about the analysts (blind-tester flag); distractor D reworded so 'and' is not on the key alone.",
+   "_provenance": "Authored from concept: 'An AI-powered firewall removes the need for analysts' (exam trap, notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Blind re-test fix (5 Nov 2026): C given a measured but still wrong claim, so the key is not the only cautious option. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key A finishes the point about the analysts (blind-tester flag); distractor D reworded so 'and' is not on the key alone. Word-tell sweep polish, 18 Nov 2026: key A says 'can miss' instead of the absolute 'will miss', and is no longer the lone longest option.",
    "style_version": 2
   },
   {
@@ -5166,7 +5166,7 @@
     "A": "A full 128-bit WEP key is strong enough for a small business",
     "B": "Changing the WEP key weekly will keep attackers out",
     "C": "Switching to the first WPA on the same device is enough",
-    "D": "WEP fails at every key length, so use WPA3, at least WPA2"
+    "D": "WEP fails at every key length, so move to WPA3 if possible"
    },
    "correct": "D",
    "key_concept": "WEP is broken by design, whatever its key length; use WPA3, or WPA2 where devices cannot do WPA3.",
@@ -5188,7 +5188,7 @@
     "Wi-Fi security",
     "WPA3"
    ],
-   "_provenance": "Authored from concept: 'Wired Equivalent Privacy (WEP) and the first Wi-Fi Protected Access (WPA) are broken; use WPA3, or WPA2 where devices cannot do WPA3' (notes 4.1.10 Wireless Security: Wi-Fi and Bluetooth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key D recast from a semicolon to ', so'.",
+   "_provenance": "Authored from concept: 'Wired Equivalent Privacy (WEP) and the first Wi-Fi Protected Access (WPA) are broken; use WPA3, or WPA2 where devices cannot do WPA3' (notes 4.1.10 Wireless Security: Wi-Fi and Bluetooth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key D recast from a semicolon to ', so'. Word-tell sweep polish, 18 Nov 2026: key D reworded for a smoother read.",
    "style_version": 2
   },
   {
@@ -5487,7 +5487,7 @@
    "bloom_level": "Application",
    "question": "A community college's network access control (NAC) policy lists its new badge printers, which cannot do 802.1X sign-in, as approved devices. How should the network technician set up NAC for them as BEST?",
    "options": {
-    "A": "Identify them by profile to grant them printing access only",
+    "A": "Use device profiling to limit them to printing access",
     "B": "Admit them to the staff network, since printers hold no data",
     "C": "Admit them on the staff network by MAC address alone",
     "D": "Block them from the network until they support 802.1X"
@@ -5512,7 +5512,7 @@
     "802.1X",
     "Limited access"
    ],
-   "_provenance": "Authored from concept: 'Devices that cannot use 802.1X, like printers, are identified by profiling and given limited access, not a free pass' (notes 4.2.8 Network Access Control (NAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key A recast from ', giving' to 'to grant'.",
+   "_provenance": "Authored from concept: 'Devices that cannot use 802.1X, like printers, are identified by profiling and given limited access, not a free pass' (notes 4.2.8 Network Access Control (NAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key A recast from ', giving' to 'to grant'. Word-tell sweep polish, 18 Nov 2026: key A reworded for a smoother read.",
    "style_version": 2
   },
   {
@@ -5632,9 +5632,9 @@
    "question": "A phone insurance startup's developer says a public container image with millions of downloads is safe to deploy without review. Which reply from the system administrator is MOST accurate?",
    "options": {
     "A": "Popular images are safe; their many users would spot any flaws",
-    "B": "Popularity is no proof, so scan it first; use only trusted sources",
+    "B": "Popularity proves nothing; scan it and use trusted sources",
     "C": "It is safe once run in a container, not a virtual machine",
-    "D": "Its signature proves it is free of flaws and malware"
+    "D": "Check its signature; a valid one rules out flaws and malware"
    },
    "correct": "B",
    "key_concept": "Every public image is outside software: scan it and run only images from trusted, maintained sources; popularity and signatures do not prove it is flaw-free.",
@@ -5656,7 +5656,7 @@
     "Trusted registries",
     "Image signing"
    ],
-   "_provenance": "Authored from concept: 'Secure the template, not just the copy: harden and patch images, and pull them only from approved sources' (notes 4.3.2 Virtualization and Containers in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: distractor A now shares the key's semicolon form (blind-tester flag).",
+   "_provenance": "Authored from concept: 'Secure the template, not just the copy: harden and patch images, and pull them only from approved sources' (notes 4.3.2 Virtualization and Containers in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: distractor A now shares the key's semicolon form (blind-tester flag). Word-tell sweep polish, 18 Nov 2026: key B trimmed so it is no longer the longest option; distractor D now also opens with a check, so the key is not the only cautious option.",
    "style_version": 2
   },
   {
@@ -6786,7 +6786,7 @@
     "A": "Disagree; a MAC list suffices when each port admits one address",
     "B": "Disagree; a MAC address is fixed in hardware and cannot be faked",
     "C": "Agree; NAC also encrypts traffic between each device and the switch",
-    "D": "Agree; NAC also checks each device's credentials plus its health"
+    "D": "Agree; NAC checks each device's identity as well as its health"
    },
    "correct": "D",
    "key_concept": "A MAC list checks only an address the device announces; NAC authenticates devices with credentials or certificates and checks their health.",
@@ -6799,7 +6799,7 @@
    },
    "tips": [
     "Eliminate: B treats MAC addresses as fixed, though software can change them, and C credits NAC with encryption, which is not its job.",
-    "Final two: D beats A because NAC checks credentials and health; limiting each port to one address still admits a copied address.",
+    "Final two: D beats A because NAC checks each device's identity and health; limiting each port to one address still admits a copied address.",
     "Exam cue: when asked whether one control can replace another, list what each actually verifies; a stand-in that checks less is not a substitute."
    ],
    "framework_ref": "NIST SP 800-41 Rev. 1 Section 2.1.7 (Network Access Control: health checks and limited access for remediation); NIST SP 800-94 Section 5.1.2 (WLAN Components: SSIDs are broadcast in plaintext, so any listening device can learn them, and MAC addresses are relatively trivial to spoof)",
@@ -6808,7 +6808,7 @@
     "MAC filtering",
     "802.1X"
    ],
-   "_provenance": "Authored from concept: 'Media access control (MAC) address filtering protects as well as NAC is a trap: MAC addresses are easy to copy, while NAC authenticates and checks health' (notes 4.2.8 Network Access Control (NAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key D tightened, no doubled 'also ... as well as' (blind-tester flag).",
+   "_provenance": "Authored from concept: 'Media access control (MAC) address filtering protects as well as NAC is a trap: MAC addresses are easy to copy, while NAC authenticates and checks health' (notes 4.2.8 Network Access Control (NAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key D tightened, no doubled 'also ... as well as' (blind-tester flag). Word-tell sweep polish, 18 Nov 2026: key D reworded for a smoother read.",
    "style_version": 2
   },
   {
@@ -7146,7 +7146,7 @@
     "A": "Rotate the key, so any copy of the old one stops working",
     "B": "Leave the key, since the provider retires unused keys itself",
     "C": "Cut the key to read-only rights, and record it on the scan",
-    "D": "Delete the key before noting the change on the scan finding"
+    "D": "Delete the key, then note the change on the scan finding"
    },
    "correct": "D",
    "key_concept": "An unused cloud key should be removed, not rotated or weakened; when the procedure assigns removal, the analyst does it and records it.",
@@ -7168,7 +7168,7 @@
     "Cloud misconfiguration",
     "Key rotation"
    ],
-   "_provenance": "Authored from concept: 'Common mistakes are public storage, management ports open to the internet and accounts with more rights than they need' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key D recast from a semicolon to 'before'.",
+   "_provenance": "Authored from concept: 'Common mistakes are public storage, management ports open to the internet and accounts with more rights than they need' (notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 7, 12 Nov 2026. Word-tell sweep, 18 Nov 2026: options reworded to even out word tells. Word-tell sweep round 2, 18 Nov 2026: key D recast from a semicolon to 'before'. Word-tell sweep polish, 18 Nov 2026: key D reworded for a smoother read.",
    "style_version": 2
   },
   {
