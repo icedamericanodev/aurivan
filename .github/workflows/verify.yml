@@ -57,3 +57,18 @@ jobs:
       # always ready to reopen.
       - name: Website build, web app mode (kept ready for launch)
         run: SITE_MODE=app bash scripts/build_site.sh
+      # The new marketing home page (home.html) is not live. While it is a
+      # draft, the plain home build must refuse it with the draft message; the
+      # draft build (noindex) keeps its files, allowlist and strict policy
+      # healthy. Its browser checks (scripts/home_page/check.cjs) need
+      # Playwright and run locally, not here. The draft build goes to a scratch
+      # folder so it does not overwrite _site/. The build itself decides what
+      # is a draft; this step only checks that it refuses one for publishing.
+      - name: Website build, home page mode (draft, not deployed)
+        run: |
+          if out="$(SITE_MODE=home SITE_NO_PREVIEW=1 SITE_OUT=/tmp/site-home-nodraft bash scripts/build_site.sh 2>&1)"; then
+            echo "The home page is approved and builds for publishing."
+          else
+            echo "$out" | grep -q 'is a draft' || { echo "$out"; exit 1; }
+          fi
+          SITE_MODE=home HOME_ALLOW_DRAFT=1 SITE_OUT=/tmp/site-home-draft bash scripts/build_site.sh

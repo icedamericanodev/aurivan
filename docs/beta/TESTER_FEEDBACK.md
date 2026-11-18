@@ -38,6 +38,20 @@ cause in the app, and slots it into the plan below.
 | FB-007 | 2026-11-13 | R-ZJ67 | Phone · Mock review (question d5_205) | Content | Medium | One question | Implemented for 2.1: question states management's requirement; key D and option order unchanged | 2.1 |
 | FB-008 | 2026-11-15 | R-QHER | Phone · bottom buttons (reported on the plant picker, 2.0.0, Pixel, Android 16, three-button navigation) | Bug/UX | Medium | Every screen with a sticky bottom button | Implemented for 2.1: the shared bottom bar now reserves the navigation-bar space; native phone check pending | 2.1 |
 
+## Feedback quoted on the website
+
+A tester's words go on kaisip.com only with that tester's own yes to the exact
+text and name, kept by the owner outside the repo (privacy.html section 3e).
+Every quote card carries `data-quote-permission="recorded"` and the reward
+disclosure ("CISA Premium free"); `scripts/build_site.sh` treats a home page
+quote without them as a draft, which cannot be published. For a translated or
+trimmed quote, the tester says yes to the English wording shown, not only to
+the original.
+
+| Quote | Shown as | Permission | Where |
+|---|---|---|---|
+| "The app is user friendly … wasn't tiring to answer." (translated from Filipino, excerpt; the original's comparison with ISACA's question product left out) | Ken L., KaiSip beta tester | Given directly to the owner, 13 Nov 2026, for the English wording shown (owner confirmed 18 Nov 2026; reply kept privately by the owner). The tester also opted in to credit on the beta form, which covers only the in-app thank-you screen. | `home.html` (not live) |
+
 ## Next update plan (phone app 2.1, closed testing, build of 18 Nov 2026)
 
 Everything below is in the 2.1 build. Version name on Play: exactly "2.1".

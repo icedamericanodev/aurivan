@@ -429,10 +429,10 @@ version bump today.
 ### Results
 | Domain | Questions | Tagged | Untagged |
 |---|---|---|---|
-| D1 | 140 | 103 | 37 |
+| D1 | 155 | 110 | 45 |
 | D2 | 302 | 256 | 46 |
 | D3 | 146 | 131 | 15 |
-| All | 588 | 490 | 98 |
+| All | 603 | 497 | 106 |
 
 New principle `independence-of-ai-assurance` (role family): seeds and tags
 aaia_d2_014, aaia_d3_024 and aaia_d3_043, moved from
@@ -721,3 +721,30 @@ aaia_d2_286 aaia_d2_287 aaia_d2_289 aaia_d2_290 aaia_d2_292 aaia_d2_296
 aaia_d2_297 aaia_d2_298 aaia_d2_300 aaia_d3_115 aaia_d3_119 aaia_d3_121
 aaia_d3_122 aaia_d3_123 aaia_d3_125 aaia_d3_128 aaia_d3_135 aaia_d3_139
 aaia_d3_142 aaia_d3_143 aaia_d3_146.
+
+### Batch 9 (18 November 2026)
+aaia_d1_141-155 were read against the rule above. None is a seed. Kept:
+aaia_d1_146 `real-human-oversight` and aaia_d1_149 `test-the-ai-as-used`
+(high); aaia_d1_141, aaia_d1_144, aaia_d1_147, aaia_d1_152 and aaia_d1_153
+(medium, below). Six tags removed (below); aaia_d1_154 and aaia_d1_155 were
+written untagged and stay so.
+
+**Untagged new items (low confidence):**
+- aaia_d1_142: was `ai-output-is-a-lead`; the runner-up also checks the ranking before acting, so causal knowledge (a predictor is an association, not a lever) decides (as aaia_d1_078).
+- aaia_d1_143: was `ai-output-is-a-lead`; the runner-up, checking answers against the code, is that principle's own move, so retrieval-versus-fine-tuning knowledge decides (as aaia_d2_196).
+- aaia_d1_145: was `named-human-owner`; the runner-up also puts the decision with an accountable body (committee re-approval), so drift knowledge (drift submits no change) decides.
+- aaia_d1_148: was `ai-deciding-fact`; KRI design knowledge (a trigger reset at each retrain misses slow creep), as aaia_d2_156; the runner-up, escalation, is not a risk the facts never raise.
+- aaia_d1_150: was `fix-the-control-not-the-model`; the runner-up is a check, not a model fix, so provenance knowledge (error sampling cannot spot accurate model-written text) decides (as aaia_d2_136).
+- aaia_d1_151: was `rank-ai-risk-by-harm`; the Final two weighs breadth of exposure (every colleague against a log store), not harm, so oversharing knowledge decides (as aaia_d2_045).
+- aaia_d1_154: explanation knowledge (a model card is global, the duty is per decision), as aaia_d2_074.
+- aaia_d1_155: framework knowledge (NIST CSF 2.0 covers security, not validity or bias), as aaia_d1_079.
+
+**Medium confidence (tagged, review first):** aaia_d1_141
+`population-includes-misses` (semantic-search knowledge carries weight; clerks
+judge only what the ranking shows), aaia_d1_144 `ai-changes-are-changes`
+(vendors switch models silently, so the inventory records each version),
+aaia_d1_147 `ai-deciding-fact` (yearly retraining and same-input resubmission
+remove the runner-up, a disclosure risk the stem never raises), aaia_d1_152
+`test-the-ai-as-used` (extraction tests cover only the prompts tried; close to
+`accuracy-is-not-assurance`), aaia_d1_153 `accuracy-is-not-assurance` (a
+higher score never removes misses; close to `limits-outside-the-model`).

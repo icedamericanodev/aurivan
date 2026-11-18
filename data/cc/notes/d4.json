@@ -60,7 +60,7 @@
             "Each device also gets an Internet Protocol (IP) address, which routers use to move packets (data plus a delivery address) between networks.",
             "Dynamic Host Configuration Protocol (DHCP) hands out IP addresses; the Domain Name System (DNS) turns names into IP addresses."
           ],
-          "example": "At a veterinary clinic, staff typing the bank's usual address land on a fake site. Kenji, the junior IT technician, finds every laptop got its DNS setting from an unknown DHCP server plugged in at reception. Following the incident procedure, Kenji photographs it and calls the IT lead before touching it.",
+          "example": "At a veterinary clinic, staff typing the bank's usual address land on a fake site. Kenji, the IT technician, finds every laptop got its DNS setting from an unknown DHCP server plugged in at reception. Following the incident procedure, Kenji photographs it and calls the incident response lead before touching it.",
           "audit_focus": {
             "review": [
               "Look up any device you don't recognize in the asset inventory",
@@ -107,7 +107,8 @@
             "cc_d4_072",
             "cc_d4_132",
             "cc_d4_133",
-            "cc_d4_167"
+            "cc_d4_167",
+            "cc_d4_201"
           ],
           "definition": "The Open Systems Interconnection (OSI) model is a seven-layer reference model that splits network communication into separate jobs, from physical signals to applications.",
           "why_it_matters": "Name the layer where a device works or an attack lands, and you can pick a control that operates there.",
@@ -319,7 +320,7 @@
               }
             ]
           },
-          "example": "A logistics firm blocks remote desktop in its IPv4 firewall rules. Weeks later, Amara, a junior analyst, sees remote desktop sessions reaching a warehouse server over IPv6, which has no rules. Amara escalates the log entries to the network lead rather than switching IPv6 off.",
+          "example": "A logistics firm blocks remote desktop in its IPv4 firewall rules. Weeks later, Amara, a security analyst, sees remote desktop sessions reaching a warehouse server over IPv6, which has no rules. Amara escalates the log entries to the network lead rather than switching IPv6 off.",
           "audit_focus": {
             "review": [
               "Check IPv6 rules match the IPv4 ones, even where nobody turned IPv6 on",
@@ -449,7 +450,7 @@
               "meaning": "Remote control of a desktop; reach it through a virtual private network (VPN) or gateway with multifactor authentication (MFA)."
             }
           ],
-          "example": "A school's heating contractor asks Leila, a new IT technician, to open Telnet so they can manage the boiler from home. Telnet sends the login in cleartext, so Leila declines and points them to the school's remote-access request process, noting that SSH over the VPN could work.",
+          "example": "A school's heating contractor asks Leila, a new network technician, to open Telnet so they can manage the boiler from home. Telnet sends the login in cleartext, so Leila declines and points them to the school's remote-access request process, noting that SSH over the VPN could work.",
           "audit_focus": {
             "review": [
               "List the services each host runs and who still uses them",
@@ -499,7 +500,8 @@
             "cc_d4_076",
             "cc_d4_105",
             "cc_d4_138",
-            "cc_d4_172"
+            "cc_d4_172",
+            "cc_d4_202"
           ],
           "definition": "A virtual private network (VPN) creates an encrypted tunnel across an untrusted network, such as the internet, so traffic cannot be read or changed on the way.",
           "why_it_matters": "A VPN protects remote traffic in transit, but it also extends the internal network to whatever device sits at the far end.",
@@ -827,7 +829,7 @@
             "Baselines go stale as the business changes, so models need retraining.",
             "Learn the baseline from trusted traffic: an intruder active while the model learns becomes part of normal, so retrain after a compromise."
           ],
-          "example": "A hospital's AI tool flags an infusion pump sending data to an unknown address at 3 a.m. Diego, a junior analyst, cannot tell if it is an update or an attack. Patients depend on the pump, so Diego does not let the tool block it; as the playbook says, Diego pages the incident response lead and clinical engineering.",
+          "example": "A hospital's AI tool flags an infusion pump sending data to an unknown address at 3 a.m. Diego, the on-shift analyst, cannot tell if it is an update or an attack. Patients depend on the pump, so Diego does not let the tool block it; as the playbook says, Diego pages the incident response lead and clinical engineering.",
           "audit_focus": {
             "review": [
               "Know which responses the tool may trigger without a person",
@@ -874,7 +876,8 @@
             "cc_d4_080",
             "cc_d4_109",
             "cc_d4_144",
-            "cc_d4_179"
+            "cc_d4_179",
+            "cc_d4_203"
           ],
           "definition": "Wireless security protects data sent by radio, over Wi-Fi and Bluetooth, where anyone within range can pick up the signal.",
           "why_it_matters": "Radio passes through walls, so without strong encryption and sign-in, anyone nearby can listen in or join.",
@@ -1099,7 +1102,7 @@
             "Buy devices with secure updates, unique passwords and a stated support period, as the National Institute of Standards and Technology (NIST) urges makers.",
             "Change default passwords at installation, and replace devices the maker no longer supports."
           ],
-          "example": "A hotel adds smart televisions to every room. Olu, a junior IT technician, finds them already in service on the same network as the front-desk payment terminals, all with the installer's default admin password. Olu adds each one to the device inventory and, because the televisions are already live, raises a change request for a separate segment and new passwords.",
+          "example": "A hotel adds smart televisions to every room. Olu, a network technician, finds them already in service on the same network as the front-desk payment terminals, all with the installer's default admin password. Olu adds each one to the device inventory and, because the televisions are already live, raises a change request for a separate segment and new passwords.",
           "audit_focus": {
             "review": [
               "Match devices found by a discovery tool to registered owners",
@@ -1158,7 +1161,8 @@
             "cc_d4_083",
             "cc_d4_113",
             "cc_d4_146",
-            "cc_d4_182"
+            "cc_d4_182",
+            "cc_d4_204"
           ],
           "definition": "Network segmentation divides a network into smaller parts, with controls on the traffic between them, so a problem in one part cannot spread freely.",
           "why_it_matters": "On a flat network, one infected laptop can reach every server; segmentation contains attacks and shields the most sensitive systems.",
@@ -1169,7 +1173,7 @@
             "Segments can be physical, with separate switches, or logical, sharing hardware but kept apart by configuration.",
             "Traffic between internal segments is east-west; traffic into and out of the network is north-south."
           ],
-          "example": "Ransomware (malicious software that locks files until a ransom is paid) reaches a design firm through one laptop. Because staff, server and backup segments have strict rules between them, only the staff segment is hit. As the incident response lead directs, Noor, a junior analyst, checks the backup segment, finds no unusual traffic and reports back.",
+          "example": "Ransomware (malicious software that locks files until a ransom is paid) reaches a design firm through one laptop. Because staff, server and backup segments have strict rules between them, only the staff segment is hit. As the incident response lead directs, Noor, a security analyst, checks the backup segment, finds no unusual traffic and reports back.",
           "audit_focus": {
             "review": [
               "Ask what traffic each new rule between segments is for",
@@ -1215,7 +1219,8 @@
             "cc_d4_084",
             "cc_d4_114",
             "cc_d4_147",
-            "cc_d4_183"
+            "cc_d4_183",
+            "cc_d4_205"
           ],
           "definition": "A firewall zone groups networks of equal trust; a screened subnet, often called a demilitarized zone (DMZ), holds public-facing servers between the internet and internal networks.",
           "why_it_matters": "Public-facing servers are the most attacked systems; in their own zone, a breached web server does not open the internal network.",
@@ -1293,7 +1298,8 @@
             "cc_d4_085",
             "cc_d4_115",
             "cc_d4_148",
-            "cc_d4_184"
+            "cc_d4_184",
+            "cc_d4_206"
           ],
           "definition": "A virtual local area network (VLAN) splits one physical switched network into separate logical networks, so devices in different VLANs cannot talk directly at layer 2.",
           "why_it_matters": "VLANs separate staff, guests and smart devices without extra switches, but they protect only if traffic between them is filtered.",
@@ -1350,7 +1356,8 @@
             "cc_d4_086",
             "cc_d4_116",
             "cc_d4_149",
-            "cc_d4_185"
+            "cc_d4_185",
+            "cc_d4_207"
           ],
           "definition": "Micro-segmentation applies security policy to individual workloads, such as single servers, virtual machines or containers, so each talks only to the systems it needs.",
           "why_it_matters": "Ordinary segments allow free movement inside each one; micro-segmentation shrinks the boundary to one workload, sharply limiting lateral movement.",
@@ -1358,7 +1365,8 @@
             "Policies follow a workload's identity or labels, such as 'payroll database', rather than its network address, so they move with it.",
             "Enforcement sits close to the workload: in host firewalls, the virtualization platform or cloud security groups.",
             "Teams map real application traffic first, then allow the flows they find and block everything else.",
-            "It controls east-west traffic that perimeter firewalls rarely see, and it is a core building block of Zero Trust."
+            "It controls east-west traffic that perimeter firewalls rarely see, and it is a core building block of Zero Trust.",
+            "Report-only mode tests new rules before they block; once rules enforce, a newly approved flow gets its own narrow allow rule."
           ],
           "compare": {
             "columns": [
@@ -1447,7 +1455,8 @@
             "cc_d4_087",
             "cc_d4_117",
             "cc_d4_150",
-            "cc_d4_186"
+            "cc_d4_186",
+            "cc_d4_208"
           ],
           "definition": "Defense in depth layers independent physical, technical and administrative controls, so that if one fails or is bypassed, others still protect the asset.",
           "why_it_matters": "Every control fails sometimes; layers buy time to detect and respond before one failure becomes a breach.",
@@ -1507,7 +1516,8 @@
             "cc_d4_070",
             "cc_d4_118",
             "cc_d4_151",
-            "cc_d4_187"
+            "cc_d4_187",
+            "cc_d4_209"
           ],
           "definition": "Zero Trust is a security approach that grants no trust for network location alone and checks every request to every resource, every time.",
           "why_it_matters": "Remote work, cloud services and stolen credentials have erased the safe inside network; Zero Trust limits what an intruder can do.",
@@ -1515,6 +1525,7 @@
             "Never trust, always verify: being on the office network or a virtual private network (VPN) earns no access by itself.",
             "Each request is judged against policy using identity, device health and context such as time and location.",
             "Access is granted per session with least privilege, and checked again as conditions change.",
+            "Every connection is protected the same way wherever it runs: encrypted and authenticated, even between two servers in the organization's own data center.",
             "High-value data, such as artificial intelligence (AI) training sets, gets the strictest rules: named users, healthy devices, logged access.",
             "The National Institute of Standards and Technology (NIST) describes the model in Special Publication (SP) 800-207."
           ],
@@ -1600,7 +1611,8 @@
             "cc_d4_088",
             "cc_d4_119",
             "cc_d4_152",
-            "cc_d4_188"
+            "cc_d4_188",
+            "cc_d4_210"
           ],
           "definition": "A Zero Trust architecture separates deciding from enforcing: a decision point judges each access request, and enforcement points carry out the decision.",
           "why_it_matters": "A resource with no enforcement point in front of it sits outside the policy's protection.",
@@ -1882,13 +1894,15 @@
             "cc_d4_092",
             "cc_d4_123",
             "cc_d4_157",
-            "cc_d4_192"
+            "cc_d4_192",
+            "cc_d4_211"
           ],
           "definition": "Virtualization uses a hypervisor to run many isolated virtual machines on one physical server; containers share one operating system kernel but keep applications apart.",
           "why_it_matters": "Cloud pooling depends on this isolation, and one badly built image can be copied into hundreds of running workloads.",
           "how_it_works": [
             "A Type 1 hypervisor runs directly on the hardware, as in cloud data centers; a Type 2 hypervisor runs on an ordinary operating system.",
             "Workloads start from images, so one hardened image protects every copy, and one flawed image spreads the flaw everywhere.",
+            "Images and snapshots hold the same data as the disks they copy, and a snapshot often holds memory contents too, so each copy needs the same protection.",
             "Hand patches inside running containers do not last, because each replacement container starts again from the image.",
             "Serverless computing runs small pieces of code on demand; the provider manages the servers underneath.",
             "The provider secures the hypervisor and physical hosts; the customer secures what runs inside, as the service model sets."
@@ -1973,7 +1987,8 @@
             "cc_d4_093",
             "cc_d4_124",
             "cc_d4_158",
-            "cc_d4_193"
+            "cc_d4_193",
+            "cc_d4_212"
           ],
           "definition": "Cloud service models describe what the provider delivers: infrastructure as a service (IaaS), platform as a service (PaaS) or software as a service (SaaS).",
           "why_it_matters": "The service model decides how much the customer must secure; misreading it leaves layers nobody patches.",
@@ -1982,7 +1997,7 @@
             "PaaS offers a managed runtime, database or development platform; the customer secures its own code and settings.",
             "PaaS providers patch each runtime version while they support it; the customer picks the version its app uses and moves to a supported one before support ends.",
             "SaaS delivers a finished application; the customer manages users, settings and the data it puts in.",
-            "Specialist offerings, such as artificial intelligence (AI) services, usually behave like PaaS or SaaS for who secures what."
+            "NIST defines only three service models; AI services fit one of them, usually PaaS or SaaS, for who secures what."
           ],
           "compare": {
             "columns": [
@@ -2363,7 +2378,8 @@
             "cc_d4_097",
             "cc_d4_128",
             "cc_d4_162",
-            "cc_d4_198"
+            "cc_d4_198",
+            "cc_d4_213"
           ],
           "definition": "Protecting cloud data means classifying it, encrypting it in transit and at rest, controlling the keys, and making sure it can be recovered and fully deleted.",
           "why_it_matters": "The data stays the customer's responsibility in every model, and well-controlled encryption limits the damage if storage is exposed.",
@@ -2415,7 +2431,7 @@
               }
             ]
           },
-          "example": "A marketing agency keeps client files in an online file-sharing service. Ransomware hits through a compromised staff account, and the provider can restore only 30 days of versions. Sofia, a junior IT technician, runs the restore as the incident response lead directs and records, for the lessons-learned review, that there was no separate backup.",
+          "example": "A marketing agency keeps client files in an online file-sharing service. Ransomware hits through a compromised staff account, and the provider can restore only 30 days of versions. Sofia, the agency's IT technician, runs the restore as the incident response lead directs and records, for the lessons-learned review, that there was no separate backup.",
           "audit_focus": {
             "review": [
               "Identify who controls each encryption key",
@@ -2461,7 +2477,8 @@
             "cc_d4_098",
             "cc_d4_129",
             "cc_d4_163",
-            "cc_d4_199"
+            "cc_d4_199",
+            "cc_d4_214"
           ],
           "definition": "A cloud misconfiguration is a setting that leaves resources more exposed than intended, such as public storage, open ports or excessive permissions.",
           "why_it_matters": "Misconfiguration is among the commonest causes of cloud data exposure, because self-service lets anyone create resources quickly.",

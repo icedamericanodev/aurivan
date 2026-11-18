@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KaiSip Landing Round Four</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="robots" content="noindex,nofollow">
+<style>
+/* Layout: one calm column on Grove paper; three direction cards, each a hero still, a phone still and a recording. */
+@font-face{font-family:Figtree;src:url('../../assets/fonts/Figtree_400Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Figtree;src:url('../../assets/fonts/Figtree_600SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:Fraunces;src:url('../../assets/fonts/Fraunces_400Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Fraunces;src:url('../../assets/fonts/Fraunces_400Regular_Italic.woff2') format('woff2');font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:Fraunces;src:url('fonts/f-upright.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;unicode-range:U+0066}
+:root{--bg:#F3F1EA;--raised:#FFFFFF;--soft:#E9E6DC;--line:#DFDCD1;--control:#7D897F;--ink:#17231B;--ink2:#465349;--accent-text:#24603F;--btn:#1E4A34;--on-btn:#F7F5EF;--focus:#9A4F26;
+  --display:Fraunces,Georgia,serif;--body:Figtree,system-ui,sans-serif}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111613;--raised:#1D2621;--soft:#202A23;--line:#29322B;--control:#66736A;--ink:#ECEFE8;--ink2:#B4BFB6;--accent-text:#93CFAA;--btn:#A9D9BA;--on-btn:#0F1F16;--focus:#E9A07A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111613;--raised:#1D2621;--soft:#202A23;--line:#29322B;--control:#66736A;--ink:#ECEFE8;--ink2:#B4BFB6;--accent-text:#93CFAA;--btn:#A9D9BA;--on-btn:#0F1F16;--focus:#E9A07A;color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--body)}
+.page{max-width:1180px;margin-inline:auto;padding-block:clamp(32px,6vw,72px);padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:-.03em;line-height:1.08;margin:0;text-wrap:balance}
+h1{font-size:clamp(40px,6vw,72px)}h2{font-size:clamp(28px,3.4vw,40px)}
+em{font-style:italic;color:var(--accent-text)}
+p{margin:0;color:var(--ink2)}
+a{color:inherit;text-underline-offset:4px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:6px}
+.eyebrow{font:600 12px/1.5 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--accent-text);margin-bottom:18px}
+.intro{max-width:62ch;margin-top:20px;font-size:19px}
+.directions{display:grid;gap:clamp(40px,6vw,72px);margin-top:clamp(40px,6vw,72px)}
+.direction{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px clamp(24px,4vw,56px);align-items:start;padding-top:clamp(28px,4vw,44px);border-top:1px solid var(--line)}
+.stills{display:grid;grid-template-columns:minmax(0,1fr) 24%;gap:12px;align-items:start}
+.stills img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line)}
+.direction p{margin-top:12px}
+.direction ul{margin:16px 0 0;padding-left:20px;color:var(--ink2)}
+.direction li{margin-top:6px}
+.open{display:inline-flex;align-items:center;gap:12px;min-height:52px;margin-top:22px;padding:12px 26px;border-radius:999px;background:var(--btn);color:var(--on-btn);font-weight:600;text-decoration:none}
+video{display:block;width:100%;height:auto;margin-top:12px;border-radius:14px;border:1px solid var(--line);background:var(--soft)}
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:clamp(48px,7vw,88px)}
+.note{padding:24px;border-radius:20px;background:var(--raised);border:1px solid var(--line)}
+.note h3{font-size:24px;margin-bottom:10px}
+.note ul{margin:0;padding-left:20px;color:var(--ink2)}
+.note li{margin-top:8px}
+.foot{margin-top:40px;font-size:14px}
+@media(max-width:820px){.direction{grid-template-columns:1fr}}
+</style></head>
+<body>
+<main class="page">
+<p class="eyebrow">KaiSip · Round four · Unpublished</p>
+<h1>Three revised directions, <em>one to pick.</em></h1>
+<p class="intro">Each page is a working mockup: real Android screens, a scroll-through study session, and the Grove Voices feedback row. The waitlist is still a mockup. It sends and saves nothing.</p>
+
+<div class="directions">
+<section class="direction" aria-labelledby="d-fieldwork">
+<div><div class="stills"><img src="review/fieldwork-hero.webp" width="1440" height="900" alt="Fieldwork hero on desktop: headline above three product panels"><img src="review/fieldwork-mobile.webp" width="390" height="844" alt="Fieldwork hero on a phone"></div>
+<video controls muted playsinline preload="none" poster="review/fieldwork-hero.webp" aria-label="Fieldwork scroll-through recording"><source src="review/fieldwork-motion.mp4" type="video/mp4"></video></div>
+<div><h2 id="d-fieldwork">Fieldwork</h2><p>Headline on top, then three panels that show the product straight away. The clearest of the three, and the strongest on phones.</p><ul><li>Light Grove paper</li><li>Three real screens in the first view</li><li>My recommendation</li></ul><a class="open" href="fieldwork.html">Open Fieldwork <span aria-hidden="true">↗</span></a></div>
+</section>
+<section class="direction" aria-labelledby="d-canopy">
+<div><div class="stills"><img src="review/canopy-hero.webp" width="1440" height="900" alt="Canopy hero on desktop: centered headline above a fan of three phones"><img src="review/canopy-mobile.webp" width="390" height="844" alt="Canopy hero on a phone"></div>
+<video controls muted playsinline preload="none" poster="review/canopy-hero.webp" aria-label="Canopy scroll-through recording"><source src="review/canopy-motion.mp4" type="video/mp4"></video></div>
+<div><h2 id="d-canopy">Canopy</h2><p>A big centered headline and a fan of three phones that opens as the page loads. The most spacious and showy.</p><ul><li>Light Grove paper</li><li>Words first, product just below</li><li>Best if you want the brand line to lead</li></ul><a class="open" href="canopy.html">Open Canopy <span aria-hidden="true">↗</span></a></div>
+</section>
+<section class="direction" aria-labelledby="d-night">
+<div><div class="stills"><img src="review/night-hero.webp" width="1440" height="900" alt="Night Study hero on desktop: dark page with two dark-mode phones on a forest stage"><img src="review/night-mobile.webp" width="390" height="844" alt="Night Study hero on a phone"></div>
+<video controls muted playsinline preload="none" poster="review/night-hero.webp" aria-label="Night Study scroll-through recording"><source src="review/night-motion.mp4" type="video/mp4"></video></div>
+<div><h2 id="d-night">Night Study</h2><p>The Grove dark palette with the app’s own dark-mode screens on a forest stage. The moodiest and most distinctive.</p><ul><li>Dark Grove, now with real dark screenshots</li><li>Two screens in the first view</li><li>Best if most visitors study at night</li></ul><a class="open" href="night.html">Open Night Study <span aria-hidden="true">↗</span></a></div>
+</section>
+</div>
+
+<div class="notes">
+<section class="note"><h3>What changed from round three</h3><ul><li>A scroll-through study session: five real screens cross-fade in one phone as you scroll.</li><li>A feature grid built from close-ups of real screens.</li><li>Stronger, still calm motion: headline reveal, panel and phone entrances, scroll reveals, button and card feedback.</li><li>One stylesheet and one script for all three, in place of three stacked layers.</li><li>Right-sized images, about a quarter of the old file size.</li></ul></section>
+<section class="note"><h3>What stayed protected</h3><ul><li>Official logo, Grove colors, Fraunces and Figtree.</li><li>Only real app screens and verified features.</li><li>Feedback row: pause, read all, and stillness for reduced motion.</li><li>Everything readable with JavaScript off.</li><li>Nothing here is in the website build.</li></ul></section>
+<section class="note"><h3>Before any public launch</h3><ul><li>Ken L.’s quote is in. Please confirm he agreed to be quoted by name.</li><li>The five sample quotes must be replaced or removed.</li><li>The waitlist needs a destination you approve.</li><li>Android, web and iOS status needs a fresh check.</li></ul></section>
+</div>
+<p class="foot">Design review only. Not indexed, not linked from kaisip.com, and not deployed.</p>
+</main>
+</body></html>

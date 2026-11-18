@@ -99,7 +99,7 @@
               }
             ]
           },
-          "example": "A logistics firm keeps its privacy checklist in legal, its risk list in IT and its policies in human resources. One backup control is tested three times, while a contract's breach-notice clause has no owner. Leadership creates one GRC program, and Omar, a junior analyst, maps each obligation to a control, exposing the unowned clause as a gap.",
+          "example": "A logistics firm keeps its privacy checklist in legal, its risk list in IT and its policies in human resources. One backup control is tested three times, while a contract's breach-notice clause has no owner. Leadership creates one GRC program, and Omar, a security analyst, maps each obligation to a control, exposing the unowned clause as a gap.",
           "audit_focus": {
             "review": [
               "Record the agreed owner on each policy, risk or obligation entry you add",
@@ -197,7 +197,8 @@
             "cc_d2_024",
             "cc_d2_067",
             "cc_d2_093",
-            "cc_d2_148"
+            "cc_d2_148",
+            "cc_d2_164"
           ],
           "definition": "Accountability in governance, risk and compliance (GRC) means every task, risk and control has one named person who answers for it.",
           "why_it_matters": "When everyone is involved but no one is accountable, decisions stall and gaps go unowned.",
@@ -206,7 +207,8 @@
             "A RACI chart (Responsible, Accountable, Consulted, Informed) maps each task to people; the table below explains each letter.",
             "Each task has exactly one Accountable person; several can be Responsible.",
             "Senior management approves policy, funds the program and decides on risk above tolerance; risk owners accept risk within it.",
-            "Reporting lines carry risk and compliance results upward, often through a risk committee to the board."
+            "Reporting lines carry risk and compliance results upward, often through a risk committee to the board.",
+            "In a small team one person can be both Responsible and Accountable for a task."
           ],
           "compare": {
             "columns": [
@@ -289,7 +291,8 @@
             "cc_d2_025",
             "cc_d2_068",
             "cc_d2_094",
-            "cc_d2_120"
+            "cc_d2_120",
+            "cc_d2_165"
           ],
           "definition": "Compliance means meeting the requirements that apply to the organization, from laws and contracts to its own policies, and being able to prove it.",
           "why_it_matters": "Missing an obligation can bring fines, lost contracts and lost trust. Regulators and customers want records, not promises, so evidence matters as much as the control.",
@@ -409,7 +412,7 @@
               "meaning": "Sets requirements an accredited body can audit and certify. Suits customers who want formal proof."
             }
           ],
-          "example": "A credit union mapped its controls to version 1.1 of the NIST (National Institute of Standards and Technology) Cybersecurity Framework (CSF), before CSF 2.0 added a Govern function. The GRC lead asks Kofi, a junior analyst, to move the crosswalk to 2.0. Kofi re-links each control to its 2.0 outcome and lists the controls whose old category no longer exists, so the lead can review each link before the next customer report.",
+          "example": "A credit union mapped its controls to version 1.1 of the NIST (National Institute of Standards and Technology) Cybersecurity Framework (CSF), before CSF 2.0 added a Govern function. The GRC lead asks Kofi, a security analyst, to move the crosswalk to 2.0. Kofi re-links each control to its 2.0 outcome and lists the controls whose old category no longer exists, so the lead can review each link before the next customer report.",
           "audit_focus": {
             "review": [
               "Update control mappings when a framework issues a new version",
@@ -554,7 +557,7 @@
               }
             ]
           },
-          "example": "A ticketing company's GRC platform links the risk \"card data stored where it should not be\" to a KRI: card files found outside the payment system, with a tolerance of zero. A weekly scan finds two on a shared drive. Lena, a junior analyst, confirms they hold real card numbers and logs the finding against the register entry, moving the risk above tolerance.",
+          "example": "A ticketing company's GRC platform links the risk \"card data stored where it should not be\" to a KRI: card files found outside the payment system, with a tolerance of zero. A weekly scan finds two on a shared drive. Lena, a security analyst, confirms they hold real card numbers and logs the finding against the register entry, moving the risk above tolerance.",
           "audit_focus": {
             "review": [
               "Keep each entry's tolerance, owner and review date current",
@@ -842,7 +845,8 @@
             "cc_d2_028",
             "cc_d2_053",
             "cc_d2_073",
-            "cc_d2_122"
+            "cc_d2_122",
+            "cc_d2_166"
           ],
           "definition": "A business impact analysis (BIA) identifies an organization's critical functions, what each depends on and how harm grows over time if each one stops.",
           "why_it_matters": "The BIA decides what is recovered first and how fast. Every later choice, from backup schedule to recovery site, rests on it.",
@@ -987,7 +991,7 @@
             "svg": "<svg viewBox='0 0 520 176' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Timeline: data written between the last good backup and the disruption is lost and must not exceed the RPO; downtime from the disruption until service is restored must not exceed the RTO; the RTO must end before the MTD limit'><line x1='20' y1='78' x2='500' y2='78' stroke='var(--text2)' stroke-width='1.5'/><rect x='30' y='58' width='112' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='86' y='76' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Last good</text><text x='86' y='89' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>backup</text><line x1='230' y1='30' x2='230' y2='118' stroke='var(--text2)' stroke-width='1.5' stroke-dasharray='3 3'/><text x='230' y='22' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>DISRUPTION</text><rect x='318' y='58' width='112' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='374' y='76' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Service</text><text x='374' y='89' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>restored</text><line x1='486' y1='30' x2='486' y2='160' stroke='var(--accent-fill)' stroke-width='1.5' stroke-dasharray='3 3'/><text x='486' y='22' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>MTD LIMIT</text><line x1='142' y1='118' x2='228' y2='118' stroke='var(--text2)' stroke-width='1.5'/><line x1='232' y1='118' x2='318' y2='118' stroke='var(--text2)' stroke-width='1.5'/><text x='185' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Data lost: within RPO</text><text x='275' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Downtime: within RTO</text><line x1='232' y1='152' x2='484' y2='152' stroke='var(--accent-fill)' stroke-width='1.5'/><text x='358' y='168' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Whole outage must end before the MTD</text></svg>",
             "caption": "The three targets on one timeline. Work done since the last good backup is lost, and that gap must stay within the RPO. The time from the disruption until service is back must stay within the RTO, and the whole outage must end before the MTD."
           },
-          "example": "A veterinary clinic backs up its booking system nightly, but the practice manager says losing more than an hour of appointments would be serious. Noor, a junior technician, sees that the backup can lose up to 24 hours of bookings, far beyond the one-hour RPO, and raises the gap with the IT lead.",
+          "example": "A veterinary clinic backs up its booking system nightly, but the practice manager says losing more than an hour of appointments would be serious. Noor, a junior technician, sees that the backup can lose up to 24 hours of bookings, far beyond the one-hour RPO, and raises the gap with the IT manager.",
           "audit_focus": {
             "review": [
               "Line up actual copy times against each data-loss target",
@@ -1107,7 +1111,8 @@
             "cc_d2_008",
             "cc_d2_034",
             "cc_d2_074",
-            "cc_d2_126"
+            "cc_d2_126",
+            "cc_d2_167"
           ],
           "definition": "A recovery site is an alternate place to run critical systems or work when the main site is unusable, from an empty room to a running copy.",
           "why_it_matters": "The site must match the recovery time objective (RTO). Too slow misses the target; too ready wastes money on standby equipment.",
@@ -1164,7 +1169,7 @@
               }
             ]
           },
-          "example": "An online pharmacy's BIA sets a four-hour RTO for orders. To save money, finance proposes a cold site across town. Sana, a junior analyst preparing the options, notes that a cold site takes days to equip and sits in the same flood zone. She puts both facts in the comparison before the decision.",
+          "example": "An online pharmacy's BIA sets a four-hour RTO for orders. To save money, finance proposes a cold site across town. Sana, a security analyst preparing the options, notes that a cold site takes days to equip and sits in the same flood zone. She puts both facts in the comparison before the decision.",
           "audit_focus": {
             "review": [
               "Compare each site option's recovery time with the RTO",
@@ -1341,7 +1346,8 @@
             "cc_d2_030",
             "cc_d2_058",
             "cc_d2_098",
-            "cc_d2_158"
+            "cc_d2_158",
+            "cc_d2_168"
           ],
           "definition": "Artificial intelligence (AI) assisted detection spots trouble early; for resilience, it must catch events before they disrupt the business and keep working through an outage.",
           "why_it_matters": "An attack caught early may never need the recovery plan. But monitoring that sits on the failed systems leaves the organization blind when most exposed.",
@@ -1408,7 +1414,8 @@
             "cc_d2_059",
             "cc_d2_077",
             "cc_d2_102",
-            "cc_d2_151"
+            "cc_d2_151",
+            "cc_d2_169"
           ],
           "definition": "Security culture is the shared attitudes and habits that shape how people treat security day to day, especially when no one is watching.",
           "why_it_matters": "Controls fail when people work around them. A culture where staff value security and feel safe reporting mistakes catches problems early.",
@@ -1463,7 +1470,8 @@
             "cc_d2_078",
             "cc_d2_103",
             "cc_d2_121",
-            "cc_d2_157"
+            "cc_d2_157",
+            "cc_d2_173"
           ],
           "definition": "Awareness keeps security in mind for everyone, training builds job-specific skills for particular roles, and education builds deeper understanding for those whose careers need it.",
           "why_it_matters": "One course for everyone wastes time and misses real risks. A developer, a payroll clerk and a help desk agent face different attacks.",
@@ -1471,7 +1479,8 @@
             "Awareness reaches everyone through short, frequent messages, such as reminders and brief campaigns.",
             "Basic training happens at onboarding and then on a regular cycle, such as yearly.",
             "Role-based training adds what a job needs: secure coding for developers, caller checks for the help desk.",
-            "Content is refreshed as threats change, for example to cover scams written with artificial intelligence (AI)."
+            "Content is refreshed as threats change, for example to cover scams written with artificial intelligence (AI).",
+            "Role-based training is also updated when a system a role uses changes, before staff work in it."
           ],
           "compare": {
             "columns": [
@@ -1952,7 +1961,8 @@
             "cc_d2_062",
             "cc_d2_084",
             "cc_d2_109",
-            "cc_d2_119"
+            "cc_d2_119",
+            "cc_d2_170"
           ],
           "definition": "In NIST SP 800-55 terms, a measure is a raw, quantified result, such as 940 of 1,000 laptops patched; a metric sets measures against a target to track progress.",
           "why_it_matters": "Without measurement, leaders fund security on instinct. Good metrics show what is improving, what is slipping and where to act.",
@@ -1960,9 +1970,10 @@
             "Start from a goal, such as patching critical flaws quickly, then pick measures that show progress.",
             "Collect data the same way every period, so trends mean something.",
             "Compare each result with a baseline and a target.",
+            "For goals that take months, add interim targets before the final one, set from the plan since work rarely moves evenly, to show early if progress is on pace.",
             "If a metric drives no decision, drop it; a few meaningful metrics beat many."
           ],
-          "example": "A city council's security manager reports \"supplier contracts with security clauses: 64%, target 90%, last quarter 52%\". The target and the earlier figure show councilors the work is moving but short, so they fund another quarter of contract reviews. Yusuf, the junior analyst who pulls the data, uses the same query and cutoff date every quarter, so the trend stays comparable.",
+          "example": "A city council's security manager reports \"supplier contracts with security clauses: 64%, target 90%, last quarter 52%\". The target and the earlier figure show councilors the work is moving but short, so they fund another quarter of contract reviews. Yusuf, the security analyst who pulls the data, uses the same query and cutoff date every quarter, so the trend stays comparable.",
           "audit_focus": {
             "review": [
               "Confirm each metric you report has a goal and a target",
@@ -2035,7 +2046,7 @@
               "meaning": "Shows the effect on the mission or finances. Example: cost of security incidents this year."
             }
           ],
-          "example": "A clinic's report says \"100% of staff completed phishing training\". The practice manager asks whether phishing is actually being stopped. Ravi, a junior analyst, explains that completion is an implementation measure and adds two to the next report: the share of test phishing emails staff report, and the average time to report.",
+          "example": "A clinic's report says \"100% of staff completed phishing training\". The practice manager asks whether phishing is actually being stopped. Ravi, a security analyst, explains that completion is an implementation measure and adds two to the next report: the share of test phishing emails staff report, and the average time to report.",
           "audit_focus": {
             "review": [
               "Label each reported measure by its type",
@@ -2079,7 +2090,8 @@
             "cc_d2_043",
             "cc_d2_086",
             "cc_d2_111",
-            "cc_d2_147"
+            "cc_d2_147",
+            "cc_d2_171"
           ],
           "definition": "A key performance indicator (KPI) shows how well a process meets its goal; a key risk indicator (KRI) gives early warning that a risk is growing toward its limit.",
           "why_it_matters": "KPIs show whether security work is on track; KRIs show whether exposure is growing before it becomes an incident. Mixing them up hides warnings.",
@@ -2087,6 +2099,7 @@
             "KPIs look at performance, such as the share of patches applied on time.",
             "KRIs look at exposure, such as internet-facing systems with critical flaws or payroll tasks only one person can do.",
             "Good KRIs are leading, measurable and tied to a named risk, with thresholds set from its tolerance.",
+            "A climbing KRI is a warning to act on; it shows a limit is passed only when it crosses its threshold.",
             "The same number can be either; what matters is whether it judges performance or warns of risk."
           ],
           "compare": {
@@ -2132,7 +2145,7 @@
               }
             ]
           },
-          "example": "A logistics company's quarterly supplier account review, a KPI, has been green all year. Chen, a junior analyst, notices another number climbing: supplier accounts with administrator rights and no sign-in for 90 days. He proposes it as a KRI for misused supplier access and sends the trend to the risk owner.",
+          "example": "A logistics company's quarterly supplier account review, a KPI, has been green all year. Chen, a security analyst, notices another number climbing: supplier accounts with administrator rights and no sign-in for 90 days. He proposes it as a KRI for misused supplier access and sends the trend to the risk owner.",
           "audit_focus": {
             "review": [
               "Tie each KRI you report to a named risk in the register",
@@ -2246,7 +2259,8 @@
             "cc_d2_088",
             "cc_d2_113",
             "cc_d2_134",
-            "cc_d2_159"
+            "cc_d2_159",
+            "cc_d2_172"
           ],
           "definition": "Dashboards, scorecards and reports are ways to present metrics: a live visual view, a periodic grade against targets and a written account with context and recommendations.",
           "why_it_matters": "The right numbers in the wrong format still fail. A board needs a short view of risk and trends; an operations team needs live detail.",
@@ -2254,7 +2268,8 @@
             "Know the audience first: the board, senior management, risk owners or technical teams.",
             "Dashboards suit people who act daily; they refresh often and allow drill-down.",
             "Scorecards suit periodic reviews against targets; reports explain trends, causes and the decisions needed.",
-            "Show trends, not single snapshots, and use the same definitions in every view."
+            "Show trends, not single snapshots, and use the same definitions in every view.",
+            "Keep detail that helps attackers, such as named weak systems, off public displays; give outside audiences a summary."
           ],
           "compare": {
             "columns": [
@@ -2297,7 +2312,7 @@
               }
             ]
           },
-          "example": "A hospital's security team shows the board a 40-chart operations dashboard every quarter, and board members lose interest. The security manager replaces it with a one-page scorecard of six metrics and a short report on two risks needing a decision. Ivo, a junior analyst, writes one plain sentence under each red item on what it means for patient care.",
+          "example": "A hospital's security team shows the board a 40-chart operations dashboard every quarter, and board members lose interest. The security manager replaces it with a one-page scorecard of six metrics and a short report on two risks needing a decision. Ivo, a security analyst, writes one plain sentence under each red item on what it means for patient care.",
           "audit_focus": {
             "review": [
               "Confirm the same metric shows the same value in every view",
@@ -2352,7 +2367,7 @@
             "Watch for gaming: once a number is a target, people may improve the number, not the outcome.",
             "Retire metrics no one uses, and add ones for new risks such as artificial intelligence (AI) use."
           ],
-          "example": "A software company's rate for closing vulnerability tickets within 30 days jumps from 60% to 98% in a month. Mei, a junior analyst, samples ten closed tickets and finds six marked accepted risk without the risk owner's approval. She sends the sample to the security manager, who limits that kind of closure to risk owners.",
+          "example": "A software company's rate for closing vulnerability tickets within 30 days jumps from 60% to 98% in a month. Mei, a security analyst, samples ten closed tickets and finds six marked accepted risk without the risk owner's approval. She sends the sample to the security manager, who limits that kind of closure to risk owners.",
           "audit_focus": {
             "review": [
               "Check a few source records behind any sudden jump or drop",
@@ -2407,7 +2422,7 @@
             "Use of unapproved AI tools shows policy risk; AI service outages, including at providers, show continuity risk.",
             "Each AI KRI has an owner, thresholds and an escalation path, like any other KRI."
           ],
-          "example": "A theme park plans an AI assistant that answers visitors' questions about tickets and opening hours. Before launch, the model owner asks Ade, a junior analyst, to help set its key risk indicators. Ade proposes tracking the share of a weekly sample of answers that cite a made-up price or park rule, often called hallucinations: amber at 2% alerts the model owner, and red at 5% also goes to the risk owner.",
+          "example": "A theme park plans an AI assistant that answers visitors' questions about tickets and opening hours. Before launch, the model owner asks Ade, a security analyst, to help set its key risk indicators. Ade proposes tracking the share of a weekly sample of answers that cite a made-up price or park rule, often called hallucinations: amber at 2% alerts the model owner, and red at 5% also goes to the risk owner.",
           "audit_focus": {
             "review": [
               "Tie each AI KRI you report to a model in the AI inventory",

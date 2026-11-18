@@ -287,6 +287,7 @@ Learned from two blind tests and two standards audits of the pilot.
 | Batch 5, all domains (4 Nov 2026) | +40 | +25 | +30 | +30 | +25 | 640 |
 | Batch 6, all domains (5 Nov 2026) | +40 | +24 | +28 | +35 | +23 | 790 |
 | Batch 7, all domains (12 Nov 2026) | +36 | +24 | +30 | +35 | +25 | 940 |
+| Batch 8, all domains (18 Nov 2026) | +14 | +10 | +12 | +14 | +10 | 1,000 |
 
 Batch 2: the first blind test matched the keys 25/25 in every domain, and
 re-tests of every changed item all matched. The audits found 7 hard errors
@@ -445,6 +446,53 @@ Batch 8 guidance from this round (the last ~60 items, to 1,000):
   only the radio link. No more due care / due diligence classification items.
 - Avoid settings used in batch 7 (zoo, candle maker, ski, museum, insurance
   broker, sawmill) and physical-access-first items in D3 (they belong in 1.4).
+
+**Batch 8 (18 Nov 2026), the bank reaches 1,000.** 60 new items finish every
+domain at its outline target (D1 240, D2 173, D3 200, D4 214, D5 173). The
+audits and the cross-domain gate found no HARD errors; the final round fixed
+seven cross-domain PRECISION findings and the leftover domain findings:
+- A firewall-rule item now says the rule is a known leftover, so it no longer
+  clashes with the rule that an unexplained change is reported, not deleted.
+- A change-control item names the change board as the approver, so the system
+  owner's mid-change request is clearly a new change.
+- Near-duplicates re-angled: board oversight (now ongoing review of results),
+  PaaS (now "AI services fit the three NIST models") and defense in depth
+  (the obscurity distractor replaced).
+- Owner names and escalation wording no longer sit only on the key; repeated
+  settings renamed; Agree and Disagree keys even within the batch (3 and 3).
+Blind re-tests of every changed item matched the keys.
+
+Do-not-repeat clusters added by this round (for any growth past 1,000 or a
+later re-angle round): leaders' actions shape security culture; monitoring
+kept apart from what it watches; mover access ends at the move (8 items in
+3.1.9); retiring an AI identity or endpoint by revoking keys; VLAN versus
+separate switches; the policy engine decides and the enforcement point
+enforces; label-based blocking of AI uploads (CASB in D4, DLP in D5); KPI
+versus KRI (6 items); preserve the scene and report; "a stronger version of
+the same layer" as a runner-up (4.2.5 is at target).
+
+**Word-tell sweep (18 Nov 2026).** A test-wise learner could learn surface
+rules from the older bank: options containing "and" won 247 of 421 items
+(about 150 by chance), and options containing "since" won only 24 of 165 (about 56). The
+sweep reworded options, not lessons:
+- Round 1: each domain expert worked a frozen per-domain plan from
+  `data/cc/tools/word_sweep.py` until all 21 flagged words sat at p >= 0.001
+  bank-wide. The same pass mapped legacy role names (junior, compliance,
+  reporting and IT asset analysts; junior engineers; IT technicians outside
+  small offices) to the canonical ones in items and notes.
+- Round 2: round 1 had swapped many "X and Y" keys for "X, logging Y" or
+  "X; log Y", which became new tells (comma-ing tails won 65 of 93). Distractors
+  got the same shapes and keys were spread across varied forms; comma-ing tails
+  now win 19 of 57 and semicolons 10 of 18, both near chance.
+- A polish round fixed the blind testers' wording flags. Blind re-tests of
+  every changed item matched every key.
+
+`check_cc.py` now fails (not warns) on a whole word in an option that predicts
+the key at under 0.01%, and on a punctuation shape (comma-ing tail, semicolon,
+colon, comma, dash) at under 0.1%. New batches should spread joining forms:
+"and" on keys and distractors alike, and no single replacement ("plus",
+"then", "before", ", logging") used mostly on keys. Words to watch, under the
+gate but close: "plus" (wins 7 of 10), "year", "request", "longer", "email".
 
 ## 7. Follow-ups outside this plan's scope
 

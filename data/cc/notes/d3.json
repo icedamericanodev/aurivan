@@ -81,7 +81,7 @@
             "svg": "<svg viewBox='0 0 470 132' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='The identity life cycle: joiner creates access, mover adjusts it, leaver removes it, and an access review runs under all three stages'><text x='85' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>CREATE</text><rect x='20' y='20' width='130' height='44' rx='4' fill='var(--accent-fill)'/><text x='85' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Joiner</text><text x='85' y='80' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>Approved role only</text><text x='235' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>ADJUST</text><rect x='170' y='20' width='130' height='44' rx='4' fill='var(--accent-fill)'/><text x='235' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Mover</text><text x='235' y='80' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>Add new, remove old</text><text x='385' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>REMOVE</text><rect x='320' y='20' width='130' height='44' rx='4' fill='var(--accent-fill)'/><text x='385' y='46' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Leaver</text><text x='385' y='80' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>Disable, revoke, collect</text><line x1='150' y1='42' x2='163' y2='42' stroke='var(--text2)' stroke-width='1.5'/><path d='M163,38 L170,42 L163,46 Z' fill='var(--text2)'/><line x1='300' y1='42' x2='313' y2='42' stroke='var(--text2)' stroke-width='1.5'/><path d='M313,38 L320,42 L313,46 Z' fill='var(--text2)'/><rect x='20' y='96' width='430' height='28' rx='4' fill='none' stroke='var(--accent-fill)' stroke-width='1.5'/><text x='235' y='114' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--accent-fill)'>Access review: is every account and right still needed?</text></svg>",
             "caption": "Each stage is triggered by a trusted record, such as an HR start, transfer or exit. Reviews run under the whole cycle to catch anything a stage missed."
           },
-          "example": "At a bus company, an HR start record creates an account for Sam, a new dispatcher. When Sam moves to payroll, the dispatch rights go; when Sam leaves, the account is disabled that day. Each month Lee, a junior analyst, matches accounts to HR records and logs any ownerless account in the access team's queue.",
+          "example": "At a bus company, an HR start record creates an account for Sam, a new dispatcher. When Sam moves to payroll, the dispatch rights go; when Sam leaves, the account is disabled that day. Each month Lee, an access analyst, matches accounts to HR records and logs any ownerless account in the access team's queue.",
           "audit_focus": {
             "review": [
               "Match the active account list against current HR records",
@@ -184,7 +184,8 @@
             "cc_d3_073",
             "cc_d3_105",
             "cc_d3_134",
-            "cc_d3_161"
+            "cc_d3_161",
+            "cc_d3_191"
           ],
           "definition": "Provisioning creates an account and grants its approved access. Identity proofing first checks that the person is who they claim to be, before credentials are issued.",
           "why_it_matters": "Getting access right on day one is easier than fixing it later. Weak proofing lets an impostor be enrolled with legitimate credentials.",
@@ -616,7 +617,8 @@
             "cc_d3_078",
             "cc_d3_117",
             "cc_d3_139",
-            "cc_d3_166"
+            "cc_d3_166",
+            "cc_d3_192"
           ],
           "definition": "A mover is a person whose job or duties change. Handling a mover adds the new role's access and removes old access the new role does not need.",
           "why_it_matters": "Movers are the stage most often missed. Keeping old rights at each move builds privilege creep and can create separation of duties conflicts.",
@@ -698,7 +700,7 @@
               "meaning": "A review triggered by a job change, incident or reorganization rather than the calendar"
             }
           ],
-          "example": "Dr. Okafor, owner of a university research database, approves all 300 accounts on the quarterly review in four minutes. Riley, the junior analyst running it, notices and finds 20 accounts of graduated students. Riley sends those back for a decision on each, then tracks the removals until the system shows them gone.",
+          "example": "Dr. Okafor, owner of a university research database, approves all 300 accounts on the quarterly review in four minutes. Riley, the access analyst running it, notices and finds 20 accounts of graduated students. Riley sends those back for a decision on each, then tracks the removals until the system shows them gone.",
           "audit_focus": {
             "review": [
               "Confirm each review line reached the accountable owner",
@@ -801,7 +803,8 @@
             "cc_d3_081",
             "cc_d3_082",
             "cc_d3_125",
-            "cc_d3_142"
+            "cc_d3_142",
+            "cc_d3_189"
           ],
           "definition": "Non-human identities are accounts used by software, such as service accounts, bots, application programming interface (API) keys and AI agents. They need the same life cycle as people.",
           "why_it_matters": "They often outnumber staff and never resign. The Open Worldwide Application Security Project (OWASP) ranks improper offboarding and leaked secrets as their top risks.",
@@ -857,7 +860,8 @@
             "cc_d3_083",
             "cc_d3_127",
             "cc_d3_143",
-            "cc_d3_170"
+            "cc_d3_170",
+            "cc_d3_193"
           ],
           "definition": "Identity and access management (IAM) frameworks are published guides to good identity practice; IAM tools are the systems that carry it out, such as directories and governance platforms.",
           "why_it_matters": "Frameworks give a shared, defensible standard instead of one person's opinion. Tools make the life cycle repeatable and keep the records reviews need.",
@@ -926,7 +930,8 @@
             "cc_d3_084",
             "cc_d3_128",
             "cc_d3_144",
-            "cc_d3_171"
+            "cc_d3_171",
+            "cc_d3_190"
           ],
           "definition": "An access request is a recorded ask for a specific right. The owner of the resource approves it, and a different person fulfills and records it.",
           "why_it_matters": "Most access changes happen after day one. A request path stops rights being granted on a hallway word or a convincing message, and leaves a record.",
@@ -981,7 +986,8 @@
             "cc_d3_085",
             "cc_d3_129",
             "cc_d3_145",
-            "cc_d3_172"
+            "cc_d3_172",
+            "cc_d3_194"
           ],
           "definition": "Third-party access lets contractors, vendors and partners use your systems, through guest accounts you create or by trusting their own organization's sign-in through federation.",
           "why_it_matters": "Outside users are often forgotten when their work ends, and their employer may never tell you they left.",
@@ -1169,7 +1175,8 @@
             "cc_d3_088",
             "cc_d3_104",
             "cc_d3_147",
-            "cc_d3_177"
+            "cc_d3_177",
+            "cc_d3_195"
           ],
           "definition": "Least privilege gives each user or process the minimum access its task needs, for as long as needed. Need to know limits information to people whose duties require it.",
           "why_it_matters": "If an account is stolen or misused, least privilege limits the damage to what it could reach. Nobody can delete what they cannot touch.",
@@ -1208,7 +1215,7 @@
               }
             ]
           },
-          "example": "A fitness club chain's member app shows front-desk staff each member's health notes, which only trainers need. Sasha, the IT coordinator, confirms the desk needs only names and membership status to check members in, then asks the operations manager, who owns member data, to approve hiding the health-notes field from the desk role.",
+          "example": "A fitness club chain's member app shows front-desk staff each member's health notes, which only trainers need. Sasha, the access analyst, confirms the desk needs only names and membership status to check members in, then asks the operations manager, who owns member data, to approve hiding the health-notes field from the desk role.",
           "audit_focus": {
             "review": [
               "Compare requested rights with what the task actually does",
@@ -1255,7 +1262,8 @@
             "cc_d3_089",
             "cc_d3_106",
             "cc_d3_148",
-            "cc_d3_178"
+            "cc_d3_178",
+            "cc_d3_196"
           ],
           "definition": "Separation of duties (SoD) splits a sensitive task so no single person can complete it alone; two-person control requires two people to act together.",
           "why_it_matters": "One person with end-to-end control can commit and hide fraud or a costly mistake. Splitting duties means abuse needs collusion.",
@@ -1443,7 +1451,8 @@
             "cc_d3_092",
             "cc_d3_112",
             "cc_d3_151",
-            "cc_d3_181"
+            "cc_d3_181",
+            "cc_d3_197"
           ],
           "definition": "Mandatory access control (MAC) lets the system, not the owner, decide access by comparing a subject's clearance with the object's classification label under central policy.",
           "why_it_matters": "MAC protects data that one user's choice must never leak, as in military systems. It is not the network MAC address (Domain 4).",
@@ -1502,7 +1511,8 @@
             "cc_d3_093",
             "cc_d3_114",
             "cc_d3_152",
-            "cc_d3_182"
+            "cc_d3_182",
+            "cc_d3_198"
           ],
           "definition": "Role-based access control (RBAC) attaches permissions to roles that match job functions, then assigns people to roles, so access follows the job rather than the person.",
           "why_it_matters": "RBAC is the most common model in business systems because it scales. Changing someone's job means changing their role.",
@@ -1557,7 +1567,8 @@
             "cc_d3_094",
             "cc_d3_116",
             "cc_d3_153",
-            "cc_d3_183"
+            "cc_d3_183",
+            "cc_d3_199"
           ],
           "definition": "Attribute-based access control (ABAC) decides each request by checking a policy against attributes of the user, the resource, the action and the environment, such as time or location.",
           "why_it_matters": "ABAC handles fine-grained, changing conditions that roles cannot, such as approving expenses only for one's own region, in business hours, from a managed device.",
@@ -1668,7 +1679,8 @@
             "cc_d3_096",
             "cc_d3_120",
             "cc_d3_155",
-            "cc_d3_186"
+            "cc_d3_186",
+            "cc_d3_200"
           ],
           "definition": "Choosing an access control model starts with one question: who or what decides access (the owner, labels, job roles, attributes or fixed rules), and does that fit the risk?",
           "why_it_matters": "Scenarios describe who decides rather than naming the model, and real organizations mix models, so knowing where each fits avoids a poor choice.",
