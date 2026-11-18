@@ -236,6 +236,7 @@ the notice is part of the description.
 | Batch 6 (5 Nov 2026) | — | +42 | +32 | 442 |
 | Batch 7 (12 Nov 2026) | +30 | +42 | — | 514 |
 | Batch 8 (13 Nov 2026) | — | +42 | +32 | 588 |
+| Batch 9 (18 Nov 2026) | +15 | — | — | 603 |
 
 Pilot review, 30 Oct 2026:
 - **Blind tests:** 60/60 picks matched the keys on the first pass. After the
@@ -385,6 +386,30 @@ Batch 8 review, 13 Nov 2026 (D2 and D3 only):
 - Length tell: D2 21.4%, D3 17.7%. Tags: 490 of 588.
 
 **Next round:** D1 and D2, a small round to reach 600, then the release audit.
+
+Batch 9 review, 18 Nov 2026 (D1 only, to pass 600):
+- **Author:** one new item per D1 notes subtopic (15), difficulty 4/7/4, keys A3 B4 C4 D4. Seven drafts
+  were dropped or moved before writing because their setting or angle collided with an existing AAIA or
+  CRISC item. Each runner-up is a careful CISA auditor's move (independent validation, yearly re-approval,
+  escrow, retention, operating effectiveness) that only the AI fact defeats.
+- **Five reviewers:** first blind pass 15/15. One HARD ERROR and the PRECISION findings went through three
+  fix rounds, the cross-domain gate (4), the completeness critic (5 gaps: three repeated settings, one
+  reused lesson, and an unplanned library edit, which the librarian then verified) and two gap rounds.
+  Last, aaia_d1_146 was re-angled from the frame of aaia_d1_091 (same subtopic, same "concern" stem) to a
+  conclusion about what an unedited-letters share can show, and one cue word in aaia_d1_144 was removed.
+  Every changed item was re-tested blind and re-audited. No key changed after the first draft.
+- **Notes:** each D1 subtopic gained the fact its new key relies on (for example: a strong predictor shows
+  association, not cause; an assistant that searches every file a user can open makes old oversharing easy
+  to find; NIST CSF 2.0 covers security, not bias or validity), merged into existing bullets to stay under
+  380 words.
+- **Citations:** four library bullets added after the librarian opened each source: NIST AI 100-1 Section
+  3.2 and Appendix B, NIST AI 100-2e2025 Section 2.4.5, and NIST CSF 2.0 Section 3.2.
+- Length tell: D1 20.3%. Tags: 497 of 603.
+- **For later rounds:** no fourth 1B.3 item keyed on automation bias, no third 1A.3 item on fine-tuning
+  against retrieval, and avoid the organization types now used twice.
+
+**Next round:** the AAIA release audit across the whole course (bank, notes, glossary, principles, exam
+guide, final review week, mocks), then D1 and D2 rounds toward the targets.
 
 ## 10. Follow-ups outside this plan's scope
 
