@@ -13,11 +13,11 @@ Tasks are paraphrased. Short headings in quotes are ISACA's.
 | Fact | Value | Source |
 |---|---|---|
 | Outline in force | "AAIA Examination Content Outline (June 2025)", the guide's appendix. The live outline page lists the same three domains, 17 areas and 23 tasks | S1, S2 |
-| Newer outline? | None announced as of 30 Oct 2026. (The November 2026 ISACA change people mention is CISM's.) | S2, S6 |
+| Newer outline? | None announced as of 18 Nov 2026. (The November 2026 ISACA change people mention is CISM's.) | S2, S6 |
 | Length | 90 multiple-choice questions, 2.5 hours (150 minutes) | S1 |
 | Scored / unscored | ISACA exams mix scored items with unscored pre-test items; the guide gives no count for AAIA | S1 |
 | Scoring | Scaled 200–800; 450 or higher passes. Domain results are informational only; the score counts total correct items regardless of domain | S1 |
-| Languages | English, Simplified Chinese, Spanish | S1 |
+| Languages | English, Simplified Chinese, Spanish, Japanese (Japanese added in the guide modified 5 Nov 2026; checked 18 Nov 2026) | S1, S3 |
 | Delivery | Computer-based, at PSI test centers or by live remote proctoring. Residents of India, Mainland China and Hong Kong: test centers only (checked on S3, 31 Oct 2026) | S1, S3 |
 | Fees | US$459 ISACA members, US$599 non-members; non-refundable | S1 |
 | Retakes | Four attempts in a rolling 12 months: wait 30 days before attempt 2, then 90 days before attempts 3 and 4 | S1 |
@@ -267,12 +267,16 @@ ISACA product) may be cited by name and number, never quoted.
 - Store copy that names the June 2025 outline must be re-checked with the
   outline (every six months and before each release).
 - The trademark decision on the full name "Advanced in AI Audit" (see Trademarks).
+- ITAF 5th edition was published on 26 Feb 2026; ten D3 framework_ref parts still use 4th-edition
+  numbers (labelled "ITAF 4th edition, 2020" in the library; no learner text cites an ITAF number).
+  Re-map them when the course goes on sale or when ISACA moves the AAIA outline or review manual to
+  the 5th edition, whichever comes first (release audit, 18 Nov 2026).
 - Allowing iso.org, eur-lex.europa.eu and genai.owasp.org would let ISO/IEC
   42001, the EU AI Act and the OWASP 2025 list become Verified citations.
 
 ## Sources
 
-- S1 AAIA Exam Candidate Guide (PDF created 31 Mar 2026, modified 24 Apr 2026), https://www.isaca.org/-/media/files/isacadp/project/isaca/certification/aaia/aaia-exam-candidate-guide.pdf (Program summary; Scoring; Retake policy; Certification; Appendix "AAIA Examination Content Outline (June 2025)" and Supporting Tasks)
+- S1 AAIA Exam Candidate Guide (PDF created 31 Mar 2026, modified 5 Nov 2026; checked 18 Nov 2026), https://www.isaca.org/-/media/files/isacadp/project/isaca/certification/aaia/aaia-exam-candidate-guide.pdf (Program summary; Scoring; Retake policy; Certification; Appendix "AAIA Examination Content Outline (June 2025)" and Supporting Tasks)
 - S2 AAIA exam content outline page, https://www.isaca.org/credentialing/aaia/aaia-exam-content-outline
 - S3 AAIA credential page, https://www.isaca.org/credentialing/aaia
 - S4 NIST AI 100-1, https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf

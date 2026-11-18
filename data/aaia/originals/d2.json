@@ -571,7 +571,7 @@
       "question": "An engineering firm's internal AI assistant reads supplier PDFs from a shared folder and can send emails on staff's behalf. Which threat should the IS auditor consider MOST significant?",
       "options": {
         "A": "Outsiders breaching the firewall to reach the model's servers",
-        "B": "Competitors copying the model by querying it many times",
+        "B": "Suppliers copying the model by querying it many times",
         "C": "Staff crafting prompts that trick the assistant into sending improper emails",
         "D": "Hidden instructions in a supplier file steering the assistant's emails"
       },
@@ -581,7 +581,7 @@
       "correct_explanation": "The assistant combines untrusted content, supplier files, with the power to act by sending email. A third party can plant instructions in a document that the assistant may follow, sending data out under a staff member's name: indirect prompt injection. Direct prompting by staff is a real risk too, but staff are known, authorized users, while the outside attacker needs no access at all.",
       "wrong_explanations": {
         "A": "Tempting because perimeter attacks are familiar. But prompt injection travels inside ordinary content the assistant is allowed to read; no firewall breach is needed.",
-        "B": "Tempting because model extraction is a real AI threat. But it needs heavy query access, and this internal assistant is not exposed to competitors.",
+        "B": "Tempting because model extraction is a real AI threat. But it needs heavy query access, and suppliers cannot query this internal assistant.",
         "C": "Tempting because jailbreaks are well known. But staff are identified, authorized users; the supplier file lets an outsider steer the assistant with no access at all."
       },
       "tips": [
@@ -2753,7 +2753,7 @@
       "options": {
         "A": "Add a cap on missed corroded sections, set from risk tolerance",
         "B": "Raise the overall accuracy pass mark from 95% to 99%",
-        "C": "Require the model to flag at least 2% of pipe sections",
+        "C": "Require the model to flag at least 2% of sections as corroded",
         "D": "Use the vendor's published accuracy figure as the criterion"
       },
       "correct": "A",
@@ -3567,7 +3567,7 @@
       },
       "correct": "A",
       "key_concept": "Augment after splitting: copies made before the split put near-identical images in training and test sets, inflating reported performance.",
-      "pre_read": "Ask where each rotated copy ends up after the random split.",
+      "pre_read": "Before trusting a test score, ask how the test records were produced and chosen.",
       "correct_explanation": "Copies made before the split land on both sides of it, so the model is tested on rotated versions of photos it already learned. Its test score then overstates how it will do on new beans. Augmentation belongs after the split, applied to training data only. Unrealistic rotations are a smaller concern: they may add little, but they do not inflate the reported score.",
       "wrong_explanations": {
         "B": "Tempting because augmented data should be realistic. But rotated bean photos are plausible, and the larger flaw is that copies now sit in both sets.",
@@ -3604,7 +3604,7 @@
       },
       "correct": "C",
       "key_concept": "Feature selection is part of training: done on the whole dataset before splitting, it leaks test information and inflates results.",
-      "pre_read": "Ask which records the team looked at when choosing the 20 inputs.",
+      "pre_read": "Before trusting a test score, trace everything that was done to the data before testing.",
       "correct_explanation": "Choosing inputs on the whole dataset lets the test records shape the model before testing, so the test is no longer unseen and its results overstate performance on new implants. Selection, like any step that learns from data, must use training data only. Missing new kinds of defect is a real limit of any model trained on past cases, but it is not what makes this test evidence unreliable.",
       "wrong_explanations": {
         "A": "Tempting because input count affects detection. But no number is right in itself; the flaw is that test data shaped which inputs were chosen.",
@@ -3628,28 +3628,28 @@
     {
       "id": "aaia_d2_099",
       "domain": 2,
-      "subtopic": "2B AI lifecycle. Monitoring plan at the deployment gate",
+      "subtopic": "2B AI lifecycle. Shrimp-feed release gate",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Belizean shrimp farm's feed-ration models pass validation each sprint, but its deployment gate never asks who will monitor each model, or against what limits. What should the IS auditor recommend as BEST?",
+      "question": "A Belizean shrimp farm's deployment gate releases each feed-ration model once it passes validation on the latest pond data; the gate's checklist ends at release. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept the gate, since each model passes validation before release",
-        "B": "Revalidate each model against its limits 30 days after release",
-        "C": "Have the IS auditor monitor each model after release",
+        "B": "Check each model against its limits at a 30-day monitoring review",
+        "C": "Validate each model on a wider range of pond conditions",
         "D": "Require an owned monitoring plan with limits to pass the gate"
       },
       "correct": "D",
       "key_concept": "A deployment gate should require a monitoring plan with an owner and limits; a validation pass describes the model only at release.",
-      "pre_read": "Ask what the gate checks about the model's life after release, not just at release.",
-      "correct_explanation": "A validation pass shows a model met its criteria on the day it was tested; water, feed and stock conditions keep changing, so it can drift soon after release. A deployment gate should pass a model only with a monitoring plan naming who watches it and the limits that trigger action. A 30-day revalidation adds one more snapshot, but drift that starts sooner would set rations unnoticed until then.",
+      "pre_read": "Read each option as a change to the gate, then ask what it would catch and when.",
+      "correct_explanation": "A validation pass shows a model met its criteria on the day it was tested; water, feed and stock conditions keep changing, so it can drift soon after release. A deployment gate should pass a model only with a monitoring plan naming who watches it and the limits that trigger action. A 30-day monitoring review adds one more snapshot, but drift that starts sooner would set rations unnoticed until then.",
       "wrong_explanations": {
         "A": "Tempting because validation is the main gate. But it describes the model at release; nothing then shows when drift starts setting wrong rations.",
         "B": "Tempting because it checks again. But one later snapshot still leaves weeks of unwatched rations, and drift can start at any time.",
-        "C": "Tempting because the IS auditor is independent. But monitoring is the owner's control; the IS auditor assesses it and would otherwise audit their own work."
+        "C": "Tempting because wider tests cover more cases. But validation, however wide, describes the model at release; pond conditions keep changing, and drift after release goes unseen without monitoring."
       },
       "tips": [
-        "Eliminate: A treats a validation pass as lasting assurance, and C has the IS auditor run monitoring that the model owner must run.",
-        "Final two: D beats B because drift can start any day after release; a monitoring plan with limits keeps watching, while a 30-day revalidation is one more snapshot.",
+        "Eliminate: A treats a validation pass as lasting assurance, and C widens validation, which still describes each model only at release.",
+        "Final two: D beats B because drift can start any day after release; a monitoring plan with limits keeps watching, while a 30-day review is one more snapshot.",
         "Exam cue: a deployment gate should ask how the model will be watched after release, by whom and against what limits, not only whether it passed validation."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 2.4 (Functionality and behavior monitored in production); NIST AI 100-1 MANAGE 4.1 (Post-deployment monitoring including appeal, override, incident response and change management)",
@@ -3658,7 +3658,7 @@
         "Monitoring plan",
         "Drift"
       ],
-      "_provenance": "Authored from concept: notes 2B.1 The AI Lifecycle and Stage Gates (gates run through deployment and monitoring, not only build and validation). Re-angled at the batch 4 cross-domain gate: the earlier version mirrored the 2B.1 notes example (intended use and acceptable error not set before build). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2B.1 The AI Lifecycle and Stage Gates (gates run through deployment and monitoring, not only build and validation). Re-angled at the batch 4 cross-domain gate: the earlier version mirrored the 2B.1 notes example (intended use and acceptable error not set before build). Release audit, 18 Nov 2026: distractor C recast from the IS auditor monitoring to wider validation, so only drift after release defeats it. Release audit final fix, 18 Nov 2026: the stem no longer names the missing owner and limits that key D supplies, and the pre_read is a neutral habit. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2
     },
     {
@@ -3922,7 +3922,7 @@
     {
       "id": "aaia_d2_107",
       "domain": 2,
-      "subtopic": "2C AI change management. Prompt history",
+      "subtopic": "2C AI change management. Console prompt edits",
       "principle_id": "ai-changes-are-changes",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
@@ -3999,7 +3999,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Salvadoran remittance firm's ID-reading model reads the redesigned card most customers carry; a vendor update retrained it without code changes, passing regression tests on older cards only. What should the IS auditor recommend FIRST?",
+      "question": "A Salvadoran remittance firm's ID-reading model must read a redesigned card most customers carry; a vendor retrain, with no code change, passed regression tests built before the redesign. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Adopt the update, since it passed every regression test",
         "B": "Ask the vendor to confirm the update reads the new cards",
@@ -4026,7 +4026,7 @@
         "Vendor model updates",
         "Test set currency"
       ],
-      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (before adopting an update, the model owner reruns regression tests, which show the effect only for the organization's own use). Re-angled at the batch 4 cross-domain gate: the earlier version (test the successor before a pinned version retires) repeated crisc_d4_006, aaia_d2_033, the 2C.3 notes example and the ai-changes-are-changes principle example. Final fix, 4 Nov 2026: the update is a retrain without code changes and option D treats that as no change, so the deciding fact is AI-specific. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (before adopting an update, the model owner reruns regression tests, which show the effect only for the organization's own use). Re-angled at the batch 4 cross-domain gate: the earlier version (test the successor before a pinned version retires) repeated crisc_d4_006, aaia_d2_033, the 2C.3 notes example and the ai-changes-are-changes principle example. Final fix, 4 Nov 2026: the update is a retrain without code changes and option D treats that as no change, so the deciding fact is AI-specific. Release audit, 18 Nov 2026: the stem no longer names the test gap outright; the learner infers it from when the tests were built. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2
     },
     {
@@ -4223,7 +4223,7 @@
       "question": "A Sierra Leonean bank's face-matching model, retrained monthly on its past decisions, blocks account openings; 200 blocks a month reversed on appeal stay recorded as mismatches. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add appeal staff so that reversals are made more quickly",
-        "B": "Correct the labels of reversed blocks before each retraining",
+        "B": "Relabel overturned cases as matches in the data it learns from",
         "C": "Require a manager to approve each reversal that is made on appeal",
         "D": "Send the monthly count of reversals to the model owner"
       },
@@ -4247,13 +4247,13 @@
         "Feedback loops",
         "Training labels"
       ],
-      "_provenance": "Authored from concept: notes 2D.3 Decision Logs, Appeals and Feedback (upheld appeals must correct the labels a model retrains on, or it learns its own errors). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2D.3 Decision Logs, Appeals and Feedback (upheld appeals must correct the labels a model retrains on, or it learns its own errors). Release audit, 18 Nov 2026: key B no longer alone echoes the stem's \"blocks\". Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2
     },
     {
       "id": "aaia_d2_116",
       "domain": 2,
-      "subtopic": "2D AI supervision. Log retention and reruns",
+      "subtopic": "2D AI supervision. Stall-license appeals",
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
@@ -4294,7 +4294,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Liberian rubber plantation's leaf-disease model passed acceptance testing, then was compressed to run on workers' phones; the compressed version was never retested. What should the IS auditor recommend FIRST?",
+      "question": "A Liberian rubber plantation compressed its accepted leaf-disease model to run on workers' phones; engineers say the acceptance results still apply, as its logic is unchanged. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Monitor field results against acceptance criteria for a month",
         "B": "Compare the compressed file's hash with the registry entry",
@@ -4308,7 +4308,7 @@
       "wrong_explanations": {
         "A": "Tempting because field results are real-world evidence. But they come after reliance; the compressed model should meet the criteria before workers depend on it.",
         "B": "Tempting because hashes prove which file is deployed. But a matching hash shows identity, not that the compressed model still performs.",
-        "D": "Tempting because the design looks the same. But compression alters the model's parameters and can change its outputs, so earlier results may not hold."
+        "D": "Tempting because the engineers say the logic is unchanged. But compression alters the model's parameters and can change its outputs, so earlier results may not hold."
       },
       "tips": [
         "Eliminate: B checks file identity, not behavior, and D assumes compression leaves outputs unchanged, though it alters the model's parameters.",
@@ -4321,7 +4321,7 @@
         "Acceptance testing",
         "Deployed version"
       ],
-      "_provenance": "Authored from concept: notes 2E.1 TEVV and Acceptance Criteria (a compressed model is a new version that needs its own acceptance tests). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2E.1 TEVV and Acceptance Criteria (a compressed model is a new version that needs its own acceptance tests). Release audit, 18 Nov 2026: the stem no longer states the test gap; it gives the engineers' claim, so the AI fact (compression changes outputs) decides. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2
     },
     {
@@ -4364,7 +4364,7 @@
     {
       "id": "aaia_d2_119",
       "domain": 2,
-      "subtopic": "2E AI testing. Fairness at the cutoff",
+      "subtopic": "2E AI testing. Equipment-hire deposits",
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
@@ -4478,25 +4478,25 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Mauritian vehicle-licensing office's public chatbot answers in English, French and Mauritian Creole; its red team tried jailbreaks and harmful requests in English only. What should the IS auditor recommend as BEST?",
+      "question": "A Mauritian vehicle-licensing office's chatbot answers in English, French and Mauritian Creole from one model; its red team's jailbreaks and harmful requests, all in English, were refused. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Repeat the same attack tests using French and Creole prompts",
-        "B": "Translate the English-tested safety filters into French and Creole",
+        "A": "Repeat the attack tests in the chatbot's other two languages",
+        "B": "Accept the results, as one model's safeguards serve each language",
         "C": "Limit the chatbot to English until the vendor certifies it",
         "D": "Add a harmful-content disclaimer in each of the three languages"
       },
       "correct": "A",
       "key_concept": "Generative AI safeguards can be weaker in some languages, so red teaming covers every language the system serves, not just English.",
-      "pre_read": "Ask whether a jailbreak refused in English would be refused in Creole.",
-      "correct_explanation": "Safety training and filters can work differently across languages, and often less well in those with little training data, such as Creole, so a jailbreak refused in English may succeed in another. A red team that tested only English says nothing about two of the chatbot's three languages. Extending tests to them finds those gaps. Translating the English filters assumes the gaps are the same in every language, which only testing can show.",
+      "pre_read": "List every way people will use the system, then compare it with what was tested.",
+      "correct_explanation": "Safety training and filters can work differently across languages, and often less well in those with little training data, such as Creole, so a jailbreak refused in English may succeed in another. The English results say nothing about two of the chatbot's three languages; extending the tests finds those gaps. Accepting them because one model serves all three treats it like an automated control tested once, though its behavior varies by language.",
       "wrong_explanations": {
-        "B": "Tempting because the filters were tested in English. But safeguards can behave differently by language; a translated filter is still untested in French and Creole.",
+        "B": "Tempting because automated controls tested once usually work alike for all inputs. But a model's safeguards can be weaker in less-resourced languages, so English refusals may not carry over.",
         "C": "Tempting because it limits exposure. But a vendor certificate is a claim, not the office's own test of how its chatbot behaves.",
         "D": "Tempting because it warns users. But a disclaimer does not stop harmful answers in untested languages."
       },
       "tips": [
         "Eliminate: C waits on a vendor claim instead of the office's own tests, and D warns users without testing for or stopping harmful answers.",
-        "Final two: A beats B because safeguards can fail differently in each language; translated filters still leave gaps that only French or Creole tests would find.",
+        "Final two: A beats B because a model's safeguards can fail in one language and hold in another; unlike an automated control, one English test cannot cover all three.",
         "Exam cue: red-team coverage must match how the system is really used, including every language and input channel it serves."
       ],
       "framework_ref": "NIST AI 100-2e2025 Section 3.3 (Direct Prompting Attacks and Mitigations); MITRE ATLAS AML.T0054 (LLM Jailbreak)",
@@ -4505,7 +4505,7 @@
         "Multilingual safety",
         "Jailbreaks"
       ],
-      "_provenance": "Authored from concept: notes 2E.3 Independent Validation, Robustness and Red Teaming (red teaming covers every language the system serves). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2E.3 Independent Validation, Robustness and Red Teaming (red teaming covers every language the system serves). Release audit, 18 Nov 2026: runner-up B recast from translating filters to accepting the English results, so only the AI fact (safeguards differ by language) defeats it; pre_read made neutral. Release audit fix, 18 Nov 2026: key A no longer alone names the stem's languages. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2
     },
     {
@@ -4815,19 +4815,19 @@
         "A": "Restart it now, then rebuild its logs by rerunning prompts",
         "B": "Disengage the chatbot and save its logs before restarting",
         "C": "Retrain the chatbot on the correct redemption prices",
-        "D": "Post a notice that the chatbot's prices may be wrong"
+        "D": "Roll back the chatbot to its previous version at once"
       },
       "correct": "B",
       "key_concept": "Containing an AI incident means disengaging it without destroying evidence: preserve logs, inputs and version before restarting or fixing.",
       "pre_read": "Ask what the restart would erase, and who needs it later.",
-      "correct_explanation": "The chatbot must stop quoting prices, so it is disengaged first. A restart may not even stop the errors, since their cause is unknown, and it wipes the session logs; a generative chatbot's answers cannot be reliably regenerated from prompts later. Saving the logs first preserves who was quoted which wrong price, and why, for root cause work and for correcting investors' redemptions.",
+      "correct_explanation": "The chatbot must stop quoting prices, so it is disengaged first. A restart may not even stop the errors, since their cause is unknown, and it wipes the session logs; a generative chatbot's answers cannot be reliably regenerated from prompts later. Saving the logs first preserves who was quoted which wrong price, and why, for root cause work and for putting right any redemptions made on those quotes.",
       "wrong_explanations": {
         "A": "Tempting because it is quick. But rerun prompts produce new answers, not the ones investors saw, so who was quoted what is lost.",
         "C": "Tempting because it targets the wrong prices. But retraining is an untested change made before the cause is known, which may not be the model.",
-        "D": "Tempting because it warns investors. But wrong prices keep going out while the notice stands, and no evidence is preserved."
+        "D": "Tempting because rollback is a standard AI containment step. But the cause is unknown and may lie outside the model, and redeploying before the logs are saved risks losing them."
       },
       "tips": [
-        "Eliminate: C retrains before the cause is known, an untested change, and D warns investors while wrong prices keep going out.",
+        "Eliminate: C retrains before the cause is known, an untested change, and D swaps versions before the cause is known or the logs are saved.",
         "Final two: B beats A because rerunning prompts on a generative chatbot gives new answers; only logs saved before the restart show who was quoted what.",
         "Exam cue: in an AI incident, stop the harm in a way that keeps the evidence; capture logs, inputs and version before any restart or fix."
       ],
@@ -4837,7 +4837,7 @@
         "Evidence preservation",
         "Session logs"
       ],
-      "_provenance": "Authored from concept: notes 2G.2 Containment: Disengage, Roll Back and Preserve Evidence (disengage the AI without destroying evidence; save logs before any restart). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2G.2 Containment: Disengage, Roll Back and Preserve Evidence (disengage the AI without destroying evidence; save logs before any restart). Release audit, 18 Nov 2026: distractor D recast from a warning notice to an immediate rollback. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2
     },
     {
@@ -5027,10 +5027,10 @@
     {
       "id": "aaia_d2_137",
       "domain": 2,
-      "subtopic": "2A Data management for AI. Tripling a skewed image archive",
+      "subtopic": "2A Data management for AI. Burn-photo archive",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Saint Lucian hospital's burn model, trained mostly on lighter-skin photos, misses more deep burns on darker skin; staff will triple the data from that archive. What should the IS auditor recommend as BEST?",
+      "question": "A Saint Lucian hospital's burn model, trained mostly on lighter-skin archive photos, misses more deep burns on darker skin; staff will triple the data from that archive. Which plan should the IS auditor consider BEST?",
       "options": {
         "A": "Triple the training set as planned, then retest on darker skin",
         "B": "Lower every patient's alert threshold so fewer deep burns are missed",
@@ -5057,7 +5057,7 @@
         "Harmful bias",
         "Group results"
       ],
-      "_provenance": "Authored from concept: notes 2A.2 Data Quality, Labeling and Representativeness (more data with the same skew repeats the gap). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2A.2 Data Quality, Labeling and Representativeness (more data with the same skew repeats the gap). Release audit, 18 Nov 2026: the stem asks which plan the IS auditor judges best, so the auditor assesses rather than prescribes the fix; neutral subtopic label. Release audit fix, 18 Nov 2026: the stem names the archive the extra data comes from. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
       "style_version": 2
     },
     {
@@ -5149,7 +5149,7 @@
       },
       "correct": "C",
       "key_concept": "A retraining pipeline that folds the test set into training turns every later score into a memory test.",
-      "pre_read": "Follow the test records through each monthly retraining run.",
+      "pre_read": "Read how the pipeline repeats each month before judging what its reported scores show.",
       "correct_explanation": "Once test records are folded into training, the model has seen the answers, so each release's score measures memory, not performance on new faults. That makes every reported score unreliable from the first retrain on. A fixed test set can also grow stale as faults change, which matters, but a stale yet unseen set still tests the model; a set it trained on tests nothing.",
       "wrong_explanations": {
         "A": "Tempting because frequent changes strain review. But automated gates can test monthly releases; frequency is not what makes these scores unreliable.",
@@ -5223,7 +5223,7 @@
       },
       "correct": "D",
       "key_concept": "Training-serving skew: features computed differently in production than in validation make validation results unreliable for the live model.",
-      "pre_read": "Ask whether the numbers the model sees in production come from the same code it was validated on.",
+      "pre_read": "Compare the conditions the model was validated under with those it will run under.",
       "correct_explanation": "The model was validated on features from one piece of code and will run on features from another. Small differences in rounding, time windows or missing-value handling can shift fuel recommendations without any error message. Comparing batch and live features for the same flights exposes this skew before go-live. A fresh batch holdout retests the model, but on batch features again, so the live service's numbers stay untested.",
       "wrong_explanations": {
         "A": "Tempting because live services must handle peak loads. But speed testing shows capacity, not whether live features match those the model was validated on.",
@@ -5543,7 +5543,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Nicaraguan crowdfunding platform pauses campaigns scoring above 0.7 on a vendor's scam-detection model; the vendor says next month's version gives lower scores overall. What should the IS auditor recommend FIRST?",
+      "question": "A Nicaraguan crowdfunding platform pauses campaigns scoring above 0.7 on a vendor's scam-detection model; the vendor says next month's version is more accurate but scores lower overall. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Reset the cutoff on the new version's scores, then retest",
         "B": "Keep 0.7, since the vendor says the new version is better",
@@ -5552,7 +5552,7 @@
       },
       "correct": "A",
       "key_concept": "A decision threshold is calibrated to one model version's scores; a vendor update that shifts scores needs the threshold re-derived and retested.",
-      "pre_read": "Ask what 0.7 means on the new version's scale.",
+      "pre_read": "Before a vendor update, list what in your own process depends on the model's outputs.",
       "correct_explanation": "A cutoff is tuned to one model's score scale. If the new version scores lower, 0.7 will pause fewer scam campaigns, though nothing in the platform's code changed. The model owner should reset the cutoff on the new version's scores, using labeled campaigns, and retest before the switch. Subtracting the vendor's average drop assumes every score moved equally, which rarely holds near the cutoff, where it matters.",
       "wrong_explanations": {
         "B": "Tempting because the vendor expects better results. But better is measured on its own tests, and lower scores mean 0.7 pauses fewer scams.",
@@ -5613,21 +5613,21 @@
     {
       "id": "aaia_d2_153",
       "domain": 2,
-      "subtopic": "2D AI supervision. When the model's flag appears",
+      "subtopic": "2D AI supervision. Biopsy-model agreement rates",
       "principle_id": "real-human-oversight",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Georgian hospital radiologists' agreement with an unchanged fracture model's flags rose from 70% to 96% once the flags began appearing before the X-ray image. What should the IS auditor recommend as BEST?",
+      "question": "A Tbilisi lab's pathologists agreed with an unchanged biopsy model's flags 96% of the time, up from 70%, once each flag showed ahead of the slide image. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Remove the radiologists' step, since they agree with the model anyway",
-        "B": "Have radiologists record their own reading before the flag appears",
-        "C": "Remind radiologists in training that the model's flags can be wrong",
-        "D": "Retrain the model on radiologists' readings to align them further"
+        "A": "Remove the pathologists' step, since they agree with the model anyway",
+        "B": "Have pathologists record their own reading before the flag appears",
+        "C": "Use refresher training to remind pathologists that flags can be wrong",
+        "D": "Retrain the model on pathologists' readings to align them further"
       },
       "correct": "B",
       "key_concept": "Showing a model's output before reviewers judge anchors them; recording an independent judgment first counters automation bias.",
-      "pre_read": "Ask what changed: the model, or what the radiologists see first.",
-      "correct_explanation": "The model did not change; only when its flag appears did. A jump from 70% to 96% agreement then suggests radiologists anchor on the flag rather than read each image afresh. Having them record their own reading before seeing the flag keeps their judgment independent and lets the owner measure real disagreement. A training reminder raises awareness, but it does not change the screen that pulls radiologists toward the flag.",
+      "pre_read": "Before choosing, ask what the figure in the stem actually measures and what could move it.",
+      "correct_explanation": "The model did not change; only the moment its flag appears did. A jump from 70% to 96% agreement then suggests pathologists anchor on the flag rather than read each slide afresh. Having them record their own reading before seeing the flag keeps their judgment independent and lets the lab measure real disagreement. A training reminder raises awareness, but it does not change the screen that pulls pathologists toward the flag.",
       "wrong_explanations": {
         "A": "Tempting because high agreement suggests the review adds little. But the jump came from the display change, so it signals anchoring, not a model fit to run alone.",
         "C": "Tempting because awareness is part of oversight. But knowing flags can be wrong does little against anchoring when the flag is the first thing shown.",
@@ -5644,7 +5644,7 @@
         "Anchoring",
         "Human oversight"
       ],
-      "_provenance": "Authored from concept: notes 2D.1 Human Oversight and Automation Bias (showing the model's output first anchors reviewers). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2D.1 Human Oversight and Automation Bias (showing the model's output first anchors reviewers). Release audit, 18 Nov 2026: neutral subtopic label. Release audit final fix, 18 Nov 2026: key B no longer alone echoes the stem's \"before\" and \"appearing\"; distractor C reworded so it cannot be read as trainee radiologists only. Release audit re-check, 18 Nov 2026: setting moved from a hospital fracture X-ray model reviewed by radiologists (shared with CISA d1_108) to a Tbilisi pathology lab's prostate-biopsy model; neutral pre_read. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
       "style_version": 2
     },
     {
@@ -5724,7 +5724,7 @@
     {
       "id": "aaia_d2_156",
       "domain": 2,
-      "subtopic": "2D AI supervision. A drift check with a rolling baseline",
+      "subtopic": "2D AI supervision. An erosion model's drift check",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A Tuvaluan coastal-works agency's drift check compares each month's erosion-model inputs with the prior month's and never trips, though sea levels edged up steadily for two years. What should the IS auditor recommend as BEST?",
@@ -5843,12 +5843,12 @@
         "A": "Add 200 more test questions, each asked once",
         "B": "Accept the results, since the 200 answers each passed",
         "C": "Set the model's temperature to zero and close testing",
-        "D": "Ask each question several times and judge pass rates"
+        "D": "Ask each question several times and count failures"
       },
       "correct": "D",
-      "key_concept": "Generated output varies run to run, so acceptance tests should repeat each case and judge pass rates, not single answers.",
+      "key_concept": "Generated output varies run to run, so acceptance tests should repeat each case and count every wrong answer, not judge single answers.",
       "pre_read": "Ask what a single passing answer shows when the next answer may differ.",
-      "correct_explanation": "When answers vary run to run, one pass per question shows only that a single draw was acceptable, not how often wrong routes appear. Asking each question several times and setting pass rates on all runs measures the error rate wheelchair users will meet. More questions asked once widen coverage, which helps, but each still gets a single draw, so occasional unsafe routes can stay hidden.",
+      "correct_explanation": "When answers vary run to run, one pass per question shows only that a single draw was acceptable, not how often wrong routes appear. Asking each question several times and counting every wrong answer across runs measures the error rate wheelchair users will meet. More questions asked once widen coverage, which helps, but each still gets a single draw, so occasional unsafe routes can stay hidden.",
       "wrong_explanations": {
         "A": "Tempting because broader coverage finds more problems. But each question still gets one draw, so answers that fail only sometimes stay hidden.",
         "B": "Tempting because every answer passed. But each was a single draw from varying output; a repeat could give a wrong route.",
@@ -5857,7 +5857,7 @@
       "tips": [
         "Eliminate: B treats one pass as proof though answers vary, and C changes a setting without testing, while hosted models can still vary.",
         "Final two: D beats A because repeated runs measure how often an answer fails; more questions asked once still sample each answer once.",
-        "Exam cue: for generative AI, acceptance tests should repeat each case and judge pass rates, because one run is one sample."
+        "Exam cue: for generative AI, acceptance tests repeat each case and count every wrong run, because one run is one sample."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 2.1 (Test sets, metrics and TEVV tools documented); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
       "related_concepts": [
@@ -5865,13 +5865,13 @@
         "Output variability",
         "Generative AI"
       ],
-      "_provenance": "Authored from concept: notes 2E.1 TEVV and Acceptance Criteria (varying output needs repeated test runs). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2E.1 TEVV and Acceptance Criteria (varying output needs repeated test runs). Release audit, 18 Nov 2026: key D counts every failure instead of judging pass rates, matching aaia_d3_094 (a wrong answer in any run is an exception). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
       "style_version": 2
     },
     {
       "id": "aaia_d2_160",
       "domain": 2,
-      "subtopic": "2E AI testing. Testing the nurse with the tool",
+      "subtopic": "2E AI testing. A triage model's go-live test",
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
@@ -5919,7 +5919,7 @@
         "D": "Report the model as unfair, since it fails most of the measures"
       },
       "correct": "A",
-      "key_concept": "When groups' base rates differ, fairness measures cannot all be met; the model owner chooses those that fit the harm and records why.",
+      "key_concept": "When groups' base rates differ, common fairness measures usually cannot all be met; the model owner chooses those that fit the harm and records why.",
       "pre_read": "Ask who decided which fairness measures matter here, and on what basis.",
       "correct_explanation": "Fairness measures can conflict: when groups' repayment rates differ, a model usually cannot meet them all at once. So the model owner, with legal and ethics input, must choose which measures fit the harm at stake, such as creditworthy older applicants wrongly declined, and record why before results are judged. Requiring all five sounds strict, but it may be impossible to meet and still leaves the harm undefined.",
       "wrong_explanations": {
@@ -6024,22 +6024,22 @@
       "bloom_level": "Application",
       "question": "A Jamaican lottery operator's red team found three high-severity jailbreaks in its player chatbot that remain open; the red team lead says it passes for launch anyway. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Accept the red team lead's view, as they know the findings best",
-        "B": "Have the model owner decide on launch with the open findings",
+        "A": "Launch if the three jailbreaks fail when the red team reruns them",
+        "B": "Have the model owner decide on the open findings before launch",
         "C": "Have the IS auditor judge whether the open findings are acceptable",
         "D": "Launch once a filter blocks the three jailbreak prompts"
       },
       "correct": "B",
-      "key_concept": "Red teams report findings; the model owner decides on launch within tolerance, since blocking known jailbreak prompts does not remove the weakness.",
+      "key_concept": "Red teams report findings and the model owner decides on launch within tolerance; filtering known jailbreak prompts leaves reworded ones open.",
       "pre_read": "Ask who in this story is allowed to accept the remaining risk.",
       "correct_explanation": "A red team tests and reports; it does not decide whether residual risk is acceptable. The model owner, within senior management's tolerance, decides on launch with the three open findings in view and can require fixes or limits first; management formally accepts any findings left open. Blocking the three known prompts looks like closure, but reworded jailbreaks often pass such filters, and the launch decision would still have no owner.",
       "wrong_explanations": {
-        "A": "Tempting because the red team knows the findings best. But testers assess and report; the model owner decides on launch, and management accepts any findings left open.",
+        "A": "Tempting because a retest seems to show the risk is gone. But generative output varies from run to run, so a jailbreak that fails once can work later.",
         "C": "Tempting because IS auditors are independent. But deciding whether the risk is acceptable is the model owner's call; the IS auditor reports and follows up.",
         "D": "Tempting because it closes the three findings quickly. But reworded jailbreaks often pass a filter built on known prompts, and no one has decided whether the remaining risk is acceptable."
       },
       "tips": [
-        "Eliminate: A lets the testers accept the risk they found, and C has the IS auditor judge acceptability, which is a management decision.",
+        "Eliminate: A trusts one rerun though generative output varies run to run, and C has the IS auditor judge acceptability, which is a management decision.",
         "Final two: B beats D because a filter on three known prompts leaves reworded jailbreaks open; the model owner decides on launch, within tolerance, with that risk in view.",
         "Exam cue: testers and IS auditors report findings; the accountable owner decides whether residual AI risk is acceptable."
       ],
@@ -6049,7 +6049,7 @@
         "Residual risk",
         "Model owner"
       ],
-      "_provenance": "Authored from concept: notes 2E.3 Independent Validation, Robustness and Red Teaming (red teams report; the owner decides on residual risk). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2E.3 Independent Validation, Robustness and Red Teaming (red teams report; the owner decides on residual risk). Release audit, 18 Nov 2026: key B reworded so it no longer reads as permission to launch with the findings open. Release audit fix, 18 Nov 2026: distractor A recast from deferring to the red team lead to a single rerun, which only output variability defeats. Release audit final fix, 18 Nov 2026: key_concept no longer joins its two facts with a false \"since\". Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
       "style_version": 2
     },
     {
@@ -6178,7 +6178,7 @@
       },
       "correct": "A",
       "key_concept": "Prompt-injection filters miss new attack wording, so an agent's powerful rights must be limited outside the model, not left behind a filter.",
-      "pre_read": "Ask what the missed 3%, and next month's new attacks, could do with the agent's rights.",
+      "pre_read": "Rank each concern by its likelihood and the harm it could do.",
       "correct_explanation": "Injection filters learn from attacks already seen, and attackers reword until one gets through, so 97% of known attacks says little about new ones. Because the agent keeps the right to change tariffs, any attack that slips past can change real customers' contracts. False blocks of genuine requests are a real cost, but they inconvenience customers, while a missed attack changes what they pay.",
       "wrong_explanations": {
         "B": "Tempting because false blocks frustrate customers. But a blocked request can be retried or escalated; an attack that gets through changes contracts.",
@@ -6359,19 +6359,19 @@
         "A": "Let the rolled-back model run, as it was known to be good",
         "B": "Retrain tonight on clean data from the previous month",
         "C": "Replace the faulty sensors as soon as parts arrive",
-        "D": "Stop the model's learning until the readings are checked"
+        "D": "Stop the model's learning until its inputs are checked"
       },
       "correct": "D",
       "key_concept": "A model that learns from live data relearns a fault after rollback unless its learning is stopped; containment covers learning, not just the version.",
-      "pre_read": "Ask what the rolled-back model keeps learning from while the sensors stay faulty.",
+      "pre_read": "Put the stem's facts in time order before choosing.",
       "correct_explanation": "Rollback restored a good version, but this model keeps learning from live readings, so the restored version will relearn the fault from the same faulty sensors. Stopping its learning is the first containment step, and keeping the suspect readings intact supports root cause analysis. Replacing the sensors fixes the source, but until parts arrive the model keeps learning from bad readings.",
       "wrong_explanations": {
         "A": "Tempting because the live model is good again. But it keeps learning from the faulty readings, so it will drift back to the fault.",
-        "B": "Tempting because clean data avoids the bad readings. But an unplanned retrain before root cause is an untested change made under pressure.",
+        "B": "Tempting because clean data avoids the bad readings. But the retrained model would keep learning from the same faulty sensors, and a rushed retrain is an untested change.",
         "C": "Tempting because it fixes the cause. But until the sensors are replaced, the self-updating model keeps learning from bad readings."
       },
       "tips": [
-        "Eliminate: A trusts a rollback while the model keeps learning from faulty readings, and B rushes an untested retrain before the cause is known.",
+        "Eliminate: A trusts a rollback while the model keeps learning from faulty readings, and B rushes an untested retrain that would relearn the fault from the same sensors.",
         "Final two: D beats C because the model learns from faulty readings until the sensors are replaced; stopping its learning contains the fault now.",
         "Exam cue: a model that learns in production is not contained by rollback alone; stop its learning until its inputs are trusted."
       ],
@@ -6381,7 +6381,7 @@
         "Online learning",
         "Rollback"
       ],
-      "_provenance": "Authored from concept: notes 2G.2 Containment: Disengage, Roll Back and Preserve Evidence (containment covers the retraining pipeline). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2G.2 Containment: Disengage, Roll Back and Preserve Evidence (containment covers the retraining pipeline). Release audit, 18 Nov 2026: key D no longer alone echoes the stem's \"readings\". Release audit final fix, 18 Nov 2026: distractor B's explanation and tip no longer say the cause is unknown, since the stem names the faulty sensors. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
       "style_version": 2
     },
     {
@@ -6461,7 +6461,7 @@
     {
       "id": "aaia_d2_176",
       "domain": 2,
-      "subtopic": "2G AI incident response. A jailbreak fixed and forgotten",
+      "subtopic": "2G AI incident response. A closed jailbreak problem record",
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
@@ -6621,7 +6621,7 @@
       },
       "correct": "D",
       "key_concept": "Labels that mature late make recent records look like the default class, so frequent retraining can teach the model to miss new fraud.",
-      "pre_read": "Ask how true each label is on the day the model trains on it.",
+      "pre_read": "Weigh each concern against the facts the stem actually gives.",
       "correct_explanation": "Labels for recent orders are not final: any fraud still waiting for its chargeback is recorded as genuine, and weekly retraining teaches the model that pattern, so it learns to pass the newest fraud. Probing by fraudsters is a real threat to fraud models, but nothing in the facts points to it, while the labeling rule mislabels recent fraud every week.",
       "wrong_explanations": {
         "A": "Tempting because frequent retrains need control. But cadence is a process question; the labels feeding each retrain are the risk the facts point to.",
@@ -7139,7 +7139,7 @@
       "correct": "D",
       "key_concept": "Load-based routing across models makes outputs untraceable and tests unrepresentative; call a named version and log it with each output.",
       "pre_read": "Ask which model wrote a given output, and how anyone would know.",
-      "correct_explanation": "With load-based routing, the model behind any headline can change from one request to the next, so tests cover whichever mix happened to answer and no output can be traced to its model. Calling a named version and logging it fixes what is being tested and makes each headline traceable. Weekly regression tests on the auto endpoint measure a moving target.",
+      "correct_explanation": "With load-based routing, the model behind any headline can change from one request to the next, so tests cover whichever mix happened to answer and no output can be traced to its model. Calling a named version and logging it fixes which model is being tested and makes each headline traceable. Weekly regression tests on the auto endpoint measure a moving target.",
       "wrong_explanations": {
         "A": "Tempting because regression tests catch changes. But the endpoint may route test prompts to different models than live ones, so results may not describe live use.",
         "B": "Tempting because transparency helps. But knowing the rules does not fix which model answers, or record which one did.",
@@ -7147,7 +7147,7 @@
       },
       "tips": [
         "Eliminate: B learns the routing without controlling it, and C samples headlines without knowing which model wrote them.",
-        "Final two: D beats A because a named, logged version fixes what is tested and traces each output; tests on a load-routed endpoint measure whatever mix answered.",
+        "Final two: D beats A because a named, logged version fixes which model is tested and traces each output; tests on a load-routed endpoint measure whatever mix answered.",
         "Exam cue: you can only test, compare and explain outputs from a known model version. Pin it and log it."
       ],
       "framework_ref": "NIST AI 100-1 MANAGE 3.1 (Third-party AI risks monitored and controls applied); NIST SP 800-53 Rev. 5 CM-2 (Baseline Configuration)",
@@ -7544,7 +7544,7 @@
       },
       "correct": "B",
       "key_concept": "Explanations need validating for faithfulness: a cited reason should move the score when it changes, not merely look plausible.",
-      "pre_read": "Ask how you would know the reasons are the model's, not just believable.",
+      "pre_read": "Ask what each option would prove about the reasons underwriters see.",
       "correct_explanation": "An explanation tool approximates the model, and its reasons can look sensible while not reflecting what actually drives a score. Testing whether a cited factor really moves the score checks that the reasons are faithful. Underwriters' sense that reasons look right tests plausibility, and plausible but wrong reasons are exactly what could mislead their decisions.",
       "wrong_explanations": {
         "A": "Tempting because more detail seems more transparent. But ten untested reasons are no more reliable than three.",
@@ -7836,7 +7836,7 @@
       },
       "correct": "D",
       "key_concept": "When people cannot tell AI made a decision, few report its errors, so incident detection cannot rely on complaints alone.",
-      "pre_read": "Ask how the incident process would first hear of a problem.",
+      "pre_read": "Check each concern against what the stem states, not what it might imply.",
       "correct_explanation": "When people do not know a model set their deposit, they have little reason to suspect a systematic error, and many will simply pay. The incident process waits for complaints, so the deciding gap is detection: harm of any kind, unequal deposits included, can go unnoticed. Detection needs monitoring of the decisions themselves, not only a complaint channel.",
       "wrong_explanations": {
         "A": "Tempting because misrouting delays response. But it affects only complaints that arrive; the bigger gap is harm no one reports.",
@@ -7984,7 +7984,7 @@
       },
       "correct": "D",
       "key_concept": "When an AI root cause sits in a shared component, the problem record must cover every system that uses it.",
-      "pre_read": "Ask what else the template's flaw could have touched.",
+      "pre_read": "Compare each option with the root cause the trace found.",
       "correct_explanation": "The cause sits in a shared template, so the same flaw may already be giving wrong prices in four other assistants, and because a prompt behaves differently on each model, a fix proven on the chatbot proves nothing for them. Extending the problem record to every assistant using the template makes the fix, retesting and closure cover all of them. Retesting only the chatbot leaves four unchecked.",
       "wrong_explanations": {
         "A": "Tempting because the fix reaches the shared template. But a prompt acts differently on each model, so the four other assistants stay unproven after the change.",
@@ -8118,7 +8118,7 @@
     {
       "id": "aaia_d2_221",
       "domain": 2,
-      "subtopic": "2A Data management for AI. Live readings no one checks",
+      "subtopic": "2A Data management for AI. A sawmill's grading data",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A Uruguayan sawmill cleaned its log-grading model's training data once, at build; live readings from its 12 scanners now feed daily grades and weekly retraining. What should the IS auditor recommend as BEST?",
@@ -8338,7 +8338,7 @@
     {
       "id": "aaia_d2_227",
       "domain": 2,
-      "subtopic": "2B AI lifecycle. A code license taken for the weights' license",
+      "subtopic": "2B AI lifecycle. An open model for a chess app",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
       "question": "An Armenian chess-coaching app's engineers chose an open-weight model for its game-review helper, since the model's code repository carries an Apache 2.0 license. What should the IS auditor recommend FIRST?",
@@ -8424,7 +8424,7 @@
       },
       "correct": "D",
       "key_concept": "A model retired on the server still acts wherever copies run; retirement must disable every copy, including offline ones on devices.",
-      "pre_read": "Ask where else the model could still be running.",
+      "pre_read": "Ask what each option changes for the next child screened.",
       "correct_explanation": "Shutting the server stopped one copy, but the offline copies on tablets keep screening children with the faulty model, so wrong results still reach families. Because the ministry manages the tablets remotely, it can disable the model on every one now. Removing the download link prevents new copies but leaves every tablet that already has the model screening children with it.",
       "wrong_explanations": {
         "A": "Tempting because it stops the model spreading. But every tablet that already holds it keeps screening children with the faulty version.",
@@ -8526,7 +8526,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Kuwaiti cinema chain's assistant answers cancellation and exchange questions; spot checks show an emergency system-prompt line, 'never discuss refunds', stopped wrong fee quotes. What should the IS auditor recommend as BEST next?",
+      "question": "A Kuwaiti cinema chain's assistant quoted outdated fees on cancellations and exchanges; fee-only spot checks show an emergency system-prompt line, 'never discuss refunds', stopped those quotes. What should the IS auditor recommend as BEST next?",
       "options": {
         "A": "Check that users cannot prompt the assistant past the new line",
         "B": "Confirm with a sample of fee questions that quoting has stopped",
@@ -8536,7 +8536,7 @@
       "correct": "D",
       "key_concept": "A system prompt shapes every answer, so a one-line fix can change unrelated behavior; test across topics, not just the target.",
       "pre_read": "Ask what else a change could affect besides what it was meant to fix.",
-      "correct_explanation": "A system prompt shapes every answer, and 'never discuss refunds' can also stop the assistant explaining the cancellations and exchanges it handles. Regression tests across every topic show what else the emergency change altered. Checking that users cannot argue past the line tests resistance to attack, but the line was added for accuracy, and its effect on every customer's ordinary answers is the untested risk.",
+      "correct_explanation": "A system prompt shapes every answer, and 'never discuss refunds' can also stop the assistant explaining the cancellations and exchanges it handles, yet the spot checks covered fees only. Regression tests across every topic show what else the emergency change altered. Checking that users cannot argue past the line tests resistance to attack, but the line was added for accuracy, and its effect on every customer's ordinary answers is the untested risk.",
       "wrong_explanations": {
         "A": "Tempting because prompt rules can be argued around. But the line was added for accuracy, not security; its untested effect on every customer's other answers is the larger risk.",
         "B": "Tempting because it confirms the fix worked. But the spot checks already show that; the new line can change answers on other topics too.",
@@ -8553,7 +8553,7 @@
         "Emergency change",
         "Regression testing"
       ],
-      "_provenance": "Authored from concept: notes 2C.1 What Counts as an AI Change (a prompt edit changes behavior across all answers, so even an emergency fix needs regression testing beyond its target). Review round 1: setting moved from a bank's customer assistant (aaia_d2_065, 176, 234); distractor A recast from a strawman to an AI-plausible attack test. Review round 2: the stem now gives the broad prompt line and the spot-check result, so the fix is confirmed and side effects decide (runner-up now A, bypass testing); key option reworded without its contrast clause. Review round 3: the stem now says the assistant also answers cancellation and exchange questions, the fact that points to side effects over bypass; distractor A's explanation no longer calls bypass one user's choice. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2C.1 What Counts as an AI Change (a prompt edit changes behavior across all answers, so even an emergency fix needs regression testing beyond its target). Review round 1: setting moved from a bank's customer assistant (aaia_d2_065, 176, 234); distractor A recast from a strawman to an AI-plausible attack test. Review round 2: the stem now gives the broad prompt line and the spot-check result, so the fix is confirmed and side effects decide (runner-up now A, bypass testing); key option reworded without its contrast clause. Review round 3: the stem now says the assistant also answers cancellation and exchange questions, the fact that points to side effects over bypass; distractor A's explanation no longer calls bypass one user's choice. Release audit, 18 Nov 2026: the stem says the wrong quotes came from outdated fees, an accuracy fault, so side effects rather than bypass are the untested risk. Release audit fix, 18 Nov 2026: the stem says the spot checks covered fees only, the fact that decides D over A. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
       "style_version": 2
     },
     {
@@ -8670,20 +8670,20 @@
     {
       "id": "aaia_d2_236",
       "domain": 2,
-      "subtopic": "2C AI change management. Same replies, different actions",
+      "subtopic": "2C AI change management. A theme park's booking agent",
       "principle_id": "test-the-ai-as-used",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "A vendor model update made an Indonesian theme park's booking agent grant twice as many free fast-track passes, each within limits; replies read the same. Which control should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Test the agent's actions, not only its replies, before updates apply",
+        "A": "Test the agent's tool actions before each update applies",
         "B": "Rely on vendor release notes to flag behavior changes",
         "C": "Compare samples of replies before and after each update applies",
         "D": "Lower the agent's pass limit after each vendor update"
       },
       "correct": "A",
       "key_concept": "For AI agents, an update can change what they do while their words look the same; regression tests must cover actions.",
-      "pre_read": "Separate what the agent says from what it does.",
+      "pre_read": "For each option, ask whether it would have caught this update.",
       "correct_explanation": "The update changed the agent's decisions, granting twice as many free passes, while its replies read the same, so a test that compares text would pass it. Running test cases that check the agent's tool actions, such as when it grants passes, before an update applies catches that kind of change. Comparing sample replies is useful, but it measures words, not the actions that cost the park money.",
       "wrong_explanations": {
         "B": "Tempting because vendors describe changes. But release notes rarely predict how one customer's agent will behave with its own tools.",
@@ -8701,7 +8701,7 @@
         "AI agents",
         "Regression testing"
       ],
-      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (a vendor model update can change an agent's actions while its text looks the same; update tests must cover tool use). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (a vendor model update can change an agent's actions while its text looks the same; update tests must cover tool use). Release audit, 18 Nov 2026: neutral subtopic label. Release audit final fix, 18 Nov 2026: key A no longer carries a contrast clause naming the stem's gap. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
       "style_version": 2
     },
     {
@@ -8794,7 +8794,7 @@
       },
       "correct": "A",
       "key_concept": "Interventions triggered by a model change the outcomes used to monitor it; a rise in 'errors' may be the intervention working.",
-      "pre_read": "Ask what happens between a flag and the recorded outcome.",
+      "pre_read": "Weigh each concern by how well the stem's facts support it.",
       "correct_explanation": "Flagged subscribers get a call, and since callers began offering discounts more of them stay. Monitoring scores each one who stays as a false alarm, so the doubled rate may show the discounts working, not the model failing, and could trigger a needless retrain. Drift is always possible, but the timing points to the discounts, which change outcomes after every flag.",
       "wrong_explanations": {
         "B": "Tempting because a doubled error rate often signals drift. But the rise followed the discounts, which change what happens after each flag.",
@@ -8866,7 +8866,7 @@
       },
       "correct": "B",
       "key_concept": "To contest an AI decision, people need to see and correct the data it used; factor explanations cannot reveal wrong records.",
-      "pre_read": "Ask what could be wrong in this decision besides the model.",
+      "pre_read": "Ask what a refused applicant could do under each option.",
       "correct_explanation": "Records matched only by name and birth date can belong to someone else, so some refusals may rest on another person's debts. Factors such as 'payment history' cannot show a refused applicant that the history is not theirs. Letting applicants see and correct the records used gives them a real way to contest. A fuller factor list explains the score better but still hides a wrongly matched record.",
       "wrong_explanations": {
         "A": "Tempting because the matched records cause errors. But it leaves past refusals resting on wrong records, and refused applicants still cannot see or challenge what was used.",
@@ -8890,7 +8890,7 @@
     {
       "id": "aaia_d2_242",
       "domain": 2,
-      "subtopic": "2D AI supervision. Error reports sent straight to retraining",
+      "subtopic": "2D AI supervision. Wrong-answer reports from customers",
       "principle_id": "fix-the-control-not-the-model",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
@@ -9442,7 +9442,7 @@
     {
       "id": "aaia_d2_257",
       "domain": 2,
-      "subtopic": "2G AI incident response. Stopping one function of a model",
+      "subtopic": "2G AI incident response. Wrongful seller suspensions",
       "principle_id": "contain-and-preserve-ai",
       "difficulty": "application",
       "bloom_level": "Application",
@@ -9566,7 +9566,7 @@
       },
       "correct": "B",
       "key_concept": "If bad labels come from a gap in the labeling guide, fixing the found labels treats the symptom; the guide is the root cause.",
-      "pre_read": "Ask what will produce the next batch of labels.",
+      "pre_read": "Ask what each option leaves in place.",
       "correct_explanation": "The bad labels came from a guide with no rule for satire, so labelers will mislabel the next satire posts the same way and the next retrain will learn the error again. Reopening the problem until the guide covers satire fixes the cause. Searching for missed satire posts cleans more of today's data, but new labels made under the same guide repeat the flaw.",
       "wrong_explanations": {
         "A": "Tempting because it targets how labels are made. But the guide has no satire rule, so rereading it leads labelers to the same wrong labels.",
@@ -10255,28 +10255,28 @@
     {
       "id": "aaia_d2_279",
       "domain": 2,
-      "subtopic": "2D AI supervision. One oversight design for every use",
+      "subtopic": "2D AI supervision. A city's approval step for AI outputs",
       "principle_id": "real-human-oversight",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
       "question": "A Finnish city has one officer approve every AI output, from meeting summaries to notices ordering families to repay housing aid; most approvals take under ten seconds. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Require officers to record a reason for each approval",
-        "B": "Drop approval once outputs prove accurate for a month",
+        "B": "Drop the approval step once outputs prove accurate for a month",
         "C": "Match each use's oversight to the impact of its outputs",
-        "D": "Let the AI vendor decide which outputs need approval"
+        "D": "Have a second officer also approve every AI output"
       },
       "correct": "C",
       "key_concept": "Oversight should be proportionate to impact; reviewing every low-impact output breeds rubber-stamping that weakens review where it matters.",
-      "pre_read": "Compare the uses listed in the stem.",
+      "pre_read": "Read every number in the stem, then ask what it shows about how the review works.",
       "correct_explanation": "One design for every use spends the same officer time on meeting summaries as on repayment notices that can hurt families, and approvals taking seconds show rubber-stamping. Matching oversight to impact cuts the volume of low-stakes approvals and focuses real review on high-impact notices. Requiring a reason for each approval adds evidence, but under the same volume reasons become boilerplate and automation bias persists.",
       "wrong_explanations": {
         "A": "Tempting because recorded reasons evidence real review. But officers approving every output face the same volume, so reasons turn to boilerplate; the design drives the rubber-stamping.",
         "B": "Tempting because accuracy seems to earn trust. But a month of good outputs does not justify removing review of high-impact decisions.",
-        "D": "Tempting because the vendor knows the tool. But the city owns its decisions and must set oversight itself."
+        "D": "Tempting because two reviewers seem stronger than one. But it doubles the volume that breeds rubber-stamping, both may defer to the AI, and review is still not matched to impact."
       },
       "tips": [
-        "Eliminate: B removes review after a short run of good outputs, and D hands an oversight decision to the vendor.",
+        "Eliminate: B removes review after a short run of good outputs, and D doubles an approval volume that already breeds rubber-stamping.",
         "Final two: C beats A because recorded reasons leave the volume that breeds rubber-stamping; oversight matched to impact gives officers time for the notices that can harm families.",
         "Exam cue: oversight is proportionate. Human-in-the-loop for high-impact decisions; lighter oversight where errors cost little."
       ],
@@ -10286,7 +10286,7 @@
         "Automation bias",
         "Proportionate oversight"
       ],
-      "_provenance": "Authored from concept: notes 2D.1 Human Oversight and Automation Bias (oversight is matched to impact; approving every output breeds rubber-stamping, shown by approvals taking seconds). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2D.1 Human Oversight and Automation Bias (oversight is matched to impact; approving every output breeds rubber-stamping, shown by approvals taking seconds). Release audit, 18 Nov 2026: distractor D recast from the vendor deciding to a second approver, which automation bias defeats. Release audit final fix, 18 Nov 2026: neutral pre_read. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
       "style_version": 2
     },
     {
@@ -10370,12 +10370,12 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Indian IT-services firm's generative helpdesk assistant, which answers any typed question, passes monthly checks on 200 fixed IT questions; its logs hold every staff conversation. What should the IS auditor recommend as BEST?",
+      "question": "An Indian IT-services firm's generative helpdesk assistant, built for IT help but answering any question, passes a fixed 200-question IT test monthly; logs hold every staff conversation. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Track staff ratings on each logged conversation",
-        "B": "Check sampled conversations' answers against the IT knowledge base",
+        "B": "Check sampled logged IT answers against the IT knowledge base",
         "C": "Track the assistant's uptime and response times monthly",
-        "D": "Sample staff conversations to find uses the checks miss"
+        "D": "Sample logged conversations to see what staff use it for"
       },
       "correct": "D",
       "key_concept": "People use generative assistants for tasks no one planned; monitoring must look at real use, not only a fixed test set.",
@@ -10383,7 +10383,7 @@
       "correct_explanation": "The monthly checks test only the 200 IT questions someone planned. Because the assistant answers any typed question, staff can take it into HR, legal or security matters no check covers. Sampling real conversations finds the uses the checks miss, so those new uses and their risks can be assessed. Checking sampled answers against the IT knowledge base tests real answers, but only on the IT use already foreseen.",
       "wrong_explanations": {
         "A": "Tempting because users notice errors. But staff often cannot tell a confident wrong answer, and ratings show nothing about off-topic use.",
-        "B": "Tempting because it checks real answers. But an IT knowledge base judges only IT answers; any other use staff make of the assistant is never looked for.",
+        "B": "Tempting because it checks real answers. But it judges only IT answers; any other use staff make of the assistant is never looked for.",
         "C": "Tempting because availability is routine IT monitoring. But uptime and speed say nothing about whether answers are right or what staff use the assistant for."
       },
       "tips": [
@@ -10397,7 +10397,7 @@
         "Intended use",
         "Generative AI"
       ],
-      "_provenance": "Authored from concept: notes 2D.2 Monitoring Drift, Performance and Impacts (people use generative assistants for unplanned tasks, so monitoring samples real use as well as fixed tests). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2D.2 Monitoring Drift, Performance and Impacts (people use generative assistants for unplanned tasks, so monitoring samples real use as well as fixed tests). Release audit, 18 Nov 2026: key D no longer names the gap outright. Release audit fix, 18 Nov 2026: the stem says the assistant was built for IT help, and B samples IT answers only, so the two no longer tie. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
       "style_version": 2
     },
     {
@@ -10661,7 +10661,7 @@
     {
       "id": "aaia_d2_290",
       "domain": 2,
-      "subtopic": "2E AI testing. One wording per test question",
+      "subtopic": "2E AI testing. A fees assistant's robustness tests",
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",

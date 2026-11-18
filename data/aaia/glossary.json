@@ -598,7 +598,7 @@
     "term": "EU AI Act",
     "acronym": null,
     "def": "The European Union's risk-based AI regulation, Regulation (EU) 2024/1689, which adds duties for high-risk uses and prohibits some practices.",
-    "scopeNotes": "Context only in this course. Which laws apply to a use is confirmed with legal counsel.",
+    "scopeNotes": "Context only in this course. Its duties phase in over several years and their timing can change, so which laws apply to a use, and from when, is confirmed with legal counsel.",
     "domain": 1,
     "category": "Concept"
   },
@@ -768,7 +768,7 @@
     "id": 86,
     "term": "Generalization",
     "acronym": null,
-    "def": "A model's ability to perform well on new data that differs from its training examples.",
+    "def": "A model's ability to perform well on new, unseen data from the same conditions as its training data; outside those conditions it extrapolates.",
     "scopeNotes": "",
     "domain": 1,
     "category": "Concept"
@@ -895,7 +895,7 @@
     "term": "Incident closure",
     "acronym": null,
     "def": "Formally ending an AI incident once normal, safe service is confirmed. Root cause work continues under a problem record.",
-    "scopeNotes": "An incident with suspected manipulation, such as poisoning or injection, stays open while it is investigated.",
+    "scopeNotes": "An incident with suspected manipulation, such as poisoning or injection, stays open until the cause is found and removed, not only while it is investigated.",
     "domain": 2,
     "category": "Process"
   },
@@ -1201,7 +1201,7 @@
     "term": "Model owner",
     "acronym": null,
     "def": "The named business leader accountable for a model's use, results and accepted risks.",
-    "scopeNotes": "Sets use-level criteria and accepts residual risk within tolerance. Never the IS auditor.",
+    "scopeNotes": "Sets use-level criteria and accepts residual risk within tolerance. Never the IS auditor. Questions and notes also call this role the business owner of the AI use.",
     "domain": 1,
     "category": "Control"
   },
@@ -1542,8 +1542,8 @@
     "id": 172,
     "term": "Reperformance",
     "acronym": null,
-    "def": "The IS auditor independently repeating a control, calculation or decision to see whether the same result occurs.",
-    "scopeNotes": "",
+    "def": "The IS auditor independently repeating a control, calculation, decision or judgment to compare the result with the original.",
+    "scopeNotes": "Rerunning the model version that made a decision, on its logged inputs, shows whether the decision was produced as logged; today's retrained model cannot show this. Whether the result was right needs the auditor to apply the criteria or check source records, since a model repeating an answer does not make it right.",
     "domain": 3,
     "category": "Process"
   },
@@ -1560,8 +1560,8 @@
     "id": 174,
     "term": "Reproducibility",
     "acronym": null,
-    "def": "The ability to rerun an analysis under the same conditions and get the same result.",
-    "scopeNotes": "",
+    "def": "The ability to rerun an analysis under recorded conditions and get the same result, or explain any difference.",
+    "scopeNotes": "For hosted generative AI, recorded version, settings, prompts and data make a rerun possible and any difference explainable; identical results are not guaranteed.",
     "domain": 3,
     "category": "Concept"
   },
@@ -1677,7 +1677,7 @@
     "id": 187,
     "term": "Risk tolerance",
     "acronym": null,
-    "def": "A measurable limit on how much of a type of risk the organization will accept, such as the highest error rate allowed for decisions about customers, set by senior management within the board's appetite.",
+    "def": "A measurable limit on how much of a risk the organization will accept, often for one AI use, such as its highest wrongful-denial rate, set by senior management within the board's appetite.",
     "scopeNotes": "Model owners then set use-level acceptance criteria that fit inside it. The IS auditor checks that the criteria stay within tolerance and that key risk indicators trace to it, and never sets either.",
     "domain": 1,
     "category": "Concept"
@@ -1813,7 +1813,7 @@
     "term": "Standard change",
     "acronym": null,
     "def": "A pre-approved, low-risk change whose outcome is known in advance, so it can skip individual approval.",
-    "scopeNotes": "Edits to system prompts, thresholds or models rarely qualify, because small changes can shift every output.",
+    "scopeNotes": "Edits to system prompts, thresholds or models rarely qualify, because small changes can shift every output. A recurring change, such as routine retraining, can be pre-approved only if every run must pass preset tests approved independently of the builders, with rollback ready.",
     "domain": 2,
     "category": "Process"
   },
