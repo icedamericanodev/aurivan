@@ -4,33 +4,42 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
-## Phone [2.2] · 2026-11-09
+## Phone [2.1] · 2026-11-18
 
-### Improved
-- Collect your milestones with refreshed badges and shorter names.
-- Focus on your review with clearer study progress and fewer distractions.
-- Find feature guidance behind information buttons for calmer screens.
-
-## Phone [2.1] · Integrated development preview
+The first update after the 2.0.0 launch (closed testing). Play version name exactly "2.1"; saved files record it as 2.1.0.
 
 ### New
-- Add an optional local nickname during setup.
+- Add an optional nickname during setup for a personal greeting.
+- Try the recovery Concept Lab in Learn.
 
 ### Improved
 - Compare every option beside its explanation.
 - Find support and feedback options together.
+- Save an Android backup in a folder you choose, or share it.
+- Collect your milestones with refreshed badges and shorter names.
+- Focus on your review with clearer study progress and fewer distractions.
+- Find feature guidance behind information buttons for calmer screens.
 
 ### Fixed
-- Keep screen-reader focus on newly opened hints without relying on stale view identifiers.
+- Question text stays readable when you open Coach me.
+- Resetting CISA progress returns to setup after the reset is saved.
+- Screen-reader focus follows newly opened hints more reliably.
+- The letter f now has a familiar, easier-to-read shape.
 
 ### Fixed after learner reports
 - Learners could only find backup sharing options; Android now also offers a device-folder picker with verified saves and clear cancellation.
 - Learners expected setup after resetting CISA; confirmed resets now save the fresh start and return to setup while preserving other exams.
 - Learners had trouble finding nickname setup; an optional local nickname is now offered during setup.
 - Learners reported missing options in explanations; each option now stays beside its explanation.
-- Learners reported unreadable questions after Coach me; question text now uses one readable layer.
+- Learners reported unreadable question text after Coach me; the question now uses one readable text layer.
+- A learner noticed the letter f looked unusual; it now has a familiar shape.
+- A learner saw Android's navigation buttons covering the buttons at the bottom of a screen; bottom buttons now sit above the navigation bar.
+- A learner found a password policy question unclear; it now states that management requires the controls.
 
-These fixes are in development review. Isolated Android reset, restart, and local backup save/restore checks passed. Coach me was readable in the checked native high-contrast light and 200% dark views; Samsung-specific and screen-reader acceptance remain pending.
+## Web [v13.0.1] · 2026-11-18
+
+### Fixed
+- A password policy question now states clearly that management requires the controls.
 
 ## [v13] Welcome to the new KaiSip
 

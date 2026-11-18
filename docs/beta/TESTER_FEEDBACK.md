@@ -34,15 +34,19 @@ cause in the app, and slots it into the plan below.
 | FB-005 | 2026-11-09 | Owner emulator review | Phone · Save backup | UX | Medium | Android backup export | Implemented; isolated native save/restore passed | 2.1 |
 | FB-004 | 2026-11-09 | Owner emulator review | Phone · Reset CISA progress | Bug/UX | High | Confirmed full CISA reset | Implemented; isolated native reset/restart passed | 2.1 |
 | FB-003 | 2026-11-06 | Beta reply email | Phone · Nickname setup | UX | Medium | New learners | Implemented, native keyboard/a11y checks pending | 2.1 |
-| FB-006 | 2026-11-12 | Closed-testing message (no report code) | Phone · every screen with serif text (questions, options, headings) | UX (typography) | Low | Whole app | Implemented in a pull request; waiting for the owner's decision on the typeface change | 2.1 (owner decision needed) |
-| FB-007 | 2026-11-13 | R-ZJ67 | Phone · Mock review (question d5_205) | Content | Medium | One question | Reviewed: key D stays, question needs one missing fact | Next update |
+| FB-006 | 2026-11-12 | Closed-testing message (no report code) | Phone · every screen with serif text (questions, options, headings) | UX (typography) | Low | Whole app | Merged (#247); native phone check pending | 2.1 |
+| FB-007 | 2026-11-13 | R-ZJ67 | Phone · Mock review (question d5_205) | Content | Medium | One question | Implemented for 2.1: question states management's requirement; key D and option order unchanged | 2.1 |
+| FB-008 | 2026-11-15 | R-QHER | Phone · bottom buttons (reported on the plant picker, 2.0.0, Pixel, Android 16, three-button navigation) | Bug/UX | Medium | Every screen with a sticky bottom button | Implemented for 2.1: the shared bottom bar now reserves the navigation-bar space; native phone check pending | 2.1 |
 
-## Next update plan (phone app, proposed 2.1.0)
+## Next update plan (phone app 2.1, closed testing, build of 18 Nov 2026)
+
+Everything below is in the 2.1 build. Version name on Play: exactly "2.1".
 
 | # | Change | From | Size |
 |---|---|---|---|
 | 1 | Show all four options with their wording on the answer screen, each with its ✓/✗ and its own "why" line, so the explanation and tips can be read against the actual text | FB-001 | Medium (app only, no content change) |
-| 2 | Question d5_205: say in the question that management rates weak passwords as a high risk, so the marked answer (move the rules into a mandatory standard) no longer rests on an unstated fact. Key stays D | FB-007 | Small (one question, plus a web What's New entry) |
+| 2 | Question d5_205: say in the question that management requires these controls after a risk assessment, so the marked answer (move the rules into a mandatory standard) no longer rests on an unstated fact. A high risk rating alone would not make a control mandatory. Key stays D | FB-007 | Small (one question, plus a web What's New entry) |
+| 3 | Sticky bottom buttons own their safe area, so Android's three-button navigation bar can't cover them | FB-008 | Small (one shared component) |
 
 ## Later
 
@@ -212,8 +216,47 @@ rules · **D. Move the requirements into a mandatory standard under the policy
   the new wording; web version bump and What's New entry, as for any content
   change.
 
-**Reply to the tester when shipped:** "Thanks for report R-ZJ67. You were
-right that the question did not say how management rates the risk; it now
-does. The answer stays the same: training would leave an advisory rule just as
-optional, so moving the rule into a mandatory standard is still the best
-recommendation."
+**Correction (18 Nov 2026):** the agreed wording above derived "mandatory"
+from a high risk rating. A high rating alone does not make a particular control
+mandatory; management's decision does. The shipped question therefore says:
+"Management requires consistent password length and lockout controls following
+a risk assessment, but several teams depart from the guideline containing them.
+Which recommendation is BEST for the IS auditor?" The explanation, key idea and
+Exam cue say the same, and note that discipline does not follow automatically.
+Options, order and key (D) are unchanged. Source references were kept as they
+were (not re-certified). Gates run: domain 5 regenerated, exam-style lint (0
+errors), repo check, mobile check.
+
+CRISC mirror crisc_d1_074: already states that the risk exceeds appetite; key D
+holds. A precision tweak (say the risk owner selected encryption) is optional
+and CRISC is not switched on in the app, so it is not part of 2.1.
+
+**Tester reply:** already sent before this fix; do not resend. When 2.1 is
+live, the app shows "Updated after your report" on its own.
+
+### FB-008 · Android navigation buttons cover the bottom buttons
+
+**Tester said (15 Nov 2026, Ref R-QHER):** a screenshot from a Pixel on
+Android 16, KaiSip 2.0.0, light theme, text 100%, with three-button
+navigation. The system Back/Home/Recents bar covered Cancel and most of "Use
+this plant" on the plant picker.
+
+**Cause:** the shared sticky bottom bar is positioned absolutely at the very
+bottom of the screen, so it ignored the screen's safe-area padding. On phones
+with three-button navigation that padding is the navigation bar's height.
+
+**Reach today:** the plant picker was retired in 2.1 (its links go to You), but
+the same bottom bar is used by practice and mock questions, the mock question
+map, mock start, onboarding, the fit check, lessons, drills, saved and
+mistakes.
+
+**Fix (2.1):** the bar's button area now reserves the bottom and side insets
+itself (react-native-safe-area-context SafeAreaView, edges bottom/left/right),
+inside the measured footer, so scroll padding still clears the whole bar.
+Component test: `mobile/src/__tests__/sticky-footer-safe-area.test.tsx`.
+
+**Still to check on a real phone:** three-button and gesture navigation on
+practice, mock, onboarding and fit; no extra gap above the buttons with gesture
+navigation; 200% text.
+
+**Tester reply:** already sent; do not resend.

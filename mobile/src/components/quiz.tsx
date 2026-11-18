@@ -33,6 +33,7 @@
 import { useEffect, useRef, useState, type ReactNode, type Ref, type RefObject } from 'react';
 import { Platform, Pressable, useWindowDimensions, View, type LayoutChangeEvent } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay } from 'react-native-reanimated';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { LETTERS, type Letter, type PackQuestion } from '../content/types';
 import { renderText, type Permutation } from '../engine/shuffle';
@@ -1075,7 +1076,11 @@ export function StickyFooter({ children, onHeight, rule }: { children: ReactNode
           <Rect x="0" y="0" width="100%" height="22" fill="url(#footerFade)" />
         </Svg>
       )}
-      <View
+      {/* Absolute positioning bypasses the screen's safe-area padding. The action surface
+          owns its bottom/side insets, including Android's three-button navigation bar.
+          Keep it inside the measured footer so scroll clearance includes those insets. */}
+      <SafeAreaView
+        edges={['bottom', 'left', 'right']}
         testID={rule ? 'footer-rule' : undefined}
         style={[
           { backgroundColor: c.bg, paddingHorizontal: space.gutter, paddingBottom: space.md, gap: space.md },
@@ -1083,7 +1088,7 @@ export function StickyFooter({ children, onHeight, rule }: { children: ReactNode
         ]}
       >
         {children}
-      </View>
+      </SafeAreaView>
     </View>
   );
 }

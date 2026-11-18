@@ -20,7 +20,7 @@ import { Linking, Platform, Share } from 'react-native';
 import { getCertification } from '../content/certifications';
 import { LETTERS, type Letter, type PackQuestion } from '../content/types';
 import { displayToOriginal, type Permutation } from '../engine/shuffle';
-import { mailtoUrl, newRef, type AppInfo, type Email, type ReportTarget } from '../engine/support';
+import { fullVersion, mailtoUrl, newRef, type AppInfo, type Email, type ReportTarget } from '../engine/support';
 import { config } from './config';
 
 /** "iOS 26", "Android 16" or "Web": the OS and its major version only. */
@@ -36,7 +36,7 @@ export function osLabel(os: string = Platform.OS, version: string | number = Pla
 
 /** The app version and OS for the email ("1.7.0", "iOS 26"). */
 export function appInfo(): AppInfo {
-  return { version: Constants.expoConfig?.version || 'unknown', os: osLabel() };
+  return { version: fullVersion(Constants.expoConfig?.version) ?? 'unknown', os: osLabel() };
 }
 
 /** The certification's short name ("CISA") for subjects and the details block. */

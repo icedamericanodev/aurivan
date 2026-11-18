@@ -28,6 +28,7 @@
  *   "boardBlocked": true   Maya has blocked one learner
  */
 import Constants from 'expo-constants';
+import { fullVersion } from '../../engine/support';
 import { getAllQuestions } from '../../content/loader';
 import { ALL_PROVIDERS, TERMS_VERSION, type Provider } from '../../engine/account';
 import { dayKey } from '../../engine/streak';
@@ -204,7 +205,7 @@ export function shotsSeed(now = Date.now()): MemoryOptions {
   const state = readShotsState();
   const day = 86_400_000;
   return {
-    appVersion: Constants.expoConfig?.version ?? '1.0.0',
+    appVersion: fullVersion(Constants.expoConfig?.version) ?? '1.0.0',
     fixedCode: DEMO_CODE,
     offline: state.offline === true,
     ...(state.syncFails === 'server' ? { failSync: 'server' as const } : {}),

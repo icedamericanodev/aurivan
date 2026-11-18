@@ -6496,6 +6496,7 @@ exports.fitReport = fitReport;
 exports.addReport = addReport;
 exports.lastReportFor = lastReportFor;
 exports.parseVersion = parseVersion;
+exports.fullVersion = fullVersion;
 exports.versionBefore = versionBefore;
 exports.fixMatches = fixMatches;
 exports.fixFor = fixFor;
@@ -6795,6 +6796,11 @@ exports.FIX_KINDS = ['corrected', 'clarified', 'removed'];
 function parseVersion(v) {
     const m = /^(\d{1,4})\.(\d{1,4})\.(\d{1,4})$/.exec(v !== null && v !== void 0 ? v : '');
     return m ? [Number(m[1]), Number(m[2]), Number(m[3])] : null;
+}
+function fullVersion(v) {
+    var _a, _b;
+    const m = /^(\d{1,4})(?:\.(\d{1,4}))?(?:\.(\d{1,4}))?$/.exec((v !== null && v !== void 0 ? v : '').trim());
+    return m ? `${Number(m[1])}.${Number((_a = m[2]) !== null && _a !== void 0 ? _a : 0)}.${Number((_b = m[3]) !== null && _b !== void 0 ? _b : 0)}` : undefined;
 }
 function versionBefore(a, b) {
     for (let i = 0; i < 3; i++)
@@ -10502,7 +10508,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "c1438b4f49e5f77a";
+  api.sourceHash = "d3be56ad31a3a9ac";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

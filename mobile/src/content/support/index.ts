@@ -59,21 +59,31 @@ export function whatsNewFor(updatesOn: boolean, list: readonly WhatsNewEntry[] =
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
-    version: '2.2.0',
-    date: '2026-11-09',
+    // The first update after the launch. Testers only ever had 2.0.0, so the
+    // 2.1.0 and 2.2.0 development entries are one release here. The Play
+    // version name is exactly "2.1" (owner rule, 9 Nov 2026).
+    version: '2.1',
+    date: '2026-11-18',
+    new: [
+      'Add an optional nickname during setup for a personal greeting. It stays on your phone, and you can change it in Settings.',
+      'Try the recovery Concept Lab in Learn: move the dials and see how recovery time and data loss targets work.',
+    ],
     improved: [
+      'Compare all options and their explanations after checking an answer or finishing a mock.',
+      'Find support and feedback options together.',
+      'Save an Android backup in a folder you choose, or share it through another app.',
       'Collect your milestones with refreshed badges and shorter names.',
       'Focus on your review with clearer study progress and fewer distractions.',
       'Find feature guidance behind information buttons for calmer screens.',
     ],
-    fixed: ['The letter f in questions and headings now has a familiar, easier-to-read shape.'],
-  },
-  {
-    version: '2.1.0',
-    improved: ['Compare all options and their explanations after checking an answer or finishing a mock.', 'Find support and feedback options together.', 'Save an Android backup in a folder you choose, or share it through another app.'],
-    fixed: ['Question text stays readable when you open Coach me.', 'Resetting CISA progress returns to setup after the reset is saved.', 'Screen-reader focus follows newly opened hints more reliably.'],
-    date: '2026-11-09',
-    new: ['Add an optional nickname during setup for a personal greeting. It stays on your phone, and you can change it in Settings.'],
+    fixed: [
+      'Question text stays readable when you open Coach me.',
+      'Resetting CISA progress returns to setup after the reset is saved.',
+      'Screen-reader focus follows newly opened hints more reliably.',
+      'The letter f in questions and headings now has a familiar, easier-to-read shape.',
+      'Buttons at the bottom of the screen now stay clear of the Android navigation bar.',
+      'A password policy question now states clearly that management requires the controls.',
+    ],
   },
   {
     version: '2.0.0',
