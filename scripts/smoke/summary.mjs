@@ -32,7 +32,9 @@ const [out, secs] = args;
 if (!out) { console.error('usage: node summary.mjs <out_dir> [seconds]'); process.exit(2); }
 const read = (f) => { try { return JSON.parse(fs.readFileSync(path.join(out, f), 'utf8')); } catch { return null; } };
 const meta = read('run-meta.json') || {};
-const suites = ['web', 'mobile', 'gates'].map((s) => read(`${s}-results.json`)).filter(Boolean);
+// mobile-results.json is the phone size; mobile-<W>x<H>-results.json any other viewport (SMOKE_MOBILE_VIEWPORTS).
+const extra = fs.existsSync(out) ? fs.readdirSync(out).filter((f) => /^mobile-\d+x\d+-results\.json$/.test(f)).map((f) => f.replace(/-results\.json$/, '')) : [];
+const suites = ['web', 'mobile', ...extra, 'gates'].map((s) => read(`${s}-results.json`)).filter(Boolean);
 const rows = suites.flatMap((s) => s.paths.map((p) => ({ ...p, suite: s.suite })));
 const lines = [];
 const anyFail = rows.some((r) => r.status === 'FAIL');
