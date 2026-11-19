@@ -303,6 +303,15 @@ answer given (not legal advice):
 - A licence would buy permission to use The IIA's content and marks and a
   listing as a licensed provider (US$500 a year for members, US$1,000 otherwise).
 
+**What others do (checked 19 Nov 2026).** The IIA's public list of licensed
+training providers has 13 names, among them Becker, Gleim and HOCK. Several
+small CIA prep apps are on sale in the App Store (found by web search; Google
+Play was not confirmed) and none of their developers is on that list; some
+have been listed for years. That shows tolerance, not permission. Several of
+them put "IIA-CIA" in the app name and promise a pass, which KaiSip's rules
+forbid. At least one still shows a 2019 part name, so being right for the 2025
+syllabus is a selling point.
+
 **Standing decision until the owner says otherwise:** build in the private
 repository; publish, sell and show nothing. **Before any pack goes on sale**
 the owner settles this, by asking licensing@theiia.org (expect "yes, you need
