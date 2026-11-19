@@ -373,12 +373,19 @@ def add_fraud_section(root):
     rebuild(root)
 
 
-def older_term(root):
-    """A glossary entry that IS an old term, marked as one, built into the packs."""
-    edit(root, "shared/glossary.json", lambda d: d.append(
-        {"id": 2, "term": "internal audit activity", "acronym": "", "def": "The name the 2017 Standards used.",
-         "scopeNotes": "", "category": "Older term", "packs": {"cia1": 1}}))
-    rebuild(root)
+def old_term_entry(category):
+    """A glossary entry that IS an old term, built into the packs: allowed only when its
+    category marks it as an "Older term"."""
+    def fault(root):
+        edit(root, "shared/glossary.json", lambda d: d.append(
+            {"id": 2, "term": "internal audit activity", "acronym": "", "def": "The name the 2017 Standards used.",
+             "scopeNotes": "", "category": category, "packs": {"cia1": 1}}))
+        rebuild(root)
+    return fault
+
+
+def isaca_note(rel):
+    return lambda r: c.write_json(r / rel, {"note": "An IS auditor would look in ITAF."})
 
 
 def empty_course(root):
@@ -482,6 +489,13 @@ CASES = [
     ("'2000-series'", STALE, pre_read("Managing the function is 2000-series material."), "'2000 series' is 2019 wording"),
     ("the old name 'Core Principles' with its capitals", STALE, pre_read("Recall the Core Principles."),
      "'Core Principles' is 2019 wording"),
+    # The next three are the faults that the three allowances in PASSES let through, without the allowance.
+    ("a glossary entry for an old term that is not marked 'Older term'", STALE, old_term_entry("Fixture"),
+     "shared/glossary.json 2 [1].term: 'internal audit activity' is 2019 wording"),
+    ("an old term in a glossary field that is not a skipped key", STALE, gloss0("scopeNotes", "Once the internal audit activity."),
+     "scopeNotes: 'internal audit activity' is 2019 wording"),
+    ("ISACA terms in a Challenge notes file that is not on the allow list", STALE, isaca_note("ciac/notes/other.json"),
+     "ciac/notes/other.json"),
     ("an old term in a retired question (still read)", STALE,
      then(retire(), pre_read("Ask the internal audit activity.", rel="cia2/originals/d1.json")),
      "cia2_d1_001 questions[0].pre_read: 'internal audit activity' is 2019 wording"),
@@ -714,11 +728,11 @@ PASSES = [
     # The 'consulting services' case above proves pre_read is read, so these words were seen and let through.
     ("wording that only looks old (Standard 7.1, Standards 2024, internal audit activities, IPPF, 'performance "
      "standards for staff', 'is auditor independence')", STALE, pre_read(CONTROLS), "0 hit(s)"),
-    ("an 'Older term' glossary entry that names an old term", STALE, older_term, "0 hit(s)"),
+    ("an 'Older term' glossary entry that names an old term", STALE, old_term_entry("Older term"), "0 hit(s)"),
     ("an old term in a skipped key (a glossary entry's `formerly`)", STALE, gloss0("formerly", "internal audit activity"),
      "0 hit(s)"),
     ("ISACA terms in a file on the allow list (the CISA bridge)", STALE,
-     lambda r: c.write_json(r / "ciac" / "notes" / "bridge.json", {"note": "An IS auditor would look in ITAF."}), "0 hit(s)"),
+     isaca_note("ciac/notes/bridge.json"), "0 hit(s)"),
     ("an Eliminate tip with the article 'A' and two wrong letters", CIA_,
      q0(lambda q: q["tips"].__setitem__(0, "Eliminate: C and D. A manager owns the procedure, so neither is the auditor's move."), n=1),
      "check_cia: 0 error(s)"),
@@ -735,6 +749,11 @@ PASSES = [
      "skipped: no git base"),
     ("a fact never opened, without --strict (a warning)", CUR, fact0("status", "search_only"), "1 warning(s)"),
     ("a citation by number and title (the Standard's own words, set aside)", ORIG, explain("See " + LONG_TITLE + "."),
+     "1 citation(s) by number and title set aside · 0 too close"),
+    # Their sentence runs "... insists on keeping the planted widget ...". With the citation set aside the
+    # words on its two sides must not close up into that run.
+    ("a citation in the middle of a sentence (the words around it do not join into a copied run)", ORIG,
+     explain("The inspector insists on (" + LONG_TITLE + ") keeping the planted widget, they said."),
      "1 citation(s) by number and title set aside · 0 too close"),
     ("a decoy '...standards...page.txt' in the reference folder (the glossary still comes from the Standards text)",
      NEW_REF, alt_ref(put("complete_standards_page.txt", "A saved web page about the standards.\n")),
