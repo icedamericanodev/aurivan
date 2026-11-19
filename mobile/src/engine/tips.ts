@@ -30,7 +30,9 @@ export function tipParts(tip: string, index: number): { label: string; body: str
 export function runnerUp(tips: string[], correct: string): string | undefined {
   const finalTwo = tips.find((t) => /^Final two:/.test(t));
   if (!finalTwo) return undefined;
-  const letters = [...finalTwo.matchAll(/\{\{([A-D])\}\}/g)].map((m) => m[1]);
+  const letters = [...new Set([...finalTwo.matchAll(/\{\{([A-D])\}\}/g)].map((m) => m[1]))];
+  // Only a pair explicitly containing the key is evidence of the authored alternative.
+  if (letters.length !== 2 || !letters.includes(correct)) return undefined;
   return letters.find((l) => l !== correct);
 }
 
