@@ -784,6 +784,200 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
   await ctx.close();
 }
 
+// ── M9 Mistake journal: "Your mistake patterns", its actions, tagging, new misses, empty state ──
+// Mobile 2.2 (PR #288). A controlled journal: 8 recent misses, 4 tagged "Missed FIRST or BEST", so
+// "Priority words" leads (engine/mistakeDNA.ts: 5 classified, 3 showing the pattern). Demo answers stay,
+// so Drills is open (the 50-answer unlock) and "Drill it" can show.
+const tipLettersOf = (tips, label) => {
+  const t = (tips || []).find((x) => typeof x === 'string' && x.startsWith(`${label}:`));
+  return t ? [...new Set([...t.matchAll(/\{\{([A-D])\}\}/g)].map((m) => m[1]))] : [];
+};
+/** The pick-aware coach line the answer screen should show for an ORIGINAL-letter pick (engine/pickCoach.ts). */
+function expectedCoach(q, picked, perm) {
+  if (picked === q.correct) return null;
+  const el = tipLettersOf(q.tips, 'Eliminate'); const ft = tipLettersOf(q.tips, 'Final two');
+  if (el.length === 2 && el.includes(picked) && !el.includes(q.correct)) return `Your pick, ${dispOf(picked, perm)}, is one of the two to rule out first.`;
+  if (ft.length === 2 && ft.includes(picked) && ft.includes(q.correct)) return `You reached the final two: ${dispOf(picked, perm)} against ${dispOf(q.correct, perm)}.`;
+  return null;
+}
+async function answerOrig(page, orig) {
+  const cur = await current(page);
+  const disp = dispOf(orig, cur.perm);
+  await page.getByLabel(new RegExp(`^Option ${disp}:`)).first().click();
+  return { id: cur.id, disp, q: cur.q, perm: cur.perm, right: orig === cur.q.correct };
+}
+function journalSeed(mistakes) {
+  const p = JSON.parse(seed['aurivan.progress.v1']);
+  p.state.byCert.cisa.mistakes = mistakes;
+  const out = { ...demo }; out['aurivan.progress.v1'] = JSON.stringify(p);
+  return out;
+}
+{
+  const now = Date.now(); const hour = 3600000;
+  const p0 = JSON.parse(seed['aurivan.progress.v1']);
+  const answered = Object.keys(p0.state.byCert.cisa.answers).filter((id) => bank[id]);
+  const slips = ['priority', 'priority', 'priority', 'priority', 'role', undefined, undefined, undefined];
+  const mistakes = {};
+  answered.slice(0, slips.length).forEach((id, i) => {
+    const q = bank[id];
+    // A pick that is not the Final-two alternative, so the untagged ones stay unclassified (no runner-up).
+    const ru = tipLettersOf(q.tips, 'Final two').find((l) => l !== q.correct);
+    const picked = LETTERS.find((l) => l !== q.correct && l !== ru && q.options[l]);
+    mistakes[id] = { picked, at: now - (i + 1) * 20 * hour, ...(slips[i] ? { slip: slips[i] } : {}) };
+  });
+  const seededIds = Object.keys(mistakes);
+  const { ctx, page } = await phone(journalSeed(mistakes));
+  await rec.run('M9', 'Mistake journal: patterns summary, evidence, principle / drill / practice, tagging, new misses arrive, coach line', page, async (c) => {
+    const back = async () => { await page.goBack({ waitUntil: 'networkidle' }).catch(() => {}); await sleep(1200); };
+    c.step('You → Mistake journal (8 seeded misses, 4 tagged "Missed FIRST or BEST")');
+    await open(page, BASE, '/you', 1500);
+    await page.getByRole('button', { name: /^Mistake journal/ }).first().click(); await sleep(1500);
+    c.check(/\/mistakes/.test(page.url()), `the You row opened ${page.url()}`);
+    let h = (await headings(page)).join(' | ');
+    c.check(/Your mistake patterns/.test(h), `no "Your mistake patterns" heading (headings: ${h.slice(0, 160)})`);
+    c.check(/Priority words/.test(h), `the summary does not name "Priority words" as the leading pattern (headings: ${h.slice(0, 160)})`);
+    const body0 = norm(await bodyText(page));
+    c.check(/Last 28 days/.test(body0), 'the summary has no "Last 28 days" window line');
+    await c.shot('m9-journal');
+
+    c.step('Explore pattern evidence → opens, then Hide → closes');
+    await page.getByRole('button', { name: 'Explore pattern evidence' }).first().click(); await sleep(700);
+    h = (await headings(page)).join(' | ');
+    const bodyE = norm(await bodyText(page));
+    c.check(/Thinking-pattern breakdown/.test(h), 'the evidence did not open (no "Thinking-pattern breakdown")');
+    const cls = bodyE.match(/(\d+) with a pattern · (\d+) without one/);
+    c.check(cls && Number(cls[1]) === 5 && Number(cls[2]) === 3, `evidence counts read "${cls && cls[0]}", expected 5 with a pattern · 3 without one`);
+    c.check(await visible(page.getByRole('button', { name: 'Hide pattern evidence' })), 'no "Hide pattern evidence" button once open');
+    await c.shot('m9-evidence');
+    await page.getByRole('button', { name: 'Hide pattern evidence' }).first().click(); await sleep(600);
+    c.check(!/Thinking-pattern breakdown/.test((await headings(page)).join(' | ')), 'the evidence did not close');
+
+    c.step('Read the principle');
+    const pr = page.getByRole('button', { name: /^Read the principle/ });
+    if (c.check(await visible(pr), 'no "Read the principle" button beside the summary')) {
+      await pr.first().click(); await sleep(1500);
+      c.check(/\/principles\//.test(page.url()), `"Read the principle" opened ${page.url()}`);
+      const nb = await notBlank(page); c.check(nb.ok, `the principle screen is blank (${nb.len} chars)`);
+      await c.shot('m9-principle');
+      await back();
+      c.check(/\/mistakes/.test(page.url()), `Back from the principle went to ${page.url()}`);
+    }
+
+    c.step('Drill it');
+    const drill = page.getByRole('button', { name: /^Drill it:/ });
+    if (c.check(await visible(drill), 'no "Drill it" button (Drills should be open: the demo has 50+ answers)')) {
+      const lbl = norm(await drill.first().innerText());
+      await drill.first().click(); await sleep(1800);
+      c.check(/\/game\/priority/.test(page.url()), `"${lbl}" opened ${page.url()}, expected /game/priority`);
+      const nb = await notBlank(page); c.check(nb.ok, `the drill screen is blank (${nb.len} chars)`);
+      await c.shot('m9-drill');
+      await back();
+      if (!/\/mistakes/.test(page.url())) { c.note(`Back from the drill went to ${page.url()}; reopening the journal`); await open(page, BASE, '/mistakes', 1500); }
+    }
+
+    c.step('Tag a mistake: Tag why you slipped → Didn’t know it');
+    const untagged = seededIds.filter((id) => !mistakes[id].slip);
+    const tagBtn = page.getByRole('button', { name: 'Tag why you slipped' });
+    const nTag = await tagBtn.count();
+    c.check(nTag === untagged.length, `${nTag} "Tag why you slipped" buttons, expected ${untagged.length} (untagged misses)`);
+    if (nTag) {
+      await tagBtn.first().scrollIntoViewIfNeeded().catch(() => {});
+      await tagBtn.first().click(); await sleep(600);
+      const chip = page.getByRole('radio', { name: /^Tag: Didn.t know it/ }).or(page.getByLabel(/^Tag: Didn.t know it/));
+      c.check(await visible(chip), 'the six tag chips did not open');
+      await c.shot('m9-tagging');
+      await chip.first().click(); await sleep(800);
+      const pr2 = await store(page, 'aurivan.progress.v1');
+      const ms = pr2.state.byCert.cisa.mistakes;
+      const tagged = untagged.filter((id) => ms[id] && ms[id].slip === 'knowledge');
+      c.check(tagged.length === 1, `after tagging, ${tagged.length} misses hold the "knowledge" tag in storage, expected 1`);
+      c.check(/Why you slipped: Didn.t know it/.test(norm(await bodyText(page))), 'the card does not say "Why you slipped: Didn’t know it" after tagging');
+    }
+
+    c.step('Practice other questions → a fresh session with no saved misses');
+    await page.evaluate(() => window.scrollTo(0, 0));
+    const before = (await store(page, 'aurivan.progress.v1')).state.byCert.cisa.mistakes;
+    const nBefore = Object.keys(before).length;
+    const fresh = page.getByRole('button', { name: 'Practice other questions' });
+    c.check(await visible(fresh), 'no "Practice other questions" button');
+    await fresh.first().click(); await sleep(1800);
+    c.check(/\/session/.test(page.url()), `"Practice other questions" opened ${page.url()}`);
+    const s0 = await current(page);
+    const qids = s0 ? s0.a.questionIds : [];
+    const old = qids.filter((id) => before[id]);
+    c.check(qids.length > 0 && old.length === 0, `the fresh set has ${qids.length} questions, ${old.length} of them already in the journal (${old.slice(0, 5).join(', ')})`);
+    c.note(`fresh session: ${qids.length} questions`);
+
+    c.step('answer 3 wrong (aiming at the coach lines), the rest right');
+    const misses = []; let coachSeen = { 'rule-out': 0, 'final-two': 0 };
+    for (let i = 0; i < qids.length; i++) {
+      const cur = await current(page);
+      const q = cur.q;
+      let pick = q.correct;
+      if (misses.length < 3) {
+        const el = tipLettersOf(q.tips, 'Eliminate'); const ft = tipLettersOf(q.tips, 'Final two');
+        const ruleOut = el.length === 2 && !el.includes(q.correct) ? el[0] : null;
+        const finalTwo = ft.length === 2 && ft.includes(q.correct) ? ft.find((l) => l !== q.correct) : null;
+        // Alternate: first a rule-out pick, then a final-two pick, then whichever exists.
+        pick = (misses.length === 1 ? finalTwo || ruleOut : ruleOut || finalTwo) || LETTERS.find((l) => l !== q.correct && q.options[l]);
+      }
+      const a = await answerOrig(page, pick);
+      await page.getByText('Check answer', { exact: true }).click(); await sleep(1000);
+      if (!a.right) {
+        misses.push(a.id);
+        const want = expectedCoach(q, pick, cur.perm);
+        const txt = norm(await bodyText(page));
+        if (want) {
+          const kind = /rule out/.test(want) ? 'rule-out' : 'final-two';
+          if (c.check(txt.includes(norm(want)), `${a.id}: picked ${a.disp}, expected the coach line "${want}" on the answer screen`)) coachSeen[kind]++;
+          if (coachSeen[kind] === 1) await c.shot(`m9-coach-${kind}`);
+        } else c.note(`${a.id}: the tips do not name pick ${pick}, so no pick-aware line is expected`);
+      }
+      await page.getByText(/^(Next question|See results)$/).first().click(); await sleep(1300);
+    }
+    c.check(coachSeen['rule-out'] > 0, 'never saw "Your pick, X, is one of the two to rule out first."');
+    c.check(coachSeen['final-two'] > 0, 'never saw "You reached the final two: X against Y."');
+    c.check(/\/results/.test(page.url()), `after the last question the app is on ${page.url()}`);
+    await c.shot('m9-results');
+    const after = (await store(page, 'aurivan.progress.v1')).state.byCert.cisa.mistakes;
+    c.check(misses.every((id) => after[id]) && Object.keys(after).length === nBefore + misses.length,
+      `storage holds ${Object.keys(after).length} misses, expected ${nBefore} + ${misses.length}`);
+
+    c.step('browser Back to the journal that stayed open underneath');
+    for (let i = 0; i < 4 && !/\/mistakes/.test(page.url()); i++) await back();
+    const viaBack = /\/mistakes/.test(page.url());
+    if (!viaBack) { c.note(`Back from results reached ${page.url()}, not the journal; opening it from You`); await open(page, BASE, '/you', 1500); await page.getByRole('button', { name: /^Mistake journal/ }).first().click(); await sleep(1500); }
+    else c.note('returned to the still-mounted journal with browser Back');
+    await page.evaluate(() => window.scrollTo(0, 0));
+    const jb = norm(await bodyText(page));
+    const stems = misses.map((id) => norm(bank[id].stem).slice(0, 50));
+    const shown = stems.filter((s) => jb.includes(s)).length;
+    c.check(shown === misses.length, `${shown} of the ${misses.length} new misses show as cards in the journal`);
+    const openN = jb.match(/(\d+) open/);
+    c.check(openN && Number(openN[1]) === nBefore + misses.length, `the journal says "${openN && openN[0]}", expected ${nBefore + misses.length} open`);
+    await page.getByRole('button', { name: 'Explore pattern evidence' }).first().click(); await sleep(700);
+    const cls2 = norm(await bodyText(page)).match(/(\d+) with a pattern · (\d+) without one/);
+    const tot2 = cls2 ? Number(cls2[1]) + Number(cls2[2]) : -1;
+    c.check(tot2 === nBefore + misses.length, `the pattern evidence counts ${tot2} misses in the window (${cls2 && cls2[0]}), expected ${nBefore + misses.length}: the new misses are left out`);
+    await c.shot('m9-journal-after');
+  });
+  await ctx.close();
+}
+{
+  const { ctx, page } = await phone(journalSeed({}));
+  await rec.run('M9b', 'Mistake journal with no mistakes shows only the empty state', page, async (c) => {
+    await open(page, BASE, '/mistakes', 1800);
+    const h = (await headings(page)).join(' | ');
+    const t = norm(await bodyText(page));
+    c.check(/Nothing open right now/.test(t), 'no "Nothing open right now" empty state');
+    c.check(!/Your mistake patterns/.test(h + t), 'the empty journal still shows "Your mistake patterns"');
+    c.check(!(await visible(page.getByRole('button', { name: /Explore pattern evidence|Read the principle|Drill it|Practice other questions/ }))), 'the empty journal shows pattern actions');
+    c.check(await visible(page.getByRole('button', { name: 'Practice 10 questions' })), 'no "Practice 10 questions" button in the empty state');
+    await c.shot('m9b-empty');
+  });
+  await ctx.close();
+}
+
 await browser.close();
 const fails = rec.paths.filter((p) => p.status === 'FAIL').length;
 console.log(`mobile ${VW}x${VH}: ${rec.paths.length} paths, ${fails} FAIL`);
