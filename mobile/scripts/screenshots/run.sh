@@ -88,6 +88,9 @@ elif [ "${SHOTS:-}" = guides ]; then
   node scripts/screenshots/shoot_guides.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = pace ]; then
   node scripts/screenshots/shoot_pace.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = lab-expansion ]; then
+  node scripts/screenshots/shoot_lab_expansion.mjs "$TMP/seed.json" "$OUT"
+  node scripts/screenshots/shoot_labs.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = qnote ]; then
   # "Your note" on a question: "Add a note" in the answer's ⋯ sheet, the note sheet (typing, and
   # above a keyboard-sized gap), the saved note's plate, Saved → Your notes (shoot_qnote.mjs).

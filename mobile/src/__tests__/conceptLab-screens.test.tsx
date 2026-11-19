@@ -31,7 +31,7 @@ afterEach(() => { act(() => { r?.unmount(); }); r = undefined; });
 
 it('opens the catalog lab and leaves existing progress untouched through exploration and application', () => {
   const before = useProgress.getState();
-  mount(<LabCatalog />); press('Open lab'); expect(router.push).toHaveBeenCalledWith('/labs/cisa-lab-rto-rpo');
+  mount(<LabCatalog />); press('Open Understand RTO vs. RPO'); expect(router.push).toHaveBeenCalledWith('/labs/cisa-lab-rto-rpo');
   act(() => { r!.unmount(); }); mount(<LabDetail />);
   expect(text()).toContain('3:20 PM'); expect(text()).toContain('1:30 PM');
   press('Experiment with recovery'); adjust(121, 15); expect(text()).toContain('RTO missed');
@@ -72,7 +72,7 @@ it('Learn keeps four reference tiles, then lab and final week, followed by lesso
   expect(ids.indexOf('learn-concept-lab')).toBeGreaterThan(ids.indexOf('learn-tile-guide'));
   expect(ids.indexOf('learn-concept-lab')).toBeLessThan(ids.indexOf('learn-tile-week'));
   expect(text()).toContain('Lessons');
-  press('Interactive Concept Lab. Change the variables. See what happens. Featured: Understand RTO versus RPO.'); expect(router.push).toHaveBeenCalledWith('/labs');
+  act(() => { r!.root.findAll(n => n.props.testID === 'learn-concept-lab' && typeof n.props.onPress === 'function')[0].props.onPress(); }); expect(router.push).toHaveBeenCalledWith('/labs');
 });
 it('Learn hides unsupported labs without hiding other reference content', () => { useSettings.setState({ activeCertId: 'cism' }); mount(<Learn />); expect(text()).not.toContain('Interactive Concept Lab'); });
 it('related note preserves primary practice and adds a contextual link', () => { mockParams = { id: '4B1.2' }; mount(<NoteSubtopic />); expect(text()).toContain('Practice this concept'); press('Explore in Concept Lab'); expect(router.push).toHaveBeenCalledWith('/labs/cisa-lab-rto-rpo'); });

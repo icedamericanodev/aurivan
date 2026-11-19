@@ -1,7 +1,8 @@
+import { expansionLabs, type ExpansionLab } from './expansion';
 import { DEFAULT_RECOVERY_CONFIG, type RecoveryConfig } from '../../engine/conceptLab';
 
 /** Small discriminated registry: add another interaction only when a real lab needs it. */
-export interface ConceptLab {
+export interface RecoveryLab {
   id: string;
   certId: string;
   domainId: string;
@@ -28,6 +29,8 @@ export interface ConceptLab {
     correctIndex: number;
   };
 }
+
+export type ConceptLab = RecoveryLab | ExpansionLab;
 
 const labs: readonly ConceptLab[] = [{
   id: 'cisa-lab-rto-rpo',
@@ -76,7 +79,7 @@ const labs: readonly ConceptLab[] = [{
       },
     ],
   },
-}];
+}, ...expansionLabs];
 
 /** Returns only supported labs for the selected certification; no fallback to CISA. */
 export function labsFor(certId: string): ConceptLab[] {

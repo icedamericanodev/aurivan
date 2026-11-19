@@ -22,7 +22,7 @@ for (const theme of ['light', 'dark']) {
   for (const id of ['learn-tile-notes', 'learn-tile-glossary', 'learn-tile-principles', 'learn-tile-guide']) if (await page.getByTestId(id).count() !== 1) throw new Error(`Missing original Learn tile ${id}`);
   await page.getByTestId('learn-concept-lab').scrollIntoViewIfNeeded(); await snap('learn');
   await page.getByTestId('learn-concept-lab').click(); await page.waitForTimeout(900); await snap('catalog');
-  await page.getByRole('button', { name: 'Open lab', exact: true }).click(); await page.waitForTimeout(900); await snap('explore');
+  await page.getByRole('button', { name: 'Open Understand RTO vs. RPO', exact: true }).click(); await page.waitForTimeout(900); await snap('explore');
   await page.getByRole('button', { name: 'Experiment with recovery', exact: true }).click(); await page.waitForTimeout(300);
   await page.getByTestId('lab-experiment').evaluate(el => el.scrollIntoView({ block: 'start' })); await page.waitForTimeout(350); await snap('experiment');
   const current = async max => page.getByTestId(`lab-range-${max}`).evaluate(el => parseFloat(el.firstElementChild.firstElementChild.style.width));

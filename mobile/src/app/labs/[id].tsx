@@ -5,7 +5,8 @@ import { EmptyScreen } from '../../components/emptyScreen';
 import { LabChoice, LabOutcomes, LabRange, LabTimeline } from '../../components/conceptLab';
 import { CardHead, HubCard, PageTitle } from '../../components/groveHub';
 import { Button, PushedHeader, Screen, T } from '../../components/ui';
-import { findLab, type ConceptLab } from '../../content/labs';
+import { ExpansionLabScreen } from '../../components/conceptLabExpansion';
+import { findLab, type RecoveryLab as RecoveryLabContent } from '../../content/labs';
 import { findLesson } from '../../content/lessons';
 import { findQuestion } from '../../content/loader';
 import { findNote } from '../../content/notes';
@@ -22,9 +23,10 @@ export default function LabDetail() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const lab = findLab(certId, typeof id === 'string' ? safeDecode(id) : undefined);
   if (!lab) return <EmptyScreen header="Concept Lab" fallback="/learn" title="Lab not found" body="This lab may not be available for your selected exam." primary={{ label: 'Browse labs', onPress: () => router.replace('/labs') }} />;
+  if (lab.interaction !== 'recovery-timeline') return <ExpansionLabScreen key={`${certId}:${lab.id}`} lab={lab} />;
   return <RecoveryLab key={`${certId}:${lab.id}`} lab={lab} />;
 }
-function RecoveryLab({ lab }: { lab: ConceptLab }) {
+function RecoveryLab({ lab }: { lab: RecoveryLabContent }) {
   const [stage, setStage] = useState(0);
   const scroll = useRef<ScrollView>(null);
   const heading = useRef<View>(null);
