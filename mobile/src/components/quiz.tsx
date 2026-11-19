@@ -1015,7 +1015,7 @@ function RecapChoiceRow({ row, first, showWhy }: { row: RecapChoice; first: bool
           <FieldText v={row.best ? 'best' : 'option'}>{row.text}</FieldText>
         </View>
       </View>
-      {/* Only when the learner asked for every choice's reason: one stop, never a heading. */}
+      {/* Only when the learner asked for every option's reason: one stop, never a heading. */}
       {showWhy && row.why ? (
         <View testID={`recap-why-${row.letter}`} accessible accessibilityLabel={`${whyHead}: ${row.why}`} style={{ marginTop: space.sm, marginLeft: discAbove ? 0 : disc + DISC_GAP }}>
           <T v="caption" color={c.ink2}>{whyHead}</T>
