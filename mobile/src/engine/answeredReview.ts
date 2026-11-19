@@ -106,7 +106,7 @@ export interface OpenSessionLike {
 
 /** True when this question sits in a mock exam that has not been submitted: its key must stay hidden. */
 export function inUnsubmittedMock(session: OpenSessionLike | null | undefined, certId: string, questionId: string): boolean {
-  return Boolean(session && session.mode === 'mock' && !session.finishedAt && session.certId === certId && session.questionIds.includes(questionId));
+  return Boolean(session && session.mode === 'mock' && !session.finishedAt && session.certId === certId && Array.isArray(session.questionIds) && session.questionIds.includes(questionId));
 }
 
 /** Why the page can't open, or `ok` with the saved answer. Checked in this order. */

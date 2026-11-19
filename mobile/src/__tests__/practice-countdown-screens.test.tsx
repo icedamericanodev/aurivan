@@ -45,7 +45,7 @@ jest.mock('../components/brand', () => ({ KaisipLockup: () => null, KaisipMark: 
 // Is the question screen the one in view? (false = another screen was pushed on top of it.)
 let mockInView = true;
 // The Practice route's params (a link with ?build=<domain id>).
-let mockParams: Record<string, string> = {};
+let mockParams: Record<string, string | string[]> = {};
 jest.mock('expo-router', () => ({
   router: { replace: jest.fn(), back: jest.fn(), push: jest.fn(), canGoBack: () => true, canDismiss: () => false, dismissTo: jest.fn() },
   useFocusEffect: jest.fn(),
@@ -277,6 +277,17 @@ describe('Practice: a domain row keeps its one tap and gains "Choose length and 
       expect(root().findAll((n) => n.props.testID === 'build-set')).toHaveLength(0);
       unmount();
     }
+  });
+
+  it('a link that repeats a key (?build=1&build=2, ?section=a&section=b) is ignored and does not loop', () => {
+    // The router gives a NEW array each render for a repeated key; the screen must not re-render forever.
+    const params = { get build() { return ['1', '2']; }, get section() { return ['drills', 'drills']; } };
+    mockParams = params as unknown as Record<string, string | string[]>;
+    expect(() => mount(<Practice />)).not.toThrow();
+    expect(root().findAll((n) => n.props.testID === 'build-set')).toHaveLength(0);
+    expect(useSession.getState().active).toBeNull();
+    unmount();
+    mockParams = {};
   });
 
   it('every domain row has the button, 48pt wide, and the focus row has it too', () => {

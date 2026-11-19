@@ -158,6 +158,8 @@ describe('may the look-back page open?', () => {
 
   it('a question in an UNSUBMITTED mock never opens, answered before or not', () => {
     expect(inUnsubmittedMock(mock, 'cisa', 'd1_001')).toBe(true);
+    // A damaged saved session (no question list) is not a crash, and hides nothing.
+    expect(inUnsubmittedMock({ ...mock, questionIds: undefined as unknown as string[] }, 'cisa', 'd1_001')).toBe(false);
     expect(lookBackGate({ question, certId: 'cisa', answers, session: mock })).toEqual({ kind: 'mock' });
     expect(lookBackGate({ question, certId: 'cisa', answers: {}, session: mock })).toEqual({ kind: 'mock' });
   });

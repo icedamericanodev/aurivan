@@ -122,7 +122,11 @@ export default function Practice() {
   const { cert, readiness, dueCount, daysLeft, stage, progress, examFocused } = useJourney();
   // An old Play link (?section=drills): Drills scrolls into view once, then the param is cleared, so a
   // later tap on the Practice tab opens at the top as usual. Through Practice's OWN navigation (as Learn).
-  const { section, build } = useParams();
+  // A link can repeat a key (`?build=1&build=2`): the router then hands back a NEW array on every
+  // render, and the "seen" checks below would never settle (a render loop). Only a plain string counts.
+  const raw = useParams() as { section?: unknown; build?: unknown };
+  const section = typeof raw.section === 'string' ? raw.section : undefined;
+  const build = typeof raw.build === 'string' ? raw.build : undefined;
   const navigation = useOwnNavigation();
   // Mobile 2.2: "Choose length and timer" on a domain row (or a `?build=<domain id>` link) opens Build a
   // set with that domain chosen. A new object per request, so asking twice for one domain works twice.

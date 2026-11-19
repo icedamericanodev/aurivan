@@ -1356,7 +1356,7 @@ export default function SessionScreen() {
       {countdown && (
         <TimesUpSheet
           visible={countdownStage === 'expired' && !active.finishedAt && inView}
-          answered={countdown.expiredAfter ?? answeredCount}
+          answered={Math.min(countdown.expiredAfter ?? answeredCount, total)}
           total={total}
           onKeepGoing={keepGoingUntimed}
           onFinish={finishAtZero}
