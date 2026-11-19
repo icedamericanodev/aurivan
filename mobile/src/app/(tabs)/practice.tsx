@@ -132,6 +132,9 @@ export default function Practice() {
   // set with that domain chosen. A new object per request, so asking twice for one domain works twice.
   const [buildFor, setBuildFor] = useState<BuildRequest | null>(null);
   const openBuilder = useCallback((domainId: string) => setBuildFor({ domainId }), []);
+  // Closing Build a set ends the request. Without this the old domain stayed "asked for", so opening
+  // the panel again from the plain "Build a set" row chose that domain again.
+  const clearBuild = useCallback(() => setBuildFor(null), []);
   const [buildSeen, setBuildSeen] = useState<string | undefined>(undefined);
   if (buildSeen !== build) {
     setBuildSeen(build);
@@ -368,7 +371,7 @@ export default function Practice() {
       </Enter>
 
       <Enter i={4} style={{ marginTop: space.lg }}>
-        <ReviewSaved cert={cert} timed={timed} buildFor={buildFor} weakLine={weakDrillLine(weakDrillRanked(readiness.domains), (id) => cert.domains.find((d) => d.id === id)?.short ?? `Domain ${id}`, readiness.domains.some((d) => d.answered > 0))} />
+        <ReviewSaved cert={cert} timed={timed} buildFor={buildFor} onBuildClosed={clearBuild} weakLine={weakDrillLine(weakDrillRanked(readiness.domains), (id) => cert.domains.find((d) => d.id === id)?.short ?? `Domain ${id}`, readiness.domains.some((d) => d.answered > 0))} />
       </Enter>
 
       {/* The brain games (mobile 1.51: the Play tab moved here). Its own outer view sits right in the page, so
@@ -879,7 +882,7 @@ export function reviewLines(missed: number, saved: number): { missed: string; sa
  * bank and Build a set (which opens its choices in place). The missed and saved lines follow the
  * learner's own counts, as on the website; each row's spoken label is its title and that same line.
  */
-const ReviewSaved = memo(function ReviewSaved({ cert, timed, weakLine, buildFor }: { cert: Certification; timed: boolean; weakLine: string; /** Mobile 2.2: open Build a set with this domain chosen. */ buildFor: BuildRequest | null }) {
+const ReviewSaved = memo(function ReviewSaved({ cert, timed, weakLine, buildFor, onBuildClosed }: { cert: Certification; timed: boolean; weakLine: string; /** Mobile 2.2: open Build a set with this domain chosen. */ buildFor: BuildRequest | null; /** The learner closed Build a set: the request above is over. */ onBuildClosed: () => void }) {
   const { c } = useTheme();
   const [setOpen, setSetOpen] = useState(false);
   // Mobile 2.2: a domain row asked for Build a set. Open it (React's "adjust state when a value changes"
@@ -943,7 +946,12 @@ const ReviewSaved = memo(function ReviewSaved({ cert, timed, weakLine, buildFor 
         icon={<SlidersHorizontal size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
         title="Build a set"
         expanded={setOpen}
-        onPress={() => setSetOpen((o) => !o)}
+        onPress={() => {
+          // Closing the panel forgets the domain a row (or a link) asked for, so the next plain
+          // opening starts from "All domains" again.
+          if (setOpen) onBuildClosed();
+          setSetOpen((o) => !o);
+        }}
         accessibilityHint="Shows the choices for a one-off set. Your path doesn't change."
         last
         ref={buildRow}

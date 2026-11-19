@@ -482,6 +482,11 @@ export default function SessionScreen() {
   const hasCountdown = timerKindOf(active) === 'countdown';
   const countdown = useMemo(() => (hasCountdown ? readCountdown(active?.countdown) : null), [hasCountdown, active?.countdown]);
   const countdownStage = countdown ? stageOf(countdown) : null;
+  // Mobile 2.2: two of the three things that can cover an unanswered question (see `overlayOpen`
+  // below). `moreOpen`: the ⋯ "More on this question" sheet (AnswerMore tells us). `endAsks`: how many
+  // "End session?" alerts are showing (a count, not yes/no, so a double tap on X cannot leave it wrong).
+  const [moreOpen, setMoreOpen] = useState(false);
+  const [endAsks, setEndAsks] = useState(0);
   // Mock exams: did this visit end with a tap on an option? If not, its time
   // is kept in the session store when the learner moves on (effect below).
   const pickedThisVisit = useRef(false);
@@ -506,6 +511,9 @@ export default function SessionScreen() {
     setVisitBase(isMock ? (response?.ms ?? 0) + (active?.visitMs?.[qid ?? ''] ?? 0) : undefined);
     setConfidence(undefined);
     setVineVisible(false);
+    // A new question is on screen, so no "End session?" alert can still be up. (A safety net: if the
+    // phone ever failed to show the alert, the countdown is held for one question at most.)
+    setEndAsks(0);
   }
   // At the swap (PageTurn calls this before the new page is painted): back to
   // the top, so the jump is never seen, and tell screen readers where they are
@@ -592,6 +600,12 @@ export default function SessionScreen() {
     [reportCert, q, perm, reportPlace, pickedShown],
   );
   const report = useReportFlow(reportCert, reportTarget, { onClosed: () => moveFocus(moreRef, MORE_FOCUS_BACK_MS) });
+  // Mobile 2.2: is something covering the question? The ⋯ sheet, the Report a problem form, or the
+  // "End session?" alert. The practice countdown counts answering time only, so it stands still under
+  // any of them, and the time's-up sheet never opens on top of one (a half-typed report is never lost
+  // to "Finish now"). The note editor is not here: it only opens after the answer is checked, when the
+  // countdown is standing still anyway. Coach me is part of the page, not a cover: the clock runs.
+  const overlayOpen = moreOpen || report.isOpen || endAsks > 0;
   // Has the learner a note on this question? The ⋯ row then says "Edit your note".
   const hasQNote = useHasQuestionNote(reportCert, qid);
 
@@ -736,11 +750,16 @@ export default function SessionScreen() {
       ]);
     } else {
       const answered = Object.keys(active.responses).length;
+      // Mobile 2.2: while this alert is up, the practice countdown stands still (`overlayOpen`). Every
+      // way out of the alert takes the count back down: both buttons, and Android's own dismiss.
+      const alertGone = () => setEndAsks((n) => Math.max(0, n - 1));
+      setEndAsks((n) => n + 1);
       Alert.alert('End session?', answered ? 'See your results for the questions you answered.' : 'You have not answered any questions yet.', [
-        { text: 'Keep going', style: 'cancel' },
+        { text: 'Keep going', style: 'cancel', onPress: alertGone },
         {
           text: 'End',
           onPress: () => {
+            alertGone();
             if (answered) {
               finishSession({ celebrate: !active.firstSet });
             } else {
@@ -749,7 +768,7 @@ export default function SessionScreen() {
             }
           },
         },
-      ]);
+      ], { onDismiss: alertGone });
     }
   };
 
@@ -1026,19 +1045,20 @@ export default function SessionScreen() {
         {/* Mobile 1.49: ⋯ "More on this question" beside the bookmark. Never in a mock. */}
         {!isMock && (
           <View style={{ marginRight: -12 }}>
-            <AnswerMore rows={moreRows} buttonRef={moreRef} />
+            <AnswerMore rows={moreRows} buttonRef={moreRef} onOpenChange={setMoreOpen} />
           </View>
         )}
       </Row>
       {strip && <PaceStrip {...strip} />}
       {timedPractice && !countdown && qid && <PracticeClock key={qid} readClock={readClock} answering={!submitted} answeredMs={practiceAnsweredMs} />}
       {/* Mobile 2.2: a set with a countdown. It runs only while a question waits for its answer on this
-          screen; after "Keep going untimed" the strip says "Untimed" and nothing ticks. */}
+          screen with nothing covering it (`overlayOpen`: the ⋯ sheet, the report form, "End session?");
+          after "Keep going untimed" the strip says "Untimed" and nothing ticks. */}
       {countdown &&
         (countdownStage === 'untimed' || countdownStage === 'finished' ? (
           <PaceStrip clock="untimed" />
         ) : (
-          <CountdownClock key={active.id} leftMs={remainingMs(countdown)} running={countdownStage === 'running' && !submitted && inView} hidden={Boolean(active.hideClock)} />
+          <CountdownClock key={active.id} leftMs={remainingMs(countdown)} running={countdownStage === 'running' && !submitted && inView && !overlayOpen} hidden={Boolean(active.hideClock)} />
         ))}
       {isMock && active.deadline !== undefined && <MockClock deadline={active.deadline} hideClock={Boolean(active.hideClock)} finished={Boolean(active.finishedAt)} />}
 
@@ -1352,10 +1372,11 @@ export default function SessionScreen() {
       {/* The report sheet the ⋯ sheet opens (a Modal: anywhere in the screen works). */}
       {report.sheet}
       {/* Mobile 2.2: the practice countdown reached zero. The sheet shows until one of its two buttons
-          is tapped (the state is saved, so it is here again after the app was closed). */}
+          is tapped (the state is saved, so it is here again after the app was closed). It waits for any
+          cover to close first (`overlayOpen`), so it never sits on top of the report form. */}
       {countdown && (
         <TimesUpSheet
-          visible={countdownStage === 'expired' && !active.finishedAt && inView}
+          visible={countdownStage === 'expired' && !active.finishedAt && inView && !overlayOpen}
           answered={Math.min(countdown.expiredAfter ?? answeredCount, total)}
           total={total}
           onKeepGoing={keepGoingUntimed}

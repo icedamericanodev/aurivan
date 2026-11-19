@@ -362,24 +362,45 @@ describe('what a screen reader is told, and when', () => {
 describe('Results says truthfully how the time went', () => {
   it('ran out, then kept going untimed', () => {
     const c: PracticeCountdown = { budgetMs: 15 * MIN, usedMs: 15 * MIN, expiredAfter: 7, after: 'untimed' };
-    expect(countdownResult(c, 10)?.text).toBe('Time ran out after 7 of 10. You kept going untimed.');
+    expect(countdownResult(c, 10, 10)?.text).toBe('Time ran out after 7 of 10. You kept going untimed.');
   });
 
   it('ran out, then finished there', () => {
     const c: PracticeCountdown = { budgetMs: 15 * MIN, usedMs: 15 * MIN, expiredAfter: 7, after: 'finished' };
-    expect(countdownResult(c, 10)?.text).toBe('Time ran out after 7 of 10. You finished there.');
+    expect(countdownResult(c, 10, 7)?.text).toBe('Time ran out after 7 of 10. You finished there.');
   });
 
-  it('never ran out, and no countdown at all', () => {
-    expect(countdownResult({ budgetMs: 15 * MIN, usedMs: 9 * MIN }, 10)).toEqual({
+  it('never ran out and every question answered, and no countdown at all', () => {
+    expect(countdownResult({ budgetMs: 15 * MIN, usedMs: 9 * MIN }, 10, 10)).toEqual({
       text: 'Finished inside your 15 min countdown.',
       spoken: 'Finished inside your 15 minute countdown.',
     });
-    expect(countdownResult({ budgetMs: MIN, usedMs: 0 }, 1)?.spoken).toBe('Finished inside your 1 minute countdown.');
-    expect(countdownResult(null, 10)).toBeNull();
+    expect(countdownResult({ budgetMs: MIN, usedMs: 0 }, 1, 1)?.spoken).toBe('Finished inside your 1 minute countdown.');
+    expect(countdownResult(null, 10, 10)).toBeNull();
+    expect(countdownResult(null, 10, 3)).toBeNull();
+  });
+
+  it('never ran out but ended early ("End session?"): it does not say "Finished"', () => {
+    expect(countdownResult({ budgetMs: 15 * MIN, usedMs: 4 * MIN }, 10, 3)).toEqual({
+      text: 'Ended with time left on your 15 min countdown.',
+      spoken: 'Ended with time left on your 15 minute countdown.',
+    });
+    // One short of the whole set is still "ended"; the whole set (or a count above it) is "finished".
+    expect(countdownResult({ budgetMs: 15 * MIN, usedMs: 4 * MIN }, 10, 9)?.text).toBe('Ended with time left on your 15 min countdown.');
+    expect(countdownResult({ budgetMs: 15 * MIN, usedMs: 4 * MIN }, 10, 11)?.text).toBe('Finished inside your 15 min countdown.');
+    expect(countdownResult({ budgetMs: MIN, usedMs: 0 }, 2, 1)?.spoken).toBe('Ended with time left on your 1 minute countdown.');
+    // A count that is not a real number never claims "Finished".
+    for (const bad of [NaN, Infinity, undefined, '10']) {
+      expect(countdownResult({ budgetMs: 15 * MIN, usedMs: 4 * MIN }, 10, bad as number)?.text).toBe('Ended with time left on your 15 min countdown.');
+    }
+  });
+
+  it('a set that ran out says so, however many were answered by the end', () => {
+    const c: PracticeCountdown = { budgetMs: 15 * MIN, usedMs: 15 * MIN, expiredAfter: 7, after: 'untimed' };
+    expect(countdownResult(c, 10, 8)?.text).toBe('Time ran out after 7 of 10. You kept going untimed.');
   });
 
   it('never claims more answers than the set has', () => {
-    expect(countdownResult({ budgetMs: 15 * MIN, usedMs: 15 * MIN, expiredAfter: 99 }, 10)?.text).toBe('Time ran out after 10 of 10.');
+    expect(countdownResult({ budgetMs: 15 * MIN, usedMs: 15 * MIN, expiredAfter: 99 }, 10, 10)?.text).toBe('Time ran out after 10 of 10.');
   });
 });

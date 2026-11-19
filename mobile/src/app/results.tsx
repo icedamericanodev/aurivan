@@ -403,7 +403,8 @@ export default function Results() {
   const tiny = active.mode !== 'mock' && score.answered < SMALL_SAMPLE;
   const headline = resultsHeadline(score.correct, active.mode === 'mock' ? score.total : score.answered);
   // Mobile 2.2: how a practice countdown went (engine/practiceCountdown.ts). Null for every other set.
-  const countdownLine = timerKindOf(active) === 'countdown' ? countdownResult(readCountdown(active.countdown), active.questionIds.length) : null;
+  // `score.answered`: "Finished inside…" only when every question was answered; ended early says so.
+  const countdownLine = timerKindOf(active) === 'countdown' ? countdownResult(readCountdown(active.countdown), active.questionIds.length, score.answered) : null;
   // The one fact beneath a small-sample headline: the note, else the domain, most missed.
   const missedDomain = (() => {
     const tally: Record<string, number> = {};

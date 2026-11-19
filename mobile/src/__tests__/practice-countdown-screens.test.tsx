@@ -11,18 +11,20 @@
  * - at zero a calm sheet offers exactly two choices; nothing is submitted, the option picked but
  *   not checked stays picked, and the sheet is back after the app was closed until it is answered;
  * - each checked answer is recorded once, whatever is tapped twice;
+ * - the countdown stands still while something covers the question (the ⋯ sheet, the Report a
+ *   problem form, the "End session?" alert), and the time's-up sheet never opens on top of one;
  * - Results says truthfully how the time went;
  * - a mock exam behaves exactly as before.
  *
  * Gotcha (see session-screen.regression.test.tsx): never write `act(() => store.action())`.
  */
-import { AccessibilityInfo, AppState, type AppStateStatus } from 'react-native';
+import { AccessibilityInfo, Alert, AppState, type AlertButton, type AlertOptions, type AppStateStatus } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import Practice from '../app/(tabs)/practice';
 import Results from '../app/results';
 import SessionScreen from '../app/session';
 import { PaceStrip, TimesUpSheet } from '../components/pace';
-import { OptionCard } from '../components/quiz';
+import { OptionCard, SHEET_GONE_MS } from '../components/quiz';
 import { Button, Chip } from '../components/ui';
 import { topicQuestionIds } from '../engine/outline';
 import { MAX_STEP_MS, readCountdown, remainingMs, stageOf } from '../engine/practiceCountdown';
@@ -78,10 +80,11 @@ const find = (label: string) =>
   root().findAll((n) => (n.props.label === label || n.props.accessibilityLabel === label) && typeof n.props.onPress === 'function');
 /** The time's-up buttons ignore presses for a moment after the sheet opens (components/pace.tsx TIMES_UP_GUARD_MS). */
 const SHEET_BUTTONS = ['Keep going untimed', 'Finish now'];
+/** Step the phone's clock past the guard, as a learner who read the sheet first (no timers run, no countdown time passes). */
+const pastGuard = () => jest.setSystemTime(Date.now() + 700);
 const press = (label: string, opts: { atOnce?: boolean } = {}) =>
   act(() => {
-    // A learner reads the sheet before tapping: step the clock past the guard (no timers run).
-    if (SHEET_BUTTONS.includes(label) && !opts.atOnce) jest.setSystemTime(Date.now() + 700);
+    if (SHEET_BUTTONS.includes(label) && !opts.atOnce) pastGuard();
     find(label)[0].props.onPress();
   });
 const allText = () => {
@@ -281,6 +284,30 @@ describe('Practice: a domain row keeps its one tap and gains "Choose length and 
       expect(root().findAll((n) => n.props.testID === 'build-set')).toHaveLength(0);
       unmount();
     }
+  });
+
+  it('closing Build a set forgets the domain that was asked for: the plain row opens on "All domains" again', () => {
+    mount(<Practice />);
+    press('Choose length and timer for IS Operations');
+    expect(chip('IS Operations').props.selected).toBe(true);
+    press('Build a set'); // close the panel
+    expect(root().findAll((n) => n.props.testID === 'build-set')).toHaveLength(0);
+    press('Build a set'); // the plain row: nothing asked for a domain this time
+    expect(chip('All domains').props.selected).toBe(true);
+    expect(chip('IS Operations').props.selected).toBe(false);
+    // Asking again for the same domain still works, as does another one.
+    press('Build a set');
+    press('Choose length and timer for IS Operations');
+    expect(chip('IS Operations').props.selected).toBe(true);
+    unmount();
+    // The same for a link: used once, then forgotten when the panel closes.
+    mockParams = { build: '4' };
+    mount(<Practice />);
+    expect(chip('IS Operations').props.selected).toBe(true);
+    press('Build a set');
+    press('Build a set');
+    expect(chip('All domains').props.selected).toBe(true);
+    expect(chip('IS Operations').props.selected).toBe(false);
   });
 
   it('a link that repeats a key (?build=1&build=2, ?section=a&section=b) is ignored and does not loop', () => {
@@ -491,6 +518,210 @@ describe('the countdown on the question screen', () => {
   });
 });
 
+describe('something covers the question: the countdown stands still, and the time’s-up sheet waits', () => {
+  /** A 10-question set with a 10 minute budget, 30 seconds in, on question 1 (not answered). */
+  const start = () => {
+    startPractice('cisa', { count: 10, countdownSec: 60 });
+    mount(<SessionScreen />);
+    tick(30 * S);
+    expect(clock()).toBe('09:30');
+  };
+  /** Nothing moved: the same time left, on screen and saved, still running (not at zero), no sheet. */
+  const stoodStill = (usedMs = 30 * S) => {
+    expect(saved().usedMs).toBe(usedMs);
+    expect(stageOf(saved())).toBe('running');
+    expect(strip().clockUnit).toBe('left · paused');
+    expect(sheetOpen()).toBe(false);
+    expect(active().finishedAt).toBeUndefined();
+  };
+  /** Is the Report a problem form showing? (It is the page-sheet Modal; the mock navigator is never open in practice.) */
+  const reportOpen = () => root().findAll((n) => typeof n.props.onRequestClose === 'function' && n.props.visible === true && n.props.presentationStyle === 'pageSheet').length > 0;
+  /** ⋯ → "Report a problem with this question" → the form (the row runs once the ⋯ sheet has gone). */
+  const openReport = () => {
+    press('More on this question');
+    press('Report a problem with this question');
+    tick(SHEET_GONE_MS);
+    expect(reportOpen()).toBe(true);
+  };
+  /** The "End session?" alerts shown so far: each one's buttons and options (the test presses them). */
+  let alerts: { buttons: AlertButton[]; options?: AlertOptions }[];
+  beforeEach(() => {
+    alerts = [];
+    jest.spyOn(Alert, 'alert').mockImplementation((_title, _message, buttons, options) => {
+      alerts.push({ buttons: buttons ?? [], options });
+    });
+  });
+  const tapAlert = (run: (() => void) | undefined) =>
+    act(() => {
+      run!();
+    });
+
+  it('the ⋯ sheet: no time passes however long it is open, and closing it carries on from the same time', () => {
+    start();
+    press('More on this question');
+    stoodStill(); // saved the moment it stopped
+    tick(20 * MIN); // twice the whole budget
+    expect(clock()).toBe('09:30');
+    stoodStill();
+    press('Close, More on this question');
+    expect(strip().clockUnit).toBe('left');
+    tick(10 * S);
+    expect(clock()).toBe('09:20');
+    expect(sheetOpen()).toBe(false);
+  });
+
+  it('the Report a problem form: the same, with no gap while the ⋯ sheet hands over to it', () => {
+    start();
+    press('More on this question');
+    press('Report a problem with this question');
+    // The ⋯ sheet is closing and the form is not up yet: still covered, still no time passing.
+    stoodStill();
+    tick(SHEET_GONE_MS);
+    expect(reportOpen()).toBe(true);
+    stoodStill();
+    tick(20 * MIN); // a long report
+    expect(clock()).toBe('09:30');
+    stoodStill();
+    expect(reportOpen()).toBe(true); // nothing opened over it, nothing closed it
+    press('Cancel');
+    expect(reportOpen()).toBe(false);
+    expect(strip().clockUnit).toBe('left');
+    tick(10 * S);
+    expect(clock()).toBe('09:20');
+  });
+
+  it('the "End session?" alert: the same for "Keep going", for Android’s dismiss, and for two alerts at once', () => {
+    start();
+    press('End session');
+    expect(alerts).toHaveLength(1);
+    expect(alerts[0].buttons.map((b) => b.text)).toEqual(['Keep going', 'End']);
+    stoodStill();
+    tick(20 * MIN);
+    expect(clock()).toBe('09:30');
+    stoodStill();
+    tapAlert(alerts[0].buttons[0].onPress); // Keep going
+    expect(strip().clockUnit).toBe('left');
+    tick(10 * S);
+    expect(clock()).toBe('09:20');
+    // Android can dismiss an alert without a button: that lets the countdown go on too.
+    press('End session');
+    tick(20 * MIN);
+    stoodStill(40 * S);
+    tapAlert(alerts[1].options?.onDismiss);
+    tick(10 * S);
+    expect(clock()).toBe('09:10');
+    // A double tap on X shows two alerts: it stands still until BOTH are gone.
+    press('End session');
+    press('End session');
+    expect(alerts).toHaveLength(4);
+    tapAlert(alerts[2].options?.onDismiss);
+    tick(20 * MIN);
+    stoodStill(50 * S);
+    tapAlert(alerts[3].buttons[0].onPress);
+    tick(10 * S);
+    expect(clock()).toBe('09:00');
+    expect(sheetOpen()).toBe(false);
+  });
+
+  it('"End" on the alert still ends the set with what was answered, and adds no time', () => {
+    start();
+    answerFirst();
+    press('Next question');
+    tick(30 * S);
+    press('End session');
+    tick(20 * MIN);
+    stoodStill(60 * S);
+    tapAlert(alerts[0].buttons[1].onPress); // End
+    expect(active().finishedAt).toBeDefined();
+    expect(Object.keys(active().responses)).toHaveLength(1);
+    expect(saved()).toEqual({ budgetMs: 10 * MIN, usedMs: 60 * S });
+  });
+
+  it('zero reached in the very second a cover opens: the time’s-up sheet waits until the cover has closed', () => {
+    startPractice('cisa', { count: 10, countdownSec: 60 });
+    mount(<SessionScreen />);
+    // Put the once-a-second tick half a second off, then stop 0.5 s short of zero.
+    tick(500);
+    goTo('background');
+    goTo('active');
+    tick(9 * MIN + 59 * S);
+    expect(remainingMs(saved())).toBeGreaterThan(0);
+    expect(stageOf(saved())).toBe('running');
+    tick(700); // 0.7 s more, not counted yet (the next tick is 0.3 s away)
+    press('More on this question');
+    // Stopping counted that last part of a second: the budget is used up, once, with nothing answered.
+    expect(saved()).toEqual({ budgetMs: 10 * MIN, usedMs: 10 * MIN, expiredAfter: 0 });
+    expect(sheetOpen()).toBe(false); // ... but the ⋯ sheet is up: not on top of it
+    press('Report a problem with this question');
+    tick(SHEET_GONE_MS);
+    expect(reportOpen()).toBe(true);
+    tick(20 * MIN);
+    expect(sheetOpen()).toBe(false); // not on top of the form either, however long the report takes
+    expect(reportOpen()).toBe(true);
+    expect(active().finishedAt).toBeUndefined();
+    press('Cancel');
+    // The form is closed: now the sheet asks, and nothing has been decided for the learner.
+    expect(sheetOpen()).toBe(true);
+    expect(sheet().props).toMatchObject({ answered: 0, total: 10 });
+    expect(saved().after).toBeUndefined();
+    press('Keep going untimed');
+    expect(sheetOpen()).toBe(false);
+    expect(saved().after).toBe('untimed');
+  });
+
+  it('a set already at zero waits behind each cover, and shows the sheet when it closes', () => {
+    /** The saved countdown reaches zero while a cover is open (as a set restored at zero would be). */
+    const atZeroNow = () =>
+      act(() => {
+        useSession.getState().bankCountdown(10 * MIN);
+      });
+    // Behind the ⋯ sheet.
+    start();
+    press('More on this question');
+    atZeroNow();
+    expect(stageOf(saved())).toBe('expired');
+    tick(5 * MIN);
+    expect(sheetOpen()).toBe(false);
+    press('Close, More on this question');
+    expect(sheetOpen()).toBe(true);
+    unmount();
+    // Closed and reopened at zero, nothing covering: the sheet is there at once (as before).
+    mount(<SessionScreen />);
+    expect(sheetOpen()).toBe(true);
+    unmount();
+    useSession.getState().clear();
+    // Behind the Report a problem form.
+    start();
+    openReport();
+    atZeroNow();
+    tick(5 * MIN);
+    expect(sheetOpen()).toBe(false);
+    expect(reportOpen()).toBe(true);
+    press('Cancel');
+    expect(sheetOpen()).toBe(true);
+    unmount();
+    useSession.getState().clear();
+    // Behind the "End session?" alert.
+    start();
+    press('End session');
+    atZeroNow();
+    tick(5 * MIN);
+    expect(sheetOpen()).toBe(false);
+    tapAlert(alerts[0].buttons[0].onPress); // Keep going
+    expect(sheetOpen()).toBe(true);
+    expect(active().finishedAt).toBeUndefined();
+  });
+
+  it('Coach me is part of the page, not a cover: the countdown keeps running under it', () => {
+    start();
+    press('Coach me');
+    expect(active().coached).toEqual([active().questionIds[0]]); // the hint is open
+    tick(10 * S);
+    expect(clock()).toBe('09:20');
+    expect(strip().clockUnit).toBe('left');
+  });
+});
+
 describe('at zero: a calm sheet with exactly two choices', () => {
   /** A 10-question set with a 10 minute budget, taken to zero on question 2 with an option picked. */
   const toZero = () => {
@@ -574,11 +805,17 @@ describe('at zero: a calm sheet with exactly two choices', () => {
 
   it('tapping "Keep going untimed" twice is one answer', () => {
     toZero();
+    // The SAME button handler, pressed twice in a row (a double tap), both after the opening moment
+    // in which the sheet ignores presses: so it is the session, not that guard, that takes one answer.
     const keep = find('Keep going untimed')[0].props.onPress;
+    const before = active();
+    pastGuard();
     act(() => {
       keep();
     });
     const once = active();
+    expect(once).not.toBe(before); // the first tap was taken
+    expect(saved().after).toBe('untimed');
     act(() => {
       keep();
     });
@@ -591,7 +828,10 @@ describe('at zero: a calm sheet with exactly two choices', () => {
   it('"Finish now": ends with what was answered; the unchecked pick and the rest are not marked wrong', () => {
     toZero();
     const [first, ...rest] = active().questionIds;
+    // Both handlers as they are on the open sheet, pressed after its opening moment (see the guard test above).
     const finish = find('Finish now')[0].props.onPress;
+    const keep = find('Keep going untimed')[0].props.onPress;
+    pastGuard();
     act(() => {
       finish();
     });
@@ -599,11 +839,16 @@ describe('at zero: a calm sheet with exactly two choices', () => {
     expect(done.finishedAt).toBeDefined();
     expect(saved().after).toBe('finished');
     expect(Object.keys(done.responses)).toEqual([first]);
-    // Tapped again (or the other button): one stable result.
+    // Tapped again, and then the other button: one stable result.
     act(() => {
       finish();
     });
     expect(active()).toBe(done);
+    act(() => {
+      keep();
+    });
+    expect(active()).toBe(done);
+    expect(saved().after).toBe('finished');
     const cp = selectCert(useProgress.getState(), 'cisa');
     expect(Object.keys(cp.answers)).toEqual([first]);
     expect(cp.answers[first].attempts).toBe(1);
@@ -713,6 +958,42 @@ describe('Results says truthfully how the time went', () => {
     mount(<Results />);
     expect(line()).toHaveLength(0);
     expect(allText()).not.toContain('Time ran out');
+  });
+});
+
+describe('Results: a countdown that never ran out', () => {
+  it('ended early through "End session?" says "Ended with time left", never "Finished"', () => {
+    startPractice('cisa', { count: 3, countdownSec: 60 });
+    mount(<SessionScreen />);
+    answerFirst(); // 1 of 3, then the learner ends the set
+    unmount();
+    act(() => {
+      useSession.getState().finish();
+    });
+    mount(<Results />);
+    expect(allText()).toContain('Ended with time left on your 3 min countdown.');
+    expect(allText()).not.toContain('Finished inside');
+    const line = root().findAll((n) => n.props.testID === 'results-countdown')[0];
+    expect(line.findAll((n) => n.props.accessibilityLabel === 'Ended with time left on your 3 minute countdown.').length).toBeGreaterThan(0);
+  });
+
+  it('every question answered in time says "Finished inside your N min countdown."', () => {
+    startPractice('cisa', { count: 3, countdownSec: 60 });
+    mount(<SessionScreen />);
+    answerFirst();
+    press('Next question');
+    tick(S);
+    answerFirst();
+    press('Next question');
+    tick(S);
+    answerFirst();
+    press('See results');
+    expect(active().finishedAt).toBeDefined();
+    expect(Object.keys(active().responses)).toHaveLength(3);
+    unmount();
+    mount(<Results />);
+    expect(allText()).toContain('Finished inside your 3 min countdown.');
+    expect(allText()).not.toContain('Ended with time left');
   });
 });
 

@@ -898,8 +898,12 @@ export const MORE_FOCUS_BACK_MS = Platform.OS === 'ios' ? 750 : 400;
  *   screen-reader focus back on ⋯ (`buttonRef`).
  * - The sheet fades in with an 8pt rise (Sheet's FadeIn); Reduce Motion fades only.
  * - Never in a mock: the session screen does not render it there.
+ * - `onOpenChange` (mobile 2.2) tells the screen while the sheet covers the question, so a practice
+ *   countdown can stand still under it. It says "open" when ⋯ is tapped and "closed" when the sheet is
+ *   closed, or, after a row was chosen, only once that row has run (so there is no gap between this
+ *   sheet going and the row's own sheet opening). It changes nothing the sheet itself does.
  */
-export function AnswerMore({ rows: given, buttonRef }: { rows: (MoreRow | null)[]; buttonRef: RefObject<View | null> }) {
+export function AnswerMore({ rows: given, buttonRef, onOpenChange }: { rows: (MoreRow | null)[]; buttonRef: RefObject<View | null>; onOpenChange?: (open: boolean) => void }) {
   const { c } = useTheme();
   // The screen passes null for a row that doesn't apply (no note, no principle…).
   const rows = given.filter((row): row is MoreRow => row !== null);
@@ -909,6 +913,7 @@ export function AnswerMore({ rows: given, buttonRef }: { rows: (MoreRow | null)[
   useEffect(() => () => cancelWait.current?.(), []);
   const close = () => {
     setOpen(false);
+    onOpenChange?.(false);
     moveFocus(buttonRef, MORE_FOCUS_BACK_MS);
   };
   const choose = (row: MoreRow) => {
@@ -917,6 +922,8 @@ export function AnswerMore({ rows: given, buttonRef }: { rows: (MoreRow | null)[
     cancelWait.current = afterSheet(() => {
       cancelWait.current = null;
       row.run();
+      // After the row ran (its own sheet is opening): only now is this one "closed" for the screen.
+      onOpenChange?.(false);
     }, SHEET_GONE_MS);
   };
   return (
@@ -927,7 +934,10 @@ export function AnswerMore({ rows: given, buttonRef }: { rows: (MoreRow | null)[
         hint={rows.length > 1 ? 'Opens the note, the principle, your note and Report a problem' : 'Opens Report a problem'}
         expanded={open}
         icon={(col) => <Ellipsis size={24} color={col} strokeWidth={ICON_STROKE} />}
-        onPress={() => setOpen(true)}
+        onPress={() => {
+          setOpen(true);
+          onOpenChange?.(true);
+        }}
       />
       <Sheet visible={open} onClose={close} title="More on this question">
         {rows.map((row, i) => (

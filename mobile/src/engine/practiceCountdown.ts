@@ -265,17 +265,24 @@ export function timesUpBody(answered: number, total: number): string {
 
 /**
  * The truthful line on Results for a set that had a countdown, shown and spoken. Null without one.
+ * `answered` is how many questions were checked when the set ended.
  * - "Time ran out after 7 of 10. You kept going untimed."
  * - "Time ran out after 7 of 10. You finished there."
- * - "Finished inside your 15 min countdown." (it never ran out)
+ * - "Finished inside your 15 min countdown." (it never ran out, and every question was answered)
+ * - "Ended with time left on your 15 min countdown." (it never ran out; the learner ended the set
+ *   early through "End session?", so "finished" would not be true)
  */
-export function countdownResult(c: PracticeCountdown | null, total: number): { text: string; spoken: string } | null {
+export function countdownResult(c: PracticeCountdown | null, total: number, answered: number): { text: string; spoken: string } | null {
   if (!c) return null;
   if (c.expiredAfter === undefined) {
     const minutes = Math.round(c.budgetMs / 60_000);
+    // "Finished" only when every question was answered. Any doubt (a count that is not a real
+    // number) reads as "ended with time left", which is true either way.
+    const all = isCount(answered) && isCount(total) && answered >= total;
+    const start = all ? 'Finished inside' : 'Ended with time left on';
     return {
-      text: `Finished inside your ${minutes} min countdown.`,
-      spoken: `Finished inside your ${minutes} minute countdown.`,
+      text: `${start} your ${minutes} min countdown.`,
+      spoken: `${start} your ${minutes} minute countdown.`,
     };
   }
   const ranOut = `Time ran out after ${Math.min(c.expiredAfter, total)} of ${total}.`;
