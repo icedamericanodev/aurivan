@@ -44,7 +44,7 @@ Format: code and the topic title from `data/cia/shared/outline.json` (an item's 
   - Standards: 6.2, 6.1, 7.1.
   - Verb and depth: Recognize (recall).
   - Traps: approval by senior management alone, or jointly with the board (the pre-2024 rule); the chief audit executive approving the charter they drafted; listing the annual plan or the budget as required charter content; mixing up the charter (the document) and the mandate (the authority inside it).
-- **1A4 Assurance versus advisory services.** Assurance: an objective assessment against criteria that raises stakeholders' confidence, with objectives and scope set mainly by the internal auditors; limited or reasonable, depending on the nature, timing and extent of the procedures. Advisory: advice with no assurance and no management responsibility, with nature and scope agreed with the requesting party. Which one fits a situation.
+- **1A4 Assurance versus advisory services.** Assurance: an objective assessment against criteria that raises stakeholders' confidence, with objectives and scope set mainly by the internal auditors; limited or reasonable, according to which procedures are done, when, and how extensively. Advisory: advice with no assurance and no management responsibility, with nature and scope agreed with the requesting party. Which one fits a situation.
   - Standards: Glossary; Domain V introduction; 13.2, 13.3, 13.4, 14.2 (where advisory work differs); 2.2.
   - Verb and depth: Interpret (apply; one bullet asks the candidate to determine).
   - Traps: treating advisory work as free of the Standards; advisory work as permission to make management's decision or own the rollout; letting the management of the activity set the scope of an assurance engagement; reading "reasonable" as absolute; believing assurance can never follow advisory work in the same area (it can, when the chief audit executive confirms no impairment). Needs a guide for anything about limited and reasonable assurance beyond the glossary line.
@@ -60,7 +60,7 @@ Format: code and the topic title from `data/cia/shared/outline.json` (an item's 
   - Standards: Principle 7; 7.1; 6.3; 8.2; 10.1; 9.4; 13.3.
   - Verb and depth: Identify (recall, with applied scenarios).
   - Traps: confusing independence (the function) with objectivity (the person); disclosing an impairment to senior management only; treating an administrative line to the chief financial officer as always fine, or as always a breach (it needs safeguards, and assurance over that officer's areas is the problem); settling a scope limitation quietly with the manager instead of the chief audit executive elevating it; "the board sets the chief audit executive's pay" (it gives input).
-- **1A8 Internal audit and the Three Lines Model.** The roles of the board, of management in first-line and second-line roles, and of the internal audit function as the third line; first-line and second-line duties that would impair independence; safeguards when internal auditors do, or seem to do, such work.
+- **1A8 Internal audit and the Three Lines Model.** The roles of the board, of management in first-line and second-line roles, and of the third line, which is the internal audit function; first-line and second-line duties that would impair independence; safeguards when internal auditors do, or seem to do, such work.
   - Standards: 7.1, 2.2, 9.5; The IIA's Statement of Position on the Three Lines Model (2026, in the reference list; cite the library bullet).
   - Verb and depth: Recognize (recall).
   - Traps: internal audit owning the risk register, setting risk appetite or choosing risk responses; calling second-line roles independent in the way internal audit is; believing a safeguard lets internal audit give assurance over its own second-line work (an independent party must); keeping a temporary risk or compliance role with no hand-back plan and no outside assurance for 12 months after; the model's pre-2020 name.
@@ -74,7 +74,7 @@ Format: code and the topic title from `data/cia/shared/outline.json` (an item's 
   - Standards: Principle 2; 2.1, 2.2.
   - Verb and depth: Assess (judge).
   - Traps: independence and objectivity swapped; thinking disclosure alone cures assurance over a recent former responsibility; counting only actual impairments and not perceived ones; "no money involved, so no conflict" (relationships count); believing advisory work on a former area is forbidden (allowed after disclosure to the requesting party).
-- **1B3 Policies and safeguards for objectivity.** When to reassign, when to outsource the performance or supervision of an engagement, when and to whom to disclose, and when a gift, reward or favor must be refused.
+- **1B3 Policies and safeguards for objectivity.** When to reassign, when to hand the engagement's performance or its supervision to an outside party, when and to whom to disclose, and when a gift, reward or favor must be refused.
   - Standards: 2.2, 2.3; 7.1.
   - Verb and depth: Analyze (judge).
   - Traps: the auditor deciding alone that the impairment is minor and carrying on; disclosing only to the manager of the activity; accepting a gift within the organization's limit when internal audit's own policy is stricter (follow the stricter one, CI); the chief audit executive's own impairment disclosed to the chief executive officer and not the board; a senior auditor overseeing an engagement on an area the chief audit executive manages (it takes an independent party outside the function).
@@ -82,7 +82,7 @@ Format: code and the topic title from `data/cia/shared/outline.json` (an item's 
   - Standards: Principle 3; 3.1, 3.2; 10.2.
   - Verb and depth: Apply (apply).
   - Traps: refusing every engagement the team lacks a skill for (the competency can be obtained: training, a guest auditor, an external provider); accepting the work with no competency and no plan to get it; treating professional development as optional once certified; persuasion as winning the argument rather than reaching understanding on evidence.
-- **1B5 Due professional care and skepticism.** What care weighs: strategy and objectives, the adequacy and effectiveness of governance, risk management and control processes, cost against benefit, and the chance of significant errors, fraud and noncompliance. Professional skepticism as a questioning, unbiased attitude toward the reliability of information.
+- **1B5 Due professional care and skepticism.** What care weighs: the chance of significant errors, fraud and noncompliance; whether governance, risk management and control processes are adequate and effective; cost against benefit; and the organization's strategy and objectives. Professional skepticism as a questioning, unbiased attitude toward the reliability of information.
   - Standards: Principle 4; 4.2, 4.3 (and 4.1).
   - Verb and depth: Demonstrate (apply; the bullets are recognize-level).
   - Traps: care as a guarantee that nothing is missed or as testing everything (care is not infallibility); skepticism as assuming dishonesty; ignoring cost against benefit; accepting a manager's statement with no corroboration.
@@ -92,7 +92,7 @@ Format: code and the topic title from `data/cia/shared/outline.json` (an item's 
   - Traps: confidentiality beating a legal or professional duty to disclose; releasing engagement records to an outside party without the route the methodologies set; using information from an engagement for personal benefit because "no one is harmed"; treating confidentiality as a reason to keep a finding from the board.
 
 ### 1C Governance, Risk Management, and Control (30%)
-- **1C1 Organizational governance basics.** What governance is and who does what: the board, senior management, the internal audit function and other assurance providers. Recognizing governance frameworks, principles and models.
+- **1C1 Organizational governance basics.** What governance is and who does what: the board and senior management, the internal audit function, and the other providers of assurance. Recognizing governance frameworks, principles and models.
   - Standards: Glossary "governance"; 9.1; 8.1; 9.5.
   - Verb and depth: Describe (recall).
   - Traps: governance as management's job alone; the board running daily operations; internal audit setting strategy or policy; counting the external auditor as part of management's controls. Frameworks need a guide.
@@ -104,15 +104,15 @@ Format: code and the topic title from `data/cia/shared/outline.json` (an item's 
   - Standards: 1.2, 1.3; 9.4; 9.1.
   - Verb and depth: Recognize (recall).
   - Traps: internal audit owning the ethics program or the hotline; the auditor disciplining staff; "legal means ethical"; reporting a concern only when it sits inside the engagement scope.
-- **1C4 Types of risk.** Strategic, operational, financial, compliance, reputational, and environmental, sustainability and social responsibility risk. Inherent risk before management's actions; residual risk after them.
+- **1C4 Types of risk.** The main families: financial, operational, strategic, compliance and reputational risk, plus risk tied to the environment, sustainability and social responsibility. Inherent risk before management's actions; residual risk after them.
   - Standards: Glossary "risk", "inherent risk", "residual risk"; 13.2.
   - Verb and depth: Interpret (apply).
   - Traps: residual risk as what is left after the auditor's recommendations (it is after management's actions); rating inherent risk with controls counted in; risk as only negative (the glossary allows positive or negative effects); treating reputational damage as a cause when it is usually the effect of another risk event.
-- **1C5 The risk management process.** What risk management is; risk appetite (the types and amount of risk the organization will accept) against risk tolerance (acceptable variation in performance); the parts of the cycle; judging management's responses.
+- **1C5 The risk management process.** What risk management is; risk appetite (how much risk, and of which kinds, the organization will accept) against risk tolerance (acceptable variation in performance); the parts of the cycle; judging management's responses.
   - Standards: Glossary; 9.1; 11.5.
   - Verb and depth: Interpret (apply; two bullets ask the candidate to assess and evaluate).
   - Traps: appetite and tolerance swapped; internal audit setting the appetite or choosing the response; "the goal is to remove all risk"; treating every accepted risk as a failure; believing insurance removes the risk. The cycle's steps need a guide.
-- **1C6 Risk management across the organization.** Judging the design and effectiveness of risk management processes; why an organization uses a risk management framework.
+- **1C6 Risk management across the organization.** Judging whether risk management processes are well designed and effective; why an organization uses a risk management framework.
   - Standards: 9.1; 9.4 (CI: rely on management's risk information only after concluding the risk management processes are effective).
   - Verb and depth: Describe (recall; one bullet asks the candidate to evaluate).
   - Traps: internal audit operating the risk management process; leaning on management's risk register without assessing the process behind it; "we adopted a framework, so risk management is effective". Named frameworks need a guide and are context, not keyed authority, until opened.
@@ -134,11 +134,11 @@ Format: code and the topic title from `data/cia/shared/outline.json` (an item's 
   - Standards: 13.2 (consider specific fraud risks), 4.2, 9.4.
   - Verb and depth: Determine (judge).
   - Traps: considering fraud only in a "fraud audit" or only when management asks; assessing fraud risk after fieldwork; assuming strong past results mean low fraud risk; demanding the same formal, documented risk assessment for every advisory engagement (the agreement may not need one).
-- **1D3 Fraud risk management and red flags.** Evaluating the organization's fraud risk management, noticing red flags at organization and process level, and the internal auditor's role in reporting them.
+- **1D3 Fraud risk management and red flags.** Evaluating the organization's fraud risk management, noticing red flags at organization and process level, and the part the internal auditor plays in reporting them.
   - Standards: 9.4; 4.2; 1.1, 1.2, 1.3; 13.1 (CI: issues needing immediate attention).
   - Verb and depth: Evaluate (judge).
   - Traps: confronting the suspect; concluding that fraud occurred (a legal conclusion) instead of reporting indicators; holding the red flag for the final communication; reporting to the manager who may be involved; treating one red flag as proof. Red-flag lists need a guide.
-- **1D4 Controls that prevent and detect fraud.** Tone at the top, segregation of duties, authority levels, and detective controls such as whistleblower hotlines, reconciliations and supervisory review.
+- **1D4 Controls that prevent and detect fraud.** Tone at the top, segregation of duties, authority levels, and detective controls (for example supervisory review, reconciliations and a whistleblower hotline).
   - Standards: Glossary "control"; 9.1 (ethical culture).
   - Verb and depth: Describe (recall).
   - Traps: a hotline or a reconciliation called preventive; authority limits called detective; segregation of duties assumed to work when access is shared or people collude; a written code taken as tone at the top. Needs a guide.

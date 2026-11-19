@@ -58,7 +58,7 @@ Write it for a CISA holder first (KaiSip's own learners), in a way that still he
 | sufficient and appropriate evidence | relevant, reliable and sufficient information | Standard 14.1. Three qualities; "appropriate" is not one of the words. |
 | materiality | significance | Glossary "significance"; Standard 14.3. |
 | audit risk (inherent, control, detection) | no such model in the Standards | The Standards speak of inherent and residual risk and an engagement risk assessment (Standard 13.2). |
-| audit opinion | engagement conclusion | Standard 14.5. A wider one is a conclusion at the level of the business unit or organization (Standard 11.3). |
+| audit opinion | engagement conclusion | Standard 14.5. A wider one covers a whole business unit or the organization (Standard 11.3). |
 | audit report | final engagement communication | Standard 15.1. The syllabus also says "audit report". |
 | exit meeting | closing communication (exit conference) | Standard 13.1, considerations. |
 | follow-up activities | confirming the implementation of recommendations or action plans | Standard 15.2. |
