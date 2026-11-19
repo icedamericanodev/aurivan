@@ -13,7 +13,8 @@ name: Mobile screenshots
 #              also fails when a page scrolls sideways or anything is wider
 #              than the screen column (shoot_wide.mjs, mobile 2.2)
 # A set fails when a step times out (the script stops) or the app throws a page
-# error. The pictures are kept as a download on the run, for review.
+# error. The default set's pictures are a download on the run for 2 days; the
+# other sets' pictures are kept only when that set fails (storage quota).
 # Playwright is installed outside mobile/ (not a project dependency).
 
 on:
@@ -70,16 +71,24 @@ jobs:
             exit 1
           fi
           echo "$(ls "$RUNNER_TEMP/shots" | wc -l) screenshots taken."
-      - name: Keep the pictures (a download on this run, 7 days)
-        if: always()
-        # The pictures are a convenience for review; the screenshot step above is the check.
-        # When the account's Actions storage is full, GitHub refuses the upload ("Artifact
-        # storage quota has been hit", 18 Nov 2026): the job warns here instead of failing a
-        # pull request whose screens all passed. A failing screenshot step still fails the job.
+      # Artifact storage is a monthly account quota (on 9 Nov 2026 about 20 runs
+      # used it all, and on 18 Nov every Screenshots job went red at this step
+      # although the screenshots passed). So: keep pictures for 2 days, always
+      # keep the default set (~59 MB, the one reviewers look at), keep settings,
+      # data and wide only when their job failed, and never let a storage error fail
+      # the job. The page-error check above stays blocking. A cancelled run (a
+      # newer push replaced it) keeps nothing: nobody looks at its pictures.
+      # PNGs are already compressed, so a higher zip level would not save space.
+      - name: Keep the pictures (a download on this run, 2 days)
+        id: upload
+        if: ${{ !cancelled() && (matrix.set == 'default' || failure()) }}
         continue-on-error: true
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: shots-${{ matrix.set }}
           path: ${{ runner.temp }}/shots/
-          retention-days: 7
+          retention-days: 2
           if-no-files-found: ignore
+      - name: Note when the pictures could not be kept
+        if: always() && steps.upload.outcome == 'failure'
+        run: echo "::warning::The ${{ matrix.set }} screenshots could not be uploaded (likely the account's artifact storage quota). Run 'npm run shots' locally to see them."

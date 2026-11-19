@@ -202,7 +202,7 @@ kill %1
 
 
 - `npm run shots` inside `mobile/` captures phone-size screenshots of the key screens with demo data (`mobile/scripts/screenshots/`). Send them to the maintainer after UI changes.
-  CI (`.github/workflows/mobile-shots.yml`) runs the default, `settings`, `data` and `wide` (tablet sizes, fails if a screen is wider than the column) sets on every pull request that changes `mobile/src/` or the scripts; when a screen changes, update the `shoot_*.mjs` steps that point at it in the same pull request. The pictures are a download on each run.
+  CI (`.github/workflows/mobile-shots.yml`) runs the default, `settings`, `data` and `wide` (tablet sizes, fails if a screen is wider than the column) sets on every pull request that changes `mobile/src/` or the scripts; when a screen changes, update the `shoot_*.mjs` steps that point at it in the same pull request. The `default` pictures are a download on each run for 2 days; the other sets' pictures are kept only when that set fails (to save the account's monthly artifact storage). A failed upload is only a warning; a page error still fails the job.
 - Run `npm run check` inside `mobile/` after touching `mobile/` or `data/domain*.json`
   (CI runs the same in `.github/workflows/mobile.yml`). The content-pack
   test fails if any question has a broken answer key.
