@@ -14,9 +14,12 @@ Fix the source item in its Part file and run this script again.
 Ids never move. data/cia/ciac/id_map.json is append-only: a source id is given
 the next free number in its Challenge section the first time it is seen and
 keeps it for good, because a learner's saved progress is keyed by question id.
-A source item that is deleted, loses its tag or moves to another Challenge
-section is marked "retired" (its number is never reused); a moved item gets a
-new id.
+A source item that is marked `"retired": true`, loses its tag or moves to
+another Challenge section has its row marked "retired" (its number is never
+reused); a moved item gets a new id. A source item is never deleted or
+renumbered: check_ids.py compares the Part ids and this id map with main and
+fails on a removed row, a changed row or a reused id (this script alone cannot
+see a hand edit of the id map, because it starts from the file on disk).
 
 What changes in a copied item: `id` (ciac_d3_001), `domain` (the Challenge
 section number) and the code and title at the start of `subtopic` (2A1 becomes
@@ -47,7 +50,7 @@ def build(root, today):
     tagged = {}
     for _pack, _d, q in c.all_items(root):
         ref = q.get("challenge_ref")
-        if ref:
+        if ref and not c.is_retired(q):    # a retired source item leaves the pack; its Challenge id is retired below
             if ref not in ch:
                 problems.append(f"{q['id']}: challenge_ref '{ref}' is not a Challenge topic")
             else:
@@ -95,11 +98,13 @@ def build(root, today):
 
 def report(files, sections, today, questions):
     live = {d: [q for q in f["questions"] if not c.not_yet_testable(q, today)] for d, f in files.items()}
-    need = {s["domain"]: questions * s["weight"] / 100 for s in sections}
-    forms = min((len(live[d]) / need[d] for d in need), default=0)
+    # One mock, split as the app deals it (the same sum as the pack dry run: whole questions, not 22.5).
+    need = dict(zip((s["domain"] for s in sections), c.allocate(questions, [s["weight"] for s in sections])))
+    forms = min((len(live[d]) // n for d, n in need.items() if n), default=0)
     print("ciac: " + " · ".join(f"{s['letter']} {len(files[s['domain']]['questions'])} ({s['weight']}%)" for s in sections)
           + f" · testable today {sum(len(v) for v in live.values())}"
-          + f" · full {questions}-question mocks without repeats: {int(forms)}")
+          + f" · one full mock: {questions} items (" + " / ".join(f"{s['letter']} {need[s['domain']]}" for s in sections)
+          + f") · full {questions}-question mocks without repeats: {forms}")
 
 
 def main(argv):

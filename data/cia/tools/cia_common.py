@@ -199,6 +199,22 @@ def all_items(root, packs=PARTS):
                 yield pack, d, q
 
 
+def allocate(total, weights):
+    """Split `total` questions by section weight: largest remainder, ties to the earlier
+    section. The same sum as allocate() in scripts/cia_pack_dry_run.cjs and
+    mobile/src/engine/blueprint.ts, so every tool counts a mock the way the app deals it
+    (150 Challenge questions are 30 / 23 / 30 / 37 / 30, not 30 / 22.5 / 30 / 37.5 / 30)."""
+    s = sum(weights)
+    if s <= 0 or total <= 0:
+        return [0 for _ in weights]
+    exact = [(w / s) * total for w in weights]
+    out = [int(x) for x in exact]
+    order = sorted(range(len(weights)), key=lambda i: -(exact[i] - int(exact[i])))   # stable: ties keep section order
+    for i in order[:total - sum(out)]:
+        out[i] += 1
+    return out
+
+
 def not_yet_testable(q, today):
     """True when the item rests on a Topical Requirement that is not testable yet."""
     tf = iso_date(q.get("testable_from"))

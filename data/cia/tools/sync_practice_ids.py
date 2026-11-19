@@ -4,7 +4,7 @@
 The "Practice this concept" links under a note are generated: a question names
 the notes sub-topic it was written from ("notes 1A1.2"), and this script lists
 it under that sub-topic. Never edit practice_ids by hand. A sub-topic with no
-question has no practice_ids field.
+question has no practice_ids field. A retired question is never linked.
 
 Usage:
   python3 data/cia/tools/sync_practice_ids.py          # rewrite the notes files
@@ -26,6 +26,8 @@ def main(argv):
                 continue
             by_note = {}
             for q in c.read_json(qpath)["questions"]:
+                if c.is_retired(q):
+                    continue
                 m = re.search(r"\bnotes (\d[A-G]\d+\.\d+)", q.get("_provenance") or "")
                 if m:
                     by_note.setdefault(m.group(1), []).append(q["id"])

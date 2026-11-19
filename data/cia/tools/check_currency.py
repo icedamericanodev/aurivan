@@ -8,14 +8,18 @@ Topical Requirement becomes testable) with its source and `last_checked`.
   - a fact last checked more than `warn_after_days` (60) ago: warning;
     more than `fail_after_days` (120): ERROR. cia-currency-checker re-opens the
     source and updates the date;
-  - a fact without a source, a date or a known status: ERROR;
+  - a fact without a source, a date or a known status: ERROR; a `last_checked`
+    date in the future: ERROR (it would never go stale);
   - a fact whose status is not "opened" is listed as a warning (it may not be
     stated to learners as checked) and is an ERROR with --strict;
   - questions, minutes and section weights must agree with shared/outline.json;
-  - Topical Requirements: an item that cites a requirement that is not testable
-    yet must carry that date in `testable_from` (the mock, free-sample and
-    Challenge builders leave such items out until then); once the date has
-    passed, `testable_from` must be cleared.
+  - Topical Requirements: each one's `library_prefix` must be the start of at
+    least one bullet in the citation library (a misspelt prefix finds no item);
+    an item that CITES a requirement that is not testable yet (framework_ref),
+    or NAMES it anywhere a learner reads (its `name`, in any letter case, with
+    or without the hyphen), must carry that date in `testable_from` (the mock,
+    free-sample and Challenge builders leave such items out until then); once
+    the date has passed, `testable_from` must be cleared.
 
 Usage:
   python3 data/cia/tools/check_currency.py [--strict] [--today YYYY-MM-DD] [--root DIR]
@@ -27,6 +31,7 @@ import sys
 import cia_common as c
 
 STATUSES = ("opened", "search_only", "not_opened")
+NOT_LEARNER_TEXT = ("framework_ref", "_provenance", "id", "principle_id", "challenge_ref", "testable_from")
 NEEDED = ["questions", "minutes"]          # per exam, as "<pack>.questions"
 
 
@@ -50,12 +55,15 @@ def main(argv):
             errs.append(f"{fid}: status must be one of {STATUSES}")
         elif f["status"] != "opened":
             (errs if "--strict" in args else warns).append(f"{fid}: source is {f['status']}; do not state it to learners as checked")
-        try:
-            age = (today - datetime.date.fromisoformat(f.get("last_checked", ""))).days
-        except ValueError:
+        checked_on = c.iso_date(f.get("last_checked"))
+        if checked_on is None:
             errs.append(f"{fid}: last_checked is not an ISO date")
             continue
-        if age > fail_d:
+        age = (today - checked_on).days
+        if age < 0:
+            errs.append(f"{fid}: last_checked {f['last_checked']} is in the future (today is {today}); "
+                        "write the day the source was really opened")
+        elif age > fail_d:
             errs.append(f"{fid}: last checked {age} days ago (limit {fail_d}); re-open the source")
         elif age > warn_d:
             warns.append(f"{fid}: last checked {age} days ago; re-open the source soon")
@@ -74,22 +82,37 @@ def main(argv):
         elif f.get("value") != want:
             errs.append(f"{e['id']}.weights: currency.json says {f.get('value')}, outline.json says {want}")
     topical = cur.get("topical_requirements", [])
+    verified, likely, _problems = c.library(root)      # check_cia.py reports the library's own problems
+    waiting = []                                       # requirements that are not testable yet
     for t in topical:
-        try:
-            datetime.date.fromisoformat(t.get("testable_from", ""))
-        except ValueError:
-            errs.append(f"{t.get('id')}: testable_from is not an ISO date")
+        tid, prefix = t.get("id"), t.get("library_prefix")
+        starts = c.iso_date(t.get("testable_from"))
+        if starts is None:                             # null, a number or a bad date: say so, never crash
+            errs.append(f"{tid}: testable_from is not an ISO date")
+        elif starts > today:
+            waiting.append(t)
+        if not isinstance(prefix, str) or not prefix or not any(b.startswith(prefix) for b in verified | likely):
+            errs.append(f"{tid}: library_prefix '{prefix}' starts no bullet in the citation library, "
+                        "so an item that cites the requirement would not be found")
+        if not isinstance(t.get("name"), str) or not t["name"].strip():
+            errs.append(f"{tid}: a Topical Requirement needs its name")
     checked = 0
     for pack, _d, q in c.all_items(root):
         checked += 1
         parts = [p.strip() for p in (q.get("framework_ref") or "").split(";")]
-        dates = [t["testable_from"] for t in topical
-                 if any(p.startswith(t["library_prefix"]) for p in parts)
-                 and datetime.date.fromisoformat(t["testable_from"]) > today]
+        text = c.norm_text(" ".join(s for _path, s in c.strings(q, NOT_LEARNER_TEXT))).lower()
+        dates, why = [], []
+        for t in waiting:
+            cites = isinstance(t.get("library_prefix"), str) and t["library_prefix"] \
+                and any(p.startswith(t["library_prefix"]) for p in parts)
+            names = isinstance(t.get("name"), str) and t["name"].strip() and c.norm_text(t["name"]).lower() in text
+            if cites or names:
+                dates.append(t["testable_from"])
+                why.append(f"it {'cites' if cites else 'names'} the {t.get('name') or t.get('id')}")
         want = max(dates) if dates else None
         if q.get("testable_from") != want:
             errs.append(f"{q['id']}: testable_from is {q.get('testable_from')}, should be {want} "
-                        "(from the Topical Requirement it cites and today's date)")
+                        f"({'; '.join(why) if why else 'it rests on no Topical Requirement that is still waiting'})")
     for w in warns:
         print(f"warn  {w}")
     for e in errs:

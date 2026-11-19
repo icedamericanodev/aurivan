@@ -18,6 +18,12 @@ data/cia/shared/, and built into each pack:
 
 NEVER EDIT the built files by hand. Edit shared/ and run this script.
 
+A built file that no shared source produces any more (the shared file was
+removed, or a pack was dropped from every term or principle) is an orphan: it
+would stay in the pack, out of date, and pass unseen. --check fails on it and a
+normal build removes it. Only <pack>/glossary.json and
+<pack>/mindset/principles.json in the four packs are ever removed.
+
 Usage:
   python3 data/cia/tools/build_packs.py          # rebuild
   python3 data/cia/tools/build_packs.py --check  # fail if a built file differs from a rebuild
@@ -27,6 +33,13 @@ import sys
 import cia_common as c
 
 NAMES = {"cia1": "CIA Part 1", "cia2": "CIA Part 2", "cia3": "CIA Part 3", "ciac": "CIA Challenge Exam"}
+BUILT = ("glossary.json", "mindset/principles.json")   # the only files this script writes or removes, per pack
+
+
+def orphans(root, targets):
+    """Built files on disk that this build does not produce."""
+    return [root / pack / name for pack in c.PACKS for name in BUILT
+            if (root / pack / name).is_file() and root / pack / name not in targets]
 
 
 def build(root):
@@ -76,14 +89,23 @@ def main(argv):
         stale = [p for p, text in targets.items() if (p.read_text(encoding="utf-8") if p.exists() else None) != text]
         for p in stale:
             print(f"ERROR {p.relative_to(root)} is out of date or hand-edited: run python3 data/cia/tools/build_packs.py")
-        print(f"build_packs --check: {len(targets)} built file(s), {len(stale)} out of date, {len(problems)} problem(s)")
-        return 1 if stale or problems else 0
+        left = orphans(root, targets)
+        for p in left:
+            print(f"ERROR {p.relative_to(root)} is an orphan: no shared source produces it any more "
+                  "(run python3 data/cia/tools/build_packs.py to remove it)")
+        print(f"build_packs --check: {len(targets)} built file(s), {len(stale)} out of date, {len(left)} orphan(s), "
+              f"{len(problems)} problem(s)")
+        return 1 if stale or left or problems else 0
     if problems:
         return 1
     for p, text in targets.items():
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(text, encoding="utf-8")
-    print(f"build_packs: {len(targets)} file(s) built" if targets else "build_packs: no shared glossary or principles yet")
+    left = orphans(root, targets)
+    for p in left:
+        p.unlink()
+        print(f"build_packs: removed {p.relative_to(root)} (no shared source produces it any more)")
+    print(f"build_packs: {len(targets)} file(s) built" if targets or left else "build_packs: no shared glossary or principles yet")
     return 0
 
 

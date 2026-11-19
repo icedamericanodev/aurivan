@@ -2,7 +2,8 @@
 """Answer-free copy of CIA items for the blind tester (qa-question-tester).
 
 Writes only id, outline code, stem and options: no key, no explanations, no
-tips, no citations. The blind tester must never see a key.
+tips, no citations. The blind tester must never see a key. Retired items are
+left out: nobody answers them again.
 
 Usage:
   python3 data/cia/tools/blind_copy.py cia1 1 --out /path/blind.json           # a whole section file
@@ -22,7 +23,7 @@ def main(argv):
         print(__doc__)
         return 2
     pack, d = args[0], int(args[1])
-    qs = c.read_json(root / pack / "originals" / f"d{d}.json")["questions"]
+    qs = [q for q in c.read_json(root / pack / "originals" / f"d{d}.json")["questions"] if not c.is_retired(q)]
     if ids:
         lo, hi = (int(x) for x in ids.split("-"))
         qs = [q for q in qs if lo <= int(q["id"][-3:]) <= hi]
