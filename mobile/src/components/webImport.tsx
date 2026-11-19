@@ -29,6 +29,7 @@ import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { useMotion } from './motion';
 import { Button, RadioRow, T } from './ui';
+import { ContentColumn } from './layout';
 
 /** "Progress 2 · last used 6 Oct 2026" when a profile has no name. */
 function profileTitle(name: string, i: number): string {
@@ -65,82 +66,84 @@ export function WebImportPreview({
   return (
     <Modal visible={web !== null} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={busy ? () => {} : onCancel}>
       <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.raised2 }}>
-        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xl }} testID="web-import">
-          <T v="hero" accessibilityRole="header">Add your website progress?</T>
-          <T v="body" color={c.ink2} style={{ marginTop: space.md }}>
-            {`This adds what you studied on the KaiSip website to this phone. Nothing here is replaced or deleted. You can undo it for ${UNDO_DAYS} days in Your data.`}
-          </T>
-          {several && web && (
-            <>
-              <T v="headline" accessibilityRole="header" style={{ marginTop: space.xl }}>Which progress?</T>
-              <T v="meta" style={{ marginTop: space.xs }}>This file has more than one. Add one at a time.</T>
-              <View accessibilityRole="radiogroup" style={{ marginTop: space.sm }}>
-                {web.profiles.map((p, i) => (
-                  <RadioRow
-                    key={`${p.key}-${i}`}
-                    title={profileTitle(p.name, i)}
-                    subtitle={p.lastActive ? `Last used ${examDateLabel(dayKey(p.lastActive))}` : undefined}
-                    checked={i === index}
-                    onPress={() => setPicked({ file: web, index: i })}
-                    last={i === web.profiles.length - 1}
-                  />
+        <ContentColumn>
+          <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xl }} testID="web-import">
+            <T v="hero" accessibilityRole="header">Add your website progress?</T>
+            <T v="body" color={c.ink2} style={{ marginTop: space.md }}>
+              {`This adds what you studied on the KaiSip website to this phone. Nothing here is replaced or deleted. You can undo it for ${UNDO_DAYS} days in Your data.`}
+            </T>
+            {several && web && (
+              <>
+                <T v="headline" accessibilityRole="header" style={{ marginTop: space.xl }}>Which progress?</T>
+                <T v="meta" style={{ marginTop: space.xs }}>This file has more than one. Add one at a time.</T>
+                <View accessibilityRole="radiogroup" style={{ marginTop: space.sm }}>
+                  {web.profiles.map((p, i) => (
+                    <RadioRow
+                      key={`${p.key}-${i}`}
+                      title={profileTitle(p.name, i)}
+                      subtitle={p.lastActive ? `Last used ${examDateLabel(dayKey(p.lastActive))}` : undefined}
+                      checked={i === index}
+                      onPress={() => setPicked({ file: web, index: i })}
+                      last={i === web.profiles.length - 1}
+                    />
+                  ))}
+                </View>
+              </>
+            )}
+            <T v="headline" accessibilityRole="header" style={{ marginTop: space.xl }}>
+              {summary?.nothingNew ? 'Already on this phone' : 'What will be added'}
+            </T>
+            {summary?.nothingNew ? (
+              <T v="body" style={{ marginTop: space.sm }}>Everything in this progress is already on this phone. Nothing needs adding.</T>
+            ) : (
+              <View style={{ marginTop: space.sm, gap: space.sm }}>
+                {lines.map((line) => (
+                  // A hanging bullet, so a wrapped line lines up under its words. Read as one line.
+                  <View key={line} accessible accessibilityLabel={line} style={{ flexDirection: 'row', gap: space.sm }}>
+                    <T v="body">•</T>
+                    {summary?.displayName && line === `${WEB_NAME_PREFIX}${summary.displayName}` ? (
+                      // Mobile 1.44: "Your name: Maya", the name in bold.
+                      <T v="body" style={{ flex: 1 }}>
+                        {WEB_NAME_PREFIX}
+                        <T v="label">{summary.displayName}</T>
+                      </T>
+                    ) : (
+                      <T v="body" style={{ flex: 1 }}>{line}</T>
+                    )}
+                  </View>
                 ))}
               </View>
-            </>
-          )}
-          <T v="headline" accessibilityRole="header" style={{ marginTop: space.xl }}>
-            {summary?.nothingNew ? 'Already on this phone' : 'What will be added'}
-          </T>
-          {summary?.nothingNew ? (
-            <T v="body" style={{ marginTop: space.sm }}>Everything in this progress is already on this phone. Nothing needs adding.</T>
-          ) : (
-            <View style={{ marginTop: space.sm, gap: space.sm }}>
-              {lines.map((line) => (
-                // A hanging bullet, so a wrapped line lines up under its words. Read as one line.
-                <View key={line} accessible accessibilityLabel={line} style={{ flexDirection: 'row', gap: space.sm }}>
-                  <T v="body">•</T>
-                  {summary?.displayName && line === `${WEB_NAME_PREFIX}${summary.displayName}` ? (
-                    // Mobile 1.44: "Your name: Maya", the name in bold.
-                    <T v="body" style={{ flex: 1 }}>
-                      {WEB_NAME_PREFIX}
-                      <T v="label">{summary.displayName}</T>
-                    </T>
-                  ) : (
-                    <T v="body" style={{ flex: 1 }}>{line}</T>
-                  )}
-                </View>
-              ))}
-            </View>
-          )}
-          {/* Mobile 1.44: the name is added only when this phone has none, and stays on this phone. */}
-          {summary?.displayName && !summary.nothingNew && (
-            <View testID="web-import-name" style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.md, marginTop: space.lg }}>
-              <LeafAvatar initial={nameInitial(summary.displayName)} size={32} />
-              <T v="small" color={c.ink2} style={{ flex: 1 }}>{WEB_NAME_NOTE}</T>
-            </View>
-          )}
-          {skips.map((line) => (
-            <T key={line} v="small" color={c.ink2} style={{ marginTop: space.md }}>{line}</T>
-          ))}
-          <T v="small" color={c.ink2} style={{ marginTop: space.md }}>{webNotInFile(profile ?? {})}</T>
-          {onboarding && (
-            <T v="small" color={c.ink2} style={{ marginTop: space.sm }}>
-              {summary?.examDate ? 'Next, you choose your starting point and daily time, and check your exam date.' : 'Next, you choose your starting point, exam date and daily time.'}
-            </T>
-          )}
-        </ScrollView>
-        {/* The actions stay in reach under the scrolling list (UX review). */}
-        <View style={{ paddingHorizontal: space.gutter, paddingTop: space.md, paddingBottom: space.md, borderTopWidth: 1, borderColor: c.line, gap: space.sm }}>
-          {canAdd && (
-            <Button
-              label={busy ? 'Adding…' : 'Add to my progress'}
-              accessibilityHint="Adds the website progress to this phone. Nothing here is replaced."
-              disabled={busy}
-              onPress={() => onConfirm(index)}
-            />
-          )}
-          <Button kind="secondary" label={canAdd ? 'Cancel' : 'Close'} disabled={busy} onPress={onCancel} />
-        </View>
+            )}
+            {/* Mobile 1.44: the name is added only when this phone has none, and stays on this phone. */}
+            {summary?.displayName && !summary.nothingNew && (
+              <View testID="web-import-name" style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.md, marginTop: space.lg }}>
+                <LeafAvatar initial={nameInitial(summary.displayName)} size={32} />
+                <T v="small" color={c.ink2} style={{ flex: 1 }}>{WEB_NAME_NOTE}</T>
+              </View>
+            )}
+            {skips.map((line) => (
+              <T key={line} v="small" color={c.ink2} style={{ marginTop: space.md }}>{line}</T>
+            ))}
+            <T v="small" color={c.ink2} style={{ marginTop: space.md }}>{webNotInFile(profile ?? {})}</T>
+            {onboarding && (
+              <T v="small" color={c.ink2} style={{ marginTop: space.sm }}>
+                {summary?.examDate ? 'Next, you choose your starting point and daily time, and check your exam date.' : 'Next, you choose your starting point, exam date and daily time.'}
+              </T>
+            )}
+          </ScrollView>
+          {/* The actions stay in reach under the scrolling list (UX review). */}
+          <View style={{ paddingHorizontal: space.gutter, paddingTop: space.md, paddingBottom: space.md, borderTopWidth: 1, borderColor: c.line, gap: space.sm }}>
+            {canAdd && (
+              <Button
+                label={busy ? 'Adding…' : 'Add to my progress'}
+                accessibilityHint="Adds the website progress to this phone. Nothing here is replaced."
+                disabled={busy}
+                onPress={() => onConfirm(index)}
+              />
+            )}
+            <Button kind="secondary" label={canAdd ? 'Cancel' : 'Close'} disabled={busy} onPress={onCancel} />
+          </View>
+        </ContentColumn>
       </SafeAreaView>
     </Modal>
   );

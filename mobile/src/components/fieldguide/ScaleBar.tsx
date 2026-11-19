@@ -26,7 +26,7 @@
  * At 200% text the numeral and its words stack; the bar keeps its labels at ×1.3.
  */
 import { useLayoutEffect, useRef, useState } from 'react';
-import { useWindowDimensions, View, type StyleProp, type ViewStyle } from 'react-native';
+import { View, type StyleProp, type ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSequence } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
 import { READY_LOW } from '../../engine/examReady';
@@ -37,6 +37,7 @@ import { useTheme } from '../../theme/useTheme';
 import { ease, FadeIn, snap, tween, useMotion, type Growth } from '../motion';
 import { BigNum, T, useFontScale } from '../ui';
 import { FieldText } from './FieldText';
+import { useContentWidth } from '../layout';
 
 /** The words that travel with every range. */
 export const ESTIMATE_WORDS = 'a study estimate, not a prediction';
@@ -158,7 +159,7 @@ export function ScaleBar({
   const { reduced } = useMotion();
   const fontScale = useFontScale();
   const large = fontScale >= LARGE_TEXT;
-  const { width } = useWindowDimensions();
+  const width = useContentWidth();
   const step = size ?? rangeStep(fontScale, width);
   const [w, setW] = useState(0);
   const x0 = 8;

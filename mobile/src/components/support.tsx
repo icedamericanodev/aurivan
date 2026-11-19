@@ -60,6 +60,7 @@ import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Check, ChevronDown, ICON_STROKE } from './icons';
 import { Button, Chip, Gap, NoteField, PushedHeader, RadioRow, T, TextField, ToggleRow } from './ui';
+import { ContentColumn } from './layout';
 
 // ── Copy (support.md §15) ────────────────────────────────────────────────
 export const REPORT_LABEL = 'Report a problem';
@@ -212,15 +213,20 @@ function SheetFrame({ visible, onClose, children }: { visible: boolean; onClose:
     <Modal visible={visible} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={onClose}>
       {/* Sheets sit one surface tier above the screen behind them (raised2, mobile 1.9). */}
       <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.raised2 }}>
+        {/* The keyboard view stays the SafeAreaView's direct child: on Android it works out the keyboard
+            overlap from its own position in its parent, so a wrapper between them would undercount it by
+            the status bar. The large-screen column goes inside it (mobile 2.2 review). */}
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? undefined : 'height'}>
-          <ScrollView
-            automaticallyAdjustKeyboardInsets
-            keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }}
-          >
-            <PushedHeader icon="close" onBack={onClose} />
-            {children}
-          </ScrollView>
+          <ContentColumn>
+            <ScrollView
+              automaticallyAdjustKeyboardInsets
+              keyboardShouldPersistTaps="handled"
+              contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }}
+            >
+              <PushedHeader icon="close" onBack={onClose} />
+              {children}
+            </ScrollView>
+          </ContentColumn>
         </KeyboardAvoidingView>
       </SafeAreaView>
     </Modal>

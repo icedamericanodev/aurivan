@@ -19,6 +19,8 @@
 #   SMOKE_DIALOGS_PORT  phone "dialogs" build port  (default 8032)
 #   SMOKE_ONLY=W3,M4    run only these paths (prefix match)
 #   SMOKE_SKIP_CHECK=1  skip `npm run check` (the unit gates)
+#   SMOKE_MOBILE_VIEWPORTS=390x844,1280x800  phone: walk at each size (default 390x844);
+#                       other sizes tag paths (M1-1280x800), screenshots and results
 #   SMOKE_SLOW_MS=5000  phone: a screen slower than this to show content fails M7
 #   SMOKE_WEB_SITE=1    web: build the public site (scripts/build_site.sh → _site/)
 #                       and serve _site/ instead of the repo root, so only what
@@ -104,7 +106,11 @@ if [ "$WHAT" != web ]; then
   python3 "$REPO/mobile/scripts/screenshots/serve_spa.py" "$TMP/web-off" "$MOB_PORT" & PIDS+=($!)
   python3 "$REPO/mobile/scripts/screenshots/serve_spa.py" "$TMP/web-dialogs" "$DLG_PORT" & PIDS+=($!)
   wait_port "$MOB_PORT"; wait_port "$DLG_PORT"
-  node "$HERE/mobile.mjs" "$REPO" "$OUT" "http://127.0.0.1:$MOB_PORT" "http://127.0.0.1:$DLG_PORT" "$TMP/seed.json" 2>&1 | tee "$OUT/mobile.log" || STATUS=1
+  # SMOKE_MOBILE_VIEWPORTS="390x844,1280x800" walks the phone paths at each size (default: the phone only).
+  for VP in $(echo "${SMOKE_MOBILE_VIEWPORTS:-390x844}" | tr ',' ' '); do
+    LOG="$OUT/mobile.log"; [ "$VP" = 390x844 ] || LOG="$OUT/mobile-$VP.log"
+    SMOKE_MOBILE_VIEWPORT="$VP" node "$HERE/mobile.mjs" "$REPO" "$OUT" "http://127.0.0.1:$MOB_PORT" "http://127.0.0.1:$DLG_PORT" "$TMP/seed.json" 2>&1 | tee "$LOG" || STATUS=1
+  done
   # Stop the servers before the unit gates: jest has timing tests that a busy machine can fail.
   cleanup; PIDS=(); TMP="$(mktemp -d)"
   if [ "${SMOKE_SKIP_CHECK:-}" != 1 ]; then

@@ -2,7 +2,7 @@
 import { FeatureInfo } from '../../components/featureInfo';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useWindowDimensions, View } from 'react-native';
+import { View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
 import { ClearingBody, clearingLine, clearingTitle, nextStepIndex, PlanLeaves, planHero, planText, ReadinessRow, reviewIdle, todayMinutes } from '../../components/journey';
 import { FieldText, headDate, KeyList, Plate, RunningHead } from '../../components/fieldguide';
@@ -58,6 +58,7 @@ import { useHeldWhen } from '../../lib/holdWhileHidden';
 import { legacyTitle, type PlanItem } from '../../engine/planner';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
+import { useContentWidth } from '../../components/layout';
 
 /** "Something you reported was updated." (by different things, not reports). */
 function creditLine(items: number): string {
@@ -462,7 +463,7 @@ export default function Today() {
     j.daysLeft !== null && j.daysLeft > 0 && j.examDate ? `${j.cert.name} exam on ${spokenShortDate(new Date(`${j.examDate}T12:00:00`).getTime())}` : (examLine ?? undefined);
   // ── Grove Today (the kit's order, ring first): the hero, the plan, the week's twig. ──
   // Presentation only: every number below is one the app already works out (engine/groveToday.ts).
-  const { width } = useWindowDimensions();
+  const width = useContentWidth();
   // The greeting is `display`; it steps to `hero` when it would wrap to a third line, or on a phone
   // under 360pt (TYPE_SCALE.md rule R3). Remembered per title, so a new name is measured afresh
   // and the step never flips back and forth.

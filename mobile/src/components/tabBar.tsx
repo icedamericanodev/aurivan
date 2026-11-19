@@ -28,6 +28,7 @@ import { useTheme } from '../theme/useTheme';
 import { AnimatedPressable, FadeIn, useMotion } from './motion';
 import { TabHeightContext } from './tabSpace';
 import { ICON_SIZE, T } from './ui';
+import { COLUMN_MAX } from './layout';
 
 export { TabHeightContext, TabSpaceContext } from './tabSpace';
 
@@ -40,7 +41,9 @@ export const TAB_BAR = {
   side: 16, // from the screen's left and right edges, plus the side insets
   floor: 16, // the least space under the bar (the kit's 16 with no inset)
   lift: 8, // above the bottom safe-area inset
-  maxWidth: 520, // wide windows (tablets, the web export): the bar stays phone sized, centred
+  // Wide windows (tablets, the web export): the column less the bar's sides, so the bar is a little wider
+  // than the cards above it, as on a phone (mobile 2.2; it was 520, narrower than the 560 cards).
+  maxWidth: COLUMN_MAX - 2 * 16,
   pillW: 52, // the current tab's pill, behind its icon (the web's 52 by 30)
   pillH: 30,
 } as const;

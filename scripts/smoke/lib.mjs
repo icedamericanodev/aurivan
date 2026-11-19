@@ -66,7 +66,9 @@ export class Recorder {
   // Run one path. fn gets a ctx { check, note, step, shot }. A thrown error or
   // a failed check makes the path FAIL; console errors also fail it unless
   // opts.allowErrors (then they are listed but the path can still PASS).
-  async run(id, name, page, fn, opts = {}) {
+  async run(id0, name, page, fn, opts = {}) {
+    // meta.idSuffix tags a second viewport's paths (M1-1280x800); meta.shotPrefix keeps its screenshots apart.
+    const id = id0 + (this.meta.idSuffix || '');
     // SMOKE_ONLY=M1,W3 runs only those paths (prefix match: W3 runs W3-390-light and W3-1280-dark).
     const only = (process.env.SMOKE_ONLY || '').split(',').filter(Boolean);
     if (only.length && !only.some((o) => id === o || id.startsWith(o + '-'))) return null;
@@ -78,7 +80,7 @@ export class Recorder {
       note: (s) => { p.notes.push(s); console.log(`  [${id}] note: ${s}`); },
       check: (cond, msg) => { if (!cond) { p.fails.push(msg); console.log(`  [${id}] CHECK FAILED: ${msg}`); } return !!cond; },
       shot: async (file, pg = page, full = false) => {
-        const f = `${file}.png`;
+        const f = `${this.meta.shotPrefix || ''}${file}.png`;
         try { await pg.screenshot({ path: path.join(this.outDir, f), fullPage: full }); p.shots.push(f); } catch (e) { p.notes.push(`screenshot ${f} failed: ${e.message}`); }
         return f;
       },
@@ -99,7 +101,8 @@ export class Recorder {
     this.save();
     return p;
   }
-  notTested(id, name, reason) {
+  notTested(id0, name, reason) {
+    const id = id0 + (this.meta.idSuffix || '');
     this.paths.push({ id, name, status: 'NOT TESTED', shots: [], notes: [reason], errors: [], steps: [], fails: [], ms: 0 });
     this.save();
   }

@@ -1,4 +1,4 @@
-// KaiSip phone smoke test (the Expo app's web export, driven at 390x844).
+// KaiSip phone smoke test (the Expo app's web export, driven at 390x844, or SMOKE_MOBILE_VIEWPORT).
 // Usage: node mobile.mjs <repo_root> <out_dir> <base_url> <dialogs_base_url> <seed.json>
 //   base_url          the SHIPPED build (cloud flag off), served with serve_spa.py
 //   dialogs_base_url  the same app exported with the in-memory backend and
@@ -37,7 +37,14 @@ const TERMS = new Map();
   Object.values(o).forEach(walk);
 })(JSON.parse(fs.readFileSync(path.join(GEN, 'notes.json'), 'utf8')));
 const appJson = JSON.parse(fs.readFileSync(path.join(repo, 'mobile/app.json'), 'utf8'));
-const rec = new Recorder(outDir, 'mobile', { appVersion: appJson.expo && appJson.expo.version, url: BASE, dialogs: DIALOGS });
+// SMOKE_MOBILE_VIEWPORT=1280x800 walks the same paths at another size (a tablet held sideways).
+// The phone size keeps the plain names; any other size tags its paths, screenshots and results file.
+const [VW, VH] = (process.env.SMOKE_MOBILE_VIEWPORT || '390x844').split('x').map(Number);
+const PHONE = VW === 390 && VH === 844;
+const TAG = PHONE ? '' : `${VW}x${VH}`;
+const rec = new Recorder(outDir, PHONE ? 'mobile' : `mobile-${TAG}`, { appVersion: appJson.expo && appJson.expo.version, url: BASE, dialogs: DIALOGS,
+  viewport: `${VW}x${VH}`, idSuffix: PHONE ? '' : `-${TAG}`, shotPrefix: PHONE ? '' : `${TAG}-` });
+const VIEW = { viewport: { width: VW, height: VH }, deviceScaleFactor: PHONE ? 2 : 1, isMobile: true, hasTouch: true };
 const browser = await launch();
 const LETTERS = ['A', 'B', 'C', 'D'];
 const SLOW_MS = Number(process.env.SMOKE_SLOW_MS) || 5000; // a screen slower than this to settle FAILs M7
@@ -47,7 +54,7 @@ const NOTE_MS = 2500; // slower than this is listed as a note
 // so a step can change storage and reload to see the result.
 const keysOf = (s) => Object.fromEntries(Object.entries(s).filter(([k]) => !k.startsWith('__')));
 async function phone(store, scheme = 'light', origin = new URL(BASE).origin) {
-  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true,
+  const ctx = await browser.newContext({ ...VIEW,
     colorScheme: scheme, acceptDownloads: true, reducedMotion: 'reduce' });
   if (store) {
     await ctx.addInitScript((s) => {
@@ -221,19 +228,19 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
       const sel = await page.getByRole('tab', { name: new RegExp(`^${name}`) }).first().getAttribute('aria-selected');
       c.check(sel === 'true', `${name} tab is not marked selected`);
       c.step(`${name}: content after ${ms} ms (${nb.h.slice(0, 2).join(' / ')})`);
-      if (!fs.existsSync(path.join(outDir, `m2-tab-${name.toLowerCase()}.png`))) { await sleep(400); await c.shot(`m2-tab-${name.toLowerCase()}`); }
+      if (!fs.existsSync(path.join(outDir, `${TAG ? TAG + '-' : ''}m2-tab-${name.toLowerCase()}.png`))) { await sleep(400); await c.shot(`m2-tab-${name.toLowerCase()}`); }
     }
     c.step('open the old /play link');
     await open(page, BASE, '/play', 2200);
     c.check(/\/practice/.test(page.url()), `/play landed on ${page.url()}, expected Practice`);
     const drills = page.getByRole('heading', { name: /^Drills/ }).first();
     const box = await drills.boundingBox().catch(() => null);
-    c.check(box && box.y >= 0 && box.y < 844, `/play: the Drills heading is not on screen (box ${JSON.stringify(box)})`);
+    c.check(box && box.y >= 0 && box.y < VH, `/play: the Drills heading is not on screen (box ${JSON.stringify(box)})`);
     await c.shot('m2-play-redirect');
     c.step('open /practice?section=drills directly');
     await open(page, BASE, '/practice?section=drills', 2200);
     const box2 = await page.getByRole('heading', { name: /^Drills/ }).first().boundingBox().catch(() => null);
-    c.check(box2 && box2.y >= 0 && box2.y < 844, '/practice?section=drills: the Drills heading is not on screen');
+    c.check(box2 && box2.y >= 0 && box2.y < VH, '/practice?section=drills: the Drills heading is not on screen');
   });
   await ctx.close();
 }
@@ -288,7 +295,7 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
         const uniq = [...new Set(tips)];
         c.check(uniq.length === 3, `Q${i + 1}: ${uniq.length} tips on the answer screen (${uniq.join(', ')}), expected Eliminate / Final two / Exam cue`);
         await c.shot(`m3-q${i + 1}-answer`);
-        await page.mouse.move(195, 500); await page.mouse.wheel(0, 1600); await sleep(500);
+        await page.mouse.move(VW / 2, VH * 0.6); await page.mouse.wheel(0, 1600); await sleep(500);
         await c.shot(`m3-q${i + 1}-tips`);
       }
       await page.getByText(/^(Next question|See results)$/).first().click(); await sleep(1400);
@@ -551,7 +558,7 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
     c.check(/badges/i.test(t), 'no badges card on You');
     c.check(!/Five areas, one scale|Plant yours|Your plant/i.test(t), 'retired chart or plant card is still on You');
     await c.shot('m6-you');
-    await page.mouse.move(195, 500); await page.mouse.wheel(0, 900); await sleep(500);
+    await page.mouse.move(VW / 2, VH * 0.6); await page.mouse.wheel(0, 900); await sleep(500);
     await c.shot('m6-you-more');
     c.step('See your badges');
     await page.getByRole('button', { name: /^All badges$/ }).first().click(); await sleep(1800);
@@ -580,7 +587,7 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
     await c.shot('m6-your-data');
     const dl = page.waitForEvent('download', { timeout: 10000 });
     await page.getByRole('button', { name: 'Save a backup' }).first().click();
-    const file = path.join(outDir, 'm6-backup.json');
+    const file = path.join(outDir, `${TAG ? TAG + '-' : ''}m6-backup.json`);
     await (await dl).saveAs(file);
     const data = JSON.parse(fs.readFileSync(file, 'utf8'));
     c.check(data.app === 'kaisip' && data.stores && data.stores.progress, 'the backup file is not a KaiSip backup (no app marker or stores)');
@@ -588,7 +595,7 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
     c.step(`backup saved: ${nBefore} answers, ${fs.statSync(file).size} bytes`);
 
     c.step('a new phone: welcome → Restore from a backup → Restore my progress');
-    const fresh = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, reducedMotion: 'reduce' });
+    const fresh = await browser.newContext({ ...VIEW, reducedMotion: 'reduce' });
     const p2 = await fresh.newPage();
     rec.watch(p2, new URL(BASE).origin);
     await open(p2, BASE, '/', 2000);
@@ -613,7 +620,7 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
     await page.getByRole('button', { name: 'Restore from a backup' }).first().click();
     await (await ch2).setFiles(file);
     await sleep(1500);
-    await page.mouse.move(195, 500); await page.mouse.wheel(0, 3000); await sleep(500);
+    await page.mouse.move(VW / 2, VH * 0.6); await page.mouse.wheel(0, 3000); await sleep(500);
     await page.getByRole('button', { name: 'Replace my progress' }).first().click(); await sleep(2000);
     const back = answersIn(await store(page, 'aurivan.progress.v1'));
     c.check(back === nBefore, `after Replace my progress there are ${back} answers, the backup had ${nBefore}`);
@@ -677,6 +684,106 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
   await ctx.close();
 }
 
+// ── M8 Sheets, the screen column, and progress across a reload ─────────────
+// Phone 2.2: every screen draws in a centred column at most 600 wide; sheets centre in it.
+{
+  const { ctx, page } = await phone(demo);
+  await rec.run('M8', 'Settings sheet and Report a problem sheet open and close; screens sit in the column; progress survives a reload', page, async (c) => {
+    const visibleModals = (pg) => ev(pg, () => [...document.querySelectorAll('[aria-modal="true"]')]
+      .filter((e) => e.getClientRects().length && !e.closest('[aria-hidden="true"]'))
+      .map((e) => {
+        // The modal covers the window; the sheet is the panel inside it: a content column (page
+        // sheets) or a rounded, painted box (bottom sheets). Text extent = where its words sit.
+        const box = (el) => { const r = el.getBoundingClientRect(); return { x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.width), h: Math.round(r.height) }; };
+        const cands = [...e.querySelectorAll('*')].filter((d) => {
+          if (d.getAttribute('data-testid') === 'content-column') return true;
+          const cs = getComputedStyle(d);
+          return cs.borderTopLeftRadius !== '0px' && cs.backgroundColor !== 'rgba(0, 0, 0, 0)' && d.getBoundingClientRect().height > 150;
+        }).map(box).sort((a, b) => b.w * b.h - a.w * a.h);
+        const words = [...e.querySelectorAll('*')].filter((d) => d.childElementCount === 0 && (d.innerText || '').trim() && d.getClientRects().length).map((d) => d.getBoundingClientRect());
+        const ext = words.length ? { x: Math.round(Math.min(...words.map((r) => r.left))), w: Math.round(Math.max(...words.map((r) => r.right)) - Math.min(...words.map((r) => r.left))) } : null;
+        return { ...(cands[0] || box(e)), modal: box(e), ext, text: (e.innerText || '').slice(0, 300) };
+      }));
+    const colBox = (pg = page) => ev(pg, () => [...document.querySelectorAll('[data-testid="content-column"]')]
+      .filter((e) => e.getClientRects().length && !e.closest('[aria-hidden="true"]'))
+      .map((e) => { const r = e.getBoundingClientRect(); return { x: Math.round(r.x), w: Math.round(r.width) }; }));
+    const centred = (b) => b.w <= Math.min(VW, 600) + 1 && Math.abs(b.x + b.w / 2 - VW / 2) <= 2;
+    const sideScroll = () => ev(page, () => document.documentElement.scrollWidth - window.innerWidth);
+    for (const s of ['/home', '/learn', '/practice', '/you', '/settings']) {
+      await open(page, BASE, s, 1500);
+      const cols = await colBox();
+      c.check(cols.length > 0 && cols.every(centred), `${s}: the screen column is ${JSON.stringify(cols)} in a ${VW} wide window (expected at most 600 wide, centred)`);
+      c.check((await sideScroll()) <= 1, `${s}: the page scrolls sideways`);
+    }
+    c.step(`screen column on Settings: ${JSON.stringify(await colBox())} at ${VW}x${VH}`);
+
+    c.step('Settings → Exam date → the calendar sheet');
+    await open(page, BASE, '/settings', 1500);
+    let row = page.getByRole('button', { name: /^Exam date/ });
+    if (!(await visible(row))) {
+      const door = page.getByRole('button', { name: /^Exam\b/ });
+      if (await visible(door)) { await door.first().click(); await sleep(1200); }
+      row = page.getByRole('button', { name: /^Exam date/ });
+    }
+    await row.first().scrollIntoViewIfNeeded().catch(() => {});
+    await row.first().click(); await sleep(1200);
+    const ms = await visibleModals(page);
+    c.check(ms.length > 0, 'no sheet opened from Settings → Exam date');
+    const sh = ms[ms.length - 1];
+    if (sh) {
+      c.check(centred(sh), `the Exam date sheet is ${JSON.stringify({ x: sh.x, y: sh.y, w: sh.w, h: sh.h })} in a ${VW} wide window (expected at most 600 wide, centred)`);
+      c.check(sh.y >= 0 && sh.y + sh.h <= VH + 1, `the Exam date sheet runs off screen ${JSON.stringify({ x: sh.x, y: sh.y, w: sh.w, h: sh.h })}`);
+      c.check(sh.ext && sh.ext.x >= sh.x - 1 && sh.ext.x + sh.ext.w <= sh.x + sh.w + 1, `the Exam date sheet's text ${JSON.stringify(sh.ext)} spills outside the sheet (${sh.x}..${sh.x + sh.w})`);
+      c.note(`Exam date sheet panel: x ${sh.x}, y ${sh.y}, ${sh.w}x${sh.h}; text from x ${sh.ext && sh.ext.x}, ${sh.ext && sh.ext.w} wide`);
+    }
+    await c.shot('m8-settings-sheet');
+    const done = page.getByRole('button', { name: /^(Done|Close|Cancel)$/ });
+    if (await visible(done)) await done.last().click(); else await page.keyboard.press('Escape');
+    await sleep(900);
+    c.check((await visibleModals(page)).length === 0, 'the Exam date sheet did not close');
+
+    c.step('Practice → Start → answer → Check answer → Report a problem');
+    await open(page, BASE, '/practice', 1500);
+    await page.getByRole('button', { name: 'Start', exact: true }).first().click(); await sleep(1500);
+    const p = await answer(page, true);
+    await page.getByText('Check answer', { exact: true }).click(); await sleep(1000);
+    const link = page.getByRole('button', { name: /^Report a problem with/ });
+    await link.first().scrollIntoViewIfNeeded().catch(() => {});
+    c.check(await visible(link), `no "Report a problem" link on the answer screen of ${p.id}`);
+    await link.first().click(); await sleep(1200);
+    const rs = await visibleModals(page);
+    const rep = rs[rs.length - 1];
+    c.check(rep && /Report a problem/.test(rep.text), `the Report a problem sheet did not open (${rs.length} sheets)`);
+    if (rep) {
+      c.check(/What.s wrong/i.test(rep.text), `the Report a problem sheet does not ask "What's wrong?" ("${rep.text.slice(0, 80)}")`);
+      c.check(centred(rep), `the Report a problem sheet is ${JSON.stringify({ x: rep.x, y: rep.y, w: rep.w, h: rep.h })} in a ${VW} wide window (expected at most 600 wide, centred)`);
+      c.check(rep.ext && rep.ext.x >= rep.x - 1 && rep.ext.x + rep.ext.w <= rep.x + rep.w + 1, `the Report a problem sheet's text ${JSON.stringify(rep.ext)} spills outside its column (${rep.x}..${rep.x + rep.w})`);
+      c.note(`Report a problem sheet panel: x ${rep.x}, y ${rep.y}, ${rep.w}x${rep.h}; text from x ${rep.ext && rep.ext.x}, ${rep.ext && rep.ext.w} wide`);
+    }
+    await c.shot('m8-report-sheet');
+    const close = page.getByRole('button', { name: /^(Close|Cancel)$/ });
+    if (await visible(close)) await close.last().click(); else await page.keyboard.press('Escape');
+    await sleep(900);
+    c.check((await visibleModals(page)).length === 0, 'the Report a problem sheet did not close');
+    c.check(/\/session/.test(page.url()), `after closing the report sheet the app is on ${page.url()}, expected the question`);
+
+    c.step('reload: the answer and the open session are kept');
+    const nBefore = answersIn(await store(page, 'aurivan.progress.v1'));
+    await page.reload({ waitUntil: 'networkidle' }); await sleep(2000);
+    const nAfter = answersIn(await store(page, 'aurivan.progress.v1'));
+    c.check(nAfter === nBefore, `after a reload progress holds ${nAfter} answers, before ${nBefore}`);
+    const cur = await current(page);
+    c.check(cur && cur.a.responses[p.id] && cur.a.responses[p.id].display === p.disp, `after a reload the open session lost the answer to ${p.id} (${JSON.stringify(cur && cur.a.responses[p.id])})`);
+    c.check(!/\/onboarding/.test(page.url()), `after a reload the app went to ${page.url()}`);
+    await c.shot('m8-after-reload');
+    await open(page, BASE, '/home', 2000);
+    const nb = await notBlank(page);
+    c.check(nb.ok, 'Today is blank after a reload');
+    c.note(`progress: ${nBefore} answers before the reload, ${nAfter} after`);
+  });
+  await ctx.close();
+}
+
 await browser.close();
 const fails = rec.paths.filter((p) => p.status === 'FAIL').length;
-console.log(`mobile: ${rec.paths.length} paths, ${fails} FAIL`);
+console.log(`mobile ${VW}x${VH}: ${rec.paths.length} paths, ${fails} FAIL`);

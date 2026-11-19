@@ -40,7 +40,7 @@
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { backOr } from '../lib/actions';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Platform, ScrollView, useWindowDimensions, View } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BadgeCellMemo as BadgeCell, BadgeListRowMemo as BadgeListRow, BadgeSheet, caseTileSize, NextPanel, ShelfHeader, StretchHeader } from '../components/badges';
 import { useGrowth, useScreenFocus } from '../components/motion';
@@ -73,6 +73,7 @@ import { useSeen } from '../store/seen';
 import { grovePlate } from '../theme/grove';
 import { LARGE_TEXT, motion, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
+import { useContentWidth } from '../components/layout';
 
 const SORT_LABEL: Record<CaseSort, string> = { set: 'By set', recent: 'Recently earned', closest: 'Closest', effort: 'Effort' };
 const SORT_WHY: Record<CaseSort, string> = {
@@ -110,7 +111,7 @@ function BadgeCase() {
   const { cert, progress, readiness, daysLeft, dueCount } = useActiveCert();
   const params = useLocalSearchParams<{ shelf?: string; open?: string }>();
   const fontScale = useFontScale();
-  const { width: screenW } = useWindowDimensions();
+  const screenW = useContentWidth();
   const full = useMemo(() => badgeCase(cert.id, progress), [cert.id, progress]);
   // Moments only once something on it happened: an unearned Study Return is never shown as a goal.
   const marks = useMemo(() => full.marks.filter(onCase), [full.marks]);

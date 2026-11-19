@@ -59,6 +59,13 @@ export function whatsNewFor(updatesOn: boolean, list: readonly WhatsNewEntry[] =
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    // Large screens (docs/mobile/RELEASE_2_2.md). Phones are unchanged; the
+    // date is set again at build freeze.
+    version: '2.2',
+    date: '2026-11-18',
+    improved: ['On tablets and other large screens, pages now sit in a comfortable reading width instead of stretching across the screen.'],
+  },
+  {
     // The first update after the launch. Testers only ever had 2.0.0, so the
     // 2.1.0 and 2.2.0 development entries are one release here. The Play
     // version name is exactly "2.1" (owner rule, 9 Nov 2026).

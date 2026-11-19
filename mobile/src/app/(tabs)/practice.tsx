@@ -30,7 +30,7 @@ import { FeatureInfo } from '../../components/featureInfo';
 import * as Router from 'expo-router';
 import { router } from 'expo-router';
 import { Children, memo, useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
-import { AccessibilityInfo, Dimensions, Pressable, useWindowDimensions, View } from 'react-native';
+import { AccessibilityInfo, Dimensions, Pressable, View } from 'react-native';
 import { ArrowRight, Bookmark, ChartColumn, ChevronRight, Compass, Crosshair, ICON_STROKE, Library, RotateCcw, SlidersHorizontal, X } from '../../components/icons';
 import { PracticeLeaf } from '../../components/glyphs';
 import { AreaDot, CardDivider, CardHead, CountChip, GlyphTile, HeroKicker, HubCard } from '../../components/groveHub';
@@ -61,6 +61,7 @@ import { selectCert, useProgress } from '../../store/progress';
 import { groveRadius } from '../../theme/grove';
 import { LARGE_TEXT, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
+import { useContentWidth } from '../../components/layout';
 
 /** The route's params and this screen's own navigation (absent where a test's expo-router stand-in has none). */
 type Nav = { setParams?: (p: { section?: string }) => void };
@@ -566,7 +567,7 @@ export function heroTilesFit(windowWidth: number, fontScale: number): boolean {
  */
 export function HeroTileRow({ children, domainsAlone = false }: { children: ReactNode; domainsAlone?: boolean }) {
   const scale = useFontScale();
-  const { width } = useWindowDimensions();
+  const width = useContentWidth();
   const large = scale >= LARGE_TEXT;
   if (large) return <View style={{ flexDirection: 'column', gap: space.sm }}>{children}</View>;
   // Release bug hunt round 1: on a narrow phone (or at the next text size up) three tiles side by side
@@ -942,7 +943,7 @@ const BuildASet = memo(function BuildASet({ cert, timed }: { cert: Certification
  * and "hide the clock").
  */
 const MockExams = memo(function MockExams({ cert, headRef }: { cert: Certification; headRef: RefObject<View | null> }) {
-  const { width } = useWindowDimensions();
+  const width = useContentWidth();
   const large = useFontScale() >= LARGE_TEXT;
   const mini = Math.round(cert.exam.questions / 3);
   const miniMinutes = Math.round((cert.exam.minutes / cert.exam.questions) * mini);

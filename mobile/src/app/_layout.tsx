@@ -49,6 +49,7 @@ import { useSettings } from '../store/settings';
 import { hasContent } from '../content/loader';
 import { useActiveCertId } from '../lib/activeCert';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ContentColumn } from '../components/layout';
 import { MotionRoot, SPLASH_FADE, ThemeFade, useMotion } from '../components/motion';
 import { Grain } from '../components/ui';
 import { motion } from '../theme/tokens';
@@ -209,80 +210,84 @@ export default function RootLayout() {
       {CLOUD && <SyncRouteWatch />}
       {/* An outside link on a cold start never skips onboarding (release bug hunt round 3). */}
       <OutsideLinkGate ready={ready} />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: c.bg },
-          // Undefined = the platform's default push animation.
-          animation: reduced ? 'fade' : undefined,
-          // iOS honours this for the dissolve; the platform pushes keep their own timing.
-          animationDuration: motion.dur.screen,
-        }}
-      >
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="onboarding" options={{ gestureEnabled: false }} />
-        {/* No swipe-back inside a quiz: an accidental swipe must not lose an exam. */}
-        <Stack.Screen name="session" options={{ gestureEnabled: false }} />
-        {/* The quiz dissolves into its outcome: not a push to a new place. */}
-        <Stack.Screen name="results" options={{ gestureEnabled: false, animation: 'fade' }} />
-        {/* Mock start sheet: timing and "hide the clock", before every mock. */}
-        <Stack.Screen name="mock-start" options={{ animation: rise }} />
-        <Stack.Screen name="lesson/[id]" options={{ animation: rise }} />
-        <Stack.Screen name="game/trap" options={{ animation: rise }} />
-        <Stack.Screen name="game/sprint" options={{ animation: rise }} />
-        <Stack.Screen name="game/priority" options={{ animation: rise }} />
-        <Stack.Screen name="game/daylight" options={{ animation: rise }} />
-        {/* Build E: two note- and principle-based games, and the Guided step. */}
-        <Stack.Screen name="game/rumor" options={{ animation: rise }} />
-        <Stack.Screen name="game/callit" options={{ animation: rise }} />
-        {/* Build F: three content games. */}
-        <Stack.Screen name="game/field" options={{ animation: rise }} />
-        <Stack.Screen name="game/canopy" options={{ animation: rise }} />
-        <Stack.Screen name="game/stones" options={{ animation: rise }} />
-        <Stack.Screen name="guided" />
-        {/* Build F: You → Milestones (mobile 1.10: Badges) and You → Field notes. */}
-        <Stack.Screen name="milestones" />
-        <Stack.Screen name="field-notes" />
-        <Stack.Screen name="mistakes" />
-        <Stack.Screen name="settings" />
-        {/* Mobile 1.46: a Settings door's own screen (Your data, Help and about). */}
-        <Stack.Screen name="settings-section" />
-        <Stack.Screen name="saved" />
-        <Stack.Screen name="caught-up" />
-        <Stack.Screen name="bank/index" />
-        <Stack.Screen name="bank/[domain]" />
-        {/* Study notes: home (domains + search) → domain → subtopic. */}
-        <Stack.Screen name="notes/index" />
-        <Stack.Screen name="notes/[domain]" />
-        <Stack.Screen name="notes/subtopic/[id]" />
-        {/* Exam-mindset principles: the list by family → one principle (Learn, Mistake journal). */}
-        <Stack.Screen name="principles/index" />
-        <Stack.Screen name="principles/[id]" />
-        {/* Mobile 1.7: Help and feedback (You), common questions, Your reports and What's new.
-            (What's next was removed in 1.17.1; +native-intent sends old links to Help.) */}
-        <Stack.Screen name="help" />
-        <Stack.Screen name="faq" />
-        <Stack.Screen name="reports" />
-        <Stack.Screen name="whats-new" />
-        {/* Mobile 1.15: Your study, from Today's one "Fit your plan" card. */}
-        <Stack.Screen name="fit" />
-        {/* Mobile 1.16: the readiness report and the exam-week checklist. */}
-        <Stack.Screen name="readiness" />
-        <Stack.Screen name="exam-week" />
-        {/* The exam guide (Learn, Help) and the final review week's cheat sheet (data/exam/). */}
-        <Stack.Screen name="exam-guide" />
-        <Stack.Screen name="cheat-sheet" />
-        {/* Grove Phase 4 (O2): the Glossary, read-only (Learn's Glossary tile, Final review week's look-ups). */}
-        <Stack.Screen name="glossary" />
-        {/* Compatibility destinations redirect retired plant links to You. */}
-        <Stack.Screen name="plant" />
-        <Stack.Screen name="plant-pick" options={{ animation: rise }} />
-        <Stack.Screen name="plant-look" />
-        {/* Mobile 1.47: where a home-screen widget tap lands; it opens the named place at once. */}
-        <Stack.Screen name="widget" options={{ animation: 'none' }} />
-        {/* Mobile 1.51: the old Play tab's route, which opens Practice at Drills at once (app/play.tsx). */}
-        <Stack.Screen name="play" options={{ animation: 'none' }} />
-      </Stack>
+      {/* Large screens (mobile 2.2): every screen draws in a centred column, never wider than
+          COLUMN_MAX (components/layout.tsx). A phone is narrower, so nothing changes there. */}
+      <ContentColumn bg={c.bg}>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: c.bg },
+            // Undefined = the platform's default push animation.
+            animation: reduced ? 'fade' : undefined,
+            // iOS honours this for the dissolve; the platform pushes keep their own timing.
+            animationDuration: motion.dur.screen,
+          }}
+        >
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="onboarding" options={{ gestureEnabled: false }} />
+          {/* No swipe-back inside a quiz: an accidental swipe must not lose an exam. */}
+          <Stack.Screen name="session" options={{ gestureEnabled: false }} />
+          {/* The quiz dissolves into its outcome: not a push to a new place. */}
+          <Stack.Screen name="results" options={{ gestureEnabled: false, animation: 'fade' }} />
+          {/* Mock start sheet: timing and "hide the clock", before every mock. */}
+          <Stack.Screen name="mock-start" options={{ animation: rise }} />
+          <Stack.Screen name="lesson/[id]" options={{ animation: rise }} />
+          <Stack.Screen name="game/trap" options={{ animation: rise }} />
+          <Stack.Screen name="game/sprint" options={{ animation: rise }} />
+          <Stack.Screen name="game/priority" options={{ animation: rise }} />
+          <Stack.Screen name="game/daylight" options={{ animation: rise }} />
+          {/* Build E: two note- and principle-based games, and the Guided step. */}
+          <Stack.Screen name="game/rumor" options={{ animation: rise }} />
+          <Stack.Screen name="game/callit" options={{ animation: rise }} />
+          {/* Build F: three content games. */}
+          <Stack.Screen name="game/field" options={{ animation: rise }} />
+          <Stack.Screen name="game/canopy" options={{ animation: rise }} />
+          <Stack.Screen name="game/stones" options={{ animation: rise }} />
+          <Stack.Screen name="guided" />
+          {/* Build F: You → Milestones (mobile 1.10: Badges) and You → Field notes. */}
+          <Stack.Screen name="milestones" />
+          <Stack.Screen name="field-notes" />
+          <Stack.Screen name="mistakes" />
+          <Stack.Screen name="settings" />
+          {/* Mobile 1.46: a Settings door's own screen (Your data, Help and about). */}
+          <Stack.Screen name="settings-section" />
+          <Stack.Screen name="saved" />
+          <Stack.Screen name="caught-up" />
+          <Stack.Screen name="bank/index" />
+          <Stack.Screen name="bank/[domain]" />
+          {/* Study notes: home (domains + search) → domain → subtopic. */}
+          <Stack.Screen name="notes/index" />
+          <Stack.Screen name="notes/[domain]" />
+          <Stack.Screen name="notes/subtopic/[id]" />
+          {/* Exam-mindset principles: the list by family → one principle (Learn, Mistake journal). */}
+          <Stack.Screen name="principles/index" />
+          <Stack.Screen name="principles/[id]" />
+          {/* Mobile 1.7: Help and feedback (You), common questions, Your reports and What's new.
+              (What's next was removed in 1.17.1; +native-intent sends old links to Help.) */}
+          <Stack.Screen name="help" />
+          <Stack.Screen name="faq" />
+          <Stack.Screen name="reports" />
+          <Stack.Screen name="whats-new" />
+          {/* Mobile 1.15: Your study, from Today's one "Fit your plan" card. */}
+          <Stack.Screen name="fit" />
+          {/* Mobile 1.16: the readiness report and the exam-week checklist. */}
+          <Stack.Screen name="readiness" />
+          <Stack.Screen name="exam-week" />
+          {/* The exam guide (Learn, Help) and the final review week's cheat sheet (data/exam/). */}
+          <Stack.Screen name="exam-guide" />
+          <Stack.Screen name="cheat-sheet" />
+          {/* Grove Phase 4 (O2): the Glossary, read-only (Learn's Glossary tile, Final review week's look-ups). */}
+          <Stack.Screen name="glossary" />
+          {/* Compatibility destinations redirect retired plant links to You. */}
+          <Stack.Screen name="plant" />
+          <Stack.Screen name="plant-pick" options={{ animation: rise }} />
+          <Stack.Screen name="plant-look" />
+          {/* Mobile 1.47: where a home-screen widget tap lands; it opens the named place at once. */}
+          <Stack.Screen name="widget" options={{ animation: 'none' }} />
+          {/* Mobile 1.51: the old Play tab's route, which opens Practice at Drills at once (app/play.tsx). */}
+          <Stack.Screen name="play" options={{ animation: 'none' }} />
+        </Stack>
+      </ContentColumn>
       <MotionRoot />
       {/* Light ⇄ Dark dissolves (mobile 1.9): a veil in the old paper fades out over the new theme. */}
       <ThemeFade isDark={isDark} bg={c.bg} />

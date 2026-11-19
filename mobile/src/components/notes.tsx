@@ -36,11 +36,11 @@ import { ICON_STROKE, Maximize2, X } from './icons';
 import { tween, useMotion, useScreenFocus } from './motion';
 import { nativeFigureFor, NativeFigureView } from './noteFigures';
 import { BigNum, Card, Gap, IconButton, ICON_SIZE, Section, T, useFontScale, useScreenScroll } from './ui';
+import { CONTENT_MAX, useContentWidth } from './layout';
 
-/** Content column: screen minus the 20pt gutters, never wider than 560 (spec §2). */
+/** Content column: the screen column minus the 20pt gutters, never wider than 560 (spec §2, components/layout.tsx). */
 export function useColumnWidth(): number {
-  const { width } = useWindowDimensions();
-  return Math.min(width - space.gutter * 2, 560);
+  return Math.min(useContentWidth() - space.gutter * 2, CONTENT_MAX);
 }
 
 // ── Small pieces ───────────────────────────────────────────────────────

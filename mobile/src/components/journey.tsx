@@ -11,7 +11,7 @@
 import { readyLine, REVIEW_ORDER } from '../engine/srs';
 import { drillTitle as gameTitle } from '../lib/drillNames';
 import { useEffect, useState, type ReactNode } from 'react';
-import { useWindowDimensions, View, type ViewStyle } from 'react-native';
+import { View, type ViewStyle } from 'react-native';
 import { domainColor } from '../content/certifications';
 import type { Certification } from '../content/types';
 import { biggestGrowth, clearingTitle, dayAccuracy, isOptional, itemMinutes, type DayPlan } from '../engine/dayPlan';
@@ -30,6 +30,7 @@ import { ESTIMATE_WORDS, FieldText, RangeNum, rangeWords, ScaleBar } from './fie
 import { READY_LOW } from '../engine/examReady';
 import { BigNum, DomainDot, ICON_SIZE, Row, Stat, StatRow, T, useFontScale } from './ui';
 import { aboutMin, spokenMin, timeStat } from '../engine/pace';
+import { useContentWidth } from './layout';
 
 // ── Plan items: icon, title, meta ─────────────────────────────────────
 export function planIcon(item: PlanItem, color: string): ReactNode {
@@ -396,7 +397,7 @@ export function PlanChecklist({
  */
 export function ReadinessFigure({ range, report = false, growth }: { range: ReadinessRange; report?: boolean; growth?: Growth }) {
   const { c } = useTheme();
-  const size = rangeStep(useFontScale(), useWindowDimensions().width);
+  const size = rangeStep(useFontScale(), useContentWidth());
   if (!range.enough) {
     return <T v={report ? 'hero' : 'headline'} color={c.ink}>Not enough data yet</T>;
   }
@@ -596,7 +597,7 @@ export function DomainRings({
   const { c, isDark } = useTheme();
   // The legend goes under the rings at large text AND on narrow phones: beside
   // the rings at 360 dp, "IT Governance" wrapped and "26/38" was cut off.
-  const narrow = useWindowDimensions().width < RINGS_SIDE_BY_SIDE_MIN;
+  const narrow = useContentWidth() < RINGS_SIDE_BY_SIDE_MIN;
   const large = useFontScale() >= LARGE_TEXT;
   const shown = only && only.length > 0 ? only : [...cert.domains.keys()];
   const tones = shown.map((i) => domainColor(cert.domains[i].tone, isDark));
