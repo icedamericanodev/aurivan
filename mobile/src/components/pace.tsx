@@ -11,17 +11,21 @@
  * "behind" and the 2-minute cue, NEVER the error colour, no pulsing. The
  * screens decide WHAT to say (engine/pace.ts); this only draws it.
  */
-import { useEffect, useState, type Ref } from 'react';
-import { Pressable, View } from 'react-native';
+import { useEffect, useRef, useState, type Ref } from 'react';
+import { Modal, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated, { Easing, ReduceMotion, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { Certification } from '../content/types';
 import { aboutSeconds, checkpointText, durationSpoken, durationText, durationWords, spokenMin, type MockPacing, type PaceStatus } from '../engine/pace';
-import { LARGE_TEXT, motion, radius, space } from '../theme/tokens';
+import { FINISH_NOW_LABEL, KEEP_GOING_LABEL, TIMES_UP_TITLE, timesUpBody } from '../engine/practiceCountdown';
+import { moveFocus } from '../lib/a11y';
+import { LARGE_TEXT, motion, radius, scrimOp, space } from '../theme/tokens';
 import { grovePlate } from '../theme/grove';
 import { useTheme } from '../theme/useTheme';
 import { Clock, Flag, Gauge, ICON_STROKE } from './icons';
+import { COLUMN_MAX } from './layout';
 import { ProgressFill, useMotion } from './motion';
-import { groveCard, ICON_SIZE, Row, T, useFontScale } from './ui';
+import { Button, groveCard, ICON_SIZE, Row, T, useFontScale } from './ui';
 
 /**
  * What the pace line says: a status (gauge icon), a cue to flag (flag icon,
@@ -38,6 +42,11 @@ export interface PaceStripProps {
    * 'untimed' for an untimed mock.
    */
   clock: { text: string; spoken: string; low?: boolean } | 'hidden' | 'untimed';
+  /**
+   * What a screen reader says for a hidden clock. Left out = the mock's words ("Clock hidden. Pace
+   * checks only."); a practice countdown (mobile 2.2) has no pace checks and says its own.
+   */
+  hiddenSpoken?: string;
   /** Small word after the clock: "left" or "session". */
   clockUnit?: string;
   /** The pace line, or nothing yet. */
@@ -61,7 +70,7 @@ export interface PaceStripProps {
   ref?: Ref<View>;
 }
 
-export function PaceStrip({ clock, clockUnit, line, lineShort, bar, onRequest, ref }: PaceStripProps) {
+export function PaceStrip({ clock, hiddenSpoken, clockUnit, line, lineShort, bar, onRequest, ref }: PaceStripProps) {
   const { c } = useTheme();
   const large = useFontScale() >= LARGE_TEXT;
   // Grove Phase 4 (PHASE4.md O13): pace attention is said in words in ink2, never clay (the handoff keeps
@@ -70,7 +79,7 @@ export function PaceStrip({ clock, clockUnit, line, lineShort, bar, onRequest, r
   const LineIcon = !line ? null : line.tone === 'cue' ? Flag : line.tone === 'note' || line.tone === 'soon' ? Clock : Gauge;
   const clockText = clock === 'hidden' ? 'Clock hidden' : clock === 'untimed' ? 'Untimed' : clock.text;
   const clockSpoken =
-    clock === 'hidden' ? 'Clock hidden. Pace checks only.' : clock === 'untimed' ? 'Untimed' : clock.spoken;
+    clock === 'hidden' ? (hiddenSpoken ?? 'Clock hidden. Pace checks only.') : clock === 'untimed' ? 'Untimed' : clock.spoken;
   // The low clock: its words ("left", the 5-minute line) carry it; the numerals stay ink.
   const clockColor = c.ink;
   const spoken = [clockSpoken, line?.text].filter(Boolean).join('. ');
@@ -117,6 +126,70 @@ export function PaceStrip({ clock, clockUnit, line, lineShort, bar, onRequest, r
     <View ref={ref} accessible accessibilityLabel={spoken} style={pad}>
       {body}
     </View>
+  );
+}
+
+/**
+ * Mobile 2.2: the practice countdown's time's-up sheet (engine/practiceCountdown.ts holds the words).
+ *
+ * Calm on purpose: the title is ink (never the error colour), nothing has been submitted, and the
+ * sheet says so. EXACTLY two choices and no other way out: no Close button, a tap on the dim does
+ * nothing and Android's Back does nothing, because leaving without choosing would leave the set
+ * with a clock at zero and no answer. The screen shows it again (once per opening of the set)
+ * until one of the two is tapped.
+ *
+ * Screen readers: the title takes focus as the sheet opens, so "Time's up" is said once, by the
+ * focus move itself (no separate announcement, which doubled on Android). Long text scrolls, so
+ * both buttons stay on screen at 200% text; the bottom inset keeps them above the system bar.
+ */
+export function TimesUpSheet({ visible, answered, total, onKeepGoing, onFinish }: { visible: boolean; answered: number; total: number; onKeepGoing: () => void; onFinish: () => void }) {
+  const { c, isDark } = useTheme();
+  const insets = useSafeAreaInsets();
+  const { height } = useWindowDimensions();
+  const titleRef = useRef<View>(null);
+  useEffect(() => {
+    if (visible) return moveFocus(titleRef, 350);
+  }, [visible]);
+  return (
+    // onRequestClose (Android Back) is required by Modal; it does nothing here on purpose (see above).
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={() => {}} statusBarTranslucent navigationBarTranslucent>
+      <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+        {/* The dim. Not a button: only the two choices close the sheet. */}
+        <View accessible={false} importantForAccessibility="no" style={[StyleSheet.absoluteFill, { backgroundColor: c.scrim, opacity: isDark ? scrimOp.dark : scrimOp.light }]} />
+        <View
+          testID="times-up-sheet"
+          accessibilityViewIsModal
+          style={[
+            {
+              width: '100%',
+              maxWidth: COLUMN_MAX,
+              alignSelf: 'center',
+              borderTopLeftRadius: radius.sheet,
+              borderTopRightRadius: radius.sheet,
+              overflow: 'hidden',
+              backgroundColor: c.raised2,
+              // Never taller than the screen under the status bar: at very large text the words scroll.
+              maxHeight: Math.max(0, height - insets.top - space.lg),
+              paddingBottom: insets.bottom,
+            },
+            // Dark: no shadow, so a hairline edge separates the sheet from the dim (as components/settings.tsx Sheet).
+            isDark && { borderWidth: 1.5, borderBottomWidth: 0, borderColor: c.line },
+          ]}
+        >
+          <ScrollView style={{ flexGrow: 0, flexShrink: 1 }} contentContainerStyle={{ paddingHorizontal: space.gutter, paddingTop: space.lg, paddingBottom: space.sm }}>
+            <View ref={titleRef} accessible accessibilityRole="header" accessibilityLabel={TIMES_UP_TITLE}>
+              <T v="hero">{TIMES_UP_TITLE}</T>
+            </View>
+            <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{timesUpBody(answered, total)}</T>
+          </ScrollView>
+          {/* Both choices stay under the words, in reach. Neither is a "danger" button: nothing is lost either way. */}
+          <View style={{ paddingHorizontal: space.gutter, paddingTop: space.sm, paddingBottom: space.md, gap: space.sm }}>
+            <Button label={KEEP_GOING_LABEL} accessibilityHint="Carries on with the same questions and no timer" onPress={onKeepGoing} />
+            <Button kind="secondary" label={FINISH_NOW_LABEL} accessibilityHint="Ends the set with the questions you answered" onPress={onFinish} />
+          </View>
+        </View>
+      </View>
+    </Modal>
   );
 }
 

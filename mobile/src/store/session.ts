@@ -12,6 +12,7 @@ import { persist } from 'zustand/middleware';
 import type { Letter } from '../content/types';
 import { addMs } from '../engine/answerClock';
 import type { Checkpoint, MockTiming } from '../engine/pace';
+import { bankMs, chooseAfter, readCountdown, timerKindOf, type PracticeCountdown } from '../engine/practiceCountdown';
 import type { PathReason, StudyMode } from '../engine/studyModes';
 import type { Confidence } from '../engine/srs';
 import type { Permutation } from '../engine/shuffle';
@@ -69,7 +70,8 @@ export interface ActiveSession {
   /**
    * Build D, all optional (older sessions have none):
    * - timing: the mock's timing option (none = standard, as before Build D);
-   * - hideClock: the learner chose "checkpoints only"; the deadline still applies;
+   * - hideClock: the learner chose "checkpoints only"; the deadline still applies
+   *   (mobile 2.2: the same choice for a practice countdown: words, not ticking numbers);
    * - checkpoints: the pace checks recorded so far (engine/pace.ts), each once;
    * - timed: a practice session with the count-up timer on (never a deadline).
    */
@@ -115,6 +117,14 @@ export interface ActiveSession {
    * older sessions have none (Results then shows the areas without a change).
    */
   before?: AreaSnapshot;
+  /**
+   * Mobile 2.2: a practice set's GENTLE countdown (engine/practiceCountdown.ts). It sits BESIDE
+   * `timed: true` (so an app that only knows `timed` shows the count-up timer) and never beside a
+   * `deadline`: it saves the answering time USED, not a clock time, so nothing is ever submitted
+   * for the learner and a changed phone clock changes nothing. Always read it through
+   * `readCountdown` (a damaged value reads as "no countdown"). Optional: older sessions have none.
+   */
+  countdown?: PracticeCountdown;
   finishedAt?: number; // set when the learner finishes / submits
 }
 
@@ -134,6 +144,13 @@ interface SessionState {
   finish: (endedAt?: number) => void;
   /** Build F: the milestone this finished session shows on Results. */
   setMilestone: (key: string) => void;
+  /**
+   * Mobile 2.2, the practice countdown: add answering time (ms). At zero it stops, ONCE, and notes
+   * how many questions were answered. Never for a mock, a finished session or a damaged countdown.
+   */
+  bankCountdown: (ms: number) => void;
+  /** The learner's answer on the time's-up sheet. Only at zero, and only the first answer counts. */
+  answerCountdown: (choice: 'untimed' | 'finished') => void;
   clear: () => void;
 }
 
@@ -184,6 +201,25 @@ export const useSession = create<SessionState>()(
       finish: (endedAt) =>
         set((s) => (s.active ? { active: { ...s.active, finishedAt: endedAt ?? Date.now() } } : s)),
       setMilestone: (key) => set((s) => (s.active ? { active: { ...s.active, milestone: key } } : s)),
+      bankCountdown: (ms) =>
+        set((s) => {
+          const a = s.active;
+          // Only a practice set that really has a countdown (`timed` and a clean `countdown`).
+          if (!a || a.finishedAt || timerKindOf(a) !== 'countdown') return s;
+          const saved = readCountdown(a.countdown);
+          if (!saved) return s;
+          const next = bankMs(saved, ms, Object.keys(a.responses).length);
+          return next === saved ? s : { active: { ...a, countdown: next } };
+        }),
+      answerCountdown: (choice) =>
+        set((s) => {
+          const a = s.active;
+          if (!a || a.finishedAt || timerKindOf(a) !== 'countdown') return s;
+          const saved = readCountdown(a.countdown);
+          if (!saved) return s;
+          const next = chooseAfter(saved, choice);
+          return next === saved ? s : { active: { ...a, countdown: next } };
+        }),
       clear: () => set({ active: null }),
     }),
     { name: 'aurivan.session.v1', storage: persistStorage, version: 1, onRehydrateStorage: watchHydration('session') },

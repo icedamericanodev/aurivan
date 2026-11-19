@@ -67,6 +67,7 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   AccessibilityInfo,
   Alert,
+  AppState,
   BackHandler,
   Dimensions,
   Modal,
@@ -107,7 +108,8 @@ import {
 } from '../components/quiz';
 import { addMs } from '../engine/answerClock';
 import { aboutMin, dueCheckpoints, formatClock, mockPace, paceMessage, paceShort, practiceElapsedMs, SOFT_CUE_LINE, softCue, spokenClockCoarse, spokenMin, statusOf, type Checkpoint } from '../engine/pace';
-import { PaceStrip, type PaceStripProps } from '../components/pace';
+import { PaceStrip, TimesUpSheet, type PaceStripProps } from '../components/pace';
+import { COUNTDOWN_CUE_LINE, countdownCue, LAST_MINUTE_LINE, LAST_MINUTE_SHORT, readCountdown, remainingMs, stageOf, startMeter, stepMeter, STOPPED_METER, timerKindOf, type CountdownMeter } from '../engine/practiceCountdown';
 import { QuestionNote, useHasQuestionNote, type QuestionNoteHandle } from '../components/questionNote';
 import { useReportFlow } from '../components/support';
 import { openTab } from '../lib/actions';
@@ -275,6 +277,110 @@ const PracticeClock = memo(function PracticeClock({ readClock, answering, answer
   );
 });
 
+/**
+ * A clock that only moves forward: it ignores changes to the phone's date and time. (Where the
+ * phone has none, the ordinary clock; engine/practiceCountdown.ts stepMeter still limits each tick.)
+ */
+const steadyNow = (): number => (typeof globalThis.performance?.now === 'function' ? globalThis.performance.now() : Date.now());
+/** While counting, the time used is saved at least this often (and whenever the clock stops). */
+const COUNTDOWN_SAVE_MS = 15_000;
+
+/**
+ * Mobile 2.2: the practice countdown's strip (engine/practiceCountdown.ts has the rules). GENTLE, and
+ * nothing like MockClock: there is no deadline, and at zero it only stops and tells the session
+ * (`bankCountdown`), which shows the time's-up sheet. It never finishes or submits anything.
+ *
+ * - It counts ANSWERING time only, as the count-up timer does: `running` is false while the
+ *   explanation shows, while another screen is on top and at zero; the clock stands still then.
+ * - It also stops while the app is not in front (AppState). Leaving the front SAVES the time used
+ *   at once, so closing the app loses nothing and the time away is never counted.
+ * - What is saved is time USED, not an end time, and each tick adds at most a few seconds, so
+ *   changing the phone's clock cannot add or remove time.
+ * - Like the other two clocks it holds the tick itself, so only this strip redraws each second.
+ * - Screen readers hear the time in whole minutes on the strip, and are told twice only:
+ *   "5 minutes left." and "1 minute left." (politely, queued behind other speech).
+ */
+const CountdownClock = memo(function CountdownClock({ leftMs, running, hidden }: { leftMs: number; running: boolean; /** "Hide the clock": words only, as a mock's hidden clock. */ hidden: boolean }) {
+  // The time left as last counted here: it starts from what is saved and only ever goes down.
+  const [left, setLeft] = useState(leftMs);
+  // Answering time counted but not yet saved to the session.
+  const unsaved = useRef(0);
+  const meter = useRef<CountdownMeter>(STOPPED_METER);
+  const [front, setFront] = useState(() => AppState.currentState === 'active');
+
+  /** Save what was counted (`force`: tell the session even with nothing new, so a clock at zero stops). */
+  const save = useCallback((force = false) => {
+    const ms = unsaved.current;
+    unsaved.current = 0;
+    if (ms > 0 || force) useSession.getState().bankCountdown(ms);
+  }, []);
+  /** One tick: add the time since the last one, say a cue if a mark was passed, and stop at zero. */
+  const step = useCallback(() => {
+    const next = stepMeter(meter.current, steadyNow());
+    meter.current = next.meter;
+    // Read the saved countdown fresh (not from a prop), so a tick right after a save is never out of date.
+    const saved = readCountdown(useSession.getState().active?.countdown);
+    if (!saved || stageOf(saved) !== 'running') return;
+    const before = remainingMs(saved) - unsaved.current;
+    const after = Math.max(0, before - next.addMs);
+    if (next.addMs > 0) {
+      unsaved.current += next.addMs;
+      const cue = countdownCue(before, after);
+      if (cue) sayLater(COUNTDOWN_CUE_LINE[cue], undefined, { queue: true });
+      setLeft(after);
+    }
+    if (after <= 0) save(true);
+    else if (unsaved.current >= COUNTDOWN_SAVE_MS) save();
+  }, [save]);
+
+  const live = running && front;
+  useEffect(() => {
+    if (!live) return;
+    meter.current = startMeter(steadyNow());
+    // A countdown reopened with nothing left stops here, at once (adds no time: the meter has just started).
+    step();
+    const t = setInterval(step, 1000);
+    return () => {
+      clearInterval(t);
+      step(); // the part of a second since the last tick
+      meter.current = STOPPED_METER;
+      save();
+    };
+  }, [live, step, save]);
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (state) => {
+      const inFront = state === 'active';
+      if (!inFront) {
+        // Leaving the front: count the last part of a second and save NOW. (Android can stop timers
+        // the moment the app is in the background, and the app may be closed from there.)
+        step();
+        meter.current = STOPPED_METER;
+        save();
+      }
+      setFront(inFront);
+    });
+    return () => sub.remove();
+  }, [step, save]);
+
+  // Whole seconds, rounded up: a fresh 15 minutes reads 15:00, and 00:00 shows only at zero.
+  const shown = Math.ceil(left / 1000) * 1000;
+  const paused = !running && left > 0;
+  const lastMinute = running && left > 0 && left <= 60_000;
+  // A hidden clock still says, in words, when the last 5 minutes have begun (as a mock's does).
+  const lastFive = hidden && running && left > 0 && left < LOW_TIME_MS;
+  return (
+    <PaceStrip
+      // Spoken in whole minutes (U-H2), so the label doesn't change every second.
+      clock={hidden ? 'hidden' : { text: formatClock(shown), spoken: `Time left ${spokenClockCoarse(shown)}${paused ? ', paused' : ''}` }}
+      hiddenSpoken={`Clock hidden. The countdown is ${left <= 0 ? 'over' : paused ? 'paused' : 'running'}.`}
+      clockUnit={paused ? 'left · paused' : 'left'}
+      // The last minute is said in words on the strip (never by colour), with the promise that matters.
+      line={lastMinute ? { text: LAST_MINUTE_LINE, tone: 'soon' } : lastFive ? { text: 'Less than 5 minutes left.', tone: 'soon' } : null}
+      lineShort={lastMinute ? LAST_MINUTE_SHORT : undefined}
+    />
+  );
+});
+
 export default function SessionScreen() {
   const { c } = useTheme();
   const active = useSession((s) => s.active);
@@ -371,6 +477,11 @@ export default function SessionScreen() {
   // Timed practice: its once-a-second clock and the soft cue live in PracticeClock (above), so the
   // tick redraws only the strip (release bug hunt round 2).
   const timedPractice = !isMock && Boolean(active?.timed);
+  // Mobile 2.2: this set's gentle countdown, if it has one (never a mock's; a damaged one reads as
+  // none, so the set counts up). Read fresh from what is saved, so it survives the app closing.
+  const hasCountdown = timerKindOf(active) === 'countdown';
+  const countdown = useMemo(() => (hasCountdown ? readCountdown(active?.countdown) : null), [hasCountdown, active?.countdown]);
+  const countdownStage = countdown ? stageOf(countdown) : null;
   // Mock exams: did this visit end with a tap on an option? If not, its time
   // is kept in the session store when the learner moves on (effect below).
   const pickedThisVisit = useRef(false);
@@ -642,6 +753,32 @@ export default function SessionScreen() {
     }
   };
 
+  // Mobile 2.2: the practice countdown at zero (the time's-up sheet's two buttons). Each is safe to tap
+  // twice: both read the SAVED countdown first and do nothing unless it is still waiting for its answer,
+  // the session takes only the first answer, and a finished session cannot finish again.
+  const waitingAtZero = () => {
+    const saved = readCountdown(useSession.getState().active?.countdown);
+    return Boolean(saved && stageOf(saved) === 'expired');
+  };
+  const keepGoingUntimed = () => {
+    if (!waitingAtZero()) return;
+    // The same set, no timer. Nothing else changes: the option picked but not checked stays picked.
+    useSession.getState().answerCountdown('untimed');
+    sayLater('No timer now. Carry on when you are ready.');
+  };
+  const finishAtZero = () => {
+    if (!waitingAtZero()) return;
+    useSession.getState().answerCountdown('finished');
+    // The same endings as "End session?" → End. Only checked answers count; an option picked but not
+    // checked, and every question not reached, stay unanswered (never marked wrong).
+    if (singleQuestion) exitSingle();
+    else if (Object.keys(active.responses).length > 0) finishSession({ celebrate: !active.firstSet });
+    else {
+      useSession.getState().clear();
+      openTab('/home');
+    }
+  };
+
   // "Latest callback" ref: the hardware back handler (registered once above)
   // always calls the newest `leave`. It must be set here, after the early
   // return, because `leave` needs the loaded session; it is only read in the
@@ -894,7 +1031,15 @@ export default function SessionScreen() {
         )}
       </Row>
       {strip && <PaceStrip {...strip} />}
-      {timedPractice && qid && <PracticeClock key={qid} readClock={readClock} answering={!submitted} answeredMs={practiceAnsweredMs} />}
+      {timedPractice && !countdown && qid && <PracticeClock key={qid} readClock={readClock} answering={!submitted} answeredMs={practiceAnsweredMs} />}
+      {/* Mobile 2.2: a set with a countdown. It runs only while a question waits for its answer on this
+          screen; after "Keep going untimed" the strip says "Untimed" and nothing ticks. */}
+      {countdown &&
+        (countdownStage === 'untimed' || countdownStage === 'finished' ? (
+          <PaceStrip clock="untimed" />
+        ) : (
+          <CountdownClock key={active.id} leftMs={remainingMs(countdown)} running={countdownStage === 'running' && !submitted && inView} hidden={Boolean(active.hideClock)} />
+        ))}
       {isMock && active.deadline !== undefined && <MockClock deadline={active.deadline} hideClock={Boolean(active.hideClock)} finished={Boolean(active.finishedAt)} />}
 
       <View style={{ flex: 1 }}>
@@ -1206,6 +1351,17 @@ export default function SessionScreen() {
       </View>
       {/* The report sheet the ⋯ sheet opens (a Modal: anywhere in the screen works). */}
       {report.sheet}
+      {/* Mobile 2.2: the practice countdown reached zero. The sheet shows until one of its two buttons
+          is tapped (the state is saved, so it is here again after the app was closed). */}
+      {countdown && (
+        <TimesUpSheet
+          visible={countdownStage === 'expired' && !active.finishedAt && inView}
+          answered={countdown.expiredAfter ?? answeredCount}
+          total={total}
+          onKeepGoing={keepGoingUntimed}
+          onFinish={finishAtZero}
+        />
+      )}
       {/* Mock navigator. Mobile 1.24: one summary line (answered · flagged · left), and "Submit exam"
           in a footer that stays put (it used to sit under the grid, up to 25 rows down). */}
       <Modal visible={navOpen} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={() => setNavOpen(false)}>
