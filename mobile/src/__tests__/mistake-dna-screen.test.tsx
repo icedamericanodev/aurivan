@@ -81,10 +81,10 @@ it.each(['light', 'dark'] as const)('shows accessible evidence and real remediat
   expect(text()).not.toMatch(/DNA/);
   expect(text()).toContain('Role confusion');
   expect(labels()).toContain(`Drill it: ${GAMES.canopy.name}`);
-  press('Explore pattern evidence');
+  press('Show details');
   expect(text()).toContain('Thinking-pattern breakdown');
   expect(text()).toContain('6 of 6');
-  expect(text()).toContain('Your tags');
+  expect(text()).toContain('From your tags');
   press(`Drill it: ${GAMES.canopy.name}`);
   expect(router.push).toHaveBeenCalledWith('/game/canopy');
   act(() => { useSettings.setState({ theme: 'light' }); });
@@ -97,7 +97,7 @@ it('keeps a next action and study notes for corrected knowledge gaps', () => {
   });
   expect(text()).toContain('Concept needs review');
   expect(labels()).toContain('Practice other questions');
-  expect(labels().some((x) => x.startsWith('Read the note:'))).toBe(true);
+  expect(labels().some((x) => x.startsWith('Read a related study note:'))).toBe(true);
   press('Practice other questions');
   const session = useSession.getState().active!;
   expect(session.questionIds.length).toBeGreaterThan(0);
@@ -116,25 +116,25 @@ it('handles certification reset and old-only evidence honestly', () => {
   act(() => { useProgress.getState().resetCert('cisa'); });
   // Mobile 2.2 (UX review): with no saved mistakes there is no pattern summary at all, only the empty state.
   expect(text()).not.toContain('Your mistake patterns');
-  expect(labels()).not.toContain('Explore pattern evidence');
+  expect(labels()).not.toContain('Show details');
   expect(text()).toContain('Nothing open right now');
   expect(text()).not.toMatch(/\b0 open\b/);
 });
 it('uses one help entry for the whole journal, with a visible coaching cue', () => {
   seed(50);
   expect(r!.root.findAllByType(FeatureInfo)).toHaveLength(1);
-  expect(text()).not.toContain('shares do not add up to 100%');
+  expect(text()).not.toContain('the bars do not add up to 100%');
   expect(text()).toContain('Ask who you are in the question');
   expect(text()).not.toContain('tagged by you');
   press('How mistake patterns work');
-  expect(text()).toContain('shares do not add up to 100%');
-  expect(text()).toContain('Each window needs at least 5 classified mistakes');
+  expect(text()).toContain('the bars do not add up to 100%');
+  expect(text()).toContain('once each has 5 mistakes with a pattern');
   press('Close, How mistake patterns work');
-  expect(text()).not.toContain('shares do not add up to 100%');
+  expect(text()).not.toContain('the bars do not add up to 100%');
   press('How mistake patterns work');
   act(() => { r!.root.findAllByType(Modal).find((m) => m.props.visible)?.props.onRequestClose(); });
-  expect(text()).not.toContain('shares do not add up to 100%');
-  press('Explore pattern evidence');
+  expect(text()).not.toContain('the bars do not add up to 100%');
+  press('Show details');
   expect(r!.root.findAllByType(FeatureInfo)).toHaveLength(1);
   expect(text()).toContain('6 with a pattern');
 });
@@ -145,7 +145,7 @@ it('counts misses made after the journal opened (the clock moves with the saved 
   jest.useFakeTimers({ now: new Date('2026-11-19T09:00:00Z') });
   try {
     seed(50);
-    press('Explore pattern evidence');
+    press('Show details');
     expect(text()).toContain('6 with a pattern');
     // An hour later, a practice session opened from the journal saves three more "role" misses.
     jest.setSystemTime(new Date('2026-11-19T10:00:00Z'));

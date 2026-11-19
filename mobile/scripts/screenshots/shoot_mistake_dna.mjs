@@ -29,7 +29,7 @@ for (const theme of ['light', 'dark']) {
   await page.goto(`${process.env.DNA_URL || 'http://127.0.0.1:8095'}/mistakes`, { waitUntil: 'networkidle' });
   await page.getByText('Your mistake patterns', { exact: true }).waitFor();
   await page.screenshot({ path: `${out}/${theme}-journal.png` });
-  await page.getByRole('button', { name: 'Explore pattern evidence', exact: true }).click();
+  await page.getByRole('button', { name: 'Show details', exact: true }).click();
   await page.getByText('Thinking-pattern breakdown', { exact: true }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${out}/${theme}-evidence.png` });
   await page.getByRole('button', { name: 'How mistake patterns work', exact: true }).click();

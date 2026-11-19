@@ -840,16 +840,16 @@ function journalSeed(mistakes) {
     c.check(/Last 28 days/.test(body0), 'the summary has no "Last 28 days" window line');
     await c.shot('m9-journal');
 
-    c.step('Explore pattern evidence → opens, then Hide → closes');
-    await page.getByRole('button', { name: 'Explore pattern evidence' }).first().click(); await sleep(700);
+    c.step('Show details → opens, then Hide → closes');
+    await page.getByRole('button', { name: 'Show details' }).first().click(); await sleep(700);
     h = (await headings(page)).join(' | ');
     const bodyE = norm(await bodyText(page));
     c.check(/Thinking-pattern breakdown/.test(h), 'the evidence did not open (no "Thinking-pattern breakdown")');
     const cls = bodyE.match(/(\d+) with a pattern · (\d+) without one/);
     c.check(cls && Number(cls[1]) === 5 && Number(cls[2]) === 3, `evidence counts read "${cls && cls[0]}", expected 5 with a pattern · 3 without one`);
-    c.check(await visible(page.getByRole('button', { name: 'Hide pattern evidence' })), 'no "Hide pattern evidence" button once open');
+    c.check(await visible(page.getByRole('button', { name: 'Hide details' })), 'no "Hide details" button once open');
     await c.shot('m9-evidence');
-    await page.getByRole('button', { name: 'Hide pattern evidence' }).first().click(); await sleep(600);
+    await page.getByRole('button', { name: 'Hide details' }).first().click(); await sleep(600);
     c.check(!/Thinking-pattern breakdown/.test((await headings(page)).join(' | ')), 'the evidence did not close');
 
     c.step('Read the principle');
@@ -955,7 +955,7 @@ function journalSeed(mistakes) {
     c.check(shown === misses.length, `${shown} of the ${misses.length} new misses show as cards in the journal`);
     const openN = jb.match(/(\d+) open/);
     c.check(openN && Number(openN[1]) === nBefore + misses.length, `the journal says "${openN && openN[0]}", expected ${nBefore + misses.length} open`);
-    await page.getByRole('button', { name: 'Explore pattern evidence' }).first().click(); await sleep(700);
+    await page.getByRole('button', { name: 'Show details' }).first().click(); await sleep(700);
     const cls2 = norm(await bodyText(page)).match(/(\d+) with a pattern · (\d+) without one/);
     const tot2 = cls2 ? Number(cls2[1]) + Number(cls2[2]) : -1;
     c.check(tot2 === nBefore + misses.length, `the pattern evidence counts ${tot2} misses in the window (${cls2 && cls2[0]}), expected ${nBefore + misses.length}: the new misses are left out`);
@@ -971,7 +971,7 @@ function journalSeed(mistakes) {
     const t = norm(await bodyText(page));
     c.check(/Nothing open right now/.test(t), 'no "Nothing open right now" empty state');
     c.check(!/Your mistake patterns/.test(h + t), 'the empty journal still shows "Your mistake patterns"');
-    c.check(!(await visible(page.getByRole('button', { name: /Explore pattern evidence|Read the principle|Drill it|Practice other questions/ }))), 'the empty journal shows pattern actions');
+    c.check(!(await visible(page.getByRole('button', { name: /Show details|Read the principle|Drill it|Practice other questions/ }))), 'the empty journal shows pattern actions');
     c.check(await visible(page.getByRole('button', { name: 'Practice 10 questions' })), 'no "Practice 10 questions" button in the empty state');
     await c.shot('m9b-empty');
   });

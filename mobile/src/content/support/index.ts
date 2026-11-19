@@ -63,7 +63,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     // date is set again at build freeze.
     version: '2.2',
     date: '2026-11-18',
-    new: ['Your mistake journal now shows the pattern behind your recent mistakes, one thing to try next, and practice on questions you have not seen yet.'],
+    new: ['Your mistake journal now shows the pattern behind your recent mistakes, one thing to try next, and practice on questions outside your mistake journal.'],
     improved: ['On tablets and other large screens, pages now sit in a comfortable reading width instead of stretching across the screen.'],
   },
   {

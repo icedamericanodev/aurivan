@@ -272,7 +272,7 @@ await edit('aurivan.progress.v1', `
   const m = v.state.byCert.cisa.mistakes; const ids = Object.keys(m);
   ids.forEach((id, i) => { m[id].resolved = false; if (i < 8) m[id].slip = i < 5 ? 'priority' : 'role'; });`);
 await shot('25-your-pattern', '/mistakes');
-await page.getByRole('button', { name: 'Explore pattern evidence', exact: true }).click();
+await page.getByRole('button', { name: 'Show details', exact: true }).click();
 await page.getByText('Thinking-pattern breakdown', { exact: true }).scrollIntoViewIfNeeded();
 await page.screenshot({ path: `${out}/25c-mistake-dna-evidence.png` });
 await edit('aurivan.progress.v1', `

@@ -10,19 +10,19 @@ import { Button, T } from './ui';
 
 /** The one action for a pattern: shown on the card, and again beside a rising trend. */
 const cue = (pattern: MistakeDNA['patterns'][number]['pattern']) =>
-  pattern === 'knowledge' ? 'Read a related note, then try fresh practice.' : pattern === 'runner-up' ? 'Say why the best answer wins before you tap.' : PATTERN_COPY[pattern].coach;
+  pattern === 'knowledge' ? 'Read a related note, then try fresh practice.' : pattern === 'runner-up' ? 'Say why the best answer wins before you tap.' : pattern === 'priority' ? 'Look for FIRST, BEST or MOST in the question, then read the options.' : PATTERN_COPY[pattern].coach;
 
-const sourceLabel = (p: MistakeDNA['patterns'][number]) => p.observed ? 'Answer evidence' : p.pattern === 'priority' ? 'Tags + wording' : 'Your tags';
+const sourceLabel = (p: MistakeDNA['patterns'][number]) => p.observed ? 'From the answers you chose' : p.pattern === 'priority' ? 'From your tags and the question wording' : 'From your tags';
 
 /** One shared explanation, using the app's accessible, scrollable help sheet. */
 function DNAHelp({ dna }: { dna: MistakeDNA }) {
   const sections = [
-    ['Learning clues', 'Your mistake patterns describe your retained mistakes, not a diagnosis of how you think or a measure of mastery. Tag why you slipped in the journal; “What do these mean?” gives examples.'],
-    ['Your evidence', `Classified means a valid learner tag or usable answer evidence is available. Unclassified means neither is available. Your tags are reflections; answer evidence describes your recorded pick or confidence. Tags + wording combines a Misread tag with a priority word in the question. ${dna.tagged} mistakes in this window have your tags.`],
-    ['The observation window', 'The last 28 days use each question’s latest saved miss. Repeated misses replace the earlier observation; saved tags can persist. Fixed mistakes remain in their original miss window. Untagged misses count only when usable answer evidence is available.'],
-    ['Counts and bars', 'Each count is distinct mistakes showing that pattern out of all classified mistakes in these 28 days. A bar shows that same share. A mistake may show several patterns, so shares do not add up to 100%. These are not shares of all practice answers.'],
-    ['When a pattern appears', 'A leading pattern needs at least 5 classified mistakes, including 3 showing that pattern. Equal counts share the lead. Below that sample, keep reflecting; the app does not guess a leading pattern.'],
-    ['Comparing recent practice', 'The trend compares the same pattern’s share in the recent 14 days with the previous 14 days. Each window needs at least 5 classified mistakes. Changes within 10 percentage points are called similar. Question mix and which mistakes you tag can change the shares; a smaller share does not prove improved mastery.'],
+    ['What this is', 'These patterns describe your recent mistakes. They are not a diagnosis of how you think or a measure of mastery. Tag why you slipped in the journal; “What do these mean?” gives examples.'],
+    ['Where a pattern comes from', `A mistake has a pattern when you tagged why you slipped, or when your answer or confidence shows one. “From your tags and the question wording” means you tagged Misread and the question had a word like FIRST or BEST. ${dna.tagged} mistakes here have your tags.`],
+    ['Which mistakes count', 'Each question counts once, using its latest miss in the last 28 days. Fixed mistakes still count in the window where you missed them.'],
+    ['Counts and bars', 'Each count is how many of your mistakes with a pattern show it. One mistake can show several patterns, so the bars do not add up to 100%.'],
+    ['When a pattern appears', 'A pattern is named once 5 mistakes have a pattern and 3 of them share it. Until then, keep tagging; the app will not guess.'],
+    ['Comparing recent practice', 'This compares the last 14 days with the 14 before, once each has 5 mistakes with a pattern. Small changes count as similar. A drop is a good sign, not proof of mastery.'],
   ];
   return (
     <>
@@ -61,9 +61,15 @@ export function MistakeDNASummary({ dna }: { dna: MistakeDNA }) {
           <T v="caption" color={c.accentText} maxFontSizeMultiplier={1.6}>{caption}</T>
         </View>
         <T v="title" accessibilityRole="header" accessibilityLabel={`${caption}: ${title}`} style={{ marginTop: space.xs }}>{title}</T>
-        <T v="small" style={{ marginTop: space.xs }}>{top ? cue(top.pattern) : 'Tag a few mistakes to help reveal a pattern.'}</T>
+        <T v="small" style={{ marginTop: space.xs }}>
+          {top
+            ? cue(top.pattern)
+            : dna.total === 0
+              ? 'Patterns use the last 28 days, and your mistakes below are older. Practice them, or answer new questions to see a fresh pattern.'
+              : 'Tag a few mistakes to help reveal a pattern.'}
+        </T>
       </View>
-      <Button kind="ghost" label={expanded ? 'Hide pattern evidence' : 'Explore pattern evidence'} expanded={expanded} onPress={() => setExpanded(!expanded)} style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.sm }} />
+      <Button kind="ghost" label={expanded ? 'Hide details' : 'Show details'} expanded={expanded} onPress={() => setExpanded(!expanded)} style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.sm }} />
       {expanded && (
         <View>
           <T v="label" accessibilityRole="header">Thinking-pattern breakdown</T>
@@ -71,15 +77,15 @@ export function MistakeDNASummary({ dna }: { dna: MistakeDNA }) {
           {dna.patterns.slice(0, 5).map((p) => (
             <View key={p.pattern} style={{ marginTop: space.md }}>
               <T v="label">{DNA_COPY[p.pattern].label}</T>
-              <T v="meta" accessibilityLabel={`${p.count} of ${dna.classified} classified mistakes, ${p.percent} percent. ${sourceLabel(p)}.`}>{`${p.count} of ${dna.classified} · ${sourceLabel(p)}`}</T>
+              <T v="meta" accessibilityLabel={`${p.count} of ${dna.classified} mistakes with a pattern, ${p.percent} percent. ${sourceLabel(p)}.`}>{`${p.count} of ${dna.classified} · ${sourceLabel(p)}`}</T>
               <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ height: 6, backgroundColor: c.line, marginTop: space.xs, borderRadius: 3 }}>
                 <View style={{ width: `${p.percent}%`, height: 6, backgroundColor: c.accent, borderRadius: 3 }} />
               </View>
             </View>
           ))}
-          {dna.patterns.length === 0 && <T v="small">No classified mistakes yet.</T>}
+          {dna.patterns.length === 0 && <T v="small">No mistakes with a pattern yet.</T>}
           <T v="label" accessibilityRole="header" style={{ marginTop: space.lg }}>Progress over time</T>
-          <T v="small" style={{ marginTop: space.xs }}>{dna.trend === 'insufficient' ? 'More evidence needed' : `${top ? DNA_COPY[top.pattern].label : 'Pattern'}: ${dna.trend === 'less' ? 'less frequent recently' : dna.trend === 'more' ? 'more frequent recently' : 'similar recently'}`}</T>
+          <T v="small" style={{ marginTop: space.xs }}>{dna.trend === 'insufficient' ? 'More evidence needed' : `${top ? DNA_COPY[top.pattern].label : 'Pattern'}: ${dna.trend === 'less' ? 'less often than the 2 weeks before. Keep going.' : dna.trend === 'more' ? 'more often than the 2 weeks before.' : 'about the same as the 2 weeks before.'}`}</T>
           {top && <T v="meta" style={{ marginTop: space.xs }}>{`Recent 14 days: ${count(dna.recent)} of ${dna.recent.classified} · Previous 14 days: ${count(dna.previous)} of ${dna.previous.classified}`}</T>}
           {top && dna.trend === 'more' && <T v="small" style={{ marginTop: space.xs }}>{`What helps: ${cue(top.pattern)}`}</T>}
         </View>

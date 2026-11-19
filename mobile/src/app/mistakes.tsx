@@ -219,22 +219,25 @@ export default function Mistakes() {
   // The drills open for this learner now (the same rule as Practice > Drills).
   const offered = useAvailableGames(certId);
   const tagMistake = useProgress((s) => s.tagMistake);
-  const [showFixed, setShowFixed] = useState(false);
+  // QA (2.2): "Show fixed" belongs to the exam it was turned on for, so switching exams starts closed.
+  const [fixedFor, setFixedFor] = useState<string | null>(null);
+  const showFixed = fixedFor === certId;
+  const setShowFixed = (on: boolean) => setFixedFor(on ? certId : null);
   const [footerH, setFooterH] = useState(120);
   const [tagsOpen, setTagsOpen] = useState(false);
   // The mistakes whose six tag chips are open (tapped "Tag why you slipped" / "Change").
   const [tagging, setTagging] = useState<string[]>([]);
   const openSession = () => router.push('/session');
 
+  // QA (2.2): only mistakes whose question is still in the pack are shown, so only those are counted
+  // ("N open", the footer, "Show N fixed"); a retired id used to count with no card to show for it.
+  const known = useMemo(() => Object.entries(progress.mistakes).filter(([id]) => !!findQuestion(certId, id)), [certId, progress.mistakes]);
   const entries = useMemo(
-    () =>
-      Object.entries(progress.mistakes)
-        .filter(([, m]) => showFixed || !m.resolved)
-        .sort(([, a], [, b]) => b.at - a.at),
-    [progress.mistakes, showFixed],
+    () => known.filter(([, m]) => showFixed || !m.resolved).sort(([, a], [, b]) => b.at - a.at),
+    [known, showFixed],
   );
-  const open = Object.entries(progress.mistakes).filter(([, m]) => !m.resolved);
-  const fixedCount = Object.keys(progress.mistakes).length - open.length;
+  const open = known.filter(([, m]) => !m.resolved);
+  const fixedCount = known.length - open.length;
   // Saved mistakes already contain one latest miss per stable question id.
   // The clock is read inside the memo (2.2 reviews): Date.now() in render broke the memo, so each tag tap
   // re-analysed every saved mistake; a clock frozen at mount would leave out misses made in a practice
@@ -289,7 +292,7 @@ export default function Mistakes() {
     <View>
       <PushedHeader title="Mistake journal" onBack={() => backOr('/you')} />
 
-      {Object.keys(progress.mistakes).length > 0 && <MistakeDNASummary dna={dna} />}
+      {known.length > 0 && <MistakeDNASummary dna={dna} />}
       {pattern.ready && (
         // Keep remediation beside the summary, using existing content and access rules.
         // UX review (2.2): no extra "What to do next" heading; the actions follow the cue directly.
@@ -307,7 +310,7 @@ export default function Mistakes() {
               style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
             />
           )}
-          {patternNote && <Button kind="ghost" label="Read a related study note" accessibilityLabel={`Read the note: ${patternNote.name}`} onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(patternNote.id)}`)} style={{ alignSelf: 'flex-start', marginLeft: -space.sm }} />}
+          {patternNote && <Button kind="ghost" label="Read a related study note" accessibilityLabel={`Read a related study note: ${patternNote.name}`} onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(patternNote.id)}`)} style={{ alignSelf: 'flex-start', marginLeft: -space.sm }} />}
           <Gap h={space.md} />
           {/* "Drill it" only when that game can be played for this exam (registry minPool) AND Drills has it open
               for this learner (release bug hunt round 2: the 50-answer unlock). Otherwise review the mistakes. */}
