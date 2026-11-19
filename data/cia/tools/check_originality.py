@@ -23,9 +23,20 @@ sentence made mostly of such terms would then hide a long copied run, every run
 is ALSO counted in plain words (a "raw run"): 11 or more for definitions and
 prose, 8 or more for titles.
 
+Citing a Standard by number and title is KaiSip's rule, not copying. So a span
+of OUR text that is exactly a citation listed in shared/_framework_library.md
+("Standard 11.5 <its title>", "Principle 7 <its title>", "Domain II <its
+title>") is set aside before any run is measured. The same title words inside
+copied prose, without the number in front, are still measured.
+
 THE IIA'S TEXT IS NEVER STORED IN THE REPOSITORY. The gate reads it from a
 folder outside the repo, in this order: --ref DIR, $CIA_REF_DIR, then
 ~/.cache/kaisip/cia_ref. A reference folder inside the repository is refused.
+Every .txt file in the folder is read for the run checks. The glossary comes
+from standards_2024.txt, or without that file from the text with the most
+glossary entries (never simply the first file with "standards" in its name: a
+saved web page once took that place and the glossary check did nothing). The
+last line names the file and the number of entries parsed.
 Fill the folder with --fetch: it downloads the Standards and the four syllabus
 files that shared/outline.json names (`syllabus_url`) from theiia.org, converts
 them with pdftotext, and downloads again any text that is missing, empty, more
@@ -35,10 +46,12 @@ than 30 days old or from another address than the outline names now.
 When no reference text is present the gate says so and exits 0, unless
 --require is given (the authoring pipeline and the release gate always pass
 --require). With --require the reference must also be COMPLETE: all five source
-texts present and not empty, and at least 56 glossary entries parsed from the
-Standards (the number counted in the opened file on 19 Nov 2026). A partial
+texts present and not empty (standards_2024, p1_syllabus, p2_syllabus,
+p3_syllabus, challenge_syllabus), and at least 56 glossary entries parsed from
+the Standards (the number counted in the opened file on 19 Nov 2026). A partial
 reference checks little and proves nothing. --fixture-ref turns the
-completeness rule off; only prove_harness.py uses it, for its made-up reference.
+completeness rule off, except that a glossary with no entry at all still fails;
+only prove_harness.py uses it, for its made-up reference.
 
 Usage:
   python3 data/cia/tools/check_originality.py --fetch --require
@@ -78,6 +91,10 @@ SKIP = {"_provenance", "_meta", "legacy_ids", "practice_ids", "url", "id", "fram
         "retired"}
 
 
+CITED = "kaisipcitation"            # stands in for a citation set aside from our text; never in theirs
+CITATION = re.compile(r"\b((?:Standard \d+\.\d+|Principle \d+|Domain [IVX]+) .+)$")
+
+
 def raw_words(text):
     """Plain lower-case words."""
     return re.findall(r"[a-z0-9]+", text.lower().replace("’", "").replace("'", ""))
@@ -89,6 +106,23 @@ def words(text):
     for i, t in enumerate(TERMS_OF_ART):
         text = text.replace(t, f"termofart{i}")
     return text.split()
+
+
+def citations(root):
+    """A pattern for the citation library's "Standard N.N <title>", "Principle N <title>" and
+    "Domain <roman> <title>" strings, as runs of plain words (None when there are none)."""
+    verified, likely, _problems = c.library(root)
+    names = {" ".join(raw_words(m.group(1))) for m in (CITATION.search(b) for b in verified | likely) if m}
+    if not names:
+        return None
+    return re.compile(r"(?<![a-z0-9])(?:" + "|".join(sorted(names, key=len, reverse=True)) + r")(?![a-z0-9])")
+
+
+def set_aside(text, cites):
+    """(our text as plain words with each exact citation replaced by one stand-in word, the
+    number replaced). The stand-in also keeps the words on its two sides from joining into a run."""
+    flat = " ".join(raw_words(text))
+    return cites.subn(CITED, flat) if cites else (flat, 0)
 
 
 def key(term):
@@ -192,9 +226,9 @@ def clean_pages(text):
 
 
 def glossary_entries(std):
-    """{term key: definition} from the Standards text: each "term – definition" paragraph."""
+    """{term key: definition} from a cleaned Standards text: each "term – definition" paragraph."""
     out = {}
-    for para in re.split(r"\n\s*\n", clean_pages(std)):
+    for para in re.split(r"\n\s*\n", std):
         flat = re.sub(r"\s+", " ", para).strip()
         flat = re.sub(r"^Glossary ", "", flat)          # the heading sits on the first entry's page
         m = re.match(r"^([a-z][a-z ,/’'()-]{1,60}?) – (.+)$", flat)
@@ -204,13 +238,19 @@ def glossary_entries(std):
 
 
 def reference(ref):
-    """Return a dict: glossary {term key: definition}, the syllabus lines and the whole text
-    as collapsed and as raw word lists, and the names of the texts read."""
+    """Return a dict: glossary {term key: definition} and the file it came from, the syllabus
+    lines and the whole text (every .txt in the folder) as collapsed and as raw word runs, and
+    the names of the texts read.
+
+    The glossary is taken from standards_2024.txt; without that file, from the text that
+    yields the most entries. Never from the first file with "standards" in its name."""
     texts = {p.stem: clean_pages(p.read_text(encoding="utf-8", errors="replace")) for p in sorted(ref.glob("*.txt"))}
-    std = texts.get(STANDARDS) or next((t for name, t in texts.items() if "standards" in name), "")
+    parsed = {name: glossary_entries(t) for name, t in texts.items()}
+    source = STANDARDS if texts.get(STANDARDS, "").strip() else max(parsed, key=lambda n: len(parsed[n]), default=None)
     lines = [l for name, t in texts.items() if "syllabus" in name for l in re.split(r"\n\s*(?=[a-h1-9]\d?\. )", t)]
     whole = " ".join(texts.values())
-    return {"glossary": glossary_entries(std), "names": {n for n, t in texts.items() if t.strip()},
+    return {"glossary": parsed.get(source, {}), "glossary_from": source,
+            "names": {n for n, t in texts.items() if t.strip()},
             "titles": set().union(*(grams(words(l), RUN_TITLE) for l in lines)) if lines else set(),
             "raw_titles": set().union(*(grams(raw_words(l), RAW_TITLE) for l in lines)) if lines else set(),
             "lines": [words(l) for l in lines], "raw_lines": [raw_words(l) for l in lines],
@@ -296,16 +336,20 @@ def main(argv):
               + ("ERROR, --require was given" if require else "skipped"))
         return 1 if require else 0
     their = reference(ref)
-    lacks = [] if "--fixture-ref" in args else incomplete(their)
+    lacks = incomplete(their) if "--fixture-ref" not in args else \
+        [] if their["glossary"] else ["no Standards glossary entry parsed from any text"]
     for l in lacks:
         print(f"{'ERROR' if require else 'warn '} reference: {l}")
     if lacks and require:
         print(f"check_originality: the reference text in {ref} is incomplete (run with --fetch); ERROR, --require was given")
         return 1
     glossary = their["glossary"]
-    flagged, counts = [], {"definition": 0, "title": 0, "prose": 0}
+    cites = citations(root)
+    flagged, counts, cited = [], {"definition": 0, "title": 0, "prose": 0}, 0
     for kind, where, term, text in ours(root):
-        a, raw = words(text), raw_words(text)
+        flat, n = set_aside(text, cites)
+        cited += n
+        a, raw = words(flat), flat.split()
         if kind == "definition":
             entry = glossary.get(key(term))
             if entry:
@@ -343,7 +387,8 @@ def main(argv):
     for f in flagged:
         print(f"ERROR {f['where']}: {f['why']}")
     print(f"check_originality: {counts['definition']} definition(s) matched a Standards glossary term "
-          f"({len(glossary)} parsed), {counts['title']} title(s), {counts['prose']} other string(s) · {len(flagged)} too close"
+          f"({len(glossary)} parsed from {their['glossary_from']}.txt), {counts['title']} title(s), "
+          f"{counts['prose']} other string(s), {cited} citation(s) by number and title set aside · {len(flagged)} too close"
           + (" · reference incomplete, so this run proves little (run with --fetch)" if lacks else ""))
     if json_out:
         Path(json_out).write_text(c.dump_json(flagged), encoding="utf-8")
