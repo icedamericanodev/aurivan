@@ -307,13 +307,18 @@ answer given (not legal advice):
   (content inside software) at a variable price. The page also says licensed
   content may not go into a publicly available AI system.
 
-**What others do (checked 19 Nov 2026).** The IIA's public list of licensed
-training providers has 13 names, among them Becker, Gleim and HOCK. Several
-small CIA prep apps are on sale in the App Store (found by web search; Google
-Play was not confirmed) and none of their developers is on that list; some
-have been listed for years. That shows tolerance, not permission. Several of
-them put "IIA-CIA" in the app name and promise a pass, which KaiSip's rules
-forbid. At least one still shows a 2019 part name, so being right for the 2025
+**What others do (store listings opened 19 Nov 2026).** The IIA's public list
+of licensed training providers has 13 names, among them Becker, Gleim and
+HOCK; Becker's app says it is built in official partnership with The IIA. The
+small CIA prep apps on sale in the App Store and Google Play (from iCert,
+Learn-Train Inc, Snap Prep OU, Cargo Teleport Inc, NUPUIT and The Flash Prep)
+are not on that list, and most say in their listing that they are not
+affiliated with or endorsed by the certifying body, which is the model KaiSip
+uses for CISA. They are still on sale, some last updated in 2024 and 2025.
+That shows tolerance, not permission, and The IIA does not publish who holds
+its separate Software Developer Licence. Several of them put "IIA-CIA" in the
+app name and promise a pass, which KaiSip's rules forbid, and at least one
+still names the parts as the 2019 exam did, so being right for the 2025
 syllabus is a selling point.
 
 **Owner decision (19 Nov 2026):** keep building in the private repository,
