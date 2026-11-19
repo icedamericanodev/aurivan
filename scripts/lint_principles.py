@@ -25,7 +25,10 @@ Optional flags (the defaults check the CISA files, unchanged):
                   its domains come from data/cia/shared/outline.json: section A
                   is domain 1, B is 2. Subtopic codes are part + section + topic
                   (1B3.2 is in domain 2; ciac codes start with 4) and ids are
-                  like cia1_d2_004. A principles file that is not written yet
+                  like cia1_d2_004. A section's question file, or the pack's
+                  notes, that is not written yet is skipped and named in one
+                  line, not an error (--cia-root DIR reads another CIA tree:
+                  the harness fixture). A principles file that is not written yet
                   prints one "nothing to lint yet" line and exits 0
     --notes PATH  notes file, or a folder of d{N}.json notes files, that
                   subtopic codes must exist in (codes like 3C3.2 are allowed)
@@ -123,6 +126,9 @@ for _pack in CIA_PACKS:
 QID_EXAMPLE = "d1_004"
 SUBTOPIC_EXAMPLE = "1A3.6"
 TOPIC_CODES = False  # also accept topic codes (1A) as subtopics
+# CIA packs are checked as far as they are written: files that do not exist yet
+# are listed here and reported in one line. None for every other course.
+CIA_SKIPPED = None
 
 TOP_KEYS = {"schema_version", "title", "updated", "description", "families",
             "principles", "slip_map"}
@@ -252,6 +258,9 @@ def load_questions():
     tags = {}
     for n in sorted(DOMAINS):
         f = ORIGINALS / f"d{n}.json"
+        if CIA_SKIPPED is not None and not f.exists():
+            CIA_SKIPPED.append(f"{rel(f)}")
+            continue
         try:
             data = json.loads(f.read_text())
         except (OSError, ValueError) as e:
@@ -299,6 +308,10 @@ def check_question_tags(doc, ctx):
 
 def load_subtopic_codes():
     files = sorted(NOTES.glob("d*.json")) if NOTES.is_dir() else [NOTES]
+    if CIA_SKIPPED is not None and not (NOTES.is_dir() and files):
+        # The Challenge pack has no section notes; a Part's may not be written yet.
+        CIA_SKIPPED.append(f"{rel(NOTES)}/d*.json")
+        return set()
     if not files:
         err(str(rel(NOTES)), "no d{N}.json notes files found")
     codes = set()
@@ -600,13 +613,14 @@ def configure(notes=None, bank=None):
 def configure_cert(cert):
     """Point every check at a --cert profile (CERT_PROFILES). Returns its default file."""
     global NOTES, ORIGINALS, DOMAINS, QID, SUBTOPIC, LEGACY_IDS
-    global QID_EXAMPLE, SUBTOPIC_EXAMPLE, TOPIC_CODES
+    global QID_EXAMPLE, SUBTOPIC_EXAMPLE, TOPIC_CODES, CIA_SKIPPED
     prof = CERT_PROFILES.get(cert)
     if prof is None:
         print(f"✗ --cert {cert}: unknown certification (known: {', '.join(sorted(CERT_PROFILES))})")
         sys.exit(2)
     if prof.get("outline"):
         prof = cia_profile(cert, prof)
+        CIA_SKIPPED = []
     NOTES, ORIGINALS = prof["notes"], prof["bank"]
     DOMAINS = set(prof["domains"])
     QID = re.compile(prof["qid"])
@@ -617,12 +631,26 @@ def configure_cert(cert):
     return prof["principles"]
 
 
+def use_cia_root(root):
+    """Read the CIA packs from another tree (same layout as data/cia)."""
+    global CIA, CIA_OUTLINE
+    CIA, CIA_OUTLINE = root, root / "shared" / "outline.json"
+    for pack in CIA_PACKS:
+        CERT_PROFILES[pack].update(principles=CIA / pack / "mindset" / "principles.json",
+                                   notes=CIA / pack / "notes", bank=CIA / pack / "originals")
+
+
 def parse_args(argv):
     path, opts = None, {"notes": None, "bank": None, "cert": None}
     args = list(argv[1:])
     while args:
         a = args.pop(0)
-        if a in ("--notes", "--bank", "--cert"):
+        if a == "--cia-root":  # another CIA tree (the harness fixture); only the CIA packs read it
+            if not args:
+                print(f"✗ {a} needs a value")
+                sys.exit(2)
+            use_cia_root(Path(args.pop(0)).resolve())
+        elif a in ("--notes", "--bank", "--cert"):
             if not args:
                 print(f"✗ {a} needs a value")
                 sys.exit(2)
@@ -738,6 +766,8 @@ def main(argv):
     print(f"  per domain: {dom_line}")
     n_q = len(ctx["qids"] - {None})
     print(f"  question tags (principle_id): {len(ctx['tags'])} of {n_q} tagged")
+    if CIA_SKIPPED:
+        print(f"  • not written yet, so not checked: {', '.join(CIA_SKIPPED)}")
     if ctx["tags"]:
         tagged_doms = sorted({qdomain(q) for q in ctx["tags"] if qdomain(q)})
         for pid, per_dom in tag_counts.items():

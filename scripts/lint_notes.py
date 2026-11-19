@@ -366,6 +366,9 @@ def lint_domain(r, dom, codes):
     want = [c for c in codes if c.startswith(str(n))]
     if PART and isinstance(n, int):  # --part 1, domain_number 2: section B, so topics 1B1, 1B2 ...
         want = [c for c in codes if c.startswith(f"{PART}{chr(64 + n)}")]
+    if PART and not want:  # a wrong --part or domain_number used to skip the topic check without a word
+        r.err(where, f"the outline has no code for part {PART}, section number {n!r}: check --part and domain_number "
+                     "(the topic ids cannot be checked)")
     got = [t.get("topic_id") for t in dom.get("topics", [])]
     if dom.get("partial"):  # a writer's draft for one Part (A or B) of a domain
         want = [c for c in want if c[1] == dom["partial"]]
