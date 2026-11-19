@@ -80,7 +80,8 @@ data/cia/
 - **Item fields**, in this order: `id, domain, subtopic, principle_id,
   challenge_ref, testable_from, difficulty, bloom_level, question, options,
   correct, key_concept, pre_read, correct_explanation, wrong_explanations,
-  tips, framework_ref, related_concepts, _provenance, style_version`.
+  tips, framework_ref, related_concepts, _provenance, style_version`, and
+  then, only on a retired item, `retired`.
   - `subtopic` is `"1A1 <the outline title>. <item label>"`.
   - `challenge_ref` is the Challenge topic the item serves (`"A1"` to `"E8"`)
     or `null`. An item on a shared topic may carry `null` when it is too basic
@@ -93,6 +94,12 @@ data/cia/
     citation library, and the first must sit in a Verified (opened) section.
   - `_provenance` starts "Authored from concept: notes 1A1.2 …" and names a
     notes sub-topic of the item's own topic.
+  - `retired` is left out of a live item. `"retired": true`, as the last
+    field, marks an item that was replaced or dropped: it keeps its id and its
+    number in the file for good (it is never deleted or renumbered), and is
+    left out of the Challenge build, mock pools, practice links, the key,
+    length and difficulty counts and blind copies. The wording gates still
+    read it. `check_ids.py` compares ids and the Challenge id map with main.
 - **Citation library**: a heading `## Verified: opened YYYY-MM-DD <source> (<url>)`
   or `## Likely: not opened (<why>)` sets the status of the bullets under it.
   The Standards are cited by number and title, never with quoted text.
@@ -156,7 +163,8 @@ topics with more bullets and for the "judge" verbs.
 | | **Part 3** | | 18 | **400** | **600** |
 
 The Challenge pool is whatever the tagged items add up to. One full Challenge
-mock needs 30 / 22.5 / 30 / 37.5 / 30 items in sections A to E.
+mock needs 30 / 23 / 30 / 37 / 30 items in sections A to E (22.5 and 37.5 by
+weight; the app deals whole questions, and every tool uses the same split).
 `build_challenge.py` prints how many full mocks the pool supports. Section A
 is the pinch: it draws on only five Part 1 topics (1A2, 1A7, 1A8, 1B2, 1B6)
 and Part 3 section C, so write those five topics to the upper end of their
@@ -216,8 +224,16 @@ The gates, in the order a round runs them (details in `data/cia/tools/README.md`
 8. Principles and exam guides: `scripts/lint_principles.py --cert <pack>` and `scripts/lint_exam_guide.py --cert <pack>` (issuer-aware: The IIA's hosts and wording).
 9. `node scripts/cia_pack_dry_run.cjs`: the phone app's own pack builders on each pack, and mock draws to the weights (`--require-full` at release time makes "cannot draw a full mock" an error).
 10. `build_challenge.py --check` and `build_packs.py --check`.
-11. `blind_copy.py`.
-12. `prove_harness.py`.
+11. `check_ids.py`: against main in git, no shipped question id deleted, renumbered or given to another question, and the Challenge id map only ever appended to (a replaced item is marked `"retired": true`).
+12. `blind_copy.py`.
+13. `prove_harness.py`.
+
+`bash data/cia/tools/run_gates.sh` runs them all and is what `scripts/verify_repo.sh` calls.
+
+An independent code review of the harness on 19 Nov 2026 found gaps (old terms
+in dict keys and with odd spacing, glossary entries lost at page breaks, ids
+that could be renumbered, a partial reference text passing as complete, and
+the rest); each is fixed and each now has a planted fault in `prove_harness.py`.
 
 What the gates cannot judge is in section 6: whether the keyed answer is truly
 the internal auditor's best move is a reviewer's call, not a script's.
