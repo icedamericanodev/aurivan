@@ -578,7 +578,7 @@ describe('Journey 5b: Role Check on the reviewed deck', () => {
     act(() => {
       r = create(<Mistakes />);
     });
-    expect(allText()).toContain('You answer as the wrong person');
+    expect(allText()).toContain('Role confusion');
     expect(root().findAll((n) => n.props.label === 'Drill it: Role Check' && typeof n.props.onPress === 'function').length).toBeGreaterThan(0);
   });
 });

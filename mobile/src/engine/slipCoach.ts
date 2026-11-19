@@ -27,6 +27,8 @@ import { runnerUp } from './tips';
 
 /** Why a learner missed a question — tagged by them in the Mistake journal. */
 export type ThinkingSlip = 'role' | 'priority' | 'tech-first' | 'symptom' | 'misread' | 'knowledge';
+export const THINKING_SLIPS: readonly ThinkingSlip[] = ['role', 'priority', 'tech-first', 'symptom', 'misread', 'knowledge'];
+export const isThinkingSlip = (value: unknown): value is ThinkingSlip => THINKING_SLIPS.includes(value as ThinkingSlip);
 
 /** The patterns the coach can name. */
 export type SlipPattern = 'runner-up' | 'priority' | 'overconfident' | Exclude<ThinkingSlip, 'priority'>;
@@ -94,10 +96,11 @@ export function missCoachLine(pickedRunnerUp: boolean, slip?: ThinkingSlip): str
 /** Every pattern one mistake shows (may be several, may be none). */
 export function patternsOf(m: SlipInput): SlipPattern[] {
   const out: SlipPattern[] = [];
-  if (m.picked && m.picked !== m.correct && m.picked === runnerUp(m.tips, m.correct)) out.push('runner-up');
+  const wrongPick = !!m.picked && /^[A-D]$/.test(m.picked) && /^[A-D]$/.test(m.correct) && m.picked !== m.correct;
+  if (wrongPick && m.picked === runnerUp(m.tips, m.correct)) out.push('runner-up');
   if (m.slip === 'priority' || (m.slip === 'misread' && priorityWord(m.stem) !== null)) out.push('priority');
-  if (m.confidence === 'sure') out.push('overconfident');
-  if (m.slip && m.slip !== 'priority') out.push(m.slip);
+  if (wrongPick && m.confidence === 'sure') out.push('overconfident');
+  if (m.slip && isThinkingSlip(m.slip) && m.slip !== 'priority') out.push(m.slip);
   return out;
 }
 
@@ -110,7 +113,7 @@ export type SlipCoach =
  * learner's own reflection; untagged misses are not evidence yet).
  */
 export function slipCoach(mistakes: SlipInput[]): SlipCoach {
-  const tagged = mistakes.filter((m) => m.slip);
+  const tagged = mistakes.filter((m) => isThinkingSlip(m.slip));
   if (tagged.length < SLIP_COACH_MIN) {
     return { ready: false, tagged: tagged.length, needed: SLIP_COACH_MIN - tagged.length };
   }
