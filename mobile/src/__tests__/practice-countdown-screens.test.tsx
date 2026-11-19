@@ -194,6 +194,13 @@ describe('Practice: Build a set has a Timer choice', () => {
     expect(startButton().props.label).toBe('Start 10 questions · 15 min');
     expect(startButton().props.accessibilityLabel).toBe('Start 10 questions with a 15 minute countdown');
     expect(allText()).toContain('At zero you choose: finish, or keep going untimed.');
+    // The field is "Time limit" ("Length" beside it already means how many questions), shown and spoken.
+    const limit = root().findAll((n) => n.props.testID === 'build-set-countdown' && typeof n.type === 'string')[0];
+    const words = (n: ReactTestInstance | string): string => (typeof n === 'string' ? n : n.children.map(words).join(' '));
+    expect(words(limit)).toContain('Time limit');
+    expect(words(limit)).not.toMatch(/Countdown length/i);
+    expect(limit.findAll((n) => typeof n.type === 'string' && n.props.accessibilityLabel === 'Time limit')).toHaveLength(1);
+    expect(limit.findAll((n) => n.props.accessibilityLabel === 'Countdown length')).toHaveLength(0);
     // A longer set: the lengths follow it, and the pace chosen is kept.
     act(() => {
       root().findAll((n) => n.props.accessibilityRole === 'radio' && n.props.accessibilityLabel === '20 questions' && typeof n.props.onPress === 'function').at(-1)!.props.onPress();

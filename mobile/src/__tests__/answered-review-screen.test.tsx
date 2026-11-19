@@ -3,12 +3,20 @@
  * (app/answered/[id].tsx) and the Question bank's Answered filter.
  *
  * What these tests prove, in plain English:
- *  - the page shows the question, the options in ORIGINAL A to D order, the
- *    best answer, every explanation, the Key idea, the tips, the last result
- *    and its date, and says the explanations are the current ones;
+ *  - the page shows, in this order, the last result and its date, the whole
+ *    question, the options in ORIGINAL A to D order with the best answer
+ *    marked, ONE switch ("Show why for each option", closed on every visit),
+ *    the Key idea, the tips, "Why B" whole, and a line saying the explanations
+ *    are the latest version;
+ *  - each option's reason is NOT on the page until that switch is pressed
+ *    (the one exception: a saved miss pick's own "Why not B");
  *  - it NEVER says which option the learner picked, except for a miss whose
  *    pick the Mistake journal kept for that same attempt (both branches,
- *    seeded through the real store, the way the session screen writes them);
+ *    seeded through the real store, the way the session screen writes them).
+ *    After any other miss it says the pick was not saved; after a right answer
+ *    it says nothing about the pick;
+ *  - the old "Compare all options" list (AnswerContext) is not on this page;
+ *    mock review still has it;
  *  - opening, scrolling, expanding and leaving it changes NOTHING in the
  *    progress, session or settings stores, and saves nothing to the phone;
  *  - only the "Practice this question" button starts a session, and it asks
@@ -19,17 +27,20 @@
  *    starts a one-question practice.
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Alert, Dimensions } from 'react-native';
+import { Alert, Dimensions, StyleSheet } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { router } from 'expo-router';
 import AnsweredQuestion, { LOOK_BACK_TITLE, PRACTICE_THIS_LABEL } from '../app/answered/[id]';
 import BankDomain, { ANSWERED_HELP } from '../app/bank/[domain]';
+import Results from '../app/results';
+import { AnswerContext, TIPS_HEADING, WHY_FOLD_CHARS } from '../components/quiz';
 import { CERTIFICATIONS } from '../content/certifications';
 import { findQuestion, getAllQuestions, getDomainQuestions, hasContent } from '../content/loader';
 import { REWRITTEN_QUESTIONS } from '../content/rewrittenQuestions';
 import { LETTERS, type Letter, type PackQuestion } from '../content/types';
 import { CURRENT_EXPLANATIONS_LINE, LAST_CORRECT_LINE, LAST_MISSED_LINE, PICK_NOT_SAVED_LINE, READ_ONLY_LINE } from '../engine/answeredReview';
 import { dropRewritten } from '../engine/rewrittenQuestions';
+import { identityPermutation, renderText } from '../engine/shuffle';
 import { finishSession } from '../lib/finishSession';
 import { haptic } from '../lib/haptics';
 import { startFromIds, startMock } from '../lib/sessions';
@@ -37,6 +48,7 @@ import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
+import { light } from '../theme/tokens';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -69,7 +81,7 @@ jest.mock('../content/loader', () => {
 // ── Questions from the real bank ────────────────────────────────────────
 const bank = getAllQuestions('cisa');
 const fourOptions = (q: PackQuestion) => LETTERS.every((l) => typeof q.options[l] === 'string');
-/** The full v2 tip set, a key idea and an explanation for every wrong option. */
+/** The full v2 tip set, a key idea, a long explanation (it would fold on the answer screen) and a reason for every wrong option. */
 const rich = bank.find(
   (q) =>
     fourOptions(q) &&
@@ -78,6 +90,7 @@ const rich = bank.find(
     q.tips.some((t) => t.startsWith('Eliminate:')) &&
     q.tips.some((t) => t.startsWith('Final two:')) &&
     q.tips.some((t) => t.startsWith('Exam cue:')) &&
+    q.explanation.length > WHY_FOLD_CHARS &&
     LETTERS.filter((l) => l !== q.correct).every((l) => q.wrongExplanations[l]),
 )!;
 /** A made-up question with a long scenario, so "Read full scenario" can be opened. */
@@ -85,6 +98,8 @@ const SCENARIO = `${'An auditor reviews a payment system after a change. '.repea
 const withScenario: PackQuestion = { ...rich, id: 'test_scenario_1', scenario: SCENARIO };
 mockExtra[withScenario.id] = withScenario;
 const wrongLetter = (q: PackQuestion): Letter => LETTERS.find((l) => l !== q.correct)!;
+/** An option's reason as the page prints it (ORIGINAL order, so `{{B}}` reads "B"). */
+const reasonOf = (q: PackQuestion, l: Letter) => renderText(l === q.correct ? q.explanation : q.wrongExplanations[l]!, identityPermutation(q));
 
 // 6 Oct 2026, 10:00 local: the page should print "6 Oct 2026".
 const T0 = new Date(2026, 9, 6, 10, 0, 0).getTime();
@@ -134,6 +149,13 @@ const open = (id: unknown) => {
   mockRoute.params = { id };
   mount(<AnsweredQuestion />);
 };
+// The switch under the options, and the letters whose reason is in the tree right now.
+const WHY_SHOW = 'Show why for each option';
+const WHY_HIDE = 'Hide why for each option';
+const whySwitch = () => byTestID('recap-why-toggle');
+const openReasons = () => LETTERS.filter((l) => byTestID(`recap-why-${l}`).length > 0);
+/** How many times `part` is in `whole`. */
+const times = (whole: string, part: string) => whole.split(part).length - 1;
 
 /** Answer the way the session screen does: the answer first, then (after a miss) the Mistake journal entry. */
 function answer(id: string, correct: boolean, picked?: Letter) {
@@ -173,23 +195,36 @@ afterEach(() => {
 
 // ── What the page shows ─────────────────────────────────────────────────
 describe('the look-back page', () => {
-  it('shows the question, the options in ORIGINAL order, the best answer, every explanation, the key idea and the tips', () => {
+  it('shows the question, the options in ORIGINAL order, the best answer, the key idea, the tips and the best answer’s explanation', () => {
     answer(rich.id, true);
     open(rich.id);
     const t = allText();
     expect(t).toContain(LOOK_BACK_TITLE);
     expect(t).toContain(rich.stem);
     // Original order A, B, C, D: each row holds that ORIGINAL letter's own wording (no shuffle is made up).
-    const rows = LETTERS.map((l) => byTestID(`answer-context-${l}`)[0]);
+    const rows = LETTERS.map((l) => byTestID(`recap-choice-${l}`)[0]);
     rows.forEach((row, i) => expect(textOf(row)).toContain(rich.options[LETTERS[i]]!));
     const order = LETTERS.map((l) => t.indexOf(rich.options[l]!));
     expect([...order].sort((a, b) => a - b)).toEqual(order);
-    // The best answer is marked, once, on the right row.
-    expect(textOf(byTestID(`answer-context-${rich.correct}`)[0])).toContain('Best answer');
+    // The best answer is marked, once, on the right row; no other row has a caption ("Not the best" is gone).
+    expect(textOf(byTestID(`recap-choice-${rich.correct}`)[0])).toContain('✓ Best answer');
     expect(t.match(/Best answer/g)).toHaveLength(1);
-    // An explanation for every choice.
-    expect(t).toContain(`Why ${rich.correct}`);
-    for (const l of LETTERS.filter((x) => x !== rich.correct)) expect(t).toContain(`Why not ${l}`);
+    expect(t).not.toMatch(/Not the best/i);
+    expect(t).not.toContain('Compare all options');
+    // Each row is one screen-reader stop that says its letter and its words.
+    for (const l of LETTERS) {
+      const said = l === rich.correct ? `${l}, best answer: ${rich.options[l]}` : `${l}: ${rich.options[l]}`;
+      expect(root().findAll((n) => n.props.accessible === true && n.props.accessibilityLabel === said && typeof n.type === 'string')).toHaveLength(1);
+    }
+    // The best answer's explanation, whole (a long one: the answer screen would fold it), under a "Why B" heading.
+    expect(rich.explanation.length).toBeGreaterThan(WHY_FOLD_CHARS);
+    const whyHead = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && textOf(n).trim() === `Why ${rich.correct}`);
+    expect(whyHead).toHaveLength(1);
+    const whyText = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityLabel === reasonOf(rich, rich.correct));
+    expect(whyText).toHaveLength(1);
+    expect(whyText[0].props.numberOfLines).toBeUndefined();
+    expect(allSpoken()).not.toMatch(/Read more/);
+    expect(t).not.toContain('Read more');
     // The Key idea and the three tips.
     expect(t).toContain('Key idea');
     expect(t).toContain(rich.keyConcept!);
@@ -200,6 +235,94 @@ describe('the look-back page', () => {
     expect(t).toContain(READ_ONLY_LINE);
     // No {{B}} token left in what is shown.
     expect(t).not.toMatch(/\{\{[A-D]\}\}/);
+  });
+
+  it('the order: question, options, the why switch, Key idea, tips, Why best, then the latest-version line', () => {
+    answer(rich.id, true);
+    open(rich.id);
+    const t = allText();
+    const parts = [
+      LAST_CORRECT_LINE,
+      READ_ONLY_LINE,
+      rich.stem,
+      ...LETTERS.map((l) => rich.options[l]!),
+      WHY_SHOW,
+      'Key idea',
+      rich.keyConcept!,
+      TIPS_HEADING,
+      'Exam cue',
+      `Why ${rich.correct}`,
+      reasonOf(rich, rich.correct),
+      CURRENT_EXPLANATIONS_LINE,
+      PRACTICE_THIS_LABEL,
+    ];
+    // Each part is on the page exactly once (so its place is not in doubt), and they come in this order.
+    for (const part of parts) expect([part, times(t, part)]).toEqual([part, 1]);
+    const at = parts.map((part) => t.indexOf(part));
+    expect([...at].sort((a, b) => a - b)).toEqual(at);
+    // The caption over the stem is a heading, in the quiet ink (the answer screen's), not the accent.
+    const caption = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && textOf(n).trim() === 'Question');
+    expect(caption).toHaveLength(1);
+    expect(StyleSheet.flatten(caption[0].props.style).color).toBe(light.ink2);
+    expect(light.ink2).not.toBe(light.accentText);
+  });
+
+  it('the reasons are NOT on the page until "Show why for each option" is pressed; closed again on every visit', () => {
+    answer(rich.id, true);
+    open(rich.id);
+    const wrong = LETTERS.filter((l) => l !== rich.correct);
+    // Closed: a button that says so, and no option's reason anywhere a reader or a screen reader could find it.
+    expect(whySwitch()).toHaveLength(1);
+    expect(whySwitch()[0].props.accessibilityRole).toBe('button');
+    expect(whySwitch()[0].props.accessibilityLabel).toBe(WHY_SHOW);
+    expect(whySwitch()[0].props.accessibilityState).toMatchObject({ expanded: false });
+    expect(textOf(whySwitch()[0]).trim()).toBe(WHY_SHOW);
+    expect(openReasons()).toEqual([]);
+    expect(allText()).not.toContain('Why not');
+    for (const l of wrong) {
+      expect(allText()).not.toContain(reasonOf(rich, l));
+      expect(allSpoken()).not.toContain(reasonOf(rich, l));
+    }
+    // Pressed: every option has its own reason under it, the wrong ones as "Why not X".
+    press(WHY_SHOW);
+    expect(whySwitch()[0].props.accessibilityLabel).toBe(WHY_HIDE);
+    expect(whySwitch()[0].props.accessibilityState).toMatchObject({ expanded: true });
+    expect(openReasons()).toEqual([...LETTERS]);
+    for (const l of wrong) {
+      const reason = byTestID(`recap-why-${l}`)[0];
+      expect(reason.props.accessibilityLabel).toBe(`Why not ${l}: ${reasonOf(rich, l)}`);
+      expect(reason.props.accessibilityRole).toBeUndefined(); // one more stop, never a heading
+      expect(textOf(byTestID(`recap-choice-${l}`)[0])).toContain(reasonOf(rich, l));
+    }
+    // Pressed again: gone again.
+    press(WHY_HIDE);
+    expect(openReasons()).toEqual([]);
+    // Left open, then the page is opened again: closed.
+    press(WHY_SHOW);
+    expect(openReasons()).toEqual([...LETTERS]);
+    unmount();
+    open(rich.id);
+    expect(whySwitch()[0].props.accessibilityState).toMatchObject({ expanded: false });
+    expect(openReasons()).toEqual([]);
+  });
+
+  it('the old "Compare all options" list is not on this page; mock review still has it', () => {
+    answer(rich.id, false, wrongLetter(rich));
+    open(rich.id);
+    expect(root().findAllByType(AnswerContext)).toHaveLength(0);
+    expect(root().findAll((n) => typeof n.props.testID === 'string' && n.props.testID.startsWith('answer-context'))).toHaveLength(0);
+    expect(byTestID('recap-choices')).toHaveLength(1);
+    unmount();
+
+    // A submitted mock, one question opened in its review: the full list, as before.
+    startMock('cisa', 10);
+    act(() => finishSession({ celebrate: false }));
+    mockRoute.params = {};
+    mount(<Results />);
+    const first = root().findAll((n) => n.props.accessibilityLabel === 'Question 1, Skipped.' && typeof n.props.onPress === 'function')[0];
+    act(() => first.props.onPress());
+    expect(root().findAllByType(AnswerContext)).toHaveLength(1);
+    expect(allText()).toContain('Compare all options');
   });
 
   it('the last result and its date come from the saved answer', () => {
@@ -241,9 +364,10 @@ describe('the look-back page', () => {
     answer(rich.id, false, wrongLetter(rich));
     open(rich.id);
     expect(allText()).toContain(LAST_MISSED_LINE);
-    expect(byTestID('answer-context')).toHaveLength(1);
+    expect(byTestID('recap-choices')).toHaveLength(1);
+    for (const l of LETTERS) expect(byTestID(`recap-choice-${l}`)).toHaveLength(1);
     // Every pressable on the page has a role and a name.
-    expect(tappables().length).toBeGreaterThanOrEqual(2); // Back and "Practice this question"
+    expect(tappables().length).toBeGreaterThanOrEqual(3); // Back, the why switch and "Practice this question"
     for (const n of tappables()) {
       expect(n.findAll((x) => x.props.accessibilityRole === 'button').length).toBeGreaterThan(0);
     }
@@ -255,13 +379,22 @@ describe('the look-back page', () => {
 describe('the learner’s pick', () => {
   const yourAnswer = /your (answer|pick)/i;
 
-  it('a RIGHT answer: no option is called "Your answer"; the page says the pick was not saved', () => {
+  it('a RIGHT answer: no option is called "Your answer", and the page says nothing about a pick "not saved"', () => {
     answer(rich.id, true);
     open(rich.id);
-    expect(allText()).toContain(PICK_NOT_SAVED_LINE);
+    expect(allText()).toContain(LAST_CORRECT_LINE);
+    // Beside "Last time: correct" the not-saved line read as an error: it is not there, shown or spoken.
+    expect(allText()).not.toContain(PICK_NOT_SAVED_LINE);
+    expect(allSpoken()).not.toContain(PICK_NOT_SAVED_LINE);
+    expect(allText()).not.toMatch(/not saved|saved your result/i);
     expect(allText()).not.toMatch(yourAnswer);
     expect(allSpoken()).not.toMatch(yourAnswer);
     expect(byTestID('tip-pick-chip')).toHaveLength(0);
+    // The same with every reason open: still no "Your answer".
+    press(WHY_SHOW);
+    expect(allText()).not.toMatch(yourAnswer);
+    expect(allSpoken()).not.toMatch(yourAnswer);
+    expect(allText()).not.toContain(PICK_NOT_SAVED_LINE);
   });
 
   it('a MISS the Mistake journal kept for the same attempt: that option, and only that one, is "Your answer"', () => {
@@ -271,23 +404,58 @@ describe('the learner’s pick', () => {
     const cp = selectCert(useProgress.getState(), 'cisa');
     expect(cp.mistakes[rich.id].at - cp.answers[rich.id].lastAt).toBe(0);
     open(rich.id);
-    const row = byTestID(`answer-context-${picked}`)[0];
-    expect(textOf(row)).toContain('Your answer · not the best');
+    const row = byTestID(`recap-choice-${picked}`)[0];
+    expect(textOf(row)).toContain('✗ Your answer');
     expect(textOf(row)).toContain(rich.options[picked]!);
     expect(allText().match(/Your answer/g)).toHaveLength(1);
+    expect(root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityLabel === `${picked}, your answer, not the best: ${rich.options[picked]}`)).toHaveLength(1);
     expect(allText()).not.toContain(PICK_NOT_SAVED_LINE);
     // The best answer is still marked as the best, not as theirs.
-    expect(textOf(byTestID(`answer-context-${rich.correct}`)[0])).not.toMatch(yourAnswer);
+    expect(textOf(byTestID(`recap-choice-${rich.correct}`)[0])).toContain('✓ Best answer');
+    expect(textOf(byTestID(`recap-choice-${rich.correct}`)[0])).not.toMatch(yourAnswer);
     expect(allText()).toContain(LAST_MISSED_LINE);
   });
 
-  it('a MISS with no journal entry: not saved', () => {
+  it('a saved miss pick: its own "Why not" is open while the switch is closed, and the switch shows the rest', () => {
+    const picked = wrongLetter(rich);
+    answer(rich.id, false, picked);
+    open(rich.id);
+    // The switch is closed, yet the pick's reason is there, in its own row, as on the answer card.
+    expect(whySwitch()[0].props.accessibilityState).toMatchObject({ expanded: false });
+    expect(openReasons()).toEqual([picked]);
+    expect(byTestID(`recap-why-${picked}`)[0].props.accessibilityLabel).toBe(`Why not ${picked}: ${reasonOf(rich, picked)}`);
+    expect(textOf(byTestID(`recap-choice-${picked}`)[0])).toContain(reasonOf(rich, picked));
+    // No other wrong option's reason yet.
+    for (const l of LETTERS.filter((x) => x !== picked && x !== rich.correct)) expect(allText()).not.toContain(reasonOf(rich, l));
+    expect(allText().match(/Why not/g)).toHaveLength(1);
+    // The switch reveals the rest; closing it leaves the pick's own reason where it was.
+    press(WHY_SHOW);
+    expect(openReasons()).toEqual([...LETTERS]);
+    press(WHY_HIDE);
+    expect(openReasons()).toEqual([picked]);
+  });
+
+  it('a MISS with no journal entry: "not saved", once, right under the switch, and every reason closed', () => {
     useProgress.getState().recordAnswer('cisa', rich.id, false);
     open(rich.id);
-    expect(allText()).toContain(LAST_MISSED_LINE);
-    expect(allText()).toContain(PICK_NOT_SAVED_LINE);
-    expect(allText()).not.toMatch(yourAnswer);
+    const t = allText();
+    expect(t).toContain(LAST_MISSED_LINE);
+    expect(times(t, PICK_NOT_SAVED_LINE)).toBe(1);
+    // Its place: after the switch, before the Key idea (nothing else between the switch and it).
+    expect(t.indexOf(WHY_SHOW)).toBeGreaterThan(t.indexOf(rich.options.D!));
+    expect(t.indexOf(PICK_NOT_SAVED_LINE)).toBeGreaterThan(t.indexOf(WHY_SHOW));
+    expect(t.slice(t.indexOf(WHY_SHOW) + WHY_SHOW.length, t.indexOf(PICK_NOT_SAVED_LINE)).trim()).toBe('');
+    expect(t.indexOf('Key idea')).toBeGreaterThan(t.indexOf(PICK_NOT_SAVED_LINE));
+    // No pick is known, so no reason is open and no row is "Your answer".
+    expect(whySwitch()[0].props.accessibilityState).toMatchObject({ expanded: false });
+    expect(openReasons()).toEqual([]);
+    expect(t).not.toContain('Why not');
+    expect(t).not.toMatch(yourAnswer);
     expect(allSpoken()).not.toMatch(yourAnswer);
+    // The line stays (once) with the reasons open.
+    press(WHY_SHOW);
+    expect(times(allText(), PICK_NOT_SAVED_LINE)).toBe(1);
+    expect(allText()).not.toMatch(yourAnswer);
   });
 
   it('a MISS whose journal entry is from an OLDER attempt: not saved (the old pick is never reused)', () => {
@@ -298,6 +466,7 @@ describe('the learner’s pick', () => {
     open(rich.id);
     expect(allText()).toContain(PICK_NOT_SAVED_LINE);
     expect(allText()).not.toMatch(yourAnswer);
+    expect(openReasons()).toEqual([]); // the old pick's reason is not opened either
   });
 
   it('a right answer after a miss: the old pick is never shown as this answer’s', () => {
@@ -306,8 +475,11 @@ describe('the learner’s pick', () => {
     answer(rich.id, true);
     open(rich.id);
     expect(allText()).toContain(LAST_CORRECT_LINE);
-    expect(allText()).toContain(PICK_NOT_SAVED_LINE);
+    // A right answer: nothing about the pick at all, and the old miss's reason is not opened.
+    expect(allText()).not.toContain(PICK_NOT_SAVED_LINE);
     expect(allText()).not.toMatch(yourAnswer);
+    expect(allSpoken()).not.toMatch(yourAnswer);
+    expect(openReasons()).toEqual([]);
   });
 
   /** Start a mini mock and answer its first question wrong. Returns that question and the ORIGINAL letter picked. */
@@ -326,7 +498,8 @@ describe('the learner’s pick', () => {
     jest.setSystemTime(T0 + 5 * 60_000);
     act(() => finishSession({ celebrate: false }));
     open(q.id);
-    expect(textOf(byTestID(`answer-context-${original}`)[0])).toContain('Your answer · not the best');
+    expect(textOf(byTestID(`recap-choice-${original}`)[0])).toContain('✗ Your answer');
+    expect(allText().match(/Your answer/g)).toHaveLength(1);
     expect(allText()).not.toContain(PICK_NOT_SAVED_LINE);
   });
 
@@ -359,8 +532,15 @@ describe('read-only', () => {
     // Tap everything that can be tapped, except the one button that is allowed to start something.
     const taps = tappables().filter((x) => x.props.label !== PRACTICE_THIS_LABEL && x.props.accessibilityLabel !== PRACTICE_THIS_LABEL);
     expect(taps.length).toBeGreaterThanOrEqual(1); // at least Back
+    const hadWhySwitch = whySwitch().length > 0;
+    if (id === rich.id || id === withScenario.id) expect(hadWhySwitch).toBe(true);
     for (const n of taps) act(() => n.props.onPress({ nativeEvent: {} }));
     expect(router.back).toHaveBeenCalled(); // "leaving" by the Back button
+    // "Show why for each option" really was opened (so that tap is covered too).
+    if (hadWhySwitch) {
+      expect(whySwitch()[0].props.accessibilityState).toMatchObject({ expanded: true });
+      expect(openReasons().length).toBeGreaterThanOrEqual(3);
+    }
     // The long scenario really was folded open (so "expanding" is covered).
     if (id === withScenario.id) expect(allText()).toContain('The last control was never tested.');
     act(() => {
@@ -465,6 +645,8 @@ describe('read-only', () => {
 // ── Bad links and questions that can't be shown ─────────────────────────
 describe('what can’t be opened', () => {
   const noAnswerShown = (q: PackQuestion) => {
+    expect(byTestID('recap-choices')).toHaveLength(0);
+    expect(whySwitch()).toHaveLength(0);
     expect(byTestID('answer-context')).toHaveLength(0);
     expect(allText()).not.toContain('Best answer');
     expect(allText()).not.toContain(q.explanation.slice(0, 40));
@@ -537,7 +719,8 @@ describe('what can’t be opened', () => {
     act(() => finishSession({ celebrate: false }));
     open(q.id);
     expect(allText()).not.toContain('Finish your mock first');
-    expect(byTestID('answer-context')).toHaveLength(1);
+    expect(byTestID('recap-choices')).toHaveLength(1);
+    expect(allText()).toContain('✓ Best answer');
   });
 });
 
@@ -560,6 +743,9 @@ describe('the Question bank’s Answered filter', () => {
     act(() => chip('Answered').props.onPress());
     expect(rows()).toHaveLength(2);
     expect(allText()).toContain(ANSWERED_HELP);
+    // The help line no longer promises "You won't answer it again" right above "Practice these again".
+    expect(ANSWERED_HELP).toBe('Tap a question to look back at it without answering.');
+    expect(btn('Practice these again')).toBeDefined();
     expect(allText()).not.toContain(d1[2].stem.split('\n')[0].slice(0, 30));
     // The row says what the tap does.
     const row = rows()[0];
