@@ -5959,13 +5959,12 @@
       "id": "aaia_d1_163",
       "domain": 1,
       "subtopic": "1B AI governance. Smart devices and AI governance",
-      "principle_id": "ai-governance-before-tooling",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
       "question": "A Czech smart-thermostat maker's AI inventory lists its heating model's data as readings from 200 test homes; once installed, each thermostat's copy keeps adapting to its home's habits. What should concern the IS auditor MOST?",
       "options": {
-        "A": "Customers' home data trains each copy, yet the record omits it",
-        "B": "The 200 test homes may not represent every customer's home",
+        "A": "Each copy learns from customers' homes, which the record omits",
+        "B": "The 200 test homes stand in for every customer's real home",
         "C": "Firmware updates may erase what each copy has learned",
         "D": "Each home's adapted copy may need its own named owner"
       },
@@ -5989,7 +5988,7 @@
         "Online learning",
         "Personal data in training"
       ],
-      "_provenance": "Authored from concept: notes 1B.1 AI Strategy, Policy and Inventory (a model that keeps learning in use trains on the data where it runs, so the AI inventory must record that data). Round 1 fix, 19 Nov 2026: re-angled from bringing product AI into the program's scope, which reused the frame of aaia_d1_088, to what the inventory must record for a model that keeps learning in customers' homes. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1B.1 AI Strategy, Policy and Inventory (a model that keeps learning in use trains on the data where it runs, so the AI inventory must record that data). Round 1 fix, 19 Nov 2026: re-angled from bringing product AI into the program's scope, which reused the frame of aaia_d1_088, to what the inventory must record for a model that keeps learning in customers' homes. Round 2 fix, 19 Nov 2026: option B restated as a fact the stem gives, so the key is no longer the only plain statement among hedged options. Round 3 fix, 19 Nov 2026: option A no longer echoes the stem's 'data', and the principle tag is dropped because test-home coverage, the runner-up, is not a tooling move, so online-learning knowledge decides. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
       "style_version": 2
     },
     {
@@ -6222,14 +6221,14 @@
       "question": "A Lao railway caps honest passengers its fare-evasion model wrongly picks for penalty review; a lower score cutoff was approved as low risk since AUC was unchanged. What is the IS auditor's BEST recommendation?",
       "options": {
         "A": "Have senior management raise the cap to fit the lower cutoff",
-        "B": "Have the change board require AUC retests for cutoff changes",
+        "B": "Have the change board require AUC retests for every cutoff change",
         "C": "Have IT restrict who can edit the cutoff setting",
-        "D": "Have the owner test the new cutoff's wrongful picks against the cap"
+        "D": "Have the owner test the new cutoff's false positives against the cap"
       },
       "correct": "D",
       "key_concept": "Moving a model's cutoff can raise wrongful flags while its AUC stays the same, so the owner rechecks harm at the new cutoff against tolerance.",
       "pre_read": "Read what changed, then ask what each option would show about it.",
-      "correct_explanation": "AUC, the area under the curve, measures how well the model ranks evaders above honest passengers across every possible cutoff, so moving the cutoff never changes it. A lower cutoff sends more cards to penalty review, honest passengers' cards among them. The owner sets the cutoff inside the cap, so wrongful picks at the new cutoff must be measured against it. AUC retests, option B, would pass whatever cutoff runs.",
+      "correct_explanation": "AUC, the area under the curve, measures how well the model ranks evaders above honest passengers across every possible cutoff, so moving the cutoff never changes it. A lower cutoff sends more passengers to penalty review, honest ones among them. The owner sets the cutoff inside the cap, so false positives, the wrongful picks, at the new cutoff must be measured against it. AUC retests, option B, would pass whatever cutoff runs.",
       "wrong_explanations": {
         "A": "Tempting because tolerances can be revised. But the cap follows the risk appetite; loosening it to fit a cutoff whose effect on passengers is unknown reverses that order.",
         "B": "Tempting because changes need testing. But AUC covers every cutoff at once, so it is the same whatever cutoff runs and never shows how many honest passengers are picked.",
@@ -6246,7 +6245,7 @@
         "AUC",
         "Decision cutoff"
       ],
-      "_provenance": "Authored from concept: notes 1C.2 Risk Appetite, Tolerance and AI Key Risk Indicators (moving a model's cutoff can raise wrongful flags while its AUC stays the same, so the owner rechecks harm at the new cutoff against tolerance). Round 1 fix, 19 Nov 2026: re-angled from a tolerance stated as AUC, which reused the frame of aaia_d1_125, to checking an approved cutoff change against the tolerance. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1C.2 Risk Appetite, Tolerance and AI Key Risk Indicators (moving a model's cutoff can raise wrongful flags while its AUC stays the same, so the owner rechecks harm at the new cutoff against tolerance). Round 1 fix, 19 Nov 2026: re-angled from a tolerance stated as AUC, which reused the frame of aaia_d1_125, to checking an approved cutoff change against the tolerance. Round 2 fix, 19 Nov 2026: key D says 'wrongful flags' so it no longer echoes the stem's 'picks', B names every cutoff change, and the explanation no longer names travel cards the stem never gives. Round 3 fix, 19 Nov 2026: key D says 'false positives' so it no longer echoes the stem's 'wrongly'. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
       "style_version": 2
     },
     {

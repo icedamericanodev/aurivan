@@ -11512,7 +11512,7 @@
       "subtopic": "2B AI lifecycle. A retired model's grades as labels",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Spanish property insurer retired its roof-condition model for misgrading tile roofs; its past grades stay in a shared label store teams use to train new models. What should the IS auditor recommend FIRST?",
+      "question": "A Spanish property insurer retired its roof-condition model for misgrading tile roofs; its past grades stay in a shared label store teams use to build new models. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Withhold its tile-roof grades from training until regraded",
         "B": "Revoke the retired model's endpoint, keys and service accounts",
@@ -11539,7 +11539,7 @@
         "Label quality",
         "Data lineage"
       ],
-      "_provenance": "Authored from concept: notes 2B.3 Decommissioning AI Systems (a retired model's flawed outputs kept as training labels are withheld from new training). Completeness round 1: re-angled from the dependent model's owner assessing it, the frame of aaia_d2_061, to stopping the flawed grades' reuse from a shared label store. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2B.3 Decommissioning AI Systems (a retired model's flawed outputs kept as training labels are withheld from new training). Completeness round 1: re-angled from the dependent model's owner assessing it, the frame of aaia_d2_061, to stopping the flawed grades' reuse from a shared label store. Round 2: removed a stem word echoed only in the key. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
       "style_version": 2
     },
     {
@@ -11967,7 +11967,7 @@
       "correct_explanation": "A language model can state reasons that differ from the factors it was given, adding or rewording them, and an approved prompt does not fix each output the way a configured rule would. Comparing a sample of sent letters with each case's logged factors shows whether applicants are told the real reasons. Inspecting the prompt checks the design, but generated letters can stray from a sound prompt.",
       "wrong_explanations": {
         "A": "Tempting because a configured control is often tested once. But generated text varies by case and run, so a sound prompt does not show each letter is faithful.",
-        "B": "Tempting because appeals expose errors. But few refused applicants appeal, and a letter that misstates their reasons may mislead them about what to challenge.",
+        "B": "Tempting because appeals expose errors. But it relies on applicants choosing to appeal, and a letter that misstates their reasons may mislead them about what to challenge.",
         "C": "Tempting because low temperature steadies wording. But steady wording can still misstate the factors; it makes errors repeatable, not checked."
       },
       "tips": [
@@ -11981,7 +11981,7 @@
         "Explanation faithfulness",
         "Output monitoring"
       ],
-      "_provenance": "Authored from concept: notes 2D.3 Decision Logs, Appeals and Feedback (generated reasons can misstate the logged factors, so sampled letters are checked against them). Completeness round 1: re-angled from keeping each letter as sent instead of regenerating it, the frame of aaia_d2_116, to checking generated letters against the logged factors; unlike aaia_d3_128 (an auditor recomputing explanation-tool reasons), this tests the bank's own supervision of generated wording. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2D.3 Decision Logs, Appeals and Feedback (generated reasons can misstate the logged factors, so sampled letters are checked against them). Completeness round 1: re-angled from keeping each letter as sent instead of regenerating it, the frame of aaia_d2_116, to checking generated letters against the logged factors; unlike aaia_d3_128 (an auditor recomputing explanation-tool reasons), this tests the bank's own supervision of generated wording. Round 2: a wrong-explanation no longer claims an appeal rate the stem never gives. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
       "style_version": 2
     },
     {
@@ -12501,11 +12501,11 @@
     {
       "id": "aaia_d2_340",
       "domain": 2,
-      "subtopic": "2G AI incident response. Loan balances shown to other customers",
+      "subtopic": "2G AI incident response. A bank assistant's answer cache",
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Moldovan bank's assistant reuses stored answers for similar questions; after 37 customers saw others' loan balances, the AI team disabled the cache and logged an accuracy defect. What should the IS auditor recommend FIRST?",
+      "question": "A Moldovan bank's assistant reuses stored answers to similar questions across all customers; after 37 received wrong balances, the AI team disabled the cache, logging an accuracy defect. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Retest the cache's similarity setting before it is re-enabled",
         "B": "Bring in the privacy officer to assess any duty to notify",
@@ -12515,15 +12515,15 @@
       "correct": "B",
       "key_concept": "When a cache serves one customer's stored answer to another, real data is disclosed: a privacy incident needing privacy staff at once.",
       "pre_read": "Note what has already been done before ranking the options.",
-      "correct_explanation": "A semantic cache returns real stored answers, so these were genuine customers' balances, not invented text: a personal-data disclosure, not only an accuracy defect. Privacy staff must join at once to judge any duty to notify, which can run on a deadline from discovery. Retesting the similarity setting is the right fix before re-enabling, but the cache is already off, so the fix can wait while any deadline cannot.",
+      "correct_explanation": "A semantic cache returns real stored answers, so the wrong balances were other customers' real ones, not invented text: a personal-data disclosure, not only an accuracy defect. Privacy staff must join at once to judge any duty to notify, which can run on a deadline from discovery. Retesting the similarity setting is the right fix before re-enabling, but the cache is already off, so the fix can wait while any deadline cannot.",
       "wrong_explanations": {
-        "A": "Tempting because the setting caused the leak. But the cache is already off; retesting is the later fix, while the disclosure needs privacy handling now.",
-        "C": "Tempting because reproducing confirms a fault. But the logs already show 37 disclosures, and with the cache off a repeat proves nothing.",
+        "A": "Tempting because the cache's matching served the wrong answers. But the cache is already off; retesting is the later fix, while the disclosure needs privacy handling now.",
+        "C": "Tempting because reproducing confirms a fault. But 37 cases are already known, and with the cache off a repeat proves nothing.",
         "D": "Tempting because it removes exposed data. But the cache is already off, and purging destroys evidence the investigation and any notice need."
       },
       "tips": [
-        "Eliminate: C repeats a fault the logs already confirm, and D destroys evidence after the cache is already off.",
-        "Final two: B beats A because real customers' data reached others, a privacy incident that may carry notice deadlines; the similarity retest is the fix and can wait while the cache is off.",
+        "Eliminate: C repeats a fault 37 known cases already confirm, and D destroys evidence after the cache is already off.",
+        "Final two: B beats A because a reused answer is another customer's real balance, a privacy incident that may carry notice deadlines; the similarity retest can wait while the cache is off.",
         "Exam cue: An AI incident can also be a privacy incident; when real personal data reaches the wrong person, bring in privacy staff at once, whatever the AI team calls it."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 IR-6 (Incident Reporting); NIST AI 600-1 Section 2.4 (Data Privacy)",
@@ -12532,7 +12532,7 @@
         "Semantic caching",
         "Privacy incident"
       ],
-      "_provenance": "Authored from concept: notes 2G.1 Recognizing and Triaging AI Incidents (an AI incident may also be a privacy incident; when a shared cache leaks real personal data, privacy staff join at once). Completeness round 1: re-angled from sizing the exposure first, the frame of aaia_d2_298, to bringing in privacy staff for a confirmed disclosure the AI team logged as an accuracy defect. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2G.1 Recognizing and Triaging AI Incidents (an AI incident may also be a privacy incident; when a shared cache leaks real personal data, privacy staff join at once). Completeness round 1: re-angled from sizing the exposure first, the frame of aaia_d2_298, to bringing in privacy staff for a confirmed disclosure the AI team logged as an accuracy defect. Round 2: stem no longer states the disclosure, so the cache mechanism decides it. Round 3: stem states the stored answers are shared across all customers, so a wrong balance is another customer's real one; A's explanation no longer claims the setting caused it. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
       "style_version": 2
     },
     {
@@ -12616,25 +12616,25 @@
       "principle_id": "named-human-owner",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Colombian metro's AI committee approved weapons-detection gates on overall accuracy; engineers traced insulin-pump false flags to tests lacking medical devices, retrained and closed the problem. What should the IS auditor recommend as BEST?",
+      "question": "A Colombian metro's AI committee approved weapons-detection gates on overall accuracy; engineers traced insulin-pump false flags to tests lacking medical or mobility devices, retrained and closed the problem. What is the IS auditor's BEST recommendation?",
       "options": {
         "A": "Report the cause to the committee that cleared the gates",
         "B": "Add insulin-pump scans to the tests rerun after each change",
         "C": "Keep the problem closed, as the retrain stopped the false flags",
-        "D": "Have the IS auditor retest the gates for the committee"
+        "D": "Rerun the committee's accuracy test on the retrained gates"
       },
       "correct": "A",
       "key_concept": "When an AI root cause shows the evidence a use was approved on was incomplete, report it to whoever approved the use, not only engineers.",
       "pre_read": "Read the whole sequence of events before judging the closure.",
-      "correct_explanation": "The committee approved the gates on an overall accuracy figure, and the root cause shows its tests held no medical devices, so that figure hid a group of riders the gates misjudge. Only the committee can decide whether its approval still holds and which other groups need testing. Adding insulin-pump scans to regression tests is sound, but it guards one group and leaves the approval resting on evidence now known to be incomplete.",
+      "correct_explanation": "The committee approved the gates on an overall accuracy figure, and the root cause shows its tests held no medical or mobility devices, so that figure hid groups of riders the gates may misjudge. Only the committee can decide whether its approval still holds and which groups need testing. Adding insulin-pump scans to regression tests is sound, but it guards one group and leaves the approval resting on evidence now known to be incomplete.",
       "wrong_explanations": {
-        "B": "Tempting because lessons learned should update tests. But it covers one device; the approval still rests on accuracy evidence that left out groups the committee never weighed.",
+        "B": "Tempting because lessons learned should update tests. But it covers insulin pumps only; mobility devices were never tested either, and the approval still rests on incomplete evidence.",
         "C": "Tempting because the false flags stopped. But a cause that undermines the approval evidence must reach those who approved the use, not end with the fix.",
-        "D": "Tempting because independent testing sounds rigorous. But retesting the gates is management's work; the IS auditor recommends and reports, keeping objectivity."
+        "D": "Tempting because a retrain is a change that needs retesting. But the overall accuracy figure is what hid the insulin-pump errors, so it cannot show how other groups fare."
       },
       "tips": [
-        "Eliminate: C ends the problem at the fix without reporting what the cause revealed, and D has the IS auditor testing the gates, which is management's work.",
-        "Final two: A beats B because the cause shows the accuracy behind the approval missed a group; a new test covers insulin pumps, but only the committee can decide if its approval holds.",
+        "Eliminate: C ends the problem at the fix without reporting what the cause revealed, and D reruns the overall accuracy test that hid the insulin-pump errors.",
+        "Final two: A beats B because the tests behind the approval held no medical or mobility devices; a new test covers insulin pumps, but only the committee can decide if its approval holds.",
         "Exam cue: When an AI root cause shows the approval evidence was incomplete, report it to whoever approved the use, not only to engineers."
       ],
       "framework_ref": "NIST AI 100-1 MANAGE 4.3 (Incidents and errors communicated and tracked); NIST AI 100-1 MEASURE 2.11 (Fairness and bias evaluated and documented)",
@@ -12643,7 +12643,7 @@
         "Incident reporting",
         "Approval evidence"
       ],
-      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (incidents are reported to owners and the AI governance committee; a root cause showing the approval evidence was incomplete goes to whoever approved the use). Completeness round 1: re-angled from checking training coverage before a retrain, the frame of aaia_d2_259, to reporting a root cause to the approving committee. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (incidents are reported to owners and the AI governance committee; a root cause showing the approval evidence was incomplete goes to whoever approved the use). Completeness round 1: re-angled from checking training coverage before a retrain, the frame of aaia_d2_259, to reporting a root cause to the approving committee. Round 2: stem states the tests held no medical devices of any kind, and D now falls to the overall-accuracy fact rather than the auditor's role. Round 3: stem adds that the tests also held no mobility devices, so a single insulin-pump regression test (B) visibly leaves the approval evidence incomplete. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
       "style_version": 2
     },
     {
