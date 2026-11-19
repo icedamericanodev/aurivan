@@ -9,12 +9,14 @@ one set of gates, with the CIA-only rules added. In one place it checks:
             verb in a known depth class, a one-to-one Challenge map), and the
             "- 1A1 Title" lines of docs/content/CIA_BLUEPRINT.md against it
   library   shared/_framework_library.md has well-formed Verified and Likely sections
-  item      field set and order, id (cia1_d1_001), domain, difficulty and bloom
-            pairing, subtopic "1A1 <outline title>. Label", four options and a
-            key, an explanation for the key and for every wrong option, three
-            tips (Eliminate / Final two / Exam cue) that agree with the key,
-            "Closest choice:" on the runner-up only, key at most 8 characters
-            longer than the longest distractor
+  item      field set and order (an optional `"retired": true` comes last), id
+            (cia1_d1_001), domain, difficulty and bloom pairing, subtopic
+            "1A1 <outline title>. Label", four options and a key, an explanation
+            for the key and for every wrong option, three tips (Eliminate /
+            Final two / Exam cue) that agree with the key (the whole Eliminate
+            tip is read: two wrong letters, never the key), "Closest choice:" on
+            the runner-up only, key at most 8 characters longer than the longest
+            distractor
   links     _provenance names a notes sub-topic of the item's own topic that
             exists; every framework_ref part is a library bullet and the FIRST
             part is Verified (a key may rest only on an opened source);
@@ -28,7 +30,8 @@ one set of gates, with the CIA-only rules added. In one place it checks:
   per file  key spread (from 20 items), pick-the-longest 15 to 24% and
             pick-the-shortest at most 30% (from 40 items, ties shared), the
             difficulty mix each topic's syllabus verb calls for (from 8 items
-            per topic), notes sub-topics with no question (reported)
+            per topic), notes sub-topics with no question (reported). Retired
+            items keep their id and number and are left out of these counts
 
 Usage:
   python3 data/cia/tools/check_cia.py                 # outline, library and every pack
@@ -51,6 +54,10 @@ MIN_RATE, MAX_RATE, MAX_SHORT_RATE = 0.15, 0.24, 0.30
 KEY_MIN_N, RATE_MIN_N, VERB_MIN_N = 20, 40, 8
 GENDERED = re.compile(r"\b(he|she|him|her|his|hers|himself|herself)\b", re.I)
 AUDITOR_STEM = re.compile(r"\b(internal auditors?|chief audit executive|audit team|audit function)\b[^.?]*\?\s*$", re.I)
+# Words that can follow an option letter but not the English article "A" ("A and D", "A is", "A only tests").
+AFTER_LETTER = {"and", "or", "nor", "is", "are", "was", "because", "since", "as", "both", "too", "also", "only", "just",
+                "merely", "simply", "still", "never", "alone", "would", "could", "can", "cannot", "may", "might",
+                "must", "should", "will"}
 OWNER_MOVE = re.compile(r"^(implement|fix|remediate|configure|correct the|accept the risk|take over|"
                         r"assume responsibility for|redesign the control)\b", re.I)
 
@@ -121,15 +128,41 @@ def rate(qs, length, pick=max):
     return wins / max(len(qs), 1)
 
 
+def eliminated(tip, key):
+    """The option letters an Eliminate tip names, read from the whole tip.
+
+    A capital "A" is the English article, not option A, when a plain lowercase word follows
+    it ("A manager owns the fix"): not a joining word, and not a verb or adverb ("A treats",
+    "A is", "A wrongly assumes"). When in doubt the letter counts, and when the key is A
+    every "A" counts, so the article can never hide a tip that names the key: reword it.
+    """
+    letters = set()
+    for m in re.finditer(r"\b([A-D])\b", tip):
+        nxt = re.match(r" ([a-z]+)\b", tip[m.end():])
+        if m.group(1) == "A" and key != "A" and nxt:
+            w = nxt.group(1)
+            verb_like = (w.endswith("s") and not w.endswith(("ss", "us", "is"))) or w.endswith("ly")
+            if w not in AFTER_LETTER and not verb_like:
+                continue
+        letters.add(m.group(1))
+    return letters
+
+
 def check_item(q, pack, d, n, ctx):
     errs = []
     part, letter = pack[-1], chr(64 + d)
     key = q.get("correct")
-    if list(q.keys()) != c.FIELDS:
+    keys = list(q.keys())
+    if c.RETIRED in q and q[c.RETIRED] is not True:
+        errs.append(f"'{c.RETIRED}' may only be true (a live item does not carry the field)")
+    if keys and keys[-1] == c.RETIRED:
+        keys = keys[:-1]                   # the one optional field, allowed only after style_version
+    if keys != c.FIELDS:
         missing = [f for f in c.FIELDS if f not in q]
-        extra = [f for f in q if f not in c.FIELDS]
+        extra = [f for f in q if f not in c.FIELDS and f != c.RETIRED]
         errs.append(f"fields differ from the house order (missing {missing}, extra {extra})"
-                    if missing or extra else "fields are out of the house order")
+                    if missing or extra else
+                    f"fields are out of the house order ('{c.RETIRED}', when present, comes last)")
     if q.get("id") != f"{pack}_d{d}_{n:03d}":
         errs.append(f"id should be {pack}_d{d}_{n:03d}")
     if q.get("domain") != d:
@@ -180,8 +213,10 @@ def check_item(q, pack, d, n, ctx):
     if len(tips) != 3 or any(not t.startswith(p) for t, p in zip(tips, prefixes)):
         errs.append("tips must be Eliminate / Final two / Exam cue")
     else:
-        elim = set(re.findall(r"\b([A-D])\b", tips[0].split(";")[0]))
-        if len(elim) != 2 or key in elim:
+        elim = eliminated(tips[0], key)
+        if key in elim:
+            errs.append(f"Eliminate tip names the key {key}; it names only the two options to rule out")
+        if len(elim - {key}) != 2:
             errs.append(f"Eliminate tip should name two wrong letters, names {sorted(elim)} (key {key})")
         fm = re.match(r"Final two: ([A-D]) beats ([A-D])\b", tips[1])
         if not fm or fm.group(1) != key:
@@ -238,11 +273,12 @@ def check_pack(root, pack, ctx, flags):
         data = c.read_json(path)
         qs = data["questions"]
         cited, by_topic = Counter(), {}
-        for n, q in enumerate(qs, 1):
+        live = [q for q in qs if not c.is_retired(q)]    # a retired item is checked, then left out of every count
+        for n, q in enumerate(qs, 1):                    # n counts retired items too: numbers never move
             errs, nid, code = check_item(q, pack, d, n, ctx)
-            if nid:
+            if nid and not c.is_retired(q):
                 cited[nid] += 1
-            if code:
+            if code and not c.is_retired(q):
                 by_topic.setdefault(code, Counter())[q.get("difficulty")] += 1
             if GENDERED.search(c.dump_json(q)):
                 errs.append("gendered pronoun; use they/them")
@@ -264,7 +300,7 @@ def check_pack(root, pack, ctx, flags):
                     if hit:
                         print(f"ERROR notes {sub['id']}: gendered pronoun '{hit.group(0)}'; use they/them")
                         errors += 1
-        ok = [q for q in qs if sorted(q.get("options") or {}) == ["A", "B", "C", "D"] and q.get("correct") in tuple("ABCD")]
+        ok = [q for q in live if sorted(q.get("options") or {}) == ["A", "B", "C", "D"] and q.get("correct") in tuple("ABCD")]
         spread = Counter(q["correct"] for q in ok)
         notes = []
         if len(ok) >= KEY_MIN_N:
@@ -292,9 +328,10 @@ def check_pack(root, pack, ctx, flags):
         errors += len(notes)
         ids = ctx["notes"].get(d) or []
         uncovered = [i for i in ids if i not in cited]
-        mix = Counter(q.get("difficulty") for q in qs)
-        tagged = sum(1 for q in qs if q.get("challenge_ref"))
-        print(f"{pack} d{d}: {len(qs)} items · keys " + " ".join(f"{k}{spread[k]}" for k in "ABCD")
+        mix = Counter(q.get("difficulty") for q in live)
+        tagged = sum(1 for q in live if q.get("challenge_ref"))
+        retired = f" ({len(qs) - len(live)} retired, left out of the counts)" if len(live) != len(qs) else ""
+        print(f"{pack} d{d}: {len(live)} items{retired} · keys " + " ".join(f"{k}{spread[k]}" for k in "ABCD")
               + f" · pick-longest {longest:.1%} · pick-shortest {shortest:.1%}"
               + f" · {mix['foundational']}/{mix['application']}/{mix['analysis']} F/Ap/An"
               + f" · Challenge-tagged {tagged} · notes covered {len(ids) - len(uncovered)}/{len(ids)} "

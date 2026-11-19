@@ -8,6 +8,14 @@ review weeks, in all four packs and in shared/) for the terms listed in
 shared/stale_terms.json. Each term there carries the evidence that it is not
 the 2024 vocabulary; a term without evidence stops the gate.
 
+What is read: every string VALUE and every dict KEY (a notes `key_terminologies`
+map shows its keys to the learner as terms). Before matching, each string is
+normalized (cia_common.norm_text): runs of whitespace, non-breaking spaces
+included, become one space, and a hyphen between two words becomes a space, so
+"internal audit  activity" and "Three-Lines-of-Defense" are caught. A term
+matches in any letter case unless it says `"case_sensitive": true` (for words
+that are ordinary English in lower case, such as "is auditor independence").
+
 A place that teaches "old term, new term" on purpose is allowed in three ways,
 all visible in a pull request:
   - a JSON key named in "skip_keys" (for example a glossary entry's `formerly`);
@@ -32,12 +40,16 @@ def load_terms(root):
     for t in cfg["terms"]:
         if not t.get("evidence") or t.get("class") not in cfg["classes"] or not t.get("say"):
             raise SystemExit(f"ERROR stale_terms.json: term '{t.get('pattern')}' needs a class, a replacement and evidence")
-        terms.append((t["class"], re.compile(r"(?<![A-Za-z])(?:" + t["pattern"] + ")", re.I), t["say"]))
+        if not isinstance(t.get("case_sensitive", False), bool):
+            raise SystemExit(f"ERROR stale_terms.json: term '{t.get('pattern')}': case_sensitive must be true or false")
+        flags = 0 if t.get("case_sensitive") else re.I
+        terms.append((t["class"], re.compile(r"(?<![A-Za-z])(?:" + t["pattern"] + ")", flags), t["say"]))
     return cfg, terms
 
 
 def walk(obj, skip, where="", path=""):
-    """Yield (where, path, string); `where` is the nearest id, topic_id or term."""
+    """Yield (where, path, string) for every value and every dict key; `where` is the
+    nearest id, topic_id or term. A key's path ends " (key)"."""
     if isinstance(obj, str):
         yield where, path, obj
     elif isinstance(obj, list):
@@ -49,6 +61,7 @@ def walk(obj, skip, where="", path=""):
         here = obj.get("id") or obj.get("topic_id") or obj.get("term") or where
         for k, v in obj.items():
             if k not in skip:
+                yield str(here), f"{path} (key)" if path else "(key)", k
                 yield from walk(v, skip, str(here), f"{path}.{k}" if path else k)
 
 
@@ -65,6 +78,7 @@ def main(argv):
         allowed = [(a.get("id"), set(a["classes"])) for a in cfg["allow"] if a["file"] == rel]
         for where, path, s in walk(c.read_json(p), skip):
             scanned += 1
+            s = c.norm_text(s)
             for cls, rx, say in terms:
                 m = rx.search(s)
                 if not m:

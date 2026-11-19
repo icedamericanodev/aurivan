@@ -21,6 +21,11 @@ FIELDS = ["id", "domain", "subtopic", "principle_id", "challenge_ref", "testable
           "bloom_level", "question", "options", "correct", "key_concept", "pre_read",
           "correct_explanation", "wrong_explanations", "tips", "framework_ref", "related_concepts",
           "_provenance", "style_version"]
+# One optional field, always last: `"retired": true`. Saved progress is keyed by question
+# id, so an item that is replaced is never deleted or renumbered: it stays in its file
+# under its id and number with this mark, and every builder and statistic leaves it out
+# (docs/content/QUESTION_SCHEMA.md, "Rewriting a question"). check_ids.py enforces it.
+RETIRED = "retired"
 
 # Depth of a topic, from the first word of its syllabus line (kickoff section 2:
 # the 2025 syllabus has no Basic or Proficient labels; the verb sets the depth).
@@ -73,6 +78,29 @@ def dump_json(obj):
     return json.dumps(obj, indent=1, ensure_ascii=False) + "\n"
 
 
+def is_retired(q):
+    """True for an item marked `"retired": true` (kept for its id, never dealt again)."""
+    return q.get(RETIRED) is True
+
+
+def iso_date(value):
+    """A date from "YYYY-MM-DD", or None for anything else (null, a number, a bad date)."""
+    try:
+        return datetime.date.fromisoformat(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def norm_text(s):
+    """One spelling of a string for term matching: invisible characters dropped, a hyphen
+    between two words turned into a space, every run of whitespace (non-breaking spaces
+    included) turned into one space. So "internal audit  activity", "Three-Lines-of-Defense"
+    and a non-breaking space cannot slip an old term past a gate."""
+    s = re.sub("[\u00ad\u200b\u200c\u200d\u2060\ufeff]", "", s)
+    s = re.sub(r"(?<=\w)[-\u2010\u2011](?=\w)", " ", s)
+    return re.sub(r"\s+", " ", s)
+
+
 def load_outline(root):
     return read_json(root / "shared" / "outline.json")
 
@@ -108,7 +136,9 @@ def library(root):
 
     Returns (verified, likely, problems). A heading "## Verified: opened
     YYYY-MM-DD ..." or "## Likely: ..." sets the status of the "- " bullets
-    under it. A Verified heading without an opened date is a problem.
+    under it. A Verified heading without an opened date is a problem, and so is
+    a Verified or Likely heading written any other way ("##Likely", "### Likely"):
+    it still sets the status, so a bullet can never silently count as Verified.
     """
     verified, likely, problems = set(), set(), []
     path = root / "shared" / "_framework_library.md"
@@ -116,16 +146,17 @@ def library(root):
         return verified, likely, [f"{path.name} is missing"]
     status = None
     for n, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-        if line.startswith("## "):
-            head = line[3:].strip()
-            if head.lower().startswith("verified"):
-                status = "verified"
-                if not re.search(r"opened \d{4}-\d{2}-\d{2}", head):
-                    problems.append(f"line {n}: a Verified heading needs 'opened YYYY-MM-DD'")
-            elif head.lower().startswith("likely"):
-                status = "likely"
-            else:
-                status = None
+        hm = re.match(r"\s*(#+)\s*(.*)$", line)
+        if hm:                             # any heading ends the section before it
+            head = hm.group(2).strip()
+            kind = next((k for k in ("verified", "likely") if head.lower().startswith(k)), None)
+            status = kind
+            if kind and not line.startswith("## "):
+                # "##Likely" or "### Likely" used to be read as plain text, so the bullets
+                # under it kept the Verified status of the section above.
+                problems.append(f"line {n}: write the heading as '## {kind.capitalize()}: ...' (two hashes, one space)")
+            if kind == "verified" and not re.search(r"opened \d{4}-\d{2}-\d{2}", head):
+                problems.append(f"line {n}: a Verified heading needs 'opened YYYY-MM-DD'")
         elif line.startswith("- "):
             bullet = line[2:].strip()
             if status is None:
@@ -160,7 +191,8 @@ def notes_ids(root, pack, d):
 
 
 def all_items(root, packs=PARTS):
-    """Yield (pack, domain, item) for every question in the given packs."""
+    """Yield (pack, domain, item) for every question in the given packs, retired ones
+    included (the wording gates still read them; builders skip them with is_retired)."""
     for pack in packs:
         for d, path in question_files(root, pack):
             for q in read_json(path)["questions"]:
@@ -169,8 +201,8 @@ def all_items(root, packs=PARTS):
 
 def not_yet_testable(q, today):
     """True when the item rests on a Topical Requirement that is not testable yet."""
-    tf = q.get("testable_from")
-    return bool(tf) and datetime.date.fromisoformat(tf) > today
+    tf = iso_date(q.get("testable_from"))
+    return tf is not None and tf > today
 
 
 def strings(obj, skip_keys=(), path=""):
