@@ -300,6 +300,12 @@ def sub0(fn, rel="cia1/notes/d1.json"):
     return lambda root: edit(root, rel, lambda d: fn(d["topics"][0]["subtopics"][0]))
 
 
+def key_longest_everywhere(data):
+    """Make the key the single longest option of every question in a file."""
+    for q in data["questions"]:
+        q["options"][q["correct"]] = max(q["options"].values(), key=len) + " now"
+
+
 def then(*faults):
     return lambda root: [f(root) for f in faults]
 
@@ -700,6 +706,8 @@ CASES = [
     ("a reference folder inside the repository", ["check_originality.py", "--ref", "{repo}/data/cia/shared"],
      lambda r: None, "is inside the repository"),
     # ── house style and generated files ──
+    ("the key made the longest option throughout a 40-question file", ["style_cia.py"],
+     lambda r: edit(r, "cia1/originals/d1.json", key_longest_everywhere), "ERROR key is the longest option"),
     ("an option far too long for the house style", ["style_cia.py"],
      q0(lambda q: q["options"].__setitem__(q["correct"], " ".join(["Discuss the finding with the manager"] * 5))), "ERROR"),
     ("a hand-edited Challenge pack file", ["build_challenge.py", "--check"],
@@ -774,6 +782,9 @@ CASES = [
 ]
 # Same shape, but the gate must PASS and print the text: a control, or a fault a builder handles.
 PASSES = [
+    # A small file's longest-option share is noise (the generated Challenge section files start small).
+    ("the key made the longest option throughout a 4-question file: a note, not a failure", ["style_cia.py"],
+     lambda r: edit(r, "cia2/originals/d1.json", key_longest_everywhere), "note (not enforced below 40 items)"),
     # The 'consulting services' case above proves pre_read is read, so these words were seen and let through.
     ("wording that only looks old (Standard 7.1, Standards 2024, internal audit activities, IPPF, 'performance "
      "standards for staff', 'is auditor independence')", STALE, pre_read(CONTROLS), "0 hit(s)"),
