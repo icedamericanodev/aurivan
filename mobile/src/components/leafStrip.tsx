@@ -8,13 +8,14 @@
  * label ("Right: 1, 2 and 4. Missed: 3."), never ten small targets, and it
  * does not animate (the rings are Results' one growth).
  */
-import { useWindowDimensions, View } from 'react-native';
+import { View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { stripSpoken, type LeafState } from '../engine/resultsCopy';
 import { LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { RINGS_SIDE_BY_SIDE_MIN } from './journey';
 import { T, useFontScale } from './ui';
+import { useContentWidth } from './layout';
 
 /**
  * One 14×22 leaf (the house lens shape): right = filled with a paper midrib;
@@ -44,7 +45,7 @@ export function ResultLeaf({ state, color, rib }: { state: LeafState; color: str
 
 export function LeafStrip({ states }: { states: readonly LeafState[] }) {
   const { c } = useTheme();
-  const narrow = useWindowDimensions().width < RINGS_SIDE_BY_SIDE_MIN;
+  const narrow = useContentWidth() < RINGS_SIDE_BY_SIDE_MIN;
   const large = useFontScale() >= LARGE_TEXT;
   const perRow = narrow || large ? 5 : 10;
   const rows: LeafState[][] = [];

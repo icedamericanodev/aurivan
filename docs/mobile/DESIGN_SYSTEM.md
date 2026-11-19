@@ -111,6 +111,12 @@ Rules
 - One `display` per screen, at most one `hero`. Meta lines: max one per row, max 6 words.
 - Reading measure: stems and explanations run full width at 390pt (≈ 36–42 characters/line in
   Fraunces 21, ≈ 45–55 in Figtree 16) — no extra side padding needed; never wider on tablets (cap content at 560).
+- Large screens (mobile 2.2): phones stay portrait; tablets, foldables and Chromebooks (and any tablet held
+  sideways, which Android 16 allows whatever the app asks) show every screen in one centred column of at most
+  600pt (`COLUMN_MAX` = the 560 reading measure + two 20pt gutters, `src/components/layout.tsx`). The paper
+  colour fills the sides. Pop-up sheets centre in the same column; the full-screen diagram viewer stays full width.
+  A component that sizes from the screen uses `useContentWidth()`, never `useWindowDimensions().width`.
+  Checked by `SHOTS=wide npm run shots` (1280x800 and 800x1280; fails if anything is wider than the column).
 
 ## 3. Colour tokens
 

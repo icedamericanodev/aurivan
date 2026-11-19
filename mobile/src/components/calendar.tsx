@@ -29,7 +29,7 @@
  * size); the chosen-date line has no such cap and wraps instead.
  */
 import { useState } from 'react';
-import { StyleSheet, useWindowDimensions, View, type StyleProp, type ViewStyle } from 'react-native';
+import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import {
   addMonths,
   calendarBounds,
@@ -55,6 +55,7 @@ import { ChevronLeft, ChevronRight, ICON_STROKE } from './icons';
 import { AnimatedPressable, FadeIn, StateLayer, usePressScale } from './motion';
 import { Sheet } from './settings';
 import { Button, Chip, ICON_SIZE, IconButton, T, useFontScale } from './ui';
+import { useContentWidth } from './layout';
 
 /** Day numbers stop growing here: they sit in a cell whose size comes from the screen's width. */
 const DAY_TEXT_CAP = 1.5;
@@ -205,7 +206,7 @@ function MonthGrid({
   onPick: (date: string) => void;
 }) {
   const { c } = useTheme();
-  const { width } = useWindowDimensions();
+  const width = useContentWidth();
   const cell = cellSize(width);
   // Short months get blank rows at the end, so every month is six rows tall.
   const weeks = monthGrid(shown);

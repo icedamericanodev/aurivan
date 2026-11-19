@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=grovedrills|grovebadges|groveplant|grove|motion2|fieldguide|forms|m149|m146|m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=wide|grovedrills|grovebadges|groveplant|grove|motion2|fieldguide|forms|m149|m146|m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -78,6 +78,10 @@ if [ -x /opt/pw-browsers/chromium-1194/chrome-linux/chrome ]; then export CHROME
 # pacing results, timed practice, Study defaults and Daylight (shoot_pace.mjs).
 if [ "${SHOTS:-}" = labs ]; then
   node scripts/screenshots/shoot_labs.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = wide ]; then
+  # Large screens: tablet landscape 1280x800, tablet portrait 800x1280 and the
+  # phone, with a check that nothing is wider than the reading column.
+  node scripts/screenshots/shoot_wide.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = notes ]; then
   node scripts/screenshots/shoot_notes.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = data ]; then

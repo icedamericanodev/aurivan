@@ -63,6 +63,7 @@ import { slipCoach, type SlipInput } from '../engine/slipCoach';
 import { useProgress, type MistakeEntry, type ThinkingSlip } from '../store/progress';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
+import { ContentColumn } from '../components/layout';
 
 /** The tags, each with one example (the chip's spoken hint and the "What do these mean?" sheet). */
 export const SLIPS: { id: ThinkingSlip; label: string; example: string }[] = [
@@ -90,24 +91,26 @@ function SlipTagsSheet({ visible, onClose }: { visible: boolean; onClose: () => 
   return (
     <Modal visible={visible} animationType={reduced ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={onClose}>
       <SafeAreaView style={{ flex: 1, backgroundColor: c.raised2 }}>
-        <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xxxl }}>
-          <Row style={{ justifyContent: 'space-between' }}>
-            <T v="hero" accessibilityRole="header" style={{ flex: 1 }}>What the tags mean</T>
-            <Button kind="ghost" label="Close" onPress={onClose} accessibilityLabel="Close what the tags mean" />
-          </Row>
-          <T v="meta" style={{ marginTop: space.xs }}>Pick the one that fits best. Your pattern shows after a few.</T>
-          {SLIPS.map((x, i) => (
-            <View
-              key={x.id}
-              accessible
-              accessibilityLabel={`${x.label}. For example: ${x.example}`}
-              style={{ paddingVertical: space.md, borderBottomWidth: i === SLIPS.length - 1 ? 0 : 1, borderBottomColor: c.line }}
-            >
-              <T v="label">{x.label}</T>
-              <T v="small" color={c.ink2} style={{ marginTop: 2 }}>{x.example}</T>
-            </View>
-          ))}
-        </ScrollView>
+        <ContentColumn>
+          <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xxxl }}>
+            <Row style={{ justifyContent: 'space-between' }}>
+              <T v="hero" accessibilityRole="header" style={{ flex: 1 }}>What the tags mean</T>
+              <Button kind="ghost" label="Close" onPress={onClose} accessibilityLabel="Close what the tags mean" />
+            </Row>
+            <T v="meta" style={{ marginTop: space.xs }}>Pick the one that fits best. Your pattern shows after a few.</T>
+            {SLIPS.map((x, i) => (
+              <View
+                key={x.id}
+                accessible
+                accessibilityLabel={`${x.label}. For example: ${x.example}`}
+                style={{ paddingVertical: space.md, borderBottomWidth: i === SLIPS.length - 1 ? 0 : 1, borderBottomColor: c.line }}
+              >
+                <T v="label">{x.label}</T>
+                <T v="small" color={c.ink2} style={{ marginTop: 2 }}>{x.example}</T>
+              </View>
+            ))}
+          </ScrollView>
+        </ContentColumn>
       </SafeAreaView>
     </Modal>
   );

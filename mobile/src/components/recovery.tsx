@@ -31,6 +31,7 @@ import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { KaisipLockup } from './brand';
 import { Button, Gap, T } from './ui';
+import { ContentColumn } from './layout';
 
 export const RECOVERY_COPY = {
   loadTitle: 'We couldn’t open your saved progress',
@@ -110,23 +111,26 @@ export function RecoveryScreen({
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', padding: space.gutter }}>
-        <KaisipLockup height={32} />
-        <Gap h={space.xl} />
-        <T v="display" accessibilityRole="header">{load ? RECOVERY_COPY.loadTitle : RECOVERY_COPY.crashTitle}</T>
-        <T v="body" style={{ marginTop: space.sm }}>{load ? RECOVERY_COPY.loadBody : RECOVERY_COPY.crashBody}</T>
-        {note && (
-          <T v="small" accessibilityRole="text" style={{ marginTop: space.md }}>{note}</T>
-        )}
-        <Gap h={space.xl} />
-        <View style={{ gap: space.sm }}>
-          <Button label={retrying ? 'Trying again…' : 'Try again'} onPress={onTryAgain} disabled={busy} />
-          <Button kind="secondary" label="Report this" onPress={report} disabled={busy} accessibilityHint="Opens your email app with a short note. No personal data is included." />
-          {load && failedNames.length > 0 && (
-            <Button kind="ghost" label="Start fresh" onPress={confirmFresh} disabled={busy} accessibilityHint="Asks first. Erases only the saved data that would not open." />
+      {/* Drawn outside the app's screen column (app/_layout.tsx), so it centres itself on a tablet. */}
+      <ContentColumn>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', padding: space.gutter }}>
+          <KaisipLockup height={32} />
+          <Gap h={space.xl} />
+          <T v="display" accessibilityRole="header">{load ? RECOVERY_COPY.loadTitle : RECOVERY_COPY.crashTitle}</T>
+          <T v="body" style={{ marginTop: space.sm }}>{load ? RECOVERY_COPY.loadBody : RECOVERY_COPY.crashBody}</T>
+          {note && (
+            <T v="small" accessibilityRole="text" style={{ marginTop: space.md }}>{note}</T>
           )}
-        </View>
-      </ScrollView>
+          <Gap h={space.xl} />
+          <View style={{ gap: space.sm }}>
+            <Button label={retrying ? 'Trying again…' : 'Try again'} onPress={onTryAgain} disabled={busy} />
+            <Button kind="secondary" label="Report this" onPress={report} disabled={busy} accessibilityHint="Opens your email app with a short note. No personal data is included." />
+            {load && failedNames.length > 0 && (
+              <Button kind="ghost" label="Start fresh" onPress={confirmFresh} disabled={busy} accessibilityHint="Asks first. Erases only the saved data that would not open." />
+            )}
+          </View>
+        </ScrollView>
+      </ContentColumn>
     </SafeAreaView>
   );
 }

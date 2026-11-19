@@ -37,7 +37,7 @@
  */
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ScrollView, useWindowDimensions, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LessonBranch, type BotanyKind } from '../../components/glyphs';
@@ -69,6 +69,7 @@ import { useSettings } from '../../store/settings';
 import { batchSaves } from '../../store/storage';
 import { motion, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
+import { useContentWidth } from '../../components/layout';
 
 /** The page after the last scene. */
 const DONE = 'done';
@@ -414,7 +415,7 @@ export default function LessonPlayer() {
  */
 function LessonComplete({ lesson, domain, fresh }: { lesson: Lesson; domain: DomainInfo | undefined; fresh: boolean }) {
   const { c } = useTheme();
-  const { width } = useWindowDimensions();
+  const width = useContentWidth();
   const done = useProgress((s) => s.byCert[lesson.certId]?.lessonsDone ?? NONE);
   const inDomain = lessonsFor(lesson.certId, lesson.domainId);
   const doneFlags = inDomain.map((l) => done.includes(l.id));

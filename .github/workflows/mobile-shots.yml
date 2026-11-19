@@ -4,11 +4,14 @@ name: Mobile screenshots
 # pull request that changes the app's screens or the screenshot scripts, so a
 # script that no longer matches the app fails here instead of weeks later (in
 # Oct 2026 a sweep found 17 of 34 sets broken by earlier redesigns, PR #173).
-# Three sets that between them walk most screens:
+# Four sets that between them walk most screens:
 #   default  - Learn, lessons, practice, results, Today, You, saved, mistakes,
 #              games and onboarding (shoot.mjs + shoot_m149.mjs)
 #   settings - every Settings card and sheet, Help and about, updates
 #   data     - Your data: backup, restore preview, errors, undo, welcome restore
+#   wide     - the key screens on a tablet (1280x800, 800x1280) and the phone;
+#              also fails when a page scrolls sideways or anything is wider
+#              than the screen column (shoot_wide.mjs, mobile 2.2)
 # A set fails when a step times out (the script stops) or the app throws a page
 # error. The pictures are kept as a download on the run, for review.
 # Playwright is installed outside mobile/ (not a project dependency).
@@ -36,7 +39,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        set: [default, settings, data]
+        set: [default, settings, data, wide]
     defaults:
       run:
         working-directory: mobile
@@ -69,6 +72,11 @@ jobs:
           echo "$(ls "$RUNNER_TEMP/shots" | wc -l) screenshots taken."
       - name: Keep the pictures (a download on this run, 7 days)
         if: always()
+        # The pictures are a convenience for review; the screenshot step above is the check.
+        # When the account's Actions storage is full, GitHub refuses the upload ("Artifact
+        # storage quota has been hit", 18 Nov 2026): the job warns here instead of failing a
+        # pull request whose screens all passed. A failing screenshot step still fails the job.
+        continue-on-error: true
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: shots-${{ matrix.set }}

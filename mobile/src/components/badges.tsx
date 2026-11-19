@@ -39,6 +39,7 @@ import { Button, DomainDot, groveCard, ICON_SIZE, ProgressBar, Row, T, useFontSc
 import { TierLine } from './fieldguide';
 import { FeatureInfo } from './featureInfo';
 import { PressedTile, type TileState } from './pressedTile';
+import { ContentColumn } from './layout';
 
 /** The medallion state for a mark (started and open both draw "not yet"; gated is dotted). */
 export const medallionState = (m: CaseMark): MedallionState => (m.status === 'earned' ? 'earned' : m.status === 'gated' ? 'gated' : 'open');
@@ -627,139 +628,141 @@ export function BadgeSheet({
   return (
     <Modal visible={visible} animationType={reduced ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={sharing ? backFromShare : onClose} onDismiss={onDismissed}>
       <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.raised2 }}>
-        <ScrollView key={sharing ? 'share' : 'details'} contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: space.xs }}>
-            <Button kind="ghost" label="Close" accessibilityLabel={`Close ${mark.name}`} onPress={onClose} />
-          </View>
-          {sharing && shareText ? (
-            // Grove 4b (5.6): the card shows the pressed tile, not the struck medallion.
-            <BadgeSharePanel text={shareText} art={<PressedTile badge={mark.badge} tier={mark.tier} emblem={mark.domain?.emblem} state="earned" size={112} />} onBack={backFromShare} />
-          ) : (
-            <>
-              <View style={{ alignItems: 'center' }}>
-                {/* Grove 4b (5.3): the pressed tile at 120pt. An earned one is pressed flat as the sheet opens
-                    (1.06 to 1, then its tape); Reduce Motion shows it flat at once. Not yet: its "how close" outline. */}
-                <PressedTile
-                  testID="sheet-tile"
-                  badge={mark.badge}
-                  tier={mark.tier}
-                  emblem={mark.domain?.emblem}
-                  state={medallionState(mark)}
-                  size={120}
-                  progress={showProgress && mark.status === 'started' ? mark.progress : 0}
-                  motion={earned && !reduced ? 'press' : 'end'}
-                />
-                <View
-                  ref={title}
-                  accessible
-                  accessibilityRole="header"
-                  accessibilityLabel={`${mark.name}. ${earned ? earnedLine(mark, quiet) : 'Not yet'}. ${metaParts.join(', ')}.${mark.stretch ? ' Stretch, beyond exam need.' : ''}`}
-                  style={{ marginTop: space.lg, alignItems: 'center' }}
-                >
-                  <T v="hero" center>{mark.name}</T>
-                  <T v="meta" center color={c.ink2} style={{ marginTop: space.xs }}>
-                    {metaParts.join(' · ')}
-                  </T>
-                  {mark.stretch && (
-                    // The Stretch tag, in words (never a colour or a ring alone).
-                    <T v="caption" center color={c.accentText} style={{ marginTop: space.xs }}>{STRETCH}</T>
-                  )}
-                </View>
-              </View>
-
-              {earned && (
-                // No 3pt accent rule: that rule is the coach's voice only (spec §5); this is an award.
-                <View style={{ marginTop: space.xl }} accessible accessibilityLabel={earnedSpoken}>
-                  <T v="caption" color={c.accentText}>{earnedCaption}</T>
-                  <T v="aside" style={{ marginTop: space.xs }}>{mark.unlock}</T>
-                  {completedHere && (
-                    <T v="meta" color={c.ink2} style={{ marginTop: space.sm }}>
-                      {`This completed ${set.info.name} on ${shortDate(set.completeAt!)}.`}
-                    </T>
-                  )}
-
-                </View>
-              )}
-
-              {ladder && ladder.length > 1 && (
-                <View
-                  style={{ marginTop: space.xl }}
-                  accessible
-                  accessibilityLabel={ladder
-                    .map(
-                      (t) =>
-                        `${tierCaption(t)}, ${tierName(t)}${t.stretch ? ', Stretch' : ''}: ${t.status === 'earned' ? earnedLine(t, quiet).replace(/^Earned/, 'earned') : t.status === 'gated' ? t.gateLine!.replace(/\.$/, '').toLowerCase() : showProgress ? spokenDetail(t.detail) : 'not yet'}${t.key === nextTier && showProgress ? ', next' : ''}`,
-                    )
-                    .join('. ')}
-                >
-                  <T v="headline">Tiers</T>
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: space.sm }}>
-                    {ladder.map((t) => (
-                      <View key={t.key} style={{ alignItems: 'center', flex: 1 }}>
-                        {/* A 64pt pressed tile per tier (the reached ones pressed), its pips and its metal's name printed (never colour alone). */}
-                        <PressedTile badge={t.badge} tier={t.tier} emblem={t.domain?.emblem} state={medallionState(t)} size={64} progress={showProgress && t.status === 'started' ? t.progress : 0} />
-                        <View style={{ marginTop: space.xs }}>
-                          <TierLine tier={t.tier ?? 0} tiers={ladder.length} earned={t.status === 'earned'} />
-                        </View>
-                        <T v="meta" num center color={c.ink2}>{tierCaption(t)}</T>
-                        {/* Its state on a line of its own, so neighbouring tiers never run together. */}
-                        <T v="meta" center color={t.status === 'earned' ? c.accentText : c.ink2}>
-                          {t.status === 'earned' ? 'Earned' : t.status === 'gated' ? 'Opens later' : t.key === nextTier && showProgress ? 'Next' : 'Not yet'}
-                        </T>
-                        {t.stretch && <T v="caption" center color={c.ink2}>Stretch</T>}
-                      </View>
-                    ))}
-                  </View>
-                </View>
-              )}
-
-              <View style={{ marginTop: space.xl }}>
-                <T v="headline" accessibilityRole="header">The rule</T>
-                <T v="small" style={{ marginTop: space.xs }}>{mark.rule}</T>
-                {!earned && mark.status === 'gated' && (
-                  <T v="meta" color={c.ink2} style={{ marginTop: space.sm }}>{mark.gateLine}</T>
-                )}
-                {!earned && mark.status !== 'gated' && showProgress && (
-                  <View style={{ marginTop: space.md }}>
-                    {mark.progress > 0 && <ProgressBar value={mark.progress} height={6} />}
-                    <T v="meta" num color={c.ink2} accessibilityLabel={spokenDetail(mark.detail)} style={{ marginTop: space.xs }}>{mark.detail}</T>
-                  </View>
-                )}
-              </View>
-
-              <View style={{ marginTop: space.md }}>
-                <FeatureInfo inline title="About this milestone" label={`About earning ${mark.name}`}>
-                  {!earned && showProgress && mark.howTo !== '' && <T v="body">{mark.howTo}</T>}
-                  {best && <T v="body">{best === MOCK_SUGGEST_LINE ? `${best} It counts whenever you do it.` : best}</T>}
-                  <T v="body">{mark.effort}</T>
-                </FeatureInfo>
-              </View>
-
-              {!earned && showProgress && target && (
-                <View style={{ marginTop: space.xl }}>
-                  {note && <T v="meta" color={c.ink2} style={{ marginBottom: space.sm }}>{note}</T>}
-                  <Button label="Study for this" accessibilityLabel={`Study for ${mark.name}`} onPress={() => onStudy(target)} />
-                </View>
-              )}
-
-              {/* Earned and shareable only (never Study Return or a Moment), on the learner's tap: nothing opens it on its own. */}
-              {shareText && (
-                <View style={{ marginTop: space.xl }}>
-                  <Button
-                    ref={detailsTop}
-                    kind="secondary"
-                    label="Share this badge"
-                    accessibilityLabel={`Share this badge: ${mark.name}`}
-                    accessibilityHint="Shows a card you can share. Nothing is shared until you choose."
-                    onPress={() => setSharing(true)}
-                    icon={(col) => <Share2 size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
-                    iconLeading
+        <ContentColumn>
+          <ScrollView key={sharing ? 'share' : 'details'} contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: space.xs }}>
+              <Button kind="ghost" label="Close" accessibilityLabel={`Close ${mark.name}`} onPress={onClose} />
+            </View>
+            {sharing && shareText ? (
+              // Grove 4b (5.6): the card shows the pressed tile, not the struck medallion.
+              <BadgeSharePanel text={shareText} art={<PressedTile badge={mark.badge} tier={mark.tier} emblem={mark.domain?.emblem} state="earned" size={112} />} onBack={backFromShare} />
+            ) : (
+              <>
+                <View style={{ alignItems: 'center' }}>
+                  {/* Grove 4b (5.3): the pressed tile at 120pt. An earned one is pressed flat as the sheet opens
+                      (1.06 to 1, then its tape); Reduce Motion shows it flat at once. Not yet: its "how close" outline. */}
+                  <PressedTile
+                    testID="sheet-tile"
+                    badge={mark.badge}
+                    tier={mark.tier}
+                    emblem={mark.domain?.emblem}
+                    state={medallionState(mark)}
+                    size={120}
+                    progress={showProgress && mark.status === 'started' ? mark.progress : 0}
+                    motion={earned && !reduced ? 'press' : 'end'}
                   />
+                  <View
+                    ref={title}
+                    accessible
+                    accessibilityRole="header"
+                    accessibilityLabel={`${mark.name}. ${earned ? earnedLine(mark, quiet) : 'Not yet'}. ${metaParts.join(', ')}.${mark.stretch ? ' Stretch, beyond exam need.' : ''}`}
+                    style={{ marginTop: space.lg, alignItems: 'center' }}
+                  >
+                    <T v="hero" center>{mark.name}</T>
+                    <T v="meta" center color={c.ink2} style={{ marginTop: space.xs }}>
+                      {metaParts.join(' · ')}
+                    </T>
+                    {mark.stretch && (
+                      // The Stretch tag, in words (never a colour or a ring alone).
+                      <T v="caption" center color={c.accentText} style={{ marginTop: space.xs }}>{STRETCH}</T>
+                    )}
+                  </View>
                 </View>
-              )}
-            </>
-          )}
-        </ScrollView>
+
+                {earned && (
+                  // No 3pt accent rule: that rule is the coach's voice only (spec §5); this is an award.
+                  <View style={{ marginTop: space.xl }} accessible accessibilityLabel={earnedSpoken}>
+                    <T v="caption" color={c.accentText}>{earnedCaption}</T>
+                    <T v="aside" style={{ marginTop: space.xs }}>{mark.unlock}</T>
+                    {completedHere && (
+                      <T v="meta" color={c.ink2} style={{ marginTop: space.sm }}>
+                        {`This completed ${set.info.name} on ${shortDate(set.completeAt!)}.`}
+                      </T>
+                    )}
+
+                  </View>
+                )}
+
+                {ladder && ladder.length > 1 && (
+                  <View
+                    style={{ marginTop: space.xl }}
+                    accessible
+                    accessibilityLabel={ladder
+                      .map(
+                        (t) =>
+                          `${tierCaption(t)}, ${tierName(t)}${t.stretch ? ', Stretch' : ''}: ${t.status === 'earned' ? earnedLine(t, quiet).replace(/^Earned/, 'earned') : t.status === 'gated' ? t.gateLine!.replace(/\.$/, '').toLowerCase() : showProgress ? spokenDetail(t.detail) : 'not yet'}${t.key === nextTier && showProgress ? ', next' : ''}`,
+                      )
+                      .join('. ')}
+                  >
+                    <T v="headline">Tiers</T>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: space.sm }}>
+                      {ladder.map((t) => (
+                        <View key={t.key} style={{ alignItems: 'center', flex: 1 }}>
+                          {/* A 64pt pressed tile per tier (the reached ones pressed), its pips and its metal's name printed (never colour alone). */}
+                          <PressedTile badge={t.badge} tier={t.tier} emblem={t.domain?.emblem} state={medallionState(t)} size={64} progress={showProgress && t.status === 'started' ? t.progress : 0} />
+                          <View style={{ marginTop: space.xs }}>
+                            <TierLine tier={t.tier ?? 0} tiers={ladder.length} earned={t.status === 'earned'} />
+                          </View>
+                          <T v="meta" num center color={c.ink2}>{tierCaption(t)}</T>
+                          {/* Its state on a line of its own, so neighbouring tiers never run together. */}
+                          <T v="meta" center color={t.status === 'earned' ? c.accentText : c.ink2}>
+                            {t.status === 'earned' ? 'Earned' : t.status === 'gated' ? 'Opens later' : t.key === nextTier && showProgress ? 'Next' : 'Not yet'}
+                          </T>
+                          {t.stretch && <T v="caption" center color={c.ink2}>Stretch</T>}
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+                )}
+
+                <View style={{ marginTop: space.xl }}>
+                  <T v="headline" accessibilityRole="header">The rule</T>
+                  <T v="small" style={{ marginTop: space.xs }}>{mark.rule}</T>
+                  {!earned && mark.status === 'gated' && (
+                    <T v="meta" color={c.ink2} style={{ marginTop: space.sm }}>{mark.gateLine}</T>
+                  )}
+                  {!earned && mark.status !== 'gated' && showProgress && (
+                    <View style={{ marginTop: space.md }}>
+                      {mark.progress > 0 && <ProgressBar value={mark.progress} height={6} />}
+                      <T v="meta" num color={c.ink2} accessibilityLabel={spokenDetail(mark.detail)} style={{ marginTop: space.xs }}>{mark.detail}</T>
+                    </View>
+                  )}
+                </View>
+
+                <View style={{ marginTop: space.md }}>
+                  <FeatureInfo inline title="About this milestone" label={`About earning ${mark.name}`}>
+                    {!earned && showProgress && mark.howTo !== '' && <T v="body">{mark.howTo}</T>}
+                    {best && <T v="body">{best === MOCK_SUGGEST_LINE ? `${best} It counts whenever you do it.` : best}</T>}
+                    <T v="body">{mark.effort}</T>
+                  </FeatureInfo>
+                </View>
+
+                {!earned && showProgress && target && (
+                  <View style={{ marginTop: space.xl }}>
+                    {note && <T v="meta" color={c.ink2} style={{ marginBottom: space.sm }}>{note}</T>}
+                    <Button label="Study for this" accessibilityLabel={`Study for ${mark.name}`} onPress={() => onStudy(target)} />
+                  </View>
+                )}
+
+                {/* Earned and shareable only (never Study Return or a Moment), on the learner's tap: nothing opens it on its own. */}
+                {shareText && (
+                  <View style={{ marginTop: space.xl }}>
+                    <Button
+                      ref={detailsTop}
+                      kind="secondary"
+                      label="Share this badge"
+                      accessibilityLabel={`Share this badge: ${mark.name}`}
+                      accessibilityHint="Shows a card you can share. Nothing is shared until you choose."
+                      onPress={() => setSharing(true)}
+                      icon={(col) => <Share2 size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+                      iconLeading
+                    />
+                  </View>
+                )}
+              </>
+            )}
+          </ScrollView>
+        </ContentColumn>
       </SafeAreaView>
     </Modal>
   );

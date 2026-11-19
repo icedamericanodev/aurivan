@@ -1,6 +1,7 @@
-import { Linking } from 'react-native';
+import { KeyboardAvoidingView, Linking } from 'react-native';
 import { act, create, type ReactTestRenderer } from 'react-test-renderer';
 import { UnifiedSupportSheet } from '../components/support';
+import { ContentColumn } from '../components/layout';
 import { CLOUD } from '../cloud/flag';
 import { SIGNED_OUT, useAccount } from '../store/account';
 import { Button, Chip, NoteField, ToggleRow, T } from '../components/ui';
@@ -107,4 +108,12 @@ it.each([
   await press('Send in KaiSip');
   expect(submitDirect).toHaveBeenCalledWith(expect.objectContaining({ message: reviewedMessage }));
   expect(Linking.openURL).not.toHaveBeenCalled();
+});
+// Mobile 2.2 review: on Android the keyboard view works out the keyboard overlap from its own
+// position in its PARENT, so it must stay the sheet's SafeAreaView's direct child. The large-screen
+// column goes inside it; a column around it would hide the field near the bottom behind the keyboard.
+it('keeps the keyboard view outside the large-screen column, with the column inside it', () => {
+  const kav = r.root.findByType(KeyboardAvoidingView);
+  for (let n = kav.parent; n; n = n.parent) expect(n.type).not.toBe(ContentColumn);
+  expect(kav.findAllByType(ContentColumn)).toHaveLength(1);
 });

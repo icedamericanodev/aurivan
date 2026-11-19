@@ -38,6 +38,7 @@ import { useTheme } from '../theme/useTheme';
 import { SettingsGroup, SettingsRow } from './settings';
 import { WebImportPreview } from './webImport';
 import { Button, Gap, T, useFontScale } from './ui';
+import { ContentColumn } from './layout';
 
 /** "6 Oct 2026" for a timestamp, in the phone's local time. */
 const dateOf = (ms: number) => examDateLabel(dayKey(ms));
@@ -301,79 +302,81 @@ export function RestorePreview({
     // While the restore is saving, swipe-down and Back do nothing.
     <Modal visible={ready !== null} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={busy ? () => {} : onCancel}>
       <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.raised2 }}>
-        <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xl }}>
-          <T v="hero" accessibilityRole="header">Restore this backup?</T>
-          {Number.isFinite(saved) && <T v="meta" style={{ marginTop: space.xs }}>{`Saved on ${dateOf(saved)}`}</T>}
-          <T v="body" color={c.ink2} style={{ marginTop: space.md }}>
-            {fresh
-              ? 'This puts the progress from your backup on this phone.'
-              : `The progress on this phone will be replaced by the backup. You can undo this for ${UNDO_DAYS} days.`}
-          </T>
-          {ready?.behind && !fresh && (
-            <View accessible style={{ marginTop: space.md, padding: space.md, borderRadius: radius.md, backgroundColor: c.tipBg }}>
-              <T v="caption" color={c.tip}>Older backup</T>
-              <T v="small" color={c.ink} style={{ marginTop: space.xs }}>
-                {`This backup is older than this phone. Restoring it replaces the newer progress here. You can undo this for ${UNDO_DAYS} days.`}
-              </T>
-            </View>
-          )}
-          {ready?.pausedSession && (
-            <T v="small" color={c.ink} style={{ marginTop: space.md }}>Your paused session will end.</T>
-          )}
-          {syncing && !fresh && <T v="small" color={c.ink} style={{ marginTop: space.md }}>{copy('reset.sync')}</T>}
-          <Gap h={space.lg} />
-          {rows.map((row, i) => (
-            <View
-              key={row.label}
-              accessible
-              accessibilityLabel={
-                fresh
-                  ? `${row.label}: ${row.backup}.`
-                  : `${row.label}. On this phone: ${row.now}. In the backup: ${row.backup}.${row.changes ? '' : ' No change.'}`
-              }
-              style={{ paddingVertical: space.md, borderTopWidth: i === 0 ? 1 : 0, borderBottomWidth: 1, borderColor: c.line }}
-            >
-              <T v="label">{row.label}</T>
-              {fresh ? (
-                <T v="body" color={c.ink} style={{ marginTop: space.xs }}>{row.backup}</T>
-              ) : (
-                // Side by side on a normal phone; stacked at large text so nothing is cut off.
-                <View style={{ flexDirection: large ? 'column' : 'row', gap: large ? space.xs : space.md, marginTop: space.xs }}>
-                  <View style={{ flex: large ? undefined : 1 }}>
-                    <T v="meta">This phone</T>
-                    <T v="body" color={c.ink2}>{row.now}</T>
+        <ContentColumn>
+          <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xl }}>
+            <T v="hero" accessibilityRole="header">Restore this backup?</T>
+            {Number.isFinite(saved) && <T v="meta" style={{ marginTop: space.xs }}>{`Saved on ${dateOf(saved)}`}</T>}
+            <T v="body" color={c.ink2} style={{ marginTop: space.md }}>
+              {fresh
+                ? 'This puts the progress from your backup on this phone.'
+                : `The progress on this phone will be replaced by the backup. You can undo this for ${UNDO_DAYS} days.`}
+            </T>
+            {ready?.behind && !fresh && (
+              <View accessible style={{ marginTop: space.md, padding: space.md, borderRadius: radius.md, backgroundColor: c.tipBg }}>
+                <T v="caption" color={c.tip}>Older backup</T>
+                <T v="small" color={c.ink} style={{ marginTop: space.xs }}>
+                  {`This backup is older than this phone. Restoring it replaces the newer progress here. You can undo this for ${UNDO_DAYS} days.`}
+                </T>
+              </View>
+            )}
+            {ready?.pausedSession && (
+              <T v="small" color={c.ink} style={{ marginTop: space.md }}>Your paused session will end.</T>
+            )}
+            {syncing && !fresh && <T v="small" color={c.ink} style={{ marginTop: space.md }}>{copy('reset.sync')}</T>}
+            <Gap h={space.lg} />
+            {rows.map((row, i) => (
+              <View
+                key={row.label}
+                accessible
+                accessibilityLabel={
+                  fresh
+                    ? `${row.label}: ${row.backup}.`
+                    : `${row.label}. On this phone: ${row.now}. In the backup: ${row.backup}.${row.changes ? '' : ' No change.'}`
+                }
+                style={{ paddingVertical: space.md, borderTopWidth: i === 0 ? 1 : 0, borderBottomWidth: 1, borderColor: c.line }}
+              >
+                <T v="label">{row.label}</T>
+                {fresh ? (
+                  <T v="body" color={c.ink} style={{ marginTop: space.xs }}>{row.backup}</T>
+                ) : (
+                  // Side by side on a normal phone; stacked at large text so nothing is cut off.
+                  <View style={{ flexDirection: large ? 'column' : 'row', gap: large ? space.xs : space.md, marginTop: space.xs }}>
+                    <View style={{ flex: large ? undefined : 1 }}>
+                      <T v="meta">This phone</T>
+                      <T v="body" color={c.ink2}>{row.now}</T>
+                    </View>
+                    <View style={{ flex: large ? undefined : 1 }}>
+                      <T v="meta">Backup</T>
+                      {/* A value that changes is drawn in ink and bold; one that stays says so. */}
+                      <T v={row.changes ? 'label' : 'body'} color={row.changes ? c.ink : c.ink2}>
+                        {row.changes ? row.backup : `${row.backup} (same)`}
+                      </T>
+                    </View>
                   </View>
-                  <View style={{ flex: large ? undefined : 1 }}>
-                    <T v="meta">Backup</T>
-                    {/* A value that changes is drawn in ink and bold; one that stays says so. */}
-                    <T v={row.changes ? 'label' : 'body'} color={row.changes ? c.ink : c.ink2}>
-                      {row.changes ? row.backup : `${row.backup} (same)`}
-                    </T>
-                  </View>
-                </View>
-              )}
-            </View>
-          ))}
-          <Gap h={space.xl} />
-          {fresh ? (
-            <Button
-              label={busy ? 'Restoring…' : 'Restore my progress'}
-              accessibilityHint="Puts the progress from the backup on this phone."
-              disabled={busy}
-              onPress={onConfirm}
-            />
-          ) : (
-            <Button
-              kind="danger"
-              label={busy ? 'Restoring…' : 'Replace my progress'}
-              accessibilityHint={`Replaces the progress on this phone with the backup. You can undo this for ${UNDO_DAYS} days.`}
-              disabled={busy}
-              onPress={onConfirm}
-            />
-          )}
-          <Gap h={space.sm} />
-          <Button kind="secondary" label="Cancel" disabled={busy} onPress={onCancel} />
-        </ScrollView>
+                )}
+              </View>
+            ))}
+            <Gap h={space.xl} />
+            {fresh ? (
+              <Button
+                label={busy ? 'Restoring…' : 'Restore my progress'}
+                accessibilityHint="Puts the progress from the backup on this phone."
+                disabled={busy}
+                onPress={onConfirm}
+              />
+            ) : (
+              <Button
+                kind="danger"
+                label={busy ? 'Restoring…' : 'Replace my progress'}
+                accessibilityHint={`Replaces the progress on this phone with the backup. You can undo this for ${UNDO_DAYS} days.`}
+                disabled={busy}
+                onPress={onConfirm}
+              />
+            )}
+            <Gap h={space.sm} />
+            <Button kind="secondary" label="Cancel" disabled={busy} onPress={onCancel} />
+          </ScrollView>
+        </ContentColumn>
       </SafeAreaView>
     </Modal>
   );

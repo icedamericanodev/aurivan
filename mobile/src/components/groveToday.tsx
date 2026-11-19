@@ -14,7 +14,7 @@
  * The ring and the twig are drawings: what they show is always said in words too.
  */
 import { useMemo, useState, type ReactNode } from 'react';
-import { Pressable, useWindowDimensions, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import Svg, { Circle, Ellipse, G, Line, Path } from 'react-native-svg';
 import { RANGE_MIN_ANSWERS } from '../engine/readinessRange';
 import { RING_STUDY_BAR, rangeTicks, TWIG_LETTERS, type AccuracyTile, type RingCaption, type RingMode, type TickState, type TwigDay } from '../engine/groveToday';
@@ -25,6 +25,7 @@ import { FieldText } from './fieldguide';
 import { Check } from './icons';
 import { FadeIn, useMotion, type Growth } from './motion';
 import { BigNum, ForestLight, groveCard, T, useFontScale } from './ui';
+import { useContentWidth } from './layout';
 
 // ── The hero card ──────────────────────────────────────────────────────
 
@@ -182,7 +183,7 @@ export function RingCaptionText({ caption }: { caption: RingCaption }) {
   const { c } = useTheme();
   // The range ("63 to 73") is the range numeral step, 38, stepping down only when space runs out;
   // its "to" is a Figtree unit (TYPE_SCALE.md section 2.1). A count ("10" of 40) is a value numeral.
-  const step = numRole[rangeStep(useFontScale(), useWindowDimensions().width)];
+  const step = numRole[rangeStep(useFontScale(), useContentWidth())];
   const ends = caption.big?.split(' to ') ?? [];
   const serif = (text: string) => (
     <T v={ends.length === 2 ? 'numRange' : 'numValue'} num color={c.onForest} style={ends.length === 2 ? step.style : undefined}>
