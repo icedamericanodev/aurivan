@@ -28,6 +28,10 @@ A development tracker for the next phone update after 2.1, not a record of a shi
 
 **Not in scope (owner decisions if wanted later).** Promoting tablets or Chromebooks in the Play listing (needs tablet screenshots). iPad support (`ios.supportsTablet` stays false until after the iOS launch). A two-pane tablet layout (for example the question beside its explanation).
 
+### Build-tool security update: node-forge 1.4.3 (19 Nov 2026, PR #286)
+
+Clears four Dependabot alerts (one low, three moderate) in node-forge, which only Expo's command-line and update code-signing tools use; it is not in the app. The npm override in `mobile/package.json` moved from 1.4.2 to 1.4.3. `npm run check` passed (7,191 tests); the Android and iOS update fingerprints are unchanged, so existing installs keep receiving updates. The fifth alert (glob, build tools only) stays open on purpose until Expo and Jest move to glob 14: `docs/mobile/DEPENDENCY_AUDIT.md`. No release note: nothing a learner can notice.
+
 ### Your mistake patterns, from PR #240 (19 Nov 2026)
 
 **Why.** Expert scope review for 2.2 (product-manager, behavioral-scientist, technical review): it is the one candidate that works on metacognition. "Sure, but incorrect" uses the learner's own confidence ratings (the hypercorrection effect), final-two confusion comes from the actual pick, and "Practice other questions" serves only questions outside the mistake history (transfer, not recognition). Nothing shows below 5 classified mistakes. Owner approved the 2.2 scope on 19 Nov 2026; the renamed screen goes to the owner for a final yes before merge.
