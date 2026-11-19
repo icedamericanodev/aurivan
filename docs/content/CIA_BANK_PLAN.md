@@ -13,7 +13,7 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 | | |
 |---|---|
 | **Status (19 Nov 2026)** | Session G, step 1 done: expert decisions, the four documents, the harness (proven on its planted-fault fixture) and the expert agents. No learner content written yet. |
-| **Owner answers so far (19 Nov 2026)** | Prices: decide later. Licence: the owner asked whether a licence is needed for original content; the answer given is in section 9. Default until the owner says otherwise: keep building in the private repository and publish or sell nothing. The licence question must be settled before any pack goes on sale. |
+| **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
 | **Next step** | Part 1 study notes for all four sections (`data/cia/cia1/notes/d{1..4}.json`), by `cia-p1-domain-expert`, notes before questions. Then the Part 1 pilot: 20 questions per section through the full pipeline (section 6), with the shared principles, the glossary start, and the Part 1 exam guide and final review week. |
 | **Then** | Part 1 to its sale minimum (its five Challenge-shared topics early), Part 2, Part 3, the Challenge build and the CISA bridge, the cross-part release gate. |
 
@@ -312,8 +312,10 @@ them put "IIA-CIA" in the app name and promise a pass, which KaiSip's rules
 forbid. At least one still shows a 2019 part name, so being right for the 2025
 syllabus is a selling point.
 
-**Standing decision until the owner says otherwise:** build in the private
-repository; publish, sell and show nothing. **Before any pack goes on sale**
+**Owner decision (19 Nov 2026):** keep building in the private repository,
+the same way as CISA (original content reviewed against the official framework);
+publish, sell and show nothing until the licence question is settled. The free
+sample and the store listing count as published. **Before any pack goes on sale**
 the owner settles this, by asking licensing@theiia.org (expect "yes, you need
 one") or with a short consult with an intellectual-property lawyer.
 
