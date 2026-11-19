@@ -2,7 +2,8 @@
  * Premium round 2, spec 2: the answer as a Term Match plate (Fig. 4).
  *
  *  - a running head: "Practice · IS Audit" / "Question 1 of 2" ("Review ·" in a review set);
- *  - the recap's "Question" head and two-line stem with "Show question";
+ *  - the recap's "Question" head and two-line stem with ONE switch, "Show question & choices"
+ *    (phone 2.2: QuestionRecap; the stem-only "Show question" is for lessons and drills);
  *  - the verdict word in ink (the leaf keeps its colour and its ✗ / ✓);
  *  - Fig. 4: after a miss "Your pick, and the best answer" with two rows (one stop each);
  *    after a right answer "Your answer" with one ✓ row;
@@ -22,7 +23,7 @@ import { originalToDisplay } from '../engine/shuffle';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import SessionScreen from '../app/session';
-import { AnswerContext, AnswerPlate, FEEDBACK_DELAY, PLATE_ROW_STAGGER, Rise, StemRecap, StickyFooter, Verdict, VINE_ARRIVES, DISC_ABOVE_FROM, WhyBlock, KeyIdea, TipsCard } from '../components/quiz';
+import { AnswerContext, AnswerPlate, FEEDBACK_DELAY, PLATE_ROW_STAGGER, QuestionRecap, Rise, StemRecap, StickyFooter, Verdict, VINE_ARRIVES, DISC_ABOVE_FROM, WhyBlock, KeyIdea, TipsCard } from '../components/quiz';
 import type { Letter } from '../content/types';
 import { finalTwoLine, pickCoachKind, ruleOutLine } from '../engine/pickCoach';
 import { SLIP_LINE } from '../engine/slipCoach';
@@ -121,10 +122,22 @@ describe('after a miss', () => {
     expect(head.props.aside).toBe('Question 1 of 2');
   });
 
-  it('the recap is the guide’s "Question" head and the stem in two lines, with "Show question"', () => {
+  // Phone 2.2: the practice answer's recap is QuestionRecap (the stem-only StemRecap stays in lessons and drills).
+  it('the recap is the guide’s "Question" head and the stem in two lines, with ONE switch, "Show question & choices"', () => {
     answer(false);
-    expect(root().findByType(StemRecap).props.field).toBe(true);
-    expect(labelled(/^Show question$/).length).toBe(1);
+    expect(root().findAllByType(StemRecap)).toHaveLength(0);
+    const recap = root().findByType(QuestionRecap);
+    expect(recap.props.stem).toBe(rich.stem);
+    // The guide's look: the "Question" caption, then the stem in the field `recap` role, held to two lines.
+    expect(textOf(recap).startsWith('Question')).toBe(true);
+    const stem = recap.findAll((n) => typeof n.type !== 'string' && n.props.v === 'recap' && typeof n.props.children === 'string');
+    expect(stem).toHaveLength(1);
+    expect(stem[0].props.numberOfLines).toBe(2);
+    // One switch, closed, and no stem-only one beside it.
+    expect(labelled(/^Show question$/)).toHaveLength(0);
+    expect(labelled(/^Show question and choices$/).map((n) => n.props.testID)).toEqual(['recap-toggle']);
+    expect(textOf(byTestId('recap-toggle')[0]).trim()).toBe('Show question & choices');
+    expect(byTestId('recap-choices')).toHaveLength(0);
   });
 
   // Grove Phase 4 (PHASE4.md 4.2 step 1): the word in hero, in its state colour (was ink).
@@ -190,13 +203,17 @@ describe('after a right answer', () => {
   });
 
   // Grove Phase 4 (4.2): one order in every state, so a right answer reads Key idea, the tips, then Why.
-  it('Full comparison, then Key idea and every tip in one card', () => {
+  it('Key idea, then every tip in one card, then the whole Why', () => {
     answer(true);
-    // Tree order is reading order.
+    // Tree order is reading order. Phone 2.2: the plate first, and no "Compare all options" list in practice.
+    expect(root().findAllByType(AnswerContext)).toHaveLength(0);
     const order = root()
-      .findAll((n) => n.type === AnswerContext || n.type === KeyIdea || n.type === TipsCard)
-      .map((n) => (n.type === AnswerContext ? 'context' : n.type === KeyIdea ? 'key' : 'tips'));
-    expect(order).toEqual(['context', 'key', 'tips']);
+      .findAll((n) => n.type === AnswerPlate || n.type === WhyBlock || n.type === KeyIdea || n.type === TipsCard)
+      .map((n) => (n.type === AnswerPlate ? 'plate' : n.type === WhyBlock ? 'why' : n.type === KeyIdea ? 'key' : 'tips'));
+    expect(order).toEqual(['plate', 'key', 'tips', 'why']);
+    // After a right answer nothing folds.
+    expect(root().findByType(WhyBlock).props.fold).toBe(false);
+    expect(labelled(/^Read more/)).toHaveLength(0);
     const tips = root().findAllByType(TipsCard)[0];
     expect(tips.props.rows.map((t: { label: string }) => t.label)).toEqual(['Eliminate two', 'Final two', 'Exam cue']);
     // Both live in the one feedback-vine view that carries the vine's timing (one tick).
@@ -206,23 +223,34 @@ describe('after a right answer', () => {
   });
 
   // Owner answer O1: after a miss the same order and the same one tips card, every tip open.
-  it('after a miss: full comparison, Key idea, then every tip; no duplicate rationale', () => {
-    answer(false);
+  it('after a miss: Key idea, every tip in one card, then the Why; the fold holds nothing else', () => {
+    const { best } = answer(false);
+    expect(root().findAllByType(AnswerContext)).toHaveLength(0);
     const order = root()
-      .findAll((n) => n.type === AnswerContext || n.type === KeyIdea || n.type === TipsCard)
-      .map((n) => (n.type === AnswerContext ? 'context' : n.type === KeyIdea ? 'key' : 'tips'));
-    expect(order).toEqual(['context', 'key', 'tips']);
+      .findAll((n) => n.type === AnswerPlate || n.type === WhyBlock || n.type === KeyIdea || n.type === TipsCard)
+      .map((n) => (n.type === AnswerPlate ? 'plate' : n.type === WhyBlock ? 'why' : n.type === KeyIdea ? 'key' : 'tips'));
+    expect(order).toEqual(['plate', 'key', 'tips', 'why']);
     expect(root().findAllByType(TipsCard)[0].props.rows.map((t: { label: string }) => t.label)).toEqual(['Eliminate two', 'Final two', 'Exam cue']);
-    expect(root().findAllByType(WhyBlock)).toHaveLength(0);
+    const why = root().findByType(WhyBlock);
+    expect(why.props.more).toEqual([]);
+    expect(why.props.children).toBeUndefined();
+    // After a miss a long Why may fold; its heading names the best answer's DISPLAY letter.
+    expect(why.props.fold).toBe(true);
+    expect(why.props.letter).toBe(best);
   });
 
   // PHASE4.md 4.4: the blocks after the card fade in reading order, opacity only, 30 ms apart.
-  it('Key idea and tips arrive together with opacity only', () => {
+  it('Key idea with the tips, then the Why: opacity only, 30 ms apart', () => {
     answer(false);
     const rises = root().findAllByType(Rise);
-    expect(rises).toHaveLength(1);
-    expect(rises.map((n) => n.props.rise)).toEqual([false]);
+    expect(rises).toHaveLength(2);
+    expect(rises.map((n) => n.props.rise)).toEqual([false, false]);
     expect(rises[0].props.delay).toBe(FEEDBACK_DELAY.why);
+    expect(rises[1].props.delay - rises[0].props.delay).toBe(PLATE_ROW_STAGGER);
+    // Which block is in which: the Key idea and tips in the first, the Why in the second.
+    expect(rises[0].findAllByType(KeyIdea)).toHaveLength(1);
+    expect(rises[0].findAllByType(TipsCard)).toHaveLength(1);
+    expect(rises[1].findAllByType(WhyBlock)).toHaveLength(1);
   });
 });
 

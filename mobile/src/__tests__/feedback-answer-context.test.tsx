@@ -1,7 +1,7 @@
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { getAllQuestions } from '../content/loader';
-import { AnswerContext } from '../components/quiz';
-import { renderText, type Permutation } from '../engine/shuffle';
+import { AnswerContext, QuestionRecap, type RecapChoice } from '../components/quiz';
+import { displayToOriginal, renderText, type Permutation } from '../engine/shuffle';
 import { startFromIds, startMock } from '../lib/sessions';
 import { finishSession } from '../lib/finishSession';
 import { useSession } from '../store/session';
@@ -52,17 +52,40 @@ it.each(['A', 'B', 'C', 'D', undefined] as const)('keeps reported shuffled wordi
   });
 });
 
-it('does not reveal practice context until Check answer', () => {
+// Phone 2.2 (owner direction, 19 Nov 2026): the practice answer no longer lists every option's reason
+// ("Compare all options"). The same content is on request, under "Show question & choices", and it is
+// still built from the session's SAVED shuffle, so the reported wording stays under the letter it had.
+it('practice never mounts the full comparison; nothing about the answer is in the tree until Check answer', () => {
   startFromIds('cisa', [q.id], 'Feedback regression');
   act(() => { tree = create(<SessionScreen />); });
+  const revealed = () => tree.root.findAll(n => typeof n.props.testID === 'string' && /^(answer-context|recap-|question-recap)/.test(n.props.testID));
   expect(tree.root.findAllByType(AnswerContext)).toHaveLength(0);
+  expect(tree.root.findAllByType(QuestionRecap)).toHaveLength(0);
+  expect(revealed()).toHaveLength(0);
   const option = tree.root.findAll(n => n.props.letter === 'D' && typeof n.props.onPress === 'function' && n.props.state !== undefined)[0];
   act(() => option.props.onPress());
   expect(tree.root.findAllByType(AnswerContext)).toHaveLength(0);
+  expect(tree.root.findAllByType(QuestionRecap)).toHaveLength(0);
+  expect(revealed()).toHaveLength(0);
   const check = tree.root.findAll(n => n.props.accessibilityLabel === 'Check answer' && typeof n.props.onPress === 'function')[0];
   act(() => check.props.onPress());
-  expect(tree.root.findAllByType(AnswerContext)).toHaveLength(1);
-  expect(tree.root.findByType(AnswerContext).props.perm).toEqual(useSession.getState().active!.perms[q.id]);
+  // Checked: still no inline comparison in practice (it lives in mock review only).
+  expect(tree.root.findAllByType(AnswerContext)).toHaveLength(0);
+  expect(textOf(tree.root)).not.toContain('Compare all options');
+  // The recap holds every choice instead, mapped through the saved permutation, and starts closed.
+  const saved = useSession.getState().active!.perms[q.id];
+  const choices = tree.root.findByType(QuestionRecap).props.choices as RecapChoice[];
+  expect(choices.map(c => c.letter)).toEqual(['A', 'B', 'C', 'D']);
+  choices.forEach(c => {
+    const original = displayToOriginal(c.letter, saved);
+    expect(c.text).toBe(q.options[original]);
+    expect(c.best).toBe(original === q.correct);
+    expect(c.pick).toBe(c.letter === 'D');
+    expect(c.why).toBe(renderText(original === q.correct ? q.explanation : q.wrongExplanations[original], saved));
+    expect(c.why).not.toMatch(/\{\{[A-D]\}\}/);
+  });
+  expect(choices.filter(c => c.best)).toHaveLength(1);
+  expect(tree.root.findAll(n => n.props.testID === 'recap-choices')).toHaveLength(0);
 });
 
 it('keeps an active mock private, including when Results is opened early; finished skipped questions get context', () => {

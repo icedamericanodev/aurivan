@@ -12,9 +12,12 @@
  *    sheet). Closing the sheet, or the report sheet it opened, puts
  *    screen-reader focus back on ⋯.
  *  - No ⋯ in a mock.
- *  - §2.1: the answer opens with "Question" and the stem in two lines, then
- *    "Show question" (its expanded state spoken); the recap is one stop that
- *    says the whole question.
+ *  - §2.1: the answer opens with "Question" and the stem in two lines; the recap
+ *    is one stop that says the whole question.
+ *  - Phone 2.2 (owner direction, 19 Nov 2026): ONE switch, "Show question &
+ *    choices" (its expanded state spoken), replaces the stem-only "Show question"
+ *    AND More's "Show all options" sheet: open, it shows the whole question and
+ *    all four choices in DISPLAY order, read-only. More no longer has that row.
  */
 import { ScrollView } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
@@ -29,8 +32,8 @@ import { displayToOriginal, originalToDisplay } from '../engine/shuffle';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import SessionScreen from '../app/session';
-import { AnswerMore, SHEET_GONE_MS, STEM_RECAP_CHARS, StemRecap } from '../components/quiz';
-import { moreButton, moreRowLabels, viaMore } from '../../jest/answerMore';
+import { AnswerMore, QuestionRecap, SHEET_GONE_MS, STEM_RECAP_CHARS, StemRecap, type RecapChoice } from '../components/quiz';
+import { moreButton, moreRowLabels } from '../../jest/answerMore';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -165,13 +168,14 @@ describe('the ⋯ "More on this question" sheet', () => {
     expect(style.height).toBeGreaterThanOrEqual(48);
   });
 
-  it('holds the five rows in order after an answer, titled "More on this question"', () => {
+  it('holds the four rows in order after an answer, titled "More on this question"', () => {
     answer([full.q.id, other.id]);
     press('More on this question');
     expect(allText()).toContain('More on this question');
     const labels = moreRowLabels(root());
-    // Grove Phase 4 (PHASE4.md 4.2 step 2, 4.5): "Show all options" first.
-    expect(labels.map((l) => l.split(':')[0])).toEqual(['Show all options, with your pick and the best', 'Read the note', 'Read the principle', 'Add a note', 'Report a problem with this question']);
+    // Phone 2.2: "Show all options" left More (the choices are under "Show question & choices" on the page).
+    expect(labels.map((l) => l.split(':')[0])).toEqual(['Read the note', 'Read the principle', 'Add a note', 'Report a problem with this question']);
+    expect(labels.some((l) => /all options/i.test(l))).toBe(false);
     // The sheet is closed again: the only report entry left is the source row's own link.
     const report = root().findAll((n) => n.props.accessibilityLabel === 'Report a problem with this question' && typeof n.props.onPress === 'function' && n.props.testID !== 'answer-report-link');
     expect(report).toHaveLength(0);
@@ -247,14 +251,22 @@ describe('the ⋯ "More on this question" sheet', () => {
   });
 });
 
-describe('the stem recap at the top of the answer (premium pass §2.1)', () => {
-  // A long stem with no scenario, and (if the bank has one) a question with a scenario.
+describe('the question recap at the top of the answer (premium pass §2.1; phone 2.2: one switch)', () => {
+  // A long stem with no scenario (the bank has no scenario questions today: those are rendered directly below).
   const long = bank.find((q) => !q.scenario && q.stem.length > STEM_RECAP_CHARS && q.id !== other.id)!;
-  const withScenario = bank.find((q) => Boolean(q.scenario) && q.id !== other.id);
+  const choices: RecapChoice[] = [
+    { letter: 'A', text: 'First', pick: false, best: false, why: 'Not A.' },
+    { letter: 'B', text: 'Second', pick: true, best: false, why: 'Not B.' },
+    { letter: 'C', text: 'Third', pick: false, best: true, why: 'C it is.' },
+    { letter: 'D', text: 'Fourth', pick: false, best: false, why: 'Not D.' },
+  ];
 
-  it('"Question", the stem in two lines, then "Show question" (48pt) that opens it in place', () => {
+  it('"Question", the stem in two lines, then ONE switch, "Show question & choices" (48pt), that opens it in place', () => {
     answer([long.id, other.id]);
-    const recap = root().findByType(StemRecap);
+    // Practice no longer mounts the stem-only recap, and nothing is labelled "Show question" exactly.
+    expect(root().findAllByType(StemRecap)).toHaveLength(0);
+    expect(hosts(/^(Show|Hide) question$/)).toHaveLength(0);
+    const recap = root().findByType(QuestionRecap);
     const t = textOf(recap);
     expect(t.startsWith('Question')).toBe(true);
     // Closed: shortened at a whole word with one "…" (engine/textClip.ts), two lines kept as a safety stop.
@@ -264,15 +276,22 @@ describe('the stem recap at the top of the answer (premium pass §2.1)', () => {
     expect(shown.endsWith('…')).toBe(true);
     expect(long.stem.replace(/\s+/g, ' ').startsWith(shown.slice(0, -1))).toBe(true);
     expect(shown).not.toMatch(/\s…$/);
-    const toggle = hosts(/^Show question$/)[0];
+    const toggles = hosts(/^Show question and choices$/);
+    expect(toggles.map((n) => n.props.testID)).toEqual(['recap-toggle']);
+    const toggle = toggles[0];
+    expect(toggle.props.accessibilityRole).toBe('button');
     expect(toggle.props.accessibilityState).toMatchObject({ expanded: false });
+    expect(textOf(toggle).trim()).toBe('Show question & choices');
     const style = Object.assign({}, ...[toggle.props.style].flat(5).filter(Boolean));
     expect(style.minHeight).toBeGreaterThanOrEqual(48);
-    press('Show question');
-    expect(hosts(/^Hide question$/)[0].props.accessibilityState).toMatchObject({ expanded: true });
-    expect(recap.findAll((n) => n.props.children === long.stem && typeof n.props.numberOfLines === 'number')).toHaveLength(0);
-    press('Hide question');
-    expect(hosts(/^Show question$/)).toHaveLength(1);
+    press('Show question and choices');
+    expect(hosts(/^Hide question and choices$/)[0].props.accessibilityState).toMatchObject({ expanded: true });
+    // Open: the whole stem, with no line limit.
+    expect(recap.findAll((n) => typeof n.type === 'string' && textOf(n) === long.stem).length).toBeGreaterThan(0);
+    expect(recap.findAll((n) => typeof n.props.children === 'string' && typeof n.props.numberOfLines === 'number')).toHaveLength(0);
+    press('Hide question and choices');
+    expect(hosts(/^Show question and choices$/)).toHaveLength(1);
+    expect(recap.findAll((n) => typeof n.props.children === 'string' && n.props.numberOfLines === 2).length).toBeGreaterThan(0);
   });
 
   it('comes before the verdict, and a screen reader hears the whole question in one stop', () => {
@@ -284,51 +303,100 @@ describe('the stem recap at the top of the answer (premium pass §2.1)', () => {
     expect(hosts(/^Question: /).map((n) => n.props.accessibilityLabel)).toEqual([`Question: ${long.stem}`]);
   });
 
-  it('a short stem has no toggle and is never cut', () => {
-    const short = bank.find((q) => !q.scenario && q.stem.length <= 70 && q.id !== other.id);
-    if (!short) return; // the bank has no short stem: nothing to check
-    answer([short.id, other.id]);
-    expect(hosts(/^Show question$/)).toHaveLength(0);
+  // The bank has no stem this short, so the part is rendered on its own (was a check that never ran).
+  it('a short stem is never cut, and still has the switch (it opens the choices)', () => {
+    const short = 'Which control is MOST effective?';
+    act(() => {
+      r = create(<QuestionRecap stem={short} choices={choices} />);
+    });
+    expect(allText()).toContain(short);
+    expect(allText()).not.toContain('…');
+    expect(hosts(/^Question: /).map((n) => n.props.accessibilityLabel)).toEqual([`Question: ${short}`]);
+    expect(hosts(/^Show question and choices$/)).toHaveLength(1);
+    press('Show question and choices');
+    expect(allText()).toContain(short);
+    expect(root().findAll((n) => typeof n.type === 'string' && /^recap-choice-[A-D]$/.test(n.props.testID ?? ''))).toHaveLength(4);
   });
 
+  // The bank has no scenario question today, so the part is rendered on its own (was a check that never ran).
   it('a scenario opens with the stem, and is in the spoken question', () => {
-    if (!withScenario) return; // no scenario questions in the bank
-    answer([withScenario.id, other.id]);
-    expect(hosts(/^Question: /)[0].props.accessibilityLabel).toBe(`Question: ${withScenario.scenario} ${withScenario.stem}`);
-    expect(hosts(/^Show question$/)).toHaveLength(1);
+    const scenario = 'A retail bank moved its payments platform to a new provider last quarter.';
+    act(() => {
+      r = create(<QuestionRecap stem={long.stem} scenario={scenario} choices={choices} />);
+    });
+    expect(hosts(/^Question: /)[0].props.accessibilityLabel).toBe(`Question: ${scenario} ${long.stem}`);
+    // Closed: the scenario is not on screen (it is in the spoken question only).
+    expect(allText()).not.toContain(scenario);
+    expect(hosts(/^Show question and choices$/)).toHaveLength(1);
+    press('Show question and choices');
+    const t = allText();
+    expect(t).toContain(scenario);
+    expect(t).toContain(long.stem);
+    expect(t.indexOf(scenario)).toBeLessThan(t.indexOf(long.stem));
+    press('Hide question and choices');
+    expect(allText()).not.toContain(scenario);
   });
 });
 
 // Grove Phase 4 (PHASE4.md 4.2 step 2, 4.5 "must not be lost"): the answer card shows only the pick
-// and the best answer, so More keeps every option one tap away, read-only, in DISPLAY order.
-describe('More: Show all options', () => {
+// and the best answer, so every option stays one tap away, read-only, in DISPLAY order. Phone 2.2: that
+// tap is "Show question & choices" on the page (it was More's "Show all options" sheet).
+describe('Show question & choices: every option, one tap away (was More: Show all options)', () => {
+  const rowsOf = () => root().findAll((n) => typeof n.type === 'string' && /^recap-choice-[A-D]$/.test(n.props.testID ?? ''));
+
   it('lists every option in display order, looked up by original letter, with the pick and the best marked', () => {
     answer([full.q.id, other.id]);
     const perm = useSession.getState().active!.perms[full.q.id];
     const pick = (['A', 'B', 'C', 'D'] as const).find((l) => l !== full.q.correct && full.q.options[l])!;
-    viaMore(root(), 'Show all options');
-    const rows = root().findAll((n) => typeof n.type === 'string' && typeof n.props.testID === 'string' && n.props.testID.startsWith('all-options-'));
-    const shown = rows.map((n) => n.props.testID.replace('all-options-', ''));
+    // Closed until asked for.
+    expect(rowsOf()).toHaveLength(0);
+    press('Show question and choices');
+    const rows = rowsOf();
+    const shown = rows.map((n) => n.props.testID.replace('recap-choice-', ''));
     expect(shown).toEqual(['A', 'B', 'C', 'D'].slice(0, perm.length));
     for (const n of rows) {
-      const d = n.props.testID.replace('all-options-', '') as 'A';
+      const d = n.props.testID.replace('recap-choice-', '') as 'A';
       const original = displayToOriginal(d, perm);
       const text = full.q.options[original];
-      const label = n.props.accessibilityLabel as string;
+      // Each row is ONE stop, with its display letter and (for the pick and the best) the words.
+      const stops = n.findAll((x) => typeof x.type === 'string' && x.props.accessible === true);
+      expect(stops).toHaveLength(1);
+      const label = stops[0].props.accessibilityLabel as string;
       expect(label.endsWith(`: ${text}`)).toBe(true);
-      if (original === full.q.correct) expect(label.startsWith(`${d}, best answer`)).toBe(true);
-      else if (original === pick) expect(label.startsWith(`${d}, your answer, not the best`)).toBe(true);
-      else expect(label).toBe(`${d}: ${text}`);
+      if (original === full.q.correct) {
+        expect(label.startsWith(`${d}, best answer`)).toBe(true);
+        expect(textOf(n)).toContain('✓ Best answer');
+      } else if (original === pick) {
+        expect(label.startsWith(`${d}, your answer, not the best`)).toBe(true);
+        expect(textOf(n)).toContain('✗ Your answer');
+      } else {
+        expect(label).toBe(`${d}: ${text}`);
+        expect(textOf(n)).not.toMatch(/Your answer|Best answer/);
+      }
     }
-    // Read-only: no option in the sheet can be tapped.
-    expect(root().findAll((n) => typeof n.props.testID === 'string' && n.props.testID.startsWith('all-options-') && typeof n.props.onPress === 'function')).toHaveLength(0);
+    // Read-only: no option in the recap can be tapped (only the two switches can).
+    const tappable = root()
+      .findByType(QuestionRecap)
+      .findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'button')
+      .map((n) => n.props.testID);
+    expect(tappable).toEqual(['recap-toggle', 'recap-why-toggle']);
+    for (const n of rows) expect(n.findAll((x) => typeof x.props.onPress === 'function')).toHaveLength(0);
   });
 
-  it('is not offered before the answer is checked', () => {
+  it('is not offered before the answer is checked, in More or on the page', () => {
     startFromIds('cisa', [full.q.id, other.id], 'T');
     act(() => {
       r = create(<SessionScreen />);
     });
-    expect(moreRowLabels(root()).some((l) => l.startsWith('Show all options'))).toBe(false);
+    expect(moreRowLabels(root()).some((l) => /all options|choices/i.test(l))).toBe(false);
+    expect(root().findAllByType(QuestionRecap)).toHaveLength(0);
+    expect(root().findAll((n) => typeof n.props.testID === 'string' && n.props.testID.startsWith('recap-'))).toHaveLength(0);
+  });
+
+  it('after the answer, More has no "Show all options" row: one surface for the choices, not two', () => {
+    answer([full.q.id, other.id]);
+    expect(moreRowLabels(root()).some((l) => /all options/i.test(l))).toBe(false);
+    expect(root().findAll((n) => typeof n.props.testID === 'string' && n.props.testID.startsWith('all-options'))).toHaveLength(0);
+    expect(root().findAll((n) => n.props.title === 'All options')).toHaveLength(0);
   });
 });
