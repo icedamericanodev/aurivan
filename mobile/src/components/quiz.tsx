@@ -8,8 +8,8 @@
  *   Head     – (premium round 2) the running head "Practice · IS Audit" and
  *              "Question 4 of 10" (fieldguide/RunningHead, set by the screen).
  *   Recap    – (phone 2.2) "Question" and the stem in two lines, with ONE
- *              switch, "Show question & choices", that opens the whole
- *              question and all four choices in place (QuestionRecap).
+ *              switch, "Show question & options", that opens the whole
+ *              question and all four options in place (QuestionRecap).
  *              Lessons and drills keep the stem-only StemRecap.
  *   Verdict  – a leaf-shaped mark with ✓/✗, "Correct" / "Not quite", and a
  *              one-line coach note (`field`: the word in ink, the note in
@@ -352,7 +352,7 @@ export const PLATE_ROW_STAGGER = 30;
  *
  * Colour is never alone: every row has its ✗ / ✓ and its words. Each row is one screen-reader stop
  * ("Your answer, B, not the best: …"; "Why not B: …"; "Best answer, D: …"). DISPLAY letters only.
- * The other options stay one tap away under "Show question & choices" (QuestionRecap below).
+ * The other options stay one tap away under "Show question & options" (QuestionRecap below).
  */
 export function AnswerPlate({ pick, best, delay = 0 }: { pick?: PlateRow; best: PlateRow; delay?: number }) {
   const { c } = useTheme();
@@ -959,7 +959,7 @@ export function AnswerMore({ rows: given, buttonRef, onOpenChange }: { rows: (Mo
   );
 }
 
-// ── Question & choices: the whole question, folded under the answer's top line ──
+// ── Question & options: the whole question, folded under the answer's top line ──
 /** One choice in the recap: its DISPLAY letter, its text, whether it is the pick or the best, and its own "why". */
 export interface RecapChoice {
   letter: Letter;
@@ -1052,13 +1052,55 @@ function RecapToggle({ open, show, hide, spokenShow, spokenHide, onPress, testID
 }
 
 /**
+ * The four options as read-only rows, with ONE switch under them, "Show why for each option".
+ * One implementation, used in two places: inside the answer screen's QuestionRecap (below) and on
+ * the read-only look-back page (app/answered/[id].tsx).
+ *
+ * - `choices`: the rows, in the order to show them. The caller has already worked out each letter,
+ *   text, reason and the pick / best marks (on ORIGINAL letters); nothing here grades anything.
+ * - `startWhyOpenFor`: letters whose own reason shows even while the switch is closed. The look-back
+ *   page passes a missed pick the app really saved, so "Why not B" is there at once, as on the
+ *   answer card. The switch then reveals the others.
+ *
+ * The switch is closed on every mount (its state lives here), and it is only drawn when it has a
+ * reason to reveal. A closed reason is not in the tree at all, so a screen reader never meets it.
+ */
+export function OptionsWithWhy({ choices, startWhyOpenFor }: { choices: RecapChoice[]; startWhyOpenFor?: Letter[] }) {
+  const [whys, setWhys] = useState(false);
+  const alwaysOpen = (letter: Letter) => Boolean(startWhyOpenFor?.includes(letter));
+  // Is there a reason the switch would add? (Not when the only reasons are already open.)
+  const anyHiddenWhy = choices.some((r) => Boolean(r.why) && !alwaysOpen(r.letter));
+  return (
+    <>
+      <View testID="recap-choices">
+        {choices.map((r, i) => (
+          <RecapChoiceRow key={r.letter} row={r} first={i === 0} showWhy={whys || alwaysOpen(r.letter)} />
+        ))}
+      </View>
+      {anyHiddenWhy && (
+        <RecapToggle
+          testID="recap-why-toggle"
+          open={whys}
+          show="Show why for each option"
+          hide="Hide why for each option"
+          spokenShow="Show why for each option"
+          spokenHide="Hide why for each option"
+          onPress={() => setWhys(!whys)}
+        />
+      )}
+    </>
+  );
+}
+
+/**
  * Phone 2.2 (owner direction, 19 Nov 2026): the practice answer keeps its short summary and the
- * familiar tips, and the whole question lives behind ONE switch, "Show question & choices",
- * closed by default. Open, it shows the scenario, the whole stem and all four choices in the
+ * familiar tips, and the whole question lives behind ONE switch, "Show question & options",
+ * closed by default. Open, it shows the scenario, the whole stem and all four options in the
  * order they were on screen (DISPLAY letters: the caller maps each through the session's saved
  * shuffle, so opening and closing can never reshuffle). The pick and the best keep their badge
- * colour AND their words. Each choice's own reason is one more step inside ("Show why for each
- * choice"), never open by default: a full list of reasons under every answer overwhelmed learners.
+ * colour AND their words. Each option's own reason is one more step inside ("Show why for each
+ * option", OptionsWithWhy above), never open by default: a full list of reasons under every answer
+ * overwhelmed learners.
  *
  * It replaces, in practice only, the stem-only "Show question" (StemRecap, still used by lessons
  * and drills), the inline "Compare all options" list (AnswerContext, still used by mock review)
@@ -1071,7 +1113,6 @@ function RecapToggle({ open, show, hide, spokenShow, spokenHide, onPress, testID
 export function QuestionRecap({ stem, scenario, choices }: { stem: string; scenario?: string; choices: RecapChoice[] }) {
   const { c } = useTheme();
   const [open, setOpen] = useState(false);
-  const [whys, setWhys] = useState(false);
   const whole = scenario ? `${scenario} ${stem}` : stem;
   // Folded, the stem is shortened at a whole word to what two lines hold (as StemRecap does).
   const screen = useContentWidth();
@@ -1083,7 +1124,6 @@ export function QuestionRecap({ stem, scenario, choices }: { stem: string; scena
   const words = (text: string, lines?: number) => (
     <FieldText v="recap" numberOfLines={lines} style={{ marginTop: space.xs }}>{text}</FieldText>
   );
-  const anyWhy = choices.some((r) => Boolean(r.why));
   return (
     <View testID="question-recap" style={{ marginTop: space.md }}>
       <View accessible accessibilityLabel={`Question: ${whole}`} onLayout={(e) => setBoxW(e.nativeEvent.layout.width)}>
@@ -1091,36 +1131,20 @@ export function QuestionRecap({ stem, scenario, choices }: { stem: string; scena
         {scenario ? <Collapse open={open}>{words(scenario)}</Collapse> : null}
         {open ? words(stem) : words(folded, 2)}
       </View>
+      {/* "&" and "options" are joined by a no-break space (\u00a0), so "&" never ends a line. */}
       <RecapToggle
         testID="recap-toggle"
         open={open}
-        show="Show question & choices"
-        hide="Hide question & choices"
-        spokenShow="Show question and choices"
-        spokenHide="Hide question and choices"
-        onPress={() => {
-          // Closing also closes the reasons, so reopening is the plain question again.
-          if (open) setWhys(false);
-          setOpen(!open);
-        }}
+        show={'Show question &\u00a0options'}
+        hide={'Hide question &\u00a0options'}
+        spokenShow="Show question and options"
+        spokenHide="Hide question and options"
+        onPress={() => setOpen(!open)}
       />
+      {/* Closed, Collapse takes the options out of the tree, so their "why" switch starts closed
+          again each time this opens: reopening is the plain question again. */}
       <Collapse open={open}>
-        <View testID="recap-choices">
-          {choices.map((r, i) => (
-            <RecapChoiceRow key={r.letter} row={r} first={i === 0} showWhy={whys} />
-          ))}
-        </View>
-        {anyWhy && (
-          <RecapToggle
-            testID="recap-why-toggle"
-            open={whys}
-            show="Show why for each choice"
-            hide="Hide why for each choice"
-            spokenShow="Show why for each choice"
-            spokenHide="Hide why for each choice"
-            onPress={() => setWhys(!whys)}
-          />
-        )}
+        <OptionsWithWhy choices={choices} />
       </Collapse>
     </View>
   );

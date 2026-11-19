@@ -7,14 +7,18 @@
  * (app/bank/[domain].tsx). It is called "answered", never "review": in this
  * app "review" means answering a question again (the spaced review queue).
  *
- * Top to bottom:
- *   - the last result and its date ("Last answered correctly · 6 Oct 2026"),
- *     and the learner's own count on this question;
- *   - the scenario and the question;
- *   - all the options in their ORIGINAL A to D order (no shuffle was saved for
- *     an old answer, so none is invented), the best answer marked, and the
- *     explanation for every option;
+ * Top to bottom (the same calm order as the answer screen; testers found a
+ * full list of reasons under every option a "wall"):
+ *   - the last result and its date ("Last time: correct", "6 Oct 2026"), and
+ *     the learner's own count on this question;
+ *   - the scenario and the whole question, never folded;
+ *   - the four options in their ORIGINAL A to D order (no shuffle was saved
+ *     for an old answer, so none is invented), with the best answer marked;
+ *   - one switch, "Show why for each option", closed on every visit. After a
+ *     miss whose pick was saved, that option's own "Why not B" is already open;
  *   - the Key idea and the tips;
+ *   - "Why B": the best answer's explanation, whole;
+ *   - a line saying the explanations are the latest version;
  *   - one separate button, "Practice this question".
  *
  * Three rules this screen must never break (engine/answeredReview.ts holds the logic):
@@ -25,8 +29,10 @@
  *      and only when it is tapped (it asks first if a session is paused).
  *   2. It never guesses the learner's pick. An answer record does not keep
  *      the option picked. The one honest exception is a miss whose pick the
- *      Mistake journal kept for that same attempt (savedMissPick). Otherwise
- *      it says "Your selected option was not saved for this answer."
+ *      Mistake journal kept for that same attempt (savedMissPick). After any
+ *      other miss it says the pick was not saved (PICK_NOT_SAVED_LINE). After a
+ *      RIGHT answer it says nothing about the pick: beside "Last time: correct"
+ *      that line read as an error, and no row is called "Your answer".
  *   3. It never shows an answer for a question that is in a mock exam the
  *      learner has not submitted: "Finish your mock first".
  *
@@ -39,10 +45,11 @@ import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusMark } from '../../components/bank';
 import { EmptyScreen } from '../../components/emptyScreen';
-import { AnswerContext, KeyIdea, ScenarioBlock, StickyFooter, TipsCard, TipsHeading } from '../../components/quiz';
+import { KeyIdea, OptionsWithWhy, ScenarioBlock, StickyFooter, TipsCard, TipsHeading, WhyBlock, type RecapChoice } from '../../components/quiz';
 import { Button, Gap, PushedHeader, Row, Stem, T, Tag } from '../../components/ui';
 import { CERTIFICATIONS, getCertification } from '../../content/certifications';
 import { findQuestion } from '../../content/loader';
+import { LETTERS } from '../../content/types';
 import {
   attemptsLine,
   CURRENT_EXPLANATIONS_LINE,
@@ -136,6 +143,15 @@ export default function AnsweredQuestion() {
   const attempts = attemptsLine(record);
   const tagLine = `${domain ? `${domain.short} · ` : ''}${difficultyLabel(question.difficulty)}`;
   const tips = question.tips.map((tip, i) => tipParts(renderText(tip, perm), i));
+  // The four option rows, A to D. `pick` is only ever true for a miss the Mistake journal kept
+  // (rule 2), so after a right answer no row is called "Your answer". Compared on ORIGINAL letters.
+  const options: RecapChoice[] = perm.map((original, i) => {
+    const best = original === question.correct;
+    const why = best ? question.explanation : question.wrongExplanations[original];
+    return { letter: LETTERS[i], text: question.options[original] ?? '', pick: original === pick, best, why: why ? renderText(why, perm) : undefined };
+  });
+  const bestLetter = originalToDisplay(question.correct, perm);
+  const explanation = renderText(question.explanation, perm);
 
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
@@ -172,25 +188,29 @@ export default function AnsweredQuestion() {
           </>
         ) : null}
         <View style={{ marginTop: space.md }}>
-          <T v="caption" color={c.accentText} accessibilityRole="header">Question</T>
+          <T v="caption" color={c.ink2} accessibilityRole="header">Question</T>
           <Gap h={space.xs} />
           <Stem>{question.stem}</Stem>
         </View>
 
-        {/* Rule 2: when the pick is not known, say so plainly. Never a guess, even after a right answer. */}
-        <View style={{ marginTop: space.xl, gap: space.xs }}>
-          {pick === null ? <T v="small" color={c.ink2}>{PICK_NOT_SAVED_LINE}</T> : null}
-          <T v="small" color={c.ink2}>{CURRENT_EXPLANATIONS_LINE}</T>
+        {/* The four options in ORIGINAL order, read-only, and under them ONE switch, "Show why for each
+            option", closed on every visit (the same rows as the answer screen's recap). A saved miss
+            pick shows its own "Why not B" at once, as the answer card does; the switch adds the rest. */}
+        <View style={{ marginTop: space.lg }}>
+          <OptionsWithWhy choices={options} startWhyOpenFor={pick ? [originalToDisplay(pick, perm)] : undefined} />
+          {/* Rule 2: after a miss whose pick is not known, say so plainly, right under the switch.
+              Never after a right answer (there it read as an error), and never a guess. */}
+          {!record.lastCorrect && pick === null ? <T v="meta">{PICK_NOT_SAVED_LINE}</T> : null}
         </View>
-
-        {/* Every option with its explanation, in ORIGINAL order. `picked` only ever holds a pick the
-            Mistake journal kept for this attempt; left out, no row is called "Your answer". */}
-        <AnswerContext question={question} perm={perm} picked={pick ? originalToDisplay(pick, perm) : undefined} />
 
         {/* `visible={false}`: the Key idea's small buzz is for a fresh answer, not for reading back. */}
         <KeyIdea text={question.keyConcept} visible={false} />
         {tips.length > 0 ? <TipsHeading /> : null}
         <TipsCard rows={tips} visible testID="look-back-tips" />
+        {/* The best answer's explanation, always whole here (`fold={false}`: nothing to "Read more"). */}
+        {explanation ? <WhyBlock letter={bestLetter} text={explanation} fold={false} /> : null}
+        {/* Last: the explanations may have been improved since the answer was given. */}
+        <T v="meta" style={{ marginTop: space.lg }}>{CURRENT_EXPLANATIONS_LINE}</T>
       </ScrollView>
 
       {/* The ONLY thing here that starts anything, and only when tapped. guardedStart asks before it

@@ -1,12 +1,12 @@
 // FB-001 visual regression (SHOTS=fb001, see run.sh), as rebuilt for phone 2.2 (owner direction, 19 Nov 2026;
 // learner report R-ZXUQ): the practice answer is the short summary again (the card, Key idea, the tips, then
-// Why), and the whole question lives behind ONE switch, "Show question & choices". The inline
+// Why), and the whole question lives behind ONE switch, "Show question & options". The inline
 // "Compare all options" list these shots used to scroll through is gone from practice.
 //
 // Shots, in light AND dark (fresh browsers per theme, so each starts from the seed):
 //   q22-1-answer-miss     the answer as it first appears after a MISS: the recap closed, verdict, the card
-//   q22-2-choices-open    the same after "Show question & choices": the whole question and all four choices
-//   q22-3-why-open        the same after "Show why for each choice": each choice's own reason under it
+//   q22-2-choices-open    the same after "Show question & options": the whole question and all four choices
+//   q22-3-why-open        the same after "Show why for each option": each choice's own reason under it
 //   q22-4-closed-again    closed again: back to the first view (the reasons close with it)
 //   q22-5-answer-correct  the same question answered RIGHT, as it first appears
 // The lesson quick check and the ⋯ sheet are in shoot_m149.mjs (SHOTS=m149 and the default run).
@@ -106,12 +106,12 @@ for (const theme of THEMES) {
   const best = (said.match(/^Best answer, ([A-D]): /) || [])[1] || seededBest();
   if (!said) console.log(`no "Best answer" row: Option ${keys[0]} was not a miss (the first sample has no runner-up)`);
 
-  // ── (b) "Show question & choices": the whole question and all four choices, in place ──
+  // ── (b) "Show question & options": the whole question and all four choices, in place ──
   if (await tapId('recap-toggle')) {
     // The switch at the top of the screen, so the question above it scrolls off and every choice is in view.
     await intoId('recap-toggle', 'start');
     await shot('q22-2-choices-open');
-    // ── (c) "Show why for each choice": each choice's own reason under it ──
+    // ── (c) "Show why for each option": each choice's own reason under it ──
     if (await tapId('recap-why-toggle')) {
       await intoId('recap-choices', 'start');
       await shot('q22-3-why-open');
@@ -123,7 +123,7 @@ for (const theme of THEMES) {
     await page.mouse.move(W / 2, H / 2);
     await page.mouse.wheel(0, -4000);
     await wait(700);
-    if (await page.getByTestId('recap-choices').count()) errs.push(`${theme}: the choices are still open after "Hide question & choices"`);
+    if (await page.getByTestId('recap-choices').count()) errs.push(`${theme}: the choices are still open after "Hide question & options"`);
     await shot('q22-4-closed-again');
   }
 

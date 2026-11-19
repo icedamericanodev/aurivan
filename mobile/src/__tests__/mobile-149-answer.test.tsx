@@ -173,7 +173,7 @@ describe('the ⋯ "More on this question" sheet', () => {
     press('More on this question');
     expect(allText()).toContain('More on this question');
     const labels = moreRowLabels(root());
-    // Phone 2.2: "Show all options" left More (the choices are under "Show question & choices" on the page).
+    // Phone 2.2: "Show all options" left More (the choices are under "Show question & options" on the page).
     expect(labels.map((l) => l.split(':')[0])).toEqual(['Read the note', 'Read the principle', 'Add a note', 'Report a problem with this question']);
     expect(labels.some((l) => /all options/i.test(l))).toBe(false);
     // The sheet is closed again: the only report entry left is the source row's own link.
@@ -261,7 +261,7 @@ describe('the question recap at the top of the answer (premium pass §2.1; phone
     { letter: 'D', text: 'Fourth', pick: false, best: false, why: 'Not D.' },
   ];
 
-  it('"Question", the stem in two lines, then ONE switch, "Show question & choices" (48pt), that opens it in place', () => {
+  it('"Question", the stem in two lines, then ONE switch, "Show question & options" (48pt), that opens it in place', () => {
     answer([long.id, other.id]);
     // Practice no longer mounts the stem-only recap, and nothing is labelled "Show question" exactly.
     expect(root().findAllByType(StemRecap)).toHaveLength(0);
@@ -276,21 +276,21 @@ describe('the question recap at the top of the answer (premium pass §2.1; phone
     expect(shown.endsWith('…')).toBe(true);
     expect(long.stem.replace(/\s+/g, ' ').startsWith(shown.slice(0, -1))).toBe(true);
     expect(shown).not.toMatch(/\s…$/);
-    const toggles = hosts(/^Show question and choices$/);
+    const toggles = hosts(/^Show question and options$/);
     expect(toggles.map((n) => n.props.testID)).toEqual(['recap-toggle']);
     const toggle = toggles[0];
     expect(toggle.props.accessibilityRole).toBe('button');
     expect(toggle.props.accessibilityState).toMatchObject({ expanded: false });
-    expect(textOf(toggle).trim()).toBe('Show question & choices');
+    expect(textOf(toggle).trim()).toBe('Show question &\u00a0options');
     const style = Object.assign({}, ...[toggle.props.style].flat(5).filter(Boolean));
     expect(style.minHeight).toBeGreaterThanOrEqual(48);
-    press('Show question and choices');
-    expect(hosts(/^Hide question and choices$/)[0].props.accessibilityState).toMatchObject({ expanded: true });
+    press('Show question and options');
+    expect(hosts(/^Hide question and options$/)[0].props.accessibilityState).toMatchObject({ expanded: true });
     // Open: the whole stem, with no line limit.
     expect(recap.findAll((n) => typeof n.type === 'string' && textOf(n) === long.stem).length).toBeGreaterThan(0);
     expect(recap.findAll((n) => typeof n.props.children === 'string' && typeof n.props.numberOfLines === 'number')).toHaveLength(0);
-    press('Hide question and choices');
-    expect(hosts(/^Show question and choices$/)).toHaveLength(1);
+    press('Hide question and options');
+    expect(hosts(/^Show question and options$/)).toHaveLength(1);
     expect(recap.findAll((n) => typeof n.props.children === 'string' && n.props.numberOfLines === 2).length).toBeGreaterThan(0);
   });
 
@@ -312,8 +312,8 @@ describe('the question recap at the top of the answer (premium pass §2.1; phone
     expect(allText()).toContain(short);
     expect(allText()).not.toContain('…');
     expect(hosts(/^Question: /).map((n) => n.props.accessibilityLabel)).toEqual([`Question: ${short}`]);
-    expect(hosts(/^Show question and choices$/)).toHaveLength(1);
-    press('Show question and choices');
+    expect(hosts(/^Show question and options$/)).toHaveLength(1);
+    press('Show question and options');
     expect(allText()).toContain(short);
     expect(root().findAll((n) => typeof n.type === 'string' && /^recap-choice-[A-D]$/.test(n.props.testID ?? ''))).toHaveLength(4);
   });
@@ -327,21 +327,21 @@ describe('the question recap at the top of the answer (premium pass §2.1; phone
     expect(hosts(/^Question: /)[0].props.accessibilityLabel).toBe(`Question: ${scenario} ${long.stem}`);
     // Closed: the scenario is not on screen (it is in the spoken question only).
     expect(allText()).not.toContain(scenario);
-    expect(hosts(/^Show question and choices$/)).toHaveLength(1);
-    press('Show question and choices');
+    expect(hosts(/^Show question and options$/)).toHaveLength(1);
+    press('Show question and options');
     const t = allText();
     expect(t).toContain(scenario);
     expect(t).toContain(long.stem);
     expect(t.indexOf(scenario)).toBeLessThan(t.indexOf(long.stem));
-    press('Hide question and choices');
+    press('Hide question and options');
     expect(allText()).not.toContain(scenario);
   });
 });
 
 // Grove Phase 4 (PHASE4.md 4.2 step 2, 4.5 "must not be lost"): the answer card shows only the pick
 // and the best answer, so every option stays one tap away, read-only, in DISPLAY order. Phone 2.2: that
-// tap is "Show question & choices" on the page (it was More's "Show all options" sheet).
-describe('Show question & choices: every option, one tap away (was More: Show all options)', () => {
+// tap is "Show question & options" on the page (it was More's "Show all options" sheet).
+describe('Show question & options: every option, one tap away (was More: Show all options)', () => {
   const rowsOf = () => root().findAll((n) => typeof n.type === 'string' && /^recap-choice-[A-D]$/.test(n.props.testID ?? ''));
 
   it('lists every option in display order, looked up by original letter, with the pick and the best marked', () => {
@@ -350,7 +350,7 @@ describe('Show question & choices: every option, one tap away (was More: Show al
     const pick = (['A', 'B', 'C', 'D'] as const).find((l) => l !== full.q.correct && full.q.options[l])!;
     // Closed until asked for.
     expect(rowsOf()).toHaveLength(0);
-    press('Show question and choices');
+    press('Show question and options');
     const rows = rowsOf();
     const shown = rows.map((n) => n.props.testID.replace('recap-choice-', ''));
     expect(shown).toEqual(['A', 'B', 'C', 'D'].slice(0, perm.length));

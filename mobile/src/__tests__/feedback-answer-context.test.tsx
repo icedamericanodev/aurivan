@@ -53,7 +53,7 @@ it.each(['A', 'B', 'C', 'D', undefined] as const)('keeps reported shuffled wordi
 });
 
 // Phone 2.2 (owner direction, 19 Nov 2026): the practice answer no longer lists every option's reason
-// ("Compare all options"). The same content is on request, under "Show question & choices", and it is
+// ("Compare all options"). The same content is on request, under "Show question & options", and it is
 // still built from the session's SAVED shuffle, so the reported wording stays under the letter it had.
 it('practice never mounts the full comparison; nothing about the answer is in the tree until Check answer', () => {
   startFromIds('cisa', [q.id], 'Feedback regression');

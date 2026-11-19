@@ -1067,8 +1067,9 @@ const BuildASet = memo(function BuildASet({ cert, timed, preset }: { cert: Certi
       {timer === 'countdown' && lengths.length > 0 && (
         <View testID="build-set-countdown">
           {/* Three lengths worked out from the set: about 60, 90 and 120 seconds a question, in whole minutes. */}
-          <FieldLabel>Countdown length</FieldLabel>
-          <View accessibilityLabel="Countdown length">
+          {/* "Time limit", not "length": "Length" beside it already means how many questions. */}
+          <FieldLabel>Time limit</FieldLabel>
+          <View accessibilityLabel="Time limit">
             <ChipRow>
               {lengths.map((l) => (
                 <Chip

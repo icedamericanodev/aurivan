@@ -186,8 +186,10 @@ describe('the words', () => {
     expect(lastResultLine(rec(false))).toBe('Last time: not quite');
     expect(LAST_CORRECT_LINE).toBe('Last time: correct');
     expect(LAST_MISSED_LINE).toBe('Last time: not quite');
-    expect(PICK_NOT_SAVED_LINE).toBe('KaiSip saved your result for this answer, not which choice you picked.');
-    expect(CURRENT_EXPLANATIONS_LINE).toBe('Explanations shown are the current version.');
+    // ISACA's word is "option" (a stem and four options), as everywhere else in the app.
+    expect(PICK_NOT_SAVED_LINE).toBe('KaiSip saved your result for this answer, not which option you picked.');
+    // Reworded so it does not worry the learner ("current version" sounded like something had changed).
+    expect(CURRENT_EXPLANATIONS_LINE).toBe('Explanations here are always the latest version.');
   });
 
   it('the count is the learner’s own, for this one question', () => {

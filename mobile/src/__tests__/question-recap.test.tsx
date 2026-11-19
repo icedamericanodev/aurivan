@@ -3,7 +3,7 @@
  *
  * Plain English for the founder: after a practice answer the screen is the short one again (your
  * answer and the best answer, the key idea, the tips, then why), and the whole question lives
- * behind ONE switch, "Show question & choices". These tests check
+ * behind ONE switch, "Show question & options". These tests check
  *  1. the first view after a right and after a wrong answer: summary, Key idea, tips, Why, in that
  *     order, with no list of every choice's reason and the switch closed;
  *  2. the reported question (d4_134): one switch that shows the whole question and exactly four
@@ -291,8 +291,8 @@ describe('1. the first view after an answer: the short summary, nothing else ope
     // The same order in the words on the page.
     const t = pageText();
     const words = missed
-      ? ['Show question & choices', 'Not quite', '✗ Your answer', `Why not ${picked}`, '✓ Best answer', 'Key idea', 'How to think about it', 'Eliminate two', 'Final two', 'Exam cue', `Why ${best}`]
-      : ['Show question & choices', 'Correct', '✓ Your answer · the best', 'Key idea', 'How to think about it', 'Eliminate two', 'Final two', 'Exam cue', `Why ${best}`];
+      ? ['Show question &\u00a0options', 'Not quite', '✗ Your answer', `Why not ${picked}`, '✓ Best answer', 'Key idea', 'How to think about it', 'Eliminate two', 'Final two', 'Exam cue', `Why ${best}`]
+      : ['Show question &\u00a0options', 'Correct', '✓ Your answer · the best', 'Key idea', 'How to think about it', 'Eliminate two', 'Final two', 'Exam cue', `Why ${best}`];
     const at = words.map((w) => t.indexOf(w));
     expect(at.every((i) => i >= 0)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
@@ -354,7 +354,7 @@ describe('2. question d4_134 (learner report R-ZXUQ): ONE switch for the whole q
 
     // One switch, closed.
     expect(toggle()).toHaveLength(1);
-    expect(hostLabelled(/^Show question and choices$/)).toHaveLength(1);
+    expect(hostLabelled(/^Show question and options$/)).toHaveLength(1);
     expect(rows()).toHaveLength(0);
     for (const l of others) expect(times(q.options[l]!)).toBe(0);
 
@@ -404,7 +404,7 @@ describe('2. question d4_134 (learner report R-ZXUQ): ONE switch for the whole q
     check();
   });
 
-  it('"Show why for each choice" gives each of the four its own reason, under the letter it was shown with', () => {
+  it('"Show why for each option" gives each of the four its own reason, under the letter it was shown with', () => {
     open([reported.id, second.id], SHUFFLED);
     const { q, perm, picked, best } = answer('wrong');
     tap('recap-toggle');
@@ -558,7 +558,7 @@ describe('4. before "Check answer": nothing about the right answer is in the tre
     const spoken = root()
       .findAll((n) => typeof n.props.accessibilityLabel === 'string')
       .map((n) => n.props.accessibilityLabel as string);
-    expect(spoken.filter((l) => /best answer|your answer|not the best|^Why |question and choices|^Key idea/i.test(l))).toEqual([]);
+    expect(spoken.filter((l) => /best answer|your answer|not the best|^Why |question and options|^Key idea/i.test(l))).toEqual([]);
   };
 
   it('on a fresh question, and after an option is tapped but not checked', () => {
@@ -686,14 +686,14 @@ describe('5. the recap starts closed on each new question, and opening it change
 
 // ── 6. Accessibility ─────────────────────────────────────────────────
 describe('6. accessibility: two buttons that say their state, one stop per choice, closed content not in the tree', () => {
-  it('"Show question & choices": a 48pt button, spoken "Show / Hide question and choices", expanded false / true', () => {
+  it('"Show question & options": a 48pt button, spoken "Show / Hide question and options", expanded false / true', () => {
     open([rich.id, second.id]);
     answer('wrong');
     const closed = toggle()[0];
     expect(closed.props.accessibilityRole).toBe('button');
-    expect(closed.props.accessibilityLabel).toBe('Show question and choices');
+    expect(closed.props.accessibilityLabel).toBe('Show question and options');
     expect(closed.props.accessibilityState).toMatchObject({ expanded: false });
-    expect(textOf(closed).trim()).toBe('Show question & choices');
+    expect(textOf(closed).trim()).toBe('Show question &\u00a0options');
     expect(Number(flat(closed).minHeight)).toBeGreaterThanOrEqual(48);
     // Closed content is not in the tree (not merely hidden).
     expect(root().findAll((n) => /^recap-(choices|choice-|why-)/.test(n.props.testID ?? ''))).toHaveLength(0);
@@ -701,14 +701,14 @@ describe('6. accessibility: two buttons that say their state, one stop per choic
     tap('recap-toggle');
     const opened = toggle()[0];
     expect(opened.props.accessibilityRole).toBe('button');
-    expect(opened.props.accessibilityLabel).toBe('Hide question and choices');
+    expect(opened.props.accessibilityLabel).toBe('Hide question and options');
     expect(opened.props.accessibilityState).toMatchObject({ expanded: true });
-    expect(textOf(opened).trim()).toBe('Hide question & choices');
+    expect(textOf(opened).trim()).toBe('Hide question &\u00a0options');
     // One switch of each kind, never two.
-    expect(hostLabelled(/question and choices$/)).toHaveLength(1);
+    expect(hostLabelled(/question and options$/)).toHaveLength(1);
 
     tap('recap-toggle');
-    expect(toggle()[0].props.accessibilityLabel).toBe('Show question and choices');
+    expect(toggle()[0].props.accessibilityLabel).toBe('Show question and options');
     expect(toggle()[0].props.accessibilityState).toMatchObject({ expanded: false });
     expect(root().findAll((n) => /^recap-(choices|choice-|why-)/.test(n.props.testID ?? ''))).toHaveLength(0);
   });
@@ -755,15 +755,15 @@ describe('6. accessibility: two buttons that say their state, one stop per choic
     expect(allText()).not.toContain('✗');
   });
 
-  it('"Show why for each choice": a 48pt button with its state; each reason is one more stop in its row, never a heading', () => {
+  it('"Show why for each option": a 48pt button with its state; each reason is one more stop in its row, never a heading', () => {
     open([rich.id, second.id]);
     const { q, perm, best } = answer('wrong');
     tap('recap-toggle');
     const closed = whyToggle()[0];
     expect(closed.props.accessibilityRole).toBe('button');
-    expect(closed.props.accessibilityLabel).toBe('Show why for each choice');
+    expect(closed.props.accessibilityLabel).toBe('Show why for each option');
     expect(closed.props.accessibilityState).toMatchObject({ expanded: false });
-    expect(textOf(closed).trim()).toBe('Show why for each choice');
+    expect(textOf(closed).trim()).toBe('Show why for each option');
     expect(Number(flat(closed).minHeight)).toBeGreaterThanOrEqual(48);
     expect(root().findAll((n) => WHY.test(n.props.testID ?? ''))).toHaveLength(0);
     // In reading order it comes after the four choices.
@@ -775,9 +775,9 @@ describe('6. accessibility: two buttons that say their state, one stop per choic
 
     tap('recap-why-toggle');
     const opened = whyToggle()[0];
-    expect(opened.props.accessibilityLabel).toBe('Hide why for each choice');
+    expect(opened.props.accessibilityLabel).toBe('Hide why for each option');
     expect(opened.props.accessibilityState).toMatchObject({ expanded: true });
-    expect(textOf(opened).trim()).toBe('Hide why for each choice');
+    expect(textOf(opened).trim()).toBe('Hide why for each option');
     rows().forEach((row, i) => {
       const d = LETTERS[i];
       const stops = rowStops(row);
@@ -897,7 +897,7 @@ describe('7. lessons, drills and mocks are unchanged', () => {
     expect(hostLabelled(/^The question: /)).toHaveLength(1);
     expect(root().findAllByType(QuestionRecap)).toHaveLength(0);
     expect(root().findAll((n) => /^(question-recap|recap-)/.test(n.props.testID ?? ''))).toHaveLength(0);
-    expect(hostLabelled(/question and choices$/)).toHaveLength(0);
+    expect(hostLabelled(/question and options$/)).toHaveLength(0);
     // A stem this long keeps its own stem-only switch.
     expect(hostLabelled(/^Show question$/)).toHaveLength(scene.question.length > 90 ? 1 : 0);
   });
@@ -916,7 +916,7 @@ describe('7. lessons, drills and mocks are unchanged', () => {
     expect(hostLabelled(/^Show question$/).map((n) => n.props.accessibilityState)).toEqual([{ expanded: false }]);
     expect(root().findAllByType(QuestionRecap)).toHaveLength(0);
     expect(root().findAll((n) => /^(question-recap|recap-)/.test(n.props.testID ?? ''))).toHaveLength(0);
-    expect(hostLabelled(/question and choices$/)).toHaveLength(0);
+    expect(hostLabelled(/question and options$/)).toHaveLength(0);
     // Its own switch still opens the stem only: no choice rows appear.
     press('Show question');
     expect(hostLabelled(/^Hide question$/)).toHaveLength(1);
@@ -936,7 +936,7 @@ describe('7. lessons, drills and mocks are unchanged', () => {
       expect(root().findAll((n) => REVEALED.test(n.props.testID ?? ''))).toHaveLength(0);
       expect(root().findAllByType(OptionCard).map((n) => n.props.state).filter((s) => s === 'correct' || s === 'wrong')).toEqual([]);
       expect(allText()).not.toMatch(/Show question|Best answer|✓ |✗ |Why not [A-D]\b|Why [A-D]\b/);
-      expect(hostLabelled(/question and choices$|^(Show|Hide) question$/)).toHaveLength(0);
+      expect(hostLabelled(/question and options$|^(Show|Hide) question$/)).toHaveLength(0);
     };
     const total = useSession.getState().active!.questionIds.length;
     expect(total).toBe(3);

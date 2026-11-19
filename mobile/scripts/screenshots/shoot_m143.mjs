@@ -112,7 +112,7 @@ if (want('answer')) {
   await wait(1200);
   await into('Show less', 'center');
   await shot('b1-answer-open');
-  // Phone 2.2: every option, read-only, the pick and the best marked, is under "Show question & choices"
+  // Phone 2.2: every option, read-only, the pick and the best marked, is under "Show question & options"
   // at the top of the answer (it was More's "Show all options" sheet). The shot keeps its name.
   const recap = page.getByTestId('recap-toggle').first();
   if (await recap.count()) {

@@ -899,7 +899,7 @@ export default function SessionScreen() {
     hint: 'Opens a short form, then your email app',
     run: report.open,
   };
-  // Phone 2.2: every choice stays one tap away under "Show question & choices" (QuestionRecap), in
+  // Phone 2.2: every option stays one tap away under "Show question & options" (QuestionRecap), in
   // DISPLAY order. Each text and reason is looked up by its ORIGINAL letter through the saved shuffle
   // (displayToOriginal), and the pick and the best are compared on ORIGINAL letters too. Read-only.
   const recapChoices: RecapChoice[] =
@@ -1171,13 +1171,13 @@ export default function SessionScreen() {
           ) : (
             response && (
               <>
-                {/* Answer (phone 2.2): running head → recap ("Show question & choices", closed) → verdict →
+                {/* Answer (phone 2.2): running head → recap ("Show question & options", closed) → verdict →
                     the answer card (your answer, "Why not B", the best answer) → Key idea → every tip →
                     "Why D" (a long one folds after a miss) → Go deeper → your note → source */}
                 {/* Where you are: "Practice · IS Audit" and "Question 4 of 10" (the set's own length, never the bank's). */}
                 <RunningHead section={headSection} aside={headAside} style={{ marginTop: space.sm }} />
-                {/* Phone 2.2: the question in two lines, with ONE switch, "Show question & choices", closed for
-                    each new question (keyed by the question). Open: the whole question and all four choices
+                {/* Phone 2.2: the question in two lines, with ONE switch, "Show question & options", closed for
+                    each new question (keyed by the question). Open: the whole question and all four options
                     in the order they were on screen. */}
                 <QuestionRecap key={qid} stem={q.stem} scenario={q.scenario} choices={recapChoices} />
                 <View onLayout={(e) => (verdictBottom.current = e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
@@ -1190,8 +1190,8 @@ export default function SessionScreen() {
                 {response.retest && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{RETEST_LINE}</T>}
                 {/* Phone 2.2 (owner direction, 19 Nov 2026): the short summary first, as in 2.0.0. The card (your
                     answer, "Why not B", the best answer), then Key idea and every tip, then "Why D" (a long one
-                    folds to two lines after a miss). Every choice's own reason is on request only, under
-                    "Show question & choices" above. DISPLAY letters on screen and in every spoken label. */}
+                    folds to two lines after a miss). Every option's own reason is on request only, under
+                    "Show question & options" above. DISPLAY letters on screen and in every spoken label. */}
                 <AnswerPlate
                   key={`${qid}:plate`}
                   delay={FEEDBACK_DELAY.rows}

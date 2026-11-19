@@ -15,8 +15,9 @@
  * AnswerRecord) keeps the result and the time, but NOT the option picked. So
  * the page never guesses, not even after a right answer. The one place a pick
  * IS kept is the Mistake journal, and only for a miss. We show it only when we
- * can tell it belongs to the SAME attempt as the last answer; otherwise the
- * page says the pick was not saved.
+ * can tell it belongs to the SAME attempt as the last answer; otherwise, after
+ * a miss, the page says the pick was not saved (after a right answer it says
+ * nothing about the pick at all).
  *
  * Pure TypeScript: no React, no storage, no network. It only reads what it is
  * given, so opening the page can never change progress.
@@ -136,8 +137,9 @@ export function lookBackGate(input: {
 // ── Words (one place, so the screen and the tests agree) ────────────────
 export const LAST_CORRECT_LINE = 'Last time: correct';
 export const LAST_MISSED_LINE = 'Last time: not quite';
-export const PICK_NOT_SAVED_LINE = 'KaiSip saved your result for this answer, not which choice you picked.';
-export const CURRENT_EXPLANATIONS_LINE = 'Explanations shown are the current version.';
+/** Shown only after a MISS whose pick is not known. Never beside "Last time: correct": there it read as an error. */
+export const PICK_NOT_SAVED_LINE = 'KaiSip saved your result for this answer, not which option you picked.';
+export const CURRENT_EXPLANATIONS_LINE = 'Explanations here are always the latest version.';
 export const READ_ONLY_LINE = 'Looking back changes nothing in your progress.';
 
 /** "Last answered correctly" / "Last answer was not the best". */

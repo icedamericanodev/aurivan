@@ -151,7 +151,7 @@ describe('the answer screen after a miss', () => {
     // Every tip is on screen once the fold is open, and the Exam cue is above the Why.
     for (const label of ['Eliminate two', 'Final two', 'Exam cue']) expect(t).toContain(label);
     expect(t.indexOf('Exam cue')).toBeLessThan(why);
-    // One "Why D" on the page: the choices' own reasons stay behind "Show question & choices".
+    // One "Why D" on the page: the choices' own reasons stay behind "Show question & options".
     expect(t.match(/Why [A-D]\b/g)).toHaveLength(1);
   });
 

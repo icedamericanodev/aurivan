@@ -2,7 +2,7 @@
  * Premium round 2, spec 2: the answer as a Term Match plate (Fig. 4).
  *
  *  - a running head: "Practice · IS Audit" / "Question 1 of 2" ("Review ·" in a review set);
- *  - the recap's "Question" head and two-line stem with ONE switch, "Show question & choices"
+ *  - the recap's "Question" head and two-line stem with ONE switch, "Show question & options"
  *    (phone 2.2: QuestionRecap; the stem-only "Show question" is for lessons and drills);
  *  - the verdict word in ink (the leaf keeps its colour and its ✗ / ✓);
  *  - Fig. 4: after a miss "Your pick, and the best answer" with two rows (one stop each);
@@ -123,7 +123,7 @@ describe('after a miss', () => {
   });
 
   // Phone 2.2: the practice answer's recap is QuestionRecap (the stem-only StemRecap stays in lessons and drills).
-  it('the recap is the guide’s "Question" head and the stem in two lines, with ONE switch, "Show question & choices"', () => {
+  it('the recap is the guide’s "Question" head and the stem in two lines, with ONE switch, "Show question & options"', () => {
     answer(false);
     expect(root().findAllByType(StemRecap)).toHaveLength(0);
     const recap = root().findByType(QuestionRecap);
@@ -135,8 +135,8 @@ describe('after a miss', () => {
     expect(stem[0].props.numberOfLines).toBe(2);
     // One switch, closed, and no stem-only one beside it.
     expect(labelled(/^Show question$/)).toHaveLength(0);
-    expect(labelled(/^Show question and choices$/).map((n) => n.props.testID)).toEqual(['recap-toggle']);
-    expect(textOf(byTestId('recap-toggle')[0]).trim()).toBe('Show question & choices');
+    expect(labelled(/^Show question and options$/).map((n) => n.props.testID)).toEqual(['recap-toggle']);
+    expect(textOf(byTestId('recap-toggle')[0]).trim()).toBe('Show question &\u00a0options');
     expect(byTestId('recap-choices')).toHaveLength(0);
   });
 

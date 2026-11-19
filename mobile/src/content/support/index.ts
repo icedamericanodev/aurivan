@@ -70,7 +70,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
       'Share KaiSip from Settings, or rate it on Google Play.',
     ],
     improved: [
-      'After you answer, the short summary and tips come first, with the whole question and every choice one tap away.',
+      'After you answer, the short summary and tips come first, with the whole question and every option one tap away.',
       'On tablets and other large screens, pages now sit in a comfortable reading width instead of stretching across the screen.',
       'The recovery Concept Lab is put away for now while we make it clearer.',
     ],

@@ -62,7 +62,7 @@ const FILTERS: { value: BankFilter; label: string }[] = [
 const EMPTY_ART: Record<BankFilter, EmptyArtKind> = { all: 'seedling', new: 'fieldbook', answered: 'seedling', missed: 'pressed', saved: 'bookmark' };
 
 /** The Answered filter's one line of help, and what its rows say to a screen reader. */
-export const ANSWERED_HELP = 'Tap a question to look back at it. You won’t answer it again.';
+export const ANSWERED_HELP = 'Tap a question to look back at it without answering.';
 const ANSWERED_ROW_HINT = 'Opens this question to look back at it, without answering it again';
 
 const openSession = () => router.push('/session');
