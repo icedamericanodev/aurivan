@@ -67,6 +67,7 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   AccessibilityInfo,
   Alert,
+  AppState,
   BackHandler,
   Dimensions,
   Modal,
@@ -79,34 +80,36 @@ import {
 import { CrossFade, PageTurn, Pop, useMotion } from '../components/motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LeafSmall } from '../components/glyphs';
-import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, Compass, Flag, ICON_STROKE, LayoutGrid, Lightbulb, ListChecks, PencilLine, Play, X } from '../components/icons';
+import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, Compass, Flag, ICON_STROKE, LayoutGrid, Lightbulb, PencilLine, Play, X } from '../components/icons';
 import {
-  AllOptionsSheet,
   AnswerMore,
   AnswerPlate,
-  AnswerContext,
   AnswerRecap,
   KeyIdea,
   MORE_FOCUS_BACK_MS,
   ConfidenceRow,
   FEEDBACK_DELAY,
   OptionCard,
+  PLATE_ROW_STAGGER,
+  QuestionRecap,
   VINE_ARRIVES,
   Rise,
   ScenarioBlock,
   SourceLine,
-  StemRecap,
   StickyFooter,
   TipsCard,
   TipsHeading,
   useVerdictIndent,
   Verdict,
+  WhyBlock,
   type MoreRow,
   type OptionState,
+  type RecapChoice,
 } from '../components/quiz';
 import { addMs } from '../engine/answerClock';
 import { aboutMin, dueCheckpoints, formatClock, mockPace, paceMessage, paceShort, practiceElapsedMs, SOFT_CUE_LINE, softCue, spokenClockCoarse, spokenMin, statusOf, type Checkpoint } from '../engine/pace';
-import { PaceStrip, type PaceStripProps } from '../components/pace';
+import { PaceStrip, TimesUpSheet, type PaceStripProps } from '../components/pace';
+import { COUNTDOWN_CUE_LINE, countdownCue, LAST_MINUTE_LINE, LAST_MINUTE_SHORT, readCountdown, remainingMs, stageOf, startMeter, stepMeter, STOPPED_METER, timerKindOf, type CountdownMeter } from '../engine/practiceCountdown';
 import { QuestionNote, useHasQuestionNote, type QuestionNoteHandle } from '../components/questionNote';
 import { useReportFlow } from '../components/support';
 import { openTab } from '../lib/actions';
@@ -274,6 +277,110 @@ const PracticeClock = memo(function PracticeClock({ readClock, answering, answer
   );
 });
 
+/**
+ * A clock that only moves forward: it ignores changes to the phone's date and time. (Where the
+ * phone has none, the ordinary clock; engine/practiceCountdown.ts stepMeter still limits each tick.)
+ */
+const steadyNow = (): number => (typeof globalThis.performance?.now === 'function' ? globalThis.performance.now() : Date.now());
+/** While counting, the time used is saved at least this often (and whenever the clock stops). */
+const COUNTDOWN_SAVE_MS = 15_000;
+
+/**
+ * Mobile 2.2: the practice countdown's strip (engine/practiceCountdown.ts has the rules). GENTLE, and
+ * nothing like MockClock: there is no deadline, and at zero it only stops and tells the session
+ * (`bankCountdown`), which shows the time's-up sheet. It never finishes or submits anything.
+ *
+ * - It counts ANSWERING time only, as the count-up timer does: `running` is false while the
+ *   explanation shows, while another screen is on top and at zero; the clock stands still then.
+ * - It also stops while the app is not in front (AppState). Leaving the front SAVES the time used
+ *   at once, so closing the app loses nothing and the time away is never counted.
+ * - What is saved is time USED, not an end time, and each tick adds at most a few seconds, so
+ *   changing the phone's clock cannot add or remove time.
+ * - Like the other two clocks it holds the tick itself, so only this strip redraws each second.
+ * - Screen readers hear the time in whole minutes on the strip, and are told twice only:
+ *   "5 minutes left." and "1 minute left." (politely, queued behind other speech).
+ */
+const CountdownClock = memo(function CountdownClock({ leftMs, running, hidden }: { leftMs: number; running: boolean; /** "Hide the clock": words only, as a mock's hidden clock. */ hidden: boolean }) {
+  // The time left as last counted here: it starts from what is saved and only ever goes down.
+  const [left, setLeft] = useState(leftMs);
+  // Answering time counted but not yet saved to the session.
+  const unsaved = useRef(0);
+  const meter = useRef<CountdownMeter>(STOPPED_METER);
+  const [front, setFront] = useState(() => AppState.currentState === 'active');
+
+  /** Save what was counted (`force`: tell the session even with nothing new, so a clock at zero stops). */
+  const save = useCallback((force = false) => {
+    const ms = unsaved.current;
+    unsaved.current = 0;
+    if (ms > 0 || force) useSession.getState().bankCountdown(ms);
+  }, []);
+  /** One tick: add the time since the last one, say a cue if a mark was passed, and stop at zero. */
+  const step = useCallback(() => {
+    const next = stepMeter(meter.current, steadyNow());
+    meter.current = next.meter;
+    // Read the saved countdown fresh (not from a prop), so a tick right after a save is never out of date.
+    const saved = readCountdown(useSession.getState().active?.countdown);
+    if (!saved || stageOf(saved) !== 'running') return;
+    const before = remainingMs(saved) - unsaved.current;
+    const after = Math.max(0, before - next.addMs);
+    if (next.addMs > 0) {
+      unsaved.current += next.addMs;
+      const cue = countdownCue(before, after);
+      if (cue) sayLater(COUNTDOWN_CUE_LINE[cue], undefined, { queue: true });
+      setLeft(after);
+    }
+    if (after <= 0) save(true);
+    else if (unsaved.current >= COUNTDOWN_SAVE_MS) save();
+  }, [save]);
+
+  const live = running && front;
+  useEffect(() => {
+    if (!live) return;
+    meter.current = startMeter(steadyNow());
+    // A countdown reopened with nothing left stops here, at once (adds no time: the meter has just started).
+    step();
+    const t = setInterval(step, 1000);
+    return () => {
+      clearInterval(t);
+      step(); // the part of a second since the last tick
+      meter.current = STOPPED_METER;
+      save();
+    };
+  }, [live, step, save]);
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (state) => {
+      const inFront = state === 'active';
+      if (!inFront) {
+        // Leaving the front: count the last part of a second and save NOW. (Android can stop timers
+        // the moment the app is in the background, and the app may be closed from there.)
+        step();
+        meter.current = STOPPED_METER;
+        save();
+      }
+      setFront(inFront);
+    });
+    return () => sub.remove();
+  }, [step, save]);
+
+  // Whole seconds, rounded up: a fresh 15 minutes reads 15:00, and 00:00 shows only at zero.
+  const shown = Math.ceil(left / 1000) * 1000;
+  const paused = !running && left > 0;
+  const lastMinute = running && left > 0 && left <= 60_000;
+  // A hidden clock still says, in words, when the last 5 minutes have begun (as a mock's does).
+  const lastFive = hidden && running && left > 0 && left < LOW_TIME_MS;
+  return (
+    <PaceStrip
+      // Spoken in whole minutes (U-H2), so the label doesn't change every second.
+      clock={hidden ? 'hidden' : { text: formatClock(shown), spoken: `Time left ${spokenClockCoarse(shown)}${paused ? ', paused' : ''}` }}
+      hiddenSpoken={`Clock hidden. The countdown is ${left <= 0 ? 'over' : paused ? 'paused' : 'running'}.`}
+      clockUnit={paused ? 'left · paused' : 'left'}
+      // The last minute is said in words on the strip (never by colour), with the promise that matters.
+      line={lastMinute ? { text: LAST_MINUTE_LINE, tone: 'soon' } : lastFive ? { text: 'Less than 5 minutes left.', tone: 'soon' } : null}
+      lineShort={lastMinute ? LAST_MINUTE_SHORT : undefined}
+    />
+  );
+});
+
 export default function SessionScreen() {
   const { c } = useTheme();
   const active = useSession((s) => s.active);
@@ -311,8 +418,6 @@ export default function SessionScreen() {
   // The question whose vine may draw: armed once its entrance has landed (VINE_ARRIVES), never at the
   // tap while it is still invisible (UX H1). Keyed by question, so a new question starts unarmed.
   const vineArmedFor = useRef<string | null>(null);
-  // Grove Phase 4: More's "Show all options" sheet (the four options, read-only).
-  const [allOptionsOpen, setAllOptionsOpen] = useState(false);
   // Screen-reader focus lands on the verdict after "Check answer".
   const verdictRef = useRef<View>(null);
   // Coach me: the first line of the hint, and a flag saying "the learner just
@@ -372,6 +477,16 @@ export default function SessionScreen() {
   // Timed practice: its once-a-second clock and the soft cue live in PracticeClock (above), so the
   // tick redraws only the strip (release bug hunt round 2).
   const timedPractice = !isMock && Boolean(active?.timed);
+  // Mobile 2.2: this set's gentle countdown, if it has one (never a mock's; a damaged one reads as
+  // none, so the set counts up). Read fresh from what is saved, so it survives the app closing.
+  const hasCountdown = timerKindOf(active) === 'countdown';
+  const countdown = useMemo(() => (hasCountdown ? readCountdown(active?.countdown) : null), [hasCountdown, active?.countdown]);
+  const countdownStage = countdown ? stageOf(countdown) : null;
+  // Mobile 2.2: two of the three things that can cover an unanswered question (see `overlayOpen`
+  // below). `moreOpen`: the ⋯ "More on this question" sheet (AnswerMore tells us). `endAsks`: how many
+  // "End session?" alerts are showing (a count, not yes/no, so a double tap on X cannot leave it wrong).
+  const [moreOpen, setMoreOpen] = useState(false);
+  const [endAsks, setEndAsks] = useState(0);
   // Mock exams: did this visit end with a tap on an option? If not, its time
   // is kept in the session store when the learner moves on (effect below).
   const pickedThisVisit = useRef(false);
@@ -396,7 +511,9 @@ export default function SessionScreen() {
     setVisitBase(isMock ? (response?.ms ?? 0) + (active?.visitMs?.[qid ?? ''] ?? 0) : undefined);
     setConfidence(undefined);
     setVineVisible(false);
-    setAllOptionsOpen(false);
+    // A new question is on screen, so no "End session?" alert can still be up. (A safety net: if the
+    // phone ever failed to show the alert, the countdown is held for one question at most.)
+    setEndAsks(0);
   }
   // At the swap (PageTurn calls this before the new page is painted): back to
   // the top, so the jump is never seen, and tell screen readers where they are
@@ -483,6 +600,12 @@ export default function SessionScreen() {
     [reportCert, q, perm, reportPlace, pickedShown],
   );
   const report = useReportFlow(reportCert, reportTarget, { onClosed: () => moveFocus(moreRef, MORE_FOCUS_BACK_MS) });
+  // Mobile 2.2: is something covering the question? The ⋯ sheet, the Report a problem form, or the
+  // "End session?" alert. The practice countdown counts answering time only, so it stands still under
+  // any of them, and the time's-up sheet never opens on top of one (a half-typed report is never lost
+  // to "Finish now"). The note editor is not here: it only opens after the answer is checked, when the
+  // countdown is standing still anyway. Coach me is part of the page, not a cover: the clock runs.
+  const overlayOpen = moreOpen || report.isOpen || endAsks > 0;
   // Has the learner a note on this question? The ⋯ row then says "Edit your note".
   const hasQNote = useHasQuestionNote(reportCert, qid);
 
@@ -627,11 +750,16 @@ export default function SessionScreen() {
       ]);
     } else {
       const answered = Object.keys(active.responses).length;
+      // Mobile 2.2: while this alert is up, the practice countdown stands still (`overlayOpen`). Every
+      // way out of the alert takes the count back down: both buttons, and Android's own dismiss.
+      const alertGone = () => setEndAsks((n) => Math.max(0, n - 1));
+      setEndAsks((n) => n + 1);
       Alert.alert('End session?', answered ? 'See your results for the questions you answered.' : 'You have not answered any questions yet.', [
-        { text: 'Keep going', style: 'cancel' },
+        { text: 'Keep going', style: 'cancel', onPress: alertGone },
         {
           text: 'End',
           onPress: () => {
+            alertGone();
             if (answered) {
               finishSession({ celebrate: !active.firstSet });
             } else {
@@ -640,7 +768,33 @@ export default function SessionScreen() {
             }
           },
         },
-      ]);
+      ], { onDismiss: alertGone });
+    }
+  };
+
+  // Mobile 2.2: the practice countdown at zero (the time's-up sheet's two buttons). Each is safe to tap
+  // twice: both read the SAVED countdown first and do nothing unless it is still waiting for its answer,
+  // the session takes only the first answer, and a finished session cannot finish again.
+  const waitingAtZero = () => {
+    const saved = readCountdown(useSession.getState().active?.countdown);
+    return Boolean(saved && stageOf(saved) === 'expired');
+  };
+  const keepGoingUntimed = () => {
+    if (!waitingAtZero()) return;
+    // The same set, no timer. Nothing else changes: the option picked but not checked stays picked.
+    useSession.getState().answerCountdown('untimed');
+    sayLater('No timer now. Carry on when you are ready.');
+  };
+  const finishAtZero = () => {
+    if (!waitingAtZero()) return;
+    useSession.getState().answerCountdown('finished');
+    // The same endings as "End session?" → End. Only checked answers count; an option picked but not
+    // checked, and every question not reached, stay unanswered (never marked wrong).
+    if (singleQuestion) exitSingle();
+    else if (Object.keys(active.responses).length > 0) finishSession({ celebrate: !active.firstSet });
+    else {
+      useSession.getState().clear();
+      openTab('/home');
     }
   };
 
@@ -745,32 +899,22 @@ export default function SessionScreen() {
     hint: 'Opens a short form, then your email app',
     run: report.open,
   };
-  // Grove Phase 4 (PHASE4.md 4.2 step 2, 4.5): the answer card shows only the pick and the best answer,
-  // so every option stays one tap away here. Only after the answer is checked (before it, the options
-  // are on screen anyway). Read-only: it never grades.
-  const optionsRow: MoreRow | null =
-    submitted && response
-      ? {
-          key: 'options',
-          icon: (col) => <ListChecks size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />,
-          title: 'Show all options',
-          subtitle: 'With your pick and the best',
-          label: 'Show all options, with your pick and the best',
-          hint: 'Opens every option for this question.',
-          run: () => setAllOptionsOpen(true),
-        }
-      : null;
-  // The sheet's rows, in DISPLAY order. Each text is looked up by its ORIGINAL letter through the
-  // shuffle (displayToOriginal); the pick and the best are compared on ORIGINAL letters too.
-  const allOptionRows =
+  // Phone 2.2: every option stays one tap away under "Show question & options" (QuestionRecap), in
+  // DISPLAY order. Each text is looked up by its ORIGINAL letter through the saved shuffle
+  // (displayToOriginal), and the pick and the best are compared on ORIGINAL letters too. Read-only.
+  // No reasons here: the recap shows the question and the four options only (the tips below say why
+  // the wrong ones are wrong; each option's own reason is on the look-back page and in mock review).
+  const recapChoices: RecapChoice[] =
     submitted && response
       ? displayLetters.map((d) => {
           const original = displayToOriginal(d, perm);
           return { letter: d, text: q.options[original] ?? '', pick: original === pickedOriginal, best: original === q.correct };
         })
       : [];
+  // "Why not B": the picked option's own reason, on the answer card after a miss (as in 2.0.0).
+  const whyWrong = pickedOriginal && pickedOriginal !== q.correct ? q.wrongExplanations[pickedOriginal] : undefined;
   // AnswerMore drops the nulls (the rows that don't apply here), in this order.
-  const moreRows = [optionsRow, noteRow, principleRow, yourNoteRow, reportRow];
+  const moreRows = [noteRow, principleRow, yourNoteRow, reportRow];
   // The shared pace strip (components/pace.tsx): mock clock and pace line.
   // Timed practice: the answered questions' times, as one number (PracticeClock adds the running time
   // on the question on screen, and draws the strip).
@@ -901,21 +1045,21 @@ export default function SessionScreen() {
         {/* Mobile 1.49: ⋯ "More on this question" beside the bookmark. Never in a mock. */}
         {!isMock && (
           <View style={{ marginRight: -12 }}>
-            <AnswerMore rows={moreRows} buttonRef={moreRef} />
-            {/* More's "Show all options": closing it puts screen-reader focus back on ⋯. */}
-            <AllOptionsSheet
-              visible={allOptionsOpen}
-              rows={allOptionRows}
-              onClose={() => {
-                setAllOptionsOpen(false);
-                moveFocus(moreRef, MORE_FOCUS_BACK_MS);
-              }}
-            />
+            <AnswerMore rows={moreRows} buttonRef={moreRef} onOpenChange={setMoreOpen} />
           </View>
         )}
       </Row>
       {strip && <PaceStrip {...strip} />}
-      {timedPractice && qid && <PracticeClock key={qid} readClock={readClock} answering={!submitted} answeredMs={practiceAnsweredMs} />}
+      {timedPractice && !countdown && qid && <PracticeClock key={qid} readClock={readClock} answering={!submitted} answeredMs={practiceAnsweredMs} />}
+      {/* Mobile 2.2: a set with a countdown. It runs only while a question waits for its answer on this
+          screen with nothing covering it (`overlayOpen`: the ⋯ sheet, the report form, "End session?");
+          after "Keep going untimed" the strip says "Untimed" and nothing ticks. */}
+      {countdown &&
+        (countdownStage === 'untimed' || countdownStage === 'finished' ? (
+          <PaceStrip clock="untimed" />
+        ) : (
+          <CountdownClock key={active.id} leftMs={remainingMs(countdown)} running={countdownStage === 'running' && !submitted && inView && !overlayOpen} hidden={Boolean(active.hideClock)} />
+        ))}
       {isMock && active.deadline !== undefined && <MockClock deadline={active.deadline} hideClock={Boolean(active.hideClock)} finished={Boolean(active.finishedAt)} />}
 
       <View style={{ flex: 1 }}>
@@ -1027,14 +1171,15 @@ export default function SessionScreen() {
           ) : (
             response && (
               <>
-                {/* Answer (premium round 2, the Field Guide answer): running head → recap → verdict →
-                    Fig. 4 (your pick against the best answer) → (after a miss: Key idea + Exam cue → Why, folded →
-                    Eliminate / Final two; after a right answer: Why → Key idea + Exam cue → Eliminate / Final two
-                    on the vine) → source */}
+                {/* Answer (phone 2.2): running head → recap ("Show question & options", closed) → verdict →
+                    the answer card (your answer, "Why not B", the best answer) → Key idea → every tip →
+                    "Why D" (a long one folds after a miss) → Go deeper → your note → source */}
                 {/* Where you are: "Practice · IS Audit" and "Question 4 of 10" (the set's own length, never the bank's). */}
                 <RunningHead section={headSection} aside={headAside} style={{ marginTop: space.sm }} />
-                {/* Mobile 1.49 (premium pass §2.1): the question in two lines, with "Show question". */}
-                <StemRecap key={qid} stem={q.stem} scenario={q.scenario} field />
+                {/* Phone 2.2: the question in two lines, with ONE switch, "Show question & options", closed for
+                    each new question (keyed by the question). Open: the whole question and all four options
+                    in the order they were on screen, with the pick and the best marked. No reasons in it. */}
+                <QuestionRecap key={qid} stem={q.stem} scenario={q.scenario} choices={recapChoices} />
                 <View onLayout={(e) => (verdictBottom.current = e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
                   <Verdict ref={verdictRef} correct={response.correct} coach={coach} best={response.correct ? undefined : correctDisplay} field />
                 </View>
@@ -1043,19 +1188,21 @@ export default function SessionScreen() {
                 {response.assisted && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{HINT_AFTER_LINE}</T>}
                 {/* A right retest (under 4 hours after a miss) is not promoted: say when it is back. */}
                 {response.retest && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{RETEST_LINE}</T>}
-                {/* Keep the verdict compact; each option rationale appears once in the comparison below. */}
+                {/* Phone 2.2 (owner direction, 19 Nov 2026): the short summary first, as in 2.0.0. The card (your
+                    answer, "Why not B", the best answer), then Key idea and every tip, then "Why D" (a long one
+                    folds to two lines after a miss). Every option's own reason is on request only, under
+                    "Show question & options" above. DISPLAY letters on screen and in every spoken label. */}
                 <AnswerPlate
                   key={`${qid}:plate`}
                   delay={FEEDBACK_DELAY.rows}
                   pick={
                     !response.correct && pickedOriginal
-                      ? { letter: response.display, text: q.options[pickedOriginal] ?? '' }
+                      ? { letter: response.display, text: q.options[pickedOriginal] ?? '', why: whyWrong ? renderText(whyWrong, perm) : undefined }
                       : undefined
                   }
                   best={{ letter: correctDisplay, text: q.options[q.correct] ?? '' }}
                 />
-                <AnswerContext question={q} perm={perm} picked={response.display} />
-                {/* Key idea and every tip arrive after the complete option comparison: opacity only,
+                {/* Key idea and every tip, then the Why, arrive in reading order after the card: opacity only,
                     200ms each, 30ms apart (PHASE4.md 4.4). Their arrival is still the vine's (VINE_ARRIVES):
                     `visible`, the one tick and the stem's draw wait for it. */}
                 <Rise delay={FEEDBACK_DELAY.why} rise={false}>
@@ -1064,6 +1211,17 @@ export default function SessionScreen() {
                     {tipRows.open.length > 0 && <TipsHeading />}
                     <TipsCard key={`${qid}:tips`} rows={tipRows.open.map(tipRow)} visible={vineVisible} />
                   </View>
+                </Rise>
+                <Rise delay={FEEDBACK_DELAY.why + PLATE_ROW_STAGGER} rise={false}>
+                  {/* The fold holds the long Why paragraph and nothing else ("Read more of the explanation"). */}
+                  <WhyBlock
+                    key={qid}
+                    letter={correctDisplay}
+                    text={renderText(q.explanation, perm)}
+                    // After a right answer nothing folds.
+                    fold={!response.correct}
+                    more={[]}
+                  />
                 </Rise>
                 {/* Mobile 1.49 (premium pass §2.2): ONE "Go deeper" row after a miss, after a hairline.
                     The lesson when it is not done yet (Play = lessons), otherwise the note (BookOpen =
@@ -1213,6 +1371,18 @@ export default function SessionScreen() {
       </View>
       {/* The report sheet the ⋯ sheet opens (a Modal: anywhere in the screen works). */}
       {report.sheet}
+      {/* Mobile 2.2: the practice countdown reached zero. The sheet shows until one of its two buttons
+          is tapped (the state is saved, so it is here again after the app was closed). It waits for any
+          cover to close first (`overlayOpen`), so it never sits on top of the report form. */}
+      {countdown && (
+        <TimesUpSheet
+          visible={countdownStage === 'expired' && !active.finishedAt && inView && !overlayOpen}
+          answered={Math.min(countdown.expiredAfter ?? answeredCount, total)}
+          total={total}
+          onKeepGoing={keepGoingUntimed}
+          onFinish={finishAtZero}
+        />
+      )}
       {/* Mock navigator. Mobile 1.24: one summary line (answered · flagged · left), and "Submit exam"
           in a footer that stays put (it used to sit under the grid, up to 25 rows down). */}
       <Modal visible={navOpen} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={() => setNavOpen(false)}>

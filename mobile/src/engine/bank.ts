@@ -12,14 +12,19 @@
  * print a total because they are never given one.
  */
 import type { Difficulty, PackQuestion } from '../content/types';
+import { answerRecordOf } from './answeredReview';
 import { shuffled, type Rng } from './random';
 import type { AnswerRecord } from './readiness';
 
 /** Where the learner stands on one question. */
 export type QuestionStatus = 'new' | 'correct' | 'missed';
 
-/** The filter chips on a domain screen. */
-export type BankFilter = 'all' | 'new' | 'missed' | 'saved';
+/**
+ * The filter chips on a domain screen. `answered` (mobile 2.2): only questions
+ * with a real saved answer; its rows open the read-only look-back page
+ * (app/answered/[id].tsx) instead of asking the question again.
+ */
+export type BankFilter = 'all' | 'new' | 'answered' | 'missed' | 'saved';
 
 /** The most questions "Practise these" puts in one session. */
 export const PRACTISE_CAP = 20;
@@ -38,11 +43,24 @@ export function matchesFilter(status: QuestionStatus, saved: boolean, filter: Ba
       return true;
     case 'new':
       return status === 'new';
+    case 'answered':
+      // Saved-only or never-answered questions are 'new', so they never pass.
+      // (buildBankList also checks the record is complete: isAnswered below.)
+      return status !== 'new';
     case 'missed':
       return status === 'missed';
     case 'saved':
       return saved;
   }
+}
+
+/**
+ * True when this question has a real, complete answer record (engine/
+ * answeredReview.ts isAnswerRecord). The Answered filter lists exactly these,
+ * so every row it shows can open its look-back page.
+ */
+export function isAnswered(id: string, answers: Record<string, AnswerRecord>): boolean {
+  return answerRecordOf(answers, id) !== undefined;
 }
 
 /** The learner's own counts. Deliberately has no "total" field. */
@@ -162,7 +180,9 @@ export function buildBankList(
   let lastGrouped = false; // the previous topic shown had a header
   for (const topic of topics) {
     const all = groups.get(topic)!;
-    const shown = all.filter((q) => matchesFilter(questionStatus(q.id, answers), savedSet.has(q.id), filter));
+    const shown = all.filter(
+      (q) => matchesFilter(questionStatus(q.id, answers), savedSet.has(q.id), filter) && (filter !== 'answered' || isAnswered(q.id, answers)),
+    );
     if (shown.length === 0) continue; // a topic with nothing left after filtering disappears
     const ownTopic = shown.length < 2;
     if (!ownTopic) {
@@ -225,6 +245,8 @@ export function emptyCopy(filter: BankFilter): { title: string; body: string } {
       return { title: 'Nothing saved here yet', body: 'Tap the bookmark on any question to add it to your revision set.' };
     case 'new':
       return { title: 'You’ve answered them all', body: 'Try Missed to revisit the ones that caught you.' };
+    case 'answered':
+      return { title: 'Nothing answered here yet', body: 'Questions you answer in this domain show up here, so you can look back at them and their explanations.' };
     case 'all':
       return { title: 'No questions here yet', body: 'New questions for this domain are on the way.' };
   }

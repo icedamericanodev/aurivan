@@ -1,11 +1,12 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
+import { ConceptLabHidden } from '../../components/conceptLabHidden';
 import { EmptyScreen } from '../../components/emptyScreen';
 import { LabChoice, LabOutcomes, LabRange, LabTimeline } from '../../components/conceptLab';
 import { CardHead, HubCard, PageTitle } from '../../components/groveHub';
 import { Button, PushedHeader, Screen, T } from '../../components/ui';
-import { findLab, type ConceptLab } from '../../content/labs';
+import { CONCEPT_LAB_ENABLED, findLab, type ConceptLab } from '../../content/labs';
 import { findLesson } from '../../content/lessons';
 import { findQuestion } from '../../content/loader';
 import { findNote } from '../../content/notes';
@@ -17,7 +18,16 @@ import { moveFocus, sayLater } from '../../lib/a11y';
 import { space } from '../../theme/tokens';
 
 const stages = ['Explore', 'Experiment', 'Apply'] as const;
+/**
+ * The /labs/<id> route. While the Concept Lab is hidden (CONCEPT_LAB_ENABLED is false; owner
+ * decision, 19 Nov 2026, content/labs/enabled.ts) it shows nothing and opens Learn, so an old link
+ * (kaisip://labs/cisa-lab-rto-rpo) never crashes or shows the lab. Switch on: the lab, as before.
+ */
 export default function LabDetail() {
+  return CONCEPT_LAB_ENABLED ? <LabDetailScreen /> : <ConceptLabHidden />;
+}
+
+function LabDetailScreen() {
   const certId = useActiveCertId();
   const { id } = useLocalSearchParams<{ id?: string }>();
   const lab = findLab(certId, typeof id === 'string' ? safeDecode(id) : undefined);

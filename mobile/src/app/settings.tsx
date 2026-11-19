@@ -14,7 +14,8 @@
  *   Badges Show badges
  *   You                   Your name (mobile 1.23: what Today calls you; optional, only on this phone)
  *   (doors)               Your data: Save a backup · Restore · (Undo restore), then Reset, set apart
- *                         Help and about: Get help or send feedback · About KaiSip · Privacy · Terms ·
+ *                         Help and about: Get help or send feedback · Rate this app (Android) · Share
+ *                         this app (both mobile 2.2) · About KaiSip · Privacy · Terms ·
  *                         Check for updates, and the app's version
  *
  * Mobile 1.46 (the owner, after 1.43: "I can't distinguish clearly the categories to its sub
@@ -62,6 +63,7 @@ import { DisplayNameField } from '../components/displayName';
 import { cleanDisplayName } from '../engine/displayName';
 import { EXAM_FOCUSED_SHORT, EXAM_FOCUSED_SPOKEN, EXAM_FOCUSED_TITLE, FAMILIARITY_QUESTION } from '../components/fit';
 import { creditSubtitle } from '../components/help';
+import { RateShareRows } from '../components/rateShare';
 import { useMotion, useSystemReducedMotion } from '../components/motion';
 import {
   ChoiceSheet,
@@ -628,6 +630,9 @@ export default function Settings() {
         subtitle={dueItems ? creditSubtitle(dueItems) : 'Questions, reports, what’s new'}
         onPress={() => router.push('/help')}
       />
+      {/* Mobile 2.2 (a tester's suggestion): "Rate this app" (Android only: Google Play) and "Share this app".
+          Tapped by the learner only: no prompt, no pop-up, no reward (components/rateShare.tsx). */}
+      <RateShareRows />
       <SettingsRow
         ref={aboutRow}
         title="About KaiSip"
