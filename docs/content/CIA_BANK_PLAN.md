@@ -323,6 +323,13 @@ Items that rest on the Third-Party or Organizational Behavior Topical
 Requirement or its user guide carry `testable_from` (2027-03-01 and
 2027-06-01).
 
+**What the syllabus itself may carry (decided 19 Nov 2026, on the Section D
+audit).** The Part 1 syllabus is an opened IIA document, so a key may rest on
+exactly what one of its lines states, cited first: the three fraud triangle
+conditions by name (1D1a), authority levels as preventing fraud (1D4c), and
+hotlines, reconciliations and supervisory reviews as detecting it (1D4d).
+Nothing beyond those classifications (`docs/content/CIA_LENS.md` says the same).
+
 ## 9. Legal position and what waits on the owner
 
 The full rule KaiSip follows is in the blueprint ("Copyright, licence and

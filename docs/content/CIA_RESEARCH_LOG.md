@@ -509,3 +509,7 @@ pass; every sha256 prefix matched the saved copy.
 | www.pearsonvue.com | Refused by the session proxy (403). Not worked around |
 | internalauditor.theiia.org, www.coso.org | Reported reachable; not needed in this pass |
 | Prep providers | Not opened, by rule |
+
+## Rule changes after the first reviews (19 Nov 2026)
+
+- `CIA_LENS.md`: the two lines that barred any key on the fraud triangle and on control types now allow a key that rests on exactly what the opened Part 1 syllabus states (the three conditions by name; authority levels as preventing fraud; hotlines, reconciliations and supervisory reviews as detecting it). Decided on the Section D pilot audit, which found the lens and the plan's section 8b in conflict. Anything beyond those classifications still waits for a practice guide or the textbook.
