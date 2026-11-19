@@ -255,6 +255,8 @@ export default function RootLayout() {
           <Stack.Screen name="caught-up" />
           <Stack.Screen name="bank/index" />
           <Stack.Screen name="bank/[domain]" />
+          {/* Mobile 2.2: look back at an answered question, read-only (the bank's Answered filter). */}
+          <Stack.Screen name="answered/[id]" />
           {/* Study notes: home (domains + search) → domain → subtopic. */}
           <Stack.Screen name="notes/index" />
           <Stack.Screen name="notes/[domain]" />

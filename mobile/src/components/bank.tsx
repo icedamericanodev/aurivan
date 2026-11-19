@@ -64,8 +64,14 @@ export function BankQuestionRow({
   difficulty,
   topic,
   afterGroup,
+  hint = 'Opens this question to answer it',
   onPress,
 }: {
+  /**
+   * What a screen reader says the tap does. Mobile 2.2: the Answered filter's
+   * rows open the read-only look-back page, so they say that instead.
+   */
+  hint?: string;
   text: string;
   status: QuestionStatus;
   saved: boolean;
@@ -83,7 +89,7 @@ export function BankQuestionRow({
       accessibilityRole="button"
       // Status first, so a screen-reader user can skim the list quickly; then the topic when the row names it.
       accessibilityLabel={`${meta}${saved ? ', saved' : ''}. ${topic ? `${topic}. ` : ''}${text}`}
-      accessibilityHint="Opens this question to answer it"
+      accessibilityHint={hint}
       onPress={onPress}
       style={({ pressed }) => [styles.row, afterGroup && styles.afterGroup, { borderBottomColor: c.line }, pressed && { backgroundColor: c.soft }]}
     >

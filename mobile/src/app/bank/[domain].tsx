@@ -2,12 +2,17 @@
  * Question bank, screen 2 — one domain.
  *
  * Header: the domain, the learner's own progress, and filter chips
- * (All · Not yet answered · Missed · Saved). Below: every question that
+ * (All · Not yet answered · Answered · Missed · Saved). Below: every question that
  * passes the filter, grouped under short topic names (a header only when a
  * topic shows 2 rows or more; a lone row names its topic itself, mobile 1.9). Tap a question to
  * answer it on its own; "Practice these" starts a session from the list
  * (up to 20, random order). Both use the normal session machinery, so
  * grading on ORIGINAL letters and the answer/tips screens are unchanged.
+ *
+ * Mobile 2.2, the Answered filter: only questions the learner has answered.
+ * There, a tap does NOT ask the question again: it opens the read-only
+ * look-back page (app/answered/[id].tsx), which changes nothing. Every other
+ * filter keeps the tap described above.
  *
  * Domains hold hundreds of questions, so the list is a FlatList: only the
  * rows near the screen are rendered. No getItemLayout on purpose — rows
@@ -48,14 +53,21 @@ import { useTheme } from '../../theme/useTheme';
 const FILTERS: { value: BankFilter; label: string }[] = [
   { value: 'all', label: 'All' },
   { value: 'new', label: 'Not yet answered' },
+  { value: 'answered', label: 'Answered' },
   { value: 'missed', label: 'Missed' },
   { value: 'saved', label: 'Saved' },
 ];
 
 /** Each filter's empty drawing (mobile 1.9): what would be here, drawn. */
-const EMPTY_ART: Record<BankFilter, EmptyArtKind> = { all: 'seedling', new: 'fieldbook', missed: 'pressed', saved: 'bookmark' };
+const EMPTY_ART: Record<BankFilter, EmptyArtKind> = { all: 'seedling', new: 'fieldbook', answered: 'seedling', missed: 'pressed', saved: 'bookmark' };
+
+/** The Answered filter's one line of help, and what its rows say to a screen reader. */
+export const ANSWERED_HELP = 'Tap a question to look back at it. You won’t answer it again.';
+const ANSWERED_ROW_HINT = 'Opens this question to look back at it, without answering it again';
 
 const openSession = () => router.push('/session');
+/** The read-only look-back page. The id goes in as a route param, never pasted into the path. */
+const openLookBack = (id: string) => router.push({ pathname: '/answered/[id]', params: { id } });
 const goBack = () => (router.canGoBack() ? router.back() : router.replace('/bank'));
 
 /**
@@ -98,6 +110,9 @@ function BankDomainScreen() {
     [cert.id, domain?.short],
   );
 
+  // Mobile 2.2: in the Answered filter a row opens the look-back page instead of a session.
+  const lookBack = filter === 'answered';
+
   const renderItem = useCallback<ListRenderItem<BankItem>>(
     ({ item }) =>
       item.kind === 'topic' ? (
@@ -110,10 +125,12 @@ function BankDomainScreen() {
           difficulty={item.difficulty}
           topic={item.ownTopic ? item.topic : undefined}
           afterGroup={item.afterGroup}
-          onPress={() => openQuestion(item.id)}
+          // Answered: look back (read-only). Every other filter: answer it, as before.
+          hint={lookBack ? ANSWERED_ROW_HINT : undefined}
+          onPress={() => (lookBack ? openLookBack(item.id) : openQuestion(item.id))}
         />
       ),
-    [openQuestion],
+    [openQuestion, lookBack],
   );
 
   if (!domain) {
@@ -137,6 +154,8 @@ function BankDomainScreen() {
           <Chip key={f.value} label={f.label} selected={filter === f.value} onPress={() => setFilter(f.value)} />
         ))}
       </ChipRow>
+      {/* Only when there are rows to tap: the empty state has its own words. */}
+      {lookBack && hasItems ? <T v="meta" style={{ marginTop: space.md }}>{ANSWERED_HELP}</T> : null}
     </View>
   );
 
