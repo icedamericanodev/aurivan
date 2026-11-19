@@ -138,7 +138,7 @@
             "Check each role for separation of duties conflicts before approval (see 3.2.3).",
             "Meet one person's extra need with a time-limited request; when the job changes for everyone, the owner approves a role change."
           ],
-          "example": "A city library defines a circulation clerk role: check items in and out and view borrower details, but not waive fines. When a supervisor asks to let one clerk waive fines for a week, Priya, a junior access administrator, opens a temporary request with an end date for the branch manager to approve.",
+          "example": "A city library defines a circulation clerk role: check items in and out and view borrower details, but not waive fines. When a supervisor asks to let one clerk waive fines for a week, Priya, an access administrator, opens a temporary request with an end date for the branch manager to approve.",
           "audit_focus": {
             "review": [
               "Trace each permission in a role to a task",
@@ -628,7 +628,7 @@
             "Check combined old and new rights for conflicts, such as raising and approving one payment.",
             "The new manager approves new access; the old manager confirms what can go."
           ],
-          "example": "At a furniture maker, Bo has moved from sales to design to logistics in four years. The yearly access review shows Bo still holds rights from all three jobs. Kemi, a junior access analyst, asks each system's owner to confirm which old rights can go, then logs a problem ticket because the mover process missed every transfer.",
+          "example": "At a furniture maker, Bo has moved from sales to design to logistics in four years. The yearly access review shows Bo still holds rights from all three jobs. Kemi, an access analyst, asks each system's owner to confirm which old rights can go, then logs a problem ticket because the mover process missed every transfer.",
           "audit_focus": {
             "review": [
               "Review each mover's rights after the job change",
@@ -815,7 +815,7 @@
             "Deleting a leaked secret from chat or code does not revoke it; anyone who copied it can use it until it is rotated.",
             "Retire the identity when its owner leaves or the project ends, unless a new owner takes it on."
           ],
-          "example": "A ferry operator replaced its AI timetable-planning agent with a vendor's tool in March, but in June the old agent's account and access token still work. Elif, a junior cloud engineer, spots them in the monthly identity inventory and asks the owner listed for the agent if anything depends on them. Once the owner confirms nothing does, Elif disables the account, revokes the token and updates the inventory.",
+          "example": "A ferry operator replaced its AI timetable-planning agent with a vendor's tool in March, but in June the old agent's account and access token still work. Elif, a cloud engineer, spots them in the monthly identity inventory and asks the owner listed for the agent if anything depends on them. Once the owner confirms nothing does, Elif disables the account, revokes the token and updates the inventory.",
           "audit_focus": {
             "review": [
               "Confirm each service account, key and agent has an owner",
@@ -1052,7 +1052,7 @@
             "Ask users to sign in again before sensitive actions, such as changing bank details.",
             "Resetting a password stops new sign-ins with it, but sessions already open may keep working until they are ended."
           ],
-          "example": "At an insurance call center, a test shows that claims portal sessions stay valid until the next morning, even after staff sign out or close the browser at the end of a shift. Bea, a junior security analyst, writes up the gap, suggests that signing out end the session on the server and that sessions expire after a shift's length, and raises a change request for the system owner to approve.",
+          "example": "At an insurance call center, a test shows that claims portal sessions stay valid until the next morning, even after staff sign out or close the browser at the end of a shift. Bea, a security analyst, writes up the gap, suggests that signing out end the session on the server and that sessions expire after a shift's length, and raises a change request for the system owner to approve.",
           "audit_focus": {
             "review": [
               "Compare each system's idle and overall timeouts with the standard",
@@ -1289,7 +1289,7 @@
               "meaning": "Each person holds only part of a secret, so nobody knows all of it"
             }
           ],
-          "example": "At a payment processor, the passphrase that unlocks the card system's master key is split between two key holders, each keeping half in a separate safe. Lucia, one holder, is moving to the marketing team, and the operations manager suggests handing Lucia's half to the other holder. Farah, a junior security analyst, points out that one person would then know the whole secret and asks the system owner to appoint a new holder and have the passphrase changed.",
+          "example": "At a payment processor, the passphrase that unlocks the card system's master key is split between two key holders, each keeping half in a separate safe. Lucia, one holder, is moving to the marketing team, and the operations manager suggests handing Lucia's half to the other holder. Farah, a security analyst, points out that one person would then know the whole secret and asks the system owner to appoint a new holder and have the passphrase changed.",
           "audit_focus": {
             "review": [
               "Compare each person's rights against a list of conflicting duties",
@@ -1349,7 +1349,7 @@
             "A vault checks admin credentials out, rotates them and logs each use.",
             "Require phishing-resistant sign-in, record privileged sessions and grant rights just in time (see 3.2.12)."
           ],
-          "example": "At a manufacturing plant, five engineers have shared one admin password for three years. When an overnight change stops the line, nobody can tell who made it. Fatima, a junior security analyst, records the gap in the risk log and drafts a proposal for named admin accounts and a vault for the system owner.",
+          "example": "At a manufacturing plant, five engineers have shared one admin password for three years. When an overnight change stops the line, nobody can tell who made it. Fatima, a security analyst, records the gap in the risk log and drafts a proposal for named admin accounts and a vault for the system owner.",
           "audit_focus": {
             "review": [
               "Confirm every admin or root account is inventoried, built-in ones too",
@@ -1578,7 +1578,7 @@
             "A policy engine checks each request, so access changes as attributes change, without new roles.",
             "Decisions are only as good as the attributes: one wrong value changes the answer."
           ],
-          "example": "An international charity's grant files must be readable only by staff in the same country office, on managed laptops; a role for every country and device would mean hundreds. Omar, a junior cloud administrator, helps build an ABAC policy on the user's country, the file's country tag and device status, and tests it before release.",
+          "example": "An international charity's grant files must be readable only by staff in the same country office, on managed laptops; a role for every country and device would mean hundreds. Omar, a cloud administrator, helps build an ABAC policy on the user's country, the file's country tag and device status, and tests it before release.",
           "audit_focus": {
             "review": [
               "Test each policy with sample users before it goes live",
@@ -1634,7 +1634,7 @@
             "Rules often sit on top of roles: the role sets what a nurse can do; a rule limits where.",
             "An exception the rule's owner approves covers only the person, place and period that need it, then expires."
           ],
-          "example": "A payroll system is used only in office hours, yet its logs show 3 a.m. sign-in attempts. Avery, a junior network administrator, raises a change request and, once it is approved, adds a rule blocking payroll sign-ins from 8 p.m. to 6 a.m., except for the on-call group, then checks the logs to confirm it works.",
+          "example": "A payroll system is used only in office hours, yet its logs show 3 a.m. sign-in attempts. Avery, a network administrator, raises a change request and, once it is approved, adds a rule blocking payroll sign-ins from 8 p.m. to 6 a.m., except for the on-call group, then checks the logs to confirm it works.",
           "audit_focus": {
             "review": [
               "Match recent rule changes to approved change tickets",
@@ -1743,7 +1743,7 @@
             "svg": "<svg viewBox='0 0 470 176' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='The five access control models grouped by who decides. Under DAC the resource owner decides. Under the non-discretionary models central policy decides: MAC by labels and clearances, RBAC by job role, ABAC by many attributes, and rule-based by one administrator rule for everyone. A note says MAC here means mandatory access control, not a network MAC address'><text x='59' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>OWNER DECIDES</text><text x='276.5' y='12' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>CENTRAL POLICY DECIDES (NON-DISCRETIONARY)</text><path d='M20,22 L20,17 L98,17 L98,22' fill='none' stroke='var(--accent-fill)' stroke-width='1.2'/><path d='M107,22 L107,17 L446,17 L446,22' fill='none' stroke='var(--accent-fill)' stroke-width='1.2'/><rect x='18' y='26' width='82' height='34' rx='4' fill='var(--accent-fill)'/><text x='59' y='47' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>DAC</text><text x='59' y='76' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>The owner</text><text x='59' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>Owner shares</text><text x='59' y='114' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>a project folder</text><rect x='105' y='26' width='82' height='34' rx='4' fill='var(--accent-fill)'/><text x='146' y='47' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>MAC</text><text x='146' y='76' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Labels and</text><text x='146' y='87' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>clearances</text><text x='146' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>Secret file,</text><text x='146' y='114' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>Secret clearance</text><rect x='192' y='26' width='82' height='34' rx='4' fill='var(--accent-fill)'/><text x='233' y='47' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>RBAC</text><text x='233' y='76' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>The job role</text><text x='233' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>Nurse role</text><text x='233' y='114' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>opens charts</text><rect x='279' y='26' width='82' height='34' rx='4' fill='var(--accent-fill)'/><text x='320' y='47' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>ABAC</text><text x='320' y='76' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Many</text><text x='320' y='87' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>attributes</text><text x='320' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>Region, device</text><text x='320' y='114' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>and office hours</text><rect x='366' y='26' width='82' height='34' rx='4' fill='var(--accent-fill)'/><text x='407' y='47' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Rule-based</text><text x='407' y='76' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>One rule</text><text x='407' y='87' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>for everyone</text><text x='407' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>No sign-ins</text><text x='407' y='114' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text2)'>after 8 p.m.</text><line x1='18' y1='93' x2='448' y2='93' stroke='var(--border2)' stroke-width='1' stroke-dasharray='3 3'/><rect x='18' y='128' width='430' height='38' rx='4' fill='none' stroke='var(--accent-fill)' stroke-width='1.5'/><text x='233' y='144' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--accent-fill)'>Ask who decides, then what the decision depends on.</text><text x='233' y='158' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>MAC here is mandatory access control, not a network MAC address.</text></svg>",
             "caption": "Ask who decides. Only DAC leaves it to the resource owner; in the other four, central policy decides and users cannot change it. Then ask what the decision depends on."
           },
-          "example": "A veterinary chain of 12 clinics gives each new hire whatever their predecessor had. Avi, a junior IT analyst, notices that staff fall into five job types and suggests RBAC, plus a rule blocking sign-ins to the drug inventory outside clinic hours. Avi presents both options, with the risks each reduces, to the operations director.",
+          "example": "A veterinary chain of 12 clinics gives each new hire whatever their predecessor had. Avi, an IT analyst, notices that staff fall into five job types and suggests RBAC, plus a rule blocking sign-ins to the drug inventory outside clinic hours. Avi presents both options, with the risks each reduces, to the operations director.",
           "audit_focus": {
             "review": [
               "Identify who decides, and on what, before naming a model",
@@ -1800,7 +1800,7 @@
             "One automation should not both make a change and approve it.",
             "Log actions under the agent's own identity, keep a stop switch and treat instructions in content as untrusted."
           ],
-          "example": "A travel booking firm's build bot uses a token that can change every code repository, though it only builds the mobile app. Tobi, a junior developer, lists what the bot actually does and proposes to the system owner a token limited to that app's repository, with a person approving each release to customers.",
+          "example": "A travel booking firm's build bot uses a token that can change every code repository, though it only builds the mobile app. Tobi, a developer, lists what the bot actually does and proposes to the system owner a token limited to that app's repository, with a person approving each release to customers.",
           "audit_focus": {
             "review": [
               "Look for agent permissions that no documented task uses",
@@ -1857,7 +1857,7 @@
             "Keep break-glass sign-in independent of the normal path, such as single sign-on (SSO), so it works when that path fails.",
             "Every break-glass use raises an alert and a review, and the credential is changed afterward."
           ],
-          "example": "On a quiet Sunday, a regional airport's monitoring raises an alert: the baggage system's break-glass account was opened while normal sign-in was working. Rosa, a junior security analyst, checks the emergency log, finds no recorded incident and, as the runbook directs, reports the use to the incident response lead as a possible incident. The system owner then has the account's password changed.",
+          "example": "On a quiet Sunday, a regional airport's monitoring raises an alert: the baggage system's break-glass account was opened while normal sign-in was working. Rosa, a security analyst, checks the emergency log, finds no recorded incident and, as the runbook directs, reports the use to the incident response lead as a possible incident. The system owner then has the account's password changed.",
           "audit_focus": {
             "review": [
               "Confirm each elevation had an approved task and expired on time",

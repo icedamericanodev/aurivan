@@ -253,7 +253,7 @@
               }
             ]
           },
-          "example": "A school's software team needs realistic student records to test a new grade portal, and a developer suggests copying the live database. Sam, the junior security analyst on the project, points to the policy banning live personal data in test systems and requests a masked copy from the database administrator.",
+          "example": "A school's software team needs realistic student records to test a new grade portal, and a developer suggests copying the live database. Sam, the security analyst on the project, points to the policy banning live personal data in test systems and requests a masked copy from the database administrator.",
           "audit_focus": {
             "review": [
               "Request masked or synthetic data for testing, never a live production copy",
@@ -2071,7 +2071,7 @@
             "If that is not yet possible, keep it patched with the vendor's extended security updates where offered, and reduce exposure: isolate it, limit access and monitor it closely.",
             "Keeping it running needs a documented exception with an expiry date and a review."
           ],
-          "example": "A port operator's crane scheduling workstation runs an unsupported operating system, kept online under a time-limited exception. Checking its conditions ahead of renewal, Sol, a junior security analyst, finds the monitoring it required stopped in the spring and the replacement has slipped a year. Sol writes up both gaps for the renewal decision and reports the stopped monitoring to the security manager at once.",
+          "example": "A port operator's crane scheduling workstation runs an unsupported operating system, kept online under a time-limited exception. Checking its conditions ahead of renewal, Sol, a security analyst, finds the monitoring it required stopped in the spring and the replacement has slipped a year. Sol writes up both gaps for the renewal decision and reports the stopped monitoring to the security manager at once.",
           "audit_focus": {
             "review": [
               "Flag assets whose support ends within the next year",
@@ -2436,7 +2436,7 @@
               }
             ]
           },
-          "example": "A retailer's monthly scan reports 600 findings, and a manager asks whether that counts as the penetration test. Lou, a junior security analyst, explains that the scan listed possible weaknesses without trying to exploit them, then sends the critical findings on internet-facing systems to their owners first.",
+          "example": "A retailer's monthly scan reports 600 findings, and a manager asks whether that counts as the penetration test. Lou, a security analyst, explains that the scan listed possible weaknesses without trying to exploit them, then sends the critical findings on internet-facing systems to their owners first.",
           "audit_focus": {
             "review": [
               "Run scans only against systems in the approved scope",
@@ -2533,7 +2533,7 @@
               }
             ]
           },
-          "example": "A transit agency is about to launch a fare top-up website. The SAST report is clean, so the project manager wants to skip the scheduled DAST run to save a week. Nico, a junior application security analyst, explains that SAST cannot see live session handling or server settings, and asks to keep the run, as policy requires.",
+          "example": "A transit agency is about to launch a fare top-up website. The SAST report is clean, so the project manager wants to skip the scheduled DAST run to save a week. Nico, an application security analyst, explains that SAST cannot see live session handling or server settings, and asks to keep the run, as policy requires.",
           "audit_focus": {
             "review": [
               "Review SAST findings with developers before marking any as false positives",
@@ -2614,7 +2614,7 @@
               "meaning": "Gaining rights beyond those granted; countered by authorization checks and least privilege."
             }
           ],
-          "example": "A small charity plans an online donation form. In a one-hour session, Bailey, the junior security analyst, walks the team through the data flow and asks what could go wrong at each step. The team sees card details would pass through the charity's own server and redesigns the form around the payment provider's hosted page.",
+          "example": "A small charity plans an online donation form. In a one-hour session, Bailey, the security analyst, walks the team through the data flow and asks what could go wrong at each step. The team sees card details would pass through the charity's own server and redesigns the form around the payment provider's hosted page.",
           "audit_focus": {
             "review": [
               "Join design reviews and ask what could go wrong at each trust boundary",
@@ -2764,7 +2764,7 @@
               "meaning": "An AI tool given more permissions or autonomy than it needs, so a manipulated model can do real damage."
             }
           ],
-          "example": "A law firm adds an AI assistant that summarizes incoming email. During an authorized test, Remy, a junior security analyst, sends an email with hidden text telling the assistant to forward the client list outside the firm. The assistant tries, but its permissions block sending. Remy records the result and reports the weakness to the system owner.",
+          "example": "A law firm adds an AI assistant that summarizes incoming email. During an authorized test, Remy, a security analyst, sends an email with hidden text telling the assistant to forward the client list outside the firm. The assistant tries, but its permissions block sending. Remy records the result and reports the weakness to the system owner.",
           "audit_focus": {
             "review": [
               "Test AI features only within the approved scope and test accounts",

@@ -247,7 +247,7 @@
               }
             ]
           },
-          "example": "A furniture maker's yearly supplier security review was skipped: procurement thought IT did it, and IT thought procurement did. The GRC lead drafts a RACI chart for the review. Ana, a junior GRC analyst checking the draft, sees two managers marked Accountable and returns it to the GRC lead to settle which one answers for it.",
+          "example": "A furniture maker's yearly supplier security review was skipped: procurement thought IT did it, and IT thought procurement did. The GRC lead drafts a RACI chart for the review. Ana, a GRC analyst checking the draft, sees two managers marked Accountable and returns it to the GRC lead to settle which one answers for it.",
           "audit_focus": {
             "review": [
               "Draft the chart with one proposed Accountable name per task",
@@ -467,7 +467,7 @@
             "Dashboards turn the stored data into views for each audience.",
             "A status is only as current as its data; check when each feed last updated before trusting a green."
           ],
-          "example": "A freight company's GRC platform has shown its server patching control as green for three months. Yuki, a junior GRC analyst, opens the record and sees the patch server's data feed stopped in July, when its service account password expired, so the green rests on an old export. Yuki marks the control's status as unverified, tells the control owner and raises a ticket for the platform owner to repair the feed.",
+          "example": "A freight company's GRC platform has shown its server patching control as green for three months. Yuki, a GRC analyst, opens the record and sees the patch server's data feed stopped in July, when its service account password expired, so the green rests on an old export. Yuki marks the control's status as unverified, tells the control owner and raises a ticket for the platform owner to repair the feed.",
           "audit_focus": {
             "review": [
               "Check the live setting on the system before acting on an alert",
@@ -706,7 +706,7 @@
               "meaning": "Two internet providers or paths, so one cut cable does not cut the service."
             }
           ],
-          "example": "A warehouse runs its order system on one server and one internet line. After a storm cuts the line for a day, the operations manager approves a second line from another provider and a standby server that takes over automatically. Ben, a junior technician, tests the switch-over monthly as the runbook sets out and logs each result.",
+          "example": "A warehouse runs its order system on one server and one internet line. After a storm cuts the line for a day, the operations manager approves a second line from another provider and a standby server that takes over automatically. Ben, a technician, tests the switch-over monthly as the runbook sets out and logs each result.",
           "audit_focus": {
             "review": [
               "Confirm the spare takes over during a scheduled test",
@@ -991,7 +991,7 @@
             "svg": "<svg viewBox='0 0 520 176' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Timeline: data written between the last good backup and the disruption is lost and must not exceed the RPO; downtime from the disruption until service is restored must not exceed the RTO; the RTO must end before the MTD limit'><line x1='20' y1='78' x2='500' y2='78' stroke='var(--text2)' stroke-width='1.5'/><rect x='30' y='58' width='112' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='86' y='76' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Last good</text><text x='86' y='89' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>backup</text><line x1='230' y1='30' x2='230' y2='118' stroke='var(--text2)' stroke-width='1.5' stroke-dasharray='3 3'/><text x='230' y='22' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>DISRUPTION</text><rect x='318' y='58' width='112' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='374' y='76' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Service</text><text x='374' y='89' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>restored</text><line x1='486' y1='30' x2='486' y2='160' stroke='var(--accent-fill)' stroke-width='1.5' stroke-dasharray='3 3'/><text x='486' y='22' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>MTD LIMIT</text><line x1='142' y1='118' x2='228' y2='118' stroke='var(--text2)' stroke-width='1.5'/><line x1='232' y1='118' x2='318' y2='118' stroke='var(--text2)' stroke-width='1.5'/><text x='185' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Data lost: within RPO</text><text x='275' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Downtime: within RTO</text><line x1='232' y1='152' x2='484' y2='152' stroke='var(--accent-fill)' stroke-width='1.5'/><text x='358' y='168' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8.5' font-weight='600' fill='var(--text2)'>Whole outage must end before the MTD</text></svg>",
             "caption": "The three targets on one timeline. Work done since the last good backup is lost, and that gap must stay within the RPO. The time from the disruption until service is back must stay within the RTO, and the whole outage must end before the MTD."
           },
-          "example": "A veterinary clinic backs up its booking system nightly, but the practice manager says losing more than an hour of appointments would be serious. Noor, a junior technician, sees that the backup can lose up to 24 hours of bookings, far beyond the one-hour RPO, and raises the gap with the IT manager.",
+          "example": "A veterinary clinic backs up its booking system nightly, but the practice manager says losing more than an hour of appointments would be serious. Noor, a technician, sees that the backup can lose up to 24 hours of bookings, far beyond the one-hour RPO, and raises the gap with the IT manager.",
           "audit_focus": {
             "review": [
               "Line up actual copy times against each data-loss target",
@@ -1245,7 +1245,7 @@
               "meaning": "Production is shut down and the business runs from the recovery site. Most realistic and highest risk."
             }
           ],
-          "example": "A city water department runs a simulation for its billing system: the recovery team acts out a flooded-server-room scenario in real time, each person doing their own role on test servers while live systems keep running. The steps take nine hours against a six-hour RTO. Dee, a junior system administrator, records each step's timing in the test report, and the gap becomes a tracked action.",
+          "example": "A city water department runs a simulation for its billing system: the recovery team acts out a flooded-server-room scenario in real time, each person doing their own role on test servers while live systems keep running. The steps take nine hours against a six-hour RTO. Dee, a system administrator, records each step's timing in the test report, and the gap becomes a tracked action.",
           "audit_focus": {
             "review": [
               "Confirm your role and contact details before each test",
@@ -1299,7 +1299,7 @@
             "Model drift is a gradual drop in accuracy as real-world data moves away from what the model learned.",
             "Plan a fallback, such as an earlier model version or a manual process."
           ],
-          "example": "A delivery firm's AI model predicts late parcels, and dispatchers plan routes around it. After the firm adds a new region, accuracy slips week by week. Kim, a junior operations analyst, sees the weekly figure fall below the agreed threshold and reports it to the model owner, who switches dispatch back to the previous model version.",
+          "example": "A delivery firm's AI model predicts late parcels, and dispatchers plan routes around it. After the firm adds a new region, accuracy slips week by week. Kim, an operations analyst, sees the weekly figure fall below the agreed threshold and reports it to the model owner, who switches dispatch back to the previous model version.",
           "audit_focus": {
             "review": [
               "Confirm the AI backup set includes model, settings and data",
