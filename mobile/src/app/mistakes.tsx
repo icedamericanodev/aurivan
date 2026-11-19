@@ -1,5 +1,5 @@
 /**
- * Mistake Journal with Mistake DNA: reflect on recent saved misses, then
+ * Mistake Journal with "Your mistake patterns" (code name Mistake DNA): reflect on recent saved misses, then
  * follow an existing principle, note, drill or independent practice set.
  * Analytics and thresholds live in engine/mistakeDNA.ts; no diagnostic
  * result is persisted. Stable slip ids, tagging/focus announcements,

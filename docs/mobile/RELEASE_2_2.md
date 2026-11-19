@@ -28,6 +28,15 @@ A development tracker for the next phone update after 2.1, not a record of a shi
 
 **Not in scope (owner decisions if wanted later).** Promoting tablets or Chromebooks in the Play listing (needs tablet screenshots). iPad support (`ios.supportsTablet` stays false until after the iOS launch). A two-pane tablet layout (for example the question beside its explanation).
 
+### Your mistake patterns, from PR #240 (19 Nov 2026)
+
+**Why.** Expert scope review for 2.2 (product-manager, behavioral-scientist, technical review): it is the one candidate that works on metacognition. "Sure, but incorrect" uses the learner's own confidence ratings (the hypercorrection effect), final-two confusion comes from the actual pick, and "Practice other questions" serves only questions outside the mistake history (transfer, not recognition). Nothing shows below 5 classified mistakes. Owner approved the 2.2 scope on 19 Nov 2026; the renamed screen goes to the owner for a final yes before merge.
+
+**What changed from #240 as built.** Learner copy says "Your mistake patterns", not "Mistake DNA" (code name kept). The card shows the cue and one action only; counts, sources and the trend sit in the opt-in "Explore pattern evidence"; caveats stay behind the "i". A rising trend shows "What helps: …". The generated `assets/kaisip-cloud.js` was regenerated from the merged sources (no data sent anywhere new). Design and method: `docs/mobile/MISTAKE_DNA.md`.
+
+**To measure after release (on the device, shared through the opt-in tester check-in):** the share of answers marked Sure on first sight that are wrong (should fall), first-try accuracy on "Practice other questions" sets, how many misses are classified, and replies that call it discouraging (guardrail). No notifications for this feature.
+
 ## Play release notes (draft)
 
+New: your mistake journal now shows the pattern behind your recent mistakes, one thing to try next, and practice on questions you have not seen yet.
 Improved: on tablets and other large screens, pages now sit in a comfortable reading width instead of stretching across the screen.

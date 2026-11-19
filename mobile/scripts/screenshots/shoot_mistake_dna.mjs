@@ -27,16 +27,16 @@ for (const theme of ['light', 'dark']) {
   const page = await context.newPage();
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto(`${process.env.DNA_URL || 'http://127.0.0.1:8095'}/mistakes`, { waitUntil: 'networkidle' });
-  await page.getByText('Your Mistake DNA', { exact: true }).waitFor();
+  await page.getByText('Your mistake patterns', { exact: true }).waitFor();
   await page.screenshot({ path: `${out}/${theme}-journal.png` });
   await page.getByRole('button', { name: 'Explore pattern evidence', exact: true }).click();
   await page.getByText('Thinking-pattern breakdown', { exact: true }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${out}/${theme}-evidence.png` });
-  await page.getByRole('button', { name: 'How Mistake DNA works', exact: true }).click();
-  await page.getByRole('button', { name: 'Close, How Mistake DNA works', exact: true }).waitFor();
+  await page.getByRole('button', { name: 'How mistake patterns work', exact: true }).click();
+  await page.getByRole('button', { name: 'Close, How mistake patterns work', exact: true }).waitFor();
   await page.waitForTimeout(700);
   await page.screenshot({ path: `${out}/${theme}-info.png` });
-  await page.getByRole('button', { name: 'Close, How Mistake DNA works', exact: true }).click();
+  await page.getByRole('button', { name: 'Close, How mistake patterns work', exact: true }).click();
   await page.waitForTimeout(400);
   await page.getByText('Progress over time', { exact: true }).evaluate((el) => el.scrollIntoView({ block: 'start' }));
   await page.waitForTimeout(350);
@@ -47,7 +47,7 @@ for (const theme of ['light', 'dark']) {
     style.textContent = '[dir="auto"] { font-size: 200% !important; line-height: 1.35 !important; }';
     document.head.appendChild(style);
   });
-  await page.getByText('Your Mistake DNA', { exact: true }).scrollIntoViewIfNeeded();
+  await page.getByText('Your mistake patterns', { exact: true }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${out}/${theme}-large-text.png` });
   // Browser layout smoke: large text must not overflow the viewport horizontally.
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);

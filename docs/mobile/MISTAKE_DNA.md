@@ -1,4 +1,6 @@
-# Mistake DNA
+# Mistake DNA ("Your mistake patterns")
+
+**Learner-facing name (phone 2.2, expert review 19 Nov 2026): "Your mistake patterns".** "Mistake DNA" stays the code name only: `behavioral-scientist` advised that "DNA" reads as a fixed trait, against the feature's own "not a diagnosis" copy. The same review kept the card to the cue and one action (the "X of Y classified mistakes" count moved into the opt-in evidence), kept the caveats behind the "i", and pairs a "more frequent recently" trend with its fix ("What helps: …"). A screen test checks that no learner-visible text says "DNA".
 
 Review scope: Mistake Journal only. Initially based independently on main `5382a2ee95fa82404e9b5ee6186d030773cbefe0`, then refreshed onto `5e3fad10c1777e3453dc9f9604ca46fcc46cf687` after the Concept Lab and shared UI updates merged. No Concept Lab dependency, Learn changes, new tab, stored field, dependency, entitlement change or release configuration change.
 
@@ -6,7 +8,7 @@ Review scope: Mistake Journal only. Initially based independently on main `5382a
 
 Slip Coach still provides the existing tag-based all-history pattern for other consumers. The journal now adds a recent evidence summary, provenance-labelled breakdown, honest classified/unclassified coverage, two-window comparison, related notes and a fresh-practice path. Its learner-facing copy describes observations and possible reflection points rather than diagnosing a thinking style.
 
-One labelled “i” control beside “Your Mistake DNA” opens the existing scrollable FeatureInfo sheet. Dates, a short practical coaching cue, counts, evidence sources and the trend’s subject stay visible. Coverage totals live in expanded evidence. The shared help consolidates sample rules, methodology, retained-miss handling and pattern definitions, with Close/Android Back/escape support and focus restoration. The journal-header help is consolidated here to avoid a second icon.
+One labelled “i” control beside “Your mistake patterns” opens the existing scrollable FeatureInfo sheet. Dates and a short practical coaching cue stay visible. Counts, evidence sources, coverage totals and the trend live in expanded evidence. The shared help consolidates sample rules, methodology, retained-miss handling and pattern definitions, with Close/Android Back/escape support and focus restoration. The journal-header help is consolidated here to avoid a second icon.
 
 ## Architecture and calculations
 

@@ -45,8 +45,6 @@ Not done from the cloud session (no Android emulator): installing a bundle-deriv
 
 ## Work in progress
 
-- Mistake DNA: independently based on main; local journal evidence summary, accessible breakdown, qualified trend and existing drill/note/fresh-practice paths. Owner review pending; see `MISTAKE_DNA.md`. No release settings changed.
-
 - FB-005: explicit Android folder-picker backup save implemented alongside sharing; 32 focused tests and independent review passed. Native folder-picker opening and cancellation verified on the Android emulator; local Documents provider write/restore acceptance passed on the isolated Android emulator; no real files created or overwritten.
 
 - FB-004: scoped durable reset and onboarding return implemented; cancellation, confirmation, restart, failure, duplicate-action and unrelated-data tests passed. Independent review clear; integrated check and Android export passed. No emulator progress was reset.

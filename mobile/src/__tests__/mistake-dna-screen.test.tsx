@@ -76,7 +76,9 @@ it.each(['light', 'dark'] as const)('shows accessible evidence and real remediat
   Dimensions.set({ window: { ...w, width: 320, fontScale: 2 }, screen: { ...w, width: 320, fontScale: 2 } });
   seed(50);
   act(() => { useSettings.setState({ theme }); });
-  expect(text()).toContain('Your Mistake DNA');
+  expect(text()).toContain('Your mistake patterns');
+  // Mobile 2.2: the learner never sees "DNA" (it reads as a fixed trait).
+  expect(text()).not.toMatch(/DNA/);
   expect(text()).toContain('Role confusion');
   expect(labels()).toContain(`Drill it: ${GAMES.canopy.name}`);
   press('Explore pattern evidence');
@@ -122,12 +124,12 @@ it('uses one help entry for the whole journal, with a visible coaching cue', () 
   expect(text()).not.toContain('shares do not add up to 100%');
   expect(text()).toContain('Ask who you are in the question');
   expect(text()).not.toContain('tagged by you');
-  press('How Mistake DNA works');
+  press('How mistake patterns work');
   expect(text()).toContain('shares do not add up to 100%');
   expect(text()).toContain('Each window needs at least 5 classified mistakes');
-  press('Close, How Mistake DNA works');
+  press('Close, How mistake patterns work');
   expect(text()).not.toContain('shares do not add up to 100%');
-  press('How Mistake DNA works');
+  press('How mistake patterns work');
   act(() => { r!.root.findAllByType(Modal).find((m) => m.props.visible)?.props.onRequestClose(); });
   expect(text()).not.toContain('shares do not add up to 100%');
   press('Explore pattern evidence');
