@@ -64,6 +64,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '2.2',
     date: '2026-11-19',
     new: [
+      'Your mistake journal now shows the pattern behind your recent mistakes, one thing to try next, and practice on questions outside your mistake journal.',
       'Look back at questions you have answered, with their explanations, without answering them again.',
       'Set a countdown for a practice set, and choose to finish or keep going when time is up.',
       'Choose how many questions and which timer when you practise one area.',

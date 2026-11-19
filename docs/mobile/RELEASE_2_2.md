@@ -65,15 +65,25 @@ Not done from this round (kept for later, on purpose): saving the latest pick pe
 - [ ] Rate opens the Play page for a closed tester; Share shows only the approved line.
 - [ ] Bottom buttons with three-button and gesture navigation; upgrade from 2.1 keeps progress.
 
+### Your mistake patterns, from PR #240 (19 Nov 2026)
+
+**Why.** Expert scope review for 2.2 (product-manager, behavioral-scientist, technical review): it is the one candidate that works on metacognition. "Sure, but incorrect" uses the learner's own confidence ratings (the hypercorrection effect), final-two confusion comes from the actual pick, and "Practice other questions" serves only questions outside the mistake history (transfer, not recognition). Nothing shows below 5 classified mistakes. Owner approved the 2.2 scope on 19 Nov 2026; the renamed screen goes to the owner for a final yes before merge.
+
+**What changed from #240 as built.** Learner copy says "Your mistake patterns", not "Mistake DNA" (code name kept). The card shows the cue and one action only; counts, sources and the trend sit in the opt-in "Explore pattern evidence"; caveats stay behind the "i". A rising trend shows "What helps: …". The generated `assets/kaisip-cloud.js` was regenerated from the merged sources (no data sent anywhere new). Design and method: `docs/mobile/MISTAKE_DNA.md`.
+
+**Review (PR #288).** Code review: the journal's clock was read on every redraw (each tag tap re-analysed the whole journal); my first fix froze it at screen open, which would have dropped misses made in a practice session opened from the journal. The clock now refreshes exactly when the saved mistakes change; a test fails on a frozen clock. The changed final-two helper gives the same letter as before for every CISA, AAIA and CRISC question, and the website's sync code is unchanged. UX review: no extra "What to do next" heading, quiet buttons aligned left, an empty journal shows only its empty state, the card's caption is read with its heading by screen readers and capped with it at large text, and "classified" became "with a pattern" on screen. Final expert panel (owner asked for it before merge, 19 Nov 2026): `behavioral-scientist` SHIP WITH NITS, `app-store-compliance-reviewer` GO (analysis stays on the device, Data safety unchanged, no pass or diagnosis claims), `learner-reader` and `mobile-qa-tester` (12 new edge-case tests). Applied: plain-language help without "classified"; the card names FIRST, BEST or MOST; "Show details" instead of "Explore pattern evidence"; sources read "From your tags…" and "From the answers you chose"; the trend says "about the same as the 2 weeks before" with the counts kept; the study-note button's spoken name matches its text; What's New says "questions outside your mistake journal" (not "not seen yet", which was inaccurate). QA fixes: older-only mistakes no longer get "Tag a few mistakes"; a mistake whose question left the pack is no longer counted in "N open"; "Show fixed" no longer carries over when switching exams. Left for later: the Play tab's slip line still uses all-time tags, so it can name a different pattern than the journal's 28-day view.
+
+**To measure after release (on the device, shared through the opt-in tester check-in):** the share of answers marked Sure on first sight that are wrong (should fall), first-try accuracy on "Practice other questions" sets, how many misses are classified, and replies that call it discouraging (guardrail). No notifications for this feature.
+
 ## Play release notes (draft)
 
 ```
 What's new in 2.2
+• Your mistake journal shows the pattern behind recent mistakes and what to try next.
 • Look back at answered questions with their explanations, without answering again.
 • Set a countdown for practice. When time is up, finish or keep going untimed.
 • Choose how many questions and which timer for one area.
-• After you answer: the short summary and tips first, with the question and every option one tap away.
+• After you answer: summary and tips first, with the question and options one tap away.
 • Rate or share KaiSip from Settings.
 • Better layout on tablets.
-• The Concept Lab is put away while we make it clearer.
 ```

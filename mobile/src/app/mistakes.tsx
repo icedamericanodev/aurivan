@@ -1,55 +1,25 @@
 /**
- * Mistake Journal — every miss filed automatically, with why.
- *
- * The learner tags the THINKING slip behind each miss (wrong role, missed
- * the priority word, chose tech before governance…). Patterns across tags
- * are the real coaching: they show HOW someone gets questions wrong, which
- * transfers to questions they've never seen. Answering a question correctly
- * later marks its mistake fixed.
- *
- * "Your pattern" (the slip coach, engine/slipCoach.ts): once 5+ mistakes
- * are tagged, it names the most frequent slip and offers the mini-game
- * that drills it in one tap. Below 5, a quiet line says when it appears.
- *
- * Nothing open → the seedling empty state (spec §11), with teaching tags
- * that preview the trap types that will be filed here.
- *
- * Mobile 1.15 (PHASE5.md J9–J13): the tags in plain words, and "What do
- * these mean?" opens one example for each, so a learner new to audit can tag
- * honestly. The stored slip ids never change (no migration). The button
- * says how many of the open mistakes one set takes ("Practice 20 of 55").
- *
- * Mobile 1.20: each open mistake whose question a study note covers gets a
- * small "Read the note" (BookOpen = notes), so the fix starts with the idea.
- *
- * Principles: "Your pattern" links to the exam-mindset principle that
- * coaches it ("Read the principle", Compass), looked up through the shared
- * file's slip map (content/principles principleForSlip). No link for "Didn't
- * know it": a content gap has no thinking rule to read.
- *
- * Mobile 1.24 (accessibility): the question is shown whole (the ask, FIRST or
- * BEST, is at the END of most stems, and the options are no longer cut to two
- * lines); "Your pick" (premium round 2, the answer screen's word; "Your answer"
- * before) / "Best answer" are plain words (no ✓ / ✗ glyphs read
- * aloud as "check mark"); and the six tag chips are not repeated under every
- * mistake: an untagged mistake has one "Tag why you slipped" button, a tagged
- * one shows its tag as a line with "Change", and the chips (one labelled radio
- * group, each spoken as "Tag: ...") open only on tap.
+ * Mistake Journal with "Your mistake patterns" (code name Mistake DNA): reflect on recent saved misses, then
+ * follow an existing principle, note, drill or independent practice set.
+ * Analytics and thresholds live in engine/mistakeDNA.ts; no diagnostic
+ * result is persisted. Stable slip ids, tagging/focus announcements,
+ * fixed/open filtering, original-letter picks and review controls remain.
+ * A virtualised list keeps a large journal usable. Even an empty or fully
+ * corrected journal retains its honest evidence summary and next actions.
  */
-import { FeatureInfo } from '../components/featureInfo';
 import { router } from 'expo-router';
 import { backOr } from '../lib/actions';
 import { moveFocus, sayLater } from '../lib/a11y';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, Modal, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { EmptyScreen } from '../components/emptyScreen';
+import { MistakeDNASummary } from '../components/mistakeDNA';
 import { StickyFooter } from '../components/quiz';
 import { BookOpen, Compass, ICON_STROKE } from '../components/icons';
 import { ReportLink } from '../components/support';
 import { useMotion } from '../components/motion';
-import { Button, Chip, Gap, ICON_SIZE, PushedHeader, Row, Section, T } from '../components/ui';
-import { findQuestion } from '../content/loader';
+import { Button, Chip, EmptyState, Gap, ICON_SIZE, PushedHeader, Row, Section, T } from '../components/ui';
+import { findQuestion, getAllQuestions } from '../content/loader';
 import { findNote, subtopicOfQuestion } from '../content/notes';
 import { principleForSlip } from '../content/principles';
 import { shortDate } from '../lib/format';
@@ -59,7 +29,8 @@ import { useActiveCert } from '../lib/useActiveCert';
 import { GAMES } from '../engine/games/registry';
 import { canPlay } from '../lib/games';
 import { useAvailableGames } from '../components/drills';
-import { slipCoach, type SlipInput } from '../engine/slipCoach';
+import { PATTERN_COPY } from '../engine/slipCoach';
+import { mistakeDNA, type DNAInput } from '../engine/mistakeDNA';
 import { useProgress, type MistakeEntry, type ThinkingSlip } from '../store/progress';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -142,11 +113,11 @@ const MistakeCard = memo(function MistakeCard({
 }) {
   const { c } = useTheme();
   const q = useMemo(() => findQuestion(certId, id), [certId, id]);
-  // The study note behind this question (open mistakes only).
+  // The study note remains available after the mistake is fixed, too.
   const note = useMemo(() => {
-    const noteId = m.resolved ? undefined : subtopicOfQuestion(certId, id);
+    const noteId = subtopicOfQuestion(certId, id);
     return noteId ? findNote(certId, noteId) : undefined;
-  }, [certId, id, m.resolved]);
+  }, [certId, id]);
   const target = useMemo(() => (q ? questionTarget(certId, q, 'Mistake journal', undefined, m.picked) : null), [certId, q, m.picked]);
   // Release bug hunt round 3 (TalkBack): every press here removes the button that has focus (the tag
   // button, Change, a tag chip). So focus moves to what replaced it: the tags when they open, the
@@ -248,37 +219,54 @@ export default function Mistakes() {
   // The drills open for this learner now (the same rule as Practice > Drills).
   const offered = useAvailableGames(certId);
   const tagMistake = useProgress((s) => s.tagMistake);
-  const [showFixed, setShowFixed] = useState(false);
+  // QA (2.2): "Show fixed" belongs to the exam it was turned on for, so switching exams starts closed.
+  const [fixedFor, setFixedFor] = useState<string | null>(null);
+  const showFixed = fixedFor === certId;
+  const setShowFixed = (on: boolean) => setFixedFor(on ? certId : null);
   const [footerH, setFooterH] = useState(120);
   const [tagsOpen, setTagsOpen] = useState(false);
   // The mistakes whose six tag chips are open (tapped "Tag why you slipped" / "Change").
   const [tagging, setTagging] = useState<string[]>([]);
   const openSession = () => router.push('/session');
 
+  // QA (2.2): only mistakes whose question is still in the pack are shown, so only those are counted
+  // ("N open", the footer, "Show N fixed"); a retired id used to count with no card to show for it.
+  const known = useMemo(() => Object.entries(progress.mistakes).filter(([id]) => !!findQuestion(certId, id)), [certId, progress.mistakes]);
   const entries = useMemo(
-    () =>
-      Object.entries(progress.mistakes)
-        .filter(([, m]) => showFixed || !m.resolved)
-        .sort(([, a], [, b]) => b.at - a.at),
-    [progress.mistakes, showFixed],
+    () => known.filter(([, m]) => showFixed || !m.resolved).sort(([, a], [, b]) => b.at - a.at),
+    [known, showFixed],
   );
-  const open = Object.entries(progress.mistakes).filter(([, m]) => !m.resolved);
-  const fixedCount = Object.keys(progress.mistakes).length - open.length;
-  // The slip coach reads EVERY tagged mistake (fixed ones too: a habit is
-  // still a habit), joined with its question for the runner-up and
-  // priority-word checks. Letters stay ORIGINAL letters throughout.
-  const pattern = useMemo(() => {
-    const inputs: SlipInput[] = [];
+  const open = known.filter(([, m]) => !m.resolved);
+  const fixedCount = known.length - open.length;
+  // Saved mistakes already contain one latest miss per stable question id.
+  // The clock is read inside the memo (2.2 reviews): Date.now() in render broke the memo, so each tag tap
+  // re-analysed every saved mistake; a clock frozen at mount would leave out misses made in a practice
+  // session opened from here (the journal stays mounted underneath). Now it moves exactly when the
+  // saved mistakes change. Elsewhere the window's own ends (dna.from, dna.to) are the time.
+  const dna = useMemo(() => {
+    const inputs: DNAInput[] = [];
     for (const [id, m] of Object.entries(progress.mistakes)) {
-      // slipCoach counts tagged mistakes only: an untagged one needs no question lookup.
-      if (!m.slip) continue;
-      const q = findQuestion(cert.id, id);
-      if (q) inputs.push({ slip: m.slip, picked: m.picked, confidence: m.confidence, correct: q.correct, tips: q.tips, stem: q.stem });
+      const q = findQuestion(certId, id);
+      if (q) inputs.push({ id, certId, at: m.at, slip: m.slip, picked: m.picked, confidence: m.confidence, correct: q.correct, tips: q.tips, stem: q.stem });
     }
-    return slipCoach(inputs);
-  }, [cert.id, progress.mistakes]);
+    // eslint-disable-next-line react-hooks/purity -- the window's clock, refreshed with the saved mistakes
+    return mistakeDNA(inputs, certId, Date.now());
+  }, [certId, progress.mistakes]);
+  const pattern = dna.top ? { ready: true as const, pattern: dna.top.pattern, ...PATTERN_COPY[dna.top.pattern] } : { ready: false as const };
   // The principle that coaches this pattern (none for a content gap, or a cert without principles).
   const patternPrinciple = pattern.ready ? principleForSlip(cert.id, pattern.pattern) : undefined;
+
+  const freshIds = useMemo(() => getAllQuestions(certId).filter((q) => !progress.mistakes[q.id]).map((q) => q.id), [certId, progress.mistakes]);
+  const patternNote = useMemo(() => {
+    if (dna.top?.pattern !== 'knowledge') return undefined;
+    const supporting = Object.entries(progress.mistakes).filter(([, m]) => m.slip === 'knowledge' && m.at >= dna.from && m.at <= dna.to).sort((a, b) => b[1].at - a[1].at || a[0].localeCompare(b[0]));
+    for (const [id] of supporting) {
+      const noteId = subtopicOfQuestion(certId, id);
+      const note = noteId ? findNote(certId, noteId) : undefined;
+      if (note) return note;
+    }
+    return undefined;
+  }, [certId, dna.top?.pattern, dna.from, dna.to, progress.mistakes]);
 
   // Stable callbacks, so a memoised card redraws only when its own values change.
   const onToggleTag = useCallback((id: string) => setTagging((t) => [...t, id]), []);
@@ -300,34 +288,15 @@ export default function Mistakes() {
     [certId, tagging, onToggleTag, onPickTag, onOpenTags],
   );
 
-  if (entries.length === 0) {
-    return (
-      <EmptyScreen
-        header="Mistake journal"
-        fallback="/you"
-        art="pressed"
-        title="Nothing open right now"
-        body="Every question you miss lands here, tagged by the trap that caught you."
-        // Effort, made visible: what the learner has already cleared (never a count of misses).
-        next={fixedCount > 0 ? `${fixedCount} ${fixedCount === 1 ? 'mistake' : 'mistakes'} cleared so far` : undefined}
-        tags={['Missed FIRST or BEST', 'Acted as the wrong person', 'Fixed the symptom, not the cause']}
-        primary={{ label: 'Practice 10 questions', onPress: () => guardedStart(() => startPractice(cert.id, { count: 10, title: 'Quick 10' }), openSession) }}
-        secondary={fixedCount > 0 ? { label: 'See cleared mistakes', onPress: () => setShowFixed(true) } : undefined}
-      />
-    );
-  }
-
   const header = (
     <View>
-      <PushedHeader right={<FeatureInfo title="Mistake journal"><T v="body">Tag why you slipped to find recurring patterns. Use “What do these mean?” beside the tags for examples.</T></FeatureInfo>} title="Mistake journal" onBack={() => backOr('/you')} />
+      <PushedHeader title="Mistake journal" onBack={() => backOr('/you')} />
 
-      {pattern.ready ? (
-        // Not a card: a green left rule, like the key idea (spec §5).
-        <View style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
-          <T v="caption" color={c.accentText}>Your pattern</T>
-          <T v="headline" accessibilityRole="header" style={{ marginTop: 2 }}>{pattern.title}</T>
-          <T v="small" color={c.ink}>{pattern.coach}</T>
-          <T v="meta" num style={{ marginTop: space.xs }}>{`Seen in ${pattern.count} of ${pattern.tagged} tagged mistakes`}</T>
+      {known.length > 0 && <MistakeDNASummary dna={dna} />}
+      {pattern.ready && (
+        // Keep remediation beside the summary, using existing content and access rules.
+        // UX review (2.2): no extra "What to do next" heading; the actions follow the cue directly.
+        <View style={{ marginTop: space.sm }}>
           {patternPrinciple && (
             // The thinking rule behind this slip. The ghost pads 8pt each side: pulled left so its icon lines up with the text.
             <Button
@@ -341,6 +310,7 @@ export default function Mistakes() {
               style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
             />
           )}
+          {patternNote && <Button kind="ghost" label="Read a related study note" accessibilityLabel={`Read a related study note: ${patternNote.name}`} onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(patternNote.id)}`)} style={{ alignSelf: 'flex-start', marginLeft: -space.sm }} />}
           <Gap h={space.md} />
           {/* "Drill it" only when that game can be played for this exam (registry minPool) AND Drills has it open
               for this learner (release bug hunt round 2: the 50-answer unlock). Otherwise review the mistakes. */}
@@ -353,20 +323,16 @@ export default function Mistakes() {
             />
           ) : (
             open.length > 0 && <Button
-              kind="secondary"
-              label="Review these mistakes"
+              kind="secondary" label="Review these mistakes"
               onPress={() => guardedStart(() => startFromIds(cert.id, open.slice(0, 20).map(([id]) => id), 'Mistake journal'), openSession)}
             />
           )}
+          {freshIds.length > 0 ? <Button kind="ghost" label="Practice other questions" accessibilityHint="Uses questions outside your mistake history to revisit your reasoning" onPress={() => guardedStart(() => startPractice(certId, { count: 10, ids: freshIds, title: 'Fresh practice' }), openSession)} style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }} /> : <Button kind="ghost" label="Choose a practice activity" onPress={() => router.push('/practice')} style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }} />}
         </View>
-      ) : (
-        <T v="meta" style={{ marginTop: space.lg }}>
-          {`Tag ${pattern.needed} more ${pattern.needed === 1 ? 'mistake' : 'mistakes'} to see your pattern.`}
-        </T>
       )}
 
-      <Section title={showFixed ? 'All mistakes' : `${open.length} open`} />
-      {fixedCount > 0 && (
+      {entries.length > 0 && <Section title={showFixed ? 'All mistakes' : `${open.length} open`} />}
+      {fixedCount > 0 && entries.length > 0 && (
         <View style={{ alignSelf: 'flex-start', marginTop: space.sm }}>
           <Chip label={showFixed ? 'Hide fixed' : `Show ${fixedCount} fixed`} selected={showFixed} onPress={() => setShowFixed(!showFixed)} />
         </View>
@@ -385,6 +351,13 @@ export default function Mistakes() {
         renderItem={renderItem}
         extraData={tagging}
         ListHeaderComponent={header}
+        ListEmptyComponent={
+          <View style={{ paddingVertical: space.lg }}>
+            <EmptyState art="pressed" title="Nothing open right now" body="Every question you miss lands here, tagged by the trap that caught you." next={fixedCount > 0 ? `${fixedCount} ${fixedCount === 1 ? 'mistake' : 'mistakes'} cleared so far` : undefined} />
+            <Button kind="secondary" label="Practice 10 questions" onPress={() => guardedStart(() => startPractice(cert.id, { count: 10, title: 'Quick 10' }), openSession)} style={{ marginTop: space.md }} />
+            {fixedCount > 0 && <Button kind="ghost" label="See cleared mistakes" onPress={() => setShowFixed(true)} />}
+          </View>
+        }
         contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}
         initialNumToRender={8}
         windowSize={5}

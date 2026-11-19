@@ -294,7 +294,7 @@ describe('entry points', () => {
   it('the Mistake journal’s "Your pattern" links to the principle that coaches it', () => {
     tagFive('role');
     mount(<Mistakes />);
-    expect(allText()).toContain('You answer as the wrong person');
+    expect(allText()).toContain('Role confusion');
     const title = pack.principles.find((x) => x.id === 'recommend-dont-implement')!.title;
     press(`Read the principle: ${title}`);
     expect(mockPush).toHaveBeenCalledWith({ pathname: '/principles/[id]', params: { id: 'recommend-dont-implement' } });
@@ -303,7 +303,7 @@ describe('entry points', () => {
   it('no principle link for "Didn’t know it" (a content gap, not a thinking slip)', () => {
     tagFive('knowledge');
     mount(<Mistakes />);
-    expect(allText()).toContain('Most misses are content gaps');
+    expect(allText()).toContain('Concept needs review');
     expect(pressables(/^Read the principle/)).toEqual([]);
   });
 });
