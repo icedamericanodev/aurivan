@@ -2,7 +2,7 @@
   "schema_version": 2,
   "title": "KaiSip CIA exam mindset principles",
   "updated": "2026-11-19",
-  "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and stay empty until the Part 1 tagging pass; legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 only for now. Intended later, once those packs' notes exist (written here because the linter of the built file allows no extra top-level key): know-your-seat cia2 cia3 ciac; board-approves-management-supports cia3 ciac; management-owns-risk-and-action cia2 cia3 ciac; advise-never-decide cia2 cia3 ciac; function-or-person cia3 ciac; no-self-review ciac; disclose-then-safeguard cia3 ciac; risk-sets-plan-and-scope cia2 cia3 ciac; plan-before-testing cia2 ciac; consider-fraud-every-engagement cia2 ciac; relevant-reliable-sufficient cia2 ciac; root-cause-over-symptom cia2 cia3 ciac; assurance-not-a-guarantee cia2; discuss-then-escalate cia2 cia3 ciac; report-through-the-right-channel cia2 ciac; tell-it-straight cia2 cia3 ciac; the four reading principles cia2 cia3 ciac. A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet, because Part 1 has no notes that teach it. Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1. Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
+  "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, the Challenge Exam 1 to 5, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and stay empty until the Part 1 tagging pass; legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 and ciac. For ciac, domains are the Challenge Exam's sections (A Internal Audit Professionalism and Quality is 1, B Internal Audit Operations and Audit Plan is 2, C Engagement Planning is 3, D Engagement Performance is 4, E Engagement Results and Monitoring is 5, mapped from docs/content/CIA_CHALLENGE_MAP.md), and subtopics and practice_ids stay empty until the Challenge notes are generated and the tagging pass is done. Parts 2 and 3 are still to come. Intended once their notes exist (written here because the linter of the built file allows no extra top-level key): know-your-seat cia2 cia3; board-approves-management-supports cia3; management-owns-risk-and-action cia2 cia3; advise-never-decide cia2 cia3; function-or-person cia3; disclose-then-safeguard cia3; risk-sets-plan-and-scope cia2 cia3; plan-before-testing cia2; consider-fraud-every-engagement cia2; relevant-reliable-sufficient cia2; root-cause-over-symptom cia2 cia3; assurance-not-a-guarantee cia2; discuss-then-escalate cia2 cia3; report-through-the-right-channel cia2; tell-it-straight cia2 cia3; the four reading principles cia2 cia3. A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet, because no notes teach it until Part 3 is written. Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1. Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
   "families": [
     {
       "id": "role",
@@ -47,8 +47,8 @@
       "family": "role",
       "order": 1,
       "title": "Know your seat",
-      "rule": "In Part 1, answer as an internal auditor who knows the rules and who does what.",
-      "why": "Domain I says internal auditing gives the board and management independent, objective assurance and advice. Several Part 1 topics cover the board's or the chief audit executive's duties. You answer as someone who knows those duties, not as the person performing them, and never as a manager.",
+      "rule": "Answer from the seat the question gives you: an internal auditor or the chief audit executive, never management.",
+      "why": "Domain I says internal auditing gives the board and management independent, objective assurance and advice. In Part 1 you answer as an internal auditor who knows the rules and who does what, even where a topic covers the board's or the chief audit executive's duties. You never answer as a manager.",
       "triggers": [
         "what should the internal auditor do",
         "who is responsible for",
@@ -71,15 +71,23 @@
         "trap": "An opinion on whether the year-end accounts payable balance is fairly stated.",
         "why": "An opinion on the financial statements is the external auditor's product. The internal auditor concludes on governance, risk management and control processes."
       },
-      "nuance": "The seat changes by exam: Part 2 is the internal auditor running an engagement, and Part 3 is the chief audit executive running the function. When a question names another actor, answer for that actor.",
+      "nuance": "The seat changes by exam: Part 2 is the internal auditor running an engagement, Part 3 the chief audit executive running the function, and the Challenge Exam follows the topic. If a question names another actor, answer for that actor.",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
           1,
           3,
           4
+        ],
+        "ciac": [
+          1,
+          2,
+          3,
+          4,
+          5
         ]
       },
       "subtopics": {
@@ -90,10 +98,12 @@
           "1C1.2",
           "1D3.1",
           "1D5.1"
-        ]
+        ],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": "role",
       "legacy_ids": [],
@@ -130,12 +140,17 @@
       },
       "nuance": "Not everything is approved. The internal audit strategy is reviewed with the board and senior management. On the chief audit executive's pay the board gives input; it authorizes appointment and removal (Standards 9.2 and 7.1).",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
           1,
           3
+        ],
+        "ciac": [
+          1,
+          2
         ]
       },
       "subtopics": {
@@ -146,10 +161,12 @@
           "1A3.3",
           "1A7.2",
           "1C1.2"
-        ]
+        ],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -187,13 +204,19 @@
       },
       "nuance": "The chief audit executive may hold a role beyond internal auditing only with safeguards: discussed with the board and senior management, written into the charter if ongoing, and assured by an independent party (Standard 7.1).",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
           1,
           3,
           4
+        ],
+        "ciac": [
+          1,
+          3,
+          5
         ]
       },
       "subtopics": {
@@ -206,10 +229,12 @@
           "1C7.3",
           "1D3.1",
           "1D4.2"
-        ]
+        ],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": "tech-first",
       "legacy_ids": [],
@@ -246,11 +271,17 @@
       },
       "nuance": "Some steps bend for advisory work: a formal documented risk assessment, evaluation criteria and evidence-based findings may not be needed, depending on the agreement. Assurance after advice needs the chief audit executive to confirm objectivity is not impaired.",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
           1,
+          3
+        ],
+        "ciac": [
+          1,
+          2,
           3
         ]
       },
@@ -262,10 +293,12 @@
           "1A6.2",
           "1A6.3",
           "1C6.2"
-        ]
+        ],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -302,10 +335,15 @@
       },
       "nuance": "A sound reporting line never proves any one auditor is unbiased, and an unbiased team does not cure a weak reporting line. An administrative line to the chief executive officer is a leading practice, not a requirement.",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
+          1,
+          2
+        ],
+        "ciac": [
           1,
           2
         ]
@@ -317,10 +355,12 @@
           "1A7.4",
           "1A8.2",
           "1B2.1"
-        ]
+        ],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -357,12 +397,16 @@
       },
       "nuance": "The bar on assessing a former responsibility has no time limit in the requirement; only the presumption for assurance is tied to 12 months. So do not assume that a longer gap makes assessing it safe.",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
           1,
           2
+        ],
+        "ciac": [
+          1
         ]
       },
       "subtopics": {
@@ -371,10 +415,12 @@
           "1B2.2",
           "1B2.3",
           "1B2.4"
-        ]
+        ],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -411,12 +457,16 @@
       },
       "nuance": "The Standards list reassigning, rescheduling, adjusting the scope and outsourcing as options and do not rank them. Prefer one over another only when the facts in the question settle it.",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
           1,
           2
+        ],
+        "ciac": [
+          1
         ]
       },
       "subtopics": {
@@ -427,10 +477,12 @@
           "1B3.2",
           "1B3.3",
           "1B3.4"
-        ]
+        ],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -467,13 +519,18 @@
       },
       "nuance": "Risk-based does not mean risk only. The plan also takes input from the board and senior management, and due professional care weighs an engagement's cost against its likely benefit (Standards 9.4 and 4.2).",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
           2,
           3,
           4
+        ],
+        "ciac": [
+          2,
+          3
         ]
       },
       "subtopics": {
@@ -483,10 +540,12 @@
           "1C4.3",
           "1C6.1",
           "1D2.3"
-        ]
+        ],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -523,13 +582,17 @@
       },
       "nuance": "Planning is not a one-way gate: the risk assessment and the work program may change as work goes on. Judging a control's design before its operation is a should, and advisory work may not need formal criteria.",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
           1,
           3,
           4
+        ],
+        "ciac": [
+          3
         ]
       },
       "subtopics": {
@@ -539,10 +602,12 @@
           "1C2.2",
           "1C8.1",
           "1D2.1"
-        ]
+        ],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -579,12 +644,16 @@
       },
       "nuance": "Considering fraud risk is not detecting or investigating fraud, and due professional care is not a guarantee. For advisory work, the risk assessment may not need to be formal or written down, depending on the agreement.",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
           2,
           4
+        ],
+        "ciac": [
+          3
         ]
       },
       "subtopics": {
@@ -595,10 +664,12 @@
           "1D2.2",
           "1D2.3",
           "1D3.1"
-        ]
+        ],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -636,13 +707,18 @@
       },
       "nuance": "Three attributes, not four: older books add one. Skepticism is aimed at the information, not the person. When relevant evidence cannot be obtained, the internal auditor decides whether that is itself a finding.",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
           1,
           2,
           3,
+          4
+        ],
+        "ciac": [
+          1,
           4
         ]
       },
@@ -654,10 +730,12 @@
           "1C2.1",
           "1C6.1",
           "1D3.2"
-        ]
+        ],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -695,12 +773,17 @@
       },
       "nuance": "The auditor works out the root cause with management when possible, and management still owns the action. More control is not always better control: the fix should be in proportion to the risk.",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
           3,
           4
+        ],
+        "ciac": [
+          4,
+          5
         ]
       },
       "subtopics": {
@@ -709,10 +792,12 @@
           "1C7.3",
           "1C8.1",
           "1D1.4"
-        ]
+        ],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": "symptom",
       "legacy_ids": [],
@@ -750,13 +835,17 @@
       },
       "nuance": "The Standards name limited and reasonable assurance but define neither, so do not rank them beyond this: the level follows the work done. Risk management aims to keep risk within appetite, never to remove it all.",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
           1,
           2,
           3
+        ],
+        "ciac": [
+          4
         ]
       },
       "subtopics": {
@@ -766,10 +855,12 @@
           "1C5.1",
           "1C7.1",
           "1C8.2"
-        ]
+        ],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -807,12 +898,18 @@
       },
       "nuance": "Raising it first with the managers responsible for the risk is a should, not a must. A scope limitation follows a similar path: discuss it with management, and if unresolved the chief audit executive elevates it to the board.",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
           1,
           3
+        ],
+        "ciac": [
+          1,
+          4,
+          5
         ]
       },
       "subtopics": {
@@ -820,10 +917,12 @@
           "1A7.4",
           "1C5.2",
           "1C5.4"
-        ]
+        ],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -861,12 +960,17 @@
       },
       "nuance": "The channel comes from policy and law, so it differs by organization. When senior management may be involved, the chief audit executive should take it to the board. Leaving confrontation to trained investigators is sound practice, not a Standards line.",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
           2,
           3,
+          4
+        ],
+        "ciac": [
+          1,
           4
         ]
       },
@@ -878,10 +982,12 @@
           "1C3.3",
           "1D3.3",
           "1D5.1"
-        ]
+        ],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -919,13 +1025,18 @@
       },
       "nuance": "Honest is not harsh: Standard 1.1 also asks for respectful, clear communication. A result does change for a valid reason, such as new evidence. Only a significant error triggers the formal correction, by criteria agreed with the board.",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
           1,
           2,
           4
+        ],
+        "ciac": [
+          1,
+          5
         ]
       },
       "subtopics": {
@@ -935,10 +1046,12 @@
           "1B4.3",
           "1B6.4",
           "1D3.3"
-        ]
+        ],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -976,7 +1089,8 @@
       },
       "nuance": "A should is not wrong, and a question may ask for the best practice. Read which strength it wants. When an essential condition is missing, the chief audit executive explains the impact to the board and senior management.",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
@@ -984,6 +1098,13 @@
           2,
           3,
           4
+        ],
+        "ciac": [
+          1,
+          2,
+          3,
+          4,
+          5
         ]
       },
       "subtopics": {
@@ -995,10 +1116,12 @@
           "1B1.1",
           "1C8.1",
           "1D2.2"
-        ]
+        ],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -1036,7 +1159,8 @@
       },
       "nuance": "LEAST and EXCEPT flip the test: three options fit and you want the one that does not. MOST LIKELY asks what is most probable from the facts given, not what would be worst.",
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
@@ -1044,13 +1168,22 @@
           2,
           3,
           4
+        ],
+        "ciac": [
+          1,
+          2,
+          3,
+          4,
+          5
         ]
       },
       "subtopics": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": "priority",
       "legacy_ids": [],
@@ -1086,7 +1219,8 @@
         "why": "The last two are separated by a principle. Length and how complete an option sounds are not evidence."
       },
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
@@ -1094,13 +1228,22 @@
           2,
           3,
           4
+        ],
+        "ciac": [
+          1,
+          2,
+          3,
+          4,
+          5
         ]
       },
       "subtopics": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": "runner-up",
       "legacy_ids": [],
@@ -1137,7 +1280,8 @@
         "why": "Two words decide it: advice and disclosed. The 12-month presumption is about assurance, and the question says the disclosure is done."
       },
       "packs": [
-        "cia1"
+        "cia1",
+        "ciac"
       ],
       "domains": {
         "cia1": [
@@ -1145,13 +1289,22 @@
           2,
           3,
           4
+        ],
+        "ciac": [
+          1,
+          2,
+          3,
+          4,
+          5
         ]
       },
       "subtopics": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "practice_ids": {
-        "cia1": []
+        "cia1": [],
+        "ciac": []
       },
       "slip_pattern": "misread",
       "legacy_ids": [],
