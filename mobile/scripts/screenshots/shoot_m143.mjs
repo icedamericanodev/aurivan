@@ -112,12 +112,15 @@ if (want('answer')) {
   await wait(1200);
   await into('Show less', 'center');
   await shot('b1-answer-open');
-  // More's "Show all options": every option, read-only, the pick and the best marked.
-  await page.getByLabel('More on this question').first().click();
-  await wait(900);
-  await page.getByText('Show all options', { exact: true }).first().click();
-  await wait(1500);
-  await shot('b1-answer-all-options');
+  // Phone 2.2: every option, read-only, the pick and the best marked, is under "Show question & choices"
+  // at the top of the answer (it was More's "Show all options" sheet). The shot keeps its name.
+  const recap = page.getByTestId('recap-toggle').first();
+  if (await recap.count()) {
+    await recap.click();
+    await wait(900);
+    await intoId('recap-toggle', 'start');
+    await shot('b1-answer-all-options');
+  } else console.log('testID "recap-toggle" did not show');
 }
 
 // ── Board 2: Results for a 10-question set with two misses ───────────────

@@ -312,7 +312,6 @@ export default function SessionScreen() {
   // The question whose vine may draw: armed once its entrance has landed (VINE_ARRIVES), never at the
   // tap while it is still invisible (UX H1). Keyed by question, so a new question starts unarmed.
   const vineArmedFor = useRef<string | null>(null);
-  // Grove Phase 4: More's "Show all options" sheet (the four options, read-only).
   // Screen-reader focus lands on the verdict after "Check answer".
   const verdictRef = useRef<View>(null);
   // Coach me: the first line of the hint, and a flag saying "the learner just
@@ -1007,10 +1006,9 @@ export default function SessionScreen() {
           ) : (
             response && (
               <>
-                {/* Answer (premium round 2, the Field Guide answer): running head → recap → verdict →
-                    Fig. 4 (your pick against the best answer) → (after a miss: Key idea + Exam cue → Why, folded →
-                    Eliminate / Final two; after a right answer: Why → Key idea + Exam cue → Eliminate / Final two
-                    on the vine) → source */}
+                {/* Answer (phone 2.2): running head → recap ("Show question & choices", closed) → verdict →
+                    the answer card (your answer, "Why not B", the best answer) → Key idea → every tip →
+                    "Why D" (a long one folds after a miss) → Go deeper → your note → source */}
                 {/* Where you are: "Practice · IS Audit" and "Question 4 of 10" (the set's own length, never the bank's). */}
                 <RunningHead section={headSection} aside={headAside} style={{ marginTop: space.sm }} />
                 {/* Phone 2.2: the question in two lines, with ONE switch, "Show question & choices", closed for

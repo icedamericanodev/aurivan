@@ -2,7 +2,7 @@
 //
 // Shots, in light AND dark (one fresh browser per theme, so each starts from the seed):
 //   m149-1-answer-miss       the answer after a miss: "Question" recap, verdict, the two rows
-//   m149-2-show-question     the recap opened with "Show question"
+//   m149-2-show-question     the recap opened with "Show question & choices" (phone 2.2: the question and all four choices)
 //   m149-3-go-deeper         further down: the one "Go deeper" row and the source line
 //   m149-4-more-sheet        the ⋯ "More on this question" sheet
 //   m149-5-lesson-check      a lesson quick check after a miss: recap, verdict, two rows
@@ -62,14 +62,16 @@ for (const theme of THEMES) {
   await page.getByText('Check answer', { exact: true }).click();
   await wait(1600);
   await shot('m149-1-answer-miss');
-  const show = page.getByRole('button', { name: 'Show question', exact: true }).first();
+  // Phone 2.2: the recap's one switch is "Show question & choices" (testID recap-toggle); it is on every
+  // answer, short stem or long. The shot keeps its name. (A lesson check keeps "Show question".)
+  const show = page.getByTestId('recap-toggle').first();
   if (await show.count()) {
     await show.click();
     await wait(700);
     await shot('m149-2-show-question');
-    await page.getByRole('button', { name: 'Hide question', exact: true }).first().click();
+    await page.getByTestId('recap-toggle').first().click();
     await wait(500);
-  } else console.log('no "Show question" (a short stem)');
+  } else console.log('no "Show question & choices" switch (testID recap-toggle)');
   // The one way on, then the source line under it.
   await into('Original · Checked', 'center');
   await shot('m149-3-go-deeper');
