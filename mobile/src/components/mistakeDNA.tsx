@@ -61,7 +61,6 @@ export function MistakeDNASummary({ dna }: { dna: MistakeDNA }) {
       {expanded && (
         <View>
           <T v="label" accessibilityRole="header">Thinking-pattern breakdown</T>
-          {top && <T v="small" style={{ marginTop: space.xs }}>{`${DNA_COPY[top.pattern].label}: ${top.count} of ${dna.classified} classified mistakes`}</T>}
           <T v="meta" style={{ marginTop: space.xs }}>{`${dna.classified} classified · ${dna.unclassified} unclassified`}</T>
           {dna.patterns.slice(0, 5).map((p) => (
             <View key={p.pattern} style={{ marginTop: space.md }}>

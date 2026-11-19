@@ -1,6 +1,6 @@
 # Mistake DNA ("Your mistake patterns")
 
-**Learner-facing name (phone 2.2, expert review 19 Nov 2026): "Your mistake patterns".** "Mistake DNA" stays the code name only: `behavioral-scientist` advised that "DNA" reads as a fixed trait, against the feature's own "not a diagnosis" copy. The same review kept the card to the cue and one action (the "X of Y classified mistakes" count moved into the opt-in evidence), kept the caveats behind the "i", and pairs a "more frequent recently" trend with its fix ("What helps: …"). A screen test checks that no learner-visible text says "DNA".
+**Learner-facing name (phone 2.2, expert review 19 Nov 2026): "Your mistake patterns".** "Mistake DNA" stays the code name only: `behavioral-scientist` advised that "DNA" reads as a fixed trait, against the feature's own "not a diagnosis" copy. The same review kept the card to the cue and one action (the "X of Y classified mistakes" line left the card; the opt-in evidence already lists each pattern's count), kept the caveats behind the "i", and pairs a "more frequent recently" trend with its fix ("What helps: …"). A screen test checks that no learner-visible text says "DNA".
 
 Review scope: Mistake Journal only. Initially based independently on main `5382a2ee95fa82404e9b5ee6186d030773cbefe0`, then refreshed onto `5e3fad10c1777e3453dc9f9604ca46fcc46cf687` after the Concept Lab and shared UI updates merged. No Concept Lab dependency, Learn changes, new tab, stored field, dependency, entitlement change or release configuration change.
 
