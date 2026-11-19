@@ -1237,7 +1237,7 @@
       "subtopic": "3.2 Logical access. Rule-based access control",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A junior network administrator finds 140 allow rules, many with no recorded purpose, on the firewall guarding a clinic's lab systems, which the network manager owns. What should the administrator do FIRST?",
+      "question": "A network technician finds 140 allow rules, many with no recorded purpose, on the firewall guarding a clinic's lab systems, which the network manager owns. What should the technician do FIRST?",
       "options": {
         "A": "Move the unexplained rules to the end of the rule list",
         "B": "Write a purpose for each rule from its recent traffic logs",
@@ -1246,8 +1246,8 @@
       },
       "correct": "C",
       "key_concept": "Access rules pile up over time; each needs an owner, a purpose and periodic review, arranged through the system's owner.",
-      "pre_read": "Note what the administrator found and who owns the device.",
-      "correct_explanation": "Rules pile up, and each needs an owner, a purpose and a periodic review. The administrator's part is to document the rules and bring them to the firewall's owner, who can arrange a review with each business area. Disabling unexplained rules is the runner-up: they may look unused, but some may carry live lab traffic, and changing the firewall is the owner's decision, made through change control.",
+      "pre_read": "Note what the technician found and who owns the device.",
+      "correct_explanation": "Rules pile up, and each needs an owner, a purpose and a periodic review. The technician's part is to document the rules and bring them to the firewall's owner, who can arrange a review with each business area. Disabling unexplained rules is the runner-up: they may look unused, but some may carry live lab traffic, and changing the firewall is the owner's decision, made through change control.",
       "wrong_explanations": {
         "A": "Tempting because rules at the end are matched last. But reordering an owned firewall's rules is still a change; it can break live lab traffic and skips the owner.",
         "B": "Tempting because recorded purposes are the goal. But traffic shows what a rule carries, not why it should exist; only the owner can confirm each purpose.",
@@ -1255,7 +1255,7 @@
       },
       "tips": [
         "Eliminate: A reorders an owned firewall's rules without change control, and B guesses purposes from traffic that only the owner can confirm.",
-        "Final two: C beats D because the manager owns the firewall; the administrator documents and raises the issue rather than changing live rules alone.",
+        "Final two: C beats D because the manager owns the firewall; the technician documents and raises the issue rather than changing live rules alone.",
         "Exam cue: every access rule needs an owner, a purpose and a review. Report rule sprawl to the owner; do not clean it up alone."
       ],
       "framework_ref": "NIST SP 800-41 Rev. 1 Section 5.5 (Manage: review the firewall policy regularly to find rules no longer needed); NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control)",
@@ -1264,7 +1264,7 @@
         "Rule sprawl",
         "Change control"
       ],
-      "_provenance": "Authored from concept: 'each access rule needs an owner, a purpose and periodic review' (notes 3.2.9 Rule-Based Access Control). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): asset moved away from cc_d5_041's payroll firewall.",
+      "_provenance": "Authored from concept: 'each access rule needs an owner, a purpose and periodic review' (notes 3.2.9 Rule-Based Access Control). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): asset moved away from cc_d5_041's payroll firewall. Final cross-domain gate, 19 Nov 2026: role junior network administrator became network technician.",
       "style_version": 2
     },
     {
@@ -4157,7 +4157,7 @@
       "options": {
         "A": "Ask the policy owner to read the policy and sign it off",
         "B": "Check each crew member's roster attribute against the rota",
-        "C": "Feed the policy requests meant to pass, plus ones meant to fail",
+        "C": "Run requests meant to pass, then ones meant to be refused",
         "D": "Have every rostered crew member confirm the list opens for them"
       },
       "correct": "C",
@@ -4180,7 +4180,7 @@
         "Policy testing",
         "Negative testing"
       ],
-      "_provenance": "Authored from concept: 'test an attribute-based policy with allowed and denied cases' (notes 3.2.8 Attribute-Based Access Control (ABAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'and'; same key and teaching point.",
+      "_provenance": "Authored from concept: 'test an attribute-based policy with allowed and denied cases' (notes 3.2.8 Attribute-Based Access Control (ABAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 5, 4 Nov 2026. Word-tell sweep, 18 Nov 2026: key reworded without 'and'; same key and teaching point. Final cross-domain gate, 19 Nov 2026: key C reworded without 'plus'.",
       "style_version": 2
     },
     {

@@ -70,7 +70,7 @@
               "DHCP lease table listing every device given an address",
               "Switch port list showing which device sits on each port"
             ],
-            "recommend": "Report unknown devices or changed DHCP and DNS settings to the network team lead.",
+            "recommend": "Report unknown devices or changed DHCP and DNS settings to the IT manager.",
             "decides": "The network's system owner decides how core services are configured"
           },
           "isaca_rule": "Switches read MAC addresses inside a local network; routers read IP addresses between networks. If DHCP or DNS looks tampered with, record the facts and escalate; never quietly reconfigure it.",
@@ -320,7 +320,7 @@
               }
             ]
           },
-          "example": "A logistics firm blocks remote desktop in its IPv4 firewall rules. Weeks later, Amara, a security analyst, sees remote desktop sessions reaching a warehouse server over IPv6, which has no rules. Amara escalates the log entries to the network lead rather than switching IPv6 off.",
+          "example": "A logistics firm blocks remote desktop in its IPv4 firewall rules. Weeks later, Amara, a security analyst, sees remote desktop sessions reaching a warehouse server over IPv6, which has no rules. Amara escalates the log entries to the IT manager rather than switching IPv6 off.",
           "audit_focus": {
             "review": [
               "Check IPv6 rules match the IPv4 ones, even where nobody turned IPv6 on",
@@ -330,7 +330,7 @@
               "Exported firewall rules for each address version",
               "Monitoring settings showing IPv6 sources are collected"
             ],
-            "recommend": "Escalate uncovered address paths to the network lead, attaching the sessions you found.",
+            "recommend": "Escalate uncovered address paths to the IT manager, attaching the sessions you found.",
             "decides": "The network's system owner decides whether IPv6 is filtered or turned off"
           },
           "isaca_rule": "Treat IPv4 and IPv6 as two doors into the same room: every rule, log and alert should cover both. Newer is not safer; configuration decides.",
@@ -659,7 +659,7 @@
               }
             ]
           },
-          "example": "A county's building inspectors file reports over shared Wi-Fi at site offices, beyond the office firewall's reach. When another device on that Wi-Fi probes an inspector's laptop for open remote desktop ports, the laptop's host-based firewall drops the unrequested connections. Lina, a junior security analyst, sees the blocked attempts in the endpoint logs and notes them in the shift log.",
+          "example": "A county's building inspectors file reports over shared Wi-Fi at site offices, beyond the office firewall's reach. When another device on that Wi-Fi probes an inspector's laptop for open remote desktop ports, the laptop's host-based firewall drops the unrequested connections. Lina, a security analyst, sees the blocked attempts in the endpoint logs and notes them in the shift log.",
           "audit_focus": {
             "review": [
               "Give every rule you request a named requester, purpose and review date",
@@ -764,7 +764,7 @@
               "meaning": "Learns normal behavior and flags departures from it; can catch new attacks but raises more false positives."
             }
           ],
-          "example": "At a university, a new inline IPS blocks the nightly backup of the student records system, because the large transfer looks like data theft. Grace, a junior security operations analyst, confirms the backup schedule with the system owner and raises a tuning request, instead of switching the IPS off.",
+          "example": "At a university, a new inline IPS blocks the nightly backup of the student records system, because the large transfer looks like data theft. Grace, a security operations analyst, confirms the backup schedule with the system owner and raises a tuning request, instead of switching the IPS off.",
           "audit_focus": {
             "review": [
               "Confirm alerts are triaged within the agreed time",
@@ -945,7 +945,7 @@
               "Wireless controller settings for each network name",
               "Wireless scan results showing nearby and rogue networks"
             ],
-            "recommend": "Escalate weak encryption, rogue access points or open guest access to the network lead.",
+            "recommend": "Escalate weak encryption, rogue access points or open guest access to the IT manager.",
             "decides": "The network's system owner decides wireless standards and guest access"
           },
           "isaca_rule": "Pick the strongest protection the devices support: WPA3 first, WPA2 with AES only where needed, never WEP or WPA. Keep guests on their own segment.",
@@ -1183,7 +1183,7 @@
               "Current network map with each segment's purpose",
               "Results of approved connection tests across segments"
             ],
-            "recommend": "Report segments with open traffic between them to the network lead, naming the systems exposed.",
+            "recommend": "Report segments with open traffic between them to the IT manager, naming the systems exposed.",
             "decides": "The network's system owner and each system's owner agree segment rules"
           },
           "isaca_rule": "Assume something inside will be compromised, then limit how far it can reach. Where sensitive systems share a network with general devices, segment and filter.",
@@ -1252,7 +1252,7 @@
             "svg": "<svg viewBox='0 0 550 160' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='The internet connects through a firewall to a screened subnet holding a web server and an email gateway, then through a second firewall to the internal zone holding staff devices and a database'><rect x='10' y='58' width='74' height='44' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='47' y='83.96' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Internet</text><line x1='86' y1='80' x2='95' y2='80' stroke='var(--text2)' stroke-width='1.5'/><path d='M95,76 L102,80 L95,84 Z' fill='var(--text2)'/><rect x='104' y='58' width='66' height='44' rx='4' fill='var(--accent-fill)'/><text x='137' y='83.96' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Firewall</text><line x1='172' y1='80' x2='181' y2='80' stroke='var(--text2)' stroke-width='1.5'/><path d='M181,76 L188,80 L181,84 Z' fill='var(--text2)'/><rect x='190' y='18' width='132' height='124' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='256' y='38' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Screened subnet (DMZ)</text><rect x='204' y='52' width='104' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='256' y='72.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>Web server</text><rect x='204' y='94' width='104' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='256' y='114.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>Email gateway</text><line x1='324' y1='80' x2='333' y2='80' stroke='var(--text2)' stroke-width='1.5'/><path d='M333,76 L340,80 L333,84 Z' fill='var(--text2)'/><rect x='342' y='58' width='66' height='44' rx='4' fill='var(--accent-fill)'/><text x='375' y='83.96' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Firewall</text><line x1='410' y1='80' x2='419' y2='80' stroke='var(--text2)' stroke-width='1.5'/><path d='M419,76 L426,80 L419,84 Z' fill='var(--text2)'/><rect x='428' y='18' width='112' height='124' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='484' y='38' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Internal zone</text><rect x='438' y='52' width='92' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='484' y='72.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>Staff devices</text><rect x='438' y='94' width='92' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='484' y='114.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>Database</text></svg>",
             "caption": "Two firewalls create three zones. The public reaches only the screened subnet; sensitive systems sit deeper inside, behind a second set of rules."
           },
-          "example": "At a regional airline, attackers break into the email gateway in the screened subnet through an unpatched flaw. The inner firewall lets the gateway reach only the internal mail server on the mail port, so their probes toward the crew-scheduling servers fail. Priya, a junior security analyst, spots the blocked probes in the inner firewall's logs and reports them to the incident response lead, as the playbook directs.",
+          "example": "At a regional airline, attackers break into the email gateway in the screened subnet through an unpatched flaw. The inner firewall lets the gateway reach only the internal mail server on the mail port, so their probes toward the crew-scheduling servers fail. Priya, a security analyst, spots the blocked probes in the inner firewall's logs and reports them to the incident response lead, as the playbook directs.",
           "audit_focus": {
             "review": [
               "Before a server goes public, confirm it sits in the screened subnet",
@@ -1262,7 +1262,7 @@
               "Exported rules from the outer and inner firewalls",
               "External scan showing which services answer from the internet"
             ],
-            "recommend": "Escalate any public-facing server outside the screened subnet, or sensitive data inside it, to the network lead.",
+            "recommend": "Escalate any public-facing server outside the screened subnet, or sensitive data inside it, to the IT manager.",
             "decides": "The network's system owner decides zone placement with each server's system owner"
           },
           "isaca_rule": "Place each system by who must reach it: anything the public touches goes in the screened subnet, and sensitive data stays deeper inside.",
@@ -1409,7 +1409,7 @@
               }
             ]
           },
-          "example": "A wine distributor's IT team drafted micro-segmentation rules for its twelve order-processing servers from one week of traffic records. Before the rules block anything, Noor, a junior system administrator, runs them in report-only mode for a full month. The logs show a month-end invoicing job that the week of records missed, so Noor adds that flow to the change request before the rules are enforced.",
+          "example": "A wine distributor's IT team drafted micro-segmentation rules for its twelve order-processing servers from one week of traffic records. Before the rules block anything, Noor, a system administrator, runs them in report-only mode for a full month. The logs show a month-end invoicing job that the week of records missed, so Noor adds that flow to the change request before the rules are enforced.",
           "audit_focus": {
             "review": [
               "Map a workload's real traffic before any rule for it is written",
@@ -1470,7 +1470,7 @@
             "svg": "<svg viewBox='0 0 480 270' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Nested layers from the outside in: policies, procedures and training; physical security; network perimeter; internal segmentation; endpoints and hosts; applications; and data at the center'><rect x='10' y='10' width='460' height='250' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='25' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Policies, procedures and training</text><rect x='36' y='32' width='408' height='220' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='47' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Physical security</text><rect x='62' y='54' width='356' height='190' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='69' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Network perimeter</text><rect x='88' y='76' width='304' height='160' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='91' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Internal segmentation</text><rect x='114' y='98' width='252' height='130' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='113' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Endpoints and hosts</text><rect x='140' y='120' width='200' height='100' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='135' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Applications</text><rect x='166' y='142' width='148' height='70' rx='4' fill='var(--accent-fill)'/><text x='240' y='181.32' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>Data</text></svg>",
             "caption": "Layers from the outside in. An attacker who gets past one layer still meets the next, and the data sits at the center."
           },
-          "example": "Ana, a bank teller, clicks a convincing phishing link. Email filtering missed it, but endpoint protection blocks the download, and multifactor authentication (MFA) stops the stolen password from working. Luca, a junior security analyst, reviews the alerts, records the near miss in the incident log and suggests the security manager review the email filter.",
+          "example": "Ana, a bank teller, clicks a convincing phishing link. Email filtering missed it, but endpoint protection blocks the download, and multifactor authentication (MFA) stops the stolen password from working. Luca, a security analyst, reviews the alerts, records the near miss in the incident log and suggests the security manager review the email filter.",
           "audit_focus": {
             "review": [
               "Map the layers protecting a key asset from outside in",
@@ -1565,7 +1565,7 @@
               }
             ]
           },
-          "example": "A design agency's contractor uses the VPN from a personal laptop and can browse every internal share. Under the new Zero Trust plan, Zainab, a junior security analyst, helps test a rule allowing only the one project folder, with a patch check at each sign-in and every access logged. The policy owner approves the final rule.",
+          "example": "A design agency's contractor uses the VPN from a personal laptop and can browse every internal share. Under the new Zero Trust plan, Zainab, a security analyst, helps test a rule allowing only the one project folder, with a patch check at each sign-in and every access logged. The policy owner approves the final rule.",
           "audit_focus": {
             "review": [
               "Identify access granted only because a user is on the network",
@@ -1643,7 +1643,7 @@
             "svg": "<svg viewBox='0 0 500 190' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='A user and device request a resource through a policy enforcement point. The policy decision point, made of the policy engine and policy administrator, uses inputs such as identity, device health and logs to tell the enforcement point to allow or deny'><rect x='150' y='12' width='200' height='56' rx='4' fill='var(--accent-fill)'/><text x='250' y='38' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Policy decision point</text><text x='250' y='51' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='400' fill='#ffffff'>Policy engine + policy administrator</text><rect x='372' y='12' width='118' height='56' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='431' y='38' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Inputs</text><text x='431' y='51' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='400' fill='var(--text)'>Identity, device, logs</text><line x1='370' y1='40' x2='359' y2='40' stroke='var(--text2)' stroke-width='1.5'/><path d='M359,36 L352,40 L359,44 Z' fill='var(--text2)'/><rect x='10' y='132' width='120' height='44' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='70' y='157.96' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>User and device</text><line x1='132' y1='154' x2='175' y2='154' stroke='var(--text2)' stroke-width='1.5'/><path d='M175,150 L182,154 L175,158 Z' fill='var(--text2)'/><rect x='184' y='132' width='132' height='44' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='250' y='157.96' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Enforcement point</text><line x1='318' y1='154' x2='361' y2='154' stroke='var(--text2)' stroke-width='1.5'/><path d='M361,150 L368,154 L361,158 Z' fill='var(--text2)'/><rect x='370' y='132' width='120' height='44' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='430' y='157.96' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Resource</text><line x1='250' y1='70' x2='250' y2='123' stroke='var(--text2)' stroke-width='1.5'/><path d='M246,123 L250,130 L254,123 Z' fill='var(--text2)'/><text x='258' y='104' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text2)'>Allow or deny</text></svg>",
             "caption": "The decision point judges each request using identity, device health and other inputs; the enforcement point in front of the resource carries out the decision."
           },
-          "example": "A health insurer replaces broad virtual private network (VPN) access with identity-aware access for claims staff. Kwame, a junior security analyst, sees a denied sign-in for a manager whose laptop failed its disk encryption check. Kwame confirms the policy worked as designed and passes the laptop to desktop support, instead of granting an exception.",
+          "example": "A health insurer replaces broad virtual private network (VPN) access with identity-aware access for claims staff. Kwame, a security analyst, sees a denied sign-in for a manager whose laptop failed its disk encryption check. Kwame confirms the policy worked as designed and passes the laptop to desktop support, instead of granting an exception.",
           "audit_focus": {
             "review": [
               "Inventory resources reachable without passing an enforcement point",
@@ -1699,7 +1699,7 @@
             "Devices that fail go to a quarantine network until fixed, and guests go to a guest network.",
             "Devices that cannot use 802.1X, like printers, are identified by profiling and given limited access, not a free pass."
           ],
-          "example": "At a law firm, a visitor plugs a laptop into a conference-room port. NAC finds no company certificate and puts it on the guest virtual local area network (VLAN), internet only. Ravi, a junior network technician, confirms this matches policy and notes it in the shift log.",
+          "example": "At a law firm, a visitor plugs a laptop into a conference-room port. NAC finds no company certificate and puts it on the guest virtual local area network (VLAN), internet only. Ravi, a network technician, confirms this matches policy and notes it in the shift log.",
           "audit_focus": {
             "review": [
               "Look up any device NAC flags in the known-device list",
@@ -1709,7 +1709,7 @@
               "NAC event logs showing admit, quarantine and deny decisions",
               "Switch settings showing which ports enforce 802.1X"
             ],
-            "recommend": "Report bypassed ports and unknown devices to the network lead rather than admitting them manually.",
+            "recommend": "Report bypassed ports and unknown devices to the IT manager rather than admitting them manually.",
             "decides": "The policy owner approves, records and time-limits any NAC exception"
           },
           "isaca_rule": "Admission depends on verified identity and device health, not on finding a free port. Failing devices go to remediation, and exceptions go to the policy owner.",
@@ -1757,7 +1757,7 @@
             "Outbound traffic is restricted, so data cannot reach unapproved outside AI services or storage.",
             "Trained models and their datasets are protected assets, because tampering with either can poison the model."
           ],
-          "example": "A retail chain's data scientists ask for a full copy of the loyalty-card database on experiment servers that share a segment with office laptops and reach the internet freely. Bao, a junior security analyst, first asks the data owner whether that data may be used, and suggests an isolated segment with masked data.",
+          "example": "A retail chain's data scientists ask for a full copy of the loyalty-card database on experiment servers that share a segment with office laptops and reach the internet freely. Bao, a security analyst, first asks the data owner whether that data may be used, and suggests an isolated segment with masked data.",
           "audit_focus": {
             "review": [
               "Confirm AI environments sit on their own segment",
@@ -1848,7 +1848,7 @@
               "meaning": "Use, such as storage or processing time, is metered, so it can be monitored, reported and billed."
             }
           ],
-          "example": "During a holiday sale, an online florist's website automatically adds servers, then removes them overnight. Afterward, Elena, a junior cloud support analyst, finds several temporary servers missing from the asset list, with their logs gone. Elena reports the gap to the cloud platform owner, so inventory and logging can cover every new server.",
+          "example": "During a holiday sale, an online florist's website automatically adds servers, then removes them overnight. Afterward, Elena, a cloud support analyst, finds several temporary servers missing from the asset list, with their logs gone. Elena reports the gap to the cloud platform owner, so inventory and logging can cover every new server.",
           "audit_focus": {
             "review": [
               "Tag each resource you create with its owner, and turn on logging",
@@ -1940,7 +1940,7 @@
               }
             ]
           },
-          "example": "A startup builds every web server from one container image pulled from a public registry. Tariq, a junior DevOps engineer, finds it contains an outdated library with a known critical flaw. Tariq logs the finding in the vulnerability tracker and asks the platform lead to approve a patched base image.",
+          "example": "A startup builds every web server from one container image pulled from a public registry. Tariq, a DevOps engineer, finds it contains an outdated library with a known critical flaw. Tariq logs the finding in the vulnerability tracker and asks the platform lead to approve a patched base image.",
           "audit_focus": {
             "review": [
               "Before deploying a container, check which registry its image came from",
@@ -2040,7 +2040,7 @@
               }
             ]
           },
-          "example": "A city council moves staff email to a SaaS email service. Weeks later, Pedro, a junior IT analyst, finds file sharing set to 'anyone with the link' by default. The provider runs the service but the council configures it, so Pedro reports the setting to the service owner, who approves a change to internal-only sharing.",
+          "example": "A city council moves staff email to a SaaS email service. Weeks later, Pedro, an IT analyst, finds file sharing set to 'anyone with the link' by default. The provider runs the service but the council configures it, so Pedro reports the setting to the service owner, who approves a change to internal-only sharing.",
           "audit_focus": {
             "review": [
               "Identify the service model for each cloud service in use",
@@ -2142,7 +2142,7 @@
               }
             ]
           },
-          "example": "Three regional hospitals plan to share a cloud platform built around their common health-privacy rules, run by one provider and closed to everyone else. Asked which model this is, Yusuf, a junior security analyst, identifies a community cloud and points out that the hospitals must agree in writing who manages access and security.",
+          "example": "Three regional hospitals plan to share a cloud platform built around their common health-privacy rules, run by one provider and closed to everyone else. Asked which model this is, Yusuf, a security analyst, identifies a community cloud and points out that the hospitals must agree in writing who manages access and security.",
           "audit_focus": {
             "review": [
               "Identify the deployment model of each cloud service",
@@ -2254,7 +2254,7 @@
             "svg": "<svg viewBox='0 0 500 262' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Shared responsibility by service model. In IaaS the customer secures data and access, the application and the operating system; in PaaS, data and access and the application; in SaaS, data and access only. The provider secures the rest, including virtualization and the physical data center in every model'><text x='226' y='22' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>IaaS</text><text x='334' y='22' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>PaaS</text><text x='442' y='22' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>SaaS</text><text x='166' y='53' text-anchor='end' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>Data, accounts, access</text><rect x='176' y='32' width='100' height='34' rx='4' fill='var(--accent-fill)'/><text x='226' y='52.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Customer</text><rect x='284' y='32' width='100' height='34' rx='4' fill='var(--accent-fill)'/><text x='334' y='52.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Customer</text><rect x='392' y='32' width='100' height='34' rx='4' fill='var(--accent-fill)'/><text x='442' y='52.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Customer</text><text x='166' y='93' text-anchor='end' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>Application</text><rect x='176' y='72' width='100' height='34' rx='4' fill='var(--accent-fill)'/><text x='226' y='92.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Customer</text><rect x='284' y='72' width='100' height='34' rx='4' fill='var(--accent-fill)'/><text x='334' y='92.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Customer</text><rect x='392' y='72' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='442' y='92.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><text x='166' y='133' text-anchor='end' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>OS and runtime</text><rect x='176' y='112' width='100' height='34' rx='4' fill='var(--accent-fill)'/><text x='226' y='132.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Customer</text><rect x='284' y='112' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='334' y='132.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><rect x='392' y='112' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='442' y='132.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><text x='166' y='173' text-anchor='end' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>Virtualization, network</text><rect x='176' y='152' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='226' y='172.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><rect x='284' y='152' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='334' y='172.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><rect x='392' y='152' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='442' y='172.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><text x='166' y='213' text-anchor='end' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>Physical data center</text><rect x='176' y='192' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='226' y='212.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><rect x='284' y='192' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='334' y='212.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><rect x='392' y='192' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='442' y='212.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><rect x='176' y='238' width='14' height='14' rx='3' fill='var(--accent-fill)'/><text x='196' y='249' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>Customer secures</text><rect x='320' y='238' width='14' height='14' rx='3' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='340' y='249' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>Provider secures</text></svg>",
             "caption": "Who secures each layer under each model. The customer's share shrinks toward SaaS, but data, accounts and access stay with the customer every time. In SaaS, the customer still sets the application's configuration."
           },
-          "example": "A nonprofit's volunteers assume their software as a service (SaaS) donor system keeps sign-in records for a year. Chloe, a junior IT administrator, checks the provider's responsibility guide: the service keeps 90 days, and longer retention is the customer's to arrange by exporting the logs. Chloe records the gap and reports it to the system owner, who assigns the export task.",
+          "example": "A nonprofit's volunteers assume their software as a service (SaaS) donor system keeps sign-in records for a year. Chloe, an IT administrator, checks the provider's responsibility guide: the service keeps 90 days, and longer retention is the customer's to arrange by exporting the logs. Chloe records the gap and reports it to the system owner, who assigns the export task.",
           "audit_focus": {
             "review": [
               "Match each security task to its owner using the provider's matrix",
@@ -2332,7 +2332,7 @@
               "meaning": "An independent party that assesses cloud services and controls and reports on them."
             }
           ],
-          "example": "A small accounting firm is choosing an online document service. Rosa, a junior IT coordinator, requests the provider's latest independent security report and its service level agreement, and notes that the contract says nothing about deleting data at exit. Rosa passes the findings to the managing partner, who decides whether to sign.",
+          "example": "A small accounting firm is choosing an online document service. Rosa, an IT coordinator, requests the provider's latest independent security report and its service level agreement, and notes that the contract says nothing about deleting data at exit. Rosa passes the findings to the managing partner, who decides whether to sign.",
           "audit_focus": {
             "review": [
               "Read the draft agreement against a checklist of required clauses",
@@ -2517,7 +2517,7 @@
               }
             ]
           },
-          "example": "A research group makes a cloud storage bucket public to share survey files with a partner, and the university's CSPM tool flags it within an hour. Wen, a junior cloud security analyst, confirms it holds student names, notifies the bucket owner and security manager under the incident procedure, and records when exposure began.",
+          "example": "A research group makes a cloud storage bucket public to share survey files with a partner, and the university's CSPM tool flags it within an hour. Wen, a cloud security analyst, confirms it holds student names, notifies the bucket owner and security manager under the incident procedure, and records when exposure began.",
           "audit_focus": {
             "review": [
               "Check whether your procedure assigns you a finding before acting on it",
@@ -2612,7 +2612,7 @@
               }
             ]
           },
-          "example": "A retailer fine-tunes a model on a cloud AI platform using customers' purchase histories. Marco, a junior cloud analyst, finds the storage holding the training data and the tuned model open to every developer account. A colleague says the provider secures the platform, so it is fine. Marco checks the provider's responsibility guide, confirms access to that data is the customer's duty, and reports it to the platform owner.",
+          "example": "A retailer fine-tunes a model on a cloud AI platform using customers' purchase histories. Marco, a cloud analyst, finds the storage holding the training data and the tuned model open to every developer account. A colleague says the provider secures the platform, so it is fine. Marco checks the provider's responsibility guide, confirms access to that data is the customer's duty, and reports it to the platform owner.",
           "audit_focus": {
             "review": [
               "Check AI storage for access wider than the team that needs it",

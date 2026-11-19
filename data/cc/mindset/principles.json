@@ -126,7 +126,7 @@
         "answer": "Reset the token as the procedure says. For the payslips, report what they saw to the HR director and the security team, and leave the system's settings alone."
       },
       "check": {
-        "scenario": "A junior analyst's runbook lets them quarantine phishing emails. They also spot a mail rule, owned by the messaging team, that forwards all finance mail to an outside address.",
+        "scenario": "A security analyst's runbook lets them quarantine phishing emails. They also spot a mail rule, owned by the messaging team, that forwards all finance mail to an outside address.",
         "right": "Quarantine the phishing emails and report the forwarding rule to the messaging and security teams.",
         "trap": "Quarantine the phishing emails, delete the forwarding rule, then tell the messaging team.",
         "why": "The runbook makes quarantine the analyst's job. The mail rule belongs to another team and may be evidence of an attack, so its owners and the responders decide what happens to it."
@@ -810,7 +810,7 @@
         "trap": "Reset it again and set a daily reminder to check the printer's settings each morning.",
         "why": "A daily check treats the effect every time it happens. A problem ticket gets the cause found and fixed, so the reset stops being needed."
       },
-      "nuance": "In a live incident, follow the incident order: contain, eradicate, then recover. The search for why it happened, and lessons learned, come once service is safely back. Coaching people can be one fix among system fixes, never the whole answer.",
+      "nuance": "In a live incident, contain, eradicate, then recover. Share each lesson with its owner when found (SP 800-61 Rev. 3); the full review comes once service is back. Coaching is one fix among system fixes, never the whole answer.",
       "domains": [
         2,
         4,
