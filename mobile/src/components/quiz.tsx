@@ -960,18 +960,26 @@ export function AnswerMore({ rows: given, buttonRef, onOpenChange }: { rows: (Mo
 }
 
 // ── Question & options: the whole question, folded under the answer's top line ──
-/** One choice in the recap: its DISPLAY letter, its text, whether it is the pick or the best, and its own "why". */
+/** One choice in the recap: its DISPLAY letter, its text, and whether it is the pick or the best. No reason. */
 export interface RecapChoice {
   letter: Letter;
   text: string;
   pick: boolean;
   best: boolean;
+}
+
+/** The same choice on the look-back page, which may also carry the reason a WRONG option is wrong. */
+export interface OptionWithWhy extends RecapChoice {
   /** This option's explanation, already through renderText (display letters). Shown only on request. */
   why?: string;
 }
 
-/** One read-only choice row: a badge with its DISPLAY letter, the words, and "Your answer" / "Best answer". */
-function RecapChoiceRow({ row, first, showWhy }: { row: RecapChoice; first: boolean; showWhy: boolean }) {
+/**
+ * One read-only choice row: a badge with its DISPLAY letter, the words, and "Your answer" / "Best answer".
+ * `why` is the reason to print under the row. Only the look-back page passes one (OptionsWithWhy below);
+ * the answer screen's recap never does.
+ */
+function RecapChoiceRow({ row, first, why }: { row: RecapChoice; first: boolean; why?: string }) {
   const { c } = useTheme();
   const fontScale = useFontScale();
   const discAbove = fontScale >= DISC_ABOVE_FROM;
@@ -1015,18 +1023,18 @@ function RecapChoiceRow({ row, first, showWhy }: { row: RecapChoice; first: bool
           <FieldText v={row.best ? 'best' : 'option'}>{row.text}</FieldText>
         </View>
       </View>
-      {/* Only when the learner asked for every option's reason: one stop, never a heading. */}
-      {showWhy && row.why ? (
-        <View testID={`recap-why-${row.letter}`} accessible accessibilityLabel={`${whyHead}: ${row.why}`} style={{ marginTop: space.sm, marginLeft: discAbove ? 0 : disc + DISC_GAP }}>
+      {/* Only when the caller handed this row a reason (look-back page): one stop, never a heading. */}
+      {why ? (
+        <View testID={`recap-why-${row.letter}`} accessible accessibilityLabel={`${whyHead}: ${why}`} style={{ marginTop: space.sm, marginLeft: discAbove ? 0 : disc + DISC_GAP }}>
           <T v="caption" color={c.ink2}>{whyHead}</T>
-          <T v="small" color={c.ink} style={{ marginTop: 2 }}>{row.why}</T>
+          <T v="small" color={c.ink} style={{ marginTop: 2 }}>{why}</T>
         </View>
       ) : null}
     </View>
   );
 }
 
-/** A ghost toggle (48pt, chevron that turns over): the recap's two switches look and speak alike. */
+/** A ghost toggle (48pt, chevron that turns over): the recap's switch and the look-back page's "why" switch look and speak alike. */
 function RecapToggle({ open, show, hide, spokenShow, spokenHide, onPress, testID }: { open: boolean; show: string; hide: string; spokenShow: string; spokenHide: string; onPress: () => void; testID: string }) {
   const { c } = useTheme();
   return (
@@ -1052,42 +1060,61 @@ function RecapToggle({ open, show, hide, spokenShow, spokenHide, onPress, testID
 }
 
 /**
- * The four options as read-only rows, with ONE switch under them, "Show why for each option".
- * One implementation, used in two places: inside the answer screen's QuestionRecap (below) and on
- * the read-only look-back page (app/answered/[id].tsx).
+ * The option rows on their own, read-only, in the order given. One implementation for both places
+ * that list them: the answer screen's QuestionRecap (no reasons at all) and the look-back page's
+ * OptionsWithWhy (which hands in `whys`: the reason to print under a letter's row, if any).
+ */
+function RecapChoiceRows({ choices, whys }: { choices: RecapChoice[]; whys?: Partial<Record<Letter, string>> }) {
+  return (
+    <View testID="recap-choices">
+      {choices.map((r, i) => (
+        <RecapChoiceRow key={r.letter} row={r} first={i === 0} why={whys?.[r.letter]} />
+      ))}
+    </View>
+  );
+}
+
+/**
+ * Look-back page only (app/answered/[id].tsx): ONE switch, "Show why the other options are wrong",
+ * and under it the four options as read-only rows. The switch comes FIRST, so the reasons appear
+ * after the control that reveals them, on screen and for a screen reader (switch, then rows).
  *
  * - `choices`: the rows, in the order to show them. The caller has already worked out each letter,
  *   text, reason and the pick / best marks (on ORIGINAL letters); nothing here grades anything.
- * - `startWhyOpenFor`: letters whose own reason shows even while the switch is closed. The look-back
- *   page passes a missed pick the app really saved, so "Why not B" is there at once, as on the
- *   answer card. The switch then reveals the others.
+ * - `startWhyOpenFor`: letters whose own reason shows even while the switch is closed. The page
+ *   passes a missed pick the app really saved, so "Why not B" is there at once, as on the answer
+ *   card. The switch then reveals the other wrong options' reasons.
+ *
+ * Only WRONG options ever get a reason here. The best answer's reason is printed whole lower on the
+ * page ("Why B", WhyBlock), so it is never repeated under its row, even if a caller passes one.
  *
  * The switch is closed on every mount (its state lives here), and it is only drawn when it has a
  * reason to reveal. A closed reason is not in the tree at all, so a screen reader never meets it.
  */
-export function OptionsWithWhy({ choices, startWhyOpenFor }: { choices: RecapChoice[]; startWhyOpenFor?: Letter[] }) {
-  const [whys, setWhys] = useState(false);
+export function OptionsWithWhy({ choices, startWhyOpenFor }: { choices: OptionWithWhy[]; startWhyOpenFor?: Letter[] }) {
+  const [open, setOpen] = useState(false);
   const alwaysOpen = (letter: Letter) => Boolean(startWhyOpenFor?.includes(letter));
+  // The reasons this list can show: the wrong options that have one.
+  const wrong = choices.filter((r) => !r.best && Boolean(r.why));
   // Is there a reason the switch would add? (Not when the only reasons are already open.)
-  const anyHiddenWhy = choices.some((r) => Boolean(r.why) && !alwaysOpen(r.letter));
+  const anyHiddenWhy = wrong.some((r) => !alwaysOpen(r.letter));
+  // The reasons on screen right now, by letter.
+  const whys: Partial<Record<Letter, string>> = {};
+  for (const r of wrong) if (open || alwaysOpen(r.letter)) whys[r.letter] = r.why;
   return (
     <>
-      <View testID="recap-choices">
-        {choices.map((r, i) => (
-          <RecapChoiceRow key={r.letter} row={r} first={i === 0} showWhy={whys || alwaysOpen(r.letter)} />
-        ))}
-      </View>
       {anyHiddenWhy && (
         <RecapToggle
           testID="recap-why-toggle"
-          open={whys}
-          show="Show why for each option"
-          hide="Hide why for each option"
-          spokenShow="Show why for each option"
-          spokenHide="Hide why for each option"
-          onPress={() => setWhys(!whys)}
+          open={open}
+          show="Show why the other options are wrong"
+          hide="Hide why the other options are wrong"
+          spokenShow="Show why the other options are wrong"
+          spokenHide="Hide why the other options are wrong"
+          onPress={() => setOpen(!open)}
         />
       )}
+      <RecapChoiceRows choices={choices} whys={whys} />
     </>
   );
 }
@@ -1098,16 +1125,19 @@ export function OptionsWithWhy({ choices, startWhyOpenFor }: { choices: RecapCho
  * closed by default. Open, it shows the scenario, the whole stem and all four options in the
  * order they were on screen (DISPLAY letters: the caller maps each through the session's saved
  * shuffle, so opening and closing can never reshuffle). The pick and the best keep their badge
- * colour AND their words. Each option's own reason is one more step inside ("Show why for each
- * option", OptionsWithWhy above), never open by default: a full list of reasons under every answer
- * overwhelmed learners.
+ * colour AND their words.
+ *
+ * It never shows a reason for any option, and it has no second switch (reviewed decision, 19 Nov
+ * 2026): the tips on the page already say why each wrong option is wrong, and a list of reasons
+ * under every answer overwhelmed learners. The per-option reasons live on the look-back page
+ * (OptionsWithWhy above) and in mock review (AnswerContext below).
  *
  * It replaces, in practice only, the stem-only "Show question" (StemRecap, still used by lessons
  * and drills), the inline "Compare all options" list (AnswerContext, still used by mock review)
  * and the "Show all options" sheet in More. Read-only: nothing here grades or changes an answer.
  *
  * State is per mount: the screen keys it by question, so each new question starts closed.
- * Screen readers: the caption and text are one stop that always says the WHOLE question; each
+ * Screen readers: the caption and text are one stop that always says the WHOLE question; the
  * switch is its own stop with its expanded state; closed content is not in the tree at all.
  */
 export function QuestionRecap({ stem, scenario, choices }: { stem: string; scenario?: string; choices: RecapChoice[] }) {
@@ -1141,10 +1171,10 @@ export function QuestionRecap({ stem, scenario, choices }: { stem: string; scena
         spokenHide="Hide question and options"
         onPress={() => setOpen(!open)}
       />
-      {/* Closed, Collapse takes the options out of the tree, so their "why" switch starts closed
-          again each time this opens: reopening is the plain question again. */}
+      {/* Closed, Collapse takes the options out of the tree. Open: the four rows and nothing else
+          (no reasons, no second switch). */}
       <Collapse open={open}>
-        <OptionsWithWhy choices={choices} />
+        <RecapChoiceRows choices={choices} />
       </Collapse>
     </View>
   );

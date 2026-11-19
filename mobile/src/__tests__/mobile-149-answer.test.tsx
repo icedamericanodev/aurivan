@@ -18,6 +18,7 @@
  *    choices" (its expanded state spoken), replaces the stem-only "Show question"
  *    AND More's "Show all options" sheet: open, it shows the whole question and
  *    all four choices in DISPLAY order, read-only. More no longer has that row.
+ *    It is the recap's ONLY switch: no reason is shown under any choice there.
  */
 import { ScrollView } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
@@ -254,7 +255,8 @@ describe('the ⋯ "More on this question" sheet', () => {
 describe('the question recap at the top of the answer (premium pass §2.1; phone 2.2: one switch)', () => {
   // A long stem with no scenario (the bank has no scenario questions today: those are rendered directly below).
   const long = bank.find((q) => !q.scenario && q.stem.length > STEM_RECAP_CHARS && q.id !== other.id)!;
-  const choices: RecapChoice[] = [
+  // Each row is handed a reason on purpose: the recap must never show one (they live on the look-back page).
+  const choices: (RecapChoice & { why: string })[] = [
     { letter: 'A', text: 'First', pick: false, best: false, why: 'Not A.' },
     { letter: 'B', text: 'Second', pick: true, best: false, why: 'Not B.' },
     { letter: 'C', text: 'Third', pick: false, best: true, why: 'C it is.' },
@@ -316,6 +318,15 @@ describe('the question recap at the top of the answer (premium pass §2.1; phone
     press('Show question and options');
     expect(allText()).toContain(short);
     expect(root().findAll((n) => typeof n.type === 'string' && /^recap-choice-[A-D]$/.test(n.props.testID ?? ''))).toHaveLength(4);
+    // The four choices and nothing more: no reason (shown or spoken) and no second switch.
+    expect(root().findAll((n) => /^recap-why/.test(n.props.testID ?? ''))).toHaveLength(0);
+    for (const ch of choices) {
+      expect(allText()).toContain(ch.text);
+      expect(allText()).not.toContain(ch.why);
+      expect(hosts(new RegExp(ch.why.replace('.', '\\.')))).toHaveLength(0);
+    }
+    expect(allText()).not.toMatch(/Why (not )?[A-D]\b/);
+    expect(root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'button').map((n) => n.props.testID)).toEqual(['recap-toggle']);
   });
 
   // The bank has no scenario question today, so the part is rendered on its own (was a check that never ran).
@@ -374,12 +385,13 @@ describe('Show question & options: every option, one tap away (was More: Show al
         expect(textOf(n)).not.toMatch(/Your answer|Best answer/);
       }
     }
-    // Read-only: no option in the recap can be tapped (only the two switches can).
+    // Read-only: no option in the recap can be tapped. Its ONE button is its own switch (no "why" switch).
     const tappable = root()
       .findByType(QuestionRecap)
       .findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'button')
       .map((n) => n.props.testID);
-    expect(tappable).toEqual(['recap-toggle', 'recap-why-toggle']);
+    expect(tappable).toEqual(['recap-toggle']);
+    expect(root().findAll((n) => /^recap-why/.test(n.props.testID ?? ''))).toHaveLength(0);
     for (const n of rows) expect(n.findAll((x) => typeof x.props.onPress === 'function')).toHaveLength(0);
   });
 

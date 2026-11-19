@@ -900,15 +900,15 @@ export default function SessionScreen() {
     run: report.open,
   };
   // Phone 2.2: every option stays one tap away under "Show question & options" (QuestionRecap), in
-  // DISPLAY order. Each text and reason is looked up by its ORIGINAL letter through the saved shuffle
+  // DISPLAY order. Each text is looked up by its ORIGINAL letter through the saved shuffle
   // (displayToOriginal), and the pick and the best are compared on ORIGINAL letters too. Read-only.
+  // No reasons here: the recap shows the question and the four options only (the tips below say why
+  // the wrong ones are wrong; each option's own reason is on the look-back page and in mock review).
   const recapChoices: RecapChoice[] =
     submitted && response
       ? displayLetters.map((d) => {
           const original = displayToOriginal(d, perm);
-          const best = original === q.correct;
-          const why = best ? q.explanation : q.wrongExplanations[original];
-          return { letter: d, text: q.options[original] ?? '', pick: original === pickedOriginal, best, why: why ? renderText(why, perm) : undefined };
+          return { letter: d, text: q.options[original] ?? '', pick: original === pickedOriginal, best: original === q.correct };
         })
       : [];
   // "Why not B": the picked option's own reason, on the answer card after a miss (as in 2.0.0).
@@ -1178,7 +1178,7 @@ export default function SessionScreen() {
                 <RunningHead section={headSection} aside={headAside} style={{ marginTop: space.sm }} />
                 {/* Phone 2.2: the question in two lines, with ONE switch, "Show question & options", closed for
                     each new question (keyed by the question). Open: the whole question and all four options
-                    in the order they were on screen. */}
+                    in the order they were on screen, with the pick and the best marked. No reasons in it. */}
                 <QuestionRecap key={qid} stem={q.stem} scenario={q.scenario} choices={recapChoices} />
                 <View onLayout={(e) => (verdictBottom.current = e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
                   <Verdict ref={verdictRef} correct={response.correct} coach={coach} best={response.correct ? undefined : correctDisplay} field />

@@ -12,10 +12,13 @@
  *   - the last result and its date ("Last time: correct", "6 Oct 2026"), and
  *     the learner's own count on this question;
  *   - the scenario and the whole question, never folded;
+ *   - one switch, "Show why the other options are wrong", closed on every
+ *     visit. It sits ABOVE the options, so the reasons appear after the control
+ *     that reveals them. It reveals the WRONG options' reasons only (the best
+ *     answer's is "Why B", lower down). After a miss whose pick was saved, that
+ *     option's own "Why not B" is already open;
  *   - the four options in their ORIGINAL A to D order (no shuffle was saved
  *     for an old answer, so none is invented), with the best answer marked;
- *   - one switch, "Show why for each option", closed on every visit. After a
- *     miss whose pick was saved, that option's own "Why not B" is already open;
  *   - the Key idea and the tips;
  *   - "Why B": the best answer's explanation, whole;
  *   - a line saying the explanations are the latest version;
@@ -45,7 +48,7 @@ import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusMark } from '../../components/bank';
 import { EmptyScreen } from '../../components/emptyScreen';
-import { KeyIdea, OptionsWithWhy, ScenarioBlock, StickyFooter, TipsCard, TipsHeading, WhyBlock, type RecapChoice } from '../../components/quiz';
+import { KeyIdea, OptionsWithWhy, ScenarioBlock, StickyFooter, TipsCard, TipsHeading, WhyBlock, type OptionWithWhy } from '../../components/quiz';
 import { Button, Gap, PushedHeader, Row, Stem, T, Tag } from '../../components/ui';
 import { CERTIFICATIONS, getCertification } from '../../content/certifications';
 import { findQuestion } from '../../content/loader';
@@ -145,9 +148,10 @@ export default function AnsweredQuestion() {
   const tips = question.tips.map((tip, i) => tipParts(renderText(tip, perm), i));
   // The four option rows, A to D. `pick` is only ever true for a miss the Mistake journal kept
   // (rule 2), so after a right answer no row is called "Your answer". Compared on ORIGINAL letters.
-  const options: RecapChoice[] = perm.map((original, i) => {
+  // A reason only for the WRONG options: the best answer's is printed whole below ("Why B").
+  const options: OptionWithWhy[] = perm.map((original, i) => {
     const best = original === question.correct;
-    const why = best ? question.explanation : question.wrongExplanations[original];
+    const why = best ? undefined : question.wrongExplanations[original];
     return { letter: LETTERS[i], text: question.options[original] ?? '', pick: original === pick, best, why: why ? renderText(why, perm) : undefined };
   });
   const bestLetter = originalToDisplay(question.correct, perm);
@@ -193,14 +197,16 @@ export default function AnsweredQuestion() {
           <Stem>{question.stem}</Stem>
         </View>
 
-        {/* The four options in ORIGINAL order, read-only, and under them ONE switch, "Show why for each
-            option", closed on every visit (the same rows as the answer screen's recap). A saved miss
-            pick shows its own "Why not B" at once, as the answer card does; the switch adds the rest. */}
         <View style={{ marginTop: space.lg }}>
-          <OptionsWithWhy choices={options} startWhyOpenFor={pick ? [originalToDisplay(pick, perm)] : undefined} />
-          {/* Rule 2: after a miss whose pick is not known, say so plainly, right under the switch.
-              Never after a right answer (there it read as an error), and never a guess. */}
+          {/* Rule 2: after a miss whose pick is not known, say so plainly, once, right ABOVE the switch
+              (so nothing comes between the switch and the rows it opens). Never after a right answer
+              (there it read as an error), and never a guess. */}
           {!record.lastCorrect && pick === null ? <T v="meta">{PICK_NOT_SAVED_LINE}</T> : null}
+          {/* ONE switch, "Show why the other options are wrong", closed on every visit, then the four
+              options in ORIGINAL order, read-only (the same rows as the answer screen's recap). A saved
+              miss pick shows its own "Why not B" at once, as the answer card does; the switch adds the
+              other wrong options' reasons. The best answer's reason is "Why B", further down. */}
+          <OptionsWithWhy choices={options} startWhyOpenFor={pick ? [originalToDisplay(pick, perm)] : undefined} />
         </View>
 
         {/* `visible={false}`: the Key idea's small buzz is for a fresh answer, not for reading back. */}

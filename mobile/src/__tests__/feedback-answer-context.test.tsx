@@ -53,8 +53,9 @@ it.each(['A', 'B', 'C', 'D', undefined] as const)('keeps reported shuffled wordi
 });
 
 // Phone 2.2 (owner direction, 19 Nov 2026): the practice answer no longer lists every option's reason
-// ("Compare all options"). The same content is on request, under "Show question & options", and it is
-// still built from the session's SAVED shuffle, so the reported wording stays under the letter it had.
+// ("Compare all options"). The question and its four options are on request, under "Show question &
+// options", still built from the session's SAVED shuffle, so the reported wording stays under the
+// letter it had. The recap is handed NO reasons (they are on the look-back page and in mock review).
 it('practice never mounts the full comparison; nothing about the answer is in the tree until Check answer', () => {
   startFromIds('cisa', [q.id], 'Feedback regression');
   act(() => { tree = create(<SessionScreen />); });
@@ -81,8 +82,8 @@ it('practice never mounts the full comparison; nothing about the answer is in th
     expect(c.text).toBe(q.options[original]);
     expect(c.best).toBe(original === q.correct);
     expect(c.pick).toBe(c.letter === 'D');
-    expect(c.why).toBe(renderText(original === q.correct ? q.explanation : q.wrongExplanations[original], saved));
-    expect(c.why).not.toMatch(/\{\{[A-D]\}\}/);
+    // Exactly these four fields: the screen passes the recap no reason for any option.
+    expect(Object.keys(c).sort()).toEqual(['best', 'letter', 'pick', 'text']);
   });
   expect(choices.filter(c => c.best)).toHaveLength(1);
   expect(tree.root.findAll(n => n.props.testID === 'recap-choices')).toHaveLength(0);

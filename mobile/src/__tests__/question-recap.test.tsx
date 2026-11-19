@@ -8,14 +8,17 @@
  *     order, with no list of every choice's reason and the switch closed;
  *  2. the reported question (d4_134): one switch that shows the whole question and exactly four
  *     choices; no stem-only "Show question", no "Show all options", no "Compare all options";
+ *     opened, it holds NO reason for any choice and NO second switch (reviewed decision, 19 Nov
+ *     2026: the tips already say why the wrong ones are wrong). Each choice's own reason is on the
+ *     look-back page instead, and that is checked here too;
  *  3. every one of the 24 ways four choices can be shuffled: the letters stay A to D, each row holds
  *     the choice that was on screen there, exactly one is the best, the learner's pick is marked on
- *     the letter they tapped, and every reason names letters as the learner saw them. Opening,
- *     closing and reopening never changes the order or the marks;
+ *     the letter they tapped, and no row carries a reason (even when the rows are handed one).
+ *     Opening, closing and reopening never changes the order or the marks;
  *  4. nothing about the right answer is in the screen before "Check answer";
  *  5. each new question starts closed, with nothing left over from the one before; opening and
  *     closing changes neither the saved answers nor the saved progress;
- *  6. screen readers: both switches are buttons that say what they do and whether they are open;
+ *  6. screen readers: the switch is a button that says what it does and whether it is open;
  *     closed content is not there at all; each choice is one stop that says its letter;
  *  7. lessons and drills keep the stem-only "Show question"; a mock never shows any of this while
  *     the exam is being answered.
@@ -24,6 +27,7 @@
  */
 import { Dimensions, ScrollView, StyleSheet } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
+import AnsweredQuestion from '../app/answered/[id]';
 import LessonPlayer from '../app/lesson/[id]';
 import SessionScreen from '../app/session';
 import { DrillAnswer } from '../components/drillAnswer';
@@ -31,7 +35,7 @@ import { AnswerContext, AnswerPlate, KeyIdea, OptionCard, QuestionRecap, StemRec
 import { CISA_LESSONS } from '../content/lessons/cisa';
 import { getAllQuestions } from '../content/loader';
 import { LETTERS, type Letter, type PackQuestion } from '../content/types';
-import { displayToOriginal, identityPermutation, renderText, type Permutation } from '../engine/shuffle';
+import { displayToOriginal, identityPermutation, type Permutation } from '../engine/shuffle';
 import { oneStepVerdict } from '../lib/drillVerdict';
 import { startFromIds, startMock } from '../lib/sessions';
 import { useProgress } from '../store/progress';
@@ -124,15 +128,15 @@ const shownAs = (original: Letter, perm: Permutation): Letter => LETTERS[perm.in
 const inDisplayLetters = (text: string, perm: Permutation) => text.replace(/\{\{([A-D])\}\}/g, (_, l: Letter) => shownAs(l, perm));
 const reasonOf = (q: PackQuestion, original: Letter, perm: Permutation) => inDisplayLetters((original === q.correct ? q.explanation : q.wrongExplanations[original]) ?? '', perm);
 
-/** The recap's rows, built the way app/session.tsx builds them (displayToOriginal and renderText). */
+/** The recap's rows, built the way app/session.tsx builds them (displayToOriginal; no reasons). */
 function choicesFor(q: PackQuestion, perm: Permutation, pickedOriginal: Letter): RecapChoice[] {
   return LETTERS.slice(0, perm.length).map((d) => {
     const original = displayToOriginal(d, perm);
-    const best = original === q.correct;
-    const why = best ? q.explanation : q.wrongExplanations[original];
-    return { letter: d, text: q.options[original] ?? '', pick: original === pickedOriginal, best, why: why ? renderText(why, perm) : undefined };
+    return { letter: d, text: q.options[original] ?? '', pick: original === pickedOriginal, best: original === q.correct };
   });
 }
+/** The same rows with every choice's reason attached (as the look-back page's rows have): the recap must ignore it. */
+const withReasons = (q: PackQuestion, perm: Permutation, rows: RecapChoice[]) => rows.map((row) => ({ ...row, why: reasonOf(q, displayToOriginal(row.letter, perm), perm) }));
 
 // ── Tree helpers ─────────────────────────────────────────────────────
 let r: ReactTestRenderer | undefined;
@@ -166,7 +170,7 @@ const press = (label: string) => {
     b.props.onPress();
   });
 };
-/** Tap a host control by its testID (the two switches). */
+/** Tap a host control by its testID (the recap's switch). */
 const tap = (id: string) => {
   const [b] = root().findAll((n) => n.props.testID === id && typeof n.props.onPress === 'function');
   if (!b) throw new Error(`nothing to tap with testID "${id}"`);
@@ -186,6 +190,32 @@ const toggle = () => host('recap-toggle');
 const whyToggle = () => host('recap-why-toggle');
 /** The one accessible stop of a choice row (its letter, words and option). */
 const rowStops = (row: ReactTestInstance) => row.findAll((n) => typeof n.type === 'string' && n.props.accessible === true);
+/**
+ * The recap (closed or open) holds no reason and no "why" switch: not as a block, not as words on
+ * screen, not as words a screen reader says. Its only button is its own "Show question & options".
+ */
+const noReasonsInRecap = (q: PackQuestion, perm: Permutation) => {
+  const recap = root().findByType(QuestionRecap);
+  expect(recap.findAll((n) => /^recap-why/.test(n.props.testID ?? ''))).toHaveLength(0);
+  expect(whys()).toHaveLength(0);
+  expect(whyToggle()).toHaveLength(0);
+  const buttons = recap.findAll((n) => typeof n.type === 'string' && (n.props.accessibilityRole === 'button' || typeof n.props.onPress === 'function'));
+  expect(buttons.map((n) => n.props.testID)).toEqual(['recap-toggle']);
+  const shown = textOf(recap);
+  const spoken = recap
+    .findAll((n) => typeof n.props.accessibilityLabel === 'string')
+    .map((n) => n.props.accessibilityLabel as string)
+    .join(' | ');
+  for (const words of [shown, spoken]) {
+    // No "Why B" / "Why not B" head and no switch about reasons (the question's own words may say "why").
+    expect(words).not.toMatch(/\bWhy (not )?[A-D]\b/);
+    expect(words).not.toMatch(/why (for each|the other) option/i);
+    for (const l of LETTERS) {
+      const reason = reasonOf(q, l, perm);
+      if (reason) expect(words).not.toContain(reason);
+    }
+  }
+};
 /** What the open recap shows, row by row: enough to see any reorder or any mark that moved. */
 const seen = () =>
   rows().map((row) => ({
@@ -297,7 +327,7 @@ describe('1. the first view after an answer: the short summary, nothing else ope
     expect(at.every((i) => i >= 0)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
 
-    // The recap is closed: its choices, its reasons and its second switch are not in the tree at all.
+    // The recap is closed: its choices are not in the tree at all (and it never has reasons or a second switch).
     expect(toggle()).toHaveLength(1);
     expect(toggle()[0].props.accessibilityState).toMatchObject({ expanded: false });
     expect(root().findAll((n) => n.props.testID === 'recap-choices')).toHaveLength(0);
@@ -400,35 +430,71 @@ describe('2. question d4_134 (learner report R-ZXUQ): ONE switch for the whole q
     tap('recap-toggle');
     check();
     expect(host('recap-choices')).toHaveLength(1);
-    tap('recap-why-toggle');
-    check();
+    // And no second switch inside it.
+    expect(whyToggle()).toHaveLength(0);
   });
 
-  it('"Show why for each option" gives each of the four its own reason, under the letter it was shown with', () => {
+  it.each([
+    ['a wrong answer', 'wrong' as const],
+    ['a right answer', 'right' as const],
+  ])('after %s: opened, the recap adds NO reason and NO "why" switch; the page\'s reasons are the card\'s and "Why D" only', (_name, pick) => {
     open([reported.id, second.id], SHUFFLED);
-    const { q, perm, picked, best } = answer('wrong');
+    const { q, perm, original, picked, best } = answer(pick);
+    const missed = pick === 'wrong';
+    /** The reasons on the whole answer page: the pick's own "Why not" on the card (after a miss) and the one "Why D". */
+    const pageReasons = () => {
+      for (const l of LETTERS.filter((x) => x !== q.correct)) expect([l, times(reasonOf(q, l, perm))]).toEqual([l, missed && l === original ? 1 : 0]);
+      expect(times(reasonOf(q, q.correct, perm))).toBe(1);
+      expect(allText().match(/Why not [A-D]\b/g) ?? []).toEqual(missed ? [`Why not ${picked}`] : []);
+      expect(allText().match(/Why [A-D]\b/g)).toEqual([`Why ${best}`]);
+      expect(strings(root()).filter((x) => /why (for each|the other) option/i.test(x))).toEqual([]);
+      expect(hostLabelled(/why (for each|the other) option/i)).toHaveLength(0);
+    };
+    noReasonsInRecap(q, perm);
+    pageReasons();
     tap('recap-toggle');
-    // Closed by default.
-    expect(whyToggle()[0].props.accessibilityState).toMatchObject({ expanded: false });
-    expect(whys()).toHaveLength(0);
+    // Open: four rows, each ONE stop (the choice), and nothing a reader or a screen reader could take for a reason.
+    expect(rows()).toHaveLength(4);
+    expect(rows().map((row) => rowStops(row).length)).toEqual([1, 1, 1, 1]);
+    noReasonsInRecap(q, perm);
+    pageReasons();
+    tap('recap-toggle');
+    noReasonsInRecap(q, perm);
+    pageReasons();
+  });
+
+  it('each choice\'s own reason is on the look-back page for that same answer, behind its own switch', () => {
+    open([reported.id, second.id], SHUFFLED);
+    const { q, perm, original } = answer('wrong');
+    tap('recap-toggle');
+    noReasonsInRecap(q, perm);
+    unmount();
+
+    // The look-back page of the question just missed (ORIGINAL letters: it invents no shuffle).
+    const plain = identityPermutation(q);
+    const wrong = LETTERS.filter((l) => l !== q.correct);
+    mockParams = { id: q.id };
+    mount(<AnsweredQuestion />);
+    // The pick's own reason is open at once; the switch (above the rows) reveals the other wrong options'.
+    expect(whys().map((n) => n.props.testID)).toEqual([`recap-why-${original}`]);
+    expect(whyToggle()).toHaveLength(1);
+    expect(whyToggle()[0].props.accessibilityLabel).toBe('Show why the other options are wrong');
     tap('recap-why-toggle');
-    expect(whys().map((n) => n.props.testID)).toEqual(['recap-why-A', 'recap-why-B', 'recap-why-C', 'recap-why-D']);
-    whys().forEach((w, i) => {
-      const d = LETTERS[i];
-      const head = d === best ? `Why ${d}` : `Why not ${d}`;
-      expect(w.props.accessibilityLabel).toBe(`${head}: ${reasonOf(q, perm[i], perm)}`);
-      // Inside its own row.
-      expect(rows()[i].findAll((n) => n.props.testID === `recap-why-${d}` && typeof n.type === 'string')).toHaveLength(1);
-    });
-    expect(picked).not.toBe(best);
+    expect(whys().map((n) => n.props.testID)).toEqual(wrong.map((l) => `recap-why-${l}`));
+    for (const l of wrong) {
+      const [why] = host(`recap-why-${l}`);
+      expect(why.props.accessibilityLabel).toBe(`Why not ${l}: ${reasonOf(q, l, plain)}`);
+      expect(textOf(why)).toContain(reasonOf(q, l, plain));
+    }
   });
 });
 
 // ── 3. All 24 shuffles ───────────────────────────────────────────────
-describe('3. every shuffle: letters, texts, the best, the pick and the reasons all go through the saved permutation', () => {
+describe('3. every shuffle: letters, texts, the best and the pick all go through the saved permutation; no row carries a reason', () => {
   it.each(PERMS.map((p) => [p.join(''), p] as const))('order %s: A to D top to bottom, the right text and marks on every row; reopening changes nothing', (_name, perm) => {
     for (const pickedOriginal of LETTERS) {
-      mount(<QuestionRecap stem={fixture.stem} choices={choicesFor(fixture, perm, pickedOriginal)} />);
+      // Handed rows that DO carry a reason (as the look-back page's do): the recap must never show one.
+      mount(<QuestionRecap stem={fixture.stem} choices={withReasons(fixture, perm, choicesFor(fixture, perm, pickedOriginal))} />);
       const bestAt = perm.indexOf(fixture.correct);
       const pickAt = perm.indexOf(pickedOriginal);
       expect(rows()).toHaveLength(0);
@@ -447,6 +513,8 @@ describe('3. every shuffle: letters, texts, the best, the pick and the reasons a
         // The marks, in words: the best, the pick, both, or neither.
         const caption = i === bestAt && i === pickAt ? '✓ Your answer · the best' : i === bestAt ? '✓ Best answer' : i === pickAt ? '✗ Your answer' : null;
         expect(strings(row).filter((s) => /Your answer|Best answer|the best/.test(s))).toEqual(caption ? [caption] : []);
+        // And that is ALL the row holds: its letter, its mark (if any) and its option. No reason under it.
+        expect(strings(row)).toEqual([d, ...(caption ? [caption] : []), option]);
         // One stop, with the display letter and the same words.
         const spoken = i === bestAt && i === pickAt ? `${d}, your answer, the best: ${option}` : i === bestAt ? `${d}, best answer: ${option}` : i === pickAt ? `${d}, your answer, not the best: ${option}` : `${d}: ${option}`;
         expect(rowStops(row).map((s) => s.props.accessibilityLabel)).toEqual([spoken]);
@@ -458,36 +526,16 @@ describe('3. every shuffle: letters, texts, the best, the pick and the reasons a
       // The pick mark is on the letter the learner tapped, and nowhere else.
       expect(rows().filter((row) => /Your answer/.test(textOf(row))).map((n) => n.props.testID)).toEqual([`recap-choice-${LETTERS[pickAt]}`]);
       const openOnce = seen();
+      // No reason text and no "why" switch anywhere in the opened recap.
+      noReasonsInRecap(fixture, perm);
 
-      // The reasons: each under its own row, naming letters as the learner saw them.
-      tap('recap-why-toggle');
-      expect(whys().map((n) => n.props.testID)).toEqual(LETTERS.map((l) => `recap-why-${l}`));
-      whys().forEach((w, i) => {
-        const d = LETTERS[i];
-        const reason = reasonOf(fixture, perm[i], perm);
-        expect(w.props.accessibilityLabel).toBe(`${i === bestAt ? 'Why' : 'Why not'} ${d}: ${reason}`);
-        expect(textOf(w)).toContain(reason);
-        expect(textOf(w)).not.toMatch(/\{\{|\}\}/);
-        // It opens with its own display letter (every fixture reason starts with the letter it is about).
-        expect(reason.startsWith(`${d} `)).toBe(true);
-      });
-      const withWhys = seen();
-      // The reasons are extra lines: the rows above them did not move.
-      expect(withWhys.map((x) => x.id)).toEqual(openOnce.map((x) => x.id));
-      expect(withWhys.map((x) => x.spoken[0])).toEqual(openOnce.map((x) => x.spoken[0]));
-
-      // Close: all of it leaves the tree. Reopen: the same rows and marks, and the reasons closed again.
+      // Close: all of it leaves the tree. Reopen: the same rows and marks, and still no reasons.
       tap('recap-toggle');
       expect(rows()).toHaveLength(0);
-      expect(whys()).toHaveLength(0);
+      noReasonsInRecap(fixture, perm);
       tap('recap-toggle');
       expect(seen()).toEqual(openOnce);
-      expect(whys()).toHaveLength(0);
-      tap('recap-why-toggle');
-      expect(seen()).toEqual(withWhys);
-      // And once more, the reasons alone.
-      tap('recap-why-toggle');
-      expect(seen()).toEqual(openOnce);
+      noReasonsInRecap(fixture, perm);
       unmount();
     }
   });
@@ -504,8 +552,8 @@ describe('3. every shuffle: letters, texts, the best, the pick and the reasons a
     expect(useSession.getState().active!.responses[q.id]).toMatchObject({ display: picked, correct: pickedOriginal === q.correct });
 
     tap('recap-toggle');
-    tap('recap-why-toggle');
     expect(rows().map((n) => n.props.testID)).toEqual(LETTERS.map((l) => `recap-choice-${l}`));
+    noReasonsInRecap(q, perm);
     rows().forEach((row, i) => {
       const d = LETTERS[i];
       const option = q.options[perm[i]]!;
@@ -514,10 +562,10 @@ describe('3. every shuffle: letters, texts, the best, the pick and the reasons a
       expect(d === best).toBe(isBest);
       expect(d === picked).toBe(isPick);
       const spoken = isBest && isPick ? `${d}, your answer, the best: ${option}` : isBest ? `${d}, best answer: ${option}` : isPick ? `${d}, your answer, not the best: ${option}` : `${d}: ${option}`;
-      expect(rowStops(row)[0].props.accessibilityLabel).toBe(spoken);
-      const why = row.findAll((n) => typeof n.type === 'string' && n.props.testID === `recap-why-${d}`);
-      expect(why).toHaveLength(1);
-      expect(why[0].props.accessibilityLabel).toBe(`${isBest ? 'Why' : 'Why not'} ${d}: ${reasonOf(q, perm[i], perm)}`);
+      expect(rowStops(row).map((s) => s.props.accessibilityLabel)).toEqual([spoken]);
+      // No reason under the row: its words are its letter, its mark (if any) and its option.
+      expect(row.findAll((n) => typeof n.type === 'string' && n.props.testID === `recap-why-${d}`)).toHaveLength(0);
+      expect(strings(row).filter((x) => x !== d && !/Your answer|Best answer/.test(x))).toEqual([option]);
       expect(textOf(row)).not.toMatch(/\{\{|\}\}/);
     });
     // The card above agrees with the recap: same letters, same texts.
@@ -529,7 +577,7 @@ describe('3. every shuffle: letters, texts, the best, the pick and the reasons a
     expect(root().findByType(WhyBlock).props).toMatchObject({ letter: best, text: reasonOf(q, q.correct, perm) });
   });
 
-  it('the bank has a question whose explanation names an option letter (so the screen check above can see a letter left unmapped)', () => {
+  it('the bank has a question whose explanation names an option letter (so the card and "Why D" checks above can see a letter left unmapped)', () => {
     expect(lettered).toBeDefined();
   });
 });
@@ -575,12 +623,11 @@ describe('4. before "Check answer": nothing about the right answer is in the tre
     expect(useSession.getState().active!.responses).toEqual({});
   });
 
-  it('the next question is as closed as the first, right after an answer with everything open', () => {
+  it('the next question is as closed as the first, right after an answer with the recap open', () => {
     open([rich.id, second.id]);
     answer('wrong');
     tap('recap-toggle');
-    tap('recap-why-toggle');
-    expect(whys()).toHaveLength(4);
+    expect(rows()).toHaveLength(4);
     press('Next question');
     const { q, perm } = current();
     expect(q.id).toBe(second.id);
@@ -590,21 +637,18 @@ describe('4. before "Check answer": nothing about the right answer is in the tre
 
 // ── 5. Each question starts closed; nothing saved changes ────────────
 describe('5. the recap starts closed on each new question, and opening it changes nothing saved', () => {
-  it('open it and its reasons, go to the next question, answer it: closed, with nothing from the question before', () => {
+  it('open it, go to the next question, answer it: closed, with nothing from the question before', () => {
     open([rich.id, second.id]);
     const first = answer('wrong');
     tap('recap-toggle');
-    tap('recap-why-toggle');
     expect(toggle()[0].props.accessibilityState).toMatchObject({ expanded: true });
-    expect(whyToggle()[0].props.accessibilityState).toMatchObject({ expanded: true });
     expect(rows()).toHaveLength(4);
-    expect(whys()).toHaveLength(4);
 
     press('Next question');
     const next = answer('right');
     expect(next.q.id).toBe(second.id);
 
-    // Closed: the choices, the reasons and the second switch are not in the tree.
+    // Closed: the choices are not in the tree (and there are no reasons and no second switch).
     expect(toggle()).toHaveLength(1);
     expect(toggle()[0].props.accessibilityState).toMatchObject({ expanded: false });
     expect(root().findAll((n) => n.props.testID === 'recap-choices')).toHaveLength(0);
@@ -628,31 +672,26 @@ describe('5. the recap starts closed on each new question, and opening it change
     };
     expect(leftovers()).toEqual([]);
 
-    // Opened, it holds this question's choices in this question's saved order, the reasons still closed.
+    // Opened, it holds this question's choices in this question's saved order, and no reasons.
     tap('recap-toggle');
     expect(rows()).toHaveLength(4);
     rows().forEach((row, i) => expect(textOf(row)).toContain(next.q.options[next.perm[i]]!));
-    expect(whys()).toHaveLength(0);
-    expect(whyToggle()[0].props.accessibilityState).toMatchObject({ expanded: false });
-    expect(leftovers()).toEqual([]);
-    tap('recap-why-toggle');
-    whys().forEach((w, i) => expect(w.props.accessibilityLabel).toContain(reasonOf(next.q, next.perm[i], next.perm)));
+    noReasonsInRecap(next.q, next.perm);
     expect(leftovers()).toEqual([]);
   });
 
-  it('closing the recap closes its reasons too: reopened, it is the plain question again', () => {
+  it('closed and reopened, it is the plain question again: four rows, no reasons, no second switch', () => {
     open([rich.id, second.id]);
-    answer('wrong');
-    tap('recap-toggle');
-    tap('recap-why-toggle');
-    expect(whys()).toHaveLength(4);
-    tap('recap-toggle');
-    expect(rows()).toHaveLength(0);
-    expect(whys()).toHaveLength(0);
+    const { q, perm } = answer('wrong');
     tap('recap-toggle');
     expect(rows()).toHaveLength(4);
-    expect(whys()).toHaveLength(0);
-    expect(whyToggle()[0].props.accessibilityState).toMatchObject({ expanded: false });
+    noReasonsInRecap(q, perm);
+    tap('recap-toggle');
+    expect(rows()).toHaveLength(0);
+    noReasonsInRecap(q, perm);
+    tap('recap-toggle');
+    expect(rows()).toHaveLength(4);
+    noReasonsInRecap(q, perm);
   });
 
   it.each([
@@ -668,9 +707,6 @@ describe('5. the recap starts closed on each new question, and opening it change
       return seen();
     })();
     expect(saved()).toEqual(before);
-    tap('recap-why-toggle');
-    expect(saved()).toEqual(before);
-    tap('recap-why-toggle');
     tap('recap-toggle');
     expect(saved()).toEqual(before);
     tap('recap-toggle');
@@ -685,7 +721,7 @@ describe('5. the recap starts closed on each new question, and opening it change
 });
 
 // ── 6. Accessibility ─────────────────────────────────────────────────
-describe('6. accessibility: two buttons that say their state, one stop per choice, closed content not in the tree', () => {
+describe('6. accessibility: one button that says its state, one stop per choice, closed content not in the tree', () => {
   it('"Show question & options": a 48pt button, spoken "Show / Hide question and options", expanded false / true', () => {
     open([rich.id, second.id]);
     answer('wrong');
@@ -755,58 +791,36 @@ describe('6. accessibility: two buttons that say their state, one stop per choic
     expect(allText()).not.toContain('✗');
   });
 
-  it('"Show why for each option": a 48pt button with its state; each reason is one more stop in its row, never a heading', () => {
+  it('opened, the reading order is the switch, then A to D, and nothing else: no "why" switch, no reason stop, no heading', () => {
     open([rich.id, second.id]);
     const { q, perm, best } = answer('wrong');
     tap('recap-toggle');
-    const closed = whyToggle()[0];
-    expect(closed.props.accessibilityRole).toBe('button');
-    expect(closed.props.accessibilityLabel).toBe('Show why for each option');
-    expect(closed.props.accessibilityState).toMatchObject({ expanded: false });
-    expect(textOf(closed).trim()).toBe('Show why for each option');
-    expect(Number(flat(closed).minHeight)).toBeGreaterThanOrEqual(48);
-    expect(root().findAll((n) => WHY.test(n.props.testID ?? ''))).toHaveLength(0);
-    // In reading order it comes after the four choices.
+    // Every block of the recap, in tree order (which is reading order).
     const order = root()
       .findByType(QuestionRecap)
-      .findAll((n) => typeof n.type === 'string' && /^recap-(toggle|choice-[A-D]|why-toggle)$/.test(n.props.testID ?? ''))
+      .findAll((n) => typeof n.type === 'string' && /^recap-/.test(n.props.testID ?? ''))
       .map((n) => n.props.testID);
-    expect(order).toEqual(['recap-toggle', 'recap-choice-A', 'recap-choice-B', 'recap-choice-C', 'recap-choice-D', 'recap-why-toggle']);
-
-    tap('recap-why-toggle');
-    const opened = whyToggle()[0];
-    expect(opened.props.accessibilityLabel).toBe('Hide why for each option');
-    expect(opened.props.accessibilityState).toMatchObject({ expanded: true });
-    expect(textOf(opened).trim()).toBe('Hide why for each option');
-    rows().forEach((row, i) => {
-      const d = LETTERS[i];
-      const stops = rowStops(row);
-      // Two stops now: the choice, then its reason.
-      expect(stops).toHaveLength(2);
-      expect(stops[1].props.testID).toBe(`recap-why-${d}`);
-      expect(stops[1].props.accessibilityLabel).toBe(`${d === best ? 'Why' : 'Why not'} ${d}: ${reasonOf(q, perm[i], perm)}`);
-      expect(row.findAll((n) => n.props.accessibilityRole === 'header')).toHaveLength(0);
-    });
+    expect(order).toEqual(['recap-toggle', 'recap-choices', 'recap-choice-A', 'recap-choice-B', 'recap-choice-C', 'recap-choice-D']);
+    // Each row is one stop (the choice); there is no second stop for a reason.
+    expect(rows().map((row) => rowStops(row).length)).toEqual([1, 1, 1, 1]);
+    noReasonsInRecap(q, perm);
+    // The old switch's words are nowhere on the screen, shown or spoken.
+    expect(strings(root()).filter((x) => /why for each option|why the other options/i.test(x))).toEqual([]);
+    expect(hostLabelled(/why for each option|why the other options/i)).toHaveLength(0);
     // "Why D" under the tips is still the screen's one Why heading.
     const whyHeads = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && typeof n.props.children === 'string' && /^Why /.test(n.props.children));
     expect(whyHeads.map((n) => n.props.children)).toEqual([`Why ${best}`]);
-
-    tap('recap-why-toggle');
-    expect(whyToggle()[0].props.accessibilityState).toMatchObject({ expanded: false });
-    expect(root().findAll((n) => WHY.test(n.props.testID ?? ''))).toHaveLength(0);
   });
 
-  it('a choice with no reason gets no empty stop, and with no reasons at all there is no second switch', () => {
-    const some = choicesFor(fixture, ['A', 'B', 'C', 'D'], 'A').map((ch) => (ch.letter === 'C' ? { ...ch, why: undefined } : ch));
-    mount(<QuestionRecap stem={fixture.stem} choices={some} />);
-    tap('recap-toggle');
-    tap('recap-why-toggle');
-    expect(whys().map((n) => n.props.testID)).toEqual(['recap-why-A', 'recap-why-B', 'recap-why-D']);
-    unmount();
-    mount(<QuestionRecap stem={fixture.stem} choices={some.map((ch) => ({ ...ch, why: undefined }))} />);
-    tap('recap-toggle');
-    expect(rows()).toHaveLength(4);
-    expect(whyToggle()).toHaveLength(0);
+  it('with or without reasons on the rows it is handed, the recap shows four rows and no second switch', () => {
+    const plain = choicesFor(fixture, ['A', 'B', 'C', 'D'], 'A');
+    for (const choices of [plain, withReasons(fixture, ['A', 'B', 'C', 'D'], plain)]) {
+      mount(<QuestionRecap stem={fixture.stem} choices={choices} />);
+      tap('recap-toggle');
+      expect(rows()).toHaveLength(4);
+      noReasonsInRecap(fixture, ['A', 'B', 'C', 'D']);
+      unmount();
+    }
   });
 
   it('a scenario: said in the one question stop, on screen only when open, above the stem', () => {
@@ -833,11 +847,8 @@ describe('6. accessibility: two buttons that say their state, one stop per choic
     setWindow({ fontScale: 2 });
     mount(<QuestionRecap stem={fixture.stem} choices={choices} />);
     tap('recap-toggle');
-    tap('recap-why-toggle');
     expect(rows().map((row) => flat(rowStops(row)[0]).flexDirection)).toEqual(['column', 'column', 'column', 'column']);
-    expect(rows().map((row) => rowStops(row).length)).toEqual([2, 2, 2, 2]);
-    // The reasons line up with the words (no indent left over from the side-by-side badge).
-    expect(whys().map((w) => flat(w).marginLeft)).toEqual([0, 0, 0, 0]);
+    expect(rows().map((row) => rowStops(row).length)).toEqual([1, 1, 1, 1]);
     expect(Number(flat(toggle()[0]).minHeight)).toBeGreaterThanOrEqual(48);
   });
 

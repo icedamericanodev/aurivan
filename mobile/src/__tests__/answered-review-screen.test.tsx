@@ -4,12 +4,15 @@
  *
  * What these tests prove, in plain English:
  *  - the page shows, in this order, the last result and its date, the whole
- *    question, the options in ORIGINAL A to D order with the best answer
- *    marked, ONE switch ("Show why for each option", closed on every visit),
- *    the Key idea, the tips, "Why B" whole, and a line saying the explanations
- *    are the latest version;
- *  - each option's reason is NOT on the page until that switch is pressed
- *    (the one exception: a saved miss pick's own "Why not B");
+ *    question, ONE switch ("Show why the other options are wrong", closed on
+ *    every visit), the options in ORIGINAL A to D order with the best answer
+ *    marked, the Key idea, the tips, "Why B" whole, and a line saying the
+ *    explanations are the latest version;
+ *  - the switch comes BEFORE the rows (on screen and for a screen reader), so
+ *    the reasons appear after the control that reveals them;
+ *  - a WRONG option's reason is NOT on the page until that switch is pressed
+ *    (the one exception: a saved miss pick's own "Why not B"). The BEST
+ *    answer's reason is never under its row: it is "Why B", once, lower down;
  *  - it NEVER says which option the learner picked, except for a miss whose
  *    pick the Mistake journal kept for that same attempt (both branches,
  *    seeded through the real store, the way the session screen writes them).
@@ -33,7 +36,7 @@ import { router } from 'expo-router';
 import AnsweredQuestion, { LOOK_BACK_TITLE, PRACTICE_THIS_LABEL } from '../app/answered/[id]';
 import BankDomain, { ANSWERED_HELP } from '../app/bank/[domain]';
 import Results from '../app/results';
-import { AnswerContext, TIPS_HEADING, WHY_FOLD_CHARS } from '../components/quiz';
+import { AnswerContext, OptionsWithWhy, TIPS_HEADING, WHY_FOLD_CHARS, type OptionWithWhy } from '../components/quiz';
 import { CERTIFICATIONS } from '../content/certifications';
 import { findQuestion, getAllQuestions, getDomainQuestions, hasContent } from '../content/loader';
 import { REWRITTEN_QUESTIONS } from '../content/rewrittenQuestions';
@@ -149,11 +152,27 @@ const open = (id: unknown) => {
   mockRoute.params = { id };
   mount(<AnsweredQuestion />);
 };
-// The switch under the options, and the letters whose reason is in the tree right now.
-const WHY_SHOW = 'Show why for each option';
-const WHY_HIDE = 'Hide why for each option';
+// The switch above the options, and the letters whose reason is in the tree right now.
+const WHY_SHOW = 'Show why the other options are wrong';
+const WHY_HIDE = 'Hide why the other options are wrong';
 const whySwitch = () => byTestID('recap-why-toggle');
 const openReasons = () => LETTERS.filter((l) => byTestID(`recap-why-${l}`).length > 0);
+/** The switch, the rows and the open reasons, in tree order (which is the order a screen reader reads them in). */
+const optionOrder = () =>
+  root()
+    .findAll((n) => typeof n.type === 'string' && /^recap-(why-toggle|choice-[A-D]|why-[A-D])$/.test(n.props.testID ?? ''))
+    .map((n) => n.props.testID as string);
+/** The best answer's reason is on the page once ("Why B", lower down) and never under its own row. */
+const bestReasonOnlyBelow = (q: PackQuestion) => {
+  expect(byTestID(`recap-why-${q.correct}`)).toHaveLength(0);
+  const row = byTestID(`recap-choice-${q.correct}`)[0];
+  expect(textOf(row)).not.toContain(reasonOf(q, q.correct));
+  expect(textOf(row)).not.toMatch(/Why/);
+  expect(row.findAll((n) => typeof n.type === 'string' && n.props.accessible === true)).toHaveLength(1);
+  expect(times(allText(), reasonOf(q, q.correct))).toBe(1);
+  expect(allSpoken()).not.toContain(`Why ${q.correct}: `);
+  expect(allText().match(/Why [A-D]\b/g)).toEqual([`Why ${q.correct}`]);
+};
 /** How many times `part` is in `whole`. */
 const times = (whole: string, part: string) => whole.split(part).length - 1;
 
@@ -237,7 +256,7 @@ describe('the look-back page', () => {
     expect(t).not.toMatch(/\{\{[A-D]\}\}/);
   });
 
-  it('the order: question, options, the why switch, Key idea, tips, Why best, then the latest-version line', () => {
+  it('the order: question, the why switch, options, Key idea, tips, Why best, then the latest-version line', () => {
     answer(rich.id, true);
     open(rich.id);
     const t = allText();
@@ -245,8 +264,8 @@ describe('the look-back page', () => {
       LAST_CORRECT_LINE,
       READ_ONLY_LINE,
       rich.stem,
-      ...LETTERS.map((l) => rich.options[l]!),
       WHY_SHOW,
+      ...LETTERS.map((l) => rich.options[l]!),
       'Key idea',
       rich.keyConcept!,
       TIPS_HEADING,
@@ -267,7 +286,23 @@ describe('the look-back page', () => {
     expect(light.ink2).not.toBe(light.accentText);
   });
 
-  it('the reasons are NOT on the page until "Show why for each option" is pressed; closed again on every visit', () => {
+  it('the switch comes BEFORE the rows in the tree: a screen reader reaches it, then each row and its reason', () => {
+    answer(rich.id, true);
+    open(rich.id);
+    const rowIds = LETTERS.map((l) => `recap-choice-${l}`);
+    // Closed: the switch, then the four rows.
+    expect(optionOrder()).toEqual(['recap-why-toggle', ...rowIds]);
+    // Open: the switch is still first; each wrong row is followed by its own reason, the best row by none.
+    press(WHY_SHOW);
+    expect(optionOrder()).toEqual(['recap-why-toggle', ...LETTERS.flatMap((l) => (l === rich.correct ? [`recap-choice-${l}`] : [`recap-choice-${l}`, `recap-why-${l}`]))]);
+    // The switch is a sibling above the list, not inside it, and it is still above the Key idea.
+    expect(byTestID('recap-choices')[0].findAll((n) => n.props.testID === 'recap-why-toggle')).toHaveLength(0);
+    const t = allText();
+    expect(t.indexOf(WHY_HIDE)).toBeGreaterThan(t.indexOf(rich.stem));
+    expect(t.indexOf(WHY_HIDE)).toBeLessThan(t.indexOf(rich.options.A!));
+  });
+
+  it('the wrong options\' reasons are NOT on the page until "Show why the other options are wrong" is pressed; closed again on every visit', () => {
     answer(rich.id, true);
     open(rich.id);
     const wrong = LETTERS.filter((l) => l !== rich.correct);
@@ -283,11 +318,16 @@ describe('the look-back page', () => {
       expect(allText()).not.toContain(reasonOf(rich, l));
       expect(allSpoken()).not.toContain(reasonOf(rich, l));
     }
-    // Pressed: every option has its own reason under it, the wrong ones as "Why not X".
+    // The best answer's reason is on the page already, once, as "Why B" lower down (never under its row).
+    bestReasonOnlyBelow(rich);
+    // Pressed: every WRONG option has its own reason under it, as "Why not X". The best row gets none.
     press(WHY_SHOW);
     expect(whySwitch()[0].props.accessibilityLabel).toBe(WHY_HIDE);
     expect(whySwitch()[0].props.accessibilityState).toMatchObject({ expanded: true });
-    expect(openReasons()).toEqual([...LETTERS]);
+    expect(textOf(whySwitch()[0]).trim()).toBe(WHY_HIDE);
+    expect(openReasons()).toEqual(wrong);
+    expect(allText().match(/Why not [A-D]\b/g)).toEqual(wrong.map((l) => `Why not ${l}`));
+    bestReasonOnlyBelow(rich);
     for (const l of wrong) {
       const reason = byTestID(`recap-why-${l}`)[0];
       expect(reason.props.accessibilityLabel).toBe(`Why not ${l}: ${reasonOf(rich, l)}`);
@@ -297,9 +337,10 @@ describe('the look-back page', () => {
     // Pressed again: gone again.
     press(WHY_HIDE);
     expect(openReasons()).toEqual([]);
+    bestReasonOnlyBelow(rich);
     // Left open, then the page is opened again: closed.
     press(WHY_SHOW);
-    expect(openReasons()).toEqual([...LETTERS]);
+    expect(openReasons()).toEqual(wrong);
     unmount();
     open(rich.id);
     expect(whySwitch()[0].props.accessibilityState).toMatchObject({ expanded: false });
@@ -371,6 +412,12 @@ describe('the look-back page', () => {
     for (const n of tappables()) {
       expect(n.findAll((x) => x.props.accessibilityRole === 'button').length).toBeGreaterThan(0);
     }
+    // The switch keeps its 48pt target; opened, each reason lines up with the words (the letter badge
+    // sits above them at this size, so no indent is left over from the side-by-side layout).
+    expect(Number(StyleSheet.flatten(whySwitch()[0].props.style).minHeight)).toBeGreaterThanOrEqual(48);
+    press(WHY_SHOW);
+    expect(openReasons()).toHaveLength(3);
+    for (const l of openReasons()) expect(StyleSheet.flatten(byTestID(`recap-why-${l}`)[0].props.style).marginLeft).toBe(0);
     act(() => Dimensions.set({ window: w, screen: w }));
   });
 });
@@ -390,8 +437,9 @@ describe('the learner’s pick', () => {
     expect(allText()).not.toMatch(yourAnswer);
     expect(allSpoken()).not.toMatch(yourAnswer);
     expect(byTestID('tip-pick-chip')).toHaveLength(0);
-    // The same with every reason open: still no "Your answer".
+    // The same with the wrong options' reasons open: still no "Your answer".
     press(WHY_SHOW);
+    expect(openReasons()).toEqual(LETTERS.filter((l) => l !== rich.correct));
     expect(allText()).not.toMatch(yourAnswer);
     expect(allSpoken()).not.toMatch(yourAnswer);
     expect(allText()).not.toContain(PICK_NOT_SAVED_LINE);
@@ -428,32 +476,43 @@ describe('the learner’s pick', () => {
     // No other wrong option's reason yet.
     for (const l of LETTERS.filter((x) => x !== picked && x !== rich.correct)) expect(allText()).not.toContain(reasonOf(rich, l));
     expect(allText().match(/Why not/g)).toHaveLength(1);
-    // The switch reveals the rest; closing it leaves the pick's own reason where it was.
+    // The switch is above the rows, and the pick's open reason sits under its own row.
+    expect(optionOrder()).toEqual(['recap-why-toggle', ...LETTERS.flatMap((l) => (l === picked ? [`recap-choice-${l}`, `recap-why-${l}`] : [`recap-choice-${l}`]))]);
+    bestReasonOnlyBelow(rich);
+    // The switch reveals the other WRONG options' reasons (never one under the best row); closing it
+    // leaves the pick's own reason where it was.
     press(WHY_SHOW);
-    expect(openReasons()).toEqual([...LETTERS]);
+    expect(openReasons()).toEqual(LETTERS.filter((l) => l !== rich.correct));
+    bestReasonOnlyBelow(rich);
     press(WHY_HIDE);
     expect(openReasons()).toEqual([picked]);
+    expect(whySwitch()[0].props.accessibilityLabel).toBe(WHY_SHOW);
   });
 
-  it('a MISS with no journal entry: "not saved", once, right under the switch, and every reason closed', () => {
+  it('a MISS with no journal entry: "not saved", once, right above the switch, and every reason closed', () => {
     useProgress.getState().recordAnswer('cisa', rich.id, false);
     open(rich.id);
     const t = allText();
     expect(t).toContain(LAST_MISSED_LINE);
     expect(times(t, PICK_NOT_SAVED_LINE)).toBe(1);
-    // Its place: after the switch, before the Key idea (nothing else between the switch and it).
-    expect(t.indexOf(WHY_SHOW)).toBeGreaterThan(t.indexOf(rich.options.D!));
-    expect(t.indexOf(PICK_NOT_SAVED_LINE)).toBeGreaterThan(t.indexOf(WHY_SHOW));
-    expect(t.slice(t.indexOf(WHY_SHOW) + WHY_SHOW.length, t.indexOf(PICK_NOT_SAVED_LINE)).trim()).toBe('');
-    expect(t.indexOf('Key idea')).toBeGreaterThan(t.indexOf(PICK_NOT_SAVED_LINE));
+    // Its place: after the question, directly above the switch (nothing between the two), and the
+    // switch directly above the rows (so the line never comes between the switch and what it opens).
+    expect(t.indexOf(PICK_NOT_SAVED_LINE)).toBeGreaterThan(t.indexOf(rich.stem));
+    expect(t.indexOf(WHY_SHOW)).toBeGreaterThan(t.indexOf(PICK_NOT_SAVED_LINE));
+    expect(t.slice(t.indexOf(PICK_NOT_SAVED_LINE) + PICK_NOT_SAVED_LINE.length, t.indexOf(WHY_SHOW)).trim()).toBe('');
+    expect(t.slice(t.indexOf(WHY_SHOW) + WHY_SHOW.length, t.indexOf(rich.options.A!)).trim()).toBe('A');
+    expect(t.indexOf('Key idea')).toBeGreaterThan(t.indexOf(rich.options.D!));
+    expect(optionOrder()).toEqual(['recap-why-toggle', ...LETTERS.map((l) => `recap-choice-${l}`)]);
     // No pick is known, so no reason is open and no row is "Your answer".
     expect(whySwitch()[0].props.accessibilityState).toMatchObject({ expanded: false });
     expect(openReasons()).toEqual([]);
     expect(t).not.toContain('Why not');
     expect(t).not.toMatch(yourAnswer);
     expect(allSpoken()).not.toMatch(yourAnswer);
-    // The line stays (once) with the reasons open.
+    // The line stays (once) with the wrong options' reasons open; the best row still has none.
     press(WHY_SHOW);
+    expect(openReasons()).toEqual(LETTERS.filter((l) => l !== rich.correct));
+    bestReasonOnlyBelow(rich);
     expect(times(allText(), PICK_NOT_SAVED_LINE)).toBe(1);
     expect(allText()).not.toMatch(yourAnswer);
   });
@@ -517,6 +576,50 @@ describe('the learner’s pick', () => {
   });
 });
 
+// ── The switch and its rows on their own (components/quiz.tsx OptionsWithWhy) ──
+describe('the options with their "why" switch', () => {
+  const four = (over: Partial<Record<Letter, Partial<OptionWithWhy>>> = {}): OptionWithWhy[] =>
+    LETTERS.map((l) => ({ letter: l, text: `Option ${l}`, pick: false, best: l === 'B', why: l === 'B' ? 'B is best.' : `${l} is wrong.`, ...over[l] }));
+
+  it('the switch only ever reveals WRONG options: a reason handed in for the best row is never shown', () => {
+    mount(<OptionsWithWhy choices={four()} />);
+    expect(optionOrder()).toEqual(['recap-why-toggle', 'recap-choice-A', 'recap-choice-B', 'recap-choice-C', 'recap-choice-D']);
+    expect(allText()).not.toContain('B is best.');
+    press(WHY_SHOW);
+    expect(openReasons()).toEqual(['A', 'C', 'D']);
+    expect(optionOrder()).toEqual(['recap-why-toggle', 'recap-choice-A', 'recap-why-A', 'recap-choice-B', 'recap-choice-C', 'recap-why-C', 'recap-choice-D', 'recap-why-D']);
+    expect(allText()).not.toContain('B is best.');
+    expect(allSpoken()).not.toContain('B is best.');
+    expect(allSpoken()).not.toContain('Why B');
+    // Even when the best row is asked to start open.
+    unmount();
+    mount(<OptionsWithWhy choices={four()} startWhyOpenFor={['B']} />);
+    expect(openReasons()).toEqual([]);
+    expect(allText()).not.toContain('B is best.');
+  });
+
+  it('a wrong option with no reason gets no empty stop', () => {
+    mount(<OptionsWithWhy choices={four({ C: { why: undefined } })} />);
+    press(WHY_SHOW);
+    expect(openReasons()).toEqual(['A', 'D']);
+    expect(byTestID('recap-choice-C')[0].findAll((n) => typeof n.type === 'string' && n.props.accessible === true)).toHaveLength(1);
+  });
+
+  it('when nothing is left to reveal, the switch hides itself', () => {
+    // No wrong option has a reason (the best one's does not count: it is never shown here).
+    mount(<OptionsWithWhy choices={four({ A: { why: undefined }, C: { why: undefined }, D: { why: undefined } })} />);
+    expect(whySwitch()).toHaveLength(0);
+    expect(LETTERS.map((l) => byTestID(`recap-choice-${l}`).length)).toEqual([1, 1, 1, 1]);
+    expect(openReasons()).toEqual([]);
+    unmount();
+    // The only wrong reason is the saved pick's, already open.
+    mount(<OptionsWithWhy choices={four({ A: { why: undefined }, C: { pick: true }, D: { why: undefined } })} startWhyOpenFor={['C']} />);
+    expect(whySwitch()).toHaveLength(0);
+    expect(openReasons()).toEqual(['C']);
+    expect(byTestID('recap-why-C')[0].props.accessibilityLabel).toBe('Why not C: C is wrong.');
+  });
+});
+
 // ── Rule: the page changes nothing ──────────────────────────────────────
 describe('read-only', () => {
   /** Open, lay out, scroll, expand everything, wait, go back and leave. */
@@ -536,10 +639,10 @@ describe('read-only', () => {
     if (id === rich.id || id === withScenario.id) expect(hadWhySwitch).toBe(true);
     for (const n of taps) act(() => n.props.onPress({ nativeEvent: {} }));
     expect(router.back).toHaveBeenCalled(); // "leaving" by the Back button
-    // "Show why for each option" really was opened (so that tap is covered too).
+    // "Show why the other options are wrong" really was opened (so that tap is covered too).
     if (hadWhySwitch) {
       expect(whySwitch()[0].props.accessibilityState).toMatchObject({ expanded: true });
-      expect(openReasons().length).toBeGreaterThanOrEqual(3);
+      expect(openReasons().length).toBe(3);
     }
     // The long scenario really was folded open (so "expanding" is covered).
     if (id === withScenario.id) expect(allText()).toContain('The last control was never tested.');

@@ -1,13 +1,13 @@
 // FB-001 visual regression (SHOTS=fb001, see run.sh), as rebuilt for phone 2.2 (owner direction, 19 Nov 2026;
 // learner report R-ZXUQ): the practice answer is the short summary again (the card, Key idea, the tips, then
 // Why), and the whole question lives behind ONE switch, "Show question & options". The inline
-// "Compare all options" list these shots used to scroll through is gone from practice.
+// "Compare all options" list these shots used to scroll through is gone from practice, and so is the
+// second switch for each option's reason (the old q22-3-why-open shot): the recap has no reasons.
 //
 // Shots, in light AND dark (fresh browsers per theme, so each starts from the seed):
 //   q22-1-answer-miss     the answer as it first appears after a MISS: the recap closed, verdict, the card
 //   q22-2-choices-open    the same after "Show question & options": the whole question and all four choices
-//   q22-3-why-open        the same after "Show why for each option": each choice's own reason under it
-//   q22-4-closed-again    closed again: back to the first view (the reasons close with it)
+//   q22-4-closed-again    closed again: back to the first view (the name keeps its old number)
 //   q22-5-answer-correct  the same question answered RIGHT, as it first appears
 // The lesson quick check and the ⋯ sheet are in shoot_m149.mjs (SHOTS=m149 and the default run).
 // THEMES=light (or dark) takes one theme only.
@@ -111,12 +111,9 @@ for (const theme of THEMES) {
     // The switch at the top of the screen, so the question above it scrolls off and every choice is in view.
     await intoId('recap-toggle', 'start');
     await shot('q22-2-choices-open');
-    // ── (c) "Show why for each option": each choice's own reason under it ──
-    if (await tapId('recap-why-toggle')) {
-      await intoId('recap-choices', 'start');
-      await shot('q22-3-why-open');
-    }
-    // ── (d) Closed again (closing the question also closes the reasons): back to the first view ──
+    // The open recap is the question and its four choices only: a "why" switch here is a regression.
+    if (await page.getByTestId('recap-why-toggle').count()) errs.push(`${theme}: the recap still has a "why" switch`);
+    // ── (c) Closed again: back to the first view ──
     await intoId('recap-toggle', 'center');
     await tapId('recap-toggle');
     await intoId('question-recap', 'end');
@@ -127,7 +124,7 @@ for (const theme of THEMES) {
     await shot('q22-4-closed-again');
   }
 
-  // ── (e) The same question answered RIGHT, as it first appears (a new browser: the seed again) ──
+  // ── (d) The same question answered RIGHT, as it first appears (a new browser: the seed again) ──
   if (best) {
     await fresh();
     await answer(best);
