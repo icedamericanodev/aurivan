@@ -79,30 +79,31 @@ import {
 import { CrossFade, PageTurn, Pop, useMotion } from '../components/motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LeafSmall } from '../components/glyphs';
-import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, Compass, Flag, ICON_STROKE, LayoutGrid, Lightbulb, ListChecks, PencilLine, Play, X } from '../components/icons';
+import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, Compass, Flag, ICON_STROKE, LayoutGrid, Lightbulb, PencilLine, Play, X } from '../components/icons';
 import {
-  AllOptionsSheet,
   AnswerMore,
   AnswerPlate,
-  AnswerContext,
   AnswerRecap,
   KeyIdea,
   MORE_FOCUS_BACK_MS,
   ConfidenceRow,
   FEEDBACK_DELAY,
   OptionCard,
+  PLATE_ROW_STAGGER,
+  QuestionRecap,
   VINE_ARRIVES,
   Rise,
   ScenarioBlock,
   SourceLine,
-  StemRecap,
   StickyFooter,
   TipsCard,
   TipsHeading,
   useVerdictIndent,
   Verdict,
+  WhyBlock,
   type MoreRow,
   type OptionState,
+  type RecapChoice,
 } from '../components/quiz';
 import { addMs } from '../engine/answerClock';
 import { aboutMin, dueCheckpoints, formatClock, mockPace, paceMessage, paceShort, practiceElapsedMs, SOFT_CUE_LINE, softCue, spokenClockCoarse, spokenMin, statusOf, type Checkpoint } from '../engine/pace';
@@ -312,7 +313,6 @@ export default function SessionScreen() {
   // tap while it is still invisible (UX H1). Keyed by question, so a new question starts unarmed.
   const vineArmedFor = useRef<string | null>(null);
   // Grove Phase 4: More's "Show all options" sheet (the four options, read-only).
-  const [allOptionsOpen, setAllOptionsOpen] = useState(false);
   // Screen-reader focus lands on the verdict after "Check answer".
   const verdictRef = useRef<View>(null);
   // Coach me: the first line of the hint, and a flag saying "the learner just
@@ -396,7 +396,6 @@ export default function SessionScreen() {
     setVisitBase(isMock ? (response?.ms ?? 0) + (active?.visitMs?.[qid ?? ''] ?? 0) : undefined);
     setConfidence(undefined);
     setVineVisible(false);
-    setAllOptionsOpen(false);
   }
   // At the swap (PageTurn calls this before the new page is painted): back to
   // the top, so the jump is never seen, and tell screen readers where they are
@@ -745,32 +744,22 @@ export default function SessionScreen() {
     hint: 'Opens a short form, then your email app',
     run: report.open,
   };
-  // Grove Phase 4 (PHASE4.md 4.2 step 2, 4.5): the answer card shows only the pick and the best answer,
-  // so every option stays one tap away here. Only after the answer is checked (before it, the options
-  // are on screen anyway). Read-only: it never grades.
-  const optionsRow: MoreRow | null =
-    submitted && response
-      ? {
-          key: 'options',
-          icon: (col) => <ListChecks size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />,
-          title: 'Show all options',
-          subtitle: 'With your pick and the best',
-          label: 'Show all options, with your pick and the best',
-          hint: 'Opens every option for this question.',
-          run: () => setAllOptionsOpen(true),
-        }
-      : null;
-  // The sheet's rows, in DISPLAY order. Each text is looked up by its ORIGINAL letter through the
-  // shuffle (displayToOriginal); the pick and the best are compared on ORIGINAL letters too.
-  const allOptionRows =
+  // Phone 2.2: every choice stays one tap away under "Show question & choices" (QuestionRecap), in
+  // DISPLAY order. Each text and reason is looked up by its ORIGINAL letter through the saved shuffle
+  // (displayToOriginal), and the pick and the best are compared on ORIGINAL letters too. Read-only.
+  const recapChoices: RecapChoice[] =
     submitted && response
       ? displayLetters.map((d) => {
           const original = displayToOriginal(d, perm);
-          return { letter: d, text: q.options[original] ?? '', pick: original === pickedOriginal, best: original === q.correct };
+          const best = original === q.correct;
+          const why = best ? q.explanation : q.wrongExplanations[original];
+          return { letter: d, text: q.options[original] ?? '', pick: original === pickedOriginal, best, why: why ? renderText(why, perm) : undefined };
         })
       : [];
+  // "Why not B": the picked option's own reason, on the answer card after a miss (as in 2.0.0).
+  const whyWrong = pickedOriginal && pickedOriginal !== q.correct ? q.wrongExplanations[pickedOriginal] : undefined;
   // AnswerMore drops the nulls (the rows that don't apply here), in this order.
-  const moreRows = [optionsRow, noteRow, principleRow, yourNoteRow, reportRow];
+  const moreRows = [noteRow, principleRow, yourNoteRow, reportRow];
   // The shared pace strip (components/pace.tsx): mock clock and pace line.
   // Timed practice: the answered questions' times, as one number (PracticeClock adds the running time
   // on the question on screen, and draws the strip).
@@ -902,15 +891,6 @@ export default function SessionScreen() {
         {!isMock && (
           <View style={{ marginRight: -12 }}>
             <AnswerMore rows={moreRows} buttonRef={moreRef} />
-            {/* More's "Show all options": closing it puts screen-reader focus back on ⋯. */}
-            <AllOptionsSheet
-              visible={allOptionsOpen}
-              rows={allOptionRows}
-              onClose={() => {
-                setAllOptionsOpen(false);
-                moveFocus(moreRef, MORE_FOCUS_BACK_MS);
-              }}
-            />
           </View>
         )}
       </Row>
@@ -1033,8 +1013,10 @@ export default function SessionScreen() {
                     on the vine) → source */}
                 {/* Where you are: "Practice · IS Audit" and "Question 4 of 10" (the set's own length, never the bank's). */}
                 <RunningHead section={headSection} aside={headAside} style={{ marginTop: space.sm }} />
-                {/* Mobile 1.49 (premium pass §2.1): the question in two lines, with "Show question". */}
-                <StemRecap key={qid} stem={q.stem} scenario={q.scenario} field />
+                {/* Phone 2.2: the question in two lines, with ONE switch, "Show question & choices", closed for
+                    each new question (keyed by the question). Open: the whole question and all four choices
+                    in the order they were on screen. */}
+                <QuestionRecap key={qid} stem={q.stem} scenario={q.scenario} choices={recapChoices} />
                 <View onLayout={(e) => (verdictBottom.current = e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
                   <Verdict ref={verdictRef} correct={response.correct} coach={coach} best={response.correct ? undefined : correctDisplay} field />
                 </View>
@@ -1043,19 +1025,21 @@ export default function SessionScreen() {
                 {response.assisted && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{HINT_AFTER_LINE}</T>}
                 {/* A right retest (under 4 hours after a miss) is not promoted: say when it is back. */}
                 {response.retest && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{RETEST_LINE}</T>}
-                {/* Keep the verdict compact; each option rationale appears once in the comparison below. */}
+                {/* Phone 2.2 (owner direction, 19 Nov 2026): the short summary first, as in 2.0.0. The card (your
+                    answer, "Why not B", the best answer), then Key idea and every tip, then "Why D" (a long one
+                    folds to two lines after a miss). Every choice's own reason is on request only, under
+                    "Show question & choices" above. DISPLAY letters on screen and in every spoken label. */}
                 <AnswerPlate
                   key={`${qid}:plate`}
                   delay={FEEDBACK_DELAY.rows}
                   pick={
                     !response.correct && pickedOriginal
-                      ? { letter: response.display, text: q.options[pickedOriginal] ?? '' }
+                      ? { letter: response.display, text: q.options[pickedOriginal] ?? '', why: whyWrong ? renderText(whyWrong, perm) : undefined }
                       : undefined
                   }
                   best={{ letter: correctDisplay, text: q.options[q.correct] ?? '' }}
                 />
-                <AnswerContext question={q} perm={perm} picked={response.display} />
-                {/* Key idea and every tip arrive after the complete option comparison: opacity only,
+                {/* Key idea and every tip, then the Why, arrive in reading order after the card: opacity only,
                     200ms each, 30ms apart (PHASE4.md 4.4). Their arrival is still the vine's (VINE_ARRIVES):
                     `visible`, the one tick and the stem's draw wait for it. */}
                 <Rise delay={FEEDBACK_DELAY.why} rise={false}>
@@ -1064,6 +1048,17 @@ export default function SessionScreen() {
                     {tipRows.open.length > 0 && <TipsHeading />}
                     <TipsCard key={`${qid}:tips`} rows={tipRows.open.map(tipRow)} visible={vineVisible} />
                   </View>
+                </Rise>
+                <Rise delay={FEEDBACK_DELAY.why + PLATE_ROW_STAGGER} rise={false}>
+                  {/* The fold holds the long Why paragraph and nothing else ("Read more of the explanation"). */}
+                  <WhyBlock
+                    key={qid}
+                    letter={correctDisplay}
+                    text={renderText(q.explanation, perm)}
+                    // After a right answer nothing folds.
+                    fold={!response.correct}
+                    more={[]}
+                  />
                 </Rise>
                 {/* Mobile 1.49 (premium pass §2.2): ONE "Go deeper" row after a miss, after a hairline.
                     The lesson when it is not done yet (Play = lessons), otherwise the note (BookOpen =

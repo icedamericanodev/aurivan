@@ -7,9 +7,10 @@
  * made the practice/review answer a Field Guide page (DESIGN_SYSTEM §21):
  *   Head     – (premium round 2) the running head "Practice · IS Audit" and
  *              "Question 4 of 10" (fieldguide/RunningHead, set by the screen).
- *   Recap    – (mobile 1.49) "Question" and the stem in two lines, with
- *              "Show question" to read it whole (StemRecap; `field`: the
- *              guide's tracked head and a Fraunces stem).
+ *   Recap    – (phone 2.2) "Question" and the stem in two lines, with ONE
+ *              switch, "Show question & choices", that opens the whole
+ *              question and all four choices in place (QuestionRecap).
+ *              Lessons and drills keep the stem-only StemRecap.
  *   Verdict  – a leaf-shaped mark with ✓/✗, "Correct" / "Not quite", and a
  *              one-line coach note (`field`: the word in ink, the note in
  *              italics; the leaf keeps its colour).
@@ -351,7 +352,7 @@ export const PLATE_ROW_STAGGER = 30;
  *
  * Colour is never alone: every row has its ✗ / ✓ and its words. Each row is one screen-reader stop
  * ("Your answer, B, not the best: …"; "Why not B: …"; "Best answer, D: …"). DISPLAY letters only.
- * The other options stay one tap away in More ("Show all options", AllOptionsSheet below) and in review.
+ * The other options stay one tap away under "Show question & choices" (QuestionRecap below).
  */
 export function AnswerPlate({ pick, best, delay = 0 }: { pick?: PlateRow; best: PlateRow; delay?: number }) {
   const { c } = useTheme();
@@ -945,78 +946,169 @@ export function AnswerMore({ rows: given, buttonRef }: { rows: (MoreRow | null)[
   );
 }
 
-// ── Show all options: the four options, read-only, after the answer ──
-/** One option in the "Show all options" sheet: its DISPLAY letter, its text, and whether it is the pick or the best. */
-export interface AllOptionsRow {
+// ── Question & choices: the whole question, folded under the answer's top line ──
+/** One choice in the recap: its DISPLAY letter, its text, whether it is the pick or the best, and its own "why". */
+export interface RecapChoice {
   letter: Letter;
   text: string;
   pick: boolean;
   best: boolean;
+  /** This option's explanation, already through renderText (display letters). Shown only on request. */
+  why?: string;
 }
 
-/**
- * Grove Phase 4 (PHASE4.md 4.2 step 2 and 4.5): the answer card shows only the pick and the best
- * answer, so the other options stay one tap away in More as "Show all options". This sheet lists all
- * of them in DISPLAY order, read-only (nothing here can be tapped or graded). The pick and the best
- * answer carry their badge colour AND their words ("Your answer", "Best answer"), so colour is never
- * alone. The caller looks each option up by its ORIGINAL letter through the session's shuffle; this
- * part only draws what it is given. Each row is one screen-reader stop.
- */
-export function AllOptionsSheet({ visible, onClose, rows }: { visible: boolean; onClose: () => void; rows: AllOptionsRow[] }) {
+/** One read-only choice row: a badge with its DISPLAY letter, the words, and "Your answer" / "Best answer". */
+function RecapChoiceRow({ row, first, showWhy }: { row: RecapChoice; first: boolean; showWhy: boolean }) {
   const { c } = useTheme();
   const fontScale = useFontScale();
   const discAbove = fontScale >= DISC_ABOVE_FROM;
   // The badge grows with its letter, as on the answer card (TYPE_SCALE.md exception E4).
   const disc = DISC * Math.min(Math.max(fontScale, 1), 1.6);
+  // The caption words: the pick, the best, or both at once after a right answer.
+  const caption = row.pick && row.best ? '✓ Your answer · the best' : row.best ? '✓ Best answer' : row.pick ? '✗ Your answer' : null;
+  const tone = row.best ? c.correct : row.pick ? c.wrong : null;
+  const spoken = row.pick && row.best
+    ? `${row.letter}, your answer, the best: ${row.text}`
+    : row.best
+      ? `${row.letter}, best answer: ${row.text}`
+      : row.pick
+        ? `${row.letter}, your answer, not the best: ${row.text}`
+        : `${row.letter}: ${row.text}`;
+  const whyHead = `${row.best ? 'Why' : 'Why not'} ${row.letter}`;
   return (
-    <Sheet visible={visible} onClose={onClose} title="All options">
-      <View testID="all-options">
-        {rows.map((r, i) => {
-          // The caption words: the pick, the best, or both at once after a right answer.
-          const caption = r.pick && r.best ? '✓ Your answer · the best' : r.best ? '✓ Best answer' : r.pick ? '✗ Your answer' : null;
-          const tone = r.best ? c.correct : r.pick ? c.wrong : null;
-          const spoken = r.pick && r.best
-            ? `${r.letter}, your answer, the best: ${r.text}`
-            : r.best
-              ? `${r.letter}, best answer: ${r.text}`
-              : r.pick
-                ? `${r.letter}, your answer, not the best: ${r.text}`
-                : `${r.letter}: ${r.text}`;
-          return (
-            <View
-              key={r.letter}
-              accessible
-              accessibilityLabel={spoken}
-              testID={`all-options-${r.letter}`}
-              style={[
-                { flexDirection: discAbove ? 'column' : 'row', alignItems: 'flex-start', gap: discAbove ? space.sm : DISC_GAP, paddingVertical: space.md },
-                i > 0 && { borderTopWidth: 1, borderTopColor: c.line },
-              ]}
-            >
-              {/* The pick and the best: a filled badge in their state colour. The others: an outlined badge. */}
-              <View
-                style={{
-                  minWidth: disc,
-                  minHeight: disc,
-                  borderRadius: groveRadius.step,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: tone ?? 'transparent',
-                  borderWidth: tone ? 0 : 1.5,
-                  borderColor: c.control,
-                }}
-              >
-                <T v="badgeLetter" color={tone ? c.bg : c.ink}>{r.letter}</T>
-              </View>
-              <View style={{ flex: discAbove ? undefined : 1, alignSelf: 'stretch' }}>
-                {caption && tone && <T v="caption" color={tone} style={{ marginBottom: 2 }}>{caption}</T>}
-                <FieldText v={r.best ? 'best' : 'option'}>{r.text}</FieldText>
-              </View>
-            </View>
-          );
-        })}
+    <View testID={`recap-choice-${row.letter}`} style={[{ paddingVertical: space.md }, !first && { borderTopWidth: 1, borderTopColor: c.line }]}>
+      <View
+        accessible
+        accessibilityLabel={spoken}
+        style={{ flexDirection: discAbove ? 'column' : 'row', alignItems: 'flex-start', gap: discAbove ? space.sm : DISC_GAP }}
+      >
+        {/* The pick and the best: a filled badge in their state colour. The others: an outlined badge. */}
+        <View
+          style={{
+            minWidth: disc,
+            minHeight: disc,
+            borderRadius: groveRadius.step,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: tone ?? 'transparent',
+            borderWidth: tone ? 0 : 1.5,
+            borderColor: c.control,
+          }}
+        >
+          <T v="badgeLetter" color={tone ? c.bg : c.ink}>{row.letter}</T>
+        </View>
+        <View style={{ flex: discAbove ? undefined : 1, alignSelf: 'stretch' }}>
+          {caption && tone && <T v="caption" color={tone} style={{ marginBottom: 2 }}>{caption}</T>}
+          <FieldText v={row.best ? 'best' : 'option'}>{row.text}</FieldText>
+        </View>
       </View>
-    </Sheet>
+      {/* Only when the learner asked for every choice's reason: one stop, never a heading. */}
+      {showWhy && row.why ? (
+        <View testID={`recap-why-${row.letter}`} accessible accessibilityLabel={`${whyHead}: ${row.why}`} style={{ marginTop: space.sm, marginLeft: discAbove ? 0 : DISC + DISC_GAP }}>
+          <T v="caption" color={c.ink2}>{whyHead}</T>
+          <T v="small" color={c.ink} style={{ marginTop: 2 }}>{row.why}</T>
+        </View>
+      ) : null}
+    </View>
+  );
+}
+
+/** A ghost toggle (48pt, chevron that turns over): the recap's two switches look and speak alike. */
+function RecapToggle({ open, show, hide, spokenShow, spokenHide, onPress, testID }: { open: boolean; show: string; hide: string; spokenShow: string; spokenHide: string; onPress: () => void; testID: string }) {
+  const { c } = useTheme();
+  return (
+    <Pressable
+      testID={testID}
+      accessibilityRole="button"
+      accessibilityLabel={open ? spokenHide : spokenShow}
+      accessibilityState={{ expanded: open }}
+      onPress={onPress}
+      hitSlop={4}
+      style={({ pressed }) => ({ minHeight: 48, justifyContent: 'center', alignSelf: 'flex-start', opacity: pressed ? 0.7 : 1 })}
+    >
+      <Row gap={space.xs}>
+        <T v="label" color={c.accentText}>{open ? hide : show}</T>
+        {/* The chevron turns over when open: shape, not just the words, says which way it goes. */}
+        <View style={open ? { transform: [{ rotate: '180deg' }] } : undefined}>
+          <ChevronDown size={18} color={c.accentText} strokeWidth={ICON_STROKE} />
+        </View>
+      </Row>
+    </Pressable>
+  );
+}
+
+/**
+ * Phone 2.2 (owner direction, 19 Nov 2026): the practice answer keeps its short summary and the
+ * familiar tips, and the whole question lives behind ONE switch, "Show question & choices",
+ * closed by default. Open, it shows the scenario, the whole stem and all four choices in the
+ * order they were on screen (DISPLAY letters: the caller maps each through the session's saved
+ * shuffle, so opening and closing can never reshuffle). The pick and the best keep their badge
+ * colour AND their words. Each choice's own reason is one more step inside ("Show why for each
+ * choice"), never open by default: a full list of reasons under every answer overwhelmed learners.
+ *
+ * It replaces, in practice only, the stem-only "Show question" (StemRecap, still used by lessons
+ * and drills), the inline "Compare all options" list (AnswerContext, still used by mock review)
+ * and the "Show all options" sheet in More. Read-only: nothing here grades or changes an answer.
+ *
+ * State is per mount: the screen keys it by question, so each new question starts closed.
+ * Screen readers: the caption and text are one stop that always says the WHOLE question; each
+ * switch is its own stop with its expanded state; closed content is not in the tree at all.
+ */
+export function QuestionRecap({ stem, scenario, choices }: { stem: string; scenario?: string; choices: RecapChoice[] }) {
+  const { c } = useTheme();
+  const [open, setOpen] = useState(false);
+  const [whys, setWhys] = useState(false);
+  const whole = scenario ? `${scenario} ${stem}` : stem;
+  // Folded, the stem is shortened at a whole word to what two lines hold (as StemRecap does).
+  const screen = useContentWidth();
+  const [boxW, setBoxW] = useState(() => Math.max(0, screen - 2 * space.lg));
+  const textScale = useFontScale();
+  const size = fieldRole.recap?.style.fontSize ?? 18;
+  const cap = fieldRole.recap?.max ?? 2;
+  const folded = shortenAtWord(stem, lineBudget(boxW, size * Math.min(Math.max(1, textScale), cap), 2));
+  const words = (text: string, lines?: number) => (
+    <FieldText v="recap" numberOfLines={lines} style={{ marginTop: space.xs }}>{text}</FieldText>
+  );
+  const anyWhy = choices.some((r) => Boolean(r.why));
+  return (
+    <View testID="question-recap" style={{ marginTop: space.md }}>
+      <View accessible accessibilityLabel={`Question: ${whole}`} onLayout={(e) => setBoxW(e.nativeEvent.layout.width)}>
+        <T v="caption" color={c.ink2}>Question</T>
+        {scenario ? <Collapse open={open}>{words(scenario)}</Collapse> : null}
+        {open ? words(stem) : words(folded, 2)}
+      </View>
+      <RecapToggle
+        testID="recap-toggle"
+        open={open}
+        show="Show question & choices"
+        hide="Hide question & choices"
+        spokenShow="Show question and choices"
+        spokenHide="Hide question and choices"
+        onPress={() => {
+          // Closing also closes the reasons, so reopening is the plain question again.
+          if (open) setWhys(false);
+          setOpen(!open);
+        }}
+      />
+      <Collapse open={open}>
+        <View testID="recap-choices">
+          {choices.map((r, i) => (
+            <RecapChoiceRow key={r.letter} row={r} first={i === 0} showWhy={whys} />
+          ))}
+        </View>
+        {anyWhy && (
+          <RecapToggle
+            testID="recap-why-toggle"
+            open={whys}
+            show="Show why for each choice"
+            hide="Hide why for each choice"
+            spokenShow="Show why for each choice"
+            spokenHide="Hide why for each choice"
+            onPress={() => setWhys(!whys)}
+          />
+        )}
+      </Collapse>
+    </View>
   );
 }
 
