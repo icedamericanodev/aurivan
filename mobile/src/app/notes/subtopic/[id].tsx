@@ -111,6 +111,7 @@ export default function NoteSubtopicScreen() {
   const next = inDomain[inDomain.findIndex((s) => s.id === note.id) + 1];
 
   // The lesson that teaches this subtopic (the first in course order), if any.
+  // Always "no lab" while the Concept Lab is hidden (content/labs/enabled.ts), so its link below is not drawn.
   const lab = labForNote(cert.id, note.id);
   const lesson = lessonsForSubtopic(cert.id, note.id)[0];
   const lessonDone = lesson ? progress.lessonsDone.includes(lesson.id) : false;

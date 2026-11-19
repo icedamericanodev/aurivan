@@ -524,6 +524,8 @@ const LookItUp = memo(function LookItUp({
             ))}
           </View>
         ))}
+        {/* Hidden since mobile 2.2 (owner decision, 19 Nov 2026): labsFor answers "none" while
+            CONCEPT_LAB_ENABLED is false (content/labs/enabled.ts), so this tile is not drawn. */}
         {labsFor(cert.id).length > 0 && <HubTile
           testID="learn-concept-lab"
           icon={(color) => <Compass size={24} color={color} strokeWidth={ICON_STROKE} />}

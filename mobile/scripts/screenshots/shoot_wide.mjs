@@ -24,7 +24,9 @@ const pick = (process.env.WIDE_SIZES || 'tl,tp,pp').split(',');
 const routes = [
   ['today', '/home'], ['learn', '/learn'], ['practice', '/practice'], ['you', '/you'],
   ['mock-start', '/mock-start'], ['lesson', '/lesson/cisa-l-d1-charter'], ['notes', '/notes'],
-  ['note', '/notes/subtopic/4B1.2'], ['labs', '/labs'], ['settings', '/settings'],
+  // No '/labs' here since mobile 2.2: the Concept Lab is hidden (src/content/labs/enabled.ts), and
+  // /labs only opens Learn. Put ['labs', '/labs'] back when the lab is switched on again.
+  ['note', '/notes/subtopic/4B1.2'], ['settings', '/settings'],
 ];
 const problems = [];
 // Widest visible button / text block, ignoring full-bleed backgrounds (the

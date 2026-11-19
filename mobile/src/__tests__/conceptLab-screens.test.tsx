@@ -12,6 +12,10 @@ import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { redirectLegacyPath } from '../lib/legacyLinks';
 
+// The lab is hidden from learners since mobile 2.2 (content/labs/enabled.ts). Its code is kept, so
+// these tests turn the switch ON to keep proving the lab still works for the day it comes back.
+// The hidden behaviour (no tile, no link, the routes open Learn) is in conceptLab-hidden.test.tsx.
+jest.mock('../content/labs/enabled', () => ({ CONCEPT_LAB_ENABLED: true }));
 jest.mock('@react-native-async-storage/async-storage', () => jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'));
 jest.mock('../components/icons', () => new Proxy({ __esModule: true, ICON_STROKE: 2 }, { get: (t, k) => k in t ? t[k as keyof typeof t] : () => null }));
 let mockParams: Record<string, string | undefined> = {};

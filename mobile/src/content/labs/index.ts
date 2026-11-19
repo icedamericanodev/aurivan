@@ -1,4 +1,8 @@
 import { DEFAULT_RECOVERY_CONFIG, type RecoveryConfig } from '../../engine/conceptLab';
+import { CONCEPT_LAB_ENABLED } from './enabled';
+
+// The one switch that hides or shows the Concept Lab (see ./enabled.ts for the reason and date).
+export { CONCEPT_LAB_ENABLED };
 
 /** Small discriminated registry: add another interaction only when a real lab needs it. */
 export interface ConceptLab {
@@ -78,8 +82,13 @@ const labs: readonly ConceptLab[] = [{
   },
 }];
 
-/** Returns only supported labs for the selected certification; no fallback to CISA. */
+/**
+ * Returns only supported labs for the selected certification; no fallback to CISA.
+ * While the Concept Lab is hidden (CONCEPT_LAB_ENABLED is false, ./enabled.ts) it returns none, and
+ * so do `findLab` and `labForNote` below (both go through here): every screen that asks sees "no lab".
+ */
 export function labsFor(certId: string): ConceptLab[] {
+  if (!CONCEPT_LAB_ENABLED) return [];
   return labs.filter((lab) => lab.certId === certId);
 }
 
