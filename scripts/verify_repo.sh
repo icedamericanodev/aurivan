@@ -334,6 +334,55 @@ else
   status=1
 fi
 
+# 6c-cia. CIA course (four paid packs, not wired into the apps yet) --------
+# The harness first (it plants one fault per rule and fails if any gets
+# through), then every CIA gate on whatever content exists. The originality
+# gate needs The IIA's text, which is never stored in the repo: it runs when a
+# reference folder is present and says "skipped" otherwise (rounds and
+# releases run it with --fetch --require). Tools: data/cia/tools/README.md.
+if [ -d data/cia/tools ]; then
+  printf "\nCIA course (data/cia):\n"
+  cia_ok=1
+  cia_run() {  # label, command...: print the tool's last line; on failure print its errors too
+    label=$1; shift
+    out=$("$@" 2>&1); rc=$?
+    printf "  %s: %s\n" "$label" "$(printf '%s\n' "$out" | tail -1 | sed 's/^[a-z_]* *\(--check\)\{0,1\}: //')"
+    if [ $rc -ne 0 ]; then
+      printf '%s\n' "$out" | grep -E '^(ERROR|✗)' | head -15 | sed 's/^/    /'
+      cia_ok=0
+    fi
+  }
+  cia_run "harness proof" python3 data/cia/tools/prove_harness.py -q
+  cia_run "structure" python3 data/cia/tools/check_cia.py
+  cia_run "old-syllabus wording" python3 data/cia/tools/check_stale_terms.py
+  cia_run "dated facts" python3 data/cia/tools/check_currency.py
+  cia_run "originality" python3 data/cia/tools/check_originality.py
+  cia_run "house style" python3 data/cia/tools/style_cia.py
+  cia_run "built glossary and principles" python3 data/cia/tools/build_packs.py --check
+  cia_run "Challenge pack" python3 data/cia/tools/build_challenge.py --check
+  cia_run "practice links" python3 data/cia/tools/sync_practice_ids.py --check
+  for pack in cia1 cia2 cia3; do
+    for f in data/cia/$pack/notes/d[0-9].json; do
+      [ -f "$f" ] || continue
+      cia_run "$pack notes $(basename "$f" .json)" python3 scripts/lint_notes.py "$f" --part "${pack#cia}" \
+        --outline docs/content/CIA_BLUEPRINT.md --bank "data/cia/$pack/originals"
+    done
+  done
+  for pack in cia1 cia2 cia3 ciac; do
+    [ -f "data/cia/$pack/mindset/principles.json" ] && cia_run "$pack principles" python3 scripts/lint_principles.py --cert "$pack"
+    [ -f "data/cia/$pack/exam/${pack}_exam_guide.json" ] && cia_run "$pack exam guide" python3 scripts/lint_exam_guide.py --cert "$pack"
+  done
+  if command -v node >/dev/null 2>&1 && [ -f scripts/cia_pack_dry_run.cjs ]; then
+    cia_run "app pack dry run" node scripts/cia_pack_dry_run.cjs
+  fi
+  if [ $cia_ok -eq 1 ]; then
+    echo "  $OK harness proven and every CIA gate clean"
+  else
+    echo "  $FAIL CIA course has errors (run the commands in data/cia/tools/README.md)"
+    status=1
+  fi
+fi
+
 # 6d. Web <-> mobile design-token parity (premium pass §0) -------------------
 # The web dark tokens that the premium pass moved (raised, wrongBg, the
 # section gap) must match mobile/src/theme/tokens.ts. A pair the web has moved
