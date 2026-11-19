@@ -28,6 +28,9 @@ A development tracker for the next phone update after 2.1, not a record of a shi
 
 **Not in scope (owner decisions if wanted later).** Promoting tablets or Chromebooks in the Play listing (needs tablet screenshots). iPad support (`ios.supportsTablet` stays false until after the iOS launch). A two-pane tablet layout (for example the question beside its explanation).
 
+### Build-tool security update: node-forge 1.4.3 (19 Nov 2026, PR #286)
+
+Clears four Dependabot alerts (one low, three moderate) in node-forge, which only Expo's command-line and update code-signing tools use; it is not in the app. The npm override in `mobile/package.json` moved from 1.4.2 to 1.4.3. `npm run check` passed (7,191 tests); the Android and iOS update fingerprints are unchanged, so existing installs keep receiving updates. The fifth alert (glob, build tools only) stays open on purpose until Expo and Jest move to glob 14: `docs/mobile/DEPENDENCY_AUDIT.md`. No release note: nothing a learner can notice.
 ### Learner-feedback round (19 Nov 2026)
 
 Source: the owner's consolidated handoff of 18 to 19 Nov 2026 and her decisions the same day. Built on main at `44f6583`. **State: implemented and unit-tested in a pull request; not merged, not built, not tested on a phone.** The owner reviews screenshots first.
