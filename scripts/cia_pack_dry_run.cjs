@@ -34,7 +34,9 @@
  *                 (the phone app has no builder for this file: shape only)
  *   exam          the exam-guide builder on <pack>/exam/<pack>_exam_guide.json
  *                 and final_review_week.json, with the outline's weights
- *   mock pool     items whose `testable_from` date is after today are left out
+ *   mock pool     retired items (`"retired": true`: kept for their id, never
+ *                 dealt again) and items whose `testable_from` date is after
+ *                 today are left out
  *   full mock     the real length (125, 100, 100, 150) split by section weight
  *   short mock    the app's mini mock (a third: 42, 33, 33, 50) likewise.
  *                 A pool too small for a mock is NOT a failure while a pack is
@@ -42,10 +44,15 @@
  *                 and which section is short, and the draw is still checked on
  *                 the largest mock that fits and keeps the weights.
  *                 --require-full turns "cannot draw" into a failure (releases).
- * Checks across packs:
+ * Checks across packs (they run on every call, whichever packs are named):
  *   ciac          data/cia/tools/build_challenge.py --check passes, and
- *                 ciac/id_map.json has no Challenge id twice, no active source twice
+ *                 ciac/id_map.json has no Challenge id twice, no active source twice.
+ *                 Printed before the ciac pack's own lines; when ciac is not
+ *                 one of the named packs, printed with the other checks
+ *                 across packs, because a Part item feeds the Challenge pack
  *   question ids  no id appears in two packs
+ * (Whether an id or an id-map row has changed since main is a git question:
+ * data/cia/tools/check_ids.py.)
  *
  * Usage (plain node, no npm install):
  *   node scripts/cia_pack_dry_run.cjs                      # data/cia, today's date
@@ -500,11 +507,14 @@ function dryRunPack(pack, exam, app, builders) {
   }
   // CIA: an item that rests on a Topical Requirement that is not testable yet
   // carries its `testable_from` date; it stays in the bank but is left out of
-  // every mock until that date. (Retired items are left out as in the other courses.)
+  // every mock until that date. A retired item (`"retired": true`) keeps its
+  // id in the pack so old progress still resolves, and is never dealt again.
   const live = questions.filter((q) => !q.retired);
+  const retiredCount = questions.length - live.length;
   const waiting = live.filter((q) => testableFrom.has(q.id) && testableFrom.get(q.id) > ARGS.today);
   const pool = live.filter((q) => !waiting.includes(q));
   note('mock pool', `${pool.length} of ${live.length} live items testable on ${ARGS.today}`
+    + (retiredCount ? ` (${plural(retiredCount, 'retired item')} kept for the id, never dealt)` : '')
     + (waiting.length
       ? ` (${waiting.length} left out until testable_from: ${waiting.slice(0, 5).map((q) => `${q.id} ${testableFrom.get(q.id)}`).join(', ')}${waiting.length > 5 ? ', …' : ''})`
       : ''));
@@ -575,6 +585,9 @@ async function main() {
     }
     dryRunPack(pack, facts[pack], app, builders);
   }
+
+  // The Challenge gate is a check across packs: it runs even when ciac was not named.
+  if (!ARGS.packs.includes(CHALLENGE)) checkChallenge();
 
   // ── Across packs: a question id belongs to one pack only (progress is keyed by id) ──
   const where = new Map();
