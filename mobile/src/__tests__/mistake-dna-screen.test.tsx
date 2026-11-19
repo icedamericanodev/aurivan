@@ -114,9 +114,11 @@ it('handles certification reset and old-only evidence honestly', () => {
   expect(text()).toContain('Not enough evidence yet');
   expect(labels().some((l) => /^Drill it/.test(l))).toBe(false);
   act(() => { useProgress.getState().resetCert('cisa'); });
-  press('Explore pattern evidence');
-  expect(text()).toContain('0 classified');
+  // Mobile 2.2 (UX review): with no saved mistakes there is no pattern summary at all, only the empty state.
+  expect(text()).not.toContain('Your mistake patterns');
+  expect(labels()).not.toContain('Explore pattern evidence');
   expect(text()).toContain('Nothing open right now');
+  expect(text()).not.toMatch(/\b0 open\b/);
 });
 it('uses one help entry for the whole journal, with a visible coaching cue', () => {
   seed(50);
@@ -134,5 +136,26 @@ it('uses one help entry for the whole journal, with a visible coaching cue', () 
   expect(text()).not.toContain('shares do not add up to 100%');
   press('Explore pattern evidence');
   expect(r!.root.findAllByType(FeatureInfo)).toHaveLength(1);
-  expect(text()).toContain('6 classified');
+  expect(text()).toContain('6 with a pattern');
+});
+// Mobile 2.2 code review: the journal stays mounted under a practice session opened from it, so a clock
+// frozen when the screen opened would leave out misses made in that session (the engine drops any miss
+// dated after its clock). The clock must move with the saved mistakes.
+it('counts misses made after the journal opened (the clock moves with the saved mistakes)', () => {
+  jest.useFakeTimers({ now: new Date('2026-11-19T09:00:00Z') });
+  try {
+    seed(50);
+    press('Explore pattern evidence');
+    expect(text()).toContain('6 with a pattern');
+    // An hour later, a practice session opened from the journal saves three more "role" misses.
+    jest.setSystemTime(new Date('2026-11-19T10:00:00Z'));
+    act(() => {
+      const cp = selectCert(useProgress.getState(), 'cisa');
+      const extra = Object.fromEntries(getAllQuestions('cisa').slice(200, 203).map((q) => [q.id, { picked: q.correct === 'A' ? 'B' : 'A', at: Date.now(), slip: 'role' as const, resolved: false }]));
+      useProgress.setState({ byCert: { cisa: { ...cp, mistakes: { ...cp.mistakes, ...extra } } } } as never);
+    });
+    expect(text()).toContain('9 with a pattern');
+  } finally {
+    jest.useRealTimers();
+  }
 });

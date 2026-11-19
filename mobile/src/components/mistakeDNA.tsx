@@ -43,6 +43,8 @@ export function MistakeDNASummary({ dna }: { dna: MistakeDNA }) {
   const { c } = useTheme();
   const [expanded, setExpanded] = useState(false);
   const top = dna.top;
+  const caption = top ? (dna.tied ? 'One of your most common patterns' : 'A pattern worth reviewing') : 'Not enough evidence yet';
+  const title = top ? DNA_COPY[top.pattern].label : 'Keep reflecting';
   const count = (w: MistakeDNA['recent']) => w.patterns.find((p) => p.pattern === top?.pattern)?.count ?? 0;
   return (
     <View style={{ marginTop: space.xl }}>
@@ -53,15 +55,19 @@ export function MistakeDNASummary({ dna }: { dna: MistakeDNA }) {
       </View>
       <T v="meta">{`Last 28 days · ${shortDate(dna.from)} – ${shortDate(dna.to)}`}</T>
       <View style={{ marginTop: space.md, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
-        <T v="caption" color={c.accentText}>{top ? (dna.tied ? 'One of your most common patterns' : 'A pattern worth reviewing') : 'Not enough evidence yet'}</T>
-        <T v="title" accessibilityRole="header" style={{ marginTop: space.xs }}>{top ? DNA_COPY[top.pattern].label : 'Keep reflecting'}</T>
+        {/* UX review (2.2): the caption is read as part of the heading (TalkBack's heading jump lands on the
+            title and would skip it), and it is capped with the title so the hierarchy holds at 200% text. */}
+        <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+          <T v="caption" color={c.accentText} maxFontSizeMultiplier={1.6}>{caption}</T>
+        </View>
+        <T v="title" accessibilityRole="header" accessibilityLabel={`${caption}: ${title}`} style={{ marginTop: space.xs }}>{title}</T>
         <T v="small" style={{ marginTop: space.xs }}>{top ? cue(top.pattern) : 'Tag a few mistakes to help reveal a pattern.'}</T>
       </View>
       <Button kind="ghost" label={expanded ? 'Hide pattern evidence' : 'Explore pattern evidence'} expanded={expanded} onPress={() => setExpanded(!expanded)} style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.sm }} />
       {expanded && (
         <View>
           <T v="label" accessibilityRole="header">Thinking-pattern breakdown</T>
-          <T v="meta" style={{ marginTop: space.xs }}>{`${dna.classified} classified · ${dna.unclassified} unclassified`}</T>
+          <T v="meta" style={{ marginTop: space.xs }}>{`${dna.classified} with a pattern · ${dna.unclassified} without one`}</T>
           {dna.patterns.slice(0, 5).map((p) => (
             <View key={p.pattern} style={{ marginTop: space.md }}>
               <T v="label">{DNA_COPY[p.pattern].label}</T>

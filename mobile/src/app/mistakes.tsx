@@ -236,16 +236,19 @@ export default function Mistakes() {
   const open = Object.entries(progress.mistakes).filter(([, m]) => !m.resolved);
   const fixedCount = Object.keys(progress.mistakes).length - open.length;
   // Saved mistakes already contain one latest miss per stable question id.
-  // eslint-disable-next-line react-hooks/purity -- explicit clock for the rolling observation window
-  const now = Date.now();
+  // The clock is read inside the memo (2.2 reviews): Date.now() in render broke the memo, so each tag tap
+  // re-analysed every saved mistake; a clock frozen at mount would leave out misses made in a practice
+  // session opened from here (the journal stays mounted underneath). Now it moves exactly when the
+  // saved mistakes change. Elsewhere the window's own ends (dna.from, dna.to) are the time.
   const dna = useMemo(() => {
     const inputs: DNAInput[] = [];
     for (const [id, m] of Object.entries(progress.mistakes)) {
       const q = findQuestion(certId, id);
       if (q) inputs.push({ id, certId, at: m.at, slip: m.slip, picked: m.picked, confidence: m.confidence, correct: q.correct, tips: q.tips, stem: q.stem });
     }
-    return mistakeDNA(inputs, certId, now);
-  }, [certId, progress.mistakes, now]);
+    // eslint-disable-next-line react-hooks/purity -- the window's clock, refreshed with the saved mistakes
+    return mistakeDNA(inputs, certId, Date.now());
+  }, [certId, progress.mistakes]);
   const pattern = dna.top ? { ready: true as const, pattern: dna.top.pattern, ...PATTERN_COPY[dna.top.pattern] } : { ready: false as const };
   // The principle that coaches this pattern (none for a content gap, or a cert without principles).
   const patternPrinciple = pattern.ready ? principleForSlip(cert.id, pattern.pattern) : undefined;
@@ -286,11 +289,11 @@ export default function Mistakes() {
     <View>
       <PushedHeader title="Mistake journal" onBack={() => backOr('/you')} />
 
-      <MistakeDNASummary dna={dna} />
+      {Object.keys(progress.mistakes).length > 0 && <MistakeDNASummary dna={dna} />}
       {pattern.ready && (
         // Keep remediation beside the summary, using existing content and access rules.
-        <View style={{ marginTop: space.lg }}>
-          <T v="label" accessibilityRole="header">What to do next</T>
+        // UX review (2.2): no extra "What to do next" heading; the actions follow the cue directly.
+        <View style={{ marginTop: space.sm }}>
           {patternPrinciple && (
             // The thinking rule behind this slip. The ghost pads 8pt each side: pulled left so its icon lines up with the text.
             <Button
@@ -304,7 +307,7 @@ export default function Mistakes() {
               style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
             />
           )}
-          {patternNote && <Button kind="ghost" label="Read a related study note" accessibilityLabel={`Read the note: ${patternNote.name}`} onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(patternNote.id)}`)} />}
+          {patternNote && <Button kind="ghost" label="Read a related study note" accessibilityLabel={`Read the note: ${patternNote.name}`} onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(patternNote.id)}`)} style={{ alignSelf: 'flex-start', marginLeft: -space.sm }} />}
           <Gap h={space.md} />
           {/* "Drill it" only when that game can be played for this exam (registry minPool) AND Drills has it open
               for this learner (release bug hunt round 2: the 50-answer unlock). Otherwise review the mistakes. */}
@@ -321,12 +324,12 @@ export default function Mistakes() {
               onPress={() => guardedStart(() => startFromIds(cert.id, open.slice(0, 20).map(([id]) => id), 'Mistake journal'), openSession)}
             />
           )}
-          {freshIds.length > 0 ? <Button kind="ghost" label="Practice other questions" accessibilityHint="Uses questions outside your mistake history to revisit your reasoning" onPress={() => guardedStart(() => startPractice(certId, { count: 10, ids: freshIds, title: 'Fresh practice' }), openSession)} /> : <Button kind="ghost" label="Choose a practice activity" onPress={() => router.push('/practice')} />}
+          {freshIds.length > 0 ? <Button kind="ghost" label="Practice other questions" accessibilityHint="Uses questions outside your mistake history to revisit your reasoning" onPress={() => guardedStart(() => startPractice(certId, { count: 10, ids: freshIds, title: 'Fresh practice' }), openSession)} style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }} /> : <Button kind="ghost" label="Choose a practice activity" onPress={() => router.push('/practice')} style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }} />}
         </View>
       )}
 
-      <Section title={showFixed ? 'All mistakes' : `${open.length} open`} />
-      {fixedCount > 0 && (
+      {entries.length > 0 && <Section title={showFixed ? 'All mistakes' : `${open.length} open`} />}
+      {fixedCount > 0 && entries.length > 0 && (
         <View style={{ alignSelf: 'flex-start', marginTop: space.sm }}>
           <Chip label={showFixed ? 'Hide fixed' : `Show ${fixedCount} fixed`} selected={showFixed} onPress={() => setShowFixed(!showFixed)} />
         </View>

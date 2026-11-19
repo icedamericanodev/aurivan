@@ -58,7 +58,8 @@ for (const theme of ['light', 'dark']) {
     localStorage.setItem('aurivan.progress.v1', JSON.stringify(p));
   });
   await page.reload({ waitUntil: 'networkidle' });
-  await page.getByText('Not enough evidence yet', { exact: true }).waitFor();
+  // Mobile 2.2: an empty journal shows only its empty state (no pattern summary).
+  await page.getByText('Nothing open right now', { exact: true }).waitFor();
   await page.screenshot({ path: `${out}/${theme}-empty.png` });
   await context.close();
 }
