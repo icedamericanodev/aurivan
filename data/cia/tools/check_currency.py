@@ -25,7 +25,6 @@ Usage:
   python3 data/cia/tools/check_currency.py [--strict] [--today YYYY-MM-DD] [--root DIR]
 Exit 1 on any ERROR.
 """
-import datetime
 import sys
 
 import cia_common as c
