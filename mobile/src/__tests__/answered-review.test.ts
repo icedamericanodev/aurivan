@@ -182,11 +182,11 @@ describe('may the look-back page open?', () => {
 
 describe('the words', () => {
   it('the last result, in the wording the owner asked for', () => {
-    expect(lastResultLine(rec(true))).toBe('Last answered correctly');
-    expect(lastResultLine(rec(false))).toBe('Last answer was not the best');
-    expect(LAST_CORRECT_LINE).toBe('Last answered correctly');
-    expect(LAST_MISSED_LINE).toBe('Last answer was not the best');
-    expect(PICK_NOT_SAVED_LINE).toBe('Your selected option was not saved for this answer.');
+    expect(lastResultLine(rec(true))).toBe('Last time: correct');
+    expect(lastResultLine(rec(false))).toBe('Last time: not quite');
+    expect(LAST_CORRECT_LINE).toBe('Last time: correct');
+    expect(LAST_MISSED_LINE).toBe('Last time: not quite');
+    expect(PICK_NOT_SAVED_LINE).toBe('KaiSip saved your result for this answer, not which choice you picked.');
     expect(CURRENT_EXPLANATIONS_LINE).toBe('Explanations shown are the current version.');
   });
 

@@ -325,7 +325,7 @@ describe('zero: the countdown stops once, and the learner chooses once', () => {
   });
 
   it('the sheet says what happened and that nothing was marked wrong', () => {
-    expect(timesUpBody(7, 10)).toBe('You answered 7 of 10. Nothing was submitted, and questions you have not answered are not marked wrong.');
+    expect(timesUpBody(7, 10)).toBe('You answered 7 of 10. Those answers are saved. The rest are not marked wrong.');
   });
 });
 

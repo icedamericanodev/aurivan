@@ -175,7 +175,9 @@ function BankDomainScreen() {
       {hasItems && (
         <StickyFooter onHeight={setFooterH}>
           <Button
-            label="Practice these"
+            // Answered: looking back is the main thing here, so answering again is the quieter choice.
+            kind={lookBack ? 'secondary' : undefined}
+            label={lookBack ? 'Practice these again' : 'Practice these'}
             accessibilityHint="Up to 20 questions from this list, in a random order"
             onPress={() =>
               guardedStart(

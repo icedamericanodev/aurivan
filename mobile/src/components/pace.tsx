@@ -133,32 +133,46 @@ export function PaceStrip({ clock, hiddenSpoken, clockUnit, line, lineShort, bar
  * Mobile 2.2: the practice countdown's time's-up sheet (engine/practiceCountdown.ts holds the words).
  *
  * Calm on purpose: the title is ink (never the error colour), nothing has been submitted, and the
- * sheet says so. EXACTLY two choices and no other way out: no Close button, a tap on the dim does
- * nothing and Android's Back does nothing, because leaving without choosing would leave the set
- * with a clock at zero and no answer. The screen shows it again (once per opening of the set)
+ * sheet says so. EXACTLY two choices: no Close button and a tap on the dim does nothing, because
+ * leaving without choosing would leave the set with a clock at zero and no answer. Android's Back
+ * (and the screen-reader escape) takes the gentle choice, "Keep going untimed", so the sheet never
+ * feels frozen. Both buttons ignore presses for TIMES_UP_GUARD_MS after the sheet opens. The screen shows it again (once per opening of the set)
  * until one of the two is tapped.
  *
  * Screen readers: the title takes focus as the sheet opens, so "Time's up" is said once, by the
  * focus move itself (no separate announcement, which doubled on Android). Long text scrolls, so
  * both buttons stay on screen at 200% text; the bottom inset keeps them above the system bar.
  */
+/** How long the time's-up buttons ignore presses after the sheet opens (a tap meant for "Check answer"). */
+export const TIMES_UP_GUARD_MS = 600;
+
 export function TimesUpSheet({ visible, answered, total, onKeepGoing, onFinish }: { visible: boolean; answered: number; total: number; onKeepGoing: () => void; onFinish: () => void }) {
   const { c, isDark } = useTheme();
   const insets = useSafeAreaInsets();
   const { height } = useWindowDimensions();
   const titleRef = useRef<View>(null);
+  // The sheet's buttons appear where "Check answer" was a moment ago. A tap already on its way when the
+  // clock reached zero must not end the set: both buttons ignore presses for a short moment after opening.
+  const shownAt = useRef(0);
   useEffect(() => {
-    if (visible) return moveFocus(titleRef, 350);
+    if (!visible) return;
+    shownAt.current = Date.now();
+    return moveFocus(titleRef, 350);
   }, [visible]);
+  const guarded = (run: () => void) => () => {
+    if (Date.now() - shownAt.current >= TIMES_UP_GUARD_MS) run();
+  };
   return (
-    // onRequestClose (Android Back) is required by Modal; it does nothing here on purpose (see above).
-    <Modal visible={visible} transparent animationType="fade" onRequestClose={() => {}} statusBarTranslucent navigationBarTranslucent>
+    // Android Back (and the screen-reader escape gesture) is the gentle choice: keep going untimed.
+    // Nothing is lost that way, and the sheet never feels frozen. Ending the set stays a deliberate tap.
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={guarded(onKeepGoing)} statusBarTranslucent navigationBarTranslucent>
       <View style={{ flex: 1, justifyContent: 'flex-end' }}>
         {/* The dim. Not a button: only the two choices close the sheet. */}
         <View accessible={false} importantForAccessibility="no" style={[StyleSheet.absoluteFill, { backgroundColor: c.scrim, opacity: isDark ? scrimOp.dark : scrimOp.light }]} />
         <View
           testID="times-up-sheet"
           accessibilityViewIsModal
+          onAccessibilityEscape={guarded(onKeepGoing)}
           style={[
             {
               width: '100%',
@@ -184,8 +198,8 @@ export function TimesUpSheet({ visible, answered, total, onKeepGoing, onFinish }
           </ScrollView>
           {/* Both choices stay under the words, in reach. Neither is a "danger" button: nothing is lost either way. */}
           <View style={{ paddingHorizontal: space.gutter, paddingTop: space.sm, paddingBottom: space.md, gap: space.sm }}>
-            <Button label={KEEP_GOING_LABEL} accessibilityHint="Carries on with the same questions and no timer" onPress={onKeepGoing} />
-            <Button kind="secondary" label={FINISH_NOW_LABEL} accessibilityHint="Ends the set with the questions you answered" onPress={onFinish} />
+            <Button label={KEEP_GOING_LABEL} accessibilityHint="Carries on with the same questions and no timer" onPress={guarded(onKeepGoing)} />
+            <Button kind="secondary" label={FINISH_NOW_LABEL} accessibilityHint="Ends the set with the questions you answered" onPress={guarded(onFinish)} />
           </View>
         </View>
       </View>

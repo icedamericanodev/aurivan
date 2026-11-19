@@ -250,7 +250,7 @@ export function countdownCue(beforeMs: number, afterMs: number): CountdownCue | 
 }
 
 /** The last minute's line on the strip (words, never colour alone), and its short form at large text. */
-export const LAST_MINUTE_LINE = 'Last minute. Nothing is submitted at zero.';
+export const LAST_MINUTE_LINE = 'Last minute. At zero you choose what happens.';
 export const LAST_MINUTE_SHORT = 'Last minute';
 
 /** The time's-up sheet. Two choices, nothing else. */
@@ -260,7 +260,7 @@ export const FINISH_NOW_LABEL = 'Finish now';
 
 /** The sheet's words: what happened, and that nothing was taken away. */
 export function timesUpBody(answered: number, total: number): string {
-  return `You answered ${answered} of ${total}. Nothing was submitted, and questions you have not answered are not marked wrong.`;
+  return `You answered ${answered} of ${total}. Those answers are saved. The rest are not marked wrong.`;
 }
 
 /**

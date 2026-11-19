@@ -59,6 +59,8 @@ export function RateShareRows() {
           subtitle={rateFailed ? RATE_FAILED_LINE : undefined}
           accessibilityHint="Opens Google Play"
           onPress={rate}
+          // An action, not a door to another screen: no chevron (DESIGN_SYSTEM).
+          chevron={false}
         />
       )}
       <SettingsRow
@@ -66,6 +68,7 @@ export function RateShareRows() {
         subtitle={shareFailed ? SHARE_FAILED_LINE : undefined}
         accessibilityHint="Opens your phone’s share options with a link to kaisip.com"
         onPress={share}
+        chevron={false}
       />
     </>
   );

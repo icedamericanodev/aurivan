@@ -64,13 +64,13 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '2.2',
     date: '2026-11-19',
     new: [
-      'Look back at questions you have answered, with their explanations, without answering them again. Open Answered in the question list.',
-      'Set a countdown for a practice set. When time is up, you choose to finish or to keep going without the timer.',
+      'Look back at questions you have answered, with their explanations, without answering them again.',
+      'Set a countdown for a practice set, and choose to finish or keep going when time is up.',
       'Choose how many questions and which timer when you practise one area.',
-      'Rate or share KaiSip from Settings.',
+      'Share KaiSip from Settings, or rate it on Google Play.',
     ],
     improved: [
-      'After you answer, the short summary and the tips come first. The whole question and all the choices are one tap away under Show question & choices.',
+      'After you answer, the short summary and tips come first, with the whole question and every choice one tap away.',
       'On tablets and other large screens, pages now sit in a comfortable reading width instead of stretching across the screen.',
       'The recovery Concept Lab is put away for now while we make it clearer.',
     ],

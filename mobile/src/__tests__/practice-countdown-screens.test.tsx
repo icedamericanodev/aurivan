@@ -76,8 +76,12 @@ const unmount = () =>
   });
 const find = (label: string) =>
   root().findAll((n) => (n.props.label === label || n.props.accessibilityLabel === label) && typeof n.props.onPress === 'function');
-const press = (label: string) =>
+/** The time's-up buttons ignore presses for a moment after the sheet opens (components/pace.tsx TIMES_UP_GUARD_MS). */
+const SHEET_BUTTONS = ['Keep going untimed', 'Finish now'];
+const press = (label: string, opts: { atOnce?: boolean } = {}) =>
   act(() => {
+    // A learner reads the sheet before tapping: step the clock past the guard (no timers run).
+    if (SHEET_BUTTONS.includes(label) && !opts.atOnce) jest.setSystemTime(Date.now() + 700);
     find(label)[0].props.onPress();
   });
 const allText = () => {
@@ -431,7 +435,7 @@ describe('the countdown on the question screen', () => {
     tick(2 * S);
     expect(said).toEqual(['5 minutes left.', '1 minute left.']);
     // The last minute is in words on the strip too (never colour alone).
-    expect(strip().line).toEqual({ text: 'Last minute. Nothing is submitted at zero.', tone: 'soon' });
+    expect(strip().line).toEqual({ text: 'Last minute. At zero you choose what happens.', tone: 'soon' });
     expect(strip().lineShort).toBe('Last minute');
     tick(58 * S);
     // Ten minutes of ticks: two announcements. The strip's own label moves in whole minutes / 10 s steps.
@@ -501,6 +505,26 @@ describe('at zero: a calm sheet with exactly two choices', () => {
     tick(31 * S);
   };
 
+  it('a tap that lands as the sheet opens (meant for "Check answer") does nothing; Back keeps going untimed', () => {
+    toZero();
+    expect(sheetOpen()).toBe(true);
+    const before = JSON.stringify(useSession.getState().active);
+    // "Finish now" sits where "Check answer" was: a press in the first moment is ignored, both buttons.
+    press('Finish now', { atOnce: true });
+    press('Keep going untimed', { atOnce: true });
+    expect(sheetOpen()).toBe(true);
+    expect(JSON.stringify(useSession.getState().active)).toBe(before);
+    // Android Back (the Modal's onRequestClose) is the gentle choice once the moment has passed.
+    const modal = root().findAll((n) => typeof n.props.onRequestClose === 'function' && n.props.visible === true)[0];
+    act(() => {
+      jest.setSystemTime(Date.now() + 700);
+      modal.props.onRequestClose();
+    });
+    expect(sheetOpen()).toBe(false);
+    expect(saved().after).toBe('untimed');
+    expect(useSession.getState().active!.finishedAt).toBeUndefined();
+  });
+
   it('stops once, submits nothing, and keeps the option that was picked but not checked', () => {
     toZero();
     expect(sheetOpen()).toBe(true);
@@ -510,7 +534,7 @@ describe('at zero: a calm sheet with exactly two choices', () => {
     const box = root().findAll((n) => n.props.testID === 'times-up-sheet')[0];
     expect(box.findAllByType(Button).map((b) => b.props.label)).toEqual(['Keep going untimed', 'Finish now']);
     expect(sheet().props).toMatchObject({ answered: 1, total: 10 });
-    expect(allText()).toContain('You answered 1 of 10. Nothing was submitted, and questions you have not answered are not marked wrong.');
+    expect(allText()).toContain('You answered 1 of 10. Those answers are saved. The rest are not marked wrong.');
     // The title is the header a screen reader lands on; there is no separate "time's up" announcement.
     expect(box.findAll((n) => n.props.accessibilityRole === 'header' && n.props.accessibilityLabel === 'Time’s up').length).toBeGreaterThan(0);
     expect(said).toEqual([]);

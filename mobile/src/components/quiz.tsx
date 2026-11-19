@@ -385,9 +385,12 @@ export function AnswerPlate({ pick, best, delay = 0 }: { pick?: PlateRow; best: 
  */
 export function PickNote({ letter, text }: { letter: Letter; text: string }) {
   const { c } = useTheme();
-  const discAbove = useFontScale() >= DISC_ABOVE_FROM;
+  const fontScale = useFontScale();
+  const discAbove = fontScale >= DISC_ABOVE_FROM;
+  // Lined up with the row's words: the badge grows with its letter, so the indent grows with it.
+  const disc = DISC * Math.min(Math.max(fontScale, 1), 1.6);
   return (
-    <View testID="answer-why-not" accessible accessibilityLabel={`Why not ${letter}: ${text}`} style={{ marginTop: space.sm, marginLeft: discAbove ? 0 : DISC + DISC_GAP }}>
+    <View testID="answer-why-not" accessible accessibilityLabel={`Why not ${letter}: ${text}`} style={{ marginTop: space.sm, marginLeft: discAbove ? 0 : disc + DISC_GAP }}>
       <T v="caption" color={c.ink2}>{`Why not ${letter}`}</T>
       <T v="small" color={c.ink} style={{ marginTop: 2 }}>{text}</T>
     </View>
@@ -921,7 +924,7 @@ export function AnswerMore({ rows: given, buttonRef }: { rows: (MoreRow | null)[
       <IconButton
         ref={buttonRef}
         label="More on this question"
-        hint={rows.length > 1 ? 'Opens all the options, the note, the principle, your note and Report a problem' : 'Opens Report a problem'}
+        hint={rows.length > 1 ? 'Opens the note, the principle, your note and Report a problem' : 'Opens Report a problem'}
         expanded={open}
         icon={(col) => <Ellipsis size={24} color={col} strokeWidth={ICON_STROKE} />}
         onPress={() => setOpen(true)}
@@ -1004,7 +1007,7 @@ function RecapChoiceRow({ row, first, showWhy }: { row: RecapChoice; first: bool
       </View>
       {/* Only when the learner asked for every choice's reason: one stop, never a heading. */}
       {showWhy && row.why ? (
-        <View testID={`recap-why-${row.letter}`} accessible accessibilityLabel={`${whyHead}: ${row.why}`} style={{ marginTop: space.sm, marginLeft: discAbove ? 0 : DISC + DISC_GAP }}>
+        <View testID={`recap-why-${row.letter}`} accessible accessibilityLabel={`${whyHead}: ${row.why}`} style={{ marginTop: space.sm, marginLeft: discAbove ? 0 : disc + DISC_GAP }}>
           <T v="caption" color={c.ink2}>{whyHead}</T>
           <T v="small" color={c.ink} style={{ marginTop: 2 }}>{row.why}</T>
         </View>
@@ -1024,10 +1027,11 @@ function RecapToggle({ open, show, hide, spokenShow, spokenHide, onPress, testID
       accessibilityState={{ expanded: open }}
       onPress={onPress}
       hitSlop={4}
-      style={({ pressed }) => ({ minHeight: 48, justifyContent: 'center', alignSelf: 'flex-start', opacity: pressed ? 0.7 : 1 })}
+      style={({ pressed }) => ({ minHeight: 48, maxWidth: '100%', justifyContent: 'center', alignSelf: 'flex-start', opacity: pressed ? 0.7 : 1 })}
     >
       <Row gap={space.xs}>
-        <T v="label" color={c.accentText}>{open ? hide : show}</T>
+        {/* Shrinks and wraps at large text, so the chevron never leaves the page. */}
+        <T v="label" color={c.accentText} style={{ flexShrink: 1 }}>{open ? hide : show}</T>
         {/* The chevron turns over when open: shape, not just the words, says which way it goes. */}
         <View style={open ? { transform: [{ rotate: '180deg' }] } : undefined}>
           <ChevronDown size={18} color={c.accentText} strokeWidth={ICON_STROKE} />

@@ -134,9 +134,9 @@ export function lookBackGate(input: {
 }
 
 // ── Words (one place, so the screen and the tests agree) ────────────────
-export const LAST_CORRECT_LINE = 'Last answered correctly';
-export const LAST_MISSED_LINE = 'Last answer was not the best';
-export const PICK_NOT_SAVED_LINE = 'Your selected option was not saved for this answer.';
+export const LAST_CORRECT_LINE = 'Last time: correct';
+export const LAST_MISSED_LINE = 'Last time: not quite';
+export const PICK_NOT_SAVED_LINE = 'KaiSip saved your result for this answer, not which choice you picked.';
 export const CURRENT_EXPLANATIONS_LINE = 'Explanations shown are the current version.';
 export const READ_ONLY_LINE = 'Looking back changes nothing in your progress.';
 
