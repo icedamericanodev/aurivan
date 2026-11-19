@@ -136,7 +136,11 @@ def library(root):
 
     Returns (verified, likely, problems). A heading "## Verified: opened
     YYYY-MM-DD ..." or "## Likely: ..." sets the status of the "- " bullets
-    under it. A Verified heading without an opened date is a problem, and so is
+    under it. A third heading, "## Background: opened YYYY-MM-DD ...", is for a
+    source that was opened but is not one of The IIA's exam references (COSO's
+    public summaries, a white paper): it may be cited after the first citation,
+    but it can never carry a key, so its bullets are returned with the Likely
+    ones. A Verified heading without an opened date is a problem, and so is
     a Verified or Likely heading written any other way ("##Likely", "### Likely"):
     it still sets the status, so a bullet can never silently count as Verified.
     """
@@ -149,18 +153,18 @@ def library(root):
         hm = re.match(r"\s*(#+)\s*(.*)$", line)
         if hm:                             # any heading ends the section before it
             head = hm.group(2).strip()
-            kind = next((k for k in ("verified", "likely") if head.lower().startswith(k)), None)
+            kind = next((k for k in ("verified", "likely", "background") if head.lower().startswith(k)), None)
             status = kind
             if kind and not line.startswith("## "):
                 # "##Likely" or "### Likely" used to be read as plain text, so the bullets
                 # under it kept the Verified status of the section above.
                 problems.append(f"line {n}: write the heading as '## {kind.capitalize()}: ...' (two hashes, one space)")
-            if kind == "verified" and not re.search(r"opened \d{4}-\d{2}-\d{2}", head):
-                problems.append(f"line {n}: a Verified heading needs 'opened YYYY-MM-DD'")
+            if kind in ("verified", "background") and not re.search(r"opened \d{4}-\d{2}-\d{2}", head):
+                problems.append(f"line {n}: a {kind.capitalize()} heading needs 'opened YYYY-MM-DD'")
         elif line.startswith("- "):
             bullet = line[2:].strip()
             if status is None:
-                problems.append(f"line {n}: bullet outside a Verified or Likely section: {bullet}")
+                problems.append(f"line {n}: bullet outside a Verified or Likely section: {bullet}")  # or Background
             elif bullet in verified or bullet in likely:
                 problems.append(f"line {n}: duplicate bullet: {bullet}")
             else:

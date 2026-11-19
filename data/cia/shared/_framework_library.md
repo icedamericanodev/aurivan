@@ -12,6 +12,10 @@ How to read this file:
    bullets under it. A bullet is the exact string a `framework_ref` part must
    equal. Split a `framework_ref` on "; " and match each part.
 2. The FIRST part of every `framework_ref` must be a Verified bullet.
+   A "Background" heading marks a source that was opened but is not one of
+   The IIA's exam references (COSO's public summaries, a white paper): it may
+   be cited after the first part and may inform a note, but it never carries
+   a key.
 3. Verified means the file was downloaded from theiia.org and opened on the
    date in the heading. Likely means the title is on The IIA's exam reference
    list (V5.5.2026.10.15) but the text was not opened: a Likely bullet may
@@ -179,6 +183,18 @@ reference list by name), and every prep provider.
 
 ## Verified: opened 2026-11-19 Certification Candidate Handbook, March 2026 (https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf)
 - IIA Certification Candidate Handbook (March 2026)
+
+## Background: opened 2026-11-19 COSO Internal Control: Integrated Framework (2013), Executive Summary; not on The IIA's exam reference list (https://www.coso.org/_files/ugd/3059fc_1df7d5dd38074006bce8fdf621a942cf.pdf)
+- COSO, Internal Control: Integrated Framework (2013), Executive Summary
+
+## Background: opened 2026-11-19 COSO Enterprise Risk Management: Integrating with Strategy and Performance (2017), Executive Summary; not on The IIA's exam reference list (https://www.coso.org/_files/ugd/3059fc_61ea5985b03c4293960642fdce408eaa.pdf)
+- COSO, Enterprise Risk Management: Integrating with Strategy and Performance (2017), Executive Summary
+
+## Background: opened 2026-11-19 COSO and ACFE Fraud Risk Management Guide, second edition (2023), Executive Summary only; not on The IIA's exam reference list (https://www.coso.org/_files/ugd/3059fc_ff11af647d0e433dac3eccfac3f8606a.pdf)
+- COSO and ACFE, Fraud Risk Management Guide, second edition (2023), Executive Summary
+
+## Background: opened 2026-11-19 IIA and Anti-Fraud Collaboration white paper on the internal auditor and fraud risk, April 2026; public, calls itself non-authoritative, not on The IIA's exam reference list (https://www.theiia.org/globalassets/site/content/white-paper/afc-role-of-ia-assessing-and-responding-to-fraud-risk.pdf)
+- IIA and Anti-Fraud Collaboration white paper on the internal auditor's role in fraud risk (2026)
 
 ## Likely: not opened (for purchase: the textbook, primary reference 2, sold in the IIA Bookstore)
 - Internal Auditing: Assurance & Advisory Services, 6th edition

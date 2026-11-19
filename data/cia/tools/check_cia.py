@@ -235,7 +235,7 @@ def check_item(q, pack, d, n, ctx):
         if p not in ctx["verified"] and p not in ctx["likely"]:
             errs.append(f"framework_ref part not in the library: {p}")
         elif i == 0 and p not in ctx["verified"]:
-            errs.append(f"the first framework_ref part must be a Verified (opened) source; '{p}' is Likely")
+            errs.append(f"the first framework_ref part must be a Verified (opened) source; '{p}' is Likely or Background")
     nid = None
     prov = q.get("_provenance") or ""
     if not prov.startswith("Authored from concept:"):

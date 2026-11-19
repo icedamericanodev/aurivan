@@ -1220,8 +1220,11 @@ pack: each has the title of the Part topic it shares.
 From The IIA's exam reference list (version and link in the facts table) and
 the citation library `data/cia/shared/_framework_library.md`. A key may rest
 only on a source in a Verified section, which means it was opened on the date
-shown. The others are listed so an author knows they exist and does not key on
-them from memory.
+shown and is one of The IIA's own documents. "Background only" sources were
+opened too but are not exam references (COSO's public summaries, a white
+paper): a note may use them and a question may cite them second, but they
+never carry a key. The unopened ones are listed so an author knows they exist
+and does not key on them from memory.
 
 | Source | Access | Citable entries |
 |---|---|---|
@@ -1246,6 +1249,10 @@ them from memory.
 | [CIA Part 3 syllabus (2025)](https://www.theiia.org/globalassets/site/certifications/certified-internal-auditor/cia-exam-why-how-and-what-is-changing/cia-part-3-syllabus.pdf) | Opened 2026-11-19 | CIA Part 3 syllabus (2025), Expanded Test Specifications V2.09.2024 FINAL |
 | [CIA Challenge Exam syllabus (effective June 2026)](https://www.theiia.org/globalassets/site/certifications/challenge-exam/oct-2025-challenge-exam-syllabus-v2.pdf) | Opened 2026-11-19 | CIA Challenge Exam syllabus (effective June 2026), V2.10.2025 FINAL |
 | [Certification Candidate Handbook, March 2026](https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf) | Opened 2026-11-19 | IIA Certification Candidate Handbook (March 2026) |
+| [COSO Internal Control: Integrated Framework (2013), Executive Summary; not on The IIA's exam reference list](https://www.coso.org/_files/ugd/3059fc_1df7d5dd38074006bce8fdf621a942cf.pdf) | Opened 2026-11-19 (background only: never carries a key) | COSO, Internal Control: Integrated Framework (2013), Executive Summary |
+| [COSO Enterprise Risk Management: Integrating with Strategy and Performance (2017), Executive Summary; not on The IIA's exam reference list](https://www.coso.org/_files/ugd/3059fc_61ea5985b03c4293960642fdce408eaa.pdf) | Opened 2026-11-19 (background only: never carries a key) | COSO, Enterprise Risk Management: Integrating with Strategy and Performance (2017), Executive Summary |
+| [COSO and ACFE Fraud Risk Management Guide, second edition (2023), Executive Summary only; not on The IIA's exam reference list](https://www.coso.org/_files/ugd/3059fc_ff11af647d0e433dac3eccfac3f8606a.pdf) | Opened 2026-11-19 (background only: never carries a key) | COSO and ACFE, Fraud Risk Management Guide, second edition (2023), Executive Summary |
+| [IIA and Anti-Fraud Collaboration white paper on the internal auditor and fraud risk, April 2026; public, calls itself non-authoritative, not on The IIA's exam reference list](https://www.theiia.org/globalassets/site/content/white-paper/afc-role-of-ia-assessing-and-responding-to-fraud-risk.pdf) | Opened 2026-11-19 (background only: never carries a key) | IIA and Anti-Fraud Collaboration white paper on the internal auditor's role in fraud risk (2026) |
 | Not opened | For purchase: the textbook, primary reference 2, sold in the IIA Bookstore | Internal Auditing: Assurance & Advisory Services, 6th edition |
 | Not opened | Members only: primary references 3 to 6; eBooks of some are also sold in the IIA Bookstore | IIA Global PG: Developing a Risk-Based Internal Audit Plan, 2nd edition; IIA Global PG: Engagement Planning: Assessing Fraud Risks; IIA Global PG: Integrated Approaches to Internal Auditing; IIA GTAG: IT Essentials for Internal Auditors |
 | Not opened | Members only: secondary Global Practice Guides, references 11 to 24 and 26 | IIA Global PG: Assessing the Risk Management Process, 2nd edition; IIA Global PG: Auditing Anti-Corruption Activities, 2nd edition; IIA Global PG: Auditing Culture, 2nd edition; IIA Global PG: Auditing Privacy and Data Protection Risks, 3rd edition; IIA Global PG: Auditing Third-Party Risk Management; IIA Global PG: Communicating Final Engagement Results; IIA Global PG: Communicating Results of Internal Audit Services; IIA Global PG: Coordination and Reliance: Working with Other Assurance Providers; IIA Global PG: Data Analytics Skills for Internal Auditors; IIA Global PG: Developing an Internal Audit Strategy; IIA Global PG: Engagement Planning: Establishing Objectives and Scope, 2nd edition; IIA Global PG: Evaluating the Effectiveness of Ethics Programs; IIA Global PG: Interaction with the Board, 2nd edition; IIA Global PG: Internal Auditing and Fraud, 3rd edition; IIA Global PG: Understanding Data Analytics for Internal Auditors |

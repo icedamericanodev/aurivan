@@ -12,9 +12,9 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 
 | | |
 |---|---|
-| **Status (19 Nov 2026)** | Session G, step 1 done: expert decisions, the four documents, the harness (proven on its planted-fault fixture) and the expert agents. No learner content written yet. |
+| **Status (19 Nov 2026)** | Session G, steps 1 and 2 done: expert decisions, the documents, the harness (145 planted faults stopped, 34 controls hold; an independent code review's findings are all fixed), the expert agents, and the **Part 1 study notes for all four sections** (93 sub-topics; each section independently audited against the opened Standards, read by a first-time learner, and fixed). No questions written yet. |
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
-| **Next step** | Part 1 study notes for all four sections (`data/cia/cia1/notes/d{1..4}.json`), by `cia-p1-domain-expert`, notes before questions. Then the Part 1 pilot: 20 questions per section through the full pipeline (section 6), with the shared principles, the glossary start, and the Part 1 exam guide and final review week. |
+| **Next step** | The Part 1 pilot: 20 questions per section through the full pipeline (section 6), written from the notes, obeying the "do not key on" list in section 8b, with the shared principles, the glossary start, and the Part 1 exam guide and final review week. Then the Challenge map's CISA bridge outline. |
 | **Then** | Part 1 to its sale minimum (its five Challenge-shared topics early), Part 2, Part 3, the Challenge build and the CISA bridge, the cross-part release gate. |
 
 Commands a new session runs first:
@@ -41,7 +41,7 @@ pack. Every surface CISA has, as data that passes its gate.
 | Surface | File (per pack) | Owner agents | cia1 | cia2 | cia3 | ciac |
 |---|---|---|---|---|---|---|
 | Blueprint and outline | `docs/content/CIA_BLUEPRINT.md`, `data/cia/shared/outline.json` | cert-blueprint-researcher | Done | Done | Done | Done |
-| Study notes | `notes/d{N}.json`, one file per section, notes schema v2 | part expert | Next | Not started | Not started | Generated later, plus the bridge |
+| Study notes | `notes/d{N}.json`, one file per section, notes schema v2 | part expert | Done: 93 sub-topics, audited (section 8b) | Not started | Not started | Generated later, plus the bridge |
 | Questions | `originals/d{N}.json` | part expert | Not started | Not started | Not started | Generated (`build_challenge.py`) |
 | Citation library | `data/cia/shared/_framework_library.md` (one for all four) | part experts, cia-currency-checker | Started | | | |
 | Dated facts | `data/cia/shared/currency.json` | cia-currency-checker | Started | | | |
@@ -100,8 +100,10 @@ data/cia/
     left out of the Challenge build, mock pools, practice links, the key,
     length and difficulty counts and blind copies. The wording gates still
     read it. `check_ids.py` compares ids and the Challenge id map with main.
-- **Citation library**: a heading `## Verified: opened YYYY-MM-DD <source> (<url>)`
-  or `## Likely: not opened (<why>)` sets the status of the bullets under it.
+- **Citation library**: a heading `## Verified: opened YYYY-MM-DD <source> (<url>)`,
+  `## Background: opened YYYY-MM-DD <source> (<url>)` (opened, but not an exam
+  reference: never carries a key) or `## Likely: not opened (<why>)` sets the
+  status of the bullets under it.
   The Standards are cited by number and title, never with quoted text.
 - **Dated facts**: `currency.json`, one entry per fact with `source`,
   `last_checked` and `status` (`opened`, `search_only`, `not_opened`).
@@ -284,6 +286,42 @@ An item that rests on a requirement that is not testable yet carries the date
 in `testable_from`; `check_currency.py` enforces it, and the mock and
 free-sample pools leave the item out until then. `cia-currency-checker`
 re-opens the dates every round.
+
+## 8b. Part 1 notes: what they rest on, and what must not carry a key
+
+The Part 1 notes (`data/cia/cia1/notes/d{1..4}.json`: 28, 22, 25 and 18
+sub-topics) were written from opened sources only, then audited by
+`cia-standards-auditor` one section at a time (4 real errors, 51 precision
+points and 29 suggestions across the four sections, all applied or answered),
+read by `learner-reader`, and compared across sections by
+`cia-cross-part-reviewer`. Every rule line says whether it is a **must** (a
+requirement), a **should** or **may** (a consideration), or sound practice
+with no Standards line behind it.
+
+Where the opened sources stop, the notes stay general, and **no question may
+be keyed on these points** until The IIA's practice guides or the textbook
+are opened (they need IIA membership or a purchase):
+
+| Topic | Do not key on |
+|---|---|
+| 1A4 | Any definition or ranking of "limited" against "reasonable" assurance beyond: the Standards name both, define neither, the level follows the nature, timing and extent of the procedures, and assurance is never a guarantee |
+| 1A5, 1A6 | Detail of performance, quality, privacy and culture audits, due diligence, data privacy work or process mapping (concept level only) |
+| 1A8 | Wording from the superseded 2020 Three Lines paper; the model comes from The IIA's 2026 Statement of Position, not the Standards |
+| 1B2 | A former responsibility that ended more than 12 months ago (the "must refrain" rule has no time limit; only the presumption for assurance is tied to 12 months) |
+| 1B3 | Which of reassign, reschedule, adjust the scope or outsource is "best" unless the stem settles it (Standard 2.3 lists them as options with no ranking) |
+| 1B4 | Named negotiation styles, change models or other soft-skill techniques |
+| 1C1 | Named governance codes other than the Three Lines Model |
+| 1C4 | Borderline risk-category cases |
+| 1C5 | Who sets risk tolerance (the sources differ) |
+| 1C7 | "Directive" or "corrective" against a plausible "preventive" or "detective"; the definition of a compensating control |
+| 1C6, 1C8 | COSO component or principle names (COSO is background only) |
+| 1D1 | Named fraud schemes (lapping, kiting, skimming and the like); whether all three sides of the fraud triangle must be present |
+| 1D3 | A fixed list of red flags; "never confront" or "bypass anyone involved" as CIA rules (they are sound practice, not Standards lines) |
+| 1D5 | Interviewing technique, investigation steps, chain of custody |
+
+Items that rest on the Third-Party or Organizational Behavior Topical
+Requirement or its user guide carry `testable_from` (2027-03-01 and
+2027-06-01).
 
 ## 9. Legal position and what waits on the owner
 
