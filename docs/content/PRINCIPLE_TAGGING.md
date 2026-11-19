@@ -760,8 +760,9 @@ old rules' misses go silent while wrongly removed records surface as alerts);
 aaia_d2_335 moved from `test-the-ai-as-used` to `accuracy-is-not-assurance`
 (the runner-up, untested new jailbreaks, is that card's own move; a pooled
 99.95% pass rate hides four working attacks). Newly tagged: aaia_d1_174
-`ai-deciding-fact` (the stem says the index holds current protocols, which
-removes the runner-up, superseded dose tables). Three tags removed (below).
+`rank-ai-risk-by-harm` (after the final fix round its Final two is D against
+C: both follow from one pooled index behind per-hospital sign-ins, but only a
+wrong dose harms a patient). Three tags removed (below).
 
 **Untagged new items (low confidence):**
 - aaia_d1_162: was `ai-deciding-fact`; the Final two compares what each control covers (a typing rule against what the tool sends), not a stated fact, so integrated-assistant knowledge decides (as aaia_d2_291).

@@ -6362,7 +6362,7 @@
       "id": "aaia_d1_174",
       "domain": 1,
       "subtopic": "1D Privacy and data governance. Documents an assistant retrieves",
-      "principle_id": "ai-deciding-fact",
+      "principle_id": "rank-ai-risk-by-harm",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A Guatemalan hospital group's AI assistant for nurses, used via each hospital's sign-in, searches one index of its four hospitals' current care protocols, which differ on some doses. What should concern the IS auditor MOST?",
@@ -6375,15 +6375,15 @@
       "correct": "D",
       "key_concept": "Retrieval matches passages by similarity, not by where they apply, so documents pooled from several sites need owner-set records of where each applies.",
       "pre_read": "Weigh each option against the facts in the stem.",
-      "correct_explanation": "A hospital sign-in controls who uses the assistant, not which passages it retrieves, unless each protocol records where it applies and retrieval uses that record. Retrieval picks the best-matching passages, and four hospitals' protocols for the same drug match almost equally well, so a nurse can get another site's dose with no sign it is wrong for their ward. The index holds current protocols, so superseded tables, option A, are not the stated risk.",
+      "correct_explanation": "A hospital sign-in controls who uses the assistant, not which passages it retrieves, unless each protocol records where it applies and retrieval filters on it. Four hospitals' protocols for one drug match a question almost equally well, so a nurse can get another site's dose with no sign it is wrong. Staff seeing other sites' protocols, option C, stems from the same gap, but only a wrong dose harms a patient.",
       "wrong_explanations": {
         "A": "Tempting because outdated documents are a common retrieval risk. But the index pools current protocols; the stated difference is between hospitals, not versions.",
         "B": "Tempting because over-reliance is a real oversight concern. But the facts give no sign of it, and the harm here comes from which protocol is retrieved.",
-        "C": "Tempting because a sign-in suggests access control is the issue. But these are clinical protocols shared within one group; a wrong dose reaching a patient is the greater harm."
+        "C": "Tempting because one index behind separate sign-ins looks like an access-control gap. But staff seeing a sister hospital's protocol matters far less than a wrong dose reaching a patient."
       },
       "tips": [
-        "Eliminate: B assumes over-reliance the facts never give, and C treats sharing protocols within one group as the main harm.",
-        "Final two: D beats A because the index holds current protocols, and a hospital sign-in does not steer similarity search away from another site's dose.",
+        "Eliminate: A raises replaced dose tables when the index holds current protocols, and B assumes over-reliance the facts never give.",
+        "Final two: D beats C because both follow from a sign-in that does not scope similarity search, but only a wrong dose can harm a patient.",
         "Exam cue: when one assistant searches documents from several owners or sites, ask whether each document records where it applies."
       ],
       "framework_ref": "COBIT 2019 APO14 (Managed Data); NIST CSF 2.0 ID.AM-07 (Inventories of data and metadata maintained)",
@@ -6392,7 +6392,7 @@
         "Retrieval",
         "Metadata"
       ],
-      "_provenance": "Authored from concept: notes 1D.1 Data Governance for AI (retrieval matches by similarity, not by where a document applies, so pooled documents need owner-set records of their scope). Re-angled in batch 10 review from document currency, which 2A.1 already teaches, to where each document applies. Revised in batch 10 round 2 to add the per-hospital sign-in, which does not scope retrieval. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1D.1 Data Governance for AI (retrieval matches by similarity, not by where a document applies, so pooled documents need owner-set records of their scope). Re-angled in batch 10 review from document currency, which 2A.1 already teaches, to where each document applies. Revised in batch 10 round 2 to add the per-hospital sign-in, which does not scope retrieval. Final fix round: runner-up named as C (cross-site visibility), which loses on harm to patients. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
       "style_version": 2
     },
     {
@@ -6409,9 +6409,9 @@
         "D": "Whether the group's license allows training a model for sale"
       },
       "correct": "A",
-      "key_concept": "A dataset's license passes on only rights its publisher held; scraped content can carry a permissive license yet give no right to train on it.",
+      "key_concept": "A dataset's license passes on only rights its grantor held; scraped content can carry a permissive license yet give no right to train on it.",
       "pre_read": "Separate what the stem states from what it leaves open.",
-      "correct_explanation": "A license can pass on only the rights its grantor holds. Volunteers who scraped passages from publishers' sites gained no copyright by doing so, so unless the publishers granted rights, their permissive license cannot authorize training a commercial generator, and a trained model is hard to unwind later. Checking that the license allows training for sale, option D, reads the grant's terms, but even generous terms grant nothing the group never owned.",
+      "correct_explanation": "A license can pass on only the rights its grantor holds. Volunteers who scraped passages from publishers' sites gained no copyright by doing so, so unless the publishers granted them rights, the group's permissive license cannot authorize training a commercial generator, and a trained model is hard to unwind later. Checking that the license allows training for sale, option D, reads the grant's terms, but even generous terms grant nothing the group never owned.",
       "wrong_explanations": {
         "B": "Tempting because data volume affects model quality. But size is a technical question; whether the firm may use the data at all comes first.",
         "C": "Tempting because practice questions must be correct. But accurate passages still may not be used if no one with the rights allowed it.",
@@ -6428,7 +6428,7 @@
         "Training data",
         "Licensing"
       ],
-      "_provenance": "Authored from concept: notes 1D.1 Data Governance for AI (a dataset's license passes on only rights its publisher held, so scraped content shared under a permissive license may carry no right to train a model that is sold). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1D.1 Data Governance for AI (a dataset's license passes on only the rights its grantor held, so scraped content shared under a permissive license may carry no right to train a model that is sold). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
       "style_version": 2
     },
     {
@@ -6520,9 +6520,9 @@
       "correct": "D",
       "key_concept": "Models memorize repeated text more readily, so removing duplicates before training cuts the chance that one person's details are reproduced.",
       "pre_read": "Weigh each control by what it would actually stop.",
-      "correct_explanation": "Text repeated hundreds of times in training is far more likely to be memorized and reproduced word for word, so the disputed customer's letters could surface in drafts to other customers. Removing the repeats before fine-tuning cuts much of that memorization at its source. Filtering drafts for the customer's name and account number, option A, catches only those exact details, while memorized text can reveal the dispute in other words.",
+      "correct_explanation": "Text repeated hundreds of times in training is far more likely to be memorized and reproduced word for word, so the customer's dispute letters could surface in drafts sent to other customers. Removing the repeats before fine-tuning cuts much of that memorization at its source. Filtering drafts for the customer's name and account number, option A, catches only those exact details, while reproduced letters can carry other identifying details.",
       "wrong_explanations": {
-        "A": "Tempting because output filters catch leaks. But they match only listed details, while memorized letters can reveal the dispute in other words; prevention at the source is stronger.",
+        "A": "Tempting because output filters catch leaks. But they match only listed details, while reproduced letters can carry others; prevention at the source is stronger.",
         "B": "Tempting because deleting sources sounds thorough. But what the model memorized stays in it after the source emails are gone.",
         "C": "Tempting because encryption protects stored emails. But training uses the decrypted text, so the model can still memorize it."
       },
@@ -6556,7 +6556,7 @@
       },
       "correct": "A",
       "key_concept": "A rollback can restore a version trained on data since erased, so the owner and privacy officer must approve its return first.",
-      "pre_read": "Note the order of events in the stem.",
+      "pre_read": "Read the whole stem before weighing the options.",
       "correct_explanation": "The earlier version was trained on the letters customers asked to erase, so it may still reproduce them, and a rollback would put it back into service. The owner, with the privacy officer confirming, must decide whether it may return or another option is needed. Testing it on current claims, option B, shows whether it works, but a version that works well can still reproduce what customers asked to erase.",
       "wrong_explanations": {
         "B": "Tempting because rollback targets should be tested. But a version that handles current claims well still holds what it learned from the erased letters.",
@@ -6692,9 +6692,9 @@
       "subtopic": "1E Ethics, regulations and standards. AI inside regulated products",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An Israeli firm's ECG-reading model is regulated as a medical device; each monthly retrain is independently validated, then released through the change process used for its billing software. What should concern the IS auditor MOST?",
+      "question": "An Israeli firm's ECG-reading model is a regulated medical device; each monthly retrain changes no code, is independently validated and is released through its billing software's change process. What should concern the IS auditor MOST?",
       "options": {
-        "A": "Retrained versions may need regulator review no one seeks",
+        "A": "The change process may not ask if a version needs clearance",
         "B": "Monthly retraining is too frequent for a medical model",
         "C": "Patients may not be told an AI model reads their ECG",
         "D": "The change process may not record each version's training data"
@@ -6702,15 +6702,15 @@
       "correct": "A",
       "key_concept": "In a regulated product, sector law can treat a retrained model as a change needing regulator review, so obligation mapping must reach retraining.",
       "pre_read": "Weigh each concern against the facts in the stem.",
-      "correct_explanation": "Medical-device rules generally require significant changes to a regulated product to be assessed, and sometimes reviewed by the regulator, before release, unless an agreed change plan covers them. A retrained diagnostic model can be such a change even with no code change, yet a process built for billing software will not ask the question. Recording each version's training data, option D, supports review, but it does not meet the regulator's requirement.",
+      "correct_explanation": "Medical-device rules generally require significant changes to a regulated product to be assessed, and sometimes reviewed by the regulator, before release, unless an agreed change plan covers them. A retrained diagnostic model can be such a change even with no code change, yet a process built for billing software is unlikely to ask that question. Recording each version's training data, option D, supports review, but it does not meet the regulator's requirement.",
       "wrong_explanations": {
         "B": "Tempting because frequent change adds risk. But frequency itself is not the problem; how each version is controlled and cleared is.",
         "C": "Tempting because people should know when AI shapes their care. But telling patients, however fair, does nothing to clear each retrained version for use.",
-        "D": "Tempting because each version should trace to its data. But lineage records support review; they do not meet a duty to have significant changes cleared by the regulator."
+        "D": "Tempting because each version should trace to its data. But lineage records support review; they do not decide whether a version needs the regulator's review before release."
       },
       "tips": [
         "Eliminate: B objects to frequency rather than control of each change, and C raises patient notice, which does not clear a changed device.",
-        "Final two: A beats D because lineage records, however complete, do not meet a duty to have significant changes reviewed by the regulator.",
+        "Final two: A beats D because lineage records, however complete, do not decide whether a retrained version needs the regulator's review before release.",
         "Exam cue: when AI sits inside a regulated product, map the sector's change rules to retraining, not only to code releases."
       ],
       "framework_ref": "NIST AI 100-1 GOVERN 1.1 (Legal and regulatory requirements involving AI are understood and managed); COBIT 2019 BAI06 (Managed IT Changes)",
@@ -6719,7 +6719,7 @@
         "Retraining",
         "Medical devices"
       ],
-      "_provenance": "Authored from concept: notes 1E.2 Risk-Based AI Regulation and Mapping Obligations (when AI sits in a regulated product, sector law can treat a retrained model as a change needing regulator review, so obligation mapping must reach retraining). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1E.2 Risk-Based AI Regulation and Mapping Obligations (when AI sits in a regulated product, sector law can treat a retrained model as a change needing regulator review, so obligation mapping must reach retraining). Final review: option A reworded to name the change-process gap the stem implies, not assert it. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
       "style_version": 2
     },
     {

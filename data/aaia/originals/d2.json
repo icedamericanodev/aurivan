@@ -11476,10 +11476,10 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Philippine rice institute runs a vendor's crop-pest detection model at a 0.5 cutoff to catch more infestations, citing the vendor's 95% precision at its recommended 0.8 cutoff. What is the IS auditor's GREATEST concern?",
+      "question": "A Philippine rice institute runs a vendor's pest-detection model at a 0.5 cutoff to catch more infestations, citing only the vendor's 95% precision at its recommended 0.8 cutoff. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Vendor precision may come from pests in other countries",
-        "B": "A lower cutoff will make the model miss more infestations",
+        "B": "A 0.5 cutoff will make the model miss more infestations",
         "C": "The vendor may change the model without telling the institute",
         "D": "Precision at 0.5 is likely lower and has not been measured"
       },
@@ -12486,7 +12486,7 @@
       },
       "tips": [
         "Eliminate: A treats AI incidents as security events, and D treats a vendor contract as the basis for triage.",
-        "Final two: C beats B because the rule rates every reported incident low now, whatever reached vessel owners, while under-reporting is only a possible effect.",
+        "Final two: C beats B because staff send 99% of drafts unchanged, so review likely catches little and assistant errors can reach vessel owners under a low rating now; under-reporting is only a possible effect.",
         "Exam cue: Triage AI incidents by where outputs end up and whom they can harm; a review that rarely changes anything is no reason to rate them low."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 IR-4 (Incident Handling); NIST AI 100-1 MANAGE 4.3 (Incidents and errors communicated and tracked)",
@@ -12513,17 +12513,17 @@
         "D": "Purge stored answers that hold customers' personal details"
       },
       "correct": "B",
-      "key_concept": "When a cache serves one customer's stored answer to another, real data is disclosed: a privacy incident needing privacy staff at once.",
+      "key_concept": "When a shared answer cache serves one customer's personal answer to another, real personal data is disclosed: a privacy incident needing privacy staff at once.",
       "pre_read": "Note what has already been done before ranking the options.",
-      "correct_explanation": "A semantic cache returns real stored answers, so the wrong balances were other customers' real ones, not invented text: a personal-data disclosure, not only an accuracy defect. Privacy staff must join at once to judge any duty to notify, which can run on a deadline from discovery. Retesting the similarity setting is the right fix before re-enabling, but the cache is already off, so the fix can wait while any deadline cannot.",
+      "correct_explanation": "A cache shared across all customers returns real stored answers, so the wrong balances were other customers' real ones, not invented text: a personal-data disclosure, not only an accuracy defect. Privacy staff must join at once to judge any duty to notify, which can run on a deadline from discovery. Retesting the cache before re-enabling is sound later work, but the cache is already off, so it can wait while any deadline cannot.",
       "wrong_explanations": {
-        "A": "Tempting because the cache's matching served the wrong answers. But the cache is already off; retesting is the later fix, while the disclosure needs privacy handling now.",
+        "A": "Tempting because the cache's matching served the wrong answers. But the cache is already off; any retest belongs before re-enabling, while the disclosure needs privacy handling now.",
         "C": "Tempting because reproducing confirms a fault. But 37 cases are already known, and with the cache off a repeat proves nothing.",
         "D": "Tempting because it removes exposed data. But the cache is already off, and purging destroys evidence the investigation and any notice need."
       },
       "tips": [
         "Eliminate: C repeats a fault 37 known cases already confirm, and D destroys evidence after the cache is already off.",
-        "Final two: B beats A because a reused answer is another customer's real balance, a privacy incident that may carry notice deadlines; the similarity retest can wait while the cache is off.",
+        "Final two: B beats A because a reused answer is another customer's real balance, a privacy incident that may carry notice deadlines; any retest can wait while the cache is off.",
         "Exam cue: An AI incident can also be a privacy incident; when real personal data reaches the wrong person, bring in privacy staff at once, whatever the AI team calls it."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 IR-6 (Incident Reporting); NIST AI 600-1 Section 2.4 (Data Privacy)",
@@ -12616,9 +12616,9 @@
       "principle_id": "named-human-owner",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Colombian metro's AI committee approved weapons-detection gates on overall accuracy; engineers traced insulin-pump false flags to tests lacking medical or mobility devices, retrained and closed the problem. What is the IS auditor's BEST recommendation?",
+      "question": "Medellín's metro AI committee approved weapons-detection gates on accuracy tests without medical or mobility devices; engineers traced insulin-pump false flags to that gap, retrained and closed the problem. What is the IS auditor's BEST recommendation?",
       "options": {
-        "A": "Report the cause to the committee that cleared the gates",
+        "A": "Have the cause reported to the approving committee",
         "B": "Add insulin-pump scans to the tests rerun after each change",
         "C": "Keep the problem closed, as the retrain stopped the false flags",
         "D": "Rerun the committee's accuracy test on the retrained gates"
@@ -12626,14 +12626,14 @@
       "correct": "A",
       "key_concept": "When an AI root cause shows the evidence a use was approved on was incomplete, report it to whoever approved the use, not only engineers.",
       "pre_read": "Read the whole sequence of events before judging the closure.",
-      "correct_explanation": "The committee approved the gates on an overall accuracy figure, and the root cause shows its tests held no medical or mobility devices, so that figure hid groups of riders the gates may misjudge. Only the committee can decide whether its approval still holds and which groups need testing. Adding insulin-pump scans to regression tests is sound, but it guards one group and leaves the approval resting on evidence now known to be incomplete.",
+      "correct_explanation": "The committee approved the gates on accuracy tests that held no medical or mobility devices, and the false flags trace to that gap, so the approval never measured riders the gates may misjudge. Only the committee can decide whether its approval still holds and which groups need testing. Adding insulin-pump scans to regression tests is sound, but it guards one group and leaves the approval resting on evidence now known to be incomplete.",
       "wrong_explanations": {
         "B": "Tempting because lessons learned should update tests. But it covers insulin pumps only; mobility devices were never tested either, and the approval still rests on incomplete evidence.",
         "C": "Tempting because the false flags stopped. But a cause that undermines the approval evidence must reach those who approved the use, not end with the fix.",
-        "D": "Tempting because a retrain is a change that needs retesting. But the overall accuracy figure is what hid the insulin-pump errors, so it cannot show how other groups fare."
+        "D": "Tempting because a retrain is a change that needs retesting. But the committee's test held no medical or mobility devices, so rerunning it cannot show how those riders fare."
       },
       "tips": [
-        "Eliminate: C ends the problem at the fix without reporting what the cause revealed, and D reruns the overall accuracy test that hid the insulin-pump errors.",
+        "Eliminate: C ends the problem at the fix without reporting what the cause revealed, and D reruns an accuracy test that never held medical or mobility devices.",
         "Final two: A beats B because the tests behind the approval held no medical or mobility devices; a new test covers insulin pumps, but only the committee can decide if its approval holds.",
         "Exam cue: When an AI root cause shows the approval evidence was incomplete, report it to whoever approved the use, not only to engineers."
       ],
@@ -12643,7 +12643,7 @@
         "Incident reporting",
         "Approval evidence"
       ],
-      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (incidents are reported to owners and the AI governance committee; a root cause showing the approval evidence was incomplete goes to whoever approved the use). Completeness round 1: re-angled from checking training coverage before a retrain, the frame of aaia_d2_259, to reporting a root cause to the approving committee. Round 2: stem states the tests held no medical devices of any kind, and D now falls to the overall-accuracy fact rather than the auditor's role. Round 3: stem adds that the tests also held no mobility devices, so a single insulin-pump regression test (B) visibly leaves the approval evidence incomplete. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (incidents are reported to owners and the AI governance committee; a root cause showing the approval evidence was incomplete goes to whoever approved the use). Completeness round 1: re-angled from checking training coverage before a retrain, the frame of aaia_d2_259, to reporting a root cause to the approving committee. Round 2: stem states the tests held no medical devices of any kind, and D now falls to the overall-accuracy fact rather than the auditor's role. Round 3: stem adds that the tests also held no mobility devices, so a single insulin-pump regression test (B) visibly leaves the approval evidence incomplete. Round 4: stem states the committee approved on the tests that lacked the devices, so the explanation's link to the approval evidence is given. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 10, 19 Nov 2026.",
       "style_version": 2
     },
     {

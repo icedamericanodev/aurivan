@@ -402,8 +402,8 @@
           "definition": "Model documentation records what a model is for, what data trained it, how it was tested and its known limits; model cards and datasheets are common formats.",
           "why_it_matters": "Without documentation, nobody can judge whether a model fits a new use or explain its decisions. Bought and pre-trained models need it too; the buyer stays accountable.",
           "how_it_works": [
-            "A model card summarizes intended and out-of-scope uses, performance by group at a stated cutoff, training data and known limitations.",
-            "Building allows full documentation but needs skills; buying is faster but depends on what the vendor discloses.",
+            "A model card gives uses, limits, training data and performance by group at a stated cutoff; precision and recall hold only at that cutoff.",
+            "Building allows full documentation; buying is faster but depends on what the vendor discloses.",
             "Tuning inherits the base model's unknowns and can weaken its safety; open weights often carry their own license, apart from the code's.",
             "Vendor contracts should require documentation, change notice, testing access and incident cooperation.",
             "A tuned model can repeat content from any file it learned to any user, so it is as sensitive as its most restricted training file."
