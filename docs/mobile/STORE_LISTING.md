@@ -1,5 +1,7 @@
 # KaiSip — Store listing, first release (CISA)
 
+> **Updated 19 Nov 2026:** the plant was retired in phone 2.1. The owner removed the plant section and screenshot 8 from the live Play listing on 18 Nov 2026 (sent for review with the 2.1 release); the Play and App Store descriptions below now say "Milestones that mean something" instead. Older notes in this file that mention the plant are history. Do not add Concept Lab, answered review or the countdown to the listing until the build that has them is live.
+
 > **Owner request (29 Oct 2026):** the revised marketing video and materials must feature the plant's form change, "The Turning". See `docs/MARKETING_PLAN.md`.
 
 Ready-to-paste copy for App Store Connect and Google Play Console.
@@ -94,10 +96,8 @@ STAND TALL ON EXAM DAY
 • A guide to sitting the exam: booking, exam day and results
 • A share card to mark your progress with your study group
 
-A PLANT THAT GROWS WITH YOU
-• Grow a plant as you study, drawn like a page from a field guide
-• It changes form as your knowledge takes root
-• Badges for real milestones, with no leaderboards
+MILESTONES THAT MEAN SOMETHING
+• Badges for real study milestones, with no leaderboards
 
 MADE FOR REAL LIFE
 • Works offline, on the commute or between meetings
@@ -205,10 +205,8 @@ STAND TALL ON EXAM DAY
 • A guide to sitting the exam: booking, exam day and results
 • A share card to mark your progress with your study group
 
-A PLANT THAT GROWS WITH YOU
-• Grow a plant as you study, drawn like a page from a field guide
-• It changes form as your knowledge takes root
-• Badges for real milestones, with no leaderboards
+MILESTONES THAT MEAN SOMETHING
+• Badges for real study milestones, with no leaderboards
 
 MADE FOR REAL LIFE
 • Works offline, on the commute or between meetings
@@ -289,7 +287,7 @@ The Play set, in listing order, 8 screenshots (Play's maximum). Each is 1080×19
 | 5 | Readiness report after mocks | An honest readiness estimate | 4 |
 | 6 | Mistake journal | Turn mistakes into progress | 4 |
 | 7 | A lesson | Short lessons, big ideas | 4 |
-| 8 | Your plant (botanical) | Watch your progress grow | 4 |
+| 8 | (removed 18 Nov 2026: the plant was retired in 2.1; the Play listing now has screenshots 1 to 7) | | |
 
 Rules for every shot:
 - Never show the bank size. Today and the Mistake journal show the learner's own numbers ("16 ready to revisit", "54 open"), which say nothing about the bank. Slot 4 shows "1 of 150": that is the length of the mock exam, not the bank size (owner decision, 6 Nov 2026).

@@ -28,6 +28,38 @@ A development tracker for the next phone update after 2.1, not a record of a shi
 
 **Not in scope (owner decisions if wanted later).** Promoting tablets or Chromebooks in the Play listing (needs tablet screenshots). iPad support (`ios.supportsTablet` stays false until after the iOS launch). A two-pane tablet layout (for example the question beside its explanation).
 
+### Learner-feedback round (19 Nov 2026)
+
+Source: the owner's consolidated handoff of 18 to 19 Nov 2026 and her decisions the same day. Built on main at `44f6583`. **State: implemented and unit-tested in a pull request; not merged, not built, not tested on a phone.** The owner reviews screenshots first.
+
+| Change | What it does | Decision / reason |
+|---|---|---|
+| Simpler practice answer | The 2.0.0 order is back: answer card (your answer, "Why not B", best answer), Key idea, the three tips, "Why D". The whole question and all four choices sit behind ONE switch, "Show question & choices", closed for each new question; each choice's reason is a second, opt-in switch inside it. The inline "Compare all options" list and the "Show all options" sheet are gone from practice. | Owner, 19 Nov: the inline reasons overwhelmed a tester; R-ZXUQ could not find the question and choices. Mock review keeps its full comparison; lessons and drills are unchanged. Question data untouched. |
+| Concept Lab hidden | `CONCEPT_LAB_ENABLED = false` (`mobile/src/content/labs/enabled.ts`): no tile in Learn, no link from notes; `/labs` routes go to Learn. Code and tests kept. | Owner, 19 Nov: the lab made the topic more confusing. It shipped in the 2.1 bundle, so this hides a live feature on purpose; no saved data is involved. Returns only after a redesign and uncoached learner testing. #244 stays deferred. |
+| Answered review (read-only) | "Answered" filter in the question list opens `/answered/[id]`: question, choices in A to D order, best answer, current explanations, Key idea, tips, last result and date. A separate "Practice this question" button. Opening it changes no stored data (tested). | First delivery only: no new stored fields. The app never saved which option was picked, so the page says "Your selected option was not saved for this answer", except for a miss whose pick is in the Mistake journal for that same attempt. Saving the latest pick for new answers is a later, separately reviewed storage change. |
+| Practice countdown (gentle) | Build a set: Untimed / Count up / Countdown, per set. Counts active study time only (pauses in the background and when paused; no wall-clock deadline). At zero: "Keep going untimed" or "Finish now"; nothing is auto-submitted and unanswered questions are never marked wrong. Domain rows open the builder with the area preselected. | Owner, 19 Nov, chose gentle over exam-strict. Mock deadlines untouched (regression test). One optional field on the active session, `countdown`; no store version bump; not in backups. Old `timed: true` still means count up. |
+| Rate and Share | Settings, Help and about: "Rate this app" (Android only, opens Google Play; no in-app prompt, no reward, no screening question) and "Share this app" (share sheet with one neutral line and https://kaisip.com; nothing personal). | Tester suggestion. Google's in-app review guidance: user-initiated buttons open the store. |
+| Website | `home.html`: the plant panel, bullet and step 05 become the Mistake journal; screenshots re-shot from this build. | The plant was retired in 2.1; the public page must match the app. |
+
+Not done from this round (kept for later, on purpose): saving the latest pick per question; lesson entry points for the set builder; an exit-confirmation dialog on Back (no data-loss defect shown); study-fatigue wording review; the Concept Lab learning pilot; countdown pausing while the More or report sheet is open.
+
+**Still to verify on a phone (no emulator in the cloud session).**
+- [ ] R-S4JW: Coach me on the reported Android version, question visible before and after the hint, light/dark, 200% text, TalkBack.
+- [ ] The new answer screen: switch opens and closes, resets on the next question, TalkBack says expanded/collapsed, 200% text.
+- [ ] Countdown: background and resume, kill and relaunch at zero, the sheet over the More and report sheets.
+- [ ] Answered review with a real profile upgraded from 2.0.0 or 2.1; nothing changes after opening it.
+- [ ] Rate opens the Play page for a closed tester; Share shows only the approved line.
+- [ ] Bottom buttons with three-button and gesture navigation; upgrade from 2.1 keeps progress.
+
 ## Play release notes (draft)
 
-Improved: on tablets and other large screens, pages now sit in a comfortable reading width instead of stretching across the screen.
+```
+What's new in 2.2
+• Look back at answered questions with their explanations, without answering again.
+• Set a countdown for practice. When time is up, finish or keep going untimed.
+• Choose how many questions and which timer for one area.
+• After you answer: the short summary and tips first, with the question and all choices one tap away.
+• Rate or share KaiSip from Settings.
+• Better layout on tablets.
+• The Concept Lab is put away while we make it clearer.
+```
