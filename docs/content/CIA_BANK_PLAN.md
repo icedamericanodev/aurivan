@@ -13,7 +13,7 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 | | |
 |---|---|
 | **Status (19 Nov 2026)** | Session G, step 1 done: expert decisions, the four documents, the harness (proven on its planted-fault fixture) and the expert agents. No learner content written yet. |
-| **Waiting on the owner** | (1) The licence question in section 9 (The IIA says commercial exam-prep use of its content needs a licence). (2) Prices in section 3, decision 6. Nothing is published or sold until both are answered. |
+| **Owner answers so far (19 Nov 2026)** | Prices: decide later. Licence: the owner asked whether a licence is needed for original content; the answer given is in section 9. Default until the owner says otherwise: keep building in the private repository and publish or sell nothing. The licence question must be settled before any pack goes on sale. |
 | **Next step** | Part 1 study notes for all four sections (`data/cia/cia1/notes/d{1..4}.json`), by `cia-p1-domain-expert`, notes before questions. Then the Part 1 pilot: 20 questions per section through the full pipeline (section 6), with the shared principles, the glossary start, and the Part 1 exam guide and final review week. |
 | **Then** | Part 1 to its sale minimum (its five Challenge-shared topics early), Part 2, Part 3, the Challenge build and the CISA bridge, the cross-part release gate. |
 
@@ -111,7 +111,7 @@ answered the six questions in the kickoff prompt, in parallel.
 | 3 | Order of work | **Changed from the kickoff default.** Part 1 pilot, then Part 1 to its sale minimum with its five shared topics early, then Part 2, then Part 3, then the Challenge build. Reason: all 35 topics of Parts 2 and 3 are shared but only 5 of Part 1's 27, so "shared topics first" would leave nothing sellable until two whole banks were done; and Parts 2 and 3 should not sell before Part 1 is complete. | Product manager, marketer, behavioral scientist |
 | 4 | Bank size | Six non-overlapping full mocks is the ceiling (Part 1 about 750, Parts 2 and 3 about 600 each). The sale minimum is four (500, 400, 400), with two full forms held out that practice never serves. Never padding: if a topic runs out of distinct, testable ideas, stop there and say so here. For the Challenge, accept five full mocks rather than write to fill section A. | Product manager, behavioral scientist |
 | 5 | On sale, free sample | A pack goes on sale when it reaches its sale minimum and has passed the cross-part gate, and not before the paywall has run on CISA. Part 1 first, Parts 2 and 3 as they finish, the Challenge when both are done and the bridge is reviewed, ideally 8 to 12 weeks before a testing window (February, June, September, November). Free sample as CRISC: 10% of each bank, at least 100, weighted by section, every topic touched, one diagnostic and one short mock that share no items. The Challenge sample uses only ids already free in their Part. The bridge notes are free. | All four |
-| 6 | Prices | **Owner decision, not made yet.** The experts differ, so both options go to the owner: (a) US$19.99 per part, no bundle, Challenge US$39.99, all 6 months (product manager: three exams rarely fit one 6-month clock, so a lower part price gives everyone the bundle saving with no extra product); (b) US$29.99 per part (the CISA price), Challenge US$39.99, and when Part 3 ships a three-part bundle at US$69.99 for 12 months (marketer: more revenue per learner, at the cost of a fifth product and a new access length). Never mention a price in learner copy before this is decided. | Open |
+| 6 | Prices | **Owner decision: decide later (19 Nov 2026).** The experts differ, so both options stay on record: (a) US$19.99 per part, no bundle, Challenge US$39.99, all 6 months (product manager: three exams rarely fit one 6-month clock, so a lower part price gives everyone the bundle saving with no extra product); (b) US$29.99 per part (the CISA price), Challenge US$39.99, and when Part 3 ships a three-part bundle at US$69.99 for 12 months (marketer: more revenue per learner, at the cost of a fifth product and a new access length). Never mention a price in learner copy before this is decided. | Open, by the owner's choice |
 
 Other points the experts raised, recorded so they are not lost:
 
@@ -214,7 +214,7 @@ The gates, in the order a round runs them (details in `data/cia/tools/README.md`
 6. `check_originality.py --fetch --require`: own words. The IIA's text is fetched outside the repository and never committed.
 7. Notes: `scripts/lint_notes.py <file> --part N --outline docs/content/CIA_BLUEPRINT.md --bank data/cia/cia{N}/originals`, and `sync_practice_ids.py --check`.
 8. Principles and exam guides: `scripts/lint_principles.py --cert <pack>` and `scripts/lint_exam_guide.py --cert <pack>` (issuer-aware: The IIA's hosts and wording).
-9. `node scripts/cia_pack_dry_run.cjs`: the phone app's own pack builders on each pack, and mock draws to the weights.
+9. `node scripts/cia_pack_dry_run.cjs`: the phone app's own pack builders on each pack, and mock draws to the weights (`--require-full` at release time makes "cannot draw a full mock" an error).
 10. `build_challenge.py --check` and `build_packs.py --check`.
 11. `blind_copy.py`.
 12. `prove_harness.py`.
@@ -285,16 +285,30 @@ and trademarks requires a licence, and its examples include exam preparation
 and inclusion in software (including AI); it exempts fair use with
 attribution; it treats adaptations of its content as needing a licence. The
 copyright notice allows quoting small portions with attribution. The Standards
-PDF is marked for individual personal use. KaiSip holds no licence. The
-reviewer's recommendation: **ask licensing@theiia.org before anything is
-published or sold**, describing exactly what KaiSip does (original notes and
-questions, the Standards cited by number and title, written with AI
-assistance), and decide on the Training Provider Licence (listed at US$500 a
-year for members, US$1,000 otherwise) from the answer. Until the owner
-decides, the course is built in the private repository and nothing is
-published, sold or shown in the apps.
+PDF is marked for individual personal use. KaiSip holds no licence.
 
-**Owner item 2: prices** (section 3, decision 6).
+The owner asked: do we need the licence when the questions are original? The
+answer given (not legal advice):
+
+- Copyright protects wording, not ideas or facts. Original questions and
+  notes copy nothing; a standard's number and title are facts; naming the exam
+  to say what a product is for is descriptive use, as long as no logo is used
+  and no approval is implied. So a licence is probably not strictly required
+  by law for what KaiSip plans.
+- The IIA's stated position is wider than that, and it can act on it. The
+  practical risk is a complaint that removes a store listing, not a court case.
+- The course is not only practice questions: notes, glossary and exam guides
+  sit closer to the grey zone, because explaining a rule can drift into
+  restating it. The originality gate guards this, and it is the part to watch.
+- A licence would buy permission to use The IIA's content and marks and a
+  listing as a licensed provider (US$500 a year for members, US$1,000 otherwise).
+
+**Standing decision until the owner says otherwise:** build in the private
+repository; publish, sell and show nothing. **Before any pack goes on sale**
+the owner settles this, by asking licensing@theiia.org (expect "yes, you need
+one") or with a short consult with an intellectual-property lawyer.
+
+**Owner item 2: prices** (section 3, decision 6): decide later.
 
 **Sources the owner may need to supply** (they block a key only if a question
 needs them; until then questions rest on what was opened): IIA membership
@@ -376,8 +390,12 @@ const IIA_BASE = { issuer: IIA, mindset: IIA_MINDSET, trademarkNotice: IIA_TM, t
 - "Domain N" is hardcoded in about 27 places; The IIA says "Section A".
 - `mobile/src/engine/readySigns.ts` says "Check isaca.org";
   `mobile/src/engine/planner.ts` falls back to 1.6 minutes a question (CIA is 1.2).
-- The pack builders must accept the two CIA item fields (`challenge_ref`,
-  `testable_from`); `scripts/cia_pack_dry_run.cjs` reports whether they do.
+- The pack builders accept the two CIA item fields (`challenge_ref`,
+  `testable_from`) but leave them out of the pack question, so the app cannot
+  see `testable_from` yet: `scripts/cia_pack_dry_run.cjs` applies the date
+  itself. The app needs the date before a pack with such items is switched on.
+- The phone app has no builder for `<pack>/glossary.json` yet (the dry run
+  checks its shape only).
 - `scripts/build_free_sample.py` needs the CIA packs, the 100-item floor and
   the rule that the Challenge sample uses only ids already free in their Part.
 - The generated Challenge notes (the Part notes for the 40 shared topics,

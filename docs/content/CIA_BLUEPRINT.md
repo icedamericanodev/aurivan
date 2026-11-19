@@ -1316,10 +1316,12 @@ record for "CIA Challenge"; IPPF 4150157 cancelled.
 
 ## Open items
 
-1. **Licence (owner).** Ask licensing@theiia.org what KaiSip's use needs,
-   before anything is published or sold; decide on the Training Provider
-   Licence from the answer. `docs/content/CIA_BANK_PLAN.md` section 9.
-2. **Prices (owner).** Two expert options, `docs/content/CIA_BANK_PLAN.md` section 3.
+1. **Licence (owner).** To settle before any pack goes on sale: ask
+   licensing@theiia.org or an intellectual-property lawyer what KaiSip's use
+   needs. Until then the course is built privately and nothing is published or
+   sold. `docs/content/CIA_BANK_PLAN.md` section 9.
+2. **Prices (owner): decide later.** Two expert options on record,
+   `docs/content/CIA_BANK_PLAN.md` section 3.
 3. **Unscored pretest questions.** No opened IIA file says whether an exam
    includes unscored questions. Do not state either way.
 4. **The exact launch day of the 2025 syllabus** was seen in search results only.
