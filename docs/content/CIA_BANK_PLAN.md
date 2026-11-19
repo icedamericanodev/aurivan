@@ -301,7 +301,11 @@ answer given (not legal advice):
   sit closer to the grey zone, because explaining a rule can drift into
   restating it. The originality gate guards this, and it is the part to watch.
 - A licence would buy permission to use The IIA's content and marks and a
-  listing as a licensed provider (US$500 a year for members, US$1,000 otherwise).
+  listing as a licensed provider. Listed prices: Training Provider Licence
+  US$500 a year for an IIA member or US$1,000 otherwise for a sole proprietor,
+  US$1,250 or US$2,500 for 2 to 5 users; a separate Software Developer Licence
+  (content inside software) at a variable price. The page also says licensed
+  content may not go into a publicly available AI system.
 
 **What others do (checked 19 Nov 2026).** The IIA's public list of licensed
 training providers has 13 names, among them Becker, Gleim and HOCK. Several

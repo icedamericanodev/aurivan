@@ -7,8 +7,8 @@ and 3, down to the lettered bullets.
 
 The CIA Challenge Exam is one exam that leads to the CIA for people who come in
 through one of The IIA's Challenge pathways (for example, holders of an active CISA).
-Since 1 June 2026 there is a single Challenge Exam, with one syllabus, for every
-pathway: 150 multiple-choice questions in 180 minutes.
+There is a single Challenge Exam, with one syllabus (effective 1 June 2026), and
+every pathway follows the same content: 150 multiple-choice questions in 180 minutes.
 
 This map is KaiSip's own line-by-line match of the syllabus files we opened: the
 Challenge syllabus (label V2.10.2025 FINAL) against the three part syllabuses (label

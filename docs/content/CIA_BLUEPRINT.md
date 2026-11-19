@@ -20,15 +20,15 @@ IIA's text is never pasted here or stored in the repository.
 | cia1 | CIA Part 1: Internal Audit Fundamentals (also the Internal Audit Practitioner exam) | 125 | 150 | A Foundations of Internal Auditing 35% · B Ethics and Professionalism 20% · C Governance, Risk Management, and Control 30% · D Fraud Risks 15% |
 | cia2 | CIA Part 2: Internal Audit Engagement | 100 | 120 | A Engagement Planning 50% · B Information Gathering, Analysis, and Evaluation 40% · C Engagement Supervision and Communication 10% |
 | cia3 | CIA Part 3: Internal Audit Function | 100 | 120 | A Internal Audit Operations 25% · B Internal Audit Plan 15% · C Quality of the Internal Audit Function 15% · D Engagement Results and Monitoring 45% |
-| ciac | CIA Challenge Exam (one exam for every pathway since 1 June 2026) | 150 | 180 | A Internal Audit Professionalism and Quality 20% · B Internal Audit Operations and Audit Plan 15% · C Engagement Planning 20% · D Engagement Performance 25% · E Engagement Results and Monitoring 20% |
+| ciac | CIA Challenge Exam (one exam for every pathway; current syllabus effective 1 June 2026) | 150 | 180 | A Internal Audit Professionalism and Quality 20% · B Internal Audit Operations and Audit Plan 15% · C Engagement Planning 20% · D Engagement Performance 25% · E Engagement Results and Monitoring 20% |
 
 All four give 1.2 minutes a question. The IIA calls the top level "Sections";
 in KaiSip's files a section is a "domain" (Section A is `d1.json`).
 
-**There is no separate Challenge Exam for CISA holders.** Since 1 June 2026
-The IIA runs one Challenge Exam with one syllabus for every pathway: active
-CISA holders, approved CPA and CA holders, and a pilot for professionals with
-10 or more years of experience. KaiSip's Challenge pack is that one exam, with
+**There is no separate Challenge Exam for CISA holders.** The IIA runs one
+Challenge Exam with one syllabus (effective 1 June 2026), and every pathway
+follows the same content: active CISA holders, approved CPA and CA holders,
+and a pilot for professionals with 10 or more years of experience. KaiSip's Challenge pack is that one exam, with
 a "coming from CISA" bridge as its own addition.
 
 **40 of the 62 three-part topics are also the Challenge Exam's 40 topics,
@@ -80,7 +80,7 @@ rebuild the table.
 | Every Challenge pathway uses the same exam content and syllabus | True | [challenge-exam](https://www.theiia.org/en/certifications/cia/challenge-exam/) | 2026-11-19 |
 | Challenge pathways: approved CPA and CA holders; active CISA holders; a pilot for professionals with 10 or more years of experience, whose applications are closed | accounting, information_systems, professional_pilot_closed | [challenge-exam](https://www.theiia.org/en/certifications/cia/challenge-exam/) | 2026-11-19 |
 | CISA route: an active CISA, proof of good standing from the public registry and a government photo ID; no proof of experience; applications open all year |  | [information-systems](https://www.theiia.org/en/certifications/cia/challenge-exam/information-systems/) | 2026-11-19 |
-| The Challenge Exam is delivered only in February, June, September and November | February, June, September, November | [information-systems](https://www.theiia.org/en/certifications/cia/challenge-exam/information-systems/) | 2026-11-19 |
+| The Challenge Exam is delivered only in February, June, September and November (mainland China has single test days instead, in 2026 on 8 March, 7 June, 6 September and 6 December) | February, June, September, November | [information-systems](https://www.theiia.org/en/certifications/cia/challenge-exam/information-systems/) | 2026-11-19 |
 | A Challenge registration is valid for 180 days or until the program expires, whichever is sooner | 180 | [information-systems](https://www.theiia.org/en/certifications/cia/challenge-exam/information-systems/) | 2026-11-19 |
 | The Challenge Exam has no program or exam extensions | none | [information-systems](https://www.theiia.org/en/certifications/cia/challenge-exam/information-systems/) | 2026-11-19 |
 | Challenge Exam: up to seven retakes (eight attempts in all) within the three-year program eligibility period, in any testing window | 8 | [information-systems](https://www.theiia.org/en/certifications/cia/challenge-exam/information-systems/) | 2026-11-19 |
@@ -93,23 +93,23 @@ rebuild the table.
 | A scaled score of 600 or higher passes an IIA exam | 600 | [certification-candidate-handbook.pdf](https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf) | 2026-11-19 |
 | Raw scores are converted to a reporting scale of 250 to 750 | 250, 750 | [certification-candidate-handbook.pdf](https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf) | 2026-11-19 |
 | A pass report shows no numeric score; a fail report shows a numeric score and the syllabus domain areas that need improvement |  | [certification-candidate-handbook.pdf](https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf) | 2026-11-19 |
-| There is no penalty for incorrect responses | True | [certification-candidate-handbook.pdf](https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf) | 2026-11-19 |
-| There are no scheduled breaks; time taken for a break counts against the exam time | none scheduled | [certification-candidate-handbook.pdf](https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf) | 2026-11-19 |
+| Wrong answers are not penalized, so it pays to answer every question | True | [certification-candidate-handbook.pdf](https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf) | 2026-11-19 |
+| No breaks are scheduled; the clock keeps running if a candidate takes one | none scheduled | [certification-candidate-handbook.pdf](https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf) | 2026-11-19 |
 | A failed exam can be retaken no sooner than 30 days after the last attempt | 30 | [certification-candidate-handbook.pdf](https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf) | 2026-11-19 |
 | An exam may be taken at most eight times during the program eligibility window | 8 | [certification-candidate-handbook.pdf](https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf) | 2026-11-19 |
 | The CIA program must be completed within three years of approval (three-part route and Challenge route) | 3 | [certification-candidate-handbook.pdf](https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf) | 2026-11-19 |
 | An exam registration is valid for 180 days or until the program expires, whichever comes first | 180 | [certification-candidate-handbook.pdf](https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf) | 2026-11-19 |
 | Three-part route only: one 75-day exam registration extension (US$100) and one 12-month program extension (US$275) can be bought | exam_days 75, exam_fee 100, program_months 12, program_fee 275 | [pricing](https://www.theiia.org/en/certifications/new-to-certification/pricing/) | 2026-11-19 |
 | An appointment can be changed up to 48 hours before it; Pearson VUE charges US$75 each time | hours 48, fee 75 | [certification-candidate-handbook.pdf](https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf) | 2026-11-19 |
-| Exams are computer-based and taken at an authorized Pearson VUE test center | Pearson VUE test center | [certification-candidate-handbook](https://www.theiia.org/en/content/certifications/certification-candidate-handbook/) | 2026-11-19 |
+| Computer-based exams, sat in person at a Pearson VUE test center | Pearson VUE test center | [certification-candidate-handbook](https://www.theiia.org/en/content/certifications/certification-candidate-handbook/) | 2026-11-19 |
 | There is no online testing: The IIA discontinued it on 27 May 2025 | discontinued 2025-05-27 | [certification-candidate-handbook](https://www.theiia.org/en/content/certifications/certification-candidate-handbook/) | 2026-11-19 |
 | The IIA's own sample questions have four options, A to D (15 on the sample questions page, 8 in the IAP Guidebook); no opened file states the number in words | 4 | [sample-exam-questions](https://www.theiia.org/en/certifications/cia/exam-prep-resources/exam-review-courses/exam-preparation-and-practice-resources/sample-exam-questions/) | 2026-11-19 |
 | The handbook says each question that counts toward the score has been pretested. No opened IIA file says whether an exam form includes unscored pretest questions, or how many |  | [certification-candidate-handbook.pdf](https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf) | 2026-11-19 |
 | Official results arrive within three weeks of the exam date (IAP, three-part CIA and CRMA from 1 April 2026); no immediate unofficial score is shown | 3 | [scoring](https://www.theiia.org/en/certifications/scoring/) | 2026-11-19 |
 | The IIA does not prescribe the order of the three parts | any order | [cia](https://www.theiia.org/en/certifications/cia/) | 2026-11-19 |
 | The CIA exam is non-disclosed: current questions and answers are not published | True | [exam-syllabus](https://www.theiia.org/en/certifications/cia/exam-prep-resources/exam-syllabus/) | 2026-11-19 |
-| Three-part route entry: master's degree with 1 year of internal audit experience, bachelor's degree with 2 years, or an active IAP with 5 years (1 or 2 years if the IAP holder has the degree); the handbook also lists 5 years of experience with no degree | masters_years 1, bachelors_years 2, active_iap_years 5, experience_only_years 5 | [certification-candidate-handbook.pdf](https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf) | 2026-11-19 |
-| Three-part CIA exam languages: Arabic, Simplified Chinese, Traditional Chinese, English, French, German, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Thai, Turkish, and Vietnamese (registration from 28 August 2026) | Arabic, Simplified Chinese, Traditional Chinese, English, French, German, Japanese, Korean | [cia](https://www.theiia.org/en/certifications/cia/) | 2026-11-19 |
+| Three-part route: a degree (or an active IAP) is the entry requirement, and candidates may sit the exams before the experience is complete; to be certified they need internal audit experience of 1 year with a master's degree, 2 years with a bachelor's, or 5 years as an active IAP holder (1 or 2 years if the holder has the degree). The handbook also lists 5 years of experience with no degree | masters_years 1, bachelors_years 2, active_iap_years 5, experience_only_years 5 | [certification-candidate-handbook.pdf](https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf) | 2026-11-19 |
+| Three-part CIA exam languages: Arabic, Simplified Chinese, Traditional Chinese, English, French, German, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Thai, Turkish, and Vietnamese (registration from 28 August 2026). Caution: Arabic candidates sit the 2019 syllabus through 27 December 2026, and Simplified Chinese (mainland China only) is also still on the 2019 syllabus until the December 2026 window | Arabic, Simplified Chinese, Traditional Chinese, English, French, German, Japanese, Korean | [cia](https://www.theiia.org/en/certifications/cia/) | 2026-11-19 |
 | The 2025 syllabus was live in English by 15 July 2025; the reference list is marked Effective May 2025 | 2025-05 | [iia-announces-excellence-and-cia-award-winners](https://www.theiia.org/en/content/communications/press-releases/2025/july/iia-announces-excellence-and-cia-award-winners-unveils-key-academic-and-certification-enhancements-at-international-conference-in-toronto/) | 2026-11-19 |
 | The exact English launch day of the 2025 syllabus (28 May 2025) was seen in search results only; no opened IIA page states it | 2025-05-28 | [cia](https://www.theiia.org/en/certifications/cia/) **(search only)** | 2026-11-19 |
 | The exam reference list linked from the CIA syllabus page is V5.5.2026.10.15, marked Effective May 2025 | V5.5.2026.10.15 | [cia-exam-references-v5.pdf](https://www.theiia.org/globalassets/site/certifications/certified-internal-auditor/cia-exam-references-v5.pdf) | 2026-11-19 |
@@ -165,32 +165,39 @@ How the exams think. Every line was checked against the opened Standards on
 corrections made to the starting lens, is `docs/content/CIA_LENS.md`. The item
 standard built on it is `.claude/agents/cia-standards-auditor.md`.
 
-1. **Who the auditor serves.** Internal auditing gives the board and
-   management independent, risk-based, objective assurance, advice, insight
-   and foresight. (Domain I)
+1. **Who the auditor serves.** The organization as a whole, through the board
+   and management: the function tells them, independently and objectively and
+   starting from risk, where things really stand, and advises on what comes
+   next. (Domain I)
 2. **Independence belongs to the function, objectivity to the person.** The
    chief audit executive reports directly to the board; each internal auditor
    keeps an unbiased mindset. Different problems, different remedies: a
    reporting-line problem goes to the board; an individual's impairment is
-   disclosed to the chief audit executive, who may reassign, reschedule,
-   adjust the scope or outsource. No assurance over an area the auditor was
-   responsible for in the previous 12 months. (Principles 2 and 7; Standards
-   2.2, 2.3, 7.1)
+   disclosed to the chief audit executive or a designated supervisor, and the
+   options include reassigning, rescheduling, adjusting the scope or
+   outsourcing. An internal auditor must not assess an activity they used to
+   be responsible for, and for assurance work objectivity is presumed impaired
+   if that responsibility ended within the previous 12 months. (Principles 2
+   and 7; Standards 2.2, 2.3, 7.1)
 3. **Who approves what.** The board approves the internal audit charter (it
    holds the mandate), the internal audit plan and significant changes to it,
    and the budget and resource plan. Senior management gives input and
    support; it does not approve the charter or the plan. The board's duties
-   are "essential conditions": the chief audit executive's own duty is to
-   discuss them and document any disagreement. (Standards 6.1 to 6.3, 9.4, 10.1)
+   are "essential conditions", not requirements placed on the board: the chief
+   audit executive must discuss them and show what their absence does, and
+   must document it when everyone agrees a condition is not needed (writing
+   down a refusal is a "should"). (Standards 6.1 to 6.3, 9.4, 10.1; Domain III
+   introduction)
 4. **Management owns risk, controls and actions.** The internal auditor
    assesses, concludes, and then either recommends, asks management for an
    action plan, or agrees actions with management. The auditor confirms that
    actions were implemented and never implements them. (Standards 14.4, 15.2)
 5. **When management accepts too much risk.** The test is a risk beyond the
    organization's risk appetite or risk tolerance, not the auditor's
-   preference. Raise it with the responsible management, discuss it with
-   senior management, and if it is still unresolved take it to the board. It
-   is not the chief audit executive's risk to resolve. (Standard 11.5)
+   preference. The requirement: discuss it with senior management, and if it
+   is still unresolved take it to the board. Trying the responsible management
+   first is a consideration ("should"), so never key it as a "must". It is not
+   the chief audit executive's risk to resolve. (Standard 11.5)
 6. **Risk decides the plan and the scope.** The plan rests on a documented
    risk assessment done at least once a year. Each engagement starts with
    understanding the activity and assessing its risks, then objectives and
@@ -234,11 +241,20 @@ Most older CIA material, and most of what a language model remembers, is the
 | Attribute and Performance Standards numbered 1000 to 2600 | Standards numbered by principle: Standard 1.1 to Standard 15.2 |
 | "consulting services" | advisory services (the 2024 glossary notes the old name) |
 | Three Lines of Defense | Three Lines Model |
-| Charter and plan approved by senior management and the board | Approved by the board; senior management is consulted |
+| The internal audit plan approved by senior management and the board (the charter's final approval was already the board's) | The plan and the charter are approved by the board; both are discussed with senior management |
 | Evidence that is sufficient, reliable, relevant and useful | Relevant, reliable and sufficient |
 | Engagement opinion, overall opinion | Engagement conclusion, results of internal audit services |
-| Part 3 with stand-alone business, IT, security and finance domains | Part 3 is about running the internal audit function; the IT, finance and business-process knowledge sits in Part 2 planning, at recognize level |
-| Basic and Proficient cognitive levels | No labels: each topic line's verb sets the depth |
+
+Two things about the 2025 exam itself, from the opened syllabuses: Part 3 is
+about running the internal audit function (the IT, finance and business-process
+knowledge sits in Part 2 planning, at recognize level), and no topic carries a
+depth label, so each topic line's verb sets the depth. What the 2019 parts and
+domains were called is not confirmed from an opened source (open item 5), so
+this document does not describe them.
+
+Every row above rests on an opened file: the two-way mapping, the 2024
+Standards (glossary and Domain II introduction) and, for the Three Lines
+rename, the titles of The IIA's 2020 and 2026 papers.
 
 Translate an old Standard number only with The IIA's two-way mapping
 (listed in the research log), and never from memory. "IPPF" alone is still
@@ -1250,7 +1266,10 @@ assurance) are written only as far as an opened source supports, and
 
 The IIA does not score questions on a new Topical Requirement until at least
 six months after its effective date. The reference list gives the month; where
-it gives no day, KaiSip uses the first of the month.
+it gives no day, KaiSip uses the first of the month. That is a few days or
+weeks before the six-month mark (5 August 2026, 15 March 2027, 15 June 2027,
+30 October 2027), on purpose: a learner should meet a topic slightly early,
+not late.
 
 | Topical Requirement | Issued | Effective | Testable on the exam from | Source |
 |---|---|---|---|---|
@@ -1262,6 +1281,11 @@ it gives no day, KaiSip uses the first of the month.
 An item that rests on a requirement that is not testable yet carries the date
 in `testable_from`, and mock and free-sample pools leave it out until then.
 
+Coming next, per The IIA's Topical Requirements page (opened 19 Nov 2026): an
+Anti-Corruption requirement (to be issued in the fourth quarter of 2026) and a
+Talent Management requirement (public consultation in January 2027). Neither
+has an exam date yet; `cia-currency-checker` adds them when they do.
+
 ## Copyright, licence and marks: the rule KaiSip follows
 
 Written by `app-store-compliance-reviewer` from The IIA's own pages, opened
@@ -1269,11 +1293,15 @@ Written by `app-store-compliance-reviewer` from The IIA's own pages, opened
 pages, the notice inside the Standards PDF, and the United States trademark
 search).
 
-1. **Licence position (an open owner decision).** The IIA's licensing page
-   says all commercial use of its content and trademarks requires a licence,
-   and names exam preparation and inclusion in software (including AI) among
-   its examples. It exempts fair use with attribution. KaiSip holds no
-   licence. Rules 2 to 6 rest on that quote allowance and on general copyright
+1. **Licence position (owner decision: build privately, settle it before
+   selling).** The IIA's licensing page says all commercial use of its content
+   and trademarks requires a licence, and names exam preparation and inclusion
+   in software (including AI) among its examples. It exempts fair use with
+   attribution. It lists a Training Provider Licence (US$500 a year for an IIA
+   member, US$1,000 otherwise, for a sole proprietor; US$1,250 or US$2,500 for
+   2 to 5 users) and a separate Software Developer Licence at a variable
+   price, and says licensed content may not go into a publicly available AI
+   system. KaiSip holds no licence. Rules 2 to 6 rest on that quote allowance and on general copyright
    law, not on IIA permission. See "Open items".
 2. **Cite: yes.** Domain, principle and standard number and title, attributed
    to The IIA and the source document.
@@ -1281,8 +1309,12 @@ search).
    and examples. Never restate a requirement sentence by sentence.
 4. **Quote: one short phrase at most**, credited "The IIA, Global Internal
    Audit Standards (2024), Standard X.Y".
-5. **Syllabus:** topic codes, KaiSip's own short titles, a link to the
-   official PDF. Never the bullets or tables.
+5. **Syllabus:** in anything a learner or the public can see, only topic
+   codes, KaiSip's own short titles and a link to the official PDF; never the
+   bullets or tables. This blueprint is an internal working document in a
+   private repository: it lists, in KaiSip's own words, what each bullet is
+   about so authors can check coverage. It is never published, never shipped
+   in a pack, and never used as learner copy.
 6. **Never used:** The IIA's practice questions (they are retired real exam
    questions), recalled exam items, the textbook's text, any prep provider's
    material. No prep provider's question bank is opened at all. No IIA file is
