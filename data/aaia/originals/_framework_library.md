@@ -112,6 +112,8 @@ The bracket is a short paraphrase of the subcategory statement.
 ### Other parts of AI RMF 1.0
 - NIST AI 100-1 Executive Summary (Framework intended to be voluntary and use-case agnostic)
   - Verified 30 Oct 2026: page 2 says the Framework "is intended to be voluntary, rights-preserving, non-sector-specific, and use-case agnostic".
+- NIST AI 100-1 Section 1.2.2 (Risk Tolerance)
+  - Verified 19 Nov 2026: "1.2.2 Risk Tolerance" in the table of contents (page 7) and as the section heading; it says "While the AI RMF can be used to prioritize risk, it does not prescribe risk tolerance", that risk tolerance is "highly contextual and application and use-case specific", that organizations "should follow existing regulations and guidelines for risk criteria, tolerance, and response", and "Where established guidelines do not exist, organizations should define reasonable risk tolerance."
 - NIST AI 100-1 Section 3 (AI Risks and Trustworthiness)
   - Verified 30 Oct 2026: the seven characteristics (valid and reliable; safe; secure and resilient; accountable and transparent; explainable and interpretable; privacy-enhanced; fair with harmful bias managed).
 - NIST AI 100-1 Section 3.1 (Valid and Reliable)
@@ -153,6 +155,10 @@ https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf (Section 2, the twelve ri
 - NIST AI 600-1 Section 2.9 (Information Security)
 - NIST AI 600-1 Section 2.10 (Intellectual Property)
 - NIST AI 600-1 Section 2.12 (Value Chain and Component Integration)
+- NIST AI 600-1 Section 3 (Suggested Actions to Manage GAI Risks)
+  - Verified 19 Nov 2026: "3. Suggested Actions to Manage GAI Risks" in the table of contents (page 12) and as the section heading; it says "Not every suggested action applies to every AI Actor or is relevant to every AI Actor Task. For example, suggested actions relevant to GAI developers may not be relevant to GAI deployers", and that applicability "should be determined based on organizational considerations and their unique uses of GAI systems".
+- NIST AI 600-1 MS-2.10-003 (Verify deduplication of GAI training data samples)
+  - Verified 19 Nov 2026: suggested action MS-2.10-003 in the MEASURE 2.10 table (privacy risk examined and documented, Section 3, page 35) says "Verify deduplication of GAI training data samples, particularly regarding synthetic data." Section 2.4 (Data Privacy) describes training data memorization.
 - NIST AI 600-1 MS-2.11-001 (Document benchmark assumptions and limitations including possible training/test data cross contamination)
   - Verified 31 Oct 2026: suggested action MS-2.11-001 in the MEASURE 2.11 table (Section 3) says "Document assumptions and limitations of benchmarks, including any actual or possible training/test data cross contamination, relative to in-context deployment environment."
 
