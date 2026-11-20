@@ -14531,23 +14531,23 @@
       "question": "A Swiss biotech firm will buy a vendor's generative prior-art assistant that answers from its training alone; its model card says training data ends in June 2025. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Ask the vendor for a full list of its training data",
-        "B": "Require its answers to draw on a current patent search",
+        "B": "Require it to draw on a current patent search",
         "C": "Confirm the vendor's security certification covers the firm's queries",
         "D": "Test it on the firm's past prior-art searches first"
       },
       "correct": "B",
-      "key_concept": "A generative model knows only its training data; work that needs recent facts requires a current source, which tests on past cases cannot prove.",
+      "key_concept": "A generative model knows only its training data; work that needs recent facts requires a current source, and tests on past cases cannot replace one.",
       "pre_read": "Ask which risk each option reduces and which it leaves.",
-      "correct_explanation": "A model that answers from its training knows nothing published after June 2025, yet later prior art can block a patent, and the assistant may answer confidently without it. The firm should require answers drawn from a current patent search before buying. Testing on past searches looks careful, but those patents predate the cutoff and may even be in the training data, so a good score cannot show coverage of recent art.",
+      "correct_explanation": "A model that answers from its training knows nothing published after June 2025, yet later prior art can block a patent, and the assistant may answer confidently without it. The firm should require answers drawn from a current patent search before buying. Testing on past searches looks careful, but much of that art may sit in the training data, and no score closes a gap the model card already shows.",
       "wrong_explanations": {
         "A": "Tempting because documentation comes before reliance. But a fuller list of training sources still ends in June 2025; it adds no coverage of later patents.",
         "C": "Tempting because queries describe unpublished inventions. But a certification covers how queries are protected, not whether answers miss recent prior art.",
-        "D": "Tempting because testing on the firm's own work is sound. But past searches cover art from before the cutoff, so they cannot show what it misses since."
+        "D": "Tempting because testing on the firm's own work is sound. But older art may sit in the training data, and no test closes the gap the model card shows."
       },
       "tips": [
         "Eliminate: A lists training sources that still end in June 2025, and C secures the firm's queries without touching whether answers miss recent patents.",
-        "Final two: B beats D because past searches cover art from before the cutoff, so a good score cannot show the assistant finds patents published since.",
-        "Exam cue: A model knows only its training data; where answers must be current, require a live source and test beyond the cutoff."
+        "Final two: B beats D because the model card already shows the June 2025 gap; testing on past searches, often art the model may have trained on, cannot close it.",
+        "Exam cue: A model knows only its training data; where answers must be current, require a live source before relying on it."
       ],
       "framework_ref": "NIST AI 100-1 MAP 2.2 (Knowledge limits and human oversight of outputs documented); NIST CSF 2.0 GV.SC-06 (Due diligence before entering supplier relationships)",
       "related_concepts": [
@@ -14555,7 +14555,7 @@
         "Training cutoff",
         "Prior-art search"
       ],
-      "_provenance": "Authored from concept: notes 2B.2 Model Documentation and Build, Buy or Tune (buying depends on what the vendor discloses; a model knows nothing published after its training data ends unless a current source feeds it, and tests on past cases cannot show that gap). Batch 12 round 1 fix (completeness critic): re-angled from 'bar training on our drafts by contract' against 'security certification', which repeated aaia_d1_038; the pair is now 'require a current source' against 'test on past searches'. Neighbours checked: aaia_d1_233 (shared learning from clients' ratings), aaia_d2_005, aaia_d2_056, aaia_d2_268, aaia_d2_354. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2B.2 Model Documentation and Build, Buy or Tune (buying depends on what the vendor discloses; a model knows nothing published after its training data ends unless a current source feeds it, and tests on past cases cannot show that gap). Batch 12 round 1 fix (completeness critic): re-angled from 'bar training on our drafts by contract' against 'security certification', which repeated aaia_d1_038; the pair is now 'require a current source' against 'test on past searches'. Neighbours checked: aaia_d1_233 (shared learning from clients' ratings), aaia_d2_005, aaia_d2_056, aaia_d2_268, aaia_d2_354. Batch 12 round 2 fix (standards re-audit): explanations no longer claim the firm's past searches predate the cutoff, a fact the stem never gives. Batch 12 round 3 fix (standards re-audit): key B no longer echoes the stem's 'answers'. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -14823,25 +14823,25 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Greek online musical-instrument shop's customer assistant runs on its vendor's preview model, chosen because it beat the vendor's general release in the shop's tests. What should the IS auditor recommend as BEST?",
+      "question": "A Greek musical-instrument shop's assistant uses a preview model its vendor may change or retire without notice; the general release scored lower but met the shop's targets. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Keep the preview model, since it beat the general release in tests",
         "B": "Ask the vendor to give notice before changing the preview",
         "C": "Pin the assistant to the preview's current version",
-        "D": "Test the general release, then run production on it"
+        "D": "Run production on the general release at a fixed version"
       },
       "correct": "D",
-      "key_concept": "Preview models can change or vanish without notice; production AI runs a tested general release, held to a fixed version.",
+      "key_concept": "Preview models can change or be retired without notice; production AI runs a general release that meets its targets, held at a fixed version.",
       "pre_read": "Read every option before ranking any of them.",
-      "correct_explanation": "A preview release is offered for trying new versions; under typical vendor terms it can change or be withdrawn without notice, so the assistant customers rely on could alter its answers or stop working without warning. Testing the general release and running production on it puts changes back under the shop's control. Pinning the preview does not help: it is not a stable release, and the vendor can still withdraw it at short notice.",
+      "correct_explanation": "The vendor may change or retire the preview without notice, so the assistant could alter its answers or stop working without warning. The general release already meets the shop's targets, and holding it at a fixed version puts changes back under the shop's control. Pinning the preview does not help: it is not a stable release, and the vendor can still retire it.",
       "wrong_explanations": {
-        "A": "Tempting because better results matter. But results measured today say nothing about the preview after its next unannounced change.",
-        "B": "Tempting because notice allows testing. But a preview's terms let it change at any time; asking does not change those terms.",
-        "C": "Tempting because pinning holds a hosted model steady. But a preview is not a stable release; pinned or not, the vendor can withdraw it at short notice."
+        "A": "Tempting because it scored higher. But the vendor may change or retire the preview without notice, and the general release already meets the shop's targets.",
+        "B": "Tempting because notice allows testing. But the vendor may still change or retire a preview without notice; a request does not bind it.",
+        "C": "Tempting because pinning holds a hosted model steady. But a preview is not a stable release; pinned or not, the vendor can retire it without notice."
       },
       "tips": [
-        "Eliminate: A relies on results the next unannounced change can void, and B asks for notice that a preview's terms do not offer.",
-        "Final two: D beats C because only a general release gives a stable version to hold, while a preview, pinned or not, can be withdrawn at short notice.",
+        "Eliminate: A trades a score gain for a version the vendor may change without notice, and B asks for notice the vendor is not bound to give.",
+        "Final two: D beats C because only a general release gives a stable version to hold, while a preview, pinned or not, can still be retired.",
         "Exam cue: Preview or experimental AI versions do not belong in production when a supported version exists."
       ],
       "framework_ref": "NIST AI 100-1 MANAGE 3.1 (Third-party AI risks monitored and controls applied); NIST SP 800-53 Rev. 5 SA-9 (External System Services)",
@@ -14850,7 +14850,7 @@
         "Version pinning",
         "Preview models"
       ],
-      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (hosted models change on the provider's schedule unless a version is held; a preview model may change or vanish without notice, so production runs a supported version). Review fix round 3: setting moved from a car-rental firm (aaia_d1_008, aaia_d2_351) to an online shop; runner-up C now pins the preview, so the pair differs from aaia_d2_194 and aaia_d2_068; key_concept made literally true. Batch 12 round 1 fix (completeness critic): setting moved from a pet-supplies shop, which repeated aaia_d2_007, to a musical-instrument shop (no grep hits in AAIA, CRISC or CISA files). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (hosted models change on the provider's schedule unless a version is held; a preview model may change or vanish without notice, so production runs a supported version). Review fix round 3: setting moved from a car-rental firm (aaia_d1_008, aaia_d2_351) to an online shop; runner-up C now pins the preview, so the pair differs from aaia_d2_194 and aaia_d2_068; key_concept made literally true. Batch 12 round 1 fix (completeness critic): setting moved from a pet-supplies shop, which repeated aaia_d2_007, to a musical-instrument shop (no grep hits in AAIA, CRISC or CISA files). Batch 12 round 2 fix (blind test ambiguous, runner-up C): the stem now states that the vendor may change or retire the preview without notice and that the general release met the shop's targets; D now names running the general release at a fixed version. Batch 12 round 3 fix (standards re-audit): explanation and tip no longer claim customers rely on it, vendor terms or a small score gap, facts the stem never gives. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -15048,21 +15048,21 @@
       "options": {
         "A": "Have staff review a monthly sample of its eligibility chats",
         "B": "Ground it on the hospital's current charity-care policy",
-        "C": "Have it explain the criteria and invite patients to apply",
+        "C": "Have it explain the criteria instead of giving a verdict",
         "D": "Add a notice that patients told no may still apply"
       },
       "correct": "C",
-      "key_concept": "An AI answer people act on as a refusal needs a refusal's safeguards; a verdict given in chat leaves no record, reasons or appeal.",
+      "key_concept": "An AI answer people act on as a refusal needs a refusal's safeguards; a chat verdict has no decision record or appeal.",
       "pre_read": "Ask what each option changes for the patients involved.",
-      "correct_explanation": "Patients treat the assistant's 'no' as a refusal and stop, yet no refusal exists: nothing records inputs or reasons, and there is nothing to appeal, so its errors go unseen. Having it explain the criteria and invite patients to apply returns each decision to staff, where it is recorded and open to appeal. Grounding it on current policy improves its answers, but each 'no' stays an unrecorded decision no one can challenge.",
+      "correct_explanation": "Patients treat the assistant's 'no' as a refusal and stop, yet no refusal exists: no staff decision, no recorded reasons and nothing to appeal, so its errors go unseen. Having it explain the criteria instead of giving a verdict leaves each decision to staff, through an application that is recorded and open to appeal. Grounding it on current policy improves its answers, but each 'no' still turns patients away with no decision anyone can challenge.",
       "wrong_explanations": {
-        "A": "Tempting because sampling is how outputs are checked. But it finds wrong answers after patients have gone without care, and those turned away still have nothing to appeal.",
-        "B": "Tempting because current policy gives better answers. But each 'no' would still be an unrecorded decision, with no reasons kept and nothing a patient can appeal.",
-        "D": "Tempting because it tells patients they may still apply. But a notice beside a confident 'no' may not change what they do, and the answer stays unrecorded."
+        "A": "Tempting because sampling is how outputs are checked. But it finds wrong answers after patients have given up applying, and those turned away still have nothing to appeal.",
+        "B": "Tempting because current policy gives better answers. But a better-grounded 'no' still turns patients away without a staff decision, recorded reasons or anything to appeal.",
+        "D": "Tempting because it tells patients they may still apply. But a notice beside a confident 'no' may not change what they do, and that 'no' stays unappealable."
       },
       "tips": [
-        "Eliminate: A finds wrong answers after patients have gone without care, and D adds a notice beside a 'no' that still goes unrecorded.",
-        "Final two: C beats B because only an application produces a recorded decision a patient can appeal, while a better-grounded assistant still turns patients away unrecorded.",
+        "Eliminate: A finds wrong answers after patients have given up applying, and D keeps the verdict, so a confident 'no' still turns patients away unappealed.",
+        "Final two: C beats B because without a chat verdict patients are left to apply, getting a recorded, appealable decision; a better-grounded 'no' still turns some away unchallenged.",
         "Exam cue: When people treat an AI's answer as a decision, it needs a decision's record and appeal route, or it should not give the verdict."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 3.3 (Feedback and appeal processes for end users and affected communities); NIST AI 100-1 MAP 3.3 (Targeted application scope specified)",
@@ -15071,7 +15071,7 @@
         "De facto decisions",
         "Generative assistants"
       ],
-      "_provenance": "Authored from concept: notes 2D.3 Decision Logs, Appeals and Feedback (affected people need a recorded decision they can challenge; a chat verdict people act on is a decision with no log, reasons or appeal). Batch 12 round 1 fix (completeness critic): re-angled from 'appeals decided by hospital staff who can reverse' against 'sample the vendor's appeal decisions', which repeated aaia_d2_012 and aaia_d2_368; the pair is now 'route patients to a recorded, appealable decision' against 'ground the assistant on current policy'. Neighbours checked: aaia_d2_038, aaia_d2_073, aaia_d2_116, aaia_d2_185, aaia_d2_241. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2D.3 Decision Logs, Appeals and Feedback (affected people need a recorded decision they can challenge; a chat verdict people act on is a decision with no log, reasons or appeal). Batch 12 round 1 fix (completeness critic): re-angled from 'appeals decided by hospital staff who can reverse' against 'sample the vendor's appeal decisions', which repeated aaia_d2_012 and aaia_d2_368; the pair is now 'route patients to a recorded, appealable decision' against 'ground the assistant on current policy'. Neighbours checked: aaia_d2_038, aaia_d2_073, aaia_d2_116, aaia_d2_185, aaia_d2_241. Batch 12 round 2 fix (standards re-audit and blind test): key C now says the assistant stops giving a verdict, so it is no longer D plus more; explanations no longer claim the chats leave no record. Batch 12 round 3 fix (standards re-audit): explanations no longer claim patients went without care, which the stem never gives; tip 2 shortened. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -15373,7 +15373,7 @@
       "bloom_level": "Foundational",
       "question": "A Colombian email provider's spam filter retrains nightly on the mail it blocked; lately, much blocked spam carries long passages of ordinary business wording. Which threat should the IS auditor consider MOST significant?",
       "options": {
-        "A": "The filter learning to block ordinary business mail",
+        "A": "The filter learning to reject legitimate everyday mail",
         "B": "Padded spam slipping past the filter to users",
         "C": "Rival providers copying the filter from its decisions",
         "D": "Bot accounts flooding the filter so mail arrives slowly"
@@ -15398,7 +15398,7 @@
         "Retraining on own decisions",
         "Spam filtering"
       ],
-      "_provenance": "Authored from concept: notes 2F.1 Attacks on Data and Models (availability poisoning degrades a model for all users; NIST AI 100-2e2025 Section 2.3.1 describes spam stuffed with words from legitimate mail raising a spam filter's false positives). Batch 12 round 1 fix (completeness critic): re-angled from 'rejection reasons teach evasion', which repeated aaia_d1_136; the pair is now 'availability poisoning through retraining' against 'padding as evasion'. Neighbours checked: aaia_d2_081 and aaia_d2_300 (false labels), aaia_d2_165 (targeted click poisoning), aaia_d2_207, aaia_d2_250 (clean-label poison that targets one class). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2F.1 Attacks on Data and Models (availability poisoning degrades a model for all users; NIST AI 100-2e2025 Section 2.3.1 describes spam stuffed with words from legitimate mail raising a spam filter's false positives). Batch 12 round 1 fix (completeness critic): re-angled from 'rejection reasons teach evasion', which repeated aaia_d1_136; the pair is now 'availability poisoning through retraining' against 'padding as evasion'. Neighbours checked: aaia_d2_081 and aaia_d2_300 (false labels), aaia_d2_165 (targeted click poisoning), aaia_d2_207, aaia_d2_250 (clean-label poison that targets one class). Batch 12 round 2 fix (standards re-audit): key A no longer echoes the stem's 'ordinary business' wording. Batch 12 round 3 fix (standards re-audit): key A no longer echoes the stem's 'blocked'. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -15707,21 +15707,21 @@
       "options": {
         "A": "Keep the record closed, since the vendor fixed its model",
         "B": "Have the owner test whether the model or price list caused it",
-        "C": "Obtain the vendor's written root cause report for the problem file",
+        "C": "Have the owner rerun last week's wrong quotes on the fixed model",
         "D": "Add a notice that quotes may not match the price list"
       },
       "correct": "B",
-      "key_concept": "A retrieval assistant's output depends on its model and its retrieved content; when both changed, root cause must test each, not take the vendor's word.",
+      "key_concept": "A retrieval assistant's output depends on its model and retrieved content; when both changed, root cause must test each layer separately.",
       "pre_read": "Weigh what each option would and would not prevent.",
-      "correct_explanation": "A retrieval assistant's answers depend on both the model and the content it retrieves, and both changed that week. If the new price list caused the wrong quotes, the vendor's fix left the cause in place and the record was closed on the wrong layer. The owner should test which change caused them, for example by trying both price lists on the current model. The vendor's report explains only the vendor's own change.",
+      "correct_explanation": "A retrieval assistant's answers depend on its model and the content it retrieves, and both changed that week. If the new price list caused the wrong quotes, the record names the wrong layer and the cause remains. The owner should test each change, for example both price lists on the current model. Rerunning last week's quotes checks only the vendor's fix, and generated answers vary run to run.",
       "wrong_explanations": {
         "A": "Tempting because the vendor says it fixed its model. But if the new price list caused the quotes, the fault is still live.",
-        "C": "Tempting because a vendor report documents the cause. But it covers only the vendor's change, not the price list that changed that same week.",
+        "C": "Tempting because reperformance is strong evidence. But it checks the vendor's fix, not the price list, and generated quotes vary run to run, so a few clean reruns prove little.",
         "D": "Tempting because it warns customers. But a notice prevents no wrong quote and leaves the true cause unknown."
       },
       "tips": [
         "Eliminate: A trusts a fix that may target the wrong layer, and D adds a notice that prevents no wrong quote.",
-        "Final two: B beats C because the vendor's report can explain only its own change, while the price list changed that week may be the real cause.",
+        "Final two: B beats C because a rerun checks only the vendor's fix, and generated quotes vary run to run; testing each price list on the current model shows which layer caused it.",
         "Exam cue: When an AI fault is blamed on one layer, check every layer that changed: model, prompt, retrieved content and integration."
       ],
       "framework_ref": "NIST CSF 2.0 RS.AN-03 (Root cause of the incident established); NIST AI 100-1 MANAGE 3.1 (Third-party AI risks monitored and controls applied)",
@@ -15730,7 +15730,7 @@
         "Root cause",
         "Retrieved content"
       ],
-      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (causes are traced across layers, retrieved content included; investigators compare versions with the last good state rather than accept one party's account). Batch 12 round 1 fix (completeness critic): re-angled from 'reopen to record our own control gap', which repeated aaia_d2_301 and aaia_d2_050; the pair is now 'test which changed layer caused it' against 'the vendor's root cause report'. Neighbours checked: aaia_d2_133 (faults tracking index refreshes), aaia_d2_217, aaia_d2_302, aaia_d2_109. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (causes are traced across layers, retrieved content included; investigators compare versions with the last good state rather than accept one party's account). Batch 12 round 1 fix (completeness critic): re-angled from 'reopen to record our own control gap', which repeated aaia_d2_301 and aaia_d2_050; the pair is now 'test which changed layer caused it' against 'the vendor's root cause report'. Neighbours checked: aaia_d2_133 (faults tracking index refreshes), aaia_d2_217, aaia_d2_302, aaia_d2_109. Batch 12 round 2 fix (standards re-audit, calibration rule 1): runner-up changed from the vendor's root-cause report, which audit sense removes, to a rerun of last week's quotes, which only the AI facts (both layers changed; generated output varies run to run) defeat. Batch 12 round 3 fix (standards re-audit): explanations now defeat C because a rerun checks only the vendor's fix and generated output varies, not because the rerun mixes both changes. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
       "style_version": 2
     },
     {

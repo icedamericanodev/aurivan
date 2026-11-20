@@ -8230,7 +8230,7 @@
       "principle_id": "named-human-owner",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Peruvian mine routes contractor-access requests through three AI agents, for documents, safety and badges; after a wrong refusal, each owner blamed another agent, citing passing tests. What should the IS auditor recommend as BEST?",
+      "question": "A Peruvian refinery routes contractor-access requests through three AI agents, for documents, safety and badges; after a wrong refusal, each owner blamed another agent, citing passing tests. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have each agent's model vendor certify the whole chain",
         "B": "Have IS audit approve each change to the chain's agents",
@@ -8242,12 +8242,12 @@
       "pre_read": "Weigh each option against the facts the stem gives.",
       "correct_explanation": "Each agent acts on what the one before it produced, so a misread document can pass into safety and badge decisions that no single agent's tests cover. With each owner blaming another agent, nobody answers for the access decision the chain makes. Senior management should name one owner, who then sets end-to-end criteria and testing. Testing on the others' outputs, option C, closes one gap, but nobody would own the combined result.",
       "wrong_explanations": {
-        "A": "Tempting because vendors know their models. But each vendor knows only its own agent, not this mine's chain, and accountability for its access decisions stays with the mine.",
+        "A": "Tempting because vendors know their models. But each vendor knows only its own agent, not this refinery's chain, and accountability for its access decisions stays with the refinery.",
         "B": "Tempting because audit is independent. But approving changes would make IS audit part of the control it must later audit.",
         "C": "Tempting because agents should be tested on real handoffs. But better tests still leave no one accountable for the chain's combined decisions or able to set their criteria."
       },
       "tips": [
-        "Eliminate: A hands the mine's accountability to vendors, and B has IS audit approve changes it must later audit.",
+        "Eliminate: A hands the refinery's accountability to vendors, and B has IS audit approve changes it must later audit.",
         "Final two: D beats C because agents act on each other's outputs, so the chain's decisions need one accountable owner; more tests do not supply one.",
         "Exam cue: when AI agents hand work to each other, look for an owner of the end result, not only of each agent."
       ],
@@ -8257,7 +8257,7 @@
         "Model owner",
         "End-to-end accountability"
       ],
-      "_provenance": "Authored from concept: notes 1B.2 Ownership, Roles and the AI Governance Committee (when AI agents act on each other's outputs, one named owner answers for the chain's combined outcome). Review round 1: replaced an item whose frame repeated aaia_d2_110 (one base model under many uses). Review round 2: stem adds a wrong refusal for which each owner cites only their agent's tests, so the gap is shown to be accountability; explanation sequences owner before end-to-end testing. Completeness round 1: setting moved from a city's event-permit chain (close to crisc_d2_036, a city permit office's vendor AI) to a copper mine's contractor site-access chain. Review round 3: wrong explanation A no longer claims a vendor-testing fact the stem never gives. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1B.2 Ownership, Roles and the AI Governance Committee (when AI agents act on each other's outputs, one named owner answers for the chain's combined outcome). Review round 1: replaced an item whose frame repeated aaia_d2_110 (one base model under many uses). Review round 2: stem adds a wrong refusal for which each owner cites only their agent's tests, so the gap is shown to be accountability; explanation sequences owner before end-to-end testing. Completeness round 1: setting moved from a city's event-permit chain (close to crisc_d2_036, a city permit office's vendor AI) to a copper mine's contractor site-access chain. Review round 3: wrong explanation A no longer claims a vendor-testing fact the stem never gives. Review round 4: setting moved from a copper mine (shared with the 1B.2 notes example, a Chilean copper mine with no named model owner) to a refinery's contractor site-access chain. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -8383,7 +8383,7 @@
         "A": "The plan rules may have changed since the prompt was written",
         "B": "Members may type personal details into their questions",
         "C": "The tests may have used too few questions to support the rating",
-        "D": "Its prompt may not stop it answering beyond the plan rules"
+        "D": "Its prompt may not keep replies within the plan rules"
       },
       "correct": "D",
       "key_concept": "A prompt instruction is not a control: a generative model told to answer only from given rules may still fill gaps from its training.",
@@ -8405,7 +8405,7 @@
         "Prompt instructions",
         "Confabulation"
       ],
-      "_provenance": "Authored from concept: notes 1C.1 Identifying and Assessing AI Risk (likelihood rests on evidence, not instructions: a prompt limiting a generative model to given sources is not a control). Completeness round 1: re-angled from a rating lowered by staff checks (repeated aaia_d1_058 and aaia_d2_339 and leaned on automation bias) to a likelihood rating resting on a prompt instruction; members now use the assistant directly. Review round 3: stem now gives passed tests on questions the rules cover, and runner-up C changed from a missing test citation to a too-small test set, so only the prompt-is-not-a-control fact decides. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1C.1 Identifying and Assessing AI Risk (likelihood rests on evidence, not instructions: a prompt limiting a generative model to given sources is not a control). Completeness round 1: re-angled from a rating lowered by staff checks (repeated aaia_d1_058 and aaia_d2_339 and leaned on automation bias) to a likelihood rating resting on a prompt instruction; members now use the assistant directly. Review round 3: stem now gives passed tests on questions the rules cover, and runner-up C changed from a missing test citation to a too-small test set, so only the prompt-is-not-a-control fact decides. Review round 4: key reworded so it no longer echoes the stem's 'answer'. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -8739,10 +8739,10 @@
     {
       "id": "aaia_d1_239",
       "domain": 1,
-      "subtopic": "1D Privacy and data governance. Erasure requests at an insurance broker",
+      "subtopic": "1D Privacy and data governance. Erasure requests at an electronics retailer",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Croatian car-insurance broker retrained its reply model from scratch without chats customers asked to erase; a small model trained on the old version's replies serves its app. What should concern the IS auditor MOST?",
+      "question": "A Tunisian electronics retailer retrained its reply model from scratch without chats customers asked to erase; a small model trained on the old version's replies serves its app. What should concern the IS auditor MOST?",
       "options": {
         "A": "The retrained model may still reproduce the erased chats",
         "B": "Erasure records may not show when each request was completed",
@@ -8769,7 +8769,7 @@
         "Derived models",
         "Memorization"
       ],
-      "_provenance": "Authored from concept: notes 1D.3 Retention, Deletion and Model Memorization (a model trained to imitate another inherits what it learned, so erasure must reach every model derived from the old version). Review round 2: runner-up changed from a performance worry to incomplete erasure records. Completeness round 1: setting moved from a telecom's reply model (close to crisc_d4_058, telecom chat logs kept in a training set) to a car-insurance broker's reply model. Review round 3: subtopic label made neutral. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1D.3 Retention, Deletion and Model Memorization (a model trained to imitate another inherits what it learned, so erasure must reach every model derived from the old version). Review round 2: runner-up changed from a performance worry to incomplete erasure records. Completeness round 1: setting moved from a telecom's reply model (close to crisc_d4_058, telecom chat logs kept in a training set) to a car-insurance broker's reply model. Review round 3: subtopic label made neutral. Review round 4: setting moved from a car-insurance broker (close to aaia_d1_179, an insurer's claims-letter model retrained without erased letters) to an electronics retailer's reply model. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -8816,7 +8816,7 @@
       "bloom_level": "Foundational",
       "question": "A Dutch mental-health app's validated model infers users' burnout risk from journals; employers' dashboards name staff flagged high risk. Which NIST AI RMF characteristic should the IS auditor consider MOST at stake?",
       "options": {
-        "A": "Privacy-enhanced, as inferences about staff health reach employers",
+        "A": "Privacy-enhanced, as inferences about health are sent to employers",
         "B": "Secure and resilient, as health data leaves the app for employers",
         "C": "Valid and reliable, as inferences from journals may be wrong",
         "D": "Fair, with harmful bias managed, as groups may be flagged unequally"
@@ -8841,7 +8841,7 @@
         "Inferred data",
         "Trustworthy-AI characteristics"
       ],
-      "_provenance": "Authored from concept: notes 1E.1 Trustworthy-AI Characteristics as Testable Criteria (privacy-enhanced AI covers what a model reveals or infers about people, not only how its data is stored). Completeness round 1: re-angled from defining privacy-enhanced by one storage criterion (its frame repeated aaia_d1_135) to naming the characteristic at stake when accurate burnout inferences reach employers by design; runner-up is secure and resilient. Review round 3: option B echoes the stem's employers and health data, so the key no longer alone mirrors the setting. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1E.1 Trustworthy-AI Characteristics as Testable Criteria (privacy-enhanced AI covers what a model reveals or infers about people, not only how its data is stored). Completeness round 1: re-angled from defining privacy-enhanced by one storage criterion (its frame repeated aaia_d1_135) to naming the characteristic at stake when accurate burnout inferences reach employers by design; runner-up is secure and resilient. Review round 3: option B echoes the stem's employers and health data, so the key no longer alone mirrors the setting. Review round 4: key drops 'staff', a stem word it alone echoed, and keeps its length within the lint ratio. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
       "style_version": 2
     },
     {
