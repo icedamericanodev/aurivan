@@ -1,6 +1,26 @@
 # Android 2.2 release tracker
 
-A development tracker for the next phone update after 2.1, not a record of a shipped release. Version name **2.2** (two parts like 2.1; saved files record it as 2.2.0 through `fullVersion()`). Update this file as work lands; reconcile it at build freeze, and follow the same bundle handoff gates as `RELEASE_2_1.md` (read the built AAB's version name and code, compare with the highest Play code, record the commit and SHA-256).
+The tracker for the phone update after 2.1. The bundle was built on 19 Nov 2026 (see "Built bundle"); it is not on Play until the owner uploads it. Version name **2.2** (two parts like 2.1; saved files record it as 2.2.0 through `fullVersion()`). Update this file as work lands; reconcile it at build freeze, and follow the same bundle handoff gates as `RELEASE_2_1.md` (read the built AAB's version name and code, compare with the highest Play code, record the commit and SHA-256).
+
+## Build freeze · 19 Nov 2026
+
+The owner approved the 2.2 screenshots and asked for the bundle. Everything under "Included" below is in it. Anything merged to main after commit `49ab40d` is **not** in this bundle and belongs to the next phone update.
+
+## Built bundle · 19 Nov 2026 (ready for the owner to upload)
+
+| Field | Value |
+|---|---|
+| Source commit | `49ab40dbb3a5563aadfac3685994c8fd5447f91f` (main, squash of #290; main at that point also held #283, #286 and #288) |
+| EAS build | `b1258b74-657f-4aaf-8a5a-78e2cf95418e` (production profile, started by the repo's "Phone build (EAS Build)" workflow, upload to Play off) |
+| File | `kaisip-2.2-code4.aab`, 72,305,276 bytes |
+| SHA-256 | `4f3da142c907084a61915d0c4cd975da0ecaff4afa0d519e9e064ddea0f7b325` |
+| Read from the bundle's manifest | package `com.kaisip.app`, versionName **2.2**, versionCode **4**, minSdk 24, targetSdk 36, `expo.modules.updates.ENABLED` false |
+| Previous Play build | 2.1, versionCode 3 (uploaded by the owner to both closed-testing tracks on 18 Nov 2026); 4 is higher |
+| Large-screen declaration | `uses-feature android.hardware.screen.portrait` with `required="false"` is present (it was absent in 2.1); `MainActivity` is still `screenOrientation=portrait`. This is the change meant to clear Play's two "portrait" warnings; the owner confirms on the release page |
+| Permissions and services vs 2.1 | identical (26 permissions, none added or removed), so no new Play declarations and no Data safety change |
+| Signing | same upload certificate as the 2.1 bundle (SHA-256 fingerprint starts `BE:8B:DA:41`) |
+
+Not done from the cloud session (no Android emulator): installing a bundle-derived APK, upgrading from 2.1 with saved progress, and the items under "Still to verify on a phone". The owner does these from the closed-testing track before promoting further.
 
 ## Included
 
