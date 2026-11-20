@@ -429,10 +429,10 @@ version bump today.
 ### Results
 | Domain | Questions | Tagged | Untagged |
 |---|---|---|---|
-| D1 | 185 | 128 | 57 |
-| D2 | 344 | 290 | 54 |
+| D1 | 215 | 146 | 69 |
+| D2 | 386 | 323 | 63 |
 | D3 | 146 | 131 | 15 |
-| All | 675 | 549 | 126 |
+| All | 747 | 600 | 147 |
 
 New principle `independence-of-ai-assurance` (role family): seeds and tags
 aaia_d2_014, aaia_d3_024 and aaia_d3_043, moved from
@@ -792,3 +792,54 @@ aaia_d1_172 aaia_d1_174 aaia_d1_176 aaia_d1_181 aaia_d2_303 aaia_d2_304
 aaia_d2_305 aaia_d2_306 aaia_d2_308 aaia_d2_309 aaia_d2_312 aaia_d2_314
 aaia_d2_316 aaia_d2_319 aaia_d2_323 aaia_d2_326 aaia_d2_327 aaia_d2_329
 aaia_d2_331 aaia_d2_332 aaia_d2_335 aaia_d2_338 aaia_d2_339.
+
+### Batch 11 (20 November 2026)
+aaia_d1_186-215 and aaia_d2_345-386 were read against the rule above. None
+is a seed. Changed: aaia_d1_195 moved from `real-human-oversight` to
+`population-includes-misses` (checking every stated detail cannot find what a
+summary omits, as aaia_d3_069; the runner-up, a signature, adds no check);
+aaia_d2_357 moved from `ai-changes-are-changes` to `real-human-oversight`
+(the runner-up also retests after the release; the banner invites reviewers
+to agree unchecked, which is automation bias). Newly tagged: aaia_d1_199
+`population-includes-misses` (fakes that fool the model are paid and never
+found, as aaia_d3_062); aaia_d1_202 `ai-deciding-fact` (the model already
+passed the fintech's tests, which removes misreads); aaia_d1_206
+`population-includes-misses` (a blurring model hides only what it detects, so
+its misses must be measured, as aaia_d3_013); aaia_d1_209 `ai-deciding-fact`
+(the stated live secrets remove flawed code, a risk the stem never raises);
+aaia_d2_354 `accuracy-is-not-assurance` (a benchmark average hides the
+conditions where the model fails); aaia_d2_371 `accuracy-is-not-assurance`
+(accuracy on clicks the rankings shape holds steady while a group gap grows,
+as aaia_d2_335). Four tags removed (below).
+
+**Untagged new items (low confidence):**
+- aaia_d1_189: forecast-uncertainty knowledge (a single figure hides its spread); the runner-up, testing on recent heatwaves, is `accuracy-is-not-assurance`'s own move.
+- aaia_d1_192: policy-scope knowledge (a check-before-use rule written for staff tools does not fit real-time product AI); no principle covers policy fit.
+- aaia_d1_197: feedback-loop knowledge (unchecked corrections become training data); the runner-up, lost know-how, is not a change move, so `ai-changes-are-changes` does not separate.
+- aaia_d1_200: KRI design knowledge (a leading drift alert needs a level tied to the late-surfacing harm), as aaia_d1_148.
+- aaia_d1_204: lineage knowledge (an origin label serves every use of a shared dataset, a cap only one), as aaia_d2_262.
+- aaia_d1_205: was `fix-the-control-not-the-model`; after the final re-angle both options weigh the version register, so retrieval knowledge (similarity search ignores status marks unless it filters on them) decides.
+- aaia_d1_207: differential-privacy knowledge (privacy loss adds up across repeated releases).
+- aaia_d1_208: data-minimization knowledge (style examples need not be real), as aaia_d1_041.
+- aaia_d1_212: legal knowledge (high-risk duties need build records kept during training).
+- aaia_d1_214: framework knowledge (a crosswalk shows overlap, not conformance), as aaia_d1_049; the runner-up is an independence move, but the Final two turns on what a crosswalk can show.
+- aaia_d1_215: framework knowledge (MITRE ATLAS is never complete), as aaia_d1_079.
+- aaia_d2_348: oversampling knowledge (copies add no variety).
+- aaia_d2_349: was `test-the-ai-as-used`; both options retest, so shortcut-learning knowledge (photos from the same camera keep the stamp) decides (as aaia_d2_320).
+- aaia_d2_355: embedding-inversion knowledge (an index holds the letters' substance, so their retention rules apply).
+- aaia_d2_366: was `accuracy-is-not-assurance`; a perfectly run accuracy test answers a different question, so evaluation-design knowledge (only a random comparison shows what the picks add) decides (method choice, as aaia_d3_136).
+- aaia_d2_375: attack knowledge (secure aggregation hides a poisoned update), as aaia_d2_081.
+- aaia_d2_376: attack knowledge (expired domains can be bought to poison retraining); the Final two weighs attacker control against random loss, not harm (as aaia_d2_336).
+- aaia_d2_379: injection knowledge (plain-text instructions pass a malware scan), as aaia_d2_016.
+- aaia_d2_384: was `contain-and-preserve-ai`; both options are steps before restart, so agent-memory knowledge (rewritten memories steer it again after new keys) decides.
+- aaia_d2_385: incident-communication knowledge (a fix changes only future rankings, so customers must learn of past ones); the runner-up also looks forward.
+
+**Medium confidence (tagged, review first):** aaia_d1_186 aaia_d1_187
+aaia_d1_191 aaia_d1_193 aaia_d1_195 aaia_d1_199 aaia_d1_201 aaia_d1_202
+aaia_d1_203 aaia_d1_206 aaia_d1_209 aaia_d1_210 aaia_d1_211
+aaia_d2_345 aaia_d2_351 aaia_d2_352 aaia_d2_354 aaia_d2_356 aaia_d2_357
+aaia_d2_359 aaia_d2_360 aaia_d2_362 aaia_d2_367 aaia_d2_369 aaia_d2_371
+aaia_d2_377 aaia_d2_378 aaia_d2_381 aaia_d2_383.
+
+The D1 row was 128 tagged before this batch; the file held 127, so the table
+now counts from the file.
