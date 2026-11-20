@@ -589,9 +589,12 @@ audit).** The Part 1 syllabus is an opened IIA document, so a key may rest on
 exactly what one of its lines states, cited first: the three fraud triangle
 conditions by name (1D1a), authority levels as preventing fraud (1D4c),
 hotlines, reconciliations and supervisory reviews as detecting it (1D4d),
-and, decided 20 Nov 2026 on the Section A round 3 audit, due diligence as an
-advisory service the internal audit function performs (1A6c, by topic 6's
-heading). Nothing beyond those classifications: what the work consists of
+and, decided 20 Nov 2026 on the Section A round 3 audit and citation check,
+the engagement types the syllabus lists under topic 1A5 (assurance services)
+and topic 1A6 (advisory services), each as that kind of service: for example
+an audit of the management reporting process as an assurance service (1A5g)
+and due diligence as an advisory service (1A6c). Nothing beyond those
+classifications: what the work consists of
 still comes from the Standards' glossary or waits for a practice guide, and a
 syllabus line that groups several things together does not rank them (round
 3's `cia1_d4_026` first keyed one detective control above the other two, which
