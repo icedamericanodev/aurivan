@@ -334,6 +334,20 @@ else
   status=1
 fi
 
+# 6c-cia. CIA course (four paid packs, not wired into the apps yet) --------
+# The harness first (it plants one fault per rule and fails if any gets
+# through), then every CIA gate on whatever content exists. The lines are
+# printed by data/cia/tools/run_gates.sh, so the harness can prove them on its
+# fixture: the last line says so when a gate did not really run (the
+# originality gate needs The IIA's text, which is never stored in the repo;
+# rounds and releases run it with --fetch --require), a failing tool's problem
+# lines are shown, and dated-fact warnings are counted.
+# Tools: data/cia/tools/README.md.
+if [ -d data/cia/tools ]; then
+  printf "\n"
+  bash data/cia/tools/run_gates.sh || status=1
+fi
+
 # 6d. Web <-> mobile design-token parity (premium pass §0) -------------------
 # The web dark tokens that the premium pass moved (raised, wrongBg, the
 # section gap) must match mobile/src/theme/tokens.ts. A pair the web has moved

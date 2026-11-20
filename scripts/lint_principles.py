@@ -9,6 +9,8 @@ Usage:
         --notes data/crisc/notes --bank data/crisc/originals
     # the AAIA course (data/aaia/principles.json, its notes and bank):
     python3 scripts/lint_principles.py --cert aaia
+    # a CIA pack (The IIA): cia1, cia2, cia3 or ciac
+    python3 scripts/lint_principles.py --cert cia1
 
 Optional flags (the defaults check the CISA files, unchanged):
     --cert aaia   the AAIA files: data/aaia/principles.json (or a draft path),
@@ -17,6 +19,17 @@ Optional flags (the defaults check the CISA files, unchanged):
                   data/aaia/originals/d1-3.json (ids like aaia_d1_004),
                   domains 1-3, no old PRINCIPLES_LIB ids. A principles file
                   that is not written yet prints "skipped: ..." and exits 0
+    --cert cia1   a CIA pack (also cia2, cia3, ciac): data/cia/<pack>/mindset/
+                  principles.json, notes data/cia/<pack>/notes/ and bank
+                  data/cia/<pack>/originals/. The pack is not in the apps yet, so
+                  its domains come from data/cia/shared/outline.json: section A
+                  is domain 1, B is 2. Subtopic codes are part + section + topic
+                  (1B3.2 is in domain 2; ciac codes start with 4) and ids are
+                  like cia1_d2_004. A section's question file, or the pack's
+                  notes, that is not written yet is skipped and named in one
+                  line, not an error (--cia-root DIR reads another CIA tree:
+                  the harness fixture). A principles file that is not written yet
+                  prints one "nothing to lint yet" line and exits 0
     --notes PATH  notes file, or a folder of d{N}.json notes files, that
                   subtopic codes must exist in (codes like 3C3.2 are allowed)
     --bank DIR    folder of d{N}.json question files; domains come from the
@@ -95,10 +108,27 @@ CERT_PROFILES = {
         "topic_codes": True,
     },
 }
+# The IIA's CIA packs. They are not in mobile/src/content/certifications.ts yet,
+# so one hand-kept outline file holds each exam's sections (the "domains" of
+# these linters: section A is domain 1), weights, length and minutes.
+# scripts/lint_exam_guide.py reads the same file through outline_exam().
+CIA = ROOT / "data" / "cia"
+CIA_OUTLINE = CIA / "shared" / "outline.json"
+CIA_PACKS = {"cia1": "1", "cia2": "2", "cia3": "3", "ciac": "4"}  # pack: first character of its note codes
+for _pack in CIA_PACKS:
+    CERT_PROFILES[_pack] = {
+        "principles": CIA / _pack / "mindset" / "principles.json",
+        "notes": CIA / _pack / "notes",
+        "bank": CIA / _pack / "originals",
+        "outline": True,  # domains and id formats are filled in from CIA_OUTLINE (cia_profile)
+    }
 # Wording of two messages; a --cert profile swaps in its own id formats.
 QID_EXAMPLE = "d1_004"
 SUBTOPIC_EXAMPLE = "1A3.6"
 TOPIC_CODES = False  # also accept topic codes (1A) as subtopics
+# CIA packs are checked as far as they are written: files that do not exist yet
+# are listed here and reported in one line. None for every other course.
+CIA_SKIPPED = None
 
 TOP_KEYS = {"schema_version", "title", "updated", "description", "families",
             "principles", "slip_map"}
@@ -179,6 +209,43 @@ def rel(path):
     return path.relative_to(ROOT) if path.is_relative_to(ROOT) else path
 
 
+def code_domain(m):
+    """Domain number of a matched note code: its leading digit (1A3.6 is D1), or
+    for a CIA code, where the digit is the part, its section letter (1B3.2 is D2)."""
+    g = m.group(1)
+    return int(g) if g.isdigit() else ord(g) - 64
+
+
+def outline_exam(pack):
+    """One exam of CIA_OUTLINE: {"id", "questions", "minutes", "sections":
+    [{"letter", "domain", "name", "weight", ...}]}. None while the file, or the
+    exam in it, is not written yet."""
+    try:
+        doc = json.loads(CIA_OUTLINE.read_text())
+    except OSError:
+        return None
+    except ValueError as e:
+        print(f"✗ cannot read {rel(CIA_OUTLINE)}: {e}")
+        sys.exit(2)
+    return next((e for e in doc.get("exams", []) if e.get("id") == pack), None)
+
+
+def cia_profile(pack, prof):
+    """Complete a CIA pack's profile from the outline. cia1 with sections A-D
+    gives domains 1-4, ids like cia1_d1_004 and subtopic codes like 1A1.2 (the
+    part's digit, then a section letter A-D)."""
+    exam = outline_exam(pack)
+    doms = sorted(s.get("domain") for s in (exam or {}).get("sections", []))
+    if not doms:
+        print(f"✗ --cert {pack}: no sections for '{pack}' in {rel(CIA_OUTLINE)}")
+        sys.exit(2)
+    part, last = CIA_PACKS[pack], chr(64 + doms[-1])
+    return dict(prof, domains=set(doms),
+                qid=rf"^{pack}_d([1-{doms[-1]}])_\d{{3}}$", qid_example=f"{pack}_d1_004",
+                subtopic=rf"^{part}([A-{last}])\d+\.\d+$", subtopic_example=f"{part}A1.2",
+                topic_codes=False)
+
+
 def qdomain(qid):
     """Domain number of a question id, or None if the id is malformed."""
     m = QID.match(qid) if isinstance(qid, str) else None
@@ -191,6 +258,9 @@ def load_questions():
     tags = {}
     for n in sorted(DOMAINS):
         f = ORIGINALS / f"d{n}.json"
+        if CIA_SKIPPED is not None and not f.exists():
+            CIA_SKIPPED.append(f"{rel(f)}")
+            continue
         try:
             data = json.loads(f.read_text())
         except (OSError, ValueError) as e:
@@ -238,6 +308,10 @@ def check_question_tags(doc, ctx):
 
 def load_subtopic_codes():
     files = sorted(NOTES.glob("d*.json")) if NOTES.is_dir() else [NOTES]
+    if CIA_SKIPPED is not None and not (NOTES.is_dir() and files):
+        # The Challenge pack has no section notes; a Part's may not be written yet.
+        CIA_SKIPPED.append(f"{rel(NOTES)}/d*.json")
+        return set()
     if not files:
         err(str(rel(NOTES)), "no d{N}.json notes files found")
     codes = set()
@@ -462,8 +536,8 @@ def check_principle(p, i, ctx):
             continue
         if ctx["codes"] and s not in ctx["codes"]:
             err(where, f"subtopic '{s}' does not exist in {rel(NOTES)}")
-        if int(m.group(1)) not in doms:
-            err(where, f"subtopic '{s}' is in D{m.group(1)}, which is not in domains")
+        if code_domain(m) not in doms:
+            err(where, f"subtopic '{s}' is in D{code_domain(m)}, which is not in domains")
 
     # practice_ids
     pids = p.get("practice_ids")
@@ -539,11 +613,14 @@ def configure(notes=None, bank=None):
 def configure_cert(cert):
     """Point every check at a --cert profile (CERT_PROFILES). Returns its default file."""
     global NOTES, ORIGINALS, DOMAINS, QID, SUBTOPIC, LEGACY_IDS
-    global QID_EXAMPLE, SUBTOPIC_EXAMPLE, TOPIC_CODES
+    global QID_EXAMPLE, SUBTOPIC_EXAMPLE, TOPIC_CODES, CIA_SKIPPED
     prof = CERT_PROFILES.get(cert)
     if prof is None:
         print(f"✗ --cert {cert}: unknown certification (known: {', '.join(sorted(CERT_PROFILES))})")
         sys.exit(2)
+    if prof.get("outline"):
+        prof = cia_profile(cert, prof)
+        CIA_SKIPPED = []
     NOTES, ORIGINALS = prof["notes"], prof["bank"]
     DOMAINS = set(prof["domains"])
     QID = re.compile(prof["qid"])
@@ -554,12 +631,26 @@ def configure_cert(cert):
     return prof["principles"]
 
 
+def use_cia_root(root):
+    """Read the CIA packs from another tree (same layout as data/cia)."""
+    global CIA, CIA_OUTLINE
+    CIA, CIA_OUTLINE = root, root / "shared" / "outline.json"
+    for pack in CIA_PACKS:
+        CERT_PROFILES[pack].update(principles=CIA / pack / "mindset" / "principles.json",
+                                   notes=CIA / pack / "notes", bank=CIA / pack / "originals")
+
+
 def parse_args(argv):
     path, opts = None, {"notes": None, "bank": None, "cert": None}
     args = list(argv[1:])
     while args:
         a = args.pop(0)
-        if a in ("--notes", "--bank", "--cert"):
+        if a == "--cia-root":  # another CIA tree (the harness fixture); only the CIA packs read it
+            if not args:
+                print(f"✗ {a} needs a value")
+                sys.exit(2)
+            use_cia_root(Path(args.pop(0)).resolve())
+        elif a in ("--notes", "--bank", "--cert"):
             if not args:
                 print(f"✗ {a} needs a value")
                 sys.exit(2)
@@ -576,6 +667,12 @@ def main(argv):
     path, opts = parse_args(argv)
     cert = (opts.pop("cert") or "").lower()
     if cert and cert != "cisa":
+        prof = CERT_PROFILES.get(cert) or {}
+        target = prof.get("principles", path) if path == DEFAULT else path
+        if prof.get("outline") and not target.exists():
+            # Checked before the outline is read: a CIA pack with no principles yet has nothing to lint.
+            print(f"Principles lint ({cert}): nothing to lint yet ({rel(target)} not written)")
+            return 0
         default = configure_cert(cert)
         if path == DEFAULT:
             path = default
@@ -669,6 +766,8 @@ def main(argv):
     print(f"  per domain: {dom_line}")
     n_q = len(ctx["qids"] - {None})
     print(f"  question tags (principle_id): {len(ctx['tags'])} of {n_q} tagged")
+    if CIA_SKIPPED:
+        print(f"  • not written yet, so not checked: {', '.join(CIA_SKIPPED)}")
     if ctx["tags"]:
         tagged_doms = sorted({qdomain(q) for q in ctx["tags"] if qdomain(q)})
         for pid, per_dom in tag_counts.items():
