@@ -12,6 +12,10 @@ Read first:
 - `docs/content/QUESTION_SCHEMA.md` and `docs/content/EXAM_STYLE_V2.md`: the same item shape and three-tip voice as the other courses, with the CIA lens below in place of the lens named there.
 - `data/cia/tools/README.md` and `CLAUDE.md` (original content only, never a bank size in learner copy).
 
+## Calibration from the Part 1 pilot (binding)
+
+The pilot's blind tests agreed with the key on every item and still found the set too easy. Read `docs/content/CIA_BANK_PLAN.md` section 6b before writing or auditing any CIA item, and hold every round to it: a real runner-up on every item; no straw options; no distractor family more than 6 times in 20; the middle-option pattern broken in at least 4 of 20; at least 6 of 20 (8 in judgment-heavy sections) turning on a distinction the Standards draw; a "should" never competing with a "must" unless the stem settles it; no giveaways (the key is never the only option of its kind); the same modal verb across options; own words beyond the gate's threshold; no invented rules for difficulty; one lesson per item per set. An audit reports, per item, whether it can be answered by test-taking alone.
+
 ## The CIA lens (verified on the opened Standards, 19 Nov 2026)
 The long form, with every correction to the starting lens and the places where the Standards are silent or ambiguous, is `docs/content/CIA_LENS.md`: read it before settling a disputed key. Cite the Standard, never quote it. "(CI)" marks a Consideration for Implementation: a "should", so a key that rests on it says "should" or "leading practice", never "must". "(EC)" marks an essential condition for the board or senior management.
 - **Purpose.** Internal auditing gives the board and management assurance, advice, insight and foresight that are independent, objective and risk-based, so the organization can create, protect and sustain value. [Domain I]

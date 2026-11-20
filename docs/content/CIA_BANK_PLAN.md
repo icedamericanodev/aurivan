@@ -268,6 +268,64 @@ Agents (in `.claude/agents/`): `cia-standards-auditor` (the shared standard),
 `behavioral-scientist`, `growth-marketer`, `app-store-compliance-reviewer`,
 `learning-game-designer`.
 
+## 6b. Pilot calibration rules (from the Part 1 pilot, 19 and 20 Nov 2026)
+
+The first blind test agreed with the key on 80 of 80, and the four audits
+found no wrong key. What they found instead decides how every later round is
+written. These rules are part of the item standard
+(`.claude/agents/cia-standards-auditor.md`), and the scaffold of every round
+states how it meets them.
+
+1. **Agreement is not difficulty.** A blind tester who gets 20 of 20 with high
+   confidence has shown the keys are clear, not that the items are worth
+   paying for. From now on the blind tester also sorts each item: needs the
+   Standards, partly reachable by test-taking, or reachable by test-taking
+   alone. A round may not merge with more than 3 in 20 in the last class.
+2. **Every item has a real runner-up**: the answer a careful, half-prepared
+   candidate would choose (the right actor at the wrong time, a "should" where
+   a "must" applies, the 2017 habit, the individual remedy for a
+   function-level problem). No straw options ("do nothing", "silent
+   observer", "accuse the manager", "call the police").
+3. **No distractor family more than 6 times in 20**, and never at the same
+   letter more than twice: internal audit does management's job; do nothing or
+   defer; overreact.
+4. **Break the middle-option pattern.** If the key is always the measured
+   option between one that caves and one that overreacts, a candidate learns
+   the trick in one mock. In at least 4 of 20 the requirement is the firm
+   action (go to the board, decline the work, report although a manager
+   objects) or the modest one (the minimum the Standards require and no more).
+5. **At least 6 of 20 turn on a distinction the Standards draw** (8 where the
+   section's verbs ask for judgment): must against should or may; requirement
+   against essential condition; who approves against who is consulted;
+   function against person; discuss against escalate; consider against
+   document. The stem settles the facts so the key is still the single best answer.
+6. **A "should" may support the key; it may never compete with a "must"
+   unless the stem settles it.** The one ambiguous item of the pilot keyed the
+   "must" (report as policy directs) against a "should" that a well-prepared
+   candidate knew (a senior executive's breach goes to the board): knowledge
+   was pulled toward the wrong option. Write such items so the two agree.
+7. **No giveaways**: the key may not be the only option that echoes a stem
+   phrase, the only one of its kind (the only one that declines, that gets
+   evidence, that names the policy, that names both the board and senior
+   management), the only one carrying its own justification, or the only one
+   with a hedge word. A stem does not state the rule and then ask for it.
+8. **Use the same modal verb in all four options** when the options are
+   statements of duty.
+9. **Own words means more than passing the gate.** One explanation sat a
+   single inserted word under the 8-word limit. After writing, read each
+   explanation beside the Standard it cites and reword anything that follows
+   its sentence.
+10. **Do not invent rules to gain difficulty.** Where the opened sources are
+    thin (most of Section D), a clean application item is better than a
+    contrived hard one. The author says which items were left at that level and why.
+11. **One lesson, one item per set.** Two items that fall to the same rule
+    with the same wrong patterns count as one (and the cross-part reviewer
+    checks this across sections: "report as policy directs" was keyed in four
+    items of the first draft).
+12. **Two fix passes, then stop.** Review, fix, blind test again, one small
+    pass, final blind test. What still falls short is recorded in the
+    scorecard, not polished forever.
+
 ## 7. Round scorecard
 
 Written here after every round. **Blind-test agreement below 90% means the
