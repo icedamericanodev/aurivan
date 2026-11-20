@@ -1,10 +1,17 @@
 # CIA kickoff prompt (paste into a new session)
 
-**Status: not run yet.** Written 19 Nov 2026. Copy everything inside the fence
-below into a new Claude Code session on this repository (KaiSip cloud
-environment, which allows `theiia.org`). When the session has run, mark this
-file "done" with the PR number, as `AAIA_KICKOFF_PROMPT.md` does, and continue
-from `docs/content/CIA_BANK_PLAN.md`.
+**Status: done (20 Nov 2026, PR #289).** This prompt was run once; its outputs
+are `docs/content/CIA_BLUEPRINT.md`, `docs/content/CIA_BANK_PLAN.md`,
+`docs/content/CIA_CHALLENGE_MAP.md`, `docs/content/CIA_LENS.md`,
+`docs/content/CIA_RESEARCH_LOG.md`, `docs/content/CIA_CISA_BRIDGE_OUTLINE.md`,
+the `cia-*` agents and `iia-mindset-coach`, and `data/cia/` (the harness, the
+Part 1 notes and the Part 1 pilot). Don't run it again: continue from the
+plan's "Resume here" block (the glossary start is the one Session G item left).
+Kept for history. Where the opened sources differed from what this prompt
+assumed, the research log lists each difference (its section 1, "What differs from
+the kickoff prompt"); the plan and the blueprint carry the checked facts.
+
+Written 19 Nov 2026.
 
 What this starts: KaiSip's course for the **Certified Internal Auditor (CIA)**
 exams of The Institute of Internal Auditors (The IIA), as paid, downloadable
