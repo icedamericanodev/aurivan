@@ -12,10 +12,11 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 
 | | |
 |---|---|
-| **Status (19 Nov 2026)** | Session G, steps 1 and 2 done: expert decisions, the documents, the harness (145 planted faults stopped, 34 controls hold; an independent code review's findings are all fixed), the expert agents, and the **Part 1 study notes for all four sections** (93 sub-topics; each section independently audited against the opened Standards, read by a first-time learner, and fixed). No questions written yet. |
+| **Status (20 Nov 2026)** | Session G, steps 1 to 3 done: expert decisions, the documents, the harness (146 planted faults stopped, 35 controls hold; an independent code review's findings are all fixed), the expert agents, the **Part 1 study notes for all four sections** (93 sub-topics, audited and learner-read), and the **Part 1 pilot: 80 questions, 20 per section**, through the full pipeline (scorecard in section 7; calibration rules in section 6b). With them: the 20 shared principles, the Part 1 exam guide and final review week, and a first generated Challenge pack from the tagged items. The outline of the CISA bridge is in `docs/content/CIA_CISA_BRIDGE_OUTLINE.md`. **Not done from Session G: the glossary start** (`data/cia/shared/glossary.json`). |
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
-| **Next step** | The Part 1 pilot: 20 questions per section through the full pipeline (section 6), written from the notes, obeying the "do not key on" list in section 8b, with the shared principles, the glossary start, and the Part 1 exam guide and final review week. Then the Challenge map's CISA bridge outline. |
-| **Then** | Part 1 to its sale minimum (its five Challenge-shared topics early), Part 2, Part 3, the Challenge build and the CISA bridge, the cross-part release gate. |
+| **Next step** | 1. The glossary start (`data/cia/shared/glossary.json`, own-words definitions checked by `check_originality.py` against the Standards glossary; `iia-mindset-coach` with `cia-p1-domain-expert`). 2. Part 1 toward its sale minimum in rounds of 20 to 25, starting with its five Challenge-shared topics (1A2, 1A7, 1A8, 1B2, 1B6). Every round obeys section 6b and reports the cue test; the target is 85% or lower (the pilot ended at 91%). |
+| **Then** | Part 2, Part 3, the Challenge build and the CISA bridge notes (from the outline), the cross-part release gate. |
+| **Known weak spot** | Difficulty. No pilot key was wrong and all four blind rounds agreed 80 of 80, but the last testers still called 21 of 80 answerable by test-taking alone, most in Sections B and D, and 8 items carry a TOO EASY or GIVEAWAY flag (section 7). New rounds must do better; the pilot items are candidates for a later hardening pass, not for more polishing now (section 6b, rule 12). |
 
 Commands a new session runs first:
 
@@ -42,14 +43,14 @@ pack. Every surface CISA has, as data that passes its gate.
 |---|---|---|---|---|---|---|
 | Blueprint and outline | `docs/content/CIA_BLUEPRINT.md`, `data/cia/shared/outline.json` | cert-blueprint-researcher | Done | Done | Done | Done |
 | Study notes | `notes/d{N}.json`, one file per section, notes schema v2 | part expert | Done: 93 sub-topics, audited (section 8b) | Not started | Not started | Generated later, plus the bridge |
-| Questions | `originals/d{N}.json` | part expert | Not started | Not started | Not started | Generated (`build_challenge.py`) |
+| Questions | `originals/d{N}.json` | part expert | Pilot done: 20 per section (section 7) | Not started | Not started | Generated (`build_challenge.py`) from the tagged pilot items |
 | Citation library | `data/cia/shared/_framework_library.md` (one for all four) | part experts, cia-currency-checker | Started | | | |
 | Dated facts | `data/cia/shared/currency.json` | cia-currency-checker | Started | | | |
 | Glossary | `glossary.json`, built from `data/cia/shared/glossary.json` | iia-mindset-coach, part experts | Not started | | | |
-| Principles | `mindset/principles.json`, built from `data/cia/shared/principles.json` | iia-mindset-coach | Not started | | | |
-| About the exam | `exam/<pack>_exam_guide.json` | iia-mindset-coach | Not started | Not started | Not started | Not started |
-| Final review week | `exam/final_review_week.json` | iia-mindset-coach, behavioral-scientist | Not started | Not started | Not started | Not started |
-| The CISA bridge | `ciac/notes/bridge.json` and a section of the Challenge exam guide | cia-challenge-bridge-expert | | | | Outline next |
+| Principles | `mindset/principles.json`, built from `data/cia/shared/principles.json` | iia-mindset-coach | Done: 20 principles, pilot questions tagged | Later | Later | Built (same 20) |
+| About the exam | `exam/<pack>_exam_guide.json` | iia-mindset-coach | Done | Not started | Not started | Not started |
+| Final review week | `exam/final_review_week.json` | iia-mindset-coach, behavioral-scientist | Done | Not started | Not started | Not started |
+| The CISA bridge | `ciac/notes/bridge.json` and a section of the Challenge exam guide | cia-challenge-bridge-expert | | | | Outline done (`docs/content/CIA_CISA_BRIDGE_OUTLINE.md`); notes not started |
 | Mock exam | the bank plus the settings in section 4 | part expert, mobile-app-engineer | | | | |
 | Decision lessons, game decks | `lessons/` (LESSONS_SCHEMA), game decks | part experts, learning-game-designer | Later | Later | Later | Later |
 | Course description and store copy | section 10 | growth-marketer, app-store-compliance-reviewer | Draft names only | | | |
@@ -283,8 +284,8 @@ states how it meets them.
    - **The cue test** (`blind_copy.py --options-only`, scored by
      `score_blind.py`): a fresh tester sees only the four options, no stem, and
      guesses the key. Chance is 25%. Measured on 19 and 20 Nov 2026 with the
-     same instructions on 80 items each: **CISA 96%, the CIA pilot 94%, CRISC
-     85%.** So the pilot sits at the house standard, and the house standard
+     same instructions on 80 items each: **CISA 96%, the CIA pilot 94% (91%
+     after its final fix), CRISC 85%.** So the pilot sits at the house standard, and the house standard
      leaks: the key is usually the one measured, by-the-book option among
      options that are wrong in general. The tester knows auditing, so this is
      not what an unprepared learner would score; it shows that the wrong
@@ -294,9 +295,9 @@ states how it meets them.
      different question, so that only the stem's facts decide.
    - **The tester's own sorting** of each item (needs the Standards, partly
      reachable by test-taking, reachable by test-taking alone). It is a
-     judgment and it wobbles between testers (the pilot's final round: 20, 34
-     and 26 of 80), so it is recorded and read with the cue test, not used as
-     a bar on its own.
+     judgment and it wobbles between testers (the pilot's last two rounds: 20,
+     34 and 26 of 80, then 18, 41 and 21), so it is recorded and read with the
+     cue test, not used as a bar on its own.
 2. **Every item has a real runner-up, and every wrong option is right
    somewhere.** The runner-up is the answer a careful, half-prepared candidate
    would choose (the right actor at the wrong time, a "should" where a "must"
@@ -353,7 +354,34 @@ in a row below 90%: stop and tell the owner.
 
 | Round | Date | Pack and sections | Items | Blind agreement | HARD / PRECISION / OBSERVATION per 25 | Pick-longest | Items cut | Sources newly opened |
 |---|---|---|---|---|---|---|---|---|
-| (none yet) | | | | | | | | |
+| Pilot | 19 to 20 Nov 2026 | cia1, Sections A to D | 80 (20 each) | 80 of 80 in each of four blind rounds (100%) | 0.3 / 12.8 / 10.9 (1 / 41 / 35 on 80) | 20.0% in every section | 0 | The texts listed in `CIA_RESEARCH_LOG.md` (no new source after the notes) |
+
+**Pilot, in full.** Four standards audits (one per section, with the key):
+Section A 0 HARD, 15 PRECISION, 8 OBSERVATION; B 0 / 8 / 5; C 1 / 9 / 12;
+D 0 / 9 / 10. The cross-section review of the items added 0 / 16 / 7 and the
+currency check 0 / 3 / 9. All were applied or answered with the Standard.
+No key was wrong. Two items were found ambiguous by blind testers along the
+way and fixed: `cia1_d3_007` (a "must" set against a "should" a prepared
+candidate knows; rule 6 of section 6b) and `cia1_d4_007` (a ranking that an
+inherent-risk reading could reorder). Two fix passes and one consolidated
+final fix, as rule 12 allows; then a last blind round on the final text.
+
+| Measure | Result |
+|---|---|
+| Blind agreement, rounds 1 to 4 | 80 of 80 each round; round 4 found no ambiguous item and no wrong premise |
+| Cue test (options only, chance 25%) | 94% before the final fix, **91% after** (73 of 80). Target for new rounds: 85% or lower |
+| Final testers' sorting of the 80 | needs the Standards 18, partly 41, test-taking alone 21 (round 3: 20 / 34 / 26). By section, test-taking alone: A 3, B 8, C 3, D 7 |
+| Flags left in the final round (recorded, not polished further) | TOO EASY: `cia1_d1_007`, `cia1_d1_011`, `cia1_d2_006`, `cia1_d3_011`, `cia1_d3_016`. GIVEAWAY: `cia1_d1_019`, `cia1_d2_018`, `cia1_d3_017` |
+| Patterns a candidate could learn (final testers) | An option where internal audit decides, operates a control or takes over is wrong; the measured middle option wins; in Section B an option that cites the function's independence is wrong; in Section C "it turned out fine, is legal, is funded, was approved" is wrong; late-timing words mark wrong options |
+| Key spread and length | 5 keys per letter in every section; key alone longest in 4 of 20 per section |
+| Notes changed because of the items | One example in 1C6.1 (it suggested a reliable risk register could replace the chief audit executive's own assessment) |
+
+What the next round changes because of this: the scaffold of every round
+states how it meets rules 2 to 5 of section 6b before writing starts; the
+learnable patterns above are given to the author as patterns to break (some
+keys must be the firm action, some wrong options must be the measured one);
+Sections B and D get the most attention, because that is where test-taking
+alone still works.
 
 ## 8. Topical Requirements calendar
 
