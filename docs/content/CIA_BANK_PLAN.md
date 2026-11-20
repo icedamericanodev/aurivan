@@ -14,8 +14,8 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 |---|---|
 | **Status (20 Nov 2026)** | Session G, steps 1 to 3 done: expert decisions, the documents, the harness (187 planted faults stopped, 43 controls hold; an independent code review's findings are all fixed), the expert agents, the **Part 1 study notes for all four sections** (93 sub-topics, audited and learner-read), and the **Part 1 pilot: 80 questions, 20 per section**, through the full pipeline (scorecard in section 7; calibration rules in section 6b). With them: the 20 shared principles, the Part 1 exam guide and final review week, and a first generated Challenge pack from the tagged items. The **glossary start** is written and audited (153 Part 1 terms in `data/cia/shared/glossary.json`; it reuses the notes' wording, and `check_glossary.py` fails if a term is ever defined two ways). The outline of the CISA bridge is in `docs/content/CIA_CISA_BRIDGE_OUTLINE.md`. Session G is complete. |
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
-| **Rounds 1 and 2 done (20 Nov 2026)** | Round 1: 25 questions on the five Challenge-shared topics (`cia1_d1_021` to `035`, `cia1_d2_021` to `030`). Round 2: 20 questions on Section C (`cia1_d3_021` to `040`). Both through the whole pipeline (scorecards in section 7). Part 1 stands at 125 questions (A 35, B 30, C 40, D 20), with 23 principles and every question tagged. The first CIA pull request merged on 20 Nov 2026, so question ids and the Challenge id map are now held against main by `check_ids.py`: reword freely, never delete, renumber or reuse an id. |
-| **Next step** | Part 1 toward its sale minimum in further rounds of 20 to 25, on the topics `check_cia.py cia1 --coverage` shows as thinnest. By exam weight the next round belongs to Section D (15% of the exam; 20 questions; uncovered sub-topics 1D2.2, 1D5.2, 1D5.3), then Section A's uncovered sub-topics (1A3.2, 1A3.3, 1A4.1, 1A4.3, 1A5.3, 1A5.4, 1A6.3). Section D has the thinnest opened sources of the four, so expect clean application items there, not hard ones (section 6b, rule 10). Every round uses the author brief that produced round 1 (kept in the plan, section 6c) and reports the cue test; the target stays at 85% or lower. |
+| **Rounds 1 to 3 done (20 Nov 2026)** | Round 1: 25 questions on the five Challenge-shared topics. Round 2: 20 on Section C. Round 3: 17 on Section A's other five topics and 8 on Section D. All through the whole pipeline (scorecards in section 7). Part 1 stands at **150 questions (A 52, B 30, C 40, D 28)**, close to the exam's weights (35 / 20 / 30 / 15), with every question tagged to a principle. Question ids and the Challenge id map are held against main by `check_ids.py`: reword freely, never delete, renumber or reuse an id. |
+| **Next step** | Round 4, toward the sale minimum, keeping the bank near the exam's weights: about 12 for Section C (1C2.1, 1C5.3 and 1C8.3 stay thin until more sources are opened) and 10 for Section B (uncovered sub-topics 1B3.2 and 1B4.2 first; Section B was the pilot's easiest section), then Section A again. Section D grows only with its exam weight (section 7, "What round 3 taught"). Every round uses the author brief in section 6c with the lessons of section 7, reports the cue test per round AND on a mixed sample of 50 items across rounds, and gets its own pull request. |
 | **Then** | Part 2, Part 3, the Challenge build and the CISA bridge notes (from the outline), the cross-part release gate. |
 | **Known weak spot** | Difficulty. No pilot key was wrong and all four blind rounds agreed 80 of 80, but the last testers still called 21 of 80 answerable by test-taking alone, most in Sections B and D, and 8 items carry a TOO EASY or GIVEAWAY flag (section 7). New rounds must do better; the pilot items are candidates for a later hardening pass, not for more polishing now (section 6b, rule 12). |
 
@@ -44,7 +44,7 @@ pack. Every surface CISA has, as data that passes its gate.
 |---|---|---|---|---|---|---|
 | Blueprint and outline | `docs/content/CIA_BLUEPRINT.md`, `data/cia/shared/outline.json` | cert-blueprint-researcher | Done | Done | Done | Done |
 | Study notes | `notes/d{N}.json`, one file per section, notes schema v2 | part expert | Done: 93 sub-topics, audited (section 8b) | Not started | Not started | Generated later, plus the bridge |
-| Questions | `originals/d{N}.json` | part expert | Pilot, rounds 1 and 2 done: 125 (A 35, B 30, C 40, D 20; section 7) | Not started | Not started | Generated (`build_challenge.py`) from the tagged pilot items |
+| Questions | `originals/d{N}.json` | part expert | Pilot and rounds 1 to 3 done: 150 (A 52, B 30, C 40, D 28; section 7) | Not started | Not started | Generated (`build_challenge.py`) from the tagged pilot items |
 | Citation library | `data/cia/shared/_framework_library.md` (one for all four) | part experts, cia-currency-checker | Started | | | |
 | Dated facts | `data/cia/shared/currency.json` | cia-currency-checker | Started | | | |
 | Glossary | `glossary.json`, built from `data/cia/shared/glossary.json` | iia-mindset-coach, part experts | Started: 153 terms, audited (section 7) | Later | Later | Built from the shared terms of its topics |
@@ -392,6 +392,7 @@ in a row below 90%: stop and tell the owner.
 | Pilot | 19 to 20 Nov 2026 | cia1, Sections A to D | 80 (20 each) | 80 of 80 in each of four blind rounds (100%) | 0.3 / 12.8 / 10.9 (1 / 41 / 35 on 80) | 20.0% in every section | 0 | The texts listed in `CIA_RESEARCH_LOG.md` (no new source after the notes) |
 | Round 1 | 20 Nov 2026 | cia1, Sections A (1A2, 1A7, 1A8) and B (1B2, 1B6): the Challenge-shared topics | 25 (15 and 10) | 25 of 25 in each of two blind rounds (100%) | 0 / 23 / 18 on 25 | 20.0% in both sections | 0 | None new (the Standards, both statements and the reference list re-downloaded, unchanged) |
 | Round 2 | 20 Nov 2026 | cia1, Section C (1C1 to 1C8) | 20 | 20 of 20, 20 of 20, then 8 of 8 on the last changed items (100%) | 1 / 11 / 11 on 20 (1.3 / 13.8 / 13.8 per 25) | 20.0% | 0 cut; 1 replaced before merge (`cia1_d3_040` mirrored pilot 018) | None new (five IIA files re-downloaded, unchanged) |
+| Round 3 | 20 Nov 2026 | cia1, Section A (1A1, 1A3, 1A4, 1A5, 1A6) and Section D (1D1 to 1D5) | 25 (17 and 8) | 25 of 25, 25 of 25, then 13 of 13 on the last changed items (100%) | 1 / 21 / 13 on 25, plus 0 / 7 / 8 from the citation check | 19.2% and 21.4% | 0 | None new (eight IIA files re-downloaded, unchanged) |
 
 **Pilot, in full.** Four standards audits (one per section, with the key):
 Section A 0 HARD, 15 PRECISION, 8 OBSERVATION; B 0 / 8 / 5; C 1 / 9 / 12;
@@ -494,6 +495,64 @@ on (their provenance names the sub-topics that do, 1C7.1, 1A4.1 and 1A8.2);
 the next notes pass on Section C should rebalance 1C2.3. Sibling groups for
 the mock draw (section 11): pilot 018 with 039 and 040; 012 with 031; 020 with
 034; 019 with 037; 017 with 033 and 038; 009 with 029 and 032.
+
+**Round 3, in full.** Section A was the section furthest below its exam
+weight; Section D had three notes sub-topics without a question. After this
+round every Part 1 notes sub-topic in Sections A, C and D has a question.
+Standards audits: Section A 0 HARD, 11 PRECISION, 6 OBSERVATION; Section D
+1 / 10 / 7. Citation check 0 / 7 / 8. One item rebuilt in the last pass
+(`cia1_d1_040`) got its own audit (0 / 4 / 3) before it was final. No key was
+wrong and no blind tester flagged an ambiguous item. The HARD ERROR was
+forbidden ground, not a wrong answer: `cia1_d4_026` first keyed one detective
+control above the other two, which the syllabus line that groups them does
+not say; the stem now gives the facts the key follows from, and section 8b
+states the limit.
+
+| Measure | Round 2 | Round 3 |
+|---|---|---|
+| Cue test (options only, chance 25%) | 75%, 75%, 65% | 68%, 68%, **76%** (19 of 25): Section A 12 of 17, Section D 7 of 8 |
+| Cue tester's high-confidence guesses | 6, then 4 of 20 | 3, 4, then 2 of 25 |
+| Final testers' sorting: needs the Standards, partly, test-taking alone | 6 / 10 / 4 of 20 | 5 / 15 / 5 of 25 |
+| Flags left in the final round | 3 of 20 | TOO EASY `cia1_d1_045`, `cia1_d1_049`, `cia1_d4_021`, `cia1_d4_023`, `cia1_d4_026`; mild GIVEAWAY `cia1_d1_043` |
+| Ambiguous items found and fixed | 1 | 0 |
+
+What round 3 taught.
+- **A 25-item cue test cannot tell 68% from 76%.** The last pass removed the
+  cues the tester had named, the tester's confidence fell (two high-confidence
+  guesses, fourteen low), and the score still rose, on lucky low-confidence
+  guesses. Read the pooled figure and the trend: the three rounds' final
+  measurements together are 49 of 70, **70%**, against the pilot's 91%. From
+  the next round on, the cue test is also run once on a mixed sample of 50
+  items drawn across rounds, so the number means something.
+- **The first draft is now where the gain is.** Round 3's first draft scored
+  68%, where rounds 1 and 2 started at 76% and 75%: the lessons written into
+  the author brief carry over. The fix passes make items correct and
+  unambiguous; they do not reliably make them harder.
+- **Section D has a ceiling.** Seven of its eight new items were guessed from
+  the options in every measurement, and its author dropped a dozen ideas that
+  no opened source could carry (named schemes, who interviews, why hotlines
+  work). Topic 1D4 has now used each distinct idea its sources support. Until
+  The IIA's fraud practice guides are opened (members only; section 9), new
+  Section D items will be fair but easy, and its share of the bank should not
+  grow past its exam weight.
+- **A pattern-breaking fix can itself be a cue.** `cia1_d1_040` was rebuilt so
+  that "hold the request" was the key against three options that accept it;
+  the cue tester and the final blind tester both named "three Accept, one
+  Hold". An option set that breaks a pattern needs two of each kind.
+- **A stated fact that makes an item fair can make it easy.** Section D's fix
+  pass added the facts two keys needed; the second blind tester then saw the
+  key restate the stem's last fact. When a fact is added to a stem, word the
+  key differently and do not put the fact last.
+
+Also from round 3: notes 1A4.3, 1A6.3 and 1D3.2 now teach three rules the new
+questions key on (one bullet each had to be tightened to stay inside the
+notes format); section 8b says what a syllabus line may carry (the engagement
+types it lists as assurance or advisory services, classification only) and
+that a line grouping several things does not rank them. Sibling groups for
+the mock draw (section 11): `cia1_d1_037` with 002; 041 with 008 and 010; 043
+with `cia1_d3_005`; 052 with 013; `cia1_d4_011` with 023 and 025 (and
+`cia1_d2_016`); 018 with 028; 001 and 003 with 022; 002 with 021; 013 and 014
+with 026.
 
 **Principle tags.** After the last fix the mindset coach re-read all 80
 items and re-tagged 7 to the principle that decides the final two. Every one
