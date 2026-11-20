@@ -41,7 +41,7 @@ Usage:
   python3 data/cia/tools/check_cia.py --root DIR      # another tree (the harness fixture)
 Exit 1 on any ERROR. Style rules (stem and option length, echoes, absolutes)
 are in data/cia/tools/style_cia.py; old-syllabus wording in check_stale_terms.py;
-dates in check_currency.py.
+dates in check_currency.py; the shared glossary in check_glossary.py.
 """
 import re
 import sys

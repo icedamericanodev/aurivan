@@ -55,6 +55,7 @@ leave_out() { left_out="${left_out:+$left_out; }$1"; }
 
 [ $proof -eq 1 ] && cia_run "harness proof" python3 "$here/prove_harness.py" -q
 cia_run "structure" python3 "$here/check_cia.py" "${opts[@]}"
+cia_run "glossary" python3 "$here/check_glossary.py" "${opts[@]}"
 cia_run "old-syllabus wording" python3 "$here/check_stale_terms.py" "${opts[@]}"
 cia_run "dated facts" python3 "$here/check_currency.py" "${opts[@]}"
 warned=$(printf '%s\n' "$cia_out" | grep -c '^warn ')

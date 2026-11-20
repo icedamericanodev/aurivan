@@ -47,8 +47,9 @@ When no reference text is present the gate says so and exits 0, unless
 --require is given (the authoring pipeline and the release gate always pass
 --require). With --require the reference must also be COMPLETE: all five source
 texts present and not empty (standards_2024, p1_syllabus, p2_syllabus,
-p3_syllabus, challenge_syllabus), and at least 56 glossary entries parsed from
-the Standards (the number counted in the opened file on 19 Nov 2026). A partial
+p3_syllabus, challenge_syllabus), and at least 57 glossary entries parsed from
+the Standards (the number counted in the opened file; it was 56 until 20 Nov
+2026, when the one entry printed with no space after its dash was read). A partial
 reference checks little and proves nothing. --fixture-ref turns the
 completeness rule off, except that a glossary with no entry at all still fails;
 only prove_harness.py uses it, for its made-up reference.
@@ -71,7 +72,7 @@ import cia_common as c
 RUN_DEF, GRAM_SHARE, SIM, RUN_TITLE, RUN_ANY = 6, 0.30, 0.60, 6, 8
 RAW_TITLE, RAW_ANY = 8, 11          # the same runs in plain words, terms of art not collapsed
 MAX_AGE_DAYS = 30                   # --fetch downloads an older text again
-MIN_GLOSSARY = 56                   # entries in the 2024 Standards glossary, counted in the opened file (19 Nov 2026)
+MIN_GLOSSARY = 57                   # entries in the 2024 Standards glossary, counted in the opened file (20 Nov 2026)
 CACHE = Path.home() / ".cache" / "kaisip" / "cia_ref"
 HOST = "https://www.theiia.org/"
 STANDARDS = "standards_2024"
@@ -226,12 +227,14 @@ def clean_pages(text):
 
 
 def glossary_entries(std):
-    """{term key: definition} from a cleaned Standards text: each "term – definition" paragraph."""
+    """{term key: definition} from a cleaned Standards text: each "term – definition" paragraph.
+    The space after the dash is optional: one entry of the opened file is printed "term –Definition",
+    and until 20 Nov 2026 it was not read (56 entries where the file has 57)."""
     out = {}
     for para in re.split(r"\n\s*\n", std):
         flat = re.sub(r"\s+", " ", para).strip()
         flat = re.sub(r"^Glossary ", "", flat)          # the heading sits on the first entry's page
-        m = re.match(r"^([a-z][a-z ,/’'()-]{1,60}?) – (.+)$", flat)
+        m = re.match(r"^([a-z][a-z ,/’'()-]{1,60}?) –\s*(.+)$", flat)
         if m:
             out[key(m.group(1))] = m.group(2)
     return out

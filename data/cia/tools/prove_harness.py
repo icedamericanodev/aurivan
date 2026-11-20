@@ -195,8 +195,14 @@ def make_fixture(root, ref):
                                   "testable_from": "2027-03-01", "source": "https://example.org/topical",
                                   "last_checked": TODAY, "status": "opened"}]})
     c.write_json(root / "shared" / "glossary.json", [
+        # A term the notes define too, in the notes' own words.
         {"id": 1, "term": "widget audit", "acronym": "", "def": "A made-up review used only by the harness fixture.",
-         "scopeNotes": "", "category": "Fixture", "packs": {"cia1": 1, "ciac": 1}}])
+         "scopeNotes": "", "category": "Fixture", "packs": {"cia1": 1, "ciac": 1}, "notes": ["1A1.1"], "related": [2]},
+        # A term the notes do not define, with every optional field: a term of the whole Challenge exam (0)
+        # and an older name, which is built into the packs.
+        {"id": 2, "term": "widget ledger", "acronym": "", "def": "A made-up list of the widgets a fixture inspector has counted.",
+         "scopeNotes": "", "category": "Fixture", "packs": {"cia1": 1, "ciac": 0}, "notes": ["1A2.1"], "related": [1],
+         "formerly": ["widget book"]}])
     c.write_json(root / "shared" / "principles.json", {
         "schema_version": 2, "title": "Fixture principles", "updated": TODAY, "description": "Fixture.",
         "families": [{"id": "role", "order": 1, "title": "Your role", "question": "Who am I here?"}],
@@ -384,7 +390,7 @@ def old_term_entry(category):
     category marks it as an "Older term"."""
     def fault(root):
         edit(root, "shared/glossary.json", lambda d: d.append(
-            {"id": 2, "term": "internal audit activity", "acronym": "", "def": "The name the 2017 Standards used.",
+            {"id": 3, "term": "internal audit activity", "acronym": "", "def": "The name the 2017 Standards used.",
              "scopeNotes": "", "category": category, "packs": {"cia1": 1}}))
         rebuild(root)
     return fault
@@ -440,11 +446,25 @@ PAGED = (f"\f     Glossary\n     widget audit – {REF_DEF}\n\n     other term �
          "10   Glossary                         ©2024, The Fixture Institute. All Rights Reserved.\n"
          "                                   Fixture copy for one reader only.\n"
          f"\f     page top – {REF_DEF2}\n\n     last term – More filler for the fixture.\n")
+# An entry printed with no space after its dash ("term –Definition"): one entry of the opened Standards
+# is, and until 20 Nov 2026 the parser did not read it.
+TIGHT = f"Fixture glossary\n\n     widget audit – {REF_DEF}\n\n     tight dash –{REF_DEF2}\n"
 FIVE = ["standards_2024", "p1_syllabus", "p2_syllabus", "p3_syllabus", "challenge_syllabus"]
 LETTERS = "abcdefghijklmnopqrstuvwxyz"
-FULL_GLOSSARY = "Fixture glossary\n\n" + "".join(
-    f"     widget {LETTERS[i // 26]}{LETTERS[i % 26]} – Made-up entry number {i} of the fixture.\n\n" for i in range(56))
-complete_ref = all_of(put("standards_2024.txt", FULL_GLOSSARY), *(put(f"{n}.txt", f" 1. {REF_LINE}\n") for n in FIVE[1:]))
+N_GLOSSARY = 57                   # check_originality.py's MIN_GLOSSARY, written out again so a change there is noticed here
+
+
+def full_glossary(n):
+    """A made-up Standards glossary of n entries; the first has no space after its dash."""
+    return "Fixture glossary\n\n" + "".join(
+        f"     widget {LETTERS[i // 26]}{LETTERS[i % 26]} –{' ' if i else ''}Made-up entry number {i} of the fixture.\n\n"
+        for i in range(n))
+
+
+def complete_ref(entries=N_GLOSSARY):
+    return all_of(put("standards_2024.txt", full_glossary(entries)), *(put(f"{n}.txt", f" 1. {REF_LINE}\n") for n in FIVE[1:]))
+
+
 LINT_NOTES = ["lint_notes.py", "{root}/cia1/notes/d1.json", "--outline", "{repo}/docs/content/CIA_BLUEPRINT.md",
               "--bank", "{root}/cia1/originals", "--part"]
 CONTROLS = ("Standard 7.1 and Standards 2024 name internal audit activities, and the IPPF is still described. Set "
@@ -452,10 +472,19 @@ CONTROLS = ("Standard 7.1 and Standards 2024 name internal audit activities, and
             "why is auditor independence important.")
 ORIG, STALE, CUR, CIA_, IDS = (["check_originality.py"], ["check_stale_terms.py"], ["check_currency.py"],
                                ["check_cia.py"], ["check_ids.py"])
+GLOSS, PACKS_CHECK = ["check_glossary.py"], ["build_packs.py", "--check"]
+MARK = "def_differs_from_notes"   # written out here, not imported: the proof does not lean on the code it proves
+OTHER_DEF = "A different made-up meaning that no fixture note gives."
 NEW_REF = ["check_originality.py", "--ref", "{root}-ref"]
 explain = lambda text: q0(lambda q: q.__setitem__("correct_explanation", q["correct_explanation"] + " " + text))
 pre_read = lambda text, n=0, rel="cia1/originals/d1.json": q0(setf("pre_read", text), rel, n)
-gloss0 = lambda field, value: (lambda r: edit(r, "shared/glossary.json", lambda d: d[0].__setitem__(field, value)))
+# The fixture's shared glossary: term 0 is "widget audit" (the notes define it too), term 1 is "widget ledger"
+# (they do not; it has an older name).
+gloss = lambda n, field, value: (lambda r: edit(r, "shared/glossary.json", lambda d: d[n].__setitem__(field, value)))
+gloss0 = lambda field, value: gloss(0, field, value)
+gloss_drop = lambda field, n=0: (lambda r: edit(r, "shared/glossary.json", lambda d: d[n].pop(field)))
+gloss_add = lambda **changes: (lambda r: edit(r, "shared/glossary.json", lambda d: d.append(dict(d[0], **changes))))
+notes_words = lambda fn, rel="cia1/notes/d1.json": (lambda r: edit(r, rel, lambda d: fn(d["key_terminologies"])))
 fact0 = lambda field, value: (lambda r: edit(r, "shared/currency.json", lambda d: d["facts"][0].__setitem__(field, value)))
 topical0 = lambda field, value: (lambda r: edit(r, "shared/currency.json",
                                                 lambda d: d["topical_requirements"][0].__setitem__(field, value)))
@@ -497,9 +526,13 @@ CASES = [
      "'Core Principles' is 2019 wording"),
     # The next three are the faults that the three allowances in PASSES let through, without the allowance.
     ("a glossary entry for an old term that is not marked 'Older term'", STALE, old_term_entry("Fixture"),
-     "shared/glossary.json 2 [1].term: 'internal audit activity' is 2019 wording"),
+     "shared/glossary.json 3 [2].term: 'internal audit activity' is 2019 wording"),
     ("an old term in a glossary field that is not a skipped key", STALE, gloss0("scopeNotes", "Once the internal audit activity."),
      "scopeNotes: 'internal audit activity' is 2019 wording"),
+    # Term 1 has an older name, which is built into the packs: only the `formerly` key is skipped there.
+    ("an old term in the def of a term that has older names, read in the built pack file", STALE,
+     then(gloss(1, "def", "A list once kept by the internal audit activity."), rebuild),
+     "cia1/glossary.json 2 [1].def: 'internal audit activity' is 2019 wording"),
     ("ISACA terms in a Challenge notes file that is not on the allow list", STALE, isaca_note("ciac/notes/other.json"),
      "ciac/notes/other.json"),
     ("an old term in a retired question (still read)", STALE,
@@ -608,6 +641,67 @@ CASES = [
     ("a key resting on a bullet under '### Likely' (once read as Verified)", CIA_,
      then(library(LIB + "### Likely: x\n- Fixture Textbook, 1st edition\n"),
           q0(setf("framework_ref", "Fixture Textbook, 1st edition; " + STD))), "must be a Verified"),
+    # ── the shared glossary ──
+    ("a glossary term related to an id that does not exist", GLOSS, gloss0("related", [2, 99]),
+     "id 1 (widget audit): related 99 is not a glossary id"),
+    ("a glossary term related to itself", GLOSS, gloss0("related", [1]), "id 1 (widget audit): related names the term itself"),
+    ("related terms given by name, not by id", GLOSS, gloss0("related", ["widget ledger"]),
+     "id 1 (widget audit): related must be a list of glossary ids"),
+    ("a notes code that no notes file has", GLOSS, gloss0("notes", ["1A1.1", "1A1.9"]),
+     "id 1 (widget audit): notes code 1A1.9 is in no notes file of cia1"),
+    ("a notes code of a Part the term is not in (2A1.1 is a cia2 note)", GLOSS, gloss0("notes", ["2A1.1"]),
+     "id 1 (widget audit): notes code 2A1.1 is in no notes file of cia1"),
+    ("notes codes given as one string", GLOSS, gloss0("notes", "1A1.1"), "notes must be a list of notes sub-topic codes"),
+    ("a term that is in no pack", GLOSS, gloss0("packs", {}), "id 1 (widget audit): packs is empty"),
+    ("a pack key that is not a pack", GLOSS, gloss0("packs", {"cia1": 1, "cia4": 1}),
+     "id 1 (widget audit): packs names 'cia4', which is not a pack"),
+    ("a section number the pack does not have", GLOSS, gloss0("packs", {"cia1": 5}),
+     "id 1 (widget audit): section 5 is not a section of cia1 (1 to 4"),
+    ("section 0, the whole exam, in a Part pack", GLOSS, gloss0("packs", {"cia1": 0, "ciac": 0}),
+     "section 0 is not a section of cia1 (1 to 4; 0, the whole exam, is for ciac only)"),
+    ("a Challenge section number above its five sections", GLOSS, gloss0("packs", {"cia1": 1, "ciac": 6}),
+     "section 6 is not a section of ciac (1 to 5, or 0 for a term of the whole exam)"),
+    ("a section number written as a string", GLOSS, gloss0("packs", {"cia1": "1"}), "section '1' is not a section of cia1"),
+    ("packs written as a list", GLOSS, gloss0("packs", ["cia1"]), "id 1 (widget audit): packs must be an object"),
+    ("a glossary term with no `def` field (a named line, not a KeyError)", GLOSS, gloss_drop("def"),
+     "id 1 (widget audit): missing def", "Traceback"),
+    ("a glossary term with no `id` field (named by its place in the file)", GLOSS, gloss_drop("id"),
+     "entry 1 (widget audit): missing id", "Traceback"),
+    ("a glossary entry that is not an object", GLOSS,
+     lambda r: edit(r, "shared/glossary.json", lambda d: d.append("widget")), "entry 3: must be an object", "Traceback"),
+    ("a glossary that is not a list", GLOSS, lambda r: c.write_json(r / "shared" / "glossary.json", {"terms": []}),
+     "must be a list of terms", "Traceback"),
+    ("two glossary terms with one name, in different letter case", GLOSS, gloss_add(id=3, term="Widget Audit"),
+     "id 3 (Widget Audit): term used twice, in any letter case (also id 1 (widget audit))"),
+    ("two glossary terms with one id (the term is named)", GLOSS, gloss_add(term="second widget"),
+     "id 1 (second widget): id used twice (also id 1 (widget audit))"),
+    ("a glossary id that is not a number", GLOSS, gloss(1, "id", "2"), "id must be a whole number above 0, got '2'"),
+    ("an empty definition", GLOSS, gloss(1, "def", "  "), "id 2 (widget ledger): def is empty"),
+    ("an empty term", GLOSS, gloss(1, "term", " "), "id 2 (no term): term is empty"),
+    ("an empty category", GLOSS, gloss(1, "category", ""), "id 2 (widget ledger): category is empty"),
+    ("an acronym that is null, not an empty string", GLOSS, gloss(1, "acronym", None),
+     "id 2 (widget ledger): acronym must be a string"),
+    ("a misspelt optional field (it would be dropped unseen)", GLOSS, gloss(1, "formely", ["widget book"]),
+     "id 2 (widget ledger): unknown field formely"),
+    ("an older name that is an empty string", GLOSS, gloss(1, "formerly", ["widget book", " "]),
+     "id 2 (widget ledger): formerly entry is empty"),
+    ("an older name that is the term's own name", GLOSS, gloss(1, "formerly", ["Widget  Ledger"]),
+     "id 2 (widget ledger): formerly repeats the term's own name"),
+    ("older names given as one string", GLOSS, gloss(1, "formerly", "widget book"), "formerly must be a list of older names"),
+    ("a definition that contradicts the notes' word list", GLOSS, gloss0("def", OTHER_DEF),
+     "id 1 (widget audit): def differs from the notes' definition of this term (cia1/notes/d1.json key_terminologies"),
+    ("a definition that contradicts a sub-topic's key term (the term is in no word list)", GLOSS,
+     then(notes_words(lambda w: w.clear()), notes_words(lambda w: w.clear(), "cia2/notes/d1.json"), gloss0("def", OTHER_DEF)),
+     "id 1 (widget audit): def differs from the notes' definition of this term (notes 1A1.1 key_terms"),
+    ("a definition that contradicts another Part's notes, the name in other letter case", GLOSS,
+     notes_words(lambda w: w.__setitem__("Widget  Ledger", "A made-up book of counted widgets."), "cia2/notes/d1.json"),
+     "id 2 (widget ledger): def differs from the notes' definition of this term (cia2/notes/d1.json key_terminologies)"),
+    ("the differs mark on a definition that is the notes' wording", GLOSS, gloss0(MARK, "The notes give the short form."),
+     "id 1 (widget audit): def_differs_from_notes is set, but the def is the notes' wording"),
+    ("the differs mark on a term the notes do not define", GLOSS, gloss(1, MARK, "The notes give the short form."),
+     "id 2 (widget ledger): def_differs_from_notes is set, but the notes do not define this term"),
+    ("the differs mark with no reason", GLOSS, then(gloss0("def", OTHER_DEF), gloss0(MARK, " ")),
+     "id 1 (widget audit): def_differs_from_notes must be the reason"),
     # ── dated facts and Topical Requirements ──
     ("a question on a Topical Requirement that is not testable yet", CUR,
      q0(setf("framework_ref", STD + "; " + TOPICAL)), "testable_from is None, should be 2027-03-01 (it cites"),
@@ -697,10 +791,15 @@ CASES = [
     ("a reference folder with one syllabus and nothing else", NEW_REF + ["--real-ref"],
      alt_ref(put("p1_syllabus.txt", f" 1. {REF_LINE}\n"), copy=False), "standards_2024.txt is missing or empty"),
     ("a reference folder whose Standards text is empty", NEW_REF + ["--real-ref"],
-     alt_ref(all_of(complete_ref, put("standards_2024.txt", "")), copy=False), "standards_2024.txt is missing or empty"),
+     alt_ref(all_of(complete_ref(), put("standards_2024.txt", "")), copy=False), "standards_2024.txt is missing or empty"),
     ("a reference whose glossary parses short of the real count", NEW_REF + ["--real-ref"],
-     alt_ref(all_of(complete_ref, put("standards_2024.txt", REF_STANDARDS)), copy=False),
-     "only 1 of the 56 Standards glossary entries parsed"),
+     alt_ref(all_of(complete_ref(), put("standards_2024.txt", REF_STANDARDS)), copy=False),
+     "only 1 of the 57 Standards glossary entries parsed"),
+    ("a reference one glossary entry short (the count before the no-space entry was read)", NEW_REF + ["--real-ref"],
+     alt_ref(complete_ref(N_GLOSSARY - 1), copy=False), "only 56 of the 57 Standards glossary entries parsed"),
+    ("a copied definition whose glossary entry has no space after its dash ('term –Definition')", NEW_REF,
+     then(alt_ref(put("standards_fixture.txt", TIGHT)), gloss0("term", "tight dash"), gloss0("def", REF_DEF2)),
+     "shared/glossary tight dash: tracks the Standards glossary"),
     ("a made-up reference with no glossary entry at all", NEW_REF,
      alt_ref(put("standards_fixture.txt", "Fixture text with no glossary.\n")), "no Standards glossary entry parsed"),
     ("a reference folder inside the repository", ["check_originality.py", "--ref", "{repo}/data/cia/shared"],
@@ -737,6 +836,12 @@ CASES = [
          d["slip_map"].__setitem__("role", "only-part-one"))), "which does not serve cia2"),
     ("two shared glossary terms with one id", ["build_packs.py", "--check"],
      lambda r: edit(r, "shared/glossary.json", lambda d: d.append(dict(d[0], term="second widget"))), "duplicate id"),
+    ("a glossary term with no `def` field (the builder names it, no KeyError)", PACKS_CHECK, gloss_drop("def"),
+     "ERROR shared/glossary.json id 1 (widget audit): missing def", "Traceback"),
+    ("a glossary term with no `packs` field (the builder names it; no built file is called an orphan)", PACKS_CHECK,
+     gloss_drop("packs", 1), "ERROR shared/glossary.json id 2 (widget ledger): missing packs", "orphan:"),
+    ("an older name added to a term without rebuilding (`formerly` is built into the packs)", PACKS_CHECK,
+     gloss0("formerly", ["widget review"]), "cia1/glossary.json is out of date or hand-edited"),
     ("practice links that no longer match the questions", ["sync_practice_ids.py", "--check"],
      sub0(setf("practice_ids", ["cia1_d1_040"])), "practice links are out of date"),
     # ── ids never move (the fixture's own `main` is the base) ──
@@ -775,6 +880,8 @@ CASES = [
      ["run_gates.sh", "--no-proof"], lambda r: None, "    ✗ principle 'fixture-principle': missing required field"),
     ("a failing pack dry run (its ✗ lines are shown by the gate runner)", ["run_gates.sh", "--no-proof", "@node"],
      q0(setf("id", "cia2_d1_001")), "id appears in 2 packs (cia1, cia2)"),
+    ("a failing glossary gate (its problem line is shown by the gate runner)", ["run_gates.sh", "--no-proof"],
+     gloss0("related", [99]), "    ERROR id 1 (widget audit): related 99 is not a glossary id"),
     ("--keep pointed at a folder that is not empty", ["prove_harness.py", "--keep", "{root}"], lambda r: None,
      "is not empty"),
     ("--keep pointed inside the repository", ["prove_harness.py", "--keep", "{repo}/data/cia/tools/keep-test"],
@@ -789,10 +896,28 @@ PASSES = [
     ("wording that only looks old (Standard 7.1, Standards 2024, internal audit activities, IPPF, 'performance "
      "standards for staff', 'is auditor independence')", STALE, pre_read(CONTROLS), "0 hit(s)"),
     ("an 'Older term' glossary entry that names an old term", STALE, old_term_entry("Older term"), "0 hit(s)"),
-    ("an old term in a skipped key (a glossary entry's `formerly`)", STALE, gloss0("formerly", "internal audit activity"),
-     "0 hit(s)"),
+    ("an old name in a glossary entry's `formerly`, built into the packs (a skipped key in every file)", STALE,
+     then(gloss0("formerly", ["internal audit activity"]), rebuild), "0 hit(s)"),
     ("ISACA terms in a file on the allow list (the CISA bridge)", STALE,
      isaca_note("ciac/notes/bridge.json"), "0 hit(s)"),
+    # The clean fixture's glossary line: "2 term(s), 1 defined as in the notes, 0 marked as differing from them,
+    # 1 with older names · 0 error(s)".
+    ("a definition that differs from the notes on purpose, marked with its reason", GLOSS,
+     then(gloss0("def", OTHER_DEF), gloss0(MARK, "The notes give the short form.")),
+     "0 defined as in the notes, 1 marked as differing from them, 1 with older names · 0 error(s)"),
+    ("the notes' wording with other spacing and a line break, under a name in other letter case", GLOSS,
+     then(gloss0("def", "A made-up  review used only\nby the harness fixture. "), gloss0("term", "Widget  Audit")),
+     "1 defined as in the notes, 0 marked as differing from them, 1 with older names · 0 error(s)"),
+    ("a term the notes define two ways, the glossary using one of them (the notes' own gates judge the notes)", GLOSS,
+     notes_words(lambda w: w.__setitem__("widget audit", "Another made-up meaning.")),
+     "1 defined as in the notes, 0 marked as differing from them, 1 with older names · 0 error(s)"),
+    ("a term of the whole Challenge exam (ciac 0), on a second term", GLOSS, gloss0("packs", {"cia1": 1, "ciac": 0}),
+     "check_glossary: 2 term(s)", "ERROR"),
+    ("a course with no shared glossary yet", GLOSS, lambda r: (r / "shared" / "glossary.json").unlink(),
+     "check_glossary: no shared glossary yet"),
+    ("gate-only glossary fields changed without rebuilding (`notes`, `related` and the differs mark are never built "
+     "into a pack)", PACKS_CHECK, then(gloss0("notes", []), gloss0("related", []), gloss0(MARK, "A reason.")),
+     "0 out of date"),
     ("an Eliminate tip with the article 'A' and two wrong letters", CIA_,
      q0(lambda q: q["tips"].__setitem__(0, "Eliminate: C and D. A manager owns the procedure, so neither is the auditor's move."), n=1),
      "check_cia: 0 error(s)"),
@@ -818,8 +943,8 @@ PASSES = [
     ("a decoy '...standards...page.txt' in the reference folder (the glossary still comes from the Standards text)",
      NEW_REF, alt_ref(put("complete_standards_page.txt", "A saved web page about the standards.\n")),
      "(1 parsed from standards_fixture.txt)"),
-    ("a complete reference: five texts and 56 glossary entries", NEW_REF + ["--real-ref"],
-     alt_ref(complete_ref, copy=False), "(56 parsed from standards_2024.txt)"),
+    ("a complete reference: five texts and 57 glossary entries, one with no space after its dash",
+     NEW_REF + ["--real-ref"], alt_ref(complete_ref(), copy=False), "(57 parsed from standards_2024.txt)"),
     ("a built file whose source is gone, after a normal build (removed)", ["build_packs.py", "--check"],
      then(lambda r: edit(r, "shared/principles.json", lambda d: d["principles"][0]["packs"].remove("cia3")), rebuild),
      "0 orphan(s)"),
@@ -856,8 +981,10 @@ SAYS = [
      "subtopic(s) checked", "the outline has no code"),
     ("a dated-fact warning (counted by the gate runner)", ["run_gates.sh", "--no-proof"], fact0("status", "search_only"),
      "    ! 1 dated-fact warning(s)"),
+    ("the glossary gate's own line in the gate runner", ["run_gates.sh", "--no-proof"], lambda r: None,
+     "  glossary: 2 term(s), 1 defined as in the notes, 0 marked as differing from them, 1 with older names · 0 error(s)"),
 ]
-CLEAN = [CIA_, STALE, CUR, ORIG, ["style_cia.py"], ["build_challenge.py", "--check"], ["build_packs.py", "--check"],
+CLEAN = [CIA_, GLOSS, STALE, CUR, ORIG, ["style_cia.py"], ["build_challenge.py", "--check"], PACKS_CHECK,
          ["sync_practice_ids.py", "--check"], IDS, [DRY]]
 
 
@@ -932,8 +1059,25 @@ def same_mock_split(case, ref):
     return ok, f"build_challenge: {a and a.group(1)}; dry run: {b and b.group(1)}"
 
 
+def pack_glossary_shape(case, ref):
+    """The builder's contract for a pack glossary: the seven fields in the house order; `formerly` after
+    them, only on a term that has older names; `notes`, `related` and the differs mark never built in;
+    a whole-exam term is domain 0 in the Challenge pack."""
+    seven = ["id", "term", "acronym", "def", "scopeNotes", "domain", "category"]
+    then(gloss0("def", OTHER_DEF), gloss0(MARK, "The notes give the short form."), rebuild)(case)
+    cia1, ciac = (c.read_json(case / pack / "glossary.json") for pack in ("cia1", c.CHALLENGE))
+    facts = {"a term with no older name keeps the seven fields exactly": [list(e) for e in (cia1[0], ciac[0])] == [seven, seven],
+             "a term with an older name has `formerly` after them": [list(e) for e in (cia1[1], ciac[1])] == [seven + ["formerly"]] * 2
+             and cia1[1]["formerly"] == ["widget book"],
+             "the built definition is the shared one": cia1[0]["def"] == OTHER_DEF,
+             "sections come from `packs`": [cia1[1]["domain"], ciac[0]["domain"], ciac[1]["domain"]] == [1, 1, 0]}
+    return all(facts.values()), "failed: " + ", ".join(k for k, v in facts.items() if not v)
+
+
 # (what must hold, the check, what it needs): checks that take more than one command.
 SCRIPTED = [
+    ("a built pack glossary has the seven fields, `formerly` where a term has older names, and no gate-only field",
+     pack_glossary_shape, ""),
     ("a not-yet-testable question is left out of the Challenge mock pool", waits_left_out, ""),
     ("a retired Challenge id is never given to another question", retag, ""),
     ("a retired question leaves every built file and keeps its own id", retired_everywhere, ""),

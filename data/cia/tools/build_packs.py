@@ -8,7 +8,20 @@ data/cia/shared/, and built into each pack:
   shared/glossary.json    a list of {id, term, acronym, def, scopeNotes, category,
                           packs: {"cia1": 1, "ciac": 1}} where the number is the
                           section (domain) the term belongs to in that pack
-      ->  <pack>/glossary.json   the CRISC shape {id, term, acronym, def, scopeNotes, domain, category}
+                          (in ciac, 0 is a term of the whole exam). Optional:
+                          `formerly` (older names), and three fields only the
+                          gates read: `notes`, `related`, `def_differs_from_notes`
+      ->  <pack>/glossary.json   the CRISC shape {id, term, acronym, def, scopeNotes, domain, category},
+                          plus `formerly` on the entries that have it, so a
+                          search can find a term by the name an older book uses.
+                          `notes`, `related` and `def_differs_from_notes` are
+                          never built into a pack (check_glossary.py reads them).
+                          An entry without `formerly` keeps the seven fields exactly.
+
+A shared glossary that cannot be read as that list (a missing field, an entry
+that is not an object) is reported with the term named, and no glossary is
+built or judged until it is fixed. Everything else about its content is
+check_glossary.py's.
 
   shared/principles.json  the principles schema (docs/content/PRINCIPLES_SCHEMA.md),
                           except that each principle has `packs` (the packs it
@@ -36,26 +49,39 @@ NAMES = {"cia1": "CIA Part 1", "cia2": "CIA Part 2", "cia3": "CIA Part 3", "ciac
 BUILT = ("glossary.json", "mindset/principles.json")   # the only files this script writes or removes, per pack
 
 
-def orphans(root, targets):
-    """Built files on disk that this build does not produce."""
+def orphans(root, targets, unbuilt=()):
+    """Built files on disk that this build does not produce. A file whose shared source
+    cannot be read (`unbuilt`) is not an orphan: nothing is known about it until the source is fixed."""
     return [root / pack / name for pack in c.PACKS for name in BUILT
-            if (root / pack / name).is_file() and root / pack / name not in targets]
+            if name not in unbuilt and (root / pack / name).is_file() and root / pack / name not in targets]
+
+
+def glossary_row(e, pack):
+    """One term as a pack shows it: the seven fields, then `formerly` when the term has older names."""
+    row = {"id": e["id"], "term": e["term"], "acronym": e["acronym"], "def": e["def"],
+           "scopeNotes": e["scopeNotes"], "domain": e["packs"][pack], "category": e["category"]}
+    row.update({k: e[k] for k in c.GLOSSARY_CARRIED if e.get(k)})
+    return row
 
 
 def build(root):
-    targets, problems = {}, []
+    """Return (targets {path: text}, problems, unbuilt: the BUILT names whose source cannot be read)."""
+    targets, problems, unbuilt = {}, [], set()
     gpath, ppath = root / "shared" / "glossary.json", root / "shared" / "principles.json"
     if gpath.exists():
         src = c.read_json(gpath)
-        ids = [e.get("id") for e in src]
-        if len(set(ids)) != len(ids):
-            problems.append("shared/glossary.json: duplicate id")
-        for pack in c.PACKS:
-            rows = [{"id": e["id"], "term": e["term"], "acronym": e.get("acronym", ""), "def": e["def"],
-                     "scopeNotes": e.get("scopeNotes", ""), "domain": e["packs"][pack], "category": e["category"]}
-                    for e in src if pack in e.get("packs", {})]
-            if rows:
-                targets[root / pack / "glossary.json"] = c.dump_json(rows)
+        shape = c.glossary_shape(src)
+        if shape:
+            problems += [f"shared/glossary.json {p}" for p in shape]
+            unbuilt.add("glossary.json")
+        else:
+            ids = [e["id"] for e in src]
+            if any(ids.count(i) > 1 for i in ids):
+                problems.append("shared/glossary.json: duplicate id")
+            for pack in c.PACKS:
+                rows = [glossary_row(e, pack) for e in src if pack in e["packs"]]
+                if rows:
+                    targets[root / pack / "glossary.json"] = c.dump_json(rows)
     if ppath.exists():
         src = c.read_json(ppath)
         for pack in c.PACKS:
@@ -77,19 +103,19 @@ def build(root):
             out["title"] = f"KaiSip {NAMES[pack]} exam mindset principles"
             out["principles"] = rows
             targets[root / pack / "mindset" / "principles.json"] = c.dump_json(out)
-    return targets, problems
+    return targets, problems, unbuilt
 
 
 def main(argv):
     root, _today, args = c.setup(argv)
-    targets, problems = build(root)
+    targets, problems, unbuilt = build(root)
     for p in problems:
         print(f"ERROR {p}")
     if "--check" in args:
         stale = [p for p, text in targets.items() if (p.read_text(encoding="utf-8") if p.exists() else None) != text]
         for p in stale:
             print(f"ERROR {p.relative_to(root)} is out of date or hand-edited: run python3 data/cia/tools/build_packs.py")
-        left = orphans(root, targets)
+        left = orphans(root, targets, unbuilt)
         for p in left:
             print(f"ERROR {p.relative_to(root)} is an orphan: no shared source produces it any more "
                   "(run python3 data/cia/tools/build_packs.py to remove it)")

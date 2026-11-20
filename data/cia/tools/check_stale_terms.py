@@ -18,7 +18,10 @@ that are ordinary English in lower case, such as "is auditor independence").
 
 A place that teaches "old term, new term" on purpose is allowed in three ways,
 all visible in a pull request:
-  - a JSON key named in "skip_keys" (for example a glossary entry's `formerly`);
+  - a JSON key named in "skip_keys" (for example a glossary entry's `formerly`: its
+    older names, in shared/glossary.json and, built by build_packs.py, in every
+    pack's glossary.json. A skipped key is skipped in every file, so the built
+    files need no entry of their own; the entry's `def` is still read in both);
   - a glossary entry whose category is "Older term" (the entry IS the old term);
   - an "allow" entry in stale_terms.json: a file (and optionally an id) and the
     classes it may use. The CISA bridge is allowed the "isaca" class this way.

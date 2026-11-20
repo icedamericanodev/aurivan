@@ -45,6 +45,15 @@ TOPIC_COUNTS = {
     "ciac": {"A": 8, "B": 7, "C": 7, "D": 10, "E": 8},
 }
 
+# shared/glossary.json, one entry per term. Every entry has the first seven fields.
+# build_packs.py turns `packs` into the pack's `domain` and carries `formerly` (older
+# names, so a search can find a term by the name an older book uses) into the pack when
+# an entry has it; the other optional fields are for the gates and stay in shared/
+# (data/cia/tools/check_glossary.py reads every one of them).
+GLOSSARY_KEYS = ["id", "term", "acronym", "def", "scopeNotes", "category", "packs"]
+GLOSSARY_CARRIED = ["formerly"]
+GLOSSARY_SOURCE_ONLY = ["notes", "related", "def_differs_from_notes"]
+
 
 def pop_opt(argv, flag, default=None):
     """Remove `flag VALUE` from argv and return VALUE (or default)."""
@@ -99,6 +108,34 @@ def norm_text(s):
     s = re.sub("[\u00ad\u200b\u200c\u200d\u2060\ufeff]", "", s)
     s = re.sub(r"(?<=\w)[-\u2010\u2011](?=\w)", " ", s)
     return re.sub(r"\s+", " ", s)
+
+
+def glossary_name(e, i):
+    """How a problem line names a glossary entry: "id 5 (Advisory services)", or by its
+    place in the file when it has no id ("entry 3 (Advisory services)")."""
+    term = e.get("term") if isinstance(e, dict) else None
+    label = f"id {e['id']}" if isinstance(e, dict) and "id" in e else f"entry {i + 1}"
+    return f"{label} ({term if isinstance(term, str) and term.strip() else 'no term'})"
+
+
+def glossary_shape(src):
+    """What stops shared/glossary.json from being read at all, as named problem lines: not a
+    list, an entry that is not an object, a missing field, `packs` that is not an object.
+    The builder and the glossary gate both start here, so a missing field is a line that
+    names the term, never a KeyError."""
+    if not isinstance(src, list):
+        return ["must be a list of terms"]
+    out = []
+    for i, e in enumerate(src):
+        if not isinstance(e, dict):
+            out.append(f"entry {i + 1}: must be an object with the fields {', '.join(GLOSSARY_KEYS)}")
+            continue
+        missing = [k for k in GLOSSARY_KEYS if k not in e]
+        if missing:
+            out.append(f"{glossary_name(e, i)}: missing {', '.join(missing)}")
+        elif not isinstance(e["packs"], dict):
+            out.append(f"{glossary_name(e, i)}: packs must be an object such as {{\"cia1\": 2, \"ciac\": 1}}")
+    return out
 
 
 def load_outline(root):
