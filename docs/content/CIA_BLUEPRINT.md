@@ -1288,10 +1288,13 @@ not late.
 An item that rests on a requirement that is not testable yet carries the date
 in `testable_from`, and mock and free-sample pools leave it out until then.
 
-Coming next, per The IIA's Topical Requirements page (opened 19 Nov 2026): an
-Anti-Corruption requirement (to be issued in the fourth quarter of 2026) and a
-Talent Management requirement (public consultation in January 2027). Neither
-has an exam date yet; `cia-currency-checker` adds them when they do.
+Coming next, per The IIA's Topical Requirements page (re-opened 20 Nov 2026 by
+`cia-currency-checker`): an Anti-Corruption Topical Requirement dated
+23 November 2026 and effective 23 November 2027, and a Talent Management
+requirement in public consultation in the first quarter of 2027. Neither has
+an exam month on the reference list yet, so neither is in `currency.json`;
+the currency checker adds each one when The IIA gives its testing month.
+Until then no question may rest on either.
 
 ## Copyright, licence and marks: the rule KaiSip follows
 
