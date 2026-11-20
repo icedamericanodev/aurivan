@@ -4,7 +4,7 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
-## Phone [2.2] · in development (not released)
+## Phone [2.2] · built 2026-11-19 (closed testing, once uploaded)
 
 ### New
 - Look back at questions you have answered, with their explanations, without answering them again.
