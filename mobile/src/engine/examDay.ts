@@ -2,7 +2,7 @@
  * Exam eve and exam day — the two calm cards on Today.
  *
  *   - The day BEFORE the exam date: "Tomorrow. You've done the work." with the
- *     learner's top slips as gentle reminders, one pacing line, and a nudge to
+ *     three gentle reminders (engine/eveReminders.ts), one pacing line, and a nudge to
  *     rest rather than cram.
  *   - ON the exam date: a short "Good luck today".
  *   - No exam date set: neither card.

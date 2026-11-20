@@ -121,7 +121,7 @@ export function ExamEveCard({
    * plan's eve checklist (Today shows this card instead of the plan's own card).
    */
   onTonight?: () => void;
-  /** The eve's reminder lines; `own` = from the learner's mistake journal. */
+  /** The eve's three reminder lines; `own` = all three are the learner's own (the caption says "Your…"). */
   reminders: { own: boolean; lines: string[] } | null;
   pace: string;
 }) {

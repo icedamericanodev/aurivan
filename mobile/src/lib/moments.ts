@@ -26,6 +26,8 @@ import { mistakePatternsFor } from './slipPattern';
 const eveCache = new Map<string, ReturnType<typeof eveReminders>>();
 export function eveFor(certId: string, today: string, mistakes: CertProgress['mistakes'], now: number) {
   const key = `${certId}|${today}`;
+  // A reset the same evening leaves no mistakes: start over, never keep "your" lines with nothing behind them.
+  if (Object.keys(mistakes).length === 0) eveCache.delete(key);
   let hit = eveCache.get(key);
   if (!hit) eveCache.set(key, (hit = eveReminders(mistakePatternsFor(certId, mistakes, now))));
   return hit;
