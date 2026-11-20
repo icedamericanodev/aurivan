@@ -244,6 +244,7 @@ the notice is part of the description.
 | Batch 9 (18 Nov 2026) | +15 | — | — | 603 |
 | Batch 10 (19 Nov 2026) | +30 | +42 | — | 675 |
 | Batch 11 (20 Nov 2026) | +30 | +42 | — | 747 |
+| Batch 12 (20 Nov 2026) | +30 | +42 | — | 819 |
 
 Pilot review, 30 Oct 2026:
 - **Blind tests:** 60/60 picks matched the keys on the first pass. After the
@@ -499,6 +500,28 @@ Batch 11 review, 20 Nov 2026 (D1 and D2):
 - **Citations:** three library bullets added after the librarian opened each source: NIST AI 100-2e2025
   Section 2.3.4 (model poisoning), Section 3.2.1 (data poisoning attacks) and the MITRE ATLAS Matrix.
 - Length tell: D1 20.2%, D2 19.8%. Tags: 600 of 747 (PRINCIPLE_TAGGING.md, Batch 11).
+
+**Next round:** D1 and D2 rounds toward the targets (D1 330, D2 460), then D3 (210).
+
+Batch 12 review, 20 Nov 2026 (D1 and D2):
+- **Author:** two new items per notes subtopic (D1 30, D2 42), difficulty D1 7/15/8 and D2 11/21/10, keys
+  D1 A7 B8 C7 D8 and D2 A10 B11 C10 D11, so every letter is now even across each domain. The brief added the
+  batch 11 lessons: grep every setting (industry and AI use) across AAIA, CRISC and CISA, the notes and the
+  principles before writing; check frames against related subtopics in all three AAIA domains; no stem fact
+  that cuts both ways. Both authors dropped or moved many drafts on that grep.
+- **Reviews:** first blind pass 72/72 (D1 30/30, D2 42/42). Five reviewers per domain (5 HARD ERRORS, about
+  130 PRECISION findings across both), three fix rounds, the cross-domain gate (10 HARD/PRECISION) and the
+  completeness critic (19 gaps, mostly a setting shared with an older item or a principles example, or a frame
+  repeated across domains), with gap rounds that moved or re-angled every one. One key was disputed in blind
+  tests (aaia_d2_394); the stem gained the deciding fact (a pilot summary omitted a failed test), the
+  runner-up became a sample of past summaries, and the re-tests agree. A final fix round and my last pass
+  removed the only-negated-option cue from aaia_d1_229's key and fixed aaia_d2_427's timing and runner-up
+  logic. Every changed item was re-tested blind and matched. No key changed after the first draft.
+- **Notes:** each subtopic gained the short fact its new keys rely on, trimmed elsewhere so every subtopic
+  stays within 380 words.
+- **Citations:** one library bullet added after the librarian opened the source: NIST AI 100-1 Section 1.2.3
+  (risk prioritization).
+- Length tell: D1 21.2%, D2 20.0%. Tags: 645 of 819 (PRINCIPLE_TAGGING.md, Batch 12).
 
 **Next round:** D1 and D2 rounds toward the targets (D1 330, D2 460), then D3 (210).
 

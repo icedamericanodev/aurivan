@@ -429,10 +429,10 @@ version bump today.
 ### Results
 | Domain | Questions | Tagged | Untagged |
 |---|---|---|---|
-| D1 | 215 | 146 | 69 |
-| D2 | 386 | 323 | 63 |
+| D1 | 245 | 161 | 84 |
+| D2 | 428 | 353 | 75 |
 | D3 | 146 | 131 | 15 |
-| All | 747 | 600 | 147 |
+| All | 819 | 645 | 174 |
 
 New principle `independence-of-ai-assurance` (role family): seeds and tags
 aaia_d2_014, aaia_d3_024 and aaia_d3_043, moved from
@@ -843,3 +843,62 @@ aaia_d2_377 aaia_d2_378 aaia_d2_381 aaia_d2_383.
 
 The D1 row was 128 tagged before this batch; the file held 127, so the table
 now counts from the file.
+
+### Batch 12 (20 November 2026)
+aaia_d1_216-245 and aaia_d2_387-428 were read against the rule above. None
+is a seed. Changed: aaia_d2_394 stays on `ai-output-is-a-lead` after the final re-angle
+(the runner-up is now a sample of past summaries; each generated summary can
+differ, so only the source results beside every summary catch its omissions). Newly tagged:
+aaia_d1_226 `test-the-ai-as-used` (the 93% covers the model's suggestions,
+not the final human-plus-AI grades, as aaia_d2_204); aaia_d1_227
+`ai-changes-are-changes` (each retrain is a new version that can be worse,
+so a green light for running one shows nothing; close to
+`fix-the-control-not-the-model`); aaia_d2_390
+`fix-the-control-not-the-model` (the split shows an unclear label rule; a
+fourth vote treats the symptom, as aaia_d2_260); aaia_d2_428
+`triage-by-harm-close-on-cause` (a problem record carries the cause; version
+tags show only where faults appear); aaia_d2_410 `reproducible-ai-evidence`
+(after its final re-angle, tying each appeal outcome to the model version that
+refused it shows whether a retrain made things worse). One tag removed
+(aaia_d1_234, below).
+
+**Untagged new items (low confidence):**
+- aaia_d1_217: ML-definition knowledge (a fitted regression learns its weights, so validation and drift apply); no principle separates it from file change control.
+- aaia_d1_218: hosted-model knowledge (chat corrections do not retrain it).
+- aaia_d1_219: few-shot knowledge (prompt examples' label mix tilts outputs).
+- aaia_d1_231: KRI design knowledge (stale sources lead wrong answers), as aaia_d1_200.
+- aaia_d1_232: contract knowledge (an IP indemnity can depend on filters staying on).
+- aaia_d1_234: lineage knowledge (a retrieval index stores passages, so lineage must record each passage's source); the runner-up is a report-level load log. Was `named-human-owner` before its re-angle.
+- aaia_d1_236: disclosure knowledge (who receives a summary, not its accuracy, is the harm); the runner-up is not a principle's trap.
+- aaia_d1_238: memorization knowledge (fine-tuned model files can hold training text), as aaia_d1_014.
+- aaia_d1_239: distillation knowledge (a copied model inherits what the old one memorized).
+- aaia_d1_240: fairness-metric knowledge (the three measures cannot all hold when base rates differ).
+- aaia_d1_241: privacy-enhanced knowledge (outputs can reveal people, not only storage), as aaia_d1_041.
+- aaia_d1_242: legal knowledge (ongoing duties need operating evidence); policy versus operation is CISA `proven-not-configured` (as aaia_d3_009).
+- aaia_d1_243: legal knowledge (firms can be held to chatbot promises).
+- aaia_d1_244: framework knowledge (NIST AI RMF expects affected people's feedback); the runner-up is an independence move, as aaia_d1_214.
+- aaia_d1_245: framework knowledge (MANAGE 1.4 documents residual risk for buyers and users).
+- aaia_d2_387: isolation knowledge (separate indexes against one shared filter); both options are system controls, as aaia_d2_084.
+- aaia_d2_388: training-rights knowledge (an opt-out email gives no agreement for older uploads), as aaia_d1_070.
+- aaia_d2_391: evaluation-design knowledge (removing failed test cases makes the set easier); the runner-up is unsupported by the facts.
+- aaia_d2_396: documentation knowledge (the model card records the cutoff in use, its owner and trade-off).
+- aaia_d2_407: target-leakage knowledge (a feed recording events after cancellation).
+- aaia_d2_412: evaluation-design knowledge (the staff baseline must be measured as staff really work).
+- aaia_d2_414: method choice (matched requests isolate a language effect), as aaia_d2_366.
+- aaia_d2_415: robustness knowledge (natural variation is not adversarial testing).
+- aaia_d2_416: position-bias knowledge (shuffle the same options).
+- aaia_d2_417: attack knowledge (morphing at self-supplied enrollment).
+- aaia_d2_418: attack knowledge (named trigger phrases make evasion easy); the Final two weighs attacker effort, not harm.
+- aaia_d2_419: injection knowledge (keep customer text out of the system role), as aaia_d2_379.
+
+**Medium confidence (tagged, review first):** aaia_d1_220 aaia_d1_221
+aaia_d1_223 aaia_d1_226 aaia_d1_227 aaia_d1_228 aaia_d1_229 aaia_d1_230
+aaia_d1_233 aaia_d1_235
+aaia_d2_390 aaia_d2_393 aaia_d2_395 aaia_d2_397 aaia_d2_399 aaia_d2_401
+aaia_d2_402 aaia_d2_403 aaia_d2_404 aaia_d2_406 aaia_d2_408 aaia_d2_411
+aaia_d2_421 aaia_d2_422 aaia_d2_425 aaia_d2_428.
+
+aaia_d2_403 stays on `ai-changes-are-changes` though its runner-up is the
+principle's own pinning move, matching aaia_d2_362 (both test and move to a
+supported version). aaia_d2_404 stays on `test-the-ai-as-used` (pre-release
+access to test each vendor version, as aaia_d3_143).
