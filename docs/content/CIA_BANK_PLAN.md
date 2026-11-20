@@ -276,15 +276,34 @@ written. These rules are part of the item standard
 (`.claude/agents/cia-standards-auditor.md`), and the scaffold of every round
 states how it meets them.
 
-1. **Agreement is not difficulty.** A blind tester who gets 20 of 20 with high
-   confidence has shown the keys are clear, not that the items are worth
-   paying for. From now on the blind tester also sorts each item: needs the
-   Standards, partly reachable by test-taking, or reachable by test-taking
-   alone. A round may not merge with more than 3 in 20 in the last class.
-2. **Every item has a real runner-up**: the answer a careful, half-prepared
-   candidate would choose (the right actor at the wrong time, a "should" where
-   a "must" applies, the 2017 habit, the individual remedy for a
-   function-level problem). No straw options ("do nothing", "silent
+1. **Agreement is not difficulty, and difficulty is measured, not judged.** A
+   blind tester who gets 20 of 20 with high confidence has shown the keys are
+   clear, not that the items are worth paying for. Two measures go in every
+   round's scorecard:
+   - **The cue test** (`blind_copy.py --options-only`, scored by
+     `score_blind.py`): a fresh tester sees only the four options, no stem, and
+     guesses the key. Chance is 25%. Measured on 19 and 20 Nov 2026 with the
+     same instructions on 80 items each: **CISA 96%, the CIA pilot 94%, CRISC
+     85%.** So the pilot sits at the house standard, and the house standard
+     leaks: the key is usually the one measured, by-the-book option among
+     options that are wrong in general. The tester knows auditing, so this is
+     not what an unprepared learner would score; it shows that the wrong
+     options do not tempt someone who half-knows the subject. **Target for CIA
+     rounds from now on: at or below the CRISC baseline (85%), and falling.**
+     The way down is rule 2: a wrong option should be the right answer to a
+     different question, so that only the stem's facts decide.
+   - **The tester's own sorting** of each item (needs the Standards, partly
+     reachable by test-taking, reachable by test-taking alone). It is a
+     judgment and it wobbles between testers (the pilot's final round: 20, 34
+     and 26 of 80), so it is recorded and read with the cue test, not used as
+     a bar on its own.
+2. **Every item has a real runner-up, and every wrong option is right
+   somewhere.** The runner-up is the answer a careful, half-prepared candidate
+   would choose (the right actor at the wrong time, a "should" where a "must"
+   applies, the 2017 habit, the individual remedy for a function-level
+   problem). The other two are actions or statements that are correct in a
+   different situation, which the stem's facts rule out; not actions that are
+   wrong everywhere. No straw options ("do nothing", "silent
    observer", "accuse the manager", "call the police").
 3. **No distractor family more than 6 times in 20**, and never at the same
    letter more than twice: internal audit does management's job; do nothing or
