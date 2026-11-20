@@ -14,7 +14,7 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 |---|---|
 | **Status (20 Nov 2026)** | Session G, steps 1 to 3 done: expert decisions, the documents, the harness (187 planted faults stopped, 43 controls hold; an independent code review's findings are all fixed), the expert agents, the **Part 1 study notes for all four sections** (93 sub-topics, audited and learner-read), and the **Part 1 pilot: 80 questions, 20 per section**, through the full pipeline (scorecard in section 7; calibration rules in section 6b). With them: the 20 shared principles, the Part 1 exam guide and final review week, and a first generated Challenge pack from the tagged items. The **glossary start** is written and audited (153 Part 1 terms in `data/cia/shared/glossary.json`; it reuses the notes' wording, and `check_glossary.py` fails if a term is ever defined two ways). The outline of the CISA bridge is in `docs/content/CIA_CISA_BRIDGE_OUTLINE.md`. Session G is complete. |
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
-| **Rounds 1 and 2 done (20 Nov 2026)** | Round 1: 25 questions on the five Challenge-shared topics (`cia1_d1_021` to `035`, `cia1_d2_021` to `030`). Round 2: 20 questions on Section C (`cia1_d3_021` to `040`). Both through the whole pipeline (scorecards in section 7). Part 1 stands at 125 questions (A 35, B 30, C 40, D 20), with 22 principles and every question tagged. The first CIA pull request merged on 20 Nov 2026, so question ids and the Challenge id map are now held against main by `check_ids.py`: reword freely, never delete, renumber or reuse an id. |
+| **Rounds 1 and 2 done (20 Nov 2026)** | Round 1: 25 questions on the five Challenge-shared topics (`cia1_d1_021` to `035`, `cia1_d2_021` to `030`). Round 2: 20 questions on Section C (`cia1_d3_021` to `040`). Both through the whole pipeline (scorecards in section 7). Part 1 stands at 125 questions (A 35, B 30, C 40, D 20), with 23 principles and every question tagged. The first CIA pull request merged on 20 Nov 2026, so question ids and the Challenge id map are now held against main by `check_ids.py`: reword freely, never delete, renumber or reuse an id. |
 | **Next step** | Part 1 toward its sale minimum in further rounds of 20 to 25, on the topics `check_cia.py cia1 --coverage` shows as thinnest. By exam weight the next round belongs to Section D (15% of the exam; 20 questions; uncovered sub-topics 1D2.2, 1D5.2, 1D5.3), then Section A's uncovered sub-topics (1A3.2, 1A3.3, 1A4.1, 1A4.3, 1A5.3, 1A5.4, 1A6.3). Section D has the thinnest opened sources of the four, so expect clean application items there, not hard ones (section 6b, rule 10). Every round uses the author brief that produced round 1 (kept in the plan, section 6c) and reports the cue test; the target stays at 85% or lower. |
 | **Then** | Part 2, Part 3, the Challenge build and the CISA bridge notes (from the outline), the cross-part release gate. |
 | **Known weak spot** | Difficulty. No pilot key was wrong and all four blind rounds agreed 80 of 80, but the last testers still called 21 of 80 answerable by test-taking alone, most in Sections B and D, and 8 items carry a TOO EASY or GIVEAWAY flag (section 7). New rounds must do better; the pilot items are candidates for a later hardening pass, not for more polishing now (section 6b, rule 12). |
@@ -48,7 +48,7 @@ pack. Every surface CISA has, as data that passes its gate.
 | Citation library | `data/cia/shared/_framework_library.md` (one for all four) | part experts, cia-currency-checker | Started | | | |
 | Dated facts | `data/cia/shared/currency.json` | cia-currency-checker | Started | | | |
 | Glossary | `glossary.json`, built from `data/cia/shared/glossary.json` | iia-mindset-coach, part experts | Started: 153 terms, audited (section 7) | Later | Later | Built from the shared terms of its topics |
-| Principles | `mindset/principles.json`, built from `data/cia/shared/principles.json` | iia-mindset-coach | Done: 22 principles, every question tagged | Later | Later | Built (same 22) |
+| Principles | `mindset/principles.json`, built from `data/cia/shared/principles.json` | iia-mindset-coach | Done: 23 principles, every question tagged | Later | Later | Built (same 23) |
 | About the exam | `exam/<pack>_exam_guide.json` | iia-mindset-coach | Done | Not started | Not started | Not started |
 | Final review week | `exam/final_review_week.json` | iia-mindset-coach, behavioral-scientist | Done | Not started | Not started | Not started |
 | The CISA bridge | `ciac/notes/bridge.json` and a section of the Challenge exam guide | cia-challenge-bridge-expert | | | | Outline done (`docs/content/CIA_CISA_BRIDGE_OUTLINE.md`); notes not started |
@@ -470,6 +470,13 @@ alone would not have shown it: read the flags, not only the percentage.
 | Final testers' sorting: needs the Standards, partly, test-taking alone | 5 / 15 / 5 of 25 | 6 / 10 / 4 of 20 |
 | Flags left in the final round | 5 of 25 | 3 of 20, all TOO EASY: `cia1_d3_029` (subtraction settles it), `cia1_d3_033` (numeracy settles it), `cia1_d3_040` |
 | Ambiguous items found and fixed | 0 | 1 (`cia1_d3_027`) |
+
+Tags after round 2: a twenty-third principle, `weigh-cost-against-benefit`
+(Standard 4.2 for audit work, a must; the considerations to Standard 14.4 for
+recommendations and action plans, a should), written only because four items
+turn on it in their final two (`cia1_d2_014`, `cia1_d3_019`, `cia1_d3_033`,
+`cia1_d3_039`) and five notes sub-topics teach it. The rule for adding one:
+at least three existing questions turn on it and the Standards support it.
 
 What round 2 taught. A general fix pass ("remove the cue") did not move the
 cue test at all; a pass aimed at the six items the cue tester had guessed with

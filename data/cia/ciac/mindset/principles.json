@@ -2,7 +2,7 @@
  "schema_version": 2,
  "title": "KaiSip CIA Challenge Exam exam mindset principles",
  "updated": "2026-11-20",
- "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, the Challenge Exam 1 to 5, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and are set by a tagging pass after each round (done for the Part 1 pilot and for round 1); legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 and ciac. For ciac, domains are the Challenge Exam's sections (A Internal Audit Professionalism and Quality is 1, B Internal Audit Operations and Audit Plan is 2, C Engagement Planning is 3, D Engagement Performance is 4, E Engagement Results and Monitoring is 5, mapped from docs/content/CIA_CHALLENGE_MAP.md), subtopics stay empty until the Challenge notes are generated, and practice ids follow the tag of each generated item's source question. Parts 2 and 3 are still to come. Intended once their notes exist (written here because the linter of the built file allows no extra top-level key): know-your-seat cia2 cia3; board-approves-management-supports cia3; management-owns-risk-and-action cia2 cia3; advise-never-decide cia2 cia3; function-or-person cia3; disclose-then-safeguard cia3; risk-sets-plan-and-scope cia2 cia3; plan-before-testing cia2; consider-fraud-every-engagement cia2; relevant-reliable-sufficient cia2; root-cause-over-symptom cia2 cia3; assurance-not-a-guarantee cia2; discuss-then-escalate cia2 cia3; report-through-the-right-channel cia2; tell-it-straight cia2 cia3; have-or-obtain-competency cia2 cia3; information-for-the-work-only cia2 cia3; the four reading principles cia2 cia3. Round 1 added two principles for questions that no earlier principle decided: have-or-obtain-competency (Principle 3; Standards 3.1, 3.2 and 13.5, with Standard 10.2 for the function) and information-for-the-work-only (Principle 5; Standards 5.1 and 5.2). A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet, because no notes teach it until Part 3 is written. Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1. Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
+ "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, the Challenge Exam 1 to 5, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and are set by a tagging pass after each round (done for the Part 1 pilot and for rounds 1 and 2); legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 and ciac. For ciac, domains are the Challenge Exam's sections (A Internal Audit Professionalism and Quality is 1, B Internal Audit Operations and Audit Plan is 2, C Engagement Planning is 3, D Engagement Performance is 4, E Engagement Results and Monitoring is 5, mapped from docs/content/CIA_CHALLENGE_MAP.md), subtopics stay empty until the Challenge notes are generated, and practice ids follow the tag of each generated item's source question. Parts 2 and 3 are still to come. Intended once their notes exist (written here because the linter of the built file allows no extra top-level key): know-your-seat cia2 cia3; board-approves-management-supports cia3; management-owns-risk-and-action cia2 cia3; advise-never-decide cia2 cia3; function-or-person cia3; disclose-then-safeguard cia3; risk-sets-plan-and-scope cia2 cia3; plan-before-testing cia2; consider-fraud-every-engagement cia2; weigh-cost-against-benefit cia2 cia3; relevant-reliable-sufficient cia2; root-cause-over-symptom cia2 cia3; assurance-not-a-guarantee cia2; discuss-then-escalate cia2 cia3; report-through-the-right-channel cia2; tell-it-straight cia2 cia3; have-or-obtain-competency cia2 cia3; information-for-the-work-only cia2 cia3; the four reading principles cia2 cia3. Round 1 added two principles for questions that no earlier principle decided: have-or-obtain-competency (Principle 3; Standards 3.1, 3.2 and 13.5, with Standard 10.2 for the function) and information-for-the-work-only (Principle 5; Standards 5.1 and 5.2). Round 2 added one more, weigh-cost-against-benefit (Standard 4.2, where the weighing is a must for internal audit work; the considerations of Standard 14.4, where it is a should for recommendations and action plans), for questions that turn on proportion: enough work or enough control for the risk, not the most. A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet, because no notes teach it until Part 3 is written. Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1. Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
  "families": [
   {
    "id": "role",
@@ -470,6 +470,48 @@
    "nuance": "Considering fraud risk is not detecting or investigating fraud, and due professional care is not a guarantee. For advisory work, the risk assessment may not need to be formal or written down, depending on the agreement.",
    "domains": [
     3
+   ],
+   "subtopics": [],
+   "practice_ids": [],
+   "slip_pattern": null,
+   "legacy_ids": [],
+   "aliases": []
+  },
+  {
+   "id": "weigh-cost-against-benefit",
+   "family": "planning",
+   "order": 4,
+   "title": "Weigh cost against benefit",
+   "rule": "Weigh what audit work, a recommendation or a control costs against its benefit: enough for the risk, not the most.",
+   "why": "Audit hours and control spending are limited, so each should buy more than it costs. Standard 4.2 makes weighing the cost of internal audit work against its potential benefit a must, as part of due professional care. Standard 14.4's considerations say the review of a recommendation or action plan should weigh cost, benefit and the organization's risk tolerance.",
+   "triggers": [
+    "costs more than the loss it prevents",
+    "test every transaction",
+    "the strongest control",
+    "worth the cost",
+    "limited hours",
+    "effective but slow",
+    "already within tolerance",
+    "the design is inadequate"
+   ],
+   "trap": {
+    "move": "Choosing the most thorough option: test everything, add the strongest control, or push the risk close to zero whatever it costs. The opposite slip is letting a tight budget decide alone.",
+    "why_wrong": "Once a risk sits within tolerance, more work or more control buys little and still costs time and money. Cost is weighed together with risk and benefit, so a cheap option that leaves the risk outside tolerance loses as well. On CIA questions the fitting control is usually the one that brings the risk within tolerance at a cost in proportion to it."
+   },
+   "example": {
+    "scenario": "Ticket-machine cash shortages cost a ferry operator in Croatia about $4,000 a year. An internal auditor weighs two recommendations: a nightly two-person cash count at every pier, costing $60,000 a year, or a weekly reconciliation of machine totals to bank deposits.",
+    "answer": "The weekly reconciliation fits if it brings shortages within the operator's risk tolerance, because it costs little. The nightly count costs far more than the loss it prevents. Management decides and owns the action."
+   },
+   "check": {
+    "scenario": "While planning a purchasing engagement, an internal auditor finds that one key control cannot work as designed: the person who raises an order also approves it. Testing hours are limited.",
+    "right": "Record the design gap as a potential finding and test the controls whose design is sound.",
+    "trap": "Test a full sample of orders against that control first, then record what the tests show.",
+    "why": "A control that cannot work as designed is already a potential finding. Due professional care weighs the cost of work against its benefit (Standard 4.2), and full testing here would add little."
+   },
+   "nuance": "For internal audit work the weighing is a must (Standard 4.2); for recommendations it is a should, in Standard 14.4's considerations. Cost never decides alone: a tight budget does not justify skipping work on a significant risk.",
+   "domains": [
+    3,
+    5
    ],
    "subtopics": [],
    "practice_ids": [],
