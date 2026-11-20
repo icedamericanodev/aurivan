@@ -14,7 +14,8 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 |---|---|
 | **Status (20 Nov 2026)** | Session G, steps 1 to 3 done: expert decisions, the documents, the harness (187 planted faults stopped, 43 controls hold; an independent code review's findings are all fixed), the expert agents, the **Part 1 study notes for all four sections** (93 sub-topics, audited and learner-read), and the **Part 1 pilot: 80 questions, 20 per section**, through the full pipeline (scorecard in section 7; calibration rules in section 6b). With them: the 20 shared principles, the Part 1 exam guide and final review week, and a first generated Challenge pack from the tagged items. The **glossary start** is written and audited (153 Part 1 terms in `data/cia/shared/glossary.json`; it reuses the notes' wording, and `check_glossary.py` fails if a term is ever defined two ways). The outline of the CISA bridge is in `docs/content/CIA_CISA_BRIDGE_OUTLINE.md`. Session G is complete. |
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
-| **Next step** | Part 1 toward its sale minimum in rounds of 20 to 25, starting with its five Challenge-shared topics (1A2, 1A7, 1A8, 1B2, 1B6). Every round obeys section 6b and reports the cue test; the target is 85% or lower (the pilot ended at 91%). |
+| **In progress: round 1 (20 Nov 2026)** | 25 new Part 1 questions on the five Challenge-shared topics are written, reviewed and fixed, and committed: `cia1_d1_021` to `035` (1A2, 1A7, 1A8) and `cia1_d2_021` to `030` (1B2, 1B6). Done: first blind test 25 of 25, two standards audits (0 HARD, 23 PRECISION, 18 OBSERVATION, all applied), cue test 76% then 68% after the fix pass, second blind test of Section B 10 of 10. **Still to do, in this order:** (1) the second blind test of Section A's fifteen and the currency and citation check of all 25 (both were running when the container restarted; results go to the scratchpad, so re-run them if their files are missing); (2) one small fix pass only if an item is ambiguous or a citation is wrong (section 6b, rule 12); (3) the tagging pass, which also writes the two missing principles named in section 7 (competency; confidentiality, "information is for the work only"); (4) because nothing has reached main, delete `data/cia/ciac/id_map.json` and `data/cia/ciac/originals/` and rebuild so the map starts clean, then set each principle's `ciac` practice ids from the new map; (5) the round's row in section 7. |
+| **Next step after round 1** | Part 1 toward its sale minimum in further rounds of 20 to 25, on the topics `check_cia.py cia1 --coverage` shows as thinnest. Every round uses the author brief that produced round 1 (kept in the plan, section 6c) and reports the cue test; the target stays at 85% or lower. |
 | **Then** | Part 2, Part 3, the Challenge build and the CISA bridge notes (from the outline), the cross-part release gate. |
 | **Known weak spot** | Difficulty. No pilot key was wrong and all four blind rounds agreed 80 of 80, but the last testers still called 21 of 80 answerable by test-taking alone, most in Sections B and D, and 8 items carry a TOO EASY or GIVEAWAY flag (section 7). New rounds must do better; the pilot items are candidates for a later hardening pass, not for more polishing now (section 6b, rule 12). |
 
@@ -345,6 +346,36 @@ states how it meets them.
 12. **Two fix passes, then stop.** Review, fix, blind test again, one small
     pass, final blind test. What still falls short is recorded in the
     scorecard, not polished forever.
+
+## 6c. The author brief for a round (what made round 1 harder than the pilot)
+
+The pilot's item format stays (section 2). On top of it, every author gets
+these instructions, and delivers the scaffold as a table BEFORE writing:
+`id | topic and notes sub-topic | the distinction the item turns on | the key's
+kind (firm, modest, measured) | the runner-up and why a half-prepared
+candidate picks it | for each other wrong option, the situation in which it
+WOULD be right | key letter | key longest or shortest`.
+
+1. Every wrong option is right somewhere: correct under the Standards in a
+   different situation, which this stem's facts rule out. If the author cannot
+   name that situation, the option is replaced.
+2. Break the learned patterns: in at least a third of the items the key is the
+   firm action or the minimum the Standards require, not the measured middle;
+   in at least two the measured option is wrong because the facts make it
+   insufficient or unnecessary; in at least one internal audit does take
+   something on; in at least one an independence or objectivity option is the
+   key; attractive wording ("report to the chief audit executive", "disclose",
+   "the board") sits in keys and wrong options about equally.
+3. At least half the items turn on a distinction the Standards draw.
+4. Cover the stem: reading only the four options, two or three should each
+   look like the key to some stem. The key is never the only option of its
+   kind, the only one carrying its own "because", or the only hedged one.
+5. Difficulty comes from the stem's facts selecting among options that are
+   each right somewhere, never from an invented rule, trick wording or two
+   defensible answers.
+6. After the reviews, the author gets the audit, the blind tester's notes and
+   the cue tester's guesses with the cue used for each item, and removes each
+   cue that pointed at the key. Changed items are blind-tested again.
 
 ## 7. Round scorecard
 
