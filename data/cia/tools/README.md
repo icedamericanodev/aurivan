@@ -64,9 +64,11 @@ from retired to active is an ERROR. A light wording fix keeps the id.
 
 ## A complete reference text
 
-`check_originality.py --require` passes only on a complete reference: all five
+`check_originality.py --require` passes only on a complete reference: all seven
 source texts present and not empty (`standards_2024`, `p1_syllabus`,
-`p2_syllabus`, `p3_syllabus`, `challenge_syllabus`, each `.txt`) and at least 57
+`p2_syllabus`, `p3_syllabus`, `challenge_syllabus`, and the two 2026 Statements
+of Position `sop_three_lines_2026` and `sop_erm_2026`, each `.txt`; `--fetch`
+downloads them all) and at least 57
 glossary entries parsed from the Standards (the count in the opened file on
 20 Nov 2026; five were once lost at page breaks, and one more, printed with no
 space after its dash, was not read until that day). The glossary is read from
