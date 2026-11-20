@@ -14,8 +14,8 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 |---|---|
 | **Status (20 Nov 2026)** | Session G, steps 1 to 3 done: expert decisions, the documents, the harness (187 planted faults stopped, 43 controls hold; an independent code review's findings are all fixed), the expert agents, the **Part 1 study notes for all four sections** (93 sub-topics, audited and learner-read), and the **Part 1 pilot: 80 questions, 20 per section**, through the full pipeline (scorecard in section 7; calibration rules in section 6b). With them: the 20 shared principles, the Part 1 exam guide and final review week, and a first generated Challenge pack from the tagged items. The **glossary start** is written and audited (153 Part 1 terms in `data/cia/shared/glossary.json`; it reuses the notes' wording, and `check_glossary.py` fails if a term is ever defined two ways). The outline of the CISA bridge is in `docs/content/CIA_CISA_BRIDGE_OUTLINE.md`. Session G is complete. |
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
-| **Rounds 1 to 3 done (20 Nov 2026)** | Round 1: 25 questions on the five Challenge-shared topics. Round 2: 20 on Section C. Round 3: 17 on Section A's other five topics and 8 on Section D. All through the whole pipeline (scorecards in section 7). Part 1 stands at **150 questions (A 52, B 30, C 40, D 28)**, close to the exam's weights (35 / 20 / 30 / 15), with every question tagged to a principle. Question ids and the Challenge id map are held against main by `check_ids.py`: reword freely, never delete, renumber or reuse an id. |
-| **Next step** | Round 4, toward the sale minimum, keeping the bank near the exam's weights: about 12 for Section C (1C2.1, 1C5.3 and 1C8.3 stay thin until more sources are opened) and 10 for Section B (uncovered sub-topics 1B3.2 and 1B4.2 first; Section B was the pilot's easiest section), then Section A again. Section D grows only with its exam weight (section 7, "What round 3 taught"). Every round uses the author brief in section 6c with the lessons of section 7, reports the cue test per round AND on a mixed sample of 50 items across rounds, and gets its own pull request. |
+| **Rounds 1 to 6 done (20 Nov 2026)** | Round 6: 12 questions on Section B and 12 on Section A, through the whole pipeline (scorecards in section 7). Part 1 stands at **220 questions (A 76, B 52, C 64, D 28)**; every notes sub-topic has a question and every question is tagged to one of 23 principles. On a mixed 50-item sample the options-only cue test stands at 80% (72% after round 5), against 87% for The IIA's own public sample questions. Question ids and the Challenge id map are held against main by `check_ids.py`. |
+| **Next step** | Round 7 toward the sale minimum (500; by exam weight about A 175, B 100, C 150, D 75): Section C (about 12) and Section B (about 12; at least one wrong option per item in the same Standards-sounding register as the key, the lesson of round 6). Section A is past 75; its new lessons are now scarce (round 6 found none left in 1A3 or 1A6), so it waits for a round that starts from the syllabus bullets with the fewest items. Section D grows only once more sources are opened (members-only practice guides: a licence-and-membership question, section 9). Every round: the author brief in section 6c with the lessons of section 7 (including: the stem states the stage, the period and any condition the choice depends on), one fix pass, a separate audit of any item whose key or key wording changes BEFORE its final blind test, the cue test on a mixed 50-item sample, and its own pull request. |
 | **Then** | Part 2, Part 3, the Challenge build and the CISA bridge notes (from the outline), the cross-part release gate. |
 | **Known weak spot** | Difficulty. No pilot key was wrong and all four blind rounds agreed 80 of 80, but the last testers still called 21 of 80 answerable by test-taking alone, most in Sections B and D, and 8 items carry a TOO EASY or GIVEAWAY flag (section 7). New rounds must do better; the pilot items are candidates for a later hardening pass, not for more polishing now (section 6b, rule 12). |
 
@@ -44,7 +44,7 @@ pack. Every surface CISA has, as data that passes its gate.
 |---|---|---|---|---|---|---|
 | Blueprint and outline | `docs/content/CIA_BLUEPRINT.md`, `data/cia/shared/outline.json` | cert-blueprint-researcher | Done | Done | Done | Done |
 | Study notes | `notes/d{N}.json`, one file per section, notes schema v2 | part expert | Done: 93 sub-topics, audited (section 8b) | Not started | Not started | Generated later, plus the bridge |
-| Questions | `originals/d{N}.json` | part expert | Pilot and rounds 1 to 3 done: 150 (A 52, B 30, C 40, D 28; section 7) | Not started | Not started | Generated (`build_challenge.py`) from the tagged pilot items |
+| Questions | `originals/d{N}.json` | part expert | Pilot and rounds 1 to 6 done: 220 (A 76, B 52, C 64, D 28; section 7) | Not started | Not started | Generated (`build_challenge.py`) from the tagged pilot items |
 | Citation library | `data/cia/shared/_framework_library.md` (one for all four) | part experts, cia-currency-checker | Started | | | |
 | Dated facts | `data/cia/shared/currency.json` | cia-currency-checker | Started | | | |
 | Glossary | `glossary.json`, built from `data/cia/shared/glossary.json` | iia-mindset-coach, part experts | Started: 153 terms, audited (section 7) | Later | Later | Built from the shared terms of its topics |
@@ -291,7 +291,10 @@ states how it meets them.
      options that are wrong in general. The tester knows auditing, so this is
      not what an unprepared learner would score; it shows that the wrong
      options do not tempt someone who half-knows the subject. **Target for CIA
-     rounds from now on: at or below the CRISC baseline (85%), and falling.**
+     rounds: first set at or below the CRISC baseline (85%) and falling;
+     recalibrated after round 3 against The IIA's own public sample questions,
+     which score 87% on the same test (section 7, "Two calibration
+     measurements"): at or below that level on a mixed 50-item sample.**
      The way down is rule 2: a wrong option should be the right answer to a
      different question, so that only the stem's facts decide.
    - **The tester's own sorting** of each item (needs the Standards, partly
@@ -376,7 +379,13 @@ WOULD be right | key letter | key longest or shortest`.
 6. After the reviews, the author gets the audit, the blind tester's notes and
    the cue tester's guesses with the cue used for each item, and removes each
    cue that pointed at the key. Changed items are blind-tested again.
-7. The second, small pass is the targeted one (round 2): only the items the
+7. An item whose key, or the wording of its key, changes in a fix pass gets
+   its own standards audit before its final blind test (rounds 3 to 5: three
+   of four such items had an error or a weak basis only that audit found).
+   When two duties that are both real are the final two, the stem states the
+   stage reached, the period in scope and any condition the choice depends
+   on (round 5).
+8. The second, small pass is the targeted one (round 2): only the items the
    cue tester guessed with high confidence, each with its cue named, and the
    instruction to give one wrong option a reason that is true in general but
    does not fit this stem's facts. Then a final blind test of what changed.
@@ -393,6 +402,9 @@ in a row below 90%: stop and tell the owner.
 | Round 1 | 20 Nov 2026 | cia1, Sections A (1A2, 1A7, 1A8) and B (1B2, 1B6): the Challenge-shared topics | 25 (15 and 10) | 25 of 25 in each of two blind rounds (100%) | 0 / 23 / 18 on 25 | 20.0% in both sections | 0 | None new (the Standards, both statements and the reference list re-downloaded, unchanged) |
 | Round 2 | 20 Nov 2026 | cia1, Section C (1C1 to 1C8) | 20 | 20 of 20, 20 of 20, then 8 of 8 on the last changed items (100%) | 1 / 11 / 11 on 20 (1.3 / 13.8 / 13.8 per 25) | 20.0% | 0 cut; 1 replaced before merge (`cia1_d3_040` mirrored pilot 018) | None new (five IIA files re-downloaded, unchanged) |
 | Round 3 | 20 Nov 2026 | cia1, Section A (1A1, 1A3, 1A4, 1A5, 1A6) and Section D (1D1 to 1D5) | 25 (17 and 8) | 25 of 25, 25 of 25, then 13 of 13 on the last changed items (100%) | 1 / 21 / 13 on 25, plus 0 / 7 / 8 from the citation check | 19.2% and 21.4% | 0 | None new (eight IIA files re-downloaded, unchanged) |
+| Round 4 | 20 Nov 2026 | cia1, Section B (1B1, 1B3, 1B4, 1B5) and Section C (1C1, 1C3 to 1C8) | 22 (10 and 12) | 22 of 22, then 16 of 16 on the changed items, then 8 of 8 on the last changed (100%) | 1 / 48 / 20 on 22 (two audits, one audit of two re-keyed items), plus 0 / 4 / 6 from the citation check | 20.0% and 20.2% | 0 | None new |
+| Round 5 | 20 Nov 2026 | cia1, Section A (1A1, 1A3 to 1A7) and Section C (1C1, 1C3 to 1C8) | 24 (12 and 12) | 24 of 24 first round; 18 of 18, then 2 of 2, then 1 of 1 on the changed items (100%) | 1 / 26 / 14 on 24 (two audits), plus 0 / 7 / 6 from the citation check and 0 / 5 / 4 from one re-keyed item's audit | 18.8% and 21.1% | 0 | None new |
+| Round 6 | 20 Nov 2026 | cia1, Section B (1B1, 1B3, 1B4, 1B5) and Section A (all eight topics) | 24 (12 and 12) | 24 of 24 first round; 24 of 24 final, after two fix passes (100%) | 3 / 47 / 31 on 24 (two audits), plus 0 / 17 / 10 from the two targeted audits of changed items and 0 / 1 / 2 from the citation check | 19.2% and 17.1% | 0 cut; 2 replaced before merge (`cia1_d2_043`, Part 3 ground; `cia1_d1_072`, a repeated lesson) | None new (the two 2026 statements added to the originality gate's fetch list) |
 
 **Pilot, in full.** Four standards audits (one per section, with the key):
 Section A 0 HARD, 15 PRECISION, 8 OBSERVATION; B 0 / 8 / 5; C 1 / 9 / 12;
@@ -553,6 +565,184 @@ the mock draw (section 11): `cia1_d1_037` with 002; 041 with 008 and 010; 043
 with `cia1_d3_005`; 052 with 013; `cia1_d4_011` with 023 and 025 (and
 `cia1_d2_016`); 018 with 028; 001 and 003 with 022; 002 with 021; 013 and 014
 with 026.
+
+**Two calibration measurements (20 Nov 2026, after round 3).** Both use the
+cue test's own instructions and a tester with fresh context.
+
+| Sample | Items | Guessed from the options alone |
+|---|---|---|
+| The pilot, final | 80 | 91% |
+| Rounds 1 to 3 as merged, a random mixed sample | 50 | **78%** (39 of 50): Section A 14 of 23, B 6 of 7, C 12 of 13, D 7 of 7 |
+| The IIA's own public sample questions (its sample page, all three parts) | 15 | **87%** (13 of 15), eight of the guesses with high confidence |
+
+What they say. (1) The small per-round tests were optimistic: on 50 items the
+rounds stand at 78%, not the pooled 70%, and the tester got 19 of 28
+low-confidence guesses right, so the leak is not a phrase to delete: someone
+who knows auditing can often tell what the right kind of answer looks like.
+Section A's new items resist that (61%); Sections B, C and D do not yet.
+(2) The IIA's own sample questions leak at least as much to the same test
+(the tester named the same cues: absolutes in the wrong options, the option
+that keeps internal audit in role, the option that sounds like the
+Standards). Fifteen items is a small sample, two were partly recognized from
+memory, and sample questions may be easier than live ones, so this is a
+benchmark, not a proof. But it means **KaiSip's items already resist an
+expert guesser at least as well as the official samples**, and that chasing
+the cue score far below the official level buys little for a learner.
+
+What changes from round 4:
+- The cue test stays, read on the mixed 50-item sample after each round; the
+  per-round figure is reported but no longer steers a pass by itself.
+- The target is "at or below the official samples' level (87%), with Section
+  A's level (about 60%) as what good looks like", not a number that must fall
+  every round.
+- The targeted second pass is no longer automatic. It runs for items a cue
+  tester guesses with high confidence and a nameable, cheaply removed cue,
+  and for any pattern a blind tester can state. The effort saved goes to what
+  the audits keep finding: a second defensible answer, a key that claims
+  more than its source, and a rule the notes do not teach.
+- How the calibration was done, so it can be repeated: the sample page was
+  already an opened source (research log, S22); an options-only copy and its
+  keys were kept outside the repository and shown only to the cue tester,
+  never to an author. No IIA question text is stored in the repository and
+  none is used to write items.
+
+**Round 4, in full.** Section B's two uncovered notes sub-topics now have
+questions, so every Part 1 notes sub-topic has at least one. Standards audits:
+Section B 0 HARD, 19 PRECISION, 7 OBSERVATION; Section C 0 / 12 / 8. Two
+Section B items had their keys changed in the fix pass (to break the patterns
+"going to the chief audit executive is always wrong" and "waiting is always
+wrong"), so they got their own audit: `cia1_d2_031` sound (0 / 8 / 3);
+`cia1_d2_033` one HARD ERROR (the stem gave no time left before the deadline,
+so narrowing the scope was as defensible as rescheduling; plan 8b bars
+choosing among a Standard's unranked options unless the stem settles it).
+Citation check 0 / 4 / 6. No wrong key, and no blind tester flagged an
+ambiguous item in any round. The usage limit of the model the session ran on
+stopped two reviewers part way; the Section C audit had already saved its
+results, and the other was rerun from the start on another model.
+
+| Measure | Result |
+|---|---|
+| Cue test on the round's 22 (first draft) | 82% (18 of 22); seven high-confidence guesses, all right |
+| Mixed 50-item sample across rounds 1 to 4, after the round | **70%** (35 of 50; four high-confidence guesses). By section: A 7 of 15, B 7 of 10, C 19 of 21, D 2 of 4. The round's own items in the sample: 13 of 15 |
+| The same test on The IIA's 15 public sample questions (benchmark) | 87% |
+| Final testers' sorting of the 22 | needs the Standards 8, partly 12, test-taking alone 2 |
+| Flags left | TOO EASY `cia1_d2_040`, `cia1_d3_041`, `cia1_d3_045` (recall); close calls recorded, not ambiguous: `cia1_d3_043`, `044`, `051`, `cia1_d2_033` (option A could read as missing the deadline) |
+
+What round 4 taught.
+- **A re-keyed item is a new item.** Both items whose keys changed were
+  audited again; one had a real error that neither the author nor the blind
+  tester of the earlier form could have seen. The rule from round 3
+  (`cia1_d1_040`) now holds twice: when a key changes, the item gets its own
+  standards audit before its final blind test.
+- **Section C leaks most.** On the mixed sample it stands at 19 of 21, while
+  Section A stands near half. Its options often read as statements of
+  doctrine, and its sources are thin (round 4's author found three areas with
+  no further sourced lesson and dropped them). The next Section C round should
+  start from scenarios where two duties are both real and the stem's facts
+  pick one, which is the shape that resisted best in Section A.
+- **The study notes caught up.** Ten notes lines were added or corrected in
+  round 4 so that every rule a new question keys on is taught, and two notes
+  that pulled a learner toward a wrong option were fixed.
+
+**Round 5, in full.** Section A's twelve went to its thinnest topics;
+Section C's twelve were written to a new brief: every item sets two duties
+that are both real against each other, and only the stem's facts pick one.
+Standards audits: Section A 0 HARD, 12 PRECISION, 8 OBSERVATION; Section C
+1 / 14 / 6. Citation check 0 / 7 / 6. No key was wrong.
+
+| Measure | Result |
+|---|---|
+| First blind test | Section A 12 of 12, nothing ambiguous; Section C 12 of 12 but **two flagged AMBIGUOUS** (`cia1_d3_057`, `063`), the first since round 2 |
+| Final testers' sorting | Section A: needs the Standards 5, partly 5, test-taking 2. Section C first round: 6 / 6 / 0, the best profile of any section in any round |
+| Cue test on the round's 24 (first draft) | 83% (20 of 24; two high-confidence guesses) |
+| Mixed 50-item sample across rounds 1 to 5, after the round | **72%** (36 of 50): A 9 of 17, B 5 of 8, C 19 of 22, D 3 of 3 (after round 4: 70%; The IIA's own samples: 87%) |
+| Flags left | TOO EASY `cia1_d1_055`; mild giveaway `cia1_d3_063` (the key alone uses both stem facts), `cia1_d3_061` |
+
+What round 5 taught.
+- **"Two real duties" makes Section C harder to answer but not harder to
+  guess, and it raises the ambiguity risk.** Section C's first-draft items
+  were the hardest of any round (none answerable by test-taking alone), but
+  they produced the round's only HARD ERROR and both ambiguous flags: when both
+  final options are real duties, a stem that leaves out the stage, the period
+  or the condition makes both defensible. Keep the style, and add a rule to the
+  author brief: **the stem states the stage reached, the period in scope and
+  any condition the choice depends on.** `cia1_d3_057` (which escalation step
+  had passed) and `cia1_d3_063` (the full-year scope, and then the Standard
+  15.1 acknowledgment that decided it) needed three passes between them.
+- **Section C's cue score is now a property of the subject, not of the
+  writing.** Two rounds of changed technique moved it nothing (19 of 21, then
+  19 of 22). Governance and control questions reward the measured,
+  process-minded answer, and so does the real exam (The IIA's own samples:
+  87% on the same test). Further passes aimed at the Section C cue score are
+  not worth their cost; the audits' findings (a second defensible answer, a
+  missing fact, an overstated rule) are what protects a paying learner.
+- **Audit a reworded key before its final blind test, not beside it.** This
+  round ran the two side by side on `cia1_d3_063` to save time; the audit then
+  changed the item again, so it needed one more blind test. The order in
+  section 6c stands.
+- **A fixer's checks must cover every file it touched.** A fix to one Section
+  A item, made during Section C's pass, exceeded a word limit that the fixer's
+  own checks (run on Section C only) did not see; the coordinator caught it.
+  Every pass now ends with the style check on all four files.
+
+**Round 6, in full.** Section B's twelve went to its thinnest topics
+(1B1, 1B3, 1B4, 1B5); Section A's twelve spread over all eight topics, with
+every one now at or past 8 items. Standards audits: Section B 3 HARD (all in
+`cia1_d2_044`, one cause), 17 PRECISION, 17 OBSERVATION; Section A 0 / 30 /
+14. Targeted audits of the changed and new items: B 0 / 4 / 4, A 0 / 13 / 6.
+Citation check 0 / 1 / 2. No key was wrong.
+
+| Measure | Result |
+|---|---|
+| First blind test | Section B 12 of 12, nothing ambiguous (one UNCLEAR: a period with no year); Section A 12 of 12, nothing ambiguous (one GIVEAWAY) |
+| Final blind test | Section B 12 of 12 (needs the Standards 5, partly 6, test-taking 1); Section A 12 of 12 (5 / 7 / 0), no flags in either |
+| Cue test on the round's own items | First draft: B 11 of 12, A 10 of 12. After the fix pass: B 10 of 12, A 11 of 12 (most of A's right guesses low or medium confidence) |
+| Mixed 50-item sample across rounds 1 to 6, after the round | **80%** (40 of 50): A 14 of 20, B 9 of 11, C 14 of 16, D 3 of 3; all 8 high-confidence guesses right (after round 5: 72%; The IIA's own samples: 87%) |
+| Flags left | TOO EASY `cia1_d2_048` (the stem states that the cheaper fix does the same job); cue leaks `cia1_d2_045`, `047`, `050`, `052` (the independent or complete option) |
+
+Replaced before merge (neither id reached main): `cia1_d2_043` first keyed on
+Standard 15.1's disclosure of a nonconformance in a final communication, which
+is the chief audit executive's seat and Part 3 ground (3C2a, 3D2b). **Parked
+for Part 3:** testing began before the work program was approved, so the final
+communication names the requirement missed, the reason and the impact instead
+of claiming conformance. `cia1_d1_072` first repeated the lesson and the wrong
+options of `cia1_d1_010` and `013`; it now keys Standard 7.2 (the chief audit
+executive must help the board understand the qualifications the role needs; a
+succession plan is a should).
+
+Sibling items to keep apart in one mock (section 11): `cia1_d2_043` with
+`cia1_d2_003` and `cia1_d2_041`; `cia1_d1_072` with `cia1_d1_015`;
+`cia1_d1_068` with `cia1_d1_006` and `007`; `cia1_d2_042` with `cia1_d2_013`.
+
+What round 6 taught.
+- **Section B's leak is the Standards' own register.** After a fix pass that
+  made keys share their kind with a rival, the ethics items still leaked where
+  the key is the independent, outside or complete option (an independent
+  confirmation, an outside actuary, every claim matched), because the Standards
+  really do favour it. The mixed sample rose from 72% to 80%, driven by Section
+  A's and Section B's new items. The next Section B brief asks for at least one
+  wrong option per item in the same Standards-sounding register as the key.
+- **A teaching field can carry a false rule while the key is right.** All
+  three HARD errors were in `cia1_d2_044`'s tips and explanations, which taught
+  that the board hears only the chief audit executive's own impairment;
+  Standard 2.3 names the board for a staff auditor's too. Audits read the
+  teaching fields as closely as the key.
+- **Part 1 depth is a real boundary.** Two items drifted into other parts: a
+  conformance disclosure (Part 3) and a sufficiency verdict on evidence (Part 2,
+  2B2). The second was kept in Part 1 by asking for the skepticism decision
+  (rely or seek more), which bullet 1B5e covers.
+- **A stem must not state a doubtful fact about real law.** `cia1_d2_043`'s
+  first stem claimed what Indonesian and Singapore data law allow; it now has
+  legal counsel confirm the breach, so the item teaches nothing about either
+  country's law.
+- **Section A is close to its supply of new lessons.** At 76 items the author
+  found no new lesson in 1A3 or 1A6, and the audit cut one item that repeated
+  an old one. The next Section A round starts from the syllabus bullets with
+  the fewest items, not from the topics.
+- **The originality gate now reads the 2026 Statements of Position.** Two
+  Section A items followed the Three Lines statement's sentences, which the
+  gate could not see from its default reference; `--fetch` and a complete
+  reference now include both statements.
 
 **Principle tags.** After the last fix the mindset coach re-read all 80
 items and re-tagged 7 to the principle that decides the final two. Every one

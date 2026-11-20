@@ -45,9 +45,10 @@ than 30 days old or from another address than the outline names now.
 
 When no reference text is present the gate says so and exits 0, unless
 --require is given (the authoring pipeline and the release gate always pass
---require). With --require the reference must also be COMPLETE: all five source
+--require). With --require the reference must also be COMPLETE: all seven source
 texts present and not empty (standards_2024, p1_syllabus, p2_syllabus,
-p3_syllabus, challenge_syllabus), and at least 57 glossary entries parsed from
+p3_syllabus, challenge_syllabus, and the two 2026 Statements of Position,
+sop_three_lines_2026 and sop_erm_2026, added 20 Nov 2026), and at least 57 glossary entries parsed from
 the Standards (the number counted in the opened file; it was 56 until 20 Nov
 2026, when the one entry printed with no space after its dash was read). A partial
 reference checks little and proves nothing. --fixture-ref turns the
@@ -78,7 +79,13 @@ HOST = "https://www.theiia.org/"
 STANDARDS = "standards_2024"
 STANDARDS_URL = HOST + "globalassets/site/standards/globalinternalauditstandards_2024january9.pdf"
 SYLLABUS_FILES = {"cia1": "p1_syllabus", "cia2": "p2_syllabus", "cia3": "p3_syllabus", "ciac": "challenge_syllabus"}
-REQUIRED = [STANDARDS, *SYLLABUS_FILES.values()]    # a complete reference has all five
+# The 2026 Statements of Position: items and notes cite them (citation library rule 7),
+# so the gate reads them too; before 20 Nov 2026 only a hand-made --ref folder held them.
+STATEMENTS = {
+    "sop_three_lines_2026": HOST + "globalassets/site/resources/statements-of-position/tlm_assurance_advice_support_effective_gov_en.pdf",
+    "sop_erm_2026": HOST + "globalassets/site/resources/statements-of-position/role_of_ia_function_enterprise_risk_mgmt_en.pdf",
+}
+REQUIRED = [STANDARDS, *SYLLABUS_FILES.values(), *STATEMENTS]    # a complete reference has all seven
 # Fixed terms of art: each counts as one word on both sides.
 TERMS_OF_ART = [
     "governance risk management and control processes", "governance risk management and control",
@@ -154,7 +161,7 @@ def sources(root):
     """{file name: address}: the Standards, and each exam's syllabus at the address
     shared/outline.json names, so the gate reads the file the outline was written from
     (the Challenge syllabus was once fetched from an older address than the outline's)."""
-    out = {STANDARDS: STANDARDS_URL}
+    out = {STANDARDS: STANDARDS_URL, **STATEMENTS}
     for e in c.load_outline(root)["exams"]:
         if e["id"] in SYLLABUS_FILES:
             out[SYLLABUS_FILES[e["id"]]] = e.get("syllabus_url") or ""

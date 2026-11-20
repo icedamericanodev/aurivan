@@ -449,7 +449,8 @@ PAGED = (f"\f     Glossary\n     widget audit – {REF_DEF}\n\n     other term �
 # An entry printed with no space after its dash ("term –Definition"): one entry of the opened Standards
 # is, and until 20 Nov 2026 the parser did not read it.
 TIGHT = f"Fixture glossary\n\n     widget audit – {REF_DEF}\n\n     tight dash –{REF_DEF2}\n"
-FIVE = ["standards_2024", "p1_syllabus", "p2_syllabus", "p3_syllabus", "challenge_syllabus"]
+SEVEN = ["standards_2024", "p1_syllabus", "p2_syllabus", "p3_syllabus", "challenge_syllabus",
+         "sop_three_lines_2026", "sop_erm_2026"]
 LETTERS = "abcdefghijklmnopqrstuvwxyz"
 N_GLOSSARY = 57                   # check_originality.py's MIN_GLOSSARY, written out again so a change there is noticed here
 
@@ -462,7 +463,7 @@ def full_glossary(n):
 
 
 def complete_ref(entries=N_GLOSSARY):
-    return all_of(put("standards_2024.txt", full_glossary(entries)), *(put(f"{n}.txt", f" 1. {REF_LINE}\n") for n in FIVE[1:]))
+    return all_of(put("standards_2024.txt", full_glossary(entries)), *(put(f"{n}.txt", f" 1. {REF_LINE}\n") for n in SEVEN[1:]))
 
 
 LINT_NOTES = ["lint_notes.py", "{root}/cia1/notes/d1.json", "--outline", "{repo}/docs/content/CIA_BLUEPRINT.md",
@@ -943,7 +944,7 @@ PASSES = [
     ("a decoy '...standards...page.txt' in the reference folder (the glossary still comes from the Standards text)",
      NEW_REF, alt_ref(put("complete_standards_page.txt", "A saved web page about the standards.\n")),
      "(1 parsed from standards_fixture.txt)"),
-    ("a complete reference: five texts and 57 glossary entries, one with no space after its dash",
+    ("a complete reference: seven texts and 57 glossary entries, one with no space after its dash",
      NEW_REF + ["--real-ref"], alt_ref(complete_ref(), copy=False), "(57 parsed from standards_2024.txt)"),
     ("a built file whose source is gone, after a normal build (removed)", ["build_packs.py", "--check"],
      then(lambda r: edit(r, "shared/principles.json", lambda d: d["principles"][0]["packs"].remove("cia3")), rebuild),
