@@ -2,7 +2,7 @@
   "schema_version": 2,
   "title": "KaiSip CIA exam mindset principles",
   "updated": "2026-11-20",
-  "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, the Challenge Exam 1 to 5, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and are set by a tagging pass after each round (done for the Part 1 pilot and for rounds 1 to 8); legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 and ciac. For ciac, domains are the Challenge Exam's sections (A Internal Audit Professionalism and Quality is 1, B Internal Audit Operations and Audit Plan is 2, C Engagement Planning is 3, D Engagement Performance is 4, E Engagement Results and Monitoring is 5, mapped from docs/content/CIA_CHALLENGE_MAP.md), subtopics stay empty until the Challenge notes are generated, and practice ids follow the tag of each generated item's source question. Parts 2 and 3 are still to come. Intended once their notes exist (written here because the linter of the built file allows no extra top-level key): know-your-seat cia2 cia3; board-approves-management-supports cia3; management-owns-risk-and-action cia2 cia3; advise-never-decide cia2 cia3; function-or-person cia3; disclose-then-safeguard cia3; risk-sets-plan-and-scope cia2 cia3; plan-before-testing cia2; consider-fraud-every-engagement cia2; weigh-cost-against-benefit cia2 cia3; relevant-reliable-sufficient cia2; root-cause-over-symptom cia2 cia3; assurance-not-a-guarantee cia2; discuss-then-escalate cia2 cia3; report-through-the-right-channel cia2; tell-it-straight cia2 cia3; have-or-obtain-competency cia2 cia3; information-for-the-work-only cia2 cia3; the four reading principles cia2 cia3. Round 1 added two principles for questions that no earlier principle decided: have-or-obtain-competency (Principle 3; Standards 3.1, 3.2 and 13.5, with Standard 10.2 for the function) and information-for-the-work-only (Principle 5; Standards 5.1 and 5.2). Round 2 added one more, weigh-cost-against-benefit (Standard 4.2, where the weighing is a must for internal audit work; the considerations of Standard 14.4, where it is a should for recommendations and action plans), for questions that turn on proportion: enough work or enough control for the risk, not the most. A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet, because no notes teach it until Part 3 is written. Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1. Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
+  "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, the Challenge Exam 1 to 5, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and are set by a tagging pass after each round (done for the Part 1 pilot and for rounds 1 to 9); legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 and ciac. For ciac, domains are the Challenge Exam's sections (A Internal Audit Professionalism and Quality is 1, B Internal Audit Operations and Audit Plan is 2, C Engagement Planning is 3, D Engagement Performance is 4, E Engagement Results and Monitoring is 5, mapped from docs/content/CIA_CHALLENGE_MAP.md), subtopics stay empty until the Challenge notes are generated, and practice ids follow the tag of each generated item's source question. Parts 2 and 3 are still to come. Intended once their notes exist (written here because the linter of the built file allows no extra top-level key): know-your-seat cia2 cia3; board-approves-management-supports cia3; management-owns-risk-and-action cia2 cia3; advise-never-decide cia2 cia3; function-or-person cia3; disclose-then-safeguard cia3; risk-sets-plan-and-scope cia2 cia3; plan-before-testing cia2; consider-fraud-every-engagement cia2; weigh-cost-against-benefit cia2 cia3; relevant-reliable-sufficient cia2; root-cause-over-symptom cia2 cia3; assurance-not-a-guarantee cia2; discuss-then-escalate cia2 cia3; report-through-the-right-channel cia2; tell-it-straight cia2 cia3; have-or-obtain-competency cia2 cia3; information-for-the-work-only cia2 cia3; design-or-operation cia2 cia3; the four reading principles cia2 cia3. Round 1 added two principles for questions that no earlier principle decided: have-or-obtain-competency (Principle 3; Standards 3.1, 3.2 and 13.5, with Standard 10.2 for the function) and information-for-the-work-only (Principle 5; Standards 5.1 and 5.2). Round 2 added one more, weigh-cost-against-benefit (Standard 4.2, where the weighing is a must for internal audit work; the considerations of Standard 14.4, where it is a should for recommendations and action plans), for questions that turn on proportion: enough work or enough control for the risk, not the most. Round 9 added design-or-operation (the glossary's definition of control processes as designed and operated; Standard 4.2, and the considerations to Standards 13.2, 13.3, 13.6 and 14.3, at should strength), for questions whose final two are a design failure against an operating failure. A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet, because no notes teach it until Part 3 is written. Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1. Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
   "families": [
     {
       "id": "role",
@@ -985,7 +985,6 @@
           "cia1_d3_006",
           "cia1_d3_011",
           "cia1_d3_017",
-          "cia1_d3_018",
           "cia1_d3_023",
           "cia1_d3_028",
           "cia1_d3_051",
@@ -1125,6 +1124,68 @@
           "cia1_d2_038",
           "cia1_d4_018",
           "cia1_d4_028"
+        ],
+        "ciac": []
+      },
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "design-or-operation",
+      "family": "evidence",
+      "order": 5,
+      "title": "Design or operation: say which failed",
+      "rule": "Judge design and operation as two questions: would the control work as written, and is it done? Name which failed.",
+      "why": "The glossary defines control processes as designed and operated to keep risk within tolerance, so either half can fail alone. Standard 4.2 makes their adequacy and effectiveness part of due professional care, and the considerations to Standards 13.2, 13.3 and 14.3 weigh design adequacy and operating effectiveness separately. A weak design needs a changed control; a skipped step needs doing.",
+      "triggers": [
+        "followed the procedure exactly",
+        "every sampled item was approved",
+        "no one reviews the exceptions",
+        "the policy does not say",
+        "operates as written",
+        "has not been done since"
+      ],
+      "trap": {
+        "move": "Reading one half as the whole: calling a control effective because every sample was done as written, or blaming the design when people skip a sound step.",
+        "why_wrong": "Perfect compliance with a step that cannot catch the risk leaves the risk unmanaged, and a sound step nobody performs manages nothing. Naming the wrong half also aims the action at the wrong fix: rewriting a good procedure, or retraining people on a weak one."
+      },
+      "example": {
+        "scenario": "A clinic in Ghana requires a second nurse to confirm each high-risk dose before it is given. An internal auditor observes that the second nurse signs the log at the end of each shift, after the doses.",
+        "answer": "The design would manage the risk; the operation fails, because the check comes too late to stop a wrong dose. The finding is an operating gap, and management decides how to restore the check."
+      },
+      "check": {
+        "scenario": "A retailer's procedure has store managers approve each refund in the system. An internal auditor finds every sampled refund approved, but the system lets a manager approve refunds they issued themselves.",
+        "right": "Report a design gap: an approver checking their own refund cannot catch a false one.",
+        "trap": "Report effective operation: every sampled refund carried the approval the procedure requires.",
+        "why": "The approvals happened, so the control operates as written. Its design fails, since self-approval manages no risk, and naming the design gap points management at the right fix."
+      },
+      "nuance": "No order is required: design may be judged in planning or alongside testing (Standard 13.6's considerations). When a design is plainly inadequate, fully testing its operation may not be worth the cost (Standard 4.2's considerations).",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          3
+        ],
+        "ciac": [
+          3,
+          5
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1C2.3",
+          "1C8.1"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d3_018",
+          "cia1_d3_066",
+          "cia1_d3_073"
         ],
         "ciac": []
       },
