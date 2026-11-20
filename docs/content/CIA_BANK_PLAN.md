@@ -14,8 +14,8 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 |---|---|
 | **Status (20 Nov 2026)** | Session G, steps 1 to 3 done: expert decisions, the documents, the harness (187 planted faults stopped, 43 controls hold; an independent code review's findings are all fixed), the expert agents, the **Part 1 study notes for all four sections** (93 sub-topics, audited and learner-read), and the **Part 1 pilot: 80 questions, 20 per section**, through the full pipeline (scorecard in section 7; calibration rules in section 6b). With them: the 20 shared principles, the Part 1 exam guide and final review week, and a first generated Challenge pack from the tagged items. The **glossary start** is written and audited (153 Part 1 terms in `data/cia/shared/glossary.json`; it reuses the notes' wording, and `check_glossary.py` fails if a term is ever defined two ways). The outline of the CISA bridge is in `docs/content/CIA_CISA_BRIDGE_OUTLINE.md`. Session G is complete. |
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
-| **Rounds 1 to 9 done (20 Nov 2026)** | Round 9: 10 questions on Section B and 7 on Section C, through the whole pipeline (scorecards in section 7), and a 24th principle (design or operation). Part 1 stands at **280 questions (A 85, B 74, C 93, D 28)**; every notes sub-topic has a question and every question is tagged to one of 24 principles. On a mixed 50-item sample the options-only cue test read 86% after round 9 (72% to 80% in rounds 5 to 8), just under 87% for The IIA's own public sample questions; Section B drives it (14 of 14 in the sample). |
-| **Next step** | Round 10 is a **Section B hardening round**, not new items: the mixed sample rose to 86% with every Section B item guessed, and new Section B lessons are scarce. Rework the existing Section B items a cue tester guesses with high confidence (start from the mixed samples and the per-round cue files), keeping each item's lesson and key: give a wrong option the key's measured register with a wrong reason, and move hedges and process words off the key alone. Every reworked key gets its own audit before a final blind test, as for new items. Then resume new items toward the sale minimum (500): Section C and Section A from their syllabus bullets with the fewest items, empty slots over repeats. Before writing, ask `cia-standards-auditor` whether "the weakness sits at the step that first fails" (three questions now) has Standards support. Section D grows only once more sources are opened (section 9). |
+| **Rounds 1 to 10 done (20 Nov 2026)** | Round 10 hardened 18 existing Section B items (no new items); round 9 added 17 items and a 24th principle. Part 1 stands at **280 questions (A 85, B 74, C 93, D 28)**; every notes sub-topic has a question and every question is tagged to one of 24 principles. The options-only cue test read 72% to 86% on mixed samples (rounds 5 to 9); round 10 showed it measures knowledge carried by self-contained options as much as wording cues (section 7), so it is now a giveaway detector, not a target to push down. |
+| **Next step** | Round 11 toward the sale minimum (500; by exam weight about A 175, B 100, C 150, D 75): Section C and Section A, about 12 each, from the Part 1 syllabus bullets with the fewest items, empty slots over repeats. Before writing, ask `cia-standards-auditor` whether "the weakness sits at the step that first fails" (three questions) has Standards support. Keep the per-round cue test only to catch giveaways (a key alone in its kind, absolutes on wrong options, an echoed stem phrase); do not spend passes lowering its score. A further hardening round (Sections A and C items guessed with high confidence) can follow when new lessons run out. Section D grows only once more sources are opened (section 9). |
 | **Then** | Part 2, Part 3, the Challenge build and the CISA bridge notes (from the outline), the cross-part release gate. |
 | **Known weak spot** | Difficulty. No pilot key was wrong and all four blind rounds agreed 80 of 80, but the last testers still called 21 of 80 answerable by test-taking alone, most in Sections B and D, and 8 items carry a TOO EASY or GIVEAWAY flag (section 7). New rounds must do better; the pilot items are candidates for a later hardening pass, not for more polishing now (section 6b, rule 12). |
 
@@ -408,6 +408,7 @@ in a row below 90%: stop and tell the owner.
 | Round 7 | 20 Nov 2026 | cia1, Section B (all six topics) and Section C (1C1 to 1C4, 1C6, 1C8) | 23 (12 and 11) | 24 of 24 first round; 23 of 23 final, after two fix passes (100%) | 0 / 38 / 21 on 24 (two audits), plus 0 / 9 / 21 from the two targeted audits and 0 / 0 / 2 from the citation check | 18.8% and 18.4% | 1 (`cia1_d3_070`, twice Part 2 ground; the slot was dropped and 071 to 076 renumbered before reaching main) | None new (the reference list re-downloaded, unchanged) |
 | Round 8 | 20 Nov 2026 | cia1, Section A (1A2, 1A3, 1A4, 1A7, 1A8) and Section C (1C1, 1C3, 1C4, 1C5, 1C7, 1C8) | 20 (9 and 11) | 21 of 21 first round; 20 of 20 final, after two fix passes (100%) | 5 / 26 / 17 on 21 (two audits), plus 0 / 9 / 5 from the two targeted audits and 0 / 0 / 0 from the citation check | 17.6% and 17.2% | 1 (`cia1_d1_081`, a defensible runner-up from Standard 6.1's must; removed and 082 to 086 renumbered before reaching main); 2 planned slots left empty | None new (the Standards and both 2026 statements re-downloaded, unchanged) |
 | Round 9 | 20 Nov 2026 | cia1, Section B (1B1, 1B2, 1B4, 1B5, 1B6) and Section C (1C2, 1C4 to 1C7) | 17 (10 and 7) | 17 of 17 first round; 17 of 17 final, then 2 of 2 on two reworded stems (100%) | 1 / 41 / 19 on 17 (two audits), plus 1 / 1 / 10 from the targeted audit and 0 / 0 / 1 from the citation check | 19.6% and 15.9% | 0 cut; 7 planned slots left empty (2 in B, 5 in C) | None new (the Standards, the ERM statement, the reference list, the Third-Party Requirement and the Part 1 syllabus re-downloaded, unchanged) |
+| Round 10 | 20 Nov 2026 | cia1, Section B hardening: 18 existing items reworked (001, 004, 005, 006, 008, 011, 013, 014, 015, 016, 018, 020, 040, 045, 050, 060, 062, 067) | 0 new (18 reworked) | 18 of 18 final (100%) | 0 / 3 / 3 on 18 | Section B 16.9% (from 19.6%) | 0 | None new |
 
 **Pilot, in full.** Four standards audits (one per section, with the key):
 Section A 0 HARD, 15 PRECISION, 8 OBSERVATION; B 0 / 8 / 5; C 1 / 9 / 12;
@@ -913,6 +914,43 @@ What round 9 taught.
   (the cost of the alternative control; whether the buyer stepped aside)
   survived two passes and were caught by the final blind test. The author brief
   already asks for every condition; the blind test remains the net.
+
+**Round 10, in full: hardening Section B.** After round 9's mixed sample
+guessed every Section B item, a fresh options-only test of all 74 Section B
+items scored 82% (4 high-confidence). Eighteen items were chosen from every cue
+file since round 4 (those guessed right most often and most confidently;
+`cia1_d2_062` in all seven tests it appeared in), most of them pilot items. Two
+authors reworked their options so the key no longer stood alone: a wrong option
+given the key's measured, Standards-sounding register with a wrong reason;
+absolutes removed; paired verdicts. Lessons, key letters and ids were kept; six
+key texts were reworded. Standards audit: 0 HARD, 3 PRECISION, 3 OBSERVATION; no
+rewritten option became defensible and nothing was reverted. Final blind test 18
+of 18 (needs the Standards 6, partly 10, test-taking 2: `cia1_d2_018` and `020`,
+where the stem states the deciding rule).
+
+| Measure | Before | After |
+|---|---|---|
+| Options-only cue test on the 18 | guessed right in nearly every cue file, often with high confidence | 18 of 18 right, but **1** high-confidence guess (5 low) |
+| Pick-longest across Section B | 19.6% | 16.9% |
+| Blind tester's "needs the Standards" on the 18 | mostly partly or test-taking in earlier rounds | 6 of 18 |
+
+What round 10 taught.
+- **The options-only test measures knowledge as well as cues.** After the
+  rework the tester still chose every key, but on knowledge: it named no wording
+  cue and was sure of only one item. In Section B each option is a complete
+  statement of conduct, so a reader who knows auditing ethics can judge it
+  without the stem (the same is why The IIA's own samples score 87%). From here
+  the cue test is a giveaway detector (a key alone in its kind or register, an
+  absolute on a wrong option, an echoed stem phrase), not a number to push down;
+  the blind tests and audits are what protect a paying learner.
+- **Hardening is safe when audited like new writing.** Giving wrong options the
+  key's register is where defensible second answers come from; a full audit that
+  argues every rewritten option found none here, but it found three precision
+  slips (a stem that assumed a fact, a tip that overgeneralized, an explanation
+  more absolute than its Standard).
+- **The pilot items were the weakest and are now in line.** The plan's note
+  that pilot items were candidates for a later hardening pass is done for
+  Section B; Sections A, C and D pilot items remain candidates.
 
 **Principle tags.** After the last fix the mindset coach re-read all 80
 items and re-tagged 7 to the principle that decides the final two. Every one
