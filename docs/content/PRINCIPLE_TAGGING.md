@@ -429,8 +429,8 @@ version bump today.
 ### Results
 | Domain | Questions | Tagged | Untagged |
 |---|---|---|---|
-| D1 | 245 | 162 | 83 |
-| D2 | 428 | 352 | 76 |
+| D1 | 245 | 161 | 84 |
+| D2 | 428 | 353 | 75 |
 | D3 | 146 | 131 | 15 |
 | All | 819 | 645 | 174 |
 
@@ -846,9 +846,9 @@ now counts from the file.
 
 ### Batch 12 (20 November 2026)
 aaia_d1_216-245 and aaia_d2_387-428 were read against the rule above. None
-is a seed. Changed: aaia_d2_394 moved from `ai-output-is-a-lead` to
-`population-includes-misses` (citations trace only what a summary states, so
-a failed test it omits is never checked, as aaia_d1_195). Newly tagged:
+is a seed. Changed: aaia_d2_394 stays on `ai-output-is-a-lead` after the final re-angle
+(the runner-up is now a sample of past summaries; each generated summary can
+differ, so only the source results beside every summary catch its omissions). Newly tagged:
 aaia_d1_226 `test-the-ai-as-used` (the 93% covers the model's suggestions,
 not the final human-plus-AI grades, as aaia_d2_204); aaia_d1_227
 `ai-changes-are-changes` (each retrain is a new version that can be worse,
@@ -857,7 +857,10 @@ so a green light for running one shows nothing; close to
 `fix-the-control-not-the-model` (the split shows an unclear label rule; a
 fourth vote treats the symptom, as aaia_d2_260); aaia_d2_428
 `triage-by-harm-close-on-cause` (a problem record carries the cause; version
-tags show only where faults appear). No tags removed.
+tags show only where faults appear); aaia_d2_410 `reproducible-ai-evidence`
+(after its final re-angle, tying each appeal outcome to the model version that
+refused it shows whether a retrain made things worse). One tag removed
+(aaia_d1_234, below).
 
 **Untagged new items (low confidence):**
 - aaia_d1_217: ML-definition knowledge (a fitted regression learns its weights, so validation and drift apply); no principle separates it from file change control.
@@ -865,6 +868,7 @@ tags show only where faults appear). No tags removed.
 - aaia_d1_219: few-shot knowledge (prompt examples' label mix tilts outputs).
 - aaia_d1_231: KRI design knowledge (stale sources lead wrong answers), as aaia_d1_200.
 - aaia_d1_232: contract knowledge (an IP indemnity can depend on filters staying on).
+- aaia_d1_234: lineage knowledge (a retrieval index stores passages, so lineage must record each passage's source); the runner-up is a report-level load log. Was `named-human-owner` before its re-angle.
 - aaia_d1_236: disclosure knowledge (who receives a summary, not its accuracy, is the harm); the runner-up is not a principle's trap.
 - aaia_d1_238: memorization knowledge (fine-tuned model files can hold training text), as aaia_d1_014.
 - aaia_d1_239: distillation knowledge (a copied model inherits what the old one memorized).
@@ -879,7 +883,6 @@ tags show only where faults appear). No tags removed.
 - aaia_d2_391: evaluation-design knowledge (removing failed test cases makes the set easier); the runner-up is unsupported by the facts.
 - aaia_d2_396: documentation knowledge (the model card records the cutoff in use, its owner and trade-off).
 - aaia_d2_407: target-leakage knowledge (a feed recording events after cancellation).
-- aaia_d2_410: labeling knowledge (an appeal won on new evidence is not a model error).
 - aaia_d2_412: evaluation-design knowledge (the staff baseline must be measured as staff really work).
 - aaia_d2_414: method choice (matched requests isolate a language effect), as aaia_d2_366.
 - aaia_d2_415: robustness knowledge (natural variation is not adversarial testing).
@@ -890,7 +893,7 @@ tags show only where faults appear). No tags removed.
 
 **Medium confidence (tagged, review first):** aaia_d1_220 aaia_d1_221
 aaia_d1_223 aaia_d1_226 aaia_d1_227 aaia_d1_228 aaia_d1_229 aaia_d1_230
-aaia_d1_233 aaia_d1_234 aaia_d1_235
+aaia_d1_233 aaia_d1_235
 aaia_d2_390 aaia_d2_393 aaia_d2_395 aaia_d2_397 aaia_d2_399 aaia_d2_401
 aaia_d2_402 aaia_d2_403 aaia_d2_404 aaia_d2_406 aaia_d2_408 aaia_d2_411
 aaia_d2_421 aaia_d2_422 aaia_d2_425 aaia_d2_428.

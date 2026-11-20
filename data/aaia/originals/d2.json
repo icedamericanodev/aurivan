@@ -14488,28 +14488,28 @@
       "id": "aaia_d2_394",
       "domain": 2,
       "subtopic": "2B AI lifecycle. Summaries for gate approvers",
-      "principle_id": "population-includes-misses",
+      "principle_id": "ai-output-is-a-lead",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "An Austrian life insurer's gate approvers read only a language model's summary of release tests; one pilot summary omitted a fairness test the release had not cleared. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Return to test write-ups the data team drafts by hand",
-        "B": "Have each summary cite the test result behind every statement",
+        "B": "Check a sample of past summaries against the test results",
         "C": "Show the test system's pass/fail list beside each summary",
         "D": "Ask the platform vendor to certify the summarizer's accuracy"
       },
       "correct": "C",
       "key_concept": "A generated summary of test results can omit or misstate failures, so gate approvers need the system's own results beside it, not the summary alone.",
       "pre_read": "Picture how approvers reach their decision today before weighing the options.",
-      "correct_explanation": "A language model's summary is generated text: it can drop a failed test, as the pilot showed, or misstate a figure, and approvers reading only the summary would not know. Showing the test system's own pass/fail list beside each summary puts every failure in front of approvers. Citing the test result behind every statement traces what a summary says, but a failed test it omits has nothing to cite.",
+      "correct_explanation": "A language model's summary is generated text: it can drop a failed test, as the pilot showed, or misstate a figure, and approvers reading only the summary would not know. Showing the test system's own pass/fail list beside each summary puts every failure in front of approvers. Checking a sample of past summaries suits a fixed report, but each generated summary can differ, so a clean sample cannot clear the next one.",
       "wrong_explanations": {
         "A": "Tempting because it removes the generated text. But hand-written summaries can omit failures too; the fix is putting the results beside the summary, not dropping a useful tool.",
-        "B": "Tempting because citations let approvers trace each claim. But they trace only what the summary states; a failed test it leaves out has nothing to cite.",
+        "B": "Tempting because sampling is how report accuracy is usually tested. But each generated summary can differ; a clean sample says nothing about the next release's summary.",
         "D": "Tempting because the vendor built the tool. But a certificate of general accuracy is a vendor claim; it cannot show any one summary is right."
       },
       "tips": [
         "Eliminate: A drops the tool though hand-written summaries can omit failures too, and D relies on a vendor's general claim, not checks of each summary.",
-        "Final two: C beats B because the system's own pass/fail list shows failures a summary omits, while citations trace only what the summary states.",
+        "Final two: C beats B because each generated summary can differ, so only the results beside every summary catch its omissions; a clean sample of past summaries cannot.",
         "Exam cue: When AI writes the evidence summary for a decision, expect the decision-maker to see the source records beside it."
       ],
       "framework_ref": "NIST AI 600-1 Section 2.2 (Confabulation); NIST AI 100-1 MEASURE 2.1 (Test sets, metrics and TEVV tools documented)",
@@ -14518,7 +14518,7 @@
         "Confabulation",
         "Gate evidence"
       ],
-      "_provenance": "Authored from concept: notes 2B.1 The AI Lifecycle and Stage Gates (each gate asks for evidence; a generated summary of test results can omit or misstate failures, so approvers check it against the results). Review fix round 3: stem adds the pilot omission as the deciding fact (citations trace only stated claims, so B cannot catch an omitted test). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2B.1 The AI Lifecycle and Stage Gates (each gate asks for evidence; a generated summary of test results can omit or misstate failures, so approvers check it against the results). Review fix round 3: stem adds the pilot omission as the deciding fact (citations trace only stated claims, so B cannot catch an omitted test). Batch 12 final fix round: runner-up B now samples past summaries (generated summaries vary run to run), so the pair no longer repeats the statement-tracing-versus-omission logic of aaia_d3_069 and the ai-output-is-a-lead check; principle tag moved to ai-output-is-a-lead. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -14819,7 +14819,7 @@
     {
       "id": "aaia_d2_403",
       "domain": 2,
-      "subtopic": "2C AI change management. A preview model in production",
+      "subtopic": "2C AI change management. A shop assistant's model version",
       "principle_id": "ai-changes-are-changes",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
@@ -14840,7 +14840,7 @@
         "C": "Tempting because pinning holds a hosted model steady. But a preview is not a stable release; pinned or not, the vendor can retire it without notice."
       },
       "tips": [
-        "Eliminate: A trades a score gain for a version the vendor may change without notice, and B asks for notice the vendor is not bound to give.",
+        "Eliminate: A accepts a version the vendor may change without notice for a score gain, and B asks for notice the vendor is not bound to give.",
         "Final two: D beats C because only a general release gives a stable version to hold, while a preview, pinned or not, can still be retired.",
         "Exam cue: Preview or experimental AI versions do not belong in production when a supported version exists."
       ],
@@ -14850,7 +14850,7 @@
         "Version pinning",
         "Preview models"
       ],
-      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (hosted models change on the provider's schedule unless a version is held; a preview model may change or vanish without notice, so production runs a supported version). Review fix round 3: setting moved from a car-rental firm (aaia_d1_008, aaia_d2_351) to an online shop; runner-up C now pins the preview, so the pair differs from aaia_d2_194 and aaia_d2_068; key_concept made literally true. Batch 12 round 1 fix (completeness critic): setting moved from a pet-supplies shop, which repeated aaia_d2_007, to a musical-instrument shop (no grep hits in AAIA, CRISC or CISA files). Batch 12 round 2 fix (blind test ambiguous, runner-up C): the stem now states that the vendor may change or retire the preview without notice and that the general release met the shop's targets; D now names running the general release at a fixed version. Batch 12 round 3 fix (standards re-audit): explanation and tip no longer claim customers rely on it, vendor terms or a small score gap, facts the stem never gives. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (hosted models change on the provider's schedule unless a version is held; a preview model may change or vanish without notice, so production runs a supported version). Review fix round 3: setting moved from a car-rental firm (aaia_d1_008, aaia_d2_351) to an online shop; runner-up C now pins the preview, so the pair differs from aaia_d2_194 and aaia_d2_068; key_concept made literally true. Batch 12 round 1 fix (completeness critic): setting moved from a pet-supplies shop, which repeated aaia_d2_007, to a musical-instrument shop (no grep hits in AAIA, CRISC or CISA files). Batch 12 round 2 fix (blind test ambiguous, runner-up C): the stem now states that the vendor may change or retire the preview without notice and that the general release met the shop's targets; D now names running the general release at a fixed version. Batch 12 round 3 fix (standards re-audit): explanation and tip no longer claim customers rely on it, vendor terms or a small score gap, facts the stem never gives. Batch 12 final fix round: subtopic label made neutral (it named production, which only key D mentions). Batch 12 final fix round 2: tip 1 no longer states A's trade the wrong way round. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -14897,17 +14897,17 @@
       "principle_id": "real-human-oversight",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Danish job platform's model automatically blocks job ads it finds discriminatory; a language model drafts each block notice, which moderators edit for tone before sending. What is the IS auditor's GREATEST concern?",
+      "question": "A Danish job platform's model blocks job ads it finds discriminatory, with no appeal; moderators, who cannot lift blocks, edit the tone of notices a language model drafts. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Employers may not trust a block notice drafted by AI",
         "B": "Notices may give reasons the blocking model did not use",
-        "C": "No person judges whether each block was right",
+        "C": "Wrong blocks may stand with no person judging them",
         "D": "The language model may word notices differently each time"
       },
       "correct": "C",
       "key_concept": "Human review of an AI-drafted message about a decision is not oversight of the decision; someone must be able to judge and reverse the decision.",
       "pre_read": "Trace one blocked ad from the model to the employer before choosing.",
-      "correct_explanation": "Blocks take effect automatically, and moderators edit only the drafted notice's tone, so no one tests whether the screening model was right. A lawful employer's ad, and the jobs in it, can be blocked and the employer told it discriminated with no person judging the case. A notice may cite reasons the model did not use, a real generated-text risk, but even an accurate notice would announce a block no one judged.",
+      "correct_explanation": "Blocks have no appeal, and moderators, who cannot lift them, edit only the notices' tone, so no one tests whether the screening model was right. A lawful employer's ad, and the jobs in it, can stay blocked with no person judging the case. A notice may cite reasons the model did not use, a real generated-text risk, but even an accurate notice would announce a block no one judged.",
       "wrong_explanations": {
         "A": "Tempting because trust affects how notices land. But trust is a communication issue; the control gap is that no person judges the blocks.",
         "B": "Tempting because generated text can misstate why a decision was made. But even an accurate notice announces a block no person judged; the decision itself goes unreviewed.",
@@ -14924,7 +14924,7 @@
         "Generated notices",
         "Automated decisions"
       ],
-      "_provenance": "Authored from concept: notes 2D.1 Human Oversight and Automation Bias (the oversight model is chosen by impact; reviewing AI-written notices about a decision is not reviewing the decision). Cross-domain gate, batch 12: re-angled from a two-model disagreement queue whose key and runner-up repeated aaia_d2_237. Batch 12 re-audit: the screen moved from scam ads, which repeated aaia_d2_300's listings scam filter, to discriminatory job ads, and the stem now states that moderators edit only the notice's tone. Batch 12 re-audit 2: runner-up B moved from moderators' automation bias, which repeated aaia_d2_238's key/runner-up pair, to generated notices citing reasons the model did not use. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2D.1 Human Oversight and Automation Bias (the oversight model is chosen by impact; reviewing AI-written notices about a decision is not reviewing the decision). Cross-domain gate, batch 12: re-angled from a two-model disagreement queue whose key and runner-up repeated aaia_d2_237. Batch 12 re-audit: the screen moved from scam ads, which repeated aaia_d2_300's listings scam filter, to discriminatory job ads, and the stem now states that moderators edit only the notice's tone. Batch 12 re-audit 2: runner-up B moved from moderators' automation bias, which repeated aaia_d2_238's key/runner-up pair, to generated notices citing reasons the model did not use. Batch 12 final fix round (blind test picked B): the stem now states that moderators cannot lift blocks, so their tone edits are plainly no oversight of the decision; key C drops 'each', which read as demanding a person review every block whatever the impact. Batch 12 final fix round 2 (blind test saw B as defensible; standards re-audit): the stem now states that blocks have no appeal, so no person can judge a block at any point; key C hedged ('may stand') to match the other options. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -15052,16 +15052,16 @@
         "D": "Add a notice that patients told no may still apply"
       },
       "correct": "C",
-      "key_concept": "An AI answer people act on as a refusal needs a refusal's safeguards; a chat verdict has no decision record or appeal.",
+      "key_concept": "An AI answer people treat as a refusal needs a recorded staff decision open to appeal, or should give no verdict.",
       "pre_read": "Ask what each option changes for the patients involved.",
-      "correct_explanation": "Patients treat the assistant's 'no' as a refusal and stop, yet no refusal exists: no staff decision, no recorded reasons and nothing to appeal, so its errors go unseen. Having it explain the criteria instead of giving a verdict leaves each decision to staff, through an application that is recorded and open to appeal. Grounding it on current policy improves its answers, but each 'no' still turns patients away with no decision anyone can challenge.",
+      "correct_explanation": "Patients treat the assistant's 'no' as a refusal and stop, yet no refusal exists: no staff decision, no recorded reasons and nothing to appeal, so a wrong 'no' reaches no one able to reverse it. Explaining the criteria instead leaves each decision to staff, through an application that is recorded and open to appeal. Grounding it on current policy improves answers, but each 'no' still leaves no decision anyone can challenge.",
       "wrong_explanations": {
         "A": "Tempting because sampling is how outputs are checked. But it finds wrong answers after patients have given up applying, and those turned away still have nothing to appeal.",
         "B": "Tempting because current policy gives better answers. But a better-grounded 'no' still turns patients away without a staff decision, recorded reasons or anything to appeal.",
-        "D": "Tempting because it tells patients they may still apply. But a notice beside a confident 'no' may not change what they do, and that 'no' stays unappealable."
+        "D": "Tempting because it tells patients they may still apply. But a notice beside the assistant's 'no' may not change what they do, and that 'no' stays unappealable."
       },
       "tips": [
-        "Eliminate: A finds wrong answers after patients have given up applying, and D keeps the verdict, so a confident 'no' still turns patients away unappealed.",
+        "Eliminate: A finds wrong answers only after patients have given up applying, and D keeps the verdict patients act on, so a wrong 'no' stays unappealable.",
         "Final two: C beats B because without a chat verdict patients are left to apply, getting a recorded, appealable decision; a better-grounded 'no' still turns some away unchallenged.",
         "Exam cue: When people treat an AI's answer as a decision, it needs a decision's record and appeal route, or it should not give the verdict."
       ],
@@ -15071,7 +15071,7 @@
         "De facto decisions",
         "Generative assistants"
       ],
-      "_provenance": "Authored from concept: notes 2D.3 Decision Logs, Appeals and Feedback (affected people need a recorded decision they can challenge; a chat verdict people act on is a decision with no log, reasons or appeal). Batch 12 round 1 fix (completeness critic): re-angled from 'appeals decided by hospital staff who can reverse' against 'sample the vendor's appeal decisions', which repeated aaia_d2_012 and aaia_d2_368; the pair is now 'route patients to a recorded, appealable decision' against 'ground the assistant on current policy'. Neighbours checked: aaia_d2_038, aaia_d2_073, aaia_d2_116, aaia_d2_185, aaia_d2_241. Batch 12 round 2 fix (standards re-audit and blind test): key C now says the assistant stops giving a verdict, so it is no longer D plus more; explanations no longer claim the chats leave no record. Batch 12 round 3 fix (standards re-audit): explanations no longer claim patients went without care, which the stem never gives; tip 2 shortened. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2D.3 Decision Logs, Appeals and Feedback (affected people need a recorded decision they can challenge; a chat verdict people act on is a decision with no log, reasons or appeal). Batch 12 round 1 fix (completeness critic): re-angled from 'appeals decided by hospital staff who can reverse' against 'sample the vendor's appeal decisions', which repeated aaia_d2_012 and aaia_d2_368; the pair is now 'route patients to a recorded, appealable decision' against 'ground the assistant on current policy'. Neighbours checked: aaia_d2_038, aaia_d2_073, aaia_d2_116, aaia_d2_185, aaia_d2_241. Batch 12 round 2 fix (standards re-audit and blind test): key C now says the assistant stops giving a verdict, so it is no longer D plus more; explanations no longer claim the chats leave no record. Batch 12 round 3 fix (standards re-audit): explanations no longer claim patients went without care, which the stem never gives; tip 2 shortened. Batch 12 final fix round 2 (standards re-audit): explanation no longer claims errors go unseen; tip 1 and the D explanation no longer call the 'no' confident or say D's notice turns patients away. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -15368,7 +15368,7 @@
     {
       "id": "aaia_d2_418",
       "domain": 2,
-      "subtopic": "2F AI threats. A spam filter's nightly retraining",
+      "subtopic": "2F AI threats. An email provider's spam filter",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
       "question": "A Colombian email provider's spam filter retrains nightly on the mail it blocked; lately, much blocked spam carries long passages of ordinary business wording. Which threat should the IS auditor consider MOST significant?",
@@ -15398,7 +15398,7 @@
         "Retraining on own decisions",
         "Spam filtering"
       ],
-      "_provenance": "Authored from concept: notes 2F.1 Attacks on Data and Models (availability poisoning degrades a model for all users; NIST AI 100-2e2025 Section 2.3.1 describes spam stuffed with words from legitimate mail raising a spam filter's false positives). Batch 12 round 1 fix (completeness critic): re-angled from 'rejection reasons teach evasion', which repeated aaia_d1_136; the pair is now 'availability poisoning through retraining' against 'padding as evasion'. Neighbours checked: aaia_d2_081 and aaia_d2_300 (false labels), aaia_d2_165 (targeted click poisoning), aaia_d2_207, aaia_d2_250 (clean-label poison that targets one class). Batch 12 round 2 fix (standards re-audit): key A no longer echoes the stem's 'ordinary business' wording. Batch 12 round 3 fix (standards re-audit): key A no longer echoes the stem's 'blocked'. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2F.1 Attacks on Data and Models (availability poisoning degrades a model for all users; NIST AI 100-2e2025 Section 2.3.1 describes spam stuffed with words from legitimate mail raising a spam filter's false positives). Batch 12 round 1 fix (completeness critic): re-angled from 'rejection reasons teach evasion', which repeated aaia_d1_136; the pair is now 'availability poisoning through retraining' against 'padding as evasion'. Neighbours checked: aaia_d2_081 and aaia_d2_300 (false labels), aaia_d2_165 (targeted click poisoning), aaia_d2_207, aaia_d2_250 (clean-label poison that targets one class). Batch 12 round 2 fix (standards re-audit): key A no longer echoes the stem's 'ordinary business' wording. Batch 12 round 3 fix (standards re-audit): key A no longer echoes the stem's 'blocked'. Batch 12 final fix round: subtopic label made neutral (it named the nightly retraining, the deciding fact). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -15703,7 +15703,7 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Japanese camera maker closed its repair assistant's wrong-quote problem record as a vendor model fault, now fixed; the price list it retrieves changed that week. What should the IS auditor recommend as BEST?",
+      "question": "A Japanese camera maker closed its assistant's wrong-quote problem record as a vendor model fault since fixed; its retrieved price list changed as the wrong quotes began. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Keep the record closed, since the vendor fixed its model",
         "B": "Have the owner test whether the model or price list caused it",
@@ -15711,17 +15711,17 @@
         "D": "Add a notice that quotes may not match the price list"
       },
       "correct": "B",
-      "key_concept": "A retrieval assistant's output depends on its model and retrieved content; when both changed, root cause must test each layer separately.",
+      "key_concept": "A retrieval assistant's output depends on its model and retrieved content; root cause must test every layer that changed, not only the one blamed.",
       "pre_read": "Weigh what each option would and would not prevent.",
-      "correct_explanation": "A retrieval assistant's answers depend on its model and the content it retrieves, and both changed that week. If the new price list caused the wrong quotes, the record names the wrong layer and the cause remains. The owner should test each change, for example both price lists on the current model. Rerunning last week's quotes checks only the vendor's fix, and generated answers vary run to run.",
+      "correct_explanation": "A retrieval assistant's answers depend on its model and retrieved content, and the price list changed as the wrong quotes began. If the new list caused them, the record names the wrong layer and the cause remains. The owner should test each layer, both price lists included, over many runs. Rerunning the wrong quotes tries only the fixed model with the new list; as answers vary run to run, clean reruns cannot show the cause.",
       "wrong_explanations": {
         "A": "Tempting because the vendor says it fixed its model. But if the new price list caused the quotes, the fault is still live.",
-        "C": "Tempting because reperformance is strong evidence. But it checks the vendor's fix, not the price list, and generated quotes vary run to run, so a few clean reruns prove little.",
+        "C": "Tempting because reperformance is strong evidence. But it tries only the fixed model with the new list, and varying reruns of it cannot show which layer caused the errors.",
         "D": "Tempting because it warns customers. But a notice prevents no wrong quote and leaves the true cause unknown."
       },
       "tips": [
         "Eliminate: A trusts a fix that may target the wrong layer, and D adds a notice that prevents no wrong quote.",
-        "Final two: B beats C because a rerun checks only the vendor's fix, and generated quotes vary run to run; testing each price list on the current model shows which layer caused it.",
+        "Final two: B beats C because C tries one combination, and varying reruns of it cannot show which layer caused the errors; testing each layer over many runs can.",
         "Exam cue: When an AI fault is blamed on one layer, check every layer that changed: model, prompt, retrieved content and integration."
       ],
       "framework_ref": "NIST CSF 2.0 RS.AN-03 (Root cause of the incident established); NIST AI 100-1 MANAGE 3.1 (Third-party AI risks monitored and controls applied)",
@@ -15730,7 +15730,7 @@
         "Root cause",
         "Retrieved content"
       ],
-      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (causes are traced across layers, retrieved content included; investigators compare versions with the last good state rather than accept one party's account). Batch 12 round 1 fix (completeness critic): re-angled from 'reopen to record our own control gap', which repeated aaia_d2_301 and aaia_d2_050; the pair is now 'test which changed layer caused it' against 'the vendor's root cause report'. Neighbours checked: aaia_d2_133 (faults tracking index refreshes), aaia_d2_217, aaia_d2_302, aaia_d2_109. Batch 12 round 2 fix (standards re-audit, calibration rule 1): runner-up changed from the vendor's root-cause report, which audit sense removes, to a rerun of last week's quotes, which only the AI facts (both layers changed; generated output varies run to run) defeat. Batch 12 round 3 fix (standards re-audit): explanations now defeat C because a rerun checks only the vendor's fix and generated output varies, not because the rerun mixes both changes. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (causes are traced across layers, retrieved content included; investigators compare versions with the last good state rather than accept one party's account). Batch 12 round 1 fix (completeness critic): re-angled from 'reopen to record our own control gap', which repeated aaia_d2_301 and aaia_d2_050; the pair is now 'test which changed layer caused it' against 'the vendor's root cause report'. Neighbours checked: aaia_d2_133 (faults tracking index refreshes), aaia_d2_217, aaia_d2_302, aaia_d2_109. Batch 12 round 2 fix (standards re-audit, calibration rule 1): runner-up changed from the vendor's root-cause report, which audit sense removes, to a rerun of last week's quotes, which only the AI facts (both layers changed; generated output varies run to run) defeat. Batch 12 round 3 fix (standards re-audit): explanations now defeat C because a rerun checks only the vendor's fix and generated output varies, not because the rerun mixes both changes. Batch 12 final fix round: C is now defeated because it compares no price lists and a few varying reruns cannot clear the new list (a rerun today does use the new list, so 'checks only the vendor's fix' was dropped). Batch 12 final fix round 2 (standards re-audit): explanation and key_concept no longer claim the model changed that week, which the stem never gives. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -15740,7 +15740,7 @@
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Singaporean bank's problem records code every AI fault as an 'application defect', so trend reports cannot show why its AI systems keep failing. What should the IS auditor recommend as BEST?",
+      "question": "A Singaporean bank's problem records code every AI fault as an 'application defect', so its trend reports show one undivided total that nobody can act on. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add AI cause categories, such as data and prompt faults",
         "B": "Tag each AI fault with the system and model version",
@@ -15750,15 +15750,15 @@
       "correct": "A",
       "key_concept": "AI faults arise in distinct layers, such as data, model, prompt and integration; problem records need those causes to show recurring patterns.",
       "pre_read": "Weigh each option against the stated problem.",
-      "correct_explanation": "AI systems fail in distinct layers, such as drifting data, a prompt, the model itself or an integration, and each needs a different fix. Coding every fault as an application defect hides which layer keeps failing, so recurring causes go unaddressed. Adding AI cause categories makes trends visible in every report. Tagging each fault with its system and model version shows where faults appear, not which layer caused them.",
+      "correct_explanation": "AI systems fail in distinct layers, such as drifting data, a prompt, the model itself or an integration, and each needs a different fix. Coding every fault as an application defect hides which layer keeps failing. Adding AI cause categories makes those patterns visible in every report. Tagging each fault with its system and model version links faults to releases, but drift arrives with no new version, so tags cannot name the layer.",
       "wrong_explanations": {
-        "B": "Tempting because it shows which system and version failed. But a version tag cannot say whether data, a prompt, the model or an integration caused the fault.",
+        "B": "Tempting because version tags link faults to releases. But many AI faults, such as drift, start with no new version; a tag cannot show which layer caused them.",
         "C": "Tempting because separate records seem thorough. But problem management groups incidents by cause; one record per incident scatters the pattern further.",
         "D": "Tempting because some AI faults are security events. But most are not, and moving them does not record their causes."
       },
       "tips": [
         "Eliminate: C scatters causes across one record per incident, and D treats AI faults as security events, which most are not.",
-        "Final two: A beats B because cause categories show which layer keeps failing, while system and version tags show only where faults appear.",
+        "Final two: A beats B because AI faults such as drift arrive with no new version, so only cause categories show which layer keeps failing.",
         "Exam cue: Problem records for AI should capture which layer failed: data, model, prompt, integration or oversight."
       ],
       "framework_ref": "NIST CSF 2.0 RS.AN-03 (Root cause of the incident established); NIST AI 100-1 MANAGE 4.3 (Incidents and errors communicated and tracked)",
@@ -15767,7 +15767,7 @@
         "Root cause categories",
         "Trend analysis"
       ],
-      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (causes are traced across layers: data, model, prompt or configuration, integration and oversight; problem records need those categories to show what keeps failing). Review fix round 3: runner-up B now tags system and model version (no longer a subset of the key); stem asks why the systems keep failing. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (causes are traced across layers: data, model, prompt or configuration, integration and oversight; problem records need those categories to show what keeps failing). Review fix round 3: runner-up B now tags system and model version (no longer a subset of the key); stem asks why the systems keep failing. Batch 12 final fix round: stem no longer says 'why' (it echoed the key's causes) or 'category' (it echoed key A); B now falls to the AI fact that drift brings faults with no new version. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 12, 20 Nov 2026.",
       "style_version": 2
     }
   ]

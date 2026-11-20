@@ -339,12 +339,12 @@
           "why_it_matters": "A model's behavior comes from its data, not just its code. Software-only gates can pass a model that is inaccurate, unfair or built on unfit data.",
           "how_it_works": [
             "Before data gathering, design states purpose, users, people affected, success criteria and method; exact figures come from records.",
-            "Machine learning operations (MLOps) automation should carry the gates, not skip them; approvers see source results beside generated summaries.",
+            "MLOps automation should carry the gates, not skip them; approvers see source results beside each generated summary, since each can differ.",
             "Each gate asks for evidence: data fitness (checked before training, since the model keeps what it learns), retrieved documents included, performance against agreed criteria, fairness results and owner sign-off.",
             "Higher-impact uses get stricter gates and independent review; release also needs an owned monitoring plan with limits and a revalidation date, since models degrade unchanged.",
             "A new use, or a live trial whose outputs take effect, re-enters the gates; unvalidated models run in shadow mode."
           ],
-          "example": "A Dutch hospital trust's rostering team builds a nurse-staffing model. Six weeks in, nobody has recorded its intended use, who it affects or what error is acceptable. The IS auditor reports that the design gate was skipped, so later tests have no criteria to meet.",
+          "example": "A Dutch hospital trust's rostering team builds a nurse-staffing model. Nobody has recorded its intended use, who it affects or what error is acceptable. The IS auditor reports that the design gate was skipped, so later tests have no criteria to meet.",
           "audit_focus": {
             "review": [
               "Walk a recent model release through each lifecycle gate and its evidence",
@@ -1746,13 +1746,13 @@
           "why_it_matters": "Patching a prompt or rolling back treats the symptom. If poisoned data, weak change control or a missing tolerance remains, the same failure returns at the next retraining or update.",
           "how_it_works": [
             "Investigators compare preserved inputs, outputs and versions with the last good state; a vendor's fault still leaves the organization's own gap to record.",
-            "Causes are traced across layers: data (drift, poisoning, labeling, coverage gaps behind 'edge cases'), retrieved content, model, prompt or configuration, integration and human oversight.",
+            "Causes are traced across layers: data (drift, which arrives with no new version; poisoning; labeling; coverage gaps behind 'edge cases'), retrieved content, model, prompt or configuration, integration and oversight.",
             "Once service is restored, a problem record carries the cause; the fix, a control outside the model where possible, goes through change control and is checked to work.",
             "Incidents are reported to owners, the AI governance committee and, where required, regulators, affected people and customers who relied on the outputs.",
             "Lessons learned, including why detection was slow, update the threat model, monitoring tolerances, tests and training.",
             "A vendor-side cause with a distant fix stays open as a known error, with a tested workaround outside the model; human-check workarounds can decay into rubber stamps."
           ],
-          "example": "An Indian education company's essay-scoring model began giving lower marks to essays from one region. Engineers adjusted the prompt and closed the ticket. After the next retraining two months later, the gap returned. The IS auditor reviews the incident and problem records and reports that no problem record was opened, so no root cause analysis examined the training data and the fix treated only the symptom.",
+          "example": "An Indian education company's essay-scoring model began giving lower marks to essays from one region. Engineers adjusted the prompt and closed the ticket. At the next retraining, the gap returned. The IS auditor reviews the incident and problem records and reports that no problem record was opened, so no root cause analysis examined the training data and the fix treated only the symptom.",
           "audit_focus": {
             "review": [
               "Sample closed AI incidents and check each has a linked problem record",
@@ -1767,7 +1767,7 @@
             "recommend": "Have the problem manager link every AI incident of unknown cause to a problem register entry tracked to a tested fix.",
             "decides": "The model owner decides remediation; management decides external reporting with legal counsel"
           },
-          "isaca_rule": "A rollback or prompt patch restores service; it does not remove the cause. An ordinary fault's incident may close once service is confirmed, while a problem record carries the cause to a verified fix. Suspected or deliberate manipulation, such as poisoning, stays open until the cause is removed.",
+          "isaca_rule": "A rollback or prompt patch restores service; it does not remove the cause. An ordinary fault's incident may close once service is confirmed, while a problem record carries the cause to a verified fix. Suspected manipulation, such as poisoning, stays open until the cause is removed.",
           "exam_traps": [
             {
               "trap": "Once outputs return to normal after a rollback, the AI failure is resolved.",
