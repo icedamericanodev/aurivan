@@ -9,21 +9,28 @@
 import { useEffect, useMemo, useState } from 'react';
 import { findQuestion } from '../content/loader';
 import type { Certification } from '../content/types';
-import { examMoment, eveReminders, paceLine } from '../engine/examDay';
+import { examMoment, paceLine } from '../engine/examDay';
+import { eveReminders } from '../engine/eveReminders';
 import { examReadyDue } from '../engine/examReady';
 import { firstTries, mindsetGrowth } from '../engine/mindsetGrowth';
 import type { ReadinessRange } from '../engine/readinessRange';
-import type { SlipInput } from '../engine/slipCoach';
 import { useProgress, type CertProgress } from '../store/progress';
+import { mistakePatternsFor } from './slipPattern';
 
-/** Every logged mistake joined with its question (ORIGINAL letters throughout). */
-export function slipInputs(certId: string, mistakes: CertProgress['mistakes']): SlipInput[] {
-  const out: SlipInput[] = [];
-  for (const [id, m] of Object.entries(mistakes)) {
-    const q = findQuestion(certId, id);
-    if (q) out.push({ slip: m.slip, picked: m.picked, confidence: m.confidence, correct: q.correct, tips: q.tips, stem: q.stem });
-  }
-  return out;
+/**
+ * The exam-eve card's reminders: the Mistake journal's evidence (the last 28
+ * days, lib/slipPattern.ts), so the eve never names a reminder the journal
+ * wouldn't. Worked out once per exam and day, then kept: a late-night practice
+ * set does not reshuffle (and replay) tonight's lines (behavioral-scientist).
+ */
+const eveCache = new Map<string, ReturnType<typeof eveReminders>>();
+export function eveFor(certId: string, today: string, mistakes: CertProgress['mistakes'], now: number) {
+  const key = `${certId}|${today}`;
+  // A reset the same evening leaves no mistakes: start over, never keep "your" lines with nothing behind them.
+  if (Object.keys(mistakes).length === 0) eveCache.delete(key);
+  let hit = eveCache.get(key);
+  if (!hit) eveCache.set(key, (hit = eveReminders(mistakePatternsFor(certId, mistakes, now))));
+  return hit;
 }
 
 export function useTodayMoments({
@@ -55,8 +62,9 @@ export function useTodayMoments({
   // On the eve and exam day the ready panel stays hidden (the exam card speaks).
   const ready = examReadyDue(progress.moments?.readiness, today, Boolean(progress.moments?.readySeenAt), moment !== null);
   const eve = useMemo(
-    () => (moment === 'eve' ? eveReminders(slipInputs(cert.id, progress.mistakes)) : null),
-    [moment, cert.id, progress.mistakes],
+    // eslint-disable-next-line react-hooks/purity -- the window's clock; the result is kept for the day (eveFor)
+    () => (moment === 'eve' ? eveFor(cert.id, today, progress.mistakes, Date.now()) : null),
+    [moment, cert.id, today, progress.mistakes],
   );
   return {
     ready,

@@ -74,7 +74,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
       'After you answer, the short summary and tips come first, with the whole question and every option one tap away.',
       'On tablets and other large screens, pages now sit in a comfortable reading width instead of stretching across the screen.',
       'The recovery Concept Lab is put away for now while we make it clearer.',
-      'The drill suggested on Play and the final review week now follow the same recent mistake pattern as your mistake journal.',
+      'The drill suggested on Play, the final review week and the reminders on the evening before your exam now follow the same recent mistake patterns as your mistake journal.',
     ],
   },
   {

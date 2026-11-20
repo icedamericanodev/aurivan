@@ -5,11 +5,12 @@
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getCertification } from '../content/certifications';
-import { daysToExam, eveReminders, examMoment, EVE_REMINDER, paceLine, topSlips } from '../engine/examDay';
+import { daysToExam, examMoment, paceLine } from '../engine/examDay';
+import { EVE_DEFAULTS, EVE_REMINDER, eveReminders } from '../engine/eveReminders';
+import { mistakeDNA, type DNAInput } from '../engine/mistakeDNA';
 import { examReadyDue, LOG_KEEP_DAYS, logReadinessDay, readyHoldDays, shiftDay, type ReadinessDay } from '../engine/examReady';
 import { firstTries, GROWTH_MIN_Z, GROWTH_WINDOW, mindsetGrowth, twoProportionZ, type FirstTry } from '../engine/mindsetGrowth';
 import { createRng } from '../engine/random';
-import type { SlipInput } from '../engine/slipCoach';
 import { selectCert, useProgress } from '../store/progress';
 
 // Use the library's in-memory mock. babel-jest hoists jest.mock() above the
@@ -149,38 +150,75 @@ describe('exam eve and exam day dates', () => {
   });
 });
 
-describe('exam eve reminders (top slips)', () => {
+describe('exam eve reminders (the journal’s evidence, phone 2.2)', () => {
+  // One recent miss per question, as the Mistake journal reads them (engine/mistakeDNA.ts).
+  const NOW = Date.UTC(2026, 10, 20, 12);
   const finalTwo = ['Final two: {{B}} beats {{C}} because…'];
-  const m = (over: Partial<SlipInput>): SlipInput => ({ correct: 'B', tips: finalTwo, stem: 'What should the auditor do?', ...over });
+  let n = 0;
+  const row = (over: Partial<DNAInput>): DNAInput => ({ id: `q${n++}`, certId: 'cisa', at: NOW - 86_400_000, correct: 'B', picked: 'A', tips: finalTwo, stem: 'What should the auditor do?', ...over });
+  const rows = (k: number, over: Partial<DNAInput>) => Array.from({ length: k }, () => row(over));
+  const eve = (list: DNAInput[]) => eveReminders(mistakeDNA(list, 'cisa', NOW));
+  const lines = (...p: (keyof typeof EVE_REMINDER)[]) => p.map((x) => EVE_REMINDER[x]);
+  const DEFAULTS = lines(...EVE_DEFAULTS);
 
-  it('ranks the three most frequent slips, ties in coach order, never "knowledge"', () => {
-    const mistakes = [
-      m({ slip: 'role' }),
-      m({ slip: 'role' }),
-      m({ slip: 'role' }),
-      m({ picked: 'C' }), // runner-up, untagged: still counts
-      m({ picked: 'C' }),
-      m({ slip: 'symptom' }),
-      m({ slip: 'symptom' }),
-      m({ slip: 'knowledge' }),
-      m({ slip: 'knowledge' }),
-      m({ slip: 'knowledge' }),
-      m({ slip: 'knowledge' }),
-    ];
-    // runner-up 2 and symptom 2 tie: runner-up comes first in coach order.
-    expect(topSlips(mistakes)).toEqual(['role', 'runner-up', 'symptom']);
-    expect(eveReminders(mistakes)).toEqual({ own: true, lines: [EVE_REMINDER.role, EVE_REMINDER['runner-up'], EVE_REMINDER.symptom] });
+  it('no mistakes: the three general reminders, not labelled as yours', () => {
+    expect(eve([])).toEqual({ own: false, lines: DEFAULTS });
   });
 
-  it('runner-up is read on ORIGINAL letters', () => {
-    expect(topSlips([m({ picked: 'C' })])).toEqual(['runner-up']);
-    expect(topSlips([m({ picked: 'A' })])).toEqual([]);
+  it('three own patterns, each seen 3 or more times: all three, most frequent first, labelled as yours', () => {
+    const r = eve([...rows(5, { slip: 'role' }), ...rows(4, { slip: 'symptom' }), ...rows(3, { slip: 'tech-first' })]);
+    expect(r).toEqual({ own: true, lines: lines('role', 'symptom', 'tech-first') });
   });
 
-  it('with no slips yet, shows three general reminders (not labelled as yours)', () => {
-    const r = eveReminders([]);
-    expect(r.own).toBe(false);
-    expect(r.lines).toHaveLength(3);
+  it('one own pattern: it leads, the general ones fill, and the card is not labelled as yours', () => {
+    const r = eve([...rows(5, { slip: 'symptom' })]);
+    expect(r).toEqual({ own: false, lines: lines('symptom', 'priority', 'runner-up') });
+  });
+
+  it('two own patterns: both lead (a tie in the journal’s order), then one general reminder', () => {
+    const r = eve([...rows(3, { slip: 'symptom' }), ...rows(3, { slip: 'tech-first' })]);
+    expect(r).toEqual({ own: false, lines: lines('tech-first', 'symptom', 'priority') });
+  });
+
+  it('an own pattern that is also a general one is not repeated', () => {
+    const r = eve([...rows(5, { slip: 'role' })]);
+    expect(r.lines).toEqual(lines('role', 'priority', 'runner-up'));
+    expect(new Set(r.lines).size).toBe(3);
+  });
+
+  it('a pattern seen fewer than 3 times is not "yours"', () => {
+    const r = eve([...rows(4, { slip: 'role' }), ...rows(2, { slip: 'symptom' })]);
+    expect(r.lines).toEqual(lines('role', 'priority', 'runner-up'));
+  });
+
+  it('fewer than 5 recent mistakes with a pattern: the general reminders, even with one pattern at 3', () => {
+    expect(eve([...rows(3, { slip: 'symptom' }), ...rows(1, { slip: 'role' })])).toEqual({ own: false, lines: DEFAULTS });
+  });
+
+  it('"Didn’t know it" leads in the journal but never becomes a line; other patterns at 3 still count', () => {
+    const r = eve([...rows(6, { slip: 'knowledge' }), ...rows(3, { slip: 'symptom' })]);
+    expect(r.lines).toEqual(lines('symptom', 'priority', 'runner-up'));
+    expect(r.lines.join(' ')).not.toMatch(/learn|study|note/i);
+  });
+
+  it('untagged answers count, as in the journal: the closest wrong choice (ORIGINAL letters) and a sure miss', () => {
+    // picked C = the "Final two" runner-up; picked A with "sure" = sure but incorrect.
+    const r = eve([...rows(3, { picked: 'C' }), ...rows(3, { picked: 'A', confidence: 'sure' })]);
+    expect(r.lines).toEqual(lines('runner-up', 'overconfident', 'priority'));
+  });
+
+  it('mistakes older than 28 days are left out', () => {
+    expect(eve(rows(9, { slip: 'role', at: NOW - 40 * 86_400_000 }))).toEqual({ own: false, lines: DEFAULTS });
+  });
+
+  it('a tie for the third place follows the journal’s order, silently, and the card never names a count or pattern', () => {
+    const r = eve([...rows(5, { slip: 'role' }), ...rows(4, { slip: 'symptom' }), ...rows(3, { slip: 'misread' }), ...rows(3, { slip: 'tech-first' })]);
+    expect(r.lines).toEqual(lines('role', 'symptom', 'tech-first'));
+    expect(r.lines.join(' ')).not.toMatch(/\d|mistake|slip|pattern/i);
+  });
+
+  it('always exactly three lines', () => {
+    for (const k of [0, 1, 3, 5, 12]) expect(eve(rows(k, { slip: 'role' })).lines).toHaveLength(3);
   });
 });
 
