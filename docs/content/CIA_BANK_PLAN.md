@@ -587,9 +587,15 @@ Requirement or its user guide carry `testable_from` (2027-03-01 and
 **What the syllabus itself may carry (decided 19 Nov 2026, on the Section D
 audit).** The Part 1 syllabus is an opened IIA document, so a key may rest on
 exactly what one of its lines states, cited first: the three fraud triangle
-conditions by name (1D1a), authority levels as preventing fraud (1D4c), and
-hotlines, reconciliations and supervisory reviews as detecting it (1D4d).
-Nothing beyond those classifications (`docs/content/CIA_LENS.md` says the same).
+conditions by name (1D1a), authority levels as preventing fraud (1D4c),
+hotlines, reconciliations and supervisory reviews as detecting it (1D4d),
+and, decided 20 Nov 2026 on the Section A round 3 audit, due diligence as an
+advisory service the internal audit function performs (1A6c, by topic 6's
+heading). Nothing beyond those classifications: what the work consists of
+still comes from the Standards' glossary or waits for a practice guide, and a
+syllabus line that groups several things together does not rank them (round
+3's `cia1_d4_026` first keyed one detective control above the other two, which
+the line does not say). `docs/content/CIA_LENS.md` says the same.
 
 ## 9. Legal position and what waits on the owner
 
