@@ -14,8 +14,8 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 |---|---|
 | **Status (20 Nov 2026)** | Session G, steps 1 to 3 done: expert decisions, the documents, the harness (187 planted faults stopped, 43 controls hold; an independent code review's findings are all fixed), the expert agents, the **Part 1 study notes for all four sections** (93 sub-topics, audited and learner-read), and the **Part 1 pilot: 80 questions, 20 per section**, through the full pipeline (scorecard in section 7; calibration rules in section 6b). With them: the 20 shared principles, the Part 1 exam guide and final review week, and a first generated Challenge pack from the tagged items. The **glossary start** is written and audited (153 Part 1 terms in `data/cia/shared/glossary.json`; it reuses the notes' wording, and `check_glossary.py` fails if a term is ever defined two ways). The outline of the CISA bridge is in `docs/content/CIA_CISA_BRIDGE_OUTLINE.md`. Session G is complete. |
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
-| **In progress: round 1 (20 Nov 2026)** | 25 new Part 1 questions on the five Challenge-shared topics are written, reviewed and fixed, and committed: `cia1_d1_021` to `035` (1A2, 1A7, 1A8) and `cia1_d2_021` to `030` (1B2, 1B6). Done: first blind test 25 of 25, two standards audits (0 HARD, 23 PRECISION, 18 OBSERVATION, all applied), cue test 76% then 68% after the fix pass, second blind test of Section B 10 of 10. **Still to do, in this order:** (1) the second blind test of Section A's fifteen and the currency and citation check of all 25 (both were running when the container restarted; results go to the scratchpad, so re-run them if their files are missing); (2) one small fix pass only if an item is ambiguous or a citation is wrong (section 6b, rule 12); (3) the tagging pass, which also writes the two missing principles named in section 7 (competency; confidentiality, "information is for the work only"); (4) because nothing has reached main, delete `data/cia/ciac/id_map.json` and `data/cia/ciac/originals/` and rebuild so the map starts clean, then set each principle's `ciac` practice ids from the new map; (5) the round's row in section 7. |
-| **Next step after round 1** | Part 1 toward its sale minimum in further rounds of 20 to 25, on the topics `check_cia.py cia1 --coverage` shows as thinnest. Every round uses the author brief that produced round 1 (kept in the plan, section 6c) and reports the cue test; the target stays at 85% or lower. |
+| **Round 1 done (20 Nov 2026)** | 25 new Part 1 questions on the five Challenge-shared topics: `cia1_d1_021` to `035` (1A2, 1A7, 1A8) and `cia1_d2_021` to `030` (1B2, 1B6), through the whole pipeline (scorecard in section 7). Part 1 stands at 105 questions. The principles are now 22 (competency and confidentiality were missing), every question is tagged, and the Challenge id map was started clean once more before anything reached main (35 ids). |
+| **Next step** | Part 1 toward its sale minimum in further rounds of 20 to 25, on the topics `check_cia.py cia1 --coverage` shows as thinnest. Every round uses the author brief that produced round 1 (kept in the plan, section 6c) and reports the cue test; the target stays at 85% or lower. |
 | **Then** | Part 2, Part 3, the Challenge build and the CISA bridge notes (from the outline), the cross-part release gate. |
 | **Known weak spot** | Difficulty. No pilot key was wrong and all four blind rounds agreed 80 of 80, but the last testers still called 21 of 80 answerable by test-taking alone, most in Sections B and D, and 8 items carry a TOO EASY or GIVEAWAY flag (section 7). New rounds must do better; the pilot items are candidates for a later hardening pass, not for more polishing now (section 6b, rule 12). |
 
@@ -44,11 +44,11 @@ pack. Every surface CISA has, as data that passes its gate.
 |---|---|---|---|---|---|---|
 | Blueprint and outline | `docs/content/CIA_BLUEPRINT.md`, `data/cia/shared/outline.json` | cert-blueprint-researcher | Done | Done | Done | Done |
 | Study notes | `notes/d{N}.json`, one file per section, notes schema v2 | part expert | Done: 93 sub-topics, audited (section 8b) | Not started | Not started | Generated later, plus the bridge |
-| Questions | `originals/d{N}.json` | part expert | Pilot done: 20 per section (section 7) | Not started | Not started | Generated (`build_challenge.py`) from the tagged pilot items |
+| Questions | `originals/d{N}.json` | part expert | Pilot and round 1 done: 105 (A 35, B 30, C 20, D 20; section 7) | Not started | Not started | Generated (`build_challenge.py`) from the tagged pilot items |
 | Citation library | `data/cia/shared/_framework_library.md` (one for all four) | part experts, cia-currency-checker | Started | | | |
 | Dated facts | `data/cia/shared/currency.json` | cia-currency-checker | Started | | | |
 | Glossary | `glossary.json`, built from `data/cia/shared/glossary.json` | iia-mindset-coach, part experts | Started: 153 terms, audited (section 7) | Later | Later | Built from the shared terms of its topics |
-| Principles | `mindset/principles.json`, built from `data/cia/shared/principles.json` | iia-mindset-coach | Done: 20 principles, pilot questions tagged | Later | Later | Built (same 20) |
+| Principles | `mindset/principles.json`, built from `data/cia/shared/principles.json` | iia-mindset-coach | Done: 22 principles, every question tagged | Later | Later | Built (same 22) |
 | About the exam | `exam/<pack>_exam_guide.json` | iia-mindset-coach | Done | Not started | Not started | Not started |
 | Final review week | `exam/final_review_week.json` | iia-mindset-coach, behavioral-scientist | Done | Not started | Not started | Not started |
 | The CISA bridge | `ciac/notes/bridge.json` and a section of the Challenge exam guide | cia-challenge-bridge-expert | | | | Outline done (`docs/content/CIA_CISA_BRIDGE_OUTLINE.md`); notes not started |
@@ -422,6 +422,12 @@ anchored to current guidance), as rule 12 allows.
 | Final testers' sorting: needs the Standards, partly, test-taking alone | 18 / 41 / 21 of 80 | 5 / 15 / 5 of 25 |
 | Flags left in the final round | 8 of 80 | 5 of 25: TOO EASY `cia1_d1_021`, `cia1_d1_034`, `cia1_d2_022`, `cia1_d2_027`; GIVEAWAY `cia1_d2_025` |
 | Blind agreement | 80 of 80, four rounds | 25 of 25, two rounds |
+
+Tags after round 1: two principles were written for the gaps the pilot
+recorded, `have-or-obtain-competency` (Standards 3.1 and 3.2, with 13.5 and
+10.2) and `information-for-the-work-only` (Principle 5, Standards 5.1 and
+5.2), and seven items moved to them (`cia1_d2_011`, `012`, `017`, `028`,
+`029`, `030` and `cia1_d4_018`).
 
 What worked, and stays: the scaffold table with "where would each wrong option
 be right" (section 6c), and handing the authors the cue tester's guess and cue

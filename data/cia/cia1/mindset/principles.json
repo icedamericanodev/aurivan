@@ -2,7 +2,7 @@
  "schema_version": 2,
  "title": "KaiSip CIA Part 1 exam mindset principles",
  "updated": "2026-11-20",
- "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, the Challenge Exam 1 to 5, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and are set by a tagging pass after each round (the Part 1 pilot's is done); legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 and ciac. For ciac, domains are the Challenge Exam's sections (A Internal Audit Professionalism and Quality is 1, B Internal Audit Operations and Audit Plan is 2, C Engagement Planning is 3, D Engagement Performance is 4, E Engagement Results and Monitoring is 5, mapped from docs/content/CIA_CHALLENGE_MAP.md), subtopics stay empty until the Challenge notes are generated, and practice ids follow the tag of each generated item's source question. Parts 2 and 3 are still to come. Intended once their notes exist (written here because the linter of the built file allows no extra top-level key): know-your-seat cia2 cia3; board-approves-management-supports cia3; management-owns-risk-and-action cia2 cia3; advise-never-decide cia2 cia3; function-or-person cia3; disclose-then-safeguard cia3; risk-sets-plan-and-scope cia2 cia3; plan-before-testing cia2; consider-fraud-every-engagement cia2; relevant-reliable-sufficient cia2; root-cause-over-symptom cia2 cia3; assurance-not-a-guarantee cia2; discuss-then-escalate cia2 cia3; report-through-the-right-channel cia2; tell-it-straight cia2 cia3; the four reading principles cia2 cia3. A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet, because no notes teach it until Part 3 is written. Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1. Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
+ "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, the Challenge Exam 1 to 5, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and are set by a tagging pass after each round (done for the Part 1 pilot and for round 1); legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 and ciac. For ciac, domains are the Challenge Exam's sections (A Internal Audit Professionalism and Quality is 1, B Internal Audit Operations and Audit Plan is 2, C Engagement Planning is 3, D Engagement Performance is 4, E Engagement Results and Monitoring is 5, mapped from docs/content/CIA_CHALLENGE_MAP.md), subtopics stay empty until the Challenge notes are generated, and practice ids follow the tag of each generated item's source question. Parts 2 and 3 are still to come. Intended once their notes exist (written here because the linter of the built file allows no extra top-level key): know-your-seat cia2 cia3; board-approves-management-supports cia3; management-owns-risk-and-action cia2 cia3; advise-never-decide cia2 cia3; function-or-person cia3; disclose-then-safeguard cia3; risk-sets-plan-and-scope cia2 cia3; plan-before-testing cia2; consider-fraud-every-engagement cia2; relevant-reliable-sufficient cia2; root-cause-over-symptom cia2 cia3; assurance-not-a-guarantee cia2; discuss-then-escalate cia2 cia3; report-through-the-right-channel cia2; tell-it-straight cia2 cia3; have-or-obtain-competency cia2 cia3; information-for-the-work-only cia2 cia3; the four reading principles cia2 cia3. Round 1 added two principles for questions that no earlier principle decided: have-or-obtain-competency (Principle 3; Standards 3.1, 3.2 and 13.5, with Standard 10.2 for the function) and information-for-the-work-only (Principle 5; Standards 5.1 and 5.2). A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet, because no notes teach it until Part 3 is written. Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1. Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
  "families": [
   {
    "id": "role",
@@ -100,9 +100,9 @@
     "cia1_d1_008",
     "cia1_d1_018",
     "cia1_d1_019",
+    "cia1_d1_031",
     "cia1_d3_001",
-    "cia1_d4_017",
-    "cia1_d4_018"
+    "cia1_d4_017"
    ],
    "slip_pattern": "role",
    "legacy_ids": [],
@@ -154,7 +154,10 @@
     "cia1_d1_003",
     "cia1_d1_004",
     "cia1_d1_015",
-    "cia1_d1_016"
+    "cia1_d1_016",
+    "cia1_d1_025",
+    "cia1_d1_026",
+    "cia1_d1_029"
    ],
    "slip_pattern": null,
    "legacy_ids": [],
@@ -207,6 +210,7 @@
     "1D4.2"
    ],
    "practice_ids": [
+    "cia1_d1_035",
     "cia1_d3_002",
     "cia1_d4_015",
     "cia1_d4_020"
@@ -260,6 +264,7 @@
    "practice_ids": [
     "cia1_d1_010",
     "cia1_d1_013",
+    "cia1_d1_032",
     "cia1_d3_014"
    ],
    "slip_pattern": null,
@@ -310,7 +315,8 @@
    "practice_ids": [
     "cia1_d1_002",
     "cia1_d1_017",
-    "cia1_d2_004"
+    "cia1_d2_004",
+    "cia1_d2_022"
    ],
    "slip_pattern": null,
    "legacy_ids": [],
@@ -358,7 +364,9 @@
    ],
    "practice_ids": [
     "cia1_d1_014",
-    "cia1_d2_005"
+    "cia1_d2_005",
+    "cia1_d2_021",
+    "cia1_d2_025"
    ],
    "slip_pattern": null,
    "legacy_ids": [],
@@ -408,6 +416,7 @@
    ],
    "practice_ids": [
     "cia1_d1_020",
+    "cia1_d1_028",
     "cia1_d2_008",
     "cia1_d2_009",
     "cia1_d2_010"
@@ -615,6 +624,7 @@
     "1D3.2"
    ],
    "practice_ids": [
+    "cia1_d1_034",
     "cia1_d2_007",
     "cia1_d2_016",
     "cia1_d3_003",
@@ -728,6 +738,55 @@
    "aliases": []
   },
   {
+   "id": "have-or-obtain-competency",
+   "family": "evidence",
+   "order": 4,
+   "title": "Have the skill, or get it",
+   "rule": "Have the competencies the work needs or obtain them; take on only work you can become competent for.",
+   "why": "A conclusion from work the auditors did not understand is one nobody should rely on. Standard 3.1 makes competency a must for each internal auditor, and has the chief audit executive ensure the function as a whole holds, or obtains, the competencies for its charter's services. Standard 3.2 requires every internal auditor to keep developing them.",
+   "triggers": [
+    "nobody on the team understands",
+    "has never audited this area",
+    "lacks the expertise",
+    "learn it during fieldwork",
+    "the charter lists the service",
+    "certified years ago",
+    "no budget for a specialist"
+   ],
+   "trap": {
+    "move": "Starting anyway and planning to learn during fieldwork, or treating long experience, a certificate or a line in the charter as proof that the skill is there.",
+    "why_wrong": "The charter says the function may do the work, not that it can. An internal auditor who sees the gap while planning an engagement must raise it with the chief audit executive (Standard 13.5), who can obtain the skill, for example through training or an outside provider."
+   },
+   "example": {
+    "scenario": "Eleni, certified for twelve years, is an internal auditor at a wind farm operator in Greece. Eleni is assigned an engagement on maintenance contracts priced by an engineering formula Eleni cannot follow.",
+    "answer": "The certification shows general competence, not this skill. Eleni tells the chief audit executive about the gap before planning goes further, and the chief audit executive arranges an engineer to work with the team under supervision."
+   },
+   "check": {
+    "scenario": "The internal audit plan includes an engagement on a derivatives pricing model. Nobody in the function has that skill, and the budget allows outside help.",
+    "right": "The chief audit executive engages an outside specialist to work with the team under supervision.",
+    "trap": "The chief audit executive assigns the most senior auditor, who has led engagements for twenty years.",
+    "why": "Seniority is not the missing competency. Under Standard 3.1 the chief audit executive must ensure the function holds the competencies for its services, or obtain them."
+   },
+   "nuance": "A gap alone is no reason to refuse: the skill can usually be obtained. If it cannot, the work is not taken on, and the chief audit executive tells the board and senior management the impact (Standards 3.1 and 10.2).",
+   "domains": [
+    2,
+    4
+   ],
+   "subtopics": [
+    "1B4.1",
+    "1B4.4",
+    "1D5.1"
+   ],
+   "practice_ids": [
+    "cia1_d2_011",
+    "cia1_d2_012",
+    "cia1_d4_018"
+   ],
+   "slip_pattern": null,
+   "legacy_ids": [],
+   "aliases": []
+  },
+  {
    "id": "discuss-then-escalate",
    "family": "speaking-up",
    "order": 1,
@@ -768,6 +827,7 @@
     "1C5.4"
    ],
    "practice_ids": [
+    "cia1_d1_027",
     "cia1_d3_012"
    ],
    "slip_pattern": null,
@@ -875,7 +935,58 @@
    "practice_ids": [
     "cia1_d2_001",
     "cia1_d2_013",
-    "cia1_d2_019"
+    "cia1_d2_019",
+    "cia1_d2_026"
+   ],
+   "slip_pattern": null,
+   "legacy_ids": [],
+   "aliases": []
+  },
+  {
+   "id": "information-for-the-work-only",
+   "family": "speaking-up",
+   "order": 4,
+   "title": "Information is for the work only",
+   "rule": "Information from the work is for the work: no personal gain, no unauthorized disclosure without a legal or professional duty.",
+   "why": "Internal auditors are given access that few others have, so the organization must be able to trust what they do with it. Principle 5 keeps that information for professional purposes. Standard 5.1 bars using it for personal gain, and Standard 5.2 bars passing confidential information to anyone unauthorized unless a legal or professional duty calls for it.",
+   "triggers": [
+    "wants to keep copies",
+    "seen in the workpapers",
+    "learned at a former employer",
+    "mentions it to a colleague",
+    "the names were removed",
+    "nobody was harmed",
+    "an outside specialist joins the engagement"
+   ],
+   "trap": {
+    "move": "Judging by harm or by who is asking: calling a use fine because nobody lost, the names were removed, the organization benefits or the person asking is a colleague.",
+    "why_wrong": "The tests are purpose and authorization, not harm. Personal use is misuse even when nothing leaks, and a colleague is not authorized just by being an employee. Access is not ownership: the information still belongs to the organization or to the other party."
+   },
+   "example": {
+    "scenario": "Mateo, an internal auditor at a property developer in Mexico, learns during an engagement which plots the company plans to bid for next quarter. A friend who invests in land asks where prices might rise.",
+    "answer": "Mateo tells the friend nothing and buys nothing nearby. The bid list was learned for the engagement and is used only there. Passing it on is unauthorized disclosure, and trading on it is personal gain, even if the company never notices."
+   },
+   "check": {
+    "scenario": "Two internal auditors ride a crowded train home after interviews on a sensitive pricing engagement. One wants to compare notes on what they heard while it is fresh.",
+    "right": "Hold the conversation until they are somewhere private, such as the office.",
+    "trap": "Compare notes quietly now, leaving out the names of the people involved.",
+    "why": "Spoken information is protected too, and Standard 5.2 has internal auditors manage the risk of exposing it by accident. Leaving out names does not make the rest safe to overhear."
+   },
+   "nuance": "Confidentiality never keeps a finding from the board, which is authorized to receive results (Standard 1.1). The chief audit executive must hold anyone who assists the function to the same protection rules (Standard 5.2).",
+   "domains": [
+    2
+   ],
+   "subtopics": [
+    "1B6.1",
+    "1B6.2",
+    "1B6.3",
+    "1B6.4"
+   ],
+   "practice_ids": [
+    "cia1_d2_017",
+    "cia1_d2_028",
+    "cia1_d2_029",
+    "cia1_d2_030"
    ],
    "slip_pattern": null,
    "legacy_ids": [],
@@ -931,6 +1042,7 @@
     "cia1_d1_005",
     "cia1_d1_006",
     "cia1_d1_007",
+    "cia1_d1_030",
     "cia1_d3_005",
     "cia1_d3_013",
     "cia1_d3_020",
@@ -983,7 +1095,7 @@
    "practice_ids": [
     "cia1_d1_011",
     "cia1_d2_006",
-    "cia1_d2_011"
+    "cia1_d2_023"
    ],
    "slip_pattern": "priority",
    "legacy_ids": [],
@@ -1026,7 +1138,6 @@
    ],
    "subtopics": [],
    "practice_ids": [
-    "cia1_d2_012",
     "cia1_d3_008",
     "cia1_d3_010",
     "cia1_d3_019"
@@ -1073,8 +1184,14 @@
    ],
    "subtopics": [],
    "practice_ids": [
-    "cia1_d2_017",
+    "cia1_d1_021",
+    "cia1_d1_022",
+    "cia1_d1_023",
+    "cia1_d1_024",
+    "cia1_d1_033",
     "cia1_d2_018",
+    "cia1_d2_024",
+    "cia1_d2_027",
     "cia1_d3_009",
     "cia1_d3_016",
     "cia1_d4_001",
