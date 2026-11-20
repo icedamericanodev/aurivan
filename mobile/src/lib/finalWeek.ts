@@ -7,9 +7,9 @@
  * - note → that study note (a topic code opens its domain's notes page);
  *   no target → Study notes.
  * - principles → that principle, or that family's principles; "top_slip" →
- *   the principle for the learner's most common tagged slip (the Mistake
- *   journal's own slip coach). When that slip is "Didn't know it", the note
- *   behind most open mistakes instead; before 5 tagged mistakes, the library.
+ *   the principle for the learner's recent mistake pattern (the Mistake
+ *   journal's own leading pattern). When that is "Didn't know it", the note
+ *   behind those mistakes instead; before there is a pattern, the library.
  * - practice_domain → a 10-question practice set in that domain ("focus" and
  *   "next_focus" from readiness, engine/finalWeek.ts weekFocus).
  * - mock_mini / mock_full → the mock start sheet (timing, hide the clock).
@@ -18,41 +18,38 @@
  */
 import { router } from 'expo-router';
 import type { TaskAction } from '../content/exam/types';
-import { findQuestion } from '../content/loader';
 import { findNote, getNotes, subtopicOfQuestion } from '../content/notes';
 import { findPrinciple, getPrinciples, principleForSlip } from '../content/principles';
 import { hasTerms } from '../content/terms';
 import type { Certification } from '../content/types';
 import { mostMissedSubtopic, resolveAction, weekFocus, type ActionContext, type Destination, type TopSlip } from '../engine/finalWeek';
 import { readinessFor } from '../engine/readiness';
-import { slipCoach, type SlipInput } from '../engine/slipCoach';
 import type { CertProgress } from '../store/progress';
 import { openSessionFromStack } from './actions';
+import { mistakePatternsFor } from './slipPattern';
 import { guardedStart, startPractice } from './sessions';
 
 /** A focused practice set's size: "a short set". */
 export const WEEK_PRACTICE_COUNT = 10;
 
 /**
- * The learner's top slip, through the Mistake journal's slip coach (only
- * tagged mistakes count, 5 or more). A thinking slip → its principle; "Didn't
- * know it" (no principle in the slip map) → the note behind the most open
- * mistakes; not enough tags yet → null (the principles library).
+ * The learner's top slip: the Mistake journal's own leading pattern
+ * (lib/slipPattern.ts: last 28 days, tags and answers, 5 mistakes with a
+ * pattern and 3 sharing it), so the final week never points at a pattern the
+ * journal doesn't show. A thinking slip → its principle; "Didn't know it" (no
+ * principle in the slip map) → the note behind the most recent "Didn't know
+ * it" mistakes (open ones first); no pattern yet → null (the principles library).
  */
-export function topSlip(certId: string, mistakes: CertProgress['mistakes']): TopSlip {
-  const inputs: SlipInput[] = [];
-  for (const [id, m] of Object.entries(mistakes)) {
-    const q = findQuestion(certId, id);
-    if (q) inputs.push({ slip: m.slip, picked: m.picked, confidence: m.confidence, correct: q.correct, tips: q.tips, stem: q.stem });
-  }
-  const coach = slipCoach(inputs);
-  if (!coach.ready) return null;
-  const p = principleForSlip(certId, coach.pattern);
+export function topSlip(certId: string, mistakes: CertProgress['mistakes'], now: number = Date.now()): TopSlip {
+  const dna = mistakePatternsFor(certId, mistakes, now);
+  if (!dna.top) return null;
+  const p = principleForSlip(certId, dna.top.pattern);
   if (p) return { principleId: p.id };
-  // A content gap: the note for the topic missed most (open mistakes first, then all).
-  const open = Object.entries(mistakes).filter(([, m]) => !m.resolved).map(([id]) => id);
+  // A content gap: the note for the topic missed most, from the same window's "Didn't know it" mistakes.
+  const gaps = Object.entries(mistakes).filter(([, m]) => m.slip === 'knowledge' && m.at >= dna.from && m.at <= dna.to);
+  const open = gaps.filter(([, m]) => !m.resolved).map(([id]) => id);
   const pick = (ids: string[]) => mostMissedSubtopic(ids, (q) => subtopicOfQuestion(certId, q));
-  const noteId = pick(open) ?? pick(Object.keys(mistakes));
+  const noteId = pick(open) ?? pick(gaps.map(([id]) => id));
   return noteId ? { noteId } : null;
 }
 

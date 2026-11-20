@@ -23,6 +23,7 @@ import { findQuestion, getAllQuestions } from '../content/loader';
 import { findNote, subtopicOfQuestion } from '../content/notes';
 import { principleForSlip } from '../content/principles';
 import { shortDate } from '../lib/format';
+import { mistakePatternsFor } from '../lib/slipPattern';
 import { guardedStart, startFromIds, startPractice } from '../lib/sessions';
 import { questionTarget } from '../lib/support';
 import { useActiveCert } from '../lib/useActiveCert';
@@ -30,7 +31,6 @@ import { GAMES } from '../engine/games/registry';
 import { canPlay } from '../lib/games';
 import { useAvailableGames } from '../components/drills';
 import { PATTERN_COPY } from '../engine/slipCoach';
-import { mistakeDNA, type DNAInput } from '../engine/mistakeDNA';
 import { useProgress, type MistakeEntry, type ThinkingSlip } from '../store/progress';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -243,15 +243,9 @@ export default function Mistakes() {
   // re-analysed every saved mistake; a clock frozen at mount would leave out misses made in a practice
   // session opened from here (the journal stays mounted underneath). Now it moves exactly when the
   // saved mistakes change. Elsewhere the window's own ends (dna.from, dna.to) are the time.
-  const dna = useMemo(() => {
-    const inputs: DNAInput[] = [];
-    for (const [id, m] of Object.entries(progress.mistakes)) {
-      const q = findQuestion(certId, id);
-      if (q) inputs.push({ id, certId, at: m.at, slip: m.slip, picked: m.picked, confidence: m.confidence, correct: q.correct, tips: q.tips, stem: q.stem });
-    }
-    // eslint-disable-next-line react-hooks/purity -- the window's clock, refreshed with the saved mistakes
-    return mistakeDNA(inputs, certId, Date.now());
-  }, [certId, progress.mistakes]);
+  // The same summary Play and the final review week use (lib/slipPattern.ts), so they never disagree.
+  // eslint-disable-next-line react-hooks/purity -- the window's clock, refreshed with the saved mistakes
+  const dna = useMemo(() => mistakePatternsFor(certId, progress.mistakes, Date.now()), [certId, progress.mistakes]);
   const pattern = dna.top ? { ready: true as const, pattern: dna.top.pattern, ...PATTERN_COPY[dna.top.pattern] } : { ready: false as const };
   // The principle that coaches this pattern (none for a content gap, or a cert without principles).
   const patternPrinciple = pattern.ready ? principleForSlip(cert.id, pattern.pattern) : undefined;

@@ -16,6 +16,7 @@ For internal/technical history, see git log and PR descriptions.
 - After you answer, the short summary and the tips come first. The whole question and every option are one tap away under "Show question & options".
 - On tablets and other large screens, pages sit in a comfortable reading width.
 - The recovery Concept Lab is put away for now while we make it clearer.
+- The drill suggested on Play and the final review week now follow the same recent mistake pattern as your mistake journal.
 
 ### Changed after learner reports
 - Learners found the list of reasons under every answer overwhelming and missed the earlier tips-first layout; practice returns to it, with every option one tap away.
@@ -54,6 +55,11 @@ The first update after the 2.0.0 launch (closed testing). Play version name exac
 - A learner noticed the letter f looked unusual; it now has a familiar shape.
 - A learner saw Android's navigation buttons covering the buttons at the bottom of a screen; bottom buttons now sit above the navigation bar.
 - A learner found a password policy question unclear; it now states that management requires the controls.
+
+## Web [v13.0.2] · 2026-11-20
+
+### Fixed
+- In the final review week, the task about your most common slip now reads more simply.
 
 ## Web [v13.0.1] · 2026-11-18
 
