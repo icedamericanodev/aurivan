@@ -243,6 +243,7 @@ the notice is part of the description.
 | Batch 8 (13 Nov 2026) | — | +42 | +32 | 588 |
 | Batch 9 (18 Nov 2026) | +15 | — | — | 603 |
 | Batch 10 (19 Nov 2026) | +30 | +42 | — | 675 |
+| Batch 11 (20 Nov 2026) | +30 | +42 | — | 747 |
 
 Pilot review, 30 Oct 2026:
 - **Blind tests:** 60/60 picks matched the keys on the first pass. After the
@@ -475,6 +476,29 @@ Batch 10 review, 19 Nov 2026 (D1 and D2):
 - Length tell: D1 20.3%, D2 20.6%. Tags: 549 of 675 (PRINCIPLE_TAGGING.md, Batch 10).
 - **For later rounds:** check each new item's frame against every older item in its subtopic before
   writing, not only its setting.
+
+**Next round:** D1 and D2 rounds toward the targets (D1 330, D2 460), then D3 (210).
+
+Batch 11 review, 20 Nov 2026 (D1 and D2):
+- **Author:** two new items per notes subtopic (D1 30, D2 42), difficulty D1 7/15/8 and D2 11/21/10, keys
+  D1 A7 B7 C8 D8 and D2 A10 B10 C11 D11. The brief added the batch 10 lesson: before writing, each author
+  listed every older item's key and runner-up in the subtopic so each new pair is new. Both authors dropped or
+  moved drafts whose lesson, frame or setting collided with an existing AAIA, CRISC or CISA item, a notes
+  example or a principles example.
+- **Reviews:** first blind pass 72/72 (D1 30/30, D2 42/42). Five reviewers per domain (8 HARD ERRORS in D1,
+  none in D2; about 140 PRECISION findings across both), three fix rounds, the cross-domain gate (14
+  HARD/PRECISION) and the completeness critic (8 gaps). Four new items repeated a setting already in the bank
+  or one of KaiSip's CISA AI items (aaia_d1_187, d1_188, d1_200, d2_386) and two repeated an older frame in
+  their subtopic (aaia_d1_204, d2_381); all six were moved or re-angled. A final fix round re-angled aaia_d1_205
+  (it shared its frame with aaia_d2_051) and took the hash check out of aaia_d2_381's options. My last pass
+  replaced aaia_d1_205's "checked quarterly" (which could argue for the runner-up) with a register updated at
+  each release, and removed the stem word "approved" from aaia_d2_381's key. Every changed item was re-tested
+  blind and matched. No key changed after the first draft.
+- **Notes:** each subtopic gained the short fact its new keys rely on, with other wording and five key-term
+  definitions trimmed so every subtopic stays within 380 words.
+- **Citations:** three library bullets added after the librarian opened each source: NIST AI 100-2e2025
+  Section 2.3.4 (model poisoning), Section 3.2.1 (data poisoning attacks) and the MITRE ATLAS Matrix.
+- Length tell: D1 20.2%, D2 19.8%. Tags: 600 of 747 (PRINCIPLE_TAGGING.md, Batch 11).
 
 **Next round:** D1 and D2 rounds toward the targets (D1 330, D2 460), then D3 (210).
 

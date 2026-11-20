@@ -1,0 +1,1622 @@
+{
+  "schema_version": 2,
+  "title": "KaiSip CIA exam mindset principles",
+  "updated": "2026-11-20",
+  "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, the Challenge Exam 1 to 5, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and are set by a tagging pass after each round (done for the Part 1 pilot and for round 1); legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 and ciac. For ciac, domains are the Challenge Exam's sections (A Internal Audit Professionalism and Quality is 1, B Internal Audit Operations and Audit Plan is 2, C Engagement Planning is 3, D Engagement Performance is 4, E Engagement Results and Monitoring is 5, mapped from docs/content/CIA_CHALLENGE_MAP.md), subtopics stay empty until the Challenge notes are generated, and practice ids follow the tag of each generated item's source question. Parts 2 and 3 are still to come. Intended once their notes exist (written here because the linter of the built file allows no extra top-level key): know-your-seat cia2 cia3; board-approves-management-supports cia3; management-owns-risk-and-action cia2 cia3; advise-never-decide cia2 cia3; function-or-person cia3; disclose-then-safeguard cia3; risk-sets-plan-and-scope cia2 cia3; plan-before-testing cia2; consider-fraud-every-engagement cia2; relevant-reliable-sufficient cia2; root-cause-over-symptom cia2 cia3; assurance-not-a-guarantee cia2; discuss-then-escalate cia2 cia3; report-through-the-right-channel cia2; tell-it-straight cia2 cia3; have-or-obtain-competency cia2 cia3; information-for-the-work-only cia2 cia3; the four reading principles cia2 cia3. Round 1 added two principles for questions that no earlier principle decided: have-or-obtain-competency (Principle 3; Standards 3.1, 3.2 and 13.5, with Standard 10.2 for the function) and information-for-the-work-only (Principle 5; Standards 5.1 and 5.2). A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet, because no notes teach it until Part 3 is written. Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1. Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
+  "families": [
+    {
+      "id": "role",
+      "order": 1,
+      "title": "Your seat",
+      "question": "Who am I in this question, and who decides?"
+    },
+    {
+      "id": "independence",
+      "order": 2,
+      "title": "Staying unbiased",
+      "question": "Is the problem with the function or the person, and what fixes it?"
+    },
+    {
+      "id": "planning",
+      "order": 3,
+      "title": "What drives the work",
+      "question": "What should set the plan, the scope and the first step?"
+    },
+    {
+      "id": "evidence",
+      "order": 4,
+      "title": "Proving it",
+      "question": "What makes a conclusion one that others can rely on?"
+    },
+    {
+      "id": "speaking-up",
+      "order": 5,
+      "title": "Speaking up",
+      "question": "Who needs to hear this, in what order, and how plainly?"
+    },
+    {
+      "id": "reading",
+      "order": 6,
+      "title": "Reading the question",
+      "question": "What is the question really asking?"
+    }
+  ],
+  "principles": [
+    {
+      "id": "know-your-seat",
+      "family": "role",
+      "order": 1,
+      "title": "Know your seat",
+      "rule": "Answer from the seat the question gives you: an internal auditor or the chief audit executive, never management.",
+      "why": "Domain I says internal auditing gives the board and management independent, objective assurance and advice. In Part 1 you answer as an internal auditor who knows the rules and who does what, even where a topic covers the board's or the chief audit executive's duties. You never answer as a manager.",
+      "triggers": [
+        "what should the internal auditor do",
+        "who is responsible for",
+        "the board's role",
+        "asks internal audit to run",
+        "an opinion on the financial statements",
+        "which party"
+      ],
+      "trap": {
+        "move": "Answering as the manager who fixes the problem, as an IT specialist, or as an external auditor giving an opinion on the financial statements.",
+        "why_wrong": "Each of those is a real job, but it is not the seat the question gives you. The internal auditor assesses, concludes, advises and reports, so an option that has them running, deciding or signing off for management loses."
+      },
+      "example": {
+        "scenario": "Ravi, an internal auditor at a hospital group in Malaysia, finds that nobody reviews changes to supplier bank details. The finance manager says: you know the fix, so set up the review yourself.",
+        "answer": "Ravi reports the gap and its risk, and agrees with the finance manager who will act and by when. Setting up and running the review is management's job; Ravi later confirms it was done."
+      },
+      "check": {
+        "scenario": "A question asks what an internal audit engagement on the accounts payable process should give the board and management.",
+        "right": "A conclusion on how well the risks in the process are governed and controlled.",
+        "trap": "An opinion on whether the year-end accounts payable balance is fairly stated.",
+        "why": "An opinion on the financial statements is the external auditor's product. The internal auditor concludes on governance, risk management and control processes."
+      },
+      "nuance": "The seat changes by exam: Part 2 is the internal auditor running an engagement, Part 3 the chief audit executive running the function, and the Challenge Exam follows the topic. If a question names another actor, answer for that actor.",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          1,
+          3,
+          4
+        ],
+        "ciac": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1A1.1",
+          "1A5.2",
+          "1A8.1",
+          "1C1.2",
+          "1D3.1",
+          "1D5.1"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d1_001",
+          "cia1_d1_008",
+          "cia1_d1_018",
+          "cia1_d1_019",
+          "cia1_d1_031",
+          "cia1_d3_001",
+          "cia1_d4_017"
+        ],
+        "ciac": [
+          "ciac_d1_006",
+          "ciac_d1_007",
+          "ciac_d1_016"
+        ]
+      },
+      "slip_pattern": "role",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "board-approves-management-supports",
+      "family": "role",
+      "order": 2,
+      "title": "The board approves; senior management supports",
+      "rule": "The chief audit executive drafts and discusses; the board approves the charter, plan and budget; senior management gives input.",
+      "why": "Approval by the board keeps internal audit answerable to the body it serves, not to the managers it audits. Standards 6.2, 9.4 and 10.1 have the chief audit executive develop each document and discuss it with the board and senior management. Only the board approves.",
+      "triggers": [
+        "who approves the charter",
+        "approve the internal audit plan",
+        "senior management signs off",
+        "jointly approved",
+        "a significant change to the plan",
+        "the internal audit budget"
+      ],
+      "trap": {
+        "move": "Choosing senior management, or senior management together with the board, as the approver of the charter, the plan or the budget.",
+        "why_wrong": "Senior management is consulted and gives input and support, but it also runs the areas being audited. An approver who is audited by the function could shape what gets looked at. Older study material that shows joint approval of the plan is out of date."
+      },
+      "example": {
+        "scenario": "At a water utility in Kenya, the chief audit executive finishes the draft internal audit plan. The chief executive officer says the executive team will approve it this year to save the board's time.",
+        "answer": "The chief audit executive discusses the draft with the executive team, takes their input, and still sends the plan to the board for approval. Input from senior management is welcome; approval is the board's."
+      },
+      "check": {
+        "scenario": "Midyear, a chief audit executive needs a significant change to the internal audit plan: two engagements dropped and one added on a new payment system. Senior management agrees.",
+        "right": "Discuss the change with senior management and the board, then ask the board to approve it.",
+        "trap": "Record senior management's agreement and report the change to the board at year end.",
+        "why": "A significant change to the plan needs the board's approval, like the plan itself. Senior management's agreement is input, not approval."
+      },
+      "nuance": "Not everything is approved. The internal audit strategy is reviewed with the board and senior management. On the chief audit executive's pay the board gives input; it authorizes appointment and removal (Standards 9.2 and 7.1).",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          1,
+          3
+        ],
+        "ciac": [
+          1,
+          2
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1A2.3",
+          "1A2.4",
+          "1A3.2",
+          "1A3.3",
+          "1A7.2",
+          "1C1.2"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d1_003",
+          "cia1_d1_004",
+          "cia1_d1_015",
+          "cia1_d1_016",
+          "cia1_d1_025",
+          "cia1_d1_026",
+          "cia1_d1_029"
+        ],
+        "ciac": [
+          "ciac_d1_001",
+          "ciac_d1_003",
+          "ciac_d1_004",
+          "ciac_d1_012"
+        ]
+      },
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "management-owns-risk-and-action",
+      "family": "role",
+      "order": 3,
+      "title": "Management owns the risk and the fix",
+      "rule": "Management owns risks, controls and actions; the internal auditor assesses, recommends or agrees actions, and later confirms them.",
+      "why": "Whoever runs an activity answers for its risks and controls, so the decision and the fix stay there. Under Standards 14.4 and 15.2, internal auditors develop recommendations, ask for action plans or agree actions with management, then confirm they were implemented. An auditor who builds a control cannot later assess it without bias.",
+      "triggers": [
+        "asks the internal auditor to implement",
+        "design the control",
+        "choose the risk response",
+        "take over until",
+        "fix it now",
+        "select the vendor",
+        "own the action plan"
+      ],
+      "trap": {
+        "move": "Fixing it yourself: writing the procedure, configuring the system, choosing the risk response or running the control because you can see what is needed.",
+        "why_wrong": "It feels helpful, but it moves a management decision to the auditor and leaves no one independent to check the fix. On CIA questions the internal auditor usually reports the gap, agrees the action with its owner and follows up."
+      },
+      "example": {
+        "scenario": "Mele, an internal auditor at a credit union in Fiji, finds that loan write-offs need no second approval. The branch manager asks Mele to add the approval step in the loan system before the audit closes.",
+        "answer": "Mele reports the gap, discusses it with the manager and agrees an action plan with an owner and a date. Management makes the system change. Mele confirms later that it is in place."
+      },
+      "check": {
+        "scenario": "An internal auditor finds that a new expense system lets staff approve their own claims. The system administrator offers the auditor access to switch the setting on.",
+        "right": "Report the gap to the process owner and agree who will change the setting, and when.",
+        "trap": "Switch the setting on now, then tell the process owner what was changed and why.",
+        "why": "Changing the control is management's action. The internal auditor reports, agrees the action with its owner and confirms it later."
+      },
+      "nuance": "The chief audit executive may hold a role beyond internal auditing only with safeguards: discussed with the board and senior management, written into the charter if ongoing, and assured by an independent party (Standard 7.1).",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          1,
+          3,
+          4
+        ],
+        "ciac": [
+          1,
+          3,
+          5
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1A1.1",
+          "1A8.1",
+          "1A8.3",
+          "1C5.4",
+          "1C6.2",
+          "1C7.3",
+          "1D3.1",
+          "1D4.2"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d1_035",
+          "cia1_d3_002",
+          "cia1_d4_015",
+          "cia1_d4_020"
+        ],
+        "ciac": [
+          "ciac_d1_020"
+        ]
+      },
+      "slip_pattern": "tech-first",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "advise-never-decide",
+      "family": "role",
+      "order": 4,
+      "title": "Advice is still internal auditing",
+      "rule": "Advisory work follows the Standards, gives advice without assurance, and leaves every decision with management.",
+      "why": "In the Standards' glossary, advisory services give advice with no assurance and no management responsibility. The Domain V introduction applies the Standards to advisory work too, except where a standard says otherwise. So the internal auditor can teach, facilitate, compare and challenge, while management designs, approves and owns the result.",
+      "triggers": [
+        "management asks for advice",
+        "help design",
+        "facilitate a workshop",
+        "join the project team",
+        "advisory engagement",
+        "then audit the same area"
+      ],
+      "trap": {
+        "move": "Treating advisory work as informal, so the rules relax: no objectivity check, no agreed scope, and the auditor makes the design choice to be useful.",
+        "why_wrong": "Advisory work is still an internal audit service. Objectivity, competency, due professional care and confidentiality all apply, and a decision made by the auditor turns advice into management."
+      },
+      "example": {
+        "scenario": "A retailer in Chile is building a new returns system. The project lead asks Camila, an internal auditor, to join the team and pick which approval controls to build.",
+        "answer": "Camila agrees the scope of the advice with the project lead, explains the risks and the control options, and leaves the choice to the project owner. The role and its limits are settled before the work starts."
+      },
+      "check": {
+        "scenario": "Management asks internal audit to help run a control self-assessment workshop for the purchasing team and to decide the final control ratings.",
+        "right": "Facilitate the workshop and challenge the ratings, leaving the final ratings to management.",
+        "trap": "Facilitate the workshop and set the final ratings, since internal audit is independent.",
+        "why": "Facilitating is advice. Setting the ratings is management's conclusion, so the auditor brings method and challenge and management owns the result."
+      },
+      "nuance": "Some steps bend for advisory work: a formal documented risk assessment, evaluation criteria and evidence-based findings may not be needed, depending on the agreement. Assurance after advice needs the chief audit executive to confirm objectivity is not impaired.",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          1,
+          3
+        ],
+        "ciac": [
+          1,
+          2,
+          3
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1A4.3",
+          "1A4.4",
+          "1A6.1",
+          "1A6.2",
+          "1A6.3",
+          "1C6.2"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d1_010",
+          "cia1_d1_013",
+          "cia1_d1_032",
+          "cia1_d3_014"
+        ],
+        "ciac": [
+          "ciac_d1_017"
+        ]
+      },
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "function-or-person",
+      "family": "independence",
+      "order": 1,
+      "title": "Function or person?",
+      "rule": "Independence belongs to the internal audit function and its reporting line; objectivity belongs to each internal auditor's mindset.",
+      "why": "Standard 7.1 builds independence from position: the chief audit executive reports directly to the board, with an administrative line to management. Principle 2 makes objectivity each internal auditor's own unbiased mindset. The two fail in different ways, so each has its own fix.",
+      "triggers": [
+        "reports to the chief financial officer",
+        "the reporting line",
+        "a close friend manages the area",
+        "the budget was cut by management",
+        "access was refused",
+        "independence or objectivity"
+      ],
+      "trap": {
+        "move": "Using the two words as one: fixing a reporting-line problem by swapping auditors, or calling one auditor's bias an independence problem.",
+        "why_wrong": "The remedy follows the kind of problem. A threat to the function's position is raised with the board and senior management, with safeguards. One person's bias is disclosed inside the function and handled by the chief audit executive."
+      },
+      "example": {
+        "scenario": "At a logistics firm in Poland, the chief audit executive reports only to the finance director. The team is about to audit treasury, which the finance director runs. Every auditor on the team is unbiased.",
+        "answer": "This is an independence threat, not an objectivity one: the function sits under the area it audits. The chief audit executive raises it with the board. Swapping auditors would not fix it."
+      },
+      "check": {
+        "scenario": "An internal auditor is assigned to an engagement on the marketing department. Their spouse joined that department as a manager last month.",
+        "right": "Treat it as an objectivity matter and disclose it to the chief audit executive.",
+        "trap": "Treat it as an independence matter and report it to the board for a decision.",
+        "why": "One auditor's relationship threatens that person's objectivity, not the function's position. It is disclosed inside the function; the reporting line is unaffected."
+      },
+      "nuance": "A sound reporting line never proves any one auditor is unbiased, and an unbiased team does not cure a weak reporting line. An administrative line to the chief executive officer is a leading practice, not a requirement.",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          1,
+          2
+        ],
+        "ciac": [
+          1,
+          2
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1A7.1",
+          "1A7.2",
+          "1A7.4",
+          "1A8.2",
+          "1B2.1"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d1_002",
+          "cia1_d1_017",
+          "cia1_d2_004",
+          "cia1_d2_022"
+        ],
+        "ciac": [
+          "ciac_d1_005",
+          "ciac_d1_026"
+        ]
+      },
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "no-self-review",
+      "family": "independence",
+      "order": 2,
+      "title": "Never assess your own past work",
+      "rule": "An internal auditor must not assess an activity they were responsible for; within 12 months, assurance objectivity is presumed impaired.",
+      "why": "People judge their own past decisions kindly, and others would doubt the result even if they did not. Standard 2.2 therefore bars assessing a specific activity the internal auditor used to be responsible for. For assurance work, it presumes impairment when that responsibility ended within the previous 12 months.",
+      "triggers": [
+        "transferred from",
+        "used to manage",
+        "designed the control last year",
+        "knows the area best",
+        "six months ago",
+        "advised on the system"
+      ],
+      "trap": {
+        "move": "Assigning the auditor who used to run the area because they know it best, or accepting their promise to stay neutral.",
+        "why_wrong": "Knowing the area from the inside is the warning sign, not the qualification. The presumption does not depend on the auditor's skill or good intentions, and how it looks to others counts too."
+      },
+      "example": {
+        "scenario": "Tomás moved from accounts payable supervisor to internal audit eight months ago. The engagement supervisor at their mining company in Peru wants Tomás on the accounts payable assurance engagement to save time.",
+        "answer": "Tomás tells the supervisor about the earlier role and is not assigned to assess accounts payable, because objectivity is presumed impaired. Another competent auditor takes the engagement."
+      },
+      "check": {
+        "scenario": "An internal auditor ran the payroll team until five months ago. Management now asks internal audit for advice on a new payroll system, and this auditor is the one available.",
+        "right": "Disclose the earlier payroll role to the requesting manager before accepting the work.",
+        "trap": "Decline the work, because the earlier payroll role bars any service for a year.",
+        "why": "The 12-month presumption is about assurance. Advisory work on a former responsibility is allowed once the possible impairment is disclosed to the requesting party first."
+      },
+      "nuance": "The bar on assessing a former responsibility has no time limit in the requirement; only the presumption for assurance is tied to 12 months. So do not assume that a longer gap makes assessing it safe.",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          1,
+          2
+        ],
+        "ciac": [
+          1
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1A4.4",
+          "1B2.2",
+          "1B2.3",
+          "1B2.4"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d1_014",
+          "cia1_d2_005",
+          "cia1_d2_021",
+          "cia1_d2_025"
+        ],
+        "ciac": [
+          "ciac_d1_021",
+          "ciac_d1_025",
+          "ciac_d1_029"
+        ]
+      },
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "disclose-then-safeguard",
+      "family": "independence",
+      "order": 3,
+      "title": "Disclose first, then safeguard",
+      "rule": "Disclose an impairment promptly to the right party; that party, not the impaired auditor, decides the safeguard.",
+      "why": "An impairment that stays private cannot be managed, and one found later damages trust in the work. Under Standard 2.3 the internal auditor tells the chief audit executive or a designated supervisor, and the chief audit executive's own impairment goes to the board. Standard 7.1 takes threats to the function's independence to the board as well.",
+      "triggers": [
+        "has not told anyone",
+        "plans to be extra careful",
+        "a gift from",
+        "a family member works in",
+        "the chief audit executive also manages",
+        "could be seen as a conflict"
+      ],
+      "trap": {
+        "move": "Handling it quietly: staying on the engagement and being extra careful, or stepping aside without telling anyone why.",
+        "why_wrong": "Being careful is not a safeguard anyone else can see or rely on. Disclosure lets the right person judge the impairment, real or only apparent, and choose what to do about it."
+      },
+      "example": {
+        "scenario": "Aiko, an internal auditor at an insurer in Japan, learns partway through an engagement that a brother has just become the audited unit's operations manager. Aiko is confident it will not affect the work.",
+        "answer": "Aiko discloses it promptly to the chief audit executive or a designated supervisor. The chief audit executive decides the action, for example a reassignment. Aiko's own confidence does not settle it, because how it looks counts too."
+      },
+      "check": {
+        "scenario": "A chief audit executive is asked to run the compliance team for four months while a replacement is hired. Internal audit is due to audit compliance this year.",
+        "right": "Discuss the role with the board and senior management and arrange outside assurance over compliance.",
+        "trap": "Accept the role and have the most senior internal auditor lead this year's compliance audit.",
+        "why": "The impairment sits with the chief audit executive, so their own team cannot be the safeguard. Standard 7.1 calls for assurance from an independent third party."
+      },
+      "nuance": "The Standards list reassigning, rescheduling, adjusting the scope and outsourcing as options and do not rank them. Prefer one over another only when the facts in the question settle it.",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          1,
+          2
+        ],
+        "ciac": [
+          1
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1A7.3",
+          "1A8.4",
+          "1B3.1",
+          "1B3.2",
+          "1B3.3",
+          "1B3.4"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d1_020",
+          "cia1_d1_028",
+          "cia1_d2_008",
+          "cia1_d2_009",
+          "cia1_d2_010"
+        ],
+        "ciac": [
+          "ciac_d1_008",
+          "ciac_d1_014"
+        ]
+      },
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "risk-sets-plan-and-scope",
+      "family": "planning",
+      "order": 1,
+      "title": "Risk sets the plan and the scope",
+      "rule": "Risk decides what goes in the internal audit plan, what an engagement covers and how deep testing goes.",
+      "why": "Internal audit time is limited, so it goes where the organization's objectives are most at risk. Standard 9.4 rests the plan on a documented risk assessment done at least once a year, and Standard 13.2 starts each engagement with its own risk assessment. Requests, routine and convenience are inputs, never the driver.",
+      "triggers": [
+        "which area should be audited first",
+        "limited resources",
+        "audited every year",
+        "management requested",
+        "the largest department",
+        "highest residual risk"
+      ],
+      "trap": {
+        "move": "Choosing by habit or convenience: the area audited every year, the biggest department, the one that asked, or the one that is easiest to test.",
+        "why_wrong": "Size, routine and requests say little about where objectives are threatened. Effort spent on a low-risk area leaves a higher-risk one with no assurance."
+      },
+      "example": {
+        "scenario": "A chief audit executive in Ghana has time for one more engagement. Petty cash has been audited every year with no findings. A mobile payments service launched last quarter and has never been reviewed.",
+        "answer": "The mobile payments service goes in the plan: new, high in value and untested. A clean history and routine are weak reasons to return to petty cash. The plan follows the risk assessment."
+      },
+      "check": {
+        "scenario": "An internal auditor planning a payroll engagement has hours to test either overtime payments, which rose sharply this year, or annual leave records, which are simple to sample.",
+        "right": "Spend the hours on overtime payments, where the risk to the objective is higher.",
+        "trap": "Spend the hours on annual leave records, where a full sample can be finished.",
+        "why": "Depth of testing follows risk. A complete test of a low-risk area tells the reader little about the exposure that matters."
+      },
+      "nuance": "Risk-based does not mean risk only. The plan also takes input from the board and senior management, and due professional care weighs an engagement's cost against its likely benefit (Standards 9.4 and 4.2).",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          2,
+          3,
+          4
+        ],
+        "ciac": [
+          2,
+          3
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1B5.2",
+          "1C2.2",
+          "1C4.3",
+          "1C6.1",
+          "1D2.3"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d2_014",
+          "cia1_d3_004",
+          "cia1_d4_007"
+        ],
+        "ciac": []
+      },
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "plan-before-testing",
+      "family": "planning",
+      "order": 2,
+      "title": "Plan before you test",
+      "rule": "Understand the activity, assess its risks, then set objectives, scope and criteria before any testing starts.",
+      "why": "A test only means something when you know what the activity is for, what could go wrong and what good looks like. Principle 13 and Standards 13.2 to 13.6 put those steps, and an approved work program, before testing. Without criteria there is nothing to compare the condition with, so there is no finding.",
+      "triggers": [
+        "FIRST step",
+        "before fieldwork",
+        "starts testing",
+        "select a sample",
+        "no criteria exist",
+        "a new engagement"
+      ],
+      "trap": {
+        "move": "Starting with the test: pulling a sample, running data analysis or interviewing staff before the objectives, the risks and the criteria are settled.",
+        "why_wrong": "Early testing feels productive, but it can test the wrong thing against no agreed yardstick. On CIA questions that ask what comes FIRST, the understanding and planning step usually beats the testing step."
+      },
+      "example": {
+        "scenario": "Lindiwe is assigned her first engagement, on fuel purchasing at a bus company in South Africa. A colleague suggests pulling 40 invoices on day one to get ahead.",
+        "answer": "Lindiwe first learns how fuel purchasing works and what it is meant to achieve, assesses the risks, fraud included, and settles objectives, scope and criteria. Then the work program says which invoices to test and why."
+      },
+      "check": {
+        "scenario": "An internal auditor is asked to assess whether a call center handles complaints well. No policy or target for complaint handling exists.",
+        "right": "Identify suitable criteria through discussion with senior management before testing complaints.",
+        "trap": "Test a sample of complaints and judge them against the auditor's own past experience.",
+        "why": "A finding is a gap between a condition and criteria. Where adequate criteria are missing, the auditor first identifies suitable ones through discussion."
+      },
+      "nuance": "Planning is not a one-way gate: the risk assessment and the work program may change as work goes on. Judging a control's design before its operation is a should, and advisory work may not need formal criteria.",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          1,
+          3,
+          4
+        ],
+        "ciac": [
+          3
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1A4.1",
+          "1A5.1",
+          "1C2.2",
+          "1C8.1",
+          "1D2.1"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d1_012",
+          "cia1_d3_015"
+        ],
+        "ciac": []
+      },
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "consider-fraud-every-engagement",
+      "family": "planning",
+      "order": 3,
+      "title": "Consider fraud in every engagement",
+      "rule": "Consider fraud risk in every engagement risk assessment, at planning, whether or not anyone asks for it.",
+      "why": "Fraud is hidden on purpose, so an auditor who never asks how it could happen will miss it. Standard 13.2 makes fraud risks part of every engagement risk assessment, and Standard 4.2 has due professional care weigh the probability of significant fraud. Considering fraud is a planning duty, not an accusation.",
+      "triggers": [
+        "no history of fraud",
+        "only if management asks",
+        "a routine engagement",
+        "a trusted long-serving employee",
+        "during planning",
+        "fraud was not in scope"
+      ],
+      "trap": {
+        "move": "Leaving fraud out because the area has a clean record, the staff are trusted, or the engagement is not a fraud audit.",
+        "why_wrong": "A clean record can mean good controls or undetected fraud. The duty is tied to every engagement risk assessment, not to a request, a tip or a past case."
+      },
+      "example": {
+        "scenario": "Ahmed plans an engagement on a charity's grant payments in Jordan. The finance head says fraud need not be covered: the team is small, loyal and has never had a case.",
+        "answer": "Ahmed still considers fraud risk while planning: where value, access and weak review meet, and how a payment could be diverted. A small trusted team with little review is a reason to look, not a reason to skip."
+      },
+      "check": {
+        "scenario": "An internal auditor is planning an assurance engagement on inventory at a factory. Fraud is not mentioned in the engagement request.",
+        "right": "Consider how inventory fraud could occur as part of the engagement risk assessment.",
+        "trap": "Leave fraud aside unless testing later turns up a sign that it may exist.",
+        "why": "Fraud risk is considered during planning in every engagement risk assessment. Waiting for a sign means the tests were never designed to find one."
+      },
+      "nuance": "Considering fraud risk is not detecting or investigating fraud, and due professional care is not a guarantee. For advisory work, the risk assessment may not need to be formal or written down, depending on the agreement.",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          2,
+          4
+        ],
+        "ciac": [
+          3
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1B5.2",
+          "1D1.3",
+          "1D2.1",
+          "1D2.2",
+          "1D2.3",
+          "1D3.1"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d4_004",
+          "cia1_d4_006",
+          "cia1_d4_016",
+          "cia1_d4_019"
+        ],
+        "ciac": []
+      },
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "relevant-reliable-sufficient",
+      "family": "evidence",
+      "order": 1,
+      "title": "Relevant, reliable, sufficient",
+      "rule": "Information must be relevant, reliable and sufficient: enough for a competent person to repeat the work and agree.",
+      "why": "A conclusion is only as strong as what stands behind it. Standard 14.1 asks for information that fits the engagement's objectives, can be trusted, and would let a prudent, informed and competent person redo the work and agree. Standard 4.3 adds professional skepticism: being told something is a start, not proof.",
+      "triggers": [
+        "management stated",
+        "verbal confirmation",
+        "a report prepared by the audited team",
+        "only one document",
+        "corroborate",
+        "MOST reliable",
+        "from an independent source"
+      ],
+      "trap": {
+        "move": "Accepting what you are told, or the first document offered, because the source is senior, confident or has always been right before.",
+        "why_wrong": "Trust is not evidence. Information is stronger when the internal auditor obtains it directly, when an independent source supplies it, when something else corroborates it, and when it comes from a well-controlled system."
+      },
+      "example": {
+        "scenario": "A plant manager in Vietnam tells Linh, an internal auditor, that every safety inspection was done this year, and hands over a summary the manager's own team prepared.",
+        "answer": "Linh keeps an open but questioning mind and compares the summary with the signed inspection records and the maintenance system's logs. The manager's word is a start; corroboration makes it reliable."
+      },
+      "check": {
+        "scenario": "An internal auditor must confirm that a supplier was paid only for goods received. Two sources are on hand for the same deliveries.",
+        "right": "Compare the payments with receiving records the auditor extracts from the warehouse system.",
+        "trap": "Compare the payments with a receiving summary the purchasing manager prepared for the audit.",
+        "why": "Information the auditor obtains directly from a controlled system is more reliable than a summary prepared by the area under review."
+      },
+      "nuance": "Three attributes, not four: older books add one. Skepticism is aimed at the information, not the person. When relevant evidence cannot be obtained, the internal auditor decides whether that is itself a finding.",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "ciac": [
+          1,
+          4
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1A5.4",
+          "1A8.2",
+          "1B5.3",
+          "1C2.1",
+          "1C6.1",
+          "1D3.2"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d1_034",
+          "cia1_d2_007",
+          "cia1_d2_016",
+          "cia1_d3_003",
+          "cia1_d4_011"
+        ],
+        "ciac": [
+          "ciac_d1_019",
+          "ciac_d1_022"
+        ]
+      },
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "root-cause-over-symptom",
+      "family": "evidence",
+      "order": 2,
+      "title": "Root cause before symptom",
+      "rule": "A finding is a gap from the criteria; trace it to its root cause and aim the action there.",
+      "why": "Fixing one error leaves the weakness that produced it, so the error comes back. Standards 14.2 and 14.3 have internal auditors compare the condition with the criteria, then work out the root cause, with management when possible, and the effect. Standard 14.4 aims recommendations and action plans at that root cause.",
+      "triggers": [
+        "the same error again",
+        "a repeat finding",
+        "correct the three invoices",
+        "retrain the clerk",
+        "why did it happen",
+        "BEST recommendation",
+        "recurring"
+      ],
+      "trap": {
+        "move": "Recommending the quick repair: correct the wrong entries, retrain the one person, or add another check on top of the broken step.",
+        "why_wrong": "That treats the instance and leaves the cause in place. The stronger recommendation removes the reason the gap opened, such as a missing approval step or access that lets one person do everything."
+      },
+      "example": {
+        "scenario": "At a school district in Canada, an internal auditor finds 12 duplicate supplier payments. The accounts team offers to recover the money this week.",
+        "answer": "Recovery is right but not enough. With management, the auditor finds the cause: the system accepts the same invoice number twice. The agreed action is a system check that blocks duplicates, which management owns and builds."
+      },
+      "check": {
+        "scenario": "For the third year running, an internal auditor finds bank reconciliations done late. Each year the finance team was reminded and promised to catch up.",
+        "right": "Work out with management why the reconciliations slip, and agree an action on that cause.",
+        "trap": "Report the late reconciliations again and ask the finance team for a firmer promise.",
+        "why": "A repeat finding means the earlier action treated the symptom. The action should reach the cause, which the auditor identifies with management when possible."
+      },
+      "nuance": "The auditor works out the root cause with management when possible, and management still owns the action. More control is not always better control: the fix should be in proportion to the risk.",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          3,
+          4
+        ],
+        "ciac": [
+          4,
+          5
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1C2.3",
+          "1C7.3",
+          "1C8.1",
+          "1D1.4"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d3_006",
+          "cia1_d3_011",
+          "cia1_d3_017",
+          "cia1_d3_018",
+          "cia1_d4_009"
+        ],
+        "ciac": []
+      },
+      "slip_pattern": "symptom",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "assurance-not-a-guarantee",
+      "family": "evidence",
+      "order": 3,
+      "title": "Assurance is never a guarantee",
+      "rule": "Assurance, due professional care and internal control give reasonable confidence; none of them guarantees that nothing is wrong.",
+      "why": "Internal auditors test samples and use judgment, and any control can fail through error, override or collusion. Principle 4 expects the care of a prudent, competent internal auditor, not a perfect one. How much assurance an engagement gives follows the nature, timing and extent of the work done.",
+      "triggers": [
+        "guarantee",
+        "ensure that no fraud exists",
+        "absolute assurance",
+        "eliminate all risk",
+        "certify that controls work",
+        "a fraud was missed",
+        "reasonable assurance"
+      ],
+      "trap": {
+        "move": "Choosing an option in which internal audit ensures, guarantees or certifies that no error or fraud exists, or blaming the auditor whenever something was missed.",
+        "why_wrong": "No engagement tests everything, and no control system removes all risk. The measure of the work is whether it was planned and done with due professional care, not whether every problem was caught."
+      },
+      "example": {
+        "scenario": "Six months after a clean assurance engagement on purchasing at a hotel group in Egypt, a supplier kickback comes to light. A director says internal audit failed, because its report guaranteed the controls.",
+        "answer": "The engagement gave assurance on what was tested, with due professional care, not a guarantee. Collusion can defeat sound controls. The fair test is whether the work was properly planned and performed, fraud risk included."
+      },
+      "check": {
+        "scenario": "A board member asks an internal auditor to confirm in writing that the new payments process is now free of any risk of error.",
+        "right": "Explain that the work supports a conclusion on the controls, not a promise of no errors.",
+        "trap": "Extend the testing to every payment so the confirmation can be given with confidence.",
+        "why": "Assurance raises confidence against criteria; it cannot promise that nothing is wrong. Even a full test leaves judgment, override and collusion."
+      },
+      "nuance": "The Standards name limited and reasonable assurance but define neither, so do not rank them beyond this: the level follows the work done. Risk management aims to keep risk within appetite, never to remove it all.",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          1,
+          2,
+          3
+        ],
+        "ciac": [
+          4
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1A4.2",
+          "1B5.1",
+          "1C5.1",
+          "1C7.1",
+          "1C8.2"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d1_009",
+          "cia1_d2_015"
+        ],
+        "ciac": []
+      },
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "have-or-obtain-competency",
+      "family": "evidence",
+      "order": 4,
+      "title": "Have the skill, or get it",
+      "rule": "Have the competencies the work needs or obtain them; take on only work you can become competent for.",
+      "why": "A conclusion from work the auditors did not understand is one nobody should rely on. Standard 3.1 makes competency a must for each internal auditor, and has the chief audit executive ensure the function as a whole holds, or obtains, the competencies for its charter's services. Standard 3.2 requires every internal auditor to keep developing them.",
+      "triggers": [
+        "nobody on the team understands",
+        "has never audited this area",
+        "lacks the expertise",
+        "learn it during fieldwork",
+        "the charter lists the service",
+        "certified years ago",
+        "no budget for a specialist"
+      ],
+      "trap": {
+        "move": "Starting anyway and planning to pick the skill up alone during fieldwork, or treating long experience, a certificate or a line in the charter as proof that the skill is there.",
+        "why_wrong": "The charter says the function may do the work, not that it can. Learning on an engagement is fine under proper supervision, but not alone, with nobody on the team who has the skill. An internal auditor who finds while planning that the team's skills do not fit the engagement must raise this resource gap with the chief audit executive (Standard 13.5), who can obtain the skill, for example through training or an outside provider."
+      },
+      "example": {
+        "scenario": "Eleni, certified for twelve years, is an internal auditor at a wind farm operator in Greece. Eleni is assigned to lead an engagement on maintenance contracts priced by an engineering formula Eleni cannot follow.",
+        "answer": "The certification shows general competence, not this skill. Eleni tells the chief audit executive about the gap before planning goes further, and the chief audit executive arranges an engineer to work with the team under supervision."
+      },
+      "check": {
+        "scenario": "The internal audit plan includes an engagement on a derivatives pricing model. Nobody in the function has that skill, and the budget allows outside help.",
+        "right": "The chief audit executive contracts an outside pricing specialist to join the engagement team.",
+        "trap": "The chief audit executive assigns the most senior auditor, who has led engagements for twenty years.",
+        "why": "Seniority is not the missing competency. Under Standard 3.1 the chief audit executive must ensure the function holds the competencies for its services, or obtain them."
+      },
+      "nuance": "A gap is no reason to refuse: the skill can usually be obtained. If it cannot, the work may be narrowed or declined, and the chief audit executive tells senior management and the board the impact (Standards 3.1, 10.2, 13.5).",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          2,
+          4
+        ],
+        "ciac": [
+          2,
+          3
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1B4.1",
+          "1B4.4",
+          "1D5.1"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d2_011",
+          "cia1_d2_012",
+          "cia1_d4_018"
+        ],
+        "ciac": []
+      },
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "discuss-then-escalate",
+      "family": "speaking-up",
+      "order": 1,
+      "title": "Discuss, then escalate in order",
+      "rule": "The chief audit executive takes risk accepted above appetite or tolerance to senior management, then to the board if unresolved.",
+      "why": "Under Standard 11.5 the test is the organization's risk appetite or risk tolerance, not the auditor's own comfort. Senior management hears it first, and the board hears it only if the chief audit executive finds the matter unresolved. Resolving the risk is not the chief audit executive's job.",
+      "triggers": [
+        "management has decided to accept the risk",
+        "exceeds the risk appetite",
+        "refuses to act",
+        "the action plan is overdue again",
+        "go straight to the board",
+        "report to the regulator",
+        "a scope limitation"
+      ],
+      "trap": {
+        "move": "Jumping a level or taking over: going straight to the board or a regulator, dropping the matter because management has decided, or fixing the risk yourself.",
+        "why_wrong": "Each skips a step. The order gives the people who can resolve the risk the chance to do so, keeps the board for what stays unresolved, and leaves the decision with those who own it."
+      },
+      "example": {
+        "scenario": "A division head at a bank in Nigeria decides not to fix a payment-approval gap. The chief audit executive concludes the risk is above the bank's stated risk tolerance.",
+        "answer": "The chief audit executive discusses it with senior management. If they do not resolve it, the matter goes to the board, which decides. The chief audit executive neither imposes the fix nor lets it drop."
+      },
+      "check": {
+        "scenario": "A chief audit executive concludes that a risk management has accepted is above the organization's risk appetite. Senior management has not yet been told.",
+        "right": "Discuss the accepted risk with senior management before taking it any further.",
+        "trap": "Take the accepted risk to the board at once, since it is above appetite.",
+        "why": "Standard 11.5 sets the order: senior management first, then the board if the matter stays unresolved."
+      },
+      "nuance": "Raising it first with the managers responsible for the risk is a should, not a must. A scope limitation follows a similar path: discuss it with management, and if unresolved the chief audit executive elevates it to the board.",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          1,
+          3
+        ],
+        "ciac": [
+          1,
+          4,
+          5
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1A7.4",
+          "1C5.2",
+          "1C5.4"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d1_027",
+          "cia1_d3_012"
+        ],
+        "ciac": [
+          "ciac_d1_013"
+        ]
+      },
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "report-through-the-right-channel",
+      "family": "speaking-up",
+      "order": 2,
+      "title": "Report through the right channel",
+      "rule": "Report ethics concerns and legal violations through the channel policy and law set, to someone with authority to act.",
+      "why": "A concern is only handled when it reaches someone who can act on it. Standard 1.2 has internal auditors report conduct against the organization's ethical expectations under its policies, and Standard 1.3 sends legal or regulatory violations to those with authority to act. Staying silent is not an option.",
+      "triggers": [
+        "suspects fraud",
+        "outside the engagement scope",
+        "confront the employee",
+        "tell the manager involved",
+        "an anonymous tip",
+        "a red flag",
+        "whom should the internal auditor inform"
+      ],
+      "trap": {
+        "move": "Acting alone: confronting the person, alerting the manager who may be involved, starting your own investigation, or keeping quiet because it is out of scope.",
+        "why_wrong": "Investigating needs the mandate and the competencies, and silence hides a finding. On CIA questions the internal auditor usually reports inside internal audit first, following the function's methodology."
+      },
+      "example": {
+        "scenario": "While testing travel claims at a university in India, Priya, an internal auditor, sees signs that a department head approved payments to a company owned by a relative. Procurement was not in the engagement's scope.",
+        "answer": "Priya records what she saw and reports it promptly by the route internal audit's methodology sets, starting with the supervisor or the chief audit executive. Scope is no reason for silence, and Priya does not investigate alone."
+      },
+      "check": {
+        "scenario": "An internal auditor notices invoices that look altered while testing something else. The auditor has no investigation training.",
+        "right": "Report the invoices to the chief audit executive, following the function's set procedure.",
+        "trap": "Interview the clerk who processed them to find out whether fraud has taken place.",
+        "why": "Concerns go through the set channel to someone with authority to act. Investigating needs the mandate and the competencies."
+      },
+      "nuance": "The channel comes from policy and law, so it differs by organization. When senior management may be involved, the chief audit executive should take it to the board. Leaving confrontation to trained investigators is sound practice, not a Standards line.",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          2,
+          3,
+          4
+        ],
+        "ciac": [
+          1,
+          4
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1B1.2",
+          "1B1.3",
+          "1B6.4",
+          "1C3.3",
+          "1D3.3",
+          "1D5.1"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d2_002",
+          "cia1_d2_003",
+          "cia1_d2_020",
+          "cia1_d3_007",
+          "cia1_d4_012"
+        ],
+        "ciac": [
+          "ciac_d1_024"
+        ]
+      },
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "tell-it-straight",
+      "family": "speaking-up",
+      "order": 3,
+      "title": "Tell it straight; disclose, never hide",
+      "rule": "Report what the evidence shows; never soften, hide or drop a result, an error or a nonconformance.",
+      "why": "The board and management decide on what internal audit tells them, so a softened or missing result leads to a worse decision. Standard 1.1 forbids concealing or omitting findings and asks for professional courage. Standards 11.4 and 4.1 apply the same idea to significant errors and to requirements that could not be met.",
+      "triggers": [
+        "asks to remove the finding",
+        "tone down the wording",
+        "a senior executive is unhappy",
+        "an error in the issued report",
+        "could not conform with",
+        "to keep the relationship",
+        "delay the report"
+      ],
+      "trap": {
+        "move": "Softening to keep the peace: dropping or rewording a finding because a senior person objects, or quietly fixing an error in a report already sent.",
+        "why_wrong": "Pressure, friendship or fear is not a valid reason to change a result. A quiet fix leaves earlier readers relying on wrong information; a significant correction goes to everyone who received the original."
+      },
+      "example": {
+        "scenario": "After a final communication is issued at a port authority in Brazil, the chief audit executive learns that a loss figure in it was overstated tenfold, which changes one conclusion.",
+        "answer": "The chief audit executive promptly sends corrected information to every party who received the original. Replacing the file quietly, or telling only the unit concerned, would leave the others with the wrong figure."
+      },
+      "check": {
+        "scenario": "A finance director asks an internal auditor to leave a well-supported finding out of the draft because it will embarrass the team before a board meeting.",
+        "right": "Keep the finding, discuss the director's concern, and report what the evidence supports.",
+        "trap": "Move the finding to a private note for the director and leave it out of the draft.",
+        "why": "Without a valid reason, results do not change. Leaving out a supported finding is concealing it, however kindly meant."
+      },
+      "nuance": "Honest is not harsh: Standard 1.1 also asks for respectful, clear communication. A result does change for a valid reason, such as new evidence. Only a significant error triggers the formal correction, by criteria agreed with the board.",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          1,
+          2,
+          4
+        ],
+        "ciac": [
+          1,
+          5
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1A7.4",
+          "1B1.1",
+          "1B4.3",
+          "1B6.4",
+          "1D3.3"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d2_001",
+          "cia1_d2_013",
+          "cia1_d2_019",
+          "cia1_d2_026"
+        ],
+        "ciac": [
+          "ciac_d1_030"
+        ]
+      },
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "information-for-the-work-only",
+      "family": "speaking-up",
+      "order": 4,
+      "title": "Information is for the work only",
+      "rule": "Information from the work is for the work: no personal gain, none to unauthorized people without legal or professional duty.",
+      "why": "Internal auditors are given access that few others have, so the organization must be able to trust what they do with it. Principle 5 keeps that information for professional purposes. Standard 5.1 bars using it for personal gain, and Standard 5.2 bars passing confidential information to anyone unauthorized unless a legal or professional duty calls for it.",
+      "triggers": [
+        "wants to keep copies",
+        "seen in the workpapers",
+        "learned at a former employer",
+        "mentions it to a colleague",
+        "the names were removed",
+        "nobody was harmed",
+        "an outside specialist joins the engagement"
+      ],
+      "trap": {
+        "move": "Judging by harm or by who is asking: calling a use fine because nobody lost, the names were removed, the organization benefits or the person asking is a colleague.",
+        "why_wrong": "No harm is not a defense. Ask two things: what is the information being used for, and is the receiver authorized? Using it for personal gain, or against the organization's legitimate aims, is misuse even when nothing leaks (Standard 5.1), and a colleague is not authorized just by being an employee. Access is not ownership: the information still belongs to the organization, or to the outside party it came from."
+      },
+      "example": {
+        "scenario": "Mateo, an internal auditor at a property developer in Mexico, learns during an engagement which plots the company plans to bid for next quarter. A friend who invests in land asks where prices might rise.",
+        "answer": "Mateo tells the friend nothing and buys nothing nearby. The bid list was learned for the engagement and is used only there. Passing it on is unauthorized disclosure, and trading on it is personal gain, even if the company never notices."
+      },
+      "check": {
+        "scenario": "Two internal auditors ride a crowded train home after interviews on a sensitive pricing engagement. One wants to compare notes on what they heard while it is fresh.",
+        "right": "Hold the conversation until they are somewhere private, such as the office.",
+        "trap": "Compare notes quietly now, leaving out the names of the people involved.",
+        "why": "Spoken information is protected too, and Standard 5.2 has internal auditors manage the risk of exposing it by accident. Leaving out names does not make the rest safe to overhear."
+      },
+      "nuance": "Confidentiality is no reason to leave a finding out of a report to the board (Standard 1.1), which receives results (Standard 11.3). The chief audit executive must hold anyone assisting the function to the same protection rules (Standard 5.2).",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          2
+        ],
+        "ciac": [
+          1
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1B6.1",
+          "1B6.2",
+          "1B6.3",
+          "1B6.4"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d2_017",
+          "cia1_d2_028",
+          "cia1_d2_029",
+          "cia1_d2_030"
+        ],
+        "ciac": [
+          "ciac_d1_032",
+          "ciac_d1_033"
+        ]
+      },
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "must-or-should",
+      "family": "reading",
+      "order": 1,
+      "title": "Must or should?",
+      "rule": "A must is a requirement; a should or may is good practice. Answer at the strength the question asks.",
+      "why": "Each standard has requirements, which use must, and considerations for implementation, which use should and may. When a question asks what is required, a sensible practice loses to the requirement. Board duties are a third kind, essential conditions, which the chief audit executive discusses and cannot enforce.",
+      "triggers": [
+        "is required to",
+        "must",
+        "should",
+        "according to the Standards",
+        "a leading practice",
+        "at least annually",
+        "which is a requirement"
+      ],
+      "trap": {
+        "move": "Picking the option that sounds like best practice when the question asks what the Standards require, or treating a common practice as a rule.",
+        "why_wrong": "Good practice is often true and still not the answer. A private yearly meeting between the board and the chief audit executive is a should; the yearly confirmation of independence is a must. Swapping the two strengths makes an option wrong."
+      },
+      "example": {
+        "scenario": "A question asks what the Standards require of an internal auditor planning an engagement. One option is a team session to brainstorm fraud scenarios; another is considering fraud risks in the engagement risk assessment.",
+        "answer": "Considering fraud risk is the requirement (Standard 13.2). A brainstorming session is a sound way to do it, and no Standard demands it. Both help; the word require picks the must."
+      },
+      "check": {
+        "scenario": "A question asks what the chief audit executive must do about independence each year. Two options remain.",
+        "right": "Confirm the internal audit function's independence to the board at least once a year.",
+        "trap": "Meet the board in a private session, without management, at least once a year.",
+        "why": "The yearly confirmation is a requirement. Private sessions are valuable, and holding them at least yearly is a should."
+      },
+      "nuance": "A should is not wrong, and a question may ask for the best practice. Read which strength it wants. When an essential condition is missing, the chief audit executive explains the impact to the board and senior management.",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "ciac": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "subtopics": {
+        "cia1": [
+          "1A1.1",
+          "1A2.4",
+          "1A7.2",
+          "1A7.3",
+          "1B1.1",
+          "1C8.1",
+          "1D2.2"
+        ],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d1_005",
+          "cia1_d1_006",
+          "cia1_d1_007",
+          "cia1_d1_030",
+          "cia1_d3_005",
+          "cia1_d3_013",
+          "cia1_d3_020",
+          "cia1_d4_005",
+          "cia1_d4_008",
+          "cia1_d4_010"
+        ],
+        "ciac": [
+          "ciac_d1_002",
+          "ciac_d1_015"
+        ]
+      },
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "priority-word-decides",
+      "family": "reading",
+      "order": 2,
+      "title": "The priority word decides",
+      "rule": "Find FIRST, BEST, MOST, PRIMARY or MOST LIKELY before the options; that word picks among several true answers.",
+      "why": "On CIA questions several options are often correct statements or sensible actions. The priority word says which test to apply: FIRST asks about order, BEST about fit for the seat, PRIMARY about the main purpose. This is KaiSip's reading pattern, not a rule from The IIA.",
+      "triggers": [
+        "FIRST",
+        "BEST",
+        "MOST important",
+        "PRIMARY purpose",
+        "MOST LIKELY",
+        "LEAST",
+        "GREATEST"
+      ],
+      "trap": {
+        "move": "Choosing the first option that is true or helpful without checking it against the priority word.",
+        "why_wrong": "A true statement can still be the wrong answer. With FIRST, a good later step loses to the step it depends on; with PRIMARY, a real side benefit loses to the main purpose."
+      },
+      "example": {
+        "scenario": "A question asks what the chief audit executive should do FIRST when a manager refuses the team access to contract files. Options: note the limit in the final communication, discuss it with management, or elevate it to the board.",
+        "answer": "All three can be right at some point. FIRST asks for order: discuss the limitation with management. The board comes next if that fails, and the final communication records what remains."
+      },
+      "check": {
+        "scenario": "A question asks for the PRIMARY purpose of the internal audit charter. Two options are both true of most charters.",
+        "right": "It records the function's mandate, position and reporting lines, as the board approved them.",
+        "trap": "It helps new audit staff learn how the function is organized and who leads the team.",
+        "why": "PRIMARY asks for the main purpose, not a side benefit. The charter exists to state the mandate and position the board approved."
+      },
+      "nuance": "LEAST and EXCEPT flip the test: three options fit and you want the one that does not. MOST LIKELY asks what is most probable from the facts given, not what would be worst.",
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "ciac": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "subtopics": {
+        "cia1": [],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d1_011",
+          "cia1_d2_006",
+          "cia1_d2_023"
+        ],
+        "ciac": [
+          "ciac_d1_027"
+        ]
+      },
+      "slip_pattern": "priority",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "final-two",
+      "family": "reading",
+      "order": 3,
+      "title": "Settle the final two with a principle",
+      "rule": "Rule out two options on knowledge, then choose between the last two with a principle, not a feeling.",
+      "why": "A well-built question usually leaves two options that both sound right. What separates them is rarely a fact: it is who owns the decision, function or person, must or should, or what comes first. Naming the principle before you choose turns a guess into a reason you can check.",
+      "triggers": [
+        "two options both look right",
+        "both are good practice",
+        "torn between",
+        "BEST",
+        "MOST appropriate",
+        "which is better"
+      ],
+      "trap": {
+        "move": "Choosing the option that sounds more thorough, more senior or more cautious, or going with the longer answer.",
+        "why_wrong": "Thorough-sounding options often have the auditor doing management's job or skipping a step. The winner is the one a principle supports for the seat you are in."
+      },
+      "example": {
+        "scenario": "Two options remain for a control gap: the internal auditor writes the missing procedure, or the internal auditor agrees an action plan with the process owner. Both would close the gap.",
+        "answer": "Ask who owns the fix. Management owns controls and actions, so agreeing the plan wins. Say the reason in one sentence before you choose."
+      },
+      "check": {
+        "scenario": "Two options remain. Both describe a real safeguard, and you cannot recall a fact that separates them.",
+        "right": "Ask which principle separates them, such as who decides or what comes first.",
+        "trap": "Pick the one that sounds more complete, since fuller answers are usually safer.",
+        "why": "The last two are separated by a principle. Length and how complete an option sounds are not evidence."
+      },
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "ciac": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "subtopics": {
+        "cia1": [],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d3_008",
+          "cia1_d3_010",
+          "cia1_d3_019"
+        ],
+        "ciac": []
+      },
+      "slip_pattern": "runner-up",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "answer-from-the-stem",
+      "family": "reading",
+      "order": 4,
+      "title": "Answer from the facts given",
+      "rule": "Use only the facts in the question: the named actor and words like already, approved, unresolved or advisory.",
+      "why": "The deciding fact is often one word: who is acting, whether senior management has already been told, whether the work is assurance or advisory. Adding a fact the question does not give, such as bad intent, answers a different question. Be wary of options that say always, never or guarantee.",
+      "triggers": [
+        "already discussed",
+        "has approved",
+        "remains unresolved",
+        "an advisory engagement",
+        "the chief audit executive",
+        "within the previous 12 months",
+        "temporary"
+      ],
+      "trap": {
+        "move": "Answering the question you expected: skimming past the actor or a qualifier, or assuming a detail that is not there.",
+        "why_wrong": "Change the actor from an internal auditor to the chief audit executive, or add the word already, and the best answer moves. The question as written is the only one being scored."
+      },
+      "example": {
+        "scenario": "A question says the chief audit executive has already discussed a risk above risk tolerance with senior management, and it remains unresolved. It asks what the chief audit executive should do next.",
+        "answer": "The first step is done, so the answer moves on: escalate to the board. An option to discuss it with senior management is true in general and wrong here, because of the word already."
+      },
+      "check": {
+        "scenario": "A question says an internal auditor was asked for advice on a process they managed eight months ago, and has disclosed that to the requesting manager.",
+        "right": "Treat the advisory work as allowed, because the disclosure has already been made.",
+        "trap": "Treat the work as barred, because the earlier role ended less than a year ago.",
+        "why": "Two words decide it: advice and disclosed. The 12-month presumption is about assurance, and the question says the disclosure is done."
+      },
+      "packs": [
+        "cia1",
+        "ciac"
+      ],
+      "domains": {
+        "cia1": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "ciac": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "subtopics": {
+        "cia1": [],
+        "ciac": []
+      },
+      "practice_ids": {
+        "cia1": [
+          "cia1_d1_021",
+          "cia1_d1_022",
+          "cia1_d1_023",
+          "cia1_d1_024",
+          "cia1_d1_033",
+          "cia1_d2_018",
+          "cia1_d2_024",
+          "cia1_d2_027",
+          "cia1_d3_009",
+          "cia1_d3_016",
+          "cia1_d4_001",
+          "cia1_d4_002",
+          "cia1_d4_003",
+          "cia1_d4_013",
+          "cia1_d4_014"
+        ],
+        "ciac": [
+          "ciac_d1_009",
+          "ciac_d1_010",
+          "ciac_d1_011",
+          "ciac_d1_018",
+          "ciac_d1_023",
+          "ciac_d1_028",
+          "ciac_d1_031",
+          "ciac_d3_001",
+          "ciac_d3_002"
+        ]
+      },
+      "slip_pattern": "misread",
+      "legacy_ids": [],
+      "aliases": []
+    }
+  ],
+  "slip_map": {
+    "runner-up": "final-two",
+    "priority": "priority-word-decides",
+    "overconfident": "answer-from-the-stem",
+    "role": "know-your-seat",
+    "tech-first": "management-owns-risk-and-action",
+    "symptom": "root-cause-over-symptom",
+    "misread": "answer-from-the-stem",
+    "knowledge": null
+  }
+}

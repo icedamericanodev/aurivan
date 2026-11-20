@@ -6,6 +6,7 @@ Usage:
     python3 scripts/lint_exam_guide.py draft.json ...   # draft copies (type detected from content)
     python3 scripts/lint_exam_guide.py --cert crisc data/crisc/exam/crisc_exam_guide.json
     python3 scripts/lint_exam_guide.py --cert aaia     # data/aaia/exam_guide.json + final_review_week.json
+    python3 scripts/lint_exam_guide.py --cert cia1     # a CIA pack (The IIA): cia1, cia2, cia3 or ciac
 
 Optional flag (the default, cisa, is unchanged):
     --cert NAME   lint another certification's files: `certification` must be
@@ -18,6 +19,18 @@ Optional flag (the default, cisa, is unchanged):
                   data/aaia/notes/ (codes like 1A and 1A.2); its exam length (90)
                   comes from certifications.ts. A file not written yet prints
                   "skipped: ..." (exit 0 when nothing else is wrong)
+                  The CIA packs (cia1, cia2, cia3, ciac) have another issuer, The
+                  IIA (ISSUERS): sources on theiia.org or pearsonvue.com, a
+                  disclaimer that names The IIA, and "check theiia.org before you
+                  book". They are not in certifications.ts yet, so domain ids
+                  (section A is "1"), weights, exam length and minutes come from
+                  data/cia/shared/outline.json, and the guide's 'at-a-glance'
+                  section must state that length and time. Files:
+                  data/cia/<pack>/exam/<pack>_exam_guide.json and
+                  final_review_week.json, mindset/principles.json and notes/
+                  (codes like 1B3 and 1B3.2: part, section, topic). With no
+                  guide or week written yet it prints one "nothing to lint yet"
+                  line and exits 0
 
 Errors break the schema, a cross-reference (domain weights, principle ids, note
 codes) or a hard limit. Warnings are gaps to close (for example facts that have
@@ -65,6 +78,36 @@ CERT_PATHS = {
 }
 NOTE_EXAMPLE = "1B3 or 1B3.2"
 
+# ---- Issuers ---------------------------------------------------------------
+# The body that runs the exam sets three things: the sites a source may link to,
+# the name the disclaimer must carry and the site "check before you book" names.
+# ISACA is the default, and its checks in lint_guide() keep their literal lines
+# and SOURCE_HOSTS on purpose: data/cc/tools/lint_cc_exam.py rewrites those exact
+# lines for ISC2 and data/csoe/tools/lint_exam_guide_csoe.py matches their
+# messages for SOXCPA. Another issuer is checked from this table instead.
+ISSUERS = {
+    "isaca": {"name": "ISACA", "hosts": SOURCE_HOSTS, "disclaimer_word": "ISACA",
+              "booking_host": "isaca.org"},
+    "iia": {"name": "The IIA", "hosts": ("theiia.org", "pearsonvue.com"), "disclaimer_word": "The IIA",
+            "booking_host": "theiia.org"},
+}
+ISSUER = "isaca"
+# The IIA's CIA packs are not in the apps yet: their domains (sections), weights,
+# exam length and minutes come from data/cia/shared/outline.json (lp.CIA_OUTLINE).
+# Note codes are part + section + topic, so the section letter gives the domain.
+for _pack, _part in lp.CIA_PACKS.items():
+    CERT_PATHS[_pack] = {
+        "issuer": "iia",
+        "outline": True,
+        "guide": lp.CIA / _pack / "exam" / f"{_pack}_exam_guide.json",
+        "week": lp.CIA / _pack / "exam" / "final_review_week.json",
+        "principles": lp.CIA / _pack / "mindset" / "principles.json",
+        "notes": lp.CIA / _pack / "notes",
+        "note_code": rf"^{_part}([A-E])\d+(\.\d+)?$",
+        "note_example": f"{_part}B3 or {_part}B3.2",
+    }
+OUTLINE_EXAM = None  # the cert's exam in the outline file: questions, minutes, sections
+
 # ---- Exam guide ------------------------------------------------------------
 GUIDE_TOP = {"schema_version", "certification", "title", "description", "last_checked",
              "disclaimer", "check_before_booking", "sections"}
@@ -104,6 +147,11 @@ QUESTION_COUNT = re.compile(r"\b(\d[\d,]*)\+?\s+(?!(?:seconds?|minutes?|hours?|d
                             r"(?:\w+[- ]){0,2}questions?\b", re.I)
 EXAM_QUESTION_COUNTS = {150}
 SESSION_MAX = 20
+# An outline-file cert (the CIA packs) also checks the exam time. A time this long
+# is taken to be the exam's, so it must be the outline's minutes (None: no check).
+MINUTES = re.compile(r"\b(\d+)[- ]minutes?\b", re.I)
+EXAM_MINUTES = None
+LONG_MINUTES = 100
 BANK_NUMBER = re.compile(r"\bbank\b[^.]{0,40}?\d|\d[\d,]*\+?\s+(?:practice\s+)?(?:questions|items)\s+in\s+(?:the|our|KaiSip)", re.I)
 
 errors = []
@@ -207,6 +255,10 @@ def check_text_hygiene(doc, label):
             n = int(m.group(1).replace(",", ""))
             if n not in EXAM_QUESTION_COUNTS and n > SESSION_MAX:
                 err(where, f"counts questions ('{m.group(0)}'); only the exam length or a small set (<= {SESSION_MAX}) may be stated")
+        if EXAM_MINUTES:
+            for m in MINUTES.finditer(s):
+                if int(m.group(1)) >= LONG_MINUTES and int(m.group(1)) != EXAM_MINUTES:
+                    err(where, f"states '{m.group(0)}'; the exam is {EXAM_MINUTES} minutes in {_rel(lp.CIA_OUTLINE)}")
 
 
 # ---- Reference data --------------------------------------------------------
@@ -242,6 +294,8 @@ def load_mobile_weights():
         # From this cert's `id: '<cert>'` up to the next certification object.
         m = re.search(rf"id:\s*'{CERT}'(.*?)(?=\n\s*\{{\s*\n\s*id:\s*'|\Z)", src, re.S)
         if not m:
+            if OUTLINE_EXAM:
+                return None  # not in the apps yet: the outline file is the reference
             err("certifications.ts", f"{CERT.upper()} block not found; cannot check weights")
             return {}
         found = dict(re.findall(r"\{\s*id:\s*'([1-9])'[^}]*?\bweight:\s*(\d+)", m.group(1)))
@@ -291,8 +345,8 @@ def check_note(where, code, ctx, domain=None):
         return
     if ctx["codes"] and code not in ctx["codes"]:
         err(where, f"note '{code}' does not exist in {NOTES.relative_to(ROOT) if NOTES.is_relative_to(ROOT) else NOTES}")
-    if domain is not None and m.group(1) != domain:
-        err(where, f"note '{code}' is in D{m.group(1)}, not D{domain}")
+    if domain is not None and str(lp.code_domain(m)) != domain:
+        err(where, f"note '{code}' is in D{lp.code_domain(m)}, not D{domain}")
 
 
 # ---- Exam guide ------------------------------------------------------------
@@ -311,12 +365,15 @@ def lint_guide(doc, ctx):
     if checked and checked > ctx["today"]:
         err(label, f"last_checked {checked} is in the future")
     disc = doc.get("disclaimer", "")
-    if not (nonempty_str(disc) and "ISACA" in disc and re.search(r"not affiliated", disc, re.I)
-            and "independent" in disc.lower()):
-        err(label, "disclaimer must say KaiSip is independent and not affiliated with ISACA")
     cbb = doc.get("check_before_booking", "")
-    if not (nonempty_str(cbb) and "isaca.org" in cbb and "before you book" in cbb and "change" in cbb):
-        err(label, "check_before_booking must tell learners to check isaca.org before they book because these change")
+    if ISSUER != "isaca":
+        check_issuer_lines(label, disc, cbb)
+    else:
+        if not (nonempty_str(disc) and "ISACA" in disc and re.search(r"not affiliated", disc, re.I)
+                and "independent" in disc.lower()):
+            err(label, "disclaimer must say KaiSip is independent and not affiliated with ISACA")
+        if not (nonempty_str(cbb) and "isaca.org" in cbb and "before you book" in cbb and "change" in cbb):
+            err(label, "check_before_booking must tell learners to check isaca.org before they book because these change")
 
     sections = doc.get("sections")
     if not isinstance(sections, list) or not sections:
@@ -345,8 +402,10 @@ def lint_guide(doc, ctx):
             if checked and as_of > checked:
                 err(where, f"as_of {as_of} is after last_checked {checked}")
             age = (ctx["today"] - as_of).days
-            if age > STALE_DAYS:
+            if age > STALE_DAYS and ISSUER == "isaca":
                 warn(where, f"facts last checked {age} days ago; re-check them on isaca.org")
+            elif age > STALE_DAYS:
+                warn(where, f"facts last checked {age} days ago; re-check them on {ISSUERS[ISSUER]['booking_host']}")
         srcs = s.get("sources")
         if not isinstance(srcs, list) or not srcs:
             err(where, "sources must list at least one {label, url}")
@@ -371,6 +430,8 @@ def lint_guide(doc, ctx):
             if sid != "domains":
                 err(where, "only the 'domains' section may carry a domains list")
             check_guide_domains(where, s["domains"], ctx)
+        if sid == "at-a-glance" and OUTLINE_EXAM:
+            check_exam_facts(where, s)
     missing = [r for r in REQUIRED_SECTIONS if r not in seen]
     if missing:
         err(label, f"missing required sections {missing}")
@@ -381,6 +442,32 @@ def lint_guide(doc, ctx):
     if dom is not None and "domains" not in dom:
         err(f"{label} section 'domains'", "must carry the domains list with weights")
     check_text_hygiene(doc, label)
+
+
+def check_issuer_lines(label, disc, cbb):
+    """The disclaimer and "check before you book" rules for an issuer other than
+    ISACA (same rules, the issuer's own name and site from ISSUERS)."""
+    iss = ISSUERS[ISSUER]
+    if not (nonempty_str(disc) and iss["disclaimer_word"] in disc and re.search(r"not affiliated", disc, re.I)
+            and "independent" in disc.lower()):
+        err(label, f"disclaimer must say KaiSip is independent and not affiliated with {iss['name']}")
+    if not (nonempty_str(cbb) and iss["booking_host"] in cbb and "before you book" in cbb and "change" in cbb):
+        err(label, f"check_before_booking must tell learners to check {iss['booking_host']} "
+                   "before they book because these change")
+
+
+def check_exam_facts(where, s):
+    """An outline-file cert: 'at-a-glance' states the exam's own length and time.
+    (Any other count or long time, anywhere, is caught by check_text_hygiene.)"""
+    items = s.get("items") if isinstance(s.get("items"), list) else []
+    text = " ".join(x for x in [s.get("summary")] + items if isinstance(x, str))
+    src = _rel(lp.CIA_OUTLINE)
+    q, mins = OUTLINE_EXAM["questions"], OUTLINE_EXAM["minutes"]
+    # Its own patterns, not QUESTION_COUNT: that one reads "Part 1 has 125 questions" as a count of 1.
+    if not re.search(rf"\b{q}\s+(?:\w+[- ]){{0,2}}questions\b", text, re.I):
+        err(where, f"must state the exam length as '{q} questions' ({src})")
+    if not re.search(rf"\b{mins}[- ]minutes?\b", text, re.I):
+        err(where, f"must state the exam time as '{mins} minutes' ({src})")
 
 
 def check_guide_domains(where, doms, ctx):
@@ -403,7 +490,8 @@ def check_guide_domains(where, doms, ctx):
         ctx["guide_domain_names"][d.get("id")] = d.get("name")
     if weights and sum(weights.values()) != 100:
         err(where, f"weights sum to {sum(weights.values())}, not 100")
-    for name, ref in (("DI in index.html", ctx["di"]), ("mobile certifications.ts", ctx["mobile"])):
+    for name, ref in (("DI in index.html", ctx["di"]), ("mobile certifications.ts", ctx["mobile"]),
+                      (str(_rel(lp.CIA_OUTLINE)), ctx.get("outline"))):
         if ref is None:
             continue
         if ref and ref != weights:
@@ -608,7 +696,7 @@ def kind_of(doc):
 def configure(cert):
     """Switch the cross-checks to another certification (default cisa: unchanged)."""
     global CERT, DOMAIN_IDS, SHEET_REFS, NOTE_CODE, PRINCIPLES, NOTES, GUIDE, WEEK
-    global NOTE_EXAMPLE, EXAM_QUESTION_COUNTS
+    global NOTE_EXAMPLE, EXAM_QUESTION_COUNTS, ISSUER, SOURCE_HOSTS, OUTLINE_EXAM, EXAM_MINUTES
     CERT = cert
     if cert == "cisa":
         return
@@ -622,6 +710,20 @@ def configure(cert):
         GUIDE, WEEK, PRINCIPLES, NOTES = cp["guide"], cp["week"], cp["principles"], cp["notes"]
         NOTE_CODE = re.compile(cp["note_code"])
         NOTE_EXAMPLE = cp["note_example"]
+        if cp.get("outline"):
+            # A CIA pack: its issuer's rules, and domains, weights, exam length and
+            # minutes from the outline file instead of certifications.ts.
+            ISSUER = cp["issuer"]
+            SOURCE_HOSTS = ISSUERS[ISSUER]["hosts"]
+            OUTLINE_EXAM = lp.outline_exam(cert)
+            if OUTLINE_EXAM and OUTLINE_EXAM.get("sections"):
+                DOMAIN_IDS = [str(s["domain"]) for s in OUTLINE_EXAM["sections"]]
+                SHEET_REFS = set(DOMAIN_IDS) | DYNAMIC_DOMAINS | {"principles", "priority_words", "routine", "pace"}
+                EXAM_QUESTION_COUNTS = {OUTLINE_EXAM["questions"]}
+                EXAM_MINUTES = OUTLINE_EXAM["minutes"]
+            else:
+                OUTLINE_EXAM = None  # main() stops if there is a file to lint
+            return
     try:
         src = MOBILE_CERTS.read_text()
         m = re.search(rf"id:\s*'{cert}'(.*?)(?=\n\s*\{{\s*\n\s*id:\s*'|\Z)", src, re.S)
@@ -665,11 +767,18 @@ def main(argv):
         missing_args = [p for p in paths if not p.exists()]
         skipped += missing_args
         paths = [p for p in paths if p.exists()]
+        if not paths and CERT_PATHS[cert].get("outline"):
+            missing = " and ".join(str(_rel(p)) for p in (missing_args or (GUIDE, WEEK)))
+            print(f"Exam guide lint ({cert}): nothing to lint yet ({missing} not written)")
+            return 0
         if not paths:
             print(f"Exam guide lint ({cert}):")
             for p in skipped:
                 print(f"  skipped: {_rel(p)} not written yet")
             return 0
+    if cert in CERT_PATHS and CERT_PATHS[cert].get("outline") and not OUTLINE_EXAM:
+        print(f"✗ --cert {cert}: no sections for '{cert}' in {_rel(lp.CIA_OUTLINE)}")
+        return 2
     docs = {}
     for p in paths:
         try:
@@ -690,6 +799,7 @@ def main(argv):
         "today": dt.date.today(),
         "di": load_di_weights(),
         "mobile": load_mobile_weights(),
+        "outline": {str(s["domain"]): s["weight"] for s in OUTLINE_EXAM["sections"]} if OUTLINE_EXAM else None,
         "principle_ids": principle_ids,
         "families": families,
         "codes": load_note_codes(),
@@ -724,8 +834,11 @@ def main(argv):
                   f"{len(doc.get('cheat_sheet', {}).get('domains', []))} domain sheets")
     if ctx["di"]:
         print(f"  DI weights: {ctx['di']}")
-    elif CERT != "cisa" and ctx["di"] is None:
+    elif CERT != "cisa" and ctx["di"] is None and not ctx["outline"]:
         print(f"  DI weights: none for {CERT} in index.html (checked against mobile certifications.ts only)")
+    if ctx["outline"]:
+        print(f"  outline weights ({CERT}): {ctx['outline']}, {OUTLINE_EXAM['questions']} questions in "
+              f"{OUTLINE_EXAM['minutes']} minutes ({_rel(lp.CIA_OUTLINE)})")
     if CERT != "cisa" and ctx["mobile"]:
         print(f"  mobile weights ({CERT}): {ctx['mobile']}")
     for w in warnings:

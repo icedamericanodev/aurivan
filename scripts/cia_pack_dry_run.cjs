@@ -1,0 +1,611 @@
+#!/usr/bin/env node
+/**
+ * cia_pack_dry_run.cjs — proves the four CIA packs (cia1, cia2, cia3 and the
+ * generated Challenge pack ciac) will load in the phone app, without wiring
+ * them in. Copied from crisc_pack_dry_run.cjs; what differs is marked "CIA:".
+ *
+ * It runs the app's own pack builders (mobile/scripts/notes-pack.cjs,
+ * principles-pack.cjs, exam-guide-pack.cjs, terms-pack.cjs) on each pack's
+ * files, converts the questions exactly as mobile/scripts/build-content.mjs
+ * does (its own toPackQuestion, validate and checkPrincipleIds, read from that
+ * file so the field mapping can never drift), and writes the results ONLY to a
+ * temp folder (os.tmpdir()/cia-pack-dry-run/<pack>, or CIA_PACK_OUT). It never
+ * writes into the repository.
+ *
+ * CIA: the exam facts (length, minutes, sections, weights) come from
+ * <root>/shared/outline.json, not from certifications.ts: the CIA exams are
+ * deliberately not in the app yet. The IIA says "Section A", so the lines here
+ * say section, and a section's number (A is 1) is the app's domain id.
+ *
+ * CIA: a pack is checked as far as it is written. A pack with no files prints
+ * "<pack>: no content yet"; a file that is not written yet is reported, never
+ * failed. That is what lets this run on every session from day one.
+ *
+ * Checks per pack (one line each; exit 1 on any problem):
+ *   questions     every question converts and passes the app's validate();
+ *                 no id twice in the pack
+ *   extra fields  CIA items carry `challenge_ref` and `testable_from`, which no
+ *                 other course has: says whether the app's converter takes them
+ *   notes         the notes builder reports 0 problems
+ *   key terms     the terms builder (the phone Glossary and Key term widget)
+ *   principles    the principles builder reports 0 problems
+ *   tags          every principle_id on a question is a principle in THAT pack
+ *   glossary      <pack>/glossary.json has the shape the other courses use
+ *                 (the phone app has no builder for this file: shape only)
+ *   exam          the exam-guide builder on <pack>/exam/<pack>_exam_guide.json
+ *                 and final_review_week.json, with the outline's weights
+ *   mock pool     retired items (`"retired": true`: kept for their id, never
+ *                 dealt again) and items whose `testable_from` date is after
+ *                 today are left out
+ *   full mock     the real length (125, 100, 100, 150) split by section weight
+ *   short mock    the app's mini mock (a third: 42, 33, 33, 50) likewise.
+ *                 A pool too small for a mock is NOT a failure while a pack is
+ *                 being written: the line says how many mocks the pool supports
+ *                 and which section is short, and the draw is still checked on
+ *                 the largest mock that fits and keeps the weights.
+ *                 --require-full turns "cannot draw" into a failure (releases).
+ * Checks across packs (they run on every call, whichever packs are named):
+ *   ciac          data/cia/tools/build_challenge.py --check passes, and
+ *                 ciac/id_map.json has no Challenge id twice, no active source twice.
+ *                 Printed before the ciac pack's own lines; when ciac is not
+ *                 one of the named packs, printed with the other checks
+ *                 across packs, because a Part item feeds the Challenge pack
+ *   question ids  no id appears in two packs
+ * (Whether an id or an id-map row has changed since main is a git question:
+ * data/cia/tools/check_ids.py.)
+ *
+ * Usage (plain node, no npm install):
+ *   node scripts/cia_pack_dry_run.cjs                      # data/cia, today's date
+ *   node scripts/cia_pack_dry_run.cjs --root DIR --today 2026-11-19
+ *   node scripts/cia_pack_dry_run.cjs cia1 --require-full  # release check of one pack
+ * Naming packs limits the per-pack lines to them; the checks across packs always run.
+ * A clean made-up course to try it on: python3 data/cia/tools/prove_harness.py --keep DIR
+ */
+'use strict';
+
+const { spawnSync } = require('child_process');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const { pathToFileURL } = require('url');
+
+const ROOT = path.resolve(__dirname, '..');
+const MOBILE_SCRIPTS = path.join(ROOT, 'mobile', 'scripts');
+const TOOLS = path.join(ROOT, 'data', 'cia', 'tools');
+const PACKS = ['cia1', 'cia2', 'cia3', 'ciac'];
+const CHALLENGE = 'ciac';
+/** CIA: the two item fields only this course has (docs/content/CIA_BANK_PLAN.md). */
+const EXTRA_FIELDS = ['challenge_ref', 'testable_from'];
+const GLOSSARY_KEYS = ['id', 'term', 'acronym', 'def', 'scopeNotes', 'domain', 'category'];
+
+// ── Command line ─────────────────────────────────────────────────────────
+function usage(message) {
+  console.error(`✗ ${message}\n  usage: node scripts/cia_pack_dry_run.cjs [${PACKS.join('|')} ...] [--root DIR] [--today YYYY-MM-DD] [--require-full]`);
+  process.exit(2);
+}
+function parseArgs(argv) {
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  const args = {
+    root: path.join(ROOT, 'data', 'cia'),
+    // The local date, as the Python gates' datetime.date.today().
+    today: `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`,
+    requireFull: false,
+    packs: [],
+  };
+  for (let i = 0; i < argv.length; i++) {
+    const a = argv[i];
+    if (a === '--require-full') args.requireFull = true;
+    else if (a === '--root' || a === '--today') {
+      if (argv[i + 1] === undefined) usage(`${a} needs a value`);
+      args[a.slice(2)] = argv[++i];
+    } else if (PACKS.includes(a)) args.packs.push(a);
+    else usage(`unknown argument "${a}"`);
+  }
+  if (!isDate(args.today)) usage(`--today "${args.today}" is not a date (YYYY-MM-DD)`);
+  args.root = path.resolve(args.root);
+  if (!args.packs.length) args.packs = PACKS;
+  return args;
+}
+/** A real calendar date written YYYY-MM-DD. Such strings sort in date order, so `>` compares them. */
+function isDate(s) {
+  if (typeof s !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
+  const d = new Date(`${s}T00:00:00Z`);
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === s;
+}
+
+const ARGS = parseArgs(process.argv.slice(2));
+const CIA = ARGS.root;
+const OUT = path.resolve(process.env.CIA_PACK_OUT || path.join(os.tmpdir(), 'cia-pack-dry-run'));
+
+/** Paths in messages: relative to the course folder (works for data/cia and for a fixture). */
+const rel = (p) => path.relative(CIA, p) || p;
+let failed = false;
+const lines = [];
+function report(ok, name, detail, problems = []) {
+  if (!ok) failed = true;
+  lines.push(`  ${ok ? '✓' : '✗'} ${name}: ${detail}`);
+  for (const p of problems.slice(0, 25)) lines.push(`      ✗ ${p}`);
+  if (problems.length > 25) lines.push(`      … and ${problems.length - 25} more`);
+}
+/** A line that is neither a pass nor a failure: something not written yet, or a fact to know. */
+function note(name, detail) {
+  lines.push(`  • ${name}: ${detail}`);
+}
+const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+
+/** Read a JSON file, or null when it does not exist. A broken file is a problem. */
+function readJson(file, name) {
+  if (!fs.existsSync(file)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch (e) {
+    report(false, name, `${rel(file)} is not valid JSON (${e.message})`);
+    return undefined;
+  }
+}
+
+/**
+ * CIA: the exam facts from shared/outline.json (this replaces the CRISC
+ * script's read of certifications.ts). Section ids are strings, as the app's
+ * domain ids are ("1" for Section A).
+ */
+function examFacts() {
+  const file = path.join(CIA, 'shared', 'outline.json');
+  if (!fs.existsSync(file)) throw new Error(`${file} is missing: the exam lengths and section weights come from it`);
+  const outline = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const facts = {};
+  for (const pack of PACKS) {
+    const e = (outline.exams || []).find((x) => x.id === pack);
+    if (!e) throw new Error(`${rel(file)} has no exam "${pack}"`);
+    const sections = (e.sections || []).map((s) => ({ id: String(s.domain), letter: s.letter, name: s.name, weight: Number(s.weight) }));
+    const sum = sections.reduce((n, s) => n + s.weight, 0);
+    if (!sections.length || sum !== 100) throw new Error(`${rel(file)}: the ${pack} section weights add up to ${sum}, not 100`);
+    if (!Number.isInteger(e.questions) || e.questions <= 0) throw new Error(`${rel(file)}: ${pack} has no exam length`);
+    facts[pack] = { id: pack, name: e.name, questions: e.questions, minutes: e.minutes, sections };
+  }
+  return facts;
+}
+
+/**
+ * build-content.mjs's own functions. toPackQuestion, validate and
+ * checkPrincipleIds are not exported, so their source is read from the file
+ * and evaluated with the exported tokenizeLetters in scope: the mapping is
+ * the app's, byte for byte.
+ */
+async function appFunctions() {
+  const file = path.join(MOBILE_SCRIPTS, 'build-content.mjs');
+  const mod = await import(pathToFileURL(file).href);
+  const src = fs.readFileSync(file, 'utf8');
+  const grab = (name) => {
+    const m = src.match(new RegExp(`\\nfunction ${name}\\([^)]*\\) \\{[\\s\\S]*?\\n\\}\\n`));
+    if (!m) throw new Error(`function ${name} not found in ${path.relative(ROOT, file)}`);
+    return m[0];
+  };
+  const body = [grab('toPackQuestion'), grab('validate'), grab('checkPrincipleIds')].join('\n');
+  // eslint-disable-next-line no-new-func
+  return new Function('tokenizeLetters', `${body}\nreturn { toPackQuestion, validate, checkPrincipleIds };`)(mod.tokenizeLetters);
+}
+
+/** Largest-remainder split, as mobile/src/engine/blueprint.ts allocate(). */
+function allocate(total, weights) {
+  const sum = weights.reduce((s, w) => s + w, 0);
+  if (sum <= 0 || total <= 0) return weights.map(() => 0);
+  const exact = weights.map((w) => (w / sum) * total);
+  const floors = exact.map(Math.floor);
+  let remaining = total - floors.reduce((s, n) => s + n, 0);
+  const order = exact.map((x, i) => ({ i, frac: x - Math.floor(x) })).sort((a, b) => b.frac - a.frac);
+  for (const { i } of order) {
+    if (remaining <= 0) break;
+    floors[i] += 1;
+    remaining -= 1;
+  }
+  return floors;
+}
+
+/**
+ * Draw `total` questions split by section weight from `pool` (live and
+ * testable today), and report whether it works without repeats.
+ *
+ * CIA: a pool too small for the mock is expected while a pack is being
+ * written, so that is a note, not a failure (unless --require-full). The line
+ * says how many whole mocks the pool supports and which sections are short;
+ * the draw is then checked on the largest mock that still fits AND keeps the
+ * exam's weights, so the logic is proven on whatever the pack has today.
+ */
+function drawMock(name, total, exam, pool) {
+  const weights = exam.sections.map((s) => s.weight);
+  const live = exam.sections.map((s) => [...new Set(pool.filter((q) => q.domainId === s.id).map((q) => q.id))]);
+  const poolIds = new Set(pool.map((q) => q.id));
+  const split = (t) => exam.sections.map((s, i) => `${s.letter} ${t[i]}`).join(' / ');
+  /** Take the first `t[i]` ids of each section and check the draw: the full size, no repeats, only pool items. */
+  const draw = (t) => {
+    // A seeded shuffle is not needed: any draw of `target` distinct ids proves it.
+    const picked = live.flatMap((ids, i) => ids.slice(0, t[i]));
+    const want = t.reduce((n, x) => n + x, 0);
+    const problems = [];
+    if (new Set(picked).size !== want) problems.push(`drew ${new Set(picked).size} distinct of ${want}`);
+    if (picked.some((id) => !poolIds.has(id))) problems.push('drew an item from outside the mock pool');
+    return problems;
+  };
+
+  const targets = allocate(total, weights);
+  // How many whole mocks with no item used twice: the tightest section decides.
+  const forms = Math.min(...targets.map((t, i) => (t > 0 ? Math.floor(live[i].length / t) : Infinity)));
+  if (forms >= 1) {
+    const problems = draw(targets);
+    report(!problems.length, name, `${total} items (${split(targets)}) ${problems.length ? 'cannot be drawn' : 'drawn without repeats'}; the pool supports ${plural(forms, name)} with no item used twice`, problems);
+    return;
+  }
+  const short = exam.sections
+    .map((s, i) => (live[i].length < targets[i] ? `section ${s.letter} has ${live[i].length} of ${targets[i]} needed` : null))
+    .filter(Boolean);
+  // The largest smaller mock whose weight-true split fits the pool.
+  let fit = 0;
+  let fitTargets = weights.map(() => 0);
+  for (let t = total - 1; t >= 1; t--) {
+    const a = allocate(t, weights);
+    if (a.every((n, i) => n <= live[i].length)) {
+      fit = t;
+      fitTargets = a;
+      break;
+    }
+  }
+  const problems = fit ? draw(fitTargets) : [];
+  const checked = fit
+    ? `Draw logic checked on the largest weight-true mock that fits today: ${plural(fit, 'item')} (${split(fitTargets)}) ${problems.length ? 'could not be drawn' : 'drawn without repeats'}`
+    : 'No weight-true mock of any size fits yet, so nothing was drawn';
+  const detail = `0 ${name}s yet (${total} items, ${split(targets)}): ${short.join(', ')}. ${checked}`;
+  if (problems.length || ARGS.requireFull) report(false, name, detail + (ARGS.requireFull && !problems.length ? ' (--require-full)' : ''), problems);
+  else note(name, detail);
+}
+
+/** Every .json file under a pack's folder (to tell "no content yet" from a started pack). */
+function jsonFiles(dir) {
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+    const p = path.join(dir, e.name);
+    return e.isDirectory() ? jsonFiles(p) : e.name.endsWith('.json') ? [p] : [];
+  });
+}
+
+/** The ids of every question file of a pack, straight from the files (for the across-packs check). */
+function rawQuestionIds(pack) {
+  const dir = path.join(CIA, pack, 'originals');
+  if (!fs.existsSync(dir)) return [];
+  const ids = [];
+  for (const f of fs.readdirSync(dir).filter((n) => /^d\d+\.json$/.test(n)).sort()) {
+    try {
+      for (const q of JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')).questions || []) ids.push(String(q.id));
+    } catch (e) { /* a broken file is reported by the pack's own "questions" line */ }
+  }
+  return ids;
+}
+
+/** One pack, as far as it is written. */
+function dryRunPack(pack, exam, app, builders) {
+  const dir = path.join(CIA, pack);
+  lines.push(`${pack}: ${exam.name} (${exam.questions} questions, ${exam.minutes} minutes)`);
+  const out = path.join(OUT, pack);
+  fs.mkdirSync(out, { recursive: true });
+  const sectionIds = exam.sections.map((s) => s.id);
+
+  // ── Questions (build-content.mjs main(): convert, validate, write d<N>.json) ──
+  const questions = [];
+  const qProblems = [];
+  const perSection = [];
+  const testableFrom = new Map(); // question id → its date (only items that carry one)
+  let filesRead = 0;
+  let withRef = 0;
+  let rejected = null; // the converter's own message, if it threw on the extra fields
+  let carried = false; // true if the converter starts passing the extra fields through
+  for (const s of exam.sections) {
+    const file = path.join(dir, 'originals', `d${s.id}.json`);
+    const raw = readJson(file, 'questions');
+    if (raw == null) {
+      // CIA: a section not written yet is not a problem (the mock lines say what is short).
+      perSection.push(`${s.letter} ${raw === null ? 'not written yet' : 'unreadable'}`);
+      continue;
+    }
+    filesRead += 1;
+    const converted = [];
+    for (const q of raw.questions || []) {
+      // CIA: the two extra fields. toPackQuestion copies an explicit list of
+      // fields and validate() reads only options, correct, stem and tips, so
+      // both accept an item that carries them: the fields are simply left out
+      // of the pack question. This is checked on every item rather than
+      // assumed: the same item is converted without them and must come out
+      // identical. If a later converter rejects them (throws), they are
+      // stripped here and the "extra fields" line says the app must accept them.
+      const bare = Object.fromEntries(Object.entries(q).filter(([k]) => !EXTRA_FIELDS.includes(k)));
+      let pq;
+      try {
+        pq = app.toPackQuestion(q, pack);
+        if (JSON.stringify(pq) !== JSON.stringify(app.toPackQuestion(bare, pack))) carried = true;
+      } catch (e) {
+        // Blame the extra fields only if the item converts once they are gone.
+        try {
+          pq = app.toPackQuestion(bare, pack);
+          rejected = rejected || e.message;
+        } catch (e2) {
+          qProblems.push(`${q && q.id}: the app's converter failed on this item (${e2.message})`);
+          continue;
+        }
+      }
+      const p = app.validate(pq);
+      if (p.length) qProblems.push(`${pq.id}: ${p.join('; ')}`);
+      if (pq.domainId !== s.id) qProblems.push(`${pq.id}: domain ${pq.domainId}, file is d${s.id} (section ${s.letter})`);
+      if (q.challenge_ref) withRef += 1;
+      if (q.testable_from != null && q.testable_from !== '') {
+        if (isDate(q.testable_from)) testableFrom.set(pq.id, q.testable_from);
+        else qProblems.push(`${pq.id}: testable_from "${q.testable_from}" is not a date (YYYY-MM-DD) or null`);
+      }
+      converted.push(pq);
+    }
+    fs.writeFileSync(path.join(out, `d${s.id}.json`), JSON.stringify(converted));
+    questions.push(...converted);
+    perSection.push(`${s.letter} ${converted.length}`);
+  }
+  // A question file for a section this exam does not have would never be loaded.
+  const origDir = path.join(dir, 'originals');
+  for (const f of fs.existsSync(origDir) ? fs.readdirSync(origDir).sort() : []) {
+    const m = /^d(\d+)\.json$/.exec(f);
+    if (m && !sectionIds.includes(m[1])) qProblems.push(`originals/${f}: this exam has no section ${m[1]} (it has ${sectionIds.join(', ')})`);
+  }
+  const ids = questions.map((q) => q.id);
+  const dupes = [...new Set(ids.filter((id, i) => ids.indexOf(id) !== i))];
+  for (const id of dupes) qProblems.push(`${id}: id appears more than once in ${pack}`);
+  if (!filesRead && !qProblems.length) {
+    note('questions', `not written yet (${pack}/originals/d${sectionIds[0]}.json to d${sectionIds[sectionIds.length - 1]}.json)`);
+  } else {
+    report(qProblems.length === 0, 'questions', `${questions.length} converted (${perSection.join(', ')}), ${qProblems.length} problem(s)`, qProblems);
+  }
+  if (questions.length) {
+    const counts = `challenge_ref on ${withRef}, testable_from on ${testableFrom.size} of ${questions.length}`;
+    if (rejected) {
+      // Not a failure of the content: a to-do for the app before the pack is wired in.
+      lines.push(`  ! extra fields: ${counts}. The app's converter REJECTS them (${rejected}); stripped for this dry run. The app builder must accept them before the pack is wired in`);
+    } else {
+      note('extra fields', `${counts}. The app's converter accepts them and ${carried ? 'carries them into' : 'leaves them out of'} the pack question`
+        + (carried ? '' : ' (so the app cannot see testable_from yet: this dry run applies the date itself)'));
+    }
+  }
+
+  // ── Notes: one file per section, as one schema v2 notes file ──
+  const notesDir = path.join(dir, 'notes');
+  const notesDocs = [];
+  const notesFor = [];
+  for (const s of exam.sections) {
+    const doc = readJson(path.join(notesDir, `d${s.id}.json`), 'notes');
+    if (doc) {
+      notesDocs.push(doc);
+      notesFor.push(s);
+    }
+  }
+  let notes = null;
+  if (!notesDocs.length) {
+    note('notes', `not written yet (${pack}/notes/d${sectionIds[0]}.json to d${sectionIds[sectionIds.length - 1]}.json)`);
+  } else {
+    const r = builders.buildNotesPack({ schema_version: 2, domains: notesDocs }, pack, { questions });
+    notes = r.pack;
+    fs.writeFileSync(path.join(out, 'notes.json'), JSON.stringify(notes));
+    const subs = notes.domains.reduce((n, d) => n + d.topics.reduce((m, t) => m + t.subtopics.length, 0), 0);
+    // The builder drops a section with no usable topic without a word: say so.
+    const built = new Set(notes.domains.map((d) => d.id));
+    const lost = notesFor.filter((s) => !built.has(s.id)).map((s) => `notes/d${s.id}.json gave no section ${s.id} in the pack (domain_number, or no complete topic)`);
+    const not = exam.sections.filter((s) => !notesFor.includes(s)).map((s) => s.letter);
+    const nProblems = [...r.problems, ...lost, ...(r.skipped ? [`builder skipped the file (${r.skipped})`] : [])];
+    report(!nProblems.length, 'notes',
+      `${plural(notes.domains.length, 'section')}, ${plural(subs, 'subtopic')}, ${nProblems.length} problem(s), ${r.warnings.length} warning(s)`
+      + (not.length ? `; not written yet: ${not.join(', ')}` : ''),
+      nProblems);
+    for (const w of r.warnings) lines.push(`      ! ${w}`);
+    // The phone Glossary and the Key term widget read this pack, not <pack>/glossary.json.
+    const terms = builders.buildTermsPack(notes, pack);
+    fs.writeFileSync(path.join(out, 'terms.json'), JSON.stringify(terms));
+    const n = Object.values(terms.domains).reduce((sum, list) => sum + list.length, 0);
+    note('key terms', `${plural(n, 'term')} from the notes' key_terminologies (what the phone Glossary and the Key term widget show)`);
+  }
+  // Any other notes file (for example the Challenge pack's hand-written bridge.json) is not read here.
+  for (const f of fs.existsSync(notesDir) ? fs.readdirSync(notesDir).sort() : []) {
+    const m = /^d(\d+)\.json$/.exec(f);
+    if (f.endsWith('.json') && !(m && sectionIds.includes(m[1]))) note('notes', `${pack}/notes/${f} is not a section file: not fed to the notes builder`);
+  }
+
+  // ── Principles (built into the pack from shared/principles.json by build_packs.py) ──
+  const principlesFile = path.join(dir, 'mindset', 'principles.json');
+  const rawPrinciples = readJson(principlesFile, 'principles');
+  let principles = null;
+  if (rawPrinciples === null) {
+    note('principles', `${rel(principlesFile)} not written yet`);
+  } else if (rawPrinciples !== undefined) {
+    const r = builders.buildPrinciplesPack(rawPrinciples, pack, { questions });
+    principles = r.pack;
+    fs.writeFileSync(path.join(out, 'principles.json'), JSON.stringify(principles));
+    report(!r.problems.length && !r.skipped, 'principles',
+      `${plural(principles.principles.length, 'principle')} in ${principles.families.length} ${principles.families.length === 1 ? 'family' : 'families'}, ${r.problems.length} problem(s), ${r.warnings.length} warning(s)`,
+      [...r.problems, ...(r.skipped ? [`builder skipped the file (${r.skipped})`] : [])]);
+    for (const w of r.warnings) lines.push(`      ! ${w}`);
+  }
+
+  // ── principle_id tags against THIS pack's principles ──
+  const tagged = questions.filter((q) => q.principleId);
+  if (!questions.length) {
+    // Nothing to check: no line.
+  } else if (!tagged.length) {
+    note('principle tags', `no ${pack} question carries a principle_id yet`);
+  } else if (!principles || !principles.principles.length) {
+    report(false, 'principle tags', `${tagged.length} question(s) carry principle_id but ${pack} has no principles pack`);
+  } else {
+    const p = app.checkPrincipleIds(pack, questions, principles);
+    report(!p.length, 'principle tags', `${tagged.length} of ${questions.length} tagged, ${p.length} unknown principle id(s)`, p);
+  }
+
+  // ── Glossary (built into the pack from shared/glossary.json by build_packs.py) ──
+  // The phone app has no builder for this file (its Glossary reads the key
+  // terms pack above), so this is the shape check verify_repo.sh runs on the
+  // CRISC glossary: the keys, a section of this exam (0: the whole exam), a
+  // definition, and no id or term twice.
+  const glossaryFile = path.join(dir, 'glossary.json');
+  const glossary = readJson(glossaryFile, 'glossary');
+  if (glossary === null) {
+    note('glossary', `${rel(glossaryFile)} not written yet`);
+  } else if (glossary !== undefined) {
+    const gProblems = [];
+    const list = Array.isArray(glossary) ? glossary : [];
+    if (!list.length) gProblems.push('must be a list with at least one term');
+    const seenId = new Set();
+    const seenTerm = new Set();
+    for (const e of list) {
+      const where = `id ${e && e.id} (${e && e.term})`;
+      const missing = GLOSSARY_KEYS.filter((k) => !e || e[k] === undefined);
+      if (missing.length) {
+        gProblems.push(`${where}: missing ${missing.join(', ')}`);
+        continue;
+      }
+      if (!['0', ...sectionIds].includes(String(e.domain))) gProblems.push(`${where}: domain ${e.domain} is not a section of this exam`);
+      if (typeof e.def !== 'string' || !e.def.trim()) gProblems.push(`${where}: no definition`);
+      const term = String(e.term).trim().toLowerCase();
+      if (seenId.has(e.id)) gProblems.push(`${where}: id used twice`);
+      if (seenTerm.has(term)) gProblems.push(`${where}: term used twice`);
+      seenId.add(e.id);
+      seenTerm.add(term);
+    }
+    report(!gProblems.length, 'glossary', `${plural(list.length, 'term')}, ${gProblems.length} problem(s) (shape only: the phone app has no builder for this file yet)`, gProblems);
+  }
+
+  // ── Exam guide and final review week ──
+  const guideFile = path.join(dir, 'exam', `${pack}_exam_guide.json`);
+  const weekFile = path.join(dir, 'exam', 'final_review_week.json');
+  const guide = readJson(guideFile, 'exam');
+  const week = readJson(weekFile, 'exam');
+  if (guide === null) note('exam guide', `${rel(guideFile)} not written yet`);
+  if (week === null) note('final review week', `${rel(weekFile)} not written yet`);
+  if (guide || week) {
+    const r = builders.buildExamPack(guide || null, week || null, pack, {
+      notes: notes || undefined,
+      principles: principles || undefined,
+      // Ids and weights: the weights check the guide against the outline (CIA: not certifications.ts).
+      domains: exam.sections.map((s) => ({ id: s.id, weight: s.weight })),
+    });
+    fs.writeFileSync(path.join(out, 'exam.json'), JSON.stringify(r.pack));
+    const parts = [
+      r.pack.guide ? `guide ${r.pack.guide.sections.length} sections` : 'guide none',
+      r.pack.week ? `final week ${r.pack.week.days.length} days` : 'final week none',
+    ];
+    const lost = [];
+    if (guide && !r.pack.guide) lost.push('the exam guide was left out (schema_version?)');
+    if (week && !r.pack.week) lost.push('the final review week was left out (schema_version?)');
+    report(!r.problems.length && !lost.length, 'exam', `${parts.join(', ')}, ${r.problems.length} problem(s), ${r.warnings.length} warning(s)`, [...r.problems, ...lost]);
+    for (const w of r.warnings) lines.push(`      ! ${w}`);
+  }
+
+  // ── Mock exams ──
+  if (!questions.length) {
+    if (ARGS.requireFull) report(false, 'full mock', 'no questions, so no full mock can be drawn (--require-full)');
+    return;
+  }
+  // CIA: an item that rests on a Topical Requirement that is not testable yet
+  // carries its `testable_from` date; it stays in the bank but is left out of
+  // every mock until that date. A retired item (`"retired": true`) keeps its
+  // id in the pack so old progress still resolves, and is never dealt again.
+  const live = questions.filter((q) => !q.retired);
+  const retiredCount = questions.length - live.length;
+  const waiting = live.filter((q) => testableFrom.has(q.id) && testableFrom.get(q.id) > ARGS.today);
+  const pool = live.filter((q) => !waiting.includes(q));
+  note('mock pool', `${pool.length} of ${live.length} live items testable on ${ARGS.today}`
+    + (retiredCount ? ` (${plural(retiredCount, 'retired item')} kept for the id, never dealt)` : '')
+    + (waiting.length
+      ? ` (${waiting.length} left out until testable_from: ${waiting.slice(0, 5).map((q) => `${q.id} ${testableFrom.get(q.id)}`).join(', ')}${waiting.length > 5 ? ', …' : ''})`
+      : ''));
+  drawMock('full mock', exam.questions, exam, pool);
+  drawMock('short mock', Math.round(exam.questions / 3), exam, pool); // engine/finalWeek.ts miniMockSize
+}
+
+/**
+ * CIA: the Challenge pack is generated, never written by hand. Its own gate
+ * must pass before anything is read from it, and its id map (append-only,
+ * because a learner's saved progress is keyed by question id) must never give
+ * one Challenge id to two items or keep two active copies of one source item.
+ */
+function checkChallenge() {
+  lines.push('ciac gate (the Challenge pack is generated from the tagged Part items):');
+  const tool = path.join(TOOLS, 'build_challenge.py');
+  const r = spawnSync('python3', [tool, '--check', '--root', CIA, '--today', ARGS.today], { encoding: 'utf8' });
+  const outText = `${r.stdout || ''}${r.stderr || ''}`.trim().split('\n').filter(Boolean);
+  if (r.error) {
+    report(false, 'build_challenge.py --check', `could not run python3 (${r.error.message})`);
+  } else {
+    const last = outText[outText.length - 1] || `exit ${r.status}`;
+    // On a failure show the gate's own ERROR lines (or everything it said, if it died another way).
+    const errors = outText.filter((l) => l.startsWith('ERROR ')).map((l) => l.slice(6));
+    report(r.status === 0, 'build_challenge.py --check', last.replace(/^build_challenge --check:\s*/, ''),
+      r.status === 0 ? [] : errors.length ? errors : outText.slice(0, -1));
+  }
+  const mapFile = path.join(CIA, CHALLENGE, 'id_map.json');
+  const map = readJson(mapFile, 'id map');
+  if (map === null) {
+    note('id map', `${rel(mapFile)} not written yet`);
+  } else if (map !== undefined) {
+    const entries = Array.isArray(map.map) ? map.map : [];
+    const problems = [];
+    const count = (list) => list.reduce((m, x) => m.set(x, (m.get(x) || 0) + 1), new Map());
+    for (const [id, n] of count(entries.map((e) => e.id))) if (n > 1) problems.push(`Challenge id ${id} is given ${n} times (an id is never reused)`);
+    const active = entries.filter((e) => e.status === 'active');
+    for (const [src, n] of count(active.map((e) => e.source))) if (n > 1) problems.push(`source ${src} is active ${n} times`);
+    report(!problems.length, 'id map', `${plural(entries.length, 'Challenge id')} (${active.length} active, ${entries.length - active.length} retired), ${problems.length} problem(s)`, problems);
+  }
+}
+
+async function main() {
+  // Under the repository nothing is ever written: a temp folder only.
+  if (OUT === ROOT || OUT.startsWith(ROOT + path.sep)) {
+    console.error(`✗ refusing to write inside the repository (${OUT}); choose a CIA_PACK_OUT under ${os.tmpdir()}`);
+    process.exit(1);
+  }
+  fs.mkdirSync(OUT, { recursive: true });
+  const builders = {
+    ...require(path.join(MOBILE_SCRIPTS, 'notes-pack.cjs')),
+    buildPrinciplesPack: require(path.join(MOBILE_SCRIPTS, 'principles-pack.cjs')).buildPrinciplesPack,
+    buildExamPack: require(path.join(MOBILE_SCRIPTS, 'exam-guide-pack.cjs')).buildExamPack,
+    buildTermsPack: require(path.join(MOBILE_SCRIPTS, 'terms-pack.cjs')).buildTermsPack,
+  };
+  const app = await appFunctions();
+  const facts = examFacts();
+  const started = (pack) => jsonFiles(path.join(CIA, pack)).length > 0;
+
+  for (const pack of ARGS.packs) {
+    // The Challenge gate first: its files are only worth reading when they are what the builder produces.
+    if (pack === CHALLENGE) checkChallenge();
+    if (!started(pack)) {
+      // At a release an empty pack is a failure; while the course is being written it is just a fact.
+      lines.push(`${pack}: no content yet`);
+      if (ARGS.requireFull) report(false, 'full mock', 'no questions, so no full mock can be drawn (--require-full)');
+      continue;
+    }
+    dryRunPack(pack, facts[pack], app, builders);
+  }
+
+  // The Challenge gate is a check across packs: it runs even when ciac was not named.
+  if (!ARGS.packs.includes(CHALLENGE)) checkChallenge();
+
+  // ── Across packs: a question id belongs to one pack only (progress is keyed by id) ──
+  const where = new Map();
+  for (const pack of PACKS) for (const id of new Set(rawQuestionIds(pack))) where.set(id, [...(where.get(id) || []), pack]);
+  const shared = [...where].filter(([, packs]) => packs.length > 1).map(([id, packs]) => `${id}: id appears in ${packs.length} packs (${packs.join(', ')})`);
+  if (where.size) {
+    lines.push('All packs:');
+    report(!shared.length, 'question ids', `${where.size} ids across the packs, ${shared.length} in more than one pack`, shared);
+  }
+
+  const course = CIA.startsWith(ROOT + path.sep) ? path.relative(ROOT, CIA) : CIA;
+  console.log(`CIA pack dry run (app builders on ${course}, today ${ARGS.today}, output in ${OUT}):`);
+  for (const l of lines) console.log(`  ${l}`);
+  console.log(failed ? '  ✗ problems found' : '  ✓ every builder reports 0 problems');
+  process.exit(failed ? 1 : 0);
+}
+
+main().catch((e) => {
+  console.error(`✗ CIA pack dry run failed: ${e && e.stack ? e.stack : e}`);
+  process.exit(1);
+});

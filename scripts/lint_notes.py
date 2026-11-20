@@ -8,6 +8,12 @@ Usage:
     python3 scripts/lint_notes.py --audit-focus        # also list each subtopic without audit_focus
     python3 scripts/lint_notes.py data/crisc/notes/d1.json --outline docs/content/CRISC_BLUEPRINT.md --bank data/crisc/originals
                                                        # another cert: its outline lines ("- 1A1 ...") and its bank
+    python3 scripts/lint_notes.py data/cia/cia1/notes/d2.json --part 1 --outline docs/content/CIA_BLUEPRINT.md --bank data/cia/cia1/originals
+                                                       # a course whose codes are part + section + topic (1B3 = part 1,
+                                                       # section B, topic 3) with one notes file per SECTION: the file's
+                                                       # domain_number is the section (2 = B), so d2.json holds topics
+                                                       # 1B1, 1B2 ... and its practice ids are cia1_d2_005. N is 1, 2 or 3
+                                                       # (4 for the CIA Challenge pack, whose codes start with 4)
 
 Errors break the schema or a hard limit; warnings are style targets.
 Exit code 1 if there are errors.
@@ -93,6 +99,9 @@ def content_words(s):
     return {w for w in re.findall(r"[a-z0-9]+", (s or "").lower()) if w not in EX_STOP and len(w) > 2}
 
 BANK = ROOT / "data" / "originals"
+# --part N (CIA): outline codes are part + section + topic and each notes file is one
+# section. None (the default) keeps the rule that a code's first digit is the domain.
+PART = None
 
 def bank_items(n):
     path = BANK / f"d{n}.json"
@@ -201,7 +210,7 @@ def lint_audit_focus(r, s, where):
                 break
     return total
 
-def lint_sub(r, s, topic_id, seen_terms):
+def lint_sub(r, s, topic_id, seen_terms, section=None):
     where = s.get("id", "?")
     for f in REQUIRED_SUB:
         if f not in s or s[f] in (None, "", []):
@@ -219,6 +228,8 @@ def lint_sub(r, s, topic_id, seen_terms):
             r.err(where, "practice_ids must be a non-empty list (omit it when there are none)")
         else:
             dom = "d" + str(s.get("id", "?"))[0] + "_"
+            if section is not None:  # --part: the id's first digit is the part; the bank file is the section's
+                dom = f"d{section}_"
             for q in pids:
                 if q not in bank:
                     r.err(where, f"practice_ids: {q} is not in the question bank")
@@ -353,6 +364,11 @@ def lint_domain(r, dom, codes):
     if isinstance(kt, dict) and not 15 <= len(kt) <= 30:
         r.warn(where, f"{len(kt)} key_terminologies (15-30)")
     want = [c for c in codes if c.startswith(str(n))]
+    if PART and isinstance(n, int):  # --part 1, domain_number 2: section B, so topics 1B1, 1B2 ...
+        want = [c for c in codes if c.startswith(f"{PART}{chr(64 + n)}")]
+    if PART and not want:  # a wrong --part or domain_number used to skip the topic check without a word
+        r.err(where, f"the outline has no code for part {PART}, section number {n!r}: check --part and domain_number "
+                     "(the topic ids cannot be checked)")
     got = [t.get("topic_id") for t in dom.get("topics", [])]
     if dom.get("partial"):  # a writer's draft for one Part (A or B) of a domain
         want = [c for c in want if c[1] == dom["partial"]]
@@ -380,7 +396,7 @@ def lint_domain(r, dom, codes):
             if s.get("id") in ids:
                 r.err(s.get("id"), "duplicate id")
             ids.add(s.get("id"))
-            lint_sub(r, s, tw, seen_terms)
+            lint_sub(r, s, tw, seen_terms, n if PART else None)
             ex = content_words(s.get("example", ""))
             if ex and bank:
                 score, qid = max((len(ex & w) / max(1, len(ex | w)), q) for q, w in bank)
@@ -389,7 +405,7 @@ def lint_domain(r, dom, codes):
     return len(ids)
 
 def main(argv):
-    global ECO, BANK
+    global ECO, BANK, PART
     args = [a for a in argv if not a.startswith("--")]
     for flag in ("--outline", "--bank"):  # a non-CISA cert: its blueprint and its own bank
         if flag in argv:
@@ -399,6 +415,13 @@ def main(argv):
                 ECO = Path(val)
             else:
                 BANK = Path(val)
+    if "--part" in argv:
+        val = argv[argv.index("--part") + 1] if argv.index("--part") + 1 < len(argv) else ""
+        if val not in ("1", "2", "3", "4"):
+            print("ERROR --part needs 1, 2 or 3 (or 4 for the Challenge pack)")
+            return 2
+        args = [a for a in args if a != val]
+        PART = int(val)
     only = None
     if "--domain" in argv:
         only = int(argv[argv.index("--domain") + 1])
