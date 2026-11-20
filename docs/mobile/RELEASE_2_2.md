@@ -24,7 +24,7 @@ Not done from the cloud session (no Android emulator): installing a bundle-deriv
 
 ## Uploaded to Play · 20 Nov 2026 (owner's report)
 
-The owner uploaded `kaisip-2.2-code4.aab` in Play Console. As reported: both closed-testing tracks ("Testers Community" and "Alpha") show **4 (2.2)**, the changes were submitted for review, and Play's two "portrait" warnings from the 2.1 upload are gone. Play Console is not readable from a cloud session, so this is the owner's report, not a reading. Google's review result is not recorded yet.
+The owner uploaded `kaisip-2.2-code4.aab` in Play Console. As reported: both closed-testing tracks ("Testers Community" and "Alpha") show **4 (2.2)**, the changes were submitted for review, and Play's two "portrait" warnings from the 2.1 upload are gone. Play Console is not readable from a cloud session, so this is the owner's report, not a reading. **Google approved 2.2 (owner's report, 20 Nov 2026).** After updating on a phone, the owner confirmed that progress saved under 2.1 is still there.
 
 ## Merged after the freeze (not in the uploaded bundle)
 
@@ -98,7 +98,8 @@ Not done from this round (kept for later, on purpose): saving the latest pick pe
 - [ ] Countdown: background and resume, kill and relaunch at zero, the sheet over the More and report sheets.
 - [ ] Answered review with a real profile upgraded from 2.0.0 or 2.1; nothing changes after opening it.
 - [ ] Rate opens the Play page for a closed tester; Share shows only the approved line.
-- [ ] Bottom buttons with three-button and gesture navigation; upgrade from 2.1 keeps progress.
+- [x] Upgrade from 2.1 keeps progress (owner, on a phone, 20 Nov 2026).
+- [ ] Bottom buttons with three-button and gesture navigation.
 
 ### Your mistake patterns, from PR #240 (19 Nov 2026)
 
