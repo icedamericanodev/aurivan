@@ -523,6 +523,8 @@ export interface ReportFlow {
   sheet: ReactNode;
   /** Opens the sheet (for a button that isn't the link). */
   open: () => void;
+  /** Is the sheet showing right now? (Mobile 2.2: a practice countdown stands still under it.) */
+  isOpen: boolean;
   /** When this phone last started a report about this item (for a row that says so), or undefined. */
   reportedAt?: number;
 }
@@ -555,6 +557,8 @@ export function useReportFlow(certId: string, target: ReportTarget | null, opts:
     link: target ? <ReportLinkButton target={target} reportedAt={reported?.at} onPress={open} /> : null,
     block: doneFor === item ? <SentNote {...REPORT_DONE} /> : null,
     open,
+    // Showing only while there is an item to report (the same test as `sheet` below).
+    isOpen: visible && mounted && Boolean(target),
     reportedAt: reported?.at,
     sheet: mounted && target && (
       <ReportSheet

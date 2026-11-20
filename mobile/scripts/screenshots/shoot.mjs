@@ -272,6 +272,11 @@ await edit('aurivan.progress.v1', `
   const m = v.state.byCert.cisa.mistakes; const ids = Object.keys(m);
   ids.forEach((id, i) => { m[id].resolved = false; if (i < 8) m[id].slip = i < 5 ? 'priority' : 'role'; });`);
 await shot('25-your-pattern', '/mistakes');
+await page.getByRole('button', { name: 'Show details', exact: true }).click();
+await page.getByText('Thinking-pattern breakdown', { exact: true }).scrollIntoViewIfNeeded();
+await page.screenshot({ path: `${out}/25c-mistake-dna-evidence.png` });
+// Play's Drills card, same saves: it names the journal's own pattern (phone 2.2, one pattern everywhere).
+await shot('25d-play-pattern', '/practice?section=drills');
 await edit('aurivan.progress.v1', `
   const m = v.state.byCert.cisa.mistakes;
   Object.keys(m).forEach((id, i) => { if (i >= 2) delete m[id].slip; });`);

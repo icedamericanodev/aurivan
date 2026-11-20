@@ -5,6 +5,10 @@ import { findQuestion } from '../content/loader';
 import { getCertification } from '../content/certifications';
 import { DEFAULT_RECOVERY_CONFIG, evaluateRecovery, formatClock, initialRecoveryState, validateRecoveryConfig } from '../engine/conceptLab';
 
+// The lab is hidden from learners since mobile 2.2 (content/labs/enabled.ts). Its code is kept, so
+// these tests turn the switch ON to keep proving the lab still works for the day it comes back.
+jest.mock('../content/labs/enabled', () => ({ CONCEPT_LAB_ENABLED: true }));
+
 describe('recovery objectives, independent of progress and storage', () => {
   test('the retailer starts at 80 minutes downtime and 30 minutes potential data loss', () => {
     expect(evaluateRecovery(80, 30)).toMatchObject({

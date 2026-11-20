@@ -110,6 +110,7 @@ import {
 import { moveFocus, sayLater } from '../lib/a11y';
 import { displayToOriginal, originalToDisplay, renderText, type Permutation } from '../engine/shuffle';
 import { aboutMin, coachingTag, practicePace, spokenMin, timeStat, TIMING_LABEL } from '../engine/pace';
+import { countdownResult, readCountdown, timerKindOf } from '../engine/practiceCountdown';
 import { coachingLine } from '../lib/coachingCopy';
 import { msUsed, scoreSession, sessionPacing } from '../lib/finishSession';
 import { trapTip } from '../engine/games/trapSpotter';
@@ -401,6 +402,9 @@ export default function Results() {
   // Mobile 1.24: small samples get the count, not a verdict (engine/resultsCopy.ts).
   const tiny = active.mode !== 'mock' && score.answered < SMALL_SAMPLE;
   const headline = resultsHeadline(score.correct, active.mode === 'mock' ? score.total : score.answered);
+  // Mobile 2.2: how a practice countdown went (engine/practiceCountdown.ts). Null for every other set.
+  // `score.answered`: "Finished inside…" only when every question was answered; ended early says so.
+  const countdownLine = timerKindOf(active) === 'countdown' ? countdownResult(readCountdown(active.countdown), active.questionIds.length, score.answered) : null;
   // The one fact beneath a small-sample headline: the note, else the domain, most missed.
   const missedDomain = (() => {
     const tally: Record<string, number> = {};
@@ -503,6 +507,14 @@ export default function Results() {
           </View>
         )}
         <T v="display" accessibilityRole="header" style={{ marginTop: space.lg }}>{headline}</T>
+        {/* Mobile 2.2: a practice set with a countdown says plainly how the time went ("Time ran out
+            after 7 of 10. You kept going untimed."). Quiet ink, never the miss colour: running out of
+            time is not a failure, and unanswered questions were not marked wrong. */}
+        {countdownLine && (
+          <View testID="results-countdown" style={{ marginTop: space.xs }}>
+            <T v="meta" accessibilityLabel={countdownLine.spoken}>{countdownLine.text}</T>
+          </View>
+        )}
         {fact && <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{fact}</T>}
         {/* A one-domain set (no ring) names its domain once (mobile 1.43: no percent, the headline is the count). */}
         {!fact && !tiny && oneDomain && !isMock && <T v="meta" style={{ marginTop: space.sm }}>{`All ${oneDomain.short}`}</T>}

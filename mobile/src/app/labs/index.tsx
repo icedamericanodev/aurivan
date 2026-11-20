@@ -1,14 +1,24 @@
 import { router } from 'expo-router';
 import { View } from 'react-native';
+import { ConceptLabHidden } from '../../components/conceptLabHidden';
 import { EmptyScreen } from '../../components/emptyScreen';
 import { PageTitle, HubCard, CardHead } from '../../components/groveHub';
 import { Button, PushedHeader, Screen, T } from '../../components/ui';
-import { labsFor } from '../../content/labs';
+import { CONCEPT_LAB_ENABLED, labsFor } from '../../content/labs';
 import { getCertification } from '../../content/certifications';
 import { useActiveCertId } from '../../lib/activeCert';
 import { space } from '../../theme/tokens';
 
+/**
+ * The /labs route. While the Concept Lab is hidden (CONCEPT_LAB_ENABLED is false; owner decision,
+ * 19 Nov 2026, content/labs/enabled.ts) it shows nothing and opens Learn, so an old link never
+ * crashes or shows the lab. Switch on: the catalog below, exactly as before.
+ */
 export default function LabCatalog() {
+  return CONCEPT_LAB_ENABLED ? <LabCatalogScreen /> : <ConceptLabHidden />;
+}
+
+function LabCatalogScreen() {
   const certId = useActiveCertId();
   const cert = getCertification(certId);
   const labs = labsFor(certId);

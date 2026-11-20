@@ -4,6 +4,15 @@
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
+# SHOTS=labs: the Concept Lab is hidden since mobile 2.2 (owner decision, 19 Nov 2026; the one switch
+# is CONCEPT_LAB_ENABLED in src/content/labs/enabled.ts). Its pictures need the lab on screen, so stop
+# here with a plain message (before the slow export) instead of failing later on a tile that is not
+# drawn. Once the switch says true again, this set runs as before. No other set opens the lab.
+if [ "${SHOTS:-}" = labs ] && ! grep -Eq '^export const CONCEPT_LAB_ENABLED: boolean = true;' src/content/labs/enabled.ts; then
+  echo "SHOTS=labs: nothing captured. The Concept Lab is hidden (CONCEPT_LAB_ENABLED is false in src/content/labs/enabled.ts)." >&2
+  echo "Set it to true to capture the lab (it comes back after its redesign and learner testing)." >&2
+  exit 1
+fi
 OUT="${1:-screenshots}"; THEME="${2:-dark}"; TMP="$(mktemp -d)"
 # SHOTS=store: the Google Play listing screenshots are always light (STORE_LISTING.md §3).
 if [ "${SHOTS:-}" = store ]; then THEME=light; fi

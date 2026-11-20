@@ -62,8 +62,20 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     // Large screens (docs/mobile/RELEASE_2_2.md). Phones are unchanged; the
     // date is set again at build freeze.
     version: '2.2',
-    date: '2026-11-18',
-    improved: ['On tablets and other large screens, pages now sit in a comfortable reading width instead of stretching across the screen.'],
+    date: '2026-11-19',
+    new: [
+      'Your mistake journal now shows the pattern behind your recent mistakes, one thing to try next, and practice on questions outside your mistake journal.',
+      'Look back at questions you have answered, with their explanations, without answering them again.',
+      'Set a countdown for a practice set, and choose to finish or keep going when time is up.',
+      'Choose how many questions and which timer when you practise one area.',
+      'Share KaiSip from Settings, or rate it on Google Play.',
+    ],
+    improved: [
+      'After you answer, the short summary and tips come first, with the whole question and every option one tap away.',
+      'On tablets and other large screens, pages now sit in a comfortable reading width instead of stretching across the screen.',
+      'The recovery Concept Lab is put away for now while we make it clearer.',
+      'The drill suggested on Play and the final review week now follow the same recent mistake pattern as your mistake journal.',
+    ],
   },
   {
     // The first update after the launch. Testers only ever had 2.0.0, so the
@@ -73,7 +85,6 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     date: '2026-11-18',
     new: [
       'Add an optional nickname during setup for a personal greeting. It stays on your phone, and you can change it in Settings.',
-      'Try the recovery Concept Lab in Learn: move the dials and see how recovery time and data loss targets work.',
     ],
     improved: [
       'Compare all options and their explanations after checking an answer or finishing a mock.',

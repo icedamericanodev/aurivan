@@ -4,13 +4,33 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## Phone [2.2] · built 2026-11-19 (closed testing, once uploaded)
+
+### New
+- Look back at questions you have answered, with their explanations, without answering them again.
+- Set a countdown for a practice set. When time is up, you choose to finish or to keep going without the timer.
+- Choose how many questions and which timer when you practise one area.
+- Rate or share KaiSip from Settings.
+
+### Improved
+- After you answer, the short summary and the tips come first. The whole question and every option are one tap away under "Show question & options".
+- On tablets and other large screens, pages sit in a comfortable reading width.
+- The recovery Concept Lab is put away for now while we make it clearer.
+- The drill suggested on Play and the final review week now follow the same recent mistake pattern as your mistake journal.
+
+### Changed after learner reports
+- Learners found the list of reasons under every answer overwhelming and missed the earlier tips-first layout; practice returns to it, with every option one tap away.
+- A learner could not find the whole question and its options after answering; one "Show question & options" switch now opens both.
+- Learners asked to re-read answered questions without answering again; the question list has an Answered filter that opens a read-only page.
+- Learners asked for a timer when practising one area; a gentle countdown is now a choice, and running out of time never marks a question wrong.
+
 ## Phone [2.1] · 2026-11-18
 
 The first update after the 2.0.0 launch (closed testing). Play version name exactly "2.1"; saved files record it as 2.1.0.
 
 ### New
 - Add an optional nickname during setup for a personal greeting.
-- Try the recovery Concept Lab in Learn.
+- Try the recovery Concept Lab in Learn. (Put away in 2.2 while it is made clearer.)
 
 ### Improved
 - Compare every option beside its explanation.
@@ -35,6 +55,11 @@ The first update after the 2.0.0 launch (closed testing). Play version name exac
 - A learner noticed the letter f looked unusual; it now has a familiar shape.
 - A learner saw Android's navigation buttons covering the buttons at the bottom of a screen; bottom buttons now sit above the navigation bar.
 - A learner found a password policy question unclear; it now states that management requires the controls.
+
+## Web [v13.0.2] · 2026-11-20
+
+### Fixed
+- In the final review week, the task about your most common slip now reads more simply.
 
 ## Web [v13.0.1] · 2026-11-18
 

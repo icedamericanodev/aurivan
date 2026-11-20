@@ -8,6 +8,7 @@ import { findQuestion, getAllQuestions } from '../content/loader';
 import type { Difficulty } from '../content/types';
 import { buildMockExam } from '../engine/blueprint';
 import { mockPace, type MockTiming } from '../engine/pace';
+import { countdownFor } from '../engine/practiceCountdown';
 import { legacyTitle } from '../engine/planner';
 import { buildPracticeQueue, filterPool } from '../engine/queue';
 import { createRng } from '../engine/random';
@@ -48,9 +49,14 @@ function newSession(
   title: string,
   ids: string[],
   { timed: askTimed, ...extra }: Partial<ActiveSession> = {},
+  /** Mobile 2.2: seconds per question for a gentle countdown (practice only; see startPractice). */
+  countdownSec?: number,
+  /** Mobile 2.2: with a countdown, show words instead of ticking numbers (the mock's "Hide the clock"). */
+  hideCountdown?: boolean,
 ): ActiveSession | null {
   const now = Date.now();
-  const timed = mode !== 'mock' && (askTimed ?? useSettings.getState().practiceTimer);
+  // A set asked for with a countdown is always timed: if the countdown cannot be made, it counts up.
+  const timed = mode !== 'mock' && (countdownSec !== undefined ? true : (askTimed ?? useSettings.getState().practiceTimer));
   const rng = createRng(now);
   const shuffle = useSettings.getState().shuffleOptions;
   const perms: Record<string, Permutation> = {};
@@ -61,6 +67,9 @@ function newSession(
   // Drop ids whose question no longer exists (e.g. removed in a content update).
   const questionIds = ids.filter((id) => perms[id]);
   if (questionIds.length === 0) return null;
+  // Mobile 2.2: the countdown's budget comes from the set as it really is (a small pool gives a
+  // shorter set, so a shorter time). A pace that gives no sensible budget gives no countdown.
+  const countdown = mode === 'practice' && countdownSec !== undefined ? countdownFor(questionIds.length, countdownSec) : null;
   // Mobile 1.47: a home-screen widget tap that asked for this session (counted as started only now).
   const widget = claimWidgetStart(now);
   const session: ActiveSession = {
@@ -76,6 +85,10 @@ function newSession(
     startedAt: now,
     ...extra,
     ...(timed ? { timed: true } : {}),
+    // Beside `timed`, never instead of it, and never with a `deadline` (that is the mock's clock).
+    ...(timed && countdown ? { countdown } : {}),
+    // Hiding the clock only makes sense when there is a countdown to hide (the count-up timer has no such choice).
+    ...(timed && countdown && hideCountdown ? { hideClock: true } : {}),
     ...(widget ? { widget } : {}),
     // Mobile 1.51: where each area stands now, so Results can show this set's growth (or drop) honestly.
     ...beforeOf(certId),
@@ -84,20 +97,47 @@ function newSession(
   return session;
 }
 
+/** The choices that decide which questions a practice set may draw from (Build a set). */
+export interface PracticeChoices {
+  domainId?: string;
+  difficulty?: Difficulty;
+  /** Only these questions (Build a set's topic chips). */
+  ids?: string[];
+}
+
+/** The questions a practice set with these choices may draw from. */
+function practicePool(certId: string, opts: PracticeChoices) {
+  const only = opts.ids ? new Set(opts.ids) : null;
+  return filterPool(getAllQuestions(certId), opts).filter((q) => !only || only.has(q.id));
+}
+
+/**
+ * Mobile 2.2: how long a set asked for `count` questions will REALLY be with these choices: `count`,
+ * or fewer when the choices leave fewer questions (0 = nothing to practice). The set-up shows this
+ * number, so "10 questions · 15 min" is never promised for a 7-question set.
+ */
+export function practiceSetLength(certId: string, opts: PracticeChoices & { count: number }): number {
+  const count = Number.isFinite(opts.count) ? Math.floor(opts.count) : 0;
+  return Math.max(0, Math.min(count, practicePool(certId, opts).length));
+}
+
 /**
  * `timed`: the count-up practice timer (Build D). It never sets a deadline:
  * practice is never submitted for the learner. Left out = the Study default.
  * `ids`: only these questions (Build a set's topic chips).
+ * `countdownSec` (mobile 2.2): a GENTLE countdown instead, at this many seconds per question
+ * (engine/practiceCountdown.ts). Still no deadline and nothing submitted: at zero the learner
+ * chooses. It wins over `timed`; left out = no countdown, exactly as before.
+ * `hideClock` (mobile 2.2): with a countdown only, words instead of ticking numbers.
  */
 export function startPractice(
   certId: string,
-  opts: { count: number; domainId?: string; difficulty?: Difficulty; title?: string; timed?: boolean; ids?: string[] },
+  opts: PracticeChoices & { count: number; title?: string; timed?: boolean; countdownSec?: number; hideClock?: boolean },
 ) {
-  const only = opts.ids ? new Set(opts.ids) : null;
-  const pool = filterPool(getAllQuestions(certId), opts).filter((q) => !only || only.has(q.id));
+  const pool = practicePool(certId, opts);
   const answers = selectCert(useProgress.getState(), certId).answers;
   const ids = buildPracticeQueue(pool, answers, opts.count, createRng(Date.now()));
-  return newSession('practice', certId, opts.title ?? 'Practice', ids, opts.timed !== undefined ? { timed: opts.timed } : {});
+  return newSession('practice', certId, opts.title ?? 'Practice', ids, opts.timed !== undefined ? { timed: opts.timed } : {}, opts.countdownSec, opts.hideClock);
 }
 
 /** How many questions "Practice {area}" starts: You's summary button and Practice's "Weak spots" row. */

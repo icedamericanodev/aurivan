@@ -242,6 +242,7 @@ the notice is part of the description.
 | Batch 7 (12 Nov 2026) | +30 | +42 | — | 514 |
 | Batch 8 (13 Nov 2026) | — | +42 | +32 | 588 |
 | Batch 9 (18 Nov 2026) | +15 | — | — | 603 |
+| Batch 10 (19 Nov 2026) | +30 | +42 | — | 675 |
 
 Pilot review, 30 Oct 2026:
 - **Blind tests:** 60/60 picks matched the keys on the first pass. After the
@@ -449,6 +450,33 @@ Release audit, 18 Nov 2026 (whole course, AAIA still switched off):
 - Length tell: D1 20.3%, D2 20.7%, D3 17.0%. Tags: 497 of 603.
 
 **Next round:** D1 and D2 rounds toward the targets.
+
+Batch 10 review, 19 Nov 2026 (D1 and D2):
+- **Author:** two new items per notes subtopic (D1 30, D2 42), difficulty D1 7/15/8 and D2 11/21/10, keys
+  D1 A7 B7 C8 D8 and D2 A10 B10 C11 D11. The brief carried the release-audit lessons (neutral pre_reads and
+  labels, no stem word echoed only in the key, explanations claim only stem facts, no CISA, CRISC or AAIA
+  setting reused). Fourteen D1 drafts and several D2 drafts were moved before writing because their setting
+  or lesson collided with an existing item or a principle example.
+- **Reviews:** first blind pass 72/72 (D1 30/30, D2 42/42). Five reviewers per domain (one HARD ERROR in
+  D1, about 90 PRECISION findings across both), three fix rounds, the cross-domain gate (9 HARD/PRECISION),
+  the completeness critic (9 gaps, mostly a new item repeating the frame of an older one in its subtopic:
+  aaia_d1_170, d2_325, d2_338 and d2_343 were re-angled; d2_341 moved off a principles example), three gap
+  rounds and a final fix round. My last pass reworded aaia_d1_183 (the stem now says the retrain changes no
+  code, and the explanations no longer overstate the regulator duty), named the actor in aaia_d2_343's key
+  and added the cutoff fact aaia_d2_312's key needs to note 2B.2. Every changed item was re-tested blind and
+  matched. No key changed after the first draft.
+- **Notes:** each subtopic gained the short fact its new keys rely on (for example: generative transcripts
+  can gain words nobody said; an agent under a person's login can do whatever that login allows; AUC ignores
+  the cutoff in use; identifiers a model derives, such as voiceprints, are new personal data; precision and
+  recall hold only at the stated cutoff), with other wording trimmed so every subtopic stays within 380
+  words.
+- **Citations:** two library bullets added after the librarian opened each source: NIST AI 100-1 Section
+  1.2.2 (risk tolerance) and NIST AI 600-1 Section 3 (suggested actions).
+- Length tell: D1 20.3%, D2 20.6%. Tags: 549 of 675 (PRINCIPLE_TAGGING.md, Batch 10).
+- **For later rounds:** check each new item's frame against every older item in its subtopic before
+  writing, not only its setting.
+
+**Next round:** D1 and D2 rounds toward the targets (D1 330, D2 460), then D3 (210).
 
 ## 10. Follow-ups outside this plan's scope
 

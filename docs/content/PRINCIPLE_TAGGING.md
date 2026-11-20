@@ -429,10 +429,10 @@ version bump today.
 ### Results
 | Domain | Questions | Tagged | Untagged |
 |---|---|---|---|
-| D1 | 155 | 110 | 45 |
-| D2 | 302 | 256 | 46 |
+| D1 | 185 | 128 | 57 |
+| D2 | 344 | 290 | 54 |
 | D3 | 146 | 131 | 15 |
-| All | 603 | 497 | 106 |
+| All | 675 | 549 | 126 |
 
 New principle `independence-of-ai-assurance` (role family): seeds and tags
 aaia_d2_014, aaia_d3_024 and aaia_d3_043, moved from
@@ -748,3 +748,47 @@ remove the runner-up, a disclosure risk the stem never raises), aaia_d1_152
 `test-the-ai-as-used` (extraction tests cover only the prompts tried; close to
 `accuracy-is-not-assurance`), aaia_d1_153 `accuracy-is-not-assurance` (a
 higher score never removes misses; close to `limits-outside-the-model`).
+
+### Batch 10 (19 November 2026)
+aaia_d1_156-185 and aaia_d2_303-344 were read against the rule above. None
+is a seed. Changed: aaia_d1_158 moved from `ai-changes-are-changes` to
+`accuracy-is-not-assurance` (the runner-up verifies the 88% independently,
+and a verified score still hides changed placements; the change principle
+does not separate the two); aaia_d2_306 moved from `ai-deciding-fact` to
+`population-includes-misses` (the runner-up is also raised by the facts; the
+old rules' misses go silent while wrongly removed records surface as alerts);
+aaia_d2_335 moved from `test-the-ai-as-used` to `accuracy-is-not-assurance`
+(the runner-up, untested new jailbreaks, is that card's own move; a pooled
+99.95% pass rate hides four working attacks). Newly tagged: aaia_d1_174
+`rank-ai-risk-by-harm` (after the final fix round its Final two is D against
+C: both follow from one pooled index behind per-hospital sign-ins, but only a
+wrong dose harms a patient). Three tags removed (below).
+
+**Untagged new items (low confidence):**
+- aaia_d1_162: was `ai-deciding-fact`; the Final two compares what each control covers (a typing rule against what the tool sends), not a stated fact, so integrated-assistant knowledge decides (as aaia_d2_291).
+- aaia_d1_166: generative-variability knowledge (later drafts are sampled anew); the runner-up also critiques the approval sample (as aaia_d3_138).
+- aaia_d1_169: monitoring-design knowledge (drift starts with no change to code, data or use); the runner-up also reassesses more often (as aaia_d1_145).
+- aaia_d1_173: fourth-party terms knowledge (a notice clause cannot pass on updates the vendor never hears of), as aaia_d1_038.
+- aaia_d1_175: data-licence knowledge (a licence grants only rights its grantor held), as aaia_d1_070.
+- aaia_d1_177: privacy knowledge (a no-training term leaves storage, access and location open); the runner-up is a terms check, not a tooling move.
+- aaia_d1_178: memorization knowledge (repeated text is memorized), as aaia_d1_014.
+- aaia_d1_180: fairness-measure knowledge (a ratio on nine people swings by chance), as aaia_d2_161.
+- aaia_d1_182: legal knowledge (AI laws can reach providers abroad), as aaia_d1_138.
+- aaia_d1_183: sector-law knowledge (a retrained medical device may need regulator review); both options concern the change process, so `ai-changes-are-changes` does not separate.
+- aaia_d1_184: framework knowledge (the NIST AI RMF sets no risk tolerance), as aaia_d1_135.
+- aaia_d1_185: framework knowledge (NIST AI 600-1 actions are suggestions selected by role), as aaia_d1_079.
+- aaia_d2_311: documentation knowledge (a model card needs intended use and limits), as aaia_d2_143.
+- aaia_d2_313: lineage knowledge (a model trained on another's outputs inherits its flaws), as aaia_d2_059.
+- aaia_d2_318: was `ai-changes-are-changes`; the runner-up also keeps each retrain under board approval, so change-classification design decides (as aaia_d2_147).
+- aaia_d2_320: was `test-the-ai-as-used`; both options retest the new version, so regression-test design for generated wording decides (as aaia_d3_094).
+- aaia_d2_330: fairness-test technique knowledge (stereotyping shows only across many outputs), as aaia_d2_120.
+- aaia_d2_333: attack knowledge (model attacks use the API as intended), as aaia_d2_081.
+- aaia_d2_334: attack knowledge (video injection bypasses the camera), as aaia_d2_081.
+- aaia_d2_336: injection knowledge (text inside images), as aaia_d2_016; the Final two weighs attacker control against random errors, not harm.
+
+**Medium confidence (tagged, review first):** aaia_d1_156 aaia_d1_158
+aaia_d1_159 aaia_d1_161 aaia_d1_163 aaia_d1_167 aaia_d1_168 aaia_d1_171
+aaia_d1_172 aaia_d1_174 aaia_d1_176 aaia_d1_181 aaia_d2_303 aaia_d2_304
+aaia_d2_305 aaia_d2_306 aaia_d2_308 aaia_d2_309 aaia_d2_312 aaia_d2_314
+aaia_d2_316 aaia_d2_319 aaia_d2_323 aaia_d2_326 aaia_d2_327 aaia_d2_329
+aaia_d2_331 aaia_d2_332 aaia_d2_335 aaia_d2_338 aaia_d2_339.

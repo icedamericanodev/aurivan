@@ -37,6 +37,10 @@ cause in the app, and slots it into the plan below.
 | FB-006 | 2026-11-12 | Closed-testing message (no report code) | Phone · every screen with serif text (questions, options, headings) | UX (typography) | Low | Whole app | Merged (#247); native phone check pending | 2.1 |
 | FB-007 | 2026-11-13 | R-ZJ67 | Phone · Mock review (question d5_205) | Content | Medium | One question | Implemented for 2.1: question states management's requirement; key D and option order unchanged | 2.1 |
 | FB-008 | 2026-11-15 | R-QHER | Phone · bottom buttons (reported on the plant picker, 2.0.0, Pixel, Android 16, three-button navigation) | Bug/UX | Medium | Every screen with a sticky bottom button | Implemented for 2.1: the shared bottom bar now reserves the navigation-bar space; native phone check pending | 2.1 |
+| FB-009 | 2026-11-19 | Owner relay of tester feedback | Phone · practice answer screen | UX | High | Every answered practice question | Implemented in a pull request for 2.2 (summary and tips first; choices behind one switch); owner screenshot review and phone check pending | 2.2 |
+| FB-010 | By 19 Nov 2026 | R-ZXUQ | Phone · practice answer (question d4_134): could not find the whole question and its options after answering | UX | Medium | Every answered practice question | Implemented with FB-009: one "Show question & options" switch; phone check pending | 2.2 |
+| FB-011 | 2026-11-19 | Owner review | Phone · Learn · Concept Lab (RTO/RPO): made the topic more confusing | Learning design | Medium | Learners who open the lab | Hidden in 2.2 behind one switch; redesign and uncoached learner testing before it returns | 2.2 (hide) · Later (redesign) |
+| FB-012 | By 19 Nov 2026 | Tester suggestions (messages and the testers' PDF) | Phone · question list, Practice, Settings | Feature requests | Medium | All learners | Implemented in a pull request for 2.2: read-only review of answered questions; a gentle practice countdown with length and area choice; Rate and Share rows in Settings | 2.2 |
 
 ## Feedback quoted on the website
 
@@ -274,3 +278,13 @@ practice, mock, onboarding and fit; no extra gap above the buttons with gesture
 navigation; 200% text.
 
 **Tester reply:** already sent; do not resend.
+
+### FB-009 to FB-012 · the 19 Nov 2026 feedback round
+
+Full scope, decisions and what is still unverified: `docs/mobile/RELEASE_2_2.md`, "Learner-feedback round (19 Nov 2026)". In short:
+
+- **FB-009 / FB-010.** The 2.1 fix for FB-001 put every option and its reason under each answer. Testers found that overwhelming and preferred the earlier tips-first screen, and one could not find the question and choices. 2.2 keeps the options findable (FB-001's point) but behind one switch, closed by default, with reasons on request. Mock review is unchanged.
+- **FB-011.** The Concept Lab stays in the code, switched off. Do not expand it (PR #244 stays deferred) until a simpler RTO/RPO pilot has been tried by learners without coaching.
+- **FB-012.** The answered review cannot show which option was picked for most past answers, because the app never stored it; it says so instead of guessing. Saving the pick for new answers is a later storage change. A tester's idea of making answered review a paid feature is NOT adopted: pricing is the owner's decision.
+- **Not adopted from the testers' PDFs:** an exit confirmation on every Back press (no data-loss defect shown), keyword-stuffed store text, a minimum description length, and review prompts or rewards (against Google's guidance).
+- **Tester replies:** none sent for this round. Do not claim any of this is fixed until 2.2 is live.

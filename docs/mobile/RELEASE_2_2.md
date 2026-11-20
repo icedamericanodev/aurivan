@@ -1,6 +1,26 @@
 # Android 2.2 release tracker
 
-A development tracker for the next phone update after 2.1, not a record of a shipped release. Version name **2.2** (two parts like 2.1; saved files record it as 2.2.0 through `fullVersion()`). Update this file as work lands; reconcile it at build freeze, and follow the same bundle handoff gates as `RELEASE_2_1.md` (read the built AAB's version name and code, compare with the highest Play code, record the commit and SHA-256).
+The tracker for the phone update after 2.1. The bundle was built on 19 Nov 2026 (see "Built bundle"); it is not on Play until the owner uploads it. Version name **2.2** (two parts like 2.1; saved files record it as 2.2.0 through `fullVersion()`). Update this file as work lands; reconcile it at build freeze, and follow the same bundle handoff gates as `RELEASE_2_1.md` (read the built AAB's version name and code, compare with the highest Play code, record the commit and SHA-256).
+
+## Build freeze · 19 Nov 2026
+
+The owner approved the 2.2 screenshots and asked for the bundle. Everything under "Included" below is in it. Anything merged to main after commit `49ab40d` is **not** in this bundle and belongs to the next phone update.
+
+## Built bundle · 19 Nov 2026 (ready for the owner to upload)
+
+| Field | Value |
+|---|---|
+| Source commit | `49ab40dbb3a5563aadfac3685994c8fd5447f91f` (main, squash of #290; main at that point also held #283, #286 and #288) |
+| EAS build | `b1258b74-657f-4aaf-8a5a-78e2cf95418e` (production profile, started by the repo's "Phone build (EAS Build)" workflow, upload to Play off) |
+| File | `kaisip-2.2-code4.aab`, 72,305,276 bytes |
+| SHA-256 | `4f3da142c907084a61915d0c4cd975da0ecaff4afa0d519e9e064ddea0f7b325` |
+| Read from the bundle's manifest | package `com.kaisip.app`, versionName **2.2**, versionCode **4**, minSdk 24, targetSdk 36, `expo.modules.updates.ENABLED` false |
+| Previous Play build | 2.1, versionCode 3 (uploaded by the owner to both closed-testing tracks on 18 Nov 2026); 4 is higher |
+| Large-screen declaration | `uses-feature android.hardware.screen.portrait` with `required="false"` is present (it was absent in 2.1); `MainActivity` is still `screenOrientation=portrait`. This is the change meant to clear Play's two "portrait" warnings; the owner confirms on the release page |
+| Permissions and services vs 2.1 | identical (26 permissions, none added or removed), so no new Play declarations and no Data safety change |
+| Signing | same upload certificate as the 2.1 bundle (SHA-256 fingerprint starts `BE:8B:DA:41`) |
+
+Not done from the cloud session (no Android emulator): installing a bundle-derived APK, upgrading from 2.1 with saved progress, and the items under "Still to verify on a phone". The owner does these from the closed-testing track before promoting further.
 
 ## Included
 
@@ -28,6 +48,64 @@ A development tracker for the next phone update after 2.1, not a record of a shi
 
 **Not in scope (owner decisions if wanted later).** Promoting tablets or Chromebooks in the Play listing (needs tablet screenshots). iPad support (`ios.supportsTablet` stays false until after the iOS launch). A two-pane tablet layout (for example the question beside its explanation).
 
+### Build-tool security update: node-forge 1.4.3 (19 Nov 2026, PR #286)
+
+Clears four Dependabot alerts (one low, three moderate) in node-forge, which only Expo's command-line and update code-signing tools use; it is not in the app. The npm override in `mobile/package.json` moved from 1.4.2 to 1.4.3. `npm run check` passed (7,191 tests); the Android and iOS update fingerprints are unchanged, so existing installs keep receiving updates. The fifth alert (glob, build tools only) stays open on purpose until Expo and Jest move to glob 14: `docs/mobile/DEPENDENCY_AUDIT.md`. No release note: nothing a learner can notice.
+### Learner-feedback round (19 Nov 2026)
+
+Source: the owner's consolidated handoff of 18 to 19 Nov 2026 and her decisions the same day. Built on main at `44f6583`. **State: implemented and unit-tested in a pull request; not merged, not built, not tested on a phone.** The owner reviews screenshots first.
+
+| Change | What it does | Decision / reason |
+|---|---|---|
+| Simpler practice answer | The 2.0.0 order is back: answer card (your answer, "Why not B", best answer), Key idea, the three tips, "Why D". The whole question and all four options sit behind ONE switch, "Show question & options", closed for each new question; opened, it shows the question and the four options only (no per-option reasons on this screen: see the second panel note below). The inline "Compare all options" list and the "Show all options" sheet are gone from practice. | Owner, 19 Nov: the inline reasons overwhelmed a tester; R-ZXUQ could not find the question and choices. Mock review keeps its full comparison; lessons and drills are unchanged. Question data untouched. |
+| Concept Lab hidden | `CONCEPT_LAB_ENABLED = false` (`mobile/src/content/labs/enabled.ts`): no tile in Learn, no link from notes; `/labs` routes go to Learn. Code and tests kept. | Owner, 19 Nov: the lab made the topic more confusing. It shipped in the 2.1 bundle, so this hides a live feature on purpose; no saved data is involved. Returns only after a redesign and uncoached learner testing. #244 stays deferred. |
+| Answered review (read-only) | "Answered" filter in the question list opens `/answered/[id]`: last result and date, the question, a closed "Show why the other options are wrong" switch, the four options in A to D order with the best one marked, then Key idea, tips and the reason for the best answer. A separate "Practice this question" button. Opening it changes no stored data (tested). | First delivery only: no new stored fields. The app never saved which option was picked, so after a miss the page says "KaiSip saved your result for this answer, not which option you picked", except for a miss whose pick is in the Mistake journal for that same attempt (shown as "Your answer" with its reason open). After a correct answer it marks only the best answer and never guesses a pick. Saving the latest pick for new answers is a later, separately reviewed storage change. |
+| Practice countdown (gentle) | Build a set: Untimed / Count up / Countdown, per set. Counts active study time only (pauses in the background and when paused; no wall-clock deadline). At zero: "Keep going untimed" or "Finish now"; nothing is auto-submitted and unanswered questions are never marked wrong. Domain rows open the builder with the area preselected. | Owner, 19 Nov, chose gentle over exam-strict. Mock deadlines untouched (regression test). One optional field on the active session, `countdown`; no store version bump; not in backups. Old `timed: true` still means count up. |
+| Rate and Share | Settings, Help and about: "Rate this app" (Android only, opens Google Play; no in-app prompt, no reward, no screening question) and "Share this app" (share sheet with one neutral line and https://kaisip.com; nothing personal). | Tester suggestion. Google's in-app review guidance: user-initiated buttons open the store. |
+| Website | `home.html`: the plant panel, bullet and step 05 become the Mistake journal; screenshots re-shot from this build. | The plant was retired in 2.1; the public page must match the app. |
+
+**Expert panel on two open choices (19 Nov 2026, at the owner's request).** `product-manager`, `mobile-ui-designer`, `learner-reader` and `isaca-language-reviewer` answered independently.
+- *One word.* All four chose **"options"** over "choices": ISACA's 2026 candidate guide says each question has "a stem (question) and four options", the bank's tips and explanations say "option" about 320 times against 48 for "choice", and the learner read two words as two things. This replaces the handoff's suggested label "Show question & choices". Existing "closest wrong choice" copy and the games' "Choice 1 of 6" are unchanged.
+- *Look-back page order.* The learner and the designer wanted the reasons behind a tap (the page was two screens of reasons before the Key idea); the product manager preferred keeping the full list for 2.2 (medium confidence). Implemented the designer's layout: question, options, closed switch, Key idea, tips, the best answer's reason. Tips stay after the options because they name option letters. Reversible in one file if the owner prefers the full list.
+- *Also agreed:* no "not saved" line after a correct answer (it read as a fault); the "latest version" line moves to the foot of the page; the Answered filter's help line no longer contradicts "Practice these again"; "Countdown length" is "Time limit" (it sat beside "Length", the number of questions).
+
+**Second panel: are per-option reasons needed after answering? (19 Nov 2026, owner's question).** `learner-reader`, `behavioral-scientist`, `cisa-pedagogy-checker`, `mobile-ux-reviewer` and `product-manager`. Four of five: remove "Show why for each option" from the after-answer screen and keep the reasons on the look-back page (the product manager would have kept the closed switch and asked testers first).
+- *Measured:* in all 1,279 questions the Eliminate and Final two tips together name every wrong option. In a 40-question sample (seed 22, 8 per domain), 107 of 120 wrong-option reasons restated a tip already on screen and 13 added a point, 3 of which are also in the Key idea or the best answer's reason; none conflicted. After a lucky correct guess the best answer's reason rebutted the runner-up in all 40.
+- *Why:* at the moment of answering the list is a second copy two taps deep, a switch inside a switch (nine extra screen-reader stops before the verdict), and opened it rebuilt the wall testers rejected. Repeated content lowers learning (redundancy effect). It is useful when re-reading days later, which is the look-back page.
+- *Done:* the answer screen's "Show question & options" opens the question and options only. On the look-back page the switch sits above the options, reveals the wrong options' reasons only (the best answer's reason is shown once, lower down) and is named "Show why the other options are wrong". Mock review is unchanged; nothing was deleted from the bank.
+- *To ask testers after 2.2:* "After a wrong answer, was there an option you still did not understand why it was wrong? Which question?" If about one in five names a real case, bring the reasons back after misses only.
+
+Not done from this round (kept for later, on purpose): saving the latest pick per question; lesson entry points for the set builder; an exit-confirmation dialog on Back (no data-loss defect shown); study-fatigue wording review; the Concept Lab learning pilot; countdown pausing while the More or report sheet is open.
+
+**Still to verify on a phone (no emulator in the cloud session).**
+- [ ] R-S4JW: Coach me on the reported Android version, question visible before and after the hint, light/dark, 200% text, TalkBack.
+- [ ] The new answer screen: switch opens and closes, resets on the next question, TalkBack says expanded/collapsed, 200% text.
+- [ ] Countdown: background and resume, kill and relaunch at zero, the sheet over the More and report sheets.
+- [ ] Answered review with a real profile upgraded from 2.0.0 or 2.1; nothing changes after opening it.
+- [ ] Rate opens the Play page for a closed tester; Share shows only the approved line.
+- [ ] Bottom buttons with three-button and gesture navigation; upgrade from 2.1 keeps progress.
+
+### Your mistake patterns, from PR #240 (19 Nov 2026)
+
+**Why.** Expert scope review for 2.2 (product-manager, behavioral-scientist, technical review): it is the one candidate that works on metacognition. "Sure, but incorrect" uses the learner's own confidence ratings (the hypercorrection effect), final-two confusion comes from the actual pick, and "Practice other questions" serves only questions outside the mistake history (transfer, not recognition). Nothing shows below 5 classified mistakes. Owner approved the 2.2 scope on 19 Nov 2026; the renamed screen goes to the owner for a final yes before merge.
+
+**What changed from #240 as built.** Learner copy says "Your mistake patterns", not "Mistake DNA" (code name kept). The card shows the cue and one action only; counts, sources and the trend sit in the opt-in "Explore pattern evidence"; caveats stay behind the "i". A rising trend shows "What helps: …". The generated `assets/kaisip-cloud.js` was regenerated from the merged sources (no data sent anywhere new). Design and method: `docs/mobile/MISTAKE_DNA.md`.
+
+**Review (PR #288).** Code review: the journal's clock was read on every redraw (each tag tap re-analysed the whole journal); my first fix froze it at screen open, which would have dropped misses made in a practice session opened from the journal. The clock now refreshes exactly when the saved mistakes change; a test fails on a frozen clock. The changed final-two helper gives the same letter as before for every CISA, AAIA and CRISC question, and the website's sync code is unchanged. UX review: no extra "What to do next" heading, quiet buttons aligned left, an empty journal shows only its empty state, the card's caption is read with its heading by screen readers and capped with it at large text, and "classified" became "with a pattern" on screen. Final expert panel (owner asked for it before merge, 19 Nov 2026): `behavioral-scientist` SHIP WITH NITS, `app-store-compliance-reviewer` GO (analysis stays on the device, Data safety unchanged, no pass or diagnosis claims), `learner-reader` and `mobile-qa-tester` (12 new edge-case tests). Applied: plain-language help without "classified"; the card names FIRST, BEST or MOST; "Show details" instead of "Explore pattern evidence"; sources read "From your tags…" and "From the answers you chose"; the trend says "about the same as the 2 weeks before" with the counts kept; the study-note button's spoken name matches its text; What's New says "questions outside your mistake journal" (not "not seen yet", which was inaccurate). QA fixes: older-only mistakes no longer get "Tag a few mistakes"; a mistake whose question left the pack is no longer counted in "N open"; "Show fixed" no longer carries over when switching exams. Left for later (done 20 Nov 2026, below): the Play tab's slip line still used all-time tags, so it could name a different pattern than the journal's 28-day view.
+
+**Play and the final review week follow the journal's pattern (20 Nov 2026).** `behavioral-scientist` chose one source of truth over keeping an all-time view: recent evidence is what makes the cue useful, and the final week (the last 7 days before the exam) is the worst place for stale tags. Play's Drills card and the final week's "top slip" task now use the journal's own leading pattern (last 28 days, tags plus answer evidence, 5 mistakes with a pattern and 3 sharing it), through one shared function (`mobile/src/lib/slipPattern.ts`). With no pattern yet, Play shows its general line and the final week opens the principles library, as before, with no message. Play's line no longer says "You often…" (it read as a trait): it says "From your recent misses: Final-two confusion." and, on a tie, "One of your most common patterns: …", matching the journal. Play's pattern is kept for the day unless new mistakes arrive, so the drill doesn't flip between sessions. The final-week task now reads "Read the principles behind your most common slip." (it said "you tagged", which is no longer the only source; the website shares the CISA text, so web v13.0.2 carries the same wording). A test checks that Play and the final week always name the journal's pattern.
+
+**To measure after release (on the device, shared through the opt-in tester check-in):** the share of answers marked Sure on first sight that are wrong (should fall), first-try accuracy on "Practice other questions" sets, how many misses are classified, and replies that call it discouraging (guardrail). No notifications for this feature.
+
 ## Play release notes (draft)
 
-Improved: on tablets and other large screens, pages now sit in a comfortable reading width instead of stretching across the screen.
+```
+What's new in 2.2
+• Your mistake journal shows the pattern behind recent mistakes and what to try next.
+• Look back at answered questions with their explanations, without answering again.
+• Set a countdown for practice. When time is up, finish or keep going untimed.
+• Choose how many questions and which timer for one area.
+• After you answer: summary and tips first, with the question and options one tap away.
+• Rate or share KaiSip from Settings.
+• Better layout on tablets.
+```

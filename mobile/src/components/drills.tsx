@@ -39,6 +39,7 @@ import { useActiveCertId } from '../lib/activeCert';
 import { moveFocus } from '../lib/a11y';
 import { playableGames } from '../lib/games';
 import { topSlipPattern } from '../lib/slipPattern';
+import { DNA_COPY } from '../engine/mistakeDNA';
 import { selectCert, useProgress, type ProgressState } from '../store/progress';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -114,9 +115,10 @@ export const Drills = memo(function Drills({
   const access = useMemo(() => ({ answered: open ? MORE_GAMES_AT : 0, played: (played ? played.split(',') : []) as GameId[] }), [open, played]);
   const available = useMemo(() => availableGames(playable, access), [playable, access]);
   const waiting = useMemo(() => waitingGames(playable, access), [playable, access]);
-  // The learner's own mistake pattern picks Today's drill (subscribed as the pattern's id only).
+  // The learner's recent mistake pattern picks Today's drill: the Mistake journal's own leading pattern
+  // (lib/slipPattern.ts), so Play never names one the journal doesn't. Subscribed as a small cached value.
   const top = useProgress((s) => topSlipPattern(cert.id, selectCert(s, certId).mistakes));
-  const pattern = top ? PATTERN_COPY[top] : null;
+  const pattern = top ? PATTERN_COPY[top.pattern] : null;
   const plan = useMemo(() => drillPlan(pattern ? pattern.game : null, available), [pattern, available]);
   const [moreOpen, setMoreOpen] = useState(false);
   const level = (id: GameId) => growthTier(gameGrowth?.[id]);
@@ -204,8 +206,9 @@ export const Drills = memo(function Drills({
   const inSight = plan.drill ? [item(plan.drill, 'Today’s drill'), ...plan.also.map((id) => item(id))] : [];
   const allSeedling = available.length > 0 && available.every((id) => level(id) === 'seedling');
 
-  // "From your misses: you often pick…" (lower case after the colon; UX review H1).
-  const why = pattern ? pattern.title.replace(/\.$/, '') : '';
+  // Phone 2.2 (behavioral-scientist): the journal's own label, said as a recent observation, never
+  // "You often…" (a trait). A tie says so, as the journal does ("One of your most common patterns").
+  const why = top ? `${top.tied ? 'One of your most common patterns' : 'From your recent misses'}: ${DNA_COPY[top.pattern].label}.` : '';
   return (
     <View ref={box} testID="drills" collapsable={false} onLayout={onLayout}>
       <Enter i={enter}>
@@ -221,7 +224,7 @@ export const Drills = memo(function Drills({
               line when there is one (each row already names its skill). */}
           <T v="meta" style={{ marginBottom: space.xs }}>
             {plan.fromPattern && pattern
-              ? `From your misses: ${why.charAt(0).toLowerCase()}${why.slice(1)}.`
+              ? why
               : 'Short games, one exam skill each. Misses go to review.'}
           </T>
           <KeyList items={inSight} testID="drills-list" />

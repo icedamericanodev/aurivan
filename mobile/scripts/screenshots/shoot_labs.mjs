@@ -1,4 +1,6 @@
 // Isolated synthetic QA: Learn integration, all lab stages, narrow/large text and reduced motion.
+// Mobile 2.2: the Concept Lab is hidden (CONCEPT_LAB_ENABLED is false, src/content/labs/enabled.ts),
+// so run.sh stops SHOTS=labs with a message before it gets here. It runs again once the switch is on.
 import { createRequire } from 'module';
 import fs from 'fs';
 const require = createRequire(process.env.PLAYWRIGHT_REQUIRE_FROM || import.meta.url);
