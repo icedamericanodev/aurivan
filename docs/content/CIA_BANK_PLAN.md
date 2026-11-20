@@ -291,7 +291,10 @@ states how it meets them.
      options that are wrong in general. The tester knows auditing, so this is
      not what an unprepared learner would score; it shows that the wrong
      options do not tempt someone who half-knows the subject. **Target for CIA
-     rounds from now on: at or below the CRISC baseline (85%), and falling.**
+     rounds: first set at or below the CRISC baseline (85%) and falling;
+     recalibrated after round 3 against The IIA's own public sample questions,
+     which score 87% on the same test (section 7, "Two calibration
+     measurements"): at or below that level on a mixed 50-item sample.**
      The way down is rule 2: a wrong option should be the right answer to a
      different question, so that only the stem's facts decide.
    - **The tester's own sorting** of each item (needs the Standards, partly
@@ -553,6 +556,46 @@ the mock draw (section 11): `cia1_d1_037` with 002; 041 with 008 and 010; 043
 with `cia1_d3_005`; 052 with 013; `cia1_d4_011` with 023 and 025 (and
 `cia1_d2_016`); 018 with 028; 001 and 003 with 022; 002 with 021; 013 and 014
 with 026.
+
+**Two calibration measurements (20 Nov 2026, after round 3).** Both use the
+cue test's own instructions and a tester with fresh context.
+
+| Sample | Items | Guessed from the options alone |
+|---|---|---|
+| The pilot, final | 80 | 91% |
+| Rounds 1 to 3 as merged, a random mixed sample | 50 | **78%** (39 of 50): Section A 14 of 23, B 6 of 7, C 12 of 13, D 7 of 7 |
+| The IIA's own public sample questions (its sample page, all three parts) | 15 | **87%** (13 of 15), eight of the guesses with high confidence |
+
+What they say. (1) The small per-round tests were optimistic: on 50 items the
+rounds stand at 78%, not the pooled 70%, and the tester got 19 of 28
+low-confidence guesses right, so the leak is not a phrase to delete: someone
+who knows auditing can often tell what the right kind of answer looks like.
+Section A's new items resist that (61%); Sections B, C and D do not yet.
+(2) The IIA's own sample questions leak at least as much to the same test
+(the tester named the same cues: absolutes in the wrong options, the option
+that keeps internal audit in role, the option that sounds like the
+Standards). Fifteen items is a small sample, two were partly recognized from
+memory, and sample questions may be easier than live ones, so this is a
+benchmark, not a proof. But it means **KaiSip's items already resist an
+expert guesser at least as well as the official samples**, and that chasing
+the cue score far below the official level buys little for a learner.
+
+What changes from round 4:
+- The cue test stays, read on the mixed 50-item sample after each round; the
+  per-round figure is reported but no longer steers a pass by itself.
+- The target is "at or below the official samples' level (87%), with Section
+  A's level (about 60%) as what good looks like", not a number that must fall
+  every round.
+- The targeted second pass is no longer automatic. It runs for items a cue
+  tester guesses with high confidence and a nameable, cheaply removed cue,
+  and for any pattern a blind tester can state. The effort saved goes to what
+  the audits keep finding: a second defensible answer, a key that claims
+  more than its source, and a rule the notes do not teach.
+- How the calibration was done, so it can be repeated: the sample page was
+  already an opened source (research log, S22); an options-only copy and its
+  keys were kept outside the repository and shown only to the cue tester,
+  never to an author. No IIA question text is stored in the repository and
+  none is used to write items.
 
 **Principle tags.** After the last fix the mindset coach re-read all 80
 items and re-tagged 7 to the principle that decides the final two. Every one

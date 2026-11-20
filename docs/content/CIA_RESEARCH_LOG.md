@@ -516,3 +516,10 @@ pass; every sha256 prefix matched the saved copy.
 
 - `CIA_LENS.md`: the two lines that barred any key on the fraud triangle and on control types now allow a key that rests on exactly what the opened Part 1 syllabus states (the three conditions by name; authority levels as preventing fraud; hotlines, reconciliations and supervisory reviews as detecting it). Decided on the Section D pilot audit, which found the lens and the plan's section 8b in conflict. Anything beyond those classifications still waits for a practice guide or the textbook.
 - 20 Nov 2026, currency check of the Part 1 pilot (80 questions, the exam guide and the final review week, about 469 facts): no keyed fact wrong or superseded; no version label changed on the re-opened sources. New on The IIA's Topical Requirements page: an Anti-Corruption Topical Requirement dated 23 November 2026 (effective 23 November 2027, no exam month yet) and Talent Management in consultation in the first quarter of 2027 (the page said January on 19 Nov).
+
+**Calibration use of the sample questions page (S22), 20 Nov 2026.** The 15
+public sample questions were given, options only and without stems, to a cue
+tester to measure how often an expert guesser picks the key from the options
+alone (13 of 15; plan section 7). The options-only copy and the keys stayed
+outside the repository; no author saw them; no question text is stored here
+or used to write items. The page's text was the copy downloaded on 19 Nov 2026.
