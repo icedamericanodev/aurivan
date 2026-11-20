@@ -27,6 +27,12 @@ How to read this file:
 6. The three Topical Requirements that are not testable yet have dates in
    `data/cia/shared/currency.json`. An item citing a bullet that starts with
    one of those names needs `testable_from`.
+7. The two 2026 Statements of Position (Three Lines Model; the internal audit
+   function's role in enterprise risk management) are exam references 47 and
+   48, and each says of itself that it is a guide and not part of the
+   International Professional Practices Framework. A key may rest on one, but
+   an item cites it as "The IIA's 2026 statement on ..." and never writes its
+   "must" as a requirement of the Standards.
 
 Not in this library on purpose: The IIA's Three Lines Model position paper of
 2020 (opened; replaced by the 2026 Statement of Position below), the two-way

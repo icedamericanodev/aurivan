@@ -430,6 +430,8 @@ All on `www.theiia.org`. PDFs under `/globalassets/` unless a page path is shown
 | S39 | Position papers: fraud (April 2019), governing body and executive committees (November 2019), why conformance matters (May 2018) | 4 pages each | c8f84f8f4bd6db34, 28539068deeaeaf2, 14be759170a0cf87 | References 41, 43, 46 are public |
 | S40 | CIA brochure, `site/certifications/certified-internal-auditor/cia-brochure.pdf` | created 7 May 2026, 20 pages | 754f320a7dc5c810 | Nothing new on format; totals as of 31 March 2026 |
 
+**Statements of Position (S30, S31), checked 20 Nov 2026.** Each says of itself that it is written as a guide and is not part of the International Professional Practices Framework. They are exam references 47 and 48 on list V5.5.2026.10.15, so a key may rest on them, but an item cites them as The IIA's 2026 statement and never as a requirement of the Standards (citation library, rule 7). Round 1 items that cite one: `cia1_d1_031` to `cia1_d1_035`; the key of 031 and of 035 rests on a statement alone.
+
 S27 detail:
 
 | File | Dates | Pages | sha256 prefix |
