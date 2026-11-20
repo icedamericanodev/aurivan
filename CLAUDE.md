@@ -198,7 +198,7 @@ kill %1
 
 ## Mobile app workflow (added with `mobile/`)
 
-- **Next Android bundle: version name exactly `2.1` (owner requirement, 9 Nov 2026).** Maintain `docs/mobile/RELEASE_2_1.md` as work completes. Include all completed changes from this cycle and those completed before the build. Before bundle handoff, inspect the actual AAB version name/code, compare the code with the highest previously uploaded Play build, and verify its commit and intended changes. Keep a separate **Fixed after learner reports** section with anonymous reported-problem/change summaries. Do not infer a verified version code from auto-increment alone.
+- **Android bundles: 2.1 (version code 3) and 2.2 (version code 4) are uploaded to closed testing (18 and 20 Nov 2026); the next bundle's version name is the owner's decision, so ask before building.** Phone code merged after `49ab40d` is not in 2.2 (see "Merged after the freeze" in `docs/mobile/RELEASE_2_2.md`). Maintain a `docs/mobile/RELEASE_<name>.md` tracker like `RELEASE_2_1.md` and `RELEASE_2_2.md` as work completes. Include all completed changes from this cycle and those completed before the build. Before bundle handoff, inspect the actual AAB version name/code, compare the code with the highest previously uploaded Play build, and verify its commit and intended changes. Keep a separate **Fixed after learner reports** section with anonymous reported-problem/change summaries. Do not infer a verified version code from auto-increment alone.
 
 
 - `npm run shots` inside `mobile/` captures phone-size screenshots of the key screens with demo data (`mobile/scripts/screenshots/`). Send them to the maintainer after UI changes.

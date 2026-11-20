@@ -4,7 +4,7 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
-## Phone [2.2] · built 2026-11-19 (closed testing, once uploaded)
+## Phone [2.2] · 2026-11-20 (closed testing)
 
 ### New
 - Look back at questions you have answered, with their explanations, without answering them again.
@@ -16,7 +16,7 @@ For internal/technical history, see git log and PR descriptions.
 - After you answer, the short summary and the tips come first. The whole question and every option are one tap away under "Show question & options".
 - On tablets and other large screens, pages sit in a comfortable reading width.
 - The recovery Concept Lab is put away for now while we make it clearer.
-- The drill suggested on Play and the final review week now follow the same recent mistake pattern as your mistake journal.
+- The drill suggested on Play and the final review week now follow the same recent mistake pattern as your mistake journal. (Arrives with the next phone update.)
 
 ### Changed after learner reports
 - Learners found the list of reasons under every answer overwhelming and missed the earlier tips-first layout; practice returns to it, with every option one tap away.
