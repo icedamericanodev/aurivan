@@ -376,6 +376,22 @@ final fix, as rule 12 allows; then a last blind round on the final text.
 | Key spread and length | 5 keys per letter in every section; key alone longest in 4 of 20 per section |
 | Notes changed because of the items | One example in 1C6.1 (it suggested a reliable risk register could replace the chief audit executive's own assessment) |
 
+**Principle tags.** After the last fix the mindset coach re-read all 80
+items and re-tagged 7 to the principle that decides the final two. Every one
+of the 20 principles has at least one Part 1 question. Eleven items have no
+principle that fits well and keep a nearest tag: two on competency
+(`cia1_d2_012`, `cia1_d4_018`), which points to a **missing principle**
+("have the skills, get them, or decline": Standards 3.1 and 8.2; write it with
+the next round, with the quality principle planned for Part 3); one on
+confidentiality (`cia1_d2_017`); and eight definition items, which turn on
+knowing a term, not on a way of thinking (expected at the Describe and
+Recognize level; they stay with the nearest reading principle).
+
+**Challenge ids.** The Challenge id map was started clean on 20 Nov 2026,
+before anything reached main (the pilot's rewrites had retired three ids that
+no learner ever saw). From the first merge on, it is append-only and
+`check_ids.py` holds it against main.
+
 What the next round changes because of this: the scaffold of every round
 states how it meets rules 2 to 5 of section 6b before writing starts; the
 learnable patterns above are given to the author as patterns to break (some

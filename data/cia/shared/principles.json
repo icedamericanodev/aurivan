@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "title": "KaiSip CIA exam mindset principles",
-  "updated": "2026-11-19",
-  "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, the Challenge Exam 1 to 5, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and stay empty until the Part 1 tagging pass; legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 and ciac. For ciac, domains are the Challenge Exam's sections (A Internal Audit Professionalism and Quality is 1, B Internal Audit Operations and Audit Plan is 2, C Engagement Planning is 3, D Engagement Performance is 4, E Engagement Results and Monitoring is 5, mapped from docs/content/CIA_CHALLENGE_MAP.md), and subtopics and practice_ids stay empty until the Challenge notes are generated and the tagging pass is done. Parts 2 and 3 are still to come. Intended once their notes exist (written here because the linter of the built file allows no extra top-level key): know-your-seat cia2 cia3; board-approves-management-supports cia3; management-owns-risk-and-action cia2 cia3; advise-never-decide cia2 cia3; function-or-person cia3; disclose-then-safeguard cia3; risk-sets-plan-and-scope cia2 cia3; plan-before-testing cia2; consider-fraud-every-engagement cia2; relevant-reliable-sufficient cia2; root-cause-over-symptom cia2 cia3; assurance-not-a-guarantee cia2; discuss-then-escalate cia2 cia3; report-through-the-right-channel cia2; tell-it-straight cia2 cia3; the four reading principles cia2 cia3. A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet, because no notes teach it until Part 3 is written. Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1. Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
+  "updated": "2026-11-20",
+  "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, the Challenge Exam 1 to 5, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and are set by a tagging pass after each round (the Part 1 pilot's is done); legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 and ciac. For ciac, domains are the Challenge Exam's sections (A Internal Audit Professionalism and Quality is 1, B Internal Audit Operations and Audit Plan is 2, C Engagement Planning is 3, D Engagement Performance is 4, E Engagement Results and Monitoring is 5, mapped from docs/content/CIA_CHALLENGE_MAP.md), subtopics stay empty until the Challenge notes are generated, and practice ids follow the tag of each generated item's source question. Parts 2 and 3 are still to come. Intended once their notes exist (written here because the linter of the built file allows no extra top-level key): know-your-seat cia2 cia3; board-approves-management-supports cia3; management-owns-risk-and-action cia2 cia3; advise-never-decide cia2 cia3; function-or-person cia3; disclose-then-safeguard cia3; risk-sets-plan-and-scope cia2 cia3; plan-before-testing cia2; consider-fraud-every-engagement cia2; relevant-reliable-sufficient cia2; root-cause-over-symptom cia2 cia3; assurance-not-a-guarantee cia2; discuss-then-escalate cia2 cia3; report-through-the-right-channel cia2; tell-it-straight cia2 cia3; the four reading principles cia2 cia3. A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet, because no notes teach it until Part 3 is written. Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1. Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
   "families": [
     {
       "id": "role",
@@ -102,8 +102,19 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
-        "ciac": []
+        "cia1": [
+          "cia1_d1_001",
+          "cia1_d1_008",
+          "cia1_d1_018",
+          "cia1_d1_019",
+          "cia1_d3_001",
+          "cia1_d4_017",
+          "cia1_d4_018"
+        ],
+        "ciac": [
+          "ciac_d1_006",
+          "ciac_d1_007"
+        ]
       },
       "slip_pattern": "role",
       "legacy_ids": [],
@@ -165,8 +176,17 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
-        "ciac": []
+        "cia1": [
+          "cia1_d1_003",
+          "cia1_d1_004",
+          "cia1_d1_015",
+          "cia1_d1_016"
+        ],
+        "ciac": [
+          "ciac_d1_001",
+          "ciac_d1_003",
+          "ciac_d1_004"
+        ]
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -233,7 +253,11 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
+        "cia1": [
+          "cia1_d3_002",
+          "cia1_d4_015",
+          "cia1_d4_020"
+        ],
         "ciac": []
       },
       "slip_pattern": "tech-first",
@@ -297,7 +321,11 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
+        "cia1": [
+          "cia1_d1_010",
+          "cia1_d1_013",
+          "cia1_d3_014"
+        ],
         "ciac": []
       },
       "slip_pattern": null,
@@ -359,8 +387,14 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
-        "ciac": []
+        "cia1": [
+          "cia1_d1_002",
+          "cia1_d1_017",
+          "cia1_d2_004"
+        ],
+        "ciac": [
+          "ciac_d1_005"
+        ]
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -419,8 +453,13 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
-        "ciac": []
+        "cia1": [
+          "cia1_d1_014",
+          "cia1_d2_005"
+        ],
+        "ciac": [
+          "ciac_d1_009"
+        ]
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -481,8 +520,15 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
-        "ciac": []
+        "cia1": [
+          "cia1_d1_020",
+          "cia1_d2_008",
+          "cia1_d2_009",
+          "cia1_d2_010"
+        ],
+        "ciac": [
+          "ciac_d1_008"
+        ]
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -544,7 +590,11 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
+        "cia1": [
+          "cia1_d2_014",
+          "cia1_d3_004",
+          "cia1_d4_007"
+        ],
         "ciac": []
       },
       "slip_pattern": null,
@@ -606,7 +656,10 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
+        "cia1": [
+          "cia1_d1_012",
+          "cia1_d3_015"
+        ],
         "ciac": []
       },
       "slip_pattern": null,
@@ -668,7 +721,12 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
+        "cia1": [
+          "cia1_d4_004",
+          "cia1_d4_006",
+          "cia1_d4_016",
+          "cia1_d4_019"
+        ],
         "ciac": []
       },
       "slip_pattern": null,
@@ -734,8 +792,15 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
-        "ciac": []
+        "cia1": [
+          "cia1_d2_007",
+          "cia1_d2_016",
+          "cia1_d3_003",
+          "cia1_d4_011"
+        ],
+        "ciac": [
+          "ciac_d1_010"
+        ]
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -796,7 +861,13 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
+        "cia1": [
+          "cia1_d3_006",
+          "cia1_d3_011",
+          "cia1_d3_017",
+          "cia1_d3_018",
+          "cia1_d4_009"
+        ],
         "ciac": []
       },
       "slip_pattern": "symptom",
@@ -859,7 +930,10 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
+        "cia1": [
+          "cia1_d1_009",
+          "cia1_d2_015"
+        ],
         "ciac": []
       },
       "slip_pattern": null,
@@ -921,7 +995,9 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
+        "cia1": [
+          "cia1_d3_012"
+        ],
         "ciac": []
       },
       "slip_pattern": null,
@@ -986,8 +1062,16 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
-        "ciac": []
+        "cia1": [
+          "cia1_d2_002",
+          "cia1_d2_003",
+          "cia1_d2_020",
+          "cia1_d3_007",
+          "cia1_d4_012"
+        ],
+        "ciac": [
+          "ciac_d1_012"
+        ]
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -1050,7 +1134,11 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
+        "cia1": [
+          "cia1_d2_001",
+          "cia1_d2_013",
+          "cia1_d2_019"
+        ],
         "ciac": []
       },
       "slip_pattern": null,
@@ -1120,8 +1208,20 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
-        "ciac": []
+        "cia1": [
+          "cia1_d1_005",
+          "cia1_d1_006",
+          "cia1_d1_007",
+          "cia1_d3_005",
+          "cia1_d3_013",
+          "cia1_d3_020",
+          "cia1_d4_005",
+          "cia1_d4_008",
+          "cia1_d4_010"
+        ],
+        "ciac": [
+          "ciac_d1_002"
+        ]
       },
       "slip_pattern": null,
       "legacy_ids": [],
@@ -1182,7 +1282,11 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
+        "cia1": [
+          "cia1_d1_011",
+          "cia1_d2_006",
+          "cia1_d2_011"
+        ],
         "ciac": []
       },
       "slip_pattern": "priority",
@@ -1242,7 +1346,12 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
+        "cia1": [
+          "cia1_d2_012",
+          "cia1_d3_008",
+          "cia1_d3_010",
+          "cia1_d3_019"
+        ],
         "ciac": []
       },
       "slip_pattern": "runner-up",
@@ -1303,8 +1412,22 @@
         "ciac": []
       },
       "practice_ids": {
-        "cia1": [],
-        "ciac": []
+        "cia1": [
+          "cia1_d2_017",
+          "cia1_d2_018",
+          "cia1_d3_009",
+          "cia1_d3_016",
+          "cia1_d4_001",
+          "cia1_d4_002",
+          "cia1_d4_003",
+          "cia1_d4_013",
+          "cia1_d4_014"
+        ],
+        "ciac": [
+          "ciac_d1_011",
+          "ciac_d3_001",
+          "ciac_d3_002"
+        ]
       },
       "slip_pattern": "misread",
       "legacy_ids": [],
