@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "comment": "Original KaiSip CIA Part 1 practice questions for Section C (Governance, Risk Management, and Control), written from KaiSip's own notes and the opened Global Internal Audit Standards (2024). No IIA practice question, textbook or prep-bank text used. Not affiliated with or endorsed by The IIA. Pilot cia1_d3_001 to cia1_d3_020, 19 Nov 2026. Round 2 cia1_d3_021 to cia1_d3_040, 20 Nov 2026. Round 4 cia1_d3_041 to cia1_d3_052, 20 Nov 2026. Round 5 cia1_d3_053 to cia1_d3_064, 20 Nov 2026. Round 7 cia1_d3_065 to cia1_d3_075, 20 Nov 2026. Round 8 cia1_d3_076 to cia1_d3_086, 20 Nov 2026.",
+  "comment": "Original KaiSip CIA Part 1 practice questions for Section C (Governance, Risk Management, and Control), written from KaiSip's own notes and the opened Global Internal Audit Standards (2024). No IIA practice question, textbook or prep-bank text used. Not affiliated with or endorsed by The IIA. Pilot cia1_d3_001 to cia1_d3_020, 19 Nov 2026. Round 2 cia1_d3_021 to cia1_d3_040, 20 Nov 2026. Round 4 cia1_d3_041 to cia1_d3_052, 20 Nov 2026. Round 5 cia1_d3_053 to cia1_d3_064, 20 Nov 2026. Round 7 cia1_d3_065 to cia1_d3_075, 20 Nov 2026. Round 8 cia1_d3_076 to cia1_d3_086, 20 Nov 2026. Round 9 cia1_d3_087 to cia1_d3_093, 20 Nov 2026.",
   "schema_version": 1
  },
  "domain": 3,
@@ -3360,6 +3360,279 @@
     "Control design"
    ],
    "_provenance": "Authored from concept: notes 1C8.2 Effectiveness, Efficiency and the Limits of Control. Sources opened 20 Nov 2026: Global Internal Audit Standards (2024), Glossary (control) and Standard 14.2 (requirements on determining the condition from evidence); COSO, Internal Control: Integrated Framework (2013), Executive Summary, limitations (background only, carries no key). Original scenario; no IIA practice question or prep-bank text used. Round 8, 20 Nov 2026. Fix pass 20 Nov 2026 (round 8 audit, blind and cue results). Targeted audit 20 Nov 2026 applied (changed-key check).",
+   "style_version": 2
+  },
+  {
+   "id": "cia1_d3_087",
+   "domain": 3,
+   "subtopic": "1C5 The risk management process. A response that lapsed between yearly ratings",
+   "principle_id": "root-cause-over-symptom",
+   "challenge_ref": null,
+   "testable_from": null,
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A Malagasy vanilla exporter rates its risks each March by one method; its cyclone insurance, the recorded response, lapsed in June, still unnoticed in October. Which MAIN weakness should internal auditor Hery Rakoto report?",
+   "options": {
+    "A": "Assessment: cyclone risk is still rated as if it were insured",
+    "B": "Response: insurance shares a cyclone's cost but leaves the risk",
+    "C": "Identification: the lapse is a new risk the register leaves out",
+    "D": "Monitoring: no check between ratings that each response still works"
+   },
+   "correct": "D",
+   "key_concept": "Monitoring watches risks and responses between scheduled ratings; a response that lapses unseen is a monitoring failure, whatever the last rating says.",
+   "pre_read": "The March rating was right when it was made. Which step should have caught the lapse since then?",
+   "correct_explanation": "The IIA's 2026 enterprise risk management statement treats risk management as continuous, not a yearly exercise, and lists monitoring among its five elements, with internal audit's assurance covering how management monitors risks and responses. The March rating was sound when made, but nothing since has checked the insurance, so the lapse has gone unseen for four months. The closest choice describes the stale rating, which is the effect of that gap, not its cause.",
+   "wrong_explanations": {
+    "A": "Closest choice: the rating is now out of date, but it was right in March under one method. It went stale because nothing checked the response afterward.",
+    "B": "Insurance is a sound way to share a risk, and its limits do not make it a weak choice here. The fault is that it lapsed unseen.",
+    "C": "Cyclone risk is already in the register. The lapse is a response that stopped working, which monitoring should catch, not a new risk."
+   },
+   "tips": [
+    "Eliminate: B, because sharing a risk through insurance is a valid response, and C, because cyclone risk is already listed; only its response failed.",
+    "Final two: D beats A because the March rating was correct when made; it went stale because no step since then checked whether the response was still in place.",
+    "Exam cue: when a response stops working between scheduled ratings, look to monitoring; an out-of-date rating is usually the symptom, not the cause."
+   ],
+   "framework_ref": "IIA Statement of Position: The Role of the Internal Audit Function in Enterprise Risk Management; Global Internal Audit Standards (2024), Glossary",
+   "related_concepts": [
+    "Risk management cycle",
+    "Monitoring",
+    "Risk response"
+   ],
+   "_provenance": "Authored from concept: notes 1C5.3 The Risk Management Cycle. Sources opened 20 Nov 2026: IIA Statement of Position on enterprise risk management (2026), its definition (continuous, not periodic), the five elements and internal audit's assurance over monitoring; Global Internal Audit Standards (2024), Glossary (risk management). Original scenario; no IIA practice question or prep-bank text used. Round 9, 20 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cia1_d3_088",
+   "domain": 3,
+   "subtopic": "1C6 Risk management across the organization. An enterprise framework offered in place of plant reviews",
+   "principle_id": "final-two",
+   "challenge_ref": null,
+   "testable_from": null,
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Having adopted an enterprise risk management framework, a Dominican cement maker's operations chief proposes ending the plants' own safety risk reviews, since the enterprise register lists safety. What should internal auditor Yokasta Peralta BEST conclude?",
+   "options": {
+    "A": "Unsound: plant reviews feed the framework; it cannot replace them",
+    "B": "Sound: the framework gives one organizationwide view of every risk",
+    "C": "Sound, once internal audit has confirmed the framework works well",
+    "D": "Unsound: ending a risk activity needs the board's approval first"
+   },
+   "correct": "A",
+   "key_concept": "An enterprise framework connects and adds up the risk work done across units; it does not replace day-to-day risk management where the risks arise.",
+   "pre_read": "Ask what one line on safety in an enterprise register is built from, and whether it can do the plants' work.",
+   "correct_explanation": "The IIA's 2026 enterprise risk management statement says the enterprise approach does not replace day-to-day risk management across the organization; it links that work into one picture so risks can be added up, escalated and weighed by executives and the board. The register's safety line depends on the plants' reviews. The closest choice names a real benefit, the organizationwide view, but that view is built from plant work, not in place of it.",
+   "wrong_explanations": {
+    "B": "Closest choice: an organizationwide view is a real benefit of the framework, but it is assembled from unit risk work. Ending the plant reviews would leave it hollow.",
+    "C": "Internal audit's assurance on the framework would not let one register line do the plants' daily work. The proposal is unsound whatever internal audit finds.",
+    "D": "The board oversees risk management; how plants manage safety risk is for management to design. The proposal fails on what the framework is for, not on who approves."
+   },
+   "tips": [
+    "Eliminate: C, because internal audit's assurance cannot turn a register line into plant risk management, and D, because management, not the board, designs how plants manage risk.",
+    "Final two: A beats B because the organizationwide view is built from the plants' reviews; the framework connects that work and does not stand in for it.",
+    "Exam cue: on CIA questions, an enterprise framework adds structure, one language and an overall view; it never removes the need to manage risk where it arises."
+   ],
+   "framework_ref": "IIA Statement of Position: The Role of the Internal Audit Function in Enterprise Risk Management; CIA Part 1 syllabus (2025), Expanded Test Specifications V2.09.2024 FINAL",
+   "related_concepts": [
+    "Risk management framework",
+    "Enterprise risk management",
+    "Day-to-day risk management"
+   ],
+   "_provenance": "Authored from concept: notes 1C6.3 Why Organizations Use a Risk Management Framework. Sources opened 20 Nov 2026: IIA Statement of Position on enterprise risk management (2026), its definition (ERM connects and does not replace day-to-day risk management); CIA Part 1 syllabus (2025), topic 1C6b. Original scenario; no IIA practice question or prep-bank text used. Round 9, 20 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cia1_d3_089",
+   "domain": 3,
+   "subtopic": "1C7 Internal control concepts and control types. A detective control for small, frequent losses",
+   "principle_id": "weigh-cost-against-benefit",
+   "challenge_ref": null,
+   "testable_from": null,
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Cashiers at a Trinidadian supermarket chain grant some 60,000 damaged-goods discounts a year, none over $3; misuse costs about $9,000 yearly, above management's $5,000 tolerance. Which control should internal auditor Anil Maharaj recommend as BEST?",
+   "options": {
+    "A": "Supervisor approval at the till before any discount is given",
+    "B": "A yearly briefing for cashiers on the discount policy and its limits",
+    "C": "A weekly review of each cashier's discounts, outliers followed up",
+    "D": "A till block on discounts above $3 that no one can override"
+   },
+   "correct": "C",
+   "key_concept": "A control should fit the risk: where each loss is small and losses are frequent, a followed-up detective control can bring them within tolerance cheaply.",
+   "pre_read": "Compare what stopping every $3 discount at the till would cost with the loss above tolerance.",
+   "correct_explanation": "Standard 14.4 requires actions that bring risk to an acceptable level, and its considerations weigh cost and benefit against the risk tolerance; the glossary describes control processes as keeping risks within tolerance. A weekly review of each cashier's discounts, with outliers followed up, targets misuse cheaply. The closest choice, approval at the till, would also cut misuse, but it calls a supervisor to the till 60,000 times a year over losses of about $9,000.",
+   "wrong_explanations": {
+    "A": "Closest choice: a preventive check suits risks where one event is costly. Here no discount exceeds $3, so approving 60,000 of them is out of proportion to the loss.",
+    "B": "A briefing tells cashiers what is expected, which helps where misuse comes from not knowing the rules. It neither finds nor stops deliberate misuse.",
+    "D": "A block above $3 suits large single discounts, but none exceed $3 here. It would stop nothing that is now going wrong."
+   },
+   "tips": [
+    "Eliminate: B, because a policy briefing neither finds nor stops deliberate misuse, and D, because no discount exceeds $3, so the block would catch nothing.",
+    "Final two: C beats A because both would cut misuse, but approving 60,000 small discounts is out of proportion to a $9,000 loss, while a weekly review costs little.",
+    "Exam cue: on CIA questions, the fitting control brings the risk within tolerance at a proportionate cost; preventive is not always better than detective."
+   ],
+   "framework_ref": "Global Internal Audit Standards (2024), Standard 14.4 Recommendations and Action Plans; Global Internal Audit Standards (2024), Glossary; CIA Part 1 syllabus (2025), Expanded Test Specifications V2.09.2024 FINAL",
+   "related_concepts": [
+    "Preventive and detective controls",
+    "Risk tolerance",
+    "Cost and benefit of controls"
+   ],
+   "_provenance": "Authored from concept: notes 1C7.2 Preventive, Detective, Corrective and Directive Controls. Sources opened 20 Nov 2026: Global Internal Audit Standards (2024), Standard 14.4 (requirements and considerations: acceptable level, cost-benefit, risk tolerance) and Glossary (control processes); CIA Part 1 syllabus (2025), topic 1C7b. Original scenario; no IIA practice question or prep-bank text used. Round 9, 20 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cia1_d3_090",
+   "domain": 3,
+   "subtopic": "1C2 Culture and the control environment. A check performed by a contracted firm",
+   "principle_id": "final-two",
+   "challenge_ref": null,
+   "testable_from": null,
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "For a risk and control matrix on a Mauritanian fishery's exports, internal auditor Mariem Sidi learns its outside cold-store firm checks fridges hourly, moving fish from any warming one. How should Mariem BEST record this?",
+   "options": {
+    "A": "As no control: controls are actions the fishery's own managers take",
+    "B": "As a control, but not until the firm's own auditors test it",
+    "C": "As outside the matrix: the cold store is not under review",
+    "D": "As a spoilage control, though the outside firm carries it out"
+   },
+   "correct": "D",
+   "key_concept": "A control is any action that manages a risk, whether management, the board or another party takes it, so a contracted firm's check still counts.",
+   "pre_read": "The glossary's definition of a control names more than one kind of party. Who performs this check?",
+   "correct_explanation": "The Standards' glossary counts as a control any step that management, the board or other parties take to manage risk and make objectives more likely to be met. The cold store's hourly checks manage spoilage, a risk to the fishery's exports, so they go in the matrix as a control carried out by another party. The closest choice treats controls as management's alone; management usually owns them, but that does not narrow what counts.",
+   "wrong_explanations": {
+    "A": "Closest choice: management usually owns and runs controls, but the glossary's definition also takes in other parties. The firm's checks manage the fishery's spoilage risk.",
+    "B": "Testing decides whether a control can be relied on, not whether it is one. The check belongs in the matrix before any test.",
+    "C": "Spoiled fish cannot be exported, so spoilage is a risk to the activity under review. Its controls belong in the matrix wherever they are carried out."
+   },
+   "tips": [
+    "Eliminate: B, because testing shows whether to rely on a control, not whether it is one, and C, because spoilage threatens the exports under review.",
+    "Final two: D beats A because the glossary counts actions by other parties as controls; management's usual ownership does not narrow the definition.",
+    "Exam cue: on CIA questions, ask what an action does to a risk, not who performs it, before deciding whether it is a control."
+   ],
+   "framework_ref": "Global Internal Audit Standards (2024), Glossary; Global Internal Audit Standards (2024), Standard 13.2 Engagement Risk Assessment",
+   "related_concepts": [
+    "Engagement-level controls",
+    "Risk and control matrix",
+    "Control"
+   ],
+   "_provenance": "Authored from concept: notes 1C2.2 Risks and Controls at Engagement Level. Sources opened 20 Nov 2026: Global Internal Audit Standards (2024), Glossary (control; risk and control matrix) and Standard 13.2 (considerations: documenting the controls meant to manage each risk). Original scenario; no IIA practice question or prep-bank text used. Round 9, 20 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cia1_d3_091",
+   "domain": 3,
+   "subtopic": "1C6 Risk management across the organization. Assurance on the process, not only the register",
+   "principle_id": "relevant-reliable-sufficient",
+   "challenge_ref": null,
+   "testable_from": null,
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A Bosnian insurer's audit committee chair asks internal auditor Amra Hadzic whether testing that its risk register is complete and accurate would show that risk management works. Which reply is MOST accurate?",
+   "options": {
+    "A": "Yes: the register is the record that the whole process produces",
+    "B": "No: rating, response, monitoring and escalation need testing too",
+    "C": "No: internal audit should first re-rate every risk in the register",
+    "D": "Yes, provided the risk function also signs off the register yearly"
+   },
+   "correct": "B",
+   "key_concept": "Assurance on risk management covers how risks are identified, rated, answered, monitored and reported; the register is only the output of those steps.",
+   "pre_read": "List what a risk process does after a risk is written down. Does testing the register reach those steps?",
+   "correct_explanation": "The IIA's 2026 enterprise risk management statement says internal audit's assurance covers whether risk management is designed and working: appetite built into decisions, risks identified and assessed consistently, significant risks escalated, and responses in line with expectations. A complete, accurate register shows only what was recorded. The closest choice treats that output as proof of the process, though a tidy register can sit beside responses no one carries out.",
+   "wrong_explanations": {
+    "A": "Closest choice: the register is the process's main record, but an accurate list says nothing about whether responses work or risks reach the board in time.",
+    "C": "Re-rating every risk would repeat management's assessment rather than test it. Reperforming a sample of ratings is one test; the other steps still need assurance.",
+    "D": "A second-line sign-off adds a view of the register, not of the other steps. Internal audit still judges the process before relying on anyone's work."
+   },
+   "tips": [
+    "Eliminate: C, because re-rating every risk repeats management's work instead of testing it, and D, because a sign-off on the register still covers only the register.",
+    "Final two: B beats A because the register is an output; assurance that risk management works must reach the steps that produce and use it.",
+    "Exam cue: on CIA questions, assurance on a process tests how it runs; a correct record of its results is only one piece of the picture."
+   ],
+   "framework_ref": "IIA Statement of Position: The Role of the Internal Audit Function in Enterprise Risk Management; Global Internal Audit Standards (2024), Standard 9.1 Understanding Governance, Risk Management, and Control Processes",
+   "related_concepts": [
+    "Assurance on risk management",
+    "Risk register",
+    "Risk management cycle"
+   ],
+   "_provenance": "Authored from concept: notes 1C6.2 Internal Audit's Boundaries in Risk Management. Sources opened 20 Nov 2026: IIA Statement of Position on enterprise risk management (2026), internal audit assurance in relation to ERM and the five elements; Global Internal Audit Standards (2024), Standard 9.1 (requirements on understanding risk management processes). Original scenario; no IIA practice question or prep-bank text used. Round 9, 20 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cia1_d3_092",
+   "domain": 3,
+   "subtopic": "1C5 The risk management process. Taking far less risk than the board's appetite",
+   "principle_id": "answer-from-the-stem",
+   "challenge_ref": null,
+   "testable_from": null,
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "An Israeli biotech's board set a high appetite for research risk to reach two medicines by 2030; its research head funds only near-certain projects, and none qualify. What should internal auditor Noa Levi BEST conclude?",
+   "options": {
+    "A": "A weakness: research choices take far less risk than the board intends",
+    "B": "No weakness: taking less risk than the appetite allows is prudent",
+    "C": "No weakness: choosing projects is management's call, not internal audit's",
+    "D": "A weakness, but one to report once the 2030 goal is missed"
+   },
+   "correct": "A",
+   "key_concept": "Risk appetite is the risk the board will take to pursue its objectives; decisions far below it can defeat those objectives too.",
+   "pre_read": "Read the appetite together with the 2030 goal. Is the research head's caution what the board asked for?",
+   "correct_explanation": "The glossary ties risk appetite to the risk an organization will accept in pursuing its strategies and objectives, and The IIA's 2026 enterprise risk management statement has internal audit give assurance that appetite is built into decisions, so that risk-taking stays aligned with strategy. Funding only near-certain projects leaves the 2030 goal with nothing behind it. The closest choice treats any risk below appetite as safe, but here caution itself threatens the objective.",
+   "wrong_explanations": {
+    "B": "Closest choice: staying below appetite is often fine, but appetite is set to pursue objectives. Here the caution leaves the board's 2030 goal without a single project.",
+    "C": "Management does choose projects, and internal audit does not. It still assesses whether those choices reflect the board's appetite, and reports where they do not.",
+    "D": "Waiting for the goal to fail would report too late to help. The gap between the appetite and today's funding choices exists now."
+   },
+   "tips": [
+    "Eliminate: C, because internal audit assesses whether decisions reflect the appetite without making them, and D, because the gap exists now, years before the goal is missed.",
+    "Final two: A beats B because appetite states the risk the board wants taken for its goals; far less than that can defeat the strategy.",
+    "Exam cue: on CIA questions, compare risk-taking with appetite in both directions; risk is the effect of uncertainty, good or bad, on objectives."
+   ],
+   "framework_ref": "Global Internal Audit Standards (2024), Glossary; IIA Statement of Position: The Role of the Internal Audit Function in Enterprise Risk Management",
+   "related_concepts": [
+    "Risk appetite",
+    "Upside of risk",
+    "Embedding appetite in decisions"
+   ],
+   "_provenance": "Authored from concept: notes 1C5.2 Risk Appetite and Risk Tolerance. Sources opened 20 Nov 2026: Global Internal Audit Standards (2024), Glossary (risk appetite; risk); IIA Statement of Position on enterprise risk management (2026), internal audit assurance that appetite is embedded in decisions and risk-taking aligned with strategy. Original scenario; no IIA practice question or prep-bank text used. Round 9, 20 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cia1_d3_093",
+   "domain": 3,
+   "subtopic": "1C4 Types of risk. Harm the organization may cause, as a risk to its own objectives",
+   "principle_id": "final-two",
+   "challenge_ref": null,
+   "testable_from": null,
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "An Argentine lithium miner's register lists drought as an environmental risk to output but leaves out the chance that its brine pumping dries nearby farmers' wells. Which view by internal auditor Valentina Correa is BEST?",
+   "options": {
+    "A": "Complete: a register holds risks to the miner, not risks it poses",
+    "B": "Complete: the farmers' wells are a matter for the water regulator",
+    "C": "Incomplete: harm it causes could rebound on its own objectives",
+    "D": "Incomplete: it should record every effect the miner has"
+   },
+   "correct": "C",
+   "key_concept": "Environmental and social risks run both ways: harm an organization may cause others belongs in its register when it can rebound on it.",
+   "pre_read": "Ask what could follow for the miner if nearby wells ran dry because of its pumping.",
+   "correct_explanation": "The glossary defines risk as the effect of uncertainty on objectives, and Standard 11.5's considerations list harm to other stakeholders and regulatory penalties among the impacts of excess risk. Drying neighbors' wells could bring claims, penalties, protests or loss of permission to operate, so it threatens the miner's objectives and belongs in the register. The closest choice limits risk to harm done to the miner, missing how harm to others rebounds.",
+   "wrong_explanations": {
+    "A": "Closest choice: risks are judged by their effect on the miner's objectives, but harm to farmers can return as claims, protests or lost permits. It belongs in the register.",
+    "B": "A regulator's possible action is itself a risk to the miner. Leaving the matter to the regulator removes nothing from the miner's exposure.",
+    "D": "A register holds effects that could threaten the miner's objectives, not every effect it has. The wells qualify because of what could follow for the miner."
+   },
+   "tips": [
+    "Eliminate: B, because a regulator's possible action is itself a risk to the miner, and D, because a register lists what threatens objectives, not every effect.",
+    "Final two: C beats A because harm the miner causes can rebound on its own objectives through claims, penalties or lost permission to operate.",
+    "Exam cue: on CIA questions, environmental and social risks run both ways: what the world does to the organization, and what the organization does to the world."
+   ],
+   "framework_ref": "Global Internal Audit Standards (2024), Glossary; Global Internal Audit Standards (2024), Standard 11.5 Communicating the Acceptance of Risks; CIA Part 1 syllabus (2025), Expanded Test Specifications V2.09.2024 FINAL",
+   "related_concepts": [
+    "Environmental risk",
+    "Social responsibility risk",
+    "Risk identification"
+   ],
+   "_provenance": "Authored from concept: notes 1C4.2 Reputational and Sustainability-Related Risk. Sources opened 20 Nov 2026: Global Internal Audit Standards (2024), Glossary (risk) and Standard 11.5 (considerations: impacts of risk beyond appetite); CIA Part 1 syllabus (2025), topic 1C4a. Original scenario; no IIA practice question or prep-bank text used. Round 9, 20 Nov 2026.",
    "style_version": 2
   }
  ]
