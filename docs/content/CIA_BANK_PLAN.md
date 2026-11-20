@@ -12,9 +12,9 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 
 | | |
 |---|---|
-| **Status (20 Nov 2026)** | Session G, steps 1 to 3 done: expert decisions, the documents, the harness (187 planted faults stopped, 43 controls hold; an independent code review's findings are all fixed), the expert agents, the **Part 1 study notes for all four sections** (93 sub-topics, audited and learner-read), and the **Part 1 pilot: 80 questions, 20 per section**, through the full pipeline (scorecard in section 7; calibration rules in section 6b). With them: the 20 shared principles, the Part 1 exam guide and final review week, and a first generated Challenge pack from the tagged items. The outline of the CISA bridge is in `docs/content/CIA_CISA_BRIDGE_OUTLINE.md`. **Not done from Session G: the glossary start** (`data/cia/shared/glossary.json`). |
+| **Status (20 Nov 2026)** | Session G, steps 1 to 3 done: expert decisions, the documents, the harness (187 planted faults stopped, 43 controls hold; an independent code review's findings are all fixed), the expert agents, the **Part 1 study notes for all four sections** (93 sub-topics, audited and learner-read), and the **Part 1 pilot: 80 questions, 20 per section**, through the full pipeline (scorecard in section 7; calibration rules in section 6b). With them: the 20 shared principles, the Part 1 exam guide and final review week, and a first generated Challenge pack from the tagged items. The **glossary start** is written and audited (153 Part 1 terms in `data/cia/shared/glossary.json`; it reuses the notes' wording, and `check_glossary.py` fails if a term is ever defined two ways). The outline of the CISA bridge is in `docs/content/CIA_CISA_BRIDGE_OUTLINE.md`. Session G is complete. |
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
-| **Next step** | 1. The glossary start (`data/cia/shared/glossary.json`, own-words definitions checked by `check_originality.py` against the Standards glossary; `iia-mindset-coach` with `cia-p1-domain-expert`). 2. Part 1 toward its sale minimum in rounds of 20 to 25, starting with its five Challenge-shared topics (1A2, 1A7, 1A8, 1B2, 1B6). Every round obeys section 6b and reports the cue test; the target is 85% or lower (the pilot ended at 91%). |
+| **Next step** | Part 1 toward its sale minimum in rounds of 20 to 25, starting with its five Challenge-shared topics (1A2, 1A7, 1A8, 1B2, 1B6). Every round obeys section 6b and reports the cue test; the target is 85% or lower (the pilot ended at 91%). |
 | **Then** | Part 2, Part 3, the Challenge build and the CISA bridge notes (from the outline), the cross-part release gate. |
 | **Known weak spot** | Difficulty. No pilot key was wrong and all four blind rounds agreed 80 of 80, but the last testers still called 21 of 80 answerable by test-taking alone, most in Sections B and D, and 8 items carry a TOO EASY or GIVEAWAY flag (section 7). New rounds must do better; the pilot items are candidates for a later hardening pass, not for more polishing now (section 6b, rule 12). |
 
@@ -46,7 +46,7 @@ pack. Every surface CISA has, as data that passes its gate.
 | Questions | `originals/d{N}.json` | part expert | Pilot done: 20 per section (section 7) | Not started | Not started | Generated (`build_challenge.py`) from the tagged pilot items |
 | Citation library | `data/cia/shared/_framework_library.md` (one for all four) | part experts, cia-currency-checker | Started | | | |
 | Dated facts | `data/cia/shared/currency.json` | cia-currency-checker | Started | | | |
-| Glossary | `glossary.json`, built from `data/cia/shared/glossary.json` | iia-mindset-coach, part experts | Not started | | | |
+| Glossary | `glossary.json`, built from `data/cia/shared/glossary.json` | iia-mindset-coach, part experts | Started: 153 terms, audited (section 7) | Later | Later | Built from the shared terms of its topics |
 | Principles | `mindset/principles.json`, built from `data/cia/shared/principles.json` | iia-mindset-coach | Done: 20 principles, pilot questions tagged | Later | Later | Built (same 20) |
 | About the exam | `exam/<pack>_exam_guide.json` | iia-mindset-coach | Done | Not started | Not started | Not started |
 | Final review week | `exam/final_review_week.json` | iia-mindset-coach, behavioral-scientist | Done | Not started | Not started | Not started |
@@ -391,6 +391,17 @@ Recognize level; they stay with the nearest reading principle).
 before anything reached main (the pilot's rewrites had retired three ids that
 no learner ever saw). From the first merge on, it is append-only and
 `check_ids.py` holds it against main.
+
+**The glossary start** (20 Nov 2026): 140 terms written from the notes, then
+an independent audit of every term against the opened Standards: 1 HARD
+ERROR (the board's approvals were counted as three; Standard 6.3 also names
+the resource plan), 17 PRECISION, 34 OBSERVATION, all applied, and 13 terms
+added, for 153. Four definitions changed in the notes too, so that glossary
+and notes still say the same thing. The same miscount sat in one line of the
+Part 1 exam guide and was corrected. The audit also led to a new gate
+(`check_glossary.py`: links, packs, duplicates, older names, and a definition
+that differs from the notes) and a fix to the Standards-glossary parser (57
+entries, one was being lost).
 
 **The CISA bridge outline** (`docs/content/CIA_CISA_BRIDGE_OUTLINE.md`,
 20 Nov 2026) plans 28 bridge sub-topics, 45 contrasts and a term table. Its
