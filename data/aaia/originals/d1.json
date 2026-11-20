@@ -6838,25 +6838,25 @@
       "principle_id": "ai-deciding-fact",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Cypriot port authority's chatbot for shipping agents can query the live port-dues schedule through a tool, but the model decides itself when to use it. What should concern the IS auditor MOST?",
+      "question": "A South African self-storage chain's chatbot for customers can query the live unit-rent list through a tool, but the model decides itself when to use it. What should concern the IS auditor MOST?",
       "options": {
-        "A": "The chatbot may need retraining whenever the dues schedule changes",
-        "B": "Tool outages may go unnoticed by the port's IT staff",
-        "C": "Shipping agents may not be told where the dues figures come from",
+        "A": "The chatbot may need retraining whenever the chain's unit rents change",
+        "B": "Tool outages may go unnoticed by the chain's IT staff",
+        "C": "Customers may not be told where the rent figures come from",
         "D": "It may answer from outdated learned figures instead of the tool"
       },
       "correct": "D",
       "key_concept": "A tool-using model chooses when to call its tools; it can skip the lookup and answer fluently from older training data.",
       "pre_read": "Rank the options by how likely each is and how much harm it would do.",
-      "correct_explanation": "When a model decides for itself whether to use a tool, it can skip the lookup and answer from figures learned in training, which may be out of date, and the reply reads just as confident. Wrong dues quoted to agents then go unchecked. Unnoticed tool outages, option B, are a real operations gap, but even with the tool working, the model may never call it.",
+      "correct_explanation": "When a model decides for itself whether to use a tool, it can skip the lookup and answer from figures learned in training, which may be out of date, and the reply reads just as confident. Wrong rents quoted to customers then go unchecked. Unnoticed tool outages, option B, are a real operations gap, but even with the tool working, the model may never call it.",
       "wrong_explanations": {
-        "A": "Tempting because models hold what they learned in training. But a live lookup reads the current schedule, so changes need no retraining; the gap is whether it looks.",
+        "A": "Tempting because models hold what they learned in training. But a live lookup reads the current rent list, so changes need no retraining; the gap is whether it looks.",
         "B": "Tempting because monitoring outages is sound practice. But a working tool helps only when the model chooses to use it, which the stem leaves to the model.",
-        "C": "Tempting because users should know a figure's source. But disclosure does not make a dues figure correct; wrong quotes are the larger harm here."
+        "C": "Tempting because users should know a figure's source. But disclosure does not make a rent figure correct; wrong quotes are the larger harm here."
       },
       "tips": [
-        "Eliminate: A thinks a live lookup tool needs retraining when the schedule changes, and C is a disclosure gap that leaves every quoted figure as right or wrong as before.",
-        "Final two: D beats B because the model, not a rule, decides whether to look up the schedule; a working tool it never calls protects nobody.",
+        "Eliminate: A thinks a live lookup tool needs retraining when rents change, and C is a disclosure gap that leaves every quoted figure as right or wrong as before.",
+        "Final two: D beats B because the model, not a rule, decides whether to look up the rent list; a working tool it never calls protects nobody.",
         "Exam cue: when an AI may choose whether to use a tool, ask what it does when it does not; access to a source is not use of it."
       ],
       "framework_ref": "NIST AI 100-1 MAP 2.2 (Knowledge limits and human oversight of outputs documented); NIST AI 600-1 Section 2.2 (Confabulation)",
@@ -6865,35 +6865,35 @@
         "Tool use",
         "Knowledge cutoff"
       ],
-      "_provenance": "Authored from concept: notes 1A.1 Kinds of AI Systems (a tool-using model decides for itself whether to call its tools, so it can skip the lookup and answer from older training data). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1A.1 Kinds of AI Systems (a tool-using model decides for itself whether to call its tools, so it can skip the lookup and answer from older training data). Round 1 review: moved from a port authority's dues chatbot, whose setting repeated aaia_d3_053, to a self-storage chain's rent chatbot. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
       "style_version": 2
     },
     {
       "id": "aaia_d1_188",
       "domain": 1,
-      "subtopic": "1A AI models and requirements. An assistant for tax questions",
+      "subtopic": "1A AI models and requirements. An assistant for kitchen managers",
       "principle_id": "ai-deciding-fact",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A New Zealand tax-advisory firm's staff ask its generative assistant, which searches current tax rulings, to confirm deductions they already plan to claim. What should concern the IS auditor MOST?",
+      "question": "A Uruguayan restaurant chain's kitchen managers ask its generative assistant, which searches current food-hygiene rules, to confirm storage practices they already plan to use. What should concern the IS auditor MOST?",
       "options": {
         "A": "Answers may lean toward whatever each question seems to expect",
         "B": "Its answers may be identical each time, hiding any error",
-        "C": "Each confirmation may teach the assistant to approve more deductions",
-        "D": "Answers may rest on tax rules that changed after its training cutoff"
+        "C": "Each confirmation may teach the assistant to approve more practices",
+        "D": "Answers may rest on hygiene rules changed after its training cutoff"
       },
       "correct": "A",
       "key_concept": "Models tuned on human approval can favor answers users seem to want, so leading questions draw agreement rather than an independent check.",
-      "pre_read": "Separate what the system is asked to do from what the business needs from it.",
-      "correct_explanation": "Generative models are tuned partly on human ratings, which tend to reward agreeable answers, so a request to confirm a planned claim can draw a yes that the rules do not support. Staff then get their own view back as advice. A training cutoff, option D, could date answers, but this assistant searches current rulings; questions built to invite agreement are the gap the stem describes.",
+      "pre_read": "Note which facts in the stem each option depends on before ranking them.",
+      "correct_explanation": "Generative models are tuned partly on human ratings, which tend to reward agreeable answers, so a request to confirm a planned practice can draw a yes that the rules do not support. Managers then get their own view back as advice. A training cutoff, option D, could date answers, but this assistant searches current rules; questions built to invite agreement are the gap the stem describes.",
       "wrong_explanations": {
         "B": "Tempting because uniform answers could hide a fault. But generative answers usually vary between runs, and nothing in the stem suggests identical replies.",
         "C": "Tempting because AI seems to learn from use. But answering a prompt does not retrain the model, so confirmations do not shift later answers.",
-        "D": "Tempting because models do miss rules made after their training. But this assistant searches current rulings, while questions built to invite a yes can still draw one."
+        "D": "Tempting because models do miss rules made after their training. But this assistant searches current rules, while questions built to invite a yes can still draw one."
       },
       "tips": [
         "Eliminate: C assumes each answer retrains the model, and B expects identical replies from a model whose answers usually vary between runs.",
-        "Final two: A beats D because the assistant searches current rulings, yet questions framed to invite a yes still draw one from models tuned on human approval.",
+        "Final two: A beats D because the assistant searches current rules, yet questions framed to invite a yes still draw one from models tuned on human approval.",
         "Exam cue: when users ask an AI to confirm their own view, expect agreement, not a check; neutral questions and source checks are the control."
       ],
       "framework_ref": "NIST AI 600-1 Section 2.7 (Human-AI Configuration); NIST AI 100-1 MAP 2.2 (Knowledge limits and human oversight of outputs documented)",
@@ -6902,7 +6902,7 @@
         "Sycophancy",
         "Training objective"
       ],
-      "_provenance": "Authored from concept: notes 1A.2 How Models Learn and Where They Fail (models tuned on human ratings can favor agreeable answers, so questions framed to confirm the asker's view draw agreement rather than a check). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1A.2 How Models Learn and Where They Fail (models tuned on human ratings can favor agreeable answers, so questions framed to confirm the asker's view draw agreement rather than a check). Round 1 review: moved from a tax-advisory firm's rulings assistant, whose setting repeated aaia_d2_215, to a restaurant chain's food-hygiene assistant. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -7315,25 +7315,25 @@
       "subtopic": "1C AI risk management. Alert levels for a drift indicator",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Ghanaian health insurer's tolerance caps claims its model wrongly delays at 4%, found only through appeals months later; its drift alert uses its monitoring tool's default. What should the IS auditor recommend as BEST?",
+      "question": "A Malaysian travel insurer's tolerance caps claims its model wrongly delays at 4%, found only through appeals months later; its drift alert uses its monitoring tool's default. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have internal audit set the alert level for the owner",
         "B": "Have the owner base alert levels on drift's link to delays",
         "C": "Have the owner replace the drift score with model confidence",
-        "D": "Have the owner alert on the wrongful-delay rate alone"
+        "D": "Have the owner set the drift alert at the 4% delay tolerance"
       },
       "correct": "B",
       "key_concept": "A drift score measures input change, not harm; when harm surfaces late, set drift alert levels from how drift predicts it against the tolerance.",
       "pre_read": "Restate the insurer's monitoring setup before choosing.",
-      "correct_explanation": "Wrongful delays come to light only through appeals months later, so the owner needs an early warning. Input drift can give one, but only at a level linked to how drift predicts delays against the 4% tolerance; the tool's default is linked to nothing. Alerting on the wrongful-delay rate alone, option D, measures the harm directly but fires months after claimants were hurt.",
+      "correct_explanation": "Wrongful delays come to light only through appeals months later, so the owner needs an early warning. Input drift can give one, but only at a level set from how drift relates to delays against the 4% tolerance; the tool's default is linked to nothing. Setting the drift alert at 4%, option D, copies a limit on wrongful delays onto a score that measures input change.",
       "wrong_explanations": {
         "A": "Tempting because internal audit understands indicators. But setting alert levels is management's job; the IS auditor assesses whether they fit the tolerance.",
         "C": "Tempting because confidence is easy to track. But a model can stay confident while its errors rise, so confidence is a poor risk indicator.",
-        "D": "Tempting because it measures the harm itself. But wrongful delays surface only through appeals months later, so an alert on them fires too late to act."
+        "D": "Tempting because alert levels should come from the tolerance. But 4% limits wrongful delays, while a drift score measures input change; the same number means something else."
       },
       "tips": [
         "Eliminate: C uses the model's own confidence, which can stay high as errors rise, and A has internal audit set a management control.",
-        "Final two: B beats D because wrongful delays surface months later; drift warns early, but only at a level tied to how it predicts those delays.",
+        "Final two: B beats D because a drift score measures input change, not delays; its alert level must come from how drift tracks delays, not from the 4% figure itself.",
         "Exam cue: when AI outcomes arrive late, a leading indicator such as drift needs alert levels calibrated to the tolerance it protects."
       ],
       "framework_ref": "NIST AI 100-1 MAP 1.5 (Organizational risk tolerances determined and documented); NIST AI 100-1 MEASURE 1.1 (Methods and metrics selected starting with the most significant risks)",
@@ -7342,7 +7342,7 @@
         "Drift",
         "Risk tolerance"
       ],
-      "_provenance": "Authored from concept: notes 1C.2 Risk Appetite, Tolerance and AI Key Risk Indicators (a drift score measures input change, not harm, so when harm surfaces late a drift indicator's alert level is set from how drift predicts it against the tolerance, not from a tool's default). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1C.2 Risk Appetite, Tolerance and AI Key Risk Indicators (a drift score measures input change, not harm, so when harm surfaces late a drift indicator's alert level is set from how drift predicts it against the tolerance, not from a tool's default). Round 1 review: moved from a health insurer's claims model, whose setting repeated CISA d2_163, to a travel insurer's claims model. Round 2 review: runner-up changed from alerting on the wrongful-delay rate, which repeated aaia_d2_113's late-outcome logic, to copying the 4% tolerance onto the drift score. Round 3 review: option D now names the 4% delay tolerance, so 'delay' no longer appears only in the key. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -7459,37 +7459,37 @@
     {
       "id": "aaia_d1_204",
       "domain": 1,
-      "subtopic": "1D Privacy and data governance. A shared customer-chat dataset",
+      "subtopic": "1D Privacy and data governance. Errors found in shared data",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Bulgarian furniture retailer's support, sales and product teams train on and analyze one customer-chat dataset; support added 50,000 question-and-answer pairs a hosted model wrote. What should the IS auditor recommend as BEST?",
+      "question": "A Bulgarian furniture retailer logged dispatch dates as delivery dates for eight months; the data owner has validated the corrected order dataset several teams' models trained on. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Have staff recheck every generated pair for wrong answers",
-        "B": "Have the data owner label which records were generated",
-        "C": "Have the support team cap the generated share of its training data",
-        "D": "Have IT encrypt the customer-chat dataset at rest"
+        "A": "Have IT reconcile the corrected dates with signed delivery notes",
+        "B": "Have each model owner retest their model on the corrected dates",
+        "C": "Have the data owner reapprove the corrected order dataset for model training",
+        "D": "Have IT log every correction made to the shared order dataset"
       },
       "correct": "B",
-      "key_concept": "Model-written records look like real ones, so lineage should label which records were generated, letting every use of a shared dataset include or exclude them.",
+      "key_concept": "Correcting source data does not change models already trained on it; each model should be retested on the corrected data before it is relied on.",
       "pre_read": "Weigh each option against the facts in the stem.",
-      "correct_explanation": "Generated pairs read like real customer chats, so once mixed in, sales and product teams may treat them as evidence of what customers ask, and every team's training leans more on model-written text, which narrows models. Labeling which records were generated lets each use include or exclude them. Capping the support team's share, option C, limits narrowing in one model, but the other teams still could not tell generated records from real ones.",
+      "correct_explanation": "Any model that used these dates learned that deliveries arrive sooner than they do, and correcting the dataset does not change what it learned; it keeps predicting from the errors until retrained. Retesting each model on the corrected dates shows whether and how far its predictions are off, so its owner can decide on retraining. Reconciling the dates with delivery notes, option A, rechecks a fix the data owner already validated, not the models.",
       "wrong_explanations": {
-        "A": "Tempting because checked data is better data. But correct answers do not make generated pairs real customer chats, and other teams still could not tell which records a model wrote.",
-        "C": "Tempting because heavy training on generated text narrows models. But a cap in one team's training leaves the sales and product teams unable to tell generated records from real ones.",
-        "D": "Tempting because customer data needs protection. But encryption limits who reads the dataset, not whether its users can tell generated records from real ones."
+        "A": "Tempting because reperformance confirms a fix. But the data owner has already validated it, and correct data now does not change what models learned from eight months of wrong dates.",
+        "C": "Tempting because training use needs the data owner's approval. But the dataset's permitted use has not changed; the gap is the models trained on the wrong dates.",
+        "D": "Tempting because changes to data should be recorded. But a log records the data fix; it does not show how far each trained model's predictions are now off."
       },
       "tips": [
-        "Eliminate: D answers a question about where records came from with encryption, and A makes generated pairs correct but no less model-written.",
-        "Final two: B beats C because three teams use the dataset; a cap protects one team's training, while a label of origin lets every use include or exclude model-written records.",
-        "Exam cue: when model-written data joins a shared dataset, look for lineage every user can see, not a fix inside one team's use."
+        "Eliminate: D records the data fix without testing the models that learned from the errors, and C reapproves a use that has not changed.",
+        "Final two: B beats A because the data fix is already validated, yet models trained on the wrong dates keep what they learned; only retesting them shows the damage.",
+        "Exam cue: when source data is corrected, ask which trained models learned from the errors; fixing data does not fix a trained model."
       ],
-      "framework_ref": "COBIT 2019 APO14 (Managed Data); NIST SP 800-53 Rev. 5 SR-4 (Provenance)",
+      "framework_ref": "COBIT 2019 APO14 (Managed Data); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
       "related_concepts": [
-        "Generated data",
-        "Data lineage",
-        "Data catalog"
+        "Data quality",
+        "Retraining",
+        "Revalidation"
       ],
-      "_provenance": "Authored from concept: notes 1D.1 Data Governance for AI (lineage flags model-written records, since they look like real ones and heavy training on generated text narrows models, so every user of a shared dataset needs to see which records a model generated). Re-angled in batch 11 review after the cross-domain reviewer found the earlier representativeness version repeated aaia_d2_265 and drifted into 2A; the runner-up was set apart from aaia_d1_150's error-sampling runner-up. Round 2 review: the stem names all three teams as training users and the key no longer echoes the stem word model. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1D.1 Data Governance for AI (trained models keep data errors until retrained, so when source data is corrected each model trained on it is retested on the corrected data before it is relied on). Re-angled in batch 11 review after the cross-domain reviewer found the earlier representativeness version repeated aaia_d2_265 and drifted into 2A; round 1 completeness review then found the generated-data version repeated aaia_d1_150's frame, so the item now tests corrected source data against models already trained on it. Round 2 review: re-keyed from finding affected model versions by lineage, which repeated aaia_d2_094's key and the 1D.1 notes example, to retesting each model on the corrected dates. Round 3 review: the stem now states the data owner validated the fix, so reconciling it again (option A) is no longer a defensible first step, and the explanation hedges whether each model used the dates. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -7885,13 +7885,13 @@
         "Final two: A beats C because ATLAS records known attacks and grows as new ones appear; rating listed techniques better cannot cover attacks the catalog does not yet hold.",
         "Exam cue: an attack catalog is a starting point for threat modeling, not a complete list; ask what covers attacks it does not yet hold."
       ],
-      "framework_ref": "MITRE ATLAS Matrix (Adversarial Threat Landscape for AI Systems); NIST AI 100-1 MAP 5.1 (Likelihood and magnitude of impacts characterized)",
+      "framework_ref": "MITRE ATLAS Matrix (Adversarial Threat Landscape for AI Systems); NIST AI 100-1 MEASURE 3.1 (Existing, unanticipated and emergent risks tracked); NIST AI 100-1 MAP 5.1 (Likelihood and magnitude of impacts characterized)",
       "related_concepts": [
         "MITRE ATLAS",
         "Threat modeling",
         "Emerging AI threats"
       ],
-      "_provenance": "Authored from concept: notes 1E.3 Frameworks and Standards for AI (MITRE ATLAS is a growing knowledge base of observed AI attacks and mitigations used for threat modeling; it is never a complete list). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1E.3 Frameworks and Standards for AI (MITRE ATLAS is a growing knowledge base of observed AI attacks and mitigations used for threat modeling; it is never a complete list). Round 2 review: cites the ATLAS Matrix library bullet, added 20 Nov 2026, in place of AML.T0015. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
       "style_version": 2
     }
   ]

@@ -13816,13 +13816,13 @@
         "Final two: D beats B because secure aggregation narrows the inference route but also hides a poisoned update from inspection.",
         "Exam cue: A privacy safeguard can hide manipulation; ask what each design choice stops others from seeing."
       ],
-      "framework_ref": "NIST AI 100-2e2025 Section 2.3.4 (Model Poisoning); MITRE ATLAS AML.T0018.000 (Poison AI Model)",
+      "framework_ref": "NIST AI 100-2e2025 Section 2.3 (Poisoning Attacks and Mitigations); MITRE ATLAS AML.T0018.000 (Poison AI Model)",
       "related_concepts": [
         "Federated learning",
         "Model poisoning",
         "Secure aggregation"
       ],
-      "_provenance": "Authored from concept: notes 2F.1 Attacks on Data and Models (federated learning shares updates, not records, and secure aggregation hides each update from others, which also hides a poisoned one). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2F.1 Attacks on Data and Models (federated learning shares updates, not records, and secure aggregation hides each update from others, which also hides a poisoned one). Review round 1: re-cited to existing library bullets (Section 2.3 in place of 2.3.4, which is reported as wanted). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -13833,7 +13833,7 @@
       "bloom_level": "Foundational",
       "question": "A Slovenian beekeepers' association's hive-disease model trains on a public list of image web addresses, fetched afresh at each retrain; some listed sites' domains have expired. Which threat should the IS auditor consider MOST significant?",
       "options": {
-        "A": "Expired links shrinking the training set at each retrain",
+        "A": "Expired domains shrinking the training set at each retrain",
         "B": "Photo owners objecting to the association's use of their images",
         "C": "Expired domains being bought to serve crafted photos",
         "D": "Rivals copying the model through the public address list"
@@ -13841,24 +13841,24 @@
       "correct": "C",
       "key_concept": "A training set built from web addresses fetched at each retrain trusts whoever controls each address now; expired domains can be bought and serve poison.",
       "pre_read": "Weigh each threat against the data path the question describes.",
-      "correct_explanation": "The model fetches its photos from listed addresses at every retrain, so whoever controls each address decides what it learns. Anyone can buy an expired domain and serve crafted photos at the listed addresses, poisoning the next retrain. Dead links are a real data-quality loss, but they remove photos at random, while a bought domain lets an attacker choose what the model learns.",
+      "correct_explanation": "The model fetches its photos from listed addresses at every retrain, so whoever controls each address decides what it learns. Anyone can buy an expired domain and serve crafted photos at the listed addresses, poisoning the next retrain. Dead links are a real data-quality loss, but they only remove photos, while a bought domain lets an attacker choose what the model learns.",
       "wrong_explanations": {
-        "A": "Tempting because lost photos weaken training. But dead links remove data at random, while a bought domain lets an attacker choose what the model learns.",
+        "A": "Tempting because lost photos weaken training. But dead links only remove data, while a bought domain lets an attacker choose what the model learns.",
         "B": "Tempting because image rights matter. But an objection is a legal question, while a bought domain lets anyone feed the model chosen images.",
         "D": "Tempting because the list is public. But it holds addresses of training photos, not the model, so it gives no route to copy it."
       },
       "tips": [
         "Eliminate: B raises an image-rights question, not a threat to what the model learns, and D imagines copying the model from a list of photo addresses.",
-        "Final two: C beats A because a bought domain lets an attacker choose the training photos, while dead links only lose some at random.",
+        "Final two: C beats A because a bought domain lets an attacker choose the training photos, while dead links only lose some.",
         "Exam cue: When training data is fetched from addresses, ask who controls each address today, not who did when the list was made."
       ],
-      "framework_ref": "NIST AI 100-2e2025 Section 3.2.1 (Data Poisoning Attacks); MITRE ATLAS AML.T0020 (Poison Training Data)",
+      "framework_ref": "NIST AI 100-2e2025 Section 3.2 (Supply Chain Attacks and Mitigations); MITRE ATLAS AML.T0020 (Poison Training Data)",
       "related_concepts": [
         "Data poisoning",
         "Training data provenance",
         "Expired domains"
       ],
-      "_provenance": "Authored from concept: notes 2F.1 Attacks on Data and Models (training data fetched from web addresses trusts whoever controls each address now, so an expired domain can be bought to serve poison). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2F.1 Attacks on Data and Models (training data fetched from web addresses trusts whoever controls each address now, so an expired domain can be bought to serve poison). Review round 1: re-cited to existing library bullets (Section 3.2 in place of 3.2.1, which is reported as wanted). Review round 2: option A reworded to start from expired domains, so the stem's deciding phrase is no longer echoed only in the key. Review round 3: explanation, wrong explanation A and tip 2 drop the unsupported claim that dead links remove photos at random. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -14015,25 +14015,25 @@
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Thai ride-hailing app's unchanged wallet fraud model approved 15% more top-ups this month, most from new accounts; managers credit fewer false declines, but chargebacks take six weeks. What should the IS auditor recommend FIRST?",
+      "question": "A Thai ride-hailing app's wallet fraud model, with no change logged since release, approved 15% more top-ups this month, most from new accounts; managers credit fewer false declines. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Adjust the threshold to bring approval rates back down",
         "B": "Have the owner log it as a possible incident and check approvals",
-        "C": "Check the rise against fraud outcomes as chargebacks arrive",
+        "C": "Compare the running model's hash with the approved release",
         "D": "Report the rise as a model improvement to the board"
       },
       "correct": "B",
-      "key_concept": "A sudden unexplained shift in a model's outputs can signal evasion or a broken input; treat it as a possible incident before outcomes confirm it.",
+      "key_concept": "A model's outputs can shift with no change to it when its inputs change, as under evasion; triage an unexplained shift as a possible incident.",
       "pre_read": "Weigh what each option would do now and what it would leave open.",
-      "correct_explanation": "A fraud model that suddenly approves far more, with nothing changed and most of the rise from new accounts, may be facing an evasion campaign or a broken input; fewer declines is not proof of fewer false declines. Having the owner log it as a possible incident and check recent approvals finds out now. Waiting for chargebacks is careful, but they take six weeks, by which time an attack could have drained far more.",
+      "correct_explanation": "Nothing is logged as changed, yet the model approves 15% more top-ups, most from new accounts. A model can shift with no change when its inputs change: fraudsters may have learned what it passes, or an input may be broken. Fewer declines is not proof of fewer false declines. Having the owner log a possible incident and check approvals finds out now. A hash check is careful, but a match leaves the shift unexplained.",
       "wrong_explanations": {
         "A": "Tempting as a quick correction. But changing the threshold before knowing the cause is an untested change.",
-        "C": "Tempting because outcomes are the best evidence. But chargebacks take six weeks, letting a possible attack run unchecked.",
+        "C": "Tempting because an unlogged change could explain a shift. But a matching hash leaves the shift unexplained: a model can shift with no change when its inputs change.",
         "D": "Tempting because the result looks good. But an unexplained shift needs explaining before it is reported as a gain."
       },
       "tips": [
         "Eliminate: A changes the model before the cause is known, and D reports an unexplained shift as success.",
-        "Final two: B beats C because waiting six weeks for chargebacks lets a possible attack run unchecked.",
+        "Final two: B beats C because a model can shift with no change when its inputs change; a matching hash would leave a rise mostly from new accounts unexplained.",
         "Exam cue: An unexplained jump in an AI's outputs, even a welcome one, is a possible incident to triage now."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 IR-4 (Incident Handling); NIST AI 100-1 MEASURE 2.4 (Functionality and behavior monitored in production)",
@@ -14042,7 +14042,7 @@
         "Evasion",
         "Output shifts"
       ],
-      "_provenance": "Authored from concept: notes 2G.1 Recognizing and Triaging AI Incidents (a sudden unexplained shift in a model's outputs can signal evasion or a broken input, so it is a possible incident before outcomes confirm it). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2G.1 Recognizing and Triaging AI Incidents (a sudden unexplained shift in a model's outputs can signal evasion or a broken input, so it is a possible incident before outcomes confirm it). Review round 1: runner-up C changed from waiting for chargebacks (the frame of aaia_d2_256) to checking change records for an unlogged change, so the AI fact that an unchanged model shifts when its inputs change decides; stem states no change is logged and drops the chargeback delay. Review round 2: explanation states the 15% rise the stem gives instead of \"far more\". Review round 3: runner-up C changed from checking change records for an unlogged change (self-contradictory) to a hash comparison with the approved release, which only the input-shift fact defeats. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -14198,24 +14198,24 @@
       "principle_id": "real-human-oversight",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "For 14 months, a Czech freight forwarder's customs clerks have checked every tariff code its model assigns, as an open problem's workaround; checks now take under five seconds. What is the IS auditor's GREATEST concern?",
+      "question": "As an open problem's workaround, an Irish veterinary lab's technicians have checked each model-assigned test code for 14 months; checks fell from a minute to five seconds. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The checks may have stopped catching wrong codes",
         "B": "Checking every code costs more than fixing the cause",
-        "C": "Clerks may be checking codes that need no review",
+        "C": "Technicians may be checking codes that need no review",
         "D": "The problem has stayed unresolved for over a year"
       },
       "correct": "A",
       "key_concept": "A human check used as a workaround, a compensating control, can decay as people grow used to the AI; rushed checks suggest it misses errors.",
       "pre_read": "Rank each concern by its likely effect.",
-      "correct_explanation": "The workaround relies on clerks catching the model's wrong codes, but checks under five seconds suggest they have become a glance: people who check an AI's work for months tend to stop looking closely. Wrong codes, with the duties and penalties they bring, may now reach customs declarations. A problem open for over a year is a real problem-management finding, but the more immediate risk is that its only safeguard has stopped working.",
+      "correct_explanation": "The workaround relies on technicians catching the model's wrong codes, but checks that fell from a minute to five seconds suggest they have become a glance: people who check an AI's work for months tend to stop looking closely. Wrong codes may send samples to the wrong tests, missing disease. A year-old open problem is a real problem-management finding, but the more immediate risk is that its only safeguard may have stopped working.",
       "wrong_explanations": {
         "B": "Tempting as a cost point. But cost does not show harm, and nothing gives the cost of fixing the cause.",
         "C": "Tempting because checking every code seems wasteful. But the problem is still open, so every code still needs a real check.",
-        "D": "Tempting because aged problems need escalation. But the more immediate harm is that the workaround protecting declarations may have stopped working."
+        "D": "Tempting because aged problems need escalation. But the more immediate harm is that the workaround protecting test orders may have stopped working."
       },
       "tips": [
-        "Eliminate: B argues cost with no figures given, and C questions checks the open problem still requires.",
+        "Eliminate: B weighs cost when a workaround is judged by whether it still stops wrong codes, and C questions checks the open problem still requires.",
         "Final two: A beats D because a decayed check lets wrong codes through now, while an aged record is a slower risk.",
         "Exam cue: A human-review workaround weakens over time; look for signs, such as rushed checks, that it has become a rubber stamp."
       ],
@@ -14225,7 +14225,7 @@
         "Workarounds",
         "Automation bias"
       ],
-      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (a human check used as a workaround decays as people grow used to the AI being right, and fast approvals suggest it no longer catches errors). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (a human check used as a workaround decays as people grow used to the AI being right, and fast approvals suggest it no longer catches errors). Review round 1: setting moved from a Czech freight forwarder's tariff-code model (close to aaia_d2_005's customs-broker classification model) to an Irish veterinary lab's test-code model. Review round 2: stem gives the fall in check time from a minute to five seconds as the baseline; explanation hedged to \"may have stopped working\". Review round 3: tip 1 removes B by the knowledge that a workaround is judged on whether it still stops wrong codes, not by a reading move. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
       "style_version": 2
     }
   ]

@@ -601,13 +601,13 @@
             "aaia_d1_201"
           ],
           "definition": "Risk appetite is how much AI risk the board accepts to pursue its goals; tolerances set measurable limits, and key risk indicators (KRIs) show when limits near breach.",
-          "why_it_matters": "Without board-set limits, every AI risk decision is made case by case, often by whoever launches. KRIs turn limits into numbers management can watch and escalate.",
+          "why_it_matters": "Without board-set limits, every AI risk decision is made case by case. KRIs turn limits into numbers management can watch and escalate.",
           "how_it_works": [
             "Appetite is proposed by management and approved by the board; senior management sets tolerances within it for each high-impact use.",
             "Tolerances limit harm to people or business, such as a wrongful-denial rate; a cutoff trades one error for another, so cap both; area under the curve (AUC) ignores cutoffs.",
             "Key performance indicators (KPIs) show whether AI delivers value; KRIs show whether risk nears tolerance, and fewer refusals can mean more guessing.",
             "Each KRI needs a source other than the model's confidence; warning levels set from the tolerance, not a tool's default; escalation; and detail, such as daily by version.",
-            "Warning levels stay fixed below tolerance, not reset after each retraining.",
+            "Warning levels stay fixed below tolerance, not reset after retraining; drift alerts follow how drift tracks harm.",
             "A breach goes to senior management, which decides the response with the owner; quiet tuning is not a response."
           ],
           "example": "A Ghanaian microfinance lender's senior management caps applications its credit model wrongly declines at 2%, within the board's appetite. Auditor Kwame finds two breaches, each answered by the data team quietly retuning the model. Kwame reports breaches never reached the owner or senior management, and recommends a documented escalation route.",
@@ -764,9 +764,9 @@
             "Quality rules cover accuracy, completeness, timeliness and how well the data represents the people affected.",
             "Rights to use come from contracts, licenses, consent or another lawful basis; public data is not automatically free, and a license passes on only its grantor's rights.",
             "A data catalog links datasets to owners, classifications and models using them; generated data carries its provider's terms, which may bar training on it.",
-            "Data errors are fixed at the source; correcting only a training copy leaves live inputs unlike what the model learned."
+            "Data errors are fixed at the source; correcting only a training copy leaves live inputs unlike what the model learned, and trained models keep errors until retrained."
           ],
-          "example": "A Swedish forestry company's yield model trains on drone imagery bought from a contractor. Auditor Elin finds no license term allowing training, nor a record of which model versions used it. Elin reports both gaps and recommends the data owner confirm usage rights and record lineage.",
+          "example": "A Swedish forestry company's yield model trains on a contractor's drone imagery. Auditor Elin finds no license term allowing training, nor a record of which model versions used it. Elin recommends the data owner confirm usage rights and record lineage.",
           "audit_focus": {
             "review": [
               "Trace training datasets to an owner, a source and a right to use",
