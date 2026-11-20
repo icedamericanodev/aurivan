@@ -386,6 +386,7 @@ in a row below 90%: stop and tell the owner.
 | Round | Date | Pack and sections | Items | Blind agreement | HARD / PRECISION / OBSERVATION per 25 | Pick-longest | Items cut | Sources newly opened |
 |---|---|---|---|---|---|---|---|---|
 | Pilot | 19 to 20 Nov 2026 | cia1, Sections A to D | 80 (20 each) | 80 of 80 in each of four blind rounds (100%) | 0.3 / 12.8 / 10.9 (1 / 41 / 35 on 80) | 20.0% in every section | 0 | The texts listed in `CIA_RESEARCH_LOG.md` (no new source after the notes) |
+| Round 1 | 20 Nov 2026 | cia1, Sections A (1A2, 1A7, 1A8) and B (1B2, 1B6): the Challenge-shared topics | 25 (15 and 10) | 25 of 25 in each of two blind rounds (100%) | 0 / 23 / 18 on 25 | 20.0% in both sections | 0 | None new (the Standards, both statements and the reference list re-downloaded, unchanged) |
 
 **Pilot, in full.** Four standards audits (one per section, with the key):
 Section A 0 HARD, 15 PRECISION, 8 OBSERVATION; B 0 / 8 / 5; C 1 / 9 / 12;
@@ -406,6 +407,40 @@ final fix, as rule 12 allows; then a last blind round on the final text.
 | Patterns a candidate could learn (final testers) | An option where internal audit decides, operates a control or takes over is wrong; the measured middle option wins; in Section B an option that cites the function's independence is wrong; in Section C "it turned out fine, is legal, is funded, was approved" is wrong; late-timing words mark wrong options |
 | Key spread and length | 5 keys per letter in every section; key alone longest in 4 of 20 per section |
 | Notes changed because of the items | One example in 1C6.1 (it suggested a reliable risk register could replace the chief audit executive's own assessment) |
+
+**Round 1, in full.** Written to the brief in section 6c. Two standards
+audits: Section A 0 HARD, 15 PRECISION, 5 OBSERVATION; Section B 0 / 8 / 13.
+Currency and citation check: 0 / 2 / 10. All applied; no key was wrong and no
+item was ever flagged ambiguous. One fix pass, a second blind round on the
+changed items, one small last pass (citations, and the Three Lines question
+anchored to current guidance), as rule 12 allows.
+
+| Measure | Pilot | Round 1 |
+|---|---|---|
+| Cue test (options only, chance 25%) | 94%, then 91% | **76%, then 68% after the fix pass** (17 of 25). Target 85% or lower: met |
+| Cue tester's high-confidence guesses | 34 of 80 | 4 of 25, and only 2 of those 4 right |
+| Final testers' sorting: needs the Standards, partly, test-taking alone | 18 / 41 / 21 of 80 | 5 / 15 / 5 of 25 |
+| Flags left in the final round | 8 of 80 | 5 of 25: TOO EASY `cia1_d1_021`, `cia1_d1_034`, `cia1_d2_022`, `cia1_d2_027`; GIVEAWAY `cia1_d2_025` |
+| Blind agreement | 80 of 80, four rounds | 25 of 25, two rounds |
+
+What worked, and stays: the scaffold table with "where would each wrong option
+be right" (section 6c), and handing the authors the cue tester's guess and cue
+for every item. What did not move: the share a tester calls answerable by
+test-taking alone is still about one in five, because a stem that gives enough
+facts to settle the key also lets a careful reader discard options; the items
+left flagged are classification items whose stem describes the answer.
+Patterns the final testers could still learn: the key is often the
+board-facing "must" while wrong options are duties from the sibling branch;
+an odd clause in the stem exists to rule out one option; "the chief audit
+executive approves" and the "assurance against advice" split were wrong each
+time they appeared in Section B. The next round's authors get this list.
+Twenty-five items is a small sample: read the cue-test trend, not its digit.
+
+Also from round 1: the notes now say who "the board" is where there is none
+(1A2.3); the citation library says how The IIA's two 2026 statements may be
+cited (rule 7 there); four groups of sibling items can cue each other inside
+one mock (pilot 005 with round 1's 023 and 030; 018 with 031; 019 with 022 and
+034; 028 with 030), which the app-side mock draw should keep apart (section 11).
 
 **Principle tags.** After the last fix the mindset coach re-read all 80
 items and re-tagged 7 to the principle that decides the final two. Every one
@@ -655,3 +690,11 @@ const IIA_BASE = { issuer: IIA, mindset: IIA_MINDSET, trademarkNotice: IIA_TM, t
 - The generated Challenge notes (the Part notes for the 40 shared topics,
   re-coded `4A1` and so on, with section-level text written for the Challenge)
   are built with the Challenge pack, after Parts 2 and 3 have notes.
+- Sibling items: questions that teach neighboring lessons can cue each other
+  when they meet in one mock (section 7 lists round 1's four groups). Before
+  mocks are dealt from the CIA packs, the draw needs a way to keep siblings
+  apart (a `sibling_group` field on the items, or a list beside the bank),
+  and the cross-part reviewer keeps that list.
+- A pack glossary entry now carries `formerly` (older names of the term), so
+  search can find "consulting services" under "advisory services"; the app's
+  glossary screen must read it when a builder for `<pack>/glossary.json` exists.
