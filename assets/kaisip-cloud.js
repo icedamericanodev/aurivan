@@ -3,7 +3,7 @@
  * from the mobile app's own TypeScript (mobile/src/webcloud and the sync
  * engine it uses), so the website syncs with the same rules as the app.
  * Loaded only when an account is used. Rebuild: cd mobile && npm run web-plant
- * TypeScript 6.0.3. Modules: 63.
+ * TypeScript 6.0.3. Modules: 61.
  */
 (function (root) {
   "use strict";
@@ -1206,11 +1206,11 @@ function greetingWithName(hour, name) {
     return clean ? `${greetingForHour(hour)}, ${clean}` : greetingForHour(hour);
 }
   };
-  links["src/engine/examDay.ts"] = {"./pace":"src/engine/pace.ts","./slipCoach":"src/engine/slipCoach.ts","./streak":"src/engine/streak.ts"};
+  links["src/engine/examDay.ts"] = {"./pace":"src/engine/pace.ts","./streak":"src/engine/streak.ts"};
   defs["src/engine/examDay.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EVE_DEFAULTS = exports.EVE_REMINDER = exports.EXAM_DATE_PRESETS = void 0;
+exports.EXAM_DATE_PRESETS = void 0;
 exports.dateInMonths = dateInMonths;
 exports.addDays = addDays;
 exports.presetIndexFor = presetIndexFor;
@@ -1218,10 +1218,7 @@ exports.examDateLabel = examDateLabel;
 exports.daysToExam = daysToExam;
 exports.examMoment = examMoment;
 exports.paceLine = paceLine;
-exports.topSlips = topSlips;
-exports.eveReminders = eveReminders;
 const pace_1 = require("./pace");
-const slipCoach_1 = require("./slipCoach");
 const streak_1 = require("./streak");
 exports.EXAM_DATE_PRESETS = [
     { label: 'In 1 month', months: 1 },
@@ -1269,33 +1266,6 @@ function paceLine(exam) {
     const m = exam.minutes % 60;
     const hours = h === 0 ? `${m} minutes` : m === 0 ? `${h} hour${h === 1 ? '' : 's'}` : `${h} h ${m} min`;
     return `${exam.questions} questions in ${hours}: about ${Math.round((0, pace_1.examPaceSeconds)(exam))} seconds each.`;
-}
-exports.EVE_REMINDER = {
-    'runner-up': 'When two options look right, say why the best one wins.',
-    priority: 'Find the FIRST or BEST word before you read the options.',
-    overconfident: 'Give a sure answer one more read of the question.',
-    role: 'Ask who you are in the question before you answer.',
-    'tech-first': 'Policy, ownership and approval come before tools.',
-    symptom: 'Prefer the option that fixes the root cause.',
-    misread: 'Slow down on the last line of each question.',
-};
-exports.EVE_DEFAULTS = ['priority', 'runner-up', 'role'];
-function topSlips(mistakes, n = 3) {
-    var _a;
-    const counts = new Map();
-    for (const m of mistakes)
-        for (const p of (0, slipCoach_1.patternsOf)(m))
-            counts.set(p, ((_a = counts.get(p)) !== null && _a !== void 0 ? _a : 0) + 1);
-    return slipCoach_1.PATTERN_ORDER.filter((p) => { var _a; return p !== 'knowledge' && ((_a = counts.get(p)) !== null && _a !== void 0 ? _a : 0) > 0; })
-        .map((p, i) => { var _a; return ({ p, i, n: (_a = counts.get(p)) !== null && _a !== void 0 ? _a : 0 }); })
-        .sort((a, b) => b.n - a.n || a.i - b.i)
-        .slice(0, n)
-        .map((x) => x.p);
-}
-function eveReminders(mistakes) {
-    const top = topSlips(mistakes, 3);
-    const own = top.length > 0;
-    return { own, lines: (own ? top : exports.EVE_DEFAULTS).map((p) => exports.EVE_REMINDER[p]) };
 }
   };
   links["src/engine/examReady.ts"] = {"./streak":"src/engine/streak.ts"};
@@ -5948,81 +5918,6 @@ function isCheckCorrect(correctIndex, displayChoice, perm) {
     return displayToOriginal(displayChoice, perm) === checkCorrectLetter(correctIndex);
 }
   };
-  links["src/engine/slipCoach.ts"] = {"./games/priorityLens":"src/engine/games/priorityLens.ts","./tips":"src/engine/tips.ts"};
-  defs["src/engine/slipCoach.ts"] = function (module, exports, require) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SLIP_LINE = exports.RUNNER_UP_LINE = exports.NEUTRAL_MISS_LINE = exports.PATTERN_ORDER = exports.PATTERN_COPY = exports.SLIP_COACH_MIN = exports.isThinkingSlip = exports.THINKING_SLIPS = void 0;
-exports.missCoachLine = missCoachLine;
-exports.patternsOf = patternsOf;
-exports.slipCoach = slipCoach;
-const priorityLens_1 = require("./games/priorityLens");
-const tips_1 = require("./tips");
-exports.THINKING_SLIPS = ['role', 'priority', 'tech-first', 'symptom', 'misread', 'knowledge'];
-const isThinkingSlip = (value) => exports.THINKING_SLIPS.includes(value);
-exports.isThinkingSlip = isThinkingSlip;
-exports.SLIP_COACH_MIN = 5;
-exports.PATTERN_COPY = {
-    'runner-up': { title: 'You often pick the closest wrong choice', coach: 'Two options look right. Say why the best one wins before you tap.', game: 'trap' },
-    priority: { title: 'You miss priority words like FIRST and BEST', coach: 'Find the priority word before you read the options.', game: 'priority' },
-    overconfident: { title: 'You miss when you feel sure', coach: 'A sure answer still deserves one more read of the question.', game: 'sprint' },
-    role: { title: 'You answer as the wrong person', coach: 'Ask who you are in the question: auditor, manager or board?', game: 'canopy' },
-    'tech-first': { title: 'You reach for a tool before the policy', coach: 'Policy, ownership and approval usually come before tools.', game: 'trap' },
-    symptom: { title: 'You fix the symptom, not the cause', coach: 'Prefer the option that removes the root cause.', game: 'trap' },
-    misread: { title: 'You misread the question', coach: 'Slow down on the last line of the question.', game: 'priority' },
-    knowledge: { title: 'Most misses are content gaps', coach: 'A lesson or a review session will close them.', game: null },
-};
-exports.PATTERN_ORDER = ['runner-up', 'priority', 'overconfident', 'role', 'tech-first', 'symptom', 'misread', 'knowledge'];
-exports.NEUTRAL_MISS_LINE = 'Here’s the idea to take with you.';
-exports.RUNNER_UP_LINE = 'You picked the closest wrong choice. That’s the trap.';
-exports.SLIP_LINE = {
-    role: 'Check who you are in the question.',
-    priority: 'Find the priority word before the options.',
-    'tech-first': 'Policy and ownership usually come before tools.',
-    symptom: 'Prefer the option that removes the cause.',
-    misread: 'Slow down on the last line of the question.',
-    knowledge: 'The idea below is the one to learn.',
-};
-function missCoachLine(pickedRunnerUp, slip) {
-    if (pickedRunnerUp)
-        return exports.RUNNER_UP_LINE;
-    return slip ? exports.SLIP_LINE[slip] : exports.NEUTRAL_MISS_LINE;
-}
-function patternsOf(m) {
-    const out = [];
-    const wrongPick = !!m.picked && /^[A-D]$/.test(m.picked) && /^[A-D]$/.test(m.correct) && m.picked !== m.correct;
-    if (wrongPick && m.picked === (0, tips_1.runnerUp)(m.tips, m.correct))
-        out.push('runner-up');
-    if (m.slip === 'priority' || (m.slip === 'misread' && (0, priorityLens_1.priorityWord)(m.stem) !== null))
-        out.push('priority');
-    if (wrongPick && m.confidence === 'sure')
-        out.push('overconfident');
-    if (m.slip && (0, exports.isThinkingSlip)(m.slip) && m.slip !== 'priority')
-        out.push(m.slip);
-    return out;
-}
-function slipCoach(mistakes) {
-    var _a, _b;
-    const tagged = mistakes.filter((m) => (0, exports.isThinkingSlip)(m.slip));
-    if (tagged.length < exports.SLIP_COACH_MIN) {
-        return { ready: false, tagged: tagged.length, needed: exports.SLIP_COACH_MIN - tagged.length };
-    }
-    const counts = new Map();
-    for (const m of tagged)
-        for (const p of patternsOf(m))
-            counts.set(p, ((_a = counts.get(p)) !== null && _a !== void 0 ? _a : 0) + 1);
-    let best = exports.PATTERN_ORDER[0];
-    let bestN = -1;
-    for (const p of exports.PATTERN_ORDER) {
-        const n = (_b = counts.get(p)) !== null && _b !== void 0 ? _b : 0;
-        if (n > bestN) {
-            best = p;
-            bestN = n;
-        }
-    }
-    return { ready: true, tagged: tagged.length, pattern: best, count: bestN, ...exports.PATTERN_COPY[best] };
-}
-  };
   links["src/engine/srs.ts"] = {};
   defs["src/engine/srs.ts"] = function (module, exports, require) {
 "use strict";
@@ -7502,51 +7397,6 @@ function plan(i) {
     if (!localChanged)
         return { kind: 'pull' };
     return { kind: 'merge', expectedRev: i.head.rev };
-}
-  };
-  links["src/engine/tips.ts"] = {};
-  defs["src/engine/tips.ts"] = function (module, exports, require) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.tipParts = tipParts;
-exports.runnerUp = runnerUp;
-exports.eliminateTip = eliminateTip;
-exports.splitMissTips = splitMissTips;
-const LEGACY_LABELS = ['The trap', 'The mindset', 'Exam-day shortcut', 'One more thing'];
-const V2_LABELS = {
-    Eliminate: 'Eliminate two',
-    'Final two': 'Final two',
-    'Exam cue': 'Exam cue',
-};
-function tipParts(tip, index) {
-    var _a;
-    const m = tip.match(/^(Eliminate|Final two|Exam cue):\s*/);
-    if (m) {
-        const rest = tip.slice(m[0].length);
-        return { label: V2_LABELS[m[1]], body: rest.charAt(0).toUpperCase() + rest.slice(1) };
-    }
-    return { label: (_a = LEGACY_LABELS[index]) !== null && _a !== void 0 ? _a : 'Tip', body: tip };
-}
-function runnerUp(tips, correct) {
-    const finalTwo = tips.find((t) => /^Final two:/.test(t));
-    if (!finalTwo)
-        return undefined;
-    const letters = [...new Set([...finalTwo.matchAll(/\{\{([A-D])\}\}/g)].map((m) => m[1]))];
-    if (letters.length !== 2 || !letters.includes(correct))
-        return undefined;
-    return letters.find((l) => l !== correct);
-}
-function eliminateTip(tips) {
-    return tips.find((t) => /^Eliminate:/.test(t));
-}
-function splitMissTips(tips) {
-    const first = [];
-    const rest = [];
-    tips.forEach((tip, i) => {
-        const label = tipParts(tip, i).label;
-        (label === 'Exam cue' || label === 'Exam-day shortcut' ? first : rest).push(i);
-    });
-    return { first, rest };
 }
   };
   links["src/engine/webImport.ts"] = {"./backup":"src/engine/backup.ts","./displayName":"src/engine/displayName.ts","./syncMerge":"src/engine/syncMerge.ts","./questionNotes":"src/engine/questionNotes.ts","./answerClock":"src/engine/answerClock.ts","./journey":"src/engine/journey.ts","./srs":"src/engine/srs.ts","./examDay":"src/engine/examDay.ts","./streak":"src/engine/streak.ts"};
@@ -10514,7 +10364,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "bb6d247e46f642ef";
+  api.sourceHash = "68ba58cbb897cabe";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

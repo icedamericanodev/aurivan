@@ -14,6 +14,8 @@ import { DAY_MS } from '../engine/srs';
 import { runnerUp } from '../engine/tips';
 import type { ThinkingSlip } from '../engine/slipCoach';
 import { topSlip } from '../lib/finalWeek';
+import { eveFor } from '../lib/moments';
+import { EVE_REMINDER, ownEvePatterns } from '../engine/eveReminders';
 import { mistakePatternsFor, topPatternOf, topSlipPattern } from '../lib/slipPattern';
 import type { MistakeEntry } from '../store/progress';
 import type { Letter } from '../content/types';
@@ -117,5 +119,25 @@ describe('Play stays still when the pattern does not change', () => {
     // A save always makes a new object (here: one more role miss).
     const after = { ...before, ...book(...tagged(5, 1, 'role')) };
     expect(topSlipPattern('cisa', after, NOW)).toBe(topSlipPattern('cisa', before, NOW));
+  });
+});
+
+describe('the exam-eve card uses the journal’s evidence', () => {
+  it('its own reminders are the journal’s patterns (old tags and one-off misses do not count)', () => {
+    // Old role tags (outside 28 days) and a recent symptom pattern.
+    const mistakes = book(...tagged(0, 6, 'role', { at: NOW - 40 * DAY_MS }), ...tagged(6, 5, 'symptom'));
+    const r = eveFor('cisa', '2026-11-20', mistakes, NOW);
+    expect(ownEvePatterns(mistakePatternsFor('cisa', mistakes, NOW))).toEqual(['symptom']);
+    expect(r.lines[0]).toBe(EVE_REMINDER.symptom);
+    expect(r.lines).not.toContain(EVE_REMINDER['tech-first']);
+    expect(r.own).toBe(false);
+  });
+
+  it('keeps tonight’s lines when a late practice set adds mistakes, and starts fresh the next day', () => {
+    const evening = book(...tagged(20, 5, 'symptom'));
+    const first = eveFor('cisa', '2026-11-21', evening, NOW);
+    const later = { ...evening, ...book(...tagged(25, 6, 'role')) };
+    expect(eveFor('cisa', '2026-11-21', later, NOW)).toBe(first);
+    expect(eveFor('cisa', '2026-11-22', later, NOW).lines[0]).toBe(EVE_REMINDER.role);
   });
 });
