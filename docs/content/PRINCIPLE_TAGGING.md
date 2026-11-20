@@ -429,10 +429,10 @@ version bump today.
 ### Results
 | Domain | Questions | Tagged | Untagged |
 |---|---|---|---|
-| D1 | 215 | 147 | 68 |
+| D1 | 215 | 146 | 69 |
 | D2 | 386 | 323 | 63 |
 | D3 | 146 | 131 | 15 |
-| All | 747 | 601 | 146 |
+| All | 747 | 600 | 147 |
 
 New principle `independence-of-ai-assurance` (role family): seeds and tags
 aaia_d2_014, aaia_d3_024 and aaia_d3_043, moved from
@@ -810,7 +810,7 @@ its misses must be measured, as aaia_d3_013); aaia_d1_209 `ai-deciding-fact`
 aaia_d2_354 `accuracy-is-not-assurance` (a benchmark average hides the
 conditions where the model fails); aaia_d2_371 `accuracy-is-not-assurance`
 (accuracy on clicks the rankings shape holds steady while a group gap grows,
-as aaia_d2_335). Three tags removed (below).
+as aaia_d2_335). Four tags removed (below).
 
 **Untagged new items (low confidence):**
 - aaia_d1_189: forecast-uncertainty knowledge (a single figure hides its spread); the runner-up, testing on recent heatwaves, is `accuracy-is-not-assurance`'s own move.
@@ -818,6 +818,7 @@ as aaia_d2_335). Three tags removed (below).
 - aaia_d1_197: feedback-loop knowledge (unchecked corrections become training data); the runner-up, lost know-how, is not a change move, so `ai-changes-are-changes` does not separate.
 - aaia_d1_200: KRI design knowledge (a leading drift alert needs a level tied to the late-surfacing harm), as aaia_d1_148.
 - aaia_d1_204: lineage knowledge (an origin label serves every use of a shared dataset, a cap only one), as aaia_d2_262.
+- aaia_d1_205: was `fix-the-control-not-the-model`; after the final re-angle both options weigh the version register, so retrieval knowledge (similarity search ignores status marks unless it filters on them) decides.
 - aaia_d1_207: differential-privacy knowledge (privacy loss adds up across repeated releases).
 - aaia_d1_208: data-minimization knowledge (style examples need not be real), as aaia_d1_041.
 - aaia_d1_212: legal knowledge (high-risk duties need build records kept during training).
@@ -835,7 +836,7 @@ as aaia_d2_335). Three tags removed (below).
 
 **Medium confidence (tagged, review first):** aaia_d1_186 aaia_d1_187
 aaia_d1_191 aaia_d1_193 aaia_d1_195 aaia_d1_199 aaia_d1_201 aaia_d1_202
-aaia_d1_203 aaia_d1_205 aaia_d1_206 aaia_d1_209 aaia_d1_210 aaia_d1_211
+aaia_d1_203 aaia_d1_206 aaia_d1_209 aaia_d1_210 aaia_d1_211
 aaia_d2_345 aaia_d2_351 aaia_d2_352 aaia_d2_354 aaia_d2_356 aaia_d2_357
 aaia_d2_359 aaia_d2_360 aaia_d2_362 aaia_d2_367 aaia_d2_369 aaia_d2_371
 aaia_d2_377 aaia_d2_378 aaia_d2_381 aaia_d2_383.

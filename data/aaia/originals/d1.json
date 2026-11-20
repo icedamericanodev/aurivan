@@ -7207,7 +7207,7 @@
       "bloom_level": "Application",
       "question": "A Slovak shared-service center's AI agent now posts the invoices 12 clerks once handled; two staff check its postings, and their corrections go straight into its monthly retraining. What should concern the IS auditor MOST?",
       "options": {
-        "A": "The agent's supplier may answer for any wrong payments",
+        "A": "The agent's supplier may not answer for wrong payments",
         "B": "A mistaken fix may be repeated across later invoices",
         "C": "The clerks' know-how may be lost if the agent fails",
         "D": "Each invoice it posts may retrain the agent at once"
@@ -7217,12 +7217,12 @@
       "pre_read": "Note each party in the stem before weighing the options.",
       "correct_explanation": "Each month the agent is retrained on the two staff's corrections with no further check, so one mistaken correction, or one person's habit, becomes training data and is repeated on every similar invoice instead of staying a single slip. Lost know-how, option C, matters only if the agent fails, and the two staff who check postings still hold the skill, while their corrections shape every posting each month.",
       "wrong_explanations": {
-        "A": "Tempting because AI products often come from suppliers. But accountability for payments stays with the center and a named owner, whoever supplies the agent.",
+        "A": "Tempting because supplier liability is a familiar third-party risk. But accountability for payments stays with the center, whatever any contract says, so recovering losses is secondary.",
         "C": "Tempting because skills fade once a task is automated. But the two staff who check postings keep the skill, while their corrections retrain the agent every month.",
         "D": "Tempting because AI seems to learn from use. But posting invoices does not retrain the agent; only the monthly retraining on the staff's corrections does."
       },
       "tips": [
-        "Eliminate: D assumes each posting retrains the agent, though only the monthly retrain does, and A moves accountability for payments to a supplier, though it stays with the center's named owner.",
+        "Eliminate: D assumes each posting retrains the agent, though only the monthly retrain does, and A treats supplier liability as the issue, though accountability for payments stays with the center.",
         "Final two: B beats C because retraining on two people's corrections turns one mistaken fix into an error repeated monthly; lost know-how matters only if the agent fails, and the two checkers still hold it.",
         "Exam cue: when an AI learns from a few people's corrections, their mistakes become its behavior; ask who checks the corrections before retraining."
       ],
@@ -7232,7 +7232,7 @@
         "Agentic AI",
         "Retraining"
       ],
-      "_provenance": "Authored from concept: notes 1B.3 Program Metrics, Awareness and Workforce Impact (when a few staff's corrections retrain a model, one wrong correction can repeat at scale, so a workforce change can concentrate what the model learns in a few hands). Re-angled in batch 11 review after the cross-domain reviewer found the earlier confident-errors version repeated aaia_d2_237, aaia_d3_038 and aaia_d1_156. Round 2 review: the stem now says corrections go straight into retraining, and the runner-up reason uses the fallback-plan distinction from aaia_d1_031. Round 3 review: the runner-up reason now rests on the stem's two checkers keeping the skill, not on an unstated fallback plan, and tip 1 removes A by accountability rather than liability. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1B.3 Program Metrics, Awareness and Workforce Impact (when a few staff's corrections retrain a model, one wrong correction can repeat at scale, so a workforce change can concentrate what the model learns in a few hands). Re-angled in batch 11 review after the cross-domain reviewer found the earlier confident-errors version repeated aaia_d2_237, aaia_d3_038 and aaia_d1_156. Round 2 review: the stem now says corrections go straight into retraining, and the runner-up reason uses the fallback-plan distinction from aaia_d1_031. Round 3 review: the runner-up reason now rests on the stem's two checkers keeping the skill, not on an unstated fallback plan, and tip 1 removes A by accountability rather than liability. Final round: option A now states a real concern (the supplier may not answer for wrong payments) and tip 1 and the A explanation no longer name an owner the stem never gives. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -7496,37 +7496,36 @@
       "id": "aaia_d1_205",
       "domain": 1,
       "subtopic": "1D Privacy and data governance. A quality assistant's document store",
-      "principle_id": "fix-the-control-not-the-model",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Swiss watchmaker's quality assistant answers workshop questions from a shared drive holding every version of each assembly procedure since 2015, and some answers cite replaced steps. What should the IS auditor recommend as BEST?",
+      "question": "A Swiss watchmaker's assistant searches a drive that must keep every procedure version; a register, updated each release and tested last month, marks each current or replaced. What should concern the IS auditor MOST?",
       "options": {
-        "A": "Have the document owner keep replaced versions out of its search",
-        "B": "Have the owner weight the assistant's search toward newer files",
-        "C": "Have IT add a notice that answers may cite replaced steps",
-        "D": "Have the IS auditor flag replaced versions on the drive quarterly"
+        "A": "The assistant may rank replaced steps above current ones",
+        "B": "The register may mark some replaced versions as current",
+        "C": "Keeping every version may breach data minimization rules",
+        "D": "The assistant may need retraining each time a procedure changes"
       },
       "correct": "A",
-      "key_concept": "Retrieval ranks documents by match, not currency, so the data owner must keep replaced versions out of what an assistant searches.",
-      "pre_read": "Weigh what each option would change in practice.",
-      "correct_explanation": "Retrieval ranks passages by how closely they match the question, not by which version is in force, so a 2016 step can outrank this year's. The document owner should decide which versions are current and keep replaced ones out of what the assistant searches. Weighting the search toward newer files, option B, only nudges the ranking, so an old version can still win when it matches better.",
+      "key_concept": "Similarity search ignores status labels unless it filters on them, so an accurate version register alone keeps no replaced step out of answers.",
+      "pre_read": "Read each option as a risk and ask what would cause it.",
+      "correct_explanation": "The assistant finds passages by how closely they match a question, ignoring status marks unless set to filter on them. So an old step that matches well can outrank the current one even though the register labels it replaced. A wrongly labeled version, option B, is less likely in a register updated each release and recently tested, and even a perfect register keeps nothing out of answers unless the search uses it.",
       "wrong_explanations": {
-        "B": "Tempting because recency weighting sounds like a direct fix. But weighting only nudges ranking; a closely matching replaced step can still outrank the current one.",
-        "C": "Tempting because warnings set expectations. But a notice leaves replaced steps in the answers, and staff still cannot tell which are current.",
-        "D": "Tempting because the IS auditor knows the problem. But maintaining sources is the owner's job; the IS auditor assesses whether it is done."
+        "B": "Tempting because document control rests on an accurate register. But this one is updated each release and tested last month, and the search ignores its labels unless filtered.",
+        "C": "Tempting because keeping data longer than needed is a privacy fault. But assembly procedures are not personal data, and the watchmaker must keep every version.",
+        "D": "Tempting because AI seems to need retraining to learn new facts. But a retrieval assistant reads the drive at answer time, so a changed procedure needs no retraining."
       },
       "tips": [
-        "Eliminate: D puts the IS auditor in charge of the data, and C warns users while replaced steps still drive answers.",
-        "Final two: A beats B because retrieval ranks by match, not currency; weighting toward newer files can still lose to an old step that matches better, while excluding replaced versions removes them.",
-        "Exam cue: for retrieval-based assistants, fix currency at the source; an owner decides which documents the assistant may search."
+        "Eliminate: D retrains an assistant that reads the drive at answer time, and C applies data minimization to procedures that hold no personal data.",
+        "Final two: A beats B because similarity search ignores status labels unless it filters on them; a register updated each release, however accurate, keeps no replaced step out of answers.",
+        "Exam cue: for retrieval assistants, ask whether the search itself uses a document's status; a well-kept register controls nothing until the search does."
       ],
       "framework_ref": "COBIT 2019 APO14 (Managed Data); NIST AI 100-1 MAP 4.2 (Internal risk controls for components identified)",
       "related_concepts": [
         "Retrieval",
-        "Data currency",
-        "Data owner"
+        "Similarity search",
+        "Document status"
       ],
-      "_provenance": "Authored from concept: notes 1D.1 Data Governance for AI (retrieval ranks documents by match, not currency, so the data owner must keep replaced versions out of what an assistant searches). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1D.1 Data Governance for AI (similarity retrieval ignores currency unless filtered, so an accurate version register reaches answers only if the search uses it). Final round: the stem now says the drive must retain every version, so plain document control (remove obsolete versions) no longer settles it and only the retrieval fact beats recency weighting. Re-audit: re-angled because the key and runner-up (an owner keeps replaced versions out of the index, beating a tool-side preference for newer files) repeated aaia_d2_051; it now asks whether an accurate version register reaches similarity search. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
       "style_version": 2
     },
     {

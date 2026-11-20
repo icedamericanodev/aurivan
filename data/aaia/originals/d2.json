@@ -13943,23 +13943,23 @@
       "bloom_level": "Application",
       "question": "A Kenyan immigration consultancy's intake agent reads clients' uploaded documents and files visa forms under its own service account, whose rights pass every quarterly access review. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Scan clients' uploads for malware before the agent reads them",
+        "A": "Alert on the service account's sign-ins from unusual locations",
         "B": "Tell the agent in its prompt to ignore instructions in uploads",
         "C": "Monitor the agent's actions for any that no task explains",
-        "D": "Rotate the service account's password after each access review"
+        "D": "Scan clients' uploads for malware before the agent reads them"
       },
       "correct": "C",
-      "key_concept": "Injected instructions make agents misuse rights they legitimately hold, so agent accounts need activity monitoring, not only access reviews.",
+      "key_concept": "Injected instructions can steer an agent into misusing rights it legitimately holds, so agent accounts need activity monitoring, not only access reviews.",
       "pre_read": "Ask which risk each option addresses and which it leaves open.",
-      "correct_explanation": "Uploaded documents can carry hidden instructions that steer the agent into actions its rights allow, such as filing a visa form nobody asked for. An access review confirms which rights the account holds, not how they are used; monitoring the agent's actions against its tasks shows the misuse. A malware scan, option A, checks uploads for code, but injected instructions are plain text and pass it.",
+      "correct_explanation": "Uploaded documents can carry hidden instructions that steer the agent into actions its rights allow, such as filing a visa form nobody asked for. An access review confirms which rights the account holds, not how they are used; monitoring the agent's actions against its tasks shows the misuse. Sign-in alerts, option A, catch a stolen account, but a steered agent signs in as usual.",
       "wrong_explanations": {
-        "A": "Tempting because uploads are untrusted input. But injected instructions are ordinary text, not code, so a malware scan passes them to the agent.",
+        "A": "Tempting because unusual sign-ins flag a stolen account. But a steered agent signs in as usual and misuses rights it legitimately holds.",
         "B": "Tempting because it targets injected text. But a prompt instruction is not a control, and injected text can talk the agent around it.",
-        "D": "Tempting because credential hygiene matters. But rotation stops stolen passwords, not an agent steered into misusing access it legitimately holds."
+        "D": "Tempting because uploads are untrusted input. But injected instructions are ordinary text, not code, so a malware scan passes them to the agent."
       },
       "tips": [
-        "Eliminate: B relies on a prompt instruction, which is not a control, and D rotates a password, which does nothing about misuse of valid access.",
-        "Final two: C beats A because injected instructions are plain text a malware scan passes; only comparing the agent's actions with its tasks shows them steering it within its valid rights.",
+        "Eliminate: B relies on a prompt instruction, which injected text can override, and D scans for malware, which plain-text instructions do not contain.",
+        "Final two: C beats A because a steered agent signs in as usual; only comparing its actions with its tasks shows outside text steering it within its valid rights.",
         "Exam cue: An agent's account is a user that outside text can steer; review what it may do, then watch what it does."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 SI-4 (System Monitoring); NIST AI 100-2e2025 Section 3.5 (Security of Agents)",
@@ -13968,7 +13968,7 @@
         "Activity monitoring",
         "Indirect prompt injection"
       ],
-      "_provenance": "Authored from concept: notes 2F.3 Excessive Agency and Access Management for AI (injected instructions make agents misuse rights they legitimately hold, so agent accounts need activity monitoring as well as access reviews). Cross-domain review: re-angled from assessing tools together, which repeated the frame of aaia_d1_094, to monitoring an agent's service account. Re-audit: runner-up changed from more frequent access reviews to a malware scan of uploads, which only the plain-text nature of injection defeats. Round 3: pre_read made neutral, no longer framing every option as detection. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2F.3 Excessive Agency and Access Management for AI (injected instructions make agents misuse rights they legitimately hold, so agent accounts need activity monitoring as well as access reviews). Cross-domain review: re-angled from assessing tools together, which repeated the frame of aaia_d1_094, to monitoring an agent's service account. Re-audit: runner-up changed from more frequent access reviews to a malware scan of uploads, which only the plain-text nature of injection defeats. Round 3: pre_read made neutral, no longer framing every option as detection. Final re-audit: runner-up changed from a malware scan of uploads, which other 2F items rule out with topic knowledge, to sign-in alerts that only the steered-agent fact defeats; the malware scan replaced password rotation as option D; key_concept hedged to \"can steer\". Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -14011,29 +14011,29 @@
     {
       "id": "aaia_d2_381",
       "domain": 2,
-      "subtopic": "2G AI incident response. A welcome jump in approvals",
+      "subtopic": "2G AI incident response. A rise in approved top-ups",
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Thai ride-hailing app's wallet fraud model, with no change logged since release, approved 15% more top-ups this month, most from new accounts; managers credit fewer false declines. What should the IS auditor recommend FIRST?",
+      "question": "A Thai ride-hailing app's wallet fraud model, hash-matched to the approved release, approved 15% more top-ups this month, most from new accounts; managers credit fewer false declines. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Adjust the threshold to bring approval rates back down",
-        "B": "Have the owner log it as a possible incident and check approvals",
-        "C": "Compare the running model's hash with the approved release",
+        "A": "Adjust the decision threshold to bring top-up approvals down",
+        "B": "Have the owner log a possible incident and check the extra top-ups",
+        "C": "Have the model retested on its original holdout set",
         "D": "Report the rise as a model improvement to the board"
       },
       "correct": "B",
       "key_concept": "A model's outputs can shift with no change to it when its inputs change, as under evasion; triage an unexplained shift as a possible incident.",
       "pre_read": "Weigh what each option would do now and what it would leave open.",
-      "correct_explanation": "Nothing is logged as changed, yet the model approves 15% more top-ups, most from new accounts. A model can shift with no change when its inputs change: fraudsters may have learned what it passes, or an input may be broken. Fewer declines is not proof of fewer false declines. Having the owner log a possible incident and check approvals finds out now. A hash check is careful, but a match leaves the shift unexplained.",
+      "correct_explanation": "The running model matches the approved release, yet it approves 15% more top-ups, most from new accounts. An unchanged model's outputs can shift when its inputs change: fraudsters may have learned what it passes, or an input may be broken. Fewer declines are not proof of fewer false declines. Having the owner log a possible incident and check the extra top-ups finds out now. A holdout retest would only repeat the release scores.",
       "wrong_explanations": {
         "A": "Tempting as a quick correction. But changing the threshold before knowing the cause is an untested change.",
-        "C": "Tempting because an unlogged change could explain a shift. But a matching hash leaves the shift unexplained: a model can shift with no change when its inputs change.",
+        "C": "Tempting because a retest is evidence-based. But an unchanged model scores the same on its original holdout set, which holds none of this month's inputs.",
         "D": "Tempting because the result looks good. But an unexplained shift needs explaining before it is reported as a gain."
       },
       "tips": [
-        "Eliminate: A changes the model before the cause is known, and D reports an unexplained shift as success.",
-        "Final two: B beats C because a model can shift with no change when its inputs change; a matching hash would leave a rise mostly from new accounts unexplained.",
+        "Eliminate: A changes the threshold before the cause is known, and D reports an unexplained shift as success.",
+        "Final two: B beats C because an unchanged model's outputs can shift when its inputs change; its original holdout set holds none of this month's new-account top-ups.",
         "Exam cue: An unexplained jump in an AI's outputs, even a welcome one, is a possible incident to triage now."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 IR-4 (Incident Handling); NIST AI 100-1 MEASURE 2.4 (Functionality and behavior monitored in production)",
@@ -14042,7 +14042,7 @@
         "Evasion",
         "Output shifts"
       ],
-      "_provenance": "Authored from concept: notes 2G.1 Recognizing and Triaging AI Incidents (a sudden unexplained shift in a model's outputs can signal evasion or a broken input, so it is a possible incident before outcomes confirm it). Review round 1: runner-up C changed from waiting for chargebacks (the frame of aaia_d2_256) to checking change records for an unlogged change, so the AI fact that an unchanged model shifts when its inputs change decides; stem states no change is logged and drops the chargeback delay. Review round 2: explanation states the 15% rise the stem gives instead of \"far more\". Review round 3: runner-up C changed from checking change records for an unlogged change (self-contradictory) to a hash comparison with the approved release, which only the input-shift fact defeats. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2G.1 Recognizing and Triaging AI Incidents (a sudden unexplained shift in a model's outputs can signal evasion or a broken input, so it is a possible incident before outcomes confirm it). Review round 1: runner-up C changed from waiting for chargebacks (the frame of aaia_d2_256) to checking change records for an unlogged change, so the AI fact that an unchanged model shifts when its inputs change decides; stem states no change is logged and drops the chargeback delay. Review round 2: explanation states the 15% rise the stem gives instead of \"far more\". Review round 3: runner-up C changed from checking change records for an unlogged change (self-contradictory) to a hash comparison with the approved release, which only the input-shift fact defeats. Final round: stem says no change is \"recorded\" instead of \"logged\", so the key's \"log\" no longer echoes a stem word; subtopic label made neutral (\"A rise in approved top-ups\"). Final round 2: stem states the hash already matches the approved release, so a hash check is no longer an open first step; runner-up C changed to a retest on the original holdout set, which only the input-shift fact defeats; key says \"review approved top-ups\" instead of the ambiguous \"check approvals\", and A names top-ups so the key no longer echoes that stem word alone; explanation, C explanation and tip 2 say an unchanged model's outputs shift, not the model. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
       "style_version": 2
     },
     {
@@ -14061,7 +14061,7 @@
       },
       "correct": "A",
       "key_concept": "AI uses that share a model can fail together; incidents triaged team by team can understate the combined harm of one shared fault.",
-      "pre_read": "Rank each concern by its likely effect on the response.",
+      "pre_read": "Weigh each concern against the facts the question states.",
       "correct_explanation": "Three assistants on one hosted model giving wrong safety answers the same morning point to one shared fault, perhaps a model update. Each team judged severity by its own assistant's few users, so the combined reach of wrong safety advice from all three may be rated far too low, slowing the response. Mismatched causes are a problem-management issue that slows the fix later; the understated severity slows the response now.",
       "wrong_explanations": {
         "B": "Tempting as a capacity worry. But three incidents is a small load; the issue is that they are not linked.",
@@ -14079,7 +14079,7 @@
         "Shared components",
         "Severity"
       ],
-      "_provenance": "Authored from concept: notes 2G.1 Recognizing and Triaging AI Incidents (AI uses that share a model can fail together, so incidents triaged team by team can understate the combined harm of one shared fault). Cross-domain review: moved from a Turkish airline, the setting of the 3E.2 notes example, to a Mexican university, then, as a university assistant's incident is the setting of aaia_d2_258, to a Mexican toy maker; round 2 re-audit also tied the wrong answers to toy safety so the severity concern plainly outranks mismatched causes. Round 3: stem now states each team rated severity citing its own assistant's few users, so the combined-harm concern plainly outranks mismatched causes. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2G.1 Recognizing and Triaging AI Incidents (AI uses that share a model can fail together, so incidents triaged team by team can understate the combined harm of one shared fault). Cross-domain review: moved from a Turkish airline, the setting of the 3E.2 notes example, to a Mexican university, then, as a university assistant's incident is the setting of aaia_d2_258, to a Mexican toy maker; round 2 re-audit also tied the wrong answers to toy safety so the severity concern plainly outranks mismatched causes. Round 3: stem now states each team rated severity citing its own assistant's few users, so the combined-harm concern plainly outranks mismatched causes. Final round: pre_read made neutral, no longer pointing at response speed. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 11, 20 Nov 2026.",
       "style_version": 2
     },
     {
