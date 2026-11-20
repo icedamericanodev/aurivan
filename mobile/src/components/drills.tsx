@@ -208,7 +208,7 @@ export const Drills = memo(function Drills({
 
   // Phone 2.2 (behavioral-scientist): the journal's own label, said as a recent observation, never
   // "You often…" (a trait). A tie says so, as the journal does ("One of your most common patterns").
-  const why = top ? `${top.tied ? 'One of your recent patterns' : 'From your recent misses'}: ${DNA_COPY[top.pattern].label}.` : '';
+  const why = top ? `${top.tied ? 'One of your most common patterns' : 'From your recent misses'}: ${DNA_COPY[top.pattern].label}.` : '';
   return (
     <View ref={box} testID="drills" collapsable={false} onLayout={onLayout}>
       <Enter i={enter}>

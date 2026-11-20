@@ -78,7 +78,7 @@ describe('Play and the final week name the journal’s pattern', () => {
     expect(v.week).toBeNull();
   });
 
-  it('a tie is reported, so Play can say "One of your recent patterns"', () => {
+  it('a tie is reported, so Play can say "One of your most common patterns"', () => {
     expect(views(book(...tagged(0, 3, 'role'), ...tagged(3, 3, 'symptom'))).play).toEqual({ pattern: 'role', tied: true });
   });
 
@@ -93,7 +93,7 @@ describe('Play keeps its pattern for the day', () => {
   it('the window does not slide under Play within a day; the next day it does', () => {
     // Five role tags, the oldest about to leave the 28-day window.
     const mistakes = book(...tagged(0, 4, 'role'), ...tagged(4, 1, 'role', { at: NOW - 28 * DAY_MS + 60_000 }));
-    const morning = Math.floor(NOW / DAY_MS) * DAY_MS + 60_000;
+    const d = new Date(NOW); const morning = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 1).getTime();
     // Computed early in the day, before the oldest tag ages out: 5 with a pattern.
     expect(topSlipPattern('cisa', mistakes, morning)?.pattern).toBe('role');
     // Later the same day the oldest is out (only 4 left), but Play keeps the morning's answer.

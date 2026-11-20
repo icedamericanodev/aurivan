@@ -172,11 +172,11 @@ describe('Drills: Today’s drill', () => {
     expect(router.push).toHaveBeenCalledWith('/game/canopy');
   });
 
-  it('a tie says "One of your recent patterns", as the journal does', () => {
+  it('a tie says "One of your most common patterns", as the journal does', () => {
     answerN(50);
     tagFive('role', { slip: 'symptom', n: 5 });
     mount();
-    expect(textOf(root())).toContain('One of your recent patterns: Role confusion.');
+    expect(textOf(root())).toContain('One of your most common patterns: Role confusion.');
     expect(textOf(root())).not.toContain('From your recent misses');
   });
 

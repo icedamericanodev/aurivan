@@ -13,7 +13,7 @@
 import { findQuestion } from '../content/loader';
 import { mistakeDNA, type DNAInput, type MistakeDNA } from '../engine/mistakeDNA';
 import type { SlipPattern } from '../engine/slipCoach';
-import { DAY_MS } from '../engine/srs';
+import { dayKey } from '../engine/streak';
 import type { MistakeEntry } from '../store/progress';
 
 /** The journal's pattern summary for one exam: saved mistakes joined with their questions. */
@@ -61,9 +61,9 @@ export function topPatternOf(dna: MistakeDNA): TopPattern | null {
  * 28-day window slides (behavioral-scientist guardrail). New mistakes are new
  * evidence and update it at once.
  */
-const topCache = new WeakMap<Record<string, MistakeEntry>, { certId: string; day: number; top: TopPattern | null }>();
+const topCache = new WeakMap<Record<string, MistakeEntry>, { certId: string; day: string; top: TopPattern | null }>();
 export function topSlipPattern(certId: string, mistakes: Record<string, MistakeEntry>, now: number = Date.now()): TopPattern | null {
-  const day = Math.floor(now / DAY_MS);
+  const day = dayKey(now); // the learner's local calendar day, as streaks use
   const hit = topCache.get(mistakes);
   if (hit && hit.certId === certId && hit.day === day) return hit.top;
   const top = topPatternOf(mistakePatternsFor(certId, mistakes, now));
