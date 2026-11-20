@@ -392,6 +392,16 @@ before anything reached main (the pilot's rewrites had retired three ids that
 no learner ever saw). From the first merge on, it is append-only and
 `check_ids.py` holds it against main.
 
+**The CISA bridge outline** (`docs/content/CIA_CISA_BRIDGE_OUTLINE.md`,
+20 Nov 2026) plans 28 bridge sub-topics, 45 contrasts and a term table. Its
+section 7 lists what is still open before the bridge notes are written: where
+the CISA aside sits in the notes format and how the bridge reaches the phone
+(app-side, with section 11), nine proposed additions to the stale-terms gate
+(`cia-standards-auditor` and `cia-currency-checker` decide), who writes the
+section-level text of the generated Challenge notes, and that no ISACA page
+was opened (the bridge cites no ITAF number). Free bridge notes would count as
+published, so they wait for the licence question in section 9.
+
 What the next round changes because of this: the scaffold of every round
 states how it meets rules 2 to 5 of section 6b before writing starts; the
 learnable patterns above are given to the author as patterns to break (some

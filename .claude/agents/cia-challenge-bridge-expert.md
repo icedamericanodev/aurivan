@@ -55,8 +55,8 @@ Write it for a CISA holder first (KaiSip's own learners), in a way that still he
 | audit committee | board | The glossary's "board" includes an audit committee. |
 | auditee, auditee management | the management of the activity under review | Glossary "activity under review". |
 | audit program | engagement work program | Standard 13.6. |
-| sufficient and appropriate evidence | relevant, reliable and sufficient information | Standard 14.1. Three qualities; "appropriate" is not one of the words. |
-| materiality | significance | Glossary "significance"; Standard 14.3. |
+| sufficient and appropriate evidence | relevant, reliable and sufficient information | Standard 14.1. Three qualities; "appropriate" is not one of the words. The opened texts list the three in different orders, so no item may turn on their order. |
+| materiality | significance | Glossary "significance"; Standard 14.3. "Significance" is the defined term; the Standards also use "material" and "materiality" a few times (Standards 1.1 and 4.2), so the word is not wrong, only not the defined term. Teach it; never key on it. |
 | audit risk (inherent, control, detection) | no such model in the Standards | The Standards speak of inherent and residual risk and an engagement risk assessment (Standard 13.2). |
 | audit opinion | engagement conclusion | Standard 14.5. A wider one covers a whole business unit or the organization (Standard 11.3). |
 | audit report | final engagement communication | Standard 15.1. The syllabus also says "audit report". |
