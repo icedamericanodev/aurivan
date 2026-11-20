@@ -20,6 +20,7 @@ import { router } from 'expo-router';
 import { Drills } from '../components/drills';
 import { getAllQuestions } from '../content/loader';
 import { GAMES, GAME_ORDER } from '../engine/games/registry';
+import { runnerUp } from '../engine/tips';
 import { useProgress, type MistakeEntry } from '../store/progress';
 import { useSettings } from '../store/settings';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
@@ -82,9 +83,14 @@ const answerN = (n: number) => {
 const waitLine = () => root().findAll((n) => n.props.testID === 'more-games-wait' && typeof n.type === 'string');
 
 /** Save five tagged mistakes with one slip, so the slip coach names a pattern. */
-const tagFive = (slip: 'role' | 'priority') => {
-  const ids = getAllQuestions('cisa').slice(0, 5).map((q) => q.id);
-  const mistakes: Record<string, MistakeEntry> = Object.fromEntries(ids.map((id, i) => [id, { picked: 'A' as const, at: 1000 + i, slip }]));
+const tagFive = (slip: 'role' | 'priority', alsoTag?: { slip: 'symptom'; n: number }) => {
+  // Recent misses with a wrong pick that is not the closest wrong choice, so the tag is the only
+  // pattern: Play follows the journal's 28-day pattern (phone 2.2), which leaves out older misses.
+  const qs = getAllQuestions('cisa').slice(0, 5);
+  const wrong = (q: (typeof qs)[number]) => (['A', 'B', 'C', 'D'] as const).find((l) => l !== q.correct && l !== runnerUp(q.tips, q.correct))!;
+  const mistakes: Record<string, MistakeEntry> = Object.fromEntries(qs.map((q, i) => [q.id, { picked: wrong(q), at: Date.now() - 60_000 + i, slip }]));
+  // A second pattern on more questions (a tie test).
+  if (alsoTag) for (const q of getAllQuestions('cisa').slice(5, 5 + alsoTag.n)) mistakes[q.id] = { picked: wrong(q), at: Date.now() - 60_000, slip: alsoTag.slip };
   act(() => {
     useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...s.byCert.cisa, mistakes } } }));
   });
@@ -156,12 +162,22 @@ describe('Drills: Today’s drill', () => {
     tagFive('role');
     mount();
     expect(drill()).toBe(GAMES.canopy.name);
-    expect(textOf(root())).toContain('From your misses: you answer as the wrong person.');
+    expect(textOf(root())).toContain('From your recent misses: Role confusion.');
+    // Recent and descriptive, never a trait (behavioral-scientist, phone 2.2).
+    expect(textOf(root())).not.toContain('You answer as');
     // Its row opens that game.
     act(() => {
       drillRow().props.onPress();
     });
     expect(router.push).toHaveBeenCalledWith('/game/canopy');
+  });
+
+  it('a tie says "One of your most common patterns", as the journal does', () => {
+    answerN(50);
+    tagFive('role', { slip: 'symptom', n: 5 });
+    mount();
+    expect(textOf(root())).toContain('One of your most common patterns: Role confusion.');
+    expect(textOf(root())).not.toContain('From your recent misses');
   });
 
   it('"More drills" opens to the other six, each with a plain subtitle, and folds again', () => {

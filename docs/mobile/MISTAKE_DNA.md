@@ -6,7 +6,9 @@ Review scope: Mistake Journal only. Initially based independently on main `5382a
 
 ## What it adds
 
-Slip Coach still provides the existing tag-based all-history pattern for other consumers. The journal now adds a recent evidence summary, provenance-labelled breakdown, honest classified/unclassified coverage, two-window comparison, related notes and a fresh-practice path. Its learner-facing copy describes observations and possible reflection points rather than diagnosing a thinking style.
+**One pattern everywhere (20 Nov 2026).** The Play tab's Drills card and the final review week's "top slip" task now use this engine's leading pattern too, through `lib/slipPattern.ts` (`mistakePatternsFor`, `topSlipPattern`), so no screen names a pattern the journal doesn't. Play says "From your recent misses: <label>." or, on a tie, "One of your most common patterns: <label>.", and keeps its result for the day unless new mistakes arrive. `slipCoach` (all-time, tags only) is no longer used by any screen; its `patternsOf`, `PATTERN_ORDER` and `PATTERN_COPY` remain shared.
+
+Originally: Slip Coach still provided the existing tag-based all-history pattern for other consumers. The journal now adds a recent evidence summary, provenance-labelled breakdown, honest classified/unclassified coverage, two-window comparison, related notes and a fresh-practice path. Its learner-facing copy describes observations and possible reflection points rather than diagnosing a thinking style.
 
 One labelled “i” control beside “Your mistake patterns” opens the existing scrollable FeatureInfo sheet. Dates and a short practical coaching cue stay visible. Counts, evidence sources, coverage totals and the trend live in expanded evidence. The shared help consolidates sample rules, methodology, retained-miss handling and pattern definitions, with Close/Android Back/escape support and focus restoration. The journal-header help is consolidated here to avoid a second icon.
 

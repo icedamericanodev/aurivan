@@ -9042,7 +9042,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
     <h2 class="vision-title" id="aboutVisionT">Think like an IS auditor.</h2>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v13.0.1</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v13.0.2</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -9451,7 +9451,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v13.0.1';
+const APP_VERSION = 'v13.0.2';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -27718,6 +27718,12 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    items: [
+      { cat: 'fixed', text: 'In the final review week, the task about your most common slip now reads more simply.' },
+    ],
+  },
+  {
+    version: 'v13.0.1',
     items: [
       { cat: 'fixed', text: 'A password policy question now states clearly that management requires the controls, so the best answer is easier to see.' },
     ],
