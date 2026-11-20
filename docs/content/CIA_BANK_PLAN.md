@@ -48,7 +48,7 @@ pack. Every surface CISA has, as data that passes its gate.
 | Citation library | `data/cia/shared/_framework_library.md` (one for all four) | part experts, cia-currency-checker | Started | | | |
 | Dated facts | `data/cia/shared/currency.json` | cia-currency-checker | Started | | | |
 | Glossary | `glossary.json`, built from `data/cia/shared/glossary.json` | iia-mindset-coach, part experts | Started: 153 terms, audited (section 7) | Later | Later | Built from the shared terms of its topics |
-| Principles | `mindset/principles.json`, built from `data/cia/shared/principles.json` | iia-mindset-coach | Done: 23 principles, every question tagged | Later | Later | Built (same 23) |
+| Principles | `mindset/principles.json`, built from `data/cia/shared/principles.json` | iia-mindset-coach | Done: 24 principles, every question tagged | Later | Later | Built (same 24) |
 | About the exam | `exam/<pack>_exam_guide.json` | iia-mindset-coach | Done | Not started | Not started | Not started |
 | Final review week | `exam/final_review_week.json` | iia-mindset-coach, behavioral-scientist | Done | Not started | Not started | Not started |
 | The CISA bridge | `ciac/notes/bridge.json` and a section of the Challenge exam guide | cia-challenge-bridge-expert | | | | Outline done (`docs/content/CIA_CISA_BRIDGE_OUTLINE.md`); notes not started |
