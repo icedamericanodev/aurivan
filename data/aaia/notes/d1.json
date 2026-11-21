@@ -73,14 +73,16 @@
             "aaia_d1_186",
             "aaia_d1_187",
             "aaia_d1_216",
-            "aaia_d1_217"
+            "aaia_d1_217",
+            "aaia_d1_246",
+            "aaia_d1_247"
           ],
           "definition": "Artificial intelligence (AI) systems produce predictions, content or actions from data. The main kinds are predictive, generative and agentic; rules engines are not machine learning.",
           "why_it_matters": "The kind of AI decides the risks and evidence the auditor needs. Rules engines are tested like code; learned models also need data, validation and monitoring examined.",
           "how_it_works": [
             "Predictive AI classifies, scores, ranks or forecasts; AI search ranking documents by meaning is predictive too, failing by missing or misranking, not inventing.",
-            "Generative AI samples plausible text, images or code, not looked-up facts, so answers vary by run, labels stray outside set lists, transcripts add words, and stated confidence is generated too.",
-            "Agentic AI plans steps and chooses whether to call tools or systems to act, such as booking or paying; under a person's login it can do whatever that login allows.",
+            "Generative AI samples plausible text or code, not looked-up facts: answers vary by run, labels stray outside set lists, transcripts add words, code runs yet errs, stated confidence is generated.",
+            "Agentic AI plans steps and chooses when to call tools to act, such as paying; it pursues its goal by any action it holds, including whatever its login allows.",
             "A rules engine applies if-then logic that people wrote; it can automate decisions but does not learn from data, while even a simple regression fitted to data does.",
             "Purchased products often embed AI features the organization never chose directly."
           ],
@@ -144,17 +146,19 @@
             "aaia_d1_188",
             "aaia_d1_189",
             "aaia_d1_218",
-            "aaia_d1_219"
+            "aaia_d1_219",
+            "aaia_d1_248",
+            "aaia_d1_249"
           ],
           "definition": "A machine learning (ML) model learns patterns from data toward an objective people set, so its outputs are statistical estimates, not certainties, and only as good as that data.",
           "why_it_matters": "Without the data, the objective and which errors matter, nobody can judge whether the model serves its purpose.",
           "how_it_works": [
             "Features are inputs and labels the answers; a feature recorded after the outcome leaks the answer, so validate with inputs known at prediction time.",
-            "Labels exist only where people looked, so models learn past choices; unlabeled training finds patterns, and group names are hypotheses. Models learn only in training, not from chat corrections.",
-            "The objective sets what the model optimizes; a poor one yields a model accurate at the wrong thing, and a classifier answers only with classes it learned.",
+            "Labels exist only where people looked and once outcomes had time to occur; models learn past choices, and group names from unlabeled training are hypotheses.",
+            "A poor objective yields a model accurate at the wrong thing; classifiers answer only with learned classes, and models learn in training, not from chat corrections.",
             "Models learn any pattern, even a shortcut such as how one class was collected, and weaken when live data drifts; a strong predictor shows association, not cause.",
-            "With rare events, predicting the common outcome scores high accuracy yet misses what matters; rating-based tuning can make generative models agreeable, and prompt examples sway them toward their label mix.",
-            "Errors carry different costs the business ranks; a 0.8 score means an 80% chance only if calibrated, and reruns with equal accuracy can score individuals differently."
+            "With rare events, predicting the common outcome scores high accuracy yet misses what matters, and accurate flags can be mostly false; prompt examples sway generative models toward their label mix.",
+            "Errors carry costs the business ranks; a 0.8 score means 80% only if calibrated; equal-accuracy reruns can score people differently; rating-based tuning can make generative models agreeable."
           ],
           "example": "A Brazilian seed producer's model ranks seed lots by predicted germination, trained only on lab results. Auditor Kofi finds refunds come from lots failing in hot, dry fields, conditions the lab data never covered. Kofi reports the gap and recommends field-based acceptance criteria.",
           "audit_focus": {
@@ -219,14 +223,16 @@
             "aaia_d1_190",
             "aaia_d1_191",
             "aaia_d1_220",
-            "aaia_d1_221"
+            "aaia_d1_221",
+            "aaia_d1_250",
+            "aaia_d1_251"
           ],
           "definition": "Artificial intelligence (AI) requirements state the purpose, acceptable errors, limits, users and oversight a system needs, and how it fits the enterprise architecture, before a model or vendor is chosen.",
           "why_it_matters": "Without stated requirements, nobody can test whether AI serves business objectives, policies and procedures.",
           "how_it_works": [
             "The business owner states the intended purpose, decisions supported, people affected and out-of-scope uses, including how a chatbot declines off-purpose questions.",
-            "Requirements set measurable acceptance criteria, such as error rates, response times and human checks the design must allow (streamed answers skip them), tested across chained models.",
-            "Enterprise architecture review checks data, integration, security, hosting and a funded route to monitor and update the model after launch.",
+            "Requirements set acceptance criteria: error rates, response times and human checks the design must allow (streamed answers skip them), tested across chained models.",
+            "Enterprise architecture review checks data, integration, security, hosting, a funded route to monitor and update the model after launch, and a way to switch the AI off alone.",
             "Sourcing follows the requirement, including the outcome a bought model predicts: build, buy, fine-tune or call a hosted model, whose versions the provider retires, so long-lived systems plan revalidation.",
             "Retrieval can log each answer's sources; fine-tuning blends sources into weights, so its citations are generated.",
             "Agentic designs need limits on what the system may do without a person, such as payment or deletion caps, and a way to undo errors, which scale with volume."
@@ -304,7 +310,9 @@
             "aaia_d1_192",
             "aaia_d1_193",
             "aaia_d1_222",
-            "aaia_d1_223"
+            "aaia_d1_223",
+            "aaia_d1_252",
+            "aaia_d1_253"
           ],
           "definition": "An artificial intelligence (AI) program ties AI use to strategy through an approved policy and a complete inventory, including vendor-embedded AI and unapproved shadow AI.",
           "why_it_matters": "Nobody can govern AI they do not know about. Embedded features and public tools often handle sensitive data unregistered.",
@@ -312,7 +320,7 @@
             "The AI strategy states which business goals AI should serve and which uses the organization will not pursue.",
             "The AI policy, approved by senior management or the board, sets acceptable use, duties and risk tiers by each use's impact, not accuracy, redone when use changes, even by prompt.",
             "A rule on what staff type misses files an assistant sends itself; staff-tool rules may not fit AI in products, and a live experiment is real use.",
-            "The inventory covers AI built, bought or sold: owner, purpose, data (including data a model keeps learning from), vendor, model version, agents' tools, rights and callable agents, risk tier, status.",
+            "The inventory covers AI built, bought or sold: owner, purpose, ongoing training data, vendor, model version, agents' tools, rights, agents they call or create (even short-lived ones), risk tier, status.",
             "AI enters through vendor updates, free tools and expensed subscriptions, so inventories cannot rely on self-reporting; shadow AI includes public generative tools and agents staff build in no-code tools.",
             "The strategy is checked against other commitments, such as emissions targets large-model training can affect."
           ],
@@ -377,7 +385,9 @@
             "aaia_d1_194",
             "aaia_d1_195",
             "aaia_d1_224",
-            "aaia_d1_225"
+            "aaia_d1_225",
+            "aaia_d1_254",
+            "aaia_d1_255"
           ],
           "definition": "Accountability for artificial intelligence (AI) means every model and every AI-supported decision has a named human owner, with roles and committee duties written down.",
           "why_it_matters": "When an AI decision harms someone, a person must answer for it, fix it and decide whether the model keeps running. Shared, vague or vendor ownership means nobody does.",
@@ -385,11 +395,11 @@
             "The owner answers for a model's use, results, risk acceptance and pausing, whoever supplies or runs it; each use, tuned copies included, has an owner who accepts changes beneath it.",
             "When AI agents act on each other's outputs, one named owner answers for the chain's combined outcome.",
             "Data scientists build models and IT runs platforms; neither owns business decisions by default, though registry owner fields often name builders.",
-            "An AI governance committee sets standards, approves high-impact uses, gives each approval condition a named owner and escalates to senior management.",
+            "An AI governance committee sets standards, approves high-impact uses and removing their human checks, gives each approval condition a named owner and escalates to senior management.",
             "Reviewer roles say what to check against which source, since generated summaries can read well with facts missing.",
-            "Internal audit gives independent assurance and may advise on evidence, such as each new population's own results at the deployed threshold, but never votes, approves uses or owns AI risk."
+            "Internal audit gives independent assurance and may advise on evidence, such as a new population's own results at the deployed threshold, but never votes, approves or owns AI risk."
           ],
-          "example": "At a Chilean copper mine, a model predicts conveyor failures and schedules shutdowns. Maintenance says the data team owns it; the data team says operations does. Auditor Valentina finds no named owner and nobody authorized to approve overrides. Valentina reports the gap and recommends naming an owner.",
+          "example": "At a Chilean copper mine, a model predicts conveyor failures and schedules shutdowns. Maintenance says the data team owns it; the data team blames operations. Auditor Valentina finds no named owner and nobody authorized to approve overrides, reports the gap and recommends naming an owner.",
           "audit_focus": {
             "review": [
               "Trace each high-impact model to a named owner who accepted the role",
@@ -451,19 +461,21 @@
             "aaia_d1_196",
             "aaia_d1_197",
             "aaia_d1_226",
-            "aaia_d1_227"
+            "aaia_d1_227",
+            "aaia_d1_256",
+            "aaia_d1_257"
           ],
           "definition": "An artificial intelligence (AI) program measures whether governance works, trains people for the duties AI policies give them, and plans for how AI changes jobs.",
           "why_it_matters": "A policy that staff do not understand is not a control. AI also shifts work from doing tasks to overseeing AI output.",
           "how_it_works": [
-            "Program metrics track results, not just activity such as retrains: inventoried systems with owners, overdue reviews, AI incidents and accuracy of final decisions after human changes.",
+            "Program metrics track results, not activity such as retrains: owner coverage beyond the inventory, overdue reviews, AI incidents, final-decision accuracy, not a referring model's own on the cases it keeps.",
             "Awareness content follows the policy: if it requires output checks, training teaches them and screens mark AI-written values; approving a template does not approve later outputs.",
             "Role-based training goes deeper for model owners, developers and reviewers, and changes when a new model errs differently.",
-            "When a few staff's corrections retrain a model, one wrong correction can repeat at scale; staff who did the task supply ground truth, the correct answers used to check models.",
+            "A wrong correction that retrains a model can repeat at scale; checking AI output takes skill built by doing the work, so keep training people in tasks AI takes over.",
             "Spot tests, not attendance records, show whether people can apply the policy.",
             "Training that stresses a model's accuracy, or targets for unedited output, can breed automation bias; an unedited share counts acceptance, not accuracy, and seeded errors show whether reviewers catch mistakes."
           ],
-          "example": "At an Indian tax-preparation firm, the AI program's quarterly report counts licenses issued, drafts produced and hours saved. Auditor Priya finds no measure of errors in sampled drafts, policy breaches or staff knowledge checks. Priya reports the metrics show adoption, not results, and recommends outcome metrics.",
+          "example": "At an Indian tax-preparation firm, the AI program's report counts licenses issued, drafts produced and hours saved. Auditor Priya finds no measure of errors in drafts, policy breaches or staff knowledge checks. Priya reports the metrics show adoption, not results, and recommends outcome metrics.",
           "audit_focus": {
             "review": [
               "Compare awareness content, topic by topic, with current AI policy duties",
@@ -486,7 +498,7 @@
             },
             {
               "trap": "AI that takes over routine work reduces the need for staff training.",
-              "why": "Remaining staff handle the harder cases and act as the human check on AI output, so they need more and different skills."
+              "why": "Remaining staff handle the harder cases and act as the human check on AI output, so they need new skills."
             }
           ],
           "key_terms": [
@@ -536,16 +548,18 @@
             "aaia_d1_198",
             "aaia_d1_199",
             "aaia_d1_228",
-            "aaia_d1_229"
+            "aaia_d1_229",
+            "aaia_d1_258",
+            "aaia_d1_259"
           ],
           "definition": "Artificial intelligence (AI) risk assessment identifies what could go wrong with an AI system, including harm to people, and rates likelihood and impact so owners can respond.",
-          "why_it_matters": "AI can harm people who never see the system, through wrong denials, unfair treatment or unsafe actions. A register that rates only security and uptime misses the risks that matter most.",
+          "why_it_matters": "AI can harm people who never see the system, through wrong denials, unfair treatment or unsafe actions; a register rating only security and uptime misses them.",
           "how_it_works": [
-            "Identification covers the model, data, use, users, people affected by outputs and automated systems it interacts with, which can form loops.",
+            "Identification covers the model, data, use, users, people affected by outputs, even when it works as designed, and automated systems it interacts with, which can form loops.",
             "Impact includes harm to people and groups, besides business loss; a model repeats errors for similar cases, so resubmitting cannot undo one and equal error rates can hide concentrated harm.",
-            "Likelihood rests on evidence, not instructions: a prompt limiting a model to given sources is not a control.",
-            "AI risks enter the enterprise risk register with an owner, a rating and a response: mitigate, transfer, avoid or accept.",
-            "Assessment repeats when data, use, model or law change, monitoring shows drift, or new tools make attacks such as fake photos cheap.",
+            "Likelihood rests on evidence, not instructions: a prompt limiting a model to given sources is not a control, and published weights run without a service's filters.",
+            "AI risks enter the enterprise risk register with an owner, rating and response.",
+            "Reassess when data, use, model or law change, drift appears, or new tools make attacks such as fake photos cheap.",
             "Assess an agent as a whole: its step errors compound across a task, and untrusted input, private data and an outbound channel together form a leak path."
           ],
           "example": "A Polish bus manufacturer's weld-inspection model was rated medium risk when it only advised inspectors. It then began passing welds unchecked, but nobody re-rated it. Auditor Marek reports the higher impact on passenger safety and recommends reassessment at defined triggers.",
@@ -614,17 +628,19 @@
             "aaia_d1_200",
             "aaia_d1_201",
             "aaia_d1_230",
-            "aaia_d1_231"
+            "aaia_d1_231",
+            "aaia_d1_260",
+            "aaia_d1_261"
           ],
           "definition": "Risk appetite is how much AI risk the board accepts to pursue its goals; tolerances set measurable limits, and key risk indicators (KRIs) show when limits near breach.",
-          "why_it_matters": "Without board-set limits, every AI risk decision is case by case; KRIs turn limits into numbers to watch and escalate.",
+          "why_it_matters": "Without board-set limits, every AI risk decision is case by case; KRIs turn limits into numbers to watch.",
           "how_it_works": [
-            "Appetite is proposed by management and approved by the board; senior management sets tolerances within it for each high-impact use.",
+            "The board approves appetite that management proposes, never zero since every model errs; senior management sets tolerances within it for each high-impact use.",
             "Tolerances limit harm to people or business, such as a wrongful-denial rate; a cutoff trades one error for another, so cap both; area under the curve (AUC) ignores cutoffs.",
             "Key performance indicators (KPIs) show whether AI delivers value; KRIs show whether risk nears tolerance; fewer refusals can mean more guessing; stale source documents warn early.",
             "Each KRI needs a source independent of the model, not its confidence or a same-provider grader; warning levels from tolerance, not a tool's default; escalation; detail by day and version.",
             "Warning levels stay fixed below tolerance, not reset after retraining; drift alerts follow how drift tracks harm.",
-            "A breach goes to senior management, which decides the response with the owner; quiet tuning is not a response."
+            "Breaches go to senior management, which decides the response with the owner; quiet tuning is no response."
           ],
           "example": "A Ghanaian microfinance lender's senior management caps applications its credit model wrongly declines at 2%, within the board's appetite. Auditor Kwame finds two breaches, each answered by the data team quietly retuning the model. Kwame reports breaches never reached the owner or senior management, and recommends an escalation route.",
           "audit_focus": {
@@ -688,19 +704,21 @@
             "aaia_d1_202",
             "aaia_d1_203",
             "aaia_d1_232",
-            "aaia_d1_233"
+            "aaia_d1_233",
+            "aaia_d1_262",
+            "aaia_d1_263"
           ],
-          "definition": "Third-party artificial intelligence (AI) risk arises from models, data, tools and services that vendors supply, including AI embedded in products and pre-trained models.",
-          "why_it_matters": "The vendor can change the model, its data or terms without notice, yet the organization answers for every decision.",
+          "definition": "Third-party artificial intelligence (AI) risk arises from models, data, tools and services that vendors supply, including embedded AI and pre-trained models.",
+          "why_it_matters": "A vendor can change the model, data or terms unannounced, yet the organization answers for every decision.",
           "how_it_works": [
-            "Due diligence covers model documentation, testing, data sources and rights, security, incident history and people who check uncertain items.",
-            "Contracts set disclosure, testing rights, exit terms, prompt notice of model malfunctions and who bears intellectual property risk in outputs; that cover can depend on filters kept on.",
-            "Testing covers only the model tested, so a vendor's model swap, or a model learning from all clients, needs notice and testing.",
+            "Due diligence, tiered by what the AI decides, covers model documentation, testing, data sources and rights, security, incident history and people who check uncertain items.",
+            "Contracts set disclosure, testing rights, decision records kept through disputes, exit terms, prompt malfunction notice and who bears output intellectual property risk, which can depend on filters kept on.",
+            "Testing covers only the model tested: a vendor's model swap, or learning from all clients, needs notice and testing.",
             "Supply chains run deep: a vendor may build on another firm's foundation model, whose silent updates a notice clause cannot cover without pinned versions.",
-            "Vendor reports give the vendor's view; monitoring adds independent checks in the buyer's setting, and provider filters target general harms, not the buyer's use.",
-            "Contingency plans cover a vendor outage, withdrawal, failed update or a model ordered deleted over unlawful training data."
+            "Vendor reports give the vendor's view; monitoring adds independent checks in the buyer's setting; provider filters target general harms, not the buyer's use.",
+            "Contingency plans cover a vendor outage, withdrawal, failed update or a model ordered deleted over unlawful training data; exported embeddings need the model that made them."
           ],
-          "example": "A Vietnamese garment exporter grades fabric defects with a vendor's AI model. The vendor's only assurance is a data-center controls report, and the contract omits its foundation model. Auditor Thanh finds no tests on the exporter's own fabric. Thanh reports both gaps and recommends supply-chain due diligence and testing on the exporter's data.",
+          "example": "A Vietnamese garment exporter grades fabric defects with a vendor's AI model; the vendor's only assurance is a data-center controls report, and the contract omits its foundation model. Auditor Thanh finds no tests on its fabric, reports both gaps and recommends supply-chain due diligence and testing on its data.",
           "audit_focus": {
             "review": [
               "Inspect AI contracts for change notice, testing, data use and exit terms",
@@ -723,7 +741,7 @@
             },
             {
               "trap": "Source code escrow protects the organization if an AI vendor fails.",
-              "why": "Code alone cannot rebuild a trained model. Continuity needs the trained model files, configuration and, where possible, data or a tested alternative."
+              "why": "Code cannot rebuild a trained model; continuity needs its model files, configuration and, where possible, data or a tested alternative."
             }
           ],
           "key_terms": [
@@ -774,15 +792,17 @@
             "aaia_d1_204",
             "aaia_d1_205",
             "aaia_d1_234",
-            "aaia_d1_235"
+            "aaia_d1_235",
+            "aaia_d1_264",
+            "aaia_d1_265"
           ],
           "definition": "Data governance for artificial intelligence (AI) assigns owners to the data models use and controls its quality, lineage, permitted uses and right to use it for training.",
           "why_it_matters": "A model inherits every flaw in its data. If no one owns or can trace a data feed, no one can vouch for it.",
           "how_it_works": [
-            "Each dataset, including retrieved documents, has an owner answering for its quality, currency, permitted uses and where it applies; similarity retrieval ignores site and currency unless filtered.",
+            "Each dataset, retrieved documents included, has an owner answering for quality, currency, permitted uses and where it applies; web results have none; similarity retrieval ignores site and currency unless filtered.",
             "Lineage records data's origin, changes and models fed, down to each indexed passage's source, and flags model-written records, even bought ones, since heavy training on generated text narrows models.",
-            "Quality rules cover accuracy, completeness, timeliness and how well the data represents the people affected.",
-            "Rights to use, retrieval included, come from contracts, licenses, consent or another lawful basis; public data is not automatically free, and a license passes only its grantor's rights.",
+            "Quality rules cover accuracy, completeness, timeliness, labels consistent across sources and how well the data represents those affected.",
+            "Rights to use, retrieval included, come from contracts, licenses, consent or another lawful basis; public data and other models' outputs are not automatically free; licenses pass only grantors' rights.",
             "A data catalog links datasets to owners, classifications and models; embeddings can often be inverted, so they take their source's classification.",
             "Data errors are fixed at the source; correcting only a training copy leaves live inputs unlike what the model learned, and trained models keep errors until retrained."
           ],
@@ -847,16 +867,18 @@
             "aaia_d1_206",
             "aaia_d1_207",
             "aaia_d1_236",
-            "aaia_d1_237"
+            "aaia_d1_237",
+            "aaia_d1_266",
+            "aaia_d1_267"
           ],
           "definition": "Personal data can enter artificial intelligence (AI) through training sets, prompts and retrieved documents, and leave through outputs and inferences, so privacy controls must cover each point.",
-          "why_it_matters": "Privacy duties such as purpose limits, consent, transparency and minimization apply to AI too. Generative AI can also infer sensitive facts nobody gave it.",
+          "why_it_matters": "Purpose limits, consent, transparency and minimization apply to AI: a notice about 'training' may mean staff training, not models. Generative AI can infer sensitive facts nobody gave it.",
           "how_it_works": [
-            "Privacy by design: collect less, even data a chatbot requests unprompted; de-identify and limit retention; training images capture passers-by, blurring misses some, voiceprints are new personal data.",
+            "Privacy by design: collect less, even data a chatbot requests unprompted; training images capture passers-by, blurring misses some, and voiceprints are new personal data.",
             "A privacy impact assessment (PIA) records what personal data is used, why, the risks to people and the safeguards chosen.",
-            "De-identified data can be re-identified when combined, so reassess when sources are added; differential privacy's protection weakens as its privacy-loss setting rises and releases repeat.",
+            "De-identified data and small totals can single people out when combined or narrowed, so reassess when sources are added; differential privacy weakens as its privacy-loss setting rises and releases repeat.",
             "Prompt rules and output filters stop staff entering, or systems revealing, personal data; assistants searching everything a user can open make old oversharing easy to find.",
-            "Privacy is shared: the privacy officer, data owner and model owner all hold duties, not only the security team; AI summaries sent automatically can spread remarks about people.",
+            "Privacy is shared among the privacy officer, data owner and model owner, not only security; AI summaries sent automatically can spread remarks about people.",
             "AI-generated statements about identifiable people are personal data; removing names from free text is not anonymization; a prompt does not retrain a model, but still reaches the provider."
           ],
           "example": "A Thai hotel group plans a model predicting guests' special needs from booking history. Auditor Niran notes it could infer health or religious details guests never shared, which the privacy assessment omits. Niran reports the gap and recommends extending the assessment to inferred data.",
@@ -920,17 +942,19 @@
             "aaia_d1_208",
             "aaia_d1_209",
             "aaia_d1_238",
-            "aaia_d1_239"
+            "aaia_d1_239",
+            "aaia_d1_268",
+            "aaia_d1_269"
           ],
           "definition": "Retention and deletion for artificial intelligence (AI) govern how long training data, prompts, outputs and models are kept, and must address what a trained model may memorize.",
-          "why_it_matters": "Deleting a record does not remove what a model learned; a model that memorized personal data can reveal it after the source is gone.",
+          "why_it_matters": "Deleting a record does not remove what a model learned; a model that memorized personal data can reveal it later.",
           "how_it_works": [
             "Retention schedules cover training sets, prompt and output logs, model versions and records explaining past decisions; data cut from live copies, like keys in old commits, can still feed training.",
-            "Copies in retrieval indexes, embeddings, caches, rollback versions, models trained to imitate a model, and a provider's tuning service, uploaded files and tuned models included, follow the originals' deletion rules.",
+            "Test sets, indexes, embeddings, caches, rollback versions, models trained on a model's outputs and provider tuning files and tuned models follow deletion rules; rerun old versions on pruned test sets.",
             "Models memorize rare or repeated examples, so deduplicate before training; memorization tests show leakage, not deletion. Data kept in a retrieval index, not model weights, can be deleted at once.",
             "When personal data must be erased, the owner assesses affected models: retrain, filter outputs or document low risk, with the privacy officer confirming the choice meets the legal duty.",
             "Prompt and output logs need retention limits and access controls; format-only prompt examples can be invented, holding no personal data.",
-            "Retired data and models, which can hold it, are disposed of securely or restricted; required decision logs are preserved."
+            "Retired data and models, which can hold it, are disposed of securely or restricted; decision logs, and model versions under legal hold, are preserved."
           ],
           "example": "A Mexican law firm's generative AI assistant keeps every prompt and output, including client names and case facts, with no disposal date. Auditor Rodrigo finds the retention schedule covers case files but not the assistant's logs, some older than clients agreed. Rodrigo reports the gap and recommends retention limits for prompt and output logs.",
           "audit_focus": {
@@ -947,7 +971,7 @@
             "recommend": "Have the data owner and model owner extend deletion procedures to trained models, prompt logs and output logs.",
             "decides": "The model owner decides what happens to affected models; the privacy officer confirms"
           },
-          "isaca_rule": "Deletion is not complete until trained models are considered. Expect retention rules for data, prompts, outputs and models, plus memorization tests, while keeping records needed to explain past decisions.",
+          "isaca_rule": "Deletion is not complete until trained models are considered. Expect retention rules for data, prompts, outputs and models, while keeping records needed to explain past decisions.",
           "exam_traps": [
             {
               "trap": "Once the source records are deleted, the model no longer holds the personal data.",
@@ -1004,19 +1028,21 @@
             "aaia_d1_210",
             "aaia_d1_211",
             "aaia_d1_240",
-            "aaia_d1_241"
+            "aaia_d1_241",
+            "aaia_d1_270",
+            "aaia_d1_271"
           ],
           "definition": "Trustworthy artificial intelligence (AI) characteristics are qualities a system should show, such as valid, safe, fair and explainable, stated as measurable criteria an auditor can test.",
-          "why_it_matters": "An ethics statement saying AI must be fair cannot be audited until someone defines fair for that use, sets a threshold and names an owner.",
+          "why_it_matters": "An ethics statement that AI must be fair is untestable until someone defines fair for the use, sets a threshold and names an owner.",
           "how_it_works": [
             "The National Institute of Standards and Technology (NIST) AI Risk Management Framework names seven trustworthy-AI characteristics; privacy criteria test what outputs reveal or infer, not only storage.",
             "They are: valid and reliable, the base for the rest; safe; secure and resilient; accountable and transparent; explainable and interpretable; privacy-enhanced; and fair with harmful bias managed.",
             "Characteristics trade off: accuracy can cost explainability, explanations can aid gaming or show others' data, safety tuning causes needless refusals, and unequal base rates make fairness measures conflict.",
-            "Each principle becomes a criterion with a metric, threshold, test method and owner; safety criteria set safe behavior when the model errs; fairness criteria cover how generated images portray people.",
-            "Explainability must be enough for the people overseeing a high-impact system to question, override and support appeals.",
+            "Each principle becomes a criterion with an owner, threshold, test method and a metric that measures it, not a stand-in like word overlap; fairness criteria cover how images portray people.",
+            "Safety criteria set safe behavior on errors and cover reliance on chatbots built to sound personal; explainability lets overseers of high-impact AI question, override and support appeals.",
             "Privacy noise can cut accuracy for small groups; a fairness measure must fit the use, as equal flag rates can hide unequal misses and tiny groups give unstable results."
           ],
-          "example": "A Danish wind-farm operator set a maximum missed-fault rate for its turbine-fault model. The owner's team reports one average across turbines. Auditor Freja reperforms the check on offshore turbines alone and finds it above the limit. Freja recommends separate validators report results by turbine type.",
+          "example": "A Danish wind-farm operator set a missed-fault limit for its turbine-fault model. The owner reports one average. Auditor Freja reperforms the check on offshore turbines alone and finds it above the limit. Freja recommends separate validators report results by turbine type.",
           "audit_focus": {
             "review": [
               "Trace each stated AI principle to a measurable criterion and owner",
@@ -1031,7 +1057,7 @@
             "recommend": "Have model owners turn each AI principle into measurable criteria with thresholds, test methods and review dates.",
             "decides": "Model owners set use-level criteria within senior management's tolerances; the AI governance committee approves high-impact uses"
           },
-          "isaca_rule": "A principle without a measure, threshold and owner cannot be audited. Owners turn each characteristic into testable criteria for the use; the auditor tests against them independently.",
+          "isaca_rule": "A principle without a measure, threshold and owner cannot be audited. Owners turn each characteristic into testable criteria; the auditor tests against them independently.",
           "exam_traps": [
             {
               "trap": "Publishing responsible-AI principles shows the organization's AI is trustworthy.",
@@ -1077,19 +1103,21 @@
             "aaia_d1_212",
             "aaia_d1_213",
             "aaia_d1_242",
-            "aaia_d1_243"
+            "aaia_d1_243",
+            "aaia_d1_272",
+            "aaia_d1_273"
           ],
           "definition": "Risk-based artificial intelligence (AI) regulation sets duties by the harm a use could cause; mapping turns each applicable obligation into an owned control with evidence.",
-          "why_it_matters": "Without a mapped obligations register, the organization cannot show which duties apply to which systems, or prove it meets them.",
+          "why_it_matters": "Without a mapped obligations register, an organization cannot show which duties apply where, or prove it meets them.",
           "how_it_works": [
-            "Risk-based laws, such as the European Union (EU) AI Act, place more duties on higher-risk uses and prohibit a few uses outright.",
+            "Risk-based laws, such as the European Union (EU) AI Act, add duties for higher-risk uses, ban a few and make deepfakes carry a label people see; documentation covers each version.",
             "Typical duties for high-risk uses include risk management, data governance, documentation, human oversight, accuracy, record keeping and an explanation of each person's decision, which a model card cannot give.",
             "Applicability depends on where the system is sold or used, its sector and purpose, so it is a legal judgment; duties starting later can need records kept during development.",
-            "Each obligation maps to a control, owner and current evidence it operates, as many duties continue after launch; a human step that never changes outcomes may not escape automated-decision rules.",
+            "Each obligation maps to a control, owner and current evidence, kept after launch; incident triggers fit harmful outputs and users' reports; rubber-stamp human steps may not escape automated-decision rules.",
             "Meeting one law is not responsible AI; other laws still apply, consumer law can bind firms to chatbot answers, and sector rules may treat retraining as regulated change.",
-            "Roles set duties: rebranding or substantially changing a high-risk system, or repurposing any system into a high-risk use, can make an organization a provider; documentation covers each version."
+            "Roles set duties: users of high-risk AI keep their own, whatever the provider declares; rebranding, substantially changing or repurposing a system into high-risk use can make one a provider."
           ],
-          "example": "A South Korean education technology firm sells an exam-proctoring AI in several countries. Auditor Ji-woo finds a spreadsheet listing laws but no controls meeting each duty. Ji-woo reports compliance cannot be shown in any market and recommends a mapped obligations register before the next release.",
+          "example": "A South Korean ed-tech firm sells exam-proctoring AI in several countries. Auditor Ji-woo finds a spreadsheet listing laws but no controls meeting each duty, reports that compliance cannot be shown in any market and recommends a mapped obligations register.",
           "audit_focus": {
             "review": [
               "Trace applicable AI obligations to controls, owners and evidence",
@@ -1104,7 +1132,7 @@
             "recommend": "Have legal counsel, compliance and the model owner map each applicable duty to a control, a control owner and evidence.",
             "decides": "Senior management sets compliance strategy on legal counsel's advice"
           },
-          "isaca_rule": "Map before you test: obligation, control, owner, evidence. Legal decides which laws apply, owners run controls, and the auditor tests the mapping and evidence. One law is a floor, not proof of responsible AI.",
+          "isaca_rule": "Map before you test: obligation, control, owner, evidence. Legal decides which laws apply, owners run controls, and the IS auditor tests the mapping. One law is only a floor.",
           "exam_traps": [
             {
               "trap": "A compliance tool that scans for AI regulations solves the obligations problem.",
@@ -1122,7 +1150,7 @@
             },
             {
               "term": "High-risk AI use",
-              "definition": "A use that a risk-based law treats as able to cause serious harm, which brings added duties."
+              "definition": "A use a risk-based law treats as able to cause serious harm, bringing added duties."
             }
           ]
         },
@@ -1145,17 +1173,19 @@
             "aaia_d1_214",
             "aaia_d1_215",
             "aaia_d1_244",
-            "aaia_d1_245"
+            "aaia_d1_245",
+            "aaia_d1_274",
+            "aaia_d1_275"
           ],
           "definition": "Artificial intelligence (AI) frameworks and standards structure AI risk management, such as the voluntary NIST framework and management-system standards such as ISO/IEC 42001.",
-          "why_it_matters": "Auditors use them as criteria. Misreading them, treating a voluntary framework as law or a certificate as proof a model is fair, leads to wrong conclusions.",
+          "why_it_matters": "Auditors use them as criteria. Misreading them, treating a voluntary framework as law or a certificate as proof a model is fair, misleads.",
           "how_it_works": [
-            "The NIST AI Risk Management Framework is voluntary, offers no certification and sets no risk tolerance; it expects feedback from affected people.",
+            "The NIST AI Risk Management Framework is voluntary with no certification or set tolerance; it measures the most significant risks first, expects unacceptably risky systems stopped, seeks affected people's feedback.",
             "NIST AI 600-1, the Generative AI Profile, lists twelve generative AI risks, such as confabulation, and suggested actions chosen by role and use.",
             "Management-system standards describe how an organization runs AI governance; certification covers that system in scope, not each model's outputs.",
-            "An organization may certify its management system and use NIST functions, but a crosswalk between frameworks shows overlap, not conformance; NIST CSF 2.0 covers security, not bias or validity.",
+            "An organization may certify its management system and use NIST functions; a crosswalk shows overlap, not conformance; NIST CSF 2.0 covers security, not bias or validity.",
             "ISACA's audit standards still govern the audit: independence, criteria, evidence and reporting. MITRE ATLAS lists known AI attacks and mitigations; it grows, setting no requirements.",
-            "Current and target profiles show gaps; Govern is continual; risks without a metric stay on the register, tracked qualitatively, and residual risks are documented to inform buyers and users."
+            "Current and target profiles show gaps; Govern is continual; risks without a metric stay on the register, tracked qualitatively, and residual risks are documented for buyers and users."
           ],
           "example": "An Irish software company tells customers its AI is certified trustworthy after its AI management system was certified. Auditor Siobhán finds the certificate covers the governance process, while its insurance-quote feature has no fairness testing. Siobhán reports the overstated claim and recommends model-level testing and corrected wording.",
           "audit_focus": {
