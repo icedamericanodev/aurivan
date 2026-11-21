@@ -15813,108 +15813,106 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An Egyptian travel agency trained a small, faster fraud model to copy its large model's scores on all 3 million past bookings, test bookings included. What should the IS auditor recommend as BEST?",
+      "question": "An Egyptian travel agency trained a small, faster fraud model to copy its large model's scores on 3 million past bookings, holding back 300,000 for testing. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Test it on bookings kept out of the data it copied",
-        "B": "Compare its scores with the large model's on the test bookings",
+        "A": "Check it on the held-back bookings against confirmed fraud cases",
+        "B": "Compare its fraud scores with the large model's on the held-back bookings",
         "C": "Stop training small models to copy another model's scores",
         "D": "Seek customers' consent before training on their past bookings"
       },
       "correct": "A",
-      "key_concept": "A model trained to copy another's scores on test records has seen those records, so only records kept out of its copying data test it.",
+      "key_concept": "A model trained to copy another model's scores copies its errors too, so agreement shows fidelity, not accuracy; only confirmed outcomes test it.",
       "pre_read": "Read the stem once, then restate it before choosing.",
-      "correct_explanation": "The small model learned the large model's scores on every booking, test bookings included, so any test on those bookings measures what it has already seen. Only bookings kept out of its copying data show how it handles new ones. Comparing its scores with the large model's on the test bookings looks like a fidelity check, but it learned those very scores, so close agreement shows memory, not skill.",
+      "correct_explanation": "The small model learned to reproduce the large model's scores, including any mistakes, so matching them on held-back bookings shows how faithfully it copies, not whether it catches fraud. Testing it against confirmed fraud cases measures what matters: real fraud caught and genuine bookings cleared. Comparing its scores with the large model's looks like a natural check, but close agreement would also repeat every case the large model gets wrong.",
       "wrong_explanations": {
-        "B": "Tempting as a check that the copy kept the large model's skill. But it learned the large model's scores on those bookings, so agreement there shows memory.",
-        "C": "Tempting because copying sounds improper. But training a small model on a larger one's scores, known as distillation, is a recognized technique; the problem is which records it used.",
-        "D": "Tempting as a privacy step. But screening past bookings for fraud is a normal use of booking data; the issue is the test records."
+        "B": "Tempting as a check that the copy kept the large model's skill. But agreement repeats the large model's errors too, so it shows fidelity, not accuracy on real fraud.",
+        "C": "Tempting because copying sounds improper. But training a small model on a larger one's scores, known as distillation, is a recognized technique; what matters is how it is tested.",
+        "D": "Tempting as a privacy step. But screening past bookings for fraud is a normal use of booking data; the issue is what the test measures."
       },
       "tips": [
         "Eliminate: C rejects a recognized way of training smaller models, and D treats routine fraud screening of past bookings as needing consent.",
-        "Final two: A beats B because the small model learned the large model's scores on the test bookings; agreement there shows memory, not skill on new bookings.",
-        "Exam cue: Any model trained on the test records, even through another model's scores, needs a new held-out set."
+        "Final two: A beats B because a copy trained on the large model's scores also learns its errors; agreement shows fidelity, while confirmed fraud cases show accuracy.",
+        "Exam cue: A model trained to imitate another is judged against real outcomes, never only against the model it imitates."
       ],
-      "framework_ref": "NIST AI 100-1 MEASURE 2.1 (Test sets, metrics and TEVV tools documented); NIST AI 600-1 MS-2.11-001 (Document benchmark assumptions and limitations including possible training/test data cross contamination)",
+      "framework_ref": "NIST AI 100-1 MEASURE 2.1 (Test sets, metrics and TEVV tools documented); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
       "related_concepts": [
-        "Data leakage",
         "Model distillation",
+        "Ground truth",
         "Holdout set"
       ],
-      "_provenance": "Authored from concept: notes 2A.3 Training, Validation and Test Separation (a model trained to copy another model's scores on test records has learned from those records, so the test is no longer unseen). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2A.3 Training, Validation and Test Separation (a model trained to copy another model's scores is tested against confirmed outcomes, since agreement with the original repeats its errors). Batch 13 round 1 fix (completeness critic): re-angled from test records inside the copying data (the frame of aaia_d2_308, aaia_d2_140 and aaia_d2_350) to agreement with the copied model against confirmed outcomes; the 'test bookings included' fact was removed. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
       "style_version": 2
     },
     {
       "id": "aaia_d2_431",
       "domain": 2,
-      "subtopic": "2A Data management for AI. Pharmacy payment rates",
-      "principle_id": "accuracy-is-not-assurance",
+      "subtopic": "2A Data management for AI. Recent pharmacy invoices",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Bangladeshi pharmaceutical distributor's late-payment model takes each pharmacy's past late-payment rate as an input, computed over every invoice before the data was split. What is the IS auditor's GREATEST concern?",
+      "question": "A Bangladeshi pharmaceutical distributor's late-payment model scored 95% on invoices from the last six weeks, held out from training; pharmacies have 60 days to pay. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Pharmacies may pay late for reasons no input captures",
-        "B": "Pharmacy rates may go stale unless recomputed as invoices close",
-        "C": "Averages across many invoices cannot be used as model inputs",
-        "D": "Each held-out invoice's own outcome shaped one of its inputs"
+        "B": "Six weeks may be too short to cover seasonal payment patterns",
+        "C": "A random split across the invoices would test it more fairly",
+        "D": "Test labels may count invoices later paid late as on time"
       },
       "correct": "D",
-      "key_concept": "An input averaged from outcomes, if computed with test records, carries their answers into the test and inflates the results.",
-      "pre_read": "Restate in your own words how the model was built.",
-      "correct_explanation": "Each pharmacy's late-payment rate is built from invoice outcomes, so a held-out invoice's own result sits inside one of its inputs, a form of target leakage. The model is judged partly on an answer it was handed, so test results overstate how it will do on new invoices. Stale rates would weaken live scoring later, but they do not explain why today's test results cannot be trusted.",
+      "key_concept": "An out-of-time test needs outcomes that have had time to happen; otherwise cases not yet late are scored as on time.",
+      "pre_read": "Restate in your own words how the model was tested.",
+      "correct_explanation": "With 60 days to pay, no invoice from the last six weeks can be late yet, so none can carry a true late label. Invoices later paid late are scored as on time, so a model that predicts on time looks accurate, and 95% may reflect unfinished outcomes. Six weeks may miss seasonal patterns, but that narrows a valid result; here the outcomes themselves are not yet known.",
       "wrong_explanations": {
-        "A": "Tempting because no model sees everything. But every model has unseen causes; the stated computation flaw inflates these test results.",
-        "B": "Tempting because averages age. But staleness affects later scoring; it does not explain why the reported test results are inflated now.",
-        "C": "Tempting because averages can mislead. But outcome averages are common, valid inputs when computed from training records only."
+        "A": "Tempting because no model sees everything. But every model has unseen causes; the stated test flaw makes this score unreliable now.",
+        "B": "Tempting because payment habits vary by season. But that narrows a sound test; here the test outcomes are not yet known.",
+        "C": "Tempting because random splits use every period. But mixing periods tests the model on times it learned from; holding back recent data is right once outcomes are known."
       },
       "tips": [
-        "Eliminate: C forbids a common kind of input that is valid when built from training records, and A names a limit every model has, not this one's flaw.",
-        "Final two: D beats B because the leak inflates the test results themselves; staleness affects later scoring, not whether today's results can be trusted.",
-        "Exam cue: An input built from outcomes must be computed from training records only, or the test is no longer unseen."
+        "Eliminate: C swaps a sound out-of-time design for one that mixes periods, and A names a limit every model has, not this test's flaw.",
+        "Final two: D beats B because no test invoice has reached its due date, so the labels are not yet outcomes; seasonality only narrows a valid test.",
+        "Exam cue: An out-of-time test needs outcomes that have had time to happen; check the outcome window before trusting the score."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 2.1 (Test sets, metrics and TEVV tools documented); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
       "related_concepts": [
-        "Target leakage",
-        "Data leakage",
-        "Feature engineering"
+        "Out-of-time test",
+        "Outcome window",
+        "Data leakage"
       ],
-      "_provenance": "Authored from concept: notes 2A.3 Training, Validation and Test Separation (an input averaged from outcomes must be computed from training records only; computed with test records, it carries their answers into the test). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2A.3 Training, Validation and Test Separation (an out-of-time test holds back the latest period whose outcomes are known; invoices not yet due cannot show late payment). Batch 13 round 1 fix (completeness critic): replaced the outcome-average leak (the 'step fitted on all data before the split' frame of aaia_d2_098) with an out-of-time test whose outcomes are not yet known; principle tag dropped (outcome-window knowledge decides). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
       "style_version": 2
     },
     {
       "id": "aaia_d2_432",
       "domain": 2,
-      "subtopic": "2B AI lifecycle. Training on labeled call recordings",
-      "principle_id": "ai-governance-before-tooling",
+      "subtopic": "2B AI lifecycle. Scored call recordings",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Qatari airline is training a model on 300,000 call recordings labeled with supervisors' quality scores and will decide later whether it grades call handlers or routes callers. What should the IS auditor recommend FIRST?",
+      "question": "A Qatari airline's data gate cleared 300,000 call recordings, scored by supervisors from 2019 to 2025, to train a call-grading model; the scoring rubric was rewritten in 2022. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Let the team choose whichever use the results favor",
-        "B": "Have the model owner set its intended use before more training",
-        "C": "Have the model owner set accuracy targets for each possible use",
-        "D": "Train on more recordings so both uses are covered"
+        "A": "Train on every year, since more scored calls improve accuracy",
+        "B": "Have the gate check old and new rubric scores are comparable",
+        "C": "Have the gate check sampled scores against each year's rubric",
+        "D": "Confirm the 2022 rubric rewrite was formally approved"
       },
       "correct": "B",
-      "key_concept": "The intended use comes first in the AI lifecycle; data fitness, validation criteria and impact checks all depend on it.",
+      "key_concept": "A model learns one target from all its labels, so a data gate checks that labels mean the same across every period used.",
       "pre_read": "Place the stem's events in lifecycle order.",
-      "correct_explanation": "The intended use decides which data, labels, people affected and error limits matter. These labels are quality scores, which suit grading call handlers but say nothing about where a caller should go, and grading affects staff while routing affects callers. Setting accuracy targets for each use sounds careful, but quality-score labels cannot teach routing, so no target makes this data fit it; the use comes first.",
+      "correct_explanation": "The model will learn one idea of a good call from all 300,000 scores, but scores given under the old and new rubrics may reward different things, so it could learn a blend that matches neither. The gate should check that old and new rubric scores are comparable before training. Sampling scores against each year's rubric checks that supervisors applied it, yet correctly applied scores can still mean different things.",
       "wrong_explanations": {
-        "A": "Tempting as a fast route. But letting results pick the use is criteria chosen after the fact.",
-        "C": "Tempting because targets set before training are good practice. But quality-score labels cannot teach routing, so a routing target cannot be met with this data.",
-        "D": "Tempting because more data often helps. But more recordings carry the same quality-score labels; the missing piece is the purpose."
+        "A": "Tempting because more labeled data often helps. But more calls scored under two rubrics add a mixed target, not a clearer one.",
+        "C": "Tempting as a check of label accuracy. But each score can be right under its own rubric while the two rubrics reward different things.",
+        "D": "Tempting as a governance check. But approval of the rewrite says nothing about whether old and new scores teach the same target."
       },
       "tips": [
-        "Eliminate: A lets results choose the purpose, which is criteria chosen after the fact, and D adds data when the purpose, not the volume, is missing.",
-        "Final two: B beats C because the labels fit only one use; targets for both uses cannot make quality scores teach routing, so the use is chosen first.",
-        "Exam cue: The lifecycle starts with a defined intended use; data, validation criteria and impact checks all depend on it."
+        "Eliminate: A adds data that carries the same mixed scores, and D checks the rubric's approval, not what its scores teach the model.",
+        "Final two: B beats C because scores applied correctly under each rubric can still mean different things; the model learns one target from all of them.",
+        "Exam cue: When a label's rules changed during the data period, check that old and new labels are comparable before training."
       ],
-      "framework_ref": "NIST AI 100-1 MAP 1.1 (Intended purposes, context and laws documented); NIST AI 100-1 MAP 3.3 (Targeted application scope specified)",
+      "framework_ref": "NIST AI 100-1 MAP 2.3 (Scientific integrity and TEVV considerations, including data representativeness); COBIT 2019 APO14 (Managed Data)",
       "related_concepts": [
-        "Intended use",
-        "Design stage gate",
+        "Data stage gate",
+        "Label consistency",
         "Data fitness"
       ],
-      "_provenance": "Authored from concept: notes 2B.1 The AI Lifecycle and Stage Gates (before data gathering, design states purpose, users, people affected and success criteria; data fitness and validation depend on the intended use). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2B.1 The AI Lifecycle and Stage Gates (the data gate checks data fitness before training, including labels that mean the same throughout, since the model keeps what it learns). Batch 13 round 1 fix (completeness critic): re-angled from setting the intended use first (the frame of aaia_d1_050, aaia_d1_003 and the 2B.1 notes example) to a data gate that passed labels scored under two rubrics; the runner-up checks each score against its own rubric. Nearest: aaia_d2_054 (2A.2, a concern that the model learns two meanings; staleness runner-up), aaia_d2_190 (2C.1, a test set kept on old labels) and aaia_d2_267 (2B.1, training before the data gate). Principle tag dropped (label-consistency knowledge decides). Batch 13 round 2 fix (blind test and re-audit): key B reworded to say plainly that old and new rubric scores are checked as comparable. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
       "style_version": 2
     },
     {
@@ -15959,35 +15957,36 @@
       "subtopic": "2B AI lifecycle. Handwritten tax amounts",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Swiss cantonal tax office's form-reading model card says it often misreads handwritten amounts; assessors see only the extracted figures, not the forms. What should the IS auditor recommend as BEST?",
+      "question": "A Swiss tax office cites its form-reading model's 98% accuracy; its card flags handwritten amounts, 4% of test forms but most of the office's, as often misread. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Rely on the model card, since it discloses the limit",
-        "B": "Have assessors check a random sample of the extracted figures",
-        "C": "Mark each figure read from handwriting for assessors to check",
-        "D": "Train assessors to spot figures misread from handwriting"
+        "A": "Rely on its 98% accuracy, since the model card discloses the limit",
+        "B": "Obtain the model's test accuracy on handwritten forms alone",
+        "C": "Have the owner measure accuracy on a sample of the office's forms",
+        "D": "Have the model retrained on the office's handwritten forms"
       },
       "correct": "C",
-      "key_concept": "A documented model limit works only if it reaches users at the point of use; outputs look the same inside and outside known weak areas.",
-      "pre_read": "Picture the work as each person in the stem does it.",
-      "correct_explanation": "The card names where the model fails, but assessors see only figures, so nothing tells them which came from handwriting. Marking those figures puts checks exactly where errors are known to cluster. A random sample of all figures is a sound review habit, yet it spends most checks on typed amounts the model reads well and catches few of the known weak cases.",
+      "key_concept": "Headline accuracy reflects the test mix; where a known weak case dominates real use, accuracy must be measured on the user's own data.",
+      "pre_read": "Restate the stem in one sentence before reading the options.",
+      "correct_explanation": "The 98% averages the test forms, only 4% of them handwritten, so it mostly describes typed amounts. In an office where most forms are handwritten, the card's known weakness dominates, and real accuracy may be far lower. Measuring on a sample of the office's own forms shows what assessors will get. Accuracy on the handwritten test forms narrows the gap, but they may not resemble the office's own.",
       "wrong_explanations": {
-        "A": "Tempting because the limit is disclosed. But a disclosure no assessor sees while working controls nothing.",
-        "B": "Tempting as standard sampling. But errors cluster in handwritten amounts; a random sample spends most effort on typed figures the model reads well.",
-        "D": "Tempting because staff should know limits. But assessors see only figures, so they cannot tell which ones came from handwriting."
+        "A": "Tempting because the limit is disclosed. But disclosing a weakness does not show how often it bites where most forms are handwritten.",
+        "B": "Tempting because it isolates the weak case. But handwritten test forms may not resemble the office's; only its own forms show the accuracy it will get.",
+        "D": "Tempting because handwriting is the weak spot. But no one has yet measured the model on the office's forms, so a fix comes after measuring."
       },
       "tips": [
-        "Eliminate: A treats disclosure as a control, and D gives assessors a skill they cannot use, since they never see which figures were handwritten.",
-        "Final two: C beats B because the model card says where errors cluster; checks belong there, not spread at random.",
-        "Exam cue: A documented model limit works only when it reaches the person using each output."
+        "Eliminate: A treats disclosing a weakness as a control, and D orders a fix before anyone has measured the problem on the office's forms.",
+        "Final two: C beats B because the test set's handwritten forms may differ from the office's; only the office's own forms show the accuracy it will get.",
+        "Exam cue: A model card's headline figure holds for its test mix; when your mix differs, measure on your own data."
       ],
-      "framework_ref": "NIST AI 100-1 MAP 2.2 (Knowledge limits and human oversight of outputs documented); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
+      "framework_ref": "NIST AI 100-1 MEASURE 2.3 (Performance measured in conditions similar to deployment); NIST AI 100-1 MAP 2.2 (Knowledge limits and human oversight of outputs documented)",
       "related_concepts": [
         "Model card",
-        "Known limitations",
-        "Human review"
+        "Test data mix",
+        "Known limitations"
       ],
-      "_provenance": "Authored from concept: notes 2B.2 Model Documentation and Build, Buy or Tune (a documented model limit works only if it reaches users where they act; outputs look the same inside and outside known weak areas). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
-      "style_version": 2
+      "_provenance": "Authored from concept: notes 2B.2 Model Documentation and Build, Buy or Tune (a model card's headline figure reflects its test mix; where a documented weak case dominates the deployer's own data, accuracy is measured there before reliance). Batch 13 round 1 fix (completeness critic): re-angled from flagging weak-case outputs at the point of use (the frame of aaia_d2_406, with sample-review and training distractors) to measuring on the deployer's own mix; the runner-up verifies the reported figure. Nearest: aaia_d2_028 (a language the card never tested), aaia_d2_312 (precision at another cutoff) and aaia_d2_354 (a vague limitation). Batch 13 round 2 fix (blind test and re-audit): runner-up B changed from verifying the test report to the test set's handwritten-only accuracy, which only the measure-in-deployment-conditions fact defeats. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
+      "style_version": 2,
+      "principle_id": "test-the-ai-as-used"
     },
     {
       "id": "aaia_d2_435",
@@ -16065,12 +16064,12 @@
       "id": "aaia_d2_437",
       "domain": 2,
       "subtopic": "2C AI change management. Patched explanation library",
-      "principle_id": "ai-changes-are-changes",
+      "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A Lithuanian online marketplace's refusal notices to would-be sellers give reasons from an explanation library, which IT patched as routine because the vetting model was untouched. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Check sampled notices still follow the approved notice template",
+        "A": "Rerun the vetting model's regression tests on sampled decisions",
         "B": "Replace the reasons with the model's top global factors",
         "C": "Test that given reasons still match what drove each decision",
         "D": "Accept the routine patch, since the model was untouched"
@@ -16078,15 +16077,15 @@
       "correct": "C",
       "key_concept": "Where an explanation component produces the reasons people receive, changing it is an AI change even when the model's decisions are untouched.",
       "pre_read": "Note each system the stem names and what it produces.",
-      "correct_explanation": "Refused sellers read reasons produced by the explanation library, not by the model, so a patch to the library can change which factors it reports while every decision stays the same. That makes it an AI change needing a test that reasons still match what drove each decision. Checking notices against the approved template confirms their format, but it would pass even if the reasons were wrong.",
+      "correct_explanation": "Refused sellers read reasons produced by the explanation library, not by the model, so a patch to the library can change which factors it reports while every decision stays the same. That makes it an AI change needing a test that reasons still match what drove each decision. Rerunning the model's regression tests checks the decisions, but those tests never read the reasons the library writes.",
       "wrong_explanations": {
-        "A": "Tempting as a check on what sellers receive. But a template check passes notices whose wording is right while the patched library ranks the wrong factors as reasons.",
+        "A": "Tempting as a careful regression check. But model regression tests check decisions, not the reasons the patched library writes, so they can pass while sellers get wrong reasons.",
         "B": "Tempting because global factors are stable. But they describe the model overall, not why one seller was refused.",
         "D": "Tempting because no model changed. But the reasons people receive come from the library, so patching it can change what they are told."
       },
       "tips": [
         "Eliminate: D treats only model edits as AI changes, and B swaps case reasons for global ones that explain no single refusal.",
-        "Final two: C beats A because the patched library chooses the reasons; a template check confirms the notice's format, not whether its reasons are true.",
+        "Final two: C beats A because the patched library writes the reasons; regression tests on the model check the decisions, not whether their reasons are still true.",
         "Exam cue: A change to any part that shapes what people are told about an AI decision is an AI change."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 CM-4 (Impact Analyses); NIST AI 100-1 MEASURE 2.9 (Model explained, validated and documented, output interpreted in context)",
@@ -16095,7 +16094,7 @@
         "Explanation tools",
         "Regression testing"
       ],
-      "_provenance": "Authored from concept: notes 2C.1 What Counts as an AI Change (an edit to the explanation tool that produces the reasons people receive is an AI change, even when the model is untouched). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2C.1 What Counts as an AI Change (an edit to the explanation tool that produces the reasons people receive is an AI change, even when the model is untouched). Batch 13 round 1 fix (completeness critic): runner-up A changed from a notice-template check (the frame of aaia_d3_128) to rerunning the model's regression tests, which only the 'reasons come from the library' fact defeats; tag moved to test-the-ai-as-used. Batch 13 round 2 fix (blind test and re-audit): explanations and tip 2 no longer claim the decisions are sure to be unchanged (consistent with aaia_d2_032); A loses because model regression tests never read the reasons. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
       "style_version": 2
     },
     {
@@ -16216,26 +16215,26 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Luxembourg drug regulator accepts each vendor update to its leaflet-translation model if it makes fewer of the errors on its known-error list, such as dropped negations. What should the IS auditor recommend as BEST?",
+      "question": "A Luxembourg drug regulator accepts vendor updates to its leaflet-translation model if errors of the types on its list fall; the vendor tunes updates to those types. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Ask the vendor to warrant each update is error-free",
         "B": "Test each update for error types beyond the list",
-        "C": "Keep the list, as one vendor's models err alike",
-        "D": "Add errors found in live use to the list"
+        "C": "Accept updates, as tuning on the list shows vendor diligence",
+        "D": "Count the listed error types on leaflets new to the vendor"
       },
       "correct": "B",
-      "key_concept": "Each model version has its own error patterns, so tests built from an old version's known errors cannot show what an update newly gets wrong.",
+      "key_concept": "An update tuned against a known-error list can cut those errors while making new kinds, so acceptance tests must look beyond the list.",
       "pre_read": "Restate the acceptance rule in your own words.",
-      "correct_explanation": "The list records errors already seen, so counting them shows only whether an update repeats those. An update can fix some and bring others, such as wrong dosage units, that the list never counts, so testing each update for new error types keeps acceptance meaningful. Adding errors found in live use, option D, grows the list only after wrong leaflets may have reached readers.",
+      "correct_explanation": "The vendor tunes each update against the listed types, so a lower count partly shows what was tuned for, not overall quality. An update can cut listed errors while adding kinds the list does not count, so testing each update for error types beyond the list keeps acceptance meaningful. Counting listed errors on fresh leaflets stops tuning on the test items, but still counts only the kinds tuned against.",
       "wrong_explanations": {
         "A": "Tempting as a contract protection. But a warranty is a vendor claim, not evidence; only testing shows which errors an update makes.",
-        "C": "Tempting because both models come from one vendor. But each version can make different mistakes, so an old list may miss new ones.",
-        "D": "Tempting as learning from experience. But an update's new error types reach the list only after it has produced them in live leaflets."
+        "C": "Tempting because fixing known errors is diligent. But tuning on the list can lower its count while other kinds of error rise unseen.",
+        "D": "Tempting because fresh leaflets block tuning on test items. But the count still covers only the error kinds the vendor tunes against."
       },
       "tips": [
-        "Eliminate: C assumes successive models make the same mistakes, and A swaps testing for a vendor promise, which is not evidence.",
-        "Final two: B beats D because each update brings its own error types; adding them after go-live finds them only once leaflets are wrong.",
-        "Exam cue: regression tests built from one model's failures must also look for new failure types when the model changes."
+        "Eliminate: C reads tuning on the list as proof of quality, and A swaps testing for a vendor promise, which is not evidence.",
+        "Final two: B beats D because the vendor tunes against the listed error kinds; fresh leaflets stop item-level tuning, yet they still count only those kinds.",
+        "Exam cue: A test the vendor tunes against stops measuring overall quality, so acceptance must also look for what it was not tuned for."
       ],
       "framework_ref": "NIST AI 100-1 MANAGE 3.2 (Pre-trained models monitored as part of regular maintenance); NIST AI 100-1 MEASURE 2.13 (Effectiveness of TEVV metrics and processes evaluated)",
       "related_concepts": [
@@ -16243,7 +16242,7 @@
         "Update acceptance testing",
         "Error patterns"
       ],
-      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (each model version has its own error patterns, so after an update tests and reviewers' checklists look for new error types, not only known ones). Cross-domain review round 1, 21 Nov 2026: re-angled from reviewers' checklists (near-duplicate of aaia_d1_167) to the update acceptance test that counts only known error types. Re-audit round 2, 21 Nov 2026: runner-up D replaced with growing the list from live errors, so only the per-version error fact defeats it. Re-audit round 3, 21 Nov 2026: key B reworded without negation; A's explanation and tip 1 now rest on a warranty being a claim, not evidence. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (each model version has its own error patterns, so after an update tests and reviewers' checklists look for new error types, not only known ones). Cross-domain review round 1, 21 Nov 2026: re-angled from reviewers' checklists (near-duplicate of aaia_d1_167) to the update acceptance test that counts only known error types. Re-audit round 2, 21 Nov 2026: runner-up D replaced with growing the list from live errors, so only the per-version error fact defeats it. Re-audit round 3, 21 Nov 2026: key B reworded without negation; A's explanation and tip 1 now rest on a warranty being a claim, not evidence. Batch 13 round 1 fix (completeness critic): the stem now says the vendor tunes each update against the list, so an update can score better on it while erring elsewhere; runner-up D changed to counting listed errors on fresh leaflets, and C to reading tuning as diligence. Batch 13 round 2 fix (blind test and re-audit): the stem now says the list holds error types and the vendor tunes against those types; D shortened; the explanation no longer names an error kind the stem never gives. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
       "style_version": 2
     },
     {
@@ -16287,37 +16286,37 @@
       "id": "aaia_d2_443",
       "domain": 2,
       "subtopic": "2D AI supervision. Edited entitlement letters",
-      "principle_id": "reproducible-ai-evidence",
+      "principle_id": "real-human-oversight",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Belgian pension office's caseworkers edit AI-drafted entitlement letters before sending; the case system keeps only the sent letter and the caseworker's name. What should the IS auditor recommend as BEST?",
+      "question": "A Belgian pension office wants evidence that caseworkers' edits to AI-drafted entitlement letters catch model errors; its case system keeps each sent letter and the caseworker's name. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Keep each AI draft beside the letter that was sent",
-        "B": "Regenerate drafts from stored inputs whenever a letter is disputed",
+        "A": "Keep each model draft beside the letter that was sent",
+        "B": "Have a second caseworker check a sample of sent letters",
         "C": "Record the model version behind each drafted letter",
         "D": "Keep the sent letters as the record, since caseworkers own them"
       },
       "correct": "A",
-      "key_concept": "Logging both the AI draft and the final edited version shows what the AI contributed and what human review changed.",
-      "pre_read": "Imagine reviewing one disputed letter months later.",
-      "correct_explanation": "Without the AI's draft, no one can tell which parts of a disputed letter came from the model and which from the caseworker, or whether review changed anything. Keeping each draft beside the sent letter shows both. Recording the model version helps trace faults to a release, but generated text cannot be reliably reproduced, so a version number alone cannot show what the draft said.",
+      "key_concept": "To judge human review of AI output, keep both the AI's draft and the final version; only the pair shows what review caught.",
+      "pre_read": "Restate the office's goal in one sentence.",
+      "correct_explanation": "Edits can only be judged against what the model wrote, and the case system does not keep that. Keeping each draft beside the sent letter shows which errors the model made, which ones caseworkers fixed and which slipped through. A second check of sent letters finds errors that survived review, but without drafts it cannot show whether they came from the model or from editing, or how many review caught.",
       "wrong_explanations": {
-        "B": "Tempting as a way to save storage. But generative models do not reliably repeat their text, so a regenerated draft may differ from the original.",
-        "C": "Tempting because versions trace faults to releases. But a version cannot recreate the draft's text, so it cannot show what the caseworker changed.",
-        "D": "Tempting because caseworkers sign the letters. But hiding the AI's part leaves no way to see errors it introduced or whether review caught them."
+        "B": "Tempting as a standard quality check. But sent letters show only errors that survived review, not which the model made or what edits caught.",
+        "C": "Tempting because versions trace faults to releases. But a version says which model drafted a letter, not what the draft said.",
+        "D": "Tempting because caseworkers sign the letters. But without the AI's part, nobody can see the errors it makes or whether edits catch them."
       },
       "tips": [
-        "Eliminate: D keeps no record of the AI's contribution, only the editor's version, and B relies on regenerating text a generative model will not reliably repeat.",
-        "Final two: A beats C because only the stored draft shows what the AI wrote and what the caseworker changed; a version number cannot recreate it.",
-        "Exam cue: Where people edit AI output, keep both the AI's output and the final version, so oversight and errors can be traced."
+        "Eliminate: D keeps only the edited version, hiding the model's part, and C records which model drafted a letter, not what it wrote.",
+        "Final two: A beats B because only the draft beside the sent letter shows what the model got wrong and what review fixed; sampled sent letters show survivors only.",
+        "Exam cue: To show whether people catch an AI's errors, keep the AI's output beside the final version."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 AU-2 (Event Logging); NIST AI 100-1 MEASURE 2.8 (Transparency and accountability risks examined)",
       "related_concepts": [
         "Decision logs",
-        "Human edits",
-        "Reproducibility"
+        "Human review",
+        "AI drafts"
       ],
-      "_provenance": "Authored from concept: notes 2D.3 Decision Logs, Appeals and Feedback (logging the AI draft beside the final edited version shows what the AI contributed and what human review changed). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2D.3 Decision Logs, Appeals and Feedback (logging the AI draft beside the final edited version shows what the AI contributed and what human review changed). Batch 13 round 1 fix (completeness critic): the regenerate-drafts option (the 'keep the original rather than recreate it' frame of aaia_d2_038 and aaia_d2_116) was removed; the stem now asks for evidence that edits catch model errors, and the runner-up is a second check of sent letters; tag moved to real-human-oversight. Batch 13 round 2 fix (blind test and re-audit): key A says 'model draft', so 'AI' from the stem is no longer echoed only in the key. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
       "style_version": 2
     },
     {
@@ -16913,37 +16912,36 @@
       "id": "aaia_d2_460",
       "domain": 2,
       "subtopic": "2G AI incident response. Crime alerts and complaints",
-      "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Romanian news app's alert model learns from which alerts readers open; it kept picking alarming crime stories, complaints rose, and the problem record blames editors' headlines. What should the IS auditor recommend as BEST?",
+      "question": "A Romanian news app trains its alert model on readers' opens; its problem record ties complaints about alarming crime alerts to that signal and proposes blocking them. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Retrain the model on this month's alert opens",
-        "B": "Review editors' headlines on crime stories against style rules",
-        "C": "Check whether learning from opens favors crime stories",
+        "B": "Have crime alerts blocked, then confirm crime complaints fall",
+        "C": "Have the owner add complaints and opt-outs to training",
         "D": "Close the record, as readers chose to open the alerts"
       },
       "correct": "C",
-      "key_concept": "A model pursues whatever its training signal rewards; when a proxy such as opens rewards harmful choices, the root cause lies in the design.",
+      "key_concept": "A model pursues whatever its training signal rewards; blocking one harmful output leaves the reward in place, so the fix belongs in the signal.",
       "pre_read": "Restate the stem in one sentence before reading the options.",
-      "correct_explanation": "The model learns from opens, and alarming crime stories may draw opens whatever their headlines, so its training signal itself may reward what readers complain about. That is a cause in the model's design the record never examines. Reviewing crime headlines against style rules is a fair check on editors, but if opens keep rewarding alarm, better headlines will not change what the model picks.",
+      "correct_explanation": "The record has found the cause: training on opens rewards alarm. Blocking crime alerts removes one topic, but the reward stays, so the model may simply favor other alarming stories, such as disasters or health scares. Adding complaints and opt-outs to training changes what the model is rewarded for, which removes the cause. Confirming crime complaints fall would only show that the blocked topic went quiet.",
       "wrong_explanations": {
-        "A": "Tempting as a refresh. But retraining on the same signal teaches the same preference again.",
-        "B": "Tempting because headlines shape what readers open. But if the model's signal rewards alarm, better headlines will not change its picks.",
-        "D": "Tempting because opens show interest. But rising complaints show readers object, so opens are not approval."
+        "A": "Tempting as a refresh. But retraining on opens alone teaches the same preference again.",
+        "B": "Tempting as a quick control outside the model. But the reward for alarm stays, so the model may shift to other alarming topics while crime complaints fall.",
+        "D": "Tempting because opens show interest. But complaints about the alerts show readers object, so opens are not approval."
       },
       "tips": [
-        "Eliminate: A retrains on the same signal that may cause the fault, and D reads opens as approval despite rising complaints.",
-        "Final two: C beats B because a model pursues what it learns from; if opens reward alarm, editors' wording is not the cause.",
-        "Exam cue: When an AI keeps doing something harmful, check what its training signal rewards before blaming the people around it."
+        "Eliminate: A retrains on the same signal that caused the fault, and D reads opens as approval despite readers' complaints.",
+        "Final two: C beats B because the cause is what training rewards; a crime block treats one symptom, and the model can find other alarming stories.",
+        "Exam cue: When a training signal rewards harm, fix the signal; blocking one output leaves the cause in place."
       ],
-      "framework_ref": "NIST CSF 2.0 RS.AN-03 (Root cause of the incident established); NIST AI 100-1 MEASURE 3.1 (Existing, unanticipated and emergent risks tracked)",
+      "framework_ref": "NIST CSF 2.0 RS.AN-03 (Root cause of the incident established); NIST AI 100-1 MANAGE 4.2 (Continual improvement integrated into AI system updates)",
       "related_concepts": [
         "Root cause analysis",
         "Proxy objectives",
         "Problem management"
       ],
-      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (a model pursues what its training signal rewards; a proxy such as opens can reward harmful choices, a root cause in the design). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (a training signal that rewards harm is fixed in the signal; blocking one output leaves the reward, which can find other harms). Batch 13 round 1 fix (completeness critic): re-angled from 'test whether the AI side caused it' against the record's named cause (the frame of aaia_d2_427 and aaia_d2_218, and close to aaia_d2_459) to a cause already found, fixed in the training signal rather than by a topic block; principle tag dropped (reward-design knowledge decides). Batch 13 round 2 fix (blind test and re-audit): key C reworded so complaints and opt-outs plainly join the training signal. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
       "style_version": 2
     }
   ]

@@ -9290,22 +9290,22 @@
       "question": "A Latvian city's AI governance committee approved a model suggesting truancy letters for staff to check; IT will let it send them unchecked as a settings change. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have the committee decide on it as a new use before go-live",
-        "B": "Have the IS auditor approve the switch after testing it",
+        "B": "Have the IS auditor approve the switch for the committee",
         "C": "Proceed as a settings change, since the model is unchanged",
-        "D": "Have IT retest a sample of letters before the switch"
+        "D": "Have IT run unchecked letters alongside staff checks first"
       },
       "correct": "A",
       "key_concept": "An approval covers a model used in a stated way; removing the human check creates a new use, even with the model unchanged.",
-      "pre_read": "Read each option for who acts and on what authority.",
-      "correct_explanation": "The committee approved a use in which staff check each suggested letter. Sending letters unchecked changes that use: every wrong flag now reaches a family as a truancy letter, though the model itself is unchanged, so the risk the committee weighed no longer applies. Retesting letters, option D, shows how often the model errs, but only the committee can decide whether that rate is acceptable unchecked.",
+      "pre_read": "Read every option in full before ruling any out.",
+      "correct_explanation": "The committee approved a use in which staff check each suggested letter. Sending letters unchecked changes that use: every wrong flag now reaches a family as a truancy letter, though the model itself is unchanged, so the risk the committee weighed no longer applies. A parallel run, option D, shows how often unchecked letters would be wrong, but only the committee can decide whether that rate is acceptable once no one checks.",
       "wrong_explanations": {
-        "B": "Tempting because the IS auditor can judge test results. But approving the switch would make the IS auditor part of a decision they must later assess.",
+        "B": "Tempting because the IS auditor is independent of IT and the committee. But approving the switch would make the IS auditor part of a decision they must later assess.",
         "C": "Tempting because the model and its accuracy are unchanged. But without staff checks its errors reach families directly, so the use carries new risk.",
-        "D": "Tempting because testing before a change is sound. But a test shows how often letters are wrong, not whether families may receive them unchecked."
+        "D": "Tempting because a parallel run measures errors without harming families. But it shows how often unchecked letters would be wrong, not whether that rate is acceptable."
       },
       "tips": [
         "Eliminate: B has the IS auditor approve a change, and C treats an unchanged model as an unchanged use.",
-        "Final two: A beats D because removing staff checks changes the use the committee approved; a retest measures the error rate but cannot decide whether it is acceptable unchecked.",
+        "Final two: A beats D because removing staff checks changes the use the committee approved; a parallel run measures the unchecked error rate but cannot decide whether it is acceptable.",
         "Exam cue: when a human check is removed from an approved AI use, expect the approving body to decide again."
       ],
       "framework_ref": "NIST AI 100-1 GOVERN 3.2 (Roles defined for human-AI configurations and oversight); NIST AI 100-1 MAP 3.5 (Processes for human oversight defined and assessed)",
@@ -9314,7 +9314,7 @@
         "Human-AI configuration",
         "Change of use"
       ],
-      "_provenance": "Authored from concept: notes 1B.2 Ownership, Roles and the AI Governance Committee (an approval covers a model used in a stated way; removing the human check creates a new use the approving body decides on). Review round 1, 21 Nov 2026: stem states the assistants are not high-impact, settling the committee runner-up. Review round 2, 21 Nov 2026: runner-up changed from committee approval to the platform team accepting as the shared model's owner. Review round 3, 21 Nov 2026: the stem stated that no assistant's prompt or code changes. Completeness round 1, 21 Nov 2026: rewritten from a Dutch insurer's shared-model switch (each use's owner accepts against the platform team accepts, a frame of aaia_d2_110 and aaia_d1_119) to a committee-approved advisory model that will act without staff checks; nearest items aaia_d1_255 (committee refers a tolerance breach), aaia_d1_028 (strategy to fully automate against appetite), aaia_d2_034 (oversight design for automatic voucher stops). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1B.2 Ownership, Roles and the AI Governance Committee (an approval covers a model used in a stated way; removing the human check creates a new use the approving body decides on). Review round 1, 21 Nov 2026: stem states the assistants are not high-impact, settling the committee runner-up. Review round 2, 21 Nov 2026: runner-up changed from committee approval to the platform team accepting as the shared model's owner. Review round 3, 21 Nov 2026: the stem stated that no assistant's prompt or code changes. Completeness round 1, 21 Nov 2026: rewritten from a Dutch insurer's shared-model switch (each use's owner accepts against the platform team accepts, a frame of aaia_d2_110 and aaia_d1_119) to a committee-approved advisory model that will act without staff checks; nearest items aaia_d1_255 (committee refers a tolerance breach), aaia_d1_028 (strategy to fully automate against appetite), aaia_d2_034 (oversight design for automatic voucher stops). Review round 4 (batch 13 round 2), 21 Nov 2026: runner-up D changed from an IT retest to a parallel run (an evidence step only the change-of-use fact defeats); pre_read made neutral. Re-audit (batch 13 round 3), 21 Nov 2026: option B names the committee so the stem word no longer appears only in the key. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
       "style_version": 2
     },
     {
@@ -9362,23 +9362,23 @@
       "bloom_level": "Foundational",
       "question": "A Jordanian engineering firm's model does the structural calculations its graduates once did, so it hires none; the senior engineers checking each one retire within five years. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Have the seniors write down how they check each calculation",
-        "B": "Have the firm train new staff to do the calculations",
+        "A": "Have the model validated independently before the seniors retire",
+        "B": "Have new staff trained to do and check the calculations",
         "C": "Have the model check its own calculations after they retire",
         "D": "Have IS audit check a sample of calculations every quarter"
       },
       "correct": "B",
       "key_concept": "People who check AI output need skills built by doing the work, so workforce plans keep training people in tasks AI takes over.",
       "pre_read": "Weigh each option against the facts the stem gives.",
-      "correct_explanation": "Checking a model's calculations takes the judgment engineers build by doing the work themselves. With no graduates doing it, no one will be ready to check once the seniors retire, and the human check becomes a formality. Training new staff to do the calculations keeps that skill growing. Written checking steps, option A, record what to look at, but not the judgment to see when a plausible result is wrong.",
+      "correct_explanation": "Checking a model's calculations takes the judgment engineers build by doing the work. With no graduates doing it, no one will be ready to check once the seniors retire, and the human check becomes a formality. Training new staff to do and check the calculations keeps that skill growing. Independent validation, option A, tests the model once on chosen cases; each later calculation still needs a checker who can spot a plausible wrong result.",
       "wrong_explanations": {
-        "A": "Tempting because written procedures protect against losing key people. But steps on paper cannot give new checkers the judgment that doing calculations builds.",
+        "A": "Tempting because independent validation is strong evidence about a model. But it tests the model once; each future calculation still needs an engineer skilled enough to check it.",
         "C": "Tempting because models can flag results they are unsure of. But a model checking itself can repeat its own errors, leaving no independent human check.",
         "D": "Tempting because sampling finds errors. But IS audit would be performing a control it must assess, and the skill gap would remain."
       },
       "tips": [
         "Eliminate: C leaves a model to check itself, and D has IS audit run a control.",
-        "Final two: B beats A because checking a model's work needs judgment built by doing that work; written steps hand over the checklist, not the expertise.",
+        "Final two: B beats A because validation tests the model once, while each future calculation still needs an engineer whose judgment comes from doing the work.",
         "Exam cue: when AI takes over junior work, ask who will be skilled enough to check its output in future."
       ],
       "framework_ref": "NIST AI 100-1 MAP 3.4 (Operator and practitioner proficiency defined and assessed); NIST AI 100-1 GOVERN 2.2 (AI risk management training for personnel and partners)",
@@ -9387,7 +9387,7 @@
         "Reskilling",
         "Human oversight"
       ],
-      "_provenance": "Authored from concept: notes 1B.3 Program Metrics, Awareness and Workforce Impact (people who check AI output need skills built by doing the work, so workforce plans keep training people in tasks AI takes over). Review round 1, 21 Nov 2026: reworked from an inventory-coverage figure (a frame of aaia_d1_121) to the workforce-impact angle. Review round 2, 21 Nov 2026: reworked from per-photo pay to a bonus on tested accuracy set by the graders' own labels. Review round 3, 21 Nov 2026: explanation's runner-up changed from A to D. Completeness round 1, 21 Nov 2026: rewritten from a fruit exporter's graders paid on accuracy their own labels set (the AI use and bonus device of aaia_d2_305) to a firm that stops training the juniors who would become its future checkers; nearest items aaia_d1_031 (manual warning skills eroded for continuity), aaia_d1_008 (untrained agents reviewing an assistant), aaia_d1_122 (no ground truth left after inspections end), crisc_d2_116 (retiring engineer, documentation as key-person response). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1B.3 Program Metrics, Awareness and Workforce Impact (people who check AI output need skills built by doing the work, so workforce plans keep training people in tasks AI takes over). Review round 1, 21 Nov 2026: reworked from an inventory-coverage figure (a frame of aaia_d1_121) to the workforce-impact angle. Review round 2, 21 Nov 2026: reworked from per-photo pay to a bonus on tested accuracy set by the graders' own labels. Review round 3, 21 Nov 2026: explanation's runner-up changed from A to D. Completeness round 1, 21 Nov 2026: rewritten from a fruit exporter's graders paid on accuracy their own labels set (the AI use and bonus device of aaia_d2_305) to a firm that stops training the juniors who would become its future checkers; nearest items aaia_d1_031 (manual warning skills eroded for continuity), aaia_d1_008 (untrained agents reviewing an assistant), aaia_d1_122 (no ground truth left after inspections end), crisc_d2_116 (retiring engineer, documentation as key-person response). Review round 4 (batch 13 round 2), 21 Nov 2026: key reworded to cover checking as well as doing the calculations. Re-audit (batch 13 round 3), 21 Nov 2026: runner-up A changed from written checking steps (the skill-over-procedure pair of aaia_d2_188; see also aaia_d2_364) to a one-time independent validation. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
       "style_version": 2,
       "principle_id": "real-human-oversight"
     },
@@ -9581,9 +9581,9 @@
       "subtopic": "1C AI risk management. An exit plan for a search index",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Zambian geological survey's assistant searches 40 years of borehole reports via a vendor's embedding index; its exit plan relies on an open-format export of the index. What should concern the IS auditor MOST?",
+      "question": "A Zambian geological survey's assistant searches decades of borehole reports via a vendor's embedding index; its exit plan relies on an open-format export, complete in a trial. What should concern the IS auditor MOST?",
       "options": {
-        "A": "The export may go untested until the contract actually ends",
+        "A": "Reports added since the trial may be missing from the export",
         "B": "The vectors may be unusable without the vendor's model",
         "C": "The vendor may keep copies of the reports after the exit",
         "D": "The vendor may stay accountable for search results until exit"
@@ -9591,15 +9591,15 @@
       "correct": "B",
       "key_concept": "Embeddings work only with the model that made them, so an exit plan needs the source documents and re-embedding, not just the exported index.",
       "pre_read": "Consider what each option assumes about leaving a vendor.",
-      "correct_explanation": "Each stored vector is a list of numbers made by the vendor's embedding model, and it matches only queries encoded by that same model. After exit, a new model would encode queries differently, so the exported index would match poorly and searches would quietly fail. The plan needs the source reports and a re-embedding step. A tested export, option A, shows the file arrives, not that another system can search it.",
+      "correct_explanation": "Each stored vector is a list of numbers made by the vendor's embedding model, and it matches only queries encoded by that same model. After exit, a new model would encode queries differently, so searches of the exported index would quietly fail. The plan needs the source reports and a re-embedding step. The trial shows the file arrives complete, not that another system can search it; newer reports, option A, can be exported again.",
       "wrong_explanations": {
-        "A": "Tempting because an untested exit plan is a common gap. But a trial export would succeed as a file while the vectors still cannot serve another model's queries.",
+        "A": "Tempting because an export goes stale as reports are added. But a fresh export at exit would still hold vectors that only the vendor's model can match.",
         "C": "Tempting because exit terms should cover retained data. But a copy left with the vendor would not stop the survey searching its reports; unusable vectors would.",
         "D": "Tempting because the vendor runs the index. But accountability for the assistant's results stays with the survey, before and after exit."
       },
       "tips": [
         "Eliminate: D moves accountability to the vendor, and C is a data-retention term that leaves search working.",
-        "Final two: B beats A because vectors are tied to the model that made them; even a tested export leaves an index no new model can search.",
+        "Final two: B beats A because vectors are tied to the model that made them; even a fresh, complete export leaves an index no new model can search.",
         "Exam cue: when an exit plan moves an embedding index, check that the source documents and a re-embedding step come too."
       ],
       "framework_ref": "NIST AI 100-1 GOVERN 6.2 (Contingency processes for failures in high-risk third-party data or AI); NIST AI 100-1 MANAGE 3.1 (Third-party AI risks monitored and controls applied)",
@@ -9608,7 +9608,7 @@
         "Embeddings",
         "Contingency planning"
       ],
-      "_provenance": "Authored from concept: notes 1C.3 Third-Party and Supply-Chain AI Risk (an exported embedding index works only with the model that made it, so an exit plan needs the source documents and re-embedding). Review round 1, 21 Nov 2026: reworked from vendor record retention against a dispute window (a frame of aaia_d2_185 and aaia_d2_116) to vendor tiering. Completeness round 1, 21 Nov 2026: rewritten from a housing site's vendor tiered by spend and data (the rate-by-harm against verify-the-basis frame of aaia_d1_012) to an exit plan that relies on exporting an embedding index; nearest items aaia_d1_127 (exit terms for a vendor model tuned on the bank's files), aaia_d1_037 (escrow of trained model files), aaia_d2_067 (reindexing after an embedding-model swap, a change-management item with a different key and runner-up). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1C.3 Third-Party and Supply-Chain AI Risk (an exported embedding index works only with the model that made it, so an exit plan needs the source documents and re-embedding). Review round 1, 21 Nov 2026: reworked from vendor record retention against a dispute window (a frame of aaia_d2_185 and aaia_d2_116) to vendor tiering. Completeness round 1, 21 Nov 2026: rewritten from a housing site's vendor tiered by spend and data (the rate-by-harm against verify-the-basis frame of aaia_d1_012) to an exit plan that relies on exporting an embedding index; nearest items aaia_d1_127 (exit terms for a vendor model tuned on the bank's files), aaia_d1_037 (escrow of trained model files), aaia_d2_067 (reindexing after an embedding-model swap, a change-management item with a different key and runner-up). Review round 4 (batch 13 round 2), 21 Nov 2026: stem states the trial export arrived complete; runner-up A changed from an untested export to reports added since the trial. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
       "style_version": 2
     },
     {
@@ -9947,25 +9947,25 @@
       "subtopic": "1E Ethics, regulations and standards. AI-made images in fundraising ads",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Under an AI law, a Belgian charity must disclose that its appeal ads' realistic flood-survivor photos are AI-made; it relies on the generator's provenance tag in each file. What should concern the IS auditor MOST?",
+      "question": "An AI law requires a Belgian charity to tell viewers its appeal ads' realistic flood-survivor photos are AI-made; it relies on the generator's provenance tag in each image. What should concern the IS auditor MOST?",
       "options": {
-        "A": "Social platforms may strip the tag when they re-encode the ads",
+        "A": "Viewers on social platforms may get copies with the tag stripped",
         "B": "The law may bar the charity from using generated photos",
         "C": "The tag may not record which prompt produced each photo",
         "D": "People seeing the ads may never see a tag inside the file"
       },
       "correct": "D",
       "key_concept": "A duty to disclose AI-made content to people is met by a label they can see, not by a machine-readable tag inside the file.",
-      "pre_read": "Consider whom the duty is meant to inform before choosing.",
-      "correct_explanation": "A disclosure duty is met when the people who see the content are told it is artificial. A provenance tag is machine-readable data inside the file, written for detection tools, so a donor looking at the ad sees nothing. Stripping by platforms, option A, is a real weakness, but even a tag that survives every upload leaves viewers uninformed; the charity needs a label people can see.",
+      "pre_read": "Weigh what each option's risk would leave undone if it occurred.",
+      "correct_explanation": "A disclosure duty is met when the people who see the content are told it is artificial. A provenance tag is machine-readable data inside the file, written for software, so a donor looking at the ad sees nothing unless a platform chooses to show it. Stripping by platforms, option A, is a real weakness, but even a tag that survives every upload leaves the disclosure to platforms; the charity needs a label people can see.",
       "wrong_explanations": {
-        "A": "Tempting because many platforms remove file data on upload. But even a tag that survives sits inside the file, so people seeing the ads are still not told.",
+        "A": "Tempting because many platforms remove file data on upload. But even a surviving tag sits inside the file, so viewers are told only if a platform chooses to show it.",
         "B": "Tempting because realistic images of disaster victims can mislead. But a disclosure duty assumes the photos may be used once people are told.",
         "C": "Tempting because records help show how content was made. But prompt records serve the charity's own trail; they tell no viewer the photos are artificial."
       },
       "tips": [
         "Eliminate: B reads a disclosure duty as a ban, and C gives the charity a record rather than telling viewers.",
-        "Final two: D beats A because a provenance tag is machine-readable data inside the file; even if no platform strips it, the people seeing the ads are not told.",
+        "Final two: D beats A because a provenance tag is machine-readable data inside the file; even if no platform strips it, viewers are told only if a platform chooses to display it.",
         "Exam cue: a duty to tell people content is AI-made needs a label they see; machine-readable marks serve detection tools."
       ],
       "framework_ref": "NIST AI 100-1 GOVERN 1.1 (Legal and regulatory requirements involving AI are understood and managed); NIST AI 600-1 Section 2.8 (Information Integrity)",
@@ -9974,7 +9974,7 @@
         "Content provenance",
         "Generated images"
       ],
-      "_provenance": "Authored from concept: notes 1E.2 Risk-Based AI Regulation and Mapping Obligations (a duty to disclose AI-made content to people is met by a label they can see, not by a machine-readable tag). Review round 1, 21 Nov 2026: setting moved from a welfare office to a life insurer; key reworded. Completeness round 1, 21 Nov 2026: replaced a register citing a vendor's declaration of conformity (the frame of aaia_d1_154, aaia_d1_242 and aaia_d1_107) with a disclosure duty for AI-made images shown to the public; nearest items aaia_d1_154 (explanation duty mapped to a model card), aaia_d1_243 (chatbot promise under consumer law), crisc_d3_176 (funding a labeling plan once rules are final, a risk-response item). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1E.2 Risk-Based AI Regulation and Mapping Obligations (a duty to disclose AI-made content to people is met by a label they can see, not by a machine-readable tag). Review round 1, 21 Nov 2026: setting moved from a welfare office to a life insurer; key reworded. Completeness round 1, 21 Nov 2026: replaced a register citing a vendor's declaration of conformity (the frame of aaia_d1_154, aaia_d1_242 and aaia_d1_107) with a disclosure duty for AI-made images shown to the public; nearest items aaia_d1_154 (explanation duty mapped to a model card), aaia_d1_243 (chatbot promise under consumer law), crisc_d3_176 (funding a labeling plan once rules are final, a risk-response item). Review round 4 (batch 13 round 2), 21 Nov 2026: stem names viewers as the people to be told and swaps 'file' for 'image' (echo only in the key); explanations no longer claim a tag can never reach viewers; pre_read made neutral. Re-audit (batch 13 round 3), 21 Nov 2026: option A names viewers so the stem's 'tell viewers' is no longer echoed only in the key; A now assumes viewers would see an intact tag, the misconception D corrects. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
       "style_version": 2
     },
     {

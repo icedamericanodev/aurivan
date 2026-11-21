@@ -254,11 +254,11 @@
             "Splits are made and recorded before modeling; the test set stays apart from builders and tested vendors, and keeps the cases models fail.",
             "Leakage means a person or record on both sides of a split, or inputs holding later facts, such as scores recalculated after the outcome; store inputs as received.",
             "Each customer's records stay on one side; splitting by person, not by row, prevents hidden overlap.",
-            "Out-of-time testing holds back the latest period, showing whether the model works on later data; classes collected differently can teach shortcuts that same-pool tests miss.",
+            "Out-of-time testing holds back the latest period whose outcomes are known, showing how the model works on later data; classes collected differently can teach shortcuts same-pool tests miss.",
             "No unseen check comes from tuning on the test set, public benchmarks a large model may have learned, or records an earlier version trained on.",
-            "Steps that learn from or copy data, such as input selection, outcome averages, augmentation, generator fitting or copying another model's scores, run after the split, on training data only."
+            "Data steps (input selection, outcome averages, augmentation, generator fitting, copying another model's scores) run after the split on training data; a copy is scored on true outcomes, not agreement."
           ],
-          "example": "A Brazilian logistics firm predicts parcel damage. Its data scientist, Tomás, reports 98% accuracy, but the IS auditor finds that one input is filled in only after a damage claim is filed, so the model sees the answer it should predict. The auditor reports that the figure cannot be relied on.",
+          "example": "A Brazilian logistics firm predicts parcel damage. Its data scientist, Tomás, reports 98% accuracy, but the IS auditor finds that one input is filled in only after a damage claim is filed, so the model sees the answer it should predict. The auditor reports the figure as unreliable.",
           "audit_focus": {
             "review": [
               "Compare training and test identifiers to detect people or records in both sets",
@@ -344,7 +344,7 @@
           "how_it_works": [
             "Before data gathering, design states purpose, users, people affected, success criteria and method; exact figures come from records.",
             "MLOps automation should carry the gates, not skip them; approvers see source results beside each generated summary, since each can differ.",
-            "Each gate asks for evidence: data fitness (checked before training, since the model keeps what it learns), retrieved documents included, performance against agreed criteria, fairness results and owner sign-off.",
+            "Gates require evidence: data fitness before training, as the model keeps what it learns (labels mean the same throughout; retrieved documents count), performance against agreed criteria, fairness results, sign-off.",
             "Higher-impact uses get stricter gates and independent review; release also needs an owned monitoring plan with limits and a revalidation date, since models degrade unchanged.",
             "A new use, or a live trial whose outputs take effect, re-enters the gates; unvalidated models run in shadow mode."
           ],
@@ -428,13 +428,13 @@
           "definition": "Model documentation records what a model is for, what data trained it, how it was tested and its known limits; model cards and datasheets are common formats.",
           "why_it_matters": "Without documentation, nobody can judge whether a model fits a new use or explain its decisions. Bought and pre-trained models need it too.",
           "how_it_works": [
-            "A model card gives uses, specific limits, training data and group results at the cutoff in use, with who set it and why; precision and recall hold only there.",
+            "A model card gives uses, specific limits, training data, group results at the cutoff in use, who set it and why; figures hold only for that cutoff and test mix.",
             "Building allows full documentation; buying depends on vendor disclosure. A hosted model changes when its provider decides; any model knows nothing past its training data without a current source.",
             "Tuning inherits the base model's unknowns and can weaken safety; open weights often carry their own license, apart from the code's.",
             "Vendor contracts should require documentation, change notice, testing access, incident cooperation, training-input statistics for drift baselines and limits on training on customer data.",
             "A tuned model can repeat any training file to any user, so it is as sensitive as its most restricted file."
           ],
-          "example": "An Irish credit union plans to tune an open-source model to draft member letters. The model's public page lists no training data or known limits. The IS auditor reviews the selection checklist and reports that it accepts models without the information needed to judge their fitness or risk.",
+          "example": "An Irish credit union plans to tune an open-source model to draft member letters. The model's public page lists no training data or known limits. The IS auditor reviews the selection checklist and reports it accepts models without the information needed to judge their fitness or risk.",
           "audit_focus": {
             "review": [
               "Inspect model cards for intended use, limits and performance by group",
@@ -1781,10 +1781,10 @@
             "Causes are traced across layers: data (drift, which arrives with no new version; poisoning; labeling; coverage gaps behind 'edge cases'), retrieved content, model, prompt or configuration, integration and oversight.",
             "Once service is restored, a problem record carries the cause; the fix, a control outside the model where possible, goes through change control and is checked to work.",
             "Incidents are reported to owners, the AI governance committee and, where required, regulators, affected people and customers who relied on the outputs.",
-            "Causes include training signals that reward harm and AI answers copied into its sources; lessons, such as slow detection, update threat models, tolerances, tests and training.",
+            "Causes include training signals rewarding harm (blocking one output leaves the reward) and AI answers copied into sources; lessons, such as slow detection, update threat models, tolerances, tests and training.",
             "A vendor-side cause with a distant fix stays open as a known error, with a tested workaround outside the model; human-check workarounds can decay into rubber stamps."
           ],
-          "example": "An Indian education company's essay-scoring model began marking one region's essays lower. Engineers adjusted the prompt and closed the ticket; at the next retraining, the gap returned. The IS auditor reports that no problem record was opened, so no root cause analysis examined the training data and the fix treated only the symptom.",
+          "example": "An Indian education company's essay-scoring model began marking one region's essays lower. Engineers adjusted the prompt and closed the ticket; at the next retraining, the gap returned. The IS auditor reports no problem record was opened, so no root cause analysis examined the data; the fix treated a symptom.",
           "audit_focus": {
             "review": [
               "Sample closed AI incidents and check each has a linked problem record",
