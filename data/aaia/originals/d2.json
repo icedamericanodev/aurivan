@@ -15894,7 +15894,7 @@
       },
       "correct": "B",
       "key_concept": "A model learns one target from all its labels, so a data gate checks that labels mean the same across every period used.",
-      "pre_read": "Place the stem's events in lifecycle order.",
+      "pre_read": "Read the priority word, then each option in full.",
       "correct_explanation": "The model will learn one idea of a good call from all 300,000 scores, but scores given under the old and new rubrics may reward different things, so it could learn a blend that matches neither. The gate should check that old and new rubric scores are comparable before training. Sampling scores against each year's rubric checks that supervisors applied it, yet correctly applied scores can still mean different things.",
       "wrong_explanations": {
         "A": "Tempting because more labeled data often helps. But more calls scored under two rubrics add a mixed target, not a clearer one.",
@@ -15912,7 +15912,7 @@
         "Label consistency",
         "Data fitness"
       ],
-      "_provenance": "Authored from concept: notes 2B.1 The AI Lifecycle and Stage Gates (the data gate checks data fitness before training, including labels that mean the same throughout, since the model keeps what it learns). Batch 13 round 1 fix (completeness critic): re-angled from setting the intended use first (the frame of aaia_d1_050, aaia_d1_003 and the 2B.1 notes example) to a data gate that passed labels scored under two rubrics; the runner-up checks each score against its own rubric. Nearest: aaia_d2_054 (2A.2, a concern that the model learns two meanings; staleness runner-up), aaia_d2_190 (2C.1, a test set kept on old labels) and aaia_d2_267 (2B.1, training before the data gate). Principle tag dropped (label-consistency knowledge decides). Batch 13 round 2 fix (blind test and re-audit): key B reworded to say plainly that old and new rubric scores are checked as comparable. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2B.1 The AI Lifecycle and Stage Gates (the data gate checks data fitness before training, including labels that mean the same throughout, since the model keeps what it learns). Batch 13 round 1 fix (completeness critic): re-angled from setting the intended use first (the frame of aaia_d1_050, aaia_d1_003 and the 2B.1 notes example) to a data gate that passed labels scored under two rubrics; the runner-up checks each score against its own rubric. Nearest: aaia_d2_054 (2A.2, a concern that the model learns two meanings; staleness runner-up), aaia_d2_190 (2C.1, a test set kept on old labels) and aaia_d2_267 (2B.1, training before the data gate). Principle tag dropped (label-consistency knowledge decides). Batch 13 round 2 fix (blind test and re-audit): key B reworded to say plainly that old and new rubric scores are checked as comparable. Batch 13 final fix: pre_read made a neutral reading habit (the lifecycle-order habit pointed at the key's sequence logic). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
       "style_version": 2
     },
     {
@@ -16039,15 +16039,15 @@
       },
       "correct": "D",
       "key_concept": "Agents can create lasting objects in other systems, such as scheduled payments and recurring entries, which keep running after their credentials are revoked.",
-      "pre_read": "Name the auditee and the action already taken before reading the options.",
+      "pre_read": "Weigh what each option would and would not establish.",
       "correct_explanation": "An agent that worked inside other systems may have left things there that run without it, such as scheduled payments, saved payees or recurring journal entries. Revoking its credentials stops new actions, not those, so finding them for their owners to keep or remove closes the gap. Confirming every credential is revoked is a sound access check, but it would miss a standing payment a bank portal runs on its own schedule.",
       "wrong_explanations": {
-        "A": "Tempting as a thorough access check. But objects the agent created, such as scheduled payments, keep running without any credential.",
-        "B": "Tempting as data cleanup. But nothing shows the vendor's model learned the firm's data; the open risk is what the agent left in client systems.",
+        "A": "Tempting as a thorough access check. But objects the agent may have created, such as scheduled payments, can keep running without any credential.",
+        "B": "Tempting because vendor-held copies matter at retirement. But a vendor deletion leaves untouched what the agent set up in client systems, which keeps running.",
         "C": "Tempting as tidying up. But retirement keeps the records needed to explain past actions; deleting logs destroys them."
       },
       "tips": [
-        "Eliminate: C deletes records a retirement should keep, and B chases the vendor's model when nothing shows it learned the firm's data.",
+        "Eliminate: C deletes records a retirement should keep, and B looks to the vendor's copy while what the agent set up in client systems keeps running.",
         "Final two: D beats A because objects an agent created keep running after its credentials go; access checks alone miss them.",
         "Exam cue: Retiring an agent means finding what it set up elsewhere for owners to review, not only removing the access it held."
       ],
@@ -16057,7 +16057,7 @@
         "Persistent automations",
         "Access revocation"
       ],
-      "_provenance": "Authored from concept: notes 2B.3 Decommissioning AI Systems (retirement revokes an agent's access and also finds jobs, rules and other objects it created elsewhere, which keep running without it, for their owners to review). Cross-domain review round 1, 21 Nov 2026: key D now names who reviews. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2B.3 Decommissioning AI Systems (retirement revokes an agent's access and also finds jobs, rules and other objects it created elsewhere, which keep running without it, for their owners to review). Cross-domain review round 1, 21 Nov 2026: key D now names who reviews. Batch 13 final fix: pre_read made a neutral reading habit (the old one pointed at the already-revoked credentials that defeat A). Final fix round 2: pre_read changed again to a neutral habit (the actor habit pointed at owners in D); wrong explanation A hedged, since the stem never says the agent scheduled anything. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 13, 21 Nov 2026.",
       "style_version": 2
     },
     {

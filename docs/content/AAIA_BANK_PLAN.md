@@ -245,6 +245,7 @@ the notice is part of the description.
 | Batch 10 (19 Nov 2026) | +30 | +42 | — | 675 |
 | Batch 11 (20 Nov 2026) | +30 | +42 | — | 747 |
 | Batch 12 (20 Nov 2026) | +30 | +42 | — | 819 |
+| Batch 13 (21 Nov 2026) | +30 | +32 | — | 881 |
 
 Pilot review, 30 Oct 2026:
 - **Blind tests:** 60/60 picks matched the keys on the first pass. After the
@@ -524,6 +525,25 @@ Batch 12 review, 20 Nov 2026 (D1 and D2):
 - Length tell: D1 21.2%, D2 20.0%. Tags: 645 of 819 (PRINCIPLE_TAGGING.md, Batch 12).
 
 **Next round:** D1 and D2 rounds toward the targets (D1 330, D2 460), then D3 (210).
+
+Batch 13 review, 21 Nov 2026 (D1 +30, D2 +32; D2 complete at 460):
+- **Author:** D1 two new items per notes subtopic; D2 32 items spread 2/1/0 by subtopic so every D2 area ends at
+  65 or 66. Difficulty D1 7/15/8 and D2 8/16/8; keys D1 A8 B8 C7 D7 and D2 8 each, so D2's keys are exactly
+  even (115 each). The brief added the batch 12 lessons: for each draft, list the three nearest existing items
+  found by grep and why the new one differs; no key that is the only negated or only unhedged option; no stem
+  that stacks facts until the key restates them. Authors dropped 21 drafts and moved 6 settings on that grep.
+- **Reviews:** first blind pass 62/62 (D1 30/30, D2 32/32). Five reviewers per domain (no HARD ERRORS for the
+  first time; about 100 PRECISION findings across both), three fix rounds, the cross-domain gate (18
+  HARD/PRECISION) and the completeness critic (12 gaps), with gap rounds that re-angled or moved every one. A
+  final fix round moved aaia_d1_263 off a stockbroker (near aaia_d3_034), hedged two keys, removed a stem echo
+  and two pointing labels; my last pass removed an unsupported vendor claim from aaia_d2_436's explanations.
+  Every changed item was re-tested blind and matched. No key changed after the first draft.
+- **Notes:** each subtopic gained the short fact its new keys rely on, trimmed elsewhere so every subtopic
+  stays within 380 words.
+- **Citations:** no new library bullets were needed.
+- Length tell: D1 20.4%, D2 19.4%. Tags: 685 of 881 (PRINCIPLE_TAGGING.md, Batch 13).
+
+**Next round:** D1 to its target of 330 (55 more), then D3 to 210 (64 more).
 
 ## 10. Follow-ups outside this plan's scope
 
