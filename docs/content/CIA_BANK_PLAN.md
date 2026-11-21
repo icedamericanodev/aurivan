@@ -14,8 +14,8 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 |---|---|
 | **Status (20 Nov 2026)** | Session G, steps 1 to 3 done: expert decisions, the documents, the harness (187 planted faults stopped, 43 controls hold; an independent code review's findings are all fixed), the expert agents, the **Part 1 study notes for all four sections** (93 sub-topics, audited and learner-read), and the **Part 1 pilot: 80 questions, 20 per section**, through the full pipeline (scorecard in section 7; calibration rules in section 6b). With them: the 20 shared principles, the Part 1 exam guide and final review week, and a first generated Challenge pack from the tagged items. The **glossary start** is written and audited (153 Part 1 terms in `data/cia/shared/glossary.json`; it reuses the notes' wording, and `check_glossary.py` fails if a term is ever defined two ways). The outline of the CISA bridge is in `docs/content/CIA_CISA_BRIDGE_OUTLINE.md`. Session G is complete. |
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
-| **Rounds 1 to 13 done (21 Nov 2026)** | Round 13: 24 questions written on the one-item bullets, Section A's Challenge topics and Section D's open slots; 19 kept (A 9, B 2, C 2, D 6) and 5 cut as answerable from wording. Part 1 stands at **341 questions (A 112, B 85, C 103, D 41)**. **Gate (a) is met**: every one of the 97 bullets has a question at its verb's depth (a bullet's only question just stays out of the held-back form and mock; 11 bullets have one). What is left is gate (b)'s counts against the three-form bar of about 375 (A 131, B 75, C 113, D 56): A 19, C 10, D 15 (14 of D's blocked on sources). Every question is tagged to one of 24 principles. |
-| **Next step** | (1) Section A's and C's counts from `docs/content/CIA_P1_COVERAGE.md` section 5, new lessons only (round 13 found the opened sources nearly out of distinct lessons on the thin bullets: write to the bullets with room, 1A4e, 1A3c, 1A4c, 1A1a, 1C6b, 1C8b, 1C2b, 1C5a, 1C5b, 1C3b, 1C2c); (2) Section D waits for its sources (the owner's IIA membership and licence decisions, section 9); (3) the Part 2 notes can start in parallel, and are the larger source of new items. If A or C runs out of distinct lessons before its count, the choice in decision 4 applies (fewer full forms, or more opened sources), never padding. |
+| **Rounds 1 to 14 done (21 Nov 2026)** | Round 14: Sections A and C only, on the bullets with room; 13 written, 6 kept (A 4, C 2), and 16 of 22 planned slots left empty because every idea repeated an existing item or was common sense. Part 1 stands at **347 questions (A 116, B 85, C 105, D 41)**. **The sale gate was revised (section 3, decision 4)**: two full forms of distinct items per section (Part 1: A 88, B 50, C 74, D 38), one frozen and held back, and a short mock drawn per learner from unseen items. **Part 1 meets gates (a) and (b)**; gate (c) is an app rule, checked when the packs are wired in (section 11). Three forms (about 375) stay the target as sources open: A 15, C 8 and D 15 short, 14 of D's blocked on the IIA's members-only guides. Every question is tagged to one of 24 principles. |
+| **Next step** | Move the authors to **Part 2** (Internal Audit Engagement): write the Part 2 notes from `docs/content/CIA_BLUEPRINT.md`, then its items; Part 2's topics are all CIA Challenge Exam topics too. Before that, one Part 1 item is still open from sources already opened (a second 1D3a analysis item). Log any Part 1 lesson found while writing Part 2 for a later round. Section D's third form waits for the owner's IIA membership and licence decisions (section 9); a textbook would add 1A4b. |
 | **Then** | Part 2, Part 3, the Challenge build and the CISA bridge notes (from the outline), the cross-part release gate. |
 | **Known weak spot** | Difficulty. No pilot key was wrong and all four blind rounds agreed 80 of 80, but the last testers still called 21 of 80 answerable by test-taking alone, most in Sections B and D, and 8 items carry a TOO EASY or GIVEAWAY flag (section 7). New rounds must do better; the pilot items are candidates for a later hardening pass, not for more polishing now (section 6b, rule 12). |
 
@@ -44,7 +44,7 @@ pack. Every surface CISA has, as data that passes its gate.
 |---|---|---|---|---|---|---|
 | Blueprint and outline | `docs/content/CIA_BLUEPRINT.md`, `data/cia/shared/outline.json` | cert-blueprint-researcher | Done | Done | Done | Done |
 | Study notes | `notes/d{N}.json`, one file per section, notes schema v2 | part expert | Done: 93 sub-topics, audited (section 8b) | Not started | Not started | Generated later, plus the bridge |
-| Questions | `originals/d{N}.json` | part expert | Pilot and rounds 1 to 13 done: 341 (A 112, B 85, C 103, D 41; section 7); every syllabus bullet covered (`CIA_P1_COVERAGE.md`) | Not started | Not started | Generated (`build_challenge.py`) from the tagged pilot items |
+| Questions | `originals/d{N}.json` | part expert | Pilot and rounds 1 to 14 done: 347 (A 116, B 85, C 105, D 41; section 7); meets the revised sale gate's counts; every syllabus bullet covered (`CIA_P1_COVERAGE.md`) | Not started | Not started | Generated (`build_challenge.py`) from the tagged pilot items |
 | Citation library | `data/cia/shared/_framework_library.md` (one for all four) | part experts, cia-currency-checker | Started | | | |
 | Dated facts | `data/cia/shared/currency.json` | cia-currency-checker | Started | | | |
 | Glossary | `glossary.json`, built from `data/cia/shared/glossary.json` | iia-mindset-coach, part experts | Started: 153 terms, audited (section 7) | Later | Later | Built from the shared terms of its topics |
@@ -412,6 +412,7 @@ in a row below 90%: stop and tell the owner.
 | Round 11 | 20 Nov 2026 | cia1, Section A (1A2, 1A3, 1A7, 1A8) and Section C (1C1, 1C5, 1C6) | 12 (7 and 5) | 12 of 12 first round; 12 of 12 final (100%) | 0 / 36 / 21 on 12 (two audits), plus 0 / 12 / 6 from the targeted audit and 0 / 2 / 1 from the citation check | 16.3% and 16.2% | 1 replaced before merge (`cia1_d3_098` repeated `cia1_d1_092`); 17 planned slots left empty | None new |
 | Round 12 | 21 Nov 2026 | cia1, all four sections, aimed at the coverage map's gaps (zero-item and one-item bullets, judge bullets below depth) | 30 (A 11, B 9, C 3, D 7) | 29 of 30 first round (Section B 8 of 9 scored); 30 of 30 final (100%), after three items were hardened and one cut | 5 / 69 / 34 on 31 (three audits), plus 0 / 14 / 10 from the targeted audits of changed keys, 0 / 9 / 5 on two reworked items and 0 / 1 / 5 from the citation check | A 17.5%, B 18.7%, C 16.7%, D 22.9% | 1 cut before merge (a 1B4g trust sibling, test-taking in three blind tests); the next item took its id | None new; the originality gate now fetches and requires the two 2026 Statements of Position |
 | Round 13 | 21 Nov 2026 | cia1, all four sections: one-item bullets, Section A's Challenge topics, Section C's analysis items, Section D's open slots (new lessons only) | 19 kept of 24 (A 9, B 2, C 2, D 6) | 24 of 24 first round, but 8 classed answerable by test-taking; 19 of 19 final after one fix pass each | 8 / 77 / 29 on 24 (three audits), plus 1 / 18 / 13 from the targeted audits of changed keys and 0 / 0 / 2 from the citation check | A 17.0%, B 18.2%, C 16.3%, D 22.0% | 5 cut before merge, each still answerable from wording after one fix pass (siblings on 1A5g, 1B5b, 1C2a; 1B4e on a common-sense lesson; a 1D3a analysis item); later ids moved down | None new |
+| Round 14 | 21 Nov 2026 | cia1, Sections A and C, bullets with room (new lessons only) | 6 kept of 13 written (A 4, C 2); 16 of 22 slots left empty | 9 of 9 first round, 4 classed answerable by test-taking; 6 of 6 final after one fix pass each | 1 / 35 / 15 on 9 (two audits), plus 0 / 7 / 7 from the targeted audits and 0 / 4 / 2 from the citation check | A 16.4%, C 16.5% | 3 cut before merge: a 1A1a item repeating d1_032, a 1A8c item and a 1C7c analysis item, each still answerable from wording after one fix pass | None new |
 
 **Pilot, in full.** Four standards audits (one per section, with the key):
 Section A 0 HARD, 15 PRECISION, 8 OBSERVATION; B 0 / 8 / 5; C 1 / 9 / 12;
@@ -954,6 +955,45 @@ What round 10 taught.
 - **The pilot items were the weakest and are now in line.** The plan's note
   that pilot items were candidates for a later hardening pass is done for
   Section B; Sections A, C and D pilot items remain candidates.
+
+**Round 14, in full.** Two authors wrote to the bullets the coverage map still had room
+on: Section A 6 of 12 slots, Section C 3 of 10, with every empty slot named against the
+items its idea would repeat. Standards audits: Section A 0 HARD, 24 PRECISION, 9
+OBSERVATION; Section C 1 / 11 / 6 (a tip that made the board the only route for concerns,
+which overstated a should and clashed with `cia1_d2_041` and `cia1_d4_012`). No key was
+wrong. Blind tests: 9 of 9, with 4 classed answerable by test-taking. After one fix pass
+each, fresh blind tests cut two more (the 12-month item, whose stem pointed at the key,
+and a 1C7c analysis item whose key was the common-sense "stop the loss before payout");
+the audit had already cut a 1A1a item that repeated `cia1_d1_032`. One reworded key was
+re-tested alone. Targeted audits: A 0 / 4 / 4, C 0 / 3 / 3. Citation check 0 / 4 / 2:
+Standard 1.3 says "may", not "should"; Standard 13.3 counts resource limits on an
+engagement as a scope limitation, so `cia1_d1_016`'s tip now names a cut to the function's
+budget; note 1C7.3 lost an unsourced "stopgap" line. Notes: six sub-topics fixed (1A7.4
+now separates an engagement's scope limitation from a cut to charter scope, Standard 8.1;
+1A7.1 counts oversight and influence; 1A8.4 treats 12 months as a minimum; 1A6.2 keeps a
+significant risk as a finding; 1C3.3 and 1C7.3). Principles: one retag
+(`cia1_d1_114` to disclose-then-safeguard) and six texts fixed.
+
+**The sale gate was revised** (section 3, decision 4). The product manager and the
+behavioral scientist agreed that a third form built from repeated items would measure
+memory of wording and overstate the bank, and that waiting for sources would hold back a
+sound pack for an unknown time. The gate is now two full forms of distinct items per
+section, one frozen and held back, and a short mock drawn per learner from unseen items
+(the behavioral scientist's point: a fixed held-back short mock left Section D too few
+practice items). Part 1 meets it. Both also advised moving the authors to Part 2, which is
+new ground and feeds the Challenge pack.
+
+Sibling items to keep apart in one mock (section 11): `cia1_d1_113` with `cia1_d1_016`,
+`cia1_d1_107` and `cia1_d1_103`; `cia1_d1_114` with `cia1_d1_101`; `cia1_d1_115` with
+`cia1_d1_043`; `cia1_d3_104` with `cia1_d3_031`.
+
+What round 14 taught.
+- **The opened sources are out of distinct Part 1 lessons.** 16 of 22 slots stayed empty
+  and 3 of 9 items were cut. More Part 1 items now need new sources, not more rounds.
+- **Copy says what the bank holds.** Two honest forms beat three padded ones; the gate now
+  says so, and store or app copy never states counts of forms or questions.
+- **A small fix can break a length limit.** Rerun the style and notes gates after every
+  citation fix, before committing.
 
 **Round 13, in full.** Three authors wrote 24 items from the coverage map's gap list:
 Section A 10 (one-item bullets, the Challenge topics 1A2a, 1A7c, 1A7e, 1A8b and 1A8c, and
