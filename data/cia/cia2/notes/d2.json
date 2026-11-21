@@ -1,0 +1,1554 @@
+{
+ "domain_number": 2,
+ "domain_name": "Information Gathering, Analysis, and Evaluation",
+ "exam_weight": "40%",
+ "source": "Original KaiSip study notes, organized by The IIA's CIA Part 2 syllabus effective 2025. KaiSip is an independent study aid, not affiliated with or endorsed by The IIA.",
+ "overview": "Section B is the working middle of an engagement: the internal auditor carries out the approved work program, gathers information, tests it and decides what it shows. It covers where information comes from, how to judge whether evidence can be trusted, the tools and analytics that help, how a gap between criteria and condition becomes a finding, and how the workpapers and the engagement conclusion rest on that evidence. Principle 14 of the Global Internal Audit Standards governs most of it.",
+ "analogy": "Think of a hospital doctor working up a patient. The doctor chooses the tests that answer the question, trusts a lab result over a guess from the waiting room, and uses a scanner only where it helps. Readings are compared with healthy ranges, and the doctor looks for the illness behind the fever, not just the fever. Everything goes in the chart so a colleague could follow it, and the diagnosis weighs all the results together. The treatment decision is made with the patient, who owns it.",
+ "parts": [
+  {
+   "part": "B",
+   "name": "Information Gathering, Analysis, and Evaluation",
+   "topic_ids": [
+    "2B1",
+    "2B2",
+    "2B3",
+    "2B4",
+    "2B5",
+    "2B6",
+    "2B7",
+    "2B8"
+   ]
+  }
+ ],
+ "topics": [
+  {
+   "topic_id": "2B1",
+   "topic_name": "Sources of engagement information",
+   "overview": "Before testing anything, the internal auditor decides where each piece of information will come from. This topic covers the ways of getting information (interviews, observation, walk-throughs, data analysis), the documents worth asking for (policies, checklists, risk and control questionnaires, self-assessment surveys), and how to fit each source to the question it must answer.",
+   "can_do": [
+    "Identify which way of getting information fits a given engagement objective: an interview, an observation, a walk-through or an analysis of data",
+    "Identify what a policy, a checklist, a risk and control questionnaire or a self-assessment survey can and cannot tell the auditor",
+    "Tell a source that describes how a process should run from one that shows how it actually ran"
+   ],
+   "subtopics": [
+    {
+     "id": "2B1.1",
+     "name": "Ways of Gathering Engagement Information",
+     "legacy_ids": [],
+     "definition": "Information-gathering methods are the procedures an internal auditor uses to learn about and test an activity: asking people, watching the work, examining records and analyzing data.",
+     "why_it_matters": "Each method yields a different kind of evidence. Picking one because it is quick, rather than because it answers the objective, leaves gaps that the conclusion cannot cover.",
+     "how_it_works": [
+      "Interviews, discussions and surveys draw out what people in the activity know and believe; they build understanding, but their answers are statements to corroborate.",
+      "Observation and walk-throughs let the auditor see the process directly, often by following one real transaction step by step with the people who perform it.",
+      "Inspection examines documents, inventory or equipment; confirmation asks someone independent of the activity to verify a fact.",
+      "Data analysis takes records straight from the activity's systems, often the whole population, to find patterns and exceptions.",
+      "Methods are often combined: checking information against more than one source raises its reliability (Standard 14.1, considerations)."
+     ],
+     "compare": {
+      "columns": [
+       "What it gives",
+       "Main limit"
+      ],
+      "rows": [
+       {
+        "label": "Interview or survey",
+        "cells": [
+         "People's knowledge and views",
+         "Statements need corroboration"
+        ]
+       },
+       {
+        "label": "Observation or walk-through",
+        "cells": [
+         "A first-hand view of the process",
+         "Covers only what was seen"
+        ]
+       },
+       {
+        "label": "Inspection or confirmation",
+        "cells": [
+         "Records, assets, or an independent party's answer",
+         "A record may not match what was done"
+        ]
+       },
+       {
+        "label": "Data analysis",
+        "cells": [
+         "Whole populations taken from systems",
+         "Only as good as the data's completeness and accuracy"
+        ]
+       }
+      ]
+     },
+     "example": "At a water utility in Lima, internal auditor Mateo must find out whether meter readings are reviewed before bills go out. In an interview, the billing manager describes a daily review. Mateo then watches two reviews take place and extracts a year of billing data to list bills issued with no review record. Four percent have none, and Mateo follows them up with the billing team.",
+     "audit_focus": {
+      "review": [
+       "Trace each work program step to the method chosen for it",
+       "Compare interview claims in the file with observation or data"
+      ],
+      "evidence": [
+       "System extracts the auditor ran, with query, source and run date",
+       "Observation and walk-through notes with dates and people present",
+       "Interview summaries confirmed with the people interviewed"
+      ],
+      "recommend": "Have the engagement supervisor require the audit team to corroborate any conclusion that rests on interviews alone.",
+      "decides": "The chief audit executive, or a delegated supervisor, approves the planned methods"
+     },
+     "isaca_rule": "Pick the method that answers the objective, not the easiest one. Statements describe; observation, inspection, confirmation and data show. Must: whatever the method, the information is relevant, reliable and sufficient (Standard 14.1).",
+     "exam_traps": [
+      {
+       "trap": "An interview with the process owner is the strongest evidence, because that person knows the process best.",
+       "why": "Knowing a process does not make a statement first-hand or independent. Interviews build understanding; a conclusion needs corroboration from observation, records or data."
+      },
+      {
+       "trap": "Watching a control performed once shows it worked all year.",
+       "why": "Observation is first-hand but covers only what the auditor saw. A conclusion about the whole year needs evidence drawn from across the year."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Inquiry",
+       "definition": "Asking people questions, in an interview, a survey or conversation, to learn what they know or believe."
+      },
+      {
+       "term": "Population",
+       "definition": "Every item in the set an auditor's conclusion covers, such as all payments made in a year."
+      }
+     ]
+    },
+    {
+     "id": "2B1.2",
+     "name": "Documents as Sources of Information",
+     "legacy_ids": [],
+     "definition": "Documentary sources are records the auditor reads to understand or test an activity, such as policies, procedures, self-assessment surveys, checklists and questionnaires on risks and controls.",
+     "why_it_matters": "Documents show how management says an activity should run and how people rate their own controls. Treating them as proof of what actually happens confuses design on paper with practice.",
+     "how_it_works": [
+      "Policies and procedures state the intended process and often supply the evaluation criteria (Standard 13.4 Evaluation Criteria).",
+      "Checklists list the points to cover or confirm; whoever fills one in, a ticked box is still a claim to test.",
+      "Risk and control questionnaires ask managers and staff which risks they see and which controls they run; answers help map the activity and target tests.",
+      "Self-assessment surveys have the activity rate its own risks and controls: useful insight, but the activity's own view, not independent evidence.",
+      "May: earlier engagement reports, past workpapers and other assurance providers' work are also sources (Standard 13.2 Engagement Risk Assessment, considerations)."
+     ],
+     "example": "Before an engagement on laboratory safety at a university in Krakow, internal auditor Zofia sends a risk and control questionnaire to six lab managers. Five report weekly fume-hood checks. The safety policy requires monthly checks, so the answers already exceed the policy. Before relying on any of them, Zofia plans to inspect the check logs in the two labs that hold the most hazardous chemicals.",
+     "audit_focus": {
+      "review": [
+       "Compare questionnaire answers with logs or records for the same controls",
+       "Inspect whether the policy used as criteria is current and approved"
+      ],
+      "evidence": [
+       "Control records the auditor inspected first-hand",
+       "Current approved policy with its effective date",
+       "Completed questionnaires and surveys with respondents and dates"
+      ],
+      "recommend": "Have the engagement supervisor require the audit team to test survey and questionnaire answers before any conclusion relies on them.",
+      "decides": "Management owns the policies and the controls the answers describe"
+     },
+     "isaca_rule": "Documents and questionnaires tell you what should happen and what people believe happens. They aim the testing; they do not replace it. Must: assess reliability with skepticism (Standards 4.3 and 14.1), so a self-assessment is corroborated before the auditor relies on it.",
+     "exam_traps": [
+      {
+       "trap": "A self-assessment survey that rates every control effective lets the auditor skip testing.",
+       "why": "The survey is the activity's own view, not independent evidence. It shows where to test first; it does not replace the test."
+      },
+      {
+       "trap": "A written, approved policy proves the process follows it.",
+       "why": "A policy shows the intended design. Whether staff follow it needs observation, inspection of records or data."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Risk and control questionnaire",
+       "definition": "A set of questions asking the activity's people which risks they face and which controls they perform."
+      },
+      {
+       "term": "Self-assessment survey",
+       "definition": "A survey in which the activity's own managers and staff rate how well their risks and controls are managed."
+      }
+     ]
+    },
+    {
+     "id": "2B1.3",
+     "name": "Fitting the Source to the Objective",
+     "legacy_ids": [],
+     "definition": "Fitting the source to the objective means choosing, for each work program step, the method and document whose evidence answers that step's question about the activity.",
+     "why_it_matters": "Relevance is set by the objective. A method that produces plenty of information about the wrong question costs time and still leaves the objective unanswered.",
+     "how_it_works": [
+      "Start from the question: is it about design (would the control work if performed) or operation (was it performed over the period)?",
+      "Questions about understanding and design suit interviews, documents, process maps and walk-throughs.",
+      "Questions about operation over a period suit inspection of records or data analysis across a sample or the whole population.",
+      "Should: consider testing the complete population or a representative sample; data analysis software makes full-population tests practical (Standard 14.1, considerations).",
+      "Must: due care weighs the cost of the work against its benefit and uses appropriate techniques and tools (Standard 4.2 Due Professional Care)."
+     ],
+     "example": "An airline in Nairobi wants assurance that overtime claims by ground crew are approved. Internal auditor Wanjiru first walks through the claim process with a shift supervisor to learn how approval is recorded. To test the year, Wanjiru does not interview more supervisors. Instead, Wanjiru matches every paid overtime claim in the payroll system to an approval record and lists the unmatched ones.",
+     "audit_focus": {
+      "review": [
+       "Trace each engagement objective to steps whose evidence answers it",
+       "Evaluate whether conclusions on operation rest on period-wide evidence"
+      ],
+      "evidence": [
+       "Work program linking each objective to procedures and sources",
+       "Population counts reconciled to system totals before testing"
+      ],
+      "recommend": "Have the engagement supervisor send back to the audit team any step whose chosen source cannot answer its question.",
+      "decides": "The chief audit executive, or a delegated supervisor, approves the work program and its changes"
+     },
+     "isaca_rule": "Ask what question the step must answer, then pick the source whose evidence answers it. Design: walk-throughs and documents. Operation: records or data across the period. Should: weigh a full-population test against a sample (Standard 14.1, considerations). Must: use appropriate tools and techniques (Standard 4.2).",
+     "exam_traps": [
+      {
+       "trap": "Choose the method the activity's staff find least disruptive.",
+       "why": "Disruption is part of the cost, but the method must first produce relevant evidence for the objective. A painless method that misses the question is wasted work."
+      },
+      {
+       "trap": "A walk-through of one transaction shows the control operated all year.",
+       "why": "A walk-through shows how the process is designed and how it ran for that item. Operation over the period needs a sample or a full-population test."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Design question",
+       "definition": "Whether a control, if performed as intended, would manage its risk."
+      },
+      {
+       "term": "Operation question",
+       "definition": "Whether a control was actually performed as intended, consistently, over the period under review."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "topic_id": "2B2",
+   "topic_name": "Judging the quality of evidence",
+   "overview": "Evidence is only as good as its fit, its trustworthiness and its weight. This topic covers the three qualities Standard 14.1 requires, the factors that make evidence more reliable, and the test that evidence must let another capable person repeat the work and reach the same conclusions.",
+   "can_do": [
+    "Evaluate an item of evidence for relevance, reliability and sufficiency, and decide what to do when it falls short",
+    "Rank sources of evidence by reliability, using who obtained them, corroboration and the strength of the system behind them",
+    "Judge whether a set of evidence would let another informed, competent reviewer arrive at the auditor's conclusions"
+   ],
+   "subtopics": [
+    {
+     "id": "2B2.1",
+     "name": "Relevant, Reliable and Sufficient Evidence",
+     "legacy_ids": [],
+     "definition": "Evidence quality is judged on three tests: relevant (it bears on the objectives and scope), reliable (factual, current and trustworthy) and sufficient (enough to support the results).",
+     "why_it_matters": "A conclusion is only as sound as the evidence under it. Each test fails differently, so the auditor must know which is missing to know what to do next.",
+     "how_it_works": [
+      "Must (Standard 14.1 Gathering Information for Analyses and Evaluation): information is relevant, reliable and sufficient, and the auditor evaluates it on all three.",
+      "Relevant fits the objectives and scope and helps build the results; reliable is factual and current, judged with skepticism (Standard 4.3 Professional Skepticism).",
+      "Sufficient is enough to complete the analysis and for another capable person to redo the work and agree.",
+      "Must: when evidence falls short on any test, decide whether to gather more; if relevant evidence cannot be obtained, decide whether that is itself a finding.",
+      "The 2024 Standards name three qualities. A list with a fourth comes from the older framework."
+     ],
+     "compare": {
+      "columns": [
+       "Asks",
+       "Fails when"
+      ],
+      "rows": [
+       {
+        "label": "Relevant",
+        "cells": [
+         "Does it bear on this objective and scope?",
+         "It covers another period, unit or question"
+        ]
+       },
+       {
+        "label": "Reliable",
+        "cells": [
+         "Can it be trusted?",
+         "It is out of date, unverified or only from the activity itself"
+        ]
+       },
+       {
+        "label": "Sufficient",
+        "cells": [
+         "Is there enough of it?",
+         "Too few items, or one source where the risk needs more"
+        ]
+       }
+      ]
+     },
+     "example": "Internal auditor Leilani, at a hotel group in Honolulu, tests whether minibar charges reach guest bills. The revenue team sends a spreadsheet of every charge billed. The figures look accurate but cover the previous year, outside the scope. Leilani judges the spreadsheet not relevant, asks for current-period data drawn directly from the billing system, and notes the change in the workpapers.",
+     "audit_focus": {
+      "review": [
+       "Sample workpapers and rate each key item on the three tests",
+       "Trace each shortfall in evidence to a decision recorded in the file"
+      ],
+      "evidence": [
+       "Source, date and period recorded for each item of evidence",
+       "Workpaper notes explaining why the evidence was judged sufficient"
+      ],
+      "recommend": "Have the chief audit executive add the three evidence tests to the workpaper review checklist.",
+      "decides": "The engagement supervisor, for the chief audit executive, judges whether evidence supports the conclusions"
+     },
+     "isaca_rule": "Three tests, in the Standards' order: relevant, reliable, sufficient. Must: evaluate all three, gather more when evidence falls short, and decide whether evidence that cannot be obtained is itself a finding (Standard 14.1). Volume never repairs evidence that is irrelevant or unreliable.",
+     "exam_traps": [
+      {
+       "trap": "When relevant evidence cannot be obtained, drop that test and move on.",
+       "why": "Must: the auditor decides whether the missing evidence is itself a finding. Silently dropping the test could hide a gap the results need to show."
+      },
+      {
+       "trap": "A large volume of evidence makes up for doubts about where it came from.",
+       "why": "Sufficiency means enough trustworthy evidence. More pages from an unreliable source add no weight to the conclusion."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Evidence",
+       "definition": "Information the auditor has gathered and analyzed that supports, or fails to support, a finding or conclusion."
+      },
+      {
+       "term": "Engagement results",
+       "definition": "What an engagement produces: its findings, its overall conclusion and, where made, recommendations or agreed actions."
+      }
+     ]
+    },
+    {
+     "id": "2B2.2",
+     "name": "What Makes Evidence More Reliable",
+     "legacy_ids": [],
+     "definition": "Reliability is how far evidence can be trusted. It rises when the auditor obtains it directly or independently, when it is corroborated, and when its source system is well controlled.",
+     "why_it_matters": "Evidence supplied by the people whose work is under review may be accurate, but it is not independent. Knowing what raises reliability tells the auditor which evidence to seek first.",
+     "how_it_works": [
+      "Must (Standard 14.1): use professional skepticism to judge reliability; three factors strengthen it.",
+      "Who obtained it: evidence the auditor gets first-hand, or that an independent party supplies, outweighs evidence handed over by the activity.",
+      "Corroboration: agreement between separate sources raises trust; disagreement calls for more work (Standard 4.3).",
+      "The system behind it: data from a process with effective governance, risk management and control processes is more trustworthy than data from a weak one.",
+      "Even system data is validated: confirm an extract is complete and accurate before analyzing it."
+     ],
+     "compare": {
+      "columns": [
+       "Weaker",
+       "Stronger"
+      ],
+      "rows": [
+       {
+        "label": "Who obtained it",
+        "cells": [
+         "A report prepared by the activity's staff",
+         "An extract the auditor ran, or a third-party confirmation"
+        ]
+       },
+       {
+        "label": "Corroboration",
+        "cells": [
+         "One source only",
+         "Two separate sources that agree"
+        ]
+       },
+       {
+        "label": "Source system",
+        "cells": [
+         "A spreadsheet anyone can change",
+         "A system with effective controls"
+        ]
+       }
+      ]
+     },
+     "example": "Internal auditor Farah reviews supplier rebates at a supermarket chain in Amman. The purchasing manager provides a summary showing every rebate received. Farah requests confirmations directly from five large suppliers and compares them with bank records. Two suppliers report rebates the summary leaves out, so Farah treats the summary as unreliable and sends confirmations to every major supplier.",
+     "audit_focus": {
+      "review": [
+       "Compare key figures from the activity with independent or system sources",
+       "Inspect how each data extract was validated before analysis"
+      ],
+      "evidence": [
+       "Replies from outside parties, sent and received by the auditor",
+       "Reconciliation of extract totals to the source system",
+       "Reports prepared by the activity, marked with their source"
+      ],
+      "recommend": "Have the engagement supervisor require the audit team to obtain first-hand or independent evidence for the key figures behind each finding.",
+      "decides": "The engagement supervisor, for the chief audit executive, decides whether reliability is enough"
+     },
+     "isaca_rule": "Who got it, does it agree with something else, and how sound is the system behind it? Must: weigh those three factors with skepticism (Standards 14.1 and 4.3). Evidence from the activity under review is a starting point, not the strongest proof.",
+     "exam_traps": [
+      {
+       "trap": "A report from a senior manager of the activity is as reliable as an extract the auditor ran.",
+       "why": "Reliability comes from independence, corroboration and the system behind the evidence, not rank. The auditor's own extract or a third-party confirmation is stronger."
+      },
+      {
+       "trap": "Data from the organization's main system needs no checking.",
+       "why": "A well-controlled system strengthens reliability, but an extract can still be incomplete or wrong. Completeness and accuracy are confirmed before relying on it."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Independent source",
+       "definition": "A party with no responsibility for the activity under review, such as a bank or customer confirming a fact."
+      },
+      {
+       "term": "Data validation",
+       "definition": "Checking that data is complete, accurate and from the right period before relying on it."
+      }
+     ]
+    },
+    {
+     "id": "2B2.3",
+     "name": "Sufficient Evidence and the Informed Reviewer Test",
+     "legacy_ids": [],
+     "definition": "Evidence is sufficient when there is enough of it, in quality and amount, for a capable outsider with the same facts to redo the work and reach the same conclusions.",
+     "why_it_matters": "The test makes conclusions checkable. If only the author can see why the evidence is enough, a supervisor, a quality reviewer or an external auditor cannot rely on the work.",
+     "how_it_works": [
+      "Must (Standard 14.1): evidence is enough to complete the analysis and gives a reasonable basis for potential findings and conclusions.",
+      "The yardstick is someone careful, well informed and capable, for example another internal auditor or an external auditor (Standard 14.6, considerations).",
+      "Must: due care weighs the extent of work against the complexity and significance of the risk (Standard 4.2), so higher stakes call for more support.",
+      "Should: make any sample as representative of its population as possible; analyzing the full population avoids the question (Standard 14.1, considerations).",
+      "Should: when sampling, record the method, population, sample size and whether results can be projected (Standard 13.6 Work Program, considerations)."
+     ],
+     "example": "Internal auditor Chen tests expense claims at a logistics firm in Shenzhen and finds two policy breaches in a sample of ten claims, all taken from one week. The engagement supervisor asks whether that sample can support a conclusion about the whole year. Chen agrees it cannot, and instead tests all 8,400 claims for the year against the policy limits.",
+     "audit_focus": {
+      "review": [
+       "Reperform a sample of the work from the workpapers alone",
+       "Evaluate whether the sample design matches the population the conclusion covers"
+      ],
+      "evidence": [
+       "Selection records showing how each tested item was chosen",
+       "Written basis for judging the evidence sufficient"
+      ],
+      "recommend": "Have the chief audit executive set sampling and sufficiency guidance in the methodology, scaled to the significance of the risk.",
+      "decides": "The engagement supervisor, for the chief audit executive, judges sufficiency before results go out"
+     },
+     "isaca_rule": "Enough means a capable outsider could redo the work and agree. Must: evidence gives a reasonable basis for findings and conclusions (Standard 14.1). Should: sample representatively and record the approach (Standards 14.1 and 13.6, considerations). A narrow sample supports only what it represents.",
+     "exam_traps": [
+      {
+       "trap": "Evidence is sufficient once the auditor who did the work is convinced.",
+       "why": "The test is whether another prudent, informed, competent person could repeat the work and agree, not how confident the author feels."
+      },
+      {
+       "trap": "Ten items from one week support a conclusion about the whole year.",
+       "why": "A sample supports conclusions only about the population it represents. One week speaks for that week."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Representative sample",
+       "definition": "A selection whose items reflect the whole population, so its results can fairly be carried over to it."
+      },
+      {
+       "term": "Reasonable basis",
+       "definition": "Enough support that a sound reviewer would accept a finding or conclusion as justified."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "topic_id": "2B3",
+   "topic_name": "Technology tools for audit work",
+   "overview": "Technology can widen coverage and speed up the work, but only when it fits the objective and its data can be trusted. This topic covers recognizing what dashboards, continuous monitoring, embedded audit modules, automation bots, machine learning and other artificial intelligence each offer an engagement, then judging when a tool helps and how far to rely on it.",
+   "can_do": [
+    "Recognize what dashboards, continuous monitoring, embedded audit modules, automation bots, machine learning and other AI each add to an engagement",
+    "Evaluate whether a tool serves an engagement objective better than a simpler test would",
+    "Judge how far a tool's output can be relied on, and who owns a tool that operates as a control"
+   ],
+   "subtopics": [
+    {
+     "id": "2B3.1",
+     "name": "Technology Options in Audit Work",
+     "legacy_ids": [],
+     "definition": "Audit technology options are software tools that help internal auditors gather, test and present evidence faster or more completely, from rule-following bots to models that learn from data.",
+     "why_it_matters": "Used well, tools let auditors test whole populations and watch risks between engagements. At this level the candidate recognizes what each tool is for, not how to build one.",
+     "how_it_works": [
+      "Should: understand and use technology that makes analysis more efficient and effective, such as software that tests an entire population (Standard 14.2, considerations).",
+      "Must: due care includes using appropriate techniques, tools and technology (Standard 4.2).",
+      "Must: the chief audit executive strives to give the function the technology it needs and evaluates it regularly (Standard 10.3 Technological Resources).",
+      "Tools need different data: automation works on structured data, while AI and machine learning can also handle unstructured data such as emails.",
+      "Continuous auditing is internal audit's ongoing, technology-enabled assessment of risks and controls; The IIA's guidance links it with continuous monitoring."
+     ],
+     "types": [
+      {
+       "term": "Artificial intelligence (AI)",
+       "meaning": "Software that performs tasks that would otherwise need human thinking, such as reading text or spotting patterns."
+      },
+      {
+       "term": "Machine learning",
+       "meaning": "A branch of AI that builds models to find patterns in data and grows more accurate as it receives more data."
+      },
+      {
+       "term": "Robotic process automation (RPA)",
+       "meaning": "Software bots that repeat rule-based, high-volume steps, such as pulling and reformatting reports, using structured data."
+      },
+      {
+       "term": "Continuous monitoring",
+       "meaning": "An ongoing, usually automated check of transactions or controls as they occur, often run by management as part of its controls."
+      },
+      {
+       "term": "Dashboard",
+       "meaning": "A visual display of key measures and indicators that lets auditors or managers follow risks at intervals or in near real time."
+      },
+      {
+       "term": "Embedded audit module",
+       "meaning": "An audit routine placed inside an application so that it can capture or flag selected transactions while they are processed."
+      }
+     ],
+     "example": "The internal audit function of a bank in Manila uses a bot to download daily branch cash reports into a dashboard that tracks cash differences. On the dashboard, internal auditor Joy notices one branch whose differences have risen for six weeks. Joy adds that branch to the current engagement and plans an unannounced cash count there.",
+     "audit_focus": {
+      "review": [
+       "Inspect the tool's rules or logic against the test it should perform",
+       "Trace a sample of tool outputs back to source records"
+      ],
+      "evidence": [
+       "Test results showing the tool flags known exceptions",
+       "Reconciliation of records processed to the source population",
+       "Change history for the scripts, bots or models used"
+      ],
+      "recommend": "Have the chief audit executive require validation and change control for every audit script, bot or model before use.",
+      "decides": "The chief audit executive chooses audit technology; funding requests go to the board and senior management"
+     },
+     "isaca_rule": "Know what each tool does and what data it needs. Should: use technology that improves the analysis (Standard 14.2, considerations). Must: use appropriate tools as part of due care (Standard 4.2). A tool widens coverage and points to risk; it does not replace the auditor's judgment.",
+     "exam_traps": [
+      {
+       "trap": "Continuous monitoring is an audit tool, so internal audit should build and run it for management.",
+       "why": "Monitoring that operates as a control belongs to management. Internal audit can use its output or give assurance over it; running it would take on a management responsibility."
+      },
+      {
+       "trap": "Robotic process automation learns and improves its own rules from data.",
+       "why": "Robotic process automation repeats steps it was set up to follow. Finding patterns and improving with more data describes machine learning."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Continuous auditing",
+       "definition": "Internal audit's ongoing, technology-enabled assessment of risks and controls, in place of testing only at intervals."
+      },
+      {
+       "term": "Full-population testing",
+       "definition": "Testing every item in a set, such as all payments in a year, instead of a sample."
+      }
+     ]
+    },
+    {
+     "id": "2B3.2",
+     "name": "Choosing and Relying on Audit Technology",
+     "legacy_ids": [],
+     "definition": "Choosing a tool means matching what it can do to the engagement objective and the data available; relying on it means confirming its data and logic before trusting its output.",
+     "why_it_matters": "Tool output looks precise even when its data is incomplete or its logic is wrong. Unchecked output can carry an error straight into a finding, so reliance has to be earned.",
+     "how_it_works": [
+      "Start from the objective: if a simple test answers it well, a complex tool needs a reason beyond novelty, since due care weighs cost against benefit (Standard 4.2).",
+      "Check the input: confirm the data is complete, accurate and from the right period before relying on results (Standard 14.1).",
+      "Check the logic: run the script, bot or model on known cases so the auditor knows it flags what it should.",
+      "Keep the judgment: a model's score or flag is a lead to investigate, and the auditor decides what it means (Standard 4.3).",
+      "Must: the chief audit executive trains staff on new technology and works with IT and information security on putting it in place (Standard 10.3)."
+     ],
+     "example": "At a drug distributor in Basel, internal auditor Luca wants to use a machine learning model built by the finance team to score invoices for fraud risk. Before relying on it, Luca runs it on twenty invoices already known to be improper, and it flags only twelve. Luca treats its scores as leads and adds a rules-based test of every invoice.",
+     "audit_focus": {
+      "review": [
+       "Reperform the tool's test by hand on a small set of items",
+       "Compare record counts processed with the source system totals"
+      ],
+      "evidence": [
+       "Validation results on items known to be good and bad",
+       "Data extract log with source, period and record count"
+      ],
+      "recommend": "Have the engagement supervisor require the audit team to document tool validation before any finding rests on tool output.",
+      "decides": "The engagement supervisor, for the chief audit executive, decides whether tool output supports a finding"
+     },
+     "isaca_rule": "Fit first, then trust. Choose the tool the objective needs, not the newest one. Validate its data and logic before relying on it, treat its flags as leads, and keep the judgment with the auditor (Standards 4.2, 4.3 and 14.1).",
+     "exam_traps": [
+      {
+       "trap": "The newest AI tool is the best choice for any engagement.",
+       "why": "If a simple rules-based test answers the objective, an elaborate tool adds cost and risk without adding evidence."
+      },
+      {
+       "trap": "If a model flags no exceptions, the population is clean.",
+       "why": "The model may have missed items or used incomplete data. Its result counts as evidence only once its data and logic have been checked."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Read-only access",
+       "definition": "Permission to view and extract data without being able to change it."
+      },
+      {
+       "term": "Exception",
+       "definition": "An item that breaks a rule or an expected pattern and needs follow-up."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "topic_id": "2B4",
+   "topic_name": "Analytics and process mapping",
+   "overview": "To test a process, the auditor first has to see it clearly and get usable data from it. This topic covers breaking a workflow into segments, studying it with process maps, walk-throughs and responsibility matrices, the difference between structured and unstructured data, the steps of a data analytics exercise, and when to use each kind of analysis.",
+   "can_do": [
+    "Break a process into segments and map who does each step, where work is handed off and where controls sit",
+    "Use a responsibility matrix to spot steps with no owner, overlapping owners or conflicting duties",
+    "Apply the analytics steps in order, from setting the question to reporting what the data shows",
+    "Choose diagnostic, predictive or prescriptive analysis, anomaly detection or text analysis for a given question"
+   ],
+   "subtopics": [
+    {
+     "id": "2B4.1",
+     "name": "Workflow Segments and Process Maps",
+     "legacy_ids": [],
+     "definition": "A workflow segment is one stage of a process, such as an input, step, decision or handoff; a process map shows the segments in order, with their owners.",
+     "why_it_matters": "Risks gather at handoffs, decisions and manual steps. Seeing the segments shows the auditor where a control should sit and where a missing one leaves a gap.",
+     "how_it_works": [
+      "Divide the process from its trigger to its output: inputs, processing steps, decisions, handoffs between people or systems, and outputs.",
+      "For each segment, note who performs it, which system holds the data and which control, if any, acts there.",
+      "A process map, flowchart or narrative records this; each is a common workpaper (Standard 14.6 Engagement Documentation, considerations).",
+      "Confirm a map drawn by management with a walk-through: follow real items through each segment with the people who perform it.",
+      "Where the walk-through and the map differ, the observed process is the condition to evaluate; the map is a claim about it.",
+      "May: link each risk and control to its segment in a risk and control matrix (Standard 13.2, considerations)."
+     ],
+     "example": "At a car rental firm in Lisbon, management's map of the damage-claims process shows a supervisor approving every repair over 500 euros. Internal auditor Ines walks three recent claims through each segment with the staff involved and finds that repairs are booked with the garage before approval is requested. Ines records the actual sequence as the condition to evaluate against the policy.",
+     "audit_focus": {
+      "review": [
+       "Walk a real transaction through every segment of the mapped process",
+       "Compare the walked sequence with management's map and list differences"
+      ],
+      "evidence": [
+       "Walk-through notes naming each step, performer and system",
+       "Records or screens seen at each control point",
+       "Dated version of the documented process used for comparison"
+      ],
+      "recommend": "Have the process owner bring the documented process and actual practice into line, choosing which one changes.",
+      "decides": "The process owner decides how the process should run"
+     },
+     "isaca_rule": "Segment the process, then find the risk points: handoffs, decisions and manual steps. A map is a claim until a walk-through confirms it, and the process as it really runs is what the auditor compares with the criteria (Standard 14.2).",
+     "exam_traps": [
+      {
+       "trap": "Management's approved process map shows how the process works, so a walk-through is unnecessary.",
+       "why": "A map shows the design as management sees it. Only following real items through the process confirms whether practice matches."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Handoff",
+       "definition": "The point where work or data passes from one person, team or system to another."
+      },
+      {
+       "term": "Process narrative",
+       "definition": "A written, step-by-step description of a process, used in place of or beside a diagram."
+      },
+      {
+       "term": "Risk and control matrix",
+       "definition": "A table that links the activity's objectives to its risks, the controls meant to manage them and the planned tests."
+      }
+     ]
+    },
+    {
+     "id": "2B4.2",
+     "name": "Responsibility Assignment Matrices",
+     "legacy_ids": [],
+     "definition": "A responsibility assignment matrix lists a process's tasks against the roles involved and marks each role's part, often as responsible, accountable, consulted or informed (RACI).",
+     "why_it_matters": "Unclear ownership lets steps fall through, or lets one person control too much. A matrix makes ownership visible, so the auditor can see gaps, overlaps and conflicting duties.",
+     "how_it_works": [
+      "Rows are tasks or decisions; columns are roles; each cell shows that role's part in that task.",
+      "The four RACI labels separate doing the task, answering for its outcome, giving input to it and being kept informed of it.",
+      "The IIA's tools use such matrices so auditors can see gaps, overlaps and unclear ownership.",
+      "A gap: a task with no role doing it or answering for it. An overlap: several roles answering for the same task.",
+      "A conflict: one role both performing and approving the same task, which undermines segregation of duties.",
+      "Practice can differ from the matrix, so it is checked against what people can and actually do."
+     ],
+     "example": "In an engagement on vendor setup at a mining company in Perth, internal auditor Kirra builds a matrix of the six setup tasks against four roles. It shows procurement both creating new vendors and approving them, and no role answering for checks on bank details. Kirra tests recent vendor setups for both weaknesses before treating either as a potential finding.",
+     "audit_focus": {
+      "review": [
+       "Map each task to the roles that perform and approve it",
+       "Compare matrix roles with system access rights and approval records"
+      ],
+      "evidence": [
+       "System access lists showing who can create and approve records",
+       "Approval records for a sample of tasks",
+       "Job descriptions and organization charts for each role"
+      ],
+      "recommend": "Have the process owner give each task a clear owner and separate duties that conflict.",
+      "decides": "Management assigns roles and accepts any remaining conflict of duties"
+     },
+     "isaca_rule": "A responsibility matrix turns ownership into something testable. Look for three faults: no owner, several owners, and one person on both sides of a check. The matrix shows the design; access rights and records show the practice.",
+     "exam_traps": [
+      {
+       "trap": "Marking two roles accountable for one task gives stronger control.",
+       "why": "Shared accountability blurs who answers for the outcome, so each may assume the other acted. It is an overlap to flag, not a strength."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Segregation of duties",
+       "definition": "Splitting tasks such as approving, recording and handling assets among different people, so no one person controls a whole transaction."
+      },
+      {
+       "term": "Unclear ownership",
+       "definition": "A situation in which no one, or more than one role, is seen as answering for a task's outcome."
+      }
+     ]
+    },
+    {
+     "id": "2B4.3",
+     "name": "The Data Analytics Steps",
+     "legacy_ids": [],
+     "definition": "Data analytics in an engagement is a five-step routine: set the question, get the relevant data, normalize it, analyze it, then communicate what it shows.",
+     "why_it_matters": "Each step protects the next. Analysis of data that answers the wrong question, or that was never cleaned, produces confident results that are wrong.",
+     "how_it_works": [
+      "Set the objective: state what the analysis must answer, tied to an engagement objective, before asking for any data.",
+      "Obtain the data: identify which records answer the question, their system and period, and extract them, directly and read-only where possible.",
+      "Normalize: clean and standardize formats, units and codes, remove duplicates and reconcile totals to the source, so records can be compared.",
+      "Analyze: run the tests, then follow up each exception with the people and records involved.",
+      "Communicate: present results clearly for each audience, often with visuals, and keep the steps in the workpapers so others can repeat them (Standard 14.6).",
+      "Validation runs through every step: a strange result may mean the data, not the process, is at fault."
+     ],
+     "example": "Internal auditor Thabo, at a hospital group in Durban, must test whether discharged patients are billed within five days. Thabo agrees the question first, then extracts admission and billing records and finds dates stored in three formats across two systems. After converting them to one format and matching record totals to each system, Thabo runs the test and follows up the late bills.",
+     "audit_focus": {
+      "review": [
+       "Inspect whether the question was agreed before data was requested",
+       "Reperform the normalizing steps on the raw extract",
+       "Compare record counts before and after cleaning"
+      ],
+      "evidence": [
+       "Raw extract kept with source, period and record count",
+       "Script or steps used to clean and analyze the data",
+       "Reconciliation of cleaned data to system totals"
+      ],
+      "recommend": "Have the chief audit executive set a standard analytics workpaper that records all five steps.",
+      "decides": "The engagement supervisor, for the chief audit executive, accepts the analytics workpapers"
+     },
+     "isaca_rule": "Question first, data second. Analyze only data that is relevant and normalized, follow up every exception, and document each step so another person could repeat it (Standards 14.1 and 14.6).",
+     "exam_traps": [
+      {
+       "trap": "Collect all the data available first, then see what the analysis turns up.",
+       "why": "Without a set objective the auditor cannot tell which data is relevant. Analysis starts from the question the engagement must answer."
+      },
+      {
+       "trap": "Normalizing data means deleting records that do not fit the expected pattern.",
+       "why": "Normalizing makes records consistent; it does not remove inconvenient ones. Odd records may be the very exceptions the test exists to find."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Normalize",
+       "definition": "To clean and standardize data, such as dates, units and codes, so that records from different sources can be compared."
+      },
+      {
+       "term": "Reconcile",
+       "definition": "To agree one set of figures with another, such as an extract's totals with the source system, to show nothing is missing."
+      }
+     ]
+    },
+    {
+     "id": "2B4.4",
+     "name": "Data Types and Analysis Methods",
+     "legacy_ids": [],
+     "definition": "Analysis methods answer different questions: why it happened (diagnostic), what may happen (predictive), what to do (prescriptive), what stands out (anomaly detection) and what text says (text analysis).",
+     "why_it_matters": "Choosing the wrong method answers the wrong question. The data type matters too: some methods need tidy tables, others are built for free text.",
+     "how_it_works": [
+      "Structured data, such as payment tables, suits most tests and automation; unstructured data, such as emails, contracts or call notes, needs text analysis or AI.",
+      "Descriptive analysis, summarizing what has already happened, usually comes first and sets the baseline.",
+      "Pick by the question: a result to explain calls for diagnostic work; a risk to anticipate, predictive; a choice between responses, prescriptive.",
+      "Anomaly detection flags items that break the expected pattern; each flag is followed up before anything is concluded.",
+      "Text analysis searches words for terms, themes or tone, such as complaints that mention refunds."
+     ],
+     "compare": {
+      "columns": [
+       "Question it answers",
+       "Engagement use"
+      ],
+      "rows": [
+       {
+        "label": "Diagnostic",
+        "cells": [
+         "Why did this happen?",
+         "Explaining a rise in bad-debt write-offs"
+        ]
+       },
+       {
+        "label": "Predictive",
+        "cells": [
+         "What is likely to happen?",
+         "Spotting branches likely to breach a limit"
+        ]
+       },
+       {
+        "label": "Prescriptive",
+        "cells": [
+         "Which action would work best?",
+         "Comparing options to inform a recommendation"
+        ]
+       },
+       {
+        "label": "Anomaly detection",
+        "cells": [
+         "Which items do not fit?",
+         "Flagging duplicate or out-of-hours payments"
+        ]
+       },
+       {
+        "label": "Text analysis",
+        "cells": [
+         "What does the text say?",
+         "Finding themes in complaints or contracts"
+        ]
+       }
+      ]
+     },
+     "example": "Customer cancellations at a telecom in Santiago doubled in one quarter. Internal auditor Valentina, reviewing retention controls, uses diagnostic analysis on account data to see which plans and regions drove the rise, then text analysis on six months of call-center notes. The notes point to repeated billing errors after a system change, which Valentina takes to the billing manager to confirm.",
+     "audit_focus": {
+      "review": [
+       "Compare the method used with the question the step asks",
+       "Sample flagged anomalies and trace each one to its follow-up"
+      ],
+      "evidence": [
+       "Analysis plan stating the question and the method chosen",
+       "Follow-up record for each flagged item and its outcome"
+      ],
+      "recommend": "Have the engagement supervisor return to the audit team any analysis whose method cannot answer its question.",
+      "decides": "The engagement supervisor, for the chief audit executive, accepts or returns each analysis"
+     },
+     "isaca_rule": "Name the question, then the method: why (diagnostic), what next (predictive), what to do (prescriptive), what stands out (anomaly detection), what the words say (text analysis). Flags and patterns are leads; they become potential findings only after follow-up against criteria.",
+     "exam_traps": [
+      {
+       "trap": "Predictive analysis explains why last quarter's losses happened.",
+       "why": "Explaining a past result is diagnostic work. Predictive analysis estimates what is likely to happen next."
+      },
+      {
+       "trap": "An anomaly flagged by the software is a finding.",
+       "why": "An anomaly breaks the pattern but may have a valid reason. Only follow-up against criteria shows whether a gap exists."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Structured data",
+       "definition": "Data held in fixed fields, rows and columns, such as a payments table, that software can sort and test directly."
+      },
+      {
+       "term": "Unstructured data",
+       "definition": "Data with no fixed format, such as emails, contracts, call notes or social media posts."
+      },
+      {
+       "term": "Descriptive analysis",
+       "definition": "Summarizing what has already happened, such as month-on-month changes in sales or costs."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "topic_id": "2B5",
+   "topic_name": "Analytical review techniques",
+   "overview": "Analytical review compares figures with expectations to find what needs a closer look. This topic covers ratios, trends, variances and benchmarks on financial and nonfinancial information, choosing the technique an objective needs, and what to do with a result nobody expected.",
+   "can_do": [
+    "Analyze a ratio, trend or variance and say what it suggests and what must be checked next",
+    "Use nonfinancial data and benchmarks to test whether financial figures fit the activity behind them",
+    "Choose the analytical technique that best serves a stated engagement objective"
+   ],
+   "subtopics": [
+    {
+     "id": "2B5.1",
+     "name": "Ratios, Trends and Variances",
+     "legacy_ids": [],
+     "definition": "Analytical review compares figures with an expectation: a ratio relates two figures, a trend follows one over time, and a variance sets actual against budget or forecast.",
+     "why_it_matters": "Analytics show quickly where an activity's figures move unusually, so detailed testing can go where the risk is.",
+     "how_it_works": [
+      "May: a work program can list ratio, trend and regression analysis and comparisons with budgets, forecasts or earlier periods (Standard 14.2, considerations).",
+      "Form the expectation first, from known facts such as price changes, volumes or new contracts, then compare the actual figures with it.",
+      "A ratio helps only when its two figures are related and bear on the objective, such as returns per thousand units sold.",
+      "A trend shows direction over several periods; a single jump may be seasonal or a one-off.",
+      "An unexpected result is explained and corroborated; should a gap against criteria emerge, follow-up establishes its cause, effect and significance (Standard 14.2, considerations)."
+     ],
+     "example": "Internal auditor Sione reviews fuel costs at a bus operator in Auckland. Fuel spending rose 18 percent while the fuel price rose 5 percent and kilometers driven stayed flat. The expectation was a 5 percent rise, so Sione does not report the gap yet. Sione analyzes fuel card transactions by vehicle and finds cards used on days the buses stood in the depot.",
+     "audit_focus": {
+      "review": [
+       "Recompute key ratios and variances from source figures",
+       "Trace each unexplained difference to the follow-up work done"
+      ],
+      "evidence": [
+       "Source figures and the documented expectation for each comparison",
+       "Explanations obtained, with the records that corroborate them"
+      ],
+      "recommend": "Have the engagement supervisor send back to the audit team any analytics where an unexplained difference has no recorded follow-up.",
+      "decides": "The engagement supervisor, for the chief audit executive, decides when a difference is explained"
+     },
+     "isaca_rule": "Expectation first, then comparison, then follow-up. A ratio, trend or variance shows where to look. An unexpected difference is a lead: follow-up shows whether the condition differs from the criteria, and only then is there a potential finding to evaluate (Standard 14.2).",
+     "exam_traps": [
+      {
+       "trap": "A variance larger than expected should be reported as a finding.",
+       "why": "A variance is a signal. It may have a valid cause, such as a price change. Follow-up work shows whether a gap against criteria exists."
+      },
+      {
+       "trap": "A ratio that matches last year shows the controls worked.",
+       "why": "Stable totals can hide offsetting errors or a control that was skipped. Whether a control operated needs evidence about that control."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Expectation",
+       "definition": "The result the auditor predicts before comparing, built from known facts about the activity."
+      },
+      {
+       "term": "Regression analysis",
+       "definition": "A statistical method that estimates how one figure moves with others, used to build a sharper expectation."
+      },
+      {
+       "term": "One-off item",
+       "definition": "An unusual event in one period, such as a large settlement, that explains a jump without lasting change."
+      }
+     ]
+    },
+    {
+     "id": "2B5.2",
+     "name": "Nonfinancial Data and Benchmarking",
+     "legacy_ids": [],
+     "definition": "Nonfinancial data, such as headcount, hours or units, and benchmarks, comparisons with other units or organizations, test whether financial figures and results make sense in context.",
+     "why_it_matters": "Money figures can look normal on their own. Setting them against operating facts or comparable peers shows when costs, revenue or results do not fit the activity behind them.",
+     "how_it_works": [
+      "May: analysis can relate financial to nonfinancial information, such as payroll cost against the average number of employees (Standard 14.2, considerations).",
+      "Internal benchmarking compares one measure across units of the same organization; external benchmarking compares it with similar organizations (Standard 14.2, considerations).",
+      "Comparability decides the value: size, mix, region, period and definitions must be close enough, or the difference misleads.",
+      "Nonfinancial measures, such as complaint rates or cycle times, can be the main evidence in an operational engagement.",
+      "A benchmark can shape the expectation, or become criteria once adopted or agreed as such (Standard 13.4); benchmarking as advisory work is in Part 1 (1A6.3)."
+     ],
+     "example": "Internal auditor Aigerim reviews cleaning contracts for a school district in Almaty. Comparing cleaning cost per school, one school costs twice the average, yet its floor area and opening hours, taken from facilities records, match the others. Aigerim then inspects that school's invoices against the contractor's sign-in sheets and finds shifts billed that no one worked.",
+     "audit_focus": {
+      "review": [
+       "Compare benchmark units for size, mix, period and definitions",
+       "Recompute per-unit measures from financial and operating records"
+      ],
+      "evidence": [
+       "Operating records such as headcount, floor area or volumes, with their source",
+       "Benchmark data with its source, period and definitions"
+      ],
+      "recommend": "Have management agree comparable benchmarks and track measures that relate costs to operating activity.",
+      "decides": "Management decides which benchmarks and measures to adopt"
+     },
+     "isaca_rule": "Test the money against the operation: costs and revenue should move with the activity behind them. May: compare inside the organization or outside it (Standard 14.2, considerations), but only with comparable units, or the gap reflects the comparison, not the process.",
+     "exam_traps": [
+      {
+       "trap": "An external benchmark from any large organization shows what our costs should be.",
+       "why": "A benchmark is only as fair as the comparison. Differences in size, mix, region or definitions can explain the whole gap."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Nonfinancial information",
+       "definition": "Operating facts not stated in money, such as staff numbers, units produced or response times."
+      },
+      {
+       "term": "Comparability",
+       "definition": "How far two sets of figures are measured on the same basis, so that comparing them is fair."
+      }
+     ]
+    },
+    {
+     "id": "2B5.3",
+     "name": "Choosing the Technique for the Objective",
+     "legacy_ids": [],
+     "definition": "Choosing an analytical technique means picking the comparison whose result bears directly on the objective: the ratio, trend, variance or benchmark that fits the question.",
+     "why_it_matters": "Analytics are cheap to run and easy to multiply. Results that bear on no objective fill the workpapers without supporting any conclusion.",
+     "how_it_works": [
+      "Start from the objective: questions about completeness, accuracy, efficiency or compliance each call for a different comparison.",
+      "Efficiency questions suit cost-per-unit ratios and benchmarks; completeness questions suit relationships, such as revenue against units delivered.",
+      "Trends suit questions about change over time; variances suit questions about planned against actual results.",
+      "Analytics point the way; tests of records give evidence about specific transactions or controls.",
+      "Must: if more analysis is needed, adjust the work program and have the chief audit executive approve it (Standard 14.2)."
+     ],
+     "example": "A port authority in Rotterdam asks whether tug services are billed for every ship movement. Internal auditor Daan considers a trend of tug revenue but sees that it cannot reveal missed bills. Daan instead compares the harbor master's movement log, kept apart from billing, with the invoices raised, movement by movement, and lists movements with no invoice.",
+     "audit_focus": {
+      "review": [
+       "Trace each analytical procedure to the objective it serves",
+       "Evaluate whether analytics alone are used to conclude on controls"
+      ],
+      "evidence": [
+       "Work program step stating the objective, technique and expectation",
+       "Independent operating records used as the comparison base"
+      ],
+      "recommend": "Have the engagement supervisor direct the audit team to drop or replace any analysis that bears on no objective.",
+      "decides": "The chief audit executive, or a delegated supervisor, approves changes to the work program"
+     },
+     "isaca_rule": "Pick the analytic whose answer is the objective's answer. Analytics direct the work and can support conclusions about totals; claims about specific transactions or controls need tests of those items. Must: added analysis goes into the work program with the chief audit executive's approval (Standard 14.2).",
+     "exam_traps": [
+      {
+       "trap": "Running every available ratio gives the most complete analytical review.",
+       "why": "Ratios that do not bear on the objective add work, not evidence. Relevance to the objective is the first test of any analysis."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Completeness",
+       "definition": "Whether every item that should have been recorded, billed or processed actually was."
+      },
+      {
+       "term": "Efficiency",
+       "definition": "Achieving a result with the least use of money, time and other resources."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "topic_id": "2B6",
+   "topic_name": "Findings and their significance",
+   "overview": "A finding starts when the condition the auditor finds does not match the criteria. This topic covers comparing condition with criteria, tracing a gap to its root cause and likely effect together with management, and weighing the factors that make a finding more or less significant.",
+   "can_do": [
+    "Determine whether the evidence shows a gap between the condition and the evaluation criteria",
+    "Separate a gap's root cause from its symptoms and state its potential effect",
+    "Appraise likelihood, impact, risk tolerance and qualitative factors to rate how significant a finding is"
+   ],
+   "subtopics": [
+    {
+     "id": "2B6.1",
+     "name": "Condition, Criteria and the Potential Finding",
+     "legacy_ids": [],
+     "definition": "A potential finding exists when the condition, the actual state the evidence shows, differs from the criteria, the state the activity is supposed to be in.",
+     "why_it_matters": "The comparison is the core of assurance. Without criteria there is nothing to measure against; without a condition proved by evidence there is nothing to compare.",
+     "how_it_works": [
+      "Must (Standard 14.2 Analyses and Potential Engagement Findings): analyze the evidence to find whether the condition differs from the criteria.",
+      "Must: establish the condition from the information and evidence gathered; an unsupported statement or map is not yet evidence of it.",
+      "Must: note any difference as a potential finding and evaluate it; if evidence is thin, decide with due care on more work, which needs an approved, adjusted work program.",
+      "Must: with no difference and no further work needed, the conclusion gives assurance that the processes are effective.",
+      "Typical potential findings: errors, irregularities, illegal acts and chances to improve efficiency or effectiveness (Standard 14.2, considerations)."
+     ],
+     "example": "At a cinema chain in Johannesburg, the cash-handling policy says two staff count each till at closing. Internal auditor Lerato reviews three weeks of count sheets against camera logs at four sites. At one site a single manager counted alone on 11 of 21 nights. Lerato notes it as a potential finding and moves on to its cause, effect and significance.",
+     "audit_focus": {
+      "review": [
+       "Sample findings workpapers and locate the evidence for each condition",
+       "Inspect whether the criteria cited were in force for the period tested"
+      ],
+      "evidence": [
+       "Findings workpaper listing criteria, condition, cause, effect and rating",
+       "Source of the criteria, such as the policy, law or contract"
+      ],
+      "recommend": "Have the chief audit executive provide a findings template that records criteria and condition before cause and effect.",
+      "decides": "The chief audit executive, or a delegate, approves the engagement documentation"
+     },
+     "isaca_rule": "No criteria, no finding; no evidence, no condition. Must: compare condition with criteria, note each difference as a potential finding and evaluate it (Standard 14.2). Must: when nothing differs and the work is enough, state assurance that the processes are effective.",
+     "exam_traps": [
+      {
+       "trap": "Every difference between condition and criteria must appear in the final communication as a finding.",
+       "why": "Must: every difference is noted and evaluated. A significant risk is reported as a finding; the others follow the circumstances and the methodology (Standard 14.3)."
+      },
+      {
+       "trap": "If the tests find no gaps, the engagement has nothing to report.",
+       "why": "Must: when nothing differs and the work is sufficient, the conclusion gives assurance that the processes are effective."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Condition",
+       "definition": "The actual state of the activity under review, as shown by the evidence gathered."
+      },
+      {
+       "term": "Evaluation criteria",
+       "definition": "The yardsticks of what should be, such as policies, laws, contracts or targets."
+      },
+      {
+       "term": "Potential finding",
+       "definition": "A noted difference between condition and criteria, not yet evaluated for cause, effect and significance."
+      }
+     ]
+    },
+    {
+     "id": "2B6.2",
+     "name": "Root Cause and Effect",
+     "legacy_ids": [],
+     "definition": "The root cause is the deeper reason a gap exists, beyond its visible symptom; the effect is the harm or exposure the gap causes or could cause.",
+     "why_it_matters": "A fix aimed at the symptom lets the problem come back. Stating the effect shows management why the gap matters and feeds the judgment of significance.",
+     "how_it_works": [
+      "Must (Standard 14.3 Evaluation of Findings): for each potential finding, identify root causes with management when possible and determine potential effects.",
+      "Should: dig to the root cause as far as feasible, often by asking why the difference exists, again and again (Standard 14.3, considerations).",
+      "The cause often lies in a control weakness: no control, a badly designed one, or one that was not performed.",
+      "The effect is often an estimate of exposure, built on professional judgment with input from the activity's management (Standard 14.3, considerations).",
+      "Recommendations and action plans then aim at the root cause (Standard 14.4)."
+     ],
+     "compare": {
+      "columns": [
+       "Condition seen (symptom)",
+       "Possible root cause"
+      ],
+      "rows": [
+       {
+        "label": "Example 1",
+        "cells": [
+         "Supplier invoices paid late",
+         "One approver, with no backup during absences"
+        ]
+       },
+       {
+        "label": "Example 2",
+        "cells": [
+         "Duplicate payments",
+         "No system check for repeated invoice numbers"
+        ]
+       },
+       {
+        "label": "Example 3",
+        "cells": [
+         "Stock count differences",
+         "Receiving staff can also adjust stock records"
+        ]
+       }
+      ]
+     },
+     "example": "Internal auditor Rahim finds that 40 refunds at an electronics retailer in Dhaka were paid without the receipt check the policy requires. Store staff say they were busy. Asking why, again and again, with the store manager, Rahim learns that the till lets any cashier approve refunds and that each shift has one cashier. Rahim records both causes and estimates the exposure with finance.",
+     "audit_focus": {
+      "review": [
+       "Evaluate whether the stated cause explains the condition beyond its symptom",
+       "Trace the cause analysis to discussions held with management"
+      ],
+      "evidence": [
+       "Notes of root cause discussions with the activity's management",
+       "Records supporting the exposure estimate and its basis"
+      ],
+      "recommend": "Have management address the root cause identified, not only correct the individual errors found.",
+      "decides": "Management decides on and implements the corrective action"
+     },
+     "isaca_rule": "Ask why until the answer is a cause management can act on. Must: identify root causes with management when possible and determine potential effects (Standard 14.3). Should: dig as deep as feasible. Actions then aim at the cause, not the symptom (Standard 14.4).",
+     "exam_traps": [
+      {
+       "trap": "Staff did not follow the procedure, so the root cause is careless staff.",
+       "why": "Not following a procedure is usually the symptom. Asking why may reveal a design gap, missing training, workload or a system that allows shortcuts."
+      },
+      {
+       "trap": "To stay objective, the auditor should settle the root cause without management.",
+       "why": "Must: root causes are identified with management when possible, since management often knows the process best. Working together does not hand over the auditor's judgment."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Symptom",
+       "definition": "The visible sign of a problem, such as an error or a delay, as distinct from the reason it happens."
+      },
+      {
+       "term": "Exposure",
+       "definition": "How much harm the organization could suffer from a risk, in money or in other terms such as safety or reputation."
+      }
+     ]
+    },
+    {
+     "id": "2B6.3",
+     "name": "Judging and Prioritizing Significance",
+     "legacy_ids": [],
+     "definition": "Significance is how much a finding matters in its context, judged by the likelihood and impact of the risk it exposes and by qualities such as its nature.",
+     "why_it_matters": "Significance decides what must be reported and in what order. Judging by money alone can bury a small-value finding with serious legal, safety or reputational effects.",
+     "how_it_works": [
+      "Must (Standard 14.3): judge significance by the likelihood of the risk and its impact on governance, risk management or control processes.",
+      "Should: also weigh the risk tolerance and any other factors important to the organization (Standard 14.3, considerations).",
+      "Must: a significant risk is documented and communicated as a finding; for other risks, decide by the circumstances and the methodology.",
+      "Must: prioritize each finding by significance with the methodology set for the whole function, so ratings are consistent across engagements.",
+      "Context counts: a risk that is minor for the organization can be significant for the activity under review (Standard 4.2, considerations)."
+     ],
+     "example": "Internal auditor Noor finds two gaps at a food manufacturer in Kuala Lumpur: 3,000 ringgit of unapproved travel claims, and allergen labels checked on one production line in five instead of on every line. The labeling gap is small in money but likely to recur, and it could harm customers and force a recall. Using the function's rating scale, Noor rates it higher and documents why.",
+     "audit_focus": {
+      "review": [
+       "Compare each finding's rating with the methodology's rating criteria",
+       "Evaluate whether qualitative factors were weighed beside money"
+      ],
+      "evidence": [
+       "Rating worksheet showing likelihood, impact and other factors used",
+       "Risk tolerance or materiality basis referred to in the rating"
+      ],
+      "recommend": "Have the chief audit executive keep a rating methodology that weighs likelihood, impact and qualitative factors consistently.",
+      "decides": "The chief audit executive sets the methodology used to prioritize findings"
+     },
+     "isaca_rule": "Significance is likelihood and impact in context, not the size of the number. Must: weigh likelihood and impact, report a significant risk as a finding, and rank findings by the function's set method (Standard 14.3). Should: weigh risk tolerance and other factors that matter to the organization.",
+     "exam_traps": [
+      {
+       "trap": "The finding with the largest amount of money is always the most significant.",
+       "why": "Must: significance weighs likelihood and impact. Nature, recurrence, and legal or safety effects can make a small amount significant."
+      },
+      {
+       "trap": "Each auditor should rate findings on a scale that suits the engagement.",
+       "why": "Must: findings are prioritized with the methodology the chief audit executive set, so ratings mean the same thing across engagements."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Likelihood",
+       "definition": "How probable it is that a risk event will happen."
+      },
+      {
+       "term": "Impact",
+       "definition": "How much an event would affect the organization's objectives if it happened."
+      },
+      {
+       "term": "Finding rating",
+       "definition": "A grade, such as high, medium or low, set by the methodology to show each finding's priority."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "topic_id": "2B7",
+   "topic_name": "Workpapers that support the results",
+   "overview": "Workpapers are the engagement's memory and its proof. This topic covers how to organize them, what makes a workpaper complete with enough evidence, how every result must trace back to the workpapers, and how records are kept and released under law, regulation and policy.",
+   "can_do": [
+    "Organize workpapers so each one links to the work program step it completes",
+    "Identify what a complete workpaper contains and what is missing from a weak one",
+    "Trace any finding or conclusion back to the evidence that supports it",
+    "Determine how long engagement records are kept, how they are protected and who may release them"
+   ],
+   "subtopics": [
+    {
+     "id": "2B7.1",
+     "name": "Organizing Workpapers",
+     "legacy_ids": [],
+     "definition": "Organizing workpapers means indexing and cross-referencing the engagement's documents so that each piece of work can be found, followed and reviewed by someone other than its author.",
+     "why_it_matters": "An orderly file lets a supervisor review the work, another auditor repeat it and a quality reviewer judge conformance. A disordered file hides gaps, even from its author.",
+     "how_it_works": [
+      "May: arrange workpapers along the work program's structure and cross-reference related items (Standard 14.6, considerations).",
+      "Common workpapers include planning papers, process maps or narratives, interview and survey summaries, the risk and control matrix, test details, conclusions and the final communication.",
+      "A basic workpaper format: index, title naming the activity, period, purpose, data sources, population and selection method, preparer and reviewer (Standard 14.6, considerations).",
+      "May: templates or audit software can hold the structure and the retention system (Standard 14.6, considerations).",
+      "Should: the work program shows who completed each step, when, and that each task was reviewed and approved (Standard 13.6, considerations)."
+     ],
+     "example": "An engagement team at a city transport agency in Bogota keeps workpapers in audit software, one folder per work program step. Internal auditor Camila finishes a fare-collection test, gives the workpaper an index number, purpose, data source, population and selection method, adds Camila's initials and the date, and cross-references it to the step and to the draft finding it supports.",
+     "audit_focus": {
+      "review": [
+       "Pick a reported result and follow its references down to the evidence",
+       "Inspect a sample of workpapers for the basic format elements"
+      ],
+      "evidence": [
+       "File listing from the audit software with reference codes",
+       "Preparer and reviewer sign-offs with dates"
+      ],
+      "recommend": "Have the chief audit executive issue workpaper templates and an indexing method as part of the methodology.",
+      "decides": "The chief audit executive sets the documentation methodology"
+     },
+     "isaca_rule": "Arrange the file so a stranger can find their way: every result points to its support. May: follow the work program's structure and use templates or software (Standard 14.6, considerations). Must: the documentation lets another informed, competent person repeat the work (Standard 14.6).",
+     "exam_traps": [
+      {
+       "trap": "Workpapers are the author's working notes, so each auditor may organize them as they prefer.",
+       "why": "Documentation must let others repeat the work, and it supports supervision and quality review. It follows the function's methodology, not personal habit."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Cross-reference",
+       "definition": "A link from one workpaper to another, or to the work program or report, so a reader can follow the trail."
+      },
+      {
+       "term": "Index number",
+       "definition": "A reference code that places each workpaper in the file and lets other documents point to it."
+      }
+     ]
+    },
+    {
+     "id": "2B7.2",
+     "name": "Complete Workpapers with Sufficient Evidence",
+     "legacy_ids": [],
+     "definition": "A complete workpaper records what was done, on which data, with what result and why that result follows, with enough evidence for another competent person to repeat it.",
+     "why_it_matters": "Workpapers are the main support for what internal audit tells management and the board. A gap in them is a gap in the support for the results.",
+     "how_it_works": [
+      "Must (Standard 14.6): document information and evidence so that an informed, prudent internal auditor, or a similar person, could repeat the work and get the same results.",
+      "Should: the file covers the engagement period, risk assessment, objectives and scope, and the work program (Standard 14.6, considerations).",
+      "It also covers each analysis with its procedures and data sources, the results, who performed and supervised the work, and evidence of communication.",
+      "Record the whole test, not only the exceptions: the population, the items tested, what each showed and the conclusion drawn.",
+      "Must: the internal auditors and the engagement supervisor review the documentation for accuracy, relevance and completeness (Standard 14.6)."
+     ],
+     "example": "A payroll workpaper at a shipping company in Dubai says only 'no exceptions noted'. Reviewing it, supervisor Omar cannot tell what was tested and raises a question. Internal auditor Priya adds the payroll register reference, the 60 employees selected and how they were chosen, the attributes checked for each and the result, so another auditor could repeat the test.",
+     "audit_focus": {
+      "review": [
+       "Reperform one test using the workpaper alone, without asking its author",
+       "Inspect whether items that passed are recorded, not only exceptions"
+      ],
+      "evidence": [
+       "Supervisor review records and how each question was resolved",
+       "Documented approval of the engagement documentation"
+      ],
+      "recommend": "Have the engagement supervisor return to the audit team any workpaper another auditor could not repeat unaided.",
+      "decides": "The chief audit executive, or a delegated supervisor, approves the engagement documentation"
+     },
+     "isaca_rule": "The test of a complete workpaper: could a competent stranger repeat it and reach the same result? Must: document to that standard and review it for accuracy, relevance and completeness before the results go out (Standard 14.6).",
+     "exam_traps": [
+      {
+       "trap": "Recording only the exceptions keeps workpapers short and focused.",
+       "why": "Results rest on every item tested. Without the population, the items that passed and the method, no one can repeat the test or trust the conclusion."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Reperformance",
+       "definition": "Redoing a test or a control from the documented steps to see whether the same result follows."
+      },
+      {
+       "term": "Attribute",
+       "definition": "A specific feature checked on each item tested, such as an approval signature or a correct amount."
+      }
+     ]
+    },
+    {
+     "id": "2B7.3",
+     "name": "Linking Workpapers to Engagement Results",
+     "legacy_ids": [],
+     "definition": "The link from workpapers to results is the trail that lets a reader follow every finding, and the conclusion, back to the tests and evidence behind them.",
+     "why_it_matters": "Management may challenge a finding, and the board relies on the conclusion. Each statement must point to its support, or it is an opinion the file cannot defend.",
+     "how_it_works": [
+      "Must: document the information and evidence that support the engagement results (Standard 14.6).",
+      "Cross-reference each finding to its criteria, condition, cause and effect, and the conclusion to the findings it weighs.",
+      "The Standards' examples of conformance include workpapers cross-referenced to the work program and the final communication (Standard 14.2).",
+      "Should: findings explain the gap and rest on documented evidence that supports the judgment of significance (Standard 14.3, considerations).",
+      "Supervisors check communications against the workpapers, which are their main support (Standard 12.3 Oversee and Improve Engagement Performance, considerations).",
+      "A statement wider than its evidence is narrowed, or supported by more work, before the communication goes out."
+     ],
+     "example": "Before a draft report on fleet maintenance at a courier company in Warsaw goes for review, internal auditor Marek ticks each sentence to a workpaper. One sentence says vehicles at all depots missed their services, but the evidence covers two of the five depots. Marek rewrites the sentence to name the two depots tested.",
+     "audit_focus": {
+      "review": [
+       "Trace every factual statement in the draft report to a workpaper",
+       "Compare the reach of each conclusion with the scope the evidence covers"
+      ],
+      "evidence": [
+       "Referenced draft report showing workpaper index numbers",
+       "Findings workpapers cross-referenced to the tests behind them"
+      ],
+      "recommend": "Have the engagement supervisor require the audit team to provide a referenced copy of every draft communication.",
+      "decides": "The chief audit executive reviews and approves the final communication before it is issued"
+     },
+     "isaca_rule": "Every result needs a trail: report to finding, finding to test, test to evidence. Must: the evidence that supports the results is documented (Standard 14.6). A statement that reaches wider than its evidence is narrowed or supported, never left as it is.",
+     "exam_traps": [
+      {
+       "trap": "A finding the auditor is certain of can be reported even if its evidence is not in the file.",
+       "why": "Must: the evidence supporting results is documented. A result that cannot be traced to workpapers cannot be reviewed, repeated or defended."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Evidence trail",
+       "definition": "The chain of cross-references linking a reported result to the workpapers and evidence that support it."
+      },
+      {
+       "term": "Referenced draft",
+       "definition": "A copy of a draft communication marked with the workpaper index behind each statement."
+      }
+     ]
+    },
+    {
+     "id": "2B7.4",
+     "name": "Retaining and Releasing Engagement Records",
+     "legacy_ids": [],
+     "definition": "Records retention sets how long, where and how securely engagement documentation is kept; release rules set who may see or receive it, inside or outside the organization.",
+     "why_it_matters": "Laws and regulations may require records to be kept for set periods, and confidential data must not leak. Personal habits, such as keeping everything or shredding early, can breach both.",
+     "how_it_works": [
+      "Must (Standard 14.6): retain engagement documentation as relevant laws, regulations and the policies of the function and the organization require.",
+      "Must (Standard 5.2 Protection of Information): follow the rules on confidentiality, privacy and security, which bear on custody, retention, disposal and release of records.",
+      "Should: the methodology covers retaining and releasing engagement records in line with organizational and regulatory requirements (Standard 9.3 Methodologies, considerations).",
+      "Policy can require named authorities to approve information before it leaves the organization (Standard 5.2, considerations).",
+      "The Cybersecurity user guide expects evidence of the Topical Requirement's applicability assessment, with reasons for any exclusion, to be kept."
+     ],
+     "example": "A regulator asks the internal audit function of an insurer in Toronto for the workpapers of a claims engagement. Internal auditor Mei does not send them directly. The methodology routes outside requests to the chief audit executive and legal counsel, so Mei passes the request on, and confirms that the file is being kept for the period the insurance regulation sets.",
+     "audit_focus": {
+      "review": [
+       "Compare retention periods in the methodology with legal requirements",
+       "Sample closed files and compare their age with the retention schedule",
+       "Trace outside requests for records to their approval"
+      ],
+      "evidence": [
+       "Retention schedule citing the laws and policies it follows",
+       "Log of records released, with the approvals obtained",
+       "Disposal records for files past their retention period"
+      ],
+      "recommend": "Have the chief audit executive align the records methodology with legal advice and the organization's retention policy.",
+      "decides": "Release outside follows policy, with the chief audit executive and legal advice as required"
+     },
+     "isaca_rule": "Keep records as law, regulation and policy require, not by habit, and release them only by the approved route. Must: retain documentation as required (Standard 14.6) and protect confidential information (Standard 5.2). Should: the methodology sets retention and release (Standard 9.3, considerations).",
+     "exam_traps": [
+      {
+       "trap": "An internal auditor may send workpapers to an outside party whose request looks legitimate.",
+       "why": "Release follows the methodology and organizational policy, which may require named approvals and legal advice. The auditor routes the request rather than releasing records alone."
+      },
+      {
+       "trap": "Destroy workpapers once the final communication is issued, to limit exposure.",
+       "why": "Must: documentation is retained as laws, regulations and policies require. Early disposal can break those rules and leave the results without support."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Retention schedule",
+       "definition": "The policy table that says how long each type of record is kept and when it is disposed of."
+      },
+      {
+       "term": "Disposal",
+       "definition": "Destroying or deleting records at the end of their retention period by an approved method."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "topic_id": "2B8",
+   "topic_name": "Reaching engagement conclusions",
+   "overview": "The engagement conclusion is the auditor's overall judgment, not a list of findings. This topic covers weighing the findings together with professional judgment, and what a conclusion must address, including how well governance, risk management and control processes work and saying so when they do.",
+   "can_do": [
+    "Determine the overall significance of several findings taken together, using professional judgment",
+    "Decide what an assurance conclusion must say about how well governance, risk management and control processes work",
+    "Summarize results against the engagement's objectives and management's objectives without reaching past the scope"
+   ],
+   "subtopics": [
+    {
+     "id": "2B8.1",
+     "name": "Weighing Findings Together",
+     "legacy_ids": [],
+     "definition": "Aggregating findings means judging what they mean taken together, since several modest gaps can add up to, or point to, a weakness larger than any one of them.",
+     "why_it_matters": "A conclusion built by counting findings can mislead. Several minor findings with one cause may reveal a wider weakness, and one serious finding may outweigh many small ones.",
+     "how_it_works": [
+      "Must (Standard 14.5 Engagement Conclusions): the conclusion sums up the auditor's judgment of how significant the findings are when combined.",
+      "Weigh, do not count: look at each finding's rating, any shared root cause, and whether several gaps hit the same objective.",
+      "May: add context on where the impact falls, since a finding can matter greatly to the activity yet little to the organization (Standard 14.5, considerations).",
+      "A cause shared by several findings is worth stating in its own right, because one fix may close several gaps.",
+      "The Standards' examples of conformance include a workpaper setting out why the overall conclusion was reached."
+     ],
+     "example": "In an engagement on a hospital's medicine stores in Accra, internal auditor Kofi has four findings rated low: missed fridge temperature logs, late stock counts, unsigned delivery notes and expired items on a shelf. All four trace to one pharmacist covering two sites. Kofi judges that together they show the stores' controls are not working reliably, and documents the basis for that conclusion.",
+     "audit_focus": {
+      "review": [
+       "Compare the overall conclusion with the combined ratings and shared causes",
+       "Inspect the workpaper that sets out the basis for the conclusion"
+      ],
+      "evidence": [
+       "Schedule listing every finding with its rating and root cause",
+       "Workpaper stating the reasoning behind the overall conclusion"
+      ],
+      "recommend": "Have the chief audit executive's methodology explain how findings are combined into an overall conclusion or rating.",
+      "decides": "The chief audit executive approves the final communication that carries the conclusion"
+     },
+     "isaca_rule": "Weigh the findings together; do not count them. Must: the conclusion states the auditor's judgment of the overall significance of the findings in aggregate (Standard 14.5). Shared causes, the objectives affected and where the impact falls all shape that judgment.",
+     "exam_traps": [
+      {
+       "trap": "Five findings always lead to a worse conclusion than two.",
+       "why": "Significance, not number, decides. Two serious findings can outweigh five minor ones, and minor findings with a shared cause can add up to a serious weakness."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Aggregated findings",
+       "definition": "An engagement's findings considered as a set, for their combined significance rather than one by one."
+      },
+      {
+       "term": "Professional judgment",
+       "definition": "Applying knowledge, experience and the Standards to reach a reasoned decision where no rule settles the answer."
+      }
+     ]
+    },
+    {
+     "id": "2B8.2",
+     "name": "What an Engagement Conclusion Covers",
+     "legacy_ids": [],
+     "definition": "An engagement conclusion is the auditor's overall judgment of the findings viewed together, stated against the engagement's objectives and the objectives management set for the activity.",
+     "why_it_matters": "The conclusion is often what the board and management read first. It must say plainly whether the processes work, including when they do, within what the work covered.",
+     "how_it_works": [
+      "Must (Standard 14.5): summarize the results against the engagement objectives and management's objectives.",
+      "Must: an assurance conclusion includes the auditor's judgment on how effective the activity's governance, risk management and control processes are, acknowledging effective processes too.",
+      "The glossary adds that a conclusion should indicate satisfactory or unsatisfactory performance; a methodology may use a rating scale with several levels (Standard 14.5, considerations).",
+      "Stay within scope: a conclusion covers what was examined, not areas, periods or units that were not tested.",
+      "Must: the final communication carries the conclusion with the objectives and scope, and for assurance work the findings and any scope limitations (Standard 15.1)."
+     ],
+     "compare": {
+      "columns": [
+       "Assurance engagement",
+       "Advisory engagement"
+      ],
+      "rows": [
+       {
+        "label": "What it must address",
+        "cells": [
+         "Effectiveness of governance, risk management and control, including when effective",
+         "Should align with the objectives and scope agreed"
+        ]
+       },
+       {
+        "label": "What it rests on",
+        "cells": [
+         "Findings from evidence compared with criteria",
+         "The agreement with stakeholders; findings may not be needed"
+        ]
+       }
+      ]
+     },
+     "example": "An engagement at a solar-panel maker in Pune tested purchasing controls at the main plant only. Internal auditor Ananya found the controls well designed and working, with one minor finding. Ananya's draft conclusion states that purchasing controls at the main plant are effective, rates them satisfactory on the function's scale, and notes that the two smaller plants were outside the scope.",
+     "audit_focus": {
+      "review": [
+       "Compare the conclusion's wording with the approved scope",
+       "Evaluate whether effective processes are acknowledged, not only weaknesses"
+      ],
+      "evidence": [
+       "Draft conclusion wording with its rating and scope statement",
+       "Approved objectives and scope for the engagement"
+      ],
+      "recommend": "Have the engagement supervisor require the audit team to check each conclusion against the objectives, scope and rating scale.",
+      "decides": "The chief audit executive approves the final communication that contains the conclusion"
+     },
+     "isaca_rule": "Say whether it works, within what you tested. Must: summarize results against the engagement's and management's objectives, and for assurance judge the effectiveness of governance, risk management and control processes, saying so when they are effective (Standard 14.5). A list of findings is not a conclusion.",
+     "exam_traps": [
+      {
+       "trap": "When an assurance engagement produces no findings, the conclusion can be left out.",
+       "why": "Must: an assurance conclusion includes the judgment on effectiveness and acknowledges when processes are effective. A clean result is itself a result to state."
+      },
+      {
+       "trap": "A strong result at one plant supports a conclusion about the whole company.",
+       "why": "A conclusion reaches only as far as the scope and the evidence. Untested plants, periods or units are outside what the auditor can conclude on."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Rating scale",
+       "definition": "A set of levels, such as satisfactory through unsatisfactory, used to express conclusions consistently."
+      },
+      {
+       "term": "Management's objectives",
+       "definition": "The goals the activity's management set for it, against which the engagement results are summarized."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "key_terminologies": {
+  "Engagement supervisor": "The internal auditor who supervises an engagement: the chief audit executive, or a delegate for whom the chief audit executive stays accountable.",
+  "Workpapers": "The auditor's own record of the planning, tests and evidence behind an engagement's results.",
+  "Relevant information": "Information that bears on the engagement objectives, sits inside the scope and helps build the results.",
+  "Reliable information": "Information that is factual and current and can be trusted, given its source and corroboration.",
+  "Sufficient information": "Enough trustworthy information for a capable reviewer to redo the work and reach the same conclusions.",
+  "Corroboration": "Confirming information against a second, separate source.",
+  "Professional skepticism": "A questioning attitude that tests information instead of taking it on trust.",
+  "Walk-through": "Following a process step by step, often with one real transaction, alongside the people who perform it.",
+  "Population": "Every item in the set an auditor's conclusion covers, such as all payments made in a year.",
+  "Structured data": "Data held in fixed fields, rows and columns, such as a payments table.",
+  "Unstructured data": "Data with no fixed format, such as emails, contracts or call notes.",
+  "Normalize": "To clean and standardize data so that records from different sources can be compared.",
+  "Continuous auditing": "Internal audit's ongoing, technology-enabled assessment of risks and controls.",
+  "Responsibility assignment matrix (RACI)": "A grid of tasks against roles showing who is responsible, accountable, consulted or informed for each.",
+  "Analytical review": "Comparing figures with expectations, through ratios, trends, variances or benchmarks, to find what needs closer testing.",
+  "Benchmarking": "Comparing an activity's performance with other units or sites inside the organization (internal) or with similar organizations and recognized good practice (external).",
+  "Condition": "What the evidence shows the actual state of the activity to be.",
+  "Evaluation criteria": "The yardsticks of what should be, such as a policy, law, contract or target.",
+  "Finding": "A gap between what the internal auditors found (the condition) and what should be there (the criteria).",
+  "Root cause": "The deepest reason behind a gap that management can act on, as distinct from its visible symptoms.",
+  "Significance": "How much a matter counts in its setting, weighing size as well as nature.",
+  "Engagement conclusion": "The auditor's overall judgment of what the findings, weighed together, say about the activity, stated as satisfactory or not.",
+  "Retention": "How long a record is kept before it is disposed of, as law and policy set."
+ },
+ "references": [
+  {
+   "title": "Global Internal Audit Standards (2024): Principle 14 and Standards 14.1 to 14.6; Standards 4.2, 4.3, 5.2, 9.3, 10.3, 12.3, 13.2 and 13.6 (considerations); 15.1; Glossary (finding, criteria, root cause, significance, engagement conclusion, engagement results, workpapers, professional skepticism)",
+   "url": "https://www.theiia.org/globalassets/site/standards/globalinternalauditstandards_2024january9.pdf",
+   "checked": "2026-11-21: requirements, considerations and examples of conformance of each listed standard read in the opened text; the glossary entries compared with our wording"
+  },
+  {
+   "title": "CIA Part 2 syllabus (2025), Section B",
+   "url": "https://www.theiia.org/globalassets/site/certifications/certified-internal-auditor/cia-exam-why-how-and-what-is-changing/cia-part-2-syllabus.pdf",
+   "checked": "2026-11-21: the eight topic lines of Section B and their bullets read (V2.09.2024 FINAL)"
+  },
+  {
+   "title": "Cybersecurity Topical Requirement User Guide; Topical Requirements Application Guidance (2025)",
+   "url": "https://www.theiia.org/globalassets/site/standards/topical-requirements/cybersecurity/cybersecurity_tr_user_guide.pdf",
+   "checked": "2026-11-21: passages on documenting applicability and exclusions in the plan or the workpapers read"
+  },
+  {
+   "title": "IIA Global Perspectives & Insights: Data Analytics, Parts 1 to 3 (public access, December 2022)",
+   "url": "https://www.theiia.org/globalassets/site/content/articles/global-perspectives-and-insights/2023/data_analytics_parts_1-3_final.pdf",
+   "checked": "2026-11-21: whole paper read (forms of data, gathering approaches, data validation, read-only access, RPA and AI, descriptive to prescriptive analytics, dashboards). Not on the exam reference list: background only"
+  },
+  {
+   "title": "The IIA's Artificial Intelligence Auditing Framework (September 2024 update, public access)",
+   "url": "https://www.theiia.org/globalassets/site/content/tools/professional/aiframework-sept-2024-update2.pdf",
+   "checked": "2026-11-21: overview of AI types and the glossary entries for machine learning and robotics read. Not on the exam reference list: background only"
+  },
+  {
+   "title": "IIA GTAG: Continuous Auditing and Monitoring, 3rd edition (2025), public product page",
+   "url": "https://www.theiia.org/en/content/guidance/recommended/supplemental/gtags/continuous-auditing-and-monitoring",
+   "checked": "2026-11-21: public summary read; the guide itself is for members only and was not opened"
+  },
+  {
+   "title": "IIA Privacy and Data Protection RACI Matrix, public tool page",
+   "url": "https://www.theiia.org/en/content/data-privacy-security-protection/tools/raci-matrix/",
+   "checked": "2026-11-21: public description read (the four RACI labels; gaps, overlaps and unclear ownership); the tool itself is for members only"
+  }
+ ]
+}
