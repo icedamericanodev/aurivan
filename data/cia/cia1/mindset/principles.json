@@ -2,7 +2,7 @@
  "schema_version": 2,
  "title": "KaiSip CIA Part 1 exam mindset principles",
  "updated": "2026-11-21",
- "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, the Challenge Exam 1 to 5, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and are set by a tagging pass after each round (done for the Part 1 pilot and for rounds 1 to 13); legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 and ciac. For ciac, domains are the Challenge Exam's sections (A Internal Audit Professionalism and Quality is 1, B Internal Audit Operations and Audit Plan is 2, C Engagement Planning is 3, D Engagement Performance is 4, E Engagement Results and Monitoring is 5, mapped from docs/content/CIA_CHALLENGE_MAP.md), subtopics stay empty until the Challenge notes are generated, and practice ids follow the tag of each generated item's source question. Parts 2 and 3 are still to come. Intended once their notes exist (written here because the linter of the built file allows no extra top-level key): know-your-seat cia2 cia3; board-approves-management-supports cia3; management-owns-risk-and-action cia2 cia3; advise-never-decide cia2 cia3; function-or-person cia3; disclose-then-safeguard cia3; risk-sets-plan-and-scope cia2 cia3; plan-before-testing cia2; consider-fraud-every-engagement cia2; weigh-cost-against-benefit cia2 cia3; relevant-reliable-sufficient cia2; root-cause-over-symptom cia2 cia3; assurance-not-a-guarantee cia2; discuss-then-escalate cia2 cia3; report-through-the-right-channel cia2; tell-it-straight cia2 cia3; have-or-obtain-competency cia2 cia3; information-for-the-work-only cia2 cia3; design-or-operation cia2 cia3; the four reading principles cia2 cia3. Round 1 added two principles for questions that no earlier principle decided: have-or-obtain-competency (Principle 3; Standards 3.1, 3.2 and 13.5, with Standard 10.2 for the function) and information-for-the-work-only (Principle 5; Standards 5.1 and 5.2). Round 2 added one more, weigh-cost-against-benefit (Standard 4.2, where the weighing is a must for internal audit work; the considerations of Standard 14.4, where it is a should for recommendations and action plans), for questions that turn on proportion: enough work or enough control for the risk, not the most. Round 9 added design-or-operation (the glossary's definition of control processes as designed and operated; Standard 4.2, and the considerations to Standards 13.2, 13.3, 13.6 and 14.3, at should strength), for questions whose final two are a design failure against an operating failure. A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet, because no notes teach it until Part 3 is written. Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1. Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
+ "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, the Challenge Exam 1 to 5, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and are set by a tagging pass after each round (done for the Part 1 pilot and for rounds 1 to 14); legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 and ciac. For ciac, domains are the Challenge Exam's sections (A Internal Audit Professionalism and Quality is 1, B Internal Audit Operations and Audit Plan is 2, C Engagement Planning is 3, D Engagement Performance is 4, E Engagement Results and Monitoring is 5, mapped from docs/content/CIA_CHALLENGE_MAP.md), subtopics stay empty until the Challenge notes are generated, and practice ids follow the tag of each generated item's source question. Parts 2 and 3 are still to come. Intended once their notes exist (written here because the linter of the built file allows no extra top-level key): know-your-seat cia2 cia3; board-approves-management-supports cia3; management-owns-risk-and-action cia2 cia3; advise-never-decide cia2 cia3; function-or-person cia3; disclose-then-safeguard cia3; risk-sets-plan-and-scope cia2 cia3; plan-before-testing cia2; consider-fraud-every-engagement cia2; weigh-cost-against-benefit cia2 cia3; relevant-reliable-sufficient cia2; root-cause-over-symptom cia2 cia3; assurance-not-a-guarantee cia2; discuss-then-escalate cia2 cia3; report-through-the-right-channel cia2; tell-it-straight cia2 cia3; have-or-obtain-competency cia2 cia3; information-for-the-work-only cia2 cia3; design-or-operation cia2 cia3; the four reading principles cia2 cia3. Round 1 added two principles for questions that no earlier principle decided: have-or-obtain-competency (Principle 3; Standards 3.1, 3.2 and 13.5, with Standard 10.2 for the function) and information-for-the-work-only (Principle 5; Standards 5.1 and 5.2). Round 2 added one more, weigh-cost-against-benefit (Standard 4.2, where the weighing is a must for internal audit work; the considerations of Standard 14.4, where it is a should for recommendations and action plans), for questions that turn on proportion: enough work or enough control for the risk, not the most. Round 9 added design-or-operation (the glossary's definition of control processes as designed and operated; Standard 4.2, and the considerations to Standards 13.2, 13.3, 13.6 and 14.3, at should strength), for questions whose final two are a design failure against an operating failure. A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet, because no notes teach it until Part 3 is written. Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1. Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
  "families": [
   {
    "id": "role",
@@ -169,7 +169,8 @@
     "cia1_d1_058",
     "cia1_d1_100",
     "cia1_d1_103",
-    "cia1_d3_043"
+    "cia1_d3_043",
+    "cia1_d1_113"
    ],
    "slip_pattern": null,
    "legacy_ids": [],
@@ -268,7 +269,7 @@
     "trap": "Facilitate the workshop and set the final ratings, since internal audit is independent.",
     "why": "Facilitating is advice. Setting the ratings is management's conclusion, so the auditor brings method and challenge and management owns the result."
    },
-   "nuance": "Advisory work may skip a formal documented risk assessment, evaluation criteria and evidence-based findings, by agreement. Assurance after advice needs the chief audit executive to confirm objectivity holds and to staff for it, not a 12-month wait.",
+   "nuance": "By agreement, advisory work may skip a formal risk assessment, criteria and evidence for findings; a significant risk must still be a finding. Later assurance needs the chief audit executive to confirm objectivity holds, not a 12-month wait.",
    "domains": [
     1,
     3
@@ -422,7 +423,7 @@
    ],
    "trap": {
     "move": "Handling it quietly: staying on the engagement and being extra careful, or stepping aside without telling anyone why.",
-    "why_wrong": "Being careful is not a safeguard anyone else can see or rely on. Disclosure lets the right person judge the impairment, real or only apparent, and choose what to do about it."
+    "why_wrong": "Being careful is not a safeguard anyone else can see or rely on. Disclosure lets the right person judge the impairment, real or only apparent, and choose what to do about it. A chief audit executive's role counts even when others run the area: oversight of it, or significant influence such as a vote on what will later be assured, may impair independence (Standard 7.1's considerations). Abstaining on their own is no substitute for discussing the role with the board and senior management."
    },
    "example": {
     "scenario": "Aiko, an internal auditor at an insurer in Japan, learns partway through an engagement that a brother has just become the audited unit's operations manager. Aiko is confident it will not affect the work.",
@@ -455,7 +456,8 @@
     "cia1_d2_009",
     "cia1_d2_010",
     "cia1_d2_034",
-    "cia1_d1_107"
+    "cia1_d1_107",
+    "cia1_d1_114"
    ],
    "slip_pattern": null,
    "legacy_ids": [],
@@ -652,7 +654,7 @@
    ],
    "trap": {
     "move": "Choosing the most thorough option: test everything, recommend the strongest control, or push the risk close to zero whatever it costs. The opposite slip is letting a tight budget decide alone.",
-    "why_wrong": "Once the evidence supports the conclusion, more testing adds little. Once a risk sits within tolerance, and the controls keep it there, more control adds little. Both still cost time and money. Cost is weighed together with risk and benefit, so a cheap option that leaves the risk outside tolerance loses as well. On CIA questions the fitting control is usually the one that brings the risk within tolerance at a cost in proportion to it, and management chooses it."
+    "why_wrong": "Once the evidence supports the conclusion, more testing adds little. Once a risk sits within tolerance, and the controls keep it there, more control adds little. Both still cost time and money. Cost is weighed together with risk and benefit, so a cheap option that leaves the risk outside tolerance loses as well. On CIA questions the fitting control is usually the one that brings the risk within tolerance, including while a slower fix is built, at a cost in proportion to it, and management chooses it."
    },
    "example": {
     "scenario": "Ticket-machine cash shortages cost a ferry operator in Croatia about $4,000 a year. An internal auditor weighs two recommendations: a nightly two-person cash count at every pier, costing $60,000 a year, or a weekly reconciliation of machine totals to bank deposits, costing $1,500 a year.",
@@ -768,8 +770,8 @@
     "the board cannot see"
    ],
    "trap": {
-    "move": "Recommending the quick repair: correct the wrong entries, retrain the one person, or add another check on top of the broken step.",
-    "why_wrong": "That treats the instance and leaves the cause in place. The stronger recommendation removes the reason the gap opened, such as a missing approval step or access that lets one person do everything."
+    "move": "Recommending only the quick repair: correct the wrong entries, retrain the one person, or add another check on top of the broken step and leave the step as it is.",
+    "why_wrong": "That treats the instance and leaves the cause in place. The stronger recommendation removes the reason the gap opened, such as a missing approval step or access that lets one person do everything. When removing the cause will take months and the risk sits above tolerance meanwhile, an interim action belongs beside the lasting fix, not in place of it: actions should bring the risk to an acceptable level as well as reach the cause (Standard 14.4)."
    },
    "example": {
     "scenario": "At a school district in Canada, an internal auditor finds 12 duplicate supplier payments. The accounts team offers to recover the money this week.",
@@ -844,7 +846,7 @@
     "trap": "Extend the testing to every payment so the confirmation can be given with confidence.",
     "why": "Assurance raises confidence against criteria; it cannot promise that nothing is wrong. Even a full test leaves judgment, override and collusion."
    },
-   "nuance": "The Standards name limited and reasonable assurance but define neither, so do not rank them beyond this: the level follows the work done. Risk management aims at risk-taking in line with appetite, never at removing all risk.",
+   "nuance": "The Standards name limited and reasonable assurance but define neither, so do not rank them beyond this: the level follows the work done. Risk management aims at risk-taking in line with appetite and tolerance, never at removing all risk.",
    "domains": [
     1,
     2,
@@ -988,7 +990,7 @@
    ],
    "trap": {
     "move": "Jumping a level or taking over: going straight to the board or a regulator, dropping the matter because management has decided, or fixing the risk yourself.",
-    "why_wrong": "Each skips a step. The order gives the people who can resolve the risk the chance to do so, keeps the board for what stays unresolved, and leaves the decision with those who own it."
+    "why_wrong": "Each skips a step. The order gives the people who can resolve the risk the chance to do so, keeps the board for what stays unresolved, and leaves the decision with those who own it. The ladder is not for everything, though. When management tries to cut the scope the board approved for the function, that may impair independence (Standard 7.1's considerations), and the chief audit executive reports it to the board and senior management without waiting for a talk with management to fail (Standard 8.1)."
    },
    "example": {
     "scenario": "A division head at a bank in Nigeria decides not to fix a payment-approval gap. The chief audit executive concludes the risk is above the bank's stated risk tolerance.",
@@ -1000,7 +1002,7 @@
     "trap": "Take the accepted risk to the board at once, since it is above appetite.",
     "why": "Standard 11.5 sets the order: senior management first, then the board if the matter stays unresolved."
    },
-   "nuance": "For accepted risk, raising it first with the managers responsible is a should. A scope limitation is any condition that stops the planned work, whatever the reason: discuss it with management, then elevate it if unresolved (Standard 13.3).",
+   "nuance": "Raising accepted risk with its managers first is a should. Inside an engagement, a scope limitation goes to management, then up if unresolved (Standard 13.3); management cutting the function's scope goes promptly to the board and senior management (Standard 8.1).",
    "domains": [
     1,
     3
@@ -1017,7 +1019,8 @@
     "cia1_d3_031",
     "cia1_d3_048",
     "cia1_d3_057",
-    "cia1_d1_105"
+    "cia1_d1_105",
+    "cia1_d3_104"
    ],
    "slip_pattern": null,
    "legacy_ids": [],
@@ -1041,7 +1044,7 @@
    ],
    "trap": {
     "move": "Acting alone: confronting the person, alerting the manager who may be involved, starting your own investigation, or keeping quiet because it is out of scope.",
-    "why_wrong": "Investigating needs the mandate and the competencies, and silence hides a finding. On CIA questions the internal auditor usually reports inside internal audit first, following the function's methodology."
+    "why_wrong": "Investigating needs the mandate and the competencies, and silence hides a finding. On CIA questions the internal auditor usually reports inside internal audit first, following the function's methodology. Where policy does not yet say where such matters go, Standard 1.3's considerations let the chief audit executive set out the steps internal auditors take, so the gap is filled inside the function rather than left open."
    },
    "example": {
     "scenario": "While testing travel claims at a university in India, Priya, an internal auditor, sees signs that a department head approved payments to a company owned by a relative. Procurement was not in the engagement's scope.",
@@ -1075,7 +1078,8 @@
     "cia1_d3_007",
     "cia1_d3_044",
     "cia1_d4_012",
-    "cia1_d4_037"
+    "cia1_d4_037",
+    "cia1_d3_105"
    ],
    "slip_pattern": null,
    "legacy_ids": [],
@@ -1136,7 +1140,8 @@
     "cia1_d3_059",
     "cia1_d3_063",
     "cia1_d4_027",
-    "cia1_d4_031"
+    "cia1_d4_031",
+    "cia1_d1_115"
    ],
    "slip_pattern": null,
    "legacy_ids": [],
@@ -1261,7 +1266,8 @@
     "cia1_d4_005",
     "cia1_d4_008",
     "cia1_d4_010",
-    "cia1_d4_025"
+    "cia1_d4_025",
+    "cia1_d1_116"
    ],
    "slip_pattern": null,
    "legacy_ids": [],
@@ -1288,7 +1294,7 @@
     "why_wrong": "A true statement can still be the wrong answer. With FIRST, a good later step loses to the step it depends on; with PRIMARY, a real side benefit loses to the main purpose."
    },
    "example": {
-    "scenario": "A question asks what the chief audit executive should do FIRST when a manager refuses the team access to contract files. Options: note the limit in the final communication, discuss it with management, or elevate it to the board.",
+    "scenario": "A question asks what the chief audit executive should do FIRST when, during an assurance engagement, a manager refuses the team access to contract files. Options: note the limit in the final communication, discuss it with management, or elevate it to the board.",
     "answer": "All three can be right at some point. FIRST asks for order: discuss the limitation with management. The board comes next if that fails, and the final communication records what remains."
    },
    "check": {
