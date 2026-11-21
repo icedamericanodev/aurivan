@@ -429,10 +429,10 @@ version bump today.
 ### Results
 | Domain | Questions | Tagged | Untagged |
 |---|---|---|---|
-| D1 | 245 | 161 | 84 |
-| D2 | 428 | 353 | 75 |
+| D1 | 275 | 179 | 96 |
+| D2 | 460 | 375 | 85 |
 | D3 | 146 | 131 | 15 |
-| All | 819 | 645 | 174 |
+| All | 881 | 685 | 196 |
 
 New principle `independence-of-ai-assurance` (role family): seeds and tags
 aaia_d2_014, aaia_d3_024 and aaia_d3_043, moved from
@@ -902,3 +902,49 @@ aaia_d2_403 stays on `ai-changes-are-changes` though its runner-up is the
 principle's own pinning move, matching aaia_d2_362 (both test and move to a
 supported version). aaia_d2_404 stays on `test-the-ai-as-used` (pre-release
 access to test each vendor version, as aaia_d3_143).
+
+### Batch 13 (21 November 2026)
+aaia_d1_246-275 and aaia_d2_429-460 were read against the rule above. None
+is a seed. Changed: aaia_d1_248 moved from `accuracy-is-not-assurance` to
+`rank-ai-risk-by-harm` (both finalists are model errors, so no accuracy
+argument separates them; the key wins because wrongful fines are near certain
+and far more common than missed dilution); aaia_d1_275 moved from
+`rank-ai-risk-by-harm` to `accuracy-is-not-assurance` (the runner-up keeps the
+pooled error rate, and the Final two turns on an overall rate hiding the
+errors that fall on one group, as aaia_d3_091). After the review rounds, aaia_d2_434 was tagged
+`test-the-ai-as-used` (its runner-up became the test set's handwritten-only
+accuracy, and only the office's own forms show the accuracy it will get).
+Tags removed in review are marked "was" below.
+
+**Untagged new items (low confidence):**
+- aaia_d1_246: agent goal-gaming knowledge (a count target can be met by closing requests unworked); the runner-up, a fuller log, is a detective point, not a principle's trap.
+- aaia_d1_249: label-timing knowledge (recent joiners labeled as staying have not had time to cancel); the runner-up, older habits, is `accuracy-is-not-assurance`'s own move, as aaia_d1_189.
+- aaia_d1_252: inventory-scope knowledge (the inventory covers AI the firm sells); the runner-up, a model card for buyers, is not a technology move, so `ai-governance-before-tooling` does not separate.
+- aaia_d1_253: inventory-design knowledge (record what an orchestrator can create, since short-lived helpers escape scans); management's inventory, not the auditor's test population, so not `population-includes-misses` (unlike aaia_d1_057).
+- aaia_d1_261: risk-appetite knowledge (a zero appetite leaves no tolerance any model can meet).
+- aaia_d1_262: embedding knowledge (vectors work only with the model that made them, so an exit needs the source documents and re-embedding).
+- aaia_d1_265: retrieval-source knowledge (live web results have no owner answering for their quality); the runner-up is a privacy point.
+- aaia_d1_267: aggregation knowledge (narrow or overlapping totals single out one person).
+- aaia_d1_269: erasure knowledge (test sets follow deletion rules; rerunning the old version keeps comparisons valid).
+- aaia_d1_272: legal knowledge (a provider's declaration does not cover the deployer's own duties); the runner-up, version coverage, is `test-the-ai-as-used`'s own move.
+- aaia_d1_273: incident-reporting knowledge (model monitoring cannot see one harmful output, so users' reports must start the process).
+- aaia_d1_274: framework knowledge (the AI RMF expects a system with unacceptable risk to cease safely), as aaia_d1_245.
+- aaia_d2_429: was `accuracy-is-not-assurance`; the runner-up, a shift over time, is that principle's own recency move, so intervention knowledge (sensor homes' claims understate unprotected homes) decides, as aaia_d1_189.
+- aaia_d2_431: was tagged at authoring; after its re-angle, label-timing knowledge (no test invoice has reached its due date, so the labels are not yet outcomes) decides.
+- aaia_d2_432: label-consistency knowledge (scores under each rubric can mean different things, and the model learns one target from all of them).
+- aaia_d2_433: drift-baseline knowledge (monitoring needs a statistical profile of the training inputs).
+- aaia_d2_435: checkpoint knowledge (saved training checkpoints are ready-to-run model copies).
+- aaia_d2_436: agent-retirement knowledge (scheduled payments and entries keep running after credentials go).
+- aaia_d2_446: evaluation-design knowledge (raters told which text is new can be swayed by the label).
+- aaia_d2_453: agent-access knowledge (rights held through chained tool keys are reviewed together); both options review the keys, so `limits-outside-the-model` does not separate (unlike aaia_d3_129).
+- aaia_d2_460: was `triage-by-harm-close-on-cause`; reward-design knowledge (a model pursues what its training signal rewards, so the fix belongs in the signal) decides.
+- aaia_d2_458: was `contain-and-preserve-ai`; the runner-up is that principle's own preserve move, so drift knowledge (a version trained before the devaluation fails the same way) decides, as aaia_d2_384.
+
+**Medium confidence (tagged, review first):** aaia_d1_247 aaia_d1_248
+aaia_d1_250 aaia_d1_251 aaia_d1_256 aaia_d1_258 aaia_d1_264 aaia_d1_268
+aaia_d1_270 aaia_d1_275
+aaia_d2_434 aaia_d2_439 aaia_d2_441 aaia_d2_442 aaia_d2_444 aaia_d2_447
+aaia_d2_450 aaia_d2_455 aaia_d2_459.
+
+aaia_d2_459 stays on `fix-the-control-not-the-model` (its key names the
+copying path as a control gap).
