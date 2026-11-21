@@ -1,7 +1,7 @@
 {
  "schema_version": 2,
  "title": "KaiSip CIA Part 1 exam mindset principles",
- "updated": "2026-11-20",
+ "updated": "2026-11-21",
  "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, the Challenge Exam 1 to 5, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and are set by a tagging pass after each round (done for the Part 1 pilot and for rounds 1 to 11); legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 and ciac. For ciac, domains are the Challenge Exam's sections (A Internal Audit Professionalism and Quality is 1, B Internal Audit Operations and Audit Plan is 2, C Engagement Planning is 3, D Engagement Performance is 4, E Engagement Results and Monitoring is 5, mapped from docs/content/CIA_CHALLENGE_MAP.md), subtopics stay empty until the Challenge notes are generated, and practice ids follow the tag of each generated item's source question. Parts 2 and 3 are still to come. Intended once their notes exist (written here because the linter of the built file allows no extra top-level key): know-your-seat cia2 cia3; board-approves-management-supports cia3; management-owns-risk-and-action cia2 cia3; advise-never-decide cia2 cia3; function-or-person cia3; disclose-then-safeguard cia3; risk-sets-plan-and-scope cia2 cia3; plan-before-testing cia2; consider-fraud-every-engagement cia2; weigh-cost-against-benefit cia2 cia3; relevant-reliable-sufficient cia2; root-cause-over-symptom cia2 cia3; assurance-not-a-guarantee cia2; discuss-then-escalate cia2 cia3; report-through-the-right-channel cia2; tell-it-straight cia2 cia3; have-or-obtain-competency cia2 cia3; information-for-the-work-only cia2 cia3; design-or-operation cia2 cia3; the four reading principles cia2 cia3. Round 1 added two principles for questions that no earlier principle decided: have-or-obtain-competency (Principle 3; Standards 3.1, 3.2 and 13.5, with Standard 10.2 for the function) and information-for-the-work-only (Principle 5; Standards 5.1 and 5.2). Round 2 added one more, weigh-cost-against-benefit (Standard 4.2, where the weighing is a must for internal audit work; the considerations of Standard 14.4, where it is a should for recommendations and action plans), for questions that turn on proportion: enough work or enough control for the risk, not the most. Round 9 added design-or-operation (the glossary's definition of control processes as designed and operated; Standard 4.2, and the considerations to Standards 13.2, 13.3, 13.6 and 14.3, at should strength), for questions whose final two are a design failure against an operating failure. A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet, because no notes teach it until Part 3 is written. Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1. Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
  "families": [
   {
@@ -201,7 +201,7 @@
     "trap": "Switch the setting on now, then tell the process owner what was changed and why.",
     "why": "Changing the control is management's action. The internal auditor reports, agrees the action with its owner and confirms it later."
    },
-   "nuance": "With safeguards (Standard 7.1), internal audit may run a risk register temporarily or supervise a risk team, never choose a risk response; that team may support managers who choose. A contractor's checks are controls; management answers for them.",
+   "nuance": "With safeguards (Standard 7.1), internal audit may keep a risk register temporarily or supervise a risk team. The 2026 risk statement bars choosing or owning risk responses and owning management's follow-up or external reporting. Contractors' checks are management's controls.",
    "domains": [
     1,
     3,
@@ -257,7 +257,7 @@
     "trap": "Facilitate the workshop and set the final ratings, since internal audit is independent.",
     "why": "Facilitating is advice. Setting the ratings is management's conclusion, so the auditor brings method and challenge and management owns the result."
    },
-   "nuance": "Some steps bend for advisory work: a formal documented risk assessment, evaluation criteria and evidence-based findings may not be needed, depending on the agreement. Assurance after advice needs the chief audit executive to confirm objectivity is not impaired.",
+   "nuance": "Some steps bend for advisory work: a formal documented risk assessment, evaluation criteria and evidence-based findings may not be needed, depending on the agreement. Assurance after advice needs the chief audit executive's confirmation that objectivity holds, not a 12-month wait.",
    "domains": [
     1,
     3
@@ -369,7 +369,7 @@
     "trap": "Decline the work, because the earlier payroll role bars any service for a year.",
     "why": "The 12-month presumption is about assurance. Advisory work on a former responsibility is allowed once the possible impairment is disclosed to the requesting party first."
    },
-   "nuance": "The bar on assessing a former responsibility has no time limit; only the assurance presumption stops at 12 months. Self-review bias also covers one's own earlier audit rating: judging it can impair objectivity, at least in appearance, so disclose it.",
+   "nuance": "The bar on assessing a former responsibility has no time limit; the 12-month presumption covers assurance only. Giving advice is not being responsible. Judging one's own earlier audit rating can impair objectivity, at least in appearance: disclose it.",
    "domains": [
     1,
     2
@@ -899,7 +899,7 @@
    ],
    "trap": {
     "move": "Reading one half as the whole: calling a control effective because every sample was done as written, or blaming the design when people skip a sound step.",
-    "why_wrong": "Perfect compliance with a step that cannot catch the risk leaves the risk unmanaged, and a sound step nobody performs manages nothing. Naming the wrong half also aims the action at the wrong fix: rewriting a good procedure, or retraining people on a weak one."
+    "why_wrong": "Perfect compliance with a step that cannot catch the risk leaves the risk unmanaged, and a sound step nobody performs manages nothing. Naming the wrong half also aims the action at the wrong fix: rewriting a good procedure, or retraining people on a weak one. A step the person it restrains can skip unseen is not a sound step: that is a design gap, whatever the samples show."
    },
    "example": {
     "scenario": "A clinic in Ghana requires a second nurse to confirm each high-risk dose before it is given. An internal auditor observes that the second nurse signs the log at the end of each shift, after the doses.",
@@ -1067,7 +1067,7 @@
     "trap": "Move the finding to a private note for the director and leave it out of the draft.",
     "why": "Without a valid reason, results do not change. Leaving out a supported finding is concealing it, however kindly meant."
    },
-   "nuance": "Honest is not harsh: Standard 1.1 also asks for respectful, clear communication. A result does change for a valid reason, such as new evidence. Only a significant error triggers the formal correction, by criteria agreed with the board.",
+   "nuance": "Honest is not harsh, and straight is not stronger than the evidence: a red flag is reported as an indicator, not as proven fraud. Results change only for a valid reason; only a significant error triggers the formal correction.",
    "domains": [
     1,
     2,
