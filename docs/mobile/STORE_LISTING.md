@@ -152,17 +152,19 @@ KaiSip: Cyber & IT Audit Prep
 
 Chosen 29 Oct 2026 (owner: "IT Audit" alone is too narrow as KaiSip adds certifications; growth-marketer and app-store-compliance-reviewer agree). "Cyber" is accurate for a CISA-only app because Protection of Information Assets is cybersecurity content; "IT audit" is an exact search phrase KaiSip can win. Conditions: keep CISA® in the short description and the owner's line near the top of the full description until a second certification is live; never add "Certified" or "Cybersecurity Cert" to the title (too close to ISC2's "Certified in Cybersecurity"); check the length of any translated title (29/30 leaves no room); use the same name on the App Store.
 
-### Short description (80): 78/80
+### Short description (80): 80/80
 
 ```
-Know why the best answer wins. CISA® exam prep for IT audit and cybersecurity.
+Know why the best answer wins. CISA® exam practice for IT audit & cybersecurity.
 ```
+
+Production text (21 Nov 2026, growth-marketer): "practice" replaces "prep" because "Prep" is already in the title, so the pair covers both searches. Previous: "Know why the best answer wins. CISA® exam prep for IT audit and cybersecurity."
 
 It opens with the brand line (5 Nov 2026), then carries "CISA® exam" (the high-intent search, used only to name the exam, and never first), "IT audit" and "cybersecurity" (Play does not reliably match "cyber" to it) and the exam the title leaves out. "Works offline" moved to the full description. Previous text (29 Oct to 5 Nov): "Calm IT audit and cybersecurity practice for the CISA® exam. Works offline." Before that (22 Oct): "Practice for the CISA® exam: teaching tips, daily plan and spaced review." When ISC2 CC ships in the Play build, switch to "Calm cybersecurity and IT audit practice for the CISA® and ISC2® CC® exams." (75) and update the guardrail, the trademark notice and "all 5 CISA domains" in the same change; have app-store-compliance-reviewer confirm the first listing that names ISC2.
 
-### Full description (4000): 2,832/4000
+### Full description (4000): 2,910/4000
 
-Its own text for Play (22 Oct 2026, revised 5 Nov 2026). It differs from the App Store text in three places: the beta line "free to use during the beta" (the same words as the beta invitation; never "free app", "completely free" or "free forever", because paid plans may come), home-screen widgets (Android only; the iPhone app has none), and the question-bank line (App Store only). Both descriptions carry the owner's line "Starting with CISA. More certifications later." and the same three drills (Snare Spotter, Signpost, Call It First; the rest open after 50 answers, `todaysDrill.ts`). Play indexes the full description for search, so these phrases already appear naturally: "CISA® exam", "IT auditors", "practice questions", "mock exams", "offline". Do not add keyword lists. Play's metadata policy rejects them.
+**Production text (21 Nov 2026), for the phone 2.2 build.** A third-party "optimized" draft was rejected: it put CISA in the title, repeated "cisa exam prep" about seven times (Play metadata policy), said the questions were "written by an IT audit professional", and claimed the download "includes a sample", which is false with no purchases in the app. Changes from the beta text, checked by app-store-compliance-reviewer (feature lines against the code at `49ab40d`) and growth-marketer: the beta line became "KaiSip is free to use. No account, no ads." (true for 2.2; change it in the same release that adds paid plans); the credential line "Built by a CISA-certified IT auditor" moved into the opening lines, and the trademark notice now says questions are drafted with AI tools and checked under the founder's direction (matches beta.html and "How questions are made"); "Starting with the CISA exam" uses the mark as an adjective; added look back at answered questions, the journal's pattern, the optional countdown (Build a set only) and light and dark themes; a readiness-estimate line. The built 2.2 bundle contains no direct-support or Supabase endpoint, so "No data collected" holds. Earlier history: its own text for Play (22 Oct 2026, revised 5 Nov 2026). It differs from the App Store text in three places: the beta line "free to use during the beta" (the same words as the beta invitation; never "free app", "completely free" or "free forever", because paid plans may come), home-screen widgets (Android only; the iPhone app has none), and the question-bank line (App Store only). Both descriptions carry the owner's line "Starting with CISA. More certifications later." and the same three drills (Snare Spotter, Signpost, Call It First; the rest open after 50 answers, `todaysDrill.ts`). Play indexes the full description for search, so these phrases already appear naturally: "CISA® exam", "IT auditors", "practice questions", "mock exams", "offline". Do not add keyword lists. Play's metadata policy rejects them.
 
 "No data collected" in MADE FOR REAL LIFE is true only because the Play build ships with over-the-air updates off (owner decision, 22 Oct 2026; PLAY_LAUNCH.md B1 Option A). If store builds ever turn updates back on, change that line to "No account, no ads, no analytics. Your progress stays on your phone." and redo the Data safety form below.
 
@@ -171,16 +173,17 @@ When the beta ends, change the beta line (the owner decides the wording then).
 ```
 Know why the best answer wins.
 
-KaiSip helps IT auditors, security and risk professionals prepare for the CISA® exam in short, calm sessions that fit around work. Every answer teaches the principle behind it, so you learn to choose the best answer, not just one that sounds right. Starting with CISA. More certifications later.
+KaiSip helps IT auditors, security and risk professionals prepare for the CISA® exam in short, calm sessions that fit around work. Built by a CISA-certified IT auditor, KaiSip teaches the principle behind every answer, so you learn to choose the best answer, not just one that sounds right. Starting with the CISA exam. More certifications later.
 
-KaiSip is free to use during the beta. No account, no ads.
+KaiSip is free to use. No account, no ads.
 
 PRACTICE THAT TEACHES
-• Original practice questions across all 5 CISA domains
+• Original practice questions for the CISA® exam, across all 5 domains
 • A clear explanation for every answer, including why the tempting choices fall short
 • Exam-style tips on every question: Eliminate two, Final two and Exam cue
 • Coach me hints when you want a nudge before you commit
 • Exam-mindset principles that show how an auditor thinks, each with its own practice set
+• Look back at questions you have answered, with their explanations, without answering again
 
 SEE THE PATH
 • Today: a short daily plan that shows what to study next, and why it matters
@@ -190,7 +193,7 @@ SEE THE PATH
 
 REMEMBER WHAT YOU LEARN
 • Questions to revisit come back before they fade
-• A mistake journal where you tag the slip behind each miss, then get the drill for your most common one
+• A mistake journal: tag the slip behind each miss, then see your pattern and what to try next
 • Study notes for every topic, short lessons and key terms
 • Save questions and add your own notes
 
@@ -201,7 +204,8 @@ DRILLS THAT BUILD EXAM SKILL
 • More drills open as you practise
 
 STAND TALL ON EXAM DAY
-• Full mock exams weighted like the real exam, plus shorter mini mocks
+• Full mock exams weighted like the CISA exam, plus shorter mini mocks
+• An optional countdown when you build your own practice set, or practise untimed
 • A guide to sitting the exam: booking, exam day and results
 • A share card to mark your progress with your study group
 
@@ -211,15 +215,13 @@ MILESTONES THAT MEAN SOMETHING
 MADE FOR REAL LIFE
 • Works offline, on the commute or between meetings
 • Home-screen widgets and gentle study reminders you set yourself
+• Light and dark themes
 • No account and no sign-up. No data collected. Your progress stays on your phone, and a backup file you save yourself moves it to a new one.
 • Report any question from where you see it. Fixes are listed in What's new.
-• Light and dark themes, and calmer motion when your phone asks for it
 
-A NOTE ON READINESS
-Your readiness range is a study estimate, not a prediction of your exam result. KaiSip cannot promise a pass. It helps you practise with purpose and walk in prepared.
+Your readiness range is a study estimate, not a prediction of your exam result. KaiSip helps you practise with purpose and walk in prepared.
 
-All practice questions are original and are not ISACA exam questions.
-CISA® and ISACA® are registered trademarks of ISACA. KaiSip is not affiliated with or endorsed by ISACA.
+CISA® is a registered trademark of ISACA and appears only to describe the exam. KaiSip is not affiliated with or endorsed by ISACA. All practice questions are original, drafted with AI tools and checked under the direction of a CISA-certified founder.
 ```
 
 ### Graphics
