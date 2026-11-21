@@ -14,8 +14,8 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 |---|---|
 | **Status (20 Nov 2026)** | Session G, steps 1 to 3 done: expert decisions, the documents, the harness (187 planted faults stopped, 43 controls hold; an independent code review's findings are all fixed), the expert agents, the **Part 1 study notes for all four sections** (93 sub-topics, audited and learner-read), and the **Part 1 pilot: 80 questions, 20 per section**, through the full pipeline (scorecard in section 7; calibration rules in section 6b). With them: the 20 shared principles, the Part 1 exam guide and final review week, and a first generated Challenge pack from the tagged items. The **glossary start** is written and audited (153 Part 1 terms in `data/cia/shared/glossary.json`; it reuses the notes' wording, and `check_glossary.py` fails if a term is ever defined two ways). The outline of the CISA bridge is in `docs/content/CIA_CISA_BRIDGE_OUTLINE.md`. Session G is complete. |
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
-| **Rounds 1 to 12 done (21 Nov 2026)** | Round 12: 30 questions aimed at the coverage map's gaps (A 11, B 9, C 3, D 7). Part 1 stands at **322 questions (A 103, B 83, C 101, D 35)**. **Every one of the 97 syllabus bullets now has a question, and every judge-level bullet an analysis question.** Against the three-form bar of about 375 (A 131, B 75, C 113, D 56), Section B is over its share and the gaps are A about 28, C about 12, D 21 (14 of D's blocked on sources). 15 bullets still have only one question, which cannot be held back. Every question is tagged to one of 24 principles. |
-| **Next step** | Toward the revised sale gate (decision 4), from `docs/content/CIA_P1_COVERAGE.md` section 5: (1) a second question on each one-item bullet with opened sources (1B5b, 1B4b, 1B4c, 1B4f, 1B4e, 1C2a, 1A6g, 1A5g), under the sibling rule, so each bullet's only question can be held back; (2) Section A's Challenge topics (1A7e, 1A2a, 1A7c, 1A8b, 1A8c) and Section C's second analysis items; (3) Section D's 7 open slots, then D waits for its sources (the owner's IIA membership and licence decisions, section 9); (4) the Part 2 notes can start in parallel. A sibling whose lesson is common sense fails the blind test however it is built (round 12): cut it rather than polish it. |
+| **Rounds 1 to 13 done (21 Nov 2026)** | Round 13: 24 questions written on the one-item bullets, Section A's Challenge topics and Section D's open slots; 19 kept (A 9, B 2, C 2, D 6) and 5 cut as answerable from wording. Part 1 stands at **341 questions (A 112, B 85, C 103, D 41)**. **Gate (a) is met**: every one of the 97 bullets has a question at its verb's depth (a bullet's only question just stays out of the held-back form and mock; 11 bullets have one). What is left is gate (b)'s counts against the three-form bar of about 375 (A 131, B 75, C 113, D 56): A 19, C 10, D 15 (14 of D's blocked on sources). Every question is tagged to one of 24 principles. |
+| **Next step** | (1) Section A's and C's counts from `docs/content/CIA_P1_COVERAGE.md` section 5, new lessons only (round 13 found the opened sources nearly out of distinct lessons on the thin bullets: write to the bullets with room, 1A4e, 1A3c, 1A4c, 1A1a, 1C6b, 1C8b, 1C2b, 1C5a, 1C5b, 1C3b, 1C2c); (2) Section D waits for its sources (the owner's IIA membership and licence decisions, section 9); (3) the Part 2 notes can start in parallel, and are the larger source of new items. If A or C runs out of distinct lessons before its count, the choice in decision 4 applies (fewer full forms, or more opened sources), never padding. |
 | **Then** | Part 2, Part 3, the Challenge build and the CISA bridge notes (from the outline), the cross-part release gate. |
 | **Known weak spot** | Difficulty. No pilot key was wrong and all four blind rounds agreed 80 of 80, but the last testers still called 21 of 80 answerable by test-taking alone, most in Sections B and D, and 8 items carry a TOO EASY or GIVEAWAY flag (section 7). New rounds must do better; the pilot items are candidates for a later hardening pass, not for more polishing now (section 6b, rule 12). |
 
@@ -44,7 +44,7 @@ pack. Every surface CISA has, as data that passes its gate.
 |---|---|---|---|---|---|---|
 | Blueprint and outline | `docs/content/CIA_BLUEPRINT.md`, `data/cia/shared/outline.json` | cert-blueprint-researcher | Done | Done | Done | Done |
 | Study notes | `notes/d{N}.json`, one file per section, notes schema v2 | part expert | Done: 93 sub-topics, audited (section 8b) | Not started | Not started | Generated later, plus the bridge |
-| Questions | `originals/d{N}.json` | part expert | Pilot and rounds 1 to 12 done: 322 (A 103, B 83, C 101, D 35; section 7); every syllabus bullet covered (`CIA_P1_COVERAGE.md`) | Not started | Not started | Generated (`build_challenge.py`) from the tagged pilot items |
+| Questions | `originals/d{N}.json` | part expert | Pilot and rounds 1 to 13 done: 341 (A 112, B 85, C 103, D 41; section 7); every syllabus bullet covered (`CIA_P1_COVERAGE.md`) | Not started | Not started | Generated (`build_challenge.py`) from the tagged pilot items |
 | Citation library | `data/cia/shared/_framework_library.md` (one for all four) | part experts, cia-currency-checker | Started | | | |
 | Dated facts | `data/cia/shared/currency.json` | cia-currency-checker | Started | | | |
 | Glossary | `glossary.json`, built from `data/cia/shared/glossary.json` | iia-mindset-coach, part experts | Started: 153 terms, audited (section 7) | Later | Later | Built from the shared terms of its topics |
@@ -411,6 +411,7 @@ in a row below 90%: stop and tell the owner.
 | Round 10 | 20 Nov 2026 | cia1, Section B hardening: 18 existing items reworked (001, 004, 005, 006, 008, 011, 013, 014, 015, 016, 018, 020, 040, 045, 050, 060, 062, 067) | 0 new (18 reworked) | 18 of 18 final (100%) | 0 / 3 / 3 on 18 | Section B 16.9% (from 19.6%) | 0 | None new |
 | Round 11 | 20 Nov 2026 | cia1, Section A (1A2, 1A3, 1A7, 1A8) and Section C (1C1, 1C5, 1C6) | 12 (7 and 5) | 12 of 12 first round; 12 of 12 final (100%) | 0 / 36 / 21 on 12 (two audits), plus 0 / 12 / 6 from the targeted audit and 0 / 2 / 1 from the citation check | 16.3% and 16.2% | 1 replaced before merge (`cia1_d3_098` repeated `cia1_d1_092`); 17 planned slots left empty | None new |
 | Round 12 | 21 Nov 2026 | cia1, all four sections, aimed at the coverage map's gaps (zero-item and one-item bullets, judge bullets below depth) | 30 (A 11, B 9, C 3, D 7) | 29 of 30 first round (Section B 8 of 9 scored); 30 of 30 final (100%), after three items were hardened and one cut | 5 / 69 / 34 on 31 (three audits), plus 0 / 14 / 10 from the targeted audits of changed keys, 0 / 9 / 5 on two reworked items and 0 / 1 / 5 from the citation check | A 17.5%, B 18.7%, C 16.7%, D 22.9% | 1 cut before merge (a 1B4g trust sibling, test-taking in three blind tests); the next item took its id | None new; the originality gate now fetches and requires the two 2026 Statements of Position |
+| Round 13 | 21 Nov 2026 | cia1, all four sections: one-item bullets, Section A's Challenge topics, Section C's analysis items, Section D's open slots (new lessons only) | 19 kept of 24 (A 9, B 2, C 2, D 6) | 24 of 24 first round, but 8 classed answerable by test-taking; 19 of 19 final after one fix pass each | 8 / 77 / 29 on 24 (three audits), plus 1 / 18 / 13 from the targeted audits of changed keys and 0 / 0 / 2 from the citation check | A 17.0%, B 18.2%, C 16.3%, D 22.0% | 5 cut before merge, each still answerable from wording after one fix pass (siblings on 1A5g, 1B5b, 1C2a; 1B4e on a common-sense lesson; a 1D3a analysis item); later ids moved down | None new |
 
 **Pilot, in full.** Four standards audits (one per section, with the key):
 Section A 0 HARD, 15 PRECISION, 8 OBSERVATION; B 0 / 8 / 5; C 1 / 9 / 12;
@@ -953,6 +954,55 @@ What round 10 taught.
 - **The pilot items were the weakest and are now in line.** The plan's note
   that pilot items were candidates for a later hardening pass is done for
   Section B; Sections A, C and D pilot items remain candidates.
+
+**Round 13, in full.** Three authors wrote 24 items from the coverage map's gap list:
+Section A 10 (one-item bullets, the Challenge topics 1A2a, 1A7c, 1A7e, 1A8b and 1A8c, and
+an analysis item on 1A4e), Section B 4 (second items on one-item bullets; slots on 1B4f and
+1B4h left empty), Sections C and D 10 (1C2a, 1C6a, and seven Section D items, each on a
+lesson no D item taught, because D's sibling share was already 17%). Standards audits:
+Section A 2 HARD, 43 PRECISION, 9 OBSERVATION; Section B 4 / 15 / 7; Sections C and D
+2 / 19 / 13. The HARD errors: a second defensible answer in a Section A item (the stem gave
+no live date for a framework still in draft) and in a Section B item (the stem did not show
+the board never saw the reports); a 1C2a item that called an overdue review "reported"
+where Standard 14.3 makes reporting mandatory only for a significant risk; an explanation
+that followed Standard 1.2's consideration clause by clause; and a tip that let Standard
+8.1's must set timing (its must sets who hears: the board and senior management). No key
+was wrong.
+
+The blind tests are the story of this round. First round: 24 of 24 correct, but 8 classed
+answerable by test-taking, and the options-only pass named every key in every section.
+Each author had one fix pass (new options so the key was not the only measured, broadest,
+act-now or safeguard-naming option; single-word echo removed; a wrong option made the
+measured one with a wrong reason). Fresh blind tests then cut five items still answerable
+from wording: siblings on 1A5g, 1B5b and 1C2a, a 1B4e item on a common-sense lesson (raise
+an issue with its owner now), and a 1D3a analysis item. The 19 kept pass at "partly" or
+"needs the Standards". Targeted audits of every changed key: A 1 / 10 / 5, B 0 / 5 / 4,
+C and D 0 / 3 / 4. Citation check: 0 / 0 / 2, both notes wording.
+
+Notes and glossary: twelve sub-topics gained or fixed a line that taught against a key
+(1A2.2, 1A4.4, 1A6.3, 1A7.3, 1A7.4, 1A8.3, 1A8.4, 1B4.3, 1C2.1, 1D2.3, 1D3.1, 1D3.3, and
+the 1D4.1 and 1D4.3 examples). Principles: five texts fixed, no retags.
+
+Sibling items to keep apart in one mock (section 11): `cia1_d1_104` with `cia1_d1_062`;
+`cia1_d1_106` with `cia1_d1_099`; `cia1_d1_107` with `cia1_d1_103` and `cia1_d1_028`;
+`cia1_d1_111` with `cia1_d1_021`; `cia1_d2_084` with `cia1_d2_076`; `cia1_d2_085` with
+`cia1_d2_077`; `cia1_d4_036` with `cia1_d4_040` (both key the middle step of a scope
+ladder); `cia1_d4_040` with `cia1_d4_033`; `cia1_d4_041` with `cia1_d4_034`.
+
+What round 13 taught.
+- **Gate (a) was misread in round 12's write-up.** A one-item bullet does not fail the
+  gate; its item just stays out of the held-back form and mock. Gate (a) has been met
+  since round 12, and the work left is gate (b)'s counts.
+- **The thin bullets are out of distinct lessons.** Five of 24 items were cut and two
+  slots left empty; most cuts were siblings. New items should go to bullets with room
+  (section 5 of the coverage map) and to Part 2, not to second items on thin bullets.
+- **The options-only pass named every key in every section**, before and after the fix
+  passes: the key is usually the measured, collaborative or Standards-faithful option,
+  because that is what the CIA lens rewards. A fix pass can break single tells (echo, the
+  lone act-now option, the broadest scope) but not that the right answer is the sound one.
+  The per-item class from the full blind test, not the options-only pass, decides a cut.
+- **One fix pass, then cut** worked: it saved four of the eight weak items and stopped
+  polishing the rest.
 
 **Round 12, in full.** The first round written from the bullet coverage map
 (`docs/content/CIA_P1_COVERAGE.md`) instead of the notes sub-topics. Each author got
