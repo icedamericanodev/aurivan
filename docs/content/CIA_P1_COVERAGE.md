@@ -1,15 +1,16 @@
 # CIA Part 1: syllabus bullet coverage map
 
-Built 20 Nov 2026 and updated 21 Nov 2026 after rounds 12 and 13, to measure the revised sale gate (`docs/content/CIA_BANK_PLAN.md`,
-section 3, decision 4): (a) every syllabus bullet tested at its verb's depth with every
-gate passing; (b) three full exam-weighted forms without repeats (Part 1 about 375:
-A 131, B 75, C 113, D 56); (c) one full form and one short mock held back, and a
-bullet's only item never held back.
+Built 20 Nov 2026 and updated 21 Nov 2026 after rounds 12 to 14, to measure the sale gate (`docs/content/CIA_BANK_PLAN.md`,
+section 3, decision 4, revised in round 14): (a) every syllabus bullet tested at its verb's
+depth with every gate passing; (b) two full exam-weighted forms of distinct items per
+section (Part 1: A 88, B 50, C 74, D 38); (c) one full form frozen and held back, and a
+short mock drawn per learner from unseen items; a bullet's only item is never held back.
+Three forms (Part 1 about 375: A 131, B 75, C 113, D 56) stay the target as sources open.
 
 Source: the opened Part 1 syllabus (V2.09.2024 FINAL, opened 19 Nov 2026). The
 "Covers" column is the blueprint's own wording (`docs/content/CIA_BLUEPRINT.md`), not
-The IIA's; the verb is the bullet's leading word. Bank: all 341 items in
-`data/cia/cia1/originals/d1.json` to `d4.json` as of round 13. This is an internal
+The IIA's; the verb is the bullet's leading word. Bank: all 347 items in
+`data/cia/cia1/originals/d1.json` to `d4.json` as of round 14. This is an internal
 working document; it holds no item text.
 
 ## 1. How the map was made
@@ -39,33 +40,36 @@ working document; it holds no item text.
 
 ## 2. Where Part 1 stands against the gate
 
-| Section | Items | Three-form bar | Gap | Bullets | Zero items | One item | Below depth | Held back at the gate (full form + short mock) |
+The sale gate was revised in round 14 (plan section 3, decision 4): two full forms of
+distinct items per section (Part 1: A 88, B 50, C 74, D 38), one of them frozen and held
+back, and a short mock drawn per learner from unseen items. Three forms (about 375) stay
+the target as sources open. The "Three-form target" columns below track that target.
+
+| Section | Items | Two-form bar (gate) | Three-form target | Gap to target | Bullets | Zero items | One item | Below depth |
 |---|---|---|---|---|---|---|---|---|
-| A Foundations | 112 | 131 | 19 | 35 | 0 | 4 | 0 | 44 + 15 = 59 |
-| B Ethics and Professionalism | 85 | 75 | 0 (10 over) | 25 | 0 | 3 | 0 | 25 + 8 = 33 |
-| C Governance, Risk Management, and Control | 103 | 113 | 10 | 20 | 0 | 0 | 0 | 37 + 13 = 50 |
-| D Fraud Risks | 41 | 56 | 15 | 17 | 0 | 4 | 0 | 19 + 6 = 25 |
-| **Part 1** | **341** | **375** | **44** | **97** | **0** | **11** | **0** | **125 + 42 = 167** |
+| A Foundations | 116 | 88, met | 131 | 15 | 35 | 0 | 4 | 0 |
+| B Ethics and Professionalism | 85 | 50, met | 75 | 0 (10 over) | 25 | 0 | 3 | 0 |
+| C Governance, Risk Management, and Control | 105 | 74, met | 113 | 8 | 20 | 0 | 0 | 0 |
+| D Fraud Risks | 41 | 38, met | 56 | 15 | 17 | 0 | 4 | 0 |
+| **Part 1** | **347** | **250, met** | **375** | **38** | **97** | **0** | **11** | **0** |
 
 (The full and short mock splits are the app's own sum, `allocate()` in
 `data/cia/tools/cia_common.py`: 125 as 44/25/37/19 and 42 as 15/8/13/6.)
 
-What the counts hide (after round 13):
+What the counts hide (after round 14):
 
-- **Gate (a) is met.** Every bullet has an item and every judge bullet an analysis item
-  (since round 12). A bullet with one item does not fail the gate: the rule is only that
-  its item is never held back from practice, so it stays out of the held-back form and mock.
-- **One item (11):** A: 1A5a, 1A5f, 1A5g, 1A6d (limited sources; round 13 found no lesson
-  left that was not a repeat or common sense, and cut the 1A5g sibling). B: 1B4e, 1B4f,
-  1B5b (round 13's siblings on 1B4e and 1B5b failed the blind test: common-sense lessons).
-  D: 1D4b, 1D5b, 1D5c, 1D5d (blocked on members-only guides or the textbook).
-- **What is left for the sale gate is gate (b)'s counts:** A 19, C 10 and D 15, of which
-  14 of D's wait for sources (section 4). Section B is 10 over its share.
-- **Distinct lessons are running out in the opened sources.** Round 13 wrote 24 items and
-  kept 19: the five cut were siblings or near-repeats that a test-wise candidate could
-  answer from wording. New items now need a lesson the bank does not yet teach.
-- **Section C's bulk sits in four bullets**: 1C1a (10), 1C8a (9), 1C5c (7) and 1C6a (8).
-  New C items belong elsewhere.
+- **Gates (a) and (b) are met.** Every bullet has an item at its verb's depth, and every
+  section holds two full forms of distinct items. Gate (c) (the held-back full form and the
+  per-learner short mock) is an app rule, checked when the packs are wired in (plan
+  section 11).
+- **One item (11):** A: 1A5a, 1A5f, 1A5g, 1A6d. B: 1B4e, 1B4f, 1B5b. D: 1D4b, 1D5b, 1D5c,
+  1D5d (blocked on members-only guides or the textbook). A bullet's only item stays out of
+  the held-back form.
+- **The opened sources are out of distinct lessons for Part 1.** Round 14 filled 6 of 22
+  planned slots (13 written, 7 cut or left as repeats); round 13 kept 19 of 24. The third
+  form waits for new sources: the IIA's members-only fraud guides (14 of D's 15) and a
+  textbook (1A4b, and more depth on the limited-source bullets).
+- **Section C's bulk sits in four bullets**: 1C1a (10), 1C8a (9), 1C6a (8) and 1C5c (7).
 - **Siblings to keep apart in one mock** are logged in each item's `_provenance` and in
   the plan's round write-ups (section 7).
 - **No item carries a future `testable_from`**, so every item can enter a form today.
@@ -92,13 +96,13 @@ What the counts hide (after round 13):
 | 1A4e | Picking the right kind of service for the situation in front of you | Determine (judge) | 3: d1_008, d1_044, d1_112; also touched by d1_014, d1_041, d3_049 | 0/1/2 | yes | - |
 | 1A5a | Assessments of risks and of the controls over them | Describe (recall) | 1: d1_012 | 1/0/0 | yes | one item: cannot be held back; more needs detail: textbook |
 | 1A5b | Audits of outside parties and of whether contracts are being followed | Describe (recall) | 2: d1_045, d1_099 | 1/1/0 | yes | more needs detail: Third-Party TR (testable 2027-03-01), PG Auditing Third-Party Risk Management |
-| 1A5c | Audits of IT security and of privacy | Describe (recall) | 2: d1_046, d1_061 | 0/2/0 | yes | - |
+| 1A5c | Audits of IT security and of privacy | Describe (recall) | 3: d1_046, d1_061, d1_116 | 0/3/0 | yes | - |
 | 1A5d | Audits of performance and of quality | Describe (recall) | 2: d1_093, d1_094 | 1/1/0 | yes | more needs detail: textbook |
 | 1A5e | Audits of operations, of financial matters and of compliance with regulations | Describe (recall) | 3: d1_011, d1_049, d1_070 | 1/2/0 | yes | - |
 | 1A5f | Audits of the organization's culture | Describe (recall) | 1: d1_047 | 0/1/0 | yes | one item: cannot be held back; more needs detail: PG Auditing Culture; Org. Behavior TR (testable 2027-06-01) |
 | 1A5g | Audits of how management reports are produced | Describe (recall) | 1: d1_048 | 0/1/0 | yes | one item: cannot be held back |
 | 1A6a | Teaching others about risk and control | Describe (recall) | 2: d1_063, d1_096 | 0/2/0 | yes | - |
-| 1A6b | Advising while a system is being designed and built | Describe (recall) | 2: d1_013, d1_014 | 1/1/0 | yes | - |
+| 1A6b | Advising while a system is being designed and built | Describe (recall) | 3: d1_013, d1_014, d1_115 | 1/2/0 | yes | - |
 | 1A6c | Helping with due diligence reviews | Describe (recall) | 2: d1_052, d1_098 | 1/1/0 | yes | more needs detail: textbook |
 | 1A6d | Helping keep personal data private | Describe (recall) | 1: d1_095 | 1/0/0 | yes | one item: cannot be held back; more needs detail: PG Auditing Privacy and Data Protection Risks |
 | 1A6e | Benchmarking against peers or good practice | Describe (recall) | 2: d1_050, d1_071 | 1/1/0 | yes | - |
@@ -106,9 +110,9 @@ What the counts hide (after round 13):
 | 1A6g | Mapping how a process flows | Describe (recall) | 2: d1_062, d1_104; also touched by d1_051 | 0/2/0 | yes | - |
 | 1A7a | Reporting lines for the chief audit executive that do not fit the role | Identify (recall) | 6: d1_017 (A2), d1_026, d1_064 (A2), d1_074 (A2), d1_083 (A2), d1_091 (A2); also touched by d1_087, d2_022 | 1/4/1 | yes | - |
 | 1A7b | The board's part in guarding independence | Describe (recall) | 5: d1_015 (A2), d1_029, d1_072, d1_073 (A2), d1_084 (A2); also touched by d1_005, d1_023 | 4/1/0 | yes | - |
-| 1A7c | The chief audit executive's part: guarding independence day to day and telling the board when it is, or looks, impaired | Describe (recall) | 4: d1_028 (A2), d1_030 (A2), d1_101 (A2), d1_107 (A2); also touched by d1_064 | 0/4/0 | yes | - |
+| 1A7c | The chief audit executive's part: guarding independence day to day and telling the board when it is, or looks, impaired | Describe (recall) | 5: d1_028 (A2), d1_030 (A2), d1_101 (A2), d1_107 (A2), d1_114 (A2); also touched by d1_064 | 1/4/0 | yes | - |
 | 1A7d | Budget limits that hold back internal audit's work | Identify (recall) | 3: d1_016 (A2), d1_090 (A2), d1_103 (A2) | 1/1/1 | yes | - |
-| 1A7e | What happens when scope is limited or access is cut off | Describe (recall) | 4: d1_027 (A2), d1_089 (A2), d1_105 (A2), d1_106 (A2); also touched by d1_069 | 0/4/0 | yes | - |
+| 1A7e | What happens when scope is limited or access is cut off | Describe (recall) | 5: d1_027 (A2), d1_089 (A2), d1_105 (A2), d1_106 (A2), d1_113 (A2); also touched by d1_069 | 0/5/0 | yes | - |
 | 1A8a | The Three Lines Model and who sits where in it | Describe (recall) | 7: d1_018 (A3), d1_019 (A3), d1_031 (A3), d1_034 (A3), d1_075 (A3), d1_076, d1_085 (A3) | 1/5/1 | yes | - |
 | 1A8b | First and second line duties that would weaken independence if auditors took them on | Identify (recall) | 5: d1_035 (A3), d1_092 (A3), d1_102 (A3), d1_108 (A3), d1_109 (A3); also touched by d1_032, d3_014 | 3/1/1 | yes | - |
 | 1A8c | Safeguards for when auditors do, or seem to do, first or second line work | Describe (recall) | 4: d1_020 (A3), d1_032 (A3), d1_033 (A3), d1_110 (A3); also touched by d1_092, d3_098 | 1/3/0 | yes | - |
@@ -156,11 +160,11 @@ What the counts hide (after round 13):
 | 1C2b | The meaning of risks and controls at engagement level | Define (recall) | 3: d3_004, d3_024, d3_090 | 2/1/0 | yes | - |
 | 1C2c | How the way decisions get made shapes governance, risk management and control | Recognize (recall) | 4: d3_005, d3_023, d3_025, d3_066 | 0/4/0 | yes | - |
 | 1C3a | Ethical, legal and compliance rules an organization must meet | Identify (recall) | 5: d3_006, d3_044, d3_065, d3_072, d3_079; also touched by d2_066 | 3/2/0 | yes | - |
-| 1C3b | Where the internal auditor fits in the organization's ethics framework | Recognize (recall) | 5: d3_007, d3_026, d3_027, d3_054, d3_068; also touched by d2_002, d2_041, d3_044 | 0/5/0 | yes | - |
+| 1C3b | Where the internal auditor fits in the organization's ethics framework | Recognize (recall) | 6: d3_007, d3_026, d3_027, d3_054, d3_068, d3_105; also touched by d2_002, d2_041, d3_044 | 0/6/0 | yes | - |
 | 1C4a | Telling the main risk types apart: strategic, financial, operational, reputational and compliance risk, plus sustainability, environmental and social responsibility risk | Differentiate (apply) | 6: d3_008, d3_028, d3_056, d3_070, d3_080, d3_093 | 1/5/0 | yes | - |
 | 1C4b | Inherent risk compared with residual risk | Compare and contrast (apply) | 6: d3_009, d3_029, d3_045, d3_046, d3_055, d3_074 | 1/5/0 | yes | - |
 | 1C5a | What risk management is | Define (recall) | 3: d3_030, d3_047, d3_082; also touched by d3_081 | 1/2/0 | yes | - |
-| 1C5b | Risk appetite and risk tolerance, and how to spot each | Recognize (recall) | 3: d3_010, d3_031, d3_094; also touched by d3_001 | 0/3/0 | yes | - |
+| 1C5b | Risk appetite and risk tolerance, and how to spot each | Recognize (recall) | 4: d3_010, d3_031, d3_094, d3_104; also touched by d3_001 | 0/4/0 | yes | - |
 | 1C5c | The steps of the risk management cycle, and how sound each one is | Assess (judge) | 7: d3_011, d3_081, d3_083, d3_087, d3_095, d3_099, d3_101 | 0/6/1 | yes | - |
 | 1C5d | Whether the organization's responses to its risks are good ones | Evaluate (judge) | 6: d3_012, d3_032, d3_033, d3_048, d3_057, d3_092; also touched by d3_030 | 0/3/3 | yes | - |
 | 1C6a | Judging how well risk management is designed and how well it works | Evaluate (judge) | 8: d3_013, d3_035, d3_050, d3_058, d3_069, d3_075, d3_091, d3_103; also touched by d3_059 | 3/3/2 | yes | - |
@@ -204,10 +208,10 @@ lesson follow the sibling rule (at most two per lesson, about 15% of a section).
 
 | Section | Now | Bar | Gap | Where the items go |
 |---|---|---|---|---|
-| A | 112 | 131 | 19 | Challenge topics where a new lesson is left: 1A7e +1, 1A2a +1, 1A7c +1, 1A8c +1 (round 13 found second lessons there overlapped existing items). 1A4e +2 (analysis). Others: 1A3c +2, 1A4c +2, 1A1a +2, 1A6b +1, 1A6e +1, 1A5c +1. One-item bullets 1A5a, 1A5f, 1A5g, 1A6d +1 each only if a new lesson appears (limited sources, plan 8b). 1A4b: none until the textbook. |
-| B | 85 | 75 | 0 | The count and depth are met. 1B4e, 1B4f and 1B5b keep one item each unless a new lesson that needs the Standards appears; round 13's siblings on them failed the blind test. |
-| C | 103 | 113 | 10 | No one-item bullets. Two items: 1C6b +1, 1C8b +1. Others: 1C2b +1 (concept level; COSO is background only), 1C5a +1, 1C5b +1, 1C3b +1, 1C2c +1. Second analysis items where a lesson is left: 1C7c +1, 1C6a +1, 1C7b +1 (round 13 found none left for 1C5c, 1C7b or 1C7c). Nothing more on 1C1a, 1C8a or 1C5c. |
-| D | 41 | 56 | 15 | **From opened sources now (1):** 1D3a, a second analysis item (round 13's was cut as a giveaway). **Blocked until the members-only guides or the textbook are opened (14):** 1D1c +3, 1D5b +3, 1D5c +3, 1D5d +2, 1D3b +2, 1D4b +1. |
+| A | 116 | 131 | 15 | Toward the three-form target only, from new sources or new lessons: round 14 found no lesson left on 1A1a, 1A4e, 1A3c, 1A4c, 1A6e or 1A2a in the opened sources. Leads for later: an independence problem found after an engagement closes (Standard 7.1 considerations); a request to add scope as a possible scope limitation (Standard 13.3 considerations). 1A4b: the textbook. |
+| B | 85 | 75 | 0 | Met. 1B4e, 1B4f and 1B5b keep one item each unless a new lesson appears. |
+| C | 105 | 113 | 8 | Toward the target only: round 14 found no lesson left on 1C6b, 1C8b, 1C2b, 1C5a, 1C2c, 1C6a or 1C7b, and cut a 1C7c analysis item as a giveaway. |
+| D | 41 | 56 | 15 | **From opened sources (1):** a second 1D3a analysis item (round 13's was cut). **Blocked (14):** 1D1c +3, 1D5b +3, 1D5c +3, 1D5d +2, 1D3b +2, 1D4b +1. |
 
 **Section D's blocked bullets and the guide each needs.** The opened sources for D are
 the Standards (glossary "fraud", 4.2, 9.4, 13.2, 3.1, 6.1), the syllabus lines (plan 8b:
@@ -230,23 +234,18 @@ decisions (plan section 9).
 
 ## 5. Gap list in priority order
 
-Rounds 12 and 13 cleared every zero-item bullet, every judge bullet below depth and the
-one-item bullets that had a second lesson to give. What is left, in order:
+The sale gate's counts are met (section 2). What is left serves the three-form target:
 
-1. **Section A's count (19)**: 1A4e analysis items, then 1A3c, 1A4c, 1A1a, and the
-   Challenge topics 1A7e, 1A2a, 1A7c, 1A8c where a new lesson is left (section 4).
-2. **Section C's count (10)**: 1C6b, 1C8b, 1C2b, 1C5a, 1C5b, 1C3b, 1C2c, and second
-   analysis items on 1C7c, 1C6a, 1C7b where a lesson is left.
-3. **Section D from opened sources (1)**: a second 1D3a analysis item.
-4. **Blocked (14 D items, plus 1A4b)**: 1D1c, 1D3b, 1D4b, 1D5b, 1D5c, 1D5d (members-only
-   guides, textbook); 1A4b (textbook).
-5. **One-item bullets (11)**: only with a new lesson; each one-item bullet's item stays in
-   practice and out of the held-back form and mock.
+1. **Section D from opened sources (1)**: a second 1D3a analysis item.
+2. **Blocked on sources (14 D items, plus 1A4b)**: 1D1c, 1D3b, 1D4b, 1D5b, 1D5c, 1D5d
+   (the IIA's members-only guides, a textbook); 1A4b (textbook). The owner's IIA
+   membership and textbook decisions open them (plan section 9).
+3. **Sections A and C**: only from a lesson the bank does not yet teach (the leads in
+   section 4), or from new sources.
+4. **One-item bullets (11)**: only with a new lesson.
 
-If the opened sources run out of distinct lessons before Section A or C reaches its
-three-form count, the honest options are the ones in plan section 3, decision 4: fewer
-full forms for that section, or opened sources beyond the Standards (the textbook, the
-members-only guides). Never padding.
+Part 1 authoring now moves to the Part 2 notes and items (plan, "Next step"); log any Part 1
+lesson found there for a later round.
 
 ## 6. Leads for first items and siblings
 
