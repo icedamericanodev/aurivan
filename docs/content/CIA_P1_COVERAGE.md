@@ -1,6 +1,6 @@
 # CIA Part 1: syllabus bullet coverage map
 
-Built 20 Nov 2026 to measure the revised sale gate (`docs/content/CIA_BANK_PLAN.md`,
+Built 20 Nov 2026 and updated 21 Nov 2026 after round 12, to measure the revised sale gate (`docs/content/CIA_BANK_PLAN.md`,
 section 3, decision 4): (a) every syllabus bullet tested at its verb's depth with every
 gate passing; (b) three full exam-weighted forms without repeats (Part 1 about 375:
 A 131, B 75, C 113, D 56); (c) one full form and one short mock held back, and a
@@ -8,8 +8,8 @@ bullet's only item never held back.
 
 Source: the opened Part 1 syllabus (V2.09.2024 FINAL, opened 19 Nov 2026). The
 "Covers" column is the blueprint's own wording (`docs/content/CIA_BLUEPRINT.md`), not
-The IIA's; the verb is the bullet's leading word. Bank: all 292 items in
-`data/cia/cia1/originals/d1.json` to `d4.json` as of round 11. This is an internal
+The IIA's; the verb is the bullet's leading word. Bank: all 322 items in
+`data/cia/cia1/originals/d1.json` to `d4.json` as of round 12. This is an internal
 working document; it holds no item text.
 
 ## 1. How the map was made
@@ -41,35 +41,38 @@ working document; it holds no item text.
 
 | Section | Items | Three-form bar | Gap | Bullets | Zero items | One item | Below depth | Held back at the gate (full form + short mock) |
 |---|---|---|---|---|---|---|---|---|
-| A Foundations | 92 | 131 | 39 | 35 | 2 | 8 | 0 | 44 + 15 = 59 |
-| B Ethics and Professionalism | 74 | 75 | 1 | 25 | 4 | 5 | 1 | 25 + 8 = 33 |
-| C Governance, Risk Management, and Control | 98 | 113 | 15 | 20 | 0 | 1 | 2 | 37 + 13 = 50 |
-| D Fraud Risks | 28 | 56 | 28 | 17 | 0 | 9 | 2 | 19 + 6 = 25 |
-| **Part 1** | **292** | **375** | **83** | **97** | **6** | **23** | **5** | **125 + 42 = 167** |
+| A Foundations | 103 | 131 | 28 | 35 | 0 | 5 | 0 | 44 + 15 = 59 |
+| B Ethics and Professionalism | 83 | 75 | 0 (8 over) | 25 | 0 | 5 | 0 | 25 + 8 = 33 |
+| C Governance, Risk Management, and Control | 101 | 113 | 12 | 20 | 0 | 1 | 0 | 37 + 13 = 50 |
+| D Fraud Risks | 35 | 56 | 21 | 17 | 0 | 4 | 0 | 19 + 6 = 25 |
+| **Part 1** | **322** | **375** | **61** | **97** | **0** | **15** | **0** | **125 + 42 = 167** |
 
 (The full and short mock splits are the app's own sum, `allocate()` in
 `data/cia/tools/cia_common.py`: 125 as 44/25/37/19 and 42 as 15/8/13/6.)
 
-What the counts hide:
+What the counts hide (after round 12):
 
-- **Section B is not complete.** It is one item short of the count bar, and four bullets have no item
-  (1B4b, 1B4c, 1B4f, 1B5b) and one judge bullet has no analysis item (1B4h). Gate (a)
-  fails on B as it does on A, C and D. B needs about 14 more items, so it ends near 88,
-  above its share of 375; forms draw by weight, so the surplus stays in practice.
-- **Zero items (6):** 1A5d, 1A6d, 1B4b, 1B4c, 1B4f, 1B5b.
-- **One item, so it cannot be held back (23):** A: 1A5a, 1A5b, 1A5f, 1A5g, 1A6a, 1A6c,
-  1A6f, 1A6g. B: 1B4e, 1B4g, 1B5a, 1B5d, 1B6b. C: 1C2a. D: 1D2b, 1D3c, 1D4a, 1D4b,
-  1D4c, 1D5b, 1D5c, 1D5d, 1D5e.
-- **Below the verb's depth (5), all judge bullets with no analysis item:** 1B4h
-  (1/2/0 F/Ap/An), 1C5c (0/5/0), 1C7b (1/2/0), 1D2b (0/1/0), 1D3a (0/2/0).
-- **Section A's depth is met everywhere**, but its two judge or apply bullets are thin:
-  1A4e has one analysis item and 1A4b two items in all, and limited against reasonable
-  assurance cannot go past the glossary line until the textbook is opened (plan 8b).
-- **Section C's bulk sits in three bullets**: 1C1a (10), 1C8a (9) and 1C6a (7) hold 26
-  of 98. New C items belong elsewhere.
+- **Every bullet now has at least one item, and every judge bullet an analysis item.**
+  Round 12 closed the six zero-item bullets (1A5d, 1A6d, 1B4b, 1B4c, 1B4f, 1B5b) and the
+  five judge bullets below depth (1B4h, 1C5c, 1C7b, 1D2b, 1D3a, one analysis item each).
+  Gate (a) now fails only on the one-item bullets, whose only item cannot be held back.
+- **One item, so it cannot be held back (15):** A: 1A5a, 1A5f, 1A5g, 1A6d, 1A6g. B: 1B4b,
+  1B4c, 1B4e, 1B4f, 1B5b. C: 1C2a. D: 1D4b, 1D5b, 1D5c, 1D5d (the four D bullets are
+  blocked on members-only guides or the textbook; section 4).
+- **Section B is over its share** (83 against 75). Forms draw by weight, so the surplus
+  stays in practice; new B items only close one-item bullets.
+- **The judge bullets are at the minimum**: one analysis item each in 1B4h, 1C5c, 1C7b,
+  1D2b and 1D3a. A second is worth writing where a distinct lesson is left.
+- **One round 12 item was dropped** after three blind tests found it answerable without
+  the Standards (a 1B4g sibling on building trust); 1B4g keeps its two items.
+- **1B4f's item overlaps Part 3 bullet 3B2c** (timely updates to a dynamic plan); when
+  Part 3 is written, a 3B2c item on a mid-year trigger is its cross-part sibling.
+- **Section C's bulk sits in four bullets**: 1C1a (10), 1C8a (9), 1C5c (7) and 1C6a (7)
+  hold 33 of 101. New C items belong elsewhere.
 - **No item carries a future `testable_from`**, so every item can enter a form today.
 
 ## 3. The map
+
 
 ### Section A table
 
@@ -77,7 +80,7 @@ What the counts hide:
 |---|---|---|---|---|---|---|
 | 1A1a | What the function is for and what the organization gains from it | Explain (recall) | 3: d1_001, d1_053, d1_055 | 2/1/0 | yes | - |
 | 1A1b | What has to be in place for internal audit to work well | Describe (recall) | 6: d1_002, d1_036, d1_037, d1_054, d1_065, d1_066 | 3/3/0 | yes | - |
-| 1A2a | What internal audit is allowed to do, the part it plays and its duties | Describe (recall) | 2: d1_021, d1_086 (A1) | 1/1/0 | yes | - |
+| 1A2a | What internal audit is allowed to do, the part it plays and its duties | Describe (recall) | 3: d1_021, d1_086 (A1), d1_100 (A1) | 1/2/0 | yes | - |
 | 1A2b | How the chief audit executive helps the board set the mandate or refresh it | Explain (recall) | 4: d1_003 (A1), d1_022 (A1), d1_024 (A1), d1_067 | 1/3/0 | yes | - |
 | 1A2c | What senior management and the board each decide about internal audit's authority and duties | Explain (recall) | 7: d1_004, d1_005 (A1), d1_023 (A1), d1_025 (A1), d1_077 (A1), d1_078 (A1), d1_079 (A1) | 2/2/3 | yes | - |
 | 1A3a | The parts a charter must have under the Standards | Identify (recall) | 5: d1_006, d1_007, d1_038, d1_056, d1_068 | 3/2/0 | yes | - |
@@ -89,26 +92,26 @@ What the counts hide:
 | 1A4d | Who decides what an advisory job covers, and how | Describe (recall) | 3: d1_042, d1_051, d1_059 | 0/3/0 | yes | - |
 | 1A4e | Picking the right kind of service for the situation in front of you | Determine (judge) | 2: d1_008, d1_044; also touched by d1_014, d1_041, d3_049 | 0/1/1 | yes | - |
 | 1A5a | Assessments of risks and of the controls over them | Describe (recall) | 1: d1_012 | 1/0/0 | yes | one item: cannot be held back; more needs detail: textbook |
-| 1A5b | Audits of outside parties and of whether contracts are being followed | Describe (recall) | 1: d1_045 | 1/0/0 | yes | one item: cannot be held back; more needs detail: Third-Party TR (testable 2027-03-01), PG Auditing Third-Party Risk Management |
+| 1A5b | Audits of outside parties and of whether contracts are being followed | Describe (recall) | 2: d1_045, d1_099 | 1/1/0 | yes | more needs detail: Third-Party TR (testable 2027-03-01), PG Auditing Third-Party Risk Management |
 | 1A5c | Audits of IT security and of privacy | Describe (recall) | 2: d1_046, d1_061 | 0/2/0 | yes | - |
-| 1A5d | Audits of performance and of quality | Describe (recall) | 0: none | 0/0/0 | no | ZERO items; more needs detail: textbook |
+| 1A5d | Audits of performance and of quality | Describe (recall) | 2: d1_093, d1_094 | 1/1/0 | yes | more needs detail: textbook |
 | 1A5e | Audits of operations, of financial matters and of compliance with regulations | Describe (recall) | 3: d1_011, d1_049, d1_070 | 1/2/0 | yes | - |
 | 1A5f | Audits of the organization's culture | Describe (recall) | 1: d1_047 | 0/1/0 | yes | one item: cannot be held back; more needs detail: PG Auditing Culture; Org. Behavior TR (testable 2027-06-01) |
 | 1A5g | Audits of how management reports are produced | Describe (recall) | 1: d1_048 | 0/1/0 | yes | one item: cannot be held back |
-| 1A6a | Teaching others about risk and control | Describe (recall) | 1: d1_063 | 0/1/0 | yes | one item: cannot be held back |
+| 1A6a | Teaching others about risk and control | Describe (recall) | 2: d1_063, d1_096 | 0/2/0 | yes | - |
 | 1A6b | Advising while a system is being designed and built | Describe (recall) | 2: d1_013, d1_014 | 1/1/0 | yes | - |
-| 1A6c | Helping with due diligence reviews | Describe (recall) | 1: d1_052 | 0/1/0 | yes | one item: cannot be held back; more needs detail: textbook |
-| 1A6d | Helping keep personal data private | Describe (recall) | 0: none | 0/0/0 | no | ZERO items; more needs detail: PG Auditing Privacy and Data Protection Risks |
+| 1A6c | Helping with due diligence reviews | Describe (recall) | 2: d1_052, d1_098 | 1/1/0 | yes | more needs detail: textbook |
+| 1A6d | Helping keep personal data private | Describe (recall) | 1: d1_095 | 1/0/0 | yes | one item: cannot be held back; more needs detail: PG Auditing Privacy and Data Protection Risks |
 | 1A6e | Benchmarking against peers or good practice | Describe (recall) | 2: d1_050, d1_071 | 1/1/0 | yes | - |
-| 1A6f | Helping management assess its own internal controls | Describe (recall) | 1: d1_010 | 0/0/1 | yes | one item: cannot be held back |
+| 1A6f | Helping management assess its own internal controls | Describe (recall) | 2: d1_010, d1_097 | 0/1/1 | yes | - |
 | 1A6g | Mapping how a process flows | Describe (recall) | 1: d1_062; also touched by d1_051 | 0/1/0 | yes | one item: cannot be held back |
 | 1A7a | Reporting lines for the chief audit executive that do not fit the role | Identify (recall) | 6: d1_017 (A2), d1_026, d1_064 (A2), d1_074 (A2), d1_083 (A2), d1_091 (A2); also touched by d1_087, d2_022 | 1/4/1 | yes | - |
 | 1A7b | The board's part in guarding independence | Describe (recall) | 5: d1_015 (A2), d1_029, d1_072, d1_073 (A2), d1_084 (A2); also touched by d1_005, d1_023 | 4/1/0 | yes | - |
-| 1A7c | The chief audit executive's part: guarding independence day to day and telling the board when it is, or looks, impaired | Describe (recall) | 2: d1_028 (A2), d1_030 (A2); also touched by d1_064 | 0/2/0 | yes | - |
-| 1A7d | Budget limits that hold back internal audit's work | Identify (recall) | 2: d1_016 (A2), d1_090 (A2) | 1/0/1 | yes | - |
+| 1A7c | The chief audit executive's part: guarding independence day to day and telling the board when it is, or looks, impaired | Describe (recall) | 3: d1_028 (A2), d1_030 (A2), d1_101 (A2); also touched by d1_064 | 0/3/0 | yes | - |
+| 1A7d | Budget limits that hold back internal audit's work | Identify (recall) | 3: d1_016 (A2), d1_090 (A2), d1_103 (A2) | 1/1/1 | yes | - |
 | 1A7e | What happens when scope is limited or access is cut off | Describe (recall) | 2: d1_027 (A2), d1_089 (A2); also touched by d1_069 | 0/2/0 | yes | - |
 | 1A8a | The Three Lines Model and who sits where in it | Describe (recall) | 7: d1_018 (A3), d1_019 (A3), d1_031 (A3), d1_034 (A3), d1_075 (A3), d1_076, d1_085 (A3) | 1/5/1 | yes | - |
-| 1A8b | First and second line duties that would weaken independence if auditors took them on | Identify (recall) | 2: d1_035 (A3), d1_092 (A3); also touched by d1_032, d3_014 | 1/0/1 | yes | - |
+| 1A8b | First and second line duties that would weaken independence if auditors took them on | Identify (recall) | 3: d1_035 (A3), d1_092 (A3), d1_102 (A3); also touched by d1_032, d3_014 | 2/0/1 | yes | - |
 | 1A8c | Safeguards for when auditors do, or seem to do, first or second line work | Describe (recall) | 3: d1_020 (A3), d1_032 (A3), d1_033 (A3); also touched by d1_092, d3_098 | 1/2/0 | yes | - |
 
 ### Section B table
@@ -124,20 +127,20 @@ What the counts hide:
 | 1B3c | When an impairment has to be disclosed | Determine (judge) | 4: d2_010, d2_021 (A4), d2_034, d2_044; also touched by d2_046 | 0/2/2 | yes | - |
 | 1B3d | When to say no to a favor, a gift or a reward | Recognize (recall) | 3: d2_008, d2_035, d2_057 | 0/3/0 | yes | - |
 | 1B4a | Writing and speaking clearly, from short messages to reports and presentations | Apply (apply) | 3: d2_036, d2_069, d2_072 | 0/2/1 | yes | - |
-| 1B4b | Reasoning through a messy problem to a workable, sometimes new, answer | Apply (apply) | 0: none; also touched by d2_068 | 0/0/0 | no | ZERO items |
-| 1B4c | Digging into an unfamiliar subject using more than one kind of source | Apply (apply) | 0: none | 0/0/0 | no | ZERO items |
+| 1B4b | Reasoning through a messy problem to a workable, sometimes new, answer | Apply (apply) | 1: d2_076; also touched by d2_068 | 0/1/0 | yes | one item: cannot be held back |
+| 1B4c | Digging into an unfamiliar subject using more than one kind of source | Apply (apply) | 1: d2_077 | 0/1/0 | yes | one item: cannot be held back |
 | 1B4d | Winning agreement: persuading, negotiating and settling disagreements with colleagues and stakeholders | Apply (apply) | 3: d2_013, d2_048, d2_068 | 0/3/0 | yes | - |
 | 1B4e | Becoming someone people trust and take seriously | Apply (apply) | 1: d2_037 | 0/1/0 | yes | one item: cannot be held back |
-| 1B4f | Handling change well as things around you shift | Apply (apply) | 0: none; also touched by d2_012 | 0/0/0 | no | ZERO items |
-| 1B4g | Curiosity: asking one more question and learning as a habit | Demonstrate (apply) | 1: d2_059 | 0/1/0 | yes | one item: cannot be held back |
-| 1B4h | Signs that an auditor needs more professional development | Evaluate (judge) | 3: d2_012, d2_049, d2_060 | 1/2/0 | no | below depth: needs an analysis item |
-| 1B5a | Care includes thinking about what the organization is trying to achieve | Recognize (recall) | 1: d2_061 | 0/1/0 | yes | one item: cannot be held back |
-| 1B5b | Care includes judging how well governance, risk management and controls work | Recognize (recall) | 0: none | 0/0/0 | no | ZERO items |
+| 1B4f | Handling change well as things around you shift | Apply (apply) | 1: d2_078; also touched by d2_012 | 0/1/0 | yes | one item: cannot be held back |
+| 1B4g | Curiosity: asking one more question and learning as a habit | Demonstrate (apply) | 2: d2_059, d2_083 | 0/2/0 | yes | - |
+| 1B4h | Signs that an auditor needs more professional development | Evaluate (judge) | 4: d2_012, d2_049, d2_060, d2_079 | 1/2/1 | yes | - |
+| 1B5a | Care includes thinking about what the organization is trying to achieve | Recognize (recall) | 2: d2_061, d2_080 | 0/2/0 | yes | - |
+| 1B5b | Care includes judging how well governance, risk management and controls work | Recognize (recall) | 1: d2_075 | 0/1/0 | yes | one item: cannot be held back |
 | 1B5c | Care includes weighing what an engagement costs against what it is likely to deliver | Recognize (recall) | 2: d2_014, d2_050; also touched by d2_062 | 1/1/0 | yes | - |
-| 1B5d | Care includes thinking about how likely major errors, fraud or noncompliance are | Recognize (recall) | 1: d2_015; also touched by d2_039 | 0/1/0 | yes | one item: cannot be held back |
+| 1B5d | Care includes thinking about how likely major errors, fraud or noncompliance are | Recognize (recall) | 2: d2_015, d2_081; also touched by d2_039 | 0/2/0 | yes | - |
 | 1B5e | Skepticism: an open but questioning mind about whether information can be trusted | Recognize (recall) | 3: d2_016, d2_040, d2_052 | 0/3/0 | yes | - |
 | 1B6a | Following the organization's policies and the laws that apply | Apply (apply) | 3: d2_018 (A5), d2_027 (A5), d2_070 (A5); also touched by d2_020 | 0/2/1 | yes | - |
-| 1B6b | Following the function's own methodology for handling information | Apply (apply) | 1: d2_020 (A5); also touched by d2_065 | 0/0/1 | yes | one item: cannot be held back |
+| 1B6b | Following the function's own methodology for handling information | Apply (apply) | 2: d2_020 (A5), d2_082 (A5); also touched by d2_065 | 0/1/1 | yes | - |
 | 1B6c | Respecting privacy and who owns the information | Demonstrate (apply) | 4: d2_017, d2_028 (A5), d2_030 (A5), d2_064 (A5) | 1/3/0 | yes | - |
 | 1B6d | Protecting information in suitable ways | Apply (apply) | 5: d2_019, d2_026 (A5), d2_029, d2_063 (A5), d2_073 (A5); also touched by d2_018, d2_027 | 1/3/1 | yes | - |
 | 1B2 (line) | Topic line only: other bias and the objectivity/independence split | topic line | 2: d2_022 (A4), d2_055 (A4) | 0/2/0 | - | - |
@@ -159,12 +162,12 @@ What the counts hide:
 | 1C4b | Inherent risk compared with residual risk | Compare and contrast (apply) | 6: d3_009, d3_029, d3_045, d3_046, d3_055, d3_074 | 1/5/0 | yes | - |
 | 1C5a | What risk management is | Define (recall) | 3: d3_030, d3_047, d3_082; also touched by d3_081 | 1/2/0 | yes | - |
 | 1C5b | Risk appetite and risk tolerance, and how to spot each | Recognize (recall) | 3: d3_010, d3_031, d3_094; also touched by d3_001 | 0/3/0 | yes | - |
-| 1C5c | The steps of the risk management cycle, and how sound each one is | Assess (judge) | 5: d3_011, d3_081, d3_083, d3_087, d3_095 | 0/5/0 | no | below depth: needs an analysis item |
+| 1C5c | The steps of the risk management cycle, and how sound each one is | Assess (judge) | 7: d3_011, d3_081, d3_083, d3_087, d3_095, d3_099, d3_101 | 0/6/1 | yes | - |
 | 1C5d | Whether the organization's responses to its risks are good ones | Evaluate (judge) | 6: d3_012, d3_032, d3_033, d3_048, d3_057, d3_092; also touched by d3_030 | 0/3/3 | yes | - |
 | 1C6a | Judging how well risk management is designed and how well it works | Evaluate (judge) | 7: d3_013, d3_035, d3_050, d3_058, d3_069, d3_075, d3_091; also touched by d3_059 | 3/3/1 | yes | - |
 | 1C6b | Why a risk management framework is worth using | Describe (recall) | 2: d3_034, d3_088 | 1/1/0 | yes | - |
 | 1C7a | What internal controls are for | Describe (recall) | 4: d3_015, d3_036, d3_061, d3_084; also touched by d3_086 | 1/3/0 | yes | - |
-| 1C7b | Control types (preventive, detective, corrective) and how to judge them | Describe and evaluate (judge) | 3: d3_016, d3_037, d3_060; also touched by d3_089 | 1/2/0 | no | below depth: needs an analysis item |
+| 1C7b | Control types (preventive, detective, corrective) and how to judge them | Describe and evaluate (judge) | 4: d3_016, d3_037, d3_060, d3_100; also touched by d3_089 | 1/2/1 | yes | - |
 | 1C7c | Suggesting controls that fit the risk | Recommend (apply) | 5: d3_017, d3_038, d3_051, d3_062, d3_089 | 0/5/0 | yes | - |
 | 1C8a | Reviewing whether controls are well designed and working | Review (apply) | 9: d3_018, d3_019, d3_039, d3_040, d3_052, d3_063, d3_073, d3_085, d3_086 | 3/6/0 | yes | - |
 | 1C8b | Why an internal control framework is worth using | Describe (recall) | 2: d3_020, d3_064 | 0/2/0 | yes | - |
@@ -178,20 +181,19 @@ What the counts hide:
 | 1D1b | Spotting where fraud could happen | Recognize (recall) | 2: d4_001 (C3), d4_004 | 0/2/0 | yes | - |
 | 1D1c | Fraud schemes that come up often | Identify (recall) | 2: d4_003 (C3), d4_022 (C3) | 0/2/0 | yes | more needs named schemes: PG Internal Auditing and Fraud (3rd ed.), textbook |
 | 1D2a | Thinking about fraud risk while planning the work | Recognize (recall) | 3: d4_005, d4_006, d4_008; also touched by d4_004 | 0/2/1 | yes | - |
-| 1D2b | Judging which processes are most exposed to fraud | Assess (judge) | 1: d4_007; also touched by d4_023 | 0/1/0 | no | one item: cannot be held back; below depth: needs an analysis item; more needs beyond Standard 13.2: PG Engagement Planning: Assessing Fraud Risks |
-| 1D3a | Judging how the organization manages fraud risk | Evaluate (judge) | 2: d4_009, d4_010 | 0/2/0 | no | below depth: needs an analysis item; more needs beyond Standard 9.4 and the 2019 position paper: PG Internal Auditing and Fraud |
+| 1D2b | Judging which processes are most exposed to fraud | Assess (judge) | 3: d4_007, d4_029, d4_035; also touched by d4_023 | 0/2/1 | yes | more needs beyond Standard 13.2: PG Engagement Planning: Assessing Fraud Risks |
+| 1D3a | Judging how the organization manages fraud risk | Evaluate (judge) | 3: d4_009, d4_010, d4_030 | 0/2/1 | yes | more needs beyond Standard 9.4 and the 2019 position paper: PG Internal Auditing and Fraud |
 | 1D3b | Finding and weighing red flags, organization-wide and inside a process | Detect and assess (judge) | 3: d4_011, d4_024, d4_025 | 0/2/1 | yes | more needs red-flag lists: PG Internal Auditing and Fraud |
-| 1D3c | The auditor's part in reporting red flags found during the work | Recognize (recall) | 1: d4_012 | 0/1/0 | yes | one item: cannot be held back |
-| 1D4a | How tone at the top changes the chance of fraud | Recognize (recall) | 1: d4_016 | 0/1/0 | yes | one item: cannot be held back |
+| 1D3c | The auditor's part in reporting red flags found during the work | Recognize (recall) | 2: d4_012, d4_031 | 0/2/0 | yes | - |
+| 1D4a | How tone at the top changes the chance of fraud | Recognize (recall) | 2: d4_016, d4_033 | 0/2/0 | yes | - |
 | 1D4b | Using segregation of duties properly | Recognize (recall) | 1: d4_015; also touched by d4_002 | 0/1/0 | yes | one item: cannot be held back; more needs beyond the syllabus line: PG Internal Auditing and Fraud, textbook |
-| 1D4c | How approval and authority limits help stop fraud | Recognize (recall) | 1: d4_014 | 0/1/0 | yes | one item: cannot be held back |
+| 1D4c | How approval and authority limits help stop fraud | Recognize (recall) | 2: d4_014, d4_034 | 0/2/0 | yes | - |
 | 1D4d | Common detective controls: reconciliations, supervisor reviews and whistleblower hotlines | Recognize (recall) | 2: d4_013, d4_026 | 2/0/0 | yes | - |
 | 1D5a | What internal audit does, and does not do, in a fraud investigation | Define (recall) | 3: d4_017, d4_018, d4_020; also touched by d4_010, d4_028 | 2/1/0 | yes | - |
 | 1D5b | Ways to interview people | Describe (recall) | 1: d4_027 | 0/1/0 | yes | one item: cannot be held back; more needs PG Internal Auditing and Fraud, textbook |
 | 1D5c | Ways to investigate | Describe (recall) | 1: d4_028 | 0/1/0 | yes | one item: cannot be held back; more needs PG Internal Auditing and Fraud, textbook |
 | 1D5d | Ways to test for fraud | Describe (recall) | 1: d4_023 | 0/1/0 | yes | one item: cannot be held back; more needs PG Internal Auditing and Fraud, textbook |
-| 1D5e | Working alongside fraud investigators and drawing on what they hold: whistleblower complaints, trends, past cases and their risk assessments | Recognize (recall) | 1: d4_019 | 0/1/0 | yes | one item: cannot be held back |
-
+| 1D5e | Working alongside fraud investigators and drawing on what they hold: whistleblower complaints, trends, past cases and their risk assessments | Recognize (recall) | 2: d4_019, d4_032 | 0/2/0 | yes | - |
 
 ## 4. Section totals and where the remaining items go
 
@@ -203,10 +205,10 @@ lesson follow the sibling rule (at most two per lesson, about 15% of a section).
 
 | Section | Now | Bar | Gap | Where the items go |
 |---|---|---|---|---|
-| A | 92 | 131 | 39 | Zero-item bullets: 1A5d +2, 1A6d +2. One-item bullets, classification-level keys only (plan 8b): 1A5a, 1A5b, 1A5f, 1A5g, 1A6a, 1A6c, 1A6f, 1A6g +1 each (8). Challenge topics: 1A2a +3, 1A7c +3, 1A7e +3, 1A8b +3, 1A7d +2, 1A8c +2 (16). Others: 1A4e +3 (at least two analysis), 1A3c +2, 1A4c +2, 1A1a +2, 1A6b +1, 1A6e +1 (11). 1A4b: none until the textbook. |
-| B | 74 | 75 | 1 (count) | The count is met but gate (a) is not. Zero-item bullets: 1B4b, 1B4c, 1B4f, 1B5b +2 each (8). 1B4h +1 analysis. One-item bullets: 1B4e, 1B4g, 1B5a, 1B5d, 1B6b +1 each (5; 1B6b is Challenge A5). About 14, to about 88. |
-| C | 98 | 113 | 15 | Below depth: 1C5c +2 analysis, 1C7b +2 analysis. One item: 1C2a +2. Two items: 1C6b +1, 1C8b +1, 1C2b +1 (concept level; COSO is background only). Thin judge or apply depth: 1C6a +1 analysis, 1C7c +1 analysis. Others: 1C5a +1, 1C5b +1, 1C3b +1, 1C2c +1. Nothing more on 1C1a, 1C8a or 1C6a's application level. |
-| D | 28 | 56 | 28 | **From opened sources now (14):** 1D2b +3 (at least two analysis), 1D3a +3 (at least two analysis), 1D3c +2, 1D5e +2, 1D2a +1, 1D4a +1, 1D4c +1, 1D5a +1. **Blocked until the members-only guides or the textbook are opened (14):** 1D1c +3, 1D5b +3, 1D5c +3, 1D5d +2, 1D3b +2, 1D4b +1. |
+| A | 103 | 131 | 28 | One-item bullets, classification-level keys only (plan 8b): 1A5a, 1A5f, 1A5g, 1A6d, 1A6g +1 each (5). Challenge topics: 1A7e +3, 1A2a +2, 1A7c +2, 1A8b +2, 1A8c +2 (11). Others: 1A4e +3 (at least two analysis), 1A3c +2, 1A4c +2, 1A1a +2 (9). Two-item bullets: 1A6b +1, 1A6e +1, 1A5c +1 (3). 1A4b: none until the textbook. |
+| B | 83 | 75 | 0 | The count is met and gate (a)'s depth is met. One-item bullets only: 1B4b, 1B4c, 1B4e, 1B4f, 1B5b +1 each (5; siblings under the sibling rule), to about 88. |
+| C | 101 | 113 | 12 | One item: 1C2a +2. Two items: 1C6b +1, 1C8b +1. Second analysis items: 1C5c +1, 1C7b +1, 1C6a +1, 1C7c +1. Others: 1C2b +1 (concept level; COSO is background only), 1C5a +1, 1C5b +1, 1C3b +1. Nothing more on 1C1a, 1C8a or 1C6a's application level. |
+| D | 35 | 56 | 21 | **From opened sources now (7):** 1D2b +1, 1D3a +1, 1D3c +1, 1D5e +1, 1D2a +1, 1D4a +1, 1D4c +1. **Blocked until the members-only guides or the textbook are opened (14):** 1D1c +3, 1D5b +3, 1D5c +3, 1D5d +2, 1D3b +2, 1D4b +1. |
 
 **Section D's blocked bullets and the guide each needs.** The opened sources for D are
 the Standards (glossary "fraud", 4.2, 9.4, 13.2, 3.1, 6.1), the syllabus lines (plan 8b:
@@ -229,29 +231,21 @@ decisions (plan section 9).
 
 ## 5. Gap list in priority order
 
-1. **1B5b** (zero; Recognize). Standard 4.2 lists it as a "must" item, so it is the
-   cheapest gap to close from an opened source.
-2. **1B4b** (zero; Apply). Standards 13.2 and 14.4, considerations.
-3. **1B4c** (zero; Apply). Standards 13.4 and 6.1, considerations.
-4. **1B4f** (zero; Apply). Standards 11.1 (considerations) and 9.4 (requirement).
-5. **1A5d** (zero; Describe). Classification-level key only (plan 8b).
-6. **1A6d** (zero; Describe). Classification-level key only (plan 8b).
-7. **1C5c** (judge, 0/5/0): needs analysis items that rank two real faults in the cycle.
-8. **1D2b** (judge, one item, 0/1/0): one item and no analysis; opened sources carry one
-   or two more, then it is blocked.
-9. **1C7b** (judge, 1/2/0): needs analysis items that weigh a mix of control types.
-10. **1D3a** (judge, 0/2/0): needs analysis items; check the 2019 position paper's
-    wording before keying any program element.
-11. **1B4h** (judge, 1/2/0): needs one analysis item.
-12. One-item bullets with opened sources: 1C2a, 1B5a, 1B5d, 1B6b (A5), 1B4e, 1B4g,
-    1D3c, 1D5e, 1D4a, 1D4c, 1A5g, 1A6a, 1A6f, 1A6g.
-13. One-item bullets with limited sources (concept or classification level only):
-    1A5a, 1A5b, 1A5f (testable_from 2027-06-01 if it rests on the Organizational
-    Behavior Topical Requirement), 1A6c; blocked: 1D4b, 1D5b, 1D5c, 1D5d.
-14. Two-item Challenge bullets, for the Challenge pool and Section A's count: 1A2a,
-    1A7c, 1A7d, 1A7e, 1A8b (and 1B3b, two items, both analysis already).
-15. Other two-item bullets: 1A3c, 1A4c, 1A4e, 1A5c, 1A6b, 1A6e, 1B5c, 1C6b, 1C8b,
-    1D1a, 1D1b, 1D1c, 1D4d; 1A4b waits for the textbook.
+Round 12 cleared the old items 1 to 11 (every zero-item bullet and every judge bullet
+below depth). What is left, in order:
+
+1. **One-item bullets with opened sources** (so the only item can be held back):
+   1B5b, 1B4b, 1B4c, 1B4f, 1B4e (B); 1C2a +2 (C); 1A6g, 1A5g (A).
+2. **One-item bullets with limited sources** (concept or classification level only):
+   1A5a, 1A6d, 1A5f (testable_from 2027-06-01 if it rests on the Organizational
+   Behavior Topical Requirement).
+3. **Second analysis items on judge bullets**, where a distinct lesson is left: 1D2b,
+   1D3a, 1C5c, 1C7b, 1B4h; and 1C6a, 1C7c, 1A4e.
+4. **Section D from opened sources** (section 4), then stop until the guides are opened.
+5. **Challenge topics for Section A's count**: 1A7e, 1A2a, 1A7c, 1A8b, 1A8c.
+6. **Other two-item bullets**: 1A3c, 1A4c, 1A5c, 1A6b, 1A6e, 1C6b, 1C8b, 1D1a, 1D1b,
+   1D3c, 1D4a, 1D4c, 1D5e; 1A4b waits for the textbook.
+7. **Blocked**: 1D1c, 1D3b, 1D4b, 1D5b, 1D5c, 1D5d (members-only guides, textbook).
 
 ## 6. Leads for first items and siblings
 
@@ -427,9 +421,9 @@ bullet and its runner-up, so the new item takes a different trap (sibling rule).
 
 ## 7. Notes for the next round
 
-- **Hardening candidates on depth.** 1C5c's five items and 1C7c's five are all
-  application; one analysis rewrite in each would lift depth without new lessons (plan
-  section 6b, rule 12, says hardening comes after new items).
+- **Hardening candidates on depth.** 1C5c now has one analysis item (round 12) and 1C7c's
+  five are all application; one analysis rewrite in 1C7c would lift depth without a new
+  lesson (plan section 6b, rule 12, says hardening comes after new items).
 - **Challenge tag check (for `cia-challenge-bridge-expert`).** The Challenge-only bullet
   covers the fraud triangle as well as schemes, but `d4_002` and `d4_021` (triangle) carry
   no `C3` tag; only `d4_001`, `d4_003` and `d4_022` do.
