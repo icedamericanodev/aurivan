@@ -146,59 +146,59 @@ What the counts hide:
 |---|---|---|---|---|---|---|
 | 2A1a | Where Topical Requirements come into setting objectives and scope | Recognize (recall) | 1: d1_001 (C1) | 0/1/0 | yes | one item: cannot be held back. Items on Third-Party, Organizational Behavior or Organizational Resilience need `testable_from` |
 | 2A1b | What feeds the objectives: whether the job is assurance or advisory, strategy, regulation, risk appetite, policies, how governance, risk and control are run, earlier audit reports and other providers' work | Recognize (recall) | 1: d1_002 | 1/0/0 | yes | one item: cannot be held back |
-| 2A1c | Spotting scope limitations at planning and writing them down | Identify (recall) | 0 | 0/0/0 | no | zero items (Part 1 sits close: 1A7e's five items) |
-| 2A1d | Ways to handle and record requests from stakeholders | Evaluate (judge) | 0; also touched by d1_001 | 0/0/0 | no | zero items; first item at analysis |
+| 2A1c | Spotting scope limitations at planning and writing them down | Identify (recall) | 1: d1_015 (C1); also touched by d1_016 | 0/1/0 | yes | one item: cannot be held back; transfer pair with `cia1_d1_027` (Part 1 sits close: 1A7e's five items) |
+| 2A1d | Ways to handle and record requests from stakeholders | Evaluate (judge) | 1: d1_016 (C1); also touched by d1_001 | 0/0/1 | yes | one item: cannot be held back; sibling of `cia1_d1_105` |
 | 2A1e | Good ways to deal with a change in objectives or scope | Identify (recall) | 1: d1_003 (C1); also touched by d3_005 | 0/1/0 | yes | one item: cannot be held back |
-| 2A2a | Picking the criteria that best fit the activity being audited | Identify (recall) | 0 | 0/0/0 | no | zero items (Part 1 sits close: `cia1_d3_020`, `cia1_d3_064`, `cia1_d1_060`) |
+| 2A2a | Picking the criteria that best fit the activity being audited | Identify (recall) | 0 | 0/0/0 | no | zero items; tried in round 1 and left empty (the lead's key was common sense). Part 1 sits close: `cia1_d3_020`, `cia1_d3_064`, `cia1_d1_060` |
 | 2A2b | Testing a set of criteria: relevant, specific, practical, in line with objectives, and able to support fair comparisons | Determine (judge) | 1: d1_004 (C2) | 0/0/1 | yes | one item: cannot be held back |
 | 2A3a | Where Topical Requirements come into planning | Recognize (recall) | 1: d1_006 (C3) | 0/1/0 | yes | one item: cannot be held back |
 | 2A3b | How the area's strategic goals connect to the way it measures and manages performance and to risk management | Recognize (recall) | 1: d1_005 (C3) | 0/1/0 | yes | one item: cannot be held back |
-| 2A3c | Current and emerging cyber risks, IT general controls, everyday security controls, why IT control frameworks help, data privacy principles and data security practice | Recognize (recall) | 0; also touched by d1_006 | 0/0/0 | no | zero items; IT general against application controls is "Common usage" (no key); named privacy principles need a members-only guide or the textbook |
+| 2A3c | Current and emerging cyber risks, IT general controls, everyday security controls, why IT control frameworks help, data privacy principles and data security practice | Recognize (recall) | 1: d1_017 (C3); also touched by d1_006 | 0/1/0 | yes | one item: cannot be held back; IT general against application controls is still "Common usage" (no key); named privacy principles need a members-only guide or the textbook |
 | 2A3d | Readiness for disruption (continuity and disaster recovery): business impact analysis, resilience, handling incidents, and tests of backup and recovery | Recognize (recall) | 1: d1_007 | 1/0/0 | yes | one item: cannot be held back; business impact analysis and recovery objectives are "Common usage"; the resilience requirement is testable from 2027-10-01 |
 | 2A3e | Finance and accounting basics for the area: assets (current and fixed), liabilities (short and long term), capital and investments | Recognize (recall) | 0 | 0/0/0 | no | zero items; blocked: no opened source (textbook) |
 | 2A3f | Key risks and controls in everyday business processes and in systems such as CRM, ERP and GRC | Recognize (recall) | 0 | 0/0/0 | no | zero items; process detail is "Common usage" (textbook); third parties rest on the Third-Party requirement (testable 2027-03-01) |
-| 2A4a | Weighing approaches (traditional, agile, integrated, remote) and picking the best fit | Evaluate (judge) | 1: d1_008 (C4) | 0/1/0 | no | analysis item; one item: cannot be held back; beyond the Standards' general rules needs the members-only integrated approaches guide (never) or the textbook |
-| 2A4b | Project management ideas used to plan and run an engagement | Describe (recall) | 0 | 0/0/0 | no | zero items |
-| 2A5a | Where Topical Requirements come into the risk assessment | Recognize (recall) | 0; also touched by d1_009 | 0/0/0 | no | zero items |
+| 2A4a | Weighing approaches (traditional, agile, integrated, remote) and picking the best fit | Evaluate (judge) | 1: d1_008 (C4) | 0/1/0 | no | analysis item (tried in round 1 and left empty: the lead retold the notes' example); one item: cannot be held back; beyond the Standards' general rules needs the members-only integrated approaches guide (never) or the textbook |
+| 2A4b | Project management ideas used to plan and run an engagement | Describe (recall) | 1: d1_018 | 0/1/0 | yes | one item: cannot be held back; sibling of `d1_011` |
+| 2A5a | Where Topical Requirements come into the risk assessment | Recognize (recall) | 0; also touched by d1_009 | 0/0/0 | no | zero items; tried in round 1 and cut: the draft's key rested only on the Application Guidance (Background). A first item keys on a requirement and its user guide alone |
 | 2A5b | Risks that run through the whole activity: regulatory, cyber, IT, operational and financial | Recognize (recall) | 1: d1_009 (C5) | 0/1/0 | yes | one item: cannot be held back |
-| 2A5c | How emerging risks affect the organization | Recognize (recall) | 0 | 0/0/0 | no | zero items; thin beyond Standard 13.2 and the Cybersecurity requirement |
+| 2A5c | How emerging risks affect the organization | Recognize (recall) | 0; also touched by d1_017 | 0/0/0 | no | zero items; tried in round 1 and left empty (sound practice only, thin beyond Standard 13.2 and the Cybersecurity requirement) |
 | 2A5d | Methods and criteria for rating and ranking risks and controls | Determine (judge) | 1: d1_010 (C5) | 0/0/1 | yes | one item: cannot be held back |
-| 2A5e | How changes to people, processes and systems shift risk | Recognize (recall) | 0 | 0/0/0 | no | zero items |
-| 2A5f | How structure and setting matter: remote or in-person work, flat or traditional layers, central or local control | Recognize (recall) | 0 | 0/0/0 | no | zero items; thin: mostly sound practice in the notes |
+| 2A5e | How changes to people, processes and systems shift risk | Recognize (recall) | 0 | 0/0/0 | no | zero items; tried in round 1 and left empty (the lead repeated `cia1_d4_008`) |
+| 2A5f | How structure and setting matter: remote or in-person work, flat or traditional layers, central or local control | Recognize (recall) | 0 | 0/0/0 | no | zero items; tried in round 1 and left empty (common-sense key; mostly sound practice in the notes) |
 | 2A5g | How culture shapes the control environment: how individuals and groups behave, and tone at the top | Recognize (recall) | 0 | 0/0/0 | no | zero items; the Organizational Behavior requirement is testable from 2027-06-01; Part 1 sits close (1C2a, 1D4a) |
-| 2A6a | Procedures that test whether a control is well designed | Determine (judge) | 1: d1_012 (C6) | 0/1/0 | no | analysis item; one item: cannot be held back |
+| 2A6a | Procedures that test whether a control is well designed | Determine (judge) | 2: d1_012 (C6), d1_019 (C6) | 0/1/1 | yes | - |
 | 2A6b | Procedures that test whether controls work | Identify (recall) | 1: d1_013 (C6) | 0/0/1 | yes | one item: cannot be held back |
-| 2A6c | Procedures that test whether controls are efficient | Identify (recall) | 0 | 0/0/0 | no | zero items (Part 1 sits close: `cia1_d3_019`, `cia1_d3_085`) |
-| 2A6d | Judging whether the work program is good enough | Evaluate (judge) | 1: d1_011 (C6); also touched by d1_003, d1_008 | 0/1/0 | no | analysis item; one item: cannot be held back |
-| 2A6e | Test methods for engagements that cover accounting, finance, IT systems, operations or cybersecurity | Identify (recall) | 0 | 0/0/0 | no | zero items; methods outside cybersecurity are "May" or "Common usage" in the notes (textbook) |
-| 2A7a | Money the engagement needs | Determine (judge) | 0 | 0/0/0 | no | zero items; first item at analysis |
-| 2A7b | People the engagement needs | Determine (judge) | 0 | 0/0/0 | no | zero items; first item at analysis |
-| 2A7c | Technology the engagement needs | Determine (judge) | 1: d1_014 (C7) | 0/1/0 | no | analysis item; one item: cannot be held back |
-| 2A7d | What it means when resources fall short | Evaluate (judge) | 0 | 0/0/0 | no | zero items; first item at analysis |
+| 2A6c | Procedures that test whether controls are efficient | Identify (recall) | 0 | 0/0/0 | no | zero items; tried in round 1 and left empty (sound practice only). Part 1 sits close: `cia1_d3_019`, `cia1_d3_085` |
+| 2A6d | Judging whether the work program is good enough | Evaluate (judge) | 2: d1_011 (C6), d1_020 (C6); also touched by d1_003, d1_008 | 0/1/1 | yes | - |
+| 2A6e | Test methods for engagements that cover accounting, finance, IT systems, operations or cybersecurity | Identify (recall) | 1: d1_021 (C6) | 0/1/0 | yes | one item (IT systems): cannot be held back; methods outside IT and cybersecurity are "May" or "Common usage" in the notes (textbook) |
+| 2A7a | Money the engagement needs | Determine (judge) | 1: d1_022 (C7) | 0/0/1 | yes | one item: cannot be held back |
+| 2A7b | People the engagement needs | Determine (judge) | 0 | 0/0/0 | no | zero items; first item at analysis. Tried in round 1 and cut: the draft was answerable from wording |
+| 2A7c | Technology the engagement needs | Determine (judge) | 1: d1_014 (C7) | 0/1/0 | no | analysis item (tried in round 1 and left empty: common sense); one item: cannot be held back |
+| 2A7d | What it means when resources fall short | Evaluate (judge) | 0 | 0/0/0 | no | zero items; first item at analysis. Tried in round 1 and cut: the draft's key rested only on the Application Guidance (Background) |
 
 ### Section B table
 
 | Bullet | Covers (our words) | Verb (class) | Items | F/Ap/An | Depth met? | Gap |
 |---|---|---|---|---|---|---|
-| 2B1a | Ways to get information: data analysis, walk-throughs, observation and interviews | Determine (judge) | 1: d2_001; also touched by d1_012 | 1/0/0 | no | analysis item; one item: cannot be held back |
+| 2B1a | Ways to get information: data analysis, walk-throughs, observation and interviews | Determine (judge) | 2: d2_001, d2_020 (D1); also touched by d1_012 | 1/1/0 | no | analysis item still needed (`d2_020` was relabelled application in round 1's fix pass); `d2_020` is a transfer pair with `d2_001` and a sibling of `d2_003` |
 | 2B1b | Documents to draw on: policies, questionnaires on risk and control, checklists and self-assessment surveys | Determine (judge) | 1: d2_002 (D1) | 0/1/0 | no | analysis item; one item: cannot be held back; `d2_002` is a hardening candidate |
 | 2B2a | Using the right criteria to judge evidence quality | Apply (apply) | 1: d2_003 (D2) | 0/0/1 | yes | one item: cannot be held back |
 | 2B2b | What makes evidence more reliable: corroboration, an independent source, and a system with sound controls behind it | Recognize (recall) | 1: d2_004 (D2); also touched by d2_003 | 0/1/0 | yes | one item: cannot be held back |
 | 2B2c | Evidence strong enough that another informed, competent person would come to the same conclusion | Describe (recall) | 1: d2_005 (D2); also touched by d1_013, d3_002 | 0/0/1 | yes | one item: cannot be held back |
-| 2B3a | Tools that save time and add insight: dashboards, continuous monitoring, embedded audit modules, robotic process automation, machine learning and AI | Recognize (recall) | 0; also touched by d1_014 | 0/0/0 | no | zero items (the only topic with none); what each tool is rests on "Common usage" and members-only guides; reliance and ownership lessons rest on the Standards |
+| 2B3a | Tools that save time and add insight: dashboards, continuous monitoring, embedded audit modules, robotic process automation, machine learning and AI | Recognize (recall) | 1: d2_015 (D3); also touched by d1_014 | 0/1/0 | yes | one item: cannot be held back, so topic 2B3 cannot enter the held-back form yet; what each tool is rests on "Common usage" and members-only guides; reliance and ownership lessons rest on the Standards |
 | 2B4a | Breaking a process workflow into its parts | Define (recall) | 0 | 0/0/0 | no | zero items; thin: sound practice beyond Standard 13.2 |
 | 2B4b | Studying workflows with responsibility matrices (such as RACI), walk-throughs and process maps | Analyze (judge) | 1: d2_006 (D4) | 0/1/0 | no | analysis item; one item: cannot be held back; the meaning of each RACI letter is "Common usage" (no key) |
 | 2B4c | Data types: structured and unstructured | Explain (recall) | 1: d2_008 (D4) | 0/1/0 | yes | one item: cannot be held back |
-| 2B4d | The analytics steps: set the objective, get the data, normalize it, analyze it, report the results | Explain (recall) | 0 | 0/0/0 | no | zero items; the order is the syllabus's, each step's detail is sound practice (members-only data analytics guides: never) |
+| 2B4d | The analytics steps: set the objective, get the data, normalize it, analyze it, report the results | Explain (recall) | 1: d2_019 | 0/1/0 | yes | one item: cannot be held back; keys rest on comparability and Standard 14.1, never on a guide's step detail (members-only data analytics guides: never) |
 | 2B4e | When to use each analysis method: diagnostic, predictive, prescriptive, anomaly detection, text analysis | Determine (judge) | 1: d2_007 (D4); also touched by d2_008 | 0/1/0 | no | analysis item; one item: cannot be held back; method definitions are "Common usage", so keys rest on Standards 14.1 and 14.2 |
 | 2B5a | Reading ratios, variances, trends, benchmarks, and financial and nonfinancial data | Analyze (judge) | 1: d2_009 (D5) | 0/1/0 | no | analysis item; one item: cannot be held back; ratio formulas need the textbook |
-| 2B5b | Choosing the analytical technique that serves the engagement objective | Determine (judge) | 0 | 0/0/0 | no | zero items; first item at analysis |
-| 2B6a | Comparing what is (the condition) with what should be (the criteria) | Analyze (judge) | 0; also touched by d2_006, d2_007 | 0/0/0 | no | zero items; first item at analysis (Part 1 sits close: `cia1_d3_023`) |
+| 2B5b | Choosing the analytical technique that serves the engagement objective | Determine (judge) | 1: d2_018 (D5) | 0/0/1 | yes | one item: cannot be held back |
+| 2B6a | Comparing what is (the condition) with what should be (the criteria) | Analyze (judge) | 1: d2_016 (D6); also touched by d2_006, d2_007 | 0/0/1 | yes | one item: cannot be held back (Part 1 sits close: `cia1_d3_023`) |
 | 2B6b | Finding root causes and the likely effects of a gap | Identify (recall) | 1: d2_010 (D6) | 0/1/0 | yes | one item: cannot be held back |
-| 2B6c | Factors that make a finding more or less significant | Appraise (judge) | 1: d2_011 (D6); also touched by d2_013, d3_007 | 0/1/0 | no | analysis item; one item: cannot be held back |
+| 2B6c | Factors that make a finding more or less significant | Appraise (judge) | 2: d2_011 (D6), d2_021 (D6); also touched by d2_013, d3_007 | 0/1/1 | yes | - |
 | 2B7a | Putting workpaper information in order | Organize (apply) | 0 | 0/0/0 | no | zero items; thin: Standard 14.6's considerations are "may" |
 | 2B7b | What a complete workpaper with enough evidence looks like | Identify (recall) | 1: d2_012 (D7) | 0/1/0 | yes | one item: cannot be held back |
-| 2B7c | Tracing the engagement results back to the workpapers | Analyze (judge) | 0; also touched by d3_002 | 0/0/0 | no | zero items; first item at analysis |
+| 2B7c | Tracing the engagement results back to the workpapers | Analyze (judge) | 1: d2_017 (D7); also touched by d3_002 | 0/0/1 | yes | one item: cannot be held back |
 | 2B7d | Organizing and keeping engagement records, given regulation and internal policy | Determine (judge) | 0 | 0/0/0 | no | zero items; first item at analysis (Part 1 sits close: `cia1_d2_020`, `cia1_d2_027`, `cia1_d2_082`) |
 | 2B8a | Using professional judgment to weigh findings taken together | Determine (judge) | 1: d2_013 (D8) | 0/0/1 | yes | one item: cannot be held back |
 | 2B8b | What goes into a conclusion, such as how well governance, risk management and controls work | Determine (judge) | 1: d2_014 (D8) | 0/0/1 | yes | one item: cannot be held back |
@@ -208,7 +208,7 @@ What the counts hide:
 | Bullet | Covers (our words) | Verb (class) | Items | F/Ap/An | Depth met? | Gap |
 |---|---|---|---|---|---|---|
 | 2C1a | Supervision runs through the whole engagement, starting at planning | Describe (recall) | 1: d3_001 (D9); also touched by d3_004 | 0/1/0 | yes | one item: cannot be held back |
-| 2C1b | The supervisor's job in coordinating who does what | Describe (recall) | 0 | 0/0/0 | no | zero items |
+| 2C1b | The supervisor's job in coordinating who does what | Describe (recall) | 1: d3_010 (D9) | 0/1/0 | yes | one item: cannot be held back; transfer pair with `d3_005` |
 | 2C1c | The supervisor's job in reviewing workpapers and conclusions | Describe (recall) | 2: d3_002 (D9), d3_004 (D9) | 0/1/1 | yes | - |
 | 2C1d | The supervisor's job in assessing how auditors performed | Describe (recall) | 1: d3_003 | 1/0/0 | yes | one item: cannot be held back |
 | 2C2a | Choosing how to communicate (written or spoken, formal or informal) at planning, fieldwork and reporting | Determine (judge) | 3: d3_005 (D10), d3_006 (D10), d3_009 | 1/2/0 | no | analysis item (`d3_006` and `d3_009` are siblings) |
@@ -245,12 +245,12 @@ guides), which are not in the citation library. Members-only guides are never a 
 | Bullet | What waits | Needs |
 |---|---|---|
 | 2A3e | Current and fixed assets, short- and long-term liabilities, capital, investments: no opened source names them | Textbook (for purchase). Until then, no item |
-| 2A3c | IT general against application controls; named privacy principles; common security controls beyond the Cybersecurity requirement's own list | Textbook; the members-only IT essentials GTAG and privacy guide are never opened. Items keep to what the Cybersecurity requirement and user guide say |
+| 2A3c | Current and emerging cyber risks, IT general controls, everyday security controls, why IT control frameworks help, data privacy principles and data security practice | Recognize (recall) | 1: d1_017 (C3); also touched by d1_006 | 0/1/0 | yes | one item: cannot be held back; IT general against application controls is still "Common usage" (no key); named privacy principles need a members-only guide or the textbook |
 | 2A3d | Business impact analysis, recovery time and recovery point as tested terms | Organizational Resilience requirement and user guide (opened; testable from 2027-10-01); textbook for the terms |
 | 2A3f | Process-level risks and controls (purchase-to-pay matching, inventory, ERP roles, GRC systems) | Textbook; third-party lessons rest on the Third-Party requirement (opened; testable from 2027-03-01) |
 | 2A4a (judge, below depth) | Agile, integrated and remote approaches beyond the Standards' general rules | Textbook; the members-only integrated approaches guide is never opened. The analysis item keeps to Standards 9.3, 13.5, 13.6 and 14.1 |
 | 2A5g | Culture and behavior in an engagement's risk assessment, beyond Part 1's lessons | Organizational Behavior requirement and user guide (opened; testable from 2027-06-01) |
-| 2B3a | What an embedded audit module, continuous monitoring or a bot is and does | Textbook; members-only data analytics guides never opened. Items on reliance and ownership rest on Standards 4.2, 4.3, 10.3 and 14.1 |
+| 2B3a | Tools that save time and add insight: dashboards, continuous monitoring, embedded audit modules, robotic process automation, machine learning and AI | Recognize (recall) | 1: d2_015 (D3); also touched by d1_014 | 0/1/0 | yes | one item: cannot be held back, so topic 2B3 cannot enter the held-back form yet; what each tool is rests on "Common usage" and members-only guides; reliance and ownership lessons rest on the Standards |
 | 2B4b, 2B4e (judge, below depth); 2B4d | RACI letter meanings; definitions of the analysis methods; the detail of each analytics step | Textbook. The syllabus names the steps and methods; keys rest on Standards 14.1, 14.2 and 14.6, never on a definition |
 | 2B5a (judge, below depth) | Ratio formulas and their reading | Textbook. The analysis item keeps to expectation, comparison and follow-up (Standard 14.2) |
 
