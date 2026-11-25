@@ -14,8 +14,8 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 |---|---|
 | **Status (20 Nov 2026)** | Session G, steps 1 to 3 done: expert decisions, the documents, the harness (187 planted faults stopped, 43 controls hold; an independent code review's findings are all fixed), the expert agents, the **Part 1 study notes for all four sections** (93 sub-topics, audited and learner-read), and the **Part 1 pilot: 80 questions, 20 per section**, through the full pipeline (scorecard in section 7; calibration rules in section 6b). With them: the 20 shared principles, the Part 1 exam guide and final review week, and a first generated Challenge pack from the tagged items. The **glossary start** is written and audited (153 Part 1 terms in `data/cia/shared/glossary.json`; it reuses the notes' wording, and `check_glossary.py` fails if a term is ever defined two ways). The outline of the CISA bridge is in `docs/content/CIA_CISA_BRIDGE_OUTLINE.md`. Session G is complete. |
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
-| **Rounds 1 to 14 done (21 Nov 2026)** | Round 14: Sections A and C only, on the bullets with room; 13 written, 6 kept (A 4, C 2), and 16 of 22 planned slots left empty because every idea repeated an existing item or was common sense. Part 1 stands at **347 questions (A 116, B 85, C 105, D 41)**. **The sale gate was revised (section 3, decision 4)**: two full forms of distinct items per section (Part 1: A 88, B 50, C 74, D 38), one frozen and held back, and a short mock drawn per learner from unseen items. **Part 1 meets gates (a) and (b)**; gate (c) is an app rule, checked when the packs are wired in (section 11). Three forms (about 375) stay the target as sources open: A 15, C 8 and D 15 short, 14 of D's blocked on the IIA's members-only guides. Every question is tagged to one of 24 principles. |
-| **Next step** | Move the authors to **Part 2** (Internal Audit Engagement): write the Part 2 notes from `docs/content/CIA_BLUEPRINT.md`, then its items; Part 2's topics are all CIA Challenge Exam topics too. Before that, one Part 1 item is still open from sources already opened (a second 1D3a analysis item). Log any Part 1 lesson found while writing Part 2 for a later round. Section D's third form waits for the owner's IIA membership and licence decisions (section 9); a textbook would add 1A4b. |
+| **Rounds 1 to 15 done (25 Nov 2026)** | Part 1 stands at **348 questions (A 116, B 85, C 105, D 42)** and meets the revised sale gate's counts (section 3, decision 4). Round 15 added the last Part 1 item the opened sources support (a second 1D3a analysis item) and wrote the **Part 2 study notes**: 57 sub-topics in 17 topics (Section A 25, B 24, C 8), audited against the Standards (0 HARD in all three sections) and read by a simulated first-time candidate, then fixed in one pass per section. |
+| **Next step** | **The Part 2 pilot**: about 20 items per section from the Part 2 notes (A, B and C; C at its 10% share), through the full pipeline and the pilot calibration rules (section 6b), with a Part 2 coverage map like `CIA_P1_COVERAGE.md`. The Part 2 notes mark several terms "common usage" (2A3's finance and IT terms, RACI meanings, embedded audit modules): no question keys on them. Section D's third Part 1 form waits for the owner's IIA membership and licence decisions (section 9). |
 | **Then** | Part 2, Part 3, the Challenge build and the CISA bridge notes (from the outline), the cross-part release gate. |
 | **Known weak spot** | Difficulty. No pilot key was wrong and all four blind rounds agreed 80 of 80, but the last testers still called 21 of 80 answerable by test-taking alone, most in Sections B and D, and 8 items carry a TOO EASY or GIVEAWAY flag (section 7). New rounds must do better; the pilot items are candidates for a later hardening pass, not for more polishing now (section 6b, rule 12). |
 
@@ -43,8 +43,8 @@ pack. Every surface CISA has, as data that passes its gate.
 | Surface | File (per pack) | Owner agents | cia1 | cia2 | cia3 | ciac |
 |---|---|---|---|---|---|---|
 | Blueprint and outline | `docs/content/CIA_BLUEPRINT.md`, `data/cia/shared/outline.json` | cert-blueprint-researcher | Done | Done | Done | Done |
-| Study notes | `notes/d{N}.json`, one file per section, notes schema v2 | part expert | Done: 93 sub-topics, audited (section 8b) | Not started | Not started | Generated later, plus the bridge |
-| Questions | `originals/d{N}.json` | part expert | Pilot and rounds 1 to 14 done: 347 (A 116, B 85, C 105, D 41; section 7); meets the revised sale gate's counts; every syllabus bullet covered (`CIA_P1_COVERAGE.md`) | Not started | Not started | Generated (`build_challenge.py`) from the tagged pilot items |
+| Study notes | `notes/d{N}.json`, one file per section, notes schema v2 | part expert | Done: 93 sub-topics, audited (section 8b) | Done: 57 sub-topics in 17 topics, audited and learner-read (round 15, section 7) | Not started | Generated later, plus the bridge |
+| Questions | `originals/d{N}.json` | part expert | Pilot and rounds 1 to 15 done: 348 (A 116, B 85, C 105, D 42; section 7); meets the revised sale gate's counts; every syllabus bullet covered (`CIA_P1_COVERAGE.md`) | Next: the Part 2 pilot | Not started | Generated (`build_challenge.py`) from the tagged pilot items |
 | Citation library | `data/cia/shared/_framework_library.md` (one for all four) | part experts, cia-currency-checker | Started | | | |
 | Dated facts | `data/cia/shared/currency.json` | cia-currency-checker | Started | | | |
 | Glossary | `glossary.json`, built from `data/cia/shared/glossary.json` | iia-mindset-coach, part experts | Started: 153 terms, audited (section 7) | Later | Later | Built from the shared terms of its topics |
@@ -413,6 +413,7 @@ in a row below 90%: stop and tell the owner.
 | Round 12 | 21 Nov 2026 | cia1, all four sections, aimed at the coverage map's gaps (zero-item and one-item bullets, judge bullets below depth) | 30 (A 11, B 9, C 3, D 7) | 29 of 30 first round (Section B 8 of 9 scored); 30 of 30 final (100%), after three items were hardened and one cut | 5 / 69 / 34 on 31 (three audits), plus 0 / 14 / 10 from the targeted audits of changed keys, 0 / 9 / 5 on two reworked items and 0 / 1 / 5 from the citation check | A 17.5%, B 18.7%, C 16.7%, D 22.9% | 1 cut before merge (a 1B4g trust sibling, test-taking in three blind tests); the next item took its id | None new; the originality gate now fetches and requires the two 2026 Statements of Position |
 | Round 13 | 21 Nov 2026 | cia1, all four sections: one-item bullets, Section A's Challenge topics, Section C's analysis items, Section D's open slots (new lessons only) | 19 kept of 24 (A 9, B 2, C 2, D 6) | 24 of 24 first round, but 8 classed answerable by test-taking; 19 of 19 final after one fix pass each | 8 / 77 / 29 on 24 (three audits), plus 1 / 18 / 13 from the targeted audits of changed keys and 0 / 0 / 2 from the citation check | A 17.0%, B 18.2%, C 16.3%, D 22.0% | 5 cut before merge, each still answerable from wording after one fix pass (siblings on 1A5g, 1B5b, 1C2a; 1B4e on a common-sense lesson; a 1D3a analysis item); later ids moved down | None new |
 | Round 14 | 21 Nov 2026 | cia1, Sections A and C, bullets with room (new lessons only) | 6 kept of 13 written (A 4, C 2); 16 of 22 slots left empty | 9 of 9 first round, 4 classed answerable by test-taking; 6 of 6 final after one fix pass each | 1 / 35 / 15 on 9 (two audits), plus 0 / 7 / 7 from the targeted audits and 0 / 4 / 2 from the citation check | A 16.4%, C 16.5% | 3 cut before merge: a 1A1a item repeating d1_032, a 1A8c item and a 1C7c analysis item, each still answerable from wording after one fix pass | None new |
+| Round 15 | 21 to 25 Nov 2026 | cia1 Section D (one item) and the cia2 study notes | 1 item; 57 notes sub-topics | 1 of 1 (test-taking at first; partly after one fix pass) | Item: 0 / 7 / 4. Notes: Section A 0 / 11 / 9, Sections B and C 0 / 13 / 12 | D 22.0% | None | IIA data analytics paper, 2024 AI Auditing Framework, public pages of two members-only guides (all background only) |
 
 **Pilot, in full.** Four standards audits (one per section, with the key):
 Section A 0 HARD, 15 PRECISION, 8 OBSERVATION; B 0 / 8 / 5; C 1 / 9 / 12;
@@ -956,6 +957,48 @@ What round 10 taught.
   that pilot items were candidates for a later hardening pass is done for
   Section B; Sections A, C and D pilot items remain candidates.
 
+**Round 15, in full.** One Part 1 item and the Part 2 notes. The 1D3a analysis item
+(`cia1_d4_042`) teaches that counsel's sign-off on each electronic evidence request is a
+control to test, not assurance to rely on (the 2019 fraud position paper, a should).
+Its first blind test found it answerable from wording (the runner-up was the only "rely"
+option); after one fix pass it passed as partly. Notes 1D3.1, 1D5.3 and 1D5.4 were fixed
+to say what the paper and Standard 9.5 say at their strength.
+
+**The Part 2 notes** were written by three `cia-p2-domain-expert` authors from
+`docs/content/CIA_BLUEPRINT.md` with a Part 2 brief built on the Part 1 one: the seat is
+the internal auditor or engagement supervisor on one engagement, Part 1's parked
+engagement topics (weighing significance, sampling, sufficiency) belong here, and running
+the function stays in Part 3. Standards audits found no HARD error: Section A 11
+PRECISION (Part 3 ground in its "recommend" lines, a guidance threshold written as a
+must, "judge design first" taught as a required order, criteria not led by the board's
+and senior management's); Sections B and C 13 PRECISION (normalizing data said to
+"remove duplicates", the anomaly the auditor looks for; an example that changed scope
+without approval; a timing change said to need approval). A simulated first-time
+candidate rated the notes ready after fixes: rules and tips were hard to tell apart,
+who approves changes and how matters escalate differed between sections, and some
+sub-topics were too long for a phone. One fix pass per section applied all of it, with
+one shared wording for approvals ("the CAE, or a supervisor the CAE delegates to") and
+one escalation route. Three glossary terms (Benchmarking, Finding, Significance) reuse
+the shared wording, and "Workpapers" is redefined everywhere as the engagement's record
+kept to the function's methodology: the old "auditor's own record" was the very idea a
+Part 2 trap warns against. Four Part 1 notes lines were corrected along the way (1A4.1
+"timely", 1C2.2 updating an earlier assessment, 1B5.3's three reliability factors).
+
+Gaps the authors named (no question keys on them): 2A3's finance and IT terms, named
+privacy principles (members-only guide), the meaning of each RACI letter, embedded audit
+modules, analytical ratio formulas (textbook), and agile, integrated and remote approaches
+beyond general terms.
+
+What round 15 taught.
+- **Write the brief for the seat.** The Part 2 brief's line on Part 3 ground still let
+  15 "recommend" lines drift to the chief audit executive's methodology; the audit caught
+  it. Future briefs name the actor each field addresses.
+- **One wording per actor and route, set before writing.** Three authors in parallel
+  wrote three versions of who approves; a shared line fixed it in the fix pass.
+- **A glossary term is defined once for every part.** The glossary gate caught the
+  differences; when a better definition appears, change the shared glossary and every
+  notes file in one step.
+
 **Round 14, in full.** Two authors wrote to the bullets the coverage map still had room
 on: Section A 6 of 12 slots, Section C 3 of 10, with every empty slot named against the
 items its idea would repeat. Standards audits: Section A 0 HARD, 24 PRECISION, 9
@@ -1396,6 +1439,9 @@ const IIA_BASE = { issuer: IIA, mindset: IIA_MINDSET, trademarkNotice: IIA_TM, t
   checks its shape only).
 - `scripts/build_free_sample.py` needs the CIA packs, the 100-item floor and
   the rule that the Challenge sample uses only ids already free in their Part.
+- The apps label the notes' audit panel "The IS auditor's lens" (web `index.html`
+  about line 12495, mobile `notes.tsx`). For a CIA pack it must read as the internal
+  auditor's lens (found by the Part 2 learner read, round 15).
 - The generated Challenge notes (the Part notes for the 40 shared topics,
   re-coded `4A1` and so on, with section-level text written for the Challenge)
   are built with the Challenge pack, after Parts 2 and 3 have notes.
