@@ -246,6 +246,7 @@ the notice is part of the description.
 | Batch 11 (20 Nov 2026) | +30 | +42 | — | 747 |
 | Batch 12 (20 Nov 2026) | +30 | +42 | — | 819 |
 | Batch 13 (21 Nov 2026) | +30 | +32 | — | 881 |
+| Batch 14 (25 Nov 2026) | +30 | — | +32 | 943 |
 
 Pilot review, 30 Oct 2026:
 - **Blind tests:** 60/60 picks matched the keys on the first pass. After the
@@ -544,6 +545,31 @@ Batch 13 review, 21 Nov 2026 (D1 +30, D2 +32; D2 complete at 460):
 - Length tell: D1 20.4%, D2 19.4%. Tags: 685 of 881 (PRINCIPLE_TAGGING.md, Batch 13).
 
 **Next round:** D1 to its target of 330 (55 more), then D3 to 210 (64 more).
+
+Batch 14 review, 25 Nov 2026 (D1 +30, D3 +32):
+- **Author:** D1 two new items per notes subtopic; D3 32 items spread 1/3/2 by subtopic so every D3 area ends at
+  42 after batch 15 (now A38 B35 C35 D35 E35), with at least 11 on using AI inside the audit. Difficulty D1 6/16/8
+  and D3 8/16/8; keys D1 A7 B7 C9 D7 and D3 A7 B9 C7 D9. Authors kept the batch 13 habit of listing the three
+  nearest existing items for each draft, and re-ran the stem-echo check after every rewrite; D1 alone dropped 16
+  drafts on that grep.
+- **Reviews:** first blind pass 62/62 (D1 30/30, D2 not touched, D3 32/32). Five reviewers per domain (one HARD
+  ERROR, in D1, fixed in round 1), three fix rounds, the cross-domain gate (5 HARD/PRECISION) and the
+  completeness critic (11 gaps: the word-length tell in D3, a D3 tag outside its card's domains, and several
+  reused frames and settings), with gap rounds that re-angled or moved every one. A final fix round moved
+  aaia_d1_292 off a mining group (aaia_d2_058) and aaia_d3_175 off a second Belgian benefits office
+  (aaia_d2_443), stated the fact that decides aaia_d3_175 (the model is seldom in error), turned aaia_d1_303's
+  belief options into real concerns, and removed a subset key in aaia_d3_172. My last pass said "spending limit"
+  in aaia_d1_290's option C, made aaia_d1_303 rest on knowing that machine-readable signals carry opt-outs, and
+  put "through an API" into aaia_d1_298's stem (the fact behind "cannot retrain"). A last blind test of 17 items,
+  every changed one included, matched 17/17. No key changed after the first draft.
+- **Notes:** each D1 subtopic and the D3 subtopics with new items gained the short fact their keys rely on,
+  trimmed elsewhere so every subtopic stays within 380 words.
+- **Citations:** no new library bullets; one Verified sub-bullet records the checked text of NIST AI 100-1
+  Section 3.7. The EU text-and-data-mining opt-out, the EU AI Act's rights impact assessment and an ISO/IEC 42001
+  clause were not added, because no opened source was available; those items cite existing bullets.
+- Length tell: D1 19.8%, D3 18.4% (up from 17.0%). Tags: 728 of 943 (PRINCIPLE_TAGGING.md, Batch 14).
+
+**Next round:** batch 15, D1 to its target of 330 (25 more) and D3 to 210 (32 more), which completes the bank at 1,000.
 
 ## 10. Follow-ups outside this plan's scope
 
