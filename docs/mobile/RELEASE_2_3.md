@@ -91,11 +91,57 @@ would then give testers the sample.
 
 ## Built bundles
 
-Filled in after the builds (build id, commit, SHA-256, manifest values, audit).
+Both built from commit `4f7b3aaff2cecf16fd000634b37b972ab3758676` (main after
+#315) on 25 Nov 2026. Package `com.kaisip.app`, version name 2.3. Values below
+were read from the .aab files themselves, not from EAS.
+
+| | Public (production) | Closed testers |
+|---|---|---|
+| EAS profile | `public-sample` | `production` |
+| EAS build id | `af41784e-ed9d-4ae3-950c-829cae666d2c` | `df806044-dae2-4664-82ad-ceb3be10450e` |
+| versionCode (manifest) | **5** | **6** |
+| Size | 71,510,297 bytes | 72,306,071 bytes |
+| SHA-256 | `03429fdf222c2e0867a6f04bb64ecf1050530624bfeb5f215a5cf70fec07dfbd` | `b98b2ffef1e197d546659f627028782f6dde1ebc0c09ed560dee6ce8459dd760` |
+| Upload certificate SHA-256 | `BE:8B:DA:41:…:93:09:E4:9C` (same as 2.1 and 2.2) | same |
+| targetSdk | 36 | 36 |
+| OTA updates (embedded config) | off | off |
+| Permissions and services | identical to 2.2 | identical to 2.2 |
+| Tablet setting (`screen.portrait` not required) | yes | yes |
+| `audit-public-aab.mjs` | **PASS**: 278/278 sample, 0 paid ids (6 known code references, no text), 0/1001 paid stems, 0/3621 unreleased-course ids, no server addresses | **FAIL as expected** (full bank): 278/278 sample, 995 paid ids, 1001/1001 paid stems, 0/3621 unreleased-course ids, no server addresses |
+
+Tester code 6 > public code 5: PASS. A whole-.aab scan of the public bundle
+(all 1,207 files, not only the JavaScript bundle) found no paid stem.
+
+The .aab files are not in the repo (they were handed to the owner directly).
 
 ## Release checks
 
-Filled in from the candidate's tests.
+Local tests used the Expo web export of the same commit at phone size
+(Chromium), plus the gates below. No Android phone and no Play-signed install
+were available to Claude.
+
+| Check | Result |
+|---|---|
+| `npm run check`, cloud-mode jest, sample-content tests, release-config check, `verify_repo.sh` | PASS |
+| Public build refuses missing, misspelled or `full` settings (tests) | PASS |
+| Public .aab carries only the free sample (audit above) | PASS |
+| Tester .aab carries the full bank, no unreleased course | PASS |
+| No sync, analytics or crash-report server in either bundle (Data safety "No data collected") | PASS |
+| Version codes: tester 6 > public 5 | PASS |
+| Same upload key, permissions, services, targetSdk 36, OTA off | PASS |
+| Fresh guest on the public build: first five, practice, full 150-question mock, mini mock, notes, journal, You, Settings | PASS (web export) |
+| Upgrade from a full-bank save to the public build: no saved keys removed, review skips missing questions, past mocks open | PASS (web export) |
+| Unfinished mock with questions no longer bundled resumes and scores only the remaining ones | PASS (web export, after the fix in #315) |
+| Saved-question count counts only questions in the build | PASS (web export) |
+| Backup export and restore | NOT TESTED |
+| Real "Submit exam" tap on a full mock (time-out scoring was tested) | NOT TESTED |
+| Dark mode on the public build | NOT TESTED |
+| Native Android device (either bundle) | NOT TESTED |
+| In-place upgrade of a real Play-signed closed install (2.2 code 4 → 2.3 code 6) keeps progress and the full bank | NOT TESTED: needs Play Console (owner, step 3 above) |
+| Play pre-launch report | NOT TESTED: runs after upload (owner) |
+
+Known, not changed (product call): when a learner finishes every free question
+in a domain, practice repeats questions without saying the sample has ended.
 
 ## Play release notes
 
