@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "comment": "Original KaiSip CIA Part 2 practice questions for Section A (Engagement Planning), written from KaiSip's own notes and the opened Global Internal Audit Standards (2024). No IIA practice question, textbook or prep-bank text used. Not affiliated with or endorsed by The IIA. Pilot cia2_d1_001 to cia2_d1_014, 25 Nov 2026; six pilot items cut in review (one repeated a Part 1 lesson; five stayed answerable from wording after one fix pass). Round 1 cia2_d1_015 to cia2_d1_022, 25 Nov 2026; three round 1 items cut in review before merge (two keyed on Background guidance, one answerable from wording) and the rest renumbered. Round 2 cia2_d1_023 to cia2_d1_026, 25 Nov 2026: first analysis items on 2A7b and 2A7d (keyed on the Standards), a first item on 2A5a (keyed on the Cybersecurity Topical Requirement and its user guide), and a second lesson on 2A1a and 2A1b; slots on 2A4a, 2A7c, 2A2a, 2A5c, 2A5e, 2A5f and 2A6c were left unwritten for want of a lesson with a Standards distinction not already in the bank.",
+  "comment": "Original KaiSip CIA Part 2 practice questions for Section A (Engagement Planning), written from KaiSip's own notes and the opened Global Internal Audit Standards (2024). No IIA practice question, textbook or prep-bank text used. Not affiliated with or endorsed by The IIA. Pilot cia2_d1_001 to cia2_d1_014, 25 Nov 2026; six pilot items cut in review (one repeated a Part 1 lesson; five stayed answerable from wording after one fix pass). Round 1 cia2_d1_015 to cia2_d1_022, 25 Nov 2026; three round 1 items cut in review before merge (two keyed on Background guidance, one answerable from wording) and the rest renumbered. Round 2 cia2_d1_023 to cia2_d1_026, 25 Nov 2026: first analysis items on 2A7b and 2A7d (keyed on the Standards), a first item on 2A5a (keyed on the Cybersecurity Topical Requirement and its user guide), and a second lesson on 2A1a and 2A1b; slots on 2A4a, 2A7c, 2A2a, 2A5c, 2A5e, 2A5f and 2A6c were left unwritten for want of a lesson with a Standards distinction not already in the bank. Round 3 cia2_d1_027 to cia2_d1_032, 25 Nov 2026: analysis items on 2A4a (remote work when every record is central) and 2A7c (a projected sample when the server is too slow), a second lesson on 2A5d (the plan's risk assessment is an input, not the engagement's), second lessons on 2A3a (a Topical Requirement is a minimum) and 2A3c (vendor-based controls), and a second lesson on 2A2b (criteria that cannot give reliable comparisons); second lessons on 2A5a, 2A5b, 2A6 and 2A1 bullets were left unwritten for want of a lesson not already in the bank.",
   "schema_version": 1
  },
  "domain": 1,
@@ -1019,6 +1019,240 @@
     "Stakeholder expectations"
    ],
    "_provenance": "Authored from concept: notes 2A1.2 Setting the Scope and Applying Topical Requirements. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standard 13.3 (requirements and considerations) and the Cybersecurity Topical Requirement (conformance and applicability). Original scenario; no IIA practice question or prep-bank text used. Siblings: cia1_d1_046 (mandatory for assurance, recommended for advice, with the types given) and cia2_d1_001 (a requested engagement outside the plan); keep apart in one mock.",
+   "style_version": 2
+  },
+  {
+   "id": "cia2_d1_027",
+   "domain": 1,
+   "subtopic": "2A4 Choosing the engagement approach. Remote work when every record is central",
+   "principle_id": "weigh-cost-against-benefit",
+   "challenge_ref": "C4",
+   "testable_from": null,
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "Planning assurance on whether an Indonesian hotel chain's discounts at 25 hotels had the required approval, auditor Wayan finds both live only in its central booking system, whose controls proved effective. Which approach is BEST?",
+   "options": {
+    "A": "Remote, querying every discount and approval in the booking system",
+    "B": "Remote analysis to rank the hotels, then visits to the riskiest five",
+    "C": "On site at the 25 hotels, inspecting each discount's approval",
+    "D": "Remote, with each hotel exporting its approvals from the booking system"
+   },
+   "correct": "A",
+   "key_concept": "Choose the approach the evidence needs: when every record sits in a well-controlled central system the auditor can query, visits add cost, not evidence.",
+   "pre_read": "Ask where the evidence for this objective lives, and whether any of it needs someone physically present to inspect or observe.",
+   "correct_explanation": "Standard 13.5 has internal auditors weigh the engagement's nature and whether resources fit, and its considerations favor the most efficient and effective use of them; Standard 4.2 weighs cost against benefit. Every discount and approval exists only in a central system with effective controls, so Wayan's own query of the full population is relevant, reliable and sufficient (Standard 14.1). Option B suits risks that need inspection on site; nothing here does.",
+   "wrong_explanations": {
+    "B": "Closest choice: ranking remotely and then visiting fits risks that need inspection on site, such as cash; here every record sits in the system, so visits add only cost.",
+    "C": "Visiting every hotel fits when approvals exist only on paper at each site; these live in the central system, which Wayan can query directly at far lower cost.",
+    "D": "Exports prepared by the hotels come from the people under review; Wayan can extract the data directly, which Standard 14.1 counts as more reliable."
+   },
+   "tips": [
+    "Eliminate: C, because visiting every hotel adds cost when no record sits at the hotels, and D, because exports made by the hotels are weaker than Wayan's own query.",
+    "Final two: A beats B because nothing in this objective needs anyone on site; visits after a remote ranking suit risks such as cash or stock, which need inspection.",
+    "Exam cue: on CIA approach questions, ask where the evidence lives; work remotely when it all sits in a well-controlled system, and plan visits only for what needs physical presence."
+   ],
+   "framework_ref": "Global Internal Audit Standards (2024), Standard 13.5 Engagement Resources; Global Internal Audit Standards (2024), Standard 4.2 Due Professional Care; Global Internal Audit Standards (2024), Standard 14.1 Gathering Information for Analyses and Evaluation",
+   "related_concepts": [
+    "Remote auditing",
+    "Engagement approach",
+    "Cost against benefit"
+   ],
+   "_provenance": "Authored from concept: notes 2A4.2 Choosing the Approach That Fits. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standards 13.5 (requirements and considerations), 4.2 (requirements and considerations) and 14.1 (requirements and considerations). Original scenario; no IIA practice question or prep-bank text used. Round 3 analysis item for 2A4a, from a lead unlike rounds 1 and 2: remote work is the key, and the notes' rank-then-visit approach is the runner-up because nothing here needs inspection. Siblings: cia2_d1_008 (agile approvals), cia2_d2_020 (a reliable system record of every instance) and cia1_d2_050 (full-population software); keep apart in one mock.",
+   "style_version": 2
+  },
+  {
+   "id": "cia2_d1_028",
+   "domain": 1,
+   "subtopic": "2A7 Resources and skills for the engagement. A server too slow for a full-population test",
+   "principle_id": "weigh-cost-against-benefit",
+   "challenge_ref": "C7",
+   "testable_from": null,
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "Auditor Emre's approved program tests all 9 million loyalty awards at a Turkish grocer against a 1% error-rate tolerance; the function's server needs four months for them, past the report date. Which step is BEST?",
+   "options": {
+    "A": "Raise the server shortfall with the chief audit executive to obtain capacity",
+    "B": "Test a projected statistical sample instead, with the program change approved",
+    "C": "Test the months the server can finish, with the program change approved",
+    "D": "Rely on the loyalty team's own error report covering the 9 million"
+   },
+   "correct": "B",
+   "key_concept": "Technology is enough when it can still meet the objective: an error rate against a tolerance can be judged from a projected sample.",
+   "pre_read": "Ask what the objective must show, a rate against a tolerance or every single exception; that decides whether the planned technology is really short.",
+   "correct_explanation": "Standard 13.5 sends resource concerns to the chief audit executive when resources cannot achieve the objectives. Here the objective is an error rate against a 1% tolerance, which a representative sample projected to all awards can judge in time (Standards 14.1 and 13.6), at far lower cost (Standard 4.2). The method change still needs approval under Standard 13.6. Option A suits objectives only every item can answer, such as finding all duplicates.",
+   "wrong_explanations": {
+    "A": "Closest choice: Standard 13.5 sends resource gaps to the chief audit executive, but a projected sample meets this rate objective in time, so more capacity is not needed.",
+    "C": "Testing only some months leaves the other awards unexamined; it fits only an objective limited to those months, and needs approval as a scope change.",
+    "D": "The loyalty team's report comes from the activity under review; it could support Emre's work once tested, but it cannot replace Emre's own testing."
+   },
+   "tips": [
+    "Eliminate: C, because testing some months leaves the other awards unexamined, and D, because the loyalty team's own report is not independent evidence.",
+    "Final two: B beats A because a rate against a tolerance can be judged from a projected sample in time; more capacity suits objectives that need every item.",
+    "Exam cue: on CIA resource questions, first ask whether what you have can still meet the objective; raise a shortfall when it cannot, and get approval when the method changes."
+   ],
+   "framework_ref": "Global Internal Audit Standards (2024), Standard 13.5 Engagement Resources; Global Internal Audit Standards (2024), Standard 14.1 Gathering Information for Analyses and Evaluation; Global Internal Audit Standards (2024), Standard 13.6 Work Program; Global Internal Audit Standards (2024), Standard 4.2 Due Professional Care",
+   "related_concepts": [
+    "Technological resources",
+    "Sample or full population",
+    "Work program changes"
+   ],
+   "_provenance": "Authored from concept: notes 2A7.2 Money and Technology for the Engagement. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standards 13.5 (requirements and considerations), 14.1 (considerations on samples and full populations), 13.6 (requirements and sampling considerations) and 4.2 (requirements). Original scenario; no IIA practice question or prep-bank text used. Round 3 analysis item for 2A7c, keyed on whether the technology on hand can still meet the objective, a rule not keyed in cia2_d1_014, cia2_d1_022 or cia1_d2_018. Transfer pairs: cia1_d2_050 (errors hidden between items call for full-population software) and cia2_d1_022 (a resource the objectives need goes to the chief audit executive); sibling cia1_d2_014 (cost against benefit); keep apart in one mock.",
+   "style_version": 2
+  },
+  {
+   "id": "cia2_d1_029",
+   "domain": 1,
+   "subtopic": "2A5 Detailed engagement risk assessment. The plan's assessment offered as the engagement's own",
+   "principle_id": "plan-before-testing",
+   "challenge_ref": "C5",
+   "testable_from": null,
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "Supervisor Dawa suggests that auditor Pema, planning the first engagement on a Nepalese hydropower firm's spare-parts buying, adopt the plan's risk assessment, made in January, as the engagement's own. Which response is BEST?",
+   "options": {
+    "A": "Update the plan's assessment, adding risks that arose since January",
+    "B": "Adopt the plan's assessment, adding the fraud risks it leaves out",
+    "C": "Rank the risks the spare-parts managers name, then test the top three",
+    "D": "Identify and rank the buying risks, drawing on the plan's assessment"
+   },
+   "correct": "D",
+   "key_concept": "The plan's risk assessment is one input; a first engagement identifies and ranks the activity's own risks, and only an earlier engagement's assessment is updated.",
+   "pre_read": "Check whether an earlier engagement has already assessed this activity's risks; the update rule in Standard 13.2 depends on it.",
+   "correct_explanation": "Standard 13.2 requires Pema to gather the risk assessment behind the internal audit plan, then identify the potentially significant risks to the activity's objectives, consider fraud and prioritize them. Only where past engagements identified the activity's risks is a review and update enough. This is the first engagement on spare-parts buying, so Option A applies that shortcut to the wrong document: the plan's assessment chose which engagements to run, not this activity's risks.",
+   "wrong_explanations": {
+    "A": "Closest choice: a review and update is enough when an earlier engagement assessed the activity's risks; the plan's assessment is not that, and this is the first engagement.",
+    "B": "Considering fraud is required, but Standard 13.2 lists the plan's risk assessment as information to gather; Pema must still identify, weigh and rank the activity's own risks.",
+    "C": "Managers' input on risks should be considered, but internal auditors identify, weigh and rank the risks themselves, fraud included (Standard 13.2)."
+   },
+   "tips": [
+    "Eliminate: B, because adding fraud risks does not make the plan's assessment the engagement's own, and C, because managers' views are input while internal auditors rank the risks.",
+    "Final two: D beats A because a review and update suffices only for an earlier engagement's assessment of the activity; this first engagement has none to update.",
+    "Exam cue: on CIA risk assessment questions, ask which earlier assessment exists: an earlier engagement's is reviewed and updated; the plan's is only an input."
+   ],
+   "framework_ref": "Global Internal Audit Standards (2024), Standard 13.2 Engagement Risk Assessment",
+   "related_concepts": [
+    "Engagement risk assessment",
+    "Plan-level risk assessment",
+    "Review and update"
+   ],
+   "_provenance": "Authored from concept: notes 2A5.1 Completing the Engagement Risk Assessment. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standard 13.2 (requirements and considerations). Original scenario; no IIA practice question or prep-bank text used. Second lesson on 2A5d: the plan's assessment is an input, and the review-and-update rule covers only an earlier engagement's assessment of the activity. Transfer pair with cia1_d4_008 (a repeat engagement: review and update is the minimum); siblings cia1_d3_004 (what an engagement risk assessment looks for), cia1_d3_013 (management's register as one input to the plan) and cia2_d1_010; keep apart in one mock.",
+   "style_version": 2
+  },
+  {
+   "id": "cia2_d1_030",
+   "domain": 1,
+   "subtopic": "2A3 Planning around key risks and controls. A top-ranked risk and the requirement's minimum",
+   "principle_id": "risk-sets-plan-and-scope",
+   "challenge_ref": "C3",
+   "testable_from": null,
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Auditor Nika's risk assessment for a Slovenian payments firm's cyber assurance engagement ranks a breach of its stored card data the top risk. What does the Cybersecurity Topical Requirement MOST accurately set for the scope?",
+   "options": {
+    "A": "A minimum, which the top-ranked risk can take the scope beyond",
+    "B": "The full scope of assurance on the topic, the top risk included",
+    "C": "Every requirement, each one tested in this engagement",
+    "D": "Recommended practice, while the risk assessment sets the scope"
+   },
+   "correct": "A",
+   "key_concept": "A Topical Requirement sets a minimum baseline for assurance on its topic; the engagement's risks can call for more than its requirements.",
+   "pre_read": "Recall how the Cybersecurity Topical Requirement describes itself: a ceiling on the work, or a baseline that the organization's risks can add to.",
+   "correct_explanation": "The Cybersecurity Topical Requirement calls its requirements a minimum baseline and says the organization's risk profile may require more aspects of the topic; its user guide adds that organizations rating cyber risk very high may need to assess more. Standard 13.3 scopes the engagement to reach objectives that follow the engagement risk assessment. So Nika's top-ranked risk can take the scope past the requirements. Option B reads the minimum as the whole.",
+   "wrong_explanations": {
+    "B": "Closest choice: the requirements must be assessed in cyber assurance, but they are a minimum baseline; the top-ranked risk can call for work beyond them.",
+    "C": "Each requirement is assessed for applicability, but one that does not apply can be excluded with a documented reason, and coverage can span engagements.",
+    "D": "Conformance is mandatory for assurance services and only recommended for advisory services; this is assurance, so the requirements are not optional."
+   },
+   "tips": [
+    "Eliminate: C, because a requirement can be excluded with a documented reason, and D, because conformance is mandatory in assurance and recommended only in advisory work.",
+    "Final two: A beats B because the requirement calls itself a minimum baseline; the organization's risks can call for more, and the top-ranked risk here may.",
+    "Exam cue: on CIA Topical Requirement questions, read the requirements as a floor, not a ceiling; the risk assessment can add to them, and documented reasons can exclude some."
+   ],
+   "framework_ref": "Cybersecurity Topical Requirement; Cybersecurity Topical Requirement User Guide; Global Internal Audit Standards (2024), Standard 13.3 Engagement Objectives and Scope; Global Internal Audit Standards (2024), Standard 13.2 Engagement Risk Assessment",
+   "related_concepts": [
+    "Topical Requirements",
+    "Minimum baseline",
+    "Risk-based scope"
+   ],
+   "_provenance": "Authored from concept: notes 2A3.1 Strategy, Performance Measures and Topical Requirements in Planning (a Topical Requirement in scope is the minimum). Sources opened 25 Nov 2026: Cybersecurity Topical Requirement (introduction: a minimum baseline, and the risk profile may require more), Cybersecurity Topical Requirement User Guide (Applicability, Risk, and Professional Judgment) and Global Internal Audit Standards (2024), Standards 13.2 and 13.3. Original scenario; no IIA practice question or prep-bank text used. Keyed on the requirement and its user guide, not on the Application Guidance. Second lesson on 2A3a. Siblings: cia2_d1_006 (mapping a framework-based program), cia2_d1_025 (exclusions and coverage across engagements, option C's trap) and cia1_d1_116; keep apart in one mock.",
+   "style_version": 2
+  },
+  {
+   "id": "cia2_d1_031",
+   "domain": 1,
+   "subtopic": "2A3 Planning around key risks and controls. Patient records held by a cloud provider",
+   "principle_id": "risk-sets-plan-and-scope",
+   "challenge_ref": "C3",
+   "testable_from": null,
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Planning cyber assurance at a Paraguayan pharmacy, auditor Lucía learns a cloud provider holds its patient records; the draft program tests only the pharmacy's own access and patching. How should Lucía BEST treat the provider?",
+   "options": {
+    "A": "Test the cloud provider's access and patching settings directly, on its premises",
+    "B": "Assess how management checks the provider's controls throughout the contract",
+    "C": "Exclude the cloud provider, recording that its controls lie outside the pharmacy",
+    "D": "Review whether the cloud provider's fees match the contract's agreed rates"
+   },
+   "correct": "B",
+   "key_concept": "Cyber assurance covers vendor-based controls protecting the organization's data: assess how management checks a provider's controls, rather than excluding them or testing the provider directly.",
+   "pre_read": "Recall whether the Cybersecurity Topical Requirement's controls requirements stop at the organization's own systems or reach vendors that hold its data.",
+   "correct_explanation": "The Cybersecurity Topical Requirement's controls requirements ask internal auditors to assess whether a process ensures that vendor-based controls, as well as internal ones, protect the organization's systems and data. Its user guide adds management's review of vendors' assurance reports before and throughout the relationship. A provider holding patient records falls squarely within that, so Lucía assesses management's process. Option C is an exclusion, which needs a reason; this one contradicts the requirement.",
+   "wrong_explanations": {
+    "A": "The requirement asks whether management's process covers vendor-based controls; tests on the provider's premises need access the contract may not give and are not what it names.",
+    "C": "Closest choice: exclusions are allowed with a documented reason, but the requirement names vendor-based controls over the organization's data, so being outside the pharmacy is no reason here.",
+    "D": "Checking fees against the contract fits a contract compliance engagement; it says nothing about whether the provider's controls protect patient records."
+   },
+   "tips": [
+    "Eliminate: A, because the requirement asks about management's process over vendor controls, not on-site tests, and D, because fees say nothing about protecting patient data.",
+    "Final two: B beats C because the requirement covers vendor-based controls over the organization's data; a provider holding patient records cannot be excluded as outside the pharmacy.",
+    "Exam cue: on CIA cyber planning questions, data held by a vendor is still the organization's risk; ask how management gains assurance over the vendor's controls."
+   ],
+   "framework_ref": "Cybersecurity Topical Requirement, Controls; Cybersecurity Topical Requirement User Guide; Cybersecurity Topical Requirement",
+   "related_concepts": [
+    "Vendor-based controls",
+    "Cybersecurity Topical Requirement",
+    "Cloud services"
+   ],
+   "_provenance": "Authored from concept: notes 2A3.2 Cybersecurity, IT Controls and Data Protection (vendors' controls over the organization's systems and data). Sources opened 25 Nov 2026: Cybersecurity Topical Requirement (Controls, requirement A; applicability and exclusions) and Cybersecurity Topical Requirement User Guide (Control Process Considerations, A). Original scenario; no IIA practice question or prep-bank text used. Second lesson on 2A3c, the vendor half of the coverage map's sibling lead; the notes' example (a grocery chain's vendor platform) differs in scenario and trap. Siblings: cia2_d1_017 (emerging threats), cia1_d1_116 (governance and risk management as well as controls) and cia2_d1_006; keep apart in one mock.",
+   "style_version": 2
+  },
+  {
+   "id": "cia2_d1_032",
+   "domain": 1,
+   "subtopic": "2A2 Choosing evaluation criteria. A target measured two ways",
+   "principle_id": "answer-from-the-stem",
+   "challenge_ref": "C2",
+   "testable_from": null,
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "Auditor Linh will test a Vietnamese courier's regions against management's 95% on-time target, below a trade body's 97%; two regions time deliveries from pickup, two from depot dispatch. Which view of the target is BEST?",
+   "options": {
+    "A": "Adequate, as management set it for the delivery objective",
+    "B": "Adequate, once Linh applies one timing basis to every region",
+    "C": "Inadequate, as the regions' results do not measure the same thing",
+    "D": "Inadequate, as it sits below the trade body's 97% average"
+   },
+   "correct": "C",
+   "key_concept": "Adequate criteria produce reliable comparisons; a target that units measure from different starting points cannot, however sensible its level.",
+   "pre_read": "Check each mark of adequate criteria in Standard 13.4: relevant, aligned with the objectives, and producing reliable comparisons.",
+   "correct_explanation": "Standard 13.4 has internal auditors judge whether management's criteria are adequate: relevant, aligned with the objectives, and producing reliable comparisons. Two regions count from pickup and two from depot dispatch, so the same 95% measures different things and results cannot be compared reliably. Inadequate criteria give way to appropriate ones identified through discussion with the board, senior management or both. Option A is right only where the measure is consistent.",
+   "wrong_explanations": {
+    "A": "Closest choice: adequate criteria set by management must be used, but a target measured from different starting points cannot produce reliable comparisons, so it is not adequate.",
+    "B": "One timing basis is the right fix, but inadequate criteria are settled through discussion with the board or senior management, not chosen by the internal auditor alone.",
+    "D": "A trade body's figure informs judgment but does not override management's target; a lower level can be a deliberate choice, and the level is not what fails here."
+   },
+   "tips": [
+    "Eliminate: B, because Linh cannot settle the criterion alone, and D, because an outside average informs judgment but does not by itself make a target inadequate.",
+    "Final two: C beats A because adequacy needs reliable comparisons; management setting the target does not help when regions measure it from different starting points.",
+    "Exam cue: on CIA criteria questions, test each mark of adequacy in turn; one failed mark, such as comparability, makes management's criteria inadequate."
+   ],
+   "framework_ref": "Global Internal Audit Standards (2024), Standard 13.4 Evaluation Criteria",
+   "related_concepts": [
+    "Adequate criteria",
+    "Reliable comparisons",
+    "Performance targets"
+   ],
+   "_provenance": "Authored from concept: notes 2A2.2 Judging Whether Criteria Are Adequate. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standard 13.4 (requirements and considerations). Original scenario; no IIA practice question or prep-bank text used. Second lesson on 2A2b (reliable comparisons; cia2_d1_004 turned on a missing satisfactory level). Siblings: cia2_d1_004, cia1_d3_064 and cia1_d1_060 (the next step once criteria are inadequate), cia1_d2_077 (comparing with recommended practice) and cia1_d3_020; keep apart in one mock.",
    "style_version": 2
   }
  ]
