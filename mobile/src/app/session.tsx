@@ -425,6 +425,15 @@ export default function SessionScreen() {
   const hintRef = useRef<View>(null);
   const focusHint = useRef(false);
 
+  // Mobile 2.3: an unfinished session saved by a build with more questions (a full-bank install
+  // updated to the public build with the free sample) drops the questions this build doesn't have,
+  // so the learner carries on with every other answer kept. When none remain, the screen below
+  // says the session can't continue, as before.
+  useEffect(() => {
+    if (!active || active.finishedAt) return;
+    const missing = active.questionIds.filter((id) => !findQuestion(active.certId, id));
+    if (missing.length && missing.length < active.questionIds.length) useSession.getState().dropQuestions(missing);
+  }, [active]);
   const qid = active?.questionIds[active.index];
   const q = useMemo(() => (active && qid ? findQuestion(active.certId, qid) : undefined), [active, qid]);
   const perm = active && qid ? active.perms[qid] : undefined;

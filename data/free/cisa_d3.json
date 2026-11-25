@@ -2,8 +2,46 @@
   "domain": 3,
   "title": "Information Systems Acquisition, Development and Implementation",
   "weight": "12%",
-  "count": 34,
+  "count": 35,
   "questions": [
+    {
+      "id": "d3_002",
+      "domain": 3,
+      "subtopic": "SDLC Phases. Definitions",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An IS auditor finds that developers began coding a new application before user requirements were signed off. What is the GREATEST risk?",
+      "options": {
+        "A": "Test cases will be written against unconfirmed assumptions",
+        "B": "Design documents will be produced after the code they describe",
+        "C": "Later rework will push project costs over budget",
+        "D": "The delivered system may not meet business needs"
+      },
+      "correct": "D",
+      "key_concept": "Approved requirements are the baseline every later SDLC phase builds on; skipping them risks a system that misses business needs.",
+      "pre_read": "Recall the SDLC order and ask what each phase hands to the next. Then weigh outcome risk against symptom risk.",
+      "correct_explanation": "In a linear SDLC each phase produces artifacts that feed the next, and approved requirements are the baseline for design, build and testing. Coding without them means the system may be built to the wrong target and fail to deliver business value. Cost overrun from rework comes closest: it is real, but it is a symptom of the larger risk of not meeting business needs.",
+      "wrong_explanations": {
+        "A": "Tests built on unconfirmed assumptions are one technical effect; they inherit the same wrong target rather than being the main risk.",
+        "B": "Documentation out of sequence is a process weakness, but the business impact is a system that misses what users need.",
+        "C": "Rework and overruns are likely, but they follow from the core problem: building something the business did not agree to."
+      },
+      "tips": [
+        "Eliminate: A and B are technical side effects inside the project, test design and documentation order, not the business impact of building without agreed requirements.",
+        "Final two: D beats C because failing to meet business needs is the root risk; cost overrun is one consequence of it.",
+        "Exam cue: when a phase is skipped, pick the option about the business outcome over its cost or schedule symptoms."
+      ],
+      "framework_ref": "ISO/IEC 12207 (Software Life Cycle Processes); NIST SP 800-160 Vol 1 (Systems Security Engineering); COBIT 2019 BAI02 (Managed Requirements Definition)",
+      "related_concepts": [
+        "SDLC",
+        "Software life cycle",
+        "ISO/IEC 12207",
+        "Phase gates"
+      ],
+      "_provenance": "Authored from concept: 'Canonical SDLC phase order from ISO/IEC 12207 and NIST SP 800-160'. Public sources: ISO/IEC 12207, NIST SP 800-160 Vol 1. Foundational sequence question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): replaced unit-test coverage and change-freeze options (unrelated to skipping sign-off) with real downstream effects: tests on unconfirmed assumptions, design documented after code.",
+      "style_version": 2
+    },
     {
       "id": "d3_004",
       "domain": 3,

@@ -18,6 +18,7 @@ const appConfig = require('../../app.config.js') as {
   (arg: { config: Record<string, unknown> }): Record<string, unknown>;
   configFor(config: Record<string, unknown>, env: Record<string, string | undefined>): Record<string, unknown>;
   cloudBuildProblem(env: Record<string, string | undefined>): string | null;
+  publicBuildProblem(env: Record<string, string | undefined>, checkGenerated?: () => string | null): string | null;
 };
 const appJson = require('../../app.json') as { expo: Record<string, unknown> & { updates: Record<string, unknown> } };
 
@@ -115,5 +116,39 @@ describe('cloud flag guard on the store build', () => {
         }
       }
     }
+  });
+});
+
+// The public Google Play build bundles only the free question sample and fails closed.
+describe('public sample build guard', () => {
+  const pub = {
+    EAS_BUILD_PROFILE: 'public-sample', KAISIP_STORE_BUILD: '1', KAISIP_RELEASE: 'public', KAISIP_QUESTION_PACK: 'sample',
+  };
+  const passes = () => null;
+  const fails = () => 'not the sample';
+
+  it('accepts the explicit public settings and keeps updates off', () => {
+    expect(appConfig.publicBuildProblem(pub, fails)).toBeNull(); // generated content is checked only on EAS
+    expect(appConfig.publicBuildProblem({ ...pub, EAS_BUILD: 'true' }, passes)).toBeNull();
+    expect((appConfig.configFor(base(), pub).updates as Record<string, unknown>).enabled).toBe(false);
+  });
+
+  it.each([
+    ['a missing pack setting', { ...pub, KAISIP_QUESTION_PACK: undefined }],
+    ['the full bank', { ...pub, KAISIP_QUESTION_PACK: 'full' }],
+    ['a missing release setting on the public profile', { ...pub, KAISIP_RELEASE: undefined }],
+    ['a missing store marker', { ...pub, KAISIP_STORE_BUILD: undefined }],
+    ['KAISIP_RELEASE=public on another profile without the pack', { EAS_BUILD_PROFILE: 'production', KAISIP_STORE_BUILD: '1', KAISIP_RELEASE: 'public' }],
+  ])('stops %s', (_name, env) => {
+    expect(appConfig.publicBuildProblem(env, passes)).toMatch(/never bundles the full question bank/);
+    expect(() => appConfig.configFor(base(), env)).toThrow(/public build/);
+  });
+
+  it('stops the build machine when the generated content is not the sample', () => {
+    expect(appConfig.publicBuildProblem({ ...pub, EAS_BUILD: 'true' }, fails)).toBe('not the sample');
+  });
+
+  it('leaves the closed-testing production profile alone', () => {
+    expect(appConfig.publicBuildProblem({ EAS_BUILD: 'true', EAS_BUILD_PROFILE: 'production', KAISIP_STORE_BUILD: '1' }, fails)).toBeNull();
   });
 });

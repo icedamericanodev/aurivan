@@ -465,11 +465,47 @@ function packRev() {
   return 0;
 }
 
+/** The EAS profile for the public Google Play build (eas.json). */
+export const PUBLIC_PROFILE = 'public-sample';
+
+/**
+ * Which question pack to build, failing closed for the public release.
+ * A build is public when its EAS profile is `public-sample` or it says
+ * KAISIP_RELEASE=public. A public build must also say, explicitly,
+ * KAISIP_RELEASE=public and KAISIP_QUESTION_PACK=sample: a missing, unknown or
+ * "full" setting stops it before any content is written. Every other build
+ * keeps the old default (the full bank), so closed-testing builds don't change.
+ */
+export function questionPackMode(env) {
+  const release = env.KAISIP_RELEASE;
+  if (release !== undefined && release !== 'public') {
+    throw new Error(`KAISIP_RELEASE must be "public" or unset (got "${release}")`);
+  }
+  const isPublic = release === 'public' || env.EAS_BUILD_PROFILE === PUBLIC_PROFILE;
+  if (isPublic) {
+    if (release !== 'public' || env.KAISIP_QUESTION_PACK !== 'sample') {
+      throw new Error(
+        'Public release build: set both KAISIP_RELEASE=public and KAISIP_QUESTION_PACK=sample ' +
+          `(got KAISIP_RELEASE=${release ?? 'unset'}, KAISIP_QUESTION_PACK=${env.KAISIP_QUESTION_PACK ?? 'unset'}). ` +
+          'The public build never bundles the full question bank.',
+      );
+    }
+    return 'sample';
+  }
+  // The closed testers' store build (profile "production") says "full" explicitly, so a stray
+  // "sample" (for example in the shared EAS environment) can't quietly take the bank away from testers.
+  if (env.EAS_BUILD_PROFILE === 'production' && env.KAISIP_QUESTION_PACK !== 'full') {
+    throw new Error(`Closed-testing build: KAISIP_QUESTION_PACK must be "full" (got ${env.KAISIP_QUESTION_PACK ?? 'unset'})`);
+  }
+  const mode = env.KAISIP_QUESTION_PACK ?? 'full';
+  if (!['full', 'sample'].includes(mode)) throw new Error('KAISIP_QUESTION_PACK must be full or sample');
+  return mode;
+}
+
 function main() {
-  const mode = process.env.KAISIP_QUESTION_PACK ?? 'full';
   // Generated files only. Never leave an old full pack or an extra cert behind.
   fs.rmSync(FINAL_ROOT, { recursive: true, force: true });
-  if (!['full', 'sample'].includes(mode)) throw new Error('KAISIP_QUESTION_PACK must be full or sample');
+  const mode = questionPackMode(process.env);
   const selection = mode === 'sample' ? sampleSelection(REPO_ROOT) : null;
   if (selection && (PACKS.length !== 1 || PACKS[0].certId !== 'cisa')) {
     throw new Error('Sample mode needs an explicit reviewed manifest for every certification');

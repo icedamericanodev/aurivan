@@ -128,8 +128,45 @@ export interface ActiveSession {
   finishedAt?: number; // set when the learner finishes / submits
 }
 
+/** Copy of a record without some keys (undefined stays undefined). */
+function omitKeys<V>(rec: Record<string, V> | undefined, drop: ReadonlySet<string>): Record<string, V> | undefined {
+  if (!rec) return rec;
+  return Object.fromEntries(Object.entries(rec).filter(([k]) => !drop.has(k)));
+}
+
+/**
+ * Mobile 2.3: the session without some questions, for an unfinished session saved by a build that
+ * had questions this build doesn't bundle (a full-bank install updated to the public build with the
+ * free sample). The learner keeps every answer to the questions that remain and carries on; the
+ * missing questions leave the set, so a mock is scored on the questions it still has. The place
+ * stays on the same question, or the next one that remains. Returns the session unchanged when
+ * nothing is dropped, and null when no question would remain (the screen then says it can't go on).
+ */
+export function withoutQuestions(a: ActiveSession, drop: readonly string[]): ActiveSession | null {
+  const gone = new Set(drop.filter((id) => a.questionIds.includes(id)));
+  if (!gone.size) return a;
+  const questionIds = a.questionIds.filter((id) => !gone.has(id));
+  if (!questionIds.length) return null;
+  // The first remaining question at or after the old place; else the last one.
+  const later = a.questionIds.slice(a.index).find((id) => !gone.has(id));
+  const index = later ? questionIds.indexOf(later) : questionIds.length - 1;
+  return {
+    ...a,
+    questionIds,
+    index,
+    perms: omitKeys(a.perms, gone)!,
+    responses: omitKeys(a.responses, gone)!,
+    flagged: a.flagged.filter((id) => !gone.has(id)),
+    ...(a.coached ? { coached: a.coached.filter((id) => !gone.has(id)) } : {}),
+    ...(a.visitMs ? { visitMs: omitKeys(a.visitMs, gone) } : {}),
+    ...(a.reasons ? { reasons: omitKeys(a.reasons, gone) } : {}),
+  };
+}
+
 interface SessionState {
   active: ActiveSession | null;
+  /** Mobile 2.3: drop questions this build doesn't bundle from an unfinished session (withoutQuestions). */
+  dropQuestions: (ids: readonly string[]) => void;
   start: (s: ActiveSession) => void;
   answer: (questionId: string, r: Response) => void;
   goTo: (index: number) => void;
@@ -159,6 +196,12 @@ export const useSession = create<SessionState>()(
     (set) => ({
       active: null,
       start: (active) => set({ active }),
+      dropQuestions: (ids) =>
+        set((s) => {
+          if (!s.active || s.active.finishedAt) return s;
+          const next = withoutQuestions(s.active, ids);
+          return next === s.active || !next ? s : { active: next };
+        }),
       answer: (questionId, r) =>
         set((s) => {
           if (!s.active) return s;
