@@ -562,25 +562,25 @@
    "testable_from": null,
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "Internal auditor Ana's model, validated on known duplicate claims, scored all 52,000 of a Brazilian insurer's claims for the year in scope, reconciled to the ledger, and flagged none. What is Ana's BEST next step?",
+   "question": "Internal auditor Ana's model, validated on known duplicate claims, checked all 52,000 of a Brazilian insurer's claims for the year in scope, reconciled to the ledger, and flagged none. What is Ana's BEST next step?",
    "options": {
-    "A": "Conclude that no claim was paid twice, citing the model's run",
-    "B": "Hand-test a random sample of claims to confirm the model's result",
+    "A": "Conclude from the model's run that no duplicate payment was found",
+    "B": "Hand-test a random sample of claims to confirm the result",
     "C": "Run the model on last year's claims too, before concluding",
     "D": "Have the claims team run the model monthly as its own check"
    },
    "correct": "A",
-   "key_concept": "Once a tool's logic is validated and its data reconciled, its full-population result is sufficient evidence; rechecking a subset adds cost, not support.",
+   "key_concept": "Once a tool's logic is validated and its data reconciled, its full-population result is sufficient; rechecking a subset adds cost for little benefit.",
    "pre_read": "Ask what the tool's result still lacks: were its logic and its data both checked? If so, what would more testing add?",
-   "correct_explanation": "Standard 14.1 calls evidence sufficient when another prudent, informed person could redo the work and arrive at the same conclusion; a model checked on known duplicates and run on a population reconciled to the ledger meets that. Standard 4.2 weighs the cost of more work against its benefit. A hand sample, the closest choice, retests part of what the model already covered, from the same records, so it adds cost without adding support.",
+   "correct_explanation": "Standard 14.1 strengthens reliability when data is corroborated, and the ledger reconciliation did that; testing the model on known duplicates showed its logic works. Its run over the whole year lets another competent auditor repeat the work and reach the same result. Standard 4.2 weighs cost against benefit, so a hand sample, the closest choice, adds cost for little benefit, and Standard 14.2 then calls for assurance in the conclusion.",
    "wrong_explanations": {
-    "B": "Closest choice: a hand sample would help if the model's logic or data were untested. Here both were checked, so a sample of the same records adds work, not evidence.",
+    "B": "Closest choice: a hand sample helps when a tool's logic or data is untested. Both were checked here, so a sample adds cost for little benefit (Standard 4.2).",
     "C": "The objective covers the year in scope. Last year's claims fall outside it, so running them adds work no objective asks for and delays the conclusion.",
-    "D": "A recommendation answers a finding, and this test found none. Management may choose such monitoring later; it is not the engagement's next step after a clean result."
+    "D": "Handing management a monitoring routine is a possible later recommendation, not the step that completes this test. With a clean, reliable result, the next step is the conclusion (Standard 14.2)."
    },
    "tips": [
-    "Eliminate: C, because last year's claims sit outside the year in scope, and D, because a recommendation follows a finding, and this test found none.",
-    "Final two: A beats B because the model's logic and data were both checked, which meets Standard 14.1's sufficiency; under Standard 4.2, retesting a subset of the same records costs more than it adds.",
+    "Eliminate: C, because last year's claims sit outside the year in scope, and D, because a monitoring routine for management is a later recommendation, not the step that completes this test.",
+    "Final two: A beats B because the model's logic and data were both checked; under Standard 4.2, a hand sample of the same records costs more than the little it adds.",
     "Exam cue: on CIA questions, check a tool's logic and data before relying on it; once both pass, its full-population result can carry the conclusion without a manual backup."
    ],
    "framework_ref": "Global Internal Audit Standards (2024), Standard 14.1 Gathering Information for Analyses and Evaluation; Global Internal Audit Standards (2024), Standard 4.2 Due Professional Care; Global Internal Audit Standards (2024), Standard 14.2 Analyses and Potential Engagement Findings",
@@ -589,7 +589,7 @@
     "Sufficiency of evidence",
     "Cost against benefit"
    ],
-   "_provenance": "Authored from concept: notes 2B3.2 Choosing and Relying on Audit Technology. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standard 14.1 (requirements: sufficiency; considerations: whole-population testing with software), Standard 4.2 (requirements: cost relative to benefits; appropriate techniques, tools and technology) and Standard 14.2 (requirements: no difference and no further analyses needed leads to assurance in the conclusion). Bullet 2B3a, the first item on topic 2B3. New lesson: reliance on an audit tool is earned by checking its logic and its data, and once earned a manual backup adds cost, not evidence; the key is the firm option and the doubting option is the runner-up. The notes' 2B3.2 trap (a model that flags nothing) is the same rule seen from the unchecked side. Nearest items: cia1_d2_050 (whole-population software chosen at planning), cia2_d2_003 (a whole population whose data was not yet reliable), cia2_d2_007 (flags followed up against criteria). Original scenario; no IIA practice question or prep-bank text used. CIA Part 2 round 1, 25 Nov 2026.",
+   "_provenance": "Authored from concept: notes 2B3.2 Choosing and Relying on Audit Technology. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standard 14.1 (requirements: sufficiency; considerations: whole-population testing with software), Standard 4.2 (requirements: cost relative to benefits; appropriate techniques, tools and technology) and Standard 14.2 (requirements: no difference and no further analyses needed leads to assurance in the conclusion). Bullet 2B3a, the first item on topic 2B3. New lesson: reliance on an audit tool is earned by checking its logic and its data, and once earned a manual backup adds cost, not evidence; the key is the firm option and the doubting option is the runner-up. The notes' 2B3.2 trap (a model that flags nothing) is the same rule seen from the unchecked side. Nearest items: cia1_d2_050 (whole-population software chosen at planning), cia2_d2_003 (a whole population whose data was not yet reliable), cia2_d2_007 (flags followed up against criteria).  Fix pass 25 Nov 2026 (standards audit, blind and options-only tests): the stem says the model checked every claim; the key states what the run found, not an absolute; B's explanation now weighs cost against a small benefit, since corroboration does add some support (Standard 14.1). Original scenario; no IIA practice question or prep-bank text used. CIA Part 2 round 1, 25 Nov 2026.",
    "style_version": 2
   },
   {
@@ -603,23 +603,23 @@
    "bloom_level": "Analysis",
    "question": "Internal auditor Rosa's approved program tests 15 of a Peruvian university's grant payments over $20,000 for a second approver's sign-off; 2 of the 15 lack it. What is Rosa's BEST next step?",
    "options": {
-    "A": "Report a finding that large grant payments lack second approval",
-    "B": "Test 45 more payments, keeping the approved program as is",
-    "C": "List the two as exceptions and move to the next test",
-    "D": "Treat the two as a potential finding, then weigh further testing"
+    "A": "Report the two as a finding, rated on the function's scale",
+    "B": "Test 45 more payments now, under the approved program as it stands",
+    "C": "Note the two as a potential finding, then start the next test",
+    "D": "Evaluate the two for cause, effect and any need for more tests"
    },
    "correct": "D",
    "key_concept": "A difference from criteria is a potential finding to evaluate; more testing follows only if due care calls for it, through an approved program change.",
    "pre_read": "Two items differ from the criteria. Before reporting or testing more, what do the Standards ask the auditor to do with a difference?",
-   "correct_explanation": "Standard 14.2 requires a difference between criteria and condition to be noted as a potential finding and evaluated further, and Standard 14.3 makes that evaluation the cause, effect and significance. If the evidence so far cannot support it, due care decides whether more analyses are needed, and added work goes into an approved program change. Listing the two as exceptions and moving on, the closest choice, records the difference but never evaluates it.",
+   "correct_explanation": "Standard 14.2 requires a difference between criteria and condition to be noted as a potential finding and then evaluated, and Standard 14.3 makes that evaluation the cause, effect and significance. Due care also decides whether the evidence needs more tests, which would go into an approved program change. Recording the two and moving on, the closest choice, notes the difference but leaves the evaluation undone.",
    "wrong_explanations": {
-    "A": "Reporting jumps past evaluation. Standard 14.3 asks for the cause, effect and significance first, and two of fifteen payments do not show that every large payment lacks approval.",
-    "B": "Under Standard 14.2, added testing goes into an adjusted work program that the chief audit executive or a delegate approves; testing more under the unchanged program skips that step.",
-    "C": "Closest choice: Standard 14.2 does require the difference to be noted, but also evaluated further. Listing it and moving on stops halfway, leaving cause and significance unexamined."
+    "A": "Reporting comes after evaluation: Standard 14.3 asks for cause, effect and significance first, and two of fifteen payments do not yet show how far the gap reaches.",
+    "B": "Under Standard 14.2, added testing needs an adjusted work program approved by the chief audit executive or a delegate; testing now under the unchanged program skips that step.",
+    "C": "Closest choice: noting the difference is the first step Standard 14.2 requires, but it must also be evaluated. Moving on leaves cause, effect and the need for more tests unsettled."
    },
    "tips": [
     "Eliminate: A, because a potential finding is evaluated for cause, effect and significance before it is reported, and B, because added testing needs an adjusted, approved work program.",
-    "Final two: D beats C because Standard 14.2 requires a difference to be noted and then evaluated further; listing it as an exception and moving on stops at the first step.",
+    "Final two: D beats C because Standard 14.2 requires a difference to be noted and then evaluated; recording it and moving on stops at the first step.",
     "Exam cue: on CIA questions, a difference from criteria is noted, then evaluated; whether to test more is a due-care decision, and any added testing changes the program."
    ],
    "framework_ref": "Global Internal Audit Standards (2024), Standard 14.2 Analyses and Potential Engagement Findings; Global Internal Audit Standards (2024), Standard 14.3 Evaluation of Findings; Global Internal Audit Standards (2024), Standard 13.6 Work Program",
@@ -628,7 +628,7 @@
     "Potential finding",
     "Work program changes"
    ],
-   "_provenance": "Authored from concept: notes 2B6.1 Condition, Criteria and the Potential Finding. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standard 14.2 (requirements: a difference between criteria and condition is a potential finding, noted and evaluated further; due care decides whether more analyses are needed; added analyses need an adjusted work program the chief audit executive approves), Standard 14.3 and Standard 13.6. Bullet 2B6a. New lesson: a difference found in a small test is noted and then evaluated (cause, effect, significance, and whether more work is needed), so recording it and moving on stops halfway. The approval of added analyses, which Section A already teaches, appears only in an option eliminated by knowledge; the final two turn on evaluation. Nearest items: cia1_d3_023 (no difference, so assurance is stated), cia2_d2_007 (analytics flags checked against criteria), cia2_d1_008 (approval of a program change as it is made). Original scenario; no IIA practice question or prep-bank text used. CIA Part 2 round 1, 25 Nov 2026.",
+   "_provenance": "Authored from concept: notes 2B6.1 Condition, Criteria and the Potential Finding. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standard 14.2 (requirements: a difference between criteria and condition is a potential finding, noted and evaluated further; due care decides whether more analyses are needed; added analyses need an adjusted work program the chief audit executive approves), Standard 14.3 and Standard 13.6. Bullet 2B6a. New lesson: a difference found in a small test is noted and then evaluated (cause, effect, significance, and whether more work is needed), so recording it and moving on stops halfway. The approval of added analyses, which Section A already teaches, appears only in an option eliminated by knowledge; the final two turn on evaluation. Nearest items: cia1_d3_023 (no difference, so assurance is stated), cia2_d2_007 (analytics flags checked against criteria), cia2_d1_008 (approval of a program change as it is made).  Fix pass 25 Nov 2026 (standards audit, blind and options-only tests): options reworded so the Standards' term 'potential finding' sits in the runner-up, not the key, and the key is no longer the longest or the only two-step option. Original scenario; no IIA practice question or prep-bank text used. CIA Part 2 round 1, 25 Nov 2026.",
    "style_version": 2
   },
   {
@@ -643,7 +643,7 @@
    "question": "Tracing a draft finding on a Ugandan coffee depot's stock losses to the workpapers, internal auditor Mukasa checks the basis of each part. Which part MOST needs more support before review?",
    "options": {
     "A": "The rating, set on the function's scale, which the depot manager disputes",
-    "B": "The shortfall, from Mukasa's own count, which the manager has not signed",
+    "B": "The shortfall, from an independent stocktaker's count Mukasa arranged",
     "C": "The cause, a scanner fault since March, as the manager described it",
     "D": "The loss, an estimate Mukasa made with the depot's accountant"
    },
@@ -653,13 +653,13 @@
    "correct_explanation": "Standard 14.6 requires the evidence behind engagement results to be documented, and Standard 4.3 calls for more evidence on statements that may be incomplete or false. A manager blaming losses on equipment is such a statement: working out root causes with management, as Standard 14.3 asks, does not make the manager's account the evidence. A disputed rating, the closest choice, rests on the function's scale; disagreement alone is not missing support.",
    "wrong_explanations": {
     "A": "Closest choice: a dispute calls for discussion, not more evidence by itself. Standard 13.1 does not oblige a change without a valid reason, and the rating follows the function's scale.",
-    "B": "Mukasa's own count is evidence the auditor obtained directly, which Standard 14.1 treats as more reliable. The manager's signature is not needed to support it.",
+    "B": "A count by an independent stocktaker is information from an independent source, which Standard 14.1 says strengthens reliability. With the count sheets filed, the shortfall is supported.",
     "D": "An estimated loss is normal: Standard 14.3 notes that exposure is often an estimate the auditor makes with input from the activity's management."
    },
    "tips": [
-    "Eliminate: B, because the auditor's own count needs no manager's signature, and D, because a loss estimated by the auditor with the activity's input is expected practice.",
+    "Eliminate: B, because an independent stocktaker's count is a source Standard 14.1 treats as more reliable, and D, because a loss estimated by the auditor with the activity's input is expected practice.",
     "Final two: C beats A because a manager's explanation of the cause is a claim that needs corroboration in the file, while a dispute over a rating is not missing evidence.",
-    "Exam cue: on CIA questions, trace each part of a finding to its evidence; anything resting only on what the audited manager said needs support before it goes out."
+    "Exam cue: on CIA questions, trace each part of a finding to its evidence; a fact that rests only on the audited manager's account needs corroboration before the finding goes out."
    ],
    "framework_ref": "Global Internal Audit Standards (2024), Standard 14.6 Engagement Documentation; Global Internal Audit Standards (2024), Standard 4.3 Professional Skepticism; Global Internal Audit Standards (2024), Standard 14.3 Evaluation of Findings",
    "related_concepts": [
@@ -667,7 +667,7 @@
     "Root cause",
     "Professional skepticism"
    ],
-   "_provenance": "Authored from concept: notes 2B7.3 Linking Workpapers to Engagement Results. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standard 14.6 (requirements: document the evidence that supports the results), Standard 4.3 (requirements: seek more evidence on statements that may be incomplete or false), Standard 14.3 (requirements: root causes identified with management when possible; considerations: exposure often estimated with management's input), Standard 14.1 and Standard 13.1. Bullet 2B7c. New lesson: collaborating with management on the cause does not make management's account the support; the runner-up treats a disagreement as missing evidence. Nearest items: cia2_d3_002 (a supervisor's note on a conclusion wider than the tests), cia2_d2_010 (stating the effect), cia1_d3_066 (naming the root cause). Original scenario; no IIA practice question or prep-bank text used. CIA Part 2 round 1, 25 Nov 2026.",
+   "_provenance": "Authored from concept: notes 2B7.3 Linking Workpapers to Engagement Results. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standard 14.6 (requirements: document the evidence that supports the results), Standard 4.3 (requirements: seek more evidence on statements that may be incomplete or false), Standard 14.3 (requirements: root causes identified with management when possible; considerations: exposure often estimated with management's input), Standard 14.1 and Standard 13.1. Bullet 2B7c. New lesson: collaborating with management on the cause does not make management's account the support; the runner-up treats a disagreement as missing evidence. Nearest items: cia2_d3_002 (a supervisor's note on a conclusion wider than the tests), cia2_d2_010 (stating the effect), cia1_d3_066 (naming the root cause).  Fix pass 25 Nov 2026 (standards audit, blind and options-only tests): B now rests on another person's word too (an independent stocktaker), so the lens, an independent source against the audited manager's account, decides; the exam cue is limited to factual claims. Original scenario; no IIA practice question or prep-bank text used. CIA Part 2 round 1, 25 Nov 2026.",
    "style_version": 2
   },
   {
@@ -684,20 +684,20 @@
     "A": "Complaints per thousand orders, this year set against last year",
     "B": "The number of complaints in each of the past five years",
     "C": "This year's complaints against the target in the service plan",
-    "D": "Its complaint count against a larger rival's published count"
+    "D": "The grocer's complaints per thousand orders against a rival's rate"
    },
    "correct": "A",
    "key_concept": "Pick the analysis that answers the objective: a raw count moves with volume, so a rate per unit of activity tests a quality claim.",
    "pre_read": "Ask what else could make the complaint count fall, then pick the comparison that rules it out.",
-   "correct_explanation": "Standard 14.1 requires information consistent with the engagement objective, here whether service improved, and Standard 14.2's considerations list ratio and trend analyses and comparisons between related sets of information. A count of complaints falls whenever orders fall, so the rate per thousand orders, set against last year, is what shows whether service changed. A five-year count trend, the closest choice, adds periods but keeps the volume problem.",
+   "correct_explanation": "Standard 14.1 requires information consistent with the objective, here whether this grocer's service improved this year. A raw count falls whenever orders fall, so complaints per thousand orders set against last year, a prior-period comparison Standard 14.2's considerations name, tests the claim. A rival's rate, the closest choice, shows how the grocer compares with another firm, not whether its own service changed.",
    "wrong_explanations": {
-    "B": "Closest choice: a longer trend shows direction, but raw counts still rise and fall with order volume, so the trend cannot separate better service from fewer orders.",
+    "B": "A longer trend shows direction, but raw counts rise and fall with order volume, so five years of counts cannot separate better service from fewer orders.",
     "C": "A variance against target tests whether the plan was met. The target may itself ignore volume, and meeting it does not show whether service improved.",
-    "D": "A benchmark is fair only between comparable organizations. A larger rival's count reflects its size and how it counts complaints, not this grocer's service."
+    "D": "Closest choice: a rate per order fixes the volume problem, but a benchmark shows relative standing, not this year's change, and a rival may count complaints differently."
    },
    "tips": [
-    "Eliminate: C, because a variance against target answers whether the plan was met, and D, because a larger rival's raw count is not a comparable benchmark.",
-    "Final two: A beats B because a rate per thousand orders removes the effect of volume, while a longer run of raw counts keeps it.",
+    "Eliminate: B, because raw counts move with order volume however many years they cover, and C, because a variance against target answers whether the plan was met.",
+    "Final two: A beats D because the claim is about change this year, which a prior-period rate tests; a rival's rate shows relative standing, not change.",
     "Exam cue: on CIA questions, pick the analytic that answers the objective; when a count can move with volume, compare a rate per unit of activity instead."
    ],
    "framework_ref": "Global Internal Audit Standards (2024), Standard 14.1 Gathering Information for Analyses and Evaluation; Global Internal Audit Standards (2024), Standard 14.2 Analyses and Potential Engagement Findings",
@@ -706,7 +706,7 @@
     "Trend analysis",
     "Relevance to the objective"
    ],
-   "_provenance": "Authored from concept: notes 2B5.3 Choosing the Technique for the Objective. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standard 14.1 (requirements: relevant information is consistent with the engagement objectives) and Standard 14.2 (considerations: ratio, trend and regression analyses, comparisons with budgets and prior periods, relationships among sets of information, benchmarking). Bullet 2B5b. New lesson: the technique is chosen by the objective, and a count that moves with volume cannot test a quality claim; the runner-up is the longer trend. Not the notes' completeness example (tug services against movement counts). Nearest items: cia2_d2_009 (an independent source for an expectation), cia1_d1_050 and cia1_d1_071 (benchmarking). Original scenario; no IIA practice question or prep-bank text used. CIA Part 2 round 1, 25 Nov 2026.",
+   "_provenance": "Authored from concept: notes 2B5.3 Choosing the Technique for the Objective. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standard 14.1 (requirements: relevant information is consistent with the engagement objectives) and Standard 14.2 (considerations: ratio, trend and regression analyses, comparisons with budgets and prior periods, relationships among sets of information, benchmarking). Bullet 2B5b. New lesson: the technique is chosen by the objective, and a count that moves with volume cannot test a quality claim; the runner-up is the longer trend. Not the notes' completeness example (tug services against movement counts). Nearest items: cia2_d2_009 (an independent source for an expectation), cia1_d1_050 and cia1_d1_071 (benchmarking).  Fix pass 25 Nov 2026 (standards audit, blind and options-only tests): D is now a rate too (a benchmark against a rival's rate), so volume alone no longer decides; the objective, change this year against relative standing, does. D is the new runner-up. Original scenario; no IIA practice question or prep-bank text used. CIA Part 2 round 1, 25 Nov 2026.",
    "style_version": 2
   },
   {
@@ -718,17 +718,17 @@
    "testable_from": null,
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "After a merger, a Danish wholesaler paid the same suppliers from two systems, each with its own supplier codes. Before testing for duplicate payments, what should internal auditor Freja do FIRST with the two extracts?",
+   "question": "A merged Danish wholesaler paid the same suppliers from two systems, each with only its own payments and supplier codes. Before testing the two extracts for duplicates, what should internal auditor Freja do FIRST?",
    "options": {
     "A": "Remove records found in both extracts, so each payment counts once",
-    "B": "Map both systems' supplier codes to one list, and keep every record",
+    "B": "Map both systems' supplier codes to one list before any matching starts",
     "C": "Test each system's extract on its own, as their supplier codes differ",
     "D": "Ask each payments team for one merged file with the codes cleaned"
    },
    "correct": "B",
    "key_concept": "Normalizing makes records from different sources comparable; it never removes records, since repeated ones may be the very exceptions the test looks for.",
    "pre_read": "Name the step between getting the data and analyzing it, then ask what that step must leave untouched.",
-   "correct_explanation": "The syllabus names normalizing as a step of data analytics: standardizing codes and formats so records from different sources can be compared before they are analyzed. Mapping both systems' codes to one supplier list lets one test see payments made from either system. Standard 14.1 requires reliable, sufficient information, so no record is dropped; removing records found in both extracts, the closest choice, would erase the duplicates the test exists to find.",
+   "correct_explanation": "A duplicate test across both systems needs one population with a common supplier key, so mapping the codes comes before analysis; the syllabus lists normalizing between obtaining data and analyzing it. Standard 14.1 requires sufficient information for the test, so no record is dropped: removing records found in both extracts, the closest choice, would delete the very payments the test exists to flag.",
    "wrong_explanations": {
     "A": "Closest choice: removing records found in both extracts deletes the very payments a duplicate test should flag. Normalizing aligns formats and codes; it does not remove records.",
     "C": "Testing each file alone misses a supplier paid once from each system, the duplicate a merger makes likely. The files must be comparable before one test covers both.",
@@ -736,7 +736,7 @@
    },
    "tips": [
     "Eliminate: C, because separate tests miss a supplier paid from both systems, and D, because a file cleaned by the audited teams is less reliable than the auditor's own extracts.",
-    "Final two: B beats A because normalizing makes the two sources comparable while keeping every record; removing repeats would delete the duplicates being tested for.",
+    "Final two: B beats A because the codes must be comparable before one test can cover both systems; removing records found in both would delete the duplicates being tested for.",
     "Exam cue: on CIA questions about data analytics, normalize before you analyze: align codes, formats and units, and flag odd records rather than delete them."
    ],
    "framework_ref": "CIA Part 2 syllabus (2025), Expanded Test Specifications V2.09.2024 FINAL; Global Internal Audit Standards (2024), Standard 14.1 Gathering Information for Analyses and Evaluation",
@@ -745,7 +745,7 @@
     "Data analytics steps",
     "Duplicate payment testing"
    ],
-   "_provenance": "Authored from concept: notes 2B4.3 The Data Analytics Steps. Sources opened 25 Nov 2026: the CIA Part 2 syllabus, bullet 2B4d (the analytics steps, normalizing among them), and Global Internal Audit Standards (2024), Standard 14.1 (requirements: reliable and sufficient information; considerations: extracting data directly from systems). Bullet 2B4d. Recall-level item: the key rests on what normalizing is for and on Standard 14.1, not on a guide's step detail. Not the notes' example (dates in three formats). Nearest items: cia2_d2_003 (data that passed through the audited team), cia2_d2_007 (anomaly flags), cia1_d2_050 (whole-population matching). Original scenario; no IIA practice question or prep-bank text used. CIA Part 2 round 1, 25 Nov 2026.",
+   "_provenance": "Authored from concept: notes 2B4.3 The Data Analytics Steps. Sources opened 25 Nov 2026: the CIA Part 2 syllabus, bullet 2B4d (the analytics steps, normalizing among them), and Global Internal Audit Standards (2024), Standard 14.1 (requirements: reliable and sufficient information; considerations: extracting data directly from systems). Bullet 2B4d. Recall-level item: the key rests on what normalizing is for and on Standard 14.1, not on a guide's step detail. Not the notes' example (dates in three formats). Nearest items: cia2_d2_003 (data that passed through the audited team), cia2_d2_007 (anomaly flags), cia1_d2_050 (whole-population matching).  Fix pass 25 Nov 2026 (standards audit, blind and options-only tests): HARD error fixed: the explanation no longer credits the syllabus with a definition of normalizing (it only lists the step); the key rests on comparability and Standard 14.1. The stem now says each system holds only its own payments, so a record in both is a payment made twice; the key lost its safeguard clause. Original scenario; no IIA practice question or prep-bank text used. CIA Part 2 round 1, 25 Nov 2026.",
    "style_version": 2
   },
   {
@@ -755,28 +755,28 @@
    "principle_id": "relevant-reliable-sufficient",
    "challenge_ref": "D1",
    "testable_from": null,
-   "difficulty": "analysis",
-   "bloom_level": "Analysis",
-   "question": "Internal auditor Youssef must learn whether every wire over $50,000 at a Moroccan bank this year had a second approver; the treasury system, its controls tested effective, logs both users. Which method BEST serves?",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Internal auditor Youssef must learn whether wires over $50,000 at a Moroccan bank this year had a second approver; the treasury system, its controls tested effective, logs both users. Which method BEST serves?",
    "options": {
     "A": "Observe wire releases at unannounced times through the year",
     "B": "Walk through one wire release with the treasury officer",
-    "C": "Interview treasury staff on how often a second approval is skipped",
-    "D": "Extract the year's wire records and test each above the limit"
+    "C": "Review treasury's monthly reports of wires released by one person",
+    "D": "Extract the year's wire records and test those above the limit"
    },
    "correct": "D",
    "key_concept": "For whether a control operated every time over a period, a reliable system record of every instance beats watching some of them.",
    "pre_read": "Ask which method covers the whole year, and what makes the records it would use trustworthy.",
-   "correct_explanation": "Standard 14.1 asks for information that is relevant to the objective, reliable and sufficient. The objective covers every large wire for the year; records the auditor draws directly from a system with effective controls are reliable, and testing all of them is sufficient, as the standard's considerations on complete populations suggest. Observation, the closest choice, is first-hand too, but it covers only the releases watched, while the system already records every one.",
+   "correct_explanation": "Standard 14.1 asks for information that is relevant, reliable and sufficient. The objective covers the large wires for the whole year. Records the auditor extracts directly from a system with effective controls gain reliability on both counts, and testing all of them leaves nothing unseen, as the standard's considerations on complete populations support. Treasury's own reports, the closest choice, cover the year too, but the activity under review prepared them.",
    "wrong_explanations": {
-    "A": "Closest choice: watching releases is first-hand, but it covers only the moments seen. Where no record exists it is the best method; here the system records every wire.",
+    "A": "Watching releases is first-hand, but it covers only the moments seen. Where no record exists it is the best method; here the system logs every wire.",
     "B": "A walk-through of one release shows how the process is designed and how that wire went; it cannot show that every large wire this year had a second approver.",
-    "C": "Interviews give staff's views, which need corroboration. When a reliable record of every wire exists, asking people how often a step is skipped is weaker evidence."
+    "C": "Closest choice: the reports cover the year, but treasury, the activity under review, prepared them; Standard 14.1 favors information obtained directly or from an independent source."
    },
    "tips": [
-    "Eliminate: B, because one walk-through shows design and a single wire, not the whole year, and C, because staff's answers need corroboration that the records already give.",
-    "Final two: D beats A because a reliable system record of every wire covers the year, while observation covers only the releases watched.",
-    "Exam cue: on CIA questions, match the method to the record: with no record, observe repeatedly; with a reliable system record, test the population from it."
+    "Eliminate: A, because observation covers only the releases watched, not the whole year, and B, because one walk-through shows design and a single wire.",
+    "Final two: D beats C because both cover the year, but the auditor's own extract from a well-controlled system is stronger than reports the activity under review prepared.",
+    "Exam cue: on CIA questions, when two sources cover the same population, prefer the one the auditor obtains directly from a well-controlled system over the activity's own reports."
    ],
    "framework_ref": "Global Internal Audit Standards (2024), Standard 14.1 Gathering Information for Analyses and Evaluation",
    "related_concepts": [
@@ -784,7 +784,7 @@
     "Observation",
     "Reliability of evidence"
    ],
-   "_provenance": "Authored from concept: notes 2B1.3 Fitting the Source to the Objective. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standard 14.1 (requirements: relevant, reliable, sufficient; reliability strengthened when obtained directly or from a system with effective controls; considerations: observation, walk-throughs, direct extraction, complete populations). Bullet 2B1a, its first analysis item. Transfer pair with cia2_d2_001 (no record of the step, so repeated observation is the key): the same four methods, opposite facts, and that item's key is this item's runner-up; keep the two apart in one mock. Nearest items also: cia2_d2_004 (a first-hand extract from a weak system), cia1_d2_050. Original scenario; no IIA practice question or prep-bank text used. CIA Part 2 round 1, 25 Nov 2026.",
+   "_provenance": "Authored from concept: notes 2B1.3 Fitting the Source to the Objective. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standard 14.1 (requirements: relevant, reliable, sufficient; reliability strengthened when obtained directly or from a system with effective controls; considerations: observation, walk-throughs, direct extraction, complete populations). Bullet 2B1a, its first analysis item. Transfer pair with cia2_d2_001 (no record of the step, so repeated observation is the key): the same four methods, opposite facts, and that item's key is this item's runner-up; keep the two apart in one mock. Nearest items also: cia2_d2_004 (a first-hand extract from a weak system), cia1_d2_050.  Fix pass 25 Nov 2026 (standards audit, blind and options-only tests): 'every' dropped from the stem (it echoed the key's 'each'); the interview option is replaced by treasury's own monthly reports, which cover the year too, so the final two turn on Standard 14.1's reliability factors (obtained directly against prepared by the activity). Relabelled application: bullet 2B1a still needs an analysis item. Original scenario; no IIA practice question or prep-bank text used. CIA Part 2 round 1, 25 Nov 2026.",
    "style_version": 2
   },
   {
@@ -796,24 +796,24 @@
    "testable_from": null,
    "difficulty": "analysis",
    "bloom_level": "Analysis",
-   "question": "Internal auditor Dara finds a $90,000 pricing error, since corrected, from a Cambodian distributor's finished system migration, and $4,000 of unapproved price overrides any clerk can still make. How should Dara BEST rank their significance?",
+   "question": "Internal auditor Dara finds a $90,000 pricing error from a Cambodian distributor's finished migration, corrected, all prices rechecked, and $4,000 of unapproved price overrides any clerk can still make. How should Dara BEST prioritize them?",
    "options": {
     "A": "The migration error, then the price overrides",
-    "B": "Both equal, as each broke policy",
+    "B": "Both equal, as each caused a loss",
     "C": "The overrides, then the migration error",
     "D": "Neither, until management ranks them"
    },
    "correct": "C",
    "key_concept": "Significance weighs the likelihood and impact of the risk: a large loss whose cause is gone can matter less than a small, continuing gap.",
    "pre_read": "For each finding, ask how likely it is to happen again and how far it could reach, not only what it has cost.",
-   "correct_explanation": "Standard 14.3 requires significance to be judged by the likelihood of the risk and its impact. The migration is finished and its error corrected, so that risk is unlikely to recur. Any clerk can still override prices without approval, so the override risk is likely, and its impact is not capped by the $4,000 found so far. Ranking by the larger amount, the closest choice, confuses past loss with risk.",
+   "correct_explanation": "Standard 14.3 requires significance to be judged by the likelihood of the risk and its impact, and findings ranked by it. The migration is finished, its error corrected and every price rechecked, so that risk is unlikely to recur. Any clerk can still override prices without approval, so that risk is likely, and its impact is not capped by the $4,000 found. Ranking by the larger past loss, the closest choice, confuses loss with risk.",
    "wrong_explanations": {
     "A": "Closest choice: the error cost more, but its cause is gone, so the risk is unlikely to recur. Significance weighs likelihood and impact, not past loss alone.",
-    "B": "Breaking the same policy does not make two findings equal. Standard 14.3 ranks them by likelihood and impact, which differ sharply here.",
+    "B": "A loss in each case does not make two findings equal. Standard 14.3 weighs the likelihood and impact of each risk, and here they differ sharply.",
     "D": "Internal auditors evaluate significance and rank findings with the function's methodology; management's view is useful input but does not set the ranking."
    },
    "tips": [
-    "Eliminate: B, because breaching the same policy does not make two risks equal, and D, because internal auditors rank findings, with management's view as input only.",
+    "Eliminate: B, because a loss in each case does not make two risks equal, and D, because internal auditors rank findings, with management's view as input only.",
     "Final two: C beats A because Standard 14.3 weighs the likelihood and impact of the risk; a corrected one-off error is unlikely to recur, while open overrides are not.",
     "Exam cue: on CIA questions, rank findings by the risk they leave open, likelihood and impact together, not by the money already lost."
    ],
@@ -823,7 +823,7 @@
     "Likelihood and impact",
     "Ranking findings"
    ],
-   "_provenance": "Authored from concept: notes 2B6.3 Judging and Prioritizing Significance. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standard 14.3 (requirements: significance by likelihood and impact; findings prioritized with the chief audit executive's methodology). Bullet 2B6c, its first analysis item. New lesson: likelihood falls when the cause is gone, so past loss does not set the rank. Not the notes' allergen example (a small gap with a safety effect). Nearest items: cia1_d3_056 (risk tolerance decides a tie), cia1_d3_046 (residual risk after a later control), cia2_d2_011 (ranking with the function's methodology). Original scenario; no IIA practice question or prep-bank text used. CIA Part 2 round 1, 25 Nov 2026.",
+   "_provenance": "Authored from concept: notes 2B6.3 Judging and Prioritizing Significance. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standard 14.3 (requirements: significance by likelihood and impact; findings prioritized with the chief audit executive's methodology). Bullet 2B6c, its first analysis item. New lesson: likelihood falls when the cause is gone, so past loss does not set the rank. Not the notes' allergen example (a small gap with a safety effect). Nearest items: cia1_d3_056 (risk tolerance decides a tie), cia1_d3_046 (residual risk after a later control), cia2_d2_011 (ranking with the function's methodology).  Fix pass 25 Nov 2026 (standards audit, blind and options-only tests): the stem now says every migrated price was rechecked, so no residual migration risk is left open, and uses the Standard's own verb (prioritize); B's reason now fits the stem. Original scenario; no IIA practice question or prep-bank text used. CIA Part 2 round 1, 25 Nov 2026.",
    "style_version": 2
   }
  ]
