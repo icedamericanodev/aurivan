@@ -1,5 +1,6 @@
 /** Study summary, progress, badges and personal tools. Plant links are retired; saved study and legacy companion data remain intact. */
 import { FeatureInfo } from '../../components/featureInfo';
+import { findQuestion } from '../../content/loader';
 import { router, useFocusEffect } from 'expo-router';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
@@ -263,7 +264,7 @@ export default function You() {
           cert={cert}
           summary={badgesHidden ? null : summary}
           dueCount={dueCount}
-          saved={progress.bookmarks.length}
+          saved={progress.bookmarks.filter((id) => findQuestion(cert.id, id)).length}
           badgesHidden={badgesHidden}
           mocks={progress.mocks}
           pacingLine={pacingLine}
