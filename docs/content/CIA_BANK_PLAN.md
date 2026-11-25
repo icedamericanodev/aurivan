@@ -14,8 +14,8 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 |---|---|
 | **Status (20 Nov 2026)** | Session G, steps 1 to 3 done: expert decisions, the documents, the harness (187 planted faults stopped, 43 controls hold; an independent code review's findings are all fixed), the expert agents, the **Part 1 study notes for all four sections** (93 sub-topics, audited and learner-read), and the **Part 1 pilot: 80 questions, 20 per section**, through the full pipeline (scorecard in section 7; calibration rules in section 6b). With them: the 20 shared principles, the Part 1 exam guide and final review week, and a first generated Challenge pack from the tagged items. The **glossary start** is written and audited (153 Part 1 terms in `data/cia/shared/glossary.json`; it reuses the notes' wording, and `check_glossary.py` fails if a term is ever defined two ways). The outline of the CISA bridge is in `docs/content/CIA_CISA_BRIDGE_OUTLINE.md`. Session G is complete. |
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
-| **Rounds 1 to 15, the Part 2 pilot and Part 2 rounds 1 to 3 done (25 Nov 2026)** | Part 1 stands at **348 questions (A 116, B 85, C 105, D 42)** and meets the revised sale gate's counts (section 3, decision 4). **Part 2 stands at 71 questions (A 30, B 30, C 11)**, every key confirmed by blind tests and Standards audits. **The opened sources are close to exhausted for Part 2**: round 3 filled 10 of 22 slots and kept 7, and its Section A author judged only 3 to 6 more distinct Section A lessons remain. **Part 2's sale gate is an open owner decision** (section 9): the experts agree Part 2 cannot sell on the opened sources and disagree on how many Section A items it needs. **Part 3's study notes are being written** (started 25 Nov 2026). The Topical Requirements Application Guidance is Background only (Part 2 round 1). |
-| **Next step** | **Part 3 notes** through the notes pipeline (Standards audit, learner read, fix pass), then the Part 3 pilot. **Part 2**: Section A rounds pause until a new source opens (the textbook, or the 2027 Topical Requirement testable dates); Sections B and C take a round only for a gap with a new Standards-keyed lead (`CIA_P2_COVERAGE.md` section 5). Waiting on the owner (section 9): Part 2's sale gate and the textbook. A glossary pass for Part 2 terms is still to do. |
+| **Rounds 1 to 15, the Part 2 pilot and Part 2 rounds 1 to 3 done (25 Nov 2026)** | Part 1 stands at **348 questions (A 116, B 85, C 105, D 42)** and meets the revised sale gate's counts (section 3, decision 4). **Part 2 stands at 71 questions (A 30, B 30, C 11)**, every key confirmed by blind tests and Standards audits. **The opened sources are close to exhausted for Part 2**: round 3 filled 10 of 22 slots and kept 7, and its Section A author judged only 3 to 6 more distinct Section A lessons remain. **Part 2's sale gate is an open owner decision** (section 9): the experts agree Part 2 cannot sell on the opened sources and disagree on how many Section A items it needs. **Part 3's study notes are done**: 63 sub-topics in 18 topics (A 16, B 10, C 9, D 28), audited against the Standards and read by a simulated candidate. The Topical Requirements Application Guidance is Background only (Part 2 round 1). |
+| **Next step** | **The Part 3 pilot**: about 20 items per section from the Part 3 notes (D at its 45% share), through the full pipeline, with a Part 3 coverage map like `CIA_P2_COVERAGE.md`. **Part 2**: Section A rounds pause until a new source opens (the textbook, or the 2027 Topical Requirement testable dates); Sections B and C take a round only for a gap with a new Standards-keyed lead (`CIA_P2_COVERAGE.md` section 5). Waiting on the owner (section 9): Part 2's sale gate and the textbook. A glossary pass for Part 2 terms is still to do. |
 | **Then** | Part 2, Part 3, the Challenge build and the CISA bridge notes (from the outline), the cross-part release gate. |
 | **Known weak spot** | Difficulty. No pilot key was wrong and all four blind rounds agreed 80 of 80, but the last testers still called 21 of 80 answerable by test-taking alone, most in Sections B and D, and 8 items carry a TOO EASY or GIVEAWAY flag (section 7). New rounds must do better; the pilot items are candidates for a later hardening pass, not for more polishing now (section 6b, rule 12). |
 
@@ -43,7 +43,7 @@ pack. Every surface CISA has, as data that passes its gate.
 | Surface | File (per pack) | Owner agents | cia1 | cia2 | cia3 | ciac |
 |---|---|---|---|---|---|---|
 | Blueprint and outline | `docs/content/CIA_BLUEPRINT.md`, `data/cia/shared/outline.json` | cert-blueprint-researcher | Done | Done | Done | Done |
-| Study notes | `notes/d{N}.json`, one file per section, notes schema v2 | part expert | Done: 93 sub-topics, audited (section 8b) | Done: 57 sub-topics in 17 topics, audited and learner-read (round 15, section 7) | Not started | Generated later, plus the bridge |
+| Study notes | `notes/d{N}.json`, one file per section, notes schema v2 | part expert | Done: 93 sub-topics, audited (section 8b) | Done: 57 sub-topics in 17 topics, audited and learner-read (round 15, section 7) | Done: 63 sub-topics in 18 topics, audited and learner-read (25 Nov 2026, section 7) | Generated later, plus the bridge |
 | Questions | `originals/d{N}.json` | part expert | Pilot and rounds 1 to 15 done: 348 (A 116, B 85, C 105, D 42; section 7); meets the revised sale gate's counts; every syllabus bullet covered (`CIA_P1_COVERAGE.md`) | Pilot and rounds 1 to 3 done: 71 (A 30, B 30, C 11; section 7); the opened sources are close to exhausted (`CIA_P2_COVERAGE.md`) | Not started | Generated (`build_challenge.py`) from the tagged pilot items |
 | Citation library | `data/cia/shared/_framework_library.md` (one for all four) | part experts, cia-currency-checker | Started | | | |
 | Dated facts | `data/cia/shared/currency.json` | cia-currency-checker | Started | | | |
@@ -418,6 +418,7 @@ in a row below 90%: stop and tell the owner.
 | Part 2 round 1 | 25 Nov 2026 | cia2, the coverage map's gaps in all three sections | 16 kept of 19 written (A 8 of 11, B 7 of 7, C 1 of 1); 13 planned slots left empty | 18 of 19 first round (one stem missing a fact), 2 classed answerable by test-taking; 18 of 18 in fresh blind tests after one fix pass | 4 / 40 / 26 on 19 (two audits), plus 0 / 9 / 12 from the targeted audits and 0 / 1 / 8 from the currency check | A 20.5%, B 9.5%, C 20% | 3 cut before merge: two keyed only on the Topical Requirements Application Guidance, one still answerable from wording after one fix pass | Topical Requirements Application Guidance re-opened and ruled Background; the exam reference list re-downloaded (V5.5, unchanged; no v6) |
 | Part 2 round 2 | 25 Nov 2026 | cia2, the coverage map's gaps in all three sections | 11 kept of 13 written (A 4 of 4, B 6 of 8, C 1 of 1); 8 planned slots left empty (A 6, B 1, C 1 group) | 13 of 13 first round, but 5 of 9 in B and C classed answerable by test-taking and all 4 in A answerable from the options alone; 13 of 13 in fresh blind tests after one fix pass, then 2 cut | 0 / 51 / 16 on 13 (two audits), plus 0 / 17 / 6 from the targeted audits and 0 / 2 / 4 from the currency check | A 17.3%, B 14.8%, C 22.7% | 2 cut before merge, both still answerable from wording after one fix pass (a process map that stopped before payment; an access matrix whose stem pointed at the key) | None new (the Standards, the reference list and the Cybersecurity requirement re-downloaded, unchanged) |
 | Part 2 round 3 | 25 Nov 2026 | cia2, the coverage map's gaps (Sections A and B; Section C had no new lead) | 7 kept of 10 written (A 4 of 6, B 3 of 4); 12 of 22 planned slots left empty | 9 of 10 first round (one ambiguous stem), 1 classed test-taking; after one fix pass, 8 of 9 (the ambiguous item disputed again) and one still test-taking; both cut | 1 / 19 / 10 on 10 (two audits), plus 1 / 7 / 8 from the targeted audits and 0 / 0 / 3 from the currency check | A 18.3%, B 16.7%, C 22.7% | 3 cut before merge: a 2A4a repeat of two Section B lessons, a 2A7c item two blind testers keyed differently after its fix pass, and a 2B2b item answerable from wording | None new (re-downloaded sources unchanged) |
+| Part 3 notes | 25 Nov 2026 | cia3 study notes, all four sections | 63 sub-topics | Not applicable (notes) | A 0 / 11 / 8, B and C 2 / 19 / 6, D 0 / 10 / 10 | Not applicable | None | None new (opened copies reused; The IIA's AI Auditing Framework used as guidance only) |
 
 **Pilot, in full.** Four standards audits (one per section, with the key):
 Section A 0 HARD, 15 PRECISION, 8 OBSERVATION; B 0 / 8 / 5; C 1 / 9 / 12;
@@ -960,6 +961,42 @@ What round 10 taught.
 - **The pilot items were the weakest and are now in line.** The plan's note
   that pilot items were candidates for a later hardening pass is done for
   Section B; Sections A, C and D pilot items remain candidates.
+
+**Part 3 notes, in full.** Three `cia-p3-domain-expert` authors wrote from
+`docs/content/CIA_BLUEPRINT.md` and the Part 3 syllabus with a brief built on the Part 2
+one: the seat is the chief audit executive running the function; one engagement's work
+stays in Part 2. Sources: the 2024 Standards (Domain III, Domain IV and Principle 15), the
+Competency Framework guide, the Cybersecurity and Third-Party user guides, the 2026 Three
+Lines statement, and The IIA's AI Auditing Framework and the Application Guidance as
+guidance only. Thin points are labelled Common usage, KaiSip's reading or Sound practice so
+no question keys on them: mission statements (3A3b), job design (3A2g), role titles beyond
+the Standards' three (3A2c), audit cycles (3B1g), risk scoring (3B2a), emerging
+technologies (3B1f), key performance indicators (3C3), and the route table, finding-fixed
+rule, follow-up closure and delay judgment in Section D. Where the syllabus's older
+wording differs from the Standards (a conclusion reported "timely", a mission statement,
+risk "unacceptable to the organization", who assesses residual risk, "audit cycle
+requirements"), the notes teach the Standards.
+
+Standards audits: Section A 0 HARD, 11 PRECISION, 8 OBSERVATION; Sections B and C 2 / 19 /
+6 (an exam rule that invented an order in Standard 9.4's unranked list; a trap that called
+plan completion productivity, where 12.1 and 8.3 count it toward efficiency and
+effectiveness); Section D 0 / 10 / 10. They also fixed four earlier notes: Part 2 2B6.2
+(addressing the root cause is one aim under 14.4, not a must), 2C2.3 (the CAE first raises
+accepted risk with the responsible management, a should under 11.5), Part 1 1C5.2 (the
+auditor takes the risk to the CAE, who reports) and 1A4.4 (conflicting demands go to the
+board and senior management together, not "board first"). A simulated candidate rated the
+notes 7 out of 10 and would pay: who does what was spread and sometimes worded two ways,
+several sub-topics repeated Part 2, labels were uneven, and Sections B to D lacked memory
+aids. One shared fix brief applied all of it across the four files. A final check found 16
+key terms defined differently between Parts 1, 2 and 3; each now has one definition
+everywhere, and three (conflicting demands, emerging risk, conformance statement) joined
+the shared glossary.
+
+What the Part 3 notes taught.
+- **Run a cross-part term check before the PR, not after.** Three authors in three parts
+  had drifted on 16 terms; a script found them in seconds.
+- **A shared fix brief keeps parallel authors in one voice.** Decisions on who approves,
+  labels and pointers were set once and applied by all three.
 
 **Part 2 round 3, in full.** Two `cia-p2-domain-expert` authors wrote to the gaps the round 2
 map left. Section A filled 6 of 10 slots and Sections B and C 4 of 12; every empty slot was
