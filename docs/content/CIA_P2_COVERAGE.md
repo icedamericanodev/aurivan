@@ -1,6 +1,7 @@
 # CIA Part 2: syllabus bullet coverage map
 
-Built 25 Nov 2026, after the Part 2 pilot, to measure Part 2 against the sale gate
+Built 25 Nov 2026, after the Part 2 pilot, and updated the same day after Part 2 round 1,
+to measure Part 2 against the sale gate
 (`docs/content/CIA_BANK_PLAN.md`, section 3, decision 4, revised in round 14): (a) every
 syllabus bullet tested at its verb's depth with every gate passing; (b) two full
 exam-weighted forms of distinct items per section (Part 2 is 100 questions as A 50, B 40,
@@ -11,8 +12,10 @@ per learner from unseen items; a bullet's only item is never held back. Three fo
 Source: the opened Part 2 syllabus (V2.09.2024 FINAL, opened 19 Nov 2026; each bullet's
 leading verb re-read in it on 25 Nov 2026). The "Covers" column is the blueprint's own
 wording (`docs/content/CIA_BLUEPRINT.md`), not The IIA's; the verb is the bullet's leading
-word. Bank: all 37 items in `data/cia/cia2/originals/d1.json` to `d3.json` as of the Part 2
-pilot (none retired). This is an internal working document; it holds no item text. No prep
+word. Bank: all 53 items in `data/cia/cia2/originals/d1.json` to `d3.json` as of Part 2
+round 1 (the pilot's 37 plus round 1's 16: `d1_015` to `d1_022`, `d2_015` to `d2_021`,
+`d3_010`; none retired). Round 1 renumbered some Section A drafts before merge; the map
+follows the file. This is an internal working document; it holds no item text. No prep
 provider was opened for it.
 
 ## 1. How the map was made
@@ -53,51 +56,70 @@ provider was opened for it.
   not 2C1a, because the key is the review of workpapers, not when supervision starts;
   `d2_003` (a full population from a file the audited team keeps) stays at 2B2a, as its
   author set it, because the key weighs coverage against reliability, which is applying
-  the quality criteria; its reason (the source) makes it "also touched by" 2B2b.
+  the quality criteria; its reason (the source) makes it "also touched by" 2B2b. Round 1:
+  `d1_016` (a request to add work in the same days) sits at 2A1d, the stakeholder request,
+  though its key names a scope limitation (also touched by 2A1c); `d1_017` (who watches
+  for emerging cyber threats) sits at 2A3c, planning, not 2A5c; `d2_020` stays at 2B1a as
+  an application item after its fix pass relabelled it.
 
 ## 2. Where Part 2 stands against the gate
 
 | Section | Items | Two-form bar (gate) | Three-form target | Gap to the bar | Bullets | Zero items | One item | Below depth |
 |---|---|---|---|---|---|---|---|---|
-| A Engagement Planning | 14 | 100, not met | 150 | 86 | 31 | 17 | 14 | 4 |
-| B Information Gathering, Analysis, and Evaluation | 14 | 80, not met | 120 | 66 | 22 | 8 | 14 | 6 |
-| C Engagement Supervision and Communication | 9 | 20, not met | 30 | 11 | 7 | 1 | 4 | 1 |
-| **Part 2** | **37** | **200, not met** | **300** | **163** | **60** | **26** | **32** | **11** |
+| A Engagement Planning | 22 | 100, not met | 150 | 78 | 31 | 11 | 18 | 2 |
+| B Information Gathering, Analysis, and Evaluation | 21 | 80, not met | 120 | 59 | 22 | 3 | 17 | 5 |
+| C Engagement Supervision and Communication | 10 | 20, not met | 30 | 10 | 7 | 0 | 5 | 1 |
+| **Part 2** | **53** | **200, not met** | **300** | **147** | **60** | **14** | **40** | **8** |
 
 (The full and short mock splits are the app's own sum, `allocate()` in
 `data/cia/tools/cia_common.py`: 100 as 50/40/10 and 33 as 17/13/3. F/Ap/An by section:
-A 2/9/3, B 1/9/4, C 2/5/2. "Below depth" counts bullets that have items but none at their
-verb's depth; zero-item bullets are counted on their own.)
+A 2/13/7, B 1/12/8, C 2/6/2. "Below depth" counts bullets that have items but none at their
+verb's depth; zero-item bullets are counted on their own. Pilot figures, for comparison:
+37 items; 26 zero-item, 32 one-item and 11 below-depth bullets.)
 
 What the counts hide:
 
-- **Gate (a) is not met.** 26 of 60 bullets have no item, and 11 more have items but none
-  at their verb's depth, every one a judge bullet (Evaluate, Determine, Analyze or
-  Appraise) with only foundational or application items: 2A4a, 2A6a, 2A6d, 2A7c, 2B1a,
-  2B1b, 2B4b, 2B4e, 2B5a, 2B6c, 2C2a. Of the 26 zero-item bullets, 8 carry judge verbs
-  (2A1d, 2A7a, 2A7b, 2A7d, 2B5b, 2B6a, 2B7c, 2B7d), so their first item should be an
-  analysis item, and one carries an apply verb (2B7a). 23 bullets meet their depth today:
-  A 10 of 31, B 8 of 22, C 5 of 7.
-- **No full form can be drawn yet.** Topic 2B3 has no item at all, and the held-back form
-  must sample every topic. Of the 34 bullets with items, 32 have exactly one, and a
-  bullet's only item stays out of the held-back form, so almost the whole bank is
-  practice-only for now.
-- **Gate (b) needs about 163 more items, and the pilot kept 37 of 50 written (74%).** At
-  that rate a round must write about 220 to keep 163. Section A carries more than half of
-  the gap (86).
+- **Gate (a) is not met.** 14 of 60 bullets have no item, and 8 more have items but none
+  at their verb's depth, every one a judge bullet with only foundational or application
+  items: 2A4a, 2A7c, 2B1a, 2B1b, 2B4b, 2B4e, 2B5a, 2C2a. Of the 14 zero-item bullets, 3
+  carry judge verbs (2A7b, 2A7d, 2B7d), so their first item should be an analysis item,
+  and one carries an apply verb (2B7a). 38 bullets meet their depth today (pilot: 23):
+  A 18 of 31, B 14 of 22, C 6 of 7. Round 1 brought 15 bullets to depth: 2A1c, 2A1d, 2A3c,
+  2A4b, 2A6a, 2A6d, 2A6e, 2A7a, 2B3a, 2B4d, 2B5b, 2B6a, 2B6c, 2B7c and 2C1b.
+- **Round 1 tried nine slots and left them empty on purpose** (section 5 keeps the
+  reasons): 2A2a, 2A5c, 2A5e, 2A5f and 2A6c as first items, and 2A4a and 2A7c as analysis
+  items, found no distinct lesson; 2A5a and 2A7d drafts were cut because their keys rested
+  only on the Topical Requirements Application Guidance; a 2A7b draft was cut as
+  answerable from wording. 2B1a gained `d2_020`, but its fix pass relabelled it
+  application, so 2B1a still lacks an analysis item.
+- **No full form can be drawn yet.** Every topic now has an item (2B3's first is
+  `d2_015`), but 40 of the 46 bullets with items have exactly one, and a bullet's only item
+  stays out of the held-back form. Topic 2B3 cannot be sampled by the held-back form until
+  2B3a has a second item. Only six bullets have two or more: 2A6a, 2A6d, 2B1a, 2B6c, 2C1c
+  and 2C2a.
+- **Gate (b) needs about 147 more items.** The pilot kept 37 of 50 written (74%); round 1
+  kept 16 of 19 (84%; all three cuts were Section A drafts). At about 80%, a round must
+  write about 185 to keep 147. Section A carries more than half of the gap (78), and topic
+  2A5 is furthest behind its share (2 of 20).
 - **The opened sources cannot reach some bullets at depth** (section 4): 2A3e (finance and
   accounting basics) has no opened source at all; parts of 2A3c, 2A3d, 2A3f, 2A4a, 2B3a,
-  2B4b, 2B4d, 2B4e and 2B5a rest on "Common usage" or on members-only guides. Four of
-  those are judge bullets now below depth (2A4a, 2B4b, 2B4e, 2B5a), so their analysis items
-  must rest on the Standards, not on terms. The owner decided on 25 Nov 2026 not to
-  join The IIA, so members-only guides are never a source; a textbook purchase is still
-  undecided (plan section 9).
+  2B4b, 2B4d, 2B4e and 2B5a rest on "Common usage" or on members-only guides. Four of the
+  judge bullets still below depth (2A4a, 2B4b, 2B4e, 2B5a) are among them, so their
+  analysis items must rest on the Standards, not on terms. The owner decided on 25 Nov 2026
+  not to join The IIA, so members-only guides are never a source; a textbook purchase is
+  still undecided (plan section 9).
+- **The Topical Requirements Application Guidance is Background, not a source for a key**
+  (ruled 25 Nov 2026, round 1: it is not on the exam's reference list and is labelled
+  Supplemental). That closed the round 1 leads for 2A5a and 2A7d. Items that cite it after
+  a Verified first part and key on a requirement or its user guide (`d1_006`,
+  `cia1_d1_046`, `cia1_d1_061`) were checked in the same ruling and are unaffected.
 - **Three Topical Requirements are not testable yet**: Third-Party from 2027-03-01,
   Organizational Behavior from 2027-06-01, Organizational Resilience from 2027-10-01
   (`data/cia/shared/currency.json`). An item that rests on one carries that
   `testable_from` and stays out of mocks, forms and the free sample until the date, so it
   does not count toward the gate before then. No Part 2 item carries a future
-  `testable_from` today; the four items on the Cybersecurity requirement are testable now.
+  `testable_from` today; the five items on the Cybersecurity requirement (`d1_001`,
+  `d1_006`, `d1_007`, `d1_009`, `d1_017`) are testable now.
 - **Part 1 already teaches many engagement lessons.** Scope limitations (`cia1_d1_027`,
   `_089`, `_099`, `_105`, `_106`), criteria (`cia1_d1_060`, `cia1_d3_020`, `cia1_d3_064`,
   `cia1_d2_077`), effectiveness against efficiency (`cia1_d3_019`, `cia1_d3_085`),
@@ -105,13 +127,16 @@ What the counts hide:
   `cia1_d3_066`, `cia1_d2_076`), records (`cia1_d2_020`, `cia1_d2_027`, `cia1_d2_082`),
   benchmarking (`cia1_d1_050`, `cia1_d1_071`) and process maps (`cia1_d1_062`,
   `cia1_d1_104`). A Part 2 item on the same lesson is a cross-part sibling: new scenario,
-  new actor or depth, new runner-up, logged (the pilot cut one repeat of a Part 1 lesson).
-- **Siblings already logged** (plan section 7, the Part 2 pilot): `d1_001` with
+  new actor or depth, new runner-up, logged (the pilot cut one repeat of a Part 1 lesson;
+  round 1 left 2A5e empty because its lead repeated `cia1_d4_008`).
+- **Siblings already logged** (plan section 7): from the pilot, `d1_001` with
   `cia1_d1_061` and `cia1_d1_046`; `d1_007` with `cia1_d2_016`; `d1_009` with
   `cia1_d1_061`; `d1_014` with `cia1_d2_012`; `d3_001` with `cia1_d2_038`; `d3_004` with
-  `cia1_d1_065`; `d3_006` with `d3_009`.
-- **Challenge tags:** 32 of 37 items carry one; `d1_002`, `d1_007`, `d2_001`, `d3_003` and
-  `d3_009` carry `null` as too basic for the Challenge candidate.
+  `cia1_d1_065`; `d3_006` with `d3_009`. From round 1, `d1_015` with `cia1_d1_027`
+  (transfer pair); `d1_016` with `cia1_d1_105`; `d1_018` with `d1_011`; `d2_020` with
+  `d2_001` (transfer pair) and with `d2_003`; `d3_010` with `d3_005` (transfer pair).
+- **Challenge tags:** 46 of 53 items carry one; `d1_002`, `d1_007`, `d1_018`, `d2_001`,
+  `d2_019`, `d3_003` and `d3_009` carry `null` as too basic for the Challenge candidate.
 
 ## 3. The map
 
