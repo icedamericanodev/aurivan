@@ -429,10 +429,10 @@ version bump today.
 ### Results
 | Domain | Questions | Tagged | Untagged |
 |---|---|---|---|
-| D1 | 275 | 179 | 96 |
+| D1 | 305 | 198 | 107 |
 | D2 | 460 | 375 | 85 |
-| D3 | 146 | 131 | 15 |
-| All | 881 | 685 | 196 |
+| D3 | 178 | 157 | 21 |
+| All | 943 | 730 | 213 |
 
 New principle `independence-of-ai-assurance` (role family): seeds and tags
 aaia_d2_014, aaia_d3_024 and aaia_d3_043, moved from
@@ -948,3 +948,47 @@ aaia_d2_450 aaia_d2_455 aaia_d2_459.
 
 aaia_d2_459 stays on `fix-the-control-not-the-model` (its key names the
 copying path as a control gap).
+
+### Batch 14 (25 November 2026)
+aaia_d1_276-305 and aaia_d3_147-178 were read against the rule above. None
+is a seed. Newly tagged: aaia_d3_152 `population-includes-misses` (travelers
+turned away by full sailings never appear in the sales the error is scored
+against; the runner-up, input-drift monitoring, does not touch the capped
+outcome); aaia_d3_158 `reproducible-ai-evidence` (the index's own dated log is
+the record of the data the assistant searched; the source system's withdrawal
+record does not show it, as aaia_d3_065); aaia_d3_160
+`independence-of-ai-assurance` (the runner-up, agreement between the labeling
+firm's own labelers, rests on data the supplier controls; only independent
+experts test the labels). One tag removed (aaia_d3_168, below).
+
+**Untagged new items (low confidence):**
+- aaia_d1_278: pretraining-bias knowledge (a general model brings its training text's biases); the runner-up, rescoring consistency, is not a principle's trap.
+- aaia_d1_283: strategy knowledge (management rules out contested uses); the runner-up, a blanket ban, is not a technology move, so `ai-governance-before-tooling` does not separate.
+- aaia_d1_287: policy-scope knowledge (risk follows the use, not the tool), as aaia_d1_192.
+- aaia_d1_295: label-incentive knowledge (bonus-linked tags teach the bonus); the runner-up is a check, not a model fix (as aaia_d1_150).
+- aaia_d1_297: data-minimization knowledge (an agent collects only what vetting needs), as aaia_d1_041.
+- aaia_d1_298: provider-model knowledge (a deployer cannot retrain a provider's base model); the key is an output filter, the `limits-outside-the-model` card's own trap.
+- aaia_d1_299: data-minimization knowledge (strip personal data before tuning), as aaia_d1_208.
+- aaia_d1_302: legal knowledge (a data protection assessment does not cover every fundamental right).
+- aaia_d1_303: copyright knowledge (ignored text-and-data-mining opt-outs).
+- aaia_d1_304: certification-scope knowledge (fine-tuning makes the deployer a trainer needing data controls); the runner-up weighs reader perception, not harm.
+- aaia_d1_305: framework knowledge (the NIST AI RMF's three bias categories), as aaia_d1_079.
+- aaia_d3_148: the auditor's own scoping (training rights), as aaia_d3_053.
+- aaia_d3_149: specialist-competence knowledge; the runner-up, ties to the builder, is a threat the facts never raise (`ai-deciding-fact`'s domains omit D3, as aaia_d3_137).
+- aaia_d3_151: injection knowledge (hidden instructions in uploaded files bypass the question screen), as aaia_d2_126.
+- aaia_d3_155: generative-randomness knowledge (a language model writes plausible numbers, not random draws); the runner-up is rerun variability (as aaia_d3_138).
+- aaia_d3_166: the auditor's own population definition (shadow-mode rows never took effect), as aaia_d3_002.
+- aaia_d3_168: was `ai-in-audit-stays-yours`; the runner-up, revalidation, is that principle's own move, so feedback-loop knowledge (wrong clearances become training data) decides, as aaia_d1_197.
+
+**Medium confidence (tagged, review first):** aaia_d1_276 aaia_d1_277
+aaia_d1_280 aaia_d1_285 aaia_d1_286 aaia_d1_288 aaia_d1_289 aaia_d1_290
+aaia_d1_292 aaia_d1_293 aaia_d1_296 aaia_d1_300 aaia_d1_301
+aaia_d3_147 aaia_d3_152 aaia_d3_153 aaia_d3_154 aaia_d3_158 aaia_d3_159
+aaia_d3_160 aaia_d3_162 aaia_d3_163 aaia_d3_167 aaia_d3_172 aaia_d3_173
+aaia_d3_175 aaia_d3_177 aaia_d3_178.
+
+aaia_d1_285 stays on `real-human-oversight` (who may stop the AI is the gap;
+close to `fix-the-control-not-the-model`, as the runner-up blocks one error).
+aaia_d3_174 keeps `named-human-owner` (high: acceptance beyond tolerance moves
+to those who set it); the card's domains omit D3, so the lint warns, as
+aaia_d3_144.
