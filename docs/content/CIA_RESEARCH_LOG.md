@@ -532,3 +532,13 @@ tester to measure how often an expert guesser picks the key from the options
 alone (13 of 15; plan section 7). The options-only copy and the keys stayed
 outside the repository; no author saw them; no question text is stored here
 or used to write items. The page's text was the copy downloaded on 19 Nov 2026.
+
+
+25 Nov 2026 (Part 2 round 1). Sourcing ruling by `cia-currency-checker`: The IIA's
+Topical Requirements Application Guidance (29 August 2025) is Background only. The
+exam reference list (V5.5.2026.10.15, re-downloaded, unchanged; no v6) names each
+Topical Requirement and its User Guide but not the Application Guidance; The IIA's
+Topical Requirements page labels it Supplemental and its disclaimer calls it
+informational. It never carries a key and is never an item's first framework_ref part;
+notes may cite it as guidance only. Two Part 2 items keyed on it alone were cut before
+merge.
