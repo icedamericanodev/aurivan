@@ -8,6 +8,11 @@ name: Phone build (EAS Build)
 #     Create new release (docs/mobile/PLAY_LAUNCH.md, step 7). Store builds have
 #     over-the-air updates OFF (mobile/app.config.js; eas.json marks the
 #     profile with KAISIP_STORE_BUILD=1).
+#   - "public-sample" makes the public Google Play build (an .aab file) with
+#     only the free question sample (docs/mobile/SAMPLE_QUESTION_PACK.md). It
+#     fails closed: a missing or full-bank setting stops it, and it can't be
+#     uploaded from here. Audit the .aab with mobile/scripts/audit-public-aab.mjs
+#     before the owner uploads it by hand.
 #   - "preview" makes a test APK for your own phone. It keeps over-the-air
 #     updates (the "Phone update" workflow publishes them after each merge).
 #
@@ -33,7 +38,7 @@ on:
       profile:
         description: Which build
         type: choice
-        options: [production, preview]
+        options: [production, public-sample, preview]
         default: production
       submit:
         description: "Upload to Google Play when the build finishes (production only; needs the Play service-account key on expo.dev)"

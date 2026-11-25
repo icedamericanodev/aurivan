@@ -1,9 +1,15 @@
 # Opt-in sample question pack foundation
 
-Status: development/CI only. **Do not publish or enable it in an EAS build or
-update channel yet.** This change does not turn on accounts, payments,
-verified-email tester grants, protected pack downloads, or a premium paywall.
-It does not make a sample-only public mobile release ready.
+Status (25 Nov 2026): **used by the first public Android release (2.3)**
+through the EAS profile `public-sample`, which fails closed (see
+`docs/mobile/RELEASE_2_3.md`, "How the public build fails closed"). Closed
+testers keep the full bank through a paired, higher-coded bundle on their
+closed tracks instead of accounts. This still does not turn on accounts,
+payments, verified-email tester grants, protected pack downloads or a paywall;
+the "Required before public launch" list below is now the list for the paid
+release and for retiring the paired tester bundle.
+
+Earlier status: development/CI only.
 
 ## What changes
 

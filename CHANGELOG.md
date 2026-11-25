@@ -4,6 +4,13 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## Phone [2.3] · in preparation (first public release)
+
+The first public Google Play release. The public app includes a free sample of the practice questions; closed testers keep the full question bank.
+
+### Improved
+- The drill suggested on Play, the final review week and the reminders on the evening before your exam now follow the same recent mistake patterns as your mistake journal.
+
 ## Phone [2.2] · 2026-11-20 (closed testing)
 
 ### New
@@ -16,7 +23,6 @@ For internal/technical history, see git log and PR descriptions.
 - After you answer, the short summary and the tips come first. The whole question and every option are one tap away under "Show question & options".
 - On tablets and other large screens, pages sit in a comfortable reading width.
 - The recovery Concept Lab is put away for now while we make it clearer.
-- The drill suggested on Play, the final review week and the reminders on the evening before your exam now follow the same recent mistake patterns as your mistake journal. (Arrives with the next phone update.)
 
 ### Changed after learner reports
 - Learners found the list of reasons under every answer overwhelming and missed the earlier tips-first layout; practice returns to it, with every option one tap away.

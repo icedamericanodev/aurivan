@@ -102,6 +102,11 @@ def published_ids():
     return set()
 
 
+# The phone app's first five questions (mobile/src/content/firstSet.ts, FIRST_SET.cisa).
+# A mobile test checks the two lists match.
+FIRST_SET = ["d1_002", "d2_006", "d3_002", "d4_041", "d5_008"]
+
+
 def build():
     share = FREE_SHARE.get(CERT, DEFAULT_SHARE)
     notes = load_json(ROOT / "data" / "cisa_notes.json")
@@ -120,8 +125,11 @@ def build():
         all_ids.update(by_id)
         quota = math.ceil(len(qs) * share)
 
-        # 1. Keep every id already in the free list (the list only grows).
-        chosen = sorted((i for i in previous if i in by_id), key=rank)
+        # 1. Keep every id already in the free list (the list only grows), plus
+        #    the phone app's "first five" (mobile/src/content/firstSet.ts): the
+        #    public phone build bundles only this sample, so every new learner's
+        #    first set must be free.
+        chosen = sorted((i for i in (previous | set(FIRST_SET)) if i in by_id), key=rank)
         picked = set(chosen)
 
         # 2. One question for every notes topic that has none free yet.
