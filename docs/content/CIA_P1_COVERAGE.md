@@ -63,12 +63,13 @@ What the counts hide (after round 14):
   per-learner short mock) is an app rule, checked when the packs are wired in (plan
   section 11).
 - **One item (11):** A: 1A5a, 1A5f, 1A5g, 1A6d. B: 1B4e, 1B4f, 1B5b. D: 1D4b, 1D5b, 1D5c,
-  1D5d (blocked on members-only guides or the textbook). A bullet's only item stays out of
+  1D5d (blocked: they need the IIA's members-only guides, which the owner decided on 25 Nov 2026 not to open, or the textbook). A bullet's only item stays out of
   the held-back form.
 - **The opened sources are out of distinct lessons for Part 1.** Round 14 filled 6 of 22
-  planned slots (13 written, 7 cut or left as repeats); round 13 kept 19 of 24. The third
-  form waits for new sources: the IIA's members-only fraud guides (14 of D's 15) and a
-  textbook (1A4b, and more depth on the limited-source bullets).
+  planned slots (13 written, 7 cut or left as repeats); round 13 kept 19 of 24. A third
+  form needs new sources: the owner decided on 25 Nov 2026 not to join The IIA, so the
+  members-only fraud guides (14 of D's 15) stay unopened; a textbook remains possible
+  (1A4b, and more depth on the limited-source bullets).
 - **Section C's bulk sits in four bullets**: 1C1a (10), 1C8a (9), 1C6a (8) and 1C5c (7).
 - **Siblings to keep apart in one mock** are logged in each item's `_provenance` and in
   the plan's round write-ups (section 7).
@@ -229,8 +230,8 @@ IIA and Anti-Fraud Collaboration white paper are background only and carry no ke
 | 1D4b | Proper use of segregation of duties past the syllabus line (which duties to split, compensating checks) | IIA Global PG: Internal Auditing and Fraud, 3rd ed.; textbook |
 | 1D5b, 1D5c, 1D5d | Interviewing technique, investigation steps, chain of custody, fraud testing methods | IIA Global PG: Internal Auditing and Fraud, 3rd ed.; textbook |
 
-Opening those two practice guides waits on the owner's IIA membership and licence
-decisions (plan section 9).
+Those two practice guides are members only, and the owner decided on 25 Nov 2026 not to
+join The IIA (plan section 9): these bullets stay blocked unless a textbook covers them.
 
 ## 5. Gap list in priority order
 
@@ -238,8 +239,8 @@ The sale gate's counts are met (section 2). What is left serves the three-form t
 
 1. **Section D from opened sources**: done in round 15 (`cia1_d4_042`).
 2. **Blocked on sources (14 D items, plus 1A4b)**: 1D1c, 1D3b, 1D4b, 1D5b, 1D5c, 1D5d
-   (the IIA's members-only guides, a textbook); 1A4b (textbook). The owner's IIA
-   membership and textbook decisions open them (plan section 9).
+   (the IIA's members-only guides, which stay unopened: no IIA membership, decided 25 Nov
+   2026); 1A4b (textbook). Only a textbook purchase could open any of them (plan section 9).
 3. **Sections A and C**: only from a lesson the bank does not yet teach (the leads in
    section 4), or from new sources.
 4. **One-item bullets (11)**: only with a new lesson.
