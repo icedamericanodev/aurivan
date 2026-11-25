@@ -70,6 +70,16 @@ Risks the owner accepts:
   opened missing questions. The free list only grows: 275 → 278.
 - The `production` profile is unchanged and still builds the full bank.
 
+## Build order (Claude)
+
+EAS keeps one version-code counter for every profile (`appVersionSource:
+remote`, `autoIncrement`). Build **`public-sample` first, then `production`**,
+so the testers' bundle gets the higher code. A retried or failed public build
+also takes a number, so before handoff read both codes from the .aab files
+themselves and check **tester code > public code**. If not, rebuild the tester
+bundle; never hand over a pair where the public code is higher, because Play
+would then give testers the sample.
+
 ## Play Console order (owner)
 
 1. Upload the **tester** bundle (code 6) to both closed tracks and roll it out

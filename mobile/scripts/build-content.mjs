@@ -492,6 +492,11 @@ export function questionPackMode(env) {
     }
     return 'sample';
   }
+  // The closed testers' store build (profile "production") says "full" explicitly, so a stray
+  // "sample" (for example in the shared EAS environment) can't quietly take the bank away from testers.
+  if (env.EAS_BUILD_PROFILE === 'production' && env.KAISIP_QUESTION_PACK !== 'full') {
+    throw new Error(`Closed-testing build: KAISIP_QUESTION_PACK must be "full" (got ${env.KAISIP_QUESTION_PACK ?? 'unset'})`);
+  }
   const mode = env.KAISIP_QUESTION_PACK ?? 'full';
   if (!['full', 'sample'].includes(mode)) throw new Error('KAISIP_QUESTION_PACK must be full or sample');
   return mode;

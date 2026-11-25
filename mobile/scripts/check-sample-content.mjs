@@ -13,6 +13,8 @@ const generated = path.join(repo, 'mobile/src/content/generated');
 const build = (mode) => {
   const env = { ...process.env };
   delete env.KAISIP_QUESTION_PACK;
+  delete env.KAISIP_RELEASE;
+  delete env.EAS_BUILD_PROFILE;
   if (mode !== undefined) env.KAISIP_QUESTION_PACK = mode;
   execFileSync(process.execPath, ['mobile/scripts/build-content.mjs'], { cwd: repo, env, stdio: 'pipe' });
 };
@@ -33,9 +35,12 @@ test('the public release fails closed unless it explicitly asks for the sample',
     { KAISIP_RELEASE: 'public', KAISIP_QUESTION_PACK: 'Sample' },
     { KAISIP_RELEASE: 'pubic', KAISIP_QUESTION_PACK: 'sample' },
   ]) assert.throws(() => questionPackMode(env), /KAISIP_RELEASE|Public release build/, JSON.stringify(env));
-  // Closed-testing and local builds keep the full-bank default.
+  // Local builds keep the full-bank default; the testers' store build must say "full".
   assert.equal(questionPackMode({}), 'full');
-  assert.equal(questionPackMode({ EAS_BUILD_PROFILE: 'production' }), 'full');
+  assert.equal(questionPackMode({ EAS_BUILD_PROFILE: 'production', KAISIP_QUESTION_PACK: 'full' }), 'full');
+  for (const pack of [undefined, 'sample', 'Full']) {
+    assert.throws(() => questionPackMode({ EAS_BUILD_PROFILE: 'production', KAISIP_QUESTION_PACK: pack }), /Closed-testing build/);
+  }
 });
 
 test('a public build with a bad setting leaves no generated pack behind', () => {
