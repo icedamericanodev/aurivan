@@ -1,7 +1,7 @@
 # CIA Part 2: syllabus bullet coverage map
 
-Built 25 Nov 2026, after the Part 2 pilot, and updated the same day after Part 2 round 1,
-to measure Part 2 against the sale gate
+Built 25 Nov 2026, after the Part 2 pilot, and updated the same day after Part 2 rounds 1
+and 2, to measure Part 2 against the sale gate
 (`docs/content/CIA_BANK_PLAN.md`, section 3, decision 4, revised in round 14): (a) every
 syllabus bullet tested at its verb's depth with every gate passing; (b) two full
 exam-weighted forms of distinct items per section (Part 2 is 100 questions as A 50, B 40,
@@ -12,11 +12,12 @@ per learner from unseen items; a bullet's only item is never held back. Three fo
 Source: the opened Part 2 syllabus (V2.09.2024 FINAL, opened 19 Nov 2026; each bullet's
 leading verb re-read in it on 25 Nov 2026). The "Covers" column is the blueprint's own
 wording (`docs/content/CIA_BLUEPRINT.md`), not The IIA's; the verb is the bullet's leading
-word. Bank: all 53 items in `data/cia/cia2/originals/d1.json` to `d3.json` as of Part 2
-round 1 (the pilot's 37 plus round 1's 16: `d1_015` to `d1_022`, `d2_015` to `d2_021`,
-`d3_010`; none retired). Round 1 renumbered some Section A drafts before merge; the map
-follows the file. This is an internal working document; it holds no item text. No prep
-provider was opened for it.
+word. Bank: all 64 items in `data/cia/cia2/originals/d1.json` to `d3.json` as of Part 2
+round 2 (the pilot's 37, round 1's 16: `d1_015` to `d1_022`, `d2_015` to `d2_021`,
+`d3_010`; and round 2's 11: `d1_023` to `d1_026`, `d2_022` to `d2_027`, `d3_011`; none
+retired). Rounds 1 and 2 renumbered some drafts before merge (round 2 cut two Section B
+drafts and moved the later items down); the map follows the file, not the drafts. This is
+an internal working document; it holds no item text. No prep provider was opened for it.
 
 ## 1. How the map was made
 
@@ -60,66 +61,83 @@ provider was opened for it.
   `d1_016` (a request to add work in the same days) sits at 2A1d, the stakeholder request,
   though its key names a scope limitation (also touched by 2A1c); `d1_017` (who watches
   for emerging cyber threats) sits at 2A3c, planning, not 2A5c; `d2_020` stays at 2B1a as
-  an application item after its fix pass relabelled it.
+  an application item after its fix pass relabelled it. Round 2: `d1_026` (advice
+  requested, assurance expected) counts at 2A1a, the bullet of the map's lead it used, as
+  its key ends on conformance with the Cybersecurity Topical Requirement; the Section A
+  file's round 2 note calls it a second lesson on 2A1a and 2A1b (its `_provenance` names
+  only notes 2A1.2), so 2A1b logs it as "also touched by" (whether the work is assurance
+  or advisory is a 2A1b input). `d1_024` (a regulation-required area no one can assess)
+  sits at 2A7d, not 2A1c, because the shortfall is the trigger; `d2_025` (a request for a
+  model instead of the approved analysis) sits at 2B4e, also touched by 2A1d; `d2_026`
+  (which of four results to follow up) sits at 2B5a, also touched by 2B6c.
 
 ## 2. Where Part 2 stands against the gate
 
 | Section | Items | Two-form bar (gate) | Three-form target | Gap to the bar | Bullets | Zero items | One item | Below depth |
 |---|---|---|---|---|---|---|---|---|
-| A Engagement Planning | 22 | 100, not met | 150 | 78 | 31 | 11 | 18 | 2 |
-| B Information Gathering, Analysis, and Evaluation | 21 | 80, not met | 120 | 59 | 22 | 3 | 17 | 5 |
-| C Engagement Supervision and Communication | 10 | 20, not met | 30 | 10 | 7 | 0 | 5 | 1 |
-| **Part 2** | **53** | **200, not met** | **300** | **147** | **60** | **14** | **40** | **8** |
+| A Engagement Planning | 26 | 100, not met | 150 | 74 | 31 | 8 | 20 | 2 |
+| B Information Gathering, Analysis, and Evaluation | 27 | 80, not met | 120 | 53 | 22 | 2 | 14 | 1 |
+| C Engagement Supervision and Communication | 11 | 20, not met | 30 | 9 | 7 | 0 | 5 | 0 |
+| **Part 2** | **64** | **200, not met** | **300** | **136** | **60** | **10** | **39** | **3** |
 
 (The full and short mock splits are the app's own sum, `allocate()` in
 `data/cia/tools/cia_common.py`: 100 as 50/40/10 and 33 as 17/13/3. F/Ap/An by section:
-A 2/13/7, B 1/12/8, C 2/6/2. "Below depth" counts bullets that have items but none at their
-verb's depth; zero-item bullets are counted on their own. Pilot figures, for comparison:
-37 items; 26 zero-item, 32 one-item and 11 below-depth bullets.)
+A 2/15/9, B 1/13/13, C 2/6/3. "Below depth" counts bullets that have items but none at their
+verb's depth; zero-item bullets are counted on their own. Earlier figures, for comparison:
+pilot, 37 items with 26 zero-item, 32 one-item and 11 below-depth bullets; round 1, 53
+items with 14, 40 and 8.)
 
 What the counts hide:
 
-- **Gate (a) is not met.** 14 of 60 bullets have no item, and 8 more have items but none
-  at their verb's depth, every one a judge bullet with only foundational or application
-  items: 2A4a, 2A7c, 2B1a, 2B1b, 2B4b, 2B4e, 2B5a, 2C2a. Of the 14 zero-item bullets, 3
-  carry judge verbs (2A7b, 2A7d, 2B7d), so their first item should be an analysis item,
-  and one carries an apply verb (2B7a). 38 bullets meet their depth today (pilot: 23):
-  A 18 of 31, B 14 of 22, C 6 of 7. Round 1 brought 15 bullets to depth: 2A1c, 2A1d, 2A3c,
-  2A4b, 2A6a, 2A6d, 2A6e, 2A7a, 2B3a, 2B4d, 2B5b, 2B6a, 2B6c, 2B7c and 2C1b.
-- **Round 1 tried nine slots and left them empty on purpose** (section 5 keeps the
-  reasons): 2A2a, 2A5c, 2A5e, 2A5f and 2A6c as first items, and 2A4a and 2A7c as analysis
-  items, found no distinct lesson; 2A5a and 2A7d drafts were cut because their keys rested
+- **Gate (a) is not met.** 10 of 60 bullets have no item, and 3 more have items but none
+  at their verb's depth, each a judge bullet with only application items: 2A4a, 2A7c and
+  2B4b. None of the 10 zero-item bullets carries a judge verb now; one carries an apply
+  verb (2B7a), the rest recall verbs. 47 bullets meet their depth today (round 1: 38;
+  pilot: 23): A 21 of 31, B 19 of 22, C 7 of 7. Round 2 brought 9 bullets to depth: first
+  items on 2A5a, 2A7b, 2A7d and 2B7d, and analysis items on 2B1a, 2B1b, 2B4e, 2B5a and
+  2C2a.
+- **Rounds 1 and 2 left slots empty on purpose** (section 5 keeps the reasons). Round 1
+  tried nine slots: 2A2a, 2A5c, 2A5e, 2A5f and 2A6c as first items and 2A4a and 2A7c as
+  analysis items found no distinct lesson; the 2A5a and 2A7d drafts were cut for resting
   only on the Topical Requirements Application Guidance; a 2A7b draft was cut as
-  answerable from wording. 2B1a gained `d2_020`, but its fix pass relabelled it
-  application, so 2B1a still lacks an analysis item.
-- **No full form can be drawn yet.** Every topic now has an item (2B3's first is
-  `d2_015`), but 40 of the 46 bullets with items have exactly one, and a bullet's only item
-  stays out of the held-back form. Topic 2B3 cannot be sampled by the held-back form until
-  2B3a has a second item. Only six bullets have two or more: 2A6a, 2A6d, 2B1a, 2B6c, 2C1c
-  and 2C2a.
-- **Gate (b) needs about 147 more items.** The pilot kept 37 of 50 written (74%); round 1
-  kept 16 of 19 (84%; all three cuts were Section A drafts). At about 80%, a round must
-  write about 185 to keep 147. Section A carries more than half of the gap (78), and topic
-  2A5 is furthest behind its share (2 of 20).
+  answerable from wording (round 2 filled 2A5a, 2A7b and 2A7d on the Standards and the
+  Cybersecurity requirement). Round 2 left 2A4a, 2A7c, 2A2a, 2A5c, 2A5e, 2A5f, 2A6c and
+  2B7a empty again, found no second lesson on 2A1b, 2A1d, 2A1e or Section C, and cut a
+  2B4a draft and a 2B4b analysis draft as answerable from wording; both bullets go to
+  round 3 with new leads.
+- **No full form can be drawn yet.** Every topic has an item, but 39 of the 50 bullets
+  with items have exactly one, and a bullet's only item stays out of the held-back form.
+  Eleven bullets have two or more: 2A1a, 2A6a, 2A6d, 2B1a, 2B1b, 2B3a, 2B4e, 2B5a, 2B6c,
+  2C1c and 2C2a. Topic 2B3 can now be sampled by the held-back form (`d2_027` is 2B3a's
+  second item).
+- **Gate (b) needs about 136 more items.** The pilot kept 37 of 50 written (74%); round 1
+  kept 16 of 19 (84%; all three cuts Section A drafts); round 2 kept 11 of 13 (85%; both
+  cuts Section B drafts). At about 80%, rounds must write about 170 to keep 136. Section A
+  carries more than half of the gap (74), and topic 2A5 is still furthest behind its share
+  (3 of 20).
 - **The opened sources cannot reach some bullets at depth** (section 4): 2A3e (finance and
   accounting basics) has no opened source at all; parts of 2A3c, 2A3d, 2A3f, 2A4a, 2B3a,
-  2B4b, 2B4d, 2B4e and 2B5a rest on "Common usage" or on members-only guides. Four of the
-  judge bullets still below depth (2A4a, 2B4b, 2B4e, 2B5a) are among them, so their
-  analysis items must rest on the Standards, not on terms. The owner decided on 25 Nov 2026
+  2B4b, 2B4d, 2B4e and 2B5a rest on "Common usage" or on members-only guides. The two
+  judge bullets still below depth among them (2A4a, 2B4b) need analysis items that rest on
+  the Standards, not on terms, as round 2's 2B4e and 2B5a items do (`d2_025` keys on
+  relevance to the approved objective, `d2_026` on significance and cost against
+  benefit). The owner decided on 25 Nov 2026
   not to join The IIA, so members-only guides are never a source; a textbook purchase is
   still undecided (plan section 9).
 - **The Topical Requirements Application Guidance is Background, not a source for a key**
   (ruled 25 Nov 2026, round 1: it is not on the exam's reference list and is labelled
-  Supplemental). That closed the round 1 leads for 2A5a and 2A7d. Items that cite it after
-  a Verified first part and key on a requirement or its user guide (`d1_006`,
-  `cia1_d1_046`, `cia1_d1_061`) were checked in the same ruling and are unaffected.
+  Supplemental). That closed the round 1 leads for 2A5a and 2A7d; round 2 filled both
+  without it (`d1_025` keys on the Cybersecurity requirement and its user guide, `d1_024`
+  on Standards 13.3 and 13.5). Items that cite it after a Verified first part and key on a
+  requirement or its user guide (`d1_006`, `cia1_d1_046`, `cia1_d1_061`) were checked in
+  the same ruling and are unaffected.
 - **Three Topical Requirements are not testable yet**: Third-Party from 2027-03-01,
   Organizational Behavior from 2027-06-01, Organizational Resilience from 2027-10-01
   (`data/cia/shared/currency.json`). An item that rests on one carries that
   `testable_from` and stays out of mocks, forms and the free sample until the date, so it
   does not count toward the gate before then. No Part 2 item carries a future
-  `testable_from` today; the five items on the Cybersecurity requirement (`d1_001`,
-  `d1_006`, `d1_007`, `d1_009`, `d1_017`) are testable now.
+  `testable_from` today; the seven items on the Cybersecurity requirement (`d1_001`,
+  `d1_006`, `d1_007`, `d1_009`, `d1_017`, `d1_025`, `d1_026`) are testable now.
 - **Part 1 already teaches many engagement lessons.** Scope limitations (`cia1_d1_027`,
   `_089`, `_099`, `_105`, `_106`), criteria (`cia1_d1_060`, `cia1_d3_020`, `cia1_d3_064`,
   `cia1_d2_077`), effectiveness against efficiency (`cia1_d3_019`, `cia1_d3_085`),
@@ -128,14 +146,23 @@ What the counts hide:
   benchmarking (`cia1_d1_050`, `cia1_d1_071`) and process maps (`cia1_d1_062`,
   `cia1_d1_104`). A Part 2 item on the same lesson is a cross-part sibling: new scenario,
   new actor or depth, new runner-up, logged (the pilot cut one repeat of a Part 1 lesson;
-  round 1 left 2A5e empty because its lead repeated `cia1_d4_008`).
+  round 1 left 2A5e empty because its lead repeated `cia1_d4_008`; round 2 left 2A2a,
+  2A5c, 2A5e and second lessons on 2A1b, 2A1d and 2A1e empty for the same reason).
 - **Siblings already logged** (plan section 7): from the pilot, `d1_001` with
   `cia1_d1_061` and `cia1_d1_046`; `d1_007` with `cia1_d2_016`; `d1_009` with
   `cia1_d1_061`; `d1_014` with `cia1_d2_012`; `d3_001` with `cia1_d2_038`; `d3_004` with
   `cia1_d1_065`; `d3_006` with `d3_009`. From round 1, `d1_015` with `cia1_d1_027`
   (transfer pair); `d1_016` with `cia1_d1_105`; `d1_018` with `d1_011`; `d2_020` with
   `d2_001` (transfer pair) and with `d2_003`; `d3_010` with `d3_005` (transfer pair).
-- **Challenge tags:** 46 of 53 items carry one; `d1_002`, `d1_007`, `d1_018`, `d2_001`,
+  From round 2 (each item's `_provenance`; keep apart in one mock): `d1_023` with
+  `cia1_d2_011` (transfer pair), `cia1_d2_012` and `d3_001`; `d1_024` with `cia1_d1_070`,
+  `d1_015` and `cia1_d1_027`; `d1_025` with `cia1_d1_061`, `d1_001` and `d1_006`;
+  `d1_026` with `cia1_d1_046` and `d1_001`; `d2_022` near `cia1_d2_027`, `cia1_d2_020`
+  and `cia1_d2_082`; `d2_023` with `d2_004` and `d2_020`; `d2_024` near `d2_002`,
+  `cia1_d1_097` and `cia1_d1_010`; `d2_025` near `d2_007`, `d2_008` and `d2_018`;
+  `d2_026` with `d2_009` (same payroll drivers); `d2_027` with `d2_015` and `d2_003`;
+  `d3_011` near `d3_007` and `d3_006`, and cross-part with Part 3 bullet 3D4b.
+- **Challenge tags:** 57 of 64 items carry one (all 11 of round 2's); `d1_002`, `d1_007`, `d1_018`, `d2_001`,
   `d2_019`, `d3_003` and `d3_009` carry `null` as too basic for the Challenge candidate.
 
 ## 3. The map
@@ -144,12 +171,12 @@ What the counts hide:
 
 | Bullet | Covers (our words) | Verb (class) | Items | F/Ap/An | Depth met? | Gap |
 |---|---|---|---|---|---|---|
-| 2A1a | Where Topical Requirements come into setting objectives and scope | Recognize (recall) | 1: d1_001 (C1) | 0/1/0 | yes | one item: cannot be held back. Items on Third-Party, Organizational Behavior or Organizational Resilience need `testable_from` |
-| 2A1b | What feeds the objectives: whether the job is assurance or advisory, strategy, regulation, risk appetite, policies, how governance, risk and control are run, earlier audit reports and other providers' work | Recognize (recall) | 1: d1_002 | 1/0/0 | yes | one item: cannot be held back |
-| 2A1c | Spotting scope limitations at planning and writing them down | Identify (recall) | 1: d1_015 (C1); also touched by d1_016 | 0/1/0 | yes | one item: cannot be held back; transfer pair with `cia1_d1_027` (Part 1 sits close: 1A7e's five items) |
-| 2A1d | Ways to handle and record requests from stakeholders | Evaluate (judge) | 1: d1_016 (C1); also touched by d1_001 | 0/0/1 | yes | one item: cannot be held back; sibling of `cia1_d1_105` |
-| 2A1e | Good ways to deal with a change in objectives or scope | Identify (recall) | 1: d1_003 (C1); also touched by d3_005 | 0/1/0 | yes | one item: cannot be held back |
-| 2A2a | Picking the criteria that best fit the activity being audited | Identify (recall) | 0 | 0/0/0 | no | zero items; tried in round 1 and left empty (the lead's key was common sense). Part 1 sits close: `cia1_d3_020`, `cia1_d3_064`, `cia1_d1_060` |
+| 2A1a | Where Topical Requirements come into setting objectives and scope | Recognize (recall) | 2: d1_001 (C1), d1_026 (C1) | 0/2/0 | yes | - (`d1_026` is round 2's second lesson: assurance must conform whatever the request is called; sibling of `cia1_d1_046` and `d1_001`). Items on Third-Party, Organizational Behavior or Organizational Resilience need `testable_from` |
+| 2A1b | What feeds the objectives: whether the job is assurance or advisory, strategy, regulation, risk appetite, policies, how governance, risk and control are run, earlier audit reports and other providers' work | Recognize (recall) | 1: d1_002; also touched by d1_026 | 1/0/0 | yes | one item: cannot be held back. `d1_026` is logged here (the Section A file's round 2 note names it a second lesson on 2A1a and 2A1b) but counts at 2A1a. Round 2's own 2A1b lead (a regulatory goal ranked low) was left empty: it repeats `cia1_d1_070` |
+| 2A1c | Spotting scope limitations at planning and writing them down | Identify (recall) | 1: d1_015 (C1); also touched by d1_016, d1_024 | 0/1/0 | yes | one item: cannot be held back; transfer pair with `cia1_d1_027` (Part 1 sits close: 1A7e's five items). A further "request may be a scope limitation" key would be the fourth: avoid |
+| 2A1d | Ways to handle and record requests from stakeholders | Evaluate (judge) | 1: d1_016 (C1); also touched by d1_001, d2_025 | 0/0/1 | yes | one item: cannot be held back; sibling of `cia1_d1_105`. Round 2's second lesson left empty (a fourth "request may be a scope limitation" key) |
+| 2A1e | Good ways to deal with a change in objectives or scope | Identify (recall) | 1: d1_003 (C1); also touched by d3_005 | 0/1/0 | yes | one item: cannot be held back. Round 2's second lesson left empty (repeats `cia1_d1_069`) |
+| 2A2a | Picking the criteria that best fit the activity being audited | Identify (recall) | 0 | 0/0/0 | no | zero items; tried in rounds 1 and 2 and left empty (round 1: common-sense key; round 2: repeats a Part 1 lesson). Part 1 sits close: `cia1_d3_020`, `cia1_d3_064`, `cia1_d1_060` |
 | 2A2b | Testing a set of criteria: relevant, specific, practical, in line with objectives, and able to support fair comparisons | Determine (judge) | 1: d1_004 (C2) | 0/0/1 | yes | one item: cannot be held back |
 | 2A3a | Where Topical Requirements come into planning | Recognize (recall) | 1: d1_006 (C3) | 0/1/0 | yes | one item: cannot be held back |
 | 2A3b | How the area's strategic goals connect to the way it measures and manages performance and to risk management | Recognize (recall) | 1: d1_005 (C3) | 0/1/0 | yes | one item: cannot be held back |
@@ -157,49 +184,49 @@ What the counts hide:
 | 2A3d | Readiness for disruption (continuity and disaster recovery): business impact analysis, resilience, handling incidents, and tests of backup and recovery | Recognize (recall) | 1: d1_007 | 1/0/0 | yes | one item: cannot be held back; business impact analysis and recovery objectives are "Common usage"; the resilience requirement is testable from 2027-10-01 |
 | 2A3e | Finance and accounting basics for the area: assets (current and fixed), liabilities (short and long term), capital and investments | Recognize (recall) | 0 | 0/0/0 | no | zero items; blocked: no opened source (textbook) |
 | 2A3f | Key risks and controls in everyday business processes and in systems such as CRM, ERP and GRC | Recognize (recall) | 0 | 0/0/0 | no | zero items; process detail is "Common usage" (textbook); third parties rest on the Third-Party requirement (testable 2027-03-01) |
-| 2A4a | Weighing approaches (traditional, agile, integrated, remote) and picking the best fit | Evaluate (judge) | 1: d1_008 (C4) | 0/1/0 | no | analysis item (tried in round 1 and left empty: the lead retold the notes' example); one item: cannot be held back; beyond the Standards' general rules needs the members-only integrated approaches guide (never) or the textbook |
+| 2A4a | Weighing approaches (traditional, agile, integrated, remote) and picking the best fit | Evaluate (judge) | 1: d1_008 (C4) | 0/1/0 | no | analysis item (tried in rounds 1 and 2 and left empty: every lead retold the notes' example, repeated `d1_009` or `cia1_d3_054`, or rested on "Common usage"); one item: cannot be held back; beyond the Standards' general rules needs the members-only integrated approaches guide (never) or the textbook |
 | 2A4b | Project management ideas used to plan and run an engagement | Describe (recall) | 1: d1_018 | 0/1/0 | yes | one item: cannot be held back; sibling of `d1_011` |
-| 2A5a | Where Topical Requirements come into the risk assessment | Recognize (recall) | 0; also touched by d1_009 | 0/0/0 | no | zero items; tried in round 1 and cut: the draft's key rested only on the Application Guidance (Background). A first item keys on a requirement and its user guide alone |
+| 2A5a | Where Topical Requirements come into the risk assessment | Recognize (recall) | 1: d1_025 (C5); also touched by d1_009 | 0/1/0 | yes | one item: cannot be held back. Round 2's first item keys on the Cybersecurity requirement and its user guide alone (coverage by an earlier assurance engagement, recorded as the reason for exclusion); sibling of `cia1_d1_061`, `d1_001`, `d1_006` |
 | 2A5b | Risks that run through the whole activity: regulatory, cyber, IT, operational and financial | Recognize (recall) | 1: d1_009 (C5) | 0/1/0 | yes | one item: cannot be held back |
-| 2A5c | How emerging risks affect the organization | Recognize (recall) | 0; also touched by d1_017 | 0/0/0 | no | zero items; tried in round 1 and left empty (sound practice only, thin beyond Standard 13.2 and the Cybersecurity requirement) |
+| 2A5c | How emerging risks affect the organization | Recognize (recall) | 0; also touched by d1_017 | 0/0/0 | no | zero items; tried in rounds 1 and 2 and left empty (round 1: sound practice only; round 2: repeats `cia1_d2_061`, `cia1_d2_059`, `cia1_d3_055` or common sense) |
 | 2A5d | Methods and criteria for rating and ranking risks and controls | Determine (judge) | 1: d1_010 (C5) | 0/0/1 | yes | one item: cannot be held back |
-| 2A5e | How changes to people, processes and systems shift risk | Recognize (recall) | 0 | 0/0/0 | no | zero items; tried in round 1 and left empty (the lead repeated `cia1_d4_008`) |
-| 2A5f | How structure and setting matter: remote or in-person work, flat or traditional layers, central or local control | Recognize (recall) | 0 | 0/0/0 | no | zero items; tried in round 1 and left empty (common-sense key; mostly sound practice in the notes) |
+| 2A5e | How changes to people, processes and systems shift risk | Recognize (recall) | 0 | 0/0/0 | no | zero items; tried in rounds 1 and 2 and left empty (round 1 repeated `cia1_d4_008`; round 2 repeated `cia1_d2_061`, `cia1_d2_059`, `cia1_d3_055` or common sense) |
+| 2A5f | How structure and setting matter: remote or in-person work, flat or traditional layers, central or local control | Recognize (recall) | 0 | 0/0/0 | no | zero items; tried in rounds 1 and 2 and left empty (round 1: common-sense key; round 2: sound practice only) |
 | 2A5g | How culture shapes the control environment: how individuals and groups behave, and tone at the top | Recognize (recall) | 0 | 0/0/0 | no | zero items; the Organizational Behavior requirement is testable from 2027-06-01; Part 1 sits close (1C2a, 1D4a) |
 | 2A6a | Procedures that test whether a control is well designed | Determine (judge) | 2: d1_012 (C6), d1_019 (C6) | 0/1/1 | yes | - |
 | 2A6b | Procedures that test whether controls work | Identify (recall) | 1: d1_013 (C6) | 0/0/1 | yes | one item: cannot be held back |
-| 2A6c | Procedures that test whether controls are efficient | Identify (recall) | 0 | 0/0/0 | no | zero items; tried in round 1 and left empty (sound practice only). Part 1 sits close: `cia1_d3_019`, `cia1_d3_085` |
+| 2A6c | Procedures that test whether controls are efficient | Identify (recall) | 0 | 0/0/0 | no | zero items; tried in rounds 1 and 2 and left empty (sound practice only). Part 1 sits close: `cia1_d3_019`, `cia1_d3_085` |
 | 2A6d | Judging whether the work program is good enough | Evaluate (judge) | 2: d1_011 (C6), d1_020 (C6); also touched by d1_003, d1_008 | 0/1/1 | yes | - |
 | 2A6e | Test methods for engagements that cover accounting, finance, IT systems, operations or cybersecurity | Identify (recall) | 1: d1_021 (C6) | 0/1/0 | yes | one item (IT systems): cannot be held back; methods outside IT and cybersecurity are "May" or "Common usage" in the notes (textbook) |
 | 2A7a | Money the engagement needs | Determine (judge) | 1: d1_022 (C7) | 0/0/1 | yes | one item: cannot be held back |
-| 2A7b | People the engagement needs | Determine (judge) | 0 | 0/0/0 | no | zero items; first item at analysis. Tried in round 1 and cut: the draft was answerable from wording |
-| 2A7c | Technology the engagement needs | Determine (judge) | 1: d1_014 (C7) | 0/1/0 | no | analysis item (tried in round 1 and left empty: common sense); one item: cannot be held back |
-| 2A7d | What it means when resources fall short | Evaluate (judge) | 0 | 0/0/0 | no | zero items; first item at analysis. Tried in round 1 and cut: the draft's key rested only on the Application Guidance (Background) |
+| 2A7b | People the engagement needs | Determine (judge) | 1: d1_023 (C7) | 0/0/1 | yes | one item: cannot be held back. Round 2 rebuilt round 1's cut lesson (every option uses a stem actor or fact); transfer pair with `cia1_d2_011`, siblings `cia1_d2_012` and `d3_001` |
+| 2A7c | Technology the engagement needs | Determine (judge) | 1: d1_014 (C7) | 0/1/0 | no | analysis item (tried in rounds 1 and 2 and left empty: round 1 common sense; round 2's technology rules were already keyed in `d1_014`, `d1_022` or `cia1_d2_018`); one item: cannot be held back |
+| 2A7d | What it means when resources fall short | Evaluate (judge) | 1: d1_024 (C7) | 0/0/1 | yes | one item: cannot be held back. Round 2 keyed it on Standards 13.3 and 13.5 (a shortfall on required work is a scope limitation discussed with management), replacing round 1's cut draft; siblings `cia1_d1_070`, `d1_015`, `cia1_d1_027` |
 
 ### Section B table
 
 | Bullet | Covers (our words) | Verb (class) | Items | F/Ap/An | Depth met? | Gap |
 |---|---|---|---|---|---|---|
-| 2B1a | Ways to get information: data analysis, walk-throughs, observation and interviews | Determine (judge) | 2: d2_001, d2_020 (D1); also touched by d1_012 | 1/1/0 | no | analysis item still needed (`d2_020` was relabelled application in round 1's fix pass); `d2_020` is a transfer pair with `d2_001` and a sibling of `d2_003` |
-| 2B1b | Documents to draw on: policies, questionnaires on risk and control, checklists and self-assessment surveys | Determine (judge) | 1: d2_002 (D1) | 0/1/0 | no | analysis item; one item: cannot be held back; `d2_002` is a hardening candidate |
+| 2B1a | Ways to get information: data analysis, walk-throughs, observation and interviews | Determine (judge) | 3: d2_001, d2_020 (D1), d2_023 (D1); also touched by d1_012 | 1/1/1 | yes | - (`d2_023`, round 2's analysis item: a second record of the same events corroborates, a rerun of the same weak field does not; siblings `d2_004`, `d2_020`. `d2_020` is a transfer pair with `d2_001` and a sibling of `d2_003`) |
+| 2B1b | Documents to draw on: policies, questionnaires on risk and control, checklists and self-assessment surveys | Determine (judge) | 2: d2_002 (D1), d2_024 (D1) | 0/1/1 | yes | - (`d2_024`, round 2's analysis item: current questionnaire answers over an older survey to target visits; near `cia1_d1_097`, `cia1_d1_010`). `d2_002` is a hardening candidate |
 | 2B2a | Using the right criteria to judge evidence quality | Apply (apply) | 1: d2_003 (D2) | 0/0/1 | yes | one item: cannot be held back |
-| 2B2b | What makes evidence more reliable: corroboration, an independent source, and a system with sound controls behind it | Recognize (recall) | 1: d2_004 (D2); also touched by d2_003 | 0/1/0 | yes | one item: cannot be held back |
+| 2B2b | What makes evidence more reliable: corroboration, an independent source, and a system with sound controls behind it | Recognize (recall) | 1: d2_004 (D2); also touched by d2_003, d2_023 | 0/1/0 | yes | one item: cannot be held back |
 | 2B2c | Evidence strong enough that another informed, competent person would come to the same conclusion | Describe (recall) | 1: d2_005 (D2); also touched by d1_013, d3_002 | 0/0/1 | yes | one item: cannot be held back |
-| 2B3a | Tools that save time and add insight: dashboards, continuous monitoring, embedded audit modules, robotic process automation, machine learning and AI | Recognize (recall) | 1: d2_015 (D3); also touched by d1_014 | 0/1/0 | yes | one item: cannot be held back, so topic 2B3 cannot enter the held-back form yet; what each tool is rests on "Common usage" and members-only guides; reliance and ownership lessons rest on the Standards |
-| 2B4a | Breaking a process workflow into its parts | Define (recall) | 0 | 0/0/0 | no | zero items; thin: sound practice beyond Standard 13.2 |
-| 2B4b | Studying workflows with responsibility matrices (such as RACI), walk-throughs and process maps | Analyze (judge) | 1: d2_006 (D4) | 0/1/0 | no | analysis item; one item: cannot be held back; the meaning of each RACI letter is "Common usage" (no key) |
+| 2B3a | Tools that save time and add insight: dashboards, continuous monitoring, embedded audit modules, robotic process automation, machine learning and AI | Recognize (recall) | 2: d2_015 (D3), d2_027 (D3); also touched by d1_014 | 0/2/0 | yes | - (`d2_027`, round 2: a dashboard built by the team under review is a lead until its feed and results are tested; topic 2B3 can now enter the held-back form). What each tool is rests on "Common usage" and members-only guides; reliance and ownership lessons rest on the Standards |
+| 2B4a | Breaking a process workflow into its parts | Define (recall) | 0 | 0/0/0 | no | zero items; thin: sound practice beyond Standard 13.2. Round 2 draft cut (a map that stopped before the payment made the missing step obvious); round 3 with a new lead |
+| 2B4b | Studying workflows with responsibility matrices (such as RACI), walk-throughs and process maps | Analyze (judge) | 1: d2_006 (D4) | 0/1/0 | no | analysis item; one item: cannot be held back. Round 2 analysis draft cut (an interview-built access matrix against system records; the stem's wording pointed at the key); round 3 with a new lead. The meaning of each RACI letter is "Common usage" (no key) |
 | 2B4c | Data types: structured and unstructured | Explain (recall) | 1: d2_008 (D4) | 0/1/0 | yes | one item: cannot be held back |
 | 2B4d | The analytics steps: set the objective, get the data, normalize it, analyze it, report the results | Explain (recall) | 1: d2_019 | 0/1/0 | yes | one item: cannot be held back; keys rest on comparability and Standard 14.1, never on a guide's step detail (members-only data analytics guides: never) |
-| 2B4e | When to use each analysis method: diagnostic, predictive, prescriptive, anomaly detection, text analysis | Determine (judge) | 1: d2_007 (D4); also touched by d2_008 | 0/1/0 | no | analysis item; one item: cannot be held back; method definitions are "Common usage", so keys rest on Standards 14.1 and 14.2 |
-| 2B5a | Reading ratios, variances, trends, benchmarks, and financial and nonfinancial data | Analyze (judge) | 1: d2_009 (D5) | 0/1/0 | no | analysis item; one item: cannot be held back; ratio formulas need the textbook |
+| 2B4e | When to use each analysis method: diagnostic, predictive, prescriptive, anomaly detection, text analysis | Determine (judge) | 2: d2_007 (D4), d2_025 (D4); also touched by d2_008 | 0/1/1 | yes | - (`d2_025`, round 2: a request for a model does not change which analysis answers the approved objective; keyed on Standards 14.1 and 13.3, not on a method's definition) |
+| 2B5a | Reading ratios, variances, trends, benchmarks, and financial and nonfinancial data | Analyze (judge) | 2: d2_009 (D5), d2_026 (D5) | 0/1/1 | yes | - (`d2_026`, round 2: follow up the unexplained difference that matters most, Standards 14.2 and 4.2; keep apart from `d2_009` in one mock). Ratio formulas need the textbook |
 | 2B5b | Choosing the analytical technique that serves the engagement objective | Determine (judge) | 1: d2_018 (D5) | 0/0/1 | yes | one item: cannot be held back |
 | 2B6a | Comparing what is (the condition) with what should be (the criteria) | Analyze (judge) | 1: d2_016 (D6); also touched by d2_006, d2_007 | 0/0/1 | yes | one item: cannot be held back (Part 1 sits close: `cia1_d3_023`) |
 | 2B6b | Finding root causes and the likely effects of a gap | Identify (recall) | 1: d2_010 (D6) | 0/1/0 | yes | one item: cannot be held back |
-| 2B6c | Factors that make a finding more or less significant | Appraise (judge) | 2: d2_011 (D6), d2_021 (D6); also touched by d2_013, d3_007 | 0/1/1 | yes | - |
-| 2B7a | Putting workpaper information in order | Organize (apply) | 0 | 0/0/0 | no | zero items; thin: Standard 14.6's considerations are "may" |
+| 2B6c | Factors that make a finding more or less significant | Appraise (judge) | 2: d2_011 (D6), d2_021 (D6); also touched by d2_013, d2_026, d3_007 | 0/1/1 | yes | - |
+| 2B7a | Putting workpaper information in order | Organize (apply) | 0 | 0/0/0 | no | zero items; tried in round 2 and left empty: Standard 14.6's organizing lines are only "may", and a must-based item would repeat `d2_012` and `d2_017` |
 | 2B7b | What a complete workpaper with enough evidence looks like | Identify (recall) | 1: d2_012 (D7) | 0/1/0 | yes | one item: cannot be held back |
 | 2B7c | Tracing the engagement results back to the workpapers | Analyze (judge) | 1: d2_017 (D7); also touched by d3_002 | 0/0/1 | yes | one item: cannot be held back |
-| 2B7d | Organizing and keeping engagement records, given regulation and internal policy | Determine (judge) | 0 | 0/0/0 | no | zero items; first item at analysis (Part 1 sits close: `cia1_d2_020`, `cia1_d2_027`, `cia1_d2_082`) |
+| 2B7d | Organizing and keeping engagement records, given regulation and internal policy | Determine (judge) | 1: d2_022 (D7) | 0/0/1 | yes | one item: cannot be held back. Round 2: retention covers the whole file of an engagement stopped midway (Standards 14.6 and 5.2); near `cia1_d2_027`, `cia1_d2_020`, `cia1_d2_082` |
 | 2B8a | Using professional judgment to weigh findings taken together | Determine (judge) | 1: d2_013 (D8) | 0/0/1 | yes | one item: cannot be held back |
 | 2B8b | What goes into a conclusion, such as how well governance, risk management and controls work | Determine (judge) | 1: d2_014 (D8) | 0/0/1 | yes | one item: cannot be held back |
 
@@ -211,9 +238,9 @@ What the counts hide:
 | 2C1b | The supervisor's job in coordinating who does what | Describe (recall) | 1: d3_010 (D9) | 0/1/0 | yes | one item: cannot be held back; transfer pair with `d3_005` |
 | 2C1c | The supervisor's job in reviewing workpapers and conclusions | Describe (recall) | 2: d3_002 (D9), d3_004 (D9) | 0/1/1 | yes | - |
 | 2C1d | The supervisor's job in assessing how auditors performed | Describe (recall) | 1: d3_003 | 1/0/0 | yes | one item: cannot be held back |
-| 2C2a | Choosing how to communicate (written or spoken, formal or informal) at planning, fieldwork and reporting | Determine (judge) | 3: d3_005 (D10), d3_006 (D10), d3_009 | 1/2/0 | no | analysis item (`d3_006` and `d3_009` are siblings) |
+| 2C2a | Choosing how to communicate (written or spoken, formal or informal) at planning, fieldwork and reporting | Determine (judge) | 4: d3_005 (D10), d3_006 (D10), d3_009, d3_011 (D10) | 1/2/1 | yes | - (`d3_011`, round 2's analysis item: the chief audit executive decides the form of the final communication; `d3_006` and `d3_009` are siblings; `d3_011` sits near `d3_007` and Part 3 bullet 3D4b) |
 | 2C2b | Situations that need to be escalated | Identify (recall) | 1: d3_007 (D10) | 0/1/0 | yes | one item: cannot be held back |
-| 2C2c | Choosing who should receive engagement communications | Determine (judge) | 1: d3_008 (D10) | 0/0/1 | yes | one item: cannot be held back |
+| 2C2c | Choosing who should receive engagement communications | Determine (judge) | 1: d3_008 (D10); also touched by d3_011 | 0/0/1 | yes | one item: cannot be held back |
 
 ## 4. Section totals and where the remaining items go
 
@@ -228,9 +255,9 @@ little more for topics with more bullets and for judge verbs).
 
 | Section | Now | Bar | Gap | Where the items go (topic: now, then share of the bar) |
 |---|---|---|---|---|
-| A | 22 | 100 | 78 | 2A1: 5 of 18; 2A2: 1 of 9; 2A3: 4 of 14; 2A4: 2 of 8; 2A5: 2 of 20; 2A6: 6 of 18; 2A7: 2 of 13. First items at analysis on 2A7b and 2A7d (keyed on the Standards), a first item on 2A5a (keyed on a requirement and its user guide), then analysis items on 2A4a and 2A7c, then second lessons. Round 1's empty slots (2A2a, 2A5c, 2A5e, 2A5f, 2A6c) reopen only with a new lead. 2A5 is furthest behind its share; 2A3's is the one most likely to stay short (2A3e blocked, 2A3c, 2A3d and 2A3f partly). |
-| B | 21 | 80 | 59 | 2B1: 3 of 8; 2B2: 3 of 11; 2B3: 1 of 5; 2B4: 4 of 14; 2B5: 2 of 8; 2B6: 4 of 12; 2B7: 2 of 13; 2B8: 2 of 9. Analysis items on the 5 below depth (2B1a, 2B1b, 2B4b, 2B4e, 2B5a); a first item on 2B7d at analysis, then 2B7a and 2B4a (both thin); a second 2B3a item so topic 2B3 can enter the held-back form. |
-| C | 10 | 20 | 10 | 2C1: 5 of 11; 2C2: 5 of 9. An analysis item on 2C2a; the rest are second lessons on the five one-item bullets. |
+| A | 26 | 100 | 74 | 2A1: 6 of 18; 2A2: 1 of 9; 2A3: 4 of 14; 2A4: 2 of 8; 2A5: 3 of 20; 2A6: 6 of 18; 2A7: 4 of 13. Analysis items on the two below depth, 2A4a and 2A7c (each tried in rounds 1 and 2: new leads only), then second lessons, 2A5 first (furthest behind its share) and the new one-item bullets 2A5a, 2A7b and 2A7d. The empty slots (2A2a, 2A5c, 2A5e, 2A5f, 2A6c) reopen only with a lead that answers both rounds' reasons. 2A3's share is the one most likely to stay short (2A3e blocked; 2A3c, 2A3d and 2A3f partly). |
+| B | 27 | 80 | 53 | 2B1: 5 of 8; 2B2: 3 of 11; 2B3: 2 of 5; 2B4: 5 of 14; 2B5: 3 of 8; 2B6: 4 of 12; 2B7: 3 of 13; 2B8: 2 of 9. An analysis item on 2B4b and a first item on 2B4a (both cut in round 2: round 3, new leads); 2B7a only with a must-based lesson apart from `d2_012` and `d2_017`; then second lessons, 2B7, 2B2 and 2B8 furthest behind their shares. 2B1 already holds 2 analysis items of 5, so its next items are foundational or application. |
+| C | 11 | 20 | 9 | 2C1: 5 of 11; 2C2: 6 of 9. Every bullet is at depth; the rest are second lessons on the five one-item bullets (2C1a, 2C1b, 2C1d, 2C2b, 2C2c), 2C1 first. Round 2's leads each repeated `d3_010`, `d3_007` or `cia1_d1_037`, so new leads must stay apart from all three. |
 
 **Bullets the opened sources cannot take to depth, and what each needs.** The opened
 sources for Part 2 are the Standards (Principles 13 and 14 above all; also 3.1, 4.2, 4.3,
@@ -250,33 +277,36 @@ undecided.
 | 2A3c | IT general against application controls; named privacy principles; common security controls beyond the Cybersecurity requirement's own list | Textbook; the members-only IT essentials GTAG and privacy guide are never opened. Items keep to what the Cybersecurity requirement and user guide say (as `d1_017` does) |
 | 2A3d | Business impact analysis, recovery time and recovery point as tested terms | Organizational Resilience requirement and user guide (opened; testable from 2027-10-01); textbook for the terms |
 | 2A3f | Process-level risks and controls (purchase-to-pay matching, inventory, ERP roles, GRC systems) | Textbook; third-party lessons rest on the Third-Party requirement (opened; testable from 2027-03-01) |
-| 2A4a (judge, below depth) | Agile, integrated and remote approaches beyond the Standards' general rules | Textbook; the members-only integrated approaches guide is never opened. The analysis item keeps to Standards 9.3, 13.5, 13.6 and 14.1 |
-| 2A5a; 2A7d (judge) | Applicability judged by inherent risk; the board agreeing to a rescope when resources fall short | The Application Guidance is Background, so neither is keyable. 2A5a keys only on a requirement's applicability text and its user guide (documented assessment, reasons for exclusions); 2A7d keys on Standards 13.5 and 13.3 and the chief audit executive's role |
+| 2A4a (judge, below depth) | Agile, integrated and remote approaches beyond the Standards' general rules | Textbook; the members-only integrated approaches guide is never opened. The analysis item keeps to Standards 9.3, 13.5, 13.6 and 14.1 (round 2's leads failed on "Common usage" or repeats) |
+| 2A5a (recall); 2A7d (judge) | Applicability judged by inherent risk; the board agreeing to a rescope when resources fall short | The Application Guidance is Background, so neither is keyable. Round 2 met both bullets without it: `d1_025` keys on the Cybersecurity requirement's applicability text and its user guide (a documented reason for each exclusion), `d1_024` on Standards 13.3 and 13.5 and the chief audit executive's role. Second lessons keep to the same sources |
 | 2A5g | Culture and behavior in an engagement's risk assessment, beyond Part 1's lessons | Organizational Behavior requirement and user guide (opened; testable from 2027-06-01) |
-| 2B3a | What an embedded audit module, continuous monitoring or a bot is and does | Textbook; members-only data analytics guides never opened. Items on reliance and ownership rest on Standards 4.2, 4.3, 10.3 and 14.1 (as `d2_015` does) |
-| 2B4b, 2B4e (judge, below depth); 2B4d | RACI letter meanings; definitions of the analysis methods; the detail of each analytics step | Textbook. The syllabus names the steps and methods; keys rest on Standards 14.1, 14.2 and 14.6, never on a definition (`d2_019` keys normalizing on comparability and Standard 14.1) |
-| 2B5a (judge, below depth) | Ratio formulas and their reading | Textbook. The analysis item keeps to expectation, comparison and follow-up (Standard 14.2) |
+| 2B3a | What an embedded audit module, continuous monitoring or a bot is and does | Textbook; members-only data analytics guides never opened. Items on reliance and ownership rest on Standards 4.2, 4.3, 10.3 and 14.1 (as `d2_015` and `d2_027` do) |
+| 2B4b (judge, below depth); 2B4e (judge, met); 2B4d | RACI letter meanings; definitions of the analysis methods; the detail of each analytics step | Textbook. The syllabus names the steps and methods; keys rest on Standards 14.1, 14.2 and 14.6, never on a definition (`d2_019` keys normalizing on comparability and Standard 14.1; `d2_025` keys 2B4e on relevance to the approved objective, with each method described in plain words) |
+| 2B5a (judge, met) | Ratio formulas and their reading | Textbook. Items keep to expectation, comparison and follow-up (Standard 14.2), as `d2_026` does (significance of the unexplained part, cost against benefit) |
 
 ## 5. Gap list in priority order
 
-1. **First items at analysis on the three judge bullets with none:** 2A7b, 2A7d and 2B7d.
-   2A7b and 2A7d were tried in round 1 and cut (below), so their next leads must key on
-   the Standards (3.1, 13.3, 13.5) with options that do not give the key away by wording.
-2. **Analysis items on the 8 judge bullets below depth**, Section A first: 2A4a and 2A7c
-   (both tried in round 1 and left empty: new leads needed); then Section B: 2B1a (still,
-   after `d2_020` was relabelled application), 2B1b, 2B4b, 2B4e, 2B5a; then Section C: 2C2a.
-   2A4a, 2B4b, 2B4e and 2B5a must key on the Standards because their terms rest on
-   "Common usage" or unopened guides.
-3. **The other reachable zero-item bullets:** 2A5a (a lead keyed on a requirement and its
-   user guide alone), then Section B's thin pair, 2B7a at application and 2B4a (recall).
-   Section A still holds 11 of the 14 zero-item bullets; 2A5g waits on 2027-06-01 or a
-   Part-1-distinct lesson, 2A3e and most of 2A3f wait on the textbook.
-4. **Round 1's empty first-item slots**, reopened only with a lead that has a Standards
-   distinction and repeats no Part 1 lesson: 2A2a, 2A5c, 2A5e, 2A5f, 2A6c. If none is
-   found, they stay empty.
-5. **Second lessons on the 40 one-item bullets**, to reach the counts (Section A needs 78)
-   and free items for the held-back form, only where a distinct lesson exists, siblings
-   logged. 2B3a first: topic 2B3 cannot enter the held-back form until it has two items.
+1. **Analysis items on the 3 judge bullets below depth**, 2B4b first: round 2's analysis
+   draft (an interview-built access matrix against system records) was cut because the
+   stem's wording pointed at the key, so round 3 needs a new lead whose stem does not name
+   the evidence that wins. Then 2A4a and 2A7c, each tried in rounds 1 and 2 and left empty:
+   only a new lead keyed on the Standards (2A4a: 9.3, 13.5, 13.6, 14.1; 2A7c: a technology
+   rule not already keyed in `d1_014`, `d1_022` or `cia1_d2_018`), never "Common usage".
+2. **The two reachable zero-item bullets:** 2B4a (recall; round 2's draft was cut because
+   a map that stopped before the payment made the missing step obvious: round 3, new lead),
+   then 2B7a (apply; left empty in round 2, reopened only with a must-based lesson apart
+   from `d2_012` and `d2_017`). Section A holds 8 of the 10 zero-item bullets; 2A5g waits
+   on 2027-06-01 or a Part-1-distinct lesson, 2A3e and most of 2A3f wait on the textbook.
+3. **The empty first-item slots of rounds 1 and 2**, reopened only with a lead that has a
+   Standards distinction, repeats no Part 1 lesson and answers both rounds' reasons: 2A2a,
+   2A5c, 2A5e, 2A5f, 2A6c. If none is found, they stay empty.
+4. **Second lessons in Section A** (it needs 74), 2A5 first (3 of its 20), then the new
+   one-item bullets 2A5a, 2A7b and 2A7d and the rest of the 20 one-item bullets, only where
+   a distinct lesson exists, siblings logged. No second 2A1b, 2A1d or 2A1e lesson unless it
+   avoids `cia1_d1_069`, `cia1_d1_070` and the "request may be a scope limitation" key.
+5. **Second lessons on Sections B and C's one-item bullets** (B: 14, C: 5), to reach the
+   counts and free items for the held-back form; Section C's leads must stay apart from
+   `d3_010`, `d3_007` and `cia1_d1_037`, which round 2's leads all repeated.
    Blocked until new sources or dates: 2A3e (textbook), the "Common usage" points of 2A3c,
    2A3d, 2A3f, 2B4b, 2B4d, 2B4e and 2B5a (textbook), and lessons resting on the Third-Party
    (2027-03-01), Organizational Behavior (2027-06-01) and Organizational Resilience
@@ -299,12 +329,34 @@ dropped rather than padded; reopen it only with a new lead that answers the reas
 | 2A7b (first item) | Draft cut | Answerable from wording |
 | 2B1a (analysis item) | `d2_020` kept, relabelled application | Its fix pass reworked the stem and options and judged the result an application item; the bullet still lacks an analysis item |
 
+**Tried in round 2 and left empty on purpose, or cut (25 Nov 2026).** Same rule: reopen a
+slot only with a new lead that answers the reason. Round 2 kept 11 of 13 drafts.
+
+| Slot | What happened | Reason |
+|---|---|---|
+| 2A4a (analysis item) | Left empty again | Every lead retold the notes' example, repeated `d1_009` or `cia1_d3_054`, or rested on "Common usage" |
+| 2A7c (analysis item) | Left empty again | The technology rules were already keyed in `d1_014`, `d1_022` or `cia1_d2_018` |
+| 2A2a (first item) | Left empty again | Repeats a Part 1 lesson |
+| 2A5e (first item) | Left empty again | Repeats `cia1_d2_061`, `cia1_d2_059` or `cia1_d3_055`, or common sense |
+| 2A5c (first item) | Left empty again | Repeats `cia1_d2_061`, `cia1_d2_059` or `cia1_d3_055`, or common sense |
+| 2A5f (first item) | Left empty again | Sound practice only |
+| 2A6c (first item) | Left empty again | Sound practice only |
+| 2A1e (second lesson) | Left empty | Repeats `cia1_d1_069` |
+| 2A1b (second lesson) | Left empty (`d1_026` counts at 2A1a, logged at 2A1b) | Repeats `cia1_d1_070` |
+| 2A1d (second lesson) | Left empty | Would be a fourth "request may be a scope limitation" key |
+| 2B7a (first item) | Left empty | Standard 14.6's organizing lines are only "may"; a must-based item would repeat `d2_012` and `d2_017` |
+| 2C1 and 2C2 (second lessons) | Left empty | Each lead repeated `d3_010`, `d3_007` or `cia1_d1_037` |
+| 2B4a (first item) | Draft cut after the fix pass | Answerable from wording: the map stopped before the payment, so the missing step was obvious. Round 3, new lead |
+| 2B4b (analysis item) | Draft cut after the fix pass | Answerable from wording: an interview-built access matrix against system records, and the stem's wording pointed at the key. Round 3, new lead |
+| 2A5a, 2A7b, 2A7d (first items) | Filled (`d1_025`, `d1_023`, `d1_024`) | Round 1's cuts answered: keys on the Cybersecurity requirement and its user guide, and on Standards 3.1, 13.3 and 13.5; every option uses a stem actor or fact |
+
 Two lessons from Part 1 apply to every slot. A thin, common-sense lesson fails the blind
 test however it is rebuilt (rounds 12 to 14: the 1B4g trust sibling and the 1C7c "stop the
 loss" item were cut; plan section 7), so a lead whose key a careful non-auditor would pick
 is dropped, not polished. And a slot with no distinct lesson stays empty (round 14 left 16
-of 22 slots empty rather than repeat). Part 2 round 1 held to both: seven slots left empty
-and three drafts cut (the table above).
+of 22 slots empty rather than repeat). Part 2 held to both: round 1 left seven slots empty
+and cut three drafts; round 2 left twelve slots empty and cut two drafts (the tables
+above).
 
 ## 6. Leads for first items and siblings
 
@@ -316,13 +368,13 @@ different trap (sibling rule). Leads marked **thin** risk the common-sense cut a
 Standards distinction to survive. On a recall bullet, keep the knowledge at the bullet's
 level even when the scenario asks for a choice.
 
-Round 1 (25 Nov 2026) marks each lead in italics: used, not used, tried and left empty, or
-tried and cut. A lead not used whose bullet now has an item becomes a sibling lead and
+Rounds 1 and 2 (25 Nov 2026) mark each lead in italics: used, not used, tried and left
+empty, or tried and cut. A lead not used whose bullet now has an item becomes a sibling lead and
 must stay apart from that item.
 
 **Zero-item bullets in the pilot map (first items)**
 
-- **2A1c Scope limitations at planning (Identify).** *Round 1: lesson (1) used by `d1_015`, with withheld files instead of an archive no one can query; lead (2) is now a sibling lead.* (1) During planning the auditor learns
+- **2A1c Scope limitations at planning (Identify).** *Round 1: lesson (1) used by `d1_015`, with withheld files instead of an archive no one can query; lead (2) is now a sibling lead. Round 2: lead (2)'s idea (a resource gap that stops needed work is a scope limitation) is keyed at 2A7d by `d1_024`; keep any 2A1c sibling apart from it.* (1) During planning the auditor learns
   that half the period's transactions sit in a retired system whose archive the team
   cannot query. Key: raise and document it as a scope limitation, discussed with
   management when identified, aiming to resolve it (Standard 13.3; notes 2A1.3).
@@ -332,7 +384,7 @@ must stay apart from that item.
   resource constraint is a scope limitation (Standard 13.3; notes 2A7.3). Keep apart from
   `cia1_d1_027`, `_089`, `_099`, `_105` and `_106`: the Part 2 angle is spotting and
   recording it at planning, from the auditor's seat.
-- **2A1d Stakeholder requests (Evaluate; analysis).** *Round 1: lead (2) used by `d1_016`; lead (1) is now a sibling lead (keep it apart from `d1_016` too).* (1) A regional director asks that a
+- **2A1d Stakeholder requests (Evaluate; analysis).** *Round 1: lead (2) used by `d1_016`; lead (1) is now a sibling lead (keep it apart from `d1_016` too). Round 2: a second lesson was tried and left empty (a fourth "request may be a scope limitation" key).* (1) A regional director asks that a
   newly bought branch be left out "while it integrates", and the branch holds a fifth of
   the activity the objectives cover. Key: weigh whether the exclusion would stop the work
   an objective needs, record the request, decision and reason, and treat any scope change
@@ -341,7 +393,7 @@ must stay apart from that item.
   request to add items within the same hours: it too may amount to a scope limitation (the
   lead the Part 1 map left open). Keep apart from `cia1_d1_059` (advisory exclusion) and
   `cia1_d1_105` (shortening).
-- **2A2a Picking criteria (Identify).** *Round 1: tried and left empty (common-sense key); reopen only with a new lead.* The objective is compliance with a regulator's
+- **2A2a Picking criteria (Identify).** *Round 1: tried and left empty (common-sense key); reopen only with a new lead. Round 2: tried again and left empty (repeats a Part 1 lesson).* The objective is compliance with a regulator's
   temperature rule; the plant's own target is stricter. Key: for a compliance objective
   the most relevant criterion is the regulation (Standard 13.4: the most relevant criteria
   for the objectives and scope). Runner-up: management's adequate target, which is right
@@ -359,23 +411,23 @@ must stay apart from that item.
   13.6); hours per step are a should (Standard 13.5). Runner-up: add a weekly update
   schedule with management (a should, notes 2A4.3). Keep apart from `d1_011` (a missing
   criterion) by the runner-up.
-- **2A5a Topical Requirements in the risk assessment (Recognize).** *Round 1: tried and cut: the draft's key rested only on the Application Guidance, now Background. This lead is retired as written; a new one keys on a requirement's own applicability text and its user guide (a documented assessment, a reason for each exclusion), never on inherent risk.* A cyber topic surfaces
+- **2A5a Topical Requirements in the risk assessment (Recognize).** *Round 1: tried and cut: the draft's key rested only on the Application Guidance, now Background. This lead is retired as written; a new one keys on a requirement's own applicability text and its user guide (a documented assessment, a reason for each exclusion), never on inherent risk. Round 2: used in that form by `d1_025` (requirements covered by an earlier assurance engagement are excluded, with that coverage recorded as the reason; Cybersecurity requirement and user guide only).* A cyber topic surfaces
   in a payroll engagement but is rated low. Key: document the applicability assessment and
   the reason for each exclusion, rather than apply every requirement (Application Guidance,
   a should, not a Standard; Cybersecurity user guide). Runner-up: apply every requirement
   because the topic surfaced, which is right when the topic is an assurance engagement's
   subject. Keep apart from `d1_009` (a risk that is significant).
-- **2A5c Emerging risks (Recognize; thin).** *Round 1: tried and left empty (sound practice only).* A new threat has no loss history in the
+- **2A5c Emerging risks (Recognize; thin).** *Round 1: tried and left empty (sound practice only). Round 2: tried again and left empty (repeats `cia1_d2_061`, `cia1_d2_059` or `cia1_d3_055`, or common sense).* A new threat has no loss history in the
   organization. Key: Standard 13.2 asks for the potentially significant risks, so no loss
   history does not rule it out; the Cybersecurity requirement asks whether management
   monitors emerging threats. Runner-up: rate it low on the loss record. Survives only with
   a Standards distinction in the stem.
-- **2A5e Change in people, processes and systems (Recognize).** *Round 1: tried and left empty (repeats `cia1_d4_008`).* Half of a team left
+- **2A5e Change in people, processes and systems (Recognize).** *Round 1: tried and left empty (repeats `cia1_d4_008`). Round 2: tried again and left empty (repeats `cia1_d2_061`, `cia1_d2_059` or `cia1_d3_055`, or common sense).* Half of a team left
   mid-year and one person now runs a key step. Key: the earlier assessment must be
   reviewed and updated, not reused (Standard 13.2), and the risk rated with the change.
   Runner-up: last year's clean result keeps the rating. Keep apart from `cia1_d2_081`
   (rule change, due care) and `d1_010`.
-- **2A5f Structure and setting (Recognize; thin).** *Round 1: tried and left empty (common-sense key).* A reorganization removed a review
+- **2A5f Structure and setting (Recognize; thin).** *Round 1: tried and left empty (common-sense key). Round 2: tried again and left empty (sound practice only).* A reorganization removed a review
   layer; the new chart shows approvals with one team lead. Key: confirm through interviews
   and walk-throughs who actually approves before rating the risk (Standard 13.2, may).
   Runner-up: rate from the chart. Keep apart from `d2_006` (map against walk-through) by
@@ -383,7 +435,7 @@ must stay apart from that item.
 - **2A5g Culture (Recognize).** Leave until 2027-06-01 (Organizational Behavior
   requirement, with `testable_from`), unless a lesson distinct from 1C2a and 1D4a appears.
   Keep fraud out.
-- **2A6c Efficiency procedures (Identify).** *Round 1: tried and left empty (sound practice only).* A three-signature approval on low-value
+- **2A6c Efficiency procedures (Identify).** *Round 1: tried and left empty (sound practice only). Round 2: tried again and left empty (sound practice only).* A three-signature approval on low-value
   purchases. Key: a procedure that weighs the control's time and cost against the risk it
   covers. Runner-up: reperform a sample of approvals, which tests effectiveness. Keep apart
   from `cia1_d3_019`, `cia1_d3_085`, and `d1_012`, where an efficiency procedure is a
@@ -398,24 +450,24 @@ must stay apart from that item.
   (Standard 13.5). Runner-up: replace site visits with documents sent by management, which
   weakens evidence and changes the work program without approval. Keep apart from
   `cia1_d1_016` (the function's budget, the board).
-- **2A7b People (Determine; analysis).** *Round 1: tried and cut: a draft was answerable from wording. The lesson stands; rebuild it so no option gives the key away.* No one on the team knows a new revenue rule; one
+- **2A7b People (Determine; analysis).** *Round 1: tried and cut: a draft was answerable from wording. The lesson stands; rebuild it so no option gives the key away. Round 2: used, rebuilt, by `d1_023` (a course plus close review by a supervisor who has the skill meets Standard 3.1; every option uses a stem actor or fact; transfer pair with `cia1_d2_011`).* No one on the team knows a new revenue rule; one
   auditor has related experience, and a staff member from the revenue team offers help.
   Key: the auditor who can obtain the competency through training and supervised work
   takes it on (Standard 3.1), and the revenue staff member does not test their own area.
   Runner-up: outsource the whole engagement. Keep apart from `cia1_d2_011`.
-- **2A7d Resources fall short (Evaluate; analysis).** *Round 1: tried and cut: the draft's key rested only on the Application Guidance (a board agreeing to rescope). Keep to the Standards 13.3 and 13.5 key below.* The CAE cannot obtain the
+- **2A7d Resources fall short (Evaluate; analysis).** *Round 1: tried and cut: the draft's key rested only on the Application Guidance (a board agreeing to rescope). Keep to the Standards 13.3 and 13.5 key below. Round 2: used by `d1_024` (a regulation-required area no one can assess: a scope limitation discussed with management, not an approved cut or elevation now to the board).* The CAE cannot obtain the
   specialist. Key: weigh what the gap does to each objective; an unresolved constraint is a
   scope limitation handled under Standard 13.3, and the CAE chooses the response.
   Runner-up: the auditor quietly drops the technical objective, or takes the matter to the
   board. Keep apart from `cia1_d1_103` and the 2A1c lead (2).
-- **2B3a Technology tools (Recognize).** *Round 1: neither lead used; `d2_015` took a third lesson (a validated, reconciled model's clean result is relied on). Both leads are now sibling leads; keep (2) apart from `d2_015` as well.* (1) The objective is whether 12 contracts carry
+- **2B3a Technology tools (Recognize).** *Round 1: neither lead used; `d2_015` took a third lesson (a validated, reconciled model's clean result is relied on). Both leads are now sibling leads; keep (2) apart from `d2_015` as well. Round 2: lead (2) used by `d2_027` (a treasury-built dashboard; key, test the feed and a sample; runner-up, the full-year view). Lead (1) stays a sibling lead.* (1) The objective is whether 12 contracts carry
   board approval; a teammate proposes a machine learning model. Key: due care weighs cost
   against benefit, so the simple test answers it (Standard 4.2). Runner-up: the model,
   because it covers the population. (2) A dashboard built by the treasury team shows every
   exception cleared. Key: check the completeness and accuracy of its data feed before
   relying on it (Standards 4.3 and 14.1). Runner-up: rely on the dashboard because it covers
   the whole population. Keep (2) apart from `d2_003` by the actor and the tool.
-- **2B4a Workflow segments (Define; thin).** *Round 1: not used.* A purchase-to-pay process mapped only inside
+- **2B4a Workflow segments (Define; thin).** *Round 1: not used. Round 2: tried and cut after the fix pass, answerable from wording (the map stopped before the payment, so the missing step was obvious). Retired as written; round 3 needs a new lead whose gap is not visible on the map's face.* A purchase-to-pay process mapped only inside
   procurement, while payment sits in finance. Key: the scope covers the processes the
   objectives need, so the handoff to finance is a segment of the workflow (Standards 13.2
   and 13.3). Keep apart from `cia1_d1_062` and `cia1_d1_104`.
@@ -434,7 +486,7 @@ must stay apart from that item.
   adjusted and approved work program, before calling it a finding (Standard 14.2).
   Runner-up: report it as a finding now, which is right when the evidence is sufficient.
   Keep apart from `cia1_d3_023` and `d2_007`.
-- **2B7a Organizing workpapers (Organize; application; thin).** *Round 1: not used.* Keys on "may" alone are
+- **2B7a Organizing workpapers (Organize; application; thin).** *Round 1: not used. Round 2: tried and left empty, as this lead advised (the organizing lines are "may"; a must-based item would repeat `d2_012` and `d2_017`).* Keys on "may" alone are
   weak: build the item on Standard 14.6's must (evidence supporting the results, enough
   for another auditor to repeat the work) against a format preference. Consider leaving
   the slot empty.
@@ -443,7 +495,7 @@ must stay apart from that item.
   wider than the tests. Key: the unsupported cause is what most needs evidence documented
   before the communication goes out (Standards 14.6 and 14.3). Runner-up: keep it because
   management agreed. Keep apart from `d3_002` (a supervisor's review note).
-- **2B7d Keeping records (Determine; analysis).** *Round 1: not used; now Section B's only judge bullet with no item.* A team member wants to delete the
+- **2B7d Keeping records (Determine; analysis).** *Round 1: not used; now Section B's only judge bullet with no item. Round 2: not used as written (which period is longest was cut as common sense in the pilot); `d2_022` met the depth with what retention covers: the whole file of an engagement stopped midway. This lead is retired.* A team member wants to delete the
   workpapers once the report is out; a regulator's rule and the organization's policy set
   different periods. Key: retain them as law, regulation and the function's and
   organization's policies require, so the longer applicable period governs (Standard
@@ -455,14 +507,15 @@ must stay apart from that item.
   lead keyed the auditor assigned to each task, a third item on one lesson with `d1_011`
   and `d1_018`. It is now a sibling lead, and `d3_010` already keys approval of a
   reassignment, so build it on the second half (supervision adjusts to the skill gap) or
-  leave it.* A supervisor reassigns a task midway when the work shows the planned auditor
+  leave it. Round 2: not used (no Section C second lesson was added; each lead repeated
+  `d3_010`, `d3_007` or `cia1_d1_037`).* A supervisor reassigns a task midway when the work shows the planned auditor
   lacks a skill. Key: the change to the work program is approved promptly (Standard 13.6)
   and supervision adjusts (Standard 12.3). Runner-up: record the change at the closing
   review.
 
 **Bullets below their verb's depth in the pilot map (analysis items)**
 
-- **2A4a (Evaluate).** *Round 1: tried and left empty (the lead retold the notes' example); a new scenario is needed.* Existing: `d1_008` (agile). Lead: stock existence at 30 warehouses
+- **2A4a (Evaluate).** *Round 1: tried and left empty (the lead retold the notes' example); a new scenario is needed. Round 2: tried again and left empty (every lead retold the notes' example, repeated `d1_009` or `cia1_d3_054`, or rested on "Common usage"); this warehouse lead too is retired.* Existing: `d1_008` (agile). Lead: stock existence at 30 warehouses
   with central data. Key: remote analysis to rank them and first-hand counts where risk is
   highest (Standards 13.5 and 14.1). Runner-up: video counts done by warehouse staff. Do not
   retell the notes' branch-cash example.
@@ -473,35 +526,35 @@ must stay apart from that item.
 - **2A6d (Evaluate).** *Round 1: not used as written; `d1_020` (a population that cannot hold the exception) met the depth. This lead is now a sibling lead.* Existing: `d1_011` (a missing criterion). Lead: the program's tasks
   cover none of one objective's units. Key: the scope and tasks must reach every objective
   (Standards 13.3 and 13.6). Runner-up: unjustified sample sizes (a consideration).
-- **2A7c (Determine).** *Round 1: tried and left empty (common sense); a new lead is needed.* Existing: `d1_014` (training and set-up). Lead: the function's
+- **2A7c (Determine).** *Round 1: tried and left empty (common sense); a new lead is needed. Round 2: tried again and left empty (the technology rules were already keyed in `d1_014`, `d1_022` or `cia1_d2_018`); this lead is retired.* Existing: `d1_014` (training and set-up). Lead: the function's
   analytics tool cannot read the new ERP's format. Key: a direct, read-only extract with IT,
   reconciled to the ledger (Standard 14.1; notes 2B4.3). Runner-up: management's standard
   reports. Keep apart from `d2_003`.
-- **2B1a (Determine).** *Round 1: used by `d2_020`, relabelled application in its fix pass; an analysis item is still needed, with a harder final two.* Existing: `d2_001` (observation where no record captures the step).
+- **2B1a (Determine).** *Round 1: used by `d2_020`, relabelled application in its fix pass; an analysis item is still needed, with a harder final two. Round 2: not used as written (it sits close to `d2_020`); `d2_023` met the depth with corroboration (a second record of the same events, not a rerun of the same weak field). Retired.* Existing: `d2_001` (observation where no record captures the step).
   Lead, its mirror: the objective is whether a control ran all year, and a system with
   effective controls logs every instance. Key: data analysis of the full year's records
   (Standard 14.1: relevant and sufficient; a system with effective controls strengthens
   reliability). Runner-up: observation, which shows only the moments watched. A transfer
   pair with `d2_001`; log it as a sibling.
-- **2B1b (Determine).** Existing: `d2_002` (a questionnaire on what staff know). Lead: a
+- **2B1b (Determine).** *Round 2: used in another form by `d2_024` (current questionnaire answers over an older survey to target visits); the "a survey is not evidence that controls operate" half stays a sibling lead.* Existing: `d2_002` (a questionnaire on what staff know). Lead: a
   unit's self-assessment survey rates every control effective. Key: use it to target the
   tests, not as evidence that controls operate (Standard 14.1: neither obtained directly nor
   independent). Runner-up: rely on it where earlier audits were clean. Keep apart from
   `cia1_d1_010` and `cia1_d1_097` (facilitating a self-assessment as advisory work).
-- **2B4b (Analyze).** Existing: `d2_006` (walk-through against the approved map). Lead: a
+- **2B4b (Analyze).** *Round 2: tried (an interview-built access matrix against the system's records) and cut after the fix pass: the stem's wording pointed at the key. This lead sits close to the cut draft; round 3 needs a new lead whose stem does not name the winning evidence.* Existing: `d2_006` (walk-through against the approved map). Lead: a
   responsibility matrix for payroll changes shows one role both entering and approving
   changes and no role owning the check of new bank details. Key: test what the conflicting
   role can and does do, through access rights and records, before calling the condition
   (Standard 14.2: the condition rests on evidence). Runner-up: report the matrix's gaps as
   findings. No key on what a RACI letter means; do not retell the notes' vendor-setup
   example.
-- **2B4e (Determine).** Existing: `d2_007` (anomaly flags). Lead: the question is why late
+- **2B4e (Determine).** *Round 2: used by `d2_025` (before and after by route; the operations head's request for a model is the trap; keyed on Standards 14.1 and 13.3).* Existing: `d2_007` (anomaly flags). Lead: the question is why late
   deliveries rose in one quarter; the data holds routes, carriers and dates. Key: the
   analysis that explains a past result by drilling into its drivers (Standard 14.1:
   information consistent with the objective). Runner-up: a model that forecasts next
   quarter's late deliveries, which answers what may happen. The key must not rest on a
   method's definition (no opened source defines them); keep it apart from `d2_008`.
-- **2B5a (Analyze).** Existing: `d2_009` (an independent headcount). Lead: a unit's margin
+- **2B5a (Analyze).** *Round 2: not used as written; `d2_026` met the depth (which of four results to follow up, by significance and cost against benefit). The margin lead is a sibling lead; keep it apart from `d2_026` and `d2_009`.* Existing: `d2_009` (an independent headcount). Lead: a unit's margin
   rose while a comparable unit's fell. Key: build an expectation from independent drivers,
   then follow up the unexplained difference before calling it a finding (Standard 14.2).
   Runner-up: report the variance as a finding. Keep apart from `d2_009` and `d2_007`; do not
@@ -510,7 +563,7 @@ must stay apart from that item.
   with a safety effect against a larger one-off loss (Standard 14.3: likelihood, impact and
   other factors). Keep apart from `cia1_d3_056` and `cia1_d3_046`; do not retell the notes'
   allergen example.
-- **2C2a (Determine).** Existing: `d3_005`, `d3_006`, `d3_009`. Lead: mid-fieldwork, a
+- **2C2a (Determine).** *Round 2: not used; `d3_011` met the depth (the chief audit executive decides the form of the final communication). The phone-call lead is a sibling lead.* Existing: `d3_005`, `d3_006`, `d3_009`. Lead: mid-fieldwork, a
   control failure needs the manager's immediate attention, and the manager wants only a
   phone call. Key: tell the manager promptly and keep a written record of the communication
   in the workpapers (Standard 13.1; open its considerations before keying the record).
@@ -519,20 +572,20 @@ must stay apart from that item.
 
 **One-item bullets (siblings)**
 
-40 bullets have one item each (32 after the pilot); second lessons come after the first
+39 bullets have one item each (32 after the pilot, 40 after round 1); second lessons come after the first
 items and the analysis items above, under the sibling rule, and each first item stays out of the held-back form
 until its bullet has a second. Leads written for the earlier draft of this map, now second
 lessons rather than depth fixes:
 
-- **2A1a.** Existing `d1_001` (a requested engagement). Sibling: management asks for
+- **2A1a.** *Round 2: used by `d1_026`, with a board relying on advisory work instead of a regulator.* Existing `d1_001` (a requested engagement). Sibling: management asks for
   advisory work on a cyber topic, then wants the results given to a regulator as assurance.
   Key: assurance on the topic must conform, so either assess every requirement as assurance
   or keep it advisory with no assurance conclusion (Cybersecurity requirement's scope
   sentence). Runner-up: advisory conformance, recommended only.
-- **2A1b.** Existing `d1_002`. Sibling: the risk assessment ranks a regulatory goal low, but
+- **2A1b.** *Round 2: tried and left empty (repeats `cia1_d1_070`).* Existing `d1_002`. Sibling: the risk assessment ranks a regulatory goal low, but
   a law requires it. Key: objectives include any goal a law or regulation requires
   (Standard 13.3). Runner-up: objectives follow the ranking alone.
-- **2A1e.** Existing `d1_003`. Sibling: mid-fieldwork, evidence shows a significant risk in a
+- **2A1e.** *Round 2: tried and left empty (repeats `cia1_d1_069`).* Existing `d1_003`. Sibling: mid-fieldwork, evidence shows a significant risk in a
   process outside scope. Key: the scope change is approved by the CAE or delegate and
   communicated to management (Standards 13.3 and 13.1; notes 2C2.2: no set order between
   them). Runner-up: test it now and tell management at the closing meeting. A transfer pair
@@ -556,14 +609,24 @@ lessons rather than depth fixes:
   keyable; a Topical Requirement item keys on the requirement and its user guide alone. A
   key that is the only option naming the people planted in the stem gives itself away:
   name the stem's actors in distractors too.
-- **Pick-the-longest after round 1:** A 20.5% (22 items), B 9.5% (21), C 20.0% (10).
-  `check_cia.py` enforces 15 to 24% from 40 items per section; Section B's keys run short,
-  so set longer B keys in the scaffold before B reaches 40.
+- **What round 2 taught.** In evidence items the key is often "test the independent system
+  record" while the distractors are testimony, observation or self-certification
+  (`d2_023`, `d2_027`), so vary which kind of evidence wins (an observation, a
+  confirmation or a current questionnaire can be right for the objective). Options-only
+  testers pick the lone rule-following option, so give at least one wrong option the
+  key's register (as `d1_024` and `d2_022` do after their fix passes). 2B1 now holds 2
+  analysis items of 5 (`d2_023`, `d2_024`), so later 2B1 items should be foundational or
+  application.
+- **Pick-the-longest after round 2:** A 17.3% (26 items), B 14.8% (27), C 22.7% (11)
+  (round 1: A 20.5%, B 9.5%, C 20.0%). `check_cia.py` enforces 15 to 24% from 40 items
+  per section; Section B is still just under 15%, so keep setting longer B keys in the
+  scaffold before B reaches 40.
 - **Difficulty by verb** is enforced per topic, by the topic verb, from 8 items; no Part 2
-  topic has 8 yet (2A6 has 6). The judge topics need at least 15% analysis and at most 25%
+  topic has 8 yet (2A1, 2A6 and 2C2 have 6). The judge topics need at least 15% analysis and at most 25%
   foundational, so recall-verb bullets under judge topics (most of 2A1, 2A3, 2A5 and 2A6)
   still need scenario items, not definitions.
 - **`d2_002` is a hardening candidate** (the pilot kept it on a split blind verdict); the
-  2B1b analysis item can serve as its replacement if the hardening fails.
+  2B1b analysis item, `d2_024`, now covers the bullet at depth if the hardening fails and
+  `d2_002` is cut.
 - **Re-run this map after each round**: set each new item's bullet in the scaffold step,
   before it is written.
