@@ -542,3 +542,6 @@ Topical Requirements page labels it Supplemental and its disclaimer calls it
 informational. It never carries a key and is never an item's first framework_ref part;
 notes may cite it as guidance only. Two Part 2 items keyed on it alone were cut before
 merge.
+
+
+25 Nov 2026 (Part 3 pilot). Opened The IIA's Artificial Intelligence Auditing Framework, 2024 update (public access; file sha256 538b022a79e1a677...; labelled copyright 2024, file name sept-2024-update2). Background only: a tool, not on the exam reference list (V5.5.2026.10.15), and written in 2017 IPPF vocabulary. Part 3 note 3B1.3 cites it as guidance; no question keys on it.
