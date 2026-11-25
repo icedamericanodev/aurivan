@@ -154,9 +154,6 @@ reference list by name), and every prep provider.
 ## Verified: opened 2026-11-19 Organizational Resilience Topical Requirement User Guide (https://www.theiia.org/globalassets/site/standards/tr/or/org_resilience_tr_ug_en.pdf)
 - Organizational Resilience Topical Requirement User Guide
 
-## Verified: opened 2026-11-19 Topical Requirements Application Guidance, issued 29 August 2025 (https://www.theiia.org/globalassets/site/standards/topical-requirements/topical_requirements_application_guidance_english.pdf)
-- Topical Requirements Application Guidance
-
 ## Verified: opened 2026-11-19 Three Lines Model Statement of Position, published 8 July 2026 (https://www.theiia.org/globalassets/site/resources/statements-of-position/tlm_assurance_advice_support_effective_gov_en.pdf)
 - IIA Statement of Position: Three Lines Model: Assurance and Advice in Support of Effective Governance
 
@@ -189,6 +186,9 @@ reference list by name), and every prep provider.
 
 ## Verified: opened 2026-11-19 Certification Candidate Handbook, March 2026 (https://www.theiia.org/globalassets/site/certifications/certification-candidate-handbook.pdf)
 - IIA Certification Candidate Handbook (March 2026)
+
+## Background: opened 2026-11-25 Topical Requirements Application Guidance, issued 29 August 2025; public, labelled Supplemental by The IIA, not on The IIA's exam reference list (V5.5.2026.10.15) (https://www.theiia.org/globalassets/site/standards/topical-requirements/topical_requirements_application_guidance_english.pdf)
+- Topical Requirements Application Guidance
 
 ## Background: opened 2026-11-19 COSO Internal Control: Integrated Framework (2013), Executive Summary; not on The IIA's exam reference list (https://www.coso.org/_files/ugd/3059fc_1df7d5dd38074006bce8fdf621a942cf.pdf)
 - COSO, Internal Control: Integrated Framework (2013), Executive Summary
