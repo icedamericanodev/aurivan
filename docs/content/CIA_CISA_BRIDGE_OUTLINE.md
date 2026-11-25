@@ -4,8 +4,11 @@ The plan for the one hand-written study piece of the CIA Challenge Exam pack:
 the bridge notes (later `data/cia/ciac/notes/bridge.json`) and the bridge
 section of the Challenge exam guide (`data/cia/ciac/exam/ciac_exam_guide.json`,
 with `iia-mindset-coach`). Written 20 Nov 2026 by `cia-challenge-bridge-expert`
-as step 4 of Session G (`docs/content/CIA_BANK_PLAN.md`). This is an outline:
-no bridge note is written yet, and nothing under `data/` was changed.
+as step 4 of Session G (`docs/content/CIA_BANK_PLAN.md`). Re-read on 25 Nov 2026
+against the Part 2 and Part 3 notes, the cross-part review and the lessons in
+plan section 7; the changes are listed in section 0b. The bridge notes are now
+written from it: `data/cia/ciac/notes/bridge.json` (29 sub-topics; section 4
+always listed 29, its "28" was a miscount).
 
 KaiSip is independent and is not affiliated with, or endorsed by, The IIA or
 ISACA. CISA® is a registered trademark of ISACA. No prep provider's question
@@ -43,6 +46,24 @@ bank was opened. Everything below is in KaiSip's own words.
   Requirement, the Topical Requirements Application Guidance, the Three Lines
   Model Statement of Position, and the Challenge syllabus (V2.10.2025 FINAL).
 
+## 0b. What changed on 25 Nov 2026, and why
+
+| Where | Change | Why |
+|---|---|---|
+| Section 0, C6 | The Topical Requirements Application Guidance no longer appears under "Rests on". It is Background: never a key, never a first citation, cited only as guidance | `cia-currency-checker`'s ruling (plan section 7, Part 2 round 1): the exam reference list names each requirement and its user guide, not the Application Guidance |
+| A3, C5 | Two routes, kept apart: a scope limitation inside an assurance engagement (discuss with management; if unresolved the CAE takes it to the board, Std 13.3), and management cutting approved scope or budget (the CAE promptly tells the board and senior management, Std 10.1, 9.4, 8.1) | Part 1 note 1A7.4 and Part 2 notes 2A1.3 and 2A7.3 were corrected to these two routes |
+| B1 | The four matters of Std 9.4 go to the board and senior management together, with no order among them | The Part 3 notes audit found an invented order (HARD); Part 1 note 1A4.4 was corrected from "board first" |
+| B3 | Mission statement labeled "Common usage"; the Standards require a vision only | Part 3 note 3A3.2 |
+| A10 | Plan completion counts toward efficiency and effectiveness (Std 12.1, 8.3), not "productivity"; measuring auditors by findings counts is warned against in Std 2.2's considerations (a should) | Part 3 notes audit (HARD) and note 3C3.2 |
+| C4, D5 | One wording for every approval: "the CAE, or a supervisor the CAE delegates to" | The shared fix brief for the Part 2 notes (plan section 7, round 15) |
+| D7 | No contrast left: the Part notes define a walk-through as following one transaction from start to finish, the same meaning as CISA notes 1A3.4. The Standards do not define it; teach the common meaning, never key a finer one | Part notes 1C8.1, 1D2.2 and 2A6.1 |
+| D8 | The way up follows Part 2 note 2C2.3: a scope limitation to management, then the CAE; resource gaps and impairments to the CAE; violations to those with authority to act; reaching the board is the CAE's step | The one escalation route set in the Part 2 fix pass |
+| E4 | Std 14.4: discussing recommendations with the management of the activity under review is a must; discussing the feasibility of action plans is a should | Re-read of Std 14.4 on 25 Nov 2026 |
+| E8 | Unchanged in substance; the Part notes now teach the first step (responsible management) as a should everywhere | Part 2 note 2C2.3 was corrected in the Part 3 notes audit |
+| E9 | "Test significant findings' actions; inquiry backed by evidence may do for minor ones" and the signs that a delay is accepted risk are KaiSip's reading (Part 3 notes 3D7.2, 3D8.3): teach, never key | Part 3 notes labels |
+| Section 4 | 4X3.2 now holds the strategy, the required reports and private sessions; themes and wider conclusions moved whole to 4X6.3, so no rule is taught twice | Found while writing |
+| Section 4 | Format decisions, taken to write the file (section 7, questions 1 and 2, stay open for the app): see "As written" under section 4 | |
+
 ## 1. Section by section
 
 The new learning sits mostly in sections A, B and E (running the function, the
@@ -72,7 +93,7 @@ Self-Assessment.
 | A7 | 4A5 | Confidentiality as one of the seven principles of ISACA's code (1A1.2). | Same duty, new authority: follow policy and law when using information, no personal gain, protect it, disclose only under a legal or professional duty (R). The chief audit executive must see that people who assist the function follow the same rules (R). | Std 5.1, 5.2 | Key |
 | A8 | 4A6 | Quality is supervision, periodic internal reviews and an outside review every five years, reported to the audit committee (1B6.1 to 1B6.3). | Transfers, with four additions. Internal results go to the board and senior management at least yearly (R). The chief audit executive must discuss the external assessment plan with the board (R); the board approves it and receives the full results straight from the assessor (EC). One assessor at least holds an active Certified Internal Auditor designation (R). Who does not count as independent is CI. | Std 8.3, 8.4, 12.1 | Key each line at its strength. TNK: whether the validator of a self-assessment must be that person (lens) |
 | A9 | 4A7 | Standards are a floor that no documented reason sets aside (1A1.1, a listed trap). | Nonconformance is a disclosed state, not an impossible one. Four things are documented and communicated by the chief audit executive: the circumstance, the alternative actions, their impact and the reason (R). Function-wide nonconformance goes to the board and senior management (R); an engagement's goes in its final communication (R). If a law blocks one part, the rest still applies and that is disclosed (R). | Std 4.1, 12.1, 15.1 | Key |
-| A10 | 4A8 | Quality metrics as inputs to improvement (1B6.4). | The chief audit executive must set performance objectives with input from the board and senior management, measure progress, ask for feedback and plan actions (R). The board approves the objectives at least yearly (EC). | Std 12.2, 8.3 | Key. TNK: any named scorecard model (S only) |
+| A10 | 4A8 | Quality metrics as inputs to improvement (1B6.4). | The chief audit executive must set performance objectives with input from the board and senior management, measure progress, ask for feedback and plan actions (R). The board approves the objectives at least yearly (EC). Measuring auditors by findings counts is warned against (CI, Std 2.2); plan completion counts toward efficiency and effectiveness. | Std 12.2, 8.3, 2.2 | Key. TNK: any named scorecard model (S only) |
 
 ### Section B (15%; 4B1 to 4B7): Internal Audit Operations and Audit Plan
 
@@ -86,9 +107,9 @@ is the chief audit executive's seat, which CISA study touches only lightly.
 
 | # | Topic | The ISACA habit (KaiSip CISA source) | The IIA's rule, with its strength | Rests on | Key? |
 |---|---|---|---|---|---|
-| B1 | 4B6, 4B4 | The audit committee approves the plan; when resources drop, re-rank and inform it (1A3.1, 1B1.4). | A close match, stated exactly: a documented risk assessment at least yearly, with input from the board and senior management (R); a plan that stays dynamic (R); discussion with both, approval of the plan and of each significant change by the board alone (R); four matters reported in time: resource limits, a high-risk area with no assurance engagement, conflicting demands, limits on scope or access (R). | Std 9.4 | Key |
+| B1 | 4B6, 4B4 | The audit committee approves the plan; when resources drop, re-rank and inform it (1A3.1, 1B1.4). | A close match, stated exactly: a documented risk assessment at least yearly, with input from the board and senior management (R); a plan that stays dynamic (R); discussion with both, approval of the plan and of each significant change by the board alone (R); four matters reported in time to both together, in no order: resource limits, a high-risk area with no assurance engagement, conflicting demands, limits on scope or access (R). An urgent change is told to the board at once and approved formally soon after (CI). | Std 9.4 | Key. Never an order among the four matters |
 | B2 | 4B5 | "A complete universe comes first" (1A3.1). | An audit universe is one approach, named in the considerations (CI). The must is the documented assessment and a plan that considers IT governance, fraud risk and the compliance and ethics programs (R). The syllabus still asks the candidate to describe the universe. | Std 9.4; S 4B5 | Key the R lines; the universe only as "may" or "one approach" |
-| B3 | 4B3 | No counterpart: the strategy in CISA notes 2A2.4 is the organization's IT strategy. | The chief audit executive must build and carry out a strategy for the function, with a vision, strategic objectives and supporting initiatives, and must review it with the board and senior management from time to time (R). Review, not approval. | Std 9.2 | Key. TNK: mission statements (S only; the lens notes the Standards are silent) |
+| B3 | 4B3 | No counterpart: the strategy in CISA notes 2A2.4 is the organization's IT strategy. | The chief audit executive must build and carry out a strategy for the function, with a vision, strategic objectives and supporting initiatives, and must review it with the board and senior management from time to time (R). Review, not approval. | Std 9.2 | Key. TNK: mission statements (S only; "Common usage" in Part 3 note 3A3.2) |
 | B4 | 4B2 | Close a skills gap with training, an expert or co-sourcing; brief the committee (1B1.4). | The chief audit executive builds the budget and must seek the board's approval (R); the board approves budget and resource plan (EC). The effect of too little money, people or technology goes to the board and senior management (R). New technology means training and working with the IT and information security functions (R). | Std 10.1, 10.2, 10.3, 8.2, 6.3 | Key. TNK: job design, reward and coaching techniques by name (S only) |
 | B5 | 4B1 | ISACA's framework and its published programs supply the method; the team tailors them (1A1.1, 1B1.2). | The chief audit executive must set the function's own methodologies, test whether they work, update them and train auditors on them (R). Supervision can be delegated; responsibility stays, also for work outside providers do (R). | Std 9.3, 12.3 | Key |
 | B6 | 4B7 | "Delegate the work, not the responsibility"; check competence and objectivity first (1A1.7). | Transfers. Added: coordinating with other assurance providers and considering reliance is a must for the chief audit executive (R); the basis for reliance is documented and the conclusions stay internal audit's (R); coordination concerns go to senior management and, if necessary, the board (R). The provider checklist and the assurance map are CI. | Std 9.5 | Key the R lines. TNK: what triggers the step to the board (lens) |
@@ -111,8 +132,8 @@ vs Assurance.
 | C2 | 4C5 | Materiality as a planning threshold (1A3.6). | Significance, judged by likelihood and impact, is the defined term. "Materiality" appears beside it a few times, never as a threshold model. | Glossary; Std 14.3, 4.2 | Key likelihood and impact. TNK: the word difference |
 | C3 | 4C2 | Criteria come from policy, standard, regulation or contract; where policy is silent, a recognized framework supplies them (1B5.1; bank label Writing Findings and Recommendations. No Internal Policy Applies). | First judge whether the board and senior management have set adequate criteria. If so, those must be used. If not, find suitable ones by talking with the board, senior management or both (R). Advisory work may not need criteria (R). | Std 13.4 | Key |
 | C4 | 4C1, 4C6 | The manager updates the audit program "with approval"; the approver is not named (1B1.2). | Approval of objectives and scope, and of later changes, belongs to the chief audit executive, who also reviews and approves the work program before use and promptly after a change (R). An engagement supervisor may hold these duties by delegation. | Std 13.3, 13.6; Glossary | Key only when the stem names who holds the delegated role (lens) |
-| C5 | 4C1 | A scope limit is dealt with at reporting, through the opinion (1B5.4). | Discuss it with management when found and try to resolve it; if that fails, the chief audit executive must take it to the board (R). It is also explained in the final communication (R). | Std 13.3, 15.1 | Key |
-| C6 | 4C1, 4C3, 4C5 (also 4A6, 4B5) | No counterpart. The risk is reading the Cybersecurity requirement as a technical checklist. | When the scope includes the topic, assurance work must conform and for advisory work conformance is recommended; applicability is assessed and each exclusion is documented with its reason. | About the IPPF; Cybersecurity Topical Requirement; Application Guidance | Key for Cybersecurity. The other three: teach with their dates from `currency.json`; no item before `testable_from` |
+| C5 | 4C1 | A scope limit is dealt with at reporting, through the opinion (1B5.4). | Discuss it with management when found and try to resolve it; if that fails, the chief audit executive must take it to the board (R). It is also explained in the final communication (R). Kept apart from management cutting approved scope or budget, which the CAE promptly reports to the board and senior management (R, Std 10.1, 9.4). | Std 13.3, 15.1 | Key |
+| C6 | 4C1, 4C3, 4C5 (also 4A6, 4B5) | No counterpart. The risk is reading the Cybersecurity requirement as a technical checklist. | When the scope includes the topic, assurance work must conform and for advisory work conformance is recommended; applicability is assessed and each exclusion is documented with its reason. | About the IPPF; Cybersecurity Topical Requirement (the Application Guidance is Background, cited only as guidance) | Key for Cybersecurity. The other three: teach with their dates from `currency.json`; no item before `testable_from` |
 | C7 | 4C3 g, 4C5 | Fraud is handled when red flags appear: document and escalate (1B3.5). | Fraud risk is considered in every engagement risk assessment, at planning (R; advisory work may not need a formal one). The three conditions of the fraud triangle come from the syllabus line. | Std 13.2; S 4C3 g | Key 13.2 and the three conditions by name. TNK: named schemes; whether all three must be present (8b, 1D1) |
 | C8 | 4C3 b to f | Deep IT knowledge is the answer (CISA domains 4 and 5). | These bullets ask for recognition, and the question is what the fact means for planning. Finance, accounting and business processes are new ground for most CISA holders. | S 4C3 | TNK beyond what the syllabus line names (no opened IIA source; the GTAG is not opened) |
 | C9 | 4C1 | Advisory work is allowed with agreed terms and safeguards (1A2.2); the habit to watch is running it like an assurance engagement. | The engagement type must be considered because the requirements differ (R). For advisory work a formal risk assessment, criteria and evidence-based findings can be left out when the agreement with stakeholders allows it (R, "may"). Objectives and scope are typically set with management (CI). | Std 13.2, 13.3, 13.4, 14.2 | Key. TNK: "limited" against "reasonable" assurance (8b, 1A4) |
@@ -137,8 +158,8 @@ Documentation Lifecycle (Retention & Access); Audit Phase. Fieldwork Discipline.
 | D4 | 4D8 | Opinion types: unmodified, qualified, adverse, disclaimer (1B5.4). | An engagement conclusion: a judgment on the overall significance of the findings taken together. For assurance work it must speak to how effective governance, risk management and control are, and say so when they are effective (R). A rating scale is optional (CI). | Std 14.5, 14.2 | Key. Opinion types appear only as wrong options |
 | D5 | 4D7, 4D9 | Supervisors review work papers; an experienced auditor could follow the trail (1B1.3, 1B6.1). | Transfers. Added: engagement documentation needs the chief audit executive's review and approval (R; may be delegated). Supervision is the chief audit executive's responsibility whoever does the work, and evidence of it is kept (R). Retention follows law and policy (R). | Std 14.6, 12.3 | Key with the delegate named. TNK: clearing or keeping review notes (both allowed, CI) |
 | D6 | 4D3, 4D4, 4D5 | Named online audit techniques, sampling plans and confidence levels (1B2, 1B4). | Less depth, other labels: technology options, the steps of a data analytics process, kinds of analysis, process maps, ratios and trends (S). In the Standards sampling appears only in considerations (a representative sample, or the whole population with software). | S 4D3 to 4D5; Std 14.1, 13.6 | Key only what a syllabus line names. TNK: fine definitions (the data analytics guides are not opened) |
-| D7 | 4D1 | A walk-through traces one transaction end to end (1A3.4). | The Standards use the word for watching a process directly (CI). Control self-assessment knowledge carries over to the questionnaires and surveys the syllabus names. | Std 14.1; S 4D1 | TNK: the definition of a walk-through |
-| D8 | 4D10, 4D9 | Pressure or deadlock goes to the audit committee (1A1.4, 1B5.5). | Internal auditors must tell management the objectives, scope and timing, and any change in time (R). On disagreement they discuss, seek a shared understanding, and change nothing without a valid reason (R). The way up is the engagement supervisor, then the chief audit executive, who is the one the Standards name for taking matters to the board. | Std 13.1, 12.3, 8.1 | Key |
+| D7 | 4D1 | A walk-through traces one transaction end to end (1A3.4). | The same common meaning in the Part notes (1C8.1, 2A6.1); the Standards do not define it. Control self-assessment knowledge carries over to the questionnaires and surveys the syllabus names. | S 4D1 | TNK: any finer definition of a walk-through |
+| D8 | 4D10, 4D9 | Pressure or deadlock goes to the audit committee (1A1.4, 1B5.5). | Internal auditors must tell management the objectives, scope and timing, and any change in time (R). On disagreement they discuss, seek a shared understanding, and change nothing without a valid reason (R). The way up (Part 2 note 2C2.3): a scope limitation to management, then the CAE; resource gaps and impairments to the CAE; violations to those with authority to act; reaching the board is the CAE's step. | Std 13.1, 13.3, 2.3, 1.3, 8.1 | Key |
 
 ### Section E (20%; 4E1 to 4E8): Engagement Results and Monitoring
 
@@ -156,12 +177,12 @@ approves, who sends and who escalates do not.
 | E1 | 4E2, 4E4 | The IS auditor issues the audit report, addressed to the audit committee (1B5.3). | Internal auditors draft the final engagement communication. Review and approval by the chief audit executive come before issue, and the same person decides who receives it and how (R; may be delegated, responsibility stays). Before release outside the organization: advice from legal counsel, senior management or both, as required (R). | Std 15.1, 11.3 | Key |
 | E2 | 4E2, 4E4 | A weakness fixed during fieldwork is still reported (1B5.1, 1B5.2). | Same direction, exact form: actions management has started or finished must be acknowledged (R). Required content: objectives, scope, conclusions, recommendations or action plans; for assurance work the prioritized findings, any scope limitation and a conclusion on effectiveness; owners and dates (R). | Std 15.1 | Key |
 | E3 | 4E2 | No counterpart. | A conformance statement should be included, and fits only when supervision and the quality program support it (CI). An engagement not done in conformance must name the standard, the reason and the impact (R). | Std 15.1 | Key the CI line as "should". TNK: "in accordance with" (syllabus) against "in conformance with" (Standard) |
-| E4 | 4E3 | The IS auditor recommends; management decides and implements (1B5.1). | Three choices for each finding: write recommendations, ask management for action plans, or agree actions together (R). Each recommendation must be discussed with the people who manage the activity (R). A disagreement follows a set method that lets both sides state their positions (R). | Std 14.4, 13.1 | Key |
+| E4 | 4E3 | The IS auditor recommends; management decides and implements (1B5.1). | Three choices for each finding: write recommendations, ask management for action plans, or agree actions together (R). Each recommendation must be discussed with the people who manage the activity (R); discussing the feasibility of action plans, with cost against benefit, is a should (CI). A disagreement follows a set method that lets both sides state their positions (R). | Std 14.4, 13.1 | Key |
 | E5 | 4E4 | The exit meeting is a fixed step that validates facts (1B5.2). | A closing communication (the Standards add the name "exit conference") may be held, depending on the engagement (CI). | Std 13.1; S 4E4 | Key only as "may"; its purpose from the syllabus line |
 | E6 | 4E4 | Late documentation goes in a dated addendum (bank label Audit Work Papers). | A significant error or omission in a final communication: the chief audit executive must send the corrected information promptly to everyone who got the original. "Significant" follows criteria agreed with the board (R). | Std 11.4 | Key |
 | E7 | 4E5 | A severity rating per finding and an overall opinion (1B5.1, 1B5.4). | Ranking findings by significance is a must (R). A rating scale and the residual-risk steps are CI. Themes across engagements must go to the board and senior management (R). A conclusion for a business unit or the whole organization, when one is given, has required parts (R). | Std 14.3, 14.5, 11.3 | Key each line at its strength |
 | E8 | 4E6 | "The IS auditor never accepts risk": check the acceptance is within appetite and approved, then report it to the committee (1B5.5; CISA notes 2A5.2). | Trigger: the chief audit executive concludes that management accepted risk above the organization's risk appetite or risk tolerance (R). Next: discuss with senior management (R); if unresolved, escalate to the board (R). Resolving the risk is not the chief audit executive's job (R). Raising it first with the managers in charge is CI. | Std 11.5 | Key the R sequence. TNK: "responsible manager first" as a must; senior management against the responsible manager as the final two; appetite against tolerance; who sets risk tolerance (8b, 1C5; CISA notes 2A5.2 give ISACA's answer); the syllabus phrase "may be unacceptable" |
-| E9 | 4E7, 4E8 | Follow-up independently verifies agreed actions, scaled to risk; repeat findings go to the audit committee (1B5.5). | The steps match. A set method has three parts: ask about progress, re-assess on a risk basis, keep a tracking record current; depth follows significance (R). When dates are missed: get and document management's explanation and take it to the chief audit executive, who determines whether the delay amounts to accepting risk beyond tolerance (R). The difference is who decides and who escalates: then E8's route. | Std 15.2, 11.5 | Key |
+| E9 | 4E7, 4E8 | Follow-up independently verifies agreed actions, scaled to risk; repeat findings go to the audit committee (1B5.5). | The steps match. A set method has three parts: ask about progress, re-assess on a risk basis, keep a tracking record current; depth follows significance (R). When dates are missed: get and document management's explanation and take it to the chief audit executive, who determines whether the delay amounts to accepting risk beyond tolerance (R). The difference is who decides and who escalates: then E8's route. | Std 15.2, 11.5 | Key. TNK: which findings get testing rather than inquiry, and the signs that a delay is acceptance (KaiSip's reading, Part 3 notes 3D7.2 and 3D8.3) |
 | E10 | 4E1 | No fixed list in the CISA notes. | Seven named qualities of a communication (the list is R; what each one means sits in CI). | Std 11.2, 15.1 | Key the list. TNK: borderline cases between two qualities |
 
 ## 2. Term table plan
@@ -236,7 +257,7 @@ cannot be missed, where The IIA expects disclosure (A9, `tell-it-straight`).
 One domain object in notes schema v2, with the root keys of a Part notes file
 (`domain_number`, `domain_name`, `exam_weight`, `source`, `overview`,
 `analogy`, `parts`, `topics`, `key_terminologies`, `references`). Six topics,
-28 sub-topics. Topic codes use the letter X (`4X1` to `4X6`), which no
+29 sub-topics. Topic codes use the letter X (`4X1` to `4X6`), which no
 syllabus section uses: a bridge code cannot be taken for a Challenge topic,
 and the gates' pattern for `_provenance` (letters A to G) cannot match one.
 
@@ -254,7 +275,7 @@ and the gates' pattern for `_provenance` (letters A to G) cannot match one.
 | 4X2.5 | The Quality Program and Who May Assess | Internal and external assessments, the board's part, the assessor | A8 |
 | 4X2.6 | Nonconformance and Performance Measures | Disclosing a gap; objectives the board approves | A9, A10 |
 | 4X3.1 | Running the Function | Methodologies, budget, people and technology | B4, B5 |
-| 4X3.2 | Strategy and Reporting to the Board | The strategy, what is reported, themes | B3, B7 |
+| 4X3.2 | Strategy and Reporting to the Board | The strategy, the required reports, private sessions (themes moved to 4X6.3) | B3, B7 |
 | 4X3.3 | The Plan: Board-Approved and Dynamic | Risk assessment, the universe as one approach, changes | B1, B2 |
 | 4X3.4 | Coordination and Reliance | Other assurance providers and the basis for relying | B6 |
 | 4X4.1 | Objectives, Scope and Who Approves | Approvals, scope limitations, changes | C4, C5 |
@@ -268,7 +289,7 @@ and the gates' pattern for `_provenance` (letters A to G) cannot match one.
 | 4X5.4 | Workpapers, Supervision and Speaking Up | Documentation test, review, the route upward | D5, D8 |
 | 4X6.1 | The Final Engagement Communication | Content, approval, distribution, errors | E1, E2, E3, E6, E10 |
 | 4X6.2 | Recommendations, Action Plans and Disagreement | The three choices; the closing communication | E4, E5 |
-| 4X6.3 | Ratings, Themes and Wider Conclusions | Prioritizing, aggregating, what goes to the board | E7 |
+| 4X6.3 | Ratings, Themes and Wider Conclusions | Prioritizing, residual risk, themes and wider conclusions | E7, B7 |
 | 4X6.4 | When Management Accepts Too Much Risk | The trigger and the sequence | E8 |
 | 4X6.5 | Confirming Actions and Escalating | The three follow-up steps; delay as acceptance | E9 |
 
@@ -285,11 +306,27 @@ How each sub-topic is built:
   4E6"). No `practice_ids` (the linter ties them to one section file) and no
   `audit_focus`. No dated fact except the section weights; Topical Requirement
   dates appear only in 4X4.5, copied from `currency.json`.
-- **Size.** 28 sub-topics at the schema's 180 to 380 words: about 8,000 words,
+- **Size.** 29 sub-topics at the schema's 180 to 380 words: about 8,000 words,
   near 120 KB of JSON (the Part 1 notes run about 4.4 KB a sub-topic).
-- **Order of writing.** 4X1 and 4X2.1 to 4X2.4 can be drafted now against the
-  Part 1 notes for 1A2, 1A7, 1A8, 1B2 and 1B6. The rest waits for the Part 2
-  and Part 3 notes, so the bridge and the notes it points to agree.
+- **Order of writing.** Done on 25 Nov 2026, all six topics at once, after the
+  Part 2 and Part 3 notes and the cross-part review, so the bridge and the
+  notes it points to agree.
+
+**As written (25 Nov 2026).** `domain_number` 0 (the glossary gate already uses
+0 for "the whole Challenge exam"), `exam_weight` "All sections", one part `X`.
+The CISA aside is a `compare` whose columns are "In CISA study: <subject>" and
+"On the CIA exam: <subject>" (the subject keeps each column name unique, so the
+linter's one-place-per-term rule holds) plus one `exam_traps` entry that opens
+"As in CISA study" or names the habit. `definition`, `why_it_matters`,
+`how_it_works`, `example` and `isaca_rule` use The IIA's terms only, except in
+4X1.1 and 4X1.5, whose subject is the transfer itself. Every rule line opens
+with Must, Should, May, Essential condition, Syllabus line, Common usage or
+KaiSip's reading. Every key term reuses the wording of the shared glossary or
+of the Part notes (checked by script; `check_glossary.py` does not read the
+bridge). `key_terminologies` holds 24 CISA-side terms, each value opening "CIA
+term:"; terms with the same name on both sides are left out so no term has two
+definitions. Every CISA reference reads "CISA notes <id>", each code with its
+own prefix. No `practice_ids`, no `audit_focus`, no Challenge or Part code.
 
 **The exam guide's bridge section** (working id `coming-from-cisa`): who the
 exam is for and the entry rules (fact ids `ciac.pathways`, `ciac.cisa_entry`,
@@ -303,8 +340,9 @@ score for a KaiSip mock, and the ISACA trademark line from the blueprint.
 
 | Gate | Today | What the bridge needs |
 |---|---|---|
-| `scripts/lint_notes.py` | With `--part 4` a file must be one syllabus section, so a bridge file fails ("the outline has no code for part 4"). Without `--part`, a domain object whose `domain_number` matches no outline code skips the topic check: a scratch copy shaped like the bridge (codes `4X1`, `domain_number` 0 or 6, no `practice_ids`) gave 0 errors on 20 Nov 2026. | Decide the route: lint without `--part`, or add a small bridge mode. Either way the linter must pass with 0 errors. |
-| `data/cia/tools/run_gates.sh` | Lints `notes/d[0-9].json` for cia1 to cia3 only. `bridge.json` is never linted. | Add a line for `ciac/notes/bridge.json`, with a planted fault in `prove_harness.py`. |
+| `scripts/lint_notes.py` | With `--part 4` a file must be one syllabus section, so a bridge file fails ("the outline has no code for part 4"). Without `--part`, a domain object whose `domain_number` matches no outline code skips the topic check. 25 Nov 2026: `python3 scripts/lint_notes.py data/cia/ciac/notes/bridge.json --outline docs/content/CIA_BLUEPRINT.md --bank data/cia/ciac/originals` gives 0 errors and 1 warning (no `audit_focus`, by design). | Lint without `--part` (as now), or add a small bridge mode. |
+| `data/cia/tools/run_gates.sh` | Lints `notes/d[0-9].json` for cia1 to cia3 only. `bridge.json` is never linted (still true on 25 Nov 2026); the stale-terms and originality gates do read it. | Add a line for `ciac/notes/bridge.json`, with a planted fault in `prove_harness.py`. |
+| `check_glossary.py` | Reads the Part packs' notes only, so a bridge key term could drift from the shared glossary unseen. | Read `ciac/notes/bridge.json` too (a term the bridge defines must match the glossary or the Part notes). |
 | `check_stale_terms.py` | The allow list already names `ciac/notes/bridge.json` (isaca, house, 2019) and the guide (isaca), matched by exact path. | No change to pass. Proposed new terms in section 2 would stop ISACA wording in the Part packs; each needs its evidence and a harness row, and a dry run on the Part 1 files first ("audit risk" could catch an innocent phrase). |
 | `check_originality.py` | Already reads `ciac/notes/bridge.json`, as prose only (the 8-word run). Notes files also get the definition and title checks; the bridge does not. | Run with `--fetch --require`. Proposed: read the bridge as a notes file so its key terms get the definition check. |
 | `scripts/cia_pack_dry_run.cjs` | Prints that `bridge.json` "is not a section file: not fed to the notes builder". | Needs the app decision in section 7, then a dry-run step that builds the bridge the way the app will. |
