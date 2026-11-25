@@ -2,7 +2,7 @@
   "schema_version": 2,
   "title": "KaiSip CIA exam mindset principles",
   "updated": "2026-11-25",
-  "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, Part 2 has 1 to 3, the Challenge Exam 1 to 5, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and are set by a tagging pass after each round (done for the Part 1 pilot, for rounds 1 to 14, for the Part 2 pilot and for Part 2 rounds 1 to 3); legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 and ciac. Part 2 (cia2) is switched on from its pilot for every principle: the twenty planned for it, plus board-approves-management-supports, function-or-person, no-self-review and disclose-then-safeguard, which Part 2's notes also teach (2A7.1, 2A7.3, 2B3.1, 2C1.2, 2C1.4, 2C2.3) and which a built pack needs, since each family keeps at least two principles with orders from 1; its domains are Part 2's sections (A Engagement Planning is 1, B Information Gathering, Analysis, and Evaluation is 2, C Engagement Supervision and Communication is 3), its subtopics are codes from data/cia/cia2/notes (such as 2A1.1), and a principle with no Part 2 item yet keeps an empty cia2 practice list until a later round tags one. For ciac, domains are the Challenge Exam's sections (A Internal Audit Professionalism and Quality is 1, B Internal Audit Operations and Audit Plan is 2, C Engagement Planning is 3, D Engagement Performance is 4, E Engagement Results and Monitoring is 5, mapped from docs/content/CIA_CHALLENGE_MAP.md), subtopics stay empty until the Challenge notes are generated, and practice ids follow the tag of each generated item's source question. Part 3 is still to come. Intended for cia3 once its notes exist (written here because the linter of the built file allows no extra top-level key): know-your-seat; board-approves-management-supports; management-owns-risk-and-action; advise-never-decide; function-or-person; disclose-then-safeguard; risk-sets-plan-and-scope; weigh-cost-against-benefit; root-cause-over-symptom; discuss-then-escalate; tell-it-straight; have-or-obtain-competency; information-for-the-work-only; design-or-operation; the four reading principles. Round 1 added two principles for questions that no earlier principle decided: have-or-obtain-competency (Principle 3; Standards 3.1, 3.2 and 13.5, with Standard 10.2 for the function) and information-for-the-work-only (Principle 5; Standards 5.1 and 5.2). Round 2 added one more, weigh-cost-against-benefit (Standard 4.2, where the weighing is a must for internal audit work; the considerations of Standard 14.4, where it is a should for recommendations and action plans), for questions that turn on proportion: enough work or enough control for the risk, not the most. Round 9 added design-or-operation (the glossary's definition of control processes as designed and operated; Standard 4.2, and the considerations to Standards 13.2, 13.3, 13.6 and 14.3, at should strength), for questions whose final two are a design failure against an operating failure. A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet, because no notes teach it until Part 3 is written. Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1 (and cia2, ciac). Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
+  "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, Part 2 has 1 to 3, the Challenge Exam 1 to 5, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and are set by a tagging pass after each round (done for the Part 1 pilot, for rounds 1 to 14, for the Part 2 pilot, for Part 2 rounds 1 to 3 and for the Part 3 pilot); legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 and ciac. Part 2 (cia2) is switched on from its pilot for every principle: the twenty planned for it, plus board-approves-management-supports, function-or-person, no-self-review and disclose-then-safeguard, which Part 2's notes also teach (2A7.1, 2A7.3, 2B3.1, 2C1.2, 2C1.4, 2C2.3) and which a built pack needs, since each family keeps at least two principles with orders from 1; its domains are Part 2's sections (A Engagement Planning is 1, B Information Gathering, Analysis, and Evaluation is 2, C Engagement Supervision and Communication is 3), its subtopics are codes from data/cia/cia2/notes (such as 2A1.1), and a principle with no Part 2 item yet keeps an empty cia2 practice list until a later round tags one. For ciac, domains are the Challenge Exam's sections (A Internal Audit Professionalism and Quality is 1, B Internal Audit Operations and Audit Plan is 2, C Engagement Planning is 3, D Engagement Performance is 4, E Engagement Results and Monitoring is 5, mapped from docs/content/CIA_CHALLENGE_MAP.md), subtopics stay empty until the Challenge notes are generated, and practice ids follow the tag of each generated item's source question. Part 3 (cia3) is switched on from its pilot for every principle, since its notes teach each one (for example 3A4.3 for no-self-review, 3A1.2 and 3C2.2 for plan-before-testing, 3B2.1 for consider-fraud-every-engagement, 3D5.3 for assurance-not-a-guarantee and 3D4.3 for report-through-the-right-channel) and a built pack needs each family's orders to run from 1; its domains are Part 3's sections (A Internal Audit Operations is 1, B Internal Audit Plan is 2, C Quality of the Internal Audit Function is 3, D Engagement Results and Monitoring is 4), its subtopics are codes from data/cia/cia3/notes (such as 3D6.3), and a principle with no Part 3 item yet keeps an empty cia3 practice list until a later round tags one. Round 1 added two principles for questions that no earlier principle decided: have-or-obtain-competency (Principle 3; Standards 3.1, 3.2 and 13.5, with Standard 10.2 for the function) and information-for-the-work-only (Principle 5; Standards 5.1 and 5.2). Round 2 added one more, weigh-cost-against-benefit (Standard 4.2, where the weighing is a must for internal audit work; the considerations of Standard 14.4, where it is a should for recommendations and action plans), for questions that turn on proportion: enough work or enough control for the risk, not the most. Round 9 added design-or-operation (the glossary's definition of control processes as designed and operated; Standard 4.2, and the considerations to Standards 13.2, 13.3, 13.6 and 14.3, at should strength), for questions whose final two are a design failure against an operating failure. A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet; until it is, the Part 3 pilot's quality items are tagged by what decides their final two (tell-it-straight for disclosure, must-or-should for a required element against an optional one). Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1 (and cia2, cia3, ciac). Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
   "families": [
     {
       "id": "role",
@@ -59,7 +59,7 @@
       ],
       "trap": {
         "move": "Answering as the manager who fixes the problem, as an IT specialist, or as an external auditor giving an opinion on the financial statements.",
-        "why_wrong": "Each of those is a real job, but it is not the seat the question gives you. The internal auditor assesses, concludes, advises and reports, so an option that has them running, deciding or signing off for management loses. A staff internal auditor also passes up a decision the Standards give the chief audit executive, such as the form of a final communication (Standard 11.3)."
+        "why_wrong": "Each of those is a real job, but it is not the seat the question gives you. The internal auditor assesses, concludes, advises and reports, so an option that has them running, deciding or signing off for management loses. A staff internal auditor also passes up a decision the Standards give the chief audit executive, such as the form of a final communication (Standard 11.3). In Part 3 the seat can still be a staff internal auditor: in section D internal auditors draft the final communication and follow up actions, while the chief audit executive approves and sends results, judges whether risk beyond tolerance was accepted and escalates (Standards 15.1, 15.2)."
       },
       "example": {
         "scenario": "Ravi, an internal auditor at a hospital group in Malaysia, finds that nobody reviews changes to supplier bank details. The finance manager says: you know the fix, so set up the review yourself.",
@@ -75,6 +75,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -86,6 +87,10 @@
         "cia2": [
           1,
           3
+        ],
+        "cia3": [
+          1,
+          4
         ],
         "ciac": [
           1,
@@ -109,6 +114,11 @@
           "2C1.1",
           "2C2.3"
         ],
+        "cia3": [
+          "3A1.1",
+          "3D6.2",
+          "3D8.1"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -130,6 +140,9 @@
           "cia2_d3_004",
           "cia2_d3_007",
           "cia2_d3_011"
+        ],
+        "cia3": [
+          "cia3_d4_014"
         ],
         "ciac": [
           "ciac_d1_006",
@@ -158,7 +171,7 @@
       ],
       "trap": {
         "move": "Choosing senior management, or senior management together with the board, as the approver of the charter, the plan or the budget.",
-        "why_wrong": "Senior management is consulted and gives input and support, but it also runs the areas being audited. An approver who is audited by the function could shape what gets looked at. Older study material that shows joint approval of the plan is out of date. Roles across the three lines are different: the board and senior management set those together."
+        "why_wrong": "Senior management is consulted and gives input and support, but it also runs the areas being audited. An approver who is audited by the function could shape what gets looked at. Older study material that shows joint approval of the plan is out of date. Roles across the three lines are different: the board and senior management set those together. Board approval is kept for the charter, the plan and its significant changes, the budget and the resource plan (Standard 6.3's essential conditions). The strategy is reviewed with the board and senior management, not approved (Standard 9.2), and methodologies are the chief audit executive's to set (Standard 9.3). When an urgent risk forces a significant plan change before the board can meet, the board should be told at once and approve formally as soon as it can, rather than wait for the meeting or hear afterward (Standard 9.4's considerations)."
       },
       "example": {
         "scenario": "At a water utility in Kenya, the chief audit executive finishes the draft internal audit plan. The chief executive officer says the executive team will approve it this year to save the board's time.",
@@ -174,6 +187,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -182,6 +196,10 @@
           3
         ],
         "cia2": [
+          1,
+          2
+        ],
+        "cia3": [
           1,
           2
         ],
@@ -202,6 +220,12 @@
         "cia2": [
           "2A7.3",
           "2B3.1"
+        ],
+        "cia3": [
+          "3A2.1",
+          "3A3.4",
+          "3A4.2",
+          "3B2.3"
         ],
         "ciac": []
       },
@@ -224,6 +248,14 @@
           "cia1_d1_113"
         ],
         "cia2": [],
+        "cia3": [
+          "cia3_d1_002",
+          "cia3_d1_005",
+          "cia3_d1_009",
+          "cia3_d1_010",
+          "cia3_d2_006",
+          "cia3_d2_009"
+        ],
         "ciac": [
           "ciac_d1_001",
           "ciac_d1_003",
@@ -269,6 +301,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -281,6 +314,10 @@
         "cia2": [
           1,
           3
+        ],
+        "cia3": [
+          3,
+          4
         ],
         "ciac": [
           1,
@@ -304,6 +341,12 @@
           "2A3.4",
           "2C2.4"
         ],
+        "cia3": [
+          "3C3.3",
+          "3D2.2",
+          "3D3.1",
+          "3D7.1"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -324,6 +367,9 @@
         "cia2": [
           "cia2_d3_008",
           "cia2_d1_029"
+        ],
+        "cia3": [
+          "cia3_d3_009"
         ],
         "ciac": [
           "ciac_d1_020"
@@ -366,6 +412,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -375,6 +422,10 @@
         ],
         "cia2": [
           1
+        ],
+        "cia3": [
+          1,
+          4
         ],
         "ciac": [
           1,
@@ -394,6 +445,10 @@
         "cia2": [
           "2A1.1",
           "2A2.3"
+        ],
+        "cia3": [
+          "3A1.3",
+          "3D2.1"
         ],
         "ciac": []
       },
@@ -416,6 +471,9 @@
           "cia1_d1_112"
         ],
         "cia2": [],
+        "cia3": [
+          "cia3_d4_004"
+        ],
         "ciac": [
           "ciac_d1_017"
         ]
@@ -457,6 +515,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -465,6 +524,10 @@
           2
         ],
         "cia2": [
+          1,
+          3
+        ],
+        "cia3": [
           1,
           3
         ],
@@ -485,6 +548,10 @@
           "2A7.1",
           "2C1.4"
         ],
+        "cia3": [
+          "3A4.3",
+          "3C1.3"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -496,6 +563,7 @@
           "cia1_d2_022"
         ],
         "cia2": [],
+        "cia3": [],
         "ciac": [
           "ciac_d1_005",
           "ciac_d1_026"
@@ -539,6 +607,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -549,6 +618,9 @@
         "cia2": [
           1,
           3
+        ],
+        "cia3": [
+          1
         ],
         "ciac": [
           1
@@ -565,6 +637,10 @@
           "2A7.1",
           "2C1.2"
         ],
+        "cia3": [
+          "3A1.3",
+          "3A4.3"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -575,6 +651,7 @@
           "cia1_d2_025"
         ],
         "cia2": [],
+        "cia3": [],
         "ciac": [
           "ciac_d1_021",
           "ciac_d1_025",
@@ -618,6 +695,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -627,6 +705,9 @@
         ],
         "cia2": [
           3
+        ],
+        "cia3": [
+          1
         ],
         "ciac": [
           1
@@ -645,6 +726,9 @@
           "2C1.2",
           "2C2.3"
         ],
+        "cia3": [
+          "3A4.3"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -660,6 +744,7 @@
           "cia1_d1_114"
         ],
         "cia2": [],
+        "cia3": [],
         "ciac": [
           "ciac_d1_008",
           "ciac_d1_014"
@@ -686,7 +771,7 @@
       ],
       "trap": {
         "move": "Choosing by habit or convenience: the area audited every year, the biggest department, the one that asked, or the one that is easiest to test.",
-        "why_wrong": "Size, routine and requests say little about where objectives are threatened. Effort spent on a low-risk area leaves a higher-risk one with no assurance. The plan's risk assessment is an input to an engagement's, never a substitute: only an earlier engagement's assessment of the same activity may simply be reviewed and updated (Standard 13.2). A Topical Requirement is a floor for its topic, not a ceiling, so the engagement's risks can take the scope beyond it."
+        "why_wrong": "Size, routine and requests say little about where objectives are threatened. Effort spent on a low-risk area leaves a higher-risk one with no assurance. The plan's risk assessment is an input to an engagement's, never a substitute: only an earlier engagement's assessment of the same activity may simply be reviewed and updated (Standard 13.2). A Topical Requirement is a floor for its topic, not a ceiling, so the engagement's risks can take the scope beyond it. A new risk reopens the plan, not the strategy: the strategy follows changes in the organization's strategic objectives and in stakeholders' expectations, such as new leaders (Standard 9.2's considerations)."
       },
       "example": {
         "scenario": "A chief audit executive in Ghana has time for one more engagement. Petty cash has been audited every year with no findings. A mobile payments service launched last quarter and has never been reviewed.",
@@ -702,6 +787,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -713,6 +799,11 @@
         ],
         "cia2": [
           1
+        ],
+        "cia3": [
+          1,
+          2,
+          4
         ],
         "ciac": [
           2,
@@ -733,6 +824,13 @@
           "2A5.1",
           "2A5.2",
           "2A5.4"
+        ],
+        "cia3": [
+          "3A3.4",
+          "3B1.1",
+          "3B1.4",
+          "3B2.1",
+          "3D7.2"
         ],
         "ciac": []
       },
@@ -761,6 +859,13 @@
           "cia2_d1_017",
           "cia2_d1_027",
           "cia2_d1_028"
+        ],
+        "cia3": [
+          "cia3_d1_008",
+          "cia3_d2_001",
+          "cia3_d2_002",
+          "cia3_d2_003",
+          "cia3_d4_012"
         ],
         "ciac": []
       },
@@ -801,6 +906,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -810,6 +916,10 @@
           4
         ],
         "cia2": [
+          1,
+          3
+        ],
+        "cia3": [
           1,
           3
         ],
@@ -832,6 +942,10 @@
           "2A6.3",
           "2C2.2"
         ],
+        "cia3": [
+          "3A1.2",
+          "3C2.2"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -851,6 +965,7 @@
           "cia2_d3_010",
           "cia2_d1_030"
         ],
+        "cia3": [],
         "ciac": []
       },
       "slip_pattern": null,
@@ -890,6 +1005,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -899,6 +1015,9 @@
         ],
         "cia2": [
           1
+        ],
+        "cia3": [
+          2
         ],
         "ciac": [
           3
@@ -917,6 +1036,10 @@
           "2A5.1",
           "2A5.2"
         ],
+        "cia3": [
+          "3B1.1",
+          "3B2.1"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -930,6 +1053,7 @@
           "cia1_d4_039"
         ],
         "cia2": [],
+        "cia3": [],
         "ciac": []
       },
       "slip_pattern": null,
@@ -971,6 +1095,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -981,6 +1106,9 @@
         "cia2": [
           1,
           2
+        ],
+        "cia3": [
+          4
         ],
         "ciac": [
           3,
@@ -1000,6 +1128,9 @@
           "2A6.2",
           "2B3.2"
         ],
+        "cia3": [
+          "3D3.2"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -1015,6 +1146,7 @@
           "cia2_d2_015",
           "cia2_d2_026"
         ],
+        "cia3": [],
         "ciac": []
       },
       "slip_pattern": null,
@@ -1055,6 +1187,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -1068,6 +1201,10 @@
           1,
           2,
           3
+        ],
+        "cia3": [
+          2,
+          4
         ],
         "ciac": [
           1,
@@ -1092,6 +1229,10 @@
           "2B2.3",
           "2B7.2",
           "2C1.3"
+        ],
+        "cia3": [
+          "3B3.3",
+          "3D1.1"
         ],
         "ciac": []
       },
@@ -1129,6 +1270,9 @@
           "cia2_d2_027",
           "cia2_d2_028",
           "cia2_d2_029"
+        ],
+        "cia3": [
+          "cia3_d4_001"
         ],
         "ciac": [
           "ciac_d1_019",
@@ -1176,6 +1320,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -1187,6 +1332,10 @@
         "cia2": [
           1,
           2
+        ],
+        "cia3": [
+          1,
+          4
         ],
         "ciac": [
           4,
@@ -1204,6 +1353,11 @@
           "2A5.4",
           "2B6.1",
           "2B6.2"
+        ],
+        "cia3": [
+          "3A4.4",
+          "3D2.2",
+          "3D3.3"
         ],
         "ciac": []
       },
@@ -1231,6 +1385,7 @@
           "cia2_d2_010",
           "cia2_d2_016"
         ],
+        "cia3": [],
         "ciac": []
       },
       "slip_pattern": "symptom",
@@ -1271,6 +1426,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -1281,6 +1437,9 @@
         ],
         "cia2": [
           2
+        ],
+        "cia3": [
+          4
         ],
         "ciac": [
           4
@@ -1297,6 +1456,9 @@
         "cia2": [
           "2B8.2"
         ],
+        "cia3": [
+          "3D5.3"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -1306,6 +1468,7 @@
           "cia1_d3_030"
         ],
         "cia2": [],
+        "cia3": [],
         "ciac": []
       },
       "slip_pattern": null,
@@ -1346,6 +1509,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -1356,6 +1520,9 @@
         "cia2": [
           1,
           3
+        ],
+        "cia3": [
+          1
         ],
         "ciac": [
           2,
@@ -1375,6 +1542,11 @@
           "2C1.2",
           "2C1.4"
         ],
+        "cia3": [
+          "3A2.2",
+          "3A2.3",
+          "3A3.3"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -1392,6 +1564,9 @@
           "cia2_d3_003",
           "cia2_d1_022",
           "cia2_d1_023"
+        ],
+        "cia3": [
+          "cia3_d1_007"
         ],
         "ciac": []
       },
@@ -1433,6 +1608,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -1443,6 +1619,9 @@
         "cia2": [
           1,
           2
+        ],
+        "cia3": [
+          4
         ],
         "ciac": [
           3,
@@ -1459,6 +1638,9 @@
           "2A6.1",
           "2A6.2",
           "2B4.1"
+        ],
+        "cia3": [
+          "3D5.1"
         ],
         "ciac": []
       },
@@ -1478,6 +1660,7 @@
           "cia2_d2_006",
           "cia2_d1_019"
         ],
+        "cia3": [],
         "ciac": []
       },
       "slip_pattern": null,
@@ -1502,7 +1685,7 @@
       ],
       "trap": {
         "move": "Jumping a level or taking over: going straight to the board or a regulator, dropping the matter because management has decided, or fixing the risk yourself.",
-        "why_wrong": "Each skips a step. The order gives the people who can resolve the risk the chance to do so, keeps the board for what stays unresolved, and leaves the decision with those who own it. The ladder is not for everything, though. When management tries to cut the scope the board approved for the function, that may impair independence (Standard 7.1's considerations), and the chief audit executive reports it to the board and senior management without waiting for a talk with management to fail (Standard 8.1)."
+        "why_wrong": "Each skips a step. The order gives the people who can resolve the risk the chance to do so, keeps the board for what stays unresolved, and leaves the decision with those who own it. The ladder is not for everything, though. When management tries to cut the scope the board approved for the function, that may impair independence (Standard 7.1's considerations), and the chief audit executive reports it to the board and senior management without waiting for a talk with management to fail (Standard 8.1). The ladder also starts lower and has other entries. On accepted risk the chief audit executive should first raise it with the managers responsible, and an action plan they agree goes to follow-up, not upward (Standard 11.5's considerations; Standard 15.2). An action past its date is the internal auditor's to document, with management's explanation, and discuss with the chief audit executive, who judges whether the delay means risk beyond tolerance was accepted (Standard 15.2). When coordination with another assurance provider fails, the concern goes to senior management and, if necessary, the board (Standard 9.5). A disagreement with senior management that may hinder the function's work, such as a threat to its access, goes to the board as facts and circumstances (Standard 8.1), not only into a talk with the person making it."
       },
       "example": {
         "scenario": "A division head at a bank in Nigeria decides not to fix a payment-approval gap. The chief audit executive concludes the risk is above the bank's stated risk tolerance.",
@@ -1518,6 +1701,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -1528,6 +1712,10 @@
         "cia2": [
           1,
           3
+        ],
+        "cia3": [
+          2,
+          4
         ],
         "ciac": [
           1,
@@ -1546,6 +1734,13 @@
           "2A7.3",
           "2C2.3"
         ],
+        "cia3": [
+          "3B3.2",
+          "3D6.1",
+          "3D6.3",
+          "3D8.2",
+          "3D8.3"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -1561,6 +1756,13 @@
         ],
         "cia2": [
           "cia2_d1_015"
+        ],
+        "cia3": [
+          "cia3_d2_007",
+          "cia3_d4_006",
+          "cia3_d4_010",
+          "cia3_d4_011",
+          "cia3_d4_013"
         ],
         "ciac": [
           "ciac_d1_013"
@@ -1604,6 +1806,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -1614,6 +1817,9 @@
         ],
         "cia2": [
           3
+        ],
+        "cia3": [
+          4
         ],
         "ciac": [
           1,
@@ -1632,6 +1838,9 @@
         "cia2": [
           "2C2.3"
         ],
+        "cia3": [
+          "3D4.3"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -1647,6 +1856,7 @@
           "cia1_d3_105"
         ],
         "cia2": [],
+        "cia3": [],
         "ciac": [
           "ciac_d1_024"
         ]
@@ -1673,7 +1883,7 @@
       ],
       "trap": {
         "move": "Softening to keep the peace: dropping or rewording a finding because a senior person objects, or quietly fixing an error in a report already sent.",
-        "why_wrong": "Pressure, friendship or fear is not a valid reason to change a result. A quiet fix leaves earlier readers relying on wrong information; a significant correction goes to everyone who received the original."
+        "why_wrong": "Pressure, friendship or fear is not a valid reason to change a result. A quiet fix leaves earlier readers relying on wrong information; a significant correction goes to everyone who received the original. The chief audit executive's own reporting is held to the same duty: why a high-risk area has no assurance engagement in the plan (Standard 9.4), the results of internal assessments with their action plans (Standard 12.1), and a nonconformance disclosed where its reach puts it, in that engagement's final communication (Standard 15.1) or, when it affects the whole function, to the board and senior management with its impact (Standard 12.1)."
       },
       "example": {
         "scenario": "After a final communication is issued at a port authority in Brazil, the chief audit executive learns that a loss figure in it was overstated tenfold, which changes one conclusion.",
@@ -1689,6 +1899,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -1700,6 +1911,11 @@
         ],
         "cia2": [
           2
+        ],
+        "cia3": [
+          2,
+          3,
+          4
         ],
         "ciac": [
           1,
@@ -1717,6 +1933,14 @@
         "cia2": [
           "2B8.1",
           "2B8.2"
+        ],
+        "cia3": [
+          "3B2.2",
+          "3C1.4",
+          "3C2.1",
+          "3C2.2",
+          "3D2.3",
+          "3D4.4"
         ],
         "ciac": []
       },
@@ -1738,6 +1962,16 @@
         "cia2": [
           "cia2_d2_013",
           "cia2_d2_014"
+        ],
+        "cia3": [
+          "cia3_d2_005",
+          "cia3_d3_003",
+          "cia3_d3_005",
+          "cia3_d3_006",
+          "cia3_d3_007",
+          "cia3_d3_010",
+          "cia3_d4_003",
+          "cia3_d4_007"
         ],
         "ciac": [
           "ciac_d1_030"
@@ -1765,7 +1999,7 @@
       ],
       "trap": {
         "move": "Judging by harm or by who is asking: calling a use fine because nobody lost, the names were removed, the organization benefits or the person asking is a colleague.",
-        "why_wrong": "No harm is not a defense. Ask two things: what is the information being used for, and is the receiver authorized? Using it for personal gain, or against the organization's legitimate aims, is misuse even when nothing leaks (Standard 5.1), and a colleague is not authorized just by being an employee. Access is not ownership: the information still belongs to the organization, or to the outside party it came from. A good purpose does not open the records either: even a fellow assurance provider receives engagement records only through the function's release procedures (Standard 5.2)."
+        "why_wrong": "No harm is not a defense. Ask two things: what is the information being used for, and is the receiver authorized? Using it for personal gain, or against the organization's legitimate aims, is misuse even when nothing leaks (Standard 5.1), and a colleague is not authorized just by being an employee. Access is not ownership: the information still belongs to the organization, or to the outside party it came from. A good purpose does not open the records either: even a fellow assurance provider receives engagement records only through the function's release procedures (Standard 5.2). Who outside the organization receives a final communication is the chief audit executive's decision, made after seeking advice from legal counsel, senior management or both, as required, unless a law says otherwise (Standard 11.3)."
       },
       "example": {
         "scenario": "Mateo, an internal auditor at a property developer in Mexico, learns during an engagement which plots the company plans to bid for next quarter. A friend who invests in land asks where prices might rise.",
@@ -1781,6 +2015,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -1790,6 +2025,9 @@
         "cia2": [
           2,
           3
+        ],
+        "cia3": [
+          4
         ],
         "ciac": [
           1
@@ -1806,6 +2044,9 @@
           "2B7.4",
           "2C2.4"
         ],
+        "cia3": [
+          "3D4.2"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -1817,6 +2058,9 @@
           "cia1_d2_082"
         ],
         "cia2": [],
+        "cia3": [
+          "cia3_d4_008"
+        ],
         "ciac": [
           "ciac_d1_032",
           "ciac_d1_033"
@@ -1844,7 +2088,7 @@
       ],
       "trap": {
         "move": "Picking the option that sounds like best practice when the question asks what the Standards require, or treating a common practice as a rule.",
-        "why_wrong": "Good practice is often true and still not the answer. A private yearly meeting between the board and the chief audit executive is a should; the yearly confirmation of independence to the board is a must. Swapping the two strengths makes an option wrong. The facts can set the strength: a goal a regulation sets must stay in the objectives, and Topical Requirement conformance is mandatory in assurance but only recommended in advice."
+        "why_wrong": "Good practice is often true and still not the answer. A private yearly meeting between the board and the chief audit executive is a should; the yearly confirmation of independence to the board is a must. Swapping the two strengths makes an option wrong. The facts can set the strength: a goal a regulation sets must stay in the objectives, and Topical Requirement conformance is mandatory in assurance but only recommended in advice. Chief audit executive questions often pair the two: documenting the basis for relying on another provider is a must, while a written agreement on the testing and evidence is a should for ongoing reliance (Standard 9.5)."
       },
       "example": {
         "scenario": "A question asks what the Standards require of an internal auditor planning an engagement. One option is a team session to brainstorm fraud scenarios; another is considering fraud risks in the engagement risk assessment.",
@@ -1860,6 +2104,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -1873,6 +2118,12 @@
           1,
           2,
           3
+        ],
+        "cia3": [
+          1,
+          2,
+          3,
+          4
         ],
         "ciac": [
           1,
@@ -1897,6 +2148,12 @@
           "2A6.3",
           "2B6.3",
           "2C2.1"
+        ],
+        "cia3": [
+          "3A3.2",
+          "3B3.3",
+          "3C1.3",
+          "3D1.4"
         ],
         "ciac": []
       },
@@ -1936,6 +2193,19 @@
           "cia2_d1_024",
           "cia2_d1_026",
           "cia2_d2_030"
+        ],
+        "cia3": [
+          "cia3_d1_003",
+          "cia3_d1_004",
+          "cia3_d1_006",
+          "cia3_d1_011",
+          "cia3_d2_004",
+          "cia3_d2_008",
+          "cia3_d3_002",
+          "cia3_d3_004",
+          "cia3_d4_002",
+          "cia3_d4_005",
+          "cia3_d4_009"
         ],
         "ciac": [
           "ciac_d1_002",
@@ -1981,6 +2251,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -1995,6 +2266,12 @@
           2,
           3
         ],
+        "cia3": [
+          1,
+          2,
+          3,
+          4
+        ],
         "ciac": [
           1,
           2,
@@ -2006,6 +2283,7 @@
       "subtopics": {
         "cia1": [],
         "cia2": [],
+        "cia3": [],
         "ciac": []
       },
       "practice_ids": {
@@ -2015,6 +2293,7 @@
           "cia1_d2_023"
         ],
         "cia2": [],
+        "cia3": [],
         "ciac": [
           "ciac_d1_027"
         ]
@@ -2055,6 +2334,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -2069,6 +2349,12 @@
           2,
           3
         ],
+        "cia3": [
+          1,
+          2,
+          3,
+          4
+        ],
         "ciac": [
           1,
           2,
@@ -2080,6 +2366,7 @@
       "subtopics": {
         "cia1": [],
         "cia2": [],
+        "cia3": [],
         "ciac": []
       },
       "practice_ids": {
@@ -2100,6 +2387,7 @@
           "cia1_d3_060"
         ],
         "cia2": [],
+        "cia3": [],
         "ciac": []
       },
       "slip_pattern": "runner-up",
@@ -2139,6 +2427,7 @@
       "packs": [
         "cia1",
         "cia2",
+        "cia3",
         "ciac"
       ],
       "domains": {
@@ -2153,6 +2442,12 @@
           2,
           3
         ],
+        "cia3": [
+          1,
+          2,
+          3,
+          4
+        ],
         "ciac": [
           1,
           2,
@@ -2164,6 +2459,7 @@
       "subtopics": {
         "cia1": [],
         "cia2": [],
+        "cia3": [],
         "ciac": []
       },
       "practice_ids": {
@@ -2212,6 +2508,12 @@
           "cia2_d2_021",
           "cia2_d1_025",
           "cia2_d2_022"
+        ],
+        "cia3": [
+          "cia3_d1_001",
+          "cia3_d1_012",
+          "cia3_d3_001",
+          "cia3_d3_008"
         ],
         "ciac": [
           "ciac_d1_009",
