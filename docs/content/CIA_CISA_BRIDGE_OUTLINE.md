@@ -316,8 +316,8 @@ How each sub-topic is built:
 0 for "the whole Challenge exam"), `exam_weight` "All sections", one part `X`.
 The CISA aside is a `compare` whose columns are "In CISA study: <subject>" and
 "On the CIA exam: <subject>" (the subject keeps each column name unique, so the
-linter's one-place-per-term rule holds) plus one `exam_traps` entry that opens
-"As in CISA study" or names the habit. `definition`, `why_it_matters`,
+linter's one-place-per-term rule holds) plus one `exam_traps` entry that states the CISA-trained habit and claims
+only what the CISA note it compares says (fix pass of 25 Nov 2026). `definition`, `why_it_matters`,
 `how_it_works`, `example` and `isaca_rule` use The IIA's terms only, except in
 4X1.1 and 4X1.5, whose subject is the transfer itself. Every rule line opens
 with Must, Should, May, Essential condition, Syllabus line, Common usage or
