@@ -10608,11 +10608,11 @@
       "principle_id": "population-includes-misses",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Montenegrin film studio's AI travel agent books flights and has a staff email login for hotel queries; the KRI for bookings above its limit counts booking-system entries. What is the IS auditor's GREATEST concern?",
+      "question": "A Montenegrin film studio's AI travel agent books flights and has a staff email login for hotel queries; a daily KRI counts booking-system entries above its spending limit. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The KRI tracks bookings rather than crew satisfaction",
         "B": "Commitments made through other tools may never be counted",
-        "C": "The booking limit may be set by the owner, not the board",
+        "C": "The spending limit may be set by the owner, not the board",
         "D": "A daily count may miss a burst of bookings within the day"
       },
       "correct": "B",
@@ -10635,7 +10635,7 @@
         "Agentic AI",
         "Tool access"
       ],
-      "_provenance": "Authored from concept: notes 1C.2 Risk Appetite, Tolerance and AI Key Risk Indicators (an agent can act through any tool its login reaches, so a KRI reading one system misses commitments made through the others). Review round 3: moved to a film studio's travel agent (the property maintenance agent repeated aaia_d2_086); the email login has a stated harmless purpose. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1C.2 Risk Appetite, Tolerance and AI Key Risk Indicators (an agent can act through any tool its login reaches, so a KRI reading one system misses commitments made through the others). Review round 3: moved to a film studio's travel agent (the property maintenance agent repeated aaia_d2_086); the email login has a stated harmless purpose. Final round: stem now states the KRI is daily, which option D and the explanation assume. Re-audit: stem names the spending limit that the explanations and tip 2 assume. Last pass: option C says spending limit, the limit the stem names. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
       "style_version": 2
     },
     {
@@ -10682,17 +10682,17 @@
       "principle_id": "ai-governance-before-tooling",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Mongolian mining group, which holds many drill-core photos of its own, will buy a start-up for its ore-grading model, trained on photos former partner mines supplied. What should the IS auditor recommend FIRST?",
+      "question": "A Uruguayan road-construction group, which holds many photos of its own roads, will buy a start-up for its pavement-crack model, trained on photos former partner councils supplied. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Have the group fine-tune it on its own drill-core photos",
+        "A": "Have the group fine-tune it on its own road photos",
         "B": "Have the start-up's source code placed in escrow",
-        "C": "Have counsel confirm rights to the photos it learned from",
+        "C": "Have counsel confirm rights to the photos behind the model",
         "D": "Rely on the start-up's warranty that its model is lawful"
       },
       "correct": "C",
       "key_concept": "Fine-tuning on clean data keeps what a model learned from earlier data, so rights to that data decide whether a bought model is usable.",
       "pre_read": "Consider what each option would leave unresolved.",
-      "correct_explanation": "The deal's value rests on a model trained on other mines' photos; if the start-up lacked rights to train on them, or those rights ended with the partnerships, the group could be forced to stop using the model and lose the asset it paid for. Fine-tuning on the group's own photos, option A, adds learning on top, but the weights still carry what the partners' photos taught.",
+      "correct_explanation": "The deal's value rests on a model trained on the councils' photos; if the start-up lacked rights to train on them, or those rights ended with the partnerships, the group could be forced to stop using the model and lose the asset it paid for. Fine-tuning on the group's own road photos, option A, adds learning on top, but the weights still carry what the councils' photos taught.",
       "wrong_explanations": {
         "A": "Tempting because the group's many photos seem to dilute the partners' share. But fine-tuning starts from the existing weights, which keep what the partners' photos taught.",
         "B": "Tempting because escrow protects continuity. But source code cannot rebuild a trained model or fix its data rights.",
@@ -10709,7 +10709,7 @@
         "Data rights",
         "Third-party models"
       ],
-      "_provenance": "Authored from concept: notes 1C.3 Third-Party and Supply-Chain AI Risk (a model built on data without rights to use it can be ordered withdrawn, so data rights decide whether a bought model is worth anything). Review round 3: stem states the group holds many photos of its own, so fine-tuning is the runner-up the AI fact defeats; explanations no longer call the photos disputed. Cross-domain review: key_concept now leads with the fine-tuning angle. Review round 4: key reworded to the photos the model learned from, not the group's own drill-core photos. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1C.3 Third-Party and Supply-Chain AI Risk (a model built on data without rights to use it can be ordered withdrawn, so data rights decide whether a bought model is worth anything). Review round 3: stem states the group holds many photos of its own, so fine-tuning is the runner-up the AI fact defeats; explanations no longer call the photos disputed. Cross-domain review: key_concept now leads with the fine-tuning angle. Review round 4: key reworded to the photos the model learned from, not the group's own drill-core photos. Final round: moved from a mining group's ore-grading model (setting of aaia_d2_058) to a road-construction group's pavement-crack model (a telecom tower-defect model was rejected as near aaia_d2_140); key names the photos behind the model, not the group's own photos. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
       "style_version": 2
     },
     {
@@ -10900,7 +10900,7 @@
       "subtopic": "1D Privacy and data governance. Erasure and a provider's base model",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Slovak news site's reader chatbot, on a provider's base model, keeps stating a private resident's home address learned in the provider's training; the resident requests erasure. What should the IS auditor recommend as BEST?",
+      "question": "A Slovak news site's chatbot, calling a provider's base model through an API, keeps stating a resident's home address from its training data; the resident seeks erasure. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have the owner retrain the chatbot's model without the address",
         "B": "Have the owner filter the address out of the chatbot's replies",
@@ -10910,9 +10910,9 @@
       "correct": "B",
       "key_concept": "A deployer cannot retrain a provider's base model, but can filter outputs and raise the request with the provider, which can act on the model.",
       "pre_read": "Consider each option's effect on what readers see.",
-      "correct_explanation": "The address sits in the provider's base model, which the news site cannot retrain, yet the site answers for what its chatbot tells readers. Filtering the address out of replies stops the harm now; the owner should also alert the provider, which can act on the model. Retraining, option A, would be the thorough fix in principle, but the site has no means to retrain a provider's base model.",
+      "correct_explanation": "The address sits in the provider's base model, which the news site reaches only through an API and cannot retrain, yet the site answers for what its chatbot tells readers. Filtering the address out of replies stops the harm now; the owner should also alert the provider, which can act on the model. Retraining, option A, would be the thorough fix in principle, but the site has no means to retrain a provider's base model.",
       "wrong_explanations": {
-        "A": "Tempting because retraining removes learned data. But the site cannot retrain the provider's base model it builds on.",
+        "A": "Tempting because retraining removes learned data. But a site calling the provider's base model through an API cannot retrain it.",
         "C": "Tempting because the logs hold the address. But deleting logs leaves the model repeating it to the next reader.",
         "D": "Tempting because the provider trained the model. But the site deploys the chatbot and answers for what it tells readers."
       },
@@ -10927,7 +10927,7 @@
         "Base models",
         "Output filtering"
       ],
-      "_provenance": "Authored from concept: notes 1D.3 Retention, Deletion and Model Memorization (a deployer cannot retrain a provider's base model, but can filter outputs and raise the request with the provider, which controls the model). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1D.3 Retention, Deletion and Model Memorization (a deployer cannot retrain a provider's base model, but can filter outputs and raise the request with the provider, which controls the model). Last pass: stem says the chatbot calls the base model through an API, the fact behind 'cannot retrain'. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
       "style_version": 2
     },
     {
@@ -11082,24 +11082,24 @@
       "subtopic": "1E Ethics, regulations and standards. Crawling websites for training",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Portuguese travel-guide publisher crawls tourism websites to train its guide-writing model, relying on a copyright exception for text and data mining; its crawler ignores sites' opt-out signals. What should concern the IS auditor MOST?",
+      "question": "A Portuguese travel-guide publisher crawls tourism websites to train its guide-writing model, relying on a text and data mining copyright exception; its crawler never reads sites' machine-readable signals. What should concern the IS auditor MOST?",
       "options": {
-        "A": "Nothing, since public web pages are free to train on",
-        "B": "Deleting the crawled copies after training cures ignored opt-outs",
-        "C": "Training may be unlawful where site owners opted out",
+        "A": "Opt-out signals may keep useful tourism pages out of training",
+        "B": "Crawled copies may be kept longer than the exception allows",
+        "C": "Training may be unlawful for pages whose owners opted out",
         "D": "The crawled pages may hold personal data about the travelers"
       },
       "correct": "C",
       "key_concept": "Where copyright law allows text and data mining unless rights holders opt out, ignoring their machine-readable opt-outs can put training outside the exception.",
-      "pre_read": "Read what the publisher relies on before the options.",
+      "pre_read": "Weigh what each concern would put at stake for the publisher.",
       "correct_explanation": "Some copyright laws, including in the EU, allow text and data mining for commercial purposes only where rights holders have not reserved their rights, for example through machine-readable opt-outs. A crawler that ignores those signals can take the training outside the exception the publisher relies on. Personal data on the pages, option D, needs assessing too, but it does not decide whether the copying is lawful at all.",
       "wrong_explanations": {
-        "A": "Tempting because the pages are openly published. But public availability does not grant rights to copy them for training.",
-        "B": "Tempting because the exception limits how long copies may be kept. But copies made against an opt-out fall outside it, and the model keeps what it learned.",
-        "D": "Tempting because web pages can hold personal data. But the publisher's legal basis for copying depends on honoring opt-outs, which the crawler ignores."
+        "A": "Tempting because opted-out pages shrink the training set. But honoring opt-outs is a condition of the exception; how much data remains is a design question, not the main exposure.",
+        "B": "Tempting because the exception can limit how long copies are kept. But copies made against an opt-out fall outside it from the start, however briefly they are kept.",
+        "D": "Tempting because web pages can hold personal data. But the publisher's legal basis for copying depends on honoring opt-outs, which the crawler never reads."
       },
       "tips": [
-        "Eliminate: A treats public pages as free to use, and B assumes deleting copies cures copying the exception never covered.",
+        "Eliminate: A treats opt-outs as lost training data rather than a legal condition, and B worries about retention when the copying itself falls outside the exception.",
         "Final two: C beats D because ignoring opt-outs can remove the legal basis for all the copying; personal data is a separate check.",
         "Exam cue: when training relies on a legal exception, check that its conditions are actually met."
       ],
@@ -11109,7 +11109,7 @@
         "Training data rights",
         "Opt-outs"
       ],
-      "_provenance": "Authored from concept: notes 1E.2 Risk-Based AI Regulation and Mapping Obligations (where copyright law allows text and data mining unless rights holders opt out, ignoring machine-readable opt-outs can take training outside the exception). Review round 3: option B now claims deleting copies cures ignored opt-outs (the paywall wording was a subset of the key). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1E.2 Risk-Based AI Regulation and Mapping Obligations (where copyright law allows text and data mining unless rights holders opt out, ignoring machine-readable opt-outs can take training outside the exception). Review round 3: option B now claims deleting copies cures ignored opt-outs (the paywall wording was a subset of the key). Final round: options A and B rewritten as concerns, parallel with C and D; neutral pre_read. Re-audit: key reworded so 'site' is not echoed only in it. Last pass: stem says the crawler never reads machine-readable signals, so knowing these carry opt-outs decides. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
       "style_version": 2
     },
     {

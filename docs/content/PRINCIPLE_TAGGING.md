@@ -429,10 +429,10 @@ version bump today.
 ### Results
 | Domain | Questions | Tagged | Untagged |
 |---|---|---|---|
-| D1 | 305 | 198 | 107 |
+| D1 | 305 | 197 | 108 |
 | D2 | 460 | 375 | 85 |
-| D3 | 178 | 157 | 21 |
-| All | 943 | 730 | 213 |
+| D3 | 178 | 156 | 22 |
+| All | 943 | 728 | 215 |
 
 New principle `independence-of-ai-assurance` (role family): seeds and tags
 aaia_d2_014, aaia_d3_024 and aaia_d3_043, moved from
@@ -959,12 +959,13 @@ the record of the data the assistant searched; the source system's withdrawal
 record does not show it, as aaia_d3_065); aaia_d3_160
 `independence-of-ai-assurance` (the runner-up, agreement between the labeling
 firm's own labelers, rests on data the supplier controls; only independent
-experts test the labels). One tag removed (aaia_d3_168, below).
+experts test the labels). Two tags removed (aaia_d3_168 and aaia_d3_174, below); aaia_d3_151 gained one after its re-angle.
 
 **Untagged new items (low confidence):**
 - aaia_d1_278: pretraining-bias knowledge (a general model brings its training text's biases); the runner-up, rescoring consistency, is not a principle's trap.
 - aaia_d1_283: strategy knowledge (management rules out contested uses); the runner-up, a blanket ban, is not a technology move, so `ai-governance-before-tooling` does not separate.
 - aaia_d1_287: policy-scope knowledge (risk follows the use, not the tool), as aaia_d1_192.
+- aaia_d1_294: classification knowledge (a prompt log stores whatever staff type, so its rating follows the most sensitive data allowed in); the runner-up, matching other system logs, is not a principle's trap.
 - aaia_d1_295: label-incentive knowledge (bonus-linked tags teach the bonus); the runner-up is a check, not a model fix (as aaia_d1_150).
 - aaia_d1_297: data-minimization knowledge (an agent collects only what vetting needs), as aaia_d1_041.
 - aaia_d1_298: provider-model knowledge (a deployer cannot retrain a provider's base model); the key is an output filter, the `limits-outside-the-model` card's own trap.
@@ -975,20 +976,20 @@ experts test the labels). One tag removed (aaia_d3_168, below).
 - aaia_d1_305: framework knowledge (the NIST AI RMF's three bias categories), as aaia_d1_079.
 - aaia_d3_148: the auditor's own scoping (training rights), as aaia_d3_053.
 - aaia_d3_149: specialist-competence knowledge; the runner-up, ties to the builder, is a threat the facts never raise (`ai-deciding-fact`'s domains omit D3, as aaia_d3_137).
-- aaia_d3_151: injection knowledge (hidden instructions in uploaded files bypass the question screen), as aaia_d2_126.
 - aaia_d3_155: generative-randomness knowledge (a language model writes plausible numbers, not random draws); the runner-up is rerun variability (as aaia_d3_138).
 - aaia_d3_166: the auditor's own population definition (shadow-mode rows never took effect), as aaia_d3_002.
 - aaia_d3_168: was `ai-in-audit-stays-yours`; the runner-up, revalidation, is that principle's own move, so feedback-loop knowledge (wrong clearances become training data) decides, as aaia_d1_197.
+- aaia_d3_171: assistant-memory knowledge (facts an assistant stores outlast deleted chats); the runner-up, provider backups, is covered by the approved terms, so `ai-in-audit-stays-yours` does not separate.
+- aaia_d3_174: was `named-human-owner`; after the re-angle it turns on temperature knowledge (a setting of 0 changes variation, not truth), and the runner-up, change approval, is not a principle's trap.
 
 **Medium confidence (tagged, review first):** aaia_d1_276 aaia_d1_277
 aaia_d1_280 aaia_d1_285 aaia_d1_286 aaia_d1_288 aaia_d1_289 aaia_d1_290
 aaia_d1_292 aaia_d1_293 aaia_d1_296 aaia_d1_300 aaia_d1_301
-aaia_d3_147 aaia_d3_152 aaia_d3_153 aaia_d3_154 aaia_d3_158 aaia_d3_159
+aaia_d3_147 aaia_d3_151 aaia_d3_152 aaia_d3_153 aaia_d3_154 aaia_d3_158 aaia_d3_159
 aaia_d3_160 aaia_d3_162 aaia_d3_163 aaia_d3_167 aaia_d3_172 aaia_d3_173
 aaia_d3_175 aaia_d3_177 aaia_d3_178.
 
 aaia_d1_285 stays on `real-human-oversight` (who may stop the AI is the gap;
 close to `fix-the-control-not-the-model`, as the runner-up blocks one error).
-aaia_d3_174 keeps `named-human-owner` (high: acceptance beyond tolerance moves
-to those who set it); the card's domains omit D3, so the lint warns, as
-aaia_d3_144.
+aaia_d3_151 was re-angled to a one-order test of a language-model screen and is
+now tagged `test-the-ai-as-used` (one verdict says little about other cases).

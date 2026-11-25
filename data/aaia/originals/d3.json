@@ -5846,7 +5846,7 @@
       "bloom_level": "Foundational",
       "question": "A Costa Rican home-solar installer's phone assistant allegedly promised a deposit refund; the platform keeps each call's audio and an automatic transcript. Which evidence BEST shows the IS auditor what was said?",
       "options": {
-        "A": "The transcript, after a sample of calls showed 98% accuracy",
+        "A": "The transcript, after a sample of calls showed 98% word accuracy",
         "B": "The caller's written complaint describing the promise",
         "C": "The audio recording of that call, played back in full",
         "D": "The vendor's description of the assistant's refund rules"
@@ -5871,7 +5871,7 @@
         "Transcripts",
         "Original records"
       ],
-      "_provenance": "Authored from concept: notes 3C.1 Sources of AI Evidence (decision, prompt and retrieval logs show what happened in production; match the evidence to the question). Round 1 fix: moved from an insurer, which mirrored the 3C.2 notes example, to a home-solar installer. Round 2 fix: the transcript now carries a vendor accuracy rate, so the speech model's error pattern, not general audit sense, decides. Round 3 fix: the runner-up is now the transcript after a sample confirmed its accuracy, a careful step that only the speech model's error pattern defeats. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3C.1 Sources of AI Evidence (decision, prompt and retrieval logs show what happened in production; match the evidence to the question). Round 1 fix: moved from an insurer, which mirrored the 3C.2 notes example, to a home-solar installer. Round 2 fix: the transcript now carries a vendor accuracy rate, so the speech model's error pattern, not general audit sense, decides. Round 3 fix: the runner-up is now the transcript after a sample confirmed its accuracy, a careful step that only the speech model's error pattern defeats. Round 4 fix: A now says word accuracy, which the explanation and tip 2 rely on. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
       "style_version": 2
     },
     {
@@ -6187,7 +6187,7 @@
       "pre_read": "Note how the tool works, then ask what each control would prevent or detect.",
       "correct_explanation": "Because the tool retrains on every clearance, misuse an auditor wrongly clears becomes training data, and the tool can learn to stop flagging such spending, with nobody seeing what it no longer flags. It still scores fully on its original validation cases, so revalidating on them may not reveal such blind spots. A second auditor confirming each clearance before the tool learns from it keeps most such errors out of its training.",
       "wrong_explanations": {
-        "A": "Tempting because the vendor knows its tool. But a vendor's assurance is not audit evidence, and accuracy can hold overall while wrongly cleared misuse stops being flagged.",
+        "A": "Tempting because the vendor knows its tool. But a vendor's attestation is an input, not assurance, and accuracy can hold overall while wrongly cleared misuse stops being flagged.",
         "B": "Tempting because revalidation restores confidence. But the tool already scores fully on those cases, so rerunning them may not show misuse that wrong clearances could teach it to ignore.",
         "D": "Tempting because recorded reasons support review. But a reason on file does not stop a wrong clearance becoming training data."
       },
@@ -6202,7 +6202,7 @@
         "Feedback loops",
         "False negatives"
       ],
-      "_provenance": "Authored from concept: notes 3D.2 AI-Assisted Audit Analytics and Tool Validation (revalidate when the tool, its model version, its prompt or the type of data changes). Round 2 fix: B now also names the retraining loop, so the key is not the only option that echoes the stem's mechanism. Round 3 fix: C shortened so the key is no longer the longest option. Round 4 fix (cross-domain review): recast from a GREATEST-concern item to a control item, so it no longer shares the frame of KaiSip's CISA item d1_218; the feedback loop now decides between checking clearances and revalidating on old cases. Round 5 fix (blind retest): the stem now says the tool still scores fully on its original validation cases, so quarterly revalidation on those cases cannot reveal what it learns from wrong clearances. Round 6 fix (standards re-audit): neutral pre_read, and the explanations and tip 2 now say revalidation may not reveal blind spots rather than claiming it cannot. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3D.2 AI-Assisted Audit Analytics and Tool Validation (revalidate when the tool, its model version, its prompt or the type of data changes). Round 2 fix: B now also names the retraining loop, so the key is not the only option that echoes the stem's mechanism. Round 3 fix: C shortened so the key is no longer the longest option. Round 4 fix (cross-domain review): recast from a GREATEST-concern item to a control item, so it no longer shares the frame of KaiSip's CISA item d1_218; the feedback loop now decides between checking clearances and revalidating on old cases. Round 5 fix (blind retest): the stem now says the tool still scores fully on its original validation cases, so quarterly revalidation on those cases cannot reveal what it learns from wrong clearances. Round 6 fix (standards re-audit): neutral pre_read, and the explanations and tip 2 now say revalidation may not reveal blind spots rather than claiming it cannot. Final fix: wrong_explanations A no longer says a vendor's assurance is not audit evidence (under ITAF 1205 it is evidence, only less reliable); note 3D.2 now teaches that a tool retraining on auditors' clearances learns their mistakes. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
       "style_version": 2
     },
     {
@@ -6214,7 +6214,7 @@
       "bloom_level": "Foundational",
       "question": "An audit team proposes reporting all 312 accounts its anomaly tool, validated at 90% precision, flagged at a Mauritian hotel group as access-policy breaches. Before reporting any account, what is the audit manager's BEST requirement?",
       "options": {
-        "A": "Follow-up of each flagged account against its records",
+        "A": "Follow-up of every flag against its underlying records",
         "B": "A statement of the tool's validated precision beside the 312",
         "C": "Follow-up of a sample of flags to confirm the 90% precision holds",
         "D": "Reporting of 281 breaches, estimated from the 90% precision"
@@ -6224,12 +6224,12 @@
       "pre_read": "Read what the team proposes to report and what each option adds.",
       "correct_explanation": "Even a validated tool with 90% precision flags some accounts with proper access: about one flag in ten here could be wrong, and nobody knows which. Reporting breaches means naming accounts that breached policy, so each flag needs follow-up against its records. Confirming the rate on a sample shows the tool works on this data, but it cannot say which of the unsampled accounts breached policy.",
       "wrong_explanations": {
-        "B": "Tempting because the precision was validated. But 90% precision means about 31 of these flags are likely accounts with proper access, and nobody knows which.",
+        "B": "Tempting because the precision was validated. But even if 90% holds here, about 31 of these flags would be accounts with proper access, and nobody knows which.",
         "C": "Tempting because sampling confirms the tool works here. But even at a confirmed 90%, about 31 flags are likely accounts with proper access, and unsampled ones stay unknown.",
         "D": "Tempting because it uses the validated rate. But an estimate cannot identify which accounts breached policy, and findings need verified items."
       },
       "tips": [
-        "Eliminate: B reports all 312 flags as breaches though about one in ten is likely wrong, and D reports an estimate that names no account.",
+        "Eliminate: B reports all 312 flags as breaches though even at 90% about one in ten would be wrong, and D reports an estimate that names no account.",
         "Final two: A beats C because a confirmed 90% still leaves about 31 accounts with proper access among the flags; only follow-up of each flag shows which.",
         "Exam cue: Validation tells you how far to trust a tool's flags overall. Each flag still needs follow-up before it becomes a finding."
       ],
@@ -6239,7 +6239,7 @@
         "False positives",
         "Audit findings"
       ],
-      "_provenance": "Authored from concept: notes 3D.2 AI-Assisted Audit Analytics and Tool Validation (treat each flag as a lead until it is followed up). Round 2 fix: D shortened so the wrong statistical option is no longer the longest. Round 3 fix: the rerun option was replaced by sampling to confirm the validated precision, a careful step that only the aggregate nature of precision defeats. Round 4 fix (cross-domain review): scene moved from supplier payments to user accounts flagged as access-policy breaches, away from the 3E.3 notes example on duplicate benefit payments. Round 5 fix (blind retest): 'FIRST' replaced by 'Before any account is reported, which requirement is BEST?' so the need to verify each named account decides, and 'here' dropped from C as a cue. Round 6 fix (re-audit and blind retest): the stem names the audit manager as the actor, D is worded as a requirement, and the explanations no longer say a sample cannot verify its own flags. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3D.2 AI-Assisted Audit Analytics and Tool Validation (treat each flag as a lead until it is followed up). Round 2 fix: D shortened so the wrong statistical option is no longer the longest. Round 3 fix: the rerun option was replaced by sampling to confirm the validated precision, a careful step that only the aggregate nature of precision defeats. Round 4 fix (cross-domain review): scene moved from supplier payments to user accounts flagged as access-policy breaches, away from the 3E.3 notes example on duplicate benefit payments. Round 5 fix (blind retest): 'FIRST' replaced by 'Before any account is reported, which requirement is BEST?' so the need to verify each named account decides, and 'here' dropped from C as a cue. Round 6 fix (re-audit and blind retest): the stem names the audit manager as the actor, D is worded as a requirement, and the explanations no longer say a sample cannot verify its own flags. Final fix: A reworded so 'account' and 'flagged' from the stem are no longer echoed only in the key. Re-audit fix: B's explanation and tip 1 no longer assume the validated precision holds on this data. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
       "style_version": 2
     },
     {
@@ -6322,9 +6322,9 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Belgian football club's vendor-hosted model picked youth-academy players to drop; against club policy, no January-to-June inputs were kept, so neither club nor IS auditor can reperform the picks. How is this BEST reported?",
+      "question": "A Belgian football club's vendor-hosted model chose academy players to drop; no January-to-June inputs were kept, so the club cannot explain any pick and the IS auditor cannot reperform one. How is this BEST reported?",
       "options": {
-        "A": "As a finding on missing records, naming the untested months",
+        "A": "As a finding on missing decision records",
         "B": "As an observation, since the vendor runs the model",
         "C": "As a finding on the model's accuracy in those months",
         "D": "As a scope limitation, excluding January to June from the conclusion"
@@ -6332,7 +6332,7 @@
       "correct": "A",
       "key_concept": "Decisions about people that cannot be explained or reperformed are a control gap to report, not only a limit on audit scope.",
       "pre_read": "Read each option as a reporting choice and ask what readers would learn.",
-      "correct_explanation": "The missing inputs are not only an obstacle to the audit; club policy required them, and without them the club itself cannot explain or check why any player was dropped. That is a control gap to report as a finding, stating which months could not be tested. Reporting only a scope limitation would describe the audit's problem and leave the club's own gap unreported.",
+      "correct_explanation": "The missing inputs are not only an obstacle to the audit: without them the club itself cannot explain or check why any player was dropped, and a model's decisions about people need records that let their owner explain them. That is a control gap to report as a finding. Reporting only a scope limitation would describe the audit's problem and leave the club's own gap unreported.",
       "wrong_explanations": {
         "B": "Tempting because the vendor runs the model. But the club owns its decisions about its players and must be able to explain them.",
         "C": "Tempting because accuracy matters. But nothing was tested for those months, so no accuracy conclusion can be reported.",
@@ -6349,7 +6349,7 @@
         "Decision logs",
         "Scope limitation"
       ],
-      "_provenance": "Authored from concept: notes 3E.1 Writing AI Audit Findings (condition: a control that policy requires but is missing; state an AI test result with its basis). Round 2 fix: moved from a housing association's arrears model (as aaia_d1_012) to an energy supplier's prepayment-meter model, and the stem now says the supplier itself cannot reperform the picks. Round 3 fix: moved again, from an Irish energy supplier picking households (near aaia_d2_398 and aaia_d2_019) to a football club's youth-academy cuts; the stem names the club, not 'it', and says club policy required the inputs, the fact that separates a finding from a scope limitation. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3E.1 Writing AI Audit Findings (condition: a control gap such as decisions about people the organization cannot explain; state an AI test result with its basis). Round 2 fix: moved from a housing association's arrears model (as aaia_d1_012) to an energy supplier's prepayment-meter model, and the stem now says the supplier itself cannot reperform the picks. Round 3 fix: moved again, from an Irish energy supplier picking households (near aaia_d2_398 and aaia_d2_019) to a football club's youth-academy cuts; the stem names the club, not 'it', and says club policy required the inputs, the fact that separates a finding from a scope limitation. Round 4 fix: club policy removed from the stem because it let general audit sense decide; the stem now says the club cannot explain any pick, the accountability fact that separates a finding from a scope limitation, and note 3E.1 now names records explaining decisions about people as a missing control. Re-audit fix: A no longer names the untested months, so the key does not contain the scope-limitation runner-up. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
       "style_version": 2
     },
     {
@@ -6432,7 +6432,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS audit found that staff at a Belgian welfare agency approved 99% of its sick-leave model's refusals within seconds; reviews must now last two minutes. Which test BEST supports closing the finding?",
+      "question": "An IS audit found Cypriot welfare agency staff approved 99% of a sick-leave model's refusals, which are seldom in error, within seconds; reviews must now last two minutes. Which test BEST supports closing the finding?",
       "options": {
         "A": "Management's confirmation that the reviewers were retrained",
         "B": "Logs showing reviews now last at least two minutes",
@@ -6440,17 +6440,17 @@
         "D": "Reperforming a sample of refusals approved since the change"
       },
       "correct": "C",
-      "key_concept": "Follow-up on rubber-stamp review needs evidence that reviewers catch model errors; review times and samples of approved decisions cannot show it.",
+      "key_concept": "Follow-up on rubber-stamp review needs evidence that reviewers catch model errors; review times, and approved decisions from a seldom-wrong model, may not show it.",
       "pre_read": "Restate what the original finding was about before judging any test.",
-      "correct_explanation": "The finding was that reviewers did not really judge the model's refusals. A two-minute minimum can be met by waiting, and a sample of approved refusals cannot show errors reviewers caught; where the model was right, approving looks correct with or without judgment. Seeding synthetic wrong refusals, so no claimant is affected, tests whether reviewers now catch the model's errors.",
+      "correct_explanation": "The finding was that reviewers did not really judge the model's refusals. A two-minute minimum can be met by waiting, and because the model is seldom in error, a sample of approved refusals may hold few or no errors for reviewers to have caught, so it cannot show their judgment. Seeding synthetic wrong refusals, so no claimant is affected, tests whether reviewers now catch the model's errors.",
       "wrong_explanations": {
         "A": "Tempting because training addresses habits. But management's word is not follow-up evidence, and training does not prove changed judgment.",
         "B": "Tempting because it shows the new control operating. But time can be waited out; it does not show reviewers catching wrong refusals.",
-        "D": "Tempting because reperformance is strong evidence. But approved refusals cannot show errors reviewers caught, and where the model was right, approving looks correct whether or not anyone judged."
+        "D": "Tempting because reperformance is strong evidence. But the model is seldom in error, so approved refusals may hold few or no errors to catch and cannot show judgment."
       },
       "tips": [
         "Eliminate: A relies on management's word, and B shows only that reviews last longer, which can be met by waiting.",
-        "Final two: C beats D because approved refusals hide the errors reviewers caught and look right wherever the model was right; only seeded wrong cases show whether reviewers catch errors.",
+        "Final two: C beats D because the model is seldom in error, so approved refusals may hold no errors for reviewers to have caught; only seeded wrong cases show whether reviewers catch errors.",
         "Exam cue: Close oversight findings on evidence that reviewers catch planted model errors, not on time spent or approved outcomes."
       ],
       "framework_ref": "NIST AI 100-1 MAP 3.5 (Processes for human oversight defined and assessed); NIST AI 600-1 Section 2.7 (Human-AI Configuration); ISACA IT Audit Standard 1402 (Follow-up Activities)",
@@ -6459,7 +6459,7 @@
         "Automation bias",
         "Human oversight"
       ],
-      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (follow up with production evidence, not reports or statements). Round 1 completeness fix: option D trimmed by a word so the key is the single wordiest option (domain word tell). Round 2 fix: the model-accuracy distractor replaced by reperforming approved refusals, a careful auditor's choice that only the automation-bias fact defeats (approved samples hide caught errors and look right wherever the model was right); the time-log option moved to B. Round 3 fix: option C now seeds synthetic wrong refusals, so the test never touches a real claimant (replacing an explanation claim the stem did not give); note 3E.2 now teaches seeded errors as follow-up evidence for weak review. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (follow up with production evidence, not reports or statements). Round 1 completeness fix: option D trimmed by a word so the key is the single wordiest option (domain word tell). Round 2 fix: the model-accuracy distractor replaced by reperforming approved refusals, a careful auditor's choice that only the automation-bias fact defeats (approved samples hide caught errors and look right wherever the model was right); the time-log option moved to B. Round 3 fix: option C now seeds synthetic wrong refusals, so the test never touches a real claimant (replacing an explanation claim the stem did not give); note 3E.2 now teaches seeded errors as follow-up evidence for weak review. Final fix: setting moved to Cyprus (Belgium already used by aaia_d2_443 and aaia_d3_172); the stem now states the model's refusals are seldom in error, the fact that rules out reperforming a sample, worded so 'wrong' is not a stem word echoed only in the key. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
       "style_version": 2
     },
     {
