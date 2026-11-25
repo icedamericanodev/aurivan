@@ -9,8 +9,8 @@ Three forms (Part 1 about 375: A 131, B 75, C 113, D 56) stay the target as sour
 
 Source: the opened Part 1 syllabus (V2.09.2024 FINAL, opened 19 Nov 2026). The
 "Covers" column is the blueprint's own wording (`docs/content/CIA_BLUEPRINT.md`), not
-The IIA's; the verb is the bullet's leading word. Bank: all 347 items in
-`data/cia/cia1/originals/d1.json` to `d4.json` as of round 14. This is an internal
+The IIA's; the verb is the bullet's leading word. Bank: all 348 items in
+`data/cia/cia1/originals/d1.json` to `d4.json` as of round 15. This is an internal
 working document; it holds no item text.
 
 ## 1. How the map was made
@@ -50,8 +50,8 @@ the target as sources open. The "Three-form target" columns below track that tar
 | A Foundations | 116 | 88, met | 131 | 15 | 35 | 0 | 4 | 0 |
 | B Ethics and Professionalism | 85 | 50, met | 75 | 0 (10 over) | 25 | 0 | 3 | 0 |
 | C Governance, Risk Management, and Control | 105 | 74, met | 113 | 8 | 20 | 0 | 0 | 0 |
-| D Fraud Risks | 41 | 38, met | 56 | 15 | 17 | 0 | 4 | 0 |
-| **Part 1** | **347** | **250, met** | **375** | **38** | **97** | **0** | **11** | **0** |
+| D Fraud Risks | 42 | 38, met | 56 | 14 | 17 | 0 | 4 | 0 |
+| **Part 1** | **348** | **250, met** | **375** | **37** | **97** | **0** | **11** | **0** |
 
 (The full and short mock splits are the app's own sum, `allocate()` in
 `data/cia/tools/cia_common.py`: 125 as 44/25/37/19 and 42 as 15/8/13/6.)
@@ -63,12 +63,13 @@ What the counts hide (after round 14):
   per-learner short mock) is an app rule, checked when the packs are wired in (plan
   section 11).
 - **One item (11):** A: 1A5a, 1A5f, 1A5g, 1A6d. B: 1B4e, 1B4f, 1B5b. D: 1D4b, 1D5b, 1D5c,
-  1D5d (blocked on members-only guides or the textbook). A bullet's only item stays out of
+  1D5d (blocked: they need the IIA's members-only guides, which the owner decided on 25 Nov 2026 not to open, or the textbook). A bullet's only item stays out of
   the held-back form.
 - **The opened sources are out of distinct lessons for Part 1.** Round 14 filled 6 of 22
-  planned slots (13 written, 7 cut or left as repeats); round 13 kept 19 of 24. The third
-  form waits for new sources: the IIA's members-only fraud guides (14 of D's 15) and a
-  textbook (1A4b, and more depth on the limited-source bullets).
+  planned slots (13 written, 7 cut or left as repeats); round 13 kept 19 of 24. A third
+  form needs new sources: the owner decided on 25 Nov 2026 not to join The IIA, so the
+  members-only fraud guides (14 of D's 15) stay unopened; a textbook remains possible
+  (1A4b, and more depth on the limited-source bullets).
 - **Section C's bulk sits in four bullets**: 1C1a (10), 1C8a (9), 1C6a (8) and 1C5c (7).
 - **Siblings to keep apart in one mock** are logged in each item's `_provenance` and in
   the plan's round write-ups (section 7).
@@ -185,7 +186,7 @@ What the counts hide (after round 14):
 | 1D1c | Fraud schemes that come up often | Identify (recall) | 2: d4_003 (C3), d4_022 (C3) | 0/2/0 | yes | more needs named schemes: PG Internal Auditing and Fraud (3rd ed.), textbook |
 | 1D2a | Thinking about fraud risk while planning the work | Recognize (recall) | 4: d4_005, d4_006, d4_008, d4_039; also touched by d4_004 | 0/3/1 | yes | - |
 | 1D2b | Judging which processes are most exposed to fraud | Assess (judge) | 4: d4_007, d4_029, d4_035, d4_036; also touched by d4_023 | 0/2/2 | yes | more needs beyond Standard 13.2: PG Engagement Planning: Assessing Fraud Risks |
-| 1D3a | Judging how the organization manages fraud risk | Evaluate (judge) | 3: d4_009, d4_010, d4_030 | 0/2/1 | yes | more needs beyond Standard 9.4 and the 2019 position paper: PG Internal Auditing and Fraud |
+| 1D3a | Judging how the organization manages fraud risk | Evaluate (judge) | 4: d4_009, d4_010, d4_030, d4_042 | 0/2/2 | yes | more needs beyond Standard 9.4 and the 2019 position paper: PG Internal Auditing and Fraud |
 | 1D3b | Finding and weighing red flags, organization-wide and inside a process | Detect and assess (judge) | 3: d4_011, d4_024, d4_025 | 0/2/1 | yes | more needs red-flag lists: PG Internal Auditing and Fraud |
 | 1D3c | The auditor's part in reporting red flags found during the work | Recognize (recall) | 3: d4_012, d4_031, d4_037 | 0/3/0 | yes | - |
 | 1D4a | How tone at the top changes the chance of fraud | Recognize (recall) | 3: d4_016, d4_033, d4_040 | 1/2/0 | yes | - |
@@ -211,7 +212,7 @@ lesson follow the sibling rule (at most two per lesson, about 15% of a section).
 | A | 116 | 131 | 15 | Toward the three-form target only, from new sources or new lessons: round 14 found no lesson left on 1A1a, 1A4e, 1A3c, 1A4c, 1A6e or 1A2a in the opened sources. Leads for later: an independence problem found after an engagement closes (Standard 7.1 considerations); a request to add scope as a possible scope limitation (Standard 13.3 considerations). 1A4b: the textbook. |
 | B | 85 | 75 | 0 | Met. 1B4e, 1B4f and 1B5b keep one item each unless a new lesson appears. |
 | C | 105 | 113 | 8 | Toward the target only: round 14 found no lesson left on 1C6b, 1C8b, 1C2b, 1C5a, 1C2c, 1C6a or 1C7b, and cut a 1C7c analysis item as a giveaway. |
-| D | 41 | 56 | 15 | **From opened sources (1):** a second 1D3a analysis item (round 13's was cut). **Blocked (14):** 1D1c +3, 1D5b +3, 1D5c +3, 1D5d +2, 1D3b +2, 1D4b +1. |
+| D | 42 | 56 | 14 | **From opened sources:** none left (round 15 added the second 1D3a analysis item, `cia1_d4_042`). **Blocked (14):** 1D1c +3, 1D5b +3, 1D5c +3, 1D5d +2, 1D3b +2, 1D4b +1. |
 
 **Section D's blocked bullets and the guide each needs.** The opened sources for D are
 the Standards (glossary "fraud", 4.2, 9.4, 13.2, 3.1, 6.1), the syllabus lines (plan 8b:
@@ -229,17 +230,17 @@ IIA and Anti-Fraud Collaboration white paper are background only and carry no ke
 | 1D4b | Proper use of segregation of duties past the syllabus line (which duties to split, compensating checks) | IIA Global PG: Internal Auditing and Fraud, 3rd ed.; textbook |
 | 1D5b, 1D5c, 1D5d | Interviewing technique, investigation steps, chain of custody, fraud testing methods | IIA Global PG: Internal Auditing and Fraud, 3rd ed.; textbook |
 
-Opening those two practice guides waits on the owner's IIA membership and licence
-decisions (plan section 9).
+Those two practice guides are members only, and the owner decided on 25 Nov 2026 not to
+join The IIA (plan section 9): these bullets stay blocked unless a textbook covers them.
 
 ## 5. Gap list in priority order
 
 The sale gate's counts are met (section 2). What is left serves the three-form target:
 
-1. **Section D from opened sources (1)**: a second 1D3a analysis item.
+1. **Section D from opened sources**: done in round 15 (`cia1_d4_042`).
 2. **Blocked on sources (14 D items, plus 1A4b)**: 1D1c, 1D3b, 1D4b, 1D5b, 1D5c, 1D5d
-   (the IIA's members-only guides, a textbook); 1A4b (textbook). The owner's IIA
-   membership and textbook decisions open them (plan section 9).
+   (the IIA's members-only guides, which stay unopened: no IIA membership, decided 25 Nov
+   2026); 1A4b (textbook). Only a textbook purchase could open any of them (plan section 9).
 3. **Sections A and C**: only from a lesson the bank does not yet teach (the leads in
    section 4), or from new sources.
 4. **One-item bullets (11)**: only with a new lesson.

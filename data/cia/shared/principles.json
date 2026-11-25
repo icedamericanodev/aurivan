@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "title": "KaiSip CIA exam mindset principles",
-  "updated": "2026-11-21",
-  "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, the Challenge Exam 1 to 5, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and are set by a tagging pass after each round (done for the Part 1 pilot and for rounds 1 to 14); legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 and ciac. For ciac, domains are the Challenge Exam's sections (A Internal Audit Professionalism and Quality is 1, B Internal Audit Operations and Audit Plan is 2, C Engagement Planning is 3, D Engagement Performance is 4, E Engagement Results and Monitoring is 5, mapped from docs/content/CIA_CHALLENGE_MAP.md), subtopics stay empty until the Challenge notes are generated, and practice ids follow the tag of each generated item's source question. Parts 2 and 3 are still to come. Intended once their notes exist (written here because the linter of the built file allows no extra top-level key): know-your-seat cia2 cia3; board-approves-management-supports cia3; management-owns-risk-and-action cia2 cia3; advise-never-decide cia2 cia3; function-or-person cia3; disclose-then-safeguard cia3; risk-sets-plan-and-scope cia2 cia3; plan-before-testing cia2; consider-fraud-every-engagement cia2; weigh-cost-against-benefit cia2 cia3; relevant-reliable-sufficient cia2; root-cause-over-symptom cia2 cia3; assurance-not-a-guarantee cia2; discuss-then-escalate cia2 cia3; report-through-the-right-channel cia2; tell-it-straight cia2 cia3; have-or-obtain-competency cia2 cia3; information-for-the-work-only cia2 cia3; design-or-operation cia2 cia3; the four reading principles cia2 cia3. Round 1 added two principles for questions that no earlier principle decided: have-or-obtain-competency (Principle 3; Standards 3.1, 3.2 and 13.5, with Standard 10.2 for the function) and information-for-the-work-only (Principle 5; Standards 5.1 and 5.2). Round 2 added one more, weigh-cost-against-benefit (Standard 4.2, where the weighing is a must for internal audit work; the considerations of Standard 14.4, where it is a should for recommendations and action plans), for questions that turn on proportion: enough work or enough control for the risk, not the most. Round 9 added design-or-operation (the glossary's definition of control processes as designed and operated; Standard 4.2, and the considerations to Standards 13.2, 13.3, 13.6 and 14.3, at should strength), for questions whose final two are a design failure against an operating failure. A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet, because no notes teach it until Part 3 is written. Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1. Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
+  "updated": "2026-11-25",
+  "description": "How the CIA exam thinks: the reasoning patterns The IIA's Certified Internal Auditor exams reward, written for the internal auditor's lens as checked against the Global Internal Audit Standards (2024) in docs/content/CIA_LENS.md. Each rule keeps the strength of its Standard (a must is a requirement, a should is a consideration) and each why names the Standard by number. Grouped into six families. This is the one shared source for the four CIA packs (cia1, cia2, cia3, ciac): data/cia/tools/build_packs.py builds each pack's mindset/principles.json from it, and a built file is never edited by hand. Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CIA deviations: each principle has packs (the packs it serves); domains, subtopics and practice_ids are objects keyed by pack; domains are an exam's sections (Part 1 has 1 to 4, Part 2 has 1 to 3, the Challenge Exam 1 to 5, and Section A is domain 1); subtopics are CIA notes codes from data/cia/<pack>/notes (part, section letter, topic, sub-topic, for example 1A7.2); practice ids refer to data/cia/<pack>/originals (ids such as cia1_d2_004) and are set by a tagging pass after each round (done for the Part 1 pilot, for rounds 1 to 14 and for the Part 2 pilot); legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are renamed for The IIA's lens; the role slip maps to knowing your seat, the tech-first slip maps to management owning the risk and the fix, and the symptom slip maps to root cause. Packs: every principle serves cia1 and ciac. Part 2 (cia2) is switched on from its pilot for every principle: the twenty planned for it, plus board-approves-management-supports, function-or-person, no-self-review and disclose-then-safeguard, which Part 2's notes also teach (2A7.1, 2A7.3, 2B3.1, 2C1.2, 2C1.4, 2C2.3) and which a built pack needs, since each family keeps at least two principles with orders from 1; its domains are Part 2's sections (A Engagement Planning is 1, B Information Gathering, Analysis, and Evaluation is 2, C Engagement Supervision and Communication is 3), its subtopics are codes from data/cia/cia2/notes (such as 2A1.1), and a principle with no Part 2 item yet keeps an empty cia2 practice list until a later round tags one. For ciac, domains are the Challenge Exam's sections (A Internal Audit Professionalism and Quality is 1, B Internal Audit Operations and Audit Plan is 2, C Engagement Planning is 3, D Engagement Performance is 4, E Engagement Results and Monitoring is 5, mapped from docs/content/CIA_CHALLENGE_MAP.md), subtopics stay empty until the Challenge notes are generated, and practice ids follow the tag of each generated item's source question. Part 3 is still to come. Intended for cia3 once its notes exist (written here because the linter of the built file allows no extra top-level key): know-your-seat; board-approves-management-supports; management-owns-risk-and-action; advise-never-decide; function-or-person; disclose-then-safeguard; risk-sets-plan-and-scope; weigh-cost-against-benefit; root-cause-over-symptom; discuss-then-escalate; tell-it-straight; have-or-obtain-competency; information-for-the-work-only; design-or-operation; the four reading principles. Round 1 added two principles for questions that no earlier principle decided: have-or-obtain-competency (Principle 3; Standards 3.1, 3.2 and 13.5, with Standard 10.2 for the function) and information-for-the-work-only (Principle 5; Standards 5.1 and 5.2). Round 2 added one more, weigh-cost-against-benefit (Standard 4.2, where the weighing is a must for internal audit work; the considerations of Standard 14.4, where it is a should for recommendations and action plans), for questions that turn on proportion: enough work or enough control for the risk, not the most. Round 9 added design-or-operation (the glossary's definition of control processes as designed and operated; Standard 4.2, and the considerations to Standards 13.2, 13.3, 13.6 and 14.3, at should strength), for questions whose final two are a design failure against an operating failure. A further principle on quality (shown, not claimed: Standards 4.1, 8.3 and 8.4) is planned for cia3 and ciac and is not written yet, because no notes teach it until Part 3 is written. Lint: python3 data/cia/tools/build_packs.py, then python3 scripts/lint_principles.py --cert cia1 (and cia2, ciac). Certified Internal Auditor and CIA are registered trademarks, and Global Internal Audit Standards is a trademark, of The IIA. KaiSip is an independent study aid. It is not affiliated with, sponsored, endorsed or licensed by The IIA.",
   "families": [
     {
       "id": "role",
@@ -48,7 +48,7 @@
       "order": 1,
       "title": "Know your seat",
       "rule": "Answer from the seat the question gives you: an internal auditor or the chief audit executive, never management.",
-      "why": "Domain I says internal auditing gives the board and management independent, objective assurance and advice. In Part 1 you answer as an internal auditor who knows the rules and who does what, even where a topic covers the board's or the chief audit executive's duties. You never answer as a manager.",
+      "why": "Domain I says internal auditing gives the board and management independent, objective assurance and advice. Each part names your seat: in Part 1 an internal auditor who knows the rules and who does what, in Part 2 the internal auditor running an engagement under a supervisor, and in Part 3 the chief audit executive. You never answer as a manager.",
       "triggers": [
         "what should the internal auditor do",
         "who is responsible for",
@@ -74,6 +74,7 @@
       "nuance": "The seat changes by exam: Part 2 is the internal auditor running an engagement, Part 3 the chief audit executive running the function, and the Challenge Exam follows the topic. If a question names another actor, answer for that actor.",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
@@ -81,6 +82,10 @@
           1,
           3,
           4
+        ],
+        "cia2": [
+          1,
+          3
         ],
         "ciac": [
           1,
@@ -99,6 +104,11 @@
           "1D3.1",
           "1D5.1"
         ],
+        "cia2": [
+          "2A1.1",
+          "2C1.1",
+          "2C2.3"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -115,6 +125,10 @@
           "cia1_d3_001",
           "cia1_d4_017",
           "cia1_d3_102"
+        ],
+        "cia2": [
+          "cia2_d3_004",
+          "cia2_d3_007"
         ],
         "ciac": [
           "ciac_d1_006",
@@ -158,12 +172,17 @@
       "nuance": "Not everything is approved. The internal audit strategy is reviewed with the board and senior management. On the chief audit executive's pay the board gives input; it authorizes appointment and removal (Standards 9.2 and 7.1).",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
         "cia1": [
           1,
           3
+        ],
+        "cia2": [
+          1,
+          2
         ],
         "ciac": [
           1,
@@ -178,6 +197,10 @@
           "1A3.3",
           "1A7.2",
           "1C1.2"
+        ],
+        "cia2": [
+          "2A7.3",
+          "2B3.1"
         ],
         "ciac": []
       },
@@ -199,6 +222,7 @@
           "cia1_d3_043",
           "cia1_d1_113"
         ],
+        "cia2": [],
         "ciac": [
           "ciac_d1_001",
           "ciac_d1_003",
@@ -243,6 +267,7 @@
       "nuance": "With board-approved safeguards (Standard 7.1), internal audit may keep a risk register, prepare management's internal risk reports or supervise a risk team. The 2026 risk statement bars choosing or owning risk responses, and owning management's follow-up or external reporting.",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
@@ -251,6 +276,10 @@
           2,
           3,
           4
+        ],
+        "cia2": [
+          1,
+          3
         ],
         "ciac": [
           1,
@@ -269,6 +298,11 @@
           "1D3.1",
           "1D4.2"
         ],
+        "cia2": [
+          "2A3.2",
+          "2A3.4",
+          "2C2.4"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -283,7 +317,11 @@
           "cia1_d4_015",
           "cia1_d4_020",
           "cia1_d1_108",
-          "cia1_d1_109"
+          "cia1_d1_109",
+          "cia1_d4_042"
+        ],
+        "cia2": [
+          "cia2_d3_008"
         ],
         "ciac": [
           "ciac_d1_020"
@@ -325,12 +363,16 @@
       "nuance": "By agreement, advisory work may skip a formal risk assessment, criteria and evidence for findings; a significant risk must still be a finding. Later assurance needs the chief audit executive to confirm objectivity holds, not a 12-month wait.",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
         "cia1": [
           1,
           3
+        ],
+        "cia2": [
+          1
         ],
         "ciac": [
           1,
@@ -346,6 +388,10 @@
           "1A6.2",
           "1A6.3",
           "1C6.2"
+        ],
+        "cia2": [
+          "2A1.1",
+          "2A2.3"
         ],
         "ciac": []
       },
@@ -367,6 +413,7 @@
           "cia1_d1_104",
           "cia1_d1_112"
         ],
+        "cia2": [],
         "ciac": [
           "ciac_d1_017"
         ]
@@ -407,12 +454,17 @@
       "nuance": "A sound reporting line never proves any one auditor is unbiased, and an unbiased team does not cure a weak reporting line. An administrative line to the chief executive officer is a leading practice, not a requirement.",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
         "cia1": [
           1,
           2
+        ],
+        "cia2": [
+          1,
+          3
         ],
         "ciac": [
           1,
@@ -427,6 +479,10 @@
           "1A8.2",
           "1B2.1"
         ],
+        "cia2": [
+          "2A7.1",
+          "2C1.4"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -437,6 +493,7 @@
           "cia1_d2_004",
           "cia1_d2_022"
         ],
+        "cia2": [],
         "ciac": [
           "ciac_d1_005",
           "ciac_d1_026"
@@ -479,12 +536,17 @@
       "nuance": "The bar on assessing a former responsibility has no time limit; the 12-month presumption covers assurance only. Giving advice is not being responsible. Judging one's own earlier audit rating can impair objectivity, at least in appearance: disclose it.",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
         "cia1": [
           1,
           2
+        ],
+        "cia2": [
+          1,
+          3
         ],
         "ciac": [
           1
@@ -497,6 +559,10 @@
           "1B2.3",
           "1B2.4"
         ],
+        "cia2": [
+          "2A7.1",
+          "2C1.2"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -506,6 +572,7 @@
           "cia1_d2_021",
           "cia1_d2_025"
         ],
+        "cia2": [],
         "ciac": [
           "ciac_d1_021",
           "ciac_d1_025",
@@ -548,12 +615,16 @@
       "nuance": "Decline a gift or favor (Standard 2.2) and still tell the right party. A role proposed for the chief audit executive is discussed with the board and senior management, not declined alone (Standard 7.1). The Standards do not rank safeguards.",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
         "cia1": [
           1,
           2
+        ],
+        "cia2": [
+          3
         ],
         "ciac": [
           1
@@ -567,6 +638,10 @@
           "1B3.2",
           "1B3.3",
           "1B3.4"
+        ],
+        "cia2": [
+          "2C1.2",
+          "2C2.3"
         ],
         "ciac": []
       },
@@ -582,6 +657,7 @@
           "cia1_d1_107",
           "cia1_d1_114"
         ],
+        "cia2": [],
         "ciac": [
           "ciac_d1_008",
           "ciac_d1_014"
@@ -623,6 +699,7 @@
       "nuance": "Risk-based does not mean risk only. The plan also takes input from the board and senior management, and due professional care weighs an engagement's cost against its likely benefit (Standards 9.4 and 4.2).",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
@@ -631,6 +708,9 @@
           2,
           3,
           4
+        ],
+        "cia2": [
+          1
         ],
         "ciac": [
           2,
@@ -644,6 +724,13 @@
           "1C4.3",
           "1C6.1",
           "1D2.3"
+        ],
+        "cia2": [
+          "2A1.2",
+          "2A3.1",
+          "2A5.1",
+          "2A5.2",
+          "2A5.4"
         ],
         "ciac": []
       },
@@ -664,6 +751,11 @@
           "cia1_d4_036",
           "cia1_d4_038",
           "cia1_d4_040"
+        ],
+        "cia2": [
+          "cia2_d1_001",
+          "cia2_d1_005",
+          "cia2_d1_009"
         ],
         "ciac": []
       },
@@ -700,9 +792,10 @@
         "trap": "Test a sample of complaints and judge them against the auditor's own past experience.",
         "why": "A finding is a gap between a condition and criteria. Where adequate criteria are missing, the auditor first identifies suitable ones through discussion."
       },
-      "nuance": "Planning is not a one-way gate: the risk assessment and the work program may change as work goes on. Judging a control's design before its operation is a should, and advisory work may not need formal criteria.",
+      "nuance": "Planning is not a one-way gate: the risk assessment may be updated during the work, and the work program revised with prompt approval. Judging design before operation is a should; advisory work may not need formal criteria.",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
@@ -710,6 +803,10 @@
           1,
           3,
           4
+        ],
+        "cia2": [
+          1,
+          3
         ],
         "ciac": [
           3
@@ -723,6 +820,13 @@
           "1C8.1",
           "1D2.1"
         ],
+        "cia2": [
+          "2A1.4",
+          "2A2.2",
+          "2A2.3",
+          "2A6.3",
+          "2C2.2"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -732,6 +836,12 @@
           "cia1_d3_015",
           "cia1_d3_034",
           "cia1_d3_040"
+        ],
+        "cia2": [
+          "cia2_d1_004",
+          "cia2_d1_006",
+          "cia2_d1_008",
+          "cia2_d3_009"
         ],
         "ciac": []
       },
@@ -771,12 +881,16 @@
       "nuance": "Considering fraud risk is not detecting or investigating fraud, and due professional care is not a guarantee. For advisory work, the risk assessment may not need to be formal or written down, depending on the agreement.",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
         "cia1": [
           2,
           4
+        ],
+        "cia2": [
+          1
         ],
         "ciac": [
           3
@@ -791,6 +905,10 @@
           "1D2.3",
           "1D3.1"
         ],
+        "cia2": [
+          "2A5.1",
+          "2A5.2"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -803,6 +921,7 @@
           "cia1_d4_035",
           "cia1_d4_039"
         ],
+        "cia2": [],
         "ciac": []
       },
       "slip_pattern": null,
@@ -843,12 +962,17 @@
       "nuance": "A must for internal audit work (Standard 4.2), a should for recommendations and action plans (Standard 14.4's considerations), and sound practice when judging any other control. Cost comes second: check any requirement and the risk tolerance first, then compare costs.",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
         "cia1": [
           2,
           3
+        ],
+        "cia2": [
+          1,
+          2
         ],
         "ciac": [
           3,
@@ -863,6 +987,11 @@
           "1C8.1",
           "1C8.2"
         ],
+        "cia2": [
+          "2A4.2",
+          "2A6.2",
+          "2B3.2"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -874,6 +1003,7 @@
           "cia1_d3_061",
           "cia1_d3_062"
         ],
+        "cia2": [],
         "ciac": []
       },
       "slip_pattern": null,
@@ -885,8 +1015,8 @@
       "family": "evidence",
       "order": 1,
       "title": "Relevant, reliable, sufficient",
-      "rule": "Information must be relevant, reliable and sufficient: enough for a competent person to repeat the work and agree.",
-      "why": "A conclusion is only as strong as what stands behind it. Standard 14.1 asks for information that fits the engagement's objectives, can be trusted, and would let a prudent, informed and competent person redo the work and agree. Standard 4.3 adds professional skepticism: being told something is a start, not proof.",
+      "rule": "Information must be relevant, reliable and sufficient: enough for a competent person to redo the work and reach your conclusion.",
+      "why": "A conclusion is only as strong as what stands behind it. Standard 14.1 asks for information that fits the engagement's objectives, can be trusted, and would let a prudent, informed and competent person redo the work and reach the same conclusions. Standard 4.3 adds professional skepticism: being told something is a start, not proof.",
       "triggers": [
         "management stated",
         "verbal confirmation",
@@ -898,7 +1028,7 @@
       ],
       "trap": {
         "move": "Accepting what you are told, or the first document offered, because the source is senior, confident or has always been right before.",
-        "why_wrong": "Trust is not evidence. Information is stronger when the internal auditor obtains it directly, when an independent source supplies it, when something else corroborates it, and when it comes from a well-controlled system. Results internal audit only facilitated, such as a control self-assessment, are still management's information and are evaluated before use. Reliability ranks evidence; it does not shut management out. Root causes are still worked out with management when possible (Standard 14.3), and the auditor weighs what they say."
+        "why_wrong": "Trust is not evidence. Information is stronger when the internal auditor obtains it directly or from an independent source, when something else corroborates it, and when it comes from a well-controlled system. Weigh each factor on its own: a first-hand query cannot repair figures anyone can overwrite. A sample should represent its population, so items the audited team picked cannot speak for the rest. Skepticism is aimed at the information, not the person. Results internal audit only facilitated, such as a control self-assessment, are still management's information and are evaluated before use. Reliability ranks evidence; it does not shut management out. Root causes are still worked out with management when possible (Standard 14.3), and the auditor weighs what they say."
       },
       "example": {
         "scenario": "A plant manager in Vietnam tells Linh, an internal auditor, that every safety inspection was done this year, and hands over a summary the manager's own team prepared.",
@@ -910,9 +1040,10 @@
         "trap": "Compare the payments with a receiving summary the purchasing manager prepared for the audit.",
         "why": "Information the auditor obtains directly from a controlled system is more reliable than a summary prepared by the area under review."
       },
-      "nuance": "Three attributes, not four: older books add one. Skepticism is aimed at the information, not the person. When relevant evidence cannot be obtained, the internal auditor decides whether that is itself a finding.",
+      "nuance": "Three attributes, not four: older books add one. Relevance comes first: when the objective is what people know, asking them is direct evidence. If relevant evidence cannot be obtained, decide whether that is itself a finding.",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
@@ -921,6 +1052,11 @@
           2,
           3,
           4
+        ],
+        "cia2": [
+          1,
+          2,
+          3
         ],
         "ciac": [
           1,
@@ -936,6 +1072,16 @@
           "1C6.1",
           "1D3.2"
         ],
+        "cia2": [
+          "2B1.1",
+          "2B1.2",
+          "2B1.3",
+          "2B2.1",
+          "2B2.2",
+          "2B2.3",
+          "2B7.2",
+          "2C1.3"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -949,6 +1095,18 @@
           "cia1_d3_003",
           "cia1_d4_011",
           "cia1_d4_023"
+        ],
+        "cia2": [
+          "cia2_d1_013",
+          "cia2_d2_001",
+          "cia2_d2_002",
+          "cia2_d2_003",
+          "cia2_d2_004",
+          "cia2_d2_005",
+          "cia2_d2_008",
+          "cia2_d2_009",
+          "cia2_d2_012",
+          "cia2_d3_002"
         ],
         "ciac": [
           "ciac_d1_019",
@@ -995,6 +1153,7 @@
       "nuance": "The auditor finds the cause with management when possible; management owns the action. In a chain of steps, look for the step where what matters is first lost or distorted, not where the effect shows, then ask why.",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
@@ -1002,6 +1161,10 @@
           2,
           3,
           4
+        ],
+        "cia2": [
+          1,
+          2
         ],
         "ciac": [
           4,
@@ -1014,6 +1177,11 @@
           "1C7.3",
           "1C8.1",
           "1D1.4"
+        ],
+        "cia2": [
+          "2A5.4",
+          "2B6.1",
+          "2B6.2"
         ],
         "ciac": []
       },
@@ -1034,6 +1202,11 @@
           "cia1_d3_101",
           "cia1_d2_084",
           "cia1_d4_041"
+        ],
+        "cia2": [
+          "cia2_d1_010",
+          "cia2_d2_007",
+          "cia2_d2_010"
         ],
         "ciac": []
       },
@@ -1074,6 +1247,7 @@
       "nuance": "The Standards name limited and reasonable assurance but define neither, so do not rank them beyond this: the level follows the work done. Risk management aims at risk-taking in line with appetite and tolerance, never at removing all risk.",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
@@ -1081,6 +1255,9 @@
           1,
           2,
           3
+        ],
+        "cia2": [
+          2
         ],
         "ciac": [
           4
@@ -1094,6 +1271,9 @@
           "1C7.1",
           "1C8.2"
         ],
+        "cia2": [
+          "2B8.2"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -1102,6 +1282,7 @@
           "cia1_d2_015",
           "cia1_d3_030"
         ],
+        "cia2": [],
         "ciac": []
       },
       "slip_pattern": null,
@@ -1126,7 +1307,7 @@
       ],
       "trap": {
         "move": "Starting anyway and planning to pick the skill up alone during fieldwork, or treating long experience, a certificate or a line in the charter as proof that the skill is there.",
-        "why_wrong": "The charter says the function may do the work, not that it can. Learning on an engagement is fine under proper supervision, but not alone, with nobody on the team who has the skill. An internal auditor who finds while planning that the team's skills do not fit the engagement must raise this resource gap with the chief audit executive (Standard 13.5), who can obtain the skill, for example through training or an outside provider."
+        "why_wrong": "The charter says the function may do the work, not that it can. Learning on an engagement is fine under proper supervision, but not alone, with nobody on the team who has the skill. An internal auditor who finds while planning that the team's skills do not fit the engagement must raise this resource gap with the chief audit executive (Standard 13.5), who can obtain the skill, for example through training or an outside provider. Experience counts in the area at hand: where it is thin there and the engagement is complex, supervision gets closer, not lighter (Standard 12.3)."
       },
       "example": {
         "scenario": "Eleni, certified for twelve years, is an internal auditor at a wind farm operator in Greece. Eleni is assigned to lead an engagement on maintenance contracts priced by an engineering formula Eleni cannot follow.",
@@ -1141,12 +1322,17 @@
       "nuance": "A gap is no reason to refuse: the skill can usually be obtained. If it cannot, the work may be narrowed or declined, and the chief audit executive tells senior management and the board the impact (Standards 3.1, 10.2, 13.5).",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
         "cia1": [
           2,
           4
+        ],
+        "cia2": [
+          1,
+          3
         ],
         "ciac": [
           2,
@@ -1159,6 +1345,13 @@
           "1B4.4",
           "1D5.1"
         ],
+        "cia2": [
+          "2A7.1",
+          "2A7.2",
+          "2C1.1",
+          "2C1.2",
+          "2C1.4"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -1169,6 +1362,11 @@
           "cia1_d2_079",
           "cia1_d4_018",
           "cia1_d4_028"
+        ],
+        "cia2": [
+          "cia2_d1_014",
+          "cia2_d3_001",
+          "cia2_d3_003"
         ],
         "ciac": []
       },
@@ -1209,12 +1407,17 @@
       "nuance": "No order is required: design may be judged in planning or alongside testing (Standard 13.6's considerations). When a design is plainly inadequate, fully testing its operation may not be worth the cost (Standard 4.2's considerations).",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
         "cia1": [
           3,
           4
+        ],
+        "cia2": [
+          1,
+          2
         ],
         "ciac": [
           3,
@@ -1225,6 +1428,12 @@
         "cia1": [
           "1C2.3",
           "1C8.1"
+        ],
+        "cia2": [
+          "2A3.3",
+          "2A6.1",
+          "2A6.2",
+          "2B4.1"
         ],
         "ciac": []
       },
@@ -1237,6 +1446,11 @@
           "cia1_d3_100",
           "cia1_d4_034",
           "cia1_d3_103"
+        ],
+        "cia2": [
+          "cia2_d1_007",
+          "cia2_d1_012",
+          "cia2_d2_006"
         ],
         "ciac": []
       },
@@ -1277,10 +1491,15 @@
       "nuance": "Raising accepted risk with its managers first is a should. Inside an engagement, a scope limitation goes to management, then up if unresolved (Standard 13.3); management cutting the function's scope goes promptly to the board and senior management (Standard 8.1).",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
         "cia1": [
+          1,
+          3
+        ],
+        "cia2": [
           1,
           3
         ],
@@ -1296,6 +1515,11 @@
           "1C5.2",
           "1C5.4"
         ],
+        "cia2": [
+          "2A1.3",
+          "2A7.3",
+          "2C2.3"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -1309,6 +1533,7 @@
           "cia1_d1_105",
           "cia1_d3_104"
         ],
+        "cia2": [],
         "ciac": [
           "ciac_d1_013"
         ]
@@ -1350,6 +1575,7 @@
       "nuance": "Compare conduct with the code: a tie declared and handled under the code is no breach, but check it held. Senior management's breach should reach the board, and internal auditors should check what was done. Avoiding confrontation is practice only.",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
@@ -1357,6 +1583,9 @@
           2,
           3,
           4
+        ],
+        "cia2": [
+          3
         ],
         "ciac": [
           1,
@@ -1372,6 +1601,9 @@
           "1D3.3",
           "1D5.1"
         ],
+        "cia2": [
+          "2C2.3"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -1386,6 +1618,7 @@
           "cia1_d4_037",
           "cia1_d3_105"
         ],
+        "cia2": [],
         "ciac": [
           "ciac_d1_024"
         ]
@@ -1427,6 +1660,7 @@
       "nuance": "Honest is not harsh, and straight is not stronger than the evidence: a red flag is reported as an indicator, not as proven fraud. Results change only for a valid reason; only a significant error triggers the formal correction.",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
@@ -1435,6 +1669,9 @@
           2,
           3,
           4
+        ],
+        "cia2": [
+          2
         ],
         "ciac": [
           1,
@@ -1448,6 +1685,10 @@
           "1B4.3",
           "1B6.4",
           "1D3.3"
+        ],
+        "cia2": [
+          "2B8.1",
+          "2B8.2"
         ],
         "ciac": []
       },
@@ -1465,6 +1706,10 @@
           "cia1_d4_027",
           "cia1_d4_031",
           "cia1_d1_115"
+        ],
+        "cia2": [
+          "cia2_d2_013",
+          "cia2_d2_014"
         ],
         "ciac": [
           "ciac_d1_030"
@@ -1507,11 +1752,16 @@
       "nuance": "Confidentiality is no reason to leave a finding out of a report to the board (Standard 1.1), which receives results (Standard 11.3). The chief audit executive must hold anyone assisting the function to the same protection rules (Standard 5.2).",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
         "cia1": [
           2
+        ],
+        "cia2": [
+          2,
+          3
         ],
         "ciac": [
           1
@@ -1524,6 +1774,10 @@
           "1B6.3",
           "1B6.4"
         ],
+        "cia2": [
+          "2B7.4",
+          "2C2.4"
+        ],
         "ciac": []
       },
       "practice_ids": {
@@ -1534,6 +1788,7 @@
           "cia1_d2_030",
           "cia1_d2_082"
         ],
+        "cia2": [],
         "ciac": [
           "ciac_d1_032",
           "ciac_d1_033"
@@ -1576,6 +1831,7 @@
       "nuance": "A should is not wrong; read which strength the question wants. The function's methodologies bind its auditors like the Standards (Standard 4.1), even beyond them. A missing essential condition's impact goes to the board and senior management.",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
@@ -1584,6 +1840,11 @@
           2,
           3,
           4
+        ],
+        "cia2": [
+          1,
+          2,
+          3
         ],
         "ciac": [
           1,
@@ -1602,6 +1863,12 @@
           "1B1.1",
           "1C8.1",
           "1D2.2"
+        ],
+        "cia2": [
+          "2A1.1",
+          "2A6.3",
+          "2B6.3",
+          "2C2.1"
         ],
         "ciac": []
       },
@@ -1630,6 +1897,13 @@
           "cia1_d4_010",
           "cia1_d4_025",
           "cia1_d1_116"
+        ],
+        "cia2": [
+          "cia2_d1_002",
+          "cia2_d1_003",
+          "cia2_d1_011",
+          "cia2_d2_011",
+          "cia2_d3_006"
         ],
         "ciac": [
           "ciac_d1_002",
@@ -1674,6 +1948,7 @@
       "nuance": "LEAST and EXCEPT flip the test: three options fit and you want the one that does not. MOST LIKELY asks what is most probable from the facts given, not what would be worst.",
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
@@ -1682,6 +1957,11 @@
           2,
           3,
           4
+        ],
+        "cia2": [
+          1,
+          2,
+          3
         ],
         "ciac": [
           1,
@@ -1693,6 +1973,7 @@
       },
       "subtopics": {
         "cia1": [],
+        "cia2": [],
         "ciac": []
       },
       "practice_ids": {
@@ -1701,6 +1982,7 @@
           "cia1_d2_006",
           "cia1_d2_023"
         ],
+        "cia2": [],
         "ciac": [
           "ciac_d1_027"
         ]
@@ -1740,6 +2022,7 @@
       },
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
@@ -1748,6 +2031,11 @@
           2,
           3,
           4
+        ],
+        "cia2": [
+          1,
+          2,
+          3
         ],
         "ciac": [
           1,
@@ -1759,6 +2047,7 @@
       },
       "subtopics": {
         "cia1": [],
+        "cia2": [],
         "ciac": []
       },
       "practice_ids": {
@@ -1778,6 +2067,7 @@
           "cia1_d3_056",
           "cia1_d3_060"
         ],
+        "cia2": [],
         "ciac": []
       },
       "slip_pattern": "runner-up",
@@ -1816,6 +2106,7 @@
       },
       "packs": [
         "cia1",
+        "cia2",
         "ciac"
       ],
       "domains": {
@@ -1824,6 +2115,11 @@
           2,
           3,
           4
+        ],
+        "cia2": [
+          1,
+          2,
+          3
         ],
         "ciac": [
           1,
@@ -1835,6 +2131,7 @@
       },
       "subtopics": {
         "cia1": [],
+        "cia2": [],
         "ciac": []
       },
       "practice_ids": {
@@ -1876,6 +2173,9 @@
           "cia1_d1_106",
           "cia1_d1_110",
           "cia1_d1_111"
+        ],
+        "cia2": [
+          "cia2_d3_005"
         ],
         "ciac": [
           "ciac_d1_009",

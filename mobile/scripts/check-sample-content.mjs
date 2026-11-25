@@ -6,18 +6,53 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import { checkSamplePack, pruneReferences, sampleSelection } from './sample-content.mjs';
+import { PUBLIC_PROFILE, questionPackMode } from './build-content.mjs';
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const generated = path.join(repo, 'mobile/src/content/generated');
 const build = (mode) => {
   const env = { ...process.env };
   delete env.KAISIP_QUESTION_PACK;
+  delete env.KAISIP_RELEASE;
+  delete env.EAS_BUILD_PROFILE;
   if (mode !== undefined) env.KAISIP_QUESTION_PACK = mode;
   execFileSync(process.execPath, ['mobile/scripts/build-content.mjs'], { cwd: repo, env, stdio: 'pipe' });
 };
 const snapshot = (root) => Object.fromEntries(fs.readdirSync(root, { recursive: true })
   .filter((p) => fs.statSync(path.join(root, p)).isFile()).sort()
   .map((p) => [p, fs.readFileSync(path.join(root, p), 'utf8')]));
+
+test('the public release fails closed unless it explicitly asks for the sample', () => {
+  const ok = { KAISIP_RELEASE: 'public', KAISIP_QUESTION_PACK: 'sample' };
+  assert.equal(questionPackMode(ok), 'sample');
+  assert.equal(questionPackMode({ ...ok, EAS_BUILD_PROFILE: PUBLIC_PROFILE }), 'sample');
+  for (const env of [
+    { EAS_BUILD_PROFILE: PUBLIC_PROFILE },
+    { EAS_BUILD_PROFILE: PUBLIC_PROFILE, KAISIP_QUESTION_PACK: 'sample' },
+    { EAS_BUILD_PROFILE: PUBLIC_PROFILE, KAISIP_RELEASE: 'public' },
+    { KAISIP_RELEASE: 'public' },
+    { KAISIP_RELEASE: 'public', KAISIP_QUESTION_PACK: 'full' },
+    { KAISIP_RELEASE: 'public', KAISIP_QUESTION_PACK: 'Sample' },
+    { KAISIP_RELEASE: 'pubic', KAISIP_QUESTION_PACK: 'sample' },
+  ]) assert.throws(() => questionPackMode(env), /KAISIP_RELEASE|Public release build/, JSON.stringify(env));
+  // Local builds keep the full-bank default; the testers' store build must say "full".
+  assert.equal(questionPackMode({}), 'full');
+  assert.equal(questionPackMode({ EAS_BUILD_PROFILE: 'production', KAISIP_QUESTION_PACK: 'full' }), 'full');
+  for (const pack of [undefined, 'sample', 'Full']) {
+    assert.throws(() => questionPackMode({ EAS_BUILD_PROFILE: 'production', KAISIP_QUESTION_PACK: pack }), /Closed-testing build/);
+  }
+});
+
+test('a public build with a bad setting leaves no generated pack behind', () => {
+  const env = { ...process.env, KAISIP_RELEASE: 'public', KAISIP_QUESTION_PACK: 'full' };
+  try {
+    const run = spawnSync(process.execPath, ['mobile/scripts/build-content.mjs'], { cwd: repo, env, encoding: 'utf8' });
+    assert.notEqual(run.status, 0);
+    assert.equal(fs.existsSync(generated), false);
+  } finally {
+    build();
+  }
+});
 
 test('only known question-link fields are pruned, without mutating source', () => {
   const source = { practiceIds: ['free', 'paid'], nested: [{ prepares: ['paid'] }], other: ['paid'] };

@@ -59,6 +59,16 @@ export function whatsNewFor(updatesOn: boolean, list: readonly WhatsNewEntry[] =
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    // The first public release (docs/mobile/RELEASE_2_3.md). The same app code
+    // ships twice: the public build with the free question sample, and the
+    // closed testers' build with the full bank. Keep this text true for both.
+    version: '2.3',
+    date: '2026-11-25',
+    improved: [
+      'The drill suggested on Play, the final review week and the reminders on the evening before your exam now follow the same recent mistake patterns as your mistake journal.',
+    ],
+  },
+  {
     // Large screens (docs/mobile/RELEASE_2_2.md). Phones are unchanged; the
     // date is set again at build freeze.
     version: '2.2',
@@ -74,7 +84,6 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
       'After you answer, the short summary and tips come first, with the whole question and every option one tap away.',
       'On tablets and other large screens, pages now sit in a comfortable reading width instead of stretching across the screen.',
       'The recovery Concept Lab is put away for now while we make it clearer.',
-      'The drill suggested on Play, the final review week and the reminders on the evening before your exam now follow the same recent mistake patterns as your mistake journal.',
     ],
   },
   {

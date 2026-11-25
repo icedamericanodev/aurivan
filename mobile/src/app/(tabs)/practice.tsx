@@ -37,6 +37,7 @@
  * - If the choices leave fewer questions than asked, the button and a line say the real length.
  */
 import { FeatureInfo } from '../../components/featureInfo';
+import { findQuestion } from '../../content/loader';
 import * as Router from 'expo-router';
 import { router } from 'expo-router';
 import { Children, memo, useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
@@ -902,7 +903,8 @@ const ReviewSaved = memo(function ReviewSaved({ cert, timed, weakLine, buildFor,
   // Primitives from the store, so the card re-renders only when its words change: the missed line
   // only says whether any are open (an answer that fixes one of several changes nothing here).
   const anyMissed = useProgress((p) => Object.values(selectCert(p, cert.id).mistakes).some((m) => !m.resolved));
-  const savedCount = useProgress((p) => selectCert(p, cert.id).bookmarks.length);
+  // Only saved questions this build has (the Saved list shows the same ones; mobile 2.3, free sample).
+  const savedCount = useProgress((p) => selectCert(p, cert.id).bookmarks.filter((id) => findQuestion(cert.id, id)).length);
   const lines = reviewLines(anyMissed ? 1 : 0, savedCount);
   return (
     <HubCard testID="practice-more">

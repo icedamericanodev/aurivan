@@ -71,9 +71,50 @@ function cloudBuildProblem(env) {
   );
 }
 
+/** The EAS profile for the public Google Play build: free sample only (eas.json). */
+const PUBLIC_PROFILE = 'public-sample';
+
+/** True for the public build: its profile, or KAISIP_RELEASE=public. */
+function isPublicBuild(env) {
+  return env.EAS_BUILD_PROFILE === PUBLIC_PROFILE || env.KAISIP_RELEASE === 'public';
+}
+
+/**
+ * 3. The public build bundles only the free question sample, and fails closed
+ *    (docs/mobile/SAMPLE_QUESTION_PACK.md). Its settings must say so
+ *    explicitly. On the EAS build machine (EAS_BUILD=true) the generated
+ *    content is also checked against the sample list every time Expo reads
+ *    this file, including right before the JavaScript bundle is made, so a
+ *    later install or content build can't swap the full bank back in.
+ *    The built .aab is audited separately (scripts/audit-public-aab.mjs).
+ */
+function publicBuildProblem(env, checkGenerated = defaultSampleCheck) {
+  if (!isPublicBuild(env)) return null;
+  if (env.KAISIP_RELEASE !== 'public' || env.KAISIP_QUESTION_PACK !== 'sample' || env.KAISIP_STORE_BUILD !== '1') {
+    return (
+      'KaiSip public build: it needs KAISIP_RELEASE=public, KAISIP_QUESTION_PACK=sample and KAISIP_STORE_BUILD=1 ' +
+      `(got ${env.KAISIP_RELEASE ?? 'unset'}, ${env.KAISIP_QUESTION_PACK ?? 'unset'}, ${env.KAISIP_STORE_BUILD ?? 'unset'}). ` +
+      'The public build never bundles the full question bank.'
+    );
+  }
+  if (env.EAS_BUILD === 'true') return checkGenerated();
+  return null;
+}
+
+/** Runs the sample guard on src/content/generated (null when it passes or nothing is built yet). */
+function defaultSampleCheck() {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const { spawnSync } = require('node:child_process');
+  if (!fs.existsSync(path.join(__dirname, 'src', 'content', 'generated'))) return null; // nothing to bundle yet
+  const run = spawnSync(process.execPath, [path.join(__dirname, 'scripts', 'sample-content.mjs')], { encoding: 'utf8' });
+  if (run.status === 0) return null;
+  return `KaiSip public build: the bundled questions are not the approved free sample. ${(run.stderr || run.stdout || '').trim()}`;
+}
+
 /** The config for this build: app.json, with updates off on the store profile. */
 function configFor(config, env) {
-  const problem = cloudBuildProblem(env);
+  const problem = cloudBuildProblem(env) || publicBuildProblem(env);
   if (problem) throw new Error(problem);
   if (!isStoreBuild(env)) return config; // test builds: unchanged
   return { ...config, updates: { ...config.updates, enabled: false } };
@@ -86,3 +127,5 @@ module.exports.cloudBuildProblem = cloudBuildProblem;
 module.exports.STORE_PROFILE = STORE_PROFILE;
 module.exports.STORE_BUILD_MARKER = STORE_BUILD_MARKER;
 module.exports.isStoreBuild = isStoreBuild;
+module.exports.publicBuildProblem = publicBuildProblem;
+module.exports.PUBLIC_PROFILE = PUBLIC_PROFILE;
