@@ -18,8 +18,8 @@ const mock = (index: number): ActiveSession => ({
   perms: { a: perm, x: perm, b: perm, y: perm, c: perm },
   index,
   responses: {
-    a: { picked: 'A', correct: true } as ActiveSession['responses'][string],
-    x: { picked: 'B', correct: false } as ActiveSession['responses'][string],
+    a: { picked: 'A', correct: true } as unknown as ActiveSession['responses'][string],
+    x: { picked: 'B', correct: false } as unknown as ActiveSession['responses'][string],
   },
   flagged: ['x', 'b'],
   coached: ['y'],
