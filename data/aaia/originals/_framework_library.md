@@ -112,6 +112,8 @@ The bracket is a short paraphrase of the subcategory statement.
 ### Other parts of AI RMF 1.0
 - NIST AI 100-1 Executive Summary (Framework intended to be voluntary and use-case agnostic)
   - Verified 30 Oct 2026: page 2 says the Framework "is intended to be voluntary, rights-preserving, non-sector-specific, and use-case agnostic".
+- NIST AI 100-1 Section 1.2.1 (Risk Measurement)
+  - Verified 26 Nov 2026: "1.2.1 Risk Measurement" in the table of contents (page 5) and as the section heading; it says "The inability to appropriately measure AI risks does not imply that an AI system necessarily poses either a high or low risk", and lists among the measurement challenges "Human baseline: Risk management of AI systems that are intended to augment or replace human activity, for example decision making, requires some form of baseline metrics for comparison."
 - NIST AI 100-1 Section 1.2.2 (Risk Tolerance)
   - Verified 19 Nov 2026: "1.2.2 Risk Tolerance" in the table of contents (page 7) and as the section heading; it says "While the AI RMF can be used to prioritize risk, it does not prescribe risk tolerance", that risk tolerance is "highly contextual and application and use-case specific", that organizations "should follow existing regulations and guidelines for risk criteria, tolerance, and response", and "Where established guidelines do not exist, organizations should define reasonable risk tolerance."
 - NIST AI 100-1 Section 1.2.3 (Risk Prioritization)
