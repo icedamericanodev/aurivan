@@ -15,7 +15,7 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 | **Status (20 Nov 2026)** | Session G, steps 1 to 3 done: expert decisions, the documents, the harness (187 planted faults stopped, 43 controls hold; an independent code review's findings are all fixed), the expert agents, the **Part 1 study notes for all four sections** (93 sub-topics, audited and learner-read), and the **Part 1 pilot: 80 questions, 20 per section**, through the full pipeline (scorecard in section 7; calibration rules in section 6b). With them: the 20 shared principles, the Part 1 exam guide and final review week, and a first generated Challenge pack from the tagged items. The **glossary start** is written and audited (153 Part 1 terms in `data/cia/shared/glossary.json`; it reuses the notes' wording, and `check_glossary.py` fails if a term is ever defined two ways). The outline of the CISA bridge is in `docs/content/CIA_CISA_BRIDGE_OUTLINE.md`. Session G is complete. |
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
 | **Rounds 1 to 15, the Part 2 pilot and Part 2 rounds 1 to 3 done (25 Nov 2026)** | Part 1 stands at **348 questions (A 116, B 85, C 105, D 42)** and meets the revised sale gate's counts (section 3, decision 4). **Part 2 stands at 71 questions (A 30, B 30, C 11)**, every key confirmed by blind tests and Standards audits. **The opened sources are close to exhausted for Part 2**: round 3 filled 10 of 22 slots and kept 7, and its Section A author judged only 3 to 6 more distinct Section A lessons remain. **Part 2's sale gate is an open owner decision** (section 9): the experts agree Part 2 cannot sell on the opened sources and disagree on how many Section A items it needs. **Part 3's study notes are done** (63 sub-topics, audited and learner-read) and **its bank holds 60 questions (A 17, B 10, C 14, D 19)** after the pilot and round 1, every key confirmed by blind tests and Standards audits. **The opened sources are close to exhausted for Part 3 too**: round 1's authors found few distinct Section D lessons left, and most new leads repeated Part 1 or Part 2 items. The Topical Requirements Application Guidance is Background only (Part 2 round 1). |
-| **Next step** | Owner decisions of 26 Nov 2026 (section 9): Part 2's gate is about A 67, B 53, C 13, and the textbook is bought. **Next**: once the owner has the textbook and its licence allows the authors to use it, open it as a source (citation library, research log) and run Part 2 rounds on the bullets it unlocks (2A3e, the Common usage terms in 2A3, 2A4 and 2B4, 2B5a), then Part 3 and Part 1's 1A4b. Until then: the app work before the packs go in (section 11: the "IS auditor's lens" label, the held-back form and per-learner short mock). The licence question still gates any publication or sale. |
+| **Next step** | Owner decisions of 26 Nov 2026 (section 9): Part 2's gate is about A 67, B 53, C 13; **write our own questions from free public sources** for the knowledge bullets (the textbook is on hold); and one expert agent per section. **Done 26 Nov 2026:** eleven section experts, and 18 public Knowledge sources opened and listed (NIST, SEC Regulation S-X, the Prompt Payment rule, the Scrum Guide, four OpenStax books; research log K1 to K18). **Still unsupported** (research log): test methods outside IT and following up differences (ISA 500 and 520 sit on a host not yet allowed), embedded audit modules and RPA, IT general against application controls, GRC systems, integrated and remote approaches, anomaly detection. **Next**: Part 2 rounds with the section experts on the bullets the sources now open (2A3c to 2A3f, 2A4a, 2B3a, 2B4, 2B5a), then Part 3 (3B1f) and Part 1's Section C. App work before the packs go in (section 11: the lessons' "IS auditor's lens" heading and the welcome headline are still CISA wording; the held-back form and per-learner short mock). The licence question still gates any publication or sale. |
 | **Then** | Part 2, Part 3, the Challenge build and the CISA bridge notes (from the outline), the cross-part release gate. |
 | **Known weak spot** | Difficulty. No pilot key was wrong and all four blind rounds agreed 80 of 80, but the last testers still called 21 of 80 answerable by test-taking alone, most in Sections B and D, and 8 items carry a TOO EASY or GIVEAWAY flag (section 7). New rounds must do better; the pilot items are candidates for a later hardening pass, not for more polishing now (section 6b, rule 12). |
 
@@ -1667,6 +1667,27 @@ KaiSip's own wording, never copied or closely paraphrased; its text is never sto
 repository, and `check_originality.py` runs against it as against the Standards. How the
 purchased copy may reach the authors (its licence terms) is settled before first use. The blueprint's reference table marks each source.
 
+**Owner decision (26 Nov 2026, later the same day): write our own questions the way the CISA
+bank was built, from free public sources, and hold off on the textbook.** The owner chose this
+over waiting for the textbook. What it means:
+
+- **Knowledge sources.** A free public source outside The IIA (NIST publications, a standard
+  setter's free concepts text, the Scrum Guide and the like) may be opened for the syllabus's
+  knowledge bullets: IT, finance and accounting basics, business processes and systems, and
+  audit methods. It is logged in the research log and listed under a "Knowledge" heading in
+  the citation library with the topics it may key; `check_cia.py` refuses it as a first
+  citation in any other topic (`prove_harness.py` plants the faults).
+- **The IIA's lens still rests on The IIA.** Who approves, who decides, who acts, and every
+  must, should and may of internal auditing are keyed on the Standards and the Topical
+  Requirements, never on a Knowledge source.
+- **Unchanged.** Original wording only; never a prep provider's questions; never a
+  members-only guide; quality before count; the full pipeline every round.
+- **Section experts.** As for CISA, CRISC and AAIA, every CIA section now has its own expert
+  agent (`.claude/agents/cia-p{N}{letter}-section-expert.md`, eleven in all), on top of the
+  part experts and the shared standard.
+- **The textbook** is on hold. Buy it only if the section experts still find bullets the
+  public sources cannot support.
+
 ## 10. Names and store copy (draft, not approved)
 
 growth-marketer drafted these inside the store length limits;
@@ -1752,7 +1773,12 @@ const IIA_BASE = { issuer: IIA, mindset: IIA_MINDSET, trademarkNotice: IIA_TM, t
   the rule that the Challenge sample uses only ids already free in their Part.
 - The apps label the notes' audit panel "The IS auditor's lens" (web `index.html`
   about line 12495, mobile `notes.tsx`). For a CIA pack it must read as the internal
-  auditor's lens (found by the Part 2 learner read, round 15).
+  auditor's lens (found by the Part 2 learner read, round 15). **Phone notes done (26 Nov
+  2026, PR 329):** each certification has a `notesRole`, and the notes headings follow it.
+  **Still CISA wording on the phone:** the lessons' heading (`COACH_HEADING` in
+  `mobile/src/components/lesson.tsx`, asserted in `s3b-labels-drill.test.ts`) and the
+  welcome headline (`WELCOME_HEADLINE` in `mobile/src/content/brand.ts`). The web label is
+  CISA only and stays as it is.
 - The generated Challenge notes (the Part notes for the 40 shared topics,
   re-coded `4A1` and so on, with section-level text written for the Challenge)
   are built with the Challenge pack, after Parts 2 and 3 have notes.

@@ -234,6 +234,11 @@ def check_item(q, pack, d, n, ctx):
     for i, p in enumerate(parts):
         if p not in ctx["verified"] and p not in ctx["likely"]:
             errs.append(f"framework_ref part not in the library: {p}")
+        elif i == 0 and p in ctx.get("knowledge", {}):
+            topic = (q.get("subtopic") or "").split(" ")[0]
+            if topic not in ctx["knowledge"][p]:
+                errs.append(f"the first framework_ref part is a Knowledge source for topics "
+                            f"{', '.join(sorted(ctx['knowledge'][p]))} only, not {topic or 'this topic'}: {p}")
         elif i == 0 and p not in ctx["verified"]:
             errs.append(f"the first framework_ref part must be a Verified (opened) source; '{p}' is Likely or Background")
     nid = None
@@ -361,9 +366,14 @@ def main(argv):
     errors = len(errs)
     ppath = root / "shared" / "principles.json"
     ctx = {"outline": outline, "topics": c.part_topics(outline), "verified": verified, "likely": likely,
+           "knowledge": c.knowledge_sources(root),
            "principles": ({p["id"] for p in c.read_json(ppath)["principles"]} if ppath.exists() else None)}
     print(f"outline: {len(ctx['topics'])} Part topics, {len(c.challenge_topics(outline))} Challenge topics · "
           f"library: {len(verified)} Verified, {len(likely)} Likely bullet(s)")
+    unknown = sorted({t for ts in ctx["knowledge"].values() for t in ts} - set(ctx["topics"]))
+    for t in unknown:                      # a typo such as "topics 2A9" would key nothing, silently
+        print(f"ERROR library: a Knowledge heading names topic {t}, which is not a Part topic in the outline")
+    errors += len(unknown)
     for pack in packs:
         errors += check_pack(root, pack, ctx, args)
     print(f"check_cia: {errors} error(s)")

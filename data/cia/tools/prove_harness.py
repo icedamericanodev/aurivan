@@ -554,6 +554,19 @@ CASES = [
     ("a key that rests on an opened source that is not an exam reference (Background)", CIA_,
      then(library(LIB + "## Background: opened 2026-11-19 Fixture Framework (https://example.org/fw)\n- Fixture Framework, Summary\n"),
           q0(setf("framework_ref", "Fixture Framework, Summary; " + STD))), "must be a Verified"),
+    ("a key that rests on a public Knowledge source outside the topics it was opened for", CIA_,
+     then(library(LIB + "## Knowledge: opened 2026-11-26 Fixture Public Guide; topics 2B5 (https://example.org/g)\n"
+                        "- Fixture Public Guide, section 2\n"),
+          q0(setf("framework_ref", "Fixture Public Guide, section 2; " + STD))), "Knowledge source for topics 2B5 only"),
+    ("a Knowledge heading that names a topic the outline does not have", CIA_,
+     library(LIB + "## Knowledge: opened 2026-11-26 Fixture Public Guide; topics 2A9 (https://example.org/g)\n"
+                   "- Fixture Public Guide, section 2\n"), "names topic 2A9, which is not a Part topic"),
+    ("a Knowledge heading that names no topics", CIA_,
+     library(LIB + "## Knowledge: opened 2026-11-26 Fixture Public Guide (https://example.org/g)\n"
+                   "- Fixture Public Guide, section 2\n"), "a Knowledge heading needs 'topics"),
+    ("a Knowledge heading with no opened date", CIA_,
+     library(LIB + "## Knowledge: Fixture Public Guide; topics 1A1 (https://example.org/g)\n"
+                   "- Fixture Public Guide, section 2\n"), "a Knowledge heading needs 'opened YYYY-MM-DD'"),
     ("a Background heading with no opened date", CIA_,
      library(LIB + "## Background: Fixture Framework\n- Fixture Framework, Summary\n"), "a Background heading needs 'opened YYYY-MM-DD'"),
     ("an empty citation", CIA_, q0(setf("framework_ref", "")), "framework_ref is empty"),
@@ -890,6 +903,10 @@ CASES = [
 ]
 # Same shape, but the gate must PASS and print the text: a control, or a fault a builder handles.
 PASSES = [
+    ("a key on a public Knowledge source for a topic it was opened for", [ "check_cia.py", "cia1"],
+     then(library(LIB + "## Knowledge: opened 2026-11-26 Fixture Public Guide; topics 1A1, 2B5 (https://example.org/g)\n"
+                        "- Fixture Public Guide, section 2\n"),
+          q0(setf("framework_ref", "Fixture Public Guide, section 2; " + STD))), ""),
     # A small file's longest-option share is noise (the generated Challenge section files start small).
     ("the key made the longest option throughout a 4-question file: a note, not a failure", ["style_cia.py"],
      lambda r: edit(r, "cia2/originals/d1.json", key_longest_everywhere), "note (not enforced below 40 items)"),

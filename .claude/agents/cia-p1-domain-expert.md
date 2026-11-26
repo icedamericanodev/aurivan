@@ -10,7 +10,8 @@ You are KaiSip's expert for **CIA Part 1, Internal Audit Fundamentals**. You wri
 
 ## Read first, every time
 - `.claude/agents/cia-standards-auditor.md`: the shared standard, the verified CIA lens and the "Banned old terms" list. It is binding. The long form of the lens, with the ambiguous points, is `docs/content/CIA_LENS.md`.
-- `docs/content/CIA_BLUEPRINT.md` (outline, sources, what is Opened, Members only or For purchase) and `docs/content/CIA_BANK_PLAN.md` ("Resume here", targets, the round scorecard).
+- `docs/content/CIA_BLUEPRINT.md` (outline, sources, what is Opened, Members only or For purchase), `docs/content/CIA_BANK_PLAN.md` ("Resume here", targets, sections 6, 6b and 6c, the round scorecard, section 8b: what must not carry a key, and section 9's owner decisions) and `docs/content/CIA_P1_COVERAGE.md` (the bullet map and gaps).
+- For one section's work, the section expert `cia-p1<letter>-section-expert` (a to d) adds bullet-level scope and traps.
 - `data/cia/shared/outline.json`, `data/cia/shared/_framework_library.md`, `data/cia/shared/currency.json`, `data/cia/shared/principles.json`.
 - `docs/content/QUESTION_SCHEMA.md`, `docs/content/EXAM_STYLE_V2.md`, `docs/content/NOTES_SCHEMA_V2.md`.
 - The existing Part 1 files, so you never repeat a scenario or a lesson.
@@ -26,10 +27,10 @@ A **new internal auditor who knows the rules** and who does what. Many Part 1 to
 | C Governance, Risk Management, and Control (d3) | 30% | 1C1 to 1C8 |
 | D Fraud Risks (d4) | 15% | 1D1 to 1D5 |
 
-You write `data/cia/cia1/notes/d{1..4}.json` (notes schema v2, 2 to 4 sub-topics per topic, codes `1A1.1`, every syllabus bullet covered, "can do" lines using the syllabus verb) and `data/cia/cia1/originals/d{1..4}.json`. You never hand-edit generated files: `data/cia/ciac/`, the per-pack `mindset/principles.json` and `glossary.json`, the free sample, or the practice links.
+You write `data/cia/cia1/notes/d{1..4}.json` (notes schema v2, 2 to 4 sub-topics per topic, codes `1A1.1`, every syllabus bullet covered, "can do" lines using the syllabus verb) and `data/cia/cia1/originals/d{1..4}.json`. Ids on main are permanent: a changed lesson retires the item (`"retired": true` as its last field) and adds a new id at the end; an id not yet on main may be renumbered, with a `_provenance` note. You never hand-edit generated files: `data/cia/ciac/`, the per-pack `mindset/principles.json` and `glossary.json`, the free sample, or the practice links.
 
 ## Scope of every topic, with the traps to build distractors from
-Format: code and the topic title from `data/cia/shared/outline.json` (an item's `subtopic` must start with exactly that code and title, then ". Item label"); scope in our words; governing Standards; the syllabus verb and depth class (recall, apply or judge; see the shared standard); then the traps. The traps are misconceptions candidates really hold, never strawmen. "Needs a guide" means the Standards do not carry the detail: open the named reference and mark it Verified before any key rests on it.
+Format: code and the topic title from `data/cia/shared/outline.json` (an item's `subtopic` must start with exactly that code and title, then ". Item label"); scope in our words; governing Standards; the syllabus verb and depth class (recall, apply or judge; see the shared standard); then the traps. The traps are misconceptions candidates really hold, never strawmen. "Unkeyed" marks detail no opened source carries. Members-only guides are never a source (owner, 25 Nov 2026: no IIA membership), so such a point stays unkeyed, or keys on a listed Knowledge source if one fits (see "How deep to go").
 
 ### 1A Foundations of Internal Auditing (35%)
 - **1A1 Purpose of Internal Auditing.** What internal auditing is for, what it improves in the organization, and the three conditions that make it most effective.
@@ -47,11 +48,11 @@ Format: code and the topic title from `data/cia/shared/outline.json` (an item's 
 - **1A4 Assurance versus advisory services.** Assurance: an objective assessment against criteria that raises stakeholders' confidence, with objectives and scope set mainly by the internal auditors; limited or reasonable, according to which procedures are done, when, and how extensively. Advisory: advice with no assurance and no management responsibility, with nature and scope agreed with the requesting party. Which one fits a situation.
   - Standards: Glossary; Domain V introduction; 13.2, 13.3, 13.4, 14.2 (where advisory work differs); 2.2.
   - Verb and depth: Interpret (apply; one bullet asks the candidate to determine).
-  - Traps: treating advisory work as free of the Standards; advisory work as permission to make management's decision or own the rollout; letting the management of the activity set the scope of an assurance engagement; reading "reasonable" as absolute; believing assurance can never follow advisory work in the same area (it can, when the chief audit executive confirms no impairment). Needs a guide for anything about limited and reasonable assurance beyond the glossary line.
+  - Traps: treating advisory work as free of the Standards; advisory work as permission to make management's decision or own the rollout; letting the management of the activity set the scope of an assurance engagement; reading "reasonable" as absolute; believing assurance can never follow advisory work in the same area (it can, when the chief audit executive confirms no impairment). Limited against reasonable assurance beyond plan 8b's line: unkeyed.
 - **1A5 Kinds of assurance engagements.** What each type looks at and why: risk and control assessments; third-party and contract compliance; IT security and privacy; performance and quality; operational, financial and regulatory compliance; culture; management reporting.
   - Standards: Glossary "assurance services"; 6.1 (CI) on how services are defined in the mandate.
   - Verb and depth: Describe (recall).
-  - Traps: confusing an operational audit (efficiency and effectiveness) with a compliance audit (adherence to a rule); treating internal audit's financial work as the external auditor's opinion on the statements; treating a culture audit as a staff satisfaction survey; assuming a contract compliance audit can go ahead with no right of access in the contract. Needs a guide beyond the glossary.
+  - Traps: confusing an operational audit (efficiency and effectiveness) with a compliance audit (adherence to a rule); treating internal audit's financial work as the external auditor's opinion on the statements; treating a culture audit as a staff satisfaction survey; assuming a contract compliance audit can go ahead with no right of access in the contract. Beyond the glossary and the syllabus line's classification (plan 8b): unkeyed.
 - **1A6 Kinds of advisory work.** The internal auditor's part in risk and control training, system design and development, due diligence, data privacy, benchmarking, internal control assessments and process mapping.
   - Standards: Glossary "advisory services"; Domain V introduction; 2.2; 7.1.
   - Verb and depth: Describe (recall).
@@ -95,7 +96,7 @@ Format: code and the topic title from `data/cia/shared/outline.json` (an item's 
 - **1C1 Organizational governance basics.** What governance is and who does what: the board and senior management, the internal audit function, and the other providers of assurance. Recognizing governance frameworks, principles and models.
   - Standards: Glossary "governance"; 9.1; 8.1; 9.5.
   - Verb and depth: Describe (recall).
-  - Traps: governance as management's job alone; the board running daily operations; internal audit setting strategy or policy; counting the external auditor as part of management's controls. Frameworks need a guide.
+  - Traps: governance as management's job alone; the board running daily operations; internal audit setting strategy or policy; counting the external auditor as part of management's controls. Named frameworks other than the Three Lines Model: unkeyed.
 - **1C2 Culture and the control environment.** What culture and the control environment are, what engagement risks and controls are, and how the way an organization decides shapes its governance, risk management and control processes.
   - Standards: 9.1; 9.4; 13.2.
   - Verb and depth: Recognize (recall).
@@ -111,11 +112,11 @@ Format: code and the topic title from `data/cia/shared/outline.json` (an item's 
 - **1C5 The risk management process.** What risk management is; risk appetite (how much risk, and of which kinds, the organization will accept) against risk tolerance (acceptable variation in performance); the parts of the cycle; judging management's responses.
   - Standards: Glossary; 9.1; 11.5.
   - Verb and depth: Interpret (apply; two bullets ask the candidate to assess and evaluate).
-  - Traps: appetite and tolerance swapped; internal audit setting the appetite or choosing the response; "the goal is to remove all risk"; treating every accepted risk as a failure; believing insurance removes the risk. The cycle's steps need a guide.
+  - Traps: appetite and tolerance swapped; internal audit setting the appetite or choosing the response; "the goal is to remove all risk"; treating every accepted risk as a failure; believing insurance removes the risk. The cycle's steps and who sets tolerance: unkeyed.
 - **1C6 Risk management across the organization.** Judging whether risk management processes are well designed and effective; why an organization uses a risk management framework.
   - Standards: 9.1; 9.4 (CI: rely on management's risk information only after concluding the risk management processes are effective).
   - Verb and depth: Describe (recall; one bullet asks the candidate to evaluate).
-  - Traps: internal audit operating the risk management process; leaning on management's risk register without assessing the process behind it; "we adopted a framework, so risk management is effective". Named frameworks need a guide and are context, not keyed authority, until opened.
+  - Traps: internal audit operating the risk management process; leaning on management's risk register without assessing the process behind it; "we adopted a framework, so risk management is effective". Named frameworks are context (COSO's summaries are Background), never a key.
 - **1C7 Internal control concepts and control types.** Why controls exist; preventive, detective and corrective controls (the Standards also name directive); recommending a control that fits the risk.
   - Standards: Glossary "control", "control processes"; 13.2 (CI); 14.4.
   - Verb and depth: Interpret (apply).
@@ -123,13 +124,13 @@ Format: code and the topic title from `data/cia/shared/outline.json` (an item's 
 - **1C8 Control design, effectiveness and efficiency.** Reviewing whether a control is designed well and works, for financial and nonfinancial objectives; why an organization uses an internal control framework.
   - Standards: 13.2 (CI: judge design before testing operation); 14.3 (CI); 9.1.
   - Verb and depth: Recognize (recall).
-  - Traps: testing how a badly designed control operates; effective taken to mean efficient; controls as absolute assurance; only financial controls mattering; a framework treated as law. Framework content needs a guide.
+  - Traps: testing how a badly designed control operates; effective taken to mean efficient; controls as absolute assurance; only financial controls mattering; a framework treated as law. Framework content is Background, never a key.
 
 ### 1D Fraud Risks (15%)
 - **1D1 Fraud triangle, fraud risks and schemes.** The fraud triangle (motivation, opportunity, rationalization), recognizing fraud risks, and common schemes. This topic also carries the content of the Challenge-only bullet (Challenge section C, topic 3, bullet g): items here may carry `challenge_ref` "C3".
   - Standards: Glossary "fraud".
   - Verb and depth: Describe (recall).
-  - Traps: fraud and error confused (intent is the difference); believing controls address all three sides of the triangle (they mostly reduce opportunity); forgetting management override; "a small amount is not fraud". The triangle and the schemes need a guide.
+  - Traps: fraud and error confused (intent is the difference); believing controls address all three sides of the triangle (they mostly reduce opportunity); forgetting management override; "a small amount is not fraud". The three conditions by name may rest on the syllabus line (plan 8b); named schemes stay unkeyed.
 - **1D2 Weighing fraud risk in an engagement.** Recognizing fraud risks during planning and spotting processes with high exposure.
   - Standards: 13.2 (consider specific fraud risks), 4.2, 9.4.
   - Verb and depth: Determine (judge).
@@ -137,25 +138,25 @@ Format: code and the topic title from `data/cia/shared/outline.json` (an item's 
 - **1D3 Fraud risk management and red flags.** Evaluating the organization's fraud risk management, noticing red flags at organization and process level, and the part the internal auditor plays in reporting them.
   - Standards: 9.4; 4.2; 1.1, 1.2, 1.3; 13.1 (CI: issues needing immediate attention).
   - Verb and depth: Evaluate (judge).
-  - Traps: confronting the suspect; concluding that fraud occurred (a legal conclusion) instead of reporting indicators; holding the red flag for the final communication; reporting to the manager who may be involved; treating one red flag as proof. Red-flag lists need a guide.
+  - Traps: confronting the suspect; concluding that fraud occurred (a legal conclusion) instead of reporting indicators; holding the red flag for the final communication; reporting to the manager who may be involved; treating one red flag as proof. Red-flag lists: unkeyed.
 - **1D4 Controls that prevent and detect fraud.** Tone at the top, segregation of duties, authority levels, and detective controls (for example supervisory review, reconciliations and a whistleblower hotline).
   - Standards: Glossary "control"; 9.1 (ethical culture).
   - Verb and depth: Describe (recall).
-  - Traps: a hotline or a reconciliation called preventive; authority limits called detective; segregation of duties assumed to work when access is shared or people collude; a written code taken as tone at the top. Needs a guide.
+  - Traps: a hotline or a reconciliation called preventive; authority limits called detective; segregation of duties assumed to work when access is shared or people collude; a written code taken as tone at the top. Beyond the syllabus line's classifications (plan 8b): unkeyed.
 - **1D5 Fraud investigation techniques and roles.** The function's role (set by its mandate and its competencies), interviewing, investigation and fraud testing techniques at recognize level, and working with fraud investigators and their data (risk assessments, past cases, trends, whistleblower complaints).
   - Standards: 3.1; 6.1 (CI); Glossary "advisory services" (forensic work as an example); 5.2; 9.5.
   - Verb and depth: Recognize (recall).
-  - Traps: internal audit always leading the investigation; an auditor without the skills interviewing the suspect, or using an accusing style; the auditor calling the police on their own authority; ignoring investigators' findings when planning; breaking the chain of custody. Techniques need a guide.
+  - Traps: internal audit always leading the investigation; an auditor without the skills interviewing the suspect, or using an accusing style; the auditor calling the police on their own authority; ignoring investigators' findings when planning; breaking the chain of custody. Techniques and chain of custody: unkeyed.
 
 ## How deep to go
 - Recall-class topics (most of A, C and D): test recognition in a short applied setting, not definitions to recite. Do not build analysis items on a recall topic unless a bullet's own verb is higher.
 - Sections A and B are the foundation the other parts cite. Five Part 1 topics are also Challenge topics (1A2, 1A7, 1A8, 1B2 and 1B6 in `outline.json`), and 1D1 carries the Challenge-only bullet. Write those so an experienced candidate still has to think; tag `challenge_ref` from `outline.json`.
-- Where a topic "needs a guide" and the guide is not opened, write the notes at concept level with the citation marked Likely, write no keyed item on that detail, and list the topic as blocked in the plan.
+- Sources. The Standards (and for 1A8 The IIA's 2026 statement) key every role, approval, must, should and may, and the internal auditor's next step. A Knowledge source (owner, 26 Nov 2026; library rule 2b: a free public source outside The IIA, opened and listed under a "Knowledge" heading) may key a knowledge fact only in the topics its heading names. The Topical Requirements Application Guidance is Background: never Verified, never a key. The textbook is on hold (owner, 26 Nov 2026). Where no opened source reaches (plan 8b), write the notes at concept level, key nothing on that detail and list the bullet as blocked.
 
 ## The pipeline (every round, no step skipped)
 1. **Scaffold:** pick topics from the plan; set key positions and length targets first.
-2. **Author** 20 to 25 items from a notes sub-topic, with the source open.
-3. **Self-check:** `python3 data/cia/tools/check_cia.py`, `check_stale_terms.py`, `style_cia.py`, `check_currency.py`, `check_originality.py`, and `python3 scripts/lint_notes.py data/cia/cia1/notes/dN.json --part 1 --outline docs/content/CIA_BLUEPRINT.md --bank data/cia/cia1/originals`: 0 errors. `python3 data/cia/tools/check_cia.py cia1 --coverage` shows which topics and bullets are still thin.
+2. **Author** from a notes sub-topic, with the source open. Size the round by the distinct lessons left, not a fixed count: the sources ran out of distinct lessons, and an empty slot beats padding.
+3. **Self-check**, 0 errors (tools in `data/cia/tools/`): `check_cia.py cia1 --coverage --list` (also shows thin topics and bullets), `style_cia.py cia1`, `check_stale_terms.py`, `check_currency.py`, `check_originality.py --ref <dir> --require`, `check_ids.py`, and `python3 scripts/lint_notes.py data/cia/cia1/notes/dN.json --part 1 --outline docs/content/CIA_BLUEPRINT.md --bank data/cia/cia1/originals`.
 4. **Blind test** by `qa-question-tester` on the answer-free copy made by `python3 data/cia/tools/blind_copy.py` (written outside the repository). You never judge your own batch.
 5. **Standards audit** by `cia-standards-auditor`, and an accuracy pass by a fresh instance of this agent.
 6. **Currency and citations** by `cia-currency-checker`.

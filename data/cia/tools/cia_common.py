@@ -183,6 +183,12 @@ def library(root):
     """
     verified, likely, problems = set(), set(), []
     path = root / "shared" / "_framework_library.md"
+    # A fourth heading, "## Knowledge: opened YYYY-MM-DD <title>; topics 2A3, 2B5
+    # (url)", is a free public source outside The IIA (NIST, a standard setter's
+    # free concepts text, the Scrum Guide) opened for the syllabus's knowledge
+    # bullets (owner decision, 26 Nov 2026). Its bullets are returned with the
+    # Likely ones, so they never count as Verified; knowledge_sources() says which
+    # topics each may still key as a first citation.
     if not path.exists():
         return verified, likely, [f"{path.name} is missing"]
     status = None
@@ -190,13 +196,15 @@ def library(root):
         hm = re.match(r"\s*(#+)\s*(.*)$", line)
         if hm:                             # any heading ends the section before it
             head = hm.group(2).strip()
-            kind = next((k for k in ("verified", "likely", "background") if head.lower().startswith(k)), None)
+            kind = next((k for k in ("verified", "likely", "background", "knowledge") if head.lower().startswith(k)), None)
             status = kind
             if kind and not line.startswith("## "):
                 # "##Likely" or "### Likely" used to be read as plain text, so the bullets
                 # under it kept the Verified status of the section above.
                 problems.append(f"line {n}: write the heading as '## {kind.capitalize()}: ...' (two hashes, one space)")
-            if kind in ("verified", "background") and not re.search(r"opened \d{4}-\d{2}-\d{2}", head):
+            if kind == "knowledge" and not KNOWLEDGE_TOPICS.search(head):
+                problems.append(f"line {n}: a Knowledge heading needs 'topics 2A3, 2B5' (the topics it may key)")
+            if kind in ("verified", "background", "knowledge") and not re.search(r"opened \d{4}-\d{2}-\d{2}", head):
                 problems.append(f"line {n}: a {kind.capitalize()} heading needs 'opened YYYY-MM-DD'")
         elif line.startswith("- "):
             bullet = line[2:].strip()
@@ -207,6 +215,28 @@ def library(root):
             else:
                 (verified if status == "verified" else likely).add(bullet)
     return verified, likely, problems
+
+
+KNOWLEDGE_TOPICS = re.compile(r"\btopics? ((?:\d[A-G]\d+)(?:,\s*\d[A-G]\d+)*)")
+
+
+def knowledge_sources(root):
+    """Map each Knowledge bullet in the citation library to the topic codes
+    (such as "2A3") it may key as an item's first framework_ref part."""
+    out = {}
+    path = root / "shared" / "_framework_library.md"
+    if not path.exists():
+        return out
+    topics = None
+    for line in path.read_text(encoding="utf-8").splitlines():
+        hm = re.match(r"\s*(#+)\s*(.*)$", line)
+        if hm:
+            head = hm.group(2).strip()
+            tm = KNOWLEDGE_TOPICS.search(head) if head.lower().startswith("knowledge") else None
+            topics = {t.strip() for t in tm.group(1).split(",")} if tm else None
+        elif line.startswith("- ") and topics:
+            out[line[2:].strip()] = topics
+    return out
 
 
 def currency(root):

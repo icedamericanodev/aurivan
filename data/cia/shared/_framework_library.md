@@ -16,6 +16,17 @@ How to read this file:
    The IIA's exam references (COSO's public summaries, a white paper): it may
    be cited after the first part and may inform a note, but it never carries
    a key.
+2b. A "Knowledge" heading marks a free public source outside The IIA (a
+   NIST publication, a standard setter's free concepts text, the Scrum Guide)
+   opened for the syllabus's knowledge bullets: IT, finance, business
+   processes and audit methods (owner decision, 26 Nov 2026). Its heading
+   reads "## Knowledge: opened YYYY-MM-DD <title>; topics 2A3, 2B5 (url)". It
+   may be the FIRST part only for an item in one of the topics it names, and
+   only for a fact the source itself states (what a current asset is, what a
+   recovery point objective means). Who does what in internal auditing (the
+   board, the CAE, management, the auditor) still rests on the Standards: an
+   item that keys on a role or a must cites the Standards first. Never a
+   prep provider, never a members-only guide, never copied wording.
 3. Verified means the file was downloaded from theiia.org and opened on the
    date in the heading. Likely means the title is on The IIA's exam reference
    list (V5.5.2026.10.15) but the text was not opened: a Likely bullet may
@@ -38,7 +49,8 @@ Not in this library on purpose: The IIA's Three Lines Model position paper of
 2020 (opened; replaced by the 2026 Statement of Position below), the two-way
 mapping and the glossary comparison (translation aids for old terms, never an
 authority for a key), COSO, ISO and ISACA publications (not on the exam
-reference list by name), and every prep provider.
+reference list by name; COSO's public summaries are Background), and every
+prep provider.
 
 ## Verified: opened 2026-11-19 Global Internal Audit Standards (2024) (https://www.theiia.org/globalassets/site/standards/globalinternalauditstandards_2024january9.pdf)
 - Global Internal Audit Standards (2024), About the International Professional Practices Framework
@@ -204,6 +216,135 @@ reference list by name), and every prep provider.
 
 ## Background: opened 2026-11-19 IIA and Anti-Fraud Collaboration white paper on the internal auditor and fraud risk, April 2026; public, calls itself non-authoritative, not on The IIA's exam reference list (https://www.theiia.org/globalassets/site/content/white-paper/afc-role-of-ia-assessing-and-responding-to-fraud-risk.pdf)
 - IIA and Anti-Fraud Collaboration white paper on the internal auditor's role in fraud risk (2026)
+
+## Knowledge: opened 2026-11-26 NIST SP 800-34 Rev. 1, Contingency Planning Guide for Federal Information Systems (May 2010, updated 11 November 2010; the current final on CSRC, no later revision); topics 2A3 (https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-34r1.pdf)
+- NIST SP 800-34 Rev. 1 Section 2.1 Contingency Planning and Resilience
+- NIST SP 800-34 Rev. 1 Section 2.2 Types of Plans
+- NIST SP 800-34 Rev. 1 Section 2.2.5 Cyber Incident Response Plan
+- NIST SP 800-34 Rev. 1 Section 3.2 Conduct the Business Impact Analysis
+- NIST SP 800-34 Rev. 1 Section 3.2.1 Determine Business Processes and Recovery Criticality
+- NIST SP 800-34 Rev. 1 Section 3.4.1 Backup and Recovery
+- NIST SP 800-34 Rev. 1 Section 3.5.1 Testing
+
+## Knowledge: opened 2026-11-26 NIST SP 800-53 Rev. 5, Security and Privacy Controls for Information Systems and Organizations (September 2020, includes updates as of 10 December 2020; release 5.2.0 of 27 August 2025 checked on CSRC, it changes SA and SI controls and related-control lists only); topics 2A3 (https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf)
+- NIST SP 800-53 Rev. 5 Section 1.1 Purpose and Applicability
+- NIST SP 800-53 Rev. 5 AC-2 Account Management
+- NIST SP 800-53 Rev. 5 AC-5 Separation of Duties
+- NIST SP 800-53 Rev. 5 AC-6 Least Privilege
+- NIST SP 800-53 Rev. 5 AU-6 Audit Record Review, Analysis, and Reporting
+- NIST SP 800-53 Rev. 5 CM-3 Configuration Change Control
+- NIST SP 800-53 Rev. 5 CP-9 System Backup
+- NIST SP 800-53 Rev. 5 IR-4 Incident Handling
+- NIST SP 800-53 Rev. 5 PT-3 Personally Identifiable Information Processing Purposes
+- NIST SP 800-53 Rev. 5 SI-10 Information Input Validation
+
+## Knowledge: opened 2026-11-26 NIST Cybersecurity Framework (CSF) 2.0, CSWP 29 (26 February 2024; the current final on CSRC); topics 2A3 (https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf)
+- NIST CSF 2.0 Section 1 Cybersecurity Framework (CSF) Overview
+- NIST CSF 2.0 Section 2 Introduction to the CSF Core
+- NIST CSF 2.0 PR.AA Identity Management, Authentication, and Access Control
+- NIST CSF 2.0 PR.DS Data Security
+- NIST CSF 2.0 DE.CM Continuous Monitoring
+- NIST CSF 2.0 RS.MA Incident Management
+- NIST CSF 2.0 RC.RP Incident Recovery Plan Execution
+
+## Knowledge: opened 2026-11-26 NIST Privacy Framework, Version 1.0 (16 January 2020; Version 1.1 is still an initial public draft on NIST's page); topics 2A3 (https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.01162020.pdf)
+- NIST Privacy Framework 1.0, Privacy Risk Management
+- NIST Privacy Framework 1.0, Privacy Framework Basics: Core
+- NIST Privacy Framework 1.0, Appendix A Privacy Framework Core
+- NIST Privacy Framework 1.0, Appendix D Privacy Risk Management Practices
+
+## Knowledge: opened 2026-11-26 SEC Regulation S-X Rule 5-02 Balance sheets, 17 CFR 210.5-02, CFR edition revised as of 1 April 2025 (the 2026 edition is not yet on GovInfo; eCFR was blocked); topics 2A3 (https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol3/pdf/CFR-2025-title17-vol3-sec210-5-02.pdf)
+- 17 CFR 210.5-02 (Regulation S-X Rule 5-02), Current Assets captions 1 to 9
+- 17 CFR 210.5-02 (Regulation S-X Rule 5-02), caption 6 Inventories
+- 17 CFR 210.5-02 (Regulation S-X Rule 5-02), captions 12 Other investments and 13 Property, plant and equipment
+- 17 CFR 210.5-02 (Regulation S-X Rule 5-02), Current Liabilities captions 19 to 21
+- 17 CFR 210.5-02 (Regulation S-X Rule 5-02), caption 22 Bonds, mortgages and other long-term debt
+- 17 CFR 210.5-02 (Regulation S-X Rule 5-02), Stockholders' Equity captions 28 to 31
+
+## Knowledge: opened 2026-11-26 OMB Prompt Payment rule, 5 CFR part 1315, CFR edition of 1 January 2026 (United States federal payment practice); topics 2A3 (https://www.govinfo.gov/content/pkg/CFR-2026-title5-vol3/pdf/CFR-2026-title5-vol3-part1315.pdf)
+- 5 CFR 1315.2(cc) Receiving report
+- 5 CFR 1315.5 Accelerated payment methods
+- 5 CFR 1315.9 Required documentation
+
+## Knowledge: opened 2026-11-26 NIST SP 800-53A Rev. 5, Assessing Security and Privacy Controls in Information Systems and Organizations (January 2022; release 5.2.0 of 27 August 2025 adds SA and SI procedures only); topics 2A6 (https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53Ar5.pdf)
+- NIST SP 800-53A Rev. 5 Section 2.4.2 Assessment Methods
+- NIST SP 800-53A Rev. 5 Appendix C Assessment Method Descriptions
+
+## Knowledge: opened 2026-11-26 NIST SP 800-137, Information Security Continuous Monitoring (ISCM) for Federal Information Systems and Organizations (September 2011; the current final on CSRC); topics 2B3 (https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-137.pdf)
+- NIST SP 800-137 Chapter One Introduction
+- NIST SP 800-137 Section 2.3 Role of Automation in ISCM
+- NIST SP 800-137 Section 3.4 Analyze Data and Report Findings
+- NIST SP 800-137 Appendix D Technologies for Enabling ISCM
+
+## Knowledge: opened 2026-11-26 NIST AI 100-1, Artificial Intelligence Risk Management Framework (AI RMF 1.0) (26 January 2023; NIST's page says it is being revised); topics 2B3, 3B1 (https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf)
+- NIST AI 100-1 (AI RMF 1.0) Executive Summary
+- NIST AI 100-1 (AI RMF 1.0) Section 3 AI Risks and Trustworthiness
+- NIST AI 100-1 (AI RMF 1.0) Appendix B How AI Risks Differ from Traditional Software Risks
+
+## Knowledge: opened 2026-11-26 NIST IR 8202, Blockchain Technology Overview (October 2018; the current final on CSRC); topics 3B1 (https://nvlpubs.nist.gov/nistpubs/ir/2018/NIST.IR.8202.pdf)
+- NIST IR 8202 Executive Summary
+- NIST IR 8202 Section 2 Blockchain Categorization
+- NIST IR 8202 Section 6 Smart Contracts
+- NIST IR 8202 Section 7 Blockchain Limitations and Misconceptions
+
+## Knowledge: opened 2026-11-26 NIST IR 8301, Blockchain Networks: Token Design and Management Overview (February 2021; the current final on CSRC); topics 3B1 (https://nvlpubs.nist.gov/nistpubs/ir/2021/NIST.IR.8301.pdf)
+- NIST IR 8301 Section 2 Token Categorization
+- NIST IR 8301 Section 3 Wallet and Key Management
+- NIST IR 8301 Section 6.2 Tokenizing Money and Financial Products
+
+## Knowledge: opened 2026-11-26 NIST IR 8259 Rev. 1, Foundational Cybersecurity Activities for IoT Product Manufacturers (April 2026; supersedes IR 8259 of May 2020, withdrawn 20 April 2026); topics 3B1 (https://nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8259r1.pdf)
+- NIST IR 8259 Rev. 1 Section 2 Background
+- NIST IR 8259 Rev. 1 Appendix B Glossary
+
+## Knowledge: opened 2026-11-26 NIST SP 800-213, IoT Device Cybersecurity Guidance for the Federal Government (November 2021; the current final on CSRC); topics 3B1 (https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-213.pdf)
+- NIST SP 800-213 Section 2.2 How IoT Devices Support Security
+- NIST SP 800-213 Section 2.3 How IoT Devices May Create Security Challenges
+
+## Knowledge: opened 2026-11-26 The Scrum Guide, November 2020 edition, by Ken Schwaber and Jeff Sutherland (the current edition: the revision history on scrumguides.org lists no change after 2020; the Guide never uses the word agile); topics 2A4 (https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-US.pdf)
+- The Scrum Guide 2020, Scrum Definition
+- The Scrum Guide 2020, Scrum Theory
+- The Scrum Guide 2020, Scrum Team
+- The Scrum Guide 2020, The Sprint
+- The Scrum Guide 2020, Sprint Planning
+- The Scrum Guide 2020, Daily Scrum
+- The Scrum Guide 2020, Sprint Review and Sprint Retrospective
+- The Scrum Guide 2020, Product Backlog and Sprint Backlog
+- The Scrum Guide 2020, Increment and Definition of Done
+
+## Knowledge: opened 2026-11-26 OpenStax, Principles of Accounting, Volume 1: Financial Accounting (Rice University, published 11 April 2019, CC BY-NC-SA 4.0; the only edition in OpenStax's catalogue, web PDF regenerated April 2026); topics 1C7, 2A3, 2B5 (https://assets.openstax.org/oscms-prodcms/media/documents/principles-financial-accounting_-_WEB.pdf)
+- OpenStax Principles of Accounting Volume 1 Section 2.2 Define, Explain, and Provide Examples of Current and Noncurrent Assets, Current and Noncurrent Liabilities, Equity, Revenues, and Expenses
+- OpenStax Principles of Accounting Volume 1 Section 5.3 Apply the Results from the Adjusted Trial Balance to Compute Current Ratio and Working Capital Balance, and Explain How These Measures Represent Liquidity
+- OpenStax Principles of Accounting Volume 1 Section 6.2 Compare and Contrast Perpetual versus Periodic Inventory Systems
+- OpenStax Principles of Accounting Volume 1 Section 7.1 Define and Describe the Components of an Accounting Information System
+- OpenStax Principles of Accounting Volume 1 Section 8.2 Define and Explain Internal Controls and Their Purpose within an Organization
+- OpenStax Principles of Accounting Volume 1 Section 8.3 Describe Internal Controls within an Organization
+- OpenStax Principles of Accounting Volume 1 Section 11.1 Distinguish between Tangible and Intangible Assets
+- OpenStax Principles of Accounting Volume 1 Section 12.1 Identify and Describe Current Liabilities
+- OpenStax Principles of Accounting Volume 1 Section 13.1 Explain the Pricing of Long-Term Liabilities
+- OpenStax Principles of Accounting Volume 1 Section 14.4 Compare and Contrast Owners' Equity versus Retained Earnings
+- OpenStax Principles of Accounting Volume 1 Appendix A Financial Statement Analysis
+
+## Knowledge: opened 2026-11-26 OpenStax, Foundations of Information Systems (Rice University, published 5 March 2025, CC BY-NC-SA 4.0; the only edition in OpenStax's catalogue); topics 2A3, 2A4, 2B3, 2B4 (https://assets.openstax.org/oscms-prodcms/media/documents/Foundations_of_Information_Systems_-_WEB_oNlbGYl.pdf)
+- OpenStax Foundations of Information Systems Section 2.4 Business Process Management
+- OpenStax Foundations of Information Systems Section 3.1 Data Types, Database Management Systems, and Tools for Managing Data
+- OpenStax Foundations of Information Systems Section 4.1 Systems Analysis and Design for Application Development
+- OpenStax Foundations of Information Systems Section 4.2 Defining the Business Problem and User Requirements
+- OpenStax Foundations of Information Systems Section 6.1 Key Concepts in Data Privacy and Data Security
+- OpenStax Foundations of Information Systems Section 7.4 Cloud-Based Industry Applications
+- OpenStax Foundations of Information Systems Section 8.1 The Business Analytics Process
+- OpenStax Foundations of Information Systems Section 8.2 Foundations of Business Intelligence and Analytics
+- OpenStax Foundations of Information Systems Section 9.1 Foundations of Information Systems Project Management
+- OpenStax Foundations of Information Systems Section 9.2 Setting Up and Managing Projects for Success
+
+## Knowledge: opened 2026-11-26 OpenStax, Introduction to Business 2e (Rice University, published 22 April 2026, CC BY-NC-SA 4.0; the current edition, OpenStax no longer offers the first edition as a PDF); topics 2A3, 2B3 (https://assets.openstax.org/oscms-prodcms/media/documents/Introduction_to_Business_2e_-_WEB.pdf)
+- OpenStax Introduction to Business 2e Section 6.8 Trends in Management and Leadership
+- OpenStax Introduction to Business 2e Section 10.4 Pulling It Together: Resource Planning
+- OpenStax Introduction to Business 2e Section 12.4 Using Supply Chain Management to Increase Efficiency and Customer Satisfaction
+- OpenStax Introduction to Business 2e Section 13.2 Linking Up: Computer Networks
+- OpenStax Introduction to Business 2e Section 14.3 Basic Accounting Procedures
+
+## Knowledge: opened 2026-11-26 OpenStax, Principles of Management (Rice University, published 20 March 2019, CC BY-NC-SA 4.0; the only edition in OpenStax's catalogue); topics 2A3, 2B5 (https://assets.openstax.org/oscms-prodcms/media/documents/principles-management_-_WEB.pdf)
+- OpenStax Principles of Management Section 9.6 Measuring and Evaluating Strategic Performance
 
 ## Likely: not opened (for purchase: the textbook, primary reference 2, sold in the IIA Bookstore)
 - Internal Auditing: Assurance & Advisory Services, 6th edition
