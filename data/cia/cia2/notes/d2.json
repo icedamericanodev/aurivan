@@ -3,7 +3,7 @@
  "domain_name": "Information Gathering, Analysis, and Evaluation",
  "exam_weight": "40%",
  "source": "Original KaiSip study notes, organized by The IIA's CIA Part 2 syllabus effective 2025. KaiSip is an independent study aid, not affiliated with or endorsed by The IIA.",
- "overview": "Section B is the working middle of an engagement: the internal auditor carries out the approved work program, gathers information, tests it and decides what it shows. It covers where information comes from, how to judge whether evidence can be trusted, the tools and analytics that help, how a gap between criteria and condition becomes a finding, and how the workpapers and the engagement conclusion rest on that evidence. Principle 14 of the Global Internal Audit Standards governs most of it. In these notes, Must marks a requirement of the Standards, Should and May their considerations for implementation, Sound practice a common method with no Standards line, and Common usage the everyday meaning of a term.",
+ "overview": "Section B is the working middle of an engagement: the internal auditor carries out the approved work program, gathers information, tests it and decides what it shows. It covers where information comes from, how to judge whether evidence can be trusted, the tools and analytics that help, how a gap between criteria and condition becomes a finding, and how the workpapers and the engagement conclusion rest on that evidence. Principle 14 of the Global Internal Audit Standards governs most of it. In these notes, Must marks a requirement of the Standards, Should and May their considerations for implementation, Sound practice a common method with no Standards line, Knowledge a fact a named free public source states, and Common usage the everyday meaning of a term.",
  "analogy": "Think of a hospital doctor working up a patient. The doctor chooses the tests that answer the question, trusts a lab result over a guess from the waiting room, and uses a scanner only where it helps. Readings are compared with healthy ranges, and the doctor looks for the illness behind the fever, not just the fever. Everything goes in the chart so a colleague could follow it, and the diagnosis weighs all the results together. The treatment decision is made with the patient, who owns it.",
  "parts": [
   {
@@ -470,15 +470,17 @@
      "name": "Technology Options in Audit Work",
      "legacy_ids": [],
      "practice_ids": [
-      "cia2_d2_027"
+      "cia2_d2_027",
+      "cia2_d2_032"
      ],
      "definition": "Audit technology options are software tools that help internal auditors gather, test and present evidence faster or more completely, from rule-following bots to models that learn from data.",
-     "why_it_matters": "Tools let auditors test whole populations and watch risks between engagements. At this level, know what each tool is for, not how to build one.",
+     "why_it_matters": "Tools let auditors test whole populations and watch risks between engagements.",
      "how_it_works": [
       "Should: understand and use technology that makes analysis more efficient and effective, such as software that tests an entire population (Standard 14.2).",
       "Must: the chief audit executive (CAE) strives to give the function the technology it needs and evaluates it regularly (Standard 10.3 Technological Resources).",
       "Common usage: automation works on structured data, while AI and machine learning can also handle unstructured data such as emails.",
-      "Embedded audit modules and continuous monitoring appear only by name in the syllabus: know what each is for and who owns it, not how it is built."
+      "Knowledge (NIST SP 800-137): automation suits checks needing little human judgment, such as technical settings; not every check can be automated, so a tool covers only the checks it performs.",
+      "Embedded audit modules and continuous monitoring appear only by name in the syllabus: know what each does and who owns it, not how it is built."
      ],
      "types": [
       {
@@ -487,7 +489,7 @@
       },
       {
        "term": "Machine learning",
-       "meaning": "A branch of AI that builds models to find patterns in data and grows more accurate as it receives more data."
+       "meaning": "A branch of AI that builds models to find patterns in data; a model grows more accurate as it is trained on more data."
       },
       {
        "term": "Robotic process automation (RPA)",
@@ -515,7 +517,7 @@
       "evidence": [
        "Test results showing the tool flags known exceptions",
        "Reconciliation of records processed to the source population",
-       "Change history for the scripts, bots or models used"
+       "Change history for the scripts, bots, models and data used"
       ],
       "recommend": "Have the chief audit executive require validation and change control for every audit script, bot or model before use.",
       "decides": "The chief audit executive chooses audit technology; funding requests go to the board and senior management"
@@ -547,18 +549,20 @@
      "name": "Choosing and Relying on Audit Technology",
      "legacy_ids": [],
      "practice_ids": [
-      "cia2_d2_015"
+      "cia2_d2_015",
+      "cia2_d2_031"
      ],
      "definition": "Choosing a tool means matching what it can do to the engagement objective and the data available; relying on it means confirming its data and logic before trusting its output.",
-     "why_it_matters": "Tool output looks precise even when its data is incomplete or its logic is wrong. Unchecked output can carry an error straight into a finding, so reliance has to be earned.",
+     "why_it_matters": "Tool output looks precise even when its data is incomplete or its logic is wrong, so reliance has to be earned.",
      "how_it_works": [
       "Must: due care weighs cost against benefit (Standard 4.2), so if a simple test answers the objective, a complex tool needs a reason beyond novelty.",
-      "Sound practice: check the input, confirming the data is complete, accurate and from the right period before relying on results.",
-      "Sound practice: check the logic by running the script, bot or model on known cases, so the auditor knows it flags what it should.",
+      "Sound practice: check the input data is complete, accurate and from the right period before relying on results.",
+      "Sound practice: check the logic by running the script, bot or model on known cases, and again after its input data changes.",
+      "Knowledge (NIST AI RMF): when the data a learning model now meets drifts from the data it learned from, its results can change with no code change.",
       "Must: apply professional skepticism to tool output (Standard 4.3); a score or flag is a lead to investigate, and the auditor decides what it means.",
       "Must: the chief audit executive (CAE) trains staff on new technology and works with IT and information security on putting it in place (Standard 10.3)."
      ],
-     "example": "At a drug distributor in Basel, internal auditor Luca wants to use a machine learning model built by the finance team to score invoices for fraud risk. Before relying on it, Luca runs it on twenty invoices already known to be improper, and it flags only twelve. Luca treats its scores as leads and adds a rules-based test of every invoice.",
+     "example": "At a drug distributor in Basel, internal auditor Luca wants to use the finance team's machine learning model to score invoices for fraud risk. Before relying on it, Luca runs it on twenty invoices known to be improper, and it flags only twelve. Luca treats its scores as leads and adds a rules-based test of every invoice.",
      "audit_focus": {
       "review": [
        "Reperform the tool's test by hand on a small set of items",
@@ -611,19 +615,20 @@
      "name": "Workflow Segments and Process Maps",
      "legacy_ids": [],
      "practice_ids": [
-      "cia2_d2_006"
+      "cia2_d2_006",
+      "cia2_d2_033"
      ],
      "definition": "A workflow segment is one stage of a process, such as an input, step, decision or handoff; a process map shows the segments in order, with their owners.",
-     "why_it_matters": "Risks gather at handoffs, decisions and manual steps. Seeing the segments shows the auditor where a control should sit and where a missing one leaves a gap.",
+     "why_it_matters": "Risks gather at handoffs, decisions and manual steps, so the segments show where a control should sit and where one is missing.",
      "how_it_works": [
       "Sound practice: divide the process from its trigger to its output: inputs, processing steps, decisions, handoffs between people or systems, and outputs.",
       "Sound practice: for each segment, note who performs it, which system holds the data and which control, if any, acts there.",
-      "May: record this in a process map, flowchart or narrative; each is a common workpaper (Standard 14.6).",
-      "Sound practice: confirm a map drawn by management with a walk-through, following real items through each segment with the people who perform it.",
-      "Must: the condition comes from evidence (Standard 14.2), so where walk-through and map differ, the observed process is the condition and the map a claim.",
-      "May: link each risk and control to its segment in a risk and control matrix (Standard 13.2)."
+      "May: record segments in a map, flowchart or narrative (Standard 14.6), linking each risk and control to its segment in a risk and control matrix (Standard 13.2).",
+      "Sound practice: confirm management's As-Is map with a walk-through, following real items through each segment with the people who perform it.",
+      "Knowledge (OpenStax Foundations of IS): an As-Is map shows how a process runs now; a To-Be map shows the future state a redesign aims for, not the current process.",
+      "Must: the condition comes from evidence (Standard 14.2), so where walk-through and map differ, the observed process is the condition and the map a claim."
      ],
-     "example": "At a car rental firm in Lisbon, management's map of the damage-claims process shows a supervisor approving every repair over 500 euros. Internal auditor Ines walks three recent claims through each segment with the staff involved and finds that repairs are booked with the garage before approval is requested. Ines records the actual sequence as the condition to evaluate against the policy.",
+     "example": "At a car rental firm in Lisbon, management's map of the damage-claims process shows a supervisor approving every repair over 500 euros. Internal auditor Ines walks three recent claims through each segment and finds that repairs are booked with the garage before approval is requested. Ines records the actual sequence as the condition to evaluate against the policy.",
      "audit_focus": {
       "review": [
        "Walk a real transaction through every segment of the mapped process",
@@ -651,7 +656,7 @@
       },
       {
        "term": "Process narrative",
-       "definition": "A written, step-by-step description of a process, used in place of or beside a diagram."
+       "definition": "A written, step-by-step description of a process."
       },
       {
        "term": "Risk and control matrix",
@@ -712,15 +717,16 @@
      "name": "The Data Analytics Steps",
      "legacy_ids": [],
      "practice_ids": [
-      "cia2_d2_019"
+      "cia2_d2_019",
+      "cia2_d2_034"
      ],
      "definition": "Data analytics in an engagement is a five-step routine: set the question, get the relevant data, normalize it, analyze it, then communicate what it shows.",
-     "why_it_matters": "Each step protects the next. Analysis of data that answers the wrong question, or that was never cleaned, produces confident results that are wrong.",
+     "why_it_matters": "Each step protects the next: analysis of the wrong data, or of data never cleaned, gives confident results that are wrong.",
      "how_it_works": [
-      "Syllabus bullet 2B4d names the steps: objectives, data, normalizing, analysis, communication. Their detail below is sound practice.",
       "Sound practice: set the objective, stating what the analysis must answer for the engagement, before asking for any data.",
-      "Sound practice: obtain the data: identify the records, system and period that answer it, and extract them directly and read-only where possible.",
+      "Sound practice: obtain the data: identify the records, system and period that answer it, and extract them read-only where possible.",
       "Sound practice: normalize: clean and standardize formats, units and codes, and reconcile totals to the source; flag odd or repeated records, never delete them.",
+      "Knowledge (OpenStax Foundations of IS): normalizing can also rescale measures kept in different units to a common range, so one with large numbers does not swamp the rest.",
       "Sound practice: analyze: run the tests, follow up each exception, and validate throughout, since an odd result may mean bad data.",
       "Must: document every step so another person could repeat it (Standard 14.6); then communicate results clearly for each audience, often with visuals."
      ],
@@ -753,7 +759,7 @@
      "key_terms": [
       {
        "term": "Normalize",
-       "definition": "To clean and standardize data, such as dates, units and codes, so that records from different sources can be compared."
+       "definition": "To clean, standardize and, where needed, rescale data so records and measures from different sources can be compared."
       },
       {
        "term": "Reconcile",
@@ -769,7 +775,8 @@
      "practice_ids": [
       "cia2_d2_007",
       "cia2_d2_008",
-      "cia2_d2_025"
+      "cia2_d2_025",
+      "cia2_d2_035"
      ],
      "definition": "Analysis methods answer different questions: why it happened (diagnostic), what may happen (predictive), what to do (prescriptive), what stands out (anomaly detection) and what text says (text analysis).",
      "why_it_matters": "Choosing the wrong method answers the wrong question. The data type matters too: some methods need tidy tables, others are built for free text.",
@@ -880,15 +887,18 @@
      "name": "Ratios, Trends and Variances",
      "legacy_ids": [],
      "practice_ids": [
-      "cia2_d2_009"
+      "cia2_d2_009",
+      "cia2_d2_036",
+      "cia2_d2_037"
      ],
      "definition": "Analytical review compares figures with an expectation: a ratio relates two figures, a trend follows one over time, and a variance sets actual against budget or forecast.",
      "why_it_matters": "Analytics show quickly where an activity's figures move unusually, so detailed testing can go where the risk is.",
      "how_it_works": [
-      "May: a work program can list ratio, trend and regression analysis and comparisons with budgets, forecasts or earlier periods (Standard 14.2).",
-      "Sound practice: form the expectation first, from known facts such as price changes, volumes or new contracts, then compare actual figures with it.",
-      "Sound practice: use a ratio only when its two figures are related and bear on the objective, such as returns per thousand units sold.",
+      "May: a work program can list ratio, trend and regression analysis and comparisons with budgets or earlier periods (Standard 14.2).",
+      "Sound practice: form the expectation first from known facts, such as prices or volumes, and use ratios whose figures are related and bear on the objective.",
       "Knowledge (OpenStax Principles of Accounting): trend analysis compares each line across periods, best over several; two periods rarely show a trend.",
+      "Knowledge (OpenStax Principles of Accounting): the current ratio sets current assets against current liabilities; the quick ratio leaves out inventory and prepaid expenses.",
+      "Knowledge (OpenStax Principles of Accounting): receivables turnover sets credit sales against average receivables; a lower figure means customers pay more slowly.",
       "Should: once a gap against criteria emerges, follow-up procedures establish its cause, effect and significance; an unexpected result is first explained and corroborated."
      ],
      "example": "Internal auditor Sione reviews fuel costs at a bus operator in Auckland. Fuel spending rose 18 percent while the fuel price rose 5 percent and kilometers driven stayed flat. The expectation was a 5 percent rise, so Sione does not report the gap yet. Sione analyzes fuel card transactions by vehicle and finds cards used on days the buses stood in the depot.",
@@ -904,15 +914,15 @@
       "recommend": "Have the engagement supervisor send back to the audit team any analytics where an unexplained difference has no recorded follow-up.",
       "decides": "The engagement supervisor, for the chief audit executive, decides when a difference is explained"
      },
-     "isaca_rule": "Expectation first, then comparison, then follow-up. A ratio, trend or variance shows where to look. An unexpected difference is a lead; only follow-up showing a gap against criteria makes it a potential finding (Standard 14.2).",
+     "isaca_rule": "Expectation first, then comparison, then follow-up. An unexpected difference is a lead; only follow-up showing a gap against criteria makes it a potential finding (Standard 14.2).",
      "exam_traps": [
       {
        "trap": "A variance larger than expected should be reported as a finding.",
-       "why": "A variance is a signal. It may have a valid cause, such as a price change. Follow-up work shows whether a gap against criteria exists."
+       "why": "A variance is a signal that may have a valid cause, such as a price change; follow-up shows whether a gap against criteria exists."
       },
       {
        "trap": "A ratio that matches last year shows the controls worked.",
-       "why": "Stable totals can hide offsetting errors or a control that was skipped. Whether a control operated needs evidence about that control."
+       "why": "Stable totals can hide offsetting errors or a skipped control; whether a control operated needs evidence about it."
       }
      ],
      "key_terms": [
@@ -922,11 +932,11 @@
       },
       {
        "term": "Regression analysis",
-       "definition": "A statistical method that estimates how one figure moves with others, used to build a sharper expectation."
+       "definition": "A statistical method estimating how one figure moves with others, to sharpen an expectation."
       },
       {
        "term": "One-off item",
-       "definition": "An unusual event in one period, such as a large settlement, that explains a jump without lasting change."
+       "definition": "An unusual event in one period, such as a settlement, that explains a jump."
       }
      ],
      "memory_aid": "Expect, compare, follow up."
