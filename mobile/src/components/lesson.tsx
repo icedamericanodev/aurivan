@@ -32,6 +32,7 @@
  */
 import { useRef, useState, type ReactNode } from 'react';
 import { View, type LayoutChangeEvent } from 'react-native';
+import { getCertification, notesHeadings } from '../content/certifications';
 import type { IdeaList, Lesson, Scene } from '../content/lessons/types';
 import { ideaListSpoken, itemParts, leadText } from '../content/lessons/ideaList';
 import { displayToOriginal, isCheckCorrect, lettersFor, originalToDisplay, renderText, type Permutation } from '../engine/shuffle';
@@ -54,7 +55,9 @@ export const partDelay = (i: number) => Math.min(i, motion.stagger.maxScene - 1)
  * The index of a scene's last part (its "Report a problem" link arrives with
  * it). Exported for the player and tests. A check's link waits for the answer.
  */
-export function lastPart(scene: Scene): number {
+export function lastPart(scene: Scene, role?: string): number {
+  // `role`: the course's notesRole (missing → CISA), which names its coach scene (coachHeading below).
+  const coach = coachHeading(role);
   switch (scene.type) {
     case 'flow':
       return scene.steps.length + (scene.caption ? 1 : 0);
@@ -71,9 +74,9 @@ export function lastPart(scene: Scene): number {
       return splitCoachText(scene.body).rest ? 2 : 1;
     case 'idea':
       // A listed idea (1.43): the lead, each item, then the closing line.
-      if (scene.list && scene.heading !== COACH_HEADING) return scene.list.items.length + (scene.list.close ? 2 : 1);
+      if (scene.list && scene.heading !== coach) return scene.list.items.length + (scene.list.close ? 2 : 1);
       // "The IS auditor’s lens" splits like the takeaway; a plain idea is two parts.
-      return scene.heading === COACH_HEADING && splitCoachText(scene.body).rest ? 2 : 1;
+      return scene.heading === coach && splitCoachText(scene.body).rest ? 2 : 1;
     default:
       // The cover and an analogy: two parts.
       return 1;
@@ -108,8 +111,19 @@ function Part({ i, drop, style, spoken, children }: { i: number; drop?: boolean;
  * against it in two places (kicker and key-idea card), so it lives here ONCE.
  * If you ever rename it, change this line and the headings in cisa.ts together
  * (a test fails if they drift apart).
+ *
+ * CIA_BANK_PLAN.md section 11 (26 Nov 2026): each course names its own coach
+ * scene from its `notesRole`, the same words as its study notes' lens
+ * (notesHeadings in content/certifications.ts): "The IS auditor’s lens" for
+ * CISA (and any course without a role), "The internal auditor’s lens" for a
+ * CIA lesson. A course's lesson data uses its own lens as the coach heading.
  */
-export const COACH_HEADING = 'The IS auditor’s lens';
+export function coachHeading(role?: string): string {
+  return notesHeadings(role).lens;
+}
+
+/** CISA's coach heading, "The IS auditor’s lens" (unchanged; the lesson data in cisa.ts uses it). */
+export const COACH_HEADING = coachHeading();
 
 /**
  * What KIND of scene this is, in a word or two: the kicker over its heading
@@ -118,12 +132,13 @@ export const COACH_HEADING = 'The IS auditor’s lens';
  * says "Think of…" gets "An analogy" instead, so the page never says it
  * twice. Exported for tests.
  */
-export function sceneKicker(scene: Scene): string | null {
+export function sceneKicker(scene: Scene, role?: string): string | null {
   switch (scene.type) {
     case 'title':
       return null;
     case 'idea':
-      return scene.heading === COACH_HEADING ? COACH_HEADING : 'The idea';
+      // The coach scene's kicker is its course's lens (role missing → CISA's).
+      return scene.heading === coachHeading(role) ? scene.heading : 'The idea';
     case 'analogy':
       return /^think of\b/i.test(scene.heading) ? 'An analogy' : 'Think of it like';
     case 'flow':
@@ -624,6 +639,8 @@ export function SceneView({
   tone?: string;
 }) {
   const { c } = useTheme();
+  // The open lesson's course names the coach scene ("The IS auditor’s lens" for CISA).
+  const coach = coachHeading(getCertification(lesson.certId)?.notesRole);
 
   switch (scene.type) {
     case 'title':
@@ -632,8 +649,8 @@ export function SceneView({
     case 'idea':
       // "The IS auditor’s lens" is the coach's voice: the key-idea recipe (ui.md LP3), as on the vine and in
       // notes, at the same anchor line as every other scene (mobile 1.22).
-      if (scene.heading === COACH_HEADING) {
-        return <KeyIdea caption={COACH_HEADING} body={scene.body} />;
+      if (scene.heading === coach) {
+        return <KeyIdea caption={coach} body={scene.body} />;
       }
       if (scene.list) return <IdeaListScene heading={scene.heading} list={scene.list} />;
       return (

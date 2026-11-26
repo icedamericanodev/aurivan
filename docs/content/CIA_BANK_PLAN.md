@@ -2147,34 +2147,38 @@ this blocks content work; all of it is needed before a pack is switched on.
   `trademark-notice.test.ts` asserts exact strings. The ready-to-paste block:
 
 ```ts
-export const IIA: CertIssuer = { id: 'iia', name: 'The IIA' };
-// TO VERIFY before pasting: registration wording (USPTO), mindset wording, difficulty mix, short names.
+export const IIA: CertIssuer = { id: 'iia', name: 'The IIA', site: 'theiia.org' };
+// TO VERIFY before pasting: registration wording (USPTO), mindset wording, difficulty mix, short names,
+// and the welcome line (welcomeHeadline below follows CISA's "Think like an IS auditor.").
 const IIA_TM = 'Not affiliated with or endorsed by The IIA. CIA is a trademark of The IIA.';
 const IIA_MIX = { analysis: 0.3, application: 0.5, foundational: 0.2 };
 const IIA_NOTE = 'The IIA reports scaled scores from 250 to 750; 600 is the passing mark.';
-const IIA_BASE = { issuer: IIA, mindset: IIA_MINDSET, trademarkNotice: IIA_TM, trademarkRegistered: false, status: 'coming_soon' as const };
+// What the phone shows (the owner's word rule: "the score needed", never "pass"); content/scoreNote.ts reads it.
+const IIA_SCORE = 'The IIA reports scaled scores from 250 to 750. The score needed is 600.';
+const IIA_BASE = { issuer: IIA, mindset: IIA_MINDSET, notesRole: 'internal auditor', welcomeHeadline: 'Think like an internal auditor.',
+  trademarkNotice: IIA_TM, trademarkRegistered: false, status: 'coming_soon' as const };
   { id: 'cia1', name: 'CIA Part 1', fullName: 'Internal Audit Fundamentals', ...IIA_BASE,
-    exam: { questions: 125, minutes: 150, difficultyMix: IIA_MIX, passingNote: IIA_NOTE },
+    exam: { questions: 125, minutes: 150, difficultyMix: IIA_MIX, passingNote: IIA_NOTE, scoreNote: IIA_SCORE },
     domains: [
       { id: '1', name: 'Foundations of Internal Auditing', short: 'Foundations', weight: 35, tone: 0 },
       { id: '2', name: 'Ethics and Professionalism', short: 'Ethics', weight: 20, tone: 1 },
       { id: '3', name: 'Governance, Risk Management, and Control', short: 'GRC', weight: 30, tone: 2 },
       { id: '4', name: 'Fraud Risks', short: 'Fraud', weight: 15, tone: 3 } ] },
   { id: 'cia2', name: 'CIA Part 2', fullName: 'Internal Audit Engagement', ...IIA_BASE,
-    exam: { questions: 100, minutes: 120, difficultyMix: IIA_MIX, passingNote: IIA_NOTE },
+    exam: { questions: 100, minutes: 120, difficultyMix: IIA_MIX, passingNote: IIA_NOTE, scoreNote: IIA_SCORE },
     domains: [
       { id: '1', name: 'Engagement Planning', short: 'Planning', weight: 50, tone: 0 },
       { id: '2', name: 'Information Gathering, Analysis, and Evaluation', short: 'Evidence', weight: 40, tone: 1 },
       { id: '3', name: 'Engagement Supervision and Communication', short: 'Supervision', weight: 10, tone: 2 } ] },
   { id: 'cia3', name: 'CIA Part 3', fullName: 'Internal Audit Function', ...IIA_BASE,
-    exam: { questions: 100, minutes: 120, difficultyMix: IIA_MIX, passingNote: IIA_NOTE },
+    exam: { questions: 100, minutes: 120, difficultyMix: IIA_MIX, passingNote: IIA_NOTE, scoreNote: IIA_SCORE },
     domains: [
       { id: '1', name: 'Internal Audit Operations', short: 'Operations', weight: 25, tone: 0 },
       { id: '2', name: 'Internal Audit Plan', short: 'Audit Plan', weight: 15, tone: 1 },
       { id: '3', name: 'Quality of the Internal Audit Function', short: 'Quality', weight: 15, tone: 2 },
       { id: '4', name: 'Engagement Results and Monitoring', short: 'Results', weight: 45, tone: 3 } ] },
   { id: 'ciac', name: 'CIA Challenge', fullName: 'CIA Challenge Exam', ...IIA_BASE,
-    exam: { questions: 150, minutes: 180, difficultyMix: IIA_MIX, passingNote: IIA_NOTE },
+    exam: { questions: 150, minutes: 180, difficultyMix: IIA_MIX, passingNote: IIA_NOTE, scoreNote: IIA_SCORE },
     domains: [
       { id: '1', name: 'Internal Audit Professionalism and Quality', short: 'Professionalism', weight: 20, tone: 0 },
       { id: '2', name: 'Internal Audit Operations and Audit Plan', short: 'Ops & Plan', weight: 15, tone: 1 },
@@ -2183,17 +2187,41 @@ const IIA_BASE = { issuer: IIA, mindset: IIA_MINDSET, trademarkNotice: IIA_TM, t
       { id: '5', name: 'Engagement Results and Monitoring', short: 'Results', weight: 20, tone: 4 } ] },
 ```
 
-- `mobile/src/engine/readiness.ts` (about line 114): the id pattern `/^d(\d+)_/`
-  returns `'?'` for ids like `cia1_d1_001`, so readiness and the domain badge
-  stay empty. CRISC and AAIA ids have the same problem.
-- `mobile/src/content/scoreNote.ts`: every non-CISSP exam prints ISACA's score
-  line. CIA needs The IIA's (250 to 750, 600 to pass), and never as a KaiSip score.
+- **Done (26 Nov 2026): question ids with a course prefix.** `domainOf` in
+  `mobile/src/engine/readiness.ts` now reads `cia1_d1_001`, `crisc_d2_010` and
+  `aaia_d3_001` as well as CISA's `d4_217` (anything else is still `'?'`).
+  Tests: `mobile/src/__tests__/course-wording.test.tsx`; both website bundles
+  were rebuilt (readiness.ts is in them).
+- **Done (26 Nov 2026): the score note.** A course may carry `exam.scoreNote`
+  (the owner's word rule: "the score needed", never "pass"); `scaledScoreNote`
+  in `mobile/src/content/scoreNote.ts` prints it, and a course without one
+  (every course today) keeps its line. Not `passingNote`: every course already
+  has one, worded "the passing mark", so reading it would change CISA's line.
+  The ready block above has The IIA's `IIA_SCORE`.
 - `mobile/src/content/games/index.ts` and `mobile/src/engine/games/canopyCall.ts`
   take the domain from the first character of the sub-topic id, which under
   `1A1` codes is the part number, not the section.
 - "Domain N" is hardcoded in about 27 places; The IIA says "Section A".
-- `mobile/src/engine/readySigns.ts` says "Check isaca.org";
-  `mobile/src/engine/planner.ts` falls back to 1.6 minutes a question (CIA is 1.2).
+  **Left as it is (26 Nov 2026):** no one course-level label fits cleanly. The
+  places are spread over many screens and two website-bundled engines
+  (`plant.ts` numbers domains by position, `readinessReport.ts` writes the
+  spoken line), lower-case "domain" runs through the copy ("Every domain at
+  70%"), and "Section A" needs a letter for an id that is a number. Places:
+  `domainLabel` in `certifications.ts`; `app/notes/[domain].tsx` (caption and
+  "Domain key terms"), `app/notes/index.tsx`, `app/bank/index.tsx`,
+  `app/exam-guide.tsx` (2), `app/cheat-sheet.tsx` (2), `app/glossary.tsx`,
+  `app/labs/[id].tsx`, `app/exam-week.tsx` (2), `app/(tabs)/learn.tsx`,
+  `app/(tabs)/practice.tsx` (2), `lib/finalWeek.ts` (3),
+  `engine/readinessReport.ts`, `engine/plant.ts`, `engine/milestones.ts`
+  ("Domain Mastery" badges, 2), `engine/games/fieldGuide.ts`. Needs a wording
+  decision (the label, letters, and the lower-case copy) before it is built.
+- **Done (26 Nov 2026): "Check isaca.org".** A course's issuer may carry
+  `site` (`CertIssuer` in `mobile/src/content/types.ts`), and `readySigns`
+  takes it as `issuerSite`: "Check theiia.org before you book." A missing site
+  keeps "Check isaca.org before you book." (the website, CISA only, passes
+  none). The output keeps its name `isacaLine`, because the website reads it.
+  The ready block's `IIA` has `site: 'theiia.org'`.
+- `mobile/src/engine/planner.ts` falls back to 1.6 minutes a question (CIA is 1.2).
 - **Done (26 Nov 2026): `testable_from` reaches the app.** `mobile/scripts/build-content.mjs`
   carries it into the pack question as `testableFrom` (only when the item has a
   date; its `validate()` fails a malformed one), and the phone's mocks, full and
@@ -2207,6 +2235,11 @@ const IIA_BASE = { issuer: IIA, mindset: IIA_MINDSET, trademarkNotice: IIA_TM, t
   the held-back form (section 3, decision 4), which does not exist in the app
   yet, must apply the same rule when they are built. `challenge_ref` is still
   left out of the pack question (the app does not need it).
+- **From the course-wording review (26 Nov 2026):** `readySigns` takes `issuerSite`, but no
+  phone screen calls `readySigns` yet and nothing sets `issuer.site`, so a CIA learner would
+  still read "Check isaca.org" until a caller passes the issuer's site. CIA lesson data must
+  write its coach scene kicker exactly as "The internal auditor’s lens" (curly apostrophe,
+  U+2019); a straight apostrophe makes the scene render as a plain idea.
 - The phone app has no builder for `<pack>/glossary.json` yet (the dry run
   checks its shape only).
 - `scripts/build_free_sample.py` needs the CIA packs, the 100-item floor and
@@ -2215,10 +2248,14 @@ const IIA_BASE = { issuer: IIA, mindset: IIA_MINDSET, trademarkNotice: IIA_TM, t
   about line 12495, mobile `notes.tsx`). For a CIA pack it must read as the internal
   auditor's lens (found by the Part 2 learner read, round 15). **Phone notes done (26 Nov
   2026, PR 329):** each certification has a `notesRole`, and the notes headings follow it.
-  **Still CISA wording on the phone:** the lessons' heading (`COACH_HEADING` in
-  `mobile/src/components/lesson.tsx`, asserted in `s3b-labels-drill.test.ts`) and the
-  welcome headline (`WELCOME_HEADLINE` in `mobile/src/content/brand.ts`). The web label is
-  CISA only and stays as it is.
+  **Lessons and welcome done (26 Nov 2026):** the lessons' coach scene follows the open
+  lesson's course (`coachHeading(role)` in `mobile/src/components/lesson.tsx`, the notes'
+  lens words; `COACH_HEADING` stays CISA's "The IS auditor’s lens"), so a CIA lesson's
+  coach heading is "The internal auditor’s lens". The welcome screen and Settings → About
+  print the course's `welcomeHeadline` when it has one (`welcomeHeadline(cert)` in
+  `mobile/src/content/brand.ts`), else "Think like an IS auditor.". Still CISA: the welcome's
+  sub line (`WELCOME_LINE`, "Your CISA® exam study…"), and onboarding always opens CISA.
+  The web label is CISA only and stays as it is.
 - The generated Challenge notes (the Part notes for the 40 shared topics,
   re-coded `4A1` and so on, with section-level text written for the Challenge)
   are built with the Challenge pack, after Parts 2 and 3 have notes.

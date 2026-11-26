@@ -56,6 +56,11 @@ export interface ReadySignsInput {
   examQuestions: number;
   /** Sign 3 on (default) or off. */
   mockSign?: boolean;
+  /**
+   * Where to check the booking rules: the course issuer's `site` ("theiia.org").
+   * Missing → "isaca.org", today's line (CIA_BANK_PLAN.md section 11).
+   */
+  issuerSite?: string;
 }
 
 export interface ReadySigns {
@@ -63,7 +68,11 @@ export interface ReadySigns {
   allMet: boolean;
   /** Under the list: the all-met line, or the plain study-bar line. */
   line: string;
-  /** Only when every sign is in place: where to check the booking rules. */
+  /**
+   * Only when every sign is in place: where to check the booking rules. The
+   * name stays `isacaLine` because the website reads it under that name; for
+   * a course from another issuer it names that issuer's site.
+   */
   isacaLine: string | null;
 }
 
@@ -78,7 +87,16 @@ export const SIGN_NOT_YET = 'Not yet';
 export const SIGNS_HEADING = 'Ready to book?';
 export const SIGNS_HEADING_DATED = 'Signs for your exam date';
 export const STUDY_BAR_NOTE = 'This app’s own study bar, not a prediction of your result.';
-export const ISACA_LINE = 'Check isaca.org before you book.';
+/** The issuer's site when a course names none: every course live today is ISACA's. */
+export const DEFAULT_ISSUER_SITE = 'isaca.org';
+
+/** "Check <site> before you book." A missing or blank site → isaca.org. */
+export function bookingLine(site?: string): string {
+  return `Check ${site?.trim() || DEFAULT_ISSUER_SITE} before you book.`;
+}
+
+/** Today's line, "Check isaca.org before you book." (unchanged). */
+export const ISACA_LINE = bookingLine();
 
 const COUNT_WORD: Record<number, string> = { 2: 'Both signs are', 3: 'All three signs are' };
 
@@ -104,5 +122,5 @@ export function readySigns(input: ReadySignsInput): ReadySigns {
   ];
   if (input.mockSign !== false) signs.push({ id: 'mocks', title: SIGN_TITLE.mocks, met: mocksMet(input.mocks, input.examQuestions) });
   const allMet = signs.every((s) => s.met);
-  return { signs, allMet, line: allMet ? allMetLine(signs.length) : STUDY_BAR_NOTE, isacaLine: allMet ? ISACA_LINE : null };
+  return { signs, allMet, line: allMet ? allMetLine(signs.length) : STUDY_BAR_NOTE, isacaLine: allMet ? bookingLine(input.issuerSite) : null };
 }

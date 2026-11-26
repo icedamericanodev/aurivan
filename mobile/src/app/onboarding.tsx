@@ -13,8 +13,8 @@ import { StickyFooter } from '../components/quiz';
 import { Button, Chip, Enter, Gap, T } from '../components/ui';
 import { DataMessage, RestorePreview } from '../components/yourData';
 import { WebImportPreview } from '../components/webImport';
-import { AI_DISCLAIMER_LINE, EXAM_TRADEMARK_LINE, WELCOME_FACTS, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
-import { DEFAULT_CERT_ID } from '../content/certifications';
+import { AI_DISCLAIMER_LINE, EXAM_TRADEMARK_LINE, WELCOME_FACTS, WELCOME_LINE, welcomeHeadline } from '../content/brand';
+import { DEFAULT_CERT_ID, getCertification } from '../content/certifications';
 import { dateInMonths, daysToExam, EXAM_DATE_PRESETS, presetIndexFor } from '../engine/examDay';
 import { planConsequence } from '../engine/firstRun';
 import { moveFocus } from '../lib/a11y';
@@ -69,6 +69,8 @@ function OnboardingFlow() {
   const typing = useKeyboardShown();
   // CISA is the only exam today, so it is chosen for the learner (no exam step).
   const certId = DEFAULT_CERT_ID;
+  // The course's own welcome line, if it has one; CISA has none, so "Think like an IS auditor." (brand.ts).
+  const headline = welcomeHeadline(getCertification(certId));
   // The exam date ("YYYY-MM-DD"), none to start ("Not sure yet").
   // A quick choice or the calendar ("Pick the exact date") sets it.
   // "Now" is read again on each quick choice and each calendar open, so a step
@@ -123,8 +125,8 @@ function OnboardingFlow() {
     <Enter key="s0">
       <View testID="welcome-page" style={{ paddingHorizontal: space.gutter, paddingTop: space.lg }}>
         <KaisipLockup height={34} decorative />
-        <T v="display" accessibilityRole="header" accessibilityLabel={`Welcome to KaiSip. ${WELCOME_HEADLINE}`} style={{ marginTop: space.lg }}>
-          {WELCOME_HEADLINE}
+        <T v="display" accessibilityRole="header" accessibilityLabel={`Welcome to KaiSip. ${headline}`} style={{ marginTop: space.lg }}>
+          {headline}
         </T>
         <FieldText v="sub" style={{ marginTop: space.xs }}>{WELCOME_LINE}</FieldText>
 
