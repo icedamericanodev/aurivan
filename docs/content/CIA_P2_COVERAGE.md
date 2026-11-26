@@ -2,7 +2,7 @@
 
 Built 25 Nov 2026, after the Part 2 pilot, and updated the same day after Part 2 rounds 1,
 2 and 3, and on 26 Nov 2026 after Part 2 round 4 (the first round keyed on free public
-Knowledge sources), to measure Part 2 against the sale gate
+Knowledge sources) and round 5 (the second), to measure Part 2 against the sale gate
 (`docs/content/CIA_BANK_PLAN.md`, section 3, decision 4, revised in round 14): (a) every
 syllabus bullet tested at its verb's depth with every gate passing; (b) two full
 exam-weighted forms of distinct items per section (Part 2 is 100 questions as A 50, B 40,
@@ -18,11 +18,12 @@ counts below still measure against two forms (`CIA_BANK_PLAN.md` section 9).
 Source: the opened Part 2 syllabus (V2.09.2024 FINAL, opened 19 Nov 2026; each bullet's
 leading verb re-read in it on 25 Nov 2026). The "Covers" column is the blueprint's own
 wording (`docs/content/CIA_BLUEPRINT.md`), not The IIA's; the verb is the bullet's leading
-word. Bank: all 85 items in `data/cia/cia2/originals/d1.json` to `d3.json` as of Part 2
-round 4 (the pilot's 37, round 1's 16: `d1_015` to `d1_022`, `d2_015` to `d2_021`,
+word. Bank: all 92 items in `data/cia/cia2/originals/d1.json` to `d3.json` as of Part 2
+round 5 (the pilot's 37, round 1's 16: `d1_015` to `d1_022`, `d2_015` to `d2_021`,
 `d3_010`; round 2's 11: `d1_023` to `d1_026`, `d2_022` to `d2_027`, `d3_011`; round
-3's 7: `d1_027` to `d1_030`, `d2_028` to `d2_030`; and round 4's 14: `d1_031` to
-`d1_037`, `d2_031` to `d2_037`, none cut; none retired). Rounds 1 to 3 renumbered
+3's 7: `d1_027` to `d1_030`, `d2_028` to `d2_030`; round 4's 14: `d1_031` to
+`d1_037`, `d2_031` to `d2_037`, none cut; and round 5's 7: `d1_038` to `d1_042`,
+`d2_038`, `d2_039`, none cut; none retired). Rounds 1 to 3 renumbered
 some drafts before merge (round 2 cut two Section B drafts; round 3 cut two Section A
 drafts and one Section B draft, and moved the later items down each time); the map follows
 the file and each item's `_provenance`, not the drafts. This is
@@ -95,28 +96,36 @@ an internal working document; it holds no item text. No prep provider was opened
   counts at 2B4e, its role half resting on the Glossary's advisory services. `d1_033` is
   labelled analysis on a recall bullet (2A3e); the re-audit accepted it, as the notes now
   teach the classification and the step to the current ratio is one move, and asked that
-  the bullet's depth be watched as it grows.
+  the bullet's depth be watched as it grows. Round 5: each item sits where its
+  `_provenance` puts it. `d1_038` (a payment approval behind a buyer who orders and
+  receives) counts at 2A3f, its key the separation of ordering from receiving, not the
+  approval; `d1_041` (developers releasing their own code) counts at 2A3c and is never
+  named a general or application control; `d1_042` (hours with no breakdown) counts at
+  2A4b, keyed on Standard 13.6 with K16 9.2 for how a schedule is built. `d1_038` is
+  labelled analysis on a recall bullet (2A3f), as `d1_033` is on 2A3e; the re-audit
+  accepted both.
 
 ## 2. Where Part 2 stands against the gate
 
 | Section | Items | Two-form bar (gate) | Three-form target | Gap to the bar | Bullets | Zero items | One item | Below depth |
 |---|---|---|---|---|---|---|---|---|
-| A Engagement Planning | 37 | 100, not met | 150 | 63 | 31 | 6 | 14 | 1 |
-| B Information Gathering, Analysis, and Evaluation | 37 | 80, not met | 120 | 43 | 22 | 1 | 11 | 0 |
+| A Engagement Planning | 42 | 100, not met | 150 | 58 | 31 | 6 | 12 | 1 |
+| B Information Gathering, Analysis, and Evaluation | 39 | 80, not met | 120 | 41 | 22 | 1 | 9 | 0 |
 | C Engagement Supervision and Communication | 11 | 20, not met | 30 | 9 | 7 | 0 | 5 | 0 |
-| **Part 2** | **85** | **200, not met** | **300** | **115** | **60** | **7** | **30** | **1** |
+| **Part 2** | **92** | **200, not met** | **300** | **108** | **60** | **7** | **26** | **1** |
 
 **Against the owner's gate of 26 Nov 2026** (one held-back full form plus one short mock's
-worth of unseen items: about A 67, B 53, C 13): A is 30 short, B 16, C 2, Part 2 48 in all.
-Round 4 moved A from 37 short to 30 and B from 23 to 16.
+worth of unseen items: about A 67, B 53, C 13): A is 25 short, B 14, C 2, Part 2 41 in all.
+Round 5 moved A from 30 short to 25 and B from 16 to 14 (round 4: A from 37 to 30, B from
+23 to 16).
 
 (The full and short mock splits are the app's own sum, `allocate()` in
 `data/cia/tools/cia_common.py`: 100 as 50/40/10 and 33 as 17/13/3. F/Ap/An by section:
-A 3/20/14, B 1/18/18, C 2/6/3. "Below depth" counts bullets that have items but none at their
+A 3/24/15, B 1/19/19, C 2/6/3. "Below depth" counts bullets that have items but none at their
 verb's depth; zero-item bullets are counted on their own. Earlier figures, for comparison:
 pilot, 37 items with 26 zero-item, 32 one-item and 11 below-depth bullets; round 1, 53
 items with 14, 40 and 8; round 2, 64 items with 10, 39 and 3; round 3, 71 items with 9, 34
-and 3.)
+and 3; round 4, 85 items with 7, 30 and 1.)
 
 What the counts hide:
 
@@ -124,10 +133,13 @@ What the counts hide:
   its verb's depth: 2A7c, a judge bullet with only an application item (tried in rounds 1
   to 3; no Knowledge source helps it, as technology resources rest on the Standards). The
   zero-item bullets are 2A2a, 2A5c, 2A5e, 2A5f, 2A5g, 2A6c and 2B4a, all recall verbs. 52
-  bullets meet their depth today (round 3: 48; round 2: 47; round 1: 38; pilot: 23): A 24
-  of 31, B 21 of 22, C 7 of 7. Round 4 brought 4 bullets to depth, all on Knowledge
-  sources: first items on 2A3e (`d1_033`, `d1_034`) and 2A3f (`d1_035`), and the first
-  analysis items on 2A4a (`d1_036`) and 2B4b (`d2_033`). Its other nine items are second or
+  bullets meet their depth today (round 4: 52; round 3: 48; round 2: 47; round 1: 38;
+  pilot: 23): A 24 of 31, B 21 of 22, C 7 of 7. Round 5 brought none to depth: all seven of
+  its items went to bullets already at depth, four of them second items on one-item
+  bullets (2A3f, 2A4b, 2B4c, 2B5b) and three later lessons (2A3c, 2A3d, 2A3e). Round 4
+  brought 4 bullets to depth, all on Knowledge sources: first items on 2A3e (`d1_033`,
+  `d1_034`) and 2A3f (`d1_035`), and the first analysis items on 2A4a (`d1_036`) and 2B4b
+  (`d2_033`). Its other nine items are second or
   later lessons on bullets already at depth (2A3c, 2A3d, 2A6e, 2B3a twice, 2B4d, 2B4e,
   2B5a twice). Round 3 brought one bullet to depth, 2B7a (`d2_030`); round 2 brought 9:
   first items on 2A5a, 2A7b, 2A7d and 2B7d, and analysis items on 2B1a, 2B1b, 2B4e, 2B5a
@@ -145,26 +157,29 @@ What the counts hide:
   2A1 second lessons, five Section B second lessons and all of Section C empty, and cut a
   2A4a draft, a 2A7c draft and a 2B2b draft. Round 4 wrote only to the knowledge bullets
   the Knowledge sources open, kept all 14 drafts, and left seven slots empty for want of a
-  source (section 5's round 4 table).
-- **No full form can be drawn yet.** Every topic has an item, but 30 of the 53 bullets
+  source (section 5's round 4 table). Round 5 wrote to seven of its ten leads, kept all
+  seven drafts and left three leads empty (section 5's round 5 table).
+- **No full form can be drawn yet.** Every topic has an item, but 26 of the 53 bullets
   with items have exactly one, and a bullet's only item stays out of the held-back form.
-  Twenty-three bullets have two or more: 2A1a, 2A2b, 2A3a, 2A3c, 2A3d, 2A3e, 2A4a, 2A5d,
-  2A6a, 2A6d, 2A6e, 2B1a, 2B1b, 2B2a, 2B3a, 2B4b, 2B4d, 2B4e, 2B5a, 2B6a, 2B6c, 2C1c and
-  2C2a (round 4 added 2A3d, 2A3e, 2A4a, 2A6e, 2B4b and 2B4d). Topic 2A4 can now be sampled
-  by the held-back form (`d1_008` and `d1_036` on 2A4a). Three topics still cannot, as
+  Twenty-seven bullets have two or more: 2A1a, 2A2b, 2A3a, 2A3c, 2A3d, 2A3e, 2A3f, 2A4a,
+  2A4b, 2A5d, 2A6a, 2A6d, 2A6e, 2B1a, 2B1b, 2B2a, 2B3a, 2B4b, 2B4c, 2B4d, 2B4e, 2B5a, 2B5b,
+  2B6a, 2B6c, 2C1c and 2C2a (round 5 added 2A3f, 2A4b, 2B4c and 2B5b; round 4 added 2A3d,
+  2A3e, 2A4a, 2A6e, 2B4b and 2B4d). Topic 2A4 can be sampled by the held-back form
+  (`d1_008` and `d1_036` on 2A4a, `d1_018` and `d1_042` on 2A4b). Three topics still cannot, as
   every bullet in them has at most one item: 2A7, 2B7 and 2B8, all Standards-only topics
   that no Knowledge source opens.
-- **Gate (b) needs about 115 more items; the owner's gate about 48.** The pilot kept 37 of
+- **Gate (b) needs about 108 more items; the owner's gate about 41.** The pilot kept 37 of
   50 written (74%); round 1 kept 16 of 19 (84%); round 2 kept 11 of 13 (85%); round 3 kept
-  7 of 10 (70%); round 4 kept 14 of 14 (100%, the first Part 2 round with no cut). The
-  running rate is 85 of 106 (about 80%). Section A carries more than half of the two-form
-  gap (63) and 30 of the owner gate's 48; topic 2A5 is still furthest behind its share (4
-  of 20), and no Knowledge source opens it.
+  7 of 10 (70%); round 4 kept 14 of 14 (100%, the first Part 2 round with no cut); round 5
+  kept 7 of 7 (100%) but wrote to only seven of ten leads. The running rate is 92 of 113
+  (about 81%). Section A carries more than half of the two-form gap (58) and 25 of the
+  owner gate's 41; topic 2A5 is still furthest behind its share (4 of 20), and no Knowledge
+  source opens it, while topic 2A3 (15) has passed its share of 14.
 - **Knowledge sources now open most of the knowledge bullets** (owner decision of 26 Nov
   2026; library rule 2b; research log K1 to K18; section 4 has the table). They key only
   the fact they state, in the topics their library heading names, and the internal
   auditor's step stays on the Standards, cited first. Round 4 used K1, K2, K4, K5, K7, K8,
-  K9, K15, K16 and K17. Still blocked: IT general against application controls (2A3c),
+  K9, K15, K16 and K17; round 5 used K1, K2, K5, K15 and K16. Still blocked: IT general against application controls (2A3c),
   GRC systems and a named three-way match (2A3f), integrated and remote approaches
   (2A4a), test methods outside IT (2A6e) and following up differences (2B5b) (ISA 500 and
   520 sit on a file host not allowed), embedded audit modules and robotic process
@@ -183,7 +198,7 @@ What the counts hide:
   (`data/cia/shared/currency.json`). An item that rests on one carries that
   `testable_from` and stays out of mocks, forms and the free sample until the date, so it
   does not count toward the gate before then. No Part 2 item carries a future
-  `testable_from` today; the nine items on the Cybersecurity requirement (`d1_001`,
+  `testable_from` today (round 5's seven rely on no Topical Requirement); the nine items on the Cybersecurity requirement (`d1_001`,
   `d1_006`, `d1_007`, `d1_009`, `d1_017`, `d1_025`, `d1_026`, and round 3's `d1_028` and
   `d1_029`) are testable now.
 - **Part 1 already teaches many engagement lessons.** Scope limitations (`cia1_d1_027`,
@@ -227,9 +242,17 @@ What the counts hide:
   `d2_027`, `d2_028` and `cia1_d3_078`; `d2_033` with `d2_006` (its key rule is this item's
   runner-up) and near `cia1_d1_104`; `d2_034` with `d2_019`, near `d2_018`; `d2_035` with
   `d2_025` (transfer pair), near `d2_007` and `d2_008`; `d2_036` with `d2_037` (both read a
-  ratio), and both near `d2_026`.
-- **Challenge tags:** 77 of 85 items carry one (all of round 4's but `d1_034`); `d1_002`, `d1_007`, `d1_018`, `d1_034`, `d2_001`,
-  `d2_019`, `d3_003` and `d3_009` carry `null` as too basic for the Challenge candidate.
+  ratio), and both near `d2_026`. From round 5 (each item's `_provenance`; keep apart in
+  one mock): `d1_038` with `d1_035` and `cia1_d4_015`; `d1_039` with `d1_007`, `d1_032` and
+  `cia1_d2_016`; `d1_040` with `d1_033` and `d1_034` (all three 2A3e classification);
+  `d1_041` with `d1_021`, `d1_037` and `d1_031`; `d1_042` with `d1_018` and `d1_011`;
+  `d2_038` with `d2_018` (transfer pair), near `d2_036`, `d2_037` and `cia1_d1_050`;
+  `d2_039` with `d2_008` (transfer pair; its key method is this item's option B), near
+  `d2_019` and `d2_034`.
+- **Challenge tags:** 82 of 92 items carry one (all of round 5's but `d1_040` and `d1_042`;
+  all of round 4's but `d1_034`); `d1_002`, `d1_007`, `d1_018`, `d1_034`, `d1_040`, `d1_042`,
+  `d2_001`, `d2_019`, `d3_003` and `d3_009` carry `null` as too basic for the Challenge
+  candidate.
 
 ## 3. The map
 
@@ -245,13 +268,13 @@ What the counts hide:
 | 2A2a | Picking the criteria that best fit the activity being audited | Identify (recall) | 0 | 0/0/0 | no | zero items; tried in rounds 1 and 2 and left empty (round 1: common-sense key; round 2: repeats a Part 1 lesson). Part 1 sits close: `cia1_d3_020`, `cia1_d3_064`, `cia1_d1_060` |
 | 2A2b | Testing a set of criteria: relevant, specific, practical, in line with objectives, and able to support fair comparisons | Determine (judge) | 2: d1_004 (C2), d1_030 (C2) | 0/0/2 | yes | - (`d1_030`, round 3's second lesson: a target the regions measure from different start points cannot give reliable comparisons, so it is inadequate whatever its level; `d1_004` turned on a missing satisfactory level; siblings `cia1_d3_064`, `cia1_d1_060`, `cia1_d2_077`, `cia1_d3_020`) |
 | 2A3a | Where Topical Requirements come into planning | Recognize (recall) | 2: d1_006 (C3), d1_028 (C3) | 1/1/0 | yes | - (`d1_028`, round 3's second lesson: a Topical Requirement in scope is a minimum, and the top-ranked risk may need more; keyed on the Cybersecurity requirement and its user guide; siblings `d1_006`, `d1_025`, `cia1_d1_116`) |
-| 2A3b | How the area's strategic goals connect to the way it measures and manages performance and to risk management | Recognize (recall) | 1: d1_005 (C3) | 0/1/0 | yes | one item: cannot be held back. K18 OpenStax Principles of Management 9.6 now opens it (measures tied to strategic objectives, evaluation against a performance standard), but `d1_005` already keys a measure that misses the strategy's risk: a second lesson must stay apart from it and from `d1_004` (a missing satisfactory level) |
-| 2A3c | Current and emerging cyber risks, IT general controls, everyday security controls, why IT control frameworks help, data privacy principles and data security practice | Recognize (recall) | 3: d1_017 (C3), d1_029 (C3), d1_031 (C3); also touched by d1_006 | 0/3/0 | yes | - (`d1_031`, round 4's third lesson and the first on privacy: personal data put to a new use is a privacy risk even when it is well secured; keyed on K4 NIST Privacy Framework 1.0, Privacy Risk Management, and K2 SP 800-53 PT-3, with Standard 13.2 for the planning step; siblings `d1_017`, `d1_029`. `d1_029`, round 3: a cloud provider's controls over the organization's data; `d1_017`: who watches for emerging threats). IT general against application controls still has no source (K16 1.1 sorts access control and encryption as application controls, against IT audit usage, so it is not listed). Open for round 5: Privacy by Design (K16 6.1), change control and separation of duties (K2 CM-3, AC-5, AC-6), the governance half of the old sibling lead |
-| 2A3d | Readiness for disruption (continuity and disaster recovery): business impact analysis, resilience, handling incidents, and tests of backup and recovery | Recognize (recall) | 2: d1_007, d1_032 (C3) | 1/0/1 | yes | - (`d1_032`, round 4's second lesson: which recovery objective each piece of evidence answers, the recovery point against the recovery time; K1 NIST SP 800-34 3.2.1 and 3.4.1 with Standard 13.2; siblings `d1_007` (recovery rehearsed, not just backed up) and `cia1_d2_016`). Business impact analysis against risk assessment left empty: no listed K1 section sets the two side by side. Open for round 5: maximum tolerable downtime against the recovery time objective (K1 3.2.1). The resilience requirement is testable from 2027-10-01 |
-| 2A3e | Finance and accounting basics for the area: assets (current and fixed), liabilities (short and long term), capital and investments | Recognize (recall) | 2: d1_033 (C3), d1_034 | 0/1/1 | yes | - (round 4's first items: `d1_033`, analysis, an installment due this year left in long-term debt hides a current liability and flatters the current ratio (K15 OpenStax Principles of Accounting 12.1 and 5.3, K5 Regulation S-X 5-02 captions 19 to 21); `d1_034`, application, bonds management means to hold for years are long-term investments, not available funds, however readily they sell (K15 5.3, K5 captions 12 and 13); keep the two apart in one mock; `d1_034` is untagged, too basic for the Challenge). Watch the recall depth: no ratio computed. Open for round 5: capital and owners' equity (K15 2.2, 14.4) |
-| 2A3f | Key risks and controls in everyday business processes and in systems such as CRM, ERP and GRC | Recognize (recall) | 1: d1_035 (C3) | 0/1/0 | yes | one item: cannot be held back. Round 4's first item: a real-time (perpetual) stock system still needs a physical count, since theft and damage never post (K15 6.2, K17 10.4 for the ERP, Standard 13.2); near `cia1_d4_029`. Left empty in round 4: GRC systems (no allowed source defines one) and a named three-way match (K15 8.3 separates ordering, receiving and paying and K6 lists the documents matched, but no source names the match as a control). Open for round 5: separated ordering, receiving and paying in an ERP (K15 8.3, K2 AC-5, K6 1315.9). Third-party lessons rest on the Third-Party requirement (testable 2027-03-01) |
+| 2A3b | How the area's strategic goals connect to the way it measures and manages performance and to risk management | Recognize (recall) | 1: d1_005 (C3) | 0/1/0 | yes | one item: cannot be held back. K18 OpenStax Principles of Management 9.6 opens it (measures tied to strategic objectives, evaluation against a performance standard), but `d1_005` already keys a measure that misses the strategy's risk and `d1_004` a missing satisfactory level. Round 5 left lead R5-10 empty: each draft key was common sense or repeated `d1_004` or `d1_005`. Spent until a lesson apart from both turns on K18's fact; topic 2A3 has passed its share |
+| 2A3c | Current and emerging cyber risks, IT general controls, everyday security controls, why IT control frameworks help, data privacy principles and data security practice | Recognize (recall) | 4: d1_017 (C3), d1_029 (C3), d1_031 (C3), d1_041 (C3); also touched by d1_006 | 0/4/0 | yes | - (`d1_041`, round 5's fourth lesson (lead R5-8): developers who move their own unapproved changes into production put payment logic at risk; K2 SP 800-53 CM-3 (review and approval before a change) and AC-5 (separation of duties), with Standard 13.2; the control is never named general or application; siblings `d1_021`, `d1_037`, `d1_031`. `d1_031`, round 4's third lesson and the first on privacy: personal data put to a new use is a privacy risk even when it is well secured; keyed on K4 NIST Privacy Framework 1.0, Privacy Risk Management, and K2 SP 800-53 PT-3, with Standard 13.2 for the planning step; siblings `d1_017`, `d1_029`. `d1_029`, round 3: a cloud provider's controls over the organization's data; `d1_017`: who watches for emerging threats). IT general against application controls still has no source (K16 1.1 sorts access control and encryption as application controls, against IT audit usage, so it is not listed). Four items and topic 2A3 past its share: give it nothing more. Privacy by Design (K16 6.1) would sit close to `d1_031`; the governance half of the old sibling lead stays on the Cybersecurity requirement |
+| 2A3d | Readiness for disruption (continuity and disaster recovery): business impact analysis, resilience, handling incidents, and tests of backup and recovery | Recognize (recall) | 3: d1_007, d1_032 (C3), d1_039 (C3) | 1/1/1 | yes | - (`d1_039`, round 5's third lesson (lead R5-6): a recovery time objective longer than the process's maximum tolerable downtime fails by design, so restore tests against it prove nothing; K1 NIST SP 800-34 3.2 and 3.2.1 with Standard 13.2; its runner-up is untimed restores, not the recovery point. `d1_032`, round 4's second lesson: which recovery objective each piece of evidence answers, the recovery point against the recovery time; K1 NIST SP 800-34 3.2.1 and 3.4.1 with Standard 13.2; siblings `d1_007` (recovery rehearsed, not just backed up) and `cia1_d2_016`). Business impact analysis against risk assessment left empty: no listed K1 section sets the two side by side. Three items: spent for now. The resilience requirement is testable from 2027-10-01 |
+| 2A3e | Finance and accounting basics for the area: assets (current and fixed), liabilities (short and long term), capital and investments | Recognize (recall) | 3: d1_033 (C3), d1_034, d1_040 | 0/2/1 | yes | - (`d1_040`, round 5's third lesson (lead R5-7): cash an owner paid for ordinary shares is contributed capital, equity, not a loan; K15 2.2 and 14.4, K5 captions 28 to 31, with Standard 13.2; untagged, too basic for the Challenge; the fresh blind test flagged it TOO EASY, kept as the bullet is recall. Round 4's first items: `d1_033`, analysis, an installment due this year left in long-term debt hides a current liability and flatters the current ratio (K15 OpenStax Principles of Accounting 12.1 and 5.3, K5 Regulation S-X 5-02 captions 19 to 21); `d1_034`, application, bonds management means to hold for years are long-term investments, not available funds, however readily they sell (K15 5.3, K5 captions 12 and 13); keep the two apart in one mock; `d1_034` is untagged, too basic for the Challenge). Watch the recall depth: no ratio computed. Assets, liabilities, capital and investments each now have an item: spent |
+| 2A3f | Key risks and controls in everyday business processes and in systems such as CRM, ERP and GRC | Recognize (recall) | 2: d1_035 (C3), d1_038 (C3) | 0/1/1 | yes | - (`d1_038`, round 5's analysis item (lead R5-1): a payment approval that rests on order and delivery records the same buyer made does not separate ordering from receiving, so goods ordered and kept pass at any amount; K15 8.3 and K2 AC-5 with Standard 13.2 (fraud risks); no three-way match named; near `cia1_d4_015`. Round 4's first item: a real-time (perpetual) stock system still needs a physical count, since theft and damage never post (K15 6.2, K17 10.4 for the ERP, Standard 13.2); near `cia1_d4_029`. Left empty in round 4: GRC systems (no allowed source defines one) and a named three-way match (K15 8.3 separates ordering, receiving and paying and K6 lists the documents matched, but no source names the match as a control). Third-party lessons rest on the Third-Party requirement (testable 2027-03-01) |
 | 2A4a | Weighing approaches (traditional, agile, integrated, remote) and picking the best fit | Evaluate (judge) | 2: d1_008 (C4), d1_036 (C4) | 0/1/1 | yes | - (`d1_036`, round 4's first analysis item: a subject redesigned every month suits short planning cycles, each cycle's program approved before its work; keyed on Standard 13.6 first, with K16 OpenStax Foundations of Information Systems 9.1 and 4.1 for what an adaptive approach suits, and 13.5; sibling `d1_008`. Rounds 1 to 3 had left it empty or cut drafts). Integrated and remote approaches still have no source: audit terms no allowed free source defines, and the members-only integrated approaches guide is never opened |
-| 2A4b | Project management ideas used to plan and run an engagement | Describe (recall) | 1: d1_018 | 0/1/0 | yes | one item: cannot be held back; sibling of `d1_011`. Open for round 5: the work breakdown structure and project stages (K16 9.2); Scrum's timeboxes and Definition of Done (K14) |
+| 2A4b | Project management ideas used to plan and run an engagement | Describe (recall) | 2: d1_018, d1_042 | 0/2/0 | yes | - (`d1_042`, round 5 (lead R5-2): break each objective's work into tasks before setting end dates; Standards 13.6 and 13.5 first, as they carry the step, then K16 9.2 for the order a schedule is built in (the first audit's HARD ERROR had OpenStax first); both items untagged, too basic for the Challenge; siblings `d1_018`, `d1_011`). Scrum's timeboxes and Definition of Done (K14) stay open, thin (section 6, R6-2) |
 | 2A5a | Where Topical Requirements come into the risk assessment | Recognize (recall) | 1: d1_025 (C5); also touched by d1_009 | 0/1/0 | yes | one item: cannot be held back. Round 2's first item keys on the Cybersecurity requirement and its user guide alone (coverage by an earlier assurance engagement, recorded as the reason for exclusion); sibling of `cia1_d1_061`, `d1_001`, `d1_006`. Round 3's second lesson left empty (repeats `cia1_d1_061`) |
 | 2A5b | Risks that run through the whole activity: regulatory, cyber, IT, operational and financial | Recognize (recall) | 1: d1_009 (C5) | 0/1/0 | yes | one item: cannot be held back. Round 3's second lesson left empty (repeats `d1_009`) |
 | 2A5c | How emerging risks affect the organization | Recognize (recall) | 0; also touched by d1_017 | 0/0/0 | no | zero items; tried in rounds 1 to 3 and left empty (round 1: sound practice only; round 2: repeats `cia1_d2_061`, `cia1_d2_059`, `cia1_d3_055` or common sense; round 3: repeats `cia1_d4_036`) |
@@ -279,13 +302,13 @@ What the counts hide:
 | 2B2b | What makes evidence more reliable: corroboration, an independent source, and a system with sound controls behind it | Recognize (recall) | 1: d2_004 (D2); also touched by d2_003, d2_023 | 0/1/0 | yes | one item: cannot be held back. Round 3's second-lesson draft (an outside warehouse co-owned by the logistics manager under review; key, the auditor's own count) was cut after its fix pass: still answerable from wording |
 | 2B2c | Evidence strong enough that another informed, competent person would come to the same conclusion | Describe (recall) | 1: d2_005 (D2); also touched by d1_013, d3_002 | 0/0/1 | yes | one item: cannot be held back |
 | 2B3a | Tools that save time and add insight: dashboards, continuous monitoring, embedded audit modules, robotic process automation, machine learning and AI | Recognize (recall) | 4: d2_015 (D3), d2_027 (D3), d2_031 (D3), d2_032 (D3); also touched by d1_014 | 0/4/0 | yes | - (round 4: `d2_031`, a validated machine learning model must be retested once its input data changes, even with its code unchanged (Standard 14.1 first, then K9 NIST AI 100-1 Appendix B; transfer pair with `d2_015`, where the validation was current); `d2_032`, a validated monitoring tool supports only the checks it runs, so a control resting on a manager's judgment needs its own test (Standard 14.1 first, then K8 NIST SP 800-137 2.3; near `d2_027`, `d2_028`, `cia1_d3_078`). `d2_027`, round 2: a dashboard built by the team under review is a lead until its feed is tested). Four items on topic 2B3's share of five: give other bullets priority. Embedded audit modules and robotic process automation still have no source |
-| 2B4a | Breaking a process workflow into its parts | Define (recall) | 0 | 0/0/0 | no | zero items; thin: sound practice beyond Standard 13.2. Round 2 draft cut (a map that stopped before the payment made the missing step obvious); round 3 left it empty (no Standards-keyed lead that repeats nothing). Round 4 left it empty again with K16 OpenStax Foundations of Information Systems 2.4 and 4.2 open: the source states what a cross-functional process is, but every draft key was the visibly complete map (round 2's cut) or a walk-through key resting on Sound practice, not on the fact. Section B's only zero-item bullet |
+| 2B4a | Breaking a process workflow into its parts | Define (recall) | 0 | 0/0/0 | no | zero items; thin: sound practice beyond Standard 13.2. Round 2 draft cut (a map that stopped before the payment made the missing step obvious); round 3 left it empty (no Standards-keyed lead that repeats nothing). Round 4 left it empty again with K16 OpenStax Foundations of Information Systems 2.4 and 4.2 open: the source states what a cross-functional process is, but every draft key was the visibly complete map (round 2's cut) or a walk-through key resting on Sound practice, not on the fact. Round 5 left lead R5-9 empty: every draft key was the widest span of the workflow, the visibly complete map, or a span chosen by the objective's scope, which test-taking finds; none turned on K16 2.4's fact. Section B's only zero-item bullet; tried in four rounds, spent until a new source or a new angle appears |
 | 2B4b | Studying workflows with responsibility matrices (such as RACI), walk-throughs and process maps | Analyze (judge) | 2: d2_006 (D4), d2_033 (D4) | 0/1/1 | yes | - (`d2_033`, round 4's first analysis item: a newly approved To-Be map is neither this year's condition nor its criteria; the condition comes from testing calls against bills. Standard 14.2 first, then K16 OpenStax Foundations of Information Systems 4.2 (As-Is against To-Be), Standards 13.4 and 13.3; near `d2_006`, whose key rule is this item's runner-up, and `cia1_d1_104`. Round 2's draft was cut and round 3 left it empty). A RACI lesson stays empty: K16 9.1 shows a RACI chart only as a project planning document, and the notes' RACI lines are Sound practice and Common usage, so no source states a rule to key on |
-| 2B4c | Data types: structured and unstructured | Explain (recall) | 1: d2_008 (D4) | 0/1/0 | yes | one item: cannot be held back. Open for round 5: semistructured data such as tagged logs (K16 3.1, Table 3.1), apart from `d2_008` (unstructured contract text) |
-| 2B4d | The analytics steps: set the objective, get the data, normalize it, analyze it, report the results | Explain (recall) | 2: d2_019, d2_034 (D4) | 0/2/0 | yes | - (`d2_034`, round 4: rescale two measures kept in different units to a common scale before combining them in a ranking; K16 8.1 with Standard 14.1 and the syllabus; its stem asks for a data-handling method, so the Knowledge source keys no auditor's step; near `d2_019` (one supplier list before a duplicate test) and `d2_018`). Open for round 5: the old lead (1), problem definition before analysis, now keyable on K16 8.1 |
+| 2B4c | Data types: structured and unstructured | Explain (recall) | 2: d2_008 (D4), d2_039 (D4) | 0/2/0 | yes | - (`d2_039`, round 5 (lead R5-4): a tagged event log whose elements vary by event type is semistructured, so it is parsed into fields before the test; K16 3.1 and Table 3.1 with Standard 14.1; its stem asks for a data-handling method; transfer pair with `d2_008`, unstructured contract text, whose keyword search is this item's option B). Spent: each of the three types now has an item |
+| 2B4d | The analytics steps: set the objective, get the data, normalize it, analyze it, report the results | Explain (recall) | 2: d2_019, d2_034 (D4) | 0/2/0 | yes | - (`d2_034`, round 4: rescale two measures kept in different units to a common scale before combining them in a ranking; K16 8.1 with Standard 14.1 and the syllabus; its stem asks for a data-handling method, so the Knowledge source keys no auditor's step; near `d2_019` (one supplier list before a duplicate test) and `d2_018`). Round 5 left lead R5-5 (problem definition first, K16 8.1) empty: the key stood alone as the only option that was not a preparation step, and notes 2B4.3 already teach it as a trap. Spent |
 | 2B4e | When to use each analysis method: diagnostic, predictive, prescriptive, anomaly detection, text analysis | Determine (judge) | 3: d2_007 (D4), d2_025 (D4), d2_035 (D4); also touched by d2_008 | 0/1/2 | yes | - (`d2_035`, round 4: an agreed advisory objective to recommend one of three options fits prescriptive analysis, and the choice stays with management; K16 8.2, the Glossary's advisory services, Standards 13.3 and 14.1; transfer pair with `d2_025`, where an assurance objective about a past cause made the prescriptive request the runner-up). Anomaly detection and text analysis still have no source |
 | 2B5a | Reading ratios, variances, trends, benchmarks, and financial and nonfinancial data | Analyze (judge) | 4: d2_009 (D5), d2_026 (D5), d2_036 (D5), d2_037 (D5) | 0/1/3 | yes | - (round 4, both on K15 OpenStax Principles of Accounting Appendix A with Standard 14.2, figures given and nothing computed: `d2_036`, a steady current ratio beside a falling quick ratio points at inventory or prepaid costs, and a ratio's move is a lead, not a finding; `d2_037`, receivables turnover already allows for sales growth, so growth cannot explain its fall (also Standard 4.3); keep the two apart in one mock and both apart from `d2_026`. `d2_026`, round 2: follow up the unexplained difference that matters most). Four items: give other bullets priority |
-| 2B5b | Choosing the analytical technique that serves the engagement objective | Determine (judge) | 1: d2_018 (D5) | 0/0/1 | yes | one item: cannot be held back. Open for round 5: trend analysis over several periods against a two-year comparison, and common-size (vertical) analysis (K15 Appendix A); benchmarking against a comparable firm (K18 9.6). Following up differences as an audit step still needs ISA 520 (host not allowed) |
+| 2B5b | Choosing the analytical technique that serves the engagement objective | Determine (judge) | 2: d2_018 (D5), d2_038 (D5) | 0/0/2 | yes | - (`d2_038`, round 5's analysis item (lead R5-3): whether spending rose each year asks for horizontal (trend) analysis over several years from a base year, not a two-year change or a common-size share; K15 Appendix A with Standards 14.1 and 14.2; transfer pair with `d2_018`, near `d2_036`, `d2_037` and `cia1_d1_050`). Benchmarking against a comparable firm (K18 9.6) would sit close to `cia1_d1_050`, `cia1_d1_071` and `d2_018`'s option D. Following up differences as an audit step still needs ISA 520 (host not allowed) |
 | 2B6a | Comparing what is (the condition) with what should be (the criteria) | Analyze (judge) | 2: d2_016 (D6), d2_029 (D6); also touched by d2_006, d2_007 | 0/1/1 | yes | - (`d2_029`, round 3's second lesson: last year's clean result shapes planning, not this year's condition; its runner-up is 13.2's review-and-update rule, the key of `cia1_d4_008`; Part 1 sits close: `cia1_d3_023`) |
 | 2B6b | Finding root causes and the likely effects of a gap | Identify (recall) | 1: d2_010 (D6) | 0/1/0 | yes | one item: cannot be held back. Round 3's second lesson left empty (the lead repeated an existing item) |
 | 2B6c | Factors that make a finding more or less significant | Appraise (judge) | 2: d2_011 (D6), d2_021 (D6); also touched by d2_013, d2_026, d3_007 | 0/1/1 | yes | - |
@@ -321,11 +344,11 @@ little more for topics with more bullets and for judge verbs).
 
 | Section | Now | Bar | Gap | Where the items go (topic: now, then share of the bar) |
 |---|---|---|---|---|
-| A | 37 | 100 | 63 | 2A1: 6 of 18; 2A2: 2 of 9; 2A3: 11 of 14; 2A4: 3 of 8; 2A5: 4 of 20; 2A6: 7 of 18; 2A7: 4 of 13. Owner's gate: 67, so 30 short. Round 4 put five items into 2A3, which is now near its share: its next items are second lessons on the one-item 2A3b and 2A3f and new Knowledge lessons only (2A3 is a Plan topic with 11 items: keep foundational at most 25% and analysis at least 15%, now 2 and 2). Then 2A4 (2A4b on K16 9.2) and the Standards-only topics: an analysis item on 2A7c (the one bullet below depth), and 2A5, 2A1, 2A6b and 2A7, which no Knowledge source opens and whose leads repeated existing items in rounds 2 and 3. The empty slots (2A2a, 2A5c, 2A5e, 2A5f, 2A6c) reopen only with a lead that answers every round's reasons. |
-| B | 37 | 80 | 43 | 2B1: 5 of 8; 2B2: 4 of 11; 2B3: 4 of 5; 2B4: 8 of 14; 2B5: 5 of 8; 2B6: 5 of 12; 2B7: 4 of 13; 2B8: 2 of 9. Owner's gate: 53, so 16 short. 2B3a and 2B5a hold four items each: next go to the one-item bullets the Knowledge sources open (2B4c on K16 3.1, 2B5b on K15 Appendix A and K18 9.6), the 2B4d lead (1) on K16 8.1, and a first item on 2B4a only with a key that rests on K16 2.4's fact. Then second lessons on the Standards-only topics, 2B8, 2B7 and 2B2 furthest behind their shares (round 3's leads for 2B6b, 2B7b, 2B7c, 2B8a and 2B8b each repeated an existing item). 2B4 now has 8 items, so its Apply mix is enforced (foundational at most 35%, application at least 40%; now 0 and 5 of 8). 2B1 already holds 2 analysis items of 5, so its next items are foundational or application. |
+| A | 42 | 100 | 58 | 2A1: 6 of 18; 2A2: 2 of 9; 2A3: 15 of 14; 2A4: 4 of 8; 2A5: 4 of 20; 2A6: 7 of 18; 2A7: 4 of 13. Owner's gate: 67, so 25 short. Rounds 4 and 5 put nine items into 2A3, which has now passed its share: give it nothing more (it is a Plan topic with 15 items: foundational 2 (13%), analysis 3 (20%), inside the limits). 2A4 has room (2A4b's Scrum lead, thin; section 6, R6-2), and 2A6e an IT-systems lead (R6-3, thin); the rest of Section A's gap sits in the Standards-only topics: an analysis item on 2A7c (the one bullet below depth), and 2A5, 2A1, 2A6b and 2A7, which no Knowledge source opens and whose leads repeated existing items in rounds 2 and 3. The empty slots (2A2a, 2A5c, 2A5e, 2A5f, 2A6c) reopen only with a lead that answers every round's reasons. |
+| B | 39 | 80 | 41 | 2B1: 5 of 8; 2B2: 4 of 11; 2B3: 4 of 5; 2B4: 9 of 14; 2B5: 6 of 8; 2B6: 5 of 12; 2B7: 4 of 13; 2B8: 2 of 9. Owner's gate: 53, so 14 short. Round 5 gave 2B4c and 2B5b their second items and left 2B4a and the 2B4d lead empty: the Knowledge sources' Section B leads are spent apart from 2B3a's old lead (1), a Standards-decided final two (section 6, R6-1). The rest of the gap sits in the Standards-only topics, 2B8, 2B7 and 2B2 furthest behind their shares (round 3's leads for 2B6b, 2B7b, 2B7c, 2B8a and 2B8b each repeated an existing item). 2B4 (9 items, Apply) passes its mix (0 foundational, 6 application); 2B5 (6) reaches enforcement at 8. 2B1 already holds 2 analysis items of 5, so its next items are foundational or application. |
 | C | 11 | 20 | 9 | 2C1: 5 of 11; 2C2: 6 of 9. Owner's gate: 13, so 2 short; no Knowledge source opens Section C (it rests on the Standards alone). Every bullet is at depth; the rest are second lessons on the five one-item bullets (2C1a, 2C1b, 2C1d, 2C2b, 2C2c), 2C1 first. Rounds 2 to 4 added none (round 4 wrote only to knowledge bullets): every lead repeated `d3_001`, `d3_007`, `d3_008`, `d3_010` or `d3_011`, a Part 1 item (`cia1_d1_037`, `cia1_d2_013`, `cia1_d2_068`, `cia1_d3_012`) or a Section A resource item (`d1_022`, `d1_024`), or rested on a line the notes mark KaiSip's reading. |
 
-**What each knowledge bullet rests on after round 4, and what is still blocked.** The IIA
+**What each knowledge bullet rests on after round 5, and what is still blocked.** The IIA
 sources opened for Part 2 are the Standards (Principles 13 and 14 above all; also 3.1, 4.2,
 4.3, 5.2, 8.1, 8.2, 9.3, 10.2, 10.3, 11.2, 11.5, 12.3, 15.1 and the glossary), the four
 Topical Requirements with their user guides, the two 2026 Statements of Position, the
@@ -343,68 +366,70 @@ source keys only a fact it states, only in the topics its library heading names;
 and every must stay on the Standards, cited first when the auditor's step decides the item.
 The notes teach each deciding fact as a "Knowledge (source)" line before an item keys on it
 (round 4 added them to 2A3.2, 2A3.3, 2A3.4, 2A4.2, 2A6.4, 2B3.1, 2B3.2, 2B4.1, 2B4.3, 2B4.4
-and 2B5.1).
+and 2B5.1; round 5 added or rewrote lines in 2A3.2 (change control), 2A3.3 (maximum
+tolerable downtime against the recovery time objective), 2A3.4 (the capital row and the
+ordering and receiving trap), 2A4.3 (the work breakdown structure), 2B4.4 (semistructured
+data) and 2B5.3 (horizontal against vertical analysis)).
 
 | Bullet | Open now (K number, section; item that uses it) | Still blocked, and why |
 |---|---|---|
-| 2A3b | K18 OpenStax Principles of Management 9.6 (measures tied to strategic objectives, a performance standard, benchmarking); no item yet | Nothing; a second lesson must stay apart from `d1_005` and `d1_004` |
-| 2A3c | K4 NIST Privacy Framework 1.0 and K2 SP 800-53 PT-3 (`d1_031`); K2 AC-2, AC-5, AC-6, AU-6, CM-3, CP-9, IR-4, SI-10; K3 CSF 2.0 (what a framework is for, its Functions); K16 6.1 (privacy against security, Privacy by Design's principles) | IT general against application controls as named categories: K16 1.1 sorts access control and encryption as application controls, against IT audit usage, so it is not listed; GAO's FISCAM is denied. Lessons on the Cybersecurity requirement keep to it and its user guide (as `d1_017` and `d1_029` do) |
-| 2A3d | K1 NIST SP 800-34: business impact analysis (3.2), maximum tolerable downtime, recovery time and recovery point (3.2.1, `d1_032`), backup and recovery (3.4.1), testing (3.5.1) | A business impact analysis set against a risk assessment (no listed K1 section draws the line); business resilience as The IIA frames it waits on the Organizational Resilience requirement (testable 2027-10-01) |
-| 2A3e | K15 OpenStax Principles of Accounting 2.2, 5.3, 11.1, 12.1, 13.1, 14.4 and K5 Regulation S-X 5-02 captions (`d1_033`, `d1_034`) | Nothing for the bullet's recall depth; K5 is a US caption list, so items cite it as support, never as the rule that binds a non-US company |
-| 2A3f | K15 6.2 (perpetual records still need a physical count, `d1_035`), 7.1 and 8.3 (ordering, receiving and paying separated); K16 7.4 and K17 10.4, 12.4, 13.2 (ERP, CRM, supply chain systems); K6 Prompt Payment rule (the documents matched before payment; US federal practice, documents only); K2 AC-5 | GRC systems (no allowed source defines one); a three-way match named as a control (no source names it); third-party lessons wait on the Third-Party requirement (testable 2027-03-01) |
-| 2A4a, 2A4b | K16 OpenStax Foundations of Information Systems 4.1, 9.1 (predictive, adaptive, incremental, `d1_036`) and 9.2 (project stages, work breakdown structure); K14 The Scrum Guide 2020 (Scrum terms; it never says agile) | Integrated and remote audit approaches (audit terms no allowed free source defines; the members-only guide is never opened). The choice of approach stays on Standards 13.5 and 13.6 |
+| 2A3b | K18 OpenStax Principles of Management 9.6 (measures tied to strategic objectives, a performance standard, benchmarking); no item yet (round 5's R5-10 left empty) | Nothing; a second lesson must stay apart from `d1_005` and `d1_004`, and round 5 found none |
+| 2A3c | K4 NIST Privacy Framework 1.0 and K2 SP 800-53 PT-3 (`d1_031`); K2 CM-3 and AC-5 (`d1_041`); K2 AC-2, AC-6, AU-6, CP-9, IR-4, SI-10; K3 CSF 2.0 (what a framework is for, its Functions); K16 6.1 (privacy against security, Privacy by Design's principles) | IT general against application controls as named categories: K16 1.1 sorts access control and encryption as application controls, against IT audit usage, so it is not listed; GAO's FISCAM is denied. Lessons on the Cybersecurity requirement keep to it and its user guide (as `d1_017` and `d1_029` do) |
+| 2A3d | K1 NIST SP 800-34: business impact analysis (3.2), maximum tolerable downtime, recovery time and recovery point (3.2.1, `d1_032`, `d1_039`), backup and recovery (3.4.1), testing (3.5.1) | A business impact analysis set against a risk assessment (no listed K1 section draws the line); business resilience as The IIA frames it waits on the Organizational Resilience requirement (testable 2027-10-01) |
+| 2A3e | K15 OpenStax Principles of Accounting 2.2, 5.3, 11.1, 12.1, 13.1, 14.4 and K5 Regulation S-X 5-02 captions (`d1_033`, `d1_034`; 2.2, 14.4 and captions 28 to 31 for `d1_040`) | Nothing for the bullet's recall depth; K5 is a US caption list, so items cite it as support, never as the rule that binds a non-US company |
+| 2A3f | K15 6.2 (perpetual records still need a physical count, `d1_035`), 7.1 and 8.3 (ordering, receiving and paying separated, `d1_038`, with K2 AC-5); K16 7.4 and K17 10.4, 12.4, 13.2 (ERP, CRM, supply chain systems); K6 Prompt Payment rule (the documents matched before payment; US federal practice, documents only); K2 AC-5 | GRC systems (no allowed source defines one); a three-way match named as a control (no source names it); third-party lessons wait on the Third-Party requirement (testable 2027-03-01) |
+| 2A4a, 2A4b | K16 OpenStax Foundations of Information Systems 4.1, 9.1 (predictive, adaptive, incremental, `d1_036`) and 9.2 (project stages, work breakdown structure, `d1_042`, after Standards 13.6 and 13.5); K14 The Scrum Guide 2020 (Scrum terms; it never says agile; no item yet) | Integrated and remote audit approaches (audit terms no allowed free source defines; the members-only guide is never opened). The choice of approach stays on Standards 13.5 and 13.6 |
 | 2A5g | None | Culture and behavior beyond Part 1's lessons wait on the Organizational Behavior requirement (testable 2027-06-01) |
 | 2A6e | K7 NIST SP 800-53A 2.4.2 and Appendix C: examine, interview, test, for IT systems only (`d1_037`) | Methods outside IT and cybersecurity (inquiry, observation, inspection, confirmation, reperformance, analytical procedures): ISA 500 and 520 are in the IAASB 2026 Handbook, but its files sit on `ifacweb.blob.core.windows.net`, not allowed (an owner decision would open them); AICPA texts are not free; GAO denies access |
 | 2B3a | K9 NIST AI 100-1 Appendix B (`d2_031`); K8 NIST SP 800-137 2.3 (`d2_032`); K17 6.8 (dashboards and their drawbacks) and 14.3 (full-population testing, continuous monitoring); K16 8.2 (dashboards in BI reporting) | Embedded audit modules and robotic process automation (no reputable free source on an allowed host) |
 | 2B4a, 2B4b | K16 2.4 (process modelling, cross-functional processes), 4.2 (flowcharts, As-Is and To-Be maps, `d2_033`), 9.1 (a RACI chart as a planning document) | A RACI rule to key on (K16 9.1 only shows the chart; the notes' RACI lines are Sound practice and Common usage); 2B4a's key must rest on K16 2.4's fact, not on what the map shows (round 4's drafts did not) |
-| 2B4c, 2B4d, 2B4e | K16 3.1 and Table 3.1 (structured, semistructured, unstructured); 8.1 (the analytics process, normalization, `d2_034`); 8.2 (descriptive, diagnostic, predictive, prescriptive, `d2_035`) | Anomaly detection and text analysis as methods (K16 has only network anomaly detection) |
-| 2B5a, 2B5b | K15 Appendix A (liquidity, solvency, efficiency and profitability ratios; trend and common-size analysis; comparison with the industry and the prior year; `d2_036`, `d2_037`) and 5.3 (current ratio); K18 9.6 (benchmarking) | Following up unexpected differences as an audit step (ISA 520, host not allowed; K15 shows it only as a management analysis): such items keep to Standard 14.2, as `d2_026`, `d2_036` and `d2_037` do |
+| 2B4c, 2B4d, 2B4e | K16 3.1 and Table 3.1 (structured, semistructured, unstructured; `d2_039`); 8.1 (the analytics process, normalization, `d2_034`); 8.2 (descriptive, diagnostic, predictive, prescriptive, `d2_035`) | Anomaly detection and text analysis as methods (K16 has only network anomaly detection) |
+| 2B5a, 2B5b | K15 Appendix A (liquidity, solvency, efficiency and profitability ratios; trend and common-size analysis; comparison with the industry and the prior year; `d2_036`, `d2_037`; trend against common-size, `d2_038`) and 5.3 (current ratio); K18 9.6 (benchmarking) | Following up unexpected differences as an audit step (ISA 520, host not allowed; K15 shows it only as a management analysis): such items keep to Standard 14.2, as `d2_026`, `d2_036` and `d2_037` do |
 | 2A5a (recall); 2A7d (judge) | Not a knowledge bullet | Applicability judged by inherent risk, and the board agreeing to a rescope, rest only on the Application Guidance (Background). Round 2 met both without it (`d1_025` on the Cybersecurity requirement and its user guide; `d1_024` on Standards 13.3 and 13.5) |
 
 ## 5. Gap list in priority order
 
 Round 4 showed the Knowledge sources open lessons the IIA sources could not (14 kept of 14,
-four bullets brought to depth), so the order now puts the bullets they open first. Every
-item is still a ceiling, filled only where a distinct lesson is found; section 6 holds the
-leads.
+four bullets brought to depth); round 5 used most of what was left (7 kept of 7, three of
+ten leads left empty, topic 2A3 past its share). The Knowledge-source leads are now close to
+spent (section 6, "Leads for round 6"), so the order below puts first what still has a
+lead and then what would open more. Every item is still a ceiling, filled only where a
+distinct lesson is found.
 
-1. **Second items on the one-item bullets the Knowledge sources open**, so each first item
-   can leave the held-back form's exclusion: 2A3f (separated ordering, receiving and paying
-   in an ERP: K15 8.3, K2 AC-5, K6 1315.9 for the documents only), 2A4b (the work breakdown
-   structure: K16 9.2), 2B5b (trend over several periods, common-size analysis: K15
-   Appendix A; benchmarking: K18 9.6), 2B4c (semistructured data: K16 3.1) and 2A3b (K18
-   9.6, only apart from `d1_005` and `d1_004`).
+1. **The three thin leads left on Knowledge-source bullets** (section 6, R6-1 to R6-3):
+   2B3a's old lead (1), where a Standards distinction (Standard 4.2, cost against benefit)
+   decides the final two and K17 14.3 only makes the runner-up real; 2A4b on the Scrum
+   Guide (K14); and a third 2A6e item on K7, IT systems only. At most three items.
 2. **The one judge bullet below depth: 2A7c** (technology resources), tried in rounds 1 to
    3 and cut in round 3 (two blind testers chose the option that raises it with the chief
    audit executive). No Knowledge source helps: a new lead keys on a technology rule not
    already keyed in `d1_014`, `d1_022` or `cia1_d2_018`, and the stem rules out the
    escalation option.
-3. **The zero-item bullets.** 2B4a: K16 2.4 and 4.2 now open it, but round 4's drafts
-   keyed on the visible map or on Sound practice; only a key that turns on K16's fact (what
-   makes a process cross-functional, where its segments meet) qualifies. 2A2a, 2A5c, 2A5e,
-   2A5f and 2A6c rest on the Standards alone, were left empty in rounds 1 to 3 and reopen
-   only with a lead that answers every round's reasons. 2A5g waits on 2027-06-01 or a
-   Part-1-distinct lesson.
-4. **Further Knowledge lessons on bullets that already have two or more items**, only where
-   the lesson is new and the topic has room: 2A3d (maximum tolerable downtime against the
-   recovery time objective, K1 3.2.1), 2A3e (capital and owners' equity, K15 2.2 and 14.4),
-   2A3c (Privacy by Design, K16 6.1; change control and separation of duties, K2 CM-3 and
-   AC-5), 2B4d (problem definition first, K16 8.1). Topic 2A3 holds 11 of its 14 share, and
-   2B3a and 2B5a hold four items each: give them nothing more until the rest catch up.
-5. **Second lessons on the Standards-only bullets** (Section A: 2A1, 2A5, 2A6b, 2A7;
+3. **The zero-item bullets.** 2B4a was tried in rounds 2 to 5 (a cut, then three empty
+   slots, the last two with K16 2.4 and 4.2 open): spent until a new source or angle
+   appears. 2A2a, 2A5c, 2A5e, 2A5f and 2A6c rest on the Standards alone, were left empty in
+   rounds 1 to 3 and reopen only with a lead that answers every round's reasons. 2A5g waits
+   on 2027-06-01 or a Part-1-distinct lesson.
+4. **Second lessons on the Standards-only bullets** (Section A: 2A1, 2A5, 2A6b, 2A7;
    Section B: 2B2b, 2B2c, 2B6b, 2B7, 2B8; Section C: all five one-item bullets, 2 items
    needed for the owner's gate). Rounds 2 and 3 found most leads repeated an existing item
    (section 4 and the round tables below name them); new leads must stay apart from all of
-   them. Topics 2A7, 2B7 and 2B8 still cannot be sampled by the held-back form.
+   them. Topics 2A7, 2B7 and 2B8 still cannot be sampled by the held-back form. These are
+   also where a Standards distinction can decide a final two, which the round 4 and 5
+   audits asked for and the knowledge bullets rarely allow.
+5. **Give nothing more to** topic 2A3 (15 of its 14), 2B5a or 2A3c (four items each), nor
+   to 2B3a beyond R6-1 (its topic's last slot), and no third item to 2A3d, 2A3e, 2B4c or 2B5b without a lesson apart from
+   every sibling logged in section 2.
 6. **What would open the rest.** Allowing `ifacweb.blob.core.windows.net` would open ISA
-   500 and ISA 520 (test methods outside IT for 2A6e; following up differences for 2B5b),
-   an owner decision; the IAASB's revisions to both are out for comment until 15 Dec 2026
-   (research log watch list). The Third-Party (2027-03-01), Organizational Behavior
-   (2027-06-01) and Organizational Resilience (2027-10-01) requirements become testable on
-   those dates. Still no route: GRC systems, a named three-way match, IT general against
-   application controls, integrated and remote approaches, embedded audit modules, robotic
-   process automation, anomaly detection, text analysis and a RACI rule. The textbook is on
-   hold.
+   500 and ISA 520 (test methods outside IT for 2A6e; following up differences for 2B5b and
+   2B5a), an owner decision; the IAASB's revisions to both are out for comment until 15 Dec
+   2026 (research log watch list). The Third-Party requirement (opened; testable
+   2027-03-01) opens new Section A lessons now (2A1a, 2A3a, 2A3f, 2A5a), written with
+   `testable_from` and counting toward the gate only from that date; Organizational
+   Behavior (2027-06-01, 2A5g) and Organizational Resilience (2027-10-01, 2A3d) likewise.
+   Still no route: GRC systems, a named three-way match, IT general against application
+   controls, integrated and remote approaches, embedded audit modules, robotic process
+   automation, anomaly detection, text analysis and a RACI rule. The textbook is on hold.
 
 **Tried in round 1 and left empty on purpose (25 Nov 2026).** Each slot was scaffolded and
 dropped rather than padded; reopen it only with a new lead that answers the reason.
@@ -489,6 +514,23 @@ pass; no item was renumbered.
 | 2B4b (a RACI lesson) | Left empty | No source states a RACI rule to key on (K16 9.1 only shows the chart) |
 | `d2_032` | Kept | Classed test-taking by one of three reviews only (the second blind test); the second options-only tester missed its key, and the re-audit found it not answerable from the options |
 
+**Round 5 (26 Nov 2026): the round 5 leads, filled or left empty.** Round 5 wrote to
+leads R5-1 to R5-10 (section 6) through the same two section experts. It kept all 7 drafts
+after one fix pass; `d1_042`'s key moved from C to A in the fix pass to balance the round's
+keys, and no item was renumbered.
+
+| Slot | What happened | Reason |
+|---|---|---|
+| 2A3f (second item, R5-1) | Filled (`d1_038`, analysis) | K15 8.3 and K2 AC-5 state the separation; the approval rests on the buyer's own records. The first draft's runner-up (payments up to the threshold) was a cut-down key, replaced in the fix pass |
+| 2A4b (second item, R5-2) | Filled (`d1_042`) | Standards 13.6 and 13.5 carry the step; K16 9.2 gives the order a schedule is built in. The first draft cited K16 first: the round's HARD ERROR, fixed |
+| 2B5b (second item, R5-3) | Filled (`d2_038`, analysis) | K15 Appendix A: trend over several periods against a two-year change and a common-size share |
+| 2B4c (second item, R5-4) | Filled (`d2_039`) | K16 3.1 and Table 3.1: semistructured data are parsed into fields |
+| 2A3d, 2A3e, 2A3c (later lessons, R5-6 to R5-8) | Filled (`d1_039`, `d1_040`, `d1_041`) | New lessons on facts K1, K15, K5 and K2 state; siblings logged in section 2 |
+| 2B4d (third item, R5-5) | Left empty | Problem definition first stood alone as the only option that was not a preparation step (test-taking finds it), notes 2B4.3 already teach it as a trap, and the bullet holds two items |
+| 2B4a (first item, R5-9) | Left empty (fifth try in four rounds) | Every draft key was the widest span of the workflow, the visibly complete map, or a span chosen by the objective's scope, which test-taking finds; none turned on K16 2.4's fact |
+| 2A3b (second item, R5-10) | Left empty | Each draft key was common sense or repeated `d1_004` (a missing satisfactory level) or `d1_005` (a measure that misses the strategy's risk) |
+| `d1_040` | Kept | Flagged TOO EASY by the fresh blind tester (the stem's "ordinary shares" and the key's "owners' stake"); the bullet is recall, and the item is untagged for the Challenge |
+
 Two lessons from Part 1 apply to every slot. A thin, common-sense lesson fails the blind
 test however it is rebuilt (rounds 12 to 14: the 1B4g trust sibling and the 1C7c "stop the
 loss" item were cut; plan section 7), so a lead whose key a careful non-auditor would pick
@@ -496,7 +538,7 @@ is dropped, not polished. And a slot with no distinct lesson stays empty (round 
 of 22 slots empty rather than repeat). Part 2 held to both: round 1 left seven slots empty
 and cut three drafts; round 2 left twelve slots empty and cut two drafts; round 3 left
 the slots in its table empty and cut three drafts; round 4 left seven slots empty for want
-of a source and cut none (the tables above).
+of a source and cut none; round 5 left three leads empty and cut none (the tables above).
 
 ## 6. Leads for first items and siblings
 
@@ -508,12 +550,57 @@ different trap (sibling rule). Leads marked **thin** risk the common-sense cut a
 Standards distinction to survive. On a recall bullet, keep the knowledge at the bullet's
 level even when the scenario asks for a choice.
 
-Rounds 1 to 4 (25 and 26 Nov 2026) mark each lead in italics: used, not used, tried and left
+Rounds 1 to 5 (25 and 26 Nov 2026) mark each lead in italics: used, not used, tried and left
 empty, or tried and cut; "spent" means the lead's lesson is now in the bank or its slot is
 closed. A lead not used whose bullet now has an item becomes a sibling lead and
 must stay apart from that item.
 
-**Leads the Knowledge sources open for round 5 (26 Nov 2026), in priority order**
+**Leads for round 6 (26 Nov 2026): the Knowledge-source leads are close to spent**
+
+Round 5 used seven of the ten round 5 leads and left three empty for the reasons the
+earlier rounds gave (common sense, a repeat, a key that stands alone). Every bullet the
+Knowledge sources open now holds two or more items except 2A3b (R5-10 empty) and 2B4a
+(zero; five tries in four rounds), and topic 2A3 has passed its share. What is left is
+three thin leads, at most three items against a gap of 25 in A and 14 in B. Part 2's
+gap now rests on Standards-only lessons, on ISA 500 and 520 (an owner decision on the
+`ifacweb.blob.core.windows.net` host) and on the 2027 Topical Requirement dates (section
+5, item 6); no further free public source on an allowed host is known that would open
+the blocked bullets (research log).
+
+- **R6-1. 2B3a, a fifth item (Recognize; the old lead (1)).** The objective is whether 12
+  contracts carry board approval; a teammate proposes a machine learning model over the
+  whole contract store. Key: due care weighs the cost of a technique against its benefit,
+  so reading the 12 contracts answers the objective (Standard 4.2; open its text before
+  keying). Runner-up, in the key's register: the model, as analytics let auditors test a
+  full population (K17 14.3 states that fact; it makes the runner-up real and never keys).
+  A Standards distinction decides the final two, which the round 4 and 5 audits asked for.
+  2B3 holds 4 of its 5: this is its last slot. Keep apart from `d2_015`, `d2_027`,
+  `d2_031` and `d2_032`.
+- **R6-2. 2A4b, a third item (Describe; thin).** An engagement run in sprints counts a
+  test as done once it is run, before its workpaper is reviewed. K14 states that a Sprint is
+  a fixed-length event of one month or less and that the Definition of Done states when an
+  Increment is complete; the review itself rests on Standards 12.3 and 14.6, cited first.
+  Key: the team's definition of done includes the supervisor's review of the workpaper.
+  Runner-up, in the key's register: lengthen the sprint to finish the reviews (Sprints are
+  fixed length). Common-sense risk; keep apart from `d1_008` and `d1_036` (agile with
+  approved programs) and `d3_002` (a review note).
+- **R6-3. 2A6e, a third item (Identify; IT systems only; thin).** Only if K7's Appendix C
+  states the coverage attribute of a method (which and how many objects are assessed):
+  a patch test examines servers in one data centre when the scope covers three. Key:
+  widen coverage to every location in scope (K7; Standard 13.3 for the scope). Runner-up:
+  deepen the test on the same servers. Keep apart from `d1_021` and `d1_037` (test against
+  examine). Drop it if the source does not state the attribute.
+
+Not leads: benchmarking for 2B5b (K18 9.6) sits on `cia1_d1_050`, `cia1_d1_071` and
+`d2_018`'s option D; Privacy by Design for 2A3c (K16 6.1) sits on `d1_031`; a business
+impact analysis against a risk assessment for 2A3d still has no K1 section; 2A3b, 2B4a and
+2B4d are spent as round 5 found.
+
+**Leads the Knowledge sources opened for round 5 (26 Nov 2026), in priority order**
+
+*Round 5 (26 Nov 2026): R5-1 to R5-4 and R5-6 to R5-8 used (`d1_038`, `d1_042`, `d2_038`,
+`d2_039`, `d1_039`, `d1_040`, `d1_041`); R5-5, R5-9 and R5-10 tried and left empty (section
+5's round 5 table). All ten are spent.*
 
 Each rests on a fact a listed Knowledge source states (research log K1 to K18; library rule
 2b) and on the Standards for the auditor's step, cited first when the step decides. Open
@@ -521,7 +608,7 @@ the section before keying, write the notes' "Knowledge (...)" line in the same p
 give a wrong option the key's register from the start (round 4's options-only lesson). The
 first three are the top leads.
 
-- **R5-1. 2A3f, second item (Recognize).** Planning a purchasing engagement, the auditor
+- **R5-1. 2A3f, second item (Recognize).** *Round 5: used by `d1_038` (analysis); its first runner-up, payments up to the threshold, was a cut-down key and became payment splitting.* Planning a purchasing engagement, the auditor
   learns that the new ERP lets one buyer role raise an order, record the goods as received
   and release the payment run. Key: the risk to rate is that one person can order, accept
   and pay for goods alone, as ordering, receiving and paying sit with different people (K15
@@ -532,14 +619,14 @@ first three are the top leads.
   "three-way match". Keep apart from `d1_035` (the count) and the notes' 2A3.4 example
   (supplier set-up and payment rights); check Part 1's 1C7 items on separation of duties
   first.
-- **R5-2. 2A4b, second item (Describe).** A draft plan gives each objective a total of
+- **R5-2. 2A4b, second item (Describe).** *Round 5: used by `d1_042`, with Standards 13.6 and 13.5 cited first after the audit's HARD ERROR.* A draft plan gives each objective a total of
   hours and a reporting date, with no breakdown of the work. Key: break each objective into
   a work breakdown structure of tasks small enough to estimate, assign and track (K16 9.2),
   which the work program then carries (Standard 13.6). Runner-up, in the key's register: a
   timeline of the objectives against dates (a schedule without the breakdown). Thin: the
   final two must turn on K16 9.2's fact. Keep apart from `d1_018` (the auditor named per
   task) and `d1_011` (a missing criterion): the key must not land on either.
-- **R5-3. 2B5b, second item (Determine; analysis).** The objective is whether a branch's
+- **R5-3. 2B5b, second item (Determine; analysis).** *Round 5: used by `d2_038`.* The objective is whether a branch's
   maintenance costs have been climbing; the manager offers this year against last year.
   Key: trend (horizontal) analysis over several periods, as two periods rarely show a trend
   (K15 Appendix A; notes 2B5.1 already teach it), chosen because it answers the objective
@@ -547,33 +634,33 @@ first three are the top leads.
   the key's register: common-size (vertical) analysis of this year's costs, a real
   technique that answers a share question, not a direction one. Keep apart from `d2_018`
   (a rate per thousand orders) and `d2_034` (rescaling): no "scale by size" key.
-- **R5-4. 2B4c, second item (Explain).** Event logs arrive as tagged records whose fields
+- **R5-4. 2B4c, second item (Explain).** *Round 5: used by `d2_039`.* Event logs arrive as tagged records whose fields
   vary by event type. Key: semistructured data, so the tags are parsed into fields before
   the test (K16 3.1, Table 3.1). Runner-up: load them as fixed fields; other wrong: search
   them as free text. Keep apart from `d2_008` (unstructured contract text).
-- **R5-5. 2B4d, the old lead (1) (Explain).** Duplicate-payment tests begin before anyone
+- **R5-5. 2B4d, the old lead (1) (Explain).** *Round 5: tried and left empty (the key was the only non-preparation option; notes 2B4.3 already teach it). Spent.* Duplicate-payment tests begin before anyone
   has said what the analysis must answer. Key: define the problem first (K16 8.1 puts
   problem definition before data preparation and analysis; Standard 14.1 relevance).
   Runner-up: prepare and normalize the data first. Thin (common-sense risk). Keep apart from
   `d2_019` and `d2_034`, both preparation keys.
-- **R5-6. 2A3d, a third lesson (Recognize).** A system's recovery time objective is set
+- **R5-6. 2A3d, a third lesson (Recognize).** *Round 5: used by `d1_039`, with untimed restores beside a plan with no recovery lead as wrong options.* A system's recovery time objective is set
   longer than the maximum time its process can stay down. Key: the recovery target cannot
   protect the process (K1 3.2.1). Do not make the recovery point the runner-up (that is
   `d1_032`'s final two); use an evidence option, such as restore tests that are not timed.
-- **R5-7. 2A3e, a third lesson (Recognize).** An owner's cash contribution is recorded as a
+- **R5-7. 2A3e, a third lesson (Recognize).** *Round 5: used by `d1_040` (ordinary shares, to close the redeemable-share reading).* An owner's cash contribution is recorded as a
   loan payable. Key: liabilities are overstated and owners' equity understated (K15 2.2 and
   14.4). Keep apart from `d1_033` (timing) and `d1_034` (intent).
-- **R5-8. 2A3c, a fourth lesson (Recognize).** Developers can move their own changes into
+- **R5-8. 2A3c, a fourth lesson (Recognize).** *Round 5: used by `d1_041`.* Developers can move their own changes into
   production with no approval record. Key: the change control risk to rate (K2 CM-3 and
   AC-5), never named as a "general" or "application" control. Keep apart from `d1_021`
   (leavers' access) and `d1_037` (lockout test). Privacy by Design (K16 6.1) is the
   alternative, but it sits close to `d1_031`.
-- **R5-9. 2B4a, first item (Define; thin).** Only with a key that turns on K16 2.4's fact:
+- **R5-9. 2B4a, first item (Define; thin).** *Round 5: tried and left empty (each key was the widest span, the complete map or a scope-chosen span). Spent.* Only with a key that turns on K16 2.4's fact:
   an order-to-cash workflow crosses sales, warehouse and finance, so its segments meet at
   the handoffs, and a scope set on one department's map misses them (Standard 13.3 for the
   scope). Round 2's cut and round 4's drafts failed because the gap showed on the map's
   face: no visible missing step, no walk-through key.
-- **R5-10. 2A3b, second item (Recognize; thin).** K18 9.6 ties performance measures to
+- **R5-10. 2A3b, second item (Recognize; thin).** *Round 5: tried and left empty (common sense, or a repeat of `d1_004` or `d1_005`). Spent.* K18 9.6 ties performance measures to
   strategic objectives and evaluates them against a performance standard. `d1_005` already
   keys a measure that misses the strategy's risk, and `d1_004` a missing satisfactory
   level: write it only if a third lesson turns on K18's fact and repeats neither.
@@ -606,13 +693,13 @@ first three are the top leads.
   when the objective is the plant's own control performance. Keep apart from
   `cia1_d3_020` and `cia1_d3_064` (adequate criteria set by the board and senior
   management must be used): this item turns on the objective, not on adequacy.
-- **2A3c Cyber, IT and data protection (Recognize).** *Round 1: not used; `d1_017` took another lesson (who watches for emerging threats). This lead is now a sibling lead; keep it apart from `d1_017`. Round 3: its vendor half used by `d1_029` (a cloud provider holding patient records); the governance half stays a sibling lead. Round 4: not used; `d1_031` took a third lesson (privacy apart from security, on K4 and K2 PT-3). The governance half is still a sibling lead, behind the round 5 Knowledge leads below.* A cyber assurance work program tests
+- **2A3c Cyber, IT and data protection (Recognize).** *Round 1: not used; `d1_017` took another lesson (who watches for emerging threats). This lead is now a sibling lead; keep it apart from `d1_017`. Round 3: its vendor half used by `d1_029` (a cloud provider holding patient records); the governance half stays a sibling lead. Round 4: not used; `d1_031` took a third lesson (privacy apart from security, on K4 and K2 PT-3). The governance half is still a sibling lead, behind the round 5 Knowledge leads below. Round 5: not used; `d1_041` took a fourth lesson (change control, K2 CM-3 and AC-5). 2A3c holds four items: this lead waits.* A cyber assurance work program tests
   access, patching and encryption only. Key: the requirement also asks about governance and
   about vendors' controls over the organization's systems and data (Cybersecurity
   Topical Requirement, Governance and Risk Management; notes 2A3.2). Runner-up: add more
   technical tests. No key on IT general against application controls or on a named privacy
   principle. Keep apart from `d1_006` (mapping a framework to the requirement) and `d1_007`.
-- **2A4b Project management (Describe).** *Round 1: used by `d1_018`.* A supervisor's timeline lists tasks and hours but
+- **2A4b Project management (Describe).** *Round 1: used by `d1_018`. Round 5: `d1_042` took a second lesson (the work breakdown first, R5-2).* A supervisor's timeline lists tasks and hours but
   no named auditor per task. Key: the work program must name the auditor assigned (Standard
   13.6); hours per step are a should (Standard 13.5). Runner-up: add a weekly update
   schedule with management (a should, notes 2A4.3). Keep apart from `d1_011` (a missing
@@ -673,16 +760,16 @@ first three are the top leads.
   exception cleared. Key: check the completeness and accuracy of its data feed before
   relying on it (Standards 4.3 and 14.1). Runner-up: rely on the dashboard because it covers
   the whole population. Keep (2) apart from `d2_003` by the actor and the tool.
-- **2B4a Workflow segments (Define; thin).** *Round 1: not used. Round 2: tried and cut after the fix pass, answerable from wording (the map stopped before the payment, so the missing step was obvious). Retired as written; round 3 needs a new lead whose gap is not visible on the map's face. Round 3: left empty (no lead keyed on the Standards that repeats nothing). Round 4: left empty with K16 2.4 and 4.2 open (each draft key was the visible map or a Sound practice walk-through). This lead is spent; see the round 5 2B4a lead below.* A purchase-to-pay process mapped only inside
+- **2B4a Workflow segments (Define; thin).** *Round 1: not used. Round 2: tried and cut after the fix pass, answerable from wording (the map stopped before the payment, so the missing step was obvious). Retired as written; round 3 needs a new lead whose gap is not visible on the map's face. Round 3: left empty (no lead keyed on the Standards that repeats nothing). Round 4: left empty with K16 2.4 and 4.2 open (each draft key was the visible map or a Sound practice walk-through). This lead is spent; see the round 5 2B4a lead below. Round 5: R5-9 left empty too.* A purchase-to-pay process mapped only inside
   procurement, while payment sits in finance. Key: the scope covers the processes the
   objectives need, so the handoff to finance is a segment of the workflow (Standards 13.2
   and 13.3). Keep apart from `cia1_d1_062` and `cia1_d1_104`.
-- **2B4d Analytics steps (Explain).** *Round 1: neither lead used as written; `d2_019` keyed the normalize step (one supplier list before a duplicate test). Both leads are now sibling leads. Round 4: neither used; `d2_034` keyed rescaling (K16 8.1). Lead (1) can now key on K16 8.1, which puts problem definition before data preparation and analysis: a round 5 lead. Lead (2) still rests on Standard 14.1 alone.* (1) An auditor runs duplicate-payment tests before
+- **2B4d Analytics steps (Explain).** *Round 1: neither lead used as written; `d2_019` keyed the normalize step (one supplier list before a duplicate test). Both leads are now sibling leads. Round 4: neither used; `d2_034` keyed rescaling (K16 8.1). Lead (1) can now key on K16 8.1, which puts problem definition before data preparation and analysis: a round 5 lead. Lead (2) still rests on Standard 14.1 alone. Round 5: lead (1), as R5-5, tried and left empty (the key stood alone as the only non-preparation step). Lead (1) is spent.* (1) An auditor runs duplicate-payment tests before
   agreeing what the analysis must answer. Key: set the objective first (the syllabus's
   order; Standard 14.1 relevance). Runner-up: normalize the data first. (2) Before analysis,
   key: reconcile the extract's totals to the ledger (Standard 14.1); runner-up: delete
   repeated records as duplicates (the notes say flag, never delete).
-- **2B5b Choosing the technique (Determine; analysis).** *Round 1: not used as written; `d2_018` keyed a rate against a count for a quality claim. This lead is now a sibling lead. Round 4: not used (no 2B5b item); see the round 5 2B5b lead below, on K15 Appendix A.* The question is whether every
+- **2B5b Choosing the technique (Determine; analysis).** *Round 1: not used as written; `d2_018` keyed a rate against a count for a quality claim. This lead is now a sibling lead. Round 4: not used (no 2B5b item); see the round 5 2B5b lead below, on K15 Appendix A. Round 5: not used; `d2_038` took trend against common-size (R5-3). This lead stays a sibling lead, apart from `d2_018` and `d2_038`.* The question is whether every
   parking entry is billed. Key: compare revenue with gate entry counts kept apart from
   billing (Standard 14.2 considerations relate financial to nonfinancial data). Runner-up:
   a year-on-year revenue trend, which answers a question about change over time. Keep apart
@@ -778,7 +865,7 @@ first three are the top leads.
 
 **One-item bullets (siblings)**
 
-30 bullets have one item each after round 4 (32 after the pilot, 40 after round 1, 39 after round 2, 34 after round 3); second lessons come after the first
+26 bullets have one item each after round 5 (32 after the pilot, 40 after round 1, 39 after round 2, 34 after round 3, 30 after round 4); second lessons come after the first
 items and the analysis items above, under the sibling rule, and each first item stays out of the held-back form
 until its bullet has a second. Leads written for the earlier draft of this map, now second
 lessons rather than depth fixes:
@@ -847,33 +934,52 @@ lessons rather than depth fixes:
   13 of 14 keys but mostly at low or medium confidence, so read their confidence, not only
   their hits. The Section B audit also noted that a Knowledge fact decided the final two in
   all seven items and a Standards distinction in none: mix the two in round 5.
-- **The Knowledge sources move the ceiling, not the Standards-only topics.** The opened IIA
+- **What round 5 taught (26 Nov 2026).** (1) The brief's self-check (read the options with
+  the stem covered, before handing over) lowered the options-only testers' confidence, not
+  their hits: round 4's first pass found 14 of 14 keys with five at high confidence, round
+  5's found 7 of 7 with none at high (5 low, 2 medium), and the fix pass left that
+  unchanged. The two medium-confidence keys (`d1_042`, `d2_039`) were "do this, then that"
+  sequences: give a wrong option the same shape from the draft. Low-confidence guesses
+  still land on the textbook risk, so on a recognize-level item the stem must carry the
+  decision; the two items the fresh blind test classed needs-the-Standards (`d1_038`,
+  `d1_039`) are those whose runner-up is a real risk in the key's own terms. (2) The
+  checklist still missed what it named: a Knowledge source cited first for a step
+  (`d1_042`, the HARD ERROR), a cut-down runner-up (`d1_038`), distractor families shared
+  with earlier siblings (`d1_039` with `d1_032`, `d2_038` with `d2_018`, `d2_039`'s
+  management-prepared list at D for the fourth time in Section B) and a stem word echoed
+  only in the key (`d1_038`, caught at the re-audit). The brief checked within the round;
+  check each wrong option against the bullet's existing items and the section's
+  letter-by-letter families as well. (3) The first audit's rate fell (1 / 8 / 15 on 7, 1.1
+  PRECISION an item, against 2.7 in round 4), but all seven final twos again turned on a
+  Knowledge fact: on recognize-level knowledge bullets a Standards distinction rarely
+  decides, so the mix must come from Standards-only bullets (R6-1 is the one Knowledge-side
+  exception).
+- **The Knowledge sources moved the ceiling, and are now close to spent.** The opened IIA
   sources were close to exhausted after round 3 (its Section A author judged 3 to 6
   distinct Section A lessons were left). The Knowledge sources open 2A3, 2A4, 2A6e (IT
-  only), 2B3, 2B4 and 2B5, and section 6 lists ten leads; they do nothing for 2A1, 2A2,
-  2A5, 2A7, 2B1, 2B2, 2B6 to 2B8 or Section C. The owner's gate (A 67, B 53, C 13) needs
-  30, 16 and 2 more, against six Section A leads and four Section B leads in section 6
-  (some thin) and none for Section C. Neither section closes on those alone: the rest needs
-  new Standards-only lessons, more Knowledge lessons as later rounds find them, ISA 500 and
-  520 (a host the owner would need to allow) or the 2027 testable dates of the Third-Party
-  (2027-03-01), Organizational Behavior (2027-06-01) and Organizational Resilience
-  (2027-10-01) requirements.
-- **Pick-the-longest after round 4:** A 17.6% (37 items), B 17.6% (37), C 22.7% (11)
-  (round 3: A 18.3%, B 16.7%; round 2: A 17.3%, B 14.8%; round 1: A 20.5%, B 9.5%).
-  `check_cia.py` enforces 15 to 24% from 40 items per section, which A and B reach in round
-  5. Section B's pick-shortest is 23.9%, near the 30% ceiling the re-audit named: vary key
-  lengths both ways.
-- **Difficulty by verb** is enforced per topic, by the topic verb, from 8 items. 2A3 (11
-  items, judge: 2 foundational, 2 analysis) and 2B4 (8 items, apply: 0 foundational, 5
-  application) are now enforced and pass; 2A6 has 7, 2A1 and 2C2 have 6. The judge topics
+  only), 2B3, 2B4 and 2B5; rounds 4 and 5 drew 21 items from them, and section 6 now lists
+  three thin leads. They do nothing for 2A1, 2A2, 2A5, 2A7, 2B1, 2B2, 2B6 to 2B8 or Section
+  C. The owner's gate (A 67, B 53, C 13) needs 25, 14 and 2 more. Neither section closes on
+  the leads left: the rest needs new Standards-only lessons, ISA 500 and 520 (a host the
+  owner would need to allow) or the 2027 testable dates of the Third-Party (2027-03-01),
+  Organizational Behavior (2027-06-01) and Organizational Resilience (2027-10-01)
+  requirements, whose items can be written ahead with `testable_from`.
+- **Pick-the-longest after round 5:** A 17.9% (42 items), B 16.7% (39), C 22.7% (11)
+  (round 4: A 17.6%, B 17.6%; round 3: A 18.3%, B 16.7%; round 2: A 17.3%, B 14.8%; round
+  1: A 20.5%, B 9.5%). `check_cia.py` enforces 15 to 24% from 40 items per section: A is
+  now enforced and passes; B reaches it with its next item. Pick-shortest: A 11.5%, B 22.6%
+  (round 4: B 23.9%), under the 30% ceiling: keep varying key lengths both ways.
+- **Difficulty by verb** is enforced per topic, by the topic verb, from 8 items. 2A3 (15
+  items, judge: 2 foundational, 3 analysis) and 2B4 (9 items, apply: 0 foundational, 6
+  application) are enforced and pass; 2A6 has 7, 2A1, 2B5 and 2C2 have 6. The judge topics
   need at least 15% analysis and at most 25% foundational, so recall-verb bullets under
-  judge topics (most of 2A1, 2A3, 2A5 and 2A6) still need scenario items, not definitions;
-  one more foundational 2A3 item would sit at the 25% limit.
+  judge topics (most of 2A1, 2A3, 2A5 and 2A6) still need scenario items, not definitions.
 - **`d2_002` is a hardening candidate** (the pilot kept it on a split blind verdict); the
   2B1b analysis item, `d2_024`, now covers the bullet at depth if the hardening fails and
   `d2_002` is cut.
-- **Scoring the round 4 evidence later:** `score_blind.py` now scores round 4's first
+- **Scoring the round 4 and 5 evidence later:** `score_blind.py` now scores round 4's first
   Section B blind and options-only files 6 of 7, because `d2_031`'s key moved from C to A in
-  the fix pass; both testers had matched the key of the time.
+  the fix pass, and round 5's first Section A files 4 of 5, because `d1_042`'s key moved
+  from C to A; in both rounds the testers had matched the key of the time.
 - **Re-run this map after each round**: set each new item's bullet in the scaffold step,
   before it is written.
