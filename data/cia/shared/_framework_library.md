@@ -311,6 +311,41 @@ prep provider.
 - The Scrum Guide 2020, Product Backlog and Sprint Backlog
 - The Scrum Guide 2020, Increment and Definition of Done
 
+## Knowledge: opened 2026-11-26 OpenStax, Principles of Accounting, Volume 1: Financial Accounting (Rice University, published 11 April 2019, CC BY-NC-SA 4.0; the only edition in OpenStax's catalogue, web PDF regenerated April 2026); topics 1C7, 2A3, 2B5 (https://assets.openstax.org/oscms-prodcms/media/documents/principles-financial-accounting_-_WEB.pdf)
+- OpenStax Principles of Accounting Volume 1 Section 2.2 Define, Explain, and Provide Examples of Current and Noncurrent Assets, Current and Noncurrent Liabilities, Equity, Revenues, and Expenses
+- OpenStax Principles of Accounting Volume 1 Section 5.3 Apply the Results from the Adjusted Trial Balance to Compute Current Ratio and Working Capital Balance, and Explain How These Measures Represent Liquidity
+- OpenStax Principles of Accounting Volume 1 Section 6.2 Compare and Contrast Perpetual versus Periodic Inventory Systems
+- OpenStax Principles of Accounting Volume 1 Section 7.1 Define and Describe the Components of an Accounting Information System
+- OpenStax Principles of Accounting Volume 1 Section 8.2 Define and Explain Internal Controls and Their Purpose within an Organization
+- OpenStax Principles of Accounting Volume 1 Section 8.3 Describe Internal Controls within an Organization
+- OpenStax Principles of Accounting Volume 1 Section 11.1 Distinguish between Tangible and Intangible Assets
+- OpenStax Principles of Accounting Volume 1 Section 12.1 Identify and Describe Current Liabilities
+- OpenStax Principles of Accounting Volume 1 Section 13.1 Explain the Pricing of Long-Term Liabilities
+- OpenStax Principles of Accounting Volume 1 Section 14.4 Compare and Contrast Owners' Equity versus Retained Earnings
+- OpenStax Principles of Accounting Volume 1 Appendix A Financial Statement Analysis
+
+## Knowledge: opened 2026-11-26 OpenStax, Foundations of Information Systems (Rice University, published 5 March 2025, CC BY-NC-SA 4.0; the only edition in OpenStax's catalogue); topics 2A3, 2A4, 2B3, 2B4 (https://assets.openstax.org/oscms-prodcms/media/documents/Foundations_of_Information_Systems_-_WEB_oNlbGYl.pdf)
+- OpenStax Foundations of Information Systems Section 2.4 Business Process Management
+- OpenStax Foundations of Information Systems Section 3.1 Data Types, Database Management Systems, and Tools for Managing Data
+- OpenStax Foundations of Information Systems Section 4.1 Systems Analysis and Design for Application Development
+- OpenStax Foundations of Information Systems Section 4.2 Defining the Business Problem and User Requirements
+- OpenStax Foundations of Information Systems Section 6.1 Key Concepts in Data Privacy and Data Security
+- OpenStax Foundations of Information Systems Section 7.4 Cloud-Based Industry Applications
+- OpenStax Foundations of Information Systems Section 8.1 The Business Analytics Process
+- OpenStax Foundations of Information Systems Section 8.2 Foundations of Business Intelligence and Analytics
+- OpenStax Foundations of Information Systems Section 9.1 Foundations of Information Systems Project Management
+- OpenStax Foundations of Information Systems Section 9.2 Setting Up and Managing Projects for Success
+
+## Knowledge: opened 2026-11-26 OpenStax, Introduction to Business 2e (Rice University, published 22 April 2026, CC BY-NC-SA 4.0; the current edition, OpenStax no longer offers the first edition as a PDF); topics 2A3, 2B3 (https://assets.openstax.org/oscms-prodcms/media/documents/Introduction_to_Business_2e_-_WEB.pdf)
+- OpenStax Introduction to Business 2e Section 6.8 Trends in Management and Leadership
+- OpenStax Introduction to Business 2e Section 10.4 Pulling It Together: Resource Planning
+- OpenStax Introduction to Business 2e Section 12.4 Using Supply Chain Management to Increase Efficiency and Customer Satisfaction
+- OpenStax Introduction to Business 2e Section 13.2 Linking Up: Computer Networks
+- OpenStax Introduction to Business 2e Section 14.3 Basic Accounting Procedures
+
+## Knowledge: opened 2026-11-26 OpenStax, Principles of Management (Rice University, published 20 March 2019, CC BY-NC-SA 4.0; the only edition in OpenStax's catalogue); topics 2A3, 2B5 (https://assets.openstax.org/oscms-prodcms/media/documents/principles-management_-_WEB.pdf)
+- OpenStax Principles of Management Section 9.6 Measuring and Evaluating Strategic Performance
+
 ## Likely: not opened (for purchase: the textbook, primary reference 2, sold in the IIA Bookstore)
 - Internal Auditing: Assurance & Advisory Services, 6th edition
 
