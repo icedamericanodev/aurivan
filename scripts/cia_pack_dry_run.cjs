@@ -25,7 +25,10 @@
  *   questions     every question converts and passes the app's validate();
  *                 no id twice in the pack
  *   extra fields  CIA items carry `challenge_ref` and `testable_from`, which no
- *                 other course has: says whether the app's converter takes them
+ *                 other course has: says whether the app's converter takes them.
+ *                 The converter carries `testable_from` as the pack question's
+ *                 `testableFrom` (and its validate() rejects a malformed date);
+ *                 the line checks that every dated item kept its date
  *   notes         the notes builder reports 0 problems
  *   key terms     the terms builder (the phone Glossary and Key term widget)
  *   principles    the principles builder reports 0 problems
@@ -35,8 +38,9 @@
  *   exam          the exam-guide builder on <pack>/exam/<pack>_exam_guide.json
  *                 and final_review_week.json, with the outline's weights
  *   mock pool     retired items (`"retired": true`: kept for their id, never
- *                 dealt again) and items whose `testable_from` date is after
- *                 today are left out
+ *                 dealt again) and items whose `testableFrom` (read from the
+ *                 pack question, as the app's mockPool does) is after today
+ *                 are left out
  *   full mock     the real length (125, 100, 100, 150) split by section weight
  *   short mock    the app's mini mock (a third: 42, 33, 33, 50) likewise.
  *                 A pool too small for a mock is NOT a failure while a pack is
@@ -294,7 +298,7 @@ function dryRunPack(pack, exam, app, builders) {
   const questions = [];
   const qProblems = [];
   const perSection = [];
-  const testableFrom = new Map(); // question id → its date (only items that carry one)
+  let datedSource = 0; // items whose source file gives a testable_from date
   let filesRead = 0;
   let withRef = 0;
   let rejected = null; // the converter's own message, if it threw on the extra fields
@@ -311,12 +315,12 @@ function dryRunPack(pack, exam, app, builders) {
     const converted = [];
     for (const q of raw.questions || []) {
       // CIA: the two extra fields. toPackQuestion copies an explicit list of
-      // fields and validate() reads only options, correct, stem and tips, so
-      // both accept an item that carries them: the fields are simply left out
-      // of the pack question. This is checked on every item rather than
-      // assumed: the same item is converted without them and must come out
-      // identical. If a later converter rejects them (throws), they are
-      // stripped here and the "extra fields" line says the app must accept them.
+      // fields: it carries testable_from as `testableFrom` (validate() checks
+      // the date) and leaves challenge_ref out. Checked on every item rather
+      // than assumed: the same item is converted without them, and any
+      // difference means the converter carries a field. If a later converter
+      // rejects them (throws), they are stripped here and the "extra fields"
+      // line says the app must accept them.
       const bare = Object.fromEntries(Object.entries(q).filter(([k]) => !EXTRA_FIELDS.includes(k)));
       let pq;
       try {
@@ -336,10 +340,8 @@ function dryRunPack(pack, exam, app, builders) {
       if (p.length) qProblems.push(`${pq.id}: ${p.join('; ')}`);
       if (pq.domainId !== s.id) qProblems.push(`${pq.id}: domain ${pq.domainId}, file is d${s.id} (section ${s.letter})`);
       if (q.challenge_ref) withRef += 1;
-      if (q.testable_from != null && q.testable_from !== '') {
-        if (isDate(q.testable_from)) testableFrom.set(pq.id, q.testable_from);
-        else qProblems.push(`${pq.id}: testable_from "${q.testable_from}" is not a date (YYYY-MM-DD) or null`);
-      }
+      // A malformed date is the app's validate() problem above; here only count.
+      if (q.testable_from != null) datedSource += 1;
       converted.push(pq);
     }
     fs.writeFileSync(path.join(out, `d${s.id}.json`), JSON.stringify(converted));
@@ -360,14 +362,19 @@ function dryRunPack(pack, exam, app, builders) {
   } else {
     report(qProblems.length === 0, 'questions', `${questions.length} converted (${perSection.join(', ')}), ${qProblems.length} problem(s)`, qProblems);
   }
+  // The dates the app will see: read from the pack question, never from the source.
+  const datedPack = questions.filter((q) => q.testableFrom !== undefined).length;
   if (questions.length) {
-    const counts = `challenge_ref on ${withRef}, testable_from on ${testableFrom.size} of ${questions.length}`;
+    const counts = `challenge_ref on ${withRef}, testable_from on ${datedSource} of ${questions.length}`;
     if (rejected) {
       // Not a failure of the content: a to-do for the app before the pack is wired in.
       lines.push(`  ! extra fields: ${counts}. The app's converter REJECTS them (${rejected}); stripped for this dry run. The app builder must accept them before the pack is wired in`);
+    } else if (datedPack !== datedSource) {
+      // Every dated source item must reach the app with its date, or a mock could deal it early.
+      report(false, 'extra fields', `${counts}, but ${datedPack} pack question(s) carry testableFrom: the app's converter must carry every date`);
     } else {
-      note('extra fields', `${counts}. The app's converter accepts them and ${carried ? 'carries them into' : 'leaves them out of'} the pack question`
-        + (carried ? '' : ' (so the app cannot see testable_from yet: this dry run applies the date itself)'));
+      note('extra fields', `${counts}. The app's converter accepts them and carries testable_from into the pack question as testableFrom (${datedPack} of ${datedSource} dates)`
+        + (carried || !datedSource ? '' : ' (but no difference was seen: check toPackQuestion)'));
     }
   }
 
@@ -506,17 +513,18 @@ function dryRunPack(pack, exam, app, builders) {
     return;
   }
   // CIA: an item that rests on a Topical Requirement that is not testable yet
-  // carries its `testable_from` date; it stays in the bank but is left out of
-  // every mock until that date. A retired item (`"retired": true`) keeps its
-  // id in the pack so old progress still resolves, and is never dealt again.
+  // carries its date on the pack question (`testableFrom`); it stays in the
+  // bank but is left out of every mock until that date, as the app's
+  // engine/blueprint.ts mockPool does. A retired item (`"retired": true`)
+  // keeps its id in the pack so old progress still resolves, and is never dealt again.
   const live = questions.filter((q) => !q.retired);
   const retiredCount = questions.length - live.length;
-  const waiting = live.filter((q) => testableFrom.has(q.id) && testableFrom.get(q.id) > ARGS.today);
+  const waiting = live.filter((q) => q.testableFrom !== undefined && !(isDate(q.testableFrom) && q.testableFrom <= ARGS.today));
   const pool = live.filter((q) => !waiting.includes(q));
   note('mock pool', `${pool.length} of ${live.length} live items testable on ${ARGS.today}`
     + (retiredCount ? ` (${plural(retiredCount, 'retired item')} kept for the id, never dealt)` : '')
     + (waiting.length
-      ? ` (${waiting.length} left out until testable_from: ${waiting.slice(0, 5).map((q) => `${q.id} ${testableFrom.get(q.id)}`).join(', ')}${waiting.length > 5 ? ', …' : ''})`
+      ? ` (${waiting.length} left out until testable_from: ${waiting.slice(0, 5).map((q) => `${q.id} ${q.testableFrom}`).join(', ')}${waiting.length > 5 ? ', …' : ''})`
       : ''));
   drawMock('full mock', exam.questions, exam, pool);
   drawMock('short mock', Math.round(exam.questions / 3), exam, pool); // engine/finalWeek.ts miniMockSize

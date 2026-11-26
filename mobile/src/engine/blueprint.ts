@@ -35,6 +35,30 @@ export function allocate(total: number, weights: number[]): number[] {
 const DIFFICULTIES: Difficulty[] = ['analysis', 'application', 'foundational'];
 
 /**
+ * True when a question may be dealt in a mock on `today` (the device's local
+ * date, "YYYY-MM-DD", e.g. streak.ts dayKey). A CIA item on a Topical
+ * Requirement that is not on the exam yet carries `testableFrom`; it waits
+ * until that day (docs/content/CIA_BANK_PLAN.md section 8). Dates written
+ * YYYY-MM-DD sort in date order, so comparing them as text is enough.
+ * A malformed date (the build rejects it, so only a broken downloaded pack)
+ * stays out: never put an untestable topic into a mock by mistake.
+ */
+export function testableOn(q: Pick<PackQuestion, 'testableFrom'>, today: string): boolean {
+  if (q.testableFrom === undefined) return true;
+  return /^\d{4}-\d{2}-\d{2}$/.test(q.testableFrom) && q.testableFrom <= today;
+}
+
+/**
+ * The questions a mock (full or mini) may draw from on `today`: the pool
+ * minus items whose `testableFrom` is still in the future. The very same
+ * array when nothing waits (every CISA, CISM, CRISC and AAIA pack), so the
+ * draw for those exams is exactly as before. Practice is not filtered.
+ */
+export function mockPool(pool: PackQuestion[], today: string): PackQuestion[] {
+  return pool.every((q) => testableOn(q, today)) ? pool : pool.filter((q) => testableOn(q, today));
+}
+
+/**
  * Build a mock exam. Returns question ids in random exam order.
  * If a domain or difficulty runs short, it tops up from what is left,
  * so you always get `total` questions when the bank is big enough.

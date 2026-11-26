@@ -45,6 +45,13 @@ export interface PackQuestion {
    * journal or a bookmark (findQuestion). Absent = live. Its id is never reused.
    */
   retired?: boolean;
+  /**
+   * CIA: the first day ("YYYY-MM-DD") this question's Topical Requirement is
+   * on the real exam. Until then a mock leaves it out (engine/blueprint.ts
+   * mockPool); practice and reviews still show it. Absent on every other
+   * question (CISA, CISM, CRISC, AAIA never carry it).
+   */
+  testableFrom?: string;
 }
 
 /** One exam domain inside a certification. */

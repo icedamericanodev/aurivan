@@ -6,12 +6,13 @@ import { Alert } from 'react-native';
 import { getCertification } from '../content/certifications';
 import { findQuestion, getAllQuestions } from '../content/loader';
 import type { Difficulty } from '../content/types';
-import { buildMockExam } from '../engine/blueprint';
+import { buildMockExam, mockPool } from '../engine/blueprint';
 import { mockPace, type MockTiming } from '../engine/pace';
 import { countdownFor } from '../engine/practiceCountdown';
 import { legacyTitle } from '../engine/planner';
 import { buildPracticeQueue, filterPool } from '../engine/queue';
 import { createRng } from '../engine/random';
+import { dayKey } from '../engine/streak';
 import { buildSmart } from '../engine/smartMix';
 import { MODE_INFO, randomMix, scopeKey, type PathItem, type PathReason, type StudyMode } from '../engine/studyModes';
 import { guidedStep, inOrderSession, nextTopic, walkOrder } from '../engine/studyPath';
@@ -330,7 +331,11 @@ export function startMock(certId: string, questions?: number, opts: MockOptions 
   const { minutesAllowed } = mockPace(cert.exam, total, timing);
   // The outline spreads each domain's picks across its topics (Wave 5 / M1);
   // a cert without notes has an empty outline and keeps the random pick.
-  const ids = buildMockExam(cert, getAllQuestions(certId), createRng(Date.now()), total, certOutline(certId).topics);
+  // mockPool leaves out a CIA item whose Topical Requirement is not on the
+  // exam yet (testableFrom after today's local date); for every other exam the
+  // pool is unchanged.
+  const pool = mockPool(getAllQuestions(certId), dayKey(Date.now()));
+  const ids = buildMockExam(cert, pool, createRng(Date.now()), total, certOutline(certId).topics);
   return newSession('mock', certId, total === cert.exam.questions ? 'Full mock exam' : 'Mini mock', ids, {
     ...(minutesAllowed !== null ? { deadline: Date.now() + minutesAllowed * 60_000 } : {}),
     timing,
