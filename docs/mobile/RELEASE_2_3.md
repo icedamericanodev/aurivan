@@ -98,6 +98,23 @@ would then give testers the sample.
 4. Optional: once production is live, pause "Testers Community" or empty its
    tester list, so 2.2 (code 4, full bank) is no longer offered on that track.
 
+## Released (owner's report)
+
+Play Console is not readable from a cloud session, so this is what the owner
+reported, with a screenshot for production.
+
+- **Alpha closed track: 6 (2.3) live** (26 Nov 2026). The update reached the
+  owner's own Alpha phone a few hours later. "Testers Community" was not given
+  code 6 (owner's decision above).
+- **Production: 5 (2.3) published, full rollout** (submission 6, submitted
+  26 Nov 2026 2:12 pm, published 2:36 pm). **KaiSip's first public release.**
+- Play's one recommended action on 5 (2.3), "deprecated APIs or parameters for
+  edge-to-edge", is not a blocker. The calls come from React Native's own
+  `WindowUtil.kt` (`enableEdgeToEdge`) and shrunk library code. In React
+  Native 0.88.1 the old calls run only on older Android versions, and newer
+  versions use the current method. It should clear with a later React Native
+  update, so nothing was changed for 2.3.
+
 ## Built bundles
 
 Both built from commit `4f7b3aaff2cecf16fd000634b37b972ab3758676` (main after
@@ -146,7 +163,7 @@ were available to Claude.
 | Real "Submit exam" tap on a full mock (time-out scoring was tested) | NOT TESTED |
 | Dark mode on the public build | NOT TESTED |
 | Native Android device (either bundle) | NOT TESTED |
-| In-place upgrade of a real Play-signed closed install (2.2 code 4 → 2.3 code 6) keeps progress and the full bank | NOT TESTED: needs Play Console (owner, step 3 above) |
+| In-place upgrade of a real Play-signed closed install (2.2 code 4 → 2.3 code 6) keeps progress and the full bank | Update arrived on the owner's Alpha phone (26 Nov 2026); version, progress and full bank are waiting for the owner's check |
 | Play pre-launch report | NOT TESTED: runs after upload (owner) |
 
 Known, not changed (product call): when a learner finishes every free question
