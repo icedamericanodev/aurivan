@@ -6796,38 +6796,37 @@
     {
       "id": "aaia_d3_185",
       "domain": 3,
-      "subtopic": "3B Testing and sampling. Strata for a bias test",
-      "principle_id": "accuracy-is-not-assurance",
+      "subtopic": "3B Testing and sampling. Comparing refusals between groups",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor's bias test of a Slovak city's small-business grant model stratifies by sex, and separately by age band, in equal strata sized to compare groups. What is the GREATEST weakness of this design?",
+      "question": "To test whether a Slovak city's grant model has a higher false-negative rate for women-owned firms than other firms, an IS auditor checks 100 refusals per group for eligibility. What is the GREATEST weakness?",
       "options": {
-        "A": "It tests by sex, a trait the model may not even receive",
-        "B": "Bias against younger men alone may show in neither stratum",
-        "C": "Its strata are less reliable than one large random sample",
-        "D": "Equal-sized strata will distort the overall error figure"
+        "A": "The owner's sex may not be among the inputs the model receives",
+        "B": "It finds errors among refusals, not among qualifying firms",
+        "C": "A hundred refusals per group are too few to compare groups",
+        "D": "Women-owned firms may ask for smaller grants than other firms"
       },
       "correct": "B",
-      "key_concept": "Some bias appears only where traits combine, such as against younger men; strata on one trait at a time can hide it.",
+      "key_concept": "A group's false-negative rate is counted over all its eligible cases; checking refusals alone gives only the share of refusals that are wrong.",
       "pre_read": "Weigh what each weakness would do to the test's conclusion.",
-      "correct_explanation": "A model can score younger men lower while men overall and younger people overall look fine, because each single-trait stratum mixes them with others. Strata on one trait at a time may also hold too few younger men to see a gap, so the design needs combined strata, such as younger men. Equal-sized strata can still give an all-decisions figure once each stratum's results are weighted by its share.",
+      "correct_explanation": "Here a false negative is an eligible firm the model refused, so a group's false-negative rate is counted over every eligible firm in that group, approved or refused. Checking refusals alone gives the share of refusals in error; if women-owned firms are refused more often, an equal share can still mean more of their eligible firms were refused. A hundred refusals per group is enough to compare those shares; the flaw is what they measure.",
       "wrong_explanations": {
         "A": "Tempting because a model may not see sex at all. But other inputs can carry it, so outcomes can still differ by sex.",
-        "C": "Tempting because random samples avoid selection bias. But a random sample may hold too few of a small group to compare; strata guarantee enough of each.",
-        "D": "Tempting because oversampled strata distort a simple average. But weighting each stratum by its share gives an overall figure; the real gap is the combination never sampled."
+        "C": "Tempting because small samples give weak comparisons. But 100 per group can compare the groups; the flaw is that refusals alone cannot give each group's false-negative rate.",
+        "D": "Tempting because group differences can have legitimate reasons. But eligibility is judged against the grant rules, so grant size does not excuse refusing an eligible firm."
       },
       "tips": [
-        "Eliminate: C trusts one large random sample to hold enough of each group, and A assumes a trait the model never sees cannot shape its results.",
-        "Final two: B beats D because results can be weighted back to all decisions, but a gap where traits combine never shows in single-trait strata.",
-        "Exam cue: Bias can sit where traits meet. When a design stratifies one trait at a time, look for the combination it misses."
+        "Eliminate: A assumes a trait the model never receives cannot shape its results, and D treats grant size as excusing the refusal of an eligible firm.",
+        "Final two: B beats C because a false-negative rate counts over every eligible firm, approved or refused; 100 refusals per group can be compared, but they never reach that denominator.",
+        "Exam cue: A fairness error rate has a denominator. Check that the sample holds every case the rate counts over, not only the outcome being checked."
       ],
       "framework_ref": "ISACA ITAF Guideline 2208 (Information Technology Audit Sampling); NIST AI 100-1 MEASURE 2.11 (Fairness and bias evaluated and documented); NIST AI 100-1 Section 3.7 (Fair with Harmful Bias Managed)",
       "related_concepts": [
-        "Stratified sampling",
-        "Intersectional bias",
+        "Fairness metrics",
+        "Sample population",
         "Affected groups"
       ],
-      "_provenance": "Authored from concept: notes 3B.2 Sampling AI Decisions (stratify by affected group so each group, including small ones and combinations of traits, can be compared). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3B.2 Sampling AI Decisions (a group's false-negative, or wrongful-refusal, rate counts over all its eligible cases, so a sample of refusals alone cannot give it). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
       "style_version": 2
     },
     {
@@ -6984,7 +6983,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Tajik electricity company's billing chatbot passes each model reply through an output filter before display. Which evidence BEST shows the IS auditor what a disputing customer was told?",
+      "question": "A Tajik coal merchant's ordering chatbot runs each model reply through an output filter. Which evidence BEST shows the IS auditor what a customer disputing a delivery price was told?",
       "options": {
         "A": "The model's output log, with version and prompt",
         "B": "The filter's settings in force on that date",
@@ -7002,7 +7001,7 @@
       },
       "tips": [
         "Eliminate: B shows what the filter could do, not what it did, and C rests on a party's recollection.",
-        "Final two: D beats A because a filter that rewrites replies after the model means the model's log is not what the customer saw.",
+        "Final two: D beats A because a filter that can rewrite replies after the model means the model's log may not be what the customer saw.",
         "Exam cue: Find the last step before the person. When text changes after generation, the evidence is the text as shown."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 AU-2 (Event Logging); NIST SP 800-53 Rev. 5 SI-15 (Information Output Filtering); NIST AI 100-1 MEASURE 2.8 (Transparency and accountability risks examined)",
@@ -7429,32 +7428,32 @@
       "bloom_level": "Foundational",
       "question": "An audit team's approved AI agent, which can browse the web and open the team's work papers, will summarize exported public comments from an Icelandic agency's consultation. What should the chief audit executive require FIRST?",
       "options": {
-        "A": "Block the agent from sending data to outside addresses",
-        "B": "Scan each comment for hidden text before the agent reads it",
+        "A": "Run this task in a session with no access to work papers",
+        "B": "Have a reviewer check the summary before it reaches the work papers",
         "C": "Have the agency's staff confirm each comment's sender is genuine",
         "D": "Instruct the agent to ignore commands found in comments"
       },
       "correct": "A",
-      "key_concept": "An agent reading untrusted content can follow hidden instructions; block its outbound paths so no instruction can send audit data out.",
+      "key_concept": "An agent reading outside text can be steered to act on whatever it can open; keep audit data out of its reach for such tasks.",
       "pre_read": "Ask what each safeguard depends on.",
-      "correct_explanation": "Comments from the public can carry instructions the agent may follow, and an agent that browses can be told to send the team's work papers to an outside site, even inside a web address. The comments arrive as an export, so blocking outbound data removes that path whatever an instruction says. Scanning for hidden text catches some tricks, but instructions can be written in plain view or in forms a scanner misses.",
+      "correct_explanation": "Public comments can carry instructions an agent may follow, and this agent can open the team's work papers and browse the web, so a planted instruction could have it send them to an outside site. Running the task without work-paper access keeps audit data out of reach whatever a comment says. A reviewer checking the summary sees only the text the agent returns, not what it did with the files it could open.",
       "wrong_explanations": {
-        "B": "Tempting because it targets the attack. But scanners miss instructions written in plain view or in new forms, so some get through.",
+        "B": "Tempting because AI output needs review before use. But a reviewer sees only the summary; a steered agent could already have sent out work papers it could open.",
         "C": "Tempting because a known sender seems safe. But a genuine sender can still embed instructions, and staff cannot see hidden text either.",
         "D": "Tempting because it addresses the instructions. But an agent can be steered into ignoring an instruction; it is not a boundary."
       },
       "tips": [
-        "Eliminate: D treats an instruction the agent can be steered around as a boundary, and C checks the sender, not what the comment tells the agent.",
-        "Final two: A beats B because scanning catches only the tricks it knows; blocking outbound data stops any instruction from sending audit work out.",
-        "Exam cue: When AI reads untrusted content, limit what it can do. A boundary outside the model beats filtering the input."
+        "Eliminate: D relies on an instruction the agent can be steered around, and C checks who sent a comment, not what it tells the agent.",
+        "Final two: A beats B because review sees only the summary returned; a steered agent acts on whatever it can open, so remove work-paper access first.",
+        "Exam cue: When an audit agent reads outside text, ask what it can reach. Reviewing its output later cannot undo what it did with that access."
       ],
-      "framework_ref": "NIST AI 100-2e2025 Section 3.4 (Indirect Prompt Injection Attacks and Mitigations); OWASP Top 10 for LLM Applications 2025 LLM01 (Prompt Injection); NIST SP 800-53 Rev. 5 SC-7 (Boundary Protection)",
+      "framework_ref": "NIST AI 100-2e2025 Section 3.4 (Indirect Prompt Injection Attacks and Mitigations); OWASP Top 10 for LLM Applications 2025 LLM06 (Excessive Agency); NIST SP 800-53 Rev. 5 AC-6 (Least Privilege)",
       "related_concepts": [
         "Indirect prompt injection",
-        "Data exfiltration",
+        "Least privilege",
         "Audit confidentiality"
       ],
-      "_provenance": "Authored from concept: notes 3D.3 Reproducibility and Confidentiality in AI-Assisted Audits (contract terms and data paths decide where audit data may go; an agent reading outside content can be steered by hidden text). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3D.3 Reproducibility and Confidentiality in AI-Assisted Audits (keep audit data in approved tools; an agent reading outside content can be steered to send out any audit data it can open). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
       "style_version": 2
     },
     {
@@ -7500,26 +7499,26 @@
       "subtopic": "3E Outputs and reports. A model fixed during the audit",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Mid-audit, an Andalusian agency retrained its disability transport-allowance model to fix the underpayments the IS auditor found; the old version had set payments for eight months. How should the finding BEST be reported?",
+      "question": "An Andalusian agency's model estimates disability transport allowances set by statute; after the IS auditor found eight months of underpayments, the agency retrained it, validated at 96% accuracy. How should the finding BEST be reported?",
       "options": {
         "A": "As resolved, with the underpayments fixed by the retrained version",
-        "B": "As open until the retrained version passes validation",
-        "C": "As open until past underpayments are identified and reviewed",
+        "B": "As open until the retrained model rescores past cases for top-ups",
+        "C": "As open until past payments are recalculated under the rules",
         "D": "As withdrawn, since the version under audit is retired"
       },
       "correct": "C",
-      "key_concept": "A retrain fixes later decisions only; people affected by the old version stay in the finding until their cases are reviewed.",
+      "key_concept": "A retrain fixes later decisions only; its outputs on past cases are estimates, so what is owed is checked against the rules.",
       "pre_read": "Weigh what each wording would tell the report's readers.",
-      "correct_explanation": "A retrain changes how the model decides from now on; it does not reach the claimants the old version underpaid over eight months. The finding's effect stays open until those past payments are identified and reviewed, and the report should say so, with the retrain noted. Holding it open only until the retrain is validated would still leave people already harmed out of management's response.",
+      "correct_explanation": "The statute sets what claimants are owed; the model only estimates it, and the retrained version, at 96% accuracy, may be wrong on about 1 in 25 cases. Rescoring eight months of cases through it gives new estimates, not amounts owed, so the finding stays open until past payments are recalculated under the allowance rules, with the retrain noted. Resolved or withdrawn ignores claimants already underpaid.",
       "wrong_explanations": {
         "A": "Tempting because the cause looks fixed. But a retrain changes future payments only; claimants underpaid by the old version are still owed a review.",
-        "B": "Tempting because a retrain is a change that needs validation. But validation tests later payments only; claimants the old version underpaid still need their cases reviewed.",
+        "B": "Tempting because rescoring past cases looks like correcting them. But a retrained model errs too; at 96% accuracy some rescores are wrong, and the rules settle what is owed.",
         "D": "Tempting because the model changed. But the harm happened under the version audited; retiring it does not undo past payments."
       },
       "tips": [
         "Eliminate: A treats the retrain as fixing past payments, and D drops a finding because the version that caused it is gone.",
-        "Final two: C beats B because validating the retrain tests later payments only; claimants the old version underpaid remain part of the finding until reviewed.",
-        "Exam cue: A model fix looks forward. Ask who was affected before it and whether their decisions were reviewed."
+        "Final two: C beats B because a retrained model's output is a new estimate with its own errors, not the amount owed; past payments are recalculated under the rules.",
+        "Exam cue: A model fix looks forward, and its outputs are estimates. Past harm is measured against the rules, not by rerunning the new model."
       ],
       "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); NIST AI 100-1 MANAGE 4.3 (Incidents and errors communicated and tracked); NIST AI 100-1 MANAGE 4.1 (Post-deployment monitoring including appeal, override, incident response and change management)",
       "related_concepts": [
@@ -7527,7 +7526,7 @@
         "Remediation",
         "Model retraining"
       ],
-      "_provenance": "Authored from concept: notes 3E.1 Writing AI Audit Findings (the effect is the consequence for people and the business; a retrain fixes later decisions only). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3E.1 Writing AI Audit Findings (the effect is the consequence for people; a retrain fixes later decisions only, and its reruns of old cases are estimates, not amounts owed). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
       "style_version": 2
     },
     {
@@ -7537,24 +7536,24 @@
       "principle_id": "ai-output-is-a-lead",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Senior management caps a Kenyan water utility's wrongful prepaid-meter disconnections at 1%; to meet it, the model owner allows automatic disconnection only at 99% model confidence. Which criterion should the IS auditor's finding BEST use?",
+      "question": "A Kenyan milk processor's senior management caps wrongful rejections of farmers' milk at 1%, so the model owner allows automatic rejection only at 99% confidence. Which criterion should the IS auditor's finding BEST use?",
       "options": {
-        "A": "The 1% cap, against the measured share of wrongful disconnections",
-        "B": "Typical wrongful-disconnection rates at other water utilities",
-        "C": "The owner's 99% rule, checking each disconnection met it",
-        "D": "A new cap the board sets on wrongful disconnections"
+        "A": "The 1% cap, against the measured share of wrongful rejections",
+        "B": "Typical wrongful-rejection rates at other milk processors",
+        "C": "The owner's 99% rule, checking each rejection met it",
+        "D": "A new cap the board sets on wrongful rejections"
       },
       "correct": "A",
       "key_concept": "Owners set use-level rules inside senior management's tolerance; a model confidence threshold is not an error limit and cannot replace it.",
       "pre_read": "Ask what each criterion would let the finding conclude.",
-      "correct_explanation": "Senior management's 1% cap is the tolerance, so it is the criterion, and the owner's rule must sit inside it. A 99% confidence score is the model's own rating of each case, not a measured error rate: every disconnection can clear 99% and more than 1% can still be wrongful. Only the measured share of wrongful disconnections shows whether the cap holds; the owner's rule is examined as a possible cause.",
+      "correct_explanation": "Senior management's 1% cap is the tolerance, so it is the criterion, and the owner's rule must sit inside it. A 99% confidence score is the model's own rating of each case, not a measured error rate: every rejection can clear 99% and more than 1% can still be wrongful. Only the measured share of wrongful rejections shows whether the cap holds; the owner's rule is examined as a possible cause.",
       "wrong_explanations": {
-        "B": "Tempting because comparisons give context. But other utilities' rates are not this utility's criteria; its approved tolerance is.",
-        "C": "Tempting because owners set use-level rules. But 99% confidence is the model's own score, not an error rate; more than 1% of disconnections meeting it can be wrongful.",
+        "B": "Tempting because comparisons give context. But other processors' rates are not this processor's criteria; its approved tolerance is.",
+        "C": "Tempting because owners set use-level rules. But 99% confidence is the model's own score, not an error rate; more than 1% of rejections meeting it can be wrongful.",
         "D": "Tempting because the board sets direction. But the board approves appetite, and senior management sets tolerances within it, as here."
       },
       "tips": [
-        "Eliminate: B measures against other utilities instead of the approved tolerance, and D moves tolerance setting to the board.",
+        "Eliminate: B measures against other processors instead of the approved tolerance, and D moves tolerance setting to the board.",
         "Final two: A beats C because a confidence threshold is the model's own score, not an error limit; only the measured wrongful share shows whether the 1% cap holds.",
         "Exam cue: Criteria come from approved tolerances. A model's confidence threshold is a design choice, not a measure of how often it is wrong."
       ],
@@ -7610,26 +7609,26 @@
       "principle_id": "limits-outside-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Brazilian fintech's vendor-hosted assistant reveals other customers' transactions; management's response to the IS auditor's finding is to wait for the vendor's next model, due later this year. What should the auditor do FIRST?",
+      "question": "A Brazilian fintech's vendor-hosted assistant looks up transactions to answer customers and revealed some to the wrong customers; management will adopt the vendor's next model, due next week. What should the IS auditor do FIRST?",
       "options": {
         "A": "Recommend the vendor retrain its current model now",
-        "B": "Ask senior management to accept the disclosure risk formally until then",
-        "C": "Ask what data-access limits will stop the disclosures until then",
+        "B": "Ask the vendor for test results showing the next model stops it",
+        "C": "Ask which data-access limits will stop the disclosures",
         "D": "Close the finding once the vendor confirms the fix"
       },
       "correct": "C",
-      "key_concept": "While a vendor's model fix is pending, the deployer limits harm with interim compensating controls it owns, such as what the assistant can access.",
+      "key_concept": "An assistant can reveal whatever its look-ups return; data-access limits stop the leak, while a new model reading the same data can leak it too.",
       "pre_read": "Think about what each option changes, and when.",
-      "correct_explanation": "Customers' data stays exposed while management waits for the vendor. As the deployer, the fintech can usually limit what the assistant reads without the vendor, and those limits hold whatever the model is asked. Asking senior management to accept the risk skips controls the fintech already owns while customers' data keeps leaking. The IS auditor first asks what interim limits management will apply, then follows up the vendor's fix.",
+      "correct_explanation": "The assistant reveals what its look-ups return, and any model given another customer's transactions can repeat them; a new model from the vendor does not change what it is given. As deployer, the fintech can usually limit which records each look-up returns without the vendor, so the IS auditor first asks what data-access limits management will set. Vendor tests of the next model show how it behaved in testing, not what it can reach here.",
       "wrong_explanations": {
-        "A": "Tempting because the model is the source. But designing the vendor's fix is not the auditor's role, and the fintech can act sooner.",
-        "B": "Tempting because senior management may accept residual risk. But the fintech can limit what the assistant reads without the vendor, so acceptance comes only after interim controls are weighed.",
+        "A": "Tempting because the model is the source. But designing the vendor's fix is not the auditor's role, and a retrained model reading the same records can still reveal them.",
+        "B": "Tempting because a fix needs evidence. But any model can reveal records it is given, so tests of the next model leave the cause, what each look-up returns, in place.",
         "D": "Tempting because the vendor builds the model. But closure needs the auditor's own evidence that disclosures stopped, not the vendor's word."
       },
       "tips": [
         "Eliminate: D closes on the vendor's word, and A has the auditor direct the vendor's model work.",
-        "Final two: C beats B because the fintech, as deployer, can limit what a hosted assistant reads without the vendor; risk acceptance comes only after the controls it owns are weighed.",
-        "Exam cue: When the model fix belongs to a vendor, ask what the deployer can limit meanwhile. Waiting is not a control."
+        "Final two: C beats B because a model can reveal whatever records it is given; the cause is what each look-up returns, which the fintech can limit, not which model reads it.",
+        "Exam cue: When an AI leaks data, ask what it was given access to. Changing the model leaves the access, and the leak, in place."
       ],
       "framework_ref": "ISACA IT Audit Standard 1402 (Follow-up Activities); NIST AI 100-1 MANAGE 3.1 (Third-party AI risks monitored and controls applied); OWASP Top 10 for LLM Applications 2025 LLM02 (Sensitive Information Disclosure)",
       "related_concepts": [
@@ -7637,7 +7636,7 @@
         "Interim controls",
         "Vendor models"
       ],
-      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (actions must reach the cause; while a vendor's fix is pending, the deployer limits harm with controls it owns). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (actions must reach the cause; a new model reading the same data can leak it too, so expect data-access limits the organization owns). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
       "style_version": 2
     },
     {

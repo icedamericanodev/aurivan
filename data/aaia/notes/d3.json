@@ -434,9 +434,9 @@
           "why_it_matters": "Model errors often cluster in small groups, low-confidence cases or overridden decisions. A simple random sample can miss them entirely and support a false clean conclusion.",
           "how_it_works": [
             "Sample production decisions when the risk is in live outcomes; sample training data only when the objective is data quality.",
-            "Stratify by affected group, including small ones and combinations such as older women, so each has enough cases to compare.",
+            "Stratify by affected group, including small ones, so each has enough cases to compare; a false-negative (wrongful-refusal) rate counts a group's eligible cases, not refusals alone.",
             "Add strata for low-confidence scores, human overrides and recent model versions, where errors tend to gather.",
-            "Size each stratum for the confidence the objective needs, select with a random-number function rather than a chatbot, and document the design and its reasons.",
+            "Size strata for the confidence needed, select with a random-number function, not a chatbot, and document the design.",
             "The population is everything handled: everything a ranker ranked, including those placed too low to see, and questions a chatbot declined or deflected.",
             "For an AI agent, sample whole tasks and trace each tool call; when answers vary between runs, a wrong answer in any run is an exception."
           ],
@@ -984,8 +984,8 @@
             "A rerun matches only when the version, settings, input data and every prompt match; earlier chat messages and pages a web search read are inputs too.",
             "Hosted models can vary even with fixed settings, and vendors retire versions; if a rerun differs, re-verify against sources.",
             "Public AI services may keep or train on inputs; a no-training contract can still allow retention and staff review for abuse; memory features can keep facts from deleted chats.",
-            "Contract terms and data classification decide which audit data an AI service may receive.",
-            "Administrators can read logged prompts and outputs, revealing what auditors asked; an agent reading auditee files can be steered to send data out."
+            "Contract terms and data classification decide which audit data a service may receive.",
+            "Administrators can read logged prompts, revealing what auditors asked; an agent reading outside content can be steered to send out audit data it can open."
           ],
           "example": "A New Zealand audit firm's team uses an AI tool to sort 6,000 supplier invoices into spending categories. IS auditor Aroha saves the tool version, settings, prompt and a hashed copy of the input file. When the client questions one category total, a reviewer reruns the saved version from those records and reproduces Aroha's figures.",
           "audit_focus": {
@@ -1066,10 +1066,10 @@
           "how_it_works": [
             "Condition: what the auditor found against criteria, such as rates outside an approved limit, or a missing control, such as records explaining decisions about people.",
             "Criteria: the policy, framework, regulation or approved threshold the condition is measured against; a confidence cutoff is a design setting, not an error limit.",
-            "Cause: why it happened, named as the control gap, such as no drift monitoring, unrepresentative data or missing oversight; one gap behind several failures is one finding.",
-            "Effect: the consequence for people and the business, such as unfair denials or losses; a retrain fixes later decisions, not people already affected.",
+            "Cause: the control gap behind it, such as no drift monitoring, unrepresentative data or missing oversight; one gap behind several failures is one finding.",
+            "Effect: the consequence for people and the business, such as unfair denials; a retrain fixes later decisions, and its reruns of old cases are estimates, not amounts owed.",
             "Recommendation: the outcome management should achieve and who owns it, not a model fix the auditor designed.",
-            "State an AI test result with its basis, such as version, period and test set; working attack prompts go to the model owner, not the report."
+            "State an AI test result with its basis: version, period and test set; working attack prompts go to the model owner, not the report."
           ],
           "example": "At a court service in Scotland, an AI tool translates hearing notices. IS auditor Morag finds that 7% of notices in two languages carry date errors. Morag's finding gives the cause, no native-speaker review; the effect, people missing hearings; and a recommendation that the service owner add review for high-risk documents.",
           "audit_focus": {
@@ -1140,7 +1140,7 @@
             "Record management's response with a named internal owner, actions and dates; actions must reach the cause, such as testing each vendor update and limiting both error types.",
             "A lower temperature cuts variation between runs, not invented answers.",
             "Follow up with production evidence, not statements: retested outcomes, proof a missing control operates, seeded errors reviewers catch, or fresh attacks on an injection fix.",
-            "Report live harm to management at once; while a vendor's fix is pending, expect interim controls the organization owns, such as data-access limits, before risk acceptance."
+            "Report live harm to management at once; a new model given the same data can leak it too, so expect data-access limits the organization owns."
           ],
           "example": "A Turkish airline's chatbot gave wrong baggage-fee answers, a high-rated finding. Management reports the knowledge base was corrected. At follow-up, IS auditor Elif asks 50 fee questions drawn from real customer chats, compares the answers with the fee schedule, finds 3 still wrong and keeps the finding open.",
           "audit_focus": {
