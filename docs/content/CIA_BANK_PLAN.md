@@ -14,8 +14,8 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 |---|---|
 | **Status (20 Nov 2026)** | Session G, steps 1 to 3 done: expert decisions, the documents, the harness (187 planted faults stopped, 43 controls hold; an independent code review's findings are all fixed), the expert agents, the **Part 1 study notes for all four sections** (93 sub-topics, audited and learner-read), and the **Part 1 pilot: 80 questions, 20 per section**, through the full pipeline (scorecard in section 7; calibration rules in section 6b). With them: the 20 shared principles, the Part 1 exam guide and final review week, and a first generated Challenge pack from the tagged items. The **glossary start** is written and audited (153 Part 1 terms in `data/cia/shared/glossary.json`; it reuses the notes' wording, and `check_glossary.py` fails if a term is ever defined two ways). The outline of the CISA bridge is in `docs/content/CIA_CISA_BRIDGE_OUTLINE.md`. Session G is complete. |
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
-| **Rounds 1 to 15, the Part 2 pilot, Part 2 rounds 1 to 5, Part 3 rounds 1 and 2 and the Third-Party items written ahead done (26 Nov 2026)** | Part 1 stands at **348 questions (A 116, B 85, C 105, D 42)** and meets the revised sale gate's counts (section 3, decision 4). **Part 2 stands at 95 questions (A 45, B 39, C 11)**, every key confirmed by blind tests and Standards audits; three of them (`cia2_d1_043` to `045`) are the Third-Party items written ahead, dated 2027-03-01, so out of the held-back form, the mocks and the free sample until then. **Part 2's gate (owner, 26 Nov 2026) is about A 67, B 53, C 13**: 25, 14 and 2 short today, A 22 short from 1 Mar 2027. **Rounds 4 and 5 (26 Nov 2026) were keyed on free public Knowledge sources** (K1 to K18): round 4 kept 14 of 14 and brought four bullets to depth; round 5 kept 7 of 7, all second or later lessons (2A3f, 2A4b, 2B4c and 2B5b now have two items each), and left three of its ten leads empty. 52 of 60 bullets meet their depth, 7 have no item and only 2A7c is below depth. **Part 2's Knowledge-source leads are now close to spent** (three thin leads left, `CIA_P2_COVERAGE.md` section 6), and the IIA sources alone were close to exhausted after round 3: the rest of Part 2's gap needs Standards-only lessons, ISA 500 and 520 (an owner decision on their file host) or the 2027 Topical Requirement dates. **Part 3's study notes are done** (63 sub-topics, audited and learner-read) and **its bank holds 66 questions (A 17, B 15, C 15, D 19)** after the pilot, rounds 1 and 2 and the Third-Party items written ahead (`cia3_d2_014`, `d2_015`, `d3_015`, dated 2027-03-01), every key confirmed by blind tests and Standards audits. **Part 3 round 2 (26 Nov 2026)** kept 3 of 3 items on 3B1f (blockchain, connected devices, AI), keyed on NIST Knowledge sources with the chief audit executive's step on Standard 9.4; 3B1 is the only Part 3 topic a Knowledge source reaches, and only one thin lead is left there (tokens and custody, K11). **The opened sources are close to exhausted for Part 3 too**: round 1's authors found few distinct Section D lessons left, and most new leads repeated Part 1 or Part 2 items. **The Third-Party Topical Requirement is now spent in Parts 2 and 3** (six items written ahead, 6 kept of 6; section 7). The Challenge pack holds 213 items, six of them dated; its Section B fills one mock (26, 24 testable today, of 23), but Section E, fed by Part 3's Section D, holds 15 of 30, so no full Challenge mock can be drawn yet. The Topical Requirements Application Guidance is Background only (Part 2 round 1). |
-| **Next step** | Owner decisions of 26 Nov 2026 (section 9): Part 2's gate is about A 67, B 53, C 13; **write our own questions from free public sources** for the knowledge bullets (the textbook is on hold); and one expert agent per section. **Done 26 Nov 2026:** eleven section experts; 18 public Knowledge sources opened and listed (research log K1 to K18); **Part 2 rounds 4 and 5** (14 kept of 14, then 7 of 7) and **Part 3 round 2** (3B1f, 3 kept of 3); and **the Third-Party items written ahead** (6 kept of 6, all `testable_from` 2027-03-01: Part 2's 2A1a, 2A3f and 2A5a, Part 3's 3B1c twice and 3C1b; 2A3a, a second 3C1b slot and the other 3B1c leads left empty as repeats). Scorecards in section 7. **Spent now:** the Knowledge leads in both parts (Part 2 has three thin leads, R6-1 to R6-3 in `CIA_P2_COVERAGE.md` section 6; Part 3 one, 3B1f tokens on K11) and the Third-Party requirement in Parts 2 and 3. **Next (recommended): Organizational Behavior Topical Requirement items written ahead, `testable_from` 2027-06-01**, aimed at Part 2's **2A5g** (culture and tone at the top: zero items, and this requirement is its only route) and, where a lesson is distinct from Part 1's 1C2a, 1D4a and 1A5f (`cia1_d1_047`), Part 1. Why: the requirement and its user guide are opened and Verified (no owner decision, no new source); unlike Third-Party's applicability lessons, its governance, risk management and controls areas (accountability for behavior, monitoring and closing gaps, tone and feedback, reporting with protection, incentives with disincentives, training, onboarding) are content, so they can give Standards-and-requirement final twos; and the items count from 1 Jun 2027. Expect nothing for Part 3: its two Topical Requirement bullets now hold the reusable applicability, prioritization and conformance-evidence lessons, and behavior is organization-level ground; leave its slots empty rather than repeat. Agree one lesson list across the authors before drafting (the Third-Party set had two Part 3 drafts re-keyed after Part 2 and Section C items took their keys). **After that the opened sources are close to spent in all three parts.** Organizational Resilience (2027-10-01) would reach only 2A3d, already three items deep. What would open more: ISA 500 and 520 (their host, `ifacweb.blob.core.windows.net`, is not allowed; an owner decision; it opens 2A6e outside IT, 2B5a and 2B5b) and the textbook (on hold, owner, 26 Nov 2026). Otherwise the useful work is **the app work in section 11**, now more pressing: six Part items and their six Challenge copies carry `testable_from`, which the pack builders still drop, and the held-back form, the per-learner short mock, sibling separation, the lessons' "IS auditor's lens" heading and the welcome headline are still to do before a pack is switched on (the licence decision still gates any publication or sale). Part 3's Section D, the pinch for a full Challenge mock (Section E 15 of 30), still waits on a new source or the owner's sale-gate decision. |
+| **Rounds 1 to 15, the Part 2 pilot, Part 2 rounds 1 to 5, Part 3 rounds 1 and 2, and the Third-Party and Organizational Behavior items written ahead done (26 Nov 2026)** | Part 1 stands at **350 questions (A 116, B 85, C 107, D 42)** and meets the revised sale gate's counts (section 3, decision 4); two of them (`cia1_d3_106`, `cia1_d3_107`, on 1C2a) are Organizational Behavior items written ahead, dated 2027-06-01. **Part 2 stands at 98 questions (A 48, B 39, C 11)**, every key confirmed by blind tests and Standards audits; six of them are written ahead and dated: `cia2_d1_043` to `045` (Third-Party, 2027-03-01) and `cia2_d1_046` to `048` (Organizational Behavior, 2027-06-01, the first items on 2A5g), so out of the held-back form, the mocks and the free sample until their dates. **Part 2's gate (owner, 26 Nov 2026) is about A 67, B 53, C 13**: 25, 14 and 2 short today; A is 22 short from 1 Mar 2027 and 19 from 1 Jun 2027. **Rounds 4 and 5 (26 Nov 2026) were keyed on free public Knowledge sources** (K1 to K18): round 4 kept 14 of 14 and brought four bullets to depth; round 5 kept 7 of 7, all second or later lessons (2A3f, 2A4b, 2B4c and 2B5b now have two items each), and left three of its ten leads empty. 52 of 60 bullets meet their depth today, 7 have no testable item and only 2A7c is below depth; from 1 Jun 2027, when 2A5g's three dated items count, 53 meet it and 6 have none. **Part 3's study notes are done** (63 sub-topics, audited and learner-read) and **its bank holds 66 questions (A 17, B 15, C 15, D 19)** after the pilot, rounds 1 and 2 and the Third-Party items written ahead (`cia3_d2_014`, `d2_015`, `d3_015`, dated 2027-03-01), every key confirmed by blind tests and Standards audits. **Part 3 round 2 (26 Nov 2026)** kept 3 of 3 items on 3B1f (blockchain, connected devices, AI), keyed on NIST Knowledge sources with the chief audit executive's step on Standard 9.4. **The Third-Party and Organizational Behavior Topical Requirements are now spent** (six and five items written ahead, all kept; section 7). **The opened sources are now close to spent across all three parts**: the IIA sources after Part 2 round 3 and Part 1 round 14, the Knowledge sources after Part 2 round 5 and Part 3 round 2 (three thin Part 2 leads and one Part 3 lead left), and both requirements that can be written ahead now. The Challenge pack holds 216 items, nine of them dated (six 2027-03-01, three 2027-06-01); its Section B fills one mock (26, 24 testable today, of 23), but Section E, fed by Part 3's Section D, holds 15 of 30, so no full Challenge mock can be drawn yet. The Topical Requirements Application Guidance is Background only (Part 2 round 1). |
+| **Next step** | Owner decisions of 26 Nov 2026 (section 9): Part 2's gate is about A 67, B 53, C 13; **write our own questions from free public sources** for the knowledge bullets (the textbook is on hold); and one expert agent per section. **Done 26 Nov 2026:** eleven section experts; 18 public Knowledge sources opened and listed (research log K1 to K18); **Part 2 rounds 4 and 5** (14 kept of 14, then 7 of 7); **Part 3 round 2** (3B1f, 3 kept of 3); **the Third-Party items written ahead** (6 kept of 6, `testable_from` 2027-03-01); and **the Organizational Behavior items written ahead** (5 kept of 5, `testable_from` 2027-06-01: Part 2's 2A5g three times, its first items, and Part 1's 1C2a twice; incentives, speak-up channels, training lists and gap follow-up left empty as repeats or recall only; nothing for Part 3, as the plan expected). Scorecards in section 7. **Spent now:** the IIA sources, the Knowledge leads (Part 2 has three thin leads, R6-1 to R6-3 in `CIA_P2_COVERAGE.md` section 6; Part 3 one, 3B1f tokens on K11), and the Third-Party and Organizational Behavior requirements. **The opened sources are close to spent across all three parts:** another content round would yield a few items at best, against Part 2's gap of 25, 14 and 2 (19 in A from 1 Jun 2027). What would open more, none of it available now: ISA 500 and 520 (their host, `ifacweb.blob.core.windows.net`, is not allowed, and the owner has not allowed it; it would open 2A6e outside IT, 2B5a and 2B5b); the textbook (on hold, owner, 26 Nov 2026); and the Organizational Resilience requirement (testable 2027-10-01), only if its text opens lessons distinct from the three items already on 2A3d, its one Part 2 bullet. **Next (recommended): the app work in section 11.** Why: eleven Part items and nine Challenge copies now carry `testable_from`, which the pack builders still drop (only `scripts/cia_pack_dry_run.cjs` applies the date), so no pack holding them can be switched on until the app reads it; the same list holds the rest of what stands between the packs and a learner (the held-back form, the per-learner short mock, sibling separation in the draw, the lessons' heading and the welcome headline still in CISA wording, the `cia1_d1_001` id pattern readiness cannot read, The IIA's score line); and none of it waits on a source or an owner decision, while every content lead left is thin. The licence decision still gates any publication or sale, not the build. After that, if no source opens: the hardening pass (section 6b, rule 12; `cia2_d1_047`'s two weak distractors are logged for it) and Part 3's Section D, the pinch for a full Challenge mock (Section E 15 of 30), which still waits on a new source or the owner's sale-gate decision. |
 | **Then** | Part 2, Part 3, the Challenge build and the CISA bridge notes (from the outline), the cross-part release gate. |
 | **Known weak spot** | Difficulty. No pilot key was wrong and all four blind rounds agreed 80 of 80, but the last testers still called 21 of 80 answerable by test-taking alone, most in Sections B and D, and 8 items carry a TOO EASY or GIVEAWAY flag (section 7). New rounds must do better; the pilot items are candidates for a later hardening pass, not for more polishing now (section 6b, rule 12). |
 
@@ -44,7 +44,7 @@ pack. Every surface CISA has, as data that passes its gate.
 |---|---|---|---|---|---|---|
 | Blueprint and outline | `docs/content/CIA_BLUEPRINT.md`, `data/cia/shared/outline.json` | cert-blueprint-researcher | Done | Done | Done | Done |
 | Study notes | `notes/d{N}.json`, one file per section, notes schema v2 | part expert | Done: 93 sub-topics, audited (section 8b) | Done: 57 sub-topics in 17 topics, audited and learner-read (round 15, section 7) | Done: 63 sub-topics in 18 topics, audited and learner-read (25 Nov 2026, section 7) | Generated later, plus the bridge |
-| Questions | `originals/d{N}.json` | part expert | Pilot and rounds 1 to 15 done: 348 (A 116, B 85, C 105, D 42; section 7); meets the revised sale gate's counts; every syllabus bullet covered (`CIA_P1_COVERAGE.md`) | Pilot, rounds 1 to 5 and the Third-Party items written ahead done: 95 (A 45, B 39, C 11; three dated 2027-03-01; section 7); the owner's gate is about A 67, B 53, C 13 (25, 14 and 2 short today; A 22 short from 1 Mar 2027); rounds 4 and 5 keyed on free public Knowledge sources, whose leads are now close to spent, as the IIA sources alone were after round 3, and the Third-Party requirement is spent too (`CIA_P2_COVERAGE.md`) | Pilot, rounds 1 and 2 and the Third-Party items written ahead done: 66 (A 17, B 15, C 15, D 19; three dated 2027-03-01; section 7; `CIA_P3_COVERAGE.md`); round 2 filled 3B1f on the NIST Knowledge sources (K9, K10, K12, K13), the only Part 3 topic they reach; their leads and the Third-Party requirement's are now close to spent | Generated (`build_challenge.py`) from the tagged Part items: 213, six dated 2027-03-01 |
+| Questions | `originals/d{N}.json` | part expert | Pilot, rounds 1 to 15 and the Organizational Behavior items written ahead done: 350 (A 116, B 85, C 107, D 42; two dated 2027-06-01; section 7); meets the revised sale gate's counts; every syllabus bullet covered (`CIA_P1_COVERAGE.md`) | Pilot, rounds 1 to 5 and the Third-Party and Organizational Behavior items written ahead done: 98 (A 48, B 39, C 11; three dated 2027-03-01, three 2027-06-01; section 7); the owner's gate is about A 67, B 53, C 13 (25, 14 and 2 short today; A 22 short from 1 Mar 2027 and 19 from 1 Jun 2027); rounds 4 and 5 keyed on free public Knowledge sources, whose leads are now close to spent, as the IIA sources alone were after round 3, and both requirements that can be written ahead are spent too (`CIA_P2_COVERAGE.md`) | Pilot, rounds 1 and 2 and the Third-Party items written ahead done: 66 (A 17, B 15, C 15, D 19; three dated 2027-03-01; section 7; `CIA_P3_COVERAGE.md`); round 2 filled 3B1f on the NIST Knowledge sources (K9, K10, K12, K13), the only Part 3 topic they reach; their leads and the Third-Party requirement's are now close to spent | Generated (`build_challenge.py`) from the tagged Part items: 216, six dated 2027-03-01 and three 2027-06-01 |
 | Citation library | `data/cia/shared/_framework_library.md` (one for all four) | part experts, cia-currency-checker | Started | | | |
 | Dated facts | `data/cia/shared/currency.json` | cia-currency-checker | Started | | | |
 | Glossary | `glossary.json`, built from `data/cia/shared/glossary.json` | iia-mindset-coach, part experts | Started: 153 terms, audited (section 7) | Later | Later | Built from the shared terms of its topics |
@@ -425,6 +425,7 @@ in a row below 90%: stop and tell the owner.
 | Part 3 round 1 | 25 Nov 2026 | cia3, the coverage map's gaps in all four sections | 15 kept of 20 written (A 5 of 6, B 1 of 1, C 4 of 5, D 5 of 8); about 14 planned slots left empty | 20 of 20 first round, none classed test-taking, but the options alone found most keys in Sections A to C; after one fix pass, 17 of 17 and 2 still answerable from the options, cut | 0 / 76 / 15 on 20 (two audits), targeted fixes, currency check 0 / 1 / 2 | A 20.6%, C 21.4%, D 21.1% | 5 cut before merge: 3 repeats of Part 1 or Part 2 lessons (Section D), 2 still answerable from the options after one fix pass | None new |
 | Part 3 round 2 | 26 Nov 2026 | cia3, Section B bullet 3B1f on the NIST Knowledge sources, written by `cia-p3b-section-expert` | 3 kept of 3 written; 3 slots left empty (robotic process automation: no source; tokens and wallets on IR 8301: not written; a second AI lesson: repeats) | 3 of 3 first round (partly 2, test-taking 1: `cia3_d2_012`'s key was the only doubting option); options-only 3 of 3, all at medium confidence; after one fix pass, 3 of 3 in a fresh blind test (all partly), options-only 3 of 3 again, all medium | 0 / 7 / 3 on 3 (one audit), plus 0 / 1 / 4 from the re-audit, all applied | B 15.4% | 0 | None new (K9, K10, K12 and K13 used; K11 not used) |
 | Third-Party items written ahead | 26 Nov 2026 | cia2 Section A (2A1a, 2A3f, 2A5a) and cia3 Sections B (3B1c) and C (3C1b), on the Third-Party Topical Requirement and its user guide, each `testable_from` 2027-03-01, written by `cia-p2a-section-expert`, `cia-p3b-section-expert` and `cia-p3c-section-expert` | 6 kept of 6 written (cia2 A 3, cia3 B 2, C 1); 2A3a, a second 3C1b slot and the other 3B1c leads left empty as repeats | 6 of 6 first round (needs the Standards 3, partly 3, test-taking 0); options-only 5 of 6 (missed `cia3_d2_015`), one at high confidence (`cia2_d1_045`); after one fix pass, 6 of 6 in fresh blind tests (needs the Standards 2, partly 4, test-taking 0; `cia3_d2_015` a mild GIVEAWAY), options-only 6 of 6, 4 medium and 2 low, none high | 0 / 14 / 9 on 6 (one audit of all three sections), plus 0 / 2 / 3 from the re-audit, both PRECISION applied | cia2 A 16.7%; cia3 B 20.0%, C 20.0% | 0 | None new (the Third-Party requirement and user guide, opened 19 Nov 2026, key items for the first time) |
+| Organizational Behavior items written ahead | 26 Nov 2026 | cia2 Section A (2A5g) and cia1 Section C (1C2a), on the Organizational Behavior Topical Requirement and its user guide, each `testable_from` 2027-06-01, written by `cia-p2a-section-expert` and the Part 1 expert | 5 kept of 5 written (cia2 A 3, cia1 C 2); incentives, speak-up channels, training lists and gap follow-up left empty (repeats, recall only, or follow-up ground); no Part 3 slot | 5 of 5 first round (partly 4, test-taking 1: `cia1_d3_107`, TOO EASY); options-only 5 of 5, 4 at medium and 1 at low confidence, none high; after one fix pass per expert, 5 of 5 in fresh blind tests (needs the Standards 1, partly 3, test-taking 1: `cia1_d3_106`, a GIVEAWAY in one of its three reviews, so kept), options-only 4 of 5 (missed `cia1_d3_107`, low confidence), none high | 0 / 13 / 10 on 5 (one audit of both parts), plus 0 / 1 / 4 from the re-audit, the PRECISION applied | cia2 A 17.7%; cia1 C 17.1% | 0 | None new (the Organizational Behavior requirement and user guide, opened 19 Nov 2026, key items for the first time) |
 | Cross-part review | 25 Nov 2026 | cia1, cia2, cia3 and ciac | 1 item retired and replaced (`cia3_d1_009` by `cia3_d1_018`); 5 reworded | 4 of 4 on the reworded items | 1 / 5 / 7 (one HARD in `cia1_d3_057`: a should-against-must final two the stem did not settle) | Not applicable | 1 retired as a repeat of `cia3_d2_006` | None new |
 | Challenge exam materials and CISA bridge | 25 Nov 2026 | ciac | 29 bridge sub-topics; exam guide and review week | Not applicable | Bridge 1 / 18 / 9; guide and week 1 / 6 / 7; trademark review GO (3 should-fix, applied) | Not applicable | None | None new |
 
@@ -1083,6 +1084,107 @@ What the Third-Party items taught (the coverage maps' section 7 say more).
 - **The requirement is spent in Parts 2 and 3.** Part 3's two Topical Requirement bullets
   now hold the reusable applicability, prioritization and conformance-evidence lessons, so
   a later requirement is likely to repeat them there; its new ground is in Parts 1 and 2.
+
+**Organizational Behavior items written ahead, in full.** The second set written ahead on a
+Topical Requirement that is not yet testable. The Organizational Behavior Topical
+Requirement (issued 15 Dec 2025, effective 15 Dec 2026) enters the CIA exams on 2027-06-01
+(`data/cia/shared/currency.json`); it and its user guide were opened and Verified on 19 Nov
+2026 and had keyed no item. Two experts wrote to one brief (up to three items in Part 2
+Section A on 2A5g, the zero-item culture bullet, which this requirement is the only route
+to; up to two in Part 1 Section C, only where the requirement states a lesson 1C2a and 1D4
+do not already teach; only what the requirement or its own user guide states, the
+Application Guidance never a key; management and the board own culture and internal audit
+assesses; never a lone-kind key), each item with `testable_from` 2027-06-01, so
+`check_currency.py` enforces the date and the mock, form and free-sample pools leave the
+items out until then (section 8). Part 3 was not written to, as the plan expected: its two
+Topical Requirement bullets already hold the reusable lessons, and behavior is
+organization-level ground. Five items: `cia2_d1_046` (2A5g: a tone control is incomplete
+when nothing checks that staff understand and support the leaders' clear messages;
+Controls B, structured feedback), `cia2_d1_047` (2A5g: a credit committee that never
+questions a proposal, seen in a year's minutes and two observed meetings, is the behavior
+risk to rate; keyed at the strength of the user guide's example indicator of decisions
+made without effective challenge, never as a must), `cia2_d1_048` (2A5g: thirty fitters
+each warned once for one shortcut is a shared pattern nobody traces or corrects, not thirty
+individual cases; Controls A and E, behavioral patterns as recurring), `cia1_d3_106` (1C2a:
+behavioral risk is measured against objectives, so a process that tracks only misconduct
+and policy breaches is incomplete; the user guide's key terms, with Risk Management A) and
+`cia1_d3_107` (1C2a: telling a formal driver of behavior from a behavior, an outcome and an
+informal driver, by the user guide's own definitions). Left empty: incentives with
+disincentives (repeats `cia1_d4_033` and `cia2_d1_005`), speak-up channels with protection
+(repeats `cia1_d3_003`), training lists (recall only, no final two) and closing behavior
+gaps (follow-up ground, Part 3's). No draft was re-keyed for a collision across the parts,
+but the first drafts shared settings and names across them (Camila in Chile, Wanjiru in
+Kenya), moved in the fix pass.
+
+First blind tests: 5 of 5 (partly 4, test-taking 1: `cia1_d3_107`, flagged TOO EASY).
+Options-only pass: 5 of 5, four at medium confidence and `cia1_d3_107` at low, none high.
+Standards audit of all five: 0 HARD ERROR, 13 PRECISION, 10 OBSERVATION. The PRECISION
+findings: `cia2_d1_047`'s option C (thin minutes) was close to a second answer while the
+minutes were the only evidence, its explanation tied the key to the requirement's
+Governance C, a different sense of "challenge", and its second citation named Governance
+where the key rests on Risk Management (five findings in all, with the tip and the C
+explanation); `cia2_d1_046`'s stem word "staff" came back only in the key, and its
+explanation walked Controls B in the source's own order; `cia2_d1_048`'s option A had a
+real user-guide hook (discipline too lenient to deter) its explanation never answered;
+`cia1_d3_106`'s pre_read handed the learner the rules-or-objectives choice; `cia1_d3_107`
+was a lone-kind key (the only option the organization sets, so the word "formal" found it),
+two findings; notes 2A5.3 put the user guide's example under a "Must" label, as the
+Third-Party notes had; and notes 1C2.1 did not teach the behavioral risk definition
+`cia1_d3_106` keys on. Among the OBSERVATIONs: four repeated settings and names, moved;
+`cia2_d1_048`'s key the longest option with the only explanatory clause; `cia1_d3_106`'s
+runner-up its key's verdict with a condition added, and a claim in its D explanation no
+source states; `cia2_d1_047`'s A and D falling to the stem's silence; and notes 1C2.1 not
+teaching outcomes as kept apart from behavior and drivers. One fix pass by each
+expert: `cia2_d1_047`'s auditor also observes two meetings, so C stays a real but lesser
+runner-up, and its key rests on the example at example strength; `cia2_d1_048`'s A
+explanation concedes the deterrence hook and says why the pattern wins; `cia1_d3_107` was
+reworked so every wrong option touches something the hospital sets (a check form, a
+quality report, a written rule) and only the definitions decide; notes 2A5.3 file the
+indicator under "Example only" and notes 1C2.1 now teach behavioral risk, conduct and
+outcomes. Fresh blind tests: 5 of 5 (needs the Standards 1, partly 3, test-taking 1:
+`cia1_d3_106`, flagged GIVEAWAY by one of its three reviews, so kept, and the stem's echo of
+the key removed); options-only 4 of 5, the miss `cia1_d3_107` at low confidence, none high.
+Re-audit: 0 HARD, 1 PRECISION, 4 OBSERVATION; the PRECISION applied (`cia1_d3_107`'s
+runner-up explanation now admits a written rule is a formal driver, as policies are, before
+showing the finding is a belief about it). Left open: `cia2_d1_047`'s options A and D fall
+to the stem's silence and its C is weaker after the fix (logged for the hardening pass);
+`cia1_d3_107`'s surname Phiri also names a `cia1_d3_072` auditor; notes 1C2.1's
+formal-driver list leaves out policies, which the user guide names (add it with the next
+1C2 edit). No item was cut. `check_currency.py` passed in both audits, and all five Part
+items and the three Challenge copies (`ciac_d3_043` to `045`; the Part 1 items carry no
+Challenge tag, as Part 1 Section C feeds no Challenge section) carry the date. Tagging: C5,
+C5, C5, none, none. Notes 2A5.3 and 1C2.1 now teach each deciding point as a "Must
+(Organizational Behavior Topical Requirement)" line, or a user-guide definition or
+"Example only" line, with the June 2027 date said once.
+
+Part 2 now holds 98 items (A 48, B 39, C 11) and Part 1 350 (A 116, B 85, C 107, D 42);
+the five dated items count toward the gates only from 1 Jun 2027, when Part 2 Section A is
+19 short of the owner's gate (25 today, 22 from 1 Mar 2027) and 2A5g, a zero-item bullet
+until then, reaches depth with three items. Topic 2A5 now holds 8 (4
+testable today), so the difficulty-by-verb check enforces it and it passes (0
+foundational, 2 analysis). Pick-longest: Part 2 A 17.7%, Part 1 C 17.1%. The Challenge pack
+holds 216 items, nine of them dated.
+
+What the Organizational Behavior items taught (the coverage maps' section 7 say more).
+- **A content requirement gives content final twos.** Unlike Third-Party's applicability
+  lessons, each key turned on what the requirement says a behavior control must contain or
+  what its user guide defines (feedback as half of the tone control, a recurring pattern
+  against one-off cases, behavioral risk measured against objectives, a formal driver
+  against an informal one).
+- **Examples keep their strength.** The user guide's list of indicators gives examples,
+  not musts: an item may key a which-risk-to-rate question on one, at example strength,
+  but the notes and explanations must say "example"; the same fault as the Third-Party
+  set's "may" under a "Must" label came back in notes 2A5.3.
+- **Definitions decide only when every option is the same kind.** `cia1_d3_107`'s first
+  draft fell to test-taking because only the key named something the organization sets;
+  it held once every option touched an organizational artefact.
+- **Check settings across the parts, not only keys.** No key collided this time (two
+  Third-Party drafts were re-keyed), but names and countries did, across the two parts'
+  drafts and with older items; the audit found four.
+- **The requirement is spent in Parts 1 and 2,** and with it both requirements that can be
+  written ahead now. Organizational Resilience (2027-10-01) is the last: it reaches only
+  2A3d in Part 2, already three items deep, so it is worth a round only if its text opens
+  lessons distinct from them.
 
 **Part 3 round 2, in full.** The first Part 3 round keyed on free public Knowledge sources
 (owner decision of 26 Nov 2026, section 9; library rule 2b), on the one Part 3 bullet the
@@ -1855,8 +1957,14 @@ re-opens the dates every round.
 
 Items carrying a date (26 Nov 2026): six on the Third-Party requirement,
 `testable_from` 2027-03-01 (`cia2_d1_043` to `045`, `cia3_d2_014`, `cia3_d2_015`,
-`cia3_d3_015`), and their six Challenge copies. The app's pack builders still drop
-the field (section 11), so no pack holding them is switched on until the app reads it.
+`cia3_d3_015`), and their six Challenge copies (`ciac_d1_084`, `ciac_d2_026`,
+`ciac_d2_027`, `ciac_d3_040` to `042`); and five on the Organizational Behavior
+requirement, `testable_from` 2027-06-01 (`cia2_d1_046` to `048`, `cia1_d3_106`,
+`cia1_d3_107`), and the three Challenge copies of the Part 2 ones (`ciac_d3_043` to
+`045`; the Part 1 items are untagged). Eleven Part items and nine Challenge copies in
+all. No item rests on Organizational Resilience (2027-10-01) or on Anti-Corruption (not
+testable yet, not in the library). The app's pack builders still drop the field (section
+11), so no pack holding them is switched on until the app reads it.
 
 ## 8b. Part 1 notes: what they rest on, and what must not carry a key
 
