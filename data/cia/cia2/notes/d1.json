@@ -3,7 +3,7 @@
  "domain_name": "Engagement Planning",
  "exam_weight": "50%",
  "source": "Original KaiSip study notes, organized by The IIA's CIA Part 2 syllabus effective 2025. KaiSip is an independent study aid, not affiliated with or endorsed by The IIA.",
- "overview": "Section A is half of Part 2 and covers everything before fieldwork: setting objectives and scope, choosing criteria, recognizing the activity's business, IT and finance risks, picking an approach, completing the engagement risk assessment, writing the work program and sizing resources. Throughout, the internal auditor plans, the chief audit executive (CAE) or a supervisor the CAE delegates to approves, and management owns the activity under review. Labels: Must marks a requirement of the Standards, Should or May a consideration, Sound practice a habit with no Standards line, and Common usage a term the Standards do not define.",
+ "overview": "Section A is half of Part 2 and covers everything before fieldwork: setting objectives and scope, choosing criteria, recognizing the activity's business, IT and finance risks, picking an approach, completing the engagement risk assessment, writing the work program and sizing resources. Throughout, the internal auditor plans, the chief audit executive (CAE) or a supervisor the CAE delegates to approves, and management owns the activity under review. Labels: Must marks a requirement of the Standards, Should or May a consideration, Sound practice a habit with no Standards line, Common usage a term the Standards do not define, and Knowledge a fact a free public source outside The IIA states, such as NIST or OpenStax.",
  "analogy": "Planning an engagement is like a surveyor preparing to inspect a bridge. Before climbing anything, the surveyor reads the design, the traffic data and past reports, decides which spans to check and against which code, picks the instruments and the team, and has the inspection plan signed off by the chief engineer. If the owner bars access to a span, the surveyor does not quietly skip it: it goes on the record and up the chain. The owner, not the surveyor, repairs the bridge.",
  "parts": [
   {
@@ -568,7 +568,8 @@
      "practice_ids": [
       "cia2_d1_006",
       "cia2_d1_017",
-      "cia2_d1_029"
+      "cia2_d1_029",
+      "cia2_d1_031"
      ],
      "definition": "Cybersecurity protects systems, networks and data from attack and misuse; it is part of information security, which keeps information confidential, accurate and available.",
      "why_it_matters": "Most processes run on technology, so cyber and IT weaknesses can defeat business controls; the Cybersecurity Topical Requirement sets a mandatory baseline and is testable now.",
@@ -576,9 +577,9 @@
       "Must: for cyber assurance, assess the requirement's three parts: governance, risk management (incident response and recovery included) and controls such as access, patching, encryption and network security.",
       "Threats named in The IIA's user guides include ransomware, malware, denial of service, data breaches, phishing and insider threats; new technology such as artificial intelligence adds emerging ones.",
       "Must: assess whether management continuously monitors emerging threats, and whether vendors' controls protect the organization's systems and data.",
-      "Common usage: IT general controls cover the whole IT environment (access, change, operations); application controls sit inside one system, such as input checks.",
       "Should: map planned cyber tests to the requirement; an IT control framework such as NIST's helps coverage, but adopting one does not prove controls work.",
-      "Must (Standard 5.2): follow the privacy laws and policies that apply; planning asks what personal data is held, where, who can reach it and why."
+      "Must (Standard 5.2): follow the privacy laws and policies that apply; planning asks what personal data is held, where, who can reach it and why.",
+      "Knowledge (NIST Privacy Framework; SP 800-53 PT-3): strong security does not settle privacy; harm can come from the organization's own use of personal data beyond its collected purpose."
      ],
      "example": "Planning an engagement on online grocery orders for a Polish supermarket chain, internal auditor Kasia sees customer addresses and payment details passing through a vendor's platform. Kasia assesses the Cybersecurity Topical Requirement for applicability, plans to review the vendor's assurance report and the chain's access controls, and records why governance items are excluded: the risk lies in how controls are run.",
      "audit_focus": {
@@ -618,19 +619,20 @@
      "name": "Continuity, Recovery and Resilience Readiness",
      "legacy_ids": [],
      "practice_ids": [
-      "cia2_d1_007"
+      "cia2_d1_007",
+      "cia2_d1_032"
      ],
      "definition": "Readiness for disruption is an organization's ability to keep critical services going and recover after a crisis, through continuity plans, recovery plans, incident response and tests.",
      "why_it_matters": "Disruption is when untested plans fail. Recognizing whether recovery has been proven, not just written down, shows where an engagement's real risk sits.",
      "how_it_works": [
       "A business continuity plan keeps critical work going in a disaster; a disaster recovery plan restores IT systems, data and operations afterward.",
-      "Common usage: a business impact analysis ranks activities by the cost of their disruption; the resilience user guide bases recovery teams and priorities on one.",
-      "Incident response covers detection, prioritization, containment, recovery and a post-incident review whose lessons feed future planning.",
+      "Knowledge (NIST SP 800-34): a business impact analysis ties systems to the processes they serve and what their disruption costs, and recovery priorities are set from it.",
+      "Incident response covers detection, prioritization, containment, recovery and a post-incident review that feeds future plans.",
       "Sound practice: treat backups as unproven until data is restored; the resilience user guide links recovery objectives to restore testing.",
-      "Must (resilience requirement): assess whether plans are tested, for example in tabletop rehearsals, and results reported to the board and senior management.",
-      "The Organizational Resilience Topical Requirement takes effect in April 2027 and is expected on the exam from October 2027."
+      "Must (resilience requirement, effective April 2027, on the exam from October 2027): assess whether plans are tested, as in tabletop rehearsals, and results go to the board and senior management.",
+      "Knowledge (NIST SP 800-34): the recovery time objective caps downtime, checked by timed restores; the recovery point objective caps data loss, checked by how often backups run."
      ],
-     "example": "At a Thai hospital, the IT manager reports that nightly backups of patient records always complete. Planning a continuity engagement, internal auditor Somchai asks when data was last restored and how long it took. No restore has been tried in two years, so Somchai rates recovery as a significant risk and plans to review the recovery plan and its tests.",
+     "example": "At a Thai hospital, the IT manager reports that nightly backups of patient records always complete. Planning a continuity engagement, internal auditor Somchai asks when data was last restored and how long it took. No restore has been tried in two years, so Somchai rates recovery a significant risk and plans to review the recovery plan and tests.",
      "audit_focus": {
       "review": [
        "Inspect restore test results against the recovery time objective",
@@ -649,7 +651,7 @@
      "exam_traps": [
       {
        "trap": "Nightly backups that complete successfully show the organization can recover.",
-       "why": "A backup that has never been restored is unproven. Readiness is shown by restore tests measured against the recovery objectives."
+       "why": "A backup never restored is unproven; readiness shows in restore tests measured against the recovery objectives."
       },
       {
        "trap": "Continuity planning is an IT matter only.",
@@ -659,15 +661,15 @@
      "key_terms": [
       {
        "term": "Business impact analysis",
-       "definition": "Common usage: a study of which activities matter most and what their disruption would cost over time."
+       "definition": "Knowledge (NIST SP 800-34): a study linking a system to the processes it supports and what their disruption would cost."
       },
       {
        "term": "Recovery time objective (RTO)",
-       "definition": "Common usage: how quickly a system or service must be back after a disruption."
+       "definition": "Knowledge (NIST SP 800-34): the longest a system can stay down before the harm becomes unacceptable."
       },
       {
        "term": "Recovery point objective (RPO)",
-       "definition": "Common usage: how much recent data, measured in time, the organization can afford to lose."
+       "definition": "Knowledge (NIST SP 800-34): how much recent data may be lost, set by the point the latest backup restores."
       }
      ],
      "memory_aid": "Detect, prioritize, contain, recover, review."
@@ -676,12 +678,18 @@
      "id": "2A3.4",
      "name": "Finance Basics and Business Process Risks",
      "legacy_ids": [],
+     "practice_ids": [
+      "cia2_d1_033",
+      "cia2_d1_034",
+      "cia2_d1_035"
+     ],
      "definition": "Recognize-level business knowledge means knowing the main financial terms and the key risks of common processes well enough to spot what an engagement must cover.",
      "why_it_matters": "An internal auditor who cannot tell an asset from a liability, or see why ordering and paying are kept apart, misses the risks that matter during planning.",
      "how_it_works": [
-      "You only need to recognize these terms and risks while planning, not calculate or design anything.",
-      "Sound practice: for assets ask whether they exist, are protected and are valued properly; for liabilities, whether all are recorded and paid on time.",
-      "Common usage: ordering, receiving and paying are kept apart and matched, so no one person can create and pay a false invoice.",
+      "Knowledge (OpenStax Accounting 5.3, 12.1): current means turning to cash, used or due within a year; a long loan's installment due this year is a current liability.",
+      "Knowledge (OpenStax Accounting 5.3): bonds or shares management intends to hold beyond a year are long-term investments, even if they could be sold sooner.",
+      "Knowledge (OpenStax Accounting 6.2): a perpetual system updates stock with every transaction, yet still needs a physical count, since theft, damage and loss leave records and shelves apart.",
+      "Knowledge (OpenStax Accounting 8.3): ordering, receiving and paying sit with different people, so no one person can order, accept and pay for goods alone.",
       "In an enterprise resource planning (ERP) system, user roles decide who can do what, so access rights carry the risk of conflicting duties.",
       "Must: assurance on third parties applies the Third-Party Topical Requirement (on the exam from March 2027), which follows each relationship from selection to exit."
      ],
@@ -699,16 +707,16 @@
         ]
        },
        {
-        "label": "Fixed assets",
+        "label": "Long-term assets",
         "cells": [
-         "Long-lived items such as buildings and equipment",
-         "Recorded, protected, written down when impaired?"
+         "Fixed assets such as buildings and equipment, and investments meant to be held beyond a year",
+         "Recorded, protected, valued properly?"
         ]
        },
        {
         "label": "Short-term liabilities",
         "cells": [
-         "Amounts due within about a year",
+         "Amounts due within about a year, a long loan's current installment included",
          "All recorded and paid on time?"
         ]
        },
@@ -720,10 +728,10 @@
         ]
        },
        {
-        "label": "Capital and investments",
+        "label": "Capital",
         "cells": [
-         "Owners' funding; holdings bought for a return",
-         "Authorized, valued, within policy?"
+         "The owners' funding of the organization",
+         "Authorized and recorded?"
         ]
        }
       ]
@@ -778,6 +786,10 @@
       {
        "term": "Segregation of duties",
        "definition": "Dividing a transaction's key steps among different people so that no one can make and hide an error or fraud alone."
+      },
+      {
+       "term": "Current ratio",
+       "definition": "Knowledge (OpenStax Accounting 5.3): current assets divided by current liabilities, a simple sign of whether debts due within the year can be met."
       }
      ],
      "memory_aid": "Order, receive, pay: three people, one match."
@@ -868,10 +880,14 @@
      "id": "2A4.2",
      "name": "Choosing the Approach That Fits",
      "legacy_ids": [],
+     "practice_ids": [
+      "cia2_d1_036"
+     ],
      "definition": "Choosing an approach means weighing the engagement's objectives, risks, complexity, deadline, stakeholders and resources, then picking the way of working that serves them best.",
      "why_it_matters": "A choice made out of habit wastes effort or misses risk. Matching the approach to the job lets the team deliver reliable results when stakeholders need them.",
      "how_it_works": [
       "Sound practice: start from the objectives and the significant risks: what must be shown, to whom and by when.",
+      "Knowledge (OpenStax Information Systems 9.1): a predictive plan suits fixed, well-defined goals; an adaptive approach repeats short planning cycles to absorb requirements that keep changing.",
       "Must (Standard 13.5 Engagement Resources): consider the engagement's nature and complexity, its time frame, and whether money, people and technology are enough.",
       "Should: weigh constraints such as hours budgeted, timing, travel and work in several languages.",
       "Must: follow the chief audit executive's (CAE's) methodologies, which set how engagements are performed (Standard 9.3).",
@@ -1484,13 +1500,15 @@
      "name": "Test Methods by Subject Area",
      "legacy_ids": [],
      "practice_ids": [
-      "cia2_d1_021"
+      "cia2_d1_021",
+      "cia2_d1_037"
      ],
      "definition": "Test methods are the procedures chosen to gather evidence, and the usual mix differs by subject: accounting and finance, IT systems, business operations or cybersecurity.",
      "why_it_matters": "A generalist internal auditor is expected to recognize which method suits which subject. Choosing a method because it is familiar, not because it answers the objective, weakens the evidence.",
      "how_it_works": [
       "May (accounting and finance): reconcile balances, trace entries to source documents, confirm balances with outside parties, and compare results with budgets and earlier periods.",
-      "May (IT systems): extract data directly from systems, inspect user lists and settings, and review records of changes with system users and administrators.",
+      "May (IT systems): extract data directly from systems, inspect user lists and settings to see how controls are configured, and review change records.",
+      "Knowledge (NIST SP 800-53A): examine reviews settings and records, interview asks people, and test makes a mechanism act under set conditions; only a test shows how it behaves.",
       "May (business operations): observe and walk through the process, compare nonfinancial data such as headcount with financial data such as payroll, and benchmark.",
       "Must (cybersecurity assurance): assess against the Topical Requirement, using access and patching reports, vendor assurance reports and incident response test results.",
       "Should: prefer evidence obtained directly or from an independent source, and corroborate key points (Standard 14.1)."
@@ -1713,7 +1731,7 @@
   "Satisfactory level of control": "The share of transactions or controls that must work as intended for a control process to count as acceptable.",
   "Key performance indicator (KPI)": "A measure management uses to track progress toward an objective, such as on-time delivery.",
   "IT general controls": "Common usage: controls over the whole IT environment, such as access, change and operations, that every system relies on.",
-  "Business impact analysis": "Common usage: a study of which activities matter most and what their disruption would cost over time.",
+  "Business impact analysis": "Knowledge (NIST SP 800-34): a study linking a system to the processes it supports and what their disruption would cost.",
   "Segregation of duties": "Dividing a transaction's key steps among different people so that no one can make and hide an error or fraud alone.",
   "Engagement approach": "How an engagement's work is organized and delivered, chosen to fit its objectives, risks and resources.",
   "Engagement risk assessment": "The planning step that identifies and ranks the risks of the activity being examined.",

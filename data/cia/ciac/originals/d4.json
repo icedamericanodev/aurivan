@@ -1449,6 +1449,279 @@
    ],
    "_provenance": "Authored from concept: notes 2B7.1 Organizing Workpapers (may: arrange workpapers along the work program and cross-reference them, Standard 14.6), with notes 2C1.3's line that answered review notes may be cleared while the evidence of supervision the methodology requires is kept. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standard 12.3 (requirements: the chief audit executive must ensure evidence of supervision is documented and retained according to the methodology; considerations: review notes are usually cleared once resolved, or a separate record is kept) and Standard 14.6 (requirements: the chief audit executive reviews and approves the documentation; considerations: workpapers may be organized by the work program's structure and cross-referenced). Bullet 2B7a, its first item: a must against a may on organizing the final file, apart from cia2_d2_012 (population and selection) and cia2_d2_017 (support for a stated cause). Nearest items: cia2_d3_002 (a supervisor's review note), cia1_d2_068 (recording both views in the workpapers). Original scenario; no IIA practice question or prep-bank text used. CIA Part 2 round 3, 25 Nov 2026. Fix pass 25 Nov 2026 (standards audit, blind and options-only tests): the stem says the methodology uses dated sign-offs to show review (a fact, not the rule), and D no longer repeats the stem's wording; the key no longer carries its own reason; the 14.6 format argument for A is answered. The key's rule is also taught in notes 2C1.3 (answered review notes may be cleared; the evidence of supervision is kept); keep apart from any 2C1 item on clearing review notes. Renumbered from cia2_d2_031 on 25 Nov 2026, before merge.",
    "style_version": 2
+  },
+  {
+   "id": "ciac_d4_038",
+   "domain": 4,
+   "subtopic": "4D3 Technology tools for audit work. A validated model after its input data changed",
+   "principle_id": "relevant-reliable-sufficient",
+   "challenge_ref": "D3",
+   "testable_from": null,
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Internal auditor Eleni will target claims using a Greek insurer's machine learning fraud model, validated in 2024; claim forms have changed since, and its owners say its code has not. What should Eleni do FIRST?",
+   "options": {
+    "A": "Test its scores on recent claims whose outcomes are known",
+    "B": "Reperform the 2024 validation on the claims it was tested on",
+    "C": "Check its change log shows the code is the validated 2024 version",
+    "D": "Ask its owners to retrain it on claims made since the change"
+   },
+   "correct": "A",
+   "key_concept": "A learning model's results depend on its data; when the data it sees has changed, revalidate it on current cases before relying on it.",
+   "pre_read": "Ask what could make an unchanged model stop working: for ordinary software, a code change; for a learning model, a data change too.",
+   "correct_explanation": "NIST's AI framework warns that a model's results can drift when the data it now meets no longer matches the data it was built on, even with no code change. New claim forms are such a change, so the 2024 validation is not current evidence. Standard 14.1 needs reliable, current information, so Eleni first tests the scores on recent claims of known outcome. The closest choice, a change log, shows only unchanged code.",
+   "wrong_explanations": {
+    "B": "Rerunning the 2024 validation shows only how the model scored claims made before the forms changed. That is not current evidence that its scores still work (Standard 14.1).",
+    "C": "Closest choice: unchanged code supports reliance on fixed-logic software. A learning model can drift when its data changes, so a code check cannot show its scores still work.",
+    "D": "Retraining is the owners' decision and a possible later recommendation. A retrained model would still need testing before Eleni relies on it, so this does not come first."
+   },
+   "tips": [
+    "Eliminate: B, because rerunning the 2024 validation shows how the model worked before the forms changed, and D, because retraining is the owners' call and would still need testing.",
+    "Final two: A beats C because a learning model can drift when its data changes even if its code does not; Standard 14.1 needs current evidence that the scores still work.",
+    "Exam cue: on CIA questions, before relying on a model's output, the internal auditor usually asks whether its data has changed since it was validated, not only its code."
+   ],
+   "framework_ref": "Global Internal Audit Standards (2024), Standard 14.1 Gathering Information for Analyses and Evaluation; NIST AI 100-1 (AI RMF 1.0) Appendix B How AI Risks Differ from Traditional Software Risks; Global Internal Audit Standards (2024), Standard 4.3 Professional Skepticism",
+   "related_concepts": [
+    "Machine learning in audit work",
+    "Reliability of evidence",
+    "Data drift in models"
+   ],
+   "_provenance": "Authored from concept: notes 2B3.2 Choosing and Relying on Audit Technology. Sources opened 26 Nov 2026: NIST AI 100-1 (AI RMF 1.0), Appendix B and the Executive Summary (Knowledge source, library rule 2b, a topic its heading names, 2B3: data a model learned from can become stale against the setting it now works in, and drift calls for more frequent maintenance; a model's behavior can change with its data), Global Internal Audit Standards (2024), Standard 14.1 (requirements: reliable information is factual and current) and Standard 4.3. Bullet 2B3a. The Knowledge fact decides the final two (code unchanged against data changed); the step (test before relying) rests on Standard 14.1, cited after it. New lesson: for a machine learning model, an unchanged code base does not keep a validation current once its input data has changed. Transfer pair with cia2_d2_015 (there the validation was current and the key is to rely), so keep the two apart in one mock; near cia2_d2_027 (a dashboard's feed) and the notes 2B3.2 example (a finance model tested on known invoices). Original scenario; no IIA practice question, prep-bank text or Knowledge-source sentence used. CIA Part 2 round 4, 26 Nov 2026 (Knowledge sources). Fix pass 26 Nov 2026 (standards audit and blind tests): the stem now says Eleni will target claims with the model, so setting it aside is no longer a sound choice; the random-pick option became a test of the wrong period (rerunning the 2024 validation), so the key is not the only option that gets evidence; key moved from C to A (batch key balance); Standard 14.1 cited first, as the step decides (library rule 2b). Re-audit 26 Nov 2026: no overclaim that unchanged code keeps ordinary software reliable.",
+   "style_version": 2
+  },
+  {
+   "id": "ciac_d4_039",
+   "domain": 4,
+   "subtopic": "4D3 Technology tools for audit work. What an automated monitoring tool cannot judge",
+   "principle_id": "relevant-reliable-sufficient",
+   "challenge_ref": "D3",
+   "testable_from": null,
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Internal auditor Awa has validated a Senegalese bank's continuous monitoring tool, which flags dormant and privileged accounts daily. Which step BEST tests managers' quarterly reviews of whether each user's access fits the job?",
+   "options": {
+    "A": "Reperform the tool's daily checks on a sample of accounts",
+    "B": "Have the tool also flag access that does not fit each job",
+    "C": "Sample the tool's privileged-account flags and how each was resolved",
+    "D": "Inspect a sample of reviews and the access changes they triggered"
+   },
+   "correct": "D",
+   "key_concept": "Automated monitoring covers checks that need little human judgment; a manager's review of whether access fits a job still needs its own test.",
+   "pre_read": "Ask what the tool can decide by itself and what still takes a person's judgment, then match the evidence to the control being tested.",
+   "correct_explanation": "NIST's continuous monitoring guide says automation suits checks needing little human involvement, and that not all monitoring can be automated. Whether a user's access fits the job is a manager's judgment this tool does not make. Standard 14.1 needs relevant evidence, so Awa inspects a sample of reviews and the changes they triggered. Following up the tool's flags, the closest choice, tests the daily monitoring, not that judgment.",
+   "wrong_explanations": {
+    "A": "Awa has already validated the tool. Rerunning its checks tests the dormant and privileged flags again, not whether managers judged each user's access against the job.",
+    "B": "Changing the tool is management's design choice and a possible recommendation. It would not show whether managers' quarterly reviews, the control under test, actually operated.",
+    "C": "Closest choice: following up the tool's privileged-account flags tests the daily monitoring. Whether each user's access fits the job is a manager's judgment the tool does not make."
+   },
+   "tips": [
+    "Eliminate: A, because the tool is already validated and rerunning its checks does not test managers' reviews, and B, because changing management's tool is not a test of the reviews.",
+    "Final two: D beats C because automation covers checks needing little human judgment; following up the tool's flags tests the monitoring, not managers' judgment of fit (Standard 14.1).",
+    "Exam cue: on CIA questions, a validated tool's results support only the checks the tool itself performs; a control that rests on a person's judgment needs its own evidence."
+   ],
+   "framework_ref": "Global Internal Audit Standards (2024), Standard 14.1 Gathering Information for Analyses and Evaluation; NIST SP 800-137 Section 2.3 Role of Automation in ISCM; Global Internal Audit Standards (2024), Standard 14.2 Analyses and Potential Engagement Findings",
+   "related_concepts": [
+    "Continuous monitoring",
+    "Relevance of evidence",
+    "Automated and manual controls"
+   ],
+   "_provenance": "Authored from concept: notes 2B3.1 Technology Options in Audit Work. Sources opened 26 Nov 2026: NIST SP 800-137, Section 2.3 (Knowledge source, library rule 2b, topic 2B3: automation covers the parts of monitoring that need little human interaction, such as technical settings; not every function can be automated, and some aspects stay manually monitored), Global Internal Audit Standards (2024), Standard 14.1 (requirements: relevant information is consistent with the engagement objectives) and Standard 14.2. Bullet 2B3a. The Knowledge fact decides the final two (a tool that flags privileged accounts against a manager's judgment of fit); the step rests on Standard 14.1, cited after it. The stem says the tool is validated, so this is not cia2_d2_027's lesson (a feed not yet tested). New lesson: a validated monitoring tool supports only the checks it performs; a control that rests on a person's judgment needs its own test. Near cia2_d2_027 and cia2_d2_028 (reliable evidence that answers one part of an objective); keep apart from both in one mock. Also near cia1_d3_078 (periodic assurance is not ongoing monitoring). Original scenario; no IIA practice question, prep-bank text or Knowledge-source sentence used. CIA Part 2 round 4, 26 Nov 2026 (Knowledge sources). Fix pass 26 Nov 2026 (standards audit and blind tests): the runner-up was a cut-down version of the key (rely on the tool for privileged accounts, inspect reviews for the rest); it is now a follow-up of the tool's own flags, and the reliance option became a reperformance of the validated tool's checks, so two wrong options also gather evidence; option B's explanation no longer claims that judging fit always needs a person (NIST says only which checks automation suits); Standard 14.1 cited first (library rule 2b).",
+   "style_version": 2
+  },
+  {
+   "id": "ciac_d4_040",
+   "domain": 4,
+   "subtopic": "4D4 Analytics and process mapping. A To-Be map offered for this year's process",
+   "principle_id": "answer-from-the-stem",
+   "challenge_ref": "D4",
+   "testable_from": null,
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "Testing whether a Tunisian port billed every vessel call this year, internal auditor Amel receives the billing manager's newly approved To-Be process map. Which use of the map is BEST?",
+   "options": {
+    "A": "As this year's process design, confirmed by walking calls through it",
+    "B": "As this year's criteria, testing billed calls against it",
+    "C": "As a planned change; map this year's process by walk-through",
+    "D": "As a planned change; assess whether the redesign will work"
+   },
+   "correct": "C",
+   "key_concept": "A To-Be map shows a planned future process; the condition comes from how the process ran in the period, and criteria from rules in force.",
+   "pre_read": "Ask which state a process map shows, current or future, and which period the engagement tests, before using any map as condition or criteria.",
+   "correct_explanation": "An As-Is map records how a process works now; a To-Be map sets out the future state a redesign aims for (OpenStax, Foundations of Information Systems). So this map shows neither how billing ran this year nor the rules billing had to follow. The condition comes from evidence (Standard 14.2), so Amel documents this year's process by walk-through before testing calls against bills. Confirming the map, the closest choice, would test the wrong design.",
+   "wrong_explanations": {
+    "A": "Closest choice: walking items through a map suits an As-Is map of the current process. A To-Be map shows a planned future state, so it is not this year's design.",
+    "B": "Criteria are chosen for the activity and period the scope sets (Standards 13.3 and 13.4). A design approved only now did not bind this year's billing.",
+    "D": "Judging whether the redesign will work does not answer an objective about this year's billing (Standard 13.3), and this year's process would stay unmapped."
+   },
+   "tips": [
+    "Eliminate: B, because a design approved only now did not bind this year's billing, and D, because judging the redesign does not answer an objective about this year's billing.",
+    "Final two: C beats A because a To-Be map shows a planned future state, not how billing ran this year; this year's process comes from walking real calls through it (Standard 14.2).",
+    "Exam cue: on CIA questions, check what a document describes, current or planned, and which period it covers before using it as the condition or the criteria."
+   ],
+   "framework_ref": "Global Internal Audit Standards (2024), Standard 14.2 Analyses and Potential Engagement Findings; OpenStax Foundations of Information Systems Section 4.2 Defining the Business Problem and User Requirements; Global Internal Audit Standards (2024), Standard 13.4 Evaluation Criteria; Global Internal Audit Standards (2024), Standard 13.3 Engagement Objectives and Scope",
+   "related_concepts": [
+    "Process maps",
+    "Condition and criteria",
+    "Walk-throughs"
+   ],
+   "_provenance": "Authored from concept: notes 2B4.1 Workflow Segments and Process Maps. Sources opened 26 Nov 2026: OpenStax, Foundations of Information Systems, Section 4.2 (Knowledge source, library rule 2b, topic 2B4: an As-Is process map shows the current state of a process and a To-Be map the future state to be reached; design diagrams can mislead when drawn wrongly), Global Internal Audit Standards (2024), Standard 14.2 (requirements: the condition is determined from information and evidence gathered during the engagement), Standard 13.4 (requirements: the most relevant criteria for the aspects defined in the objectives and scope) and Standard 13.3 (requirements: the scope sets the time period). Bullet 2B4b, its first analysis item: three facts weighed (what the map shows, the period tested, who approved it); the runner-up is right for an As-Is map alone. The Knowledge fact decides the final two. New lesson: a To-Be map is neither the condition nor this period's criteria. Near cia2_d2_006 (a walk-through that contradicts management's current map: its key rule is this item's runner-up; its option D, a policy as the condition, was this item's D before the fix pass) and cia1_d1_104 (a map offered as grounds for reliance); keep apart from cia2_d2_006 in one mock. Original scenario; no IIA practice question, prep-bank text or Knowledge-source sentence used. CIA Part 2 round 4, 26 Nov 2026 (Knowledge sources). Fix pass 26 Nov 2026 (standards audit and blind tests): the stem says the map is newly approved, so it cannot be this year's design; option D (the billing policy as the condition) became a second option that reads the map as a planned change but does the wrong work (judging the redesign), and B now tests calls against the map, so neither the key's reading nor its testing register is unique; the explanation no longer calls the walk-through the condition (the condition comes from testing calls against bills); Standard 14.2 cited first (library rule 2b).",
+   "style_version": 2
+  },
+  {
+   "id": "ciac_d4_041",
+   "domain": 4,
+   "subtopic": "4D4 Analytics and process mapping. Two measures on different scales before a ranking",
+   "principle_id": "relevant-reliable-sufficient",
+   "challenge_ref": "D4",
+   "testable_from": null,
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Internal auditor Hamid will rank 50 Omani fuel stations for visits by adding each station's cash shortages, in dollars, to its count of voided sales. Which handling of the data BEST suits the ranking?",
+   "options": {
+    "A": "Rescale both measures to a common range before adding them",
+    "B": "Remove stations with extreme values before adding the measures",
+    "C": "Divide each station's combined total by its sales before ranking",
+    "D": "Add the raw figures, then judge whether the ranking looks right"
+   },
+   "correct": "A",
+   "key_concept": "Before combining measures kept in different units, put them on a common scale, so no measure swamps the others just because its numbers are bigger.",
+   "pre_read": "Ask whether the data is ready for the analysis: are the measures being combined on the same scale, or will one drown out the other?",
+   "correct_explanation": "Data preparation comes before analysis, and normalizing rescales measures to a common range, so a measure recorded in large numbers cannot outweigh the others by size alone (OpenStax, Foundations of Information Systems). Dollar shortages would swamp a count of voids, so Hamid rescales both first, letting each measure count in the ranking (Standard 14.1). Dividing by sales, the closest choice, adjusts for station size but still mixes dollars and counts.",
+   "wrong_explanations": {
+    "B": "Extreme stations may be the riskiest ones the ranking exists to find. Treating outliers can suit other analyses, but dropping them here defeats the objective (Standard 14.1).",
+    "C": "Closest choice: dividing by sales adjusts for each station's size, but the total still mixes dollars and counts, so shortages still swamp the voids.",
+    "D": "Judging the result by eye after adding raw figures skips data preparation. The ranking would mostly follow the dollar column, and a look would not show why."
+   },
+   "tips": [
+    "Eliminate: B, because extreme stations may be the very ones to visit, and D, because adding raw figures before preparing the data analyzes first and checks later.",
+    "Final two: A beats C because measures in different units need a common scale before they are added; dividing the mixed total by sales adjusts for station size, not for units.",
+    "Exam cue: on CIA questions, prepare data before analyzing it: integrate, clean and put measures on a common scale, without deleting the odd records that may be exceptions."
+   ],
+   "framework_ref": "OpenStax Foundations of Information Systems Section 8.1 The Business Analytics Process; Global Internal Audit Standards (2024), Standard 14.1 Gathering Information for Analyses and Evaluation; CIA Part 2 syllabus (2025), Expanded Test Specifications V2.09.2024 FINAL",
+   "related_concepts": [
+    "Normalizing data",
+    "Data analytics steps",
+    "Risk-based selection"
+   ],
+   "_provenance": "Authored from concept: notes 2B4.3 The Data Analytics Steps. Sources opened 26 Nov 2026: OpenStax, Foundations of Information Systems, Section 8.1 (Knowledge source, library rule 2b, topic 2B4: data preparation, cleaning and transforming the data, comes before analysis; normalization adjusts values to a standard scale so one feature does not dominate because of its scale), Global Internal Audit Standards (2024), Standard 14.1 (requirements: relevant information is consistent with the engagement objectives) and the CIA Part 2 syllabus (bullet 2B4d names normalizing as a step). The source also lists removing redundant entries and replacing outliers as cleaning techniques; the item does not key on them, and option B teaches why an auditor keeps extreme records here (its explanation grants that treating outliers is data cleaning in other analyses). Bullet 2B4d. The Knowledge fact decides the final two (common scale against extra weight). New lesson: normalizing measures kept in different units before combining them. Near cia2_d2_019 (two supplier code sets mapped before a duplicate test: integrating data), cia2_d2_018 (a rate per thousand orders); keep apart from cia2_d2_019 in one mock. Original scenario; no IIA practice question, prep-bank text or Knowledge-source sentence used. CIA Part 2 round 4, 26 Nov 2026 (Knowledge sources). Fix pass 26 Nov 2026 (standards audit and blind tests): the runner-up (extra weight on dollars) was not a real candidate mistake and B and C carried their own reasons; C is now a real preparation step that fixes the wrong thing (dividing by station sales), B no longer states a reason, and B's explanation no longer conflicts with the source (outlier treatment is data cleaning); tips[1] no longer puts a must on a Knowledge fact. Re-audit 26 Nov 2026: the stem asks for a data-handling method, not the auditor's next step (library rule 2b).",
+   "style_version": 2
+  },
+  {
+   "id": "ciac_d4_042",
+   "domain": 4,
+   "subtopic": "4D4 Analytics and process mapping. An advisory request to recommend one of three options",
+   "principle_id": "advise-never-decide",
+   "challenge_ref": "D4",
+   "testable_from": null,
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "In an advisory engagement, a Fijian water utility's management asks internal auditor Mere to recommend one of three meter-reading schedules to cut estimated bills. Which analysis BEST fits?",
+   "options": {
+    "A": "Find what drove last year's estimated bills in each billing area",
+    "B": "Summarize last year's estimated bills by area and meter type",
+    "C": "Pilot the three schedules in one area each, then adopt the best",
+    "D": "Simulate estimated bills under each schedule, and rank the three"
+   },
+   "correct": "D",
+   "key_concept": "When the agreed objective asks which action works best, prescriptive analysis fits; in advisory work the auditor recommends and management decides.",
+   "pre_read": "Ask what the agreed objective asks for (what happened, why, what next or what to do) and who makes the final choice.",
+   "correct_explanation": "Prescriptive analytics compares possible actions, often by simulating each one, to recommend the best; diagnostic analytics looks for the causes of past results (OpenStax, Foundations of Information Systems). The agreed objective asks which schedule to recommend, so Mere simulates all three and ranks them, leaving the choice to management, as advisory services take on no management responsibility (Glossary). Finding last year's causes, the closest choice, compares no schedules.",
+   "wrong_explanations": {
+    "A": "Closest choice: finding causes is diagnostic work and may inform the options. The objective asks which of three schedules to recommend, which needs the three compared.",
+    "B": "A summary of last year's bills describes what happened. It cannot show which schedule would cut estimated bills the most.",
+    "C": "Adopting a schedule is management's decision; advisory services give advice without taking on management responsibilities (Glossary). Running live pilots also goes beyond the agreed objective."
+   },
+   "tips": [
+    "Eliminate: B, because a summary of last year shows what happened, not what to do, and C, because adopting a schedule is management's decision, not internal audit's.",
+    "Final two: D beats A because prescriptive analysis compares actions to recommend one, while diagnostic analysis explains a past result; the agreed objective asks for a recommendation.",
+    "Exam cue: on CIA questions, match the method to the objective's question: what happened, why, what next, or what to do. Whatever the method, management makes the decision."
+   ],
+   "framework_ref": "OpenStax Foundations of Information Systems Section 8.2 Foundations of Business Intelligence and Analytics; Global Internal Audit Standards (2024), Glossary; Global Internal Audit Standards (2024), Standard 13.3 Engagement Objectives and Scope; Global Internal Audit Standards (2024), Standard 14.1 Gathering Information for Analyses and Evaluation",
+   "related_concepts": [
+    "Choosing an analysis method",
+    "Advisory services",
+    "Prescriptive analysis"
+   ],
+   "_provenance": "Authored from concept: notes 2B4.4 Data Types and Analysis Methods. Sources opened 26 Nov 2026: OpenStax, Foundations of Information Systems, Section 8.2 (Knowledge source, library rule 2b, topic 2B4: descriptive analytics looks at past events and trends, diagnostic looks for causes, predictive uses historical data to forecast, prescriptive recommends actions, often by simulating scenarios), Global Internal Audit Standards (2024), Glossary (advisory services: advice without taking on management responsibilities; nature and scope agreed with stakeholders), Standard 13.3 (considerations: advisory objectives and scope are typically set jointly with management) and Standard 14.1. Bullet 2B4e. The Knowledge fact decides the final two (prescriptive against diagnostic); the Glossary rules out C. New lesson: when an agreed advisory objective asks which action to recommend, prescriptive analysis fits, and the choice stays with management. Transfer pair with cia2_d2_025 (an assurance objective about a past cause, where the request for a prescriptive model was the runner-up); keep the two apart in one mock. Near cia2_d2_007 and cia2_d2_008. Original scenario; no IIA practice question, prep-bank text or Knowledge-source sentence used. CIA Part 2 round 4, 26 Nov 2026 (Knowledge sources). Fix pass 26 Nov 2026 (standards audit and blind tests): the stem no longer says management will choose (it stated the rule that ruled out C, which now falls to the Glossary); the runner-up is now diagnostic work on last year's causes, a real half-prepared choice and the mirror of cia2_d2_025, in place of a forecast under the current schedule.",
+   "style_version": 2
+  },
+  {
+   "id": "ciac_d4_043",
+   "domain": 4,
+   "subtopic": "4D5 Analytical review techniques. A steady current ratio and a falling quick ratio",
+   "principle_id": "answer-from-the-stem",
+   "challenge_ref": "D5",
+   "testable_from": null,
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "Reviewing a Slovak wholesaler's working capital, internal auditor Marek sees its current ratio steady at 2.0 for two years while its quick ratio fell from 1.1 to 0.5. Which reading BEST directs the follow-up?",
+   "options": {
+    "A": "Liquidity held, as the current ratio shows; no follow-up is needed",
+    "B": "Inventory or prepaid costs now form more of current assets; test why",
+    "C": "Customers pay more slowly; test receivables aging and credit terms",
+    "D": "Liquid assets no longer cover short-term debts; report a finding"
+   },
+   "correct": "B",
+   "key_concept": "The quick ratio leaves inventory and prepaid costs out of current assets, so a falling quick ratio beside a steady current ratio points to them.",
+   "pre_read": "Ask what each ratio includes, and what must have changed for one to fall while the other holds steady.",
+   "correct_explanation": "The current ratio sets all current assets against current liabilities; the quick ratio leaves out inventory and prepaid costs, which take longer to turn into cash (OpenStax, Principles of Accounting, Appendix A). One steady and the other falling means those items now make up more of current assets. Marek tests why stock or prepayments built up, analyzing further before any finding (Standard 14.2). Receivables, the closest choice, count in both ratios.",
+   "wrong_explanations": {
+    "A": "A steady current ratio does not show a shift inside current assets. The falling quick ratio shows more of them are now slow to turn into cash.",
+    "C": "Closest choice: receivables are quick assets, counted in both ratios. Slower collection alone would not lower the quick ratio while the current ratio held steady.",
+    "D": "True, quick assets now cover only half of short-term debts, but no criteria breach is shown. A ratio's move is a lead for more analysis, not a finding (Standard 14.2)."
+   },
+   "tips": [
+    "Eliminate: A, because a steady current ratio does not show a shift inside current assets, and D, because a ratio's move is a lead for more analysis, not yet a finding.",
+    "Final two: B beats C because the quick ratio leaves out only inventory and prepaid costs; receivables sit in both ratios, so slower collection cannot explain the gap.",
+    "Exam cue: on CIA questions, read related ratios together: when they move apart, ask what one includes that the other leaves out, then follow up that item."
+   ],
+   "framework_ref": "OpenStax Principles of Accounting Volume 1 Appendix A Financial Statement Analysis; Global Internal Audit Standards (2024), Standard 14.2 Analyses and Potential Engagement Findings",
+   "related_concepts": [
+    "Liquidity ratios",
+    "Analytical review",
+    "Following up unexpected results"
+   ],
+   "_provenance": "Authored from concept: notes 2B5.1 Ratios, Trends and Variances. Sources opened 26 Nov 2026: OpenStax, Principles of Accounting, Volume 1, Appendix A (Knowledge source, library rule 2b, topic 2B5: liquidity ratios compare current assets with current liabilities; the current ratio uses all current assets; the quick ratio narrows them to the most liquid, leaving out inventory and prepaid expenses; a 2:1 current ratio means twice the current assets of current liabilities) and Global Internal Audit Standards (2024), Standard 14.2 (requirements: further analyses where initial analyses do not support a potential finding; considerations: ratio analyses in the work program). Bullet 2B5a. The figures are given and the item turns on what each ratio includes, not on computing one. The Knowledge fact decides the final two (inventory and prepaid costs against receivables). New lesson: two related ratios read together locate the item that moved. Near cia2_d2_026 (which of four results to follow up) and cia2_d2_009; keep apart from cia2_d2_037 in one mock (both read a ratio). Original scenario; no IIA practice question, prep-bank text or Knowledge-source sentence used. CIA Part 2 round 4, 26 Nov 2026 (Knowledge sources). Fix pass 26 Nov 2026 (standards audit and blind tests): option D's reading is now plainly true (quick assets cover only half of short-term debts), so it falls only on Standard 14.2 (a ratio's move is a lead, not a finding); cia2_d2_037 no longer shares this distractor family.",
+   "style_version": 2
+  },
+  {
+   "id": "ciac_d4_044",
+   "domain": 4,
+   "subtopic": "4D5 Analytical review techniques. A falling receivables turnover and a growth explanation",
+   "principle_id": "relevant-reliable-sufficient",
+   "challenge_ref": "D5",
+   "testable_from": null,
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "Reviewing a Malaysian printer's credit control, internal auditor Farah sees sales up 5% and receivables turnover down from 9 to 5 times; the credit manager says sales growth explains it. Which reading is MOST accurate?",
+   "options": {
+    "A": "Growth may explain it; confirm the 5% rise in the sales ledger",
+    "B": "Customers now pay faster, so less cash is tied up",
+    "C": "Receivables grew far faster than sales; the cause needs testing",
+    "D": "Unsold stock built up; count inventory against the sales records"
+   },
+   "correct": "C",
+   "key_concept": "Receivables turnover sets sales against average receivables, so sales growth alone does not lower it; a sharp fall means receivables outgrew sales.",
+   "pre_read": "Ask what the ratio compares, and whether the explanation offered would move it that far in that direction.",
+   "correct_explanation": "Receivables turnover sets credit sales against average receivables, and a lower figure means cash comes in more slowly relative to sales (OpenStax, Principles of Accounting, Appendix A). Sales up 5% cannot take it from 9 to 5: receivables must have grown far faster than sales. Under Standard 4.3, Farah seeks evidence of the cause before any finding (Standard 14.2). Confirming the sales rise, the closest choice, tests a fact that cannot explain the fall.",
+   "wrong_explanations": {
+    "A": "Closest choice: confirming the 5% rise checks a fact, not the explanation. Turnover already divides sales by receivables, so 5% growth cannot take it from 9 to 5 (Standard 4.3).",
+    "B": "A lower turnover means receivables are collected fewer times a year, so cash comes in more slowly, not faster.",
+    "D": "Receivables turnover sets credit sales against receivables; stock plays no part in it. A build-up of unsold stock would show in inventory turnover instead."
+   },
+   "tips": [
+    "Eliminate: B, because a lower turnover means slower collection, not faster, and D, because unsold stock plays no part in receivables turnover.",
+    "Final two: C beats A because turnover already sets sales against receivables, so even a confirmed 5% rise cannot take it from 9 to 5; the explanation itself fails (Standard 4.3).",
+    "Exam cue: on CIA questions, test a manager's explanation against what the ratio compares: an explanation that would not move the ratio that far needs corroboration."
+   ],
+   "framework_ref": "OpenStax Principles of Accounting Volume 1 Appendix A Financial Statement Analysis; Global Internal Audit Standards (2024), Standard 4.3 Professional Skepticism; Global Internal Audit Standards (2024), Standard 14.2 Analyses and Potential Engagement Findings",
+   "related_concepts": [
+    "Efficiency ratios",
+    "Professional skepticism",
+    "Analytical review"
+   ],
+   "_provenance": "Authored from concept: notes 2B5.1 Ratios, Trends and Variances. Sources opened 26 Nov 2026: OpenStax, Principles of Accounting, Volume 1, Appendix A (Knowledge source, library rule 2b, topic 2B5: accounts receivable turnover relates net credit sales to average receivables; a lower number can mean cash is collected slowly), Global Internal Audit Standards (2024), Standard 4.3 (professional skepticism toward explanations) and Standard 14.2 (requirements: further analyses before a potential finding is supported). Bullet 2B5a. The figures are given and the item turns on what the ratio compares, not on computing it. The Knowledge fact decides the final two (the manager's growth explanation against what the ratio already allows for). New lesson: a turnover ratio already allows for sales growth, so growth cannot explain its fall. Near cia2_d2_026 (follow-up of the largest unexplained result) and cia2_d2_018 (a manager's claim that complaints fell); keep apart from cia2_d2_036 in one mock (both read a ratio). Original scenario; no IIA practice question, prep-bank text or Knowledge-source sentence used. CIA Part 2 round 4, 26 Nov 2026 (Knowledge sources). Fix pass 26 Nov 2026 (standards audit and blind tests): the key was the only option that sought evidence; the runner-up now also seeks evidence (confirm the 5% sales rise) and D now counts inventory (a mix-up with inventory turnover) in place of reporting a finding, so this item no longer shares cia2_d2_036's distractor families (no follow-up, report a finding).",
+   "style_version": 2
   }
  ]
 }
