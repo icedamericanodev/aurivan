@@ -109,6 +109,12 @@ export interface Certification {
   issuer: CertIssuer;
   /** The "how the examiner thinks" lens, e.g. ISACA vs ISC2 manager mindset. */
   mindset: string;
+  /**
+   * The role the study notes ask the learner to take, lower case after "the"
+   * ("IS auditor" → "Think like the IS auditor", "The IS auditor’s lens").
+   * Missing → the CISA wording (notesHeadings in certifications.ts).
+   */
+  notesRole?: string;
   trademarkNotice: string;
   /** False when we can't confirm the mark is registered (plain "trademark", no ®). Defaults to true. */
   trademarkRegistered?: boolean;

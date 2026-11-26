@@ -69,10 +69,11 @@ function errorCode(e) {
   defs["src/content/certifications.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DEFAULT_CERT_ID = exports.CERTIFICATIONS = exports.ISC2 = exports.ISACA = void 0;
+exports.DEFAULT_NOTES_ROLE = exports.DEFAULT_CERT_ID = exports.CERTIFICATIONS = exports.ISC2 = exports.ISACA = void 0;
 exports.selectableCertifications = selectableCertifications;
 exports.getCertification = getCertification;
 exports.getDomain = getDomain;
+exports.notesHeadings = notesHeadings;
 exports.domainLabel = domainLabel;
 exports.domainColor = domainColor;
 exports.combinedTrademarkNotice = combinedTrademarkNotice;
@@ -93,6 +94,7 @@ exports.CERTIFICATIONS = [
         fullName: 'Certified Information Systems Auditor',
         issuer: exports.ISACA,
         mindset: 'The auditor assesses, recommends, and reports — never fixes. ' + ISACA_MINDSET,
+        notesRole: 'IS auditor',
         trademarkNotice: ISACA_TM('CISA'),
         status: 'available',
         exam: {
@@ -116,6 +118,7 @@ exports.CERTIFICATIONS = [
         issuer: exports.ISACA,
         mindset: 'Think like a security manager who serves the business: governance and ' +
             'business alignment come before technical fixes. ' + ISACA_MINDSET,
+        notesRole: 'information security manager',
         trademarkNotice: ISACA_TM('CISM'),
         status: 'coming_soon',
         exam: {
@@ -138,6 +141,7 @@ exports.CERTIFICATIONS = [
         issuer: exports.ISACA,
         mindset: 'Think like a risk practitioner: identify, assess, respond, and monitor — ' +
             'risk ownership sits with the business. ' + ISACA_MINDSET,
+        notesRole: 'risk practitioner',
         trademarkNotice: ISACA_TM('CRISC'),
         status: 'coming_soon',
         exam: {
@@ -160,6 +164,7 @@ exports.CERTIFICATIONS = [
         issuer: exports.ISACA,
         mindset: 'Think like a senior auditor applied to AI: governance, accountability, ' +
             'and evidence over hype. ' + ISACA_MINDSET,
+        notesRole: 'AI auditor',
         trademarkNotice: ISACA_TM('AAIA', false),
         trademarkRegistered: false,
         status: 'coming_soon',
@@ -182,6 +187,7 @@ exports.CERTIFICATIONS = [
         issuer: exports.ISC2,
         mindset: 'Think like a manager and advisor, not a technician: protect people first, ' +
             'then align security with business goals and due care.',
+        notesRole: 'security professional',
         trademarkNotice: ISC2_TM('CISSP'),
         status: 'coming_soon',
         exam: {
@@ -212,6 +218,11 @@ function getDomain(cert, domainId) {
     return cert.domains.find((d) => d.id === domainId);
 }
 exports.DEFAULT_CERT_ID = 'cisa';
+exports.DEFAULT_NOTES_ROLE = 'IS auditor';
+function notesHeadings(role) {
+    const r = (role === null || role === void 0 ? void 0 : role.trim()) || exports.DEFAULT_NOTES_ROLE;
+    return { movement: `Think like the ${r}`, lens: `The ${r}’s lens` };
+}
 function domainLabel(d) {
     return `Domain ${d.id} · ${d.short}`;
 }
@@ -10364,7 +10375,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "4155d2021b6ba8ee";
+  api.sourceHash = "716c504827398fd5";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};
