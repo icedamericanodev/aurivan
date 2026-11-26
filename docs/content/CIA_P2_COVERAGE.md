@@ -9,6 +9,11 @@ C 10, so A 100, B 80, C 20); (c) one full form frozen and held back, and a short
 per learner from unseen items; a bullet's only item is never held back. Three forms
 (Part 2 about 300: A 150, B 120, C 30) stay the target as sources open.
 
+**Owner decision, 26 Nov 2026: Part 2's own gate.** Part 2 sells at one frozen, held-back
+full form (A 50, B 40, C 10) plus one short mock's worth of unseen items per section (A 17,
+B 13, C 3): about **A 67, B 53, C 13**. Two forms stay the target as sources open; the gap
+counts below still measure against two forms (`CIA_BANK_PLAN.md` section 9).
+
 Source: the opened Part 2 syllabus (V2.09.2024 FINAL, opened 19 Nov 2026; each bullet's
 leading verb re-read in it on 25 Nov 2026). The "Covers" column is the blueprint's own
 wording (`docs/content/CIA_BLUEPRINT.md`), not The IIA's; the verb is the bullet's leading

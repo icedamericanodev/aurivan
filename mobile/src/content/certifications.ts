@@ -43,6 +43,8 @@ export const CERTIFICATIONS: Certification[] = [
     issuer: ISACA,
     mindset:
       'The auditor assesses, recommends, and reports — never fixes. ' + ISACA_MINDSET,
+    // The study notes' headings: "Think like the IS auditor", "The IS auditor’s lens" (unchanged since 1.24).
+    notesRole: 'IS auditor',
     trademarkNotice: ISACA_TM('CISA'),
     status: 'available',
     exam: {
@@ -67,6 +69,8 @@ export const CERTIFICATIONS: Certification[] = [
     mindset:
       'Think like a security manager who serves the business: governance and ' +
       'business alignment come before technical fixes. ' + ISACA_MINDSET,
+    // The CISM seat as the isaca-concept-reviewer and isaca-language-reviewer agents name it.
+    notesRole: 'information security manager',
     trademarkNotice: ISACA_TM('CISM'),
     status: 'coming_soon',
     exam: {
@@ -92,6 +96,8 @@ export const CERTIFICATIONS: Certification[] = [
     mindset:
       'Think like a risk practitioner: identify, assess, respond, and monitor — ' +
       'risk ownership sits with the business. ' + ISACA_MINDSET,
+    // The seat in .claude/agents/crisc-standards-auditor.md ("how a risk practitioner thinks").
+    notesRole: 'risk practitioner',
     trademarkNotice: ISACA_TM('CRISC'),
     status: 'coming_soon',
     exam: {
@@ -118,6 +124,8 @@ export const CERTIFICATIONS: Certification[] = [
     mindset:
       'Think like a senior auditor applied to AI: governance, accountability, ' +
       'and evidence over hype. ' + ISACA_MINDSET,
+    // A senior IT auditor who audits AI (.claude/agents/aaia-standards-auditor.md); "AI auditor" in isaca-concept-reviewer.
+    notesRole: 'AI auditor',
     trademarkNotice: ISACA_TM('AAIA', false),
     trademarkRegistered: false,
     status: 'coming_soon',
@@ -141,6 +149,8 @@ export const CERTIFICATIONS: Certification[] = [
     mindset:
       'Think like a manager and advisor, not a technician: protect people first, ' +
       'then align security with business goals and due care.',
+    // No CISSP standard yet: the seat the cert's own name gives (a manager and advisor, per the mindset above).
+    notesRole: 'security professional',
     // Owner decision (27 Oct 2026): follow ISC2's rule on its marks, so the issuer is "ISC2®" too.
     trademarkNotice: ISC2_TM('CISSP'),
     status: 'coming_soon',
@@ -183,6 +193,20 @@ export function getDomain(cert: Certification, domainId: string) {
 }
 
 export const DEFAULT_CERT_ID = 'cisa';
+
+/**
+ * The study notes' two role headings for a certification (CIA_BANK_PLAN.md section 11):
+ * the second movement ("Think like the IS auditor") and its key-idea section ("The IS
+ * auditor’s lens", curly apostrophe). Both say "the", so no a/an is needed. A cert
+ * without `notesRole` (or a blank one) keeps the CISA wording, so CISA never changes.
+ * When The IIA's CIA packs are added, their entries use notesRole: 'internal auditor'.
+ */
+export const DEFAULT_NOTES_ROLE = 'IS auditor';
+
+export function notesHeadings(role?: string): { movement: string; lens: string } {
+  const r = role?.trim() || DEFAULT_NOTES_ROLE;
+  return { movement: `Think like the ${r}`, lens: `The ${r}’s lens` };
+}
 
 /**
  * A domain's name in LISTS of domains (mobile 1.15, PHASE5.md C9): "Domain 4 ·

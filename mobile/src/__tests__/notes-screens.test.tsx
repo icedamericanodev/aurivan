@@ -16,6 +16,7 @@
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { AccessibilityInfo, Dimensions } from 'react-native';
 import { NoteBody, onThisPageFits } from '../components/notes';
+import { CERTIFICATIONS, getCertification, notesHeadings } from '../content/certifications';
 import { Screen } from '../components/ui';
 import { clearNotesCache, findNote, getNotes } from '../content/notes';
 import type { NoteSubtopic } from '../content/notes/types';
@@ -327,6 +328,61 @@ describe('NoteBody: every section renders', () => {
     expect(allText()).toContain('Think like the IS auditor');
     // The movements are headings, so a screen-reader user can jump between them.
     expect(root().findAll((x) => x.props.accessibilityRole === 'header' && x.props.accessibilityLabel === 'Understand').length).toBeGreaterThan(0);
+  });
+});
+
+// CIA_BANK_PLAN.md section 11: the two role headings follow the open course, so a non-CISA course
+// never says "IS auditor"; with no role (or a blank one) they keep today's CISA wording.
+describe('NoteBody: the role headings follow the open course', () => {
+  const headers = () =>
+    root()
+      .findAll((x) => x.props.accessibilityRole === 'header' && typeof x.props.accessibilityLabel === 'string')
+      .map((x) => x.props.accessibilityLabel as string);
+  const onThisPage = () =>
+    root()
+      .findAll((x) => typeof x.props.accessibilityLabel === 'string' && x.props.accessibilityLabel.startsWith('On this page') && typeof x.props.onPress === 'function')
+      .map((x) => x.props.accessibilityLabel as string);
+
+  it('notesHeadings: the role in both headings, curly apostrophe; missing or blank → the CISA wording', () => {
+    expect(notesHeadings('internal auditor')).toEqual({ movement: 'Think like the internal auditor', lens: 'The internal auditor’s lens' });
+    expect(notesHeadings(undefined)).toEqual({ movement: 'Think like the IS auditor', lens: 'The IS auditor’s lens' });
+    expect(notesHeadings('  ')).toEqual(notesHeadings(undefined));
+    // CISA's own entry gives exactly the wording it has always shown.
+    expect(notesHeadings(getCertification('cisa')!.notesRole)).toEqual(notesHeadings(undefined));
+  });
+
+  it('every course in the registry names its role, and only CISA says "IS auditor"', () => {
+    for (const c of CERTIFICATIONS) {
+      expect(c.notesRole?.trim()).toBeTruthy();
+      if (c.id !== 'cisa') expect(notesHeadings(c.notesRole).movement).not.toContain('IS auditor');
+    }
+  });
+
+  it('a course role replaces "IS auditor" in the kicker, the lens heading and the screen-reader labels', () => {
+    mount(
+      <Screen>
+        <NoteBody note={note('4B1.2')} role="internal auditor" />
+      </Screen>,
+    );
+    expect(allText()).toContain('Think like the internal auditor');
+    expect(allText()).toContain('The internal auditor’s lens');
+    // The note's own text (a CISA fixture) may still say "IS auditor"; the headings never do.
+    expect(allText()).not.toContain('Think like the IS auditor');
+    expect(allText()).not.toContain('The IS auditor’s lens');
+    // The movement kicker is a screen-reader heading named by the role.
+    expect(headers()).toContain('Think like the internal auditor');
+    expect(onThisPage()[1]).toBe('On this page: 2 of 3, Think like the internal auditor');
+  });
+
+  it('no role → exactly the CISA headings and labels', () => {
+    mount(
+      <Screen>
+        <NoteBody note={note('4B1.2')} />
+      </Screen>,
+    );
+    expect(allText()).toContain('The IS auditor’s lens');
+    expect(headers()).toContain('Think like the IS auditor');
+    expect(onThisPage()[1]).toBe('On this page: 2 of 3, Think like the IS auditor');
   });
 });
 

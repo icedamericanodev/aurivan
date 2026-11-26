@@ -6,7 +6,7 @@ Version name **2.3** (owner, 25 Nov 2026). Google granted production access on
 | Bundle | EAS profile | Questions | Version code | Goes to |
 |---|---|---|---|---|
 | Public | `public-sample` | free CISA sample only (`data/free/cisa_sample_ids.json`) | 5 | Production |
-| Closed testers | `production` | full CISA bank | 6 | "Testers Community" and "Alpha" closed tracks |
+| Closed testers | `production` | full CISA bank | 6 | "Alpha" closed track only (owner, 26 Nov 2026) |
 
 **Never put the full-bank bundle (this one, or 2.2 code 4, or any earlier
 store build) on production.** A public APK with the full bank gives it away
@@ -31,6 +31,12 @@ earlier session notes to "promote 2.2 to production" is withdrawn.
   "A free sample of original practice questions"; Data safety stays "No data
   collected" only if both bundles are checked for endpoints).
 - Owner decisions: version name 2.3, and build both bundles (25 Nov 2026).
+- Owner decision (26 Nov 2026): the full bank goes to the **Alpha** track only.
+  "Testers Community" were paid testers for Google's closed-test requirement
+  and get no premium access, so that track is not given code 6. Its members
+  move to production code 5 (sample) when production goes live, because 5 is
+  higher than the 2.2 code 4 still on their track; their saved progress stays.
+  The owner may pause that track or empty its tester list in Play Console.
 
 Risks the owner accepts:
 - Every public release needs a paired tester bundle with a higher code until
@@ -82,12 +88,32 @@ would then give testers the sample.
 
 ## Play Console order (owner)
 
-1. Upload the **tester** bundle (code 6) to both closed tracks and roll it out
-   there, in the same countries as production. Wait until Play shows it live
-   on the closed tracks.
+1. Upload the **tester** bundle (code 6) to the **Alpha** closed track only
+   and roll it out there, in the same countries as production. Wait until Play
+   shows it live. Do not add it to "Testers Community" (owner, 26 Nov 2026).
 2. Only then create the production release with the **public** bundle
    (code 5), using the release notes below.
-3. On a tester's phone, check it updates to code 6 and keeps the full bank.
+3. On an Alpha tester's phone, check it updates to code 6 and keeps the full
+   bank.
+4. Optional: once production is live, pause "Testers Community" or empty its
+   tester list, so 2.2 (code 4, full bank) is no longer offered on that track.
+
+## Released (owner's report)
+
+Play Console is not readable from a cloud session, so this is what the owner
+reported, with a screenshot for production.
+
+- **Alpha closed track: 6 (2.3) live** (26 Nov 2026). The update reached the
+  owner's own Alpha phone a few hours later. "Testers Community" was not given
+  code 6 (owner's decision above).
+- **Production: 5 (2.3) published, full rollout** (submission 6, submitted
+  26 Nov 2026 2:12 pm, published 2:36 pm). **KaiSip's first public release.**
+- Play's one recommended action on 5 (2.3), "deprecated APIs or parameters for
+  edge-to-edge", is not a blocker. The calls come from React Native's own
+  `WindowUtil.kt` (`enableEdgeToEdge`) and shrunk library code. In React
+  Native 0.88.1 the old calls run only on older Android versions, and newer
+  versions use the current method. It should clear with a later React Native
+  update, so nothing was changed for 2.3.
 
 ## Built bundles
 
@@ -137,7 +163,7 @@ were available to Claude.
 | Real "Submit exam" tap on a full mock (time-out scoring was tested) | NOT TESTED |
 | Dark mode on the public build | NOT TESTED |
 | Native Android device (either bundle) | NOT TESTED |
-| In-place upgrade of a real Play-signed closed install (2.2 code 4 → 2.3 code 6) keeps progress and the full bank | NOT TESTED: needs Play Console (owner, step 3 above) |
+| In-place upgrade of a real Play-signed closed install (2.2 code 4 → 2.3 code 6) keeps progress and the full bank | Update arrived on the owner's Alpha phone (26 Nov 2026); version, progress and full bank are waiting for the owner's check |
 | Play pre-launch report | NOT TESTED: runs after upload (owner) |
 
 Known, not changed (product call): when a learner finishes every free question
