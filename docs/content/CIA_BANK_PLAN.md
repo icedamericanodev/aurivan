@@ -2235,6 +2235,11 @@ const IIA_BASE = { issuer: IIA, mindset: IIA_MINDSET, notesRole: 'internal audit
   the held-back form (section 3, decision 4), which does not exist in the app
   yet, must apply the same rule when they are built. `challenge_ref` is still
   left out of the pack question (the app does not need it).
+- **From the course-wording review (26 Nov 2026):** `readySigns` takes `issuerSite`, but no
+  phone screen calls `readySigns` yet and nothing sets `issuer.site`, so a CIA learner would
+  still read "Check isaca.org" until a caller passes the issuer's site. CIA lesson data must
+  write its coach scene kicker exactly as "The internal auditor’s lens" (curly apostrophe,
+  U+2019); a straight apostrophe makes the scene render as a plain idea.
 - The phone app has no builder for `<pack>/glossary.json` yet (the dry run
   checks its shape only).
 - `scripts/build_free_sample.py` needs the CIA packs, the 100-item floor and
