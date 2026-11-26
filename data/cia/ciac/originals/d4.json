@@ -1722,6 +1722,84 @@
    ],
    "_provenance": "Authored from concept: notes 2B5.1 Ratios, Trends and Variances. Sources opened 26 Nov 2026: OpenStax, Principles of Accounting, Volume 1, Appendix A (Knowledge source, library rule 2b, topic 2B5: accounts receivable turnover relates net credit sales to average receivables; a lower number can mean cash is collected slowly), Global Internal Audit Standards (2024), Standard 4.3 (professional skepticism toward explanations) and Standard 14.2 (requirements: further analyses before a potential finding is supported). Bullet 2B5a. The figures are given and the item turns on what the ratio compares, not on computing it. The Knowledge fact decides the final two (the manager's growth explanation against what the ratio already allows for). New lesson: a turnover ratio already allows for sales growth, so growth cannot explain its fall. Near cia2_d2_026 (follow-up of the largest unexplained result) and cia2_d2_018 (a manager's claim that complaints fell); keep apart from cia2_d2_036 in one mock (both read a ratio). Original scenario; no IIA practice question, prep-bank text or Knowledge-source sentence used. CIA Part 2 round 4, 26 Nov 2026 (Knowledge sources). Fix pass 26 Nov 2026 (standards audit and blind tests): the key was the only option that sought evidence; the runner-up now also seeks evidence (confirm the 5% sales rise) and D now counts inventory (a mix-up with inventory turnover) in place of reporting a finding, so this item no longer shares cia2_d2_036's distractor families (no follow-up, report a finding).",
    "style_version": 2
+  },
+  {
+   "id": "ciac_d4_045",
+   "domain": 4,
+   "subtopic": "4D5 Analytical review techniques. A spending trend against a common-size share",
+   "principle_id": "relevant-reliable-sufficient",
+   "challenge_ref": "D5",
+   "testable_from": null,
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "An engagement objective asks whether a Guatemalan bus company's depot has kept spending more on maintenance each year since repairs were outsourced in 2022. Which analysis BEST answers it for internal auditor Ixchel?",
+   "options": {
+    "A": "Maintenance costs in 2026 against 2022, as a dollar and percent change",
+    "B": "Maintenance costs for each year 2022 to 2026, against 2022 as base",
+    "C": "Maintenance as a percentage of total depot costs, each year since 2022",
+    "D": "Maintenance costs in 2026 against the 2026 budget, line by line"
+   },
+   "correct": "B",
+   "key_concept": "Match the technique to the objective: a trend over several periods follows an amount over time; common-size figures follow its share of a total.",
+   "pre_read": "Ask whether the objective is about an amount, its share of a total or a plan, and over how many periods.",
+   "correct_explanation": "Horizontal (trend) analysis sets a line item for each period against a base year, and it needs several periods, as two make a trend hard to see (OpenStax, Principles of Accounting, Appendix A). Costs for every year since 2022 show whether spending rose each year (Standard 14.1). Maintenance as a percentage of total costs, the closest choice, is vertical (common-size) analysis: it tracks a share, which can fall while spending rises.",
+   "wrong_explanations": {
+    "A": "Two years give one change, not the path between them: spending could have fallen in 2024 and recovered by 2026. A trend needs the years in between.",
+    "C": "Closest choice: common-size analysis shows maintenance as a share of total costs. If other costs grew faster, that share would fall even while maintenance spending rose every year.",
+    "D": "A budget variance tests whether one year's spending met its plan. It shows nothing about the direction of spending since 2022, and budgets can rise too."
+   },
+   "tips": [
+    "Eliminate: A, because two years give one change, not the path between them, and D, because one year's budget variance tests the plan, not the direction of spending.",
+    "Final two: B beats C because the objective concerns the amount spent over time, which horizontal analysis follows; common-size analysis follows a share of total costs, which can fall while spending rises.",
+    "Exam cue: on CIA questions, match the technique to the question: change over time calls for a trend across several periods; the make-up of a total calls for common-size figures."
+   ],
+   "framework_ref": "OpenStax Principles of Accounting Volume 1 Appendix A Financial Statement Analysis; Global Internal Audit Standards (2024), Standard 14.1 Gathering Information for Analyses and Evaluation; Global Internal Audit Standards (2024), Standard 14.2 Analyses and Potential Engagement Findings",
+   "related_concepts": [
+    "Trend analysis",
+    "Common-size analysis",
+    "Relevance to the objective"
+   ],
+   "_provenance": "Authored from concept: notes 2B5.3 Choosing the Technique for the Objective. Sources opened 26 Nov 2026: OpenStax, Principles of Accounting, Volume 1, Appendix A (Knowledge source, library rule 2b, topic 2B5: horizontal analysis, also called trend analysis, compares line items across periods against a base year and is most useful over several periods, as two make a trend hard to see; vertical analysis sets each line against a base line of the same statement as common-size percentages), Global Internal Audit Standards (2024), Standard 14.1 (requirements: relevant information is consistent with the engagement objectives) and Standard 14.2 (considerations: trend analyses, comparisons with budgets and prior periods). Bullet 2B5b. The stem asks which analysis answers an objective, not for the auditor's next step, so the Knowledge fact decides the final two (an amount over time against a share of a total). New lesson: the objective's subject, an amount or its share, picks horizontal or vertical analysis, and a trend needs more than two periods. Transfer pair with cia2_d2_018, where five years of raw counts were wrong because the claim concerned quality, not volume; near cia2_d2_036 and cia2_d2_037 (ratio readings) and cia1_d1_050 (internal benchmarking). Original scenario; no IIA practice question, prep-bank text or Knowledge-source sentence used. CIA Part 2 round 5, 26 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "ciac_d4_046",
+   "domain": 4,
+   "subtopic": "4D4 Analytics and process mapping. A tagged event log whose elements vary by type",
+   "principle_id": "relevant-reliable-sufficient",
+   "challenge_ref": "D4",
+   "testable_from": null,
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Testing whether each refund over $500 at a Mauritian online retailer had a second approver, internal auditor Devika gets its event log: tags label each event's elements, which vary by type. Which handling BEST fits?",
+   "options": {
+    "A": "Query the log's elements directly, as the ledger's tables are queried",
+    "B": "Search the log's text by keyword for refunds naming no approver",
+    "C": "Parse each event's elements into fields, then select the refunds",
+    "D": "Have the refunds team list refunds and approvers, then test that list"
+   },
+   "correct": "C",
+   "key_concept": "Tagged records whose elements vary are semistructured data: parse the tags into fields before testing, as the records do not fit a fixed table.",
+   "pre_read": "Ask what shape the data has, fixed rows and columns, tagged elements or free text, and what each shape needs.",
+   "correct_explanation": "Tags that label elements varying by event type mark semistructured data: partly organized, yet not a neat table, so parsers read it (OpenStax, Foundations of Information Systems, Section 3.1). Parsing puts each event's amount and approver into fields, so Devika can test every refund over $500 (Standard 14.1). Querying it like the ledger's tables, the closest choice, treats it as structured data held in fixed rows and columns, which these events lack.",
+   "wrong_explanations": {
+    "A": "Closest choice: direct queries suit structured data in fixed rows and columns. These events carry different elements by type, so they need parsing into fields first.",
+    "B": "Keyword search suits unstructured text such as contracts. Here tags already mark each element, and a word search cannot compare amounts with $500 or tie each approver to its refund.",
+    "D": "A list prepared by the team under review is less reliable than information Devika obtains directly from the log already in hand (Standard 14.1)."
+   },
+   "tips": [
+    "Eliminate: B, because a keyword search treats tagged data as free text and cannot compare amounts, and D, because the refunds team's own list is less reliable than the log Devika holds.",
+    "Final two: C beats A because tags marking elements that vary by event type make the log semistructured; it is parsed into fields before it can be queried like a table.",
+    "Exam cue: on CIA questions, name the data type before the method: fixed tables are queried, tagged records are parsed first, and free text is searched."
+   ],
+   "framework_ref": "OpenStax Foundations of Information Systems Section 3.1 Data Types, Database Management Systems, and Tools for Managing Data; Global Internal Audit Standards (2024), Standard 14.1 Gathering Information for Analyses and Evaluation; CIA Part 2 syllabus (2025), Expanded Test Specifications V2.09.2024 FINAL",
+   "related_concepts": [
+    "Semistructured data",
+    "Structured and unstructured data",
+    "Data preparation"
+   ],
+   "_provenance": "Authored from concept: notes 2B4.4 Data Types and Analysis Methods. Sources opened 26 Nov 2026: OpenStax, Foundations of Information Systems, Section 3.1 and Table 3.1 (Knowledge source, library rule 2b, topic 2B4: structured data sit in tables of rows and columns and are easy to query; semistructured data, such as XML and JSON files, are partly organized, use tags to separate elements, do not fit neatly into tables and are read with parsers; unstructured data lack a predefined structure and need advanced techniques), Global Internal Audit Standards (2024), Standard 14.1 (requirements: relevant and reliable information, reliability strengthened when obtained directly; considerations: directly accessing systems to extract data) and the CIA Part 2 syllabus (bullet 2B4c names data types). Bullet 2B4c. The stem asks for a data-handling method, not the auditor's next step, so the Knowledge fact keys the method and decides the final two (semistructured against structured); option D falls on Standard 14.1. New lesson: semistructured data, the type between tables and free text. Transfer pair with cia2_d2_008 (unstructured contract text, where a keyword search was the key); near cia2_d2_019 and cia2_d2_034 (data preparation). Original scenario; no IIA practice question, prep-bank text or Knowledge-source sentence used. CIA Part 2 round 5, 26 Nov 2026.",
+   "style_version": 2
   }
  ]
 }
