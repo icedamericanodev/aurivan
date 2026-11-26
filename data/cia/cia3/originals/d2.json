@@ -401,14 +401,14 @@
       "id": "cia3_d2_011",
       "domain": 2,
       "subtopic": "3B1 Audit universe and engagement sources. A blockchain record of each lot's origin",
-      "principle_id": "relevant-reliable-sufficient",
+      "principle_id": "assurance-not-a-guarantee",
       "challenge_ref": "B5",
       "testable_from": null,
       "difficulty": "foundational",
       "bloom_level": "Foundational",
       "question": "An Ivorian cocoa exporter now records each lot's origin on a permissioned blockchain run jointly with its buyers. Which risk should chief audit executive Adjoua's risk assessment treat as LEAST reduced by the move?",
       "options": {
-        "A": "A lot's recorded origin quietly edited later by a single exporter clerk",
+        "A": "A lot's published origin record changed later by the exporter's own staff",
         "B": "Buyers holding conflicting versions of one lot's origin record",
         "C": "An outside party adding origin records without the network's approval",
         "D": "A lot's true origin entered wrongly when the lot is first recorded"
@@ -416,14 +416,14 @@
       "correct": "D",
       "key_concept": "A blockchain resists and exposes changes to published entries, but cannot confirm that data entered from outside matches the real event.",
       "pre_read": "Recall what a blockchain protects once data is recorded, and what it cannot check about data entering it.",
-      "correct_explanation": "NIST's blockchain overview explains that published entries resist change and show any tampering, and that a permissioned network admits only approved members. What the ledger cannot do is check whether a person or sensor entered something true about the physical lot. A wrong origin keyed in at the start is kept as faithfully as a right one, so Adjoua's assessment, kept current with system changes under Standard 9.4, still rates the entry risk.",
+      "correct_explanation": "NIST's blockchain overview explains that published entries resist change and show any tampering, and that in a permissioned network only authorized members publish blocks. What the ledger cannot do is check whether a person or sensor entered something true about the physical lot. A wrong origin keyed in at the start is kept as faithfully as a right one, so Adjoua's assessment, kept current with system changes under Standard 9.4, still rates the entry risk.",
       "wrong_explanations": {
-        "A": "Closest choice: a ledger is not strictly immutable, since its owner or consortium can replace blocks, but a published entry resists a single clerk's edit and a change would show.",
+        "A": "Closest choice: ledgers are not strictly immutable, since the owner or consortium can replace blocks, but one member's staff cannot rewrite a published entry alone unseen.",
         "B": "The members share one ledger that each of them can check, so conflicting copies of a lot's history are what the move is built to remove.",
-        "C": "A permissioned network lets only approved members write to it; anyone may write to an open, permissionless network, which is not the kind this exporter chose."
+        "C": "In a permissioned network only authorized members publish blocks, so an outsider's record cannot enter without them; on an open, permissionless network anyone may publish."
       },
       "tips": [
-        "Eliminate: B, because every member works from one shared ledger, and C, because a permissioned network lets only approved members write to it.",
+        "Eliminate: B, because every member works from one shared ledger, and C, because in a permissioned network only authorized members publish blocks.",
         "Final two: D beats A because the ledger guards entries after they are published, yet nothing in it checks that the first entry matches the real lot.",
         "Exam cue: on CIA questions about blockchain records, ask how the data reached the ledger; tamper resistance protects a record, not its truth."
       ],
@@ -433,7 +433,7 @@
         "Blockchain limits",
         "Organizationwide risk assessment"
       ],
-      "_provenance": "Authored from concept: notes 3B1.3 Trends, Organizational Change and Emerging Technologies (bullet 3B1f; the notes' Knowledge (NIST IR 8202) key term). Sources opened 26 Nov 2026: NIST IR 8202 Sections 7.1 (published entries are tamper evident and tamper resistant, not strictly immutable; an owner or consortium can replace blocks) and 7.3 (the ledger cannot tell whether entered data reflects real-world events), Section 2 and the Executive Summary (permissioned and permissionless networks), and Global Internal Audit Standards (2024), Standard 9.4 (a dynamic plan updated for changes in systems; considerations on validating key risks). Knowledge first: the source's fact decides the final two; the chief audit executive's re-rating rests on Standard 9.4. Seat: the chief audit executive re-rating a universe unit after a system change. Nearest items: cia3_d2_003 (a risk rated across units) and cia3_d2_010; no Part 1 or Part 2 item on blockchain. Original scenario; no IIA practice question, prep-bank text or NIST sentence used. CIA Part 3 round 2, 26 Nov 2026 (Knowledge sources).",
+      "_provenance": "Authored from concept: notes 3B1.3 Trends, Organizational Change and Emerging Technologies (bullet 3B1f; the notes' Knowledge (NIST IR 8202) key term). Sources opened 26 Nov 2026: NIST IR 8202 Sections 7.1 (published entries are tamper evident and tamper resistant, not strictly immutable; an owner or consortium can replace blocks) and 7.3 (the ledger cannot tell whether entered data reflects real-world events), Section 2 and the Executive Summary (permissioned and permissionless networks), and Global Internal Audit Standards (2024), Standard 9.4 (a dynamic plan updated for changes in systems; considerations on validating key risks). Knowledge first: the source's fact decides the final two; the chief audit executive's re-rating rests on Standard 9.4. Seat: the chief audit executive re-rating a universe unit after a system change. Nearest items: cia3_d2_003 (a risk rated across units) and cia3_d2_010; no Part 1 or Part 2 item on blockchain. Original scenario; no IIA practice question, prep-bank text or NIST sentence used. CIA Part 3 round 2, 26 Nov 2026 (Knowledge sources). Fix pass, 26 Nov 2026: option A no longer carries its own refutation (the exporter's own staff, not a quiet single clerk), so it is the sceptical-but-wrong option resting on 7.1; C's explanation, the key's explanation and the Eliminate tip now say permissioned networks limit who publishes blocks (Section 2.2), not who writes; principle moved to assurance-not-a-guarantee.",
       "style_version": 2
     },
     {
@@ -447,22 +447,22 @@
       "bloom_level": "Foundational",
       "question": "A Dutch grower has networked 4,000 greenhouse sensors and vent controllers; IT tells chief audit executive Sanne its tested patching and password controls cover them. Which view is BEST for Sanne's updated risk assessment?",
       "options": {
-        "A": "Not covered: many such devices cannot take updates or new passwords",
-        "B": "Covered: the patching and password controls tested clean this year",
-        "C": "Out of scope: they are facilities equipment, apart from network risk",
-        "D": "Covered: their maker built them to a published security baseline"
+        "A": "Coverage not shown: many such devices cannot take updates or new passwords",
+        "B": "Coverage shown: the patching and password controls tested clean this year",
+        "C": "Coverage not shown: new technology needs its own engagement before any rating",
+        "D": "Coverage shown: their maker built them to a published security baseline"
       },
       "correct": "A",
       "key_concept": "Connected devices often lack the update and password functions of laptops, so a clean test of those controls does not show they are covered.",
       "pre_read": "Recall what NIST says connected devices often lack compared with laptops and servers.",
-      "correct_explanation": "NIST's IoT guidance notes that connected devices often lack security functions that laptops and servers have: some cannot be updated, and some cannot protect or change their passwords. A clean test of patching and password controls therefore does not show these devices are covered, and joining them to the network changes its risk. Standard 9.4 keeps the plan current with such changes, so Sanne re-rates the network with the devices in it.",
+      "correct_explanation": "NIST's IoT guidance notes that connected devices often lack security functions that laptops and servers have: some cannot be updated, and some cannot protect or change their passwords. A clean test of patching and password controls therefore does not show these devices are covered, and joining them to the network can change its risk. Standard 9.4 keeps the plan current with such changes, so Sanne re-rates the network with the devices in it.",
       "wrong_explanations": {
         "B": "Closest choice: those controls do protect equipment able to run them, but a device that cannot take an update or a new password sits outside what they tested.",
-        "C": "Networked sensors and controllers become elements of the information system, so connecting them changes its risk, whichever team bought them or runs them.",
+        "C": "A new technology is rated in the risk assessment like any other risk; an engagement follows only if its rating warrants one, so no engagement comes before the rating.",
         "D": "NIST notes that devices meeting the requirements set for them can still add risk once joined to a system; a maker's baseline does not settle the network's exposure."
       },
       "tips": [
-        "Eliminate: C, because networked devices become part of the information system, and D, because devices meeting their own requirements can still add risk once joined to it.",
+        "Eliminate: C, because a new technology is rated like any other risk before any engagement is planned, and D, because devices meeting their own requirements can still add risk once joined.",
         "Final two: A beats B because a tested control covers only devices able to run it; many connected devices cannot take updates or password changes.",
         "Exam cue: on CIA questions about connected devices, ask whether each device can support a control before counting an existing control test as coverage."
       ],
@@ -472,7 +472,7 @@
         "Internet of things",
         "Dynamic internal audit plan"
       ],
-      "_provenance": "Authored from concept: notes 3B1.3 Trends, Organizational Change and Emerging Technologies (bullet 3B1f; the notes' Knowledge (NIST SP 800-213) line). Sources opened 26 Nov 2026: NIST SP 800-213 Section 2.3 (IoT devices often lack the cybersecurity functions of conventional IT equipment; not all allow software updates; even hiding passwords may not be achievable; devices that meet their stated requirements can still add risk once integrated) and Section 2.2 (an IoT device is a system element; integrating it may alter the system's risk assessment); NIST IR 8259 Rev. 1 Section 2.1 (a device whose default password cannot be changed defeats access control); Global Internal Audit Standards (2024), Standard 9.4 (the plan considers IT governance coverage and is updated in time for changes in systems). Knowledge first: the source's fact decides the final two; the chief audit executive's re-rating rests on Standard 9.4. Seat: the chief audit executive weighing IT's claim while updating the organizationwide risk assessment. Kept apart from the notes' example (pallet sensors at a logistics firm). Nearest items: cia2_d1_017 (an AI chatbot beside a stale cyber register, engagement level) and cia3_d2_001 (cyber risk below the cutoff); different lessons. Original scenario; no IIA practice question, prep-bank text or NIST sentence used. CIA Part 3 round 2, 26 Nov 2026 (Knowledge sources).",
+      "_provenance": "Authored from concept: notes 3B1.3 Trends, Organizational Change and Emerging Technologies (bullet 3B1f; the notes' Knowledge (NIST SP 800-213, IR 8259 Rev. 1) line). Sources opened 26 Nov 2026: NIST SP 800-213 Section 2.3 (IoT devices often lack the cybersecurity functions of conventional IT equipment; not all allow software updates; even hiding passwords may not be achievable; devices that meet their stated requirements can still add risk once integrated) and Section 2.2 (an IoT device is a system element; integrating it may alter the system's risk assessment); NIST IR 8259 Rev. 1 Section 2.1 (a device whose default password cannot be changed defeats access control); Global Internal Audit Standards (2024), Standard 9.4 (the plan considers IT governance coverage and is updated in time for changes in systems). Knowledge first: the source's fact decides the final two; the chief audit executive's re-rating rests on Standard 9.4. Seat: the chief audit executive weighing IT's claim while updating the organizationwide risk assessment. Kept apart from the notes' example (pallet sensors at a logistics firm). Nearest items: cia2_d1_017 (an AI chatbot beside a stale cyber register, engagement level) and cia3_d2_001 (cyber risk below the cutoff); different lessons. Original scenario; no IIA practice question, prep-bank text or NIST sentence used. CIA Part 3 round 2, 26 Nov 2026 (Knowledge sources). Fix pass, 26 Nov 2026: options now read as coverage shown or not shown (the stem never says these devices cannot be updated); C replaced by a second not-shown view whose reason is wrong, from the notes' exam trap (a new technology is rated like any other risk, not given an automatic engagement; Standard 9.4), so the key is no longer the only doubting option; the Eliminate tip follows. Sibling frame: cia3_d2_012 and cia3_d2_013 (management vouches for a low rating); keep apart in one mock.",
       "style_version": 2
     },
     {
@@ -489,7 +489,7 @@
         "A": "Sound: without names or IDs, the histories are no longer personal",
         "B": "Sound: the engine's outputs are offers, not records about customers",
         "C": "Unsound: AI can infer identities and private traits from such data",
-        "D": "Unsound: the AI engine's accuracy on new customers is still unmeasured"
+        "D": "Unsound: the trained model may still hold the removed names"
       },
       "correct": "C",
       "key_concept": "Removing names supports privacy, but AI can infer who people are or private facts about them, so privacy risk remains.",
@@ -498,10 +498,10 @@
       "wrong_explanations": {
         "A": "Closest choice: removing names and IDs does support privacy, but AI can still infer identities and private traits from detailed histories, so the data remains a privacy exposure.",
         "B": "An offer aimed at an inferred trait can itself reveal private facts about a customer, so the outputs carry privacy risk as well as the data.",
-        "D": "Accuracy bears on whether the engine works, a separate validity question; it is no reason to doubt a rating of privacy risk."
+        "D": "The names were stripped before training, so the model never held them; the exposure that remains is what AI can infer from the histories themselves."
       },
       "tips": [
-        "Eliminate: B, because an offer aimed at an inferred trait can reveal private facts, and D, because accuracy concerns validity, not the privacy rating at issue.",
+        "Eliminate: B, because an offer aimed at an inferred trait can reveal private facts, and D, because names stripped before training never reached the model.",
         "Final two: C beats A because removing names helps but does not stop AI inferring who customers are or what they keep private.",
         "Exam cue: on CIA questions about AI and personal data, de-identification supports privacy but does not settle it, because AI can infer identity."
       ],
@@ -511,7 +511,7 @@
         "AI privacy risk",
         "Validating key risks"
       ],
-      "_provenance": "Authored from concept: notes 3B1.3 Trends, Organizational Change and Emerging Technologies (bullet 3B1f; the notes' Knowledge (NIST AI RMF 3.6) line). Sources opened 26 Nov 2026: NIST AI 100-1 Section 3.6 (de-identification and aggregation can support privacy-enhanced AI; AI can present new privacy risks by allowing inference to identify individuals or previously private information) and Appendix B (privacy risk from AI's data aggregation capability); Global Internal Audit Standards (2024), Standard 9.4 (considerations: validate key risks independently; rely on management's risk information only where its processes are effective). Knowledge first: the source's fact decides the final two; the options are views of the rating, not steps, and the chief audit executive's independent validation rests on Standard 9.4. Seat: the chief audit executive rating a new technology's risk in the organizationwide risk assessment. Kept apart from the pilot cut (a new AI tool between risk assessments: when to assess), cia2_d2_031 (model drift, engagement level), cia2_d1_031 (privacy apart from security) and cia1_d3_058 (reliance on a register that omits a venture). Original scenario; no IIA practice question, prep-bank text or NIST sentence used. CIA Part 3 round 2, 26 Nov 2026 (Knowledge sources).",
+      "_provenance": "Authored from concept: notes 3B1.3 Trends, Organizational Change and Emerging Technologies (bullet 3B1f; the notes' Knowledge (NIST AI RMF 3.6) line). Sources opened 26 Nov 2026: NIST AI 100-1 Section 3.6 (de-identification and aggregation can support privacy-enhanced AI; AI can present new privacy risks by allowing inference to identify individuals or previously private information) and Appendix B (privacy risk from AI's data aggregation capability); Global Internal Audit Standards (2024), Standard 9.4 (considerations: validate key risks independently; rely on management's risk information only where its processes are effective). Knowledge first: the source's fact decides the final two; the options are views of the rating, not steps, and the chief audit executive's independent validation rests on Standard 9.4. Seat: the chief audit executive rating a new technology's risk in the organizationwide risk assessment. Kept apart from the pilot cut (a new AI tool between risk assessments: when to assess), cia2_d2_031 (model drift, engagement level), cia2_d1_031 (privacy apart from security) and cia1_d3_058 (reliance on a register that omits a venture). Original scenario; no IIA practice question, prep-bank text or NIST sentence used. CIA Part 3 round 2, 26 Nov 2026 (Knowledge sources). Fix pass, 26 Nov 2026: option D's off-topic accuracy reason replaced by a privacy reason the stem rules out (names stripped before training), so a second unsound view now competes; the Eliminate tip follows. Sibling frame: cia3_d2_012 and cia3_d2_013 (management vouches for a low rating); keep apart in one mock.",
       "style_version": 2
     }
   ]
