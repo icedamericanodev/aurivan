@@ -1186,7 +1186,7 @@
    "testable_from": null,
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "Internal auditor Eleni wants to pick claims using a Greek insurer's machine learning fraud model, validated in 2024. Claim forms have changed since; its owners say its code has not. What should Eleni do FIRST?",
+   "question": "Internal auditor Eleni will pick claims with a Greek insurer's machine learning fraud model, validated in 2024; claim forms have changed since, and its owners say its code has not. What should Eleni do FIRST?",
    "options": {
     "A": "Check the change log shows its code is still the 2024 version",
     "B": "Pick claims at random instead, setting the model's scores aside",
@@ -1195,8 +1195,8 @@
    },
    "correct": "C",
    "key_concept": "A learning model's results depend on its data; when the data it sees has changed, revalidate it on current cases before relying on it.",
-   "pre_read": "Ask what could make an unchanged model stop working: for ordinary software, a code change; for a machine learning model, a change in its data too.",
-   "correct_explanation": "NIST's AI framework warns that a model's results can drift when its current data no longer matches the data it was validated on, even with no code change. New claim forms are such a change, so the 2024 validation is not current evidence. Standard 14.1 needs reliable, current information, so Eleni first tests the scores on recent claims of known outcome. Checking the change log, the closest choice, suffices only for ordinary software.",
+   "pre_read": "Ask what could make an unchanged model stop working: for ordinary software, a code change; for a learning model, a data change too.",
+   "correct_explanation": "NIST's AI framework warns that a model's results can drift when the data it now meets no longer matches the data it was built on, even with no code change. New claim forms are such a change, so the 2024 validation is not current evidence. Standard 14.1 needs reliable, current information, so Eleni first tests the scores on recent claims of known outcome. Checking the change log, the closest choice, suffices only for ordinary software.",
    "wrong_explanations": {
     "A": "Closest choice: unchanged code keeps ordinary software reliable. A learning model can drift when its data changes, so a code check cannot show the scores still work.",
     "B": "Setting the model aside fits when it cannot be checked. Here it can be tested on known cases first, and it may still direct the work well.",
@@ -1235,7 +1235,7 @@
    "correct": "D",
    "key_concept": "Automated monitoring covers checks that need little human judgment; a manager's review of whether access fits a job still needs its own test.",
    "pre_read": "Ask what the tool can decide by itself and what still takes a person's judgment, then match the evidence to the control being tested.",
-   "correct_explanation": "NIST's continuous monitoring guide says automation suits checks needing little human involvement, such as technical settings, and that not all monitoring can be automated. Whether a user's access fits the job is a manager's judgment the tool does not make, even for privileged accounts. Standard 14.1 needs relevant evidence, so Awa inspects a sample of reviews and what they changed. Relying on the tool for privileged accounts, the closest choice, tests a flag, not the judgment.",
+   "correct_explanation": "NIST's continuous monitoring guide says automation suits checks needing little human involvement, and that not all monitoring can be automated. Whether a user's access fits the job is a manager's judgment the tool does not make, even for privileged accounts. Standard 14.1 needs relevant evidence, so Awa inspects a sample of reviews and what they changed. Relying on the tool for privileged accounts, the closest choice, tests a flag, not the judgment.",
    "wrong_explanations": {
     "A": "The daily flags show which accounts are dormant or privileged, not whether managers judged each user's access against the job. They are evidence about a different control.",
     "B": "Changing the tool is management's design choice and a possible recommendation, not a test of the reviews. Judging whether access fits a job also needs a person.",
@@ -1269,19 +1269,19 @@
     "A": "As this year's process design, confirmed by walking calls through it",
     "B": "As this year's criteria, since the billing manager approved it",
     "C": "As a planned change only; map this year's process by walk-through",
-    "D": "As this year's process, once the billing manager signs it as current"
+    "D": "As background; take this year's process from the billing policy"
    },
    "correct": "C",
    "key_concept": "A To-Be map shows a planned future process; the condition comes from how the process ran in the period, and criteria from rules in force.",
    "pre_read": "Ask which state a process map shows, current or future, and which period the engagement tests, before using any map as condition or criteria.",
-   "correct_explanation": "An As-Is map records how a process works now; a To-Be map sets out the future state a redesign aims for (OpenStax, Foundations of Information Systems). So this map shows neither how billing ran this year nor the rules billing had to follow. Standard 14.2 takes the condition from evidence, so Amel maps this year's process by walk-through. Confirming the map by walk-through, the closest choice, would test calls against a design not yet in use.",
+   "correct_explanation": "An As-Is map records how a process works now; a To-Be map sets out the future state a redesign aims for (OpenStax, Foundations of Information Systems). So this map shows neither how billing ran this year nor the rules billing had to follow. Standard 14.2 takes the condition from evidence, so Amel maps this year's process by walk-through. Confirming the map by walk-through, the closest choice, would test the wrong design.",
    "wrong_explanations": {
     "A": "Closest choice: walking items through a map suits an As-Is map of the current process. A To-Be map shows a planned future state, so it is not this year's design.",
     "B": "Criteria are chosen for the activity and period the scope sets (Standards 13.3 and 13.4). A design approved for the future did not bind this year's billing.",
-    "D": "A manager's signature does not turn a planned design into this year's process. The condition comes from evidence of how calls were billed (Standard 14.2)."
+    "D": "A policy states how billing should run, which makes it a source of criteria. The condition comes from evidence of how calls were actually billed (Standard 14.2)."
    },
    "tips": [
-    "Eliminate: B, because a design approved for the future did not bind this year's billing, and D, because a manager's signature does not make a planned map the current process.",
+    "Eliminate: B, because a design approved for the future did not bind this year's billing, and D, because a policy states how billing should run, not how it ran.",
     "Final two: C beats A because a To-Be map shows a planned future state, not how billing ran this year; the condition comes from walking this year's calls (Standard 14.2).",
     "Exam cue: on CIA questions, check what a document describes, current or planned, and which period it covers before using it as the condition or the criteria."
    ],
@@ -1291,7 +1291,7 @@
     "Condition and criteria",
     "Walk-throughs"
    ],
-   "_provenance": "Authored from concept: notes 2B4.1 Workflow Segments and Process Maps. Sources opened 26 Nov 2026: OpenStax, Foundations of Information Systems, Section 4.2 (Knowledge source, library rule 2b, topic 2B4: an As-Is process map shows the current state of a process and a To-Be map the future state to be reached; design diagrams can mislead when drawn wrongly), Global Internal Audit Standards (2024), Standard 14.2 (requirements: the condition is determined from information and evidence gathered during the engagement), Standard 13.4 (requirements: the most relevant criteria for the aspects defined in the objectives and scope) and Standard 13.3 (requirements: the scope sets the time period). Bullet 2B4b, its first analysis item: three facts weighed (what the map shows, the period tested, who approved it); the runner-up is right for an As-Is map alone. The Knowledge fact decides the final two. New lesson: a To-Be map is neither the condition nor this period's criteria. Near cia2_d2_006 (a walk-through that contradicts management's current map: its key rule is this item's runner-up) and cia1_d1_104 (a map offered as grounds for reliance); keep apart from cia2_d2_006 in one mock. Original scenario; no IIA practice question, prep-bank text or Knowledge-source sentence used. CIA Part 2 round 4, 26 Nov 2026 (Knowledge sources).",
+   "_provenance": "Authored from concept: notes 2B4.1 Workflow Segments and Process Maps. Sources opened 26 Nov 2026: OpenStax, Foundations of Information Systems, Section 4.2 (Knowledge source, library rule 2b, topic 2B4: an As-Is process map shows the current state of a process and a To-Be map the future state to be reached; design diagrams can mislead when drawn wrongly), Global Internal Audit Standards (2024), Standard 14.2 (requirements: the condition is determined from information and evidence gathered during the engagement), Standard 13.4 (requirements: the most relevant criteria for the aspects defined in the objectives and scope) and Standard 13.3 (requirements: the scope sets the time period). Bullet 2B4b, its first analysis item: three facts weighed (what the map shows, the period tested, who approved it); the runner-up is right for an As-Is map alone. The Knowledge fact decides the final two. New lesson: a To-Be map is neither the condition nor this period's criteria. Near cia2_d2_006 (a walk-through that contradicts management's current map: its key rule is this item's runner-up; its option D, a policy as the condition, is this item's D too) and cia1_d1_104 (a map offered as grounds for reliance); keep apart from cia2_d2_006 in one mock. Original scenario; no IIA practice question, prep-bank text or Knowledge-source sentence used. CIA Part 2 round 4, 26 Nov 2026 (Knowledge sources).",
    "style_version": 2
   },
   {
@@ -1391,14 +1391,14 @@
    "correct": "B",
    "key_concept": "The quick ratio leaves inventory and prepaid costs out of current assets, so a falling quick ratio beside a steady current ratio points to them.",
    "pre_read": "Ask what each ratio includes, and what must have changed for one to fall while the other holds steady.",
-   "correct_explanation": "The current ratio sets all current assets against current liabilities; the quick ratio leaves out inventory and prepaid costs, which take longer to turn into cash (OpenStax, Principles of Accounting, Appendix A). One steady and the other falling means those items now make up more of current assets. Under Standard 14.2, such a shift needs more analysis before any finding, so Marek tests why stock or prepayments built up. Receivables, the closest choice, count in both ratios.",
+   "correct_explanation": "The current ratio sets all current assets against current liabilities; the quick ratio leaves out inventory and prepaid costs, which take longer to turn into cash (OpenStax, Principles of Accounting, Appendix A). One steady and the other falling means those items now make up more of current assets. Marek tests why stock or prepayments built up, analyzing further before any finding (Standard 14.2). Receivables, the closest choice, count in both ratios.",
    "wrong_explanations": {
-    "A": "A steady current ratio can hide a shift inside current assets. The falling quick ratio shows more of them are now slow to turn into cash.",
+    "A": "A steady current ratio does not show a shift inside current assets. The falling quick ratio shows more of them are now slow to turn into cash.",
     "C": "Closest choice: receivables are quick assets, counted in both ratios. Slower collection alone would not lower the quick ratio while the current ratio held steady.",
     "D": "A current ratio of 2.0 means current assets still cover short-term debts twice. A ratio's move is a lead for more analysis, not a finding (Standard 14.2)."
    },
    "tips": [
-    "Eliminate: A, because a steady current ratio can hide a shift inside current assets, and D, because assets still cover short-term debts twice, and a ratio's move is not yet a finding.",
+    "Eliminate: A, because a steady current ratio does not show a shift inside current assets, and D, because assets still cover short-term debts twice, and a ratio's move is not yet a finding.",
     "Final two: B beats C because the quick ratio leaves out only inventory and prepaid costs; receivables sit in both ratios, so slower collection cannot explain the gap.",
     "Exam cue: on CIA questions, read related ratios together: when they move apart, ask what one includes that the other leaves out, then follow up that item."
    ],
@@ -1424,20 +1424,20 @@
    "options": {
     "A": "Sales growth explains it, as the credit manager says",
     "B": "Customers now pay faster, so less cash is tied up",
-    "C": "Collection slowed well beyond what sales growth explains",
-    "D": "Collection slowed, so report it as a finding on credit control"
+    "C": "Receivables grew far faster than sales; the cause needs testing",
+    "D": "Customers pay more slowly; report it as a finding on credit control"
    },
    "correct": "C",
-   "key_concept": "Receivables turnover sets sales against average receivables, so sales growth alone does not lower it; a sharp fall means collection has slowed.",
+   "key_concept": "Receivables turnover sets sales against average receivables, so sales growth alone does not lower it; a sharp fall means receivables outgrew sales.",
    "pre_read": "Ask what the ratio compares, and whether the explanation offered would move it that far in that direction.",
-   "correct_explanation": "Receivables turnover sets credit sales against average receivables, and a lower figure means cash is collected more slowly (OpenStax, Principles of Accounting, Appendix A). Sales up 5% cannot take it from 9 to 5: receivables must have grown far faster than sales. Under Standard 4.3, Farah does not accept the credit manager's explanation, the closest choice, and Standard 14.2 calls for more analysis before any finding.",
+   "correct_explanation": "Receivables turnover sets credit sales against average receivables, and a lower figure means cash comes in more slowly relative to sales (OpenStax, Principles of Accounting, Appendix A). Sales up 5% cannot take it from 9 to 5: receivables must have grown far faster than sales. Under Standard 4.3, Farah does not accept the credit manager's explanation, the closest choice, and tests the cause before any finding (Standard 14.2).",
    "wrong_explanations": {
     "A": "Closest choice: growing sales raise receivables, but the turnover already divides sales by receivables. Growth alone leaves it roughly flat, so the explanation does not fit (Standard 4.3).",
     "B": "A lower turnover means receivables are collected fewer times a year, so cash comes in more slowly, not faster.",
-    "D": "The reading is right, but a slowdown is a lead for more work on its cause and effect, not yet a finding (Standard 14.2)."
+    "D": "Slower payment may well be the cause, but a ratio's fall is a lead for more work on cause and effect, not yet a finding (Standard 14.2)."
    },
    "tips": [
-    "Eliminate: B, because a lower turnover means slower collection, not faster, and D, because a slowdown is a lead for more work, not yet a finding.",
+    "Eliminate: B, because a lower turnover means slower collection, not faster, and D, because a ratio's fall is a lead for more work, not yet a finding.",
     "Final two: C beats A because the turnover already sets sales against receivables, so 5% growth cannot explain a fall from 9 to 5; test the explanation, do not accept it.",
     "Exam cue: on CIA questions, test a manager's explanation against what the ratio compares: an explanation that would not move the ratio that far needs corroboration."
    ],
