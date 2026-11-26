@@ -14,8 +14,8 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 |---|---|
 | **Status (20 Nov 2026)** | Session G, steps 1 to 3 done: expert decisions, the documents, the harness (187 planted faults stopped, 43 controls hold; an independent code review's findings are all fixed), the expert agents, the **Part 1 study notes for all four sections** (93 sub-topics, audited and learner-read), and the **Part 1 pilot: 80 questions, 20 per section**, through the full pipeline (scorecard in section 7; calibration rules in section 6b). With them: the 20 shared principles, the Part 1 exam guide and final review week, and a first generated Challenge pack from the tagged items. The **glossary start** is written and audited (153 Part 1 terms in `data/cia/shared/glossary.json`; it reuses the notes' wording, and `check_glossary.py` fails if a term is ever defined two ways). The outline of the CISA bridge is in `docs/content/CIA_CISA_BRIDGE_OUTLINE.md`. Session G is complete. |
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
-| **Rounds 1 to 15, the Part 2 pilot and Part 2 rounds 1 to 4 done (26 Nov 2026)** | Part 1 stands at **348 questions (A 116, B 85, C 105, D 42)** and meets the revised sale gate's counts (section 3, decision 4). **Part 2 stands at 85 questions (A 37, B 37, C 11)**, every key confirmed by blind tests and Standards audits. **Part 2's gate (owner, 26 Nov 2026) is about A 67, B 53, C 13**: 30, 16 and 2 short. **Round 4 (26 Nov 2026) was the first keyed on free public Knowledge sources** (K1 to K18): 14 kept of 14, four bullets brought to depth (2A3e, 2A3f, 2A4a, 2B4b); 52 of 60 bullets meet their depth, 7 have no item and only 2A7c is below depth. The IIA sources alone are close to exhausted for Part 2 (round 3's finding), and the Knowledge sources open only 2A3, 2A4, 2A6e (IT), 2B3, 2B4 and 2B5, so Section A's gap needs Standards-only lessons or a new source as well. **Part 3's study notes are done** (63 sub-topics, audited and learner-read) and **its bank holds 60 questions (A 17, B 10, C 14, D 19)** after the pilot and round 1, every key confirmed by blind tests and Standards audits. **The opened sources are close to exhausted for Part 3 too**: round 1's authors found few distinct Section D lessons left, and most new leads repeated Part 1 or Part 2 items. The Topical Requirements Application Guidance is Background only (Part 2 round 1). |
-| **Next step** | Owner decisions of 26 Nov 2026 (section 9): Part 2's gate is about A 67, B 53, C 13; **write our own questions from free public sources** for the knowledge bullets (the textbook is on hold); and one expert agent per section. **Done 26 Nov 2026:** eleven section experts, and 18 public Knowledge sources opened and listed (NIST, SEC Regulation S-X, the Prompt Payment rule, the Scrum Guide, four OpenStax books; research log K1 to K18). **Still unsupported** (research log): test methods outside IT and following up differences (ISA 500 and 520 sit on a host not yet allowed), embedded audit modules and RPA, IT general against application controls, GRC systems, integrated and remote approaches, anomaly detection. **Done 26 Nov 2026: Part 2 round 4** on those bullets (14 kept of 14; scorecard in section 7). **Next**: **Part 2 round 5** with `cia-p2a-section-expert` and `cia-p2b-section-expert` on the leads in `CIA_P2_COVERAGE.md` section 6 ("Leads the Knowledge sources open for round 5"), top three first: R5-1 2A3f (ordering, receiving and paying separated in an ERP: K15 8.3, K2 AC-5), R5-2 2A4b (a work breakdown structure: K16 9.2), R5-3 2B5b (trend over several periods against a two-year comparison: K15 Appendix A); then R5-4 to R5-10, and Standards-only lessons for 2A7c (the one bullet below depth), 2A5, 2A7, 2B7, 2B8 and Section C (2 items to the gate), mixing Standards and Knowledge distinctions in the final twos. Write each deciding fact into the notes as a "Knowledge (source)" line with its item. **Then Part 3 with its section experts** (`cia-p3a-section-expert` to `cia-p3d-section-expert`; 3B1f on K9 to K13), and Part 1's Section C. Owner decision that would open more of Part 2: allowing `ifacweb.blob.core.windows.net` for ISA 500 and 520 (2A6e outside IT, 2B5b). App work before the packs go in (section 11: the lessons' "IS auditor's lens" heading and the welcome headline are still CISA wording; the held-back form and per-learner short mock). The licence question still gates any publication or sale. |
+| **Rounds 1 to 15, the Part 2 pilot and Part 2 rounds 1 to 5 done (26 Nov 2026)** | Part 1 stands at **348 questions (A 116, B 85, C 105, D 42)** and meets the revised sale gate's counts (section 3, decision 4). **Part 2 stands at 92 questions (A 42, B 39, C 11)**, every key confirmed by blind tests and Standards audits. **Part 2's gate (owner, 26 Nov 2026) is about A 67, B 53, C 13**: 25, 14 and 2 short. **Rounds 4 and 5 (26 Nov 2026) were keyed on free public Knowledge sources** (K1 to K18): round 4 kept 14 of 14 and brought four bullets to depth; round 5 kept 7 of 7, all second or later lessons (2A3f, 2A4b, 2B4c and 2B5b now have two items each), and left three of its ten leads empty. 52 of 60 bullets meet their depth, 7 have no item and only 2A7c is below depth. **Part 2's Knowledge-source leads are now close to spent** (three thin leads left, `CIA_P2_COVERAGE.md` section 6), and the IIA sources alone were close to exhausted after round 3: the rest of Part 2's gap needs Standards-only lessons, ISA 500 and 520 (an owner decision on their file host) or the 2027 Topical Requirement dates. **Part 3's study notes are done** (63 sub-topics, audited and learner-read) and **its bank holds 60 questions (A 17, B 10, C 14, D 19)** after the pilot and round 1, every key confirmed by blind tests and Standards audits. **The opened sources are close to exhausted for Part 3 too**: round 1's authors found few distinct Section D lessons left, and most new leads repeated Part 1 or Part 2 items. The Topical Requirements Application Guidance is Background only (Part 2 round 1). |
+| **Next step** | Owner decisions of 26 Nov 2026 (section 9): Part 2's gate is about A 67, B 53, C 13; **write our own questions from free public sources** for the knowledge bullets (the textbook is on hold); and one expert agent per section. **Done 26 Nov 2026:** eleven section experts, and 18 public Knowledge sources opened and listed (NIST, SEC Regulation S-X, the Prompt Payment rule, the Scrum Guide, four OpenStax books; research log K1 to K18). **Still unsupported** (research log): test methods outside IT and following up differences (ISA 500 and 520 sit on a host not yet allowed), embedded audit modules and RPA, IT general against application controls, GRC systems, integrated and remote approaches, anomaly detection. **Done 26 Nov 2026: Part 2 rounds 4 and 5** on those bullets (14 kept of 14, then 7 of 7; scorecards in section 7). **Next**: **Part 3 with its section experts** (`cia-p3a-section-expert` to `cia-p3d-section-expert`), 3B1f on the NIST emerging-technology sources (K9 to K13) first, then Part 1's Section C. Part 2 round 6 is worth less for now: its three leads are thin (`CIA_P2_COVERAGE.md` section 6, "Leads for round 6": R6-1 2B3a, a model against a simple test, decided by Standard 4.2; R6-2 2A4b on the Scrum Guide; R6-3 2A6e coverage on K7, only if the source states it), so fold them into a later Part 2 round with Standards-only lessons for 2A7c, 2A5, 2A7, 2B7, 2B8 and Section C (2 items to the gate). Owner decision that would open more of Part 2: allowing `ifacweb.blob.core.windows.net` for ISA 500 and 520 (2A6e outside IT, 2B5a and 2B5b). Third-Party requirement items (2A1a, 2A3a, 2A3f, 2A5a) can be written ahead with `testable_from` 2027-03-01, counting toward the gate from that date. App work before the packs go in (section 11: the lessons' "IS auditor's lens" heading and the welcome headline are still CISA wording; the held-back form and per-learner short mock). The licence question still gates any publication or sale. |
 | **Then** | Part 2, Part 3, the Challenge build and the CISA bridge notes (from the outline), the cross-part release gate. |
 | **Known weak spot** | Difficulty. No pilot key was wrong and all four blind rounds agreed 80 of 80, but the last testers still called 21 of 80 answerable by test-taking alone, most in Sections B and D, and 8 items carry a TOO EASY or GIVEAWAY flag (section 7). New rounds must do better; the pilot items are candidates for a later hardening pass, not for more polishing now (section 6b, rule 12). |
 
@@ -44,7 +44,7 @@ pack. Every surface CISA has, as data that passes its gate.
 |---|---|---|---|---|---|---|
 | Blueprint and outline | `docs/content/CIA_BLUEPRINT.md`, `data/cia/shared/outline.json` | cert-blueprint-researcher | Done | Done | Done | Done |
 | Study notes | `notes/d{N}.json`, one file per section, notes schema v2 | part expert | Done: 93 sub-topics, audited (section 8b) | Done: 57 sub-topics in 17 topics, audited and learner-read (round 15, section 7) | Done: 63 sub-topics in 18 topics, audited and learner-read (25 Nov 2026, section 7) | Generated later, plus the bridge |
-| Questions | `originals/d{N}.json` | part expert | Pilot and rounds 1 to 15 done: 348 (A 116, B 85, C 105, D 42; section 7); meets the revised sale gate's counts; every syllabus bullet covered (`CIA_P1_COVERAGE.md`) | Pilot and rounds 1 to 4 done: 85 (A 37, B 37, C 11; section 7); the owner's gate is about A 67, B 53, C 13; round 4 keyed on free public Knowledge sources, and the IIA sources alone are close to exhausted (`CIA_P2_COVERAGE.md`) | Pilot and round 1 done: 60 (A 17, B 10, C 14, D 19; section 7; `CIA_P3_COVERAGE.md`) | Generated (`build_challenge.py`) from the tagged pilot items |
+| Questions | `originals/d{N}.json` | part expert | Pilot and rounds 1 to 15 done: 348 (A 116, B 85, C 105, D 42; section 7); meets the revised sale gate's counts; every syllabus bullet covered (`CIA_P1_COVERAGE.md`) | Pilot and rounds 1 to 5 done: 92 (A 42, B 39, C 11; section 7); the owner's gate is about A 67, B 53, C 13 (25, 14 and 2 short); rounds 4 and 5 keyed on free public Knowledge sources, whose leads are now close to spent, as the IIA sources alone were after round 3 (`CIA_P2_COVERAGE.md`) | Pilot and round 1 done: 60 (A 17, B 10, C 14, D 19; section 7; `CIA_P3_COVERAGE.md`) | Generated (`build_challenge.py`) from the tagged pilot items |
 | Citation library | `data/cia/shared/_framework_library.md` (one for all four) | part experts, cia-currency-checker | Started | | | |
 | Dated facts | `data/cia/shared/currency.json` | cia-currency-checker | Started | | | |
 | Glossary | `glossary.json`, built from `data/cia/shared/glossary.json` | iia-mindset-coach, part experts | Started: 153 terms, audited (section 7) | Later | Later | Built from the shared terms of its topics |
@@ -419,6 +419,7 @@ in a row below 90%: stop and tell the owner.
 | Part 2 round 2 | 25 Nov 2026 | cia2, the coverage map's gaps in all three sections | 11 kept of 13 written (A 4 of 4, B 6 of 8, C 1 of 1); 8 planned slots left empty (A 6, B 1, C 1 group) | 13 of 13 first round, but 5 of 9 in B and C classed answerable by test-taking and all 4 in A answerable from the options alone; 13 of 13 in fresh blind tests after one fix pass, then 2 cut | 0 / 51 / 16 on 13 (two audits), plus 0 / 17 / 6 from the targeted audits and 0 / 2 / 4 from the currency check | A 17.3%, B 14.8%, C 22.7% | 2 cut before merge, both still answerable from wording after one fix pass (a process map that stopped before payment; an access matrix whose stem pointed at the key) | None new (the Standards, the reference list and the Cybersecurity requirement re-downloaded, unchanged) |
 | Part 2 round 3 | 25 Nov 2026 | cia2, the coverage map's gaps (Sections A and B; Section C had no new lead) | 7 kept of 10 written (A 4 of 6, B 3 of 4); 12 of 22 planned slots left empty | 9 of 10 first round (one ambiguous stem), 1 classed test-taking; after one fix pass, 8 of 9 (the ambiguous item disputed again) and one still test-taking; both cut | 1 / 19 / 10 on 10 (two audits), plus 1 / 7 / 8 from the targeted audits and 0 / 0 / 3 from the currency check | A 18.3%, B 16.7%, C 22.7% | 3 cut before merge: a 2A4a repeat of two Section B lessons, a 2A7c item two blind testers keyed differently after its fix pass, and a 2B2b item answerable from wording | None new (re-downloaded sources unchanged) |
 | Part 2 round 4 | 26 Nov 2026 | cia2, the knowledge bullets the new Knowledge sources open (Sections A and B), written by `cia-p2a-section-expert` and `cia-p2b-section-expert` | 14 kept of 14 written (A 7 of 7, B 7 of 7); 7 slots left empty for want of a source | 14 of 14 first round, 4 classed test-taking, but the options-only pass picked all 14 keys (5 with high confidence); after one fix pass, 14 of 14 in fresh blind tests (1 classed test-taking), options-only 7 of 7 in A (4 low, 3 medium confidence) and 6 of 7 in B (5 medium, 1 low) | 0 / 38 / 10 on 14 (two audits: A 0 / 18 / 6, B 0 / 20 / 4), plus 0 / 5 / 6 from the re-audit of all 14 | A 17.6%, B 17.6%, C 22.7% | 0 (`cia2_d2_032` was classed test-taking by one of three reviews only) | K1 to K18: 18 free public Knowledge sources (NIST, SEC Regulation S-X, the Prompt Payment rule, the Scrum Guide, four OpenStax books; research log; library rule 2b) |
+| Part 2 round 5 | 26 Nov 2026 | cia2, second and later lessons on the knowledge bullets (Sections A and B), from leads R5-1 to R5-10, written by `cia-p2a-section-expert` and `cia-p2b-section-expert` to a brief with an options-only self-check | 7 kept of 7 written (A 5 of 5, B 2 of 2); 3 of 10 leads left empty | 7 of 7 first round, all classed partly (none test-taking); options-only 7 of 7, 5 at low and 2 at medium confidence, none high; after one fix pass, 7 of 7 in fresh blind tests (needs the Standards 2, partly 5, test-taking 0; `cia2_d1_040` TOO EASY), options-only 7 of 7 again (5 low, 2 medium) | 1 / 8 / 15 on 7 (one audit of both sections), plus 0 / 1 / 5 from the re-audit of all 7 | A 17.9%, B 16.7%, C 22.7% | 0 | None new (K1, K2, K5, K15 and K16 reused) |
 | Part 3 notes | 25 Nov 2026 | cia3 study notes, all four sections | 63 sub-topics | Not applicable (notes) | A 0 / 11 / 8, B and C 2 / 19 / 6, D 0 / 10 / 10 | Not applicable | None | None new (opened copies reused; The IIA's AI Auditing Framework used as guidance only) |
 | Part 3 pilot | 25 Nov 2026 | cia3, all four sections | 45 kept of 53 written (A 12 of 15, B 9 of 10, C 10 of 10, D 14 of 18) | 53 of 53 first round, 7 classed answerable by test-taking; after one fix pass 45 of 45 kept items confirmed, the rest cut | A 2 / 12 / 8, B and C 0 / 16 / 10, D 0 / 42 / 12 (first audits); targeted audits 0 HARD; currency check 0 / 4 / 5 | A 16.7%, B 22.2%, C 20%, D 21.4% | 8 cut before merge: 6 still answerable from wording after one fix pass, 2 repeats (of a Section A item, and of its own pair) | The IIA's AI Auditing Framework, 2024 update (Background only) |
 | Part 3 round 1 | 25 Nov 2026 | cia3, the coverage map's gaps in all four sections | 15 kept of 20 written (A 5 of 6, B 1 of 1, C 4 of 5, D 5 of 8); about 14 planned slots left empty | 20 of 20 first round, none classed test-taking, but the options alone found most keys in Sections A to C; after one fix pass, 17 of 17 and 2 still answerable from the options, cut | 0 / 76 / 15 on 20 (two audits), targeted fixes, currency check 0 / 1 / 2 | A 20.6%, C 21.4%, D 21.1% | 5 cut before merge: 3 repeats of Part 1 or Part 2 lessons (Section D), 2 still answerable from the options after one fix pass | None new |
@@ -1089,6 +1090,89 @@ What the Part 3 notes taught.
   had drifted on 16 terms; a script found them in seconds.
 - **A shared fix brief keeps parallel authors in one voice.** Decisions on who approves,
   labels and pointers were set once and applied by all three.
+
+**Part 2 round 5, in full.** The second round on the Knowledge sources, written from leads
+R5-1 to R5-10 (`CIA_P2_COVERAGE.md` section 6) to a brief that turned round 4's lessons into
+a self-check before hand-over: read the four options with the stem covered and rewrite a
+wrong option into the key's register if one stands out; keep the stem neutral; cite the
+Standard first where the auditor's step decides; no cut-down key as runner-up and no
+distractor family shared within the round; and write the notes' "Knowledge (source)" line
+with the item. `cia-p2a-section-expert` wrote `cia2_d1_038` to `042`: 2A3f a payment
+approval that rests on order and delivery records the same buyer made, so ordering is not
+separated from receiving (R5-1, analysis); 2A3d a recovery time objective longer than the
+process's maximum tolerable downtime (R5-6); 2A3e cash an owner paid for ordinary shares
+booked as a loan (R5-7); 2A3c developers releasing their own unapproved code (R5-8); and
+2A4b breaking each objective's work into tasks before setting end dates (R5-2).
+`cia-p2b-section-expert` wrote `cia2_d2_038` and `039`: 2B5b trend (horizontal) analysis
+over several years against a two-year change and a common-size share (R5-3, analysis), and
+2B4c a tagged event log as semistructured data, parsed before the test (R5-4). Left empty:
+R5-10 (2A3b: each draft key was common sense or repeated `cia2_d1_004` or `cia2_d1_005`),
+R5-9 (2B4a: every key was the widest span of the workflow, the visibly complete map or a
+span chosen by the objective's scope, which test-taking finds) and R5-5 (2B4d: problem
+definition first stood alone as the only option that was not a preparation step, and the
+bullet already holds two items). Each item's `_provenance` and the files' `_meta` record the
+sources and the fixes.
+
+Standards audit (one audit of both sections): 1 HARD ERROR, 8 PRECISION, 15 OBSERVATION. The
+HARD ERROR: `d1_042`'s stem asks for the first step, but OpenStax was cited first and led
+the explanation; Standards 13.6 and 13.5 now come first and carry the step, and OpenStax 9.2
+keeps only the order a schedule is built in. The PRECISION findings: a runner-up that was a
+cut-down of the key (`d1_038`, payments up to the approval threshold; now payment splitting
+to dodge it); a stem whose "their" could mean the auditor's own system (`d1_039`); a wrong
+option from the family of sibling `d1_032` (`d1_039`, a misranking business impact analysis;
+now a plan with no recovery lead); a redeemable-share reading the stem left open (`d1_040`;
+the stem now says ordinary shares); two notes lines that credited a source with more than it
+states (2A3.2's change control line, 2A3.4's capital row); a wrong explanation saying
+semistructured data cannot be queried until parsed (`d2_039`; the source also lists NoSQL
+tools); and a management-prepared list at D for the fourth time in Section B (`d2_039`; now
+anomaly detection on amounts, off the objective). The OBSERVATIONs included keys bunched on C
+(`d1_042`'s key moved from C to A), four of five Section A stems in one frame, `d1_039`
+copying `d1_032`'s opening, `d1_040` sharing `d1_033`'s beverage-maker covenant setting (now a
+fishing company), and all seven final twos decided by a Knowledge fact. First blind tests: 7
+of 7, all classed partly; options-only 7 of 7, 5 at low and 2 at medium confidence. One fix
+pass per section. Fresh blind tests: 7 of 7, needs the Standards 2 (`d1_038`, `d1_039`),
+partly 5, test-taking 0, with `d1_040` flagged TOO EASY (kept: the bullet is recall and the
+item is untagged); options-only 7 of 7 again, 5 low and 2 medium (`d1_042`, `d2_039`).
+Re-audit of all 7 and the cited notes lines: 0 / 1 / 5, the one PRECISION applied (`d1_038`'s
+option B now names the buyer, so the stem's role word is not echoed only in the key). No item
+was cut. As in round 4, the evidence holds no separate currency report: `check_currency.py`
+passed in both audits and each source's edition was checked when it was opened. Tagging: 5
+of 7 carry a Challenge tag (`d1_040` and `d1_042` are null, too basic, like `d1_034` and
+`d1_018`). Notes lines were added or rewritten in 2A3.2, 2A3.3, 2A3.4, 2A4.3, 2B4.4 and
+2B5.3.
+
+Part 2 now holds 92 items (A 42, B 39, C 11); against the owner's gate (A 67, B 53, C 13) it
+is 25, 14 and 2 short. No bullet newly reached depth (all seven went to bullets already at
+depth; 52 of 60 meet it, 2A7c still below), but four one-item bullets gained a second item
+(2A3f, 2A4b, 2B4c, 2B5b), so their first items can now enter the held-back form; 26 bullets
+have one item (30 after round 4). Topic 2A3 (15) has passed its share of 14. Section A's
+pick-longest (17.9%) is now enforced, at 42 items.
+
+What Part 2 round 5 taught.
+- **The self-check beat round 4 on confidence, not on hits.** Round 4's first options-only
+  pass found 14 of 14 keys, five at high confidence; round 5's found 7 of 7 with none at
+  high (5 low, 2 medium). The first audit's PRECISION rate fell from 2.7 to 1.1 an item, and
+  no first blind test classed an item test-taking (round 4: four). But the fix pass did not
+  lower the options-only result further, and the medium-confidence keys were the two "do
+  this, then that" sequences (`d1_042`, `d2_039`): give a wrong option the same shape in
+  the draft. Low-confidence guesses still land on the textbook risk, so on a
+  recognize-level item the stem must decide; the two items classed needs-the-Standards are
+  those whose runner-up is a real risk in the key's own terms (`d1_038`, `d1_039`).
+- **A checklist inside the round misses families across rounds.** The first audit still
+  found what the brief named: a Knowledge source cited first for a step (the HARD ERROR), a
+  cut-down runner-up, and wrong options from the families of earlier siblings (`d1_032`,
+  `d2_018`, Section B's fourth management-prepared list at D). The next brief has authors
+  check each wrong option against the bullet's existing items and the section's
+  letter-by-letter families, and check that no stem word appears only in the key.
+- **Knowledge bullets keep Knowledge final twos.** All seven final twos again turned on a
+  Knowledge fact. On recognize-level knowledge bullets a Standards distinction rarely
+  decides, so the mix the round 4 audit asked for has to come from Standards-only bullets.
+- **Part 2's Knowledge-source leads are close to spent.** Three of ten leads failed for the
+  reasons earlier rounds gave (common sense, a repeat, a key that stands alone), 2B4a has now
+  failed five tries in four rounds, and three thin leads remain. More of Part 2 needs ISA 500
+  and 520 (an owner decision on their file host), Standards-only lessons, or Topical
+  Requirement items written ahead with `testable_from`. Part 3's 3B1f, on K9 to K13, is the
+  better next use of the Knowledge sources.
 
 **Part 2 round 4, in full.** The first round keyed on free public Knowledge sources (owner
 decision of 26 Nov 2026, section 9; library rule 2b: a Knowledge source keys only a fact it
