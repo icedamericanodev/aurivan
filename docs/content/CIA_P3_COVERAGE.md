@@ -1,7 +1,8 @@
 # CIA Part 3: syllabus bullet coverage map
 
 Built 25 Nov 2026, after the Part 3 pilot, re-run the same day after Part 3 round 1, and
-re-run on 26 Nov 2026 after Part 3 round 2 (3B1f on the Knowledge sources), to measure Part 3 against the sale gate (`docs/content/CIA_BANK_PLAN.md`, section 3, decision
+re-run on 26 Nov 2026 after Part 3 round 2 (3B1f on the Knowledge sources) and after the
+Third-Party items written ahead (3B1c and 3C1b, testable from 2027-03-01), to measure Part 3 against the sale gate (`docs/content/CIA_BANK_PLAN.md`, section 3, decision
 4, revised in round 14): (a) every syllabus bullet tested at its verb's depth with every
 gate passing; (b) two full exam-weighted forms of distinct items per section (Part 3 is 100
 questions as A 25, B 15, C 15, D 45, so A 50, B 30, C 30, D 90); (c) one full form frozen
@@ -12,11 +13,13 @@ as sources open.
 Source: the opened Part 3 syllabus (V2.09.2024 FINAL, opened 19 Nov 2026; each bullet's
 leading verb re-read in it on 25 Nov 2026, and again for round 1's bullets). The "Covers"
 column is the blueprint's own wording (`docs/content/CIA_BLUEPRINT.md`), not The IIA's; the
-verb is the bullet's own leading word, not the topic's. Bank: all 63 live items in
-`data/cia/cia3/originals/d1.json` to `d4.json` as of round 2 (A 17, B 13, C 14, D 19;
+verb is the bullet's own leading word, not the topic's. Bank: all 66 live items in
+`data/cia/cia3/originals/d1.json` to `d4.json` as of the Third-Party items written ahead
+(A 17, B 15, C 15, D 19; three of them dated 2027-03-01;
 `d1_009` was retired in the cross-part review and replaced by `d1_018`, and is left out).
 The pilot wrote 53 drafts and cut 8 (A 3, B 1, D 4); round 1 wrote 20 and cut 5 (A 1, C 1,
-D 3); round 2 wrote 3 and cut none; each cut renumbered the later items. The map follows the files' `_meta`
+D 3); round 2 wrote 3 and cut none; the Third-Party items written ahead wrote 3 and cut
+none; each cut renumbered the later items. The map follows the files' `_meta`
 and each item's `_provenance`, not the drafts. This is an internal working document; it
 holds no item text. No prep provider was opened for it.
 
@@ -89,17 +92,25 @@ holds no item text. No prep provider was opened for it.
 | Section | Items | Two-form bar (gate) | Three-form target | Gap to the bar | Bullets | Zero items | One item | Below depth |
 |---|---|---|---|---|---|---|---|---|
 | A Internal Audit Operations | 17 | 50, not met | 75 | 33 | 20 | 5 | 13 | 0 |
-| B Internal Audit Plan | 13 | 30, not met | 45 | 17 | 13 | 3 | 8 | 0 |
-| C Quality of the Internal Audit Function | 14 | 30, not met | 45 | 16 | 13 | 2 | 8 | 0 |
+| B Internal Audit Plan | 15 (2 dated) | 30, not met | 45 | 15 (17 today) | 13 | 3 | 7 (8 today) | 0 |
+| C Quality of the Internal Audit Function | 15 (1 dated) | 30, not met | 45 | 15 (16 today) | 13 | 2 | 7 (8 today) | 0 |
 | D Engagement Results and Monitoring | 19 | 90, not met | 135 | 71 | 24 | 8 | 13 | 0 |
-| **Part 3** | **63** | **200, not met** | **300** | **137** | **70** | **18** | **42** | **0** |
+| **Part 3** | **66 (3 dated)** | **200, not met** | **300** | **134 (137 today)** | **70** | **18** | **40 (42 today)** | **0** |
 
 (The full and short mock splits are the app's own sum, `allocate()` in
 `data/cia/tools/cia_common.py`: 100 as 25/15/15/45 and 33 as 8/5/5/15. F/Ap/An by section:
 A 7/8/2 (the retired `d1_009` was an application item, its replacement `d1_018` is
-foundational), B 5/6/2, C 4/7/3, D 4/11/4. "Below depth" counts bullets that have items but
+foundational), B 6/7/2, C 4/8/3, D 4/11/4. "Below depth" counts bullets that have items but
 none at their verb's depth; zero-item bullets are counted on their own. Bullets with two
-items: 3A2a, 3A4d, 3B2c, 3C1f, 3C2a, 3C3d, 3D2a, 3D2b and 3D4e. 3B1f has three (round 2).)
+items: 3A2a, 3A4d, 3B2c, 3C1f, 3C2a, 3C3d, 3D2a, 3D2b and 3D4e, and from 1 Mar 2027 3C1b.
+3B1f has three (round 2); 3B1c has three from 1 Mar 2027.)
+
+**"Dated" and "today".** The three Third-Party items written ahead (`d2_014`, `d2_015`,
+`d3_015`) carry `testable_from` 2027-03-01: until then they stay out of the held-back form,
+the short mock, the per-learner draw and the free sample, and do not count toward the gate.
+The plain figures count them (what the bank holds from 1 Mar 2027); "today" counts only items
+testable now. Until that date 3B1c and 3C1b each keep one testable item, `d2_001` and
+`d3_004`, which cannot be held back.
 
 What the counts hide:
 
@@ -116,7 +127,10 @@ What the counts hide:
   open lead the map can name; each reopens only with a new lead that answers its reason, or
   a new source. No listed Knowledge source reaches any of them (section 6).
 - **Round 2 kept 3 of 3 drafts**, all on 3B1f, and left three 3B1f slots empty (section 7).
-  With the pilot and round 1, Part 3 has kept 63 of 76 drafts (83%).
+  **The Third-Party items written ahead kept 3 of 3** (`d2_014` and `d2_015` on 3B1c,
+  `d3_015` on 3C1b), all dated 2027-03-01, and left a second 3C1b slot and the other 3B1c
+  leads empty as repeats (section 7). They brought no bullet to depth (both were already at
+  it). With the pilot and rounds 1 and 2, Part 3 has kept 66 of 79 drafts (84%).
 - **Section D is furthest behind.** It holds 19 of 60 items (32%) against its 45% weight,
   8 of its 24 bullets are empty, and it carries 71 of the 140 items the two-form bar needs.
   All three Section D cuts in round 1 repeated a Part 1 or Part 2 item, and most of its
@@ -127,12 +141,14 @@ What the counts hide:
 - **Round 1 kept 15 of 20 drafts (75%)**: A 5 of 6, B 1 of 1, C 4 of 5, D 5 of 8. With the
   pilot, Part 3 has kept 60 of 73 drafts (82%). The A and C cuts were still answerable from
   the options after the fix pass; the three D cuts repeated Part 1 or Part 2 items.
-- **No full form can be drawn yet.** 42 of the 52 bullets with items have exactly one, and
+- **No full form can be drawn yet.** 42 of the 52 bullets with items have exactly one
+  testable item today (40 from 1 Mar 2027, when 3B1c and 3C1b gain their dated items), and
   a bullet's only item stays out of the held-back form. Nine topics hold an item that is
   not a bullet's only item (3A2, 3A4, 3B1 since round 2, 3B2, 3C1, 3C2, 3C3, 3D2, 3D4); the
   other nine cannot be sampled by the held-back form, and no section could fill its share
   of one (A 25, B 15, C 15, D 45).
-- **Gate (b) needs about 137 more items** (A 33, B 17, C 16, D 71). The limit is distinct
+- **Gate (b) needs about 137 more items today, 134 from 1 Mar 2027** (A 33, B 17 then 15,
+  C 16 then 15, D 71). The limit is distinct
   lessons, not drafting: round 1 found far fewer than its slots, and round 2's three items
   came only because the owner allowed free Knowledge sources, which reach 3B1 alone in
   Part 3 (section 7). Section 4 splits the bar by topic; the 3D4,
@@ -147,10 +163,14 @@ What the counts hide:
   section 9). The Topical Requirements Application Guidance is Background, never a key
   (ruled in Part 2 round 1).
 - **Topical Requirements.** Two items rest on the Cybersecurity requirement (`d2_001`,
-  `d3_004`), testable now. No Part 3 item carries a future `testable_from`. A 3B1c or 3C1b
-  item on Third-Party (testable from 2027-03-01), Organizational Behavior (2027-06-01) or
-  Organizational Resilience (2027-10-01) carries that date and stays out of mocks, forms
-  and the free sample until then (`data/cia/shared/currency.json`).
+  `d3_004`), testable now. Three rest on the Third-Party requirement and carry
+  `testable_from` 2027-03-01 (`d2_014`, `d2_015`, `d3_015`, written ahead on 26 Nov 2026),
+  as do their Challenge copies; they stay out of mocks, forms and the free sample until then
+  (`data/cia/shared/currency.json`). An item on Organizational Behavior (2027-06-01) or
+  Organizational Resilience (2027-10-01) would carry that date the same way, but Part 3's
+  two Topical Requirement bullets now hold the applicability, prioritization and
+  conformance-evidence lessons, so a further requirement is likely to repeat them here
+  (section 6).
 - **Part 1 and Part 2 already teach many Part 3 lessons.** Plan changes and conflicting
   demands (`cia1_d1_026`, `cia1_d1_032`, `cia1_d1_044`, `cia1_d2_078`), resource limits
   (`cia1_d1_016`, `cia1_d1_090`, `cia1_d1_103`), reliance (`cia1_d1_019`, `cia1_d1_034`),
@@ -163,10 +183,12 @@ What the counts hide:
   feedback (`cia1_d2_056`, `cia1_d2_060`), the board's private session (`cia1_d1_073`) and
   informal contact (`cia1_d2_037`). A Part 3 item on the same lesson is a cross-part
   sibling: new scenario, new actor or depth, new runner-up, logged (section 6).
-- **Challenge tags:** 52 of 63 items carry one (round 2's three all serve B5, so the
-  Challenge pack's Section B now holds 24, one more than a full mock's 23; the pack holds
-  207 items and still supports no full mock, as Section E, fed by Part 3's Section D, holds
-  15 of the 30 a mock needs); `d1_002`, `d1_003`, `d1_005`, `d1_006`,
+- **Challenge tags:** 55 of 66 items carry one (the Third-Party items: `d2_014` and
+  `d2_015` serve B5, `d3_015` A6, each Challenge copy dated 2027-03-01; round 2's three all
+  serve B5). The Challenge pack holds 213 items, six of them dated (three from Part 2's
+  Section A in its Section C, two in Section B, one in Section A); its Section B holds 26,
+  24 testable today, against a full mock's 23. It still supports no full mock, as Section E,
+  fed by Part 3's Section D, holds 15 of the 30 a mock needs; `d1_002`, `d1_003`, `d1_005`, `d1_006`,
   `d1_008`, `d2_004`, `d3_004`, `d4_002`, `d4_005`, `d4_016` and `d4_017` carry `null` as
   too basic for the Challenge candidate. Every Part 3 topic is a Challenge topic, so new
   items feed the Challenge pool too.
@@ -207,7 +229,7 @@ marked "pilot".
 |---|---|---|---|---|---|---|
 | 3B1a | How the audit universe is defined | Describe (recall) | 1: d2_003 (B5) | 0/1/0 | yes | one item: cannot be held back. The universe itself is a may (Standard 9.4's considerations); the key is the should to weigh risks that span units. Nearest `cia1_d4_036`, `cia1_d4_029`; sibling `cia1_d2_076` |
 | 3B1b | The main parts of an audit universe | Identify (recall) | 0 | 0/0/0 | no | zero items. R1 left empty: the units are a may in Standard 9.4's considerations and Sound practice in the notes; the only must angle (the coverage areas the plan must consider) repeats `cia1_d3_026`. The plan guide is members-only (never) |
-| 3B1c | Where Topical Requirements apply | Recognize (recall) | 1: d2_001 (B5); also touched by d3_004 | 0/0/1 | yes | one item: cannot be held back; siblings `cia1_d3_026`, `cia1_d1_046`. Items on Third-Party, Organizational Behavior or Organizational Resilience need `testable_from` |
+| 3B1c | Where Topical Requirements apply | Recognize (recall) | 3: d2_001 (B5), d2_014 (B5, dated 2027-03-01), d2_015 (B5, dated 2027-03-01); also touched by d3_004 | 1/1/1 | yes | one testable item until 1 Mar 2027: cannot be held back before then. Written ahead on the Third-Party requirement: `d2_014`, an intragroup service provider is outside the requirement, per its user guide (the requirement's own list stops at regulators, agents, trustees or board members and employees), unless the organization defines third parties more widely; runner-up a vendor's subcontractor, which is inside (`cia2_d1_043`'s key: keep apart in one Challenge mock). `d2_015`, the reassuring key (round 2's lesson): controls work on the vendors the risk ranking prioritizes can conform, shared across engagements; siblings `d2_001`, `cia2_d1_025`, `d3_015`. Siblings of `d2_001`: `cia1_d3_026`, `cia1_d1_046`. Third-Party lessons here: spent (a competency shortfall, a requested topic, advisory conformance, accountability kept, a downstream subcontractor and coverage recorded in the plan each repeat an item: section 6) |
 | 3B1d | How requests from the board and management are weighed | Describe (recall) | 1: d2_002 (B5) | 0/1/0 | yes | one item: cannot be held back; siblings `cia1_d1_044`, `cia1_d1_026`; sibling of `d1_001` (now logged in both) |
 | 3B1e | How relevant laws and regulatory mandates are found | Describe (recall) | 1: d2_010 (B5, R1) | 0/1/0 | yes | one item: cannot be held back. Key on Standard 9.1's must (understand how the organization identifies and manages compliance), never on the notes' KaiSip's-reading line about low risk scores. Nearest `cia1_d1_070` (engagement level) and `d2_004` (keep apart in one mock) |
 | 3B1f | Tracking trends, organizational change, emerging issues and technologies | Describe (recall) | 3: d2_011 (B5, R2), d2_012 (B5, R2), d2_013 (B5, R2) | 2/1/0 | yes | - (R2, on Knowledge sources. `d2_011`: a permissioned blockchain guards entries once published, not their truth at entry (NIST IR 8202 7.3); runner-up a later change by a member's own staff (7.1, tamper evident, not strictly immutable). `d2_012`: a clean patch-and-password test does not show that networked devices are covered (SP 800-213 2.3, IR 8259 Rev. 1); runner-up the clean test itself. `d2_013`: removing names helps privacy, but AI can still infer identity (AI 100-1 3.6); runner-up "no longer personal". Each re-rating rests on Standard 9.4. `d2_012` and `d2_013` share a frame (management vouches for a low rating): keep apart in one mock. Pilot cut (a new AI tool between risk assessments) and R1's empty slot stay history. Still empty: robotic process automation (no source), tokens and wallets (IR 8301, not written), a second AI lesson (repeats)) |
@@ -224,7 +246,7 @@ marked "pilot".
 | Bullet | Covers (our words) | Verb (class) | Items | F/Ap/An | Depth met? | Gap |
 |---|---|---|---|---|---|---|
 | 3C1a | The main parts of quality assurance | Recognize (recall) | 1: d3_011 (A6, R1) | 0/1/0 | yes | one item: cannot be held back. Key: internal assessments are documented and included in the external evaluation (Standard 12.1). Nearest `d3_001` (its runner-up is eliminated here), `d3_003`. The pilot's lead (a program of external assessments only) is unused and sits next to `d3_012` |
-| 3C1b | Where Topical Requirements apply | Recognize (recall) | 1: d3_004 | 1/0/0 | yes | one item: cannot be held back; nearest `cia1_d1_061`, `cia2_d1_025` |
+| 3C1b | Where Topical Requirements apply | Recognize (recall) | 2: d3_004, d3_015 (A6, dated 2027-03-01) | 1/1/0 | yes | one testable item until 1 Mar 2027: cannot be held back before then. `d3_015`, written ahead: a self-assessment judges conformance with the Third-Party requirement from the kept evidence of each requirement's applicability and any exclusion's reason (Standards 12.1 and 8.3); kept on Third-Party because a Cybersecurity version would repeat `d3_004`; its option A falls to the same user-guide paragraph as `d2_015`'s A (keep apart in one mock). Nearest `cia1_d1_061`, `cia2_d1_025`, `cia1_d1_046`. A second Third-Party slot left empty (every lead repeated an item: section 6) |
 | 3C1c | What the program is for | Explain (recall) | 0 | 0/0/0 | no | zero items. R1 draft cut (a program paused after a clean external assessment, keyed on Standard 8.3 and Principle 12: classed test-taking in two of three reviews). The notes' purpose line is KaiSip's reading |
 | 3C1d | The chief audit executive's duty to report program results to the board | Recognize (recall) | 1: d3_003 (A6); also touched by d3_007, d1_016 | 0/1/0 | yes | one item: cannot be held back |
 | 3C1e | Internal assessments compared with external assessments | Compare (apply) | 1: d3_001 (A6) | 0/1/0 | yes | one item: cannot be held back |
@@ -279,16 +301,18 @@ and for judge verbs, a little less where the notes show a bullet is thin).
 | Section | Now | Bar | Gap | Where the items go (topic: now, then share of the bar) |
 |---|---|---|---|---|
 | A | 17 | 50 | 33 | 3A1: 4 of 10; 3A2: 4 of 16; 3A3: 4 of 10; 3A4: 5 of 14. All five empty bullets (3A2c, 3A2e, 3A2f, 3A2g, 3A4a) were tried in the pilot or round 1 and left empty or cut; none has an open lead. Then second lessons on the 13 one-item bullets, 3A1d's missing half first (which condition warrants a review). 3A2 holds 4 of its 16 and four of its seven bullets are empty, so its share is the one most likely to stay short. |
-| B | 13 | 30 | 17 | 3B1: 7 of 14; 3B2: 4 of 9; 3B3: 2 of 7. Round 2 filled 3B1f (3 items). The three empty bullets (3B1b, 3B1g, 3B3a) were left empty in round 1 (3B1g blocked, the others thin or repeats); second lessons on the eight one-item bullets. 3B1f's Knowledge leads are close to spent (section 6), so 3B1 and 3B3 are still likely to fall short. |
-| C | 14 | 30 | 16 | 3C1: 7 of 15; 3C2: 3 of 6; 3C3: 4 of 9. Two empty bullets: 3C1c (round 1 draft cut) and 3C3c (left empty); second lessons on the eight one-item bullets. Section C is the closest to its bar. |
+| B | 15 (2 dated) | 30 | 15 (17 today) | 3B1: 9 of 14 (two dated); 3B2: 4 of 9; 3B3: 2 of 7. Round 2 filled 3B1f (3 items); the Third-Party items written ahead gave 3B1c two more, and its Third-Party lessons are spent. The three empty bullets (3B1b, 3B1g, 3B3a) were left empty in round 1 (3B1g blocked, the others thin or repeats); second lessons on the eight one-item bullets. 3B1f's Knowledge leads are close to spent (section 6), so 3B1 and 3B3 are still likely to fall short. |
+| C | 15 (1 dated) | 30 | 15 (16 today) | 3C1: 8 of 15 (one dated); 3C2: 3 of 6; 3C3: 4 of 9. The Third-Party items written ahead gave 3C1b its second item (`d3_015`); a second Third-Party slot was left empty. Two empty bullets: 3C1c (round 1 draft cut) and 3C3c (left empty); second lessons on the eight one-item bullets. Section C is the closest to its bar. |
 | D | 19 | 90 | 71 | 3D1: 3 of 11; 3D2: 4 of 12; 3D3: 2 of 13; 3D4: 3 of 17; 3D5: 1 of 11; 3D6: 2 of 11; 3D7: 2 of 8; 3D8: 2 of 7. All eight empty bullets (3D2c, 3D3b, 3D4a, 3D4c, 3D4d, 3D5a, 3D5b, 3D6b) were tried and left empty or cut, most as repeats of Part 1 or Part 2; round 1 also found no distinct second lesson for ten of the 13 one-item bullets. Round 1's authors judged only a few distinct Section D lessons remain in the opened sources, so most of this gap waits on a new source (section 5, item 5). |
 
-**Difficulty by verb** is enforced per topic, by the topic verb, from 8 items; no Part 3
-topic has more than 7 today (3B1 and 3C1). When they reach 8, 3D3 (Determine) needs at least
+**Difficulty by verb** is enforced per topic, by the topic verb, from 8 items. With the
+Third-Party items, 3B1 (9) and 3C1 (8) are the first Part 3 topics it reaches, and both
+pass (the check counts dated items). When others reach 8, 3D3 (Determine) needs at least
 15% analysis and at most 25% foundational, and 3D2 (Demonstrate) at least 40% application
 and at most 35% foundational; the 16 recall topics need 25 to 60% foundational and at most
-25% analysis. 3B1 (7 items: 2 foundational, 4 application, 1 analysis) meets the recall mix
-at 8 whatever its eighth item is. Watch 3D4 (3 items, none
+25% analysis. 3B1 (9 items: 3 foundational, 5 application, 1 analysis) has room either way.
+**3C1 (8 items: 2 foundational, 6 application, no analysis) sits on the 25% floor: its
+next item must be foundational**, or the gate fails. Watch 3D4 (3 items, none
 foundational) and 3A4 (5 items, one foundational since `d1_018`, two analysis): at 8 items
 each needs at least two foundational items, and 3A4 can take no more analysis items.
 
@@ -324,8 +348,12 @@ the gap waits on.
 5. **A new source.** The textbook on the exam reference list (on hold, owner, 26 Nov 2026,
    plan section 9) and the 2027 testable dates of the Third-Party (2027-03-01),
    Organizational Behavior (2027-06-01) and Organizational Resilience (2027-10-01)
-   requirements. The Third-Party requirement is already opened (Verified), so 3B1c and 3C1b
-   items on it can be written now with `testable_from` 2027-03-01. Members-only guides are
+   requirements. The Third-Party requirement is now spent for Part 3: `d2_014`, `d2_015`
+   (3B1c) and `d3_015` (3C1b) were written ahead on 26 Nov 2026, dated 2027-03-01, and
+   every other lead repeated an item. Organizational Behavior (opened; 2027-06-01) is
+   unlikely to add a Part 3 lesson: on 3B1c and 3C1b it would repeat the applicability,
+   prioritization and conformance-evidence lessons now held, and its content (behavior,
+   incentives, tone) is organization-level, Part 1 and Part 2 ground. Members-only guides are
    never opened. The free Knowledge sources (owner, 26 Nov 2026) reach only topic 3B1 in
    Part 3, and round 2 has used most of what they give it (section 6). With most of items 1
    to 4 already tried on the opened sources, Part 3's sale gate may become an owner
@@ -447,6 +475,20 @@ or the pilot cut).
   opened sections states job design, work schedules, team titles, mission statements, audit
   cycles or audit universe units, the blocked Part 3 detail (section 5).
 
+**What happened to the Third-Party leads (26 Nov 2026).** `cia-p3b-section-expert` and
+`cia-p3c-section-expert` wrote three items on the Third-Party requirement and its user
+guide, each dated 2027-03-01: `d2_014` (an intragroup provider is outside it), `d2_015` (controls
+work on the prioritized vendors, keyed on the reassuring view) and `d3_015` (a
+self-assessment judges conformance from the kept applicability evidence and exclusion
+reasons). **Third-Party leads after them: spent.** Each other lead repeated an item: a
+competency shortfall on a third-party engagement (`cia1_d1_065`, `cia1_d1_077`,
+`cia1_d1_103`, `d1_013`), a requested or surfacing topic and advisory conformance
+(`cia2_d1_001`, `cia1_d1_061`, `cia1_d1_046`), accountability kept by the organization
+(`cia2_d1_045`), a downstream subcontractor (`cia2_d1_043`), coverage recorded in the plan
+(`d3_015`), the chief audit executive answering for conformance however the work is
+resourced (`cia2_d3_004`, `cia1_d1_077`) and internal as well as external assessments
+(`d3_004`). No Organizational Behavior lead is in view for Part 3 (section 5, item 5).
+
 **Siblings logged in the pilot** (each item's `_provenance`; keep apart in one mock):
 
 - **Inside Part 3:** `d1_001`, `d1_009` and `d1_010` form one group (significant plan
@@ -503,6 +545,14 @@ audit executive weighs it). Nearest, not siblings: `d2_011` near `d2_003` and `d
 and `d2_001`; `d2_013` apart from the pilot cut, `cia2_d2_031`, `cia2_d1_031` and
 `cia1_d3_058`. No Part 1 or Part 2 item is on blockchain.
 
+**Siblings logged with the Third-Party items written ahead** (each item's `_provenance`;
+keep apart in one mock): `d2_014` with `cia2_d1_043` (that item's key is this item's
+runner-up; keep apart in one Challenge mock), `d2_001` and `cia1_d1_099`; `d2_015` with
+`d2_001`, `cia2_d1_025` and `d3_015` (both items' option A falls to the same user-guide
+paragraph); `d3_015` with `d3_004`, `cia1_d1_061`, `cia2_d1_001`, `cia2_d1_025` and
+`cia1_d1_046`. The first drafts of `d2_014` and `d2_015` were re-keyed before hand-off
+because `cia2_d1_043` and `d3_015` had taken their first keys.
+
 **Found while mapping, not logged** (for `cia-cross-part-reviewer`; no item was changed):
 
 - `d1_012` logs a possible 3B3 sibling on disclosing reliance; `d2_008` carries that
@@ -510,7 +560,29 @@ and `d2_001`; `d2_013` apart from the pilot cut, `cia2_d2_031`, `cia2_d1_031` an
 - The pilot map's two other pairs (`d1_009` with `d2_006`; `d1_001` with `d2_002`) are now
   logged in both items' `_provenance`.
 
-## 7. What the pilot and rounds 1 and 2 taught
+## 7. What the pilot, rounds 1 and 2 and the Third-Party items taught
+
+**Third-Party items written ahead (26 Nov 2026): 3B1c and 3C1b.** From `d2.json`'s and
+`d3.json`'s `_meta` and the evidence. Kept 3 of 3 drafts, all dated 2027-03-01; no cut.
+
+| Section | Slot | What happened | Reason |
+|---|---|---|---|
+| B | 3B1c, intragroup provider (`d2_014`) | Written, kept after the fix pass | First audit: the key rests on the user guide alone (the requirement's own exclusion list does not name intragroup providers), so the user guide is now cited first and the explanation and Exam cue add that the organization's own definition of third party can widen it |
+| B | 3B1c, controls work on prioritized vendors (`d2_015`) | Written, kept after the fix pass | Keyed on the reassuring view. First audit: the stem did not say the three vendors were all the ranking prioritized, the fact the controls must turns on (added); the key's "It can conform" hedge was given to a wrong option too. The fresh blind test flagged a mild giveaway, the stem's "prioritizes" echoed only in the key; the re-audit gave option C the same word |
+| C | 3C1b, conformance evidence in a self-assessment (`d3_015`) | Written, kept after the fix pass | Kept on Third-Party because a Cybersecurity version would repeat `d3_004`; the fix pass dropped where the evidence is kept from the key (the user guide lets coverage sit in the plan or the workpapers, a may) and made the pre_read neutral |
+| B | 3B1c, other Third-Party leads | Left empty | Each repeated an item (section 6) |
+| C | 3C1b, a second Third-Party slot | Left empty | Each lead repeated an item or sat on Part 2's scoping ground (section 6) |
+
+**What the Third-Party items taught.** A Topical Requirement opened Part 3 lessons the
+Knowledge sources could not, with final twos decided by the requirement's own lines (its
+exclusions, a must for prioritized vendors, kept evidence against a may on where it is
+kept). Two cautions. Labels must carry the source's own strength: the first audit's
+PRECISION findings in notes 3B1.4 and 3C1.1 were a "may" under a "Must" label and an
+exact day ("1 March 2027") the source never gives (the exam list says the month). And
+items written for two parts at once collide: both 3B1c drafts lost their first key to a
+Part 2 or Section C item, so agree one lesson list across the authors before drafting the
+next written-ahead set. Part 3's two Topical Requirement bullets now hold the reusable
+lessons, so a later requirement is likely to add little here.
 
 **Round 2 (26 Nov 2026): 3B1f on the Knowledge sources.** From `d2.json`'s `_meta` and the
 round's evidence. Kept 3 of 3 drafts; no cut.
