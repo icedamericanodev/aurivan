@@ -1426,22 +1426,22 @@
    "question": "Planning purchasing assurance at a Jamaican hotel group, auditor Andre finds an ERP buyer role can raise orders, record deliveries and release payments; the finance manager approves payments over $2,000. Which risk is GREATEST?",
    "options": {
     "A": "Supplier bank details could be changed to divert payments elsewhere",
-    "B": "Payments up to $2,000 could go out on a buyer's approval alone",
+    "B": "Orders could be split into payments under $2,000 to avoid approval",
     "C": "A buyer could order extra goods, record them delivered and keep them",
     "D": "Invoices could be paid late, losing early-payment discounts"
    },
    "correct": "C",
    "key_concept": "Ordering, receiving and paying belong with different people; an approval resting on records one person made cannot replace that separation.",
    "pre_read": "Recall why purchasing splits ordering, receiving and paying among different people, and what a later payment approval can and cannot see.",
-   "correct_explanation": "OpenStax's accounting text keeps ordering, receiving and paying with different people, so no one can order goods, accept them and have them paid alone. This role does all three, and the finance manager approves on an order and delivery record the same buyer made, so goods ordered and kept go unseen at any amount; Standard 13.2 has Andre weigh that fraud risk. Option B is real but narrower, covering only payments up to $2,000.",
+   "correct_explanation": "OpenStax's accounting text keeps ordering, receiving and paying with different people, so no one can order goods, accept them and have them paid alone. This role does all three, and the finance manager approves on order and delivery records the same buyer made, so goods ordered and kept pass at any amount (Standard 13.2: fraud risks). Splitting payments, option B, only dodges an approval that cannot see this.",
    "wrong_explanations": {
     "A": "Diverted bank details are a payment risk where a role can edit supplier records; nothing in the stem gives this buyer role that right.",
-    "B": "Closest choice: small payments with no second approval are a gap, but the larger risk reaches every amount, since the manager approves records the same buyer created.",
+    "B": "Closest choice: split payments dodge an approval threshold, but here dodging is needless: the manager approves records the same buyer created, so goods ordered and kept pass at any amount.",
     "D": "Late payment loses discounts, an efficiency cost; the stem's concern is one role controlling a purchase from order to payment, a loss and fraud risk."
    },
    "tips": [
     "Eliminate: A, because the stem gives the buyer role no rights over supplier records, and D, because lost discounts are an efficiency cost, not the control gap the stem describes.",
-    "Final two: C beats B because the finance manager approves on an order and delivery record the same buyer made, so goods ordered and kept slip through at any amount.",
+    "Final two: C beats B because the finance manager approves on order and delivery records the same buyer made; splitting payments only dodges an approval that cannot see goods ordered and kept.",
     "Exam cue: on CIA planning questions, a payment approval does not replace separated duties; ask whether one person can order, accept and pay for goods alone."
    ],
    "framework_ref": "OpenStax Principles of Accounting Volume 1 Section 8.3 Describe Internal Controls within an Organization; NIST SP 800-53 Rev. 5 AC-5 Separation of Duties; Global Internal Audit Standards (2024), Standard 13.2 Engagement Risk Assessment",
@@ -1451,7 +1451,7 @@
     "ERP user roles",
     "Fraud risk"
    ],
-   "_provenance": "Authored from concept: notes 2A3.4 Finance Basics and Business Process Risks. Sources opened 26 Nov 2026: OpenStax Principles of Accounting Volume 1, section 8.3 (separation of duties: the person who orders does not receive the goods or pay for them) and NIST SP 800-53 Rev. 5 AC-5 (separation of duties) (Knowledge, library topics 2A3), and Standard 13.2 (specific fraud risks). Round 5, 26 Nov 2026. Original scenario; no IIA practice question or prep-bank text used. Second 2A3f item (lead R5-1), a new lesson: a payment approval does not separate ordering from receiving, as it rests on records the same buyer made. Siblings cia2_d1_035 (perpetual records still need a count; its option C on paying before receipt), cia1_d4_015 (one officer orders and receives in a two-person office; a compensating review) and notes 2A3.4's example (supplier set-up and payment rights); keep apart in one mock. No three-way match is named.",
+   "_provenance": "Authored from concept: notes 2A3.4 Finance Basics and Business Process Risks. Sources opened 26 Nov 2026: OpenStax Principles of Accounting Volume 1, section 8.3 (separation of duties: the person who orders does not receive the goods or pay for them) and NIST SP 800-53 Rev. 5 AC-5 (separation of duties) (Knowledge, library topics 2A3), and Standard 13.2 (specific fraud risks). Round 5, 26 Nov 2026. Original scenario; no IIA practice question or prep-bank text used. Second 2A3f item (lead R5-1), a new lesson: a payment approval does not separate ordering from receiving, as it rests on records the same buyer made. Siblings cia2_d1_035 (perpetual records still need a count; its option C on paying before receipt), cia1_d4_015 (one officer orders and receives in a two-person office; a compensating review) and notes 2A3.4's example (supplier set-up and payment rights); keep apart in one mock. No three-way match is named. Fix pass, 26 Nov 2026: runner-up B, a cut-down of the key (payments up to $2,000), replaced by payment splitting to dodge the threshold, a real risk only where the approval works; explanation and Final two tip follow. D (lost discounts) kept: the audit's optional receiving-check D would be a slice of the key's risk, as the same buyer records delivery.",
    "style_version": 2
   },
   {
@@ -1463,24 +1463,24 @@
    "testable_from": null,
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "Planning a Kazakh grain trader's continuity engagement, auditor Aigerim reads that the business impact analysis allows settlements at most 24 hours' disruption; their system's recovery time objective is 36 hours. Which risk MOST needs attention?",
+   "question": "Auditor Aigerim, planning a Kazakh grain trader's continuity engagement, reads the business impact analysis allows settlements at most 24 hours' disruption; the settlement system's recovery time objective is 36 hours. Which risk MOST needs attention?",
    "options": {
-    "A": "Settlements could stay stopped longer than the business can bear",
+    "A": "Settlements could stay down past their maximum tolerable downtime",
     "B": "Restores could take longer than the system's recovery time objective",
     "C": "Recovery spending could exceed what settlements' tolerance requires",
-    "D": "The business impact analysis could rank settlements below less vital work"
+    "D": "Recovery could stall if the plan names no one to lead it"
    },
    "correct": "A",
    "key_concept": "A system's recovery time objective must fit inside the downtime its process can bear; a looser target fails even when restores meet it.",
    "pre_read": "Recall how a business impact analysis's tolerable downtime and a system's recovery time objective relate, and which one must be shorter.",
-   "correct_explanation": "NIST SP 800-34 defines the recovery time objective as the longest a system may stay down before harming the processes it supports, and normally sets it shorter than their maximum tolerable downtime, leaving time to catch up on work. A 36-hour target against a 24-hour limit leaves settlements stopped longer than the business can bear even when recovery is on time. Option B tests restores against a target that is itself too loose.",
+   "correct_explanation": "NIST SP 800-34 defines the recovery time objective as the longest a system may stay down before harming the processes it supports, and normally sets it shorter than their maximum tolerable downtime, leaving time to catch up on work. A 36-hour target against the analysis's 24-hour limit leaves settlements down past that downtime even when recovery is on time. Option B tests restores against a target that is itself too loose.",
    "wrong_explanations": {
     "B": "Closest choice: timed restores show whether 36 hours is met, but meeting it would still leave settlements stopped 12 hours past what the analysis allows.",
     "C": "A recovery time objective caps downtime, so a 36-hour target means slower recovery than the 24-hour tolerance, not spending beyond what settlements need.",
-    "D": "An outdated business impact analysis can misrank processes, but the stem gives no sign of that; the gap lies in the recovery target set against it."
+    "D": "A plan naming no recovery lead is a real gap where roles are unclear, but the stem gives no sign of it; the gap lies in the recovery target itself."
    },
    "tips": [
-    "Eliminate: C, because a longer recovery time objective means slower recovery, not extra spending, and D, because nothing suggests the business impact analysis ranks settlements wrongly.",
+    "Eliminate: C, because a longer recovery time objective means slower recovery, not extra spending, and D, because nothing suggests the plan lacks a recovery lead.",
     "Final two: A beats B because a recovery target must sit inside the downtime the process can bear; restores that meet a 36-hour target still break a 24-hour limit.",
     "Exam cue: on CIA continuity questions, check the targets before the tests: a recovery target looser than the business can bear fails even when it is met."
    ],
@@ -1491,7 +1491,7 @@
     "Business impact analysis",
     "Design before operation"
    ],
-   "_provenance": "Authored from concept: notes 2A3.3 Continuity, Recovery and Resilience Readiness. Sources opened 26 Nov 2026: NIST SP 800-34 Rev. 1, sections 3.2 and 3.2.1 (maximum tolerable downtime, the recovery time objective, and why the second is normally shorter than the first) (Knowledge, library topics 2A3), and Standard 13.2. Round 5, 26 Nov 2026. Original scenario; no IIA practice question or prep-bank text used. Third 2A3d item (lead R5-6), a new lesson: a recovery target looser than the process's tolerable downtime fails by design, so restore tests against it prove nothing. Siblings cia2_d1_007 (recovery rehearsed, not just backed up), cia2_d1_032 (the recovery point against the recovery time; the recovery point is not used here) and cia1_d2_016 (restore-test evidence); keep apart in one mock. The Organizational Resilience requirement (testable from 2027-10-01) is not relied on.",
+   "_provenance": "Authored from concept: notes 2A3.3 Continuity, Recovery and Resilience Readiness. Sources opened 26 Nov 2026: NIST SP 800-34 Rev. 1, sections 3.2 and 3.2.1 (maximum tolerable downtime, the recovery time objective, and why the second is normally shorter than the first) (Knowledge, library topics 2A3), and Standard 13.2. Round 5, 26 Nov 2026. Original scenario; no IIA practice question or prep-bank text used. Third 2A3d item (lead R5-6), a new lesson: a recovery target looser than the process's tolerable downtime fails by design, so restore tests against it prove nothing. Siblings cia2_d1_007 (recovery rehearsed, not just backed up), cia2_d1_032 (the recovery point against the recovery time; the recovery point is not used here) and cia1_d2_016 (restore-test evidence); keep apart in one mock. The Organizational Resilience requirement (testable from 2027-10-01) is not relied on. Fix pass, 26 Nov 2026: stem says whose system (the settlement system) and no longer opens as cia2_d1_032 does; A put in the same technical register as B (maximum tolerable downtime, not 'what the business can bear'), removing the business-language cue; D replaced (a plan with no recovery lead), as the misranking business impact analysis repeated cia2_d1_032 C; Eliminate tip and explanation follow.",
    "style_version": 2
   },
   {
@@ -1503,7 +1503,7 @@
    "testable_from": null,
    "difficulty": "application",
    "bloom_level": "Application",
-   "question": "Planning assurance on an Icelandic insurer's claims system, auditor Sigrun learns developers move their own code into production; change tickets record no approver. Which risk MOST needs rating?",
+   "question": "Sigrun, an internal auditor scoping an Icelandic insurer's claims system, learns developers move their own code into production; change tickets record no approver. Which risk MOST needs rating?",
    "options": {
     "A": "Developers' production access could expose claimants' medical records",
     "B": "Changes no one else approved could alter how claims are paid",
@@ -1511,7 +1511,7 @@
     "D": "Claims could be paid without a claims manager's approval"
    },
    "correct": "B",
-   "key_concept": "Proposed system changes are reviewed and approved before release, by someone other than their author; without that, unauthorized changes can alter processing.",
+   "key_concept": "Proposed system changes are reviewed and approved before release, and duties are split so one person cannot both make and release a change unchecked.",
    "pre_read": "Recall what change control and separation of duties require before code reaches production, and what can go wrong without them.",
    "correct_explanation": "NIST SP 800-53 has proposed system changes reviewed and approved or rejected, with each decision recorded, before release, and splits duties so one person cannot misuse a privilege unchecked. Developers releasing their own unapproved code can change how claims are paid, by mistake or on purpose, so Standard 13.2 has Sigrun rate that risk, fraud included. Option A is a real access concern, but the stem's facts concern changes.",
    "wrong_explanations": {
@@ -1531,7 +1531,7 @@
     "Unauthorized changes",
     "Fraud risk"
    ],
-   "_provenance": "Authored from concept: notes 2A3.2 Cybersecurity, IT Controls and Data Protection. Sources opened 26 Nov 2026: NIST SP 800-53 Rev. 5 CM-3 (proposed changes reviewed, approved or disapproved, documented, then implemented) and AC-5 (separation of duties) (Knowledge, library topics 2A3), and Standard 13.2 (specific fraud risks). Round 5, 26 Nov 2026. Original scenario; no IIA practice question or prep-bank text used. Fourth 2A3c item (lead R5-8), a new lesson: developers releasing their own unapproved changes; the control is never named general or application, as no listed source supports those categories. Siblings cia2_d1_021 (leavers' access), cia2_d1_037 (a lockout test) and cia2_d1_031 (privacy apart from security); keep apart in one mock.",
+   "_provenance": "Authored from concept: notes 2A3.2 Cybersecurity, IT Controls and Data Protection. Sources opened 26 Nov 2026: NIST SP 800-53 Rev. 5 CM-3 (proposed changes reviewed, approved or disapproved, documented, then implemented) and AC-5 (separation of duties) (Knowledge, library topics 2A3), and Standard 13.2 (specific fraud risks). Round 5, 26 Nov 2026. Original scenario; no IIA practice question or prep-bank text used. Fourth 2A3c item (lead R5-8), a new lesson: developers releasing their own unapproved changes; the control is never named general or application, as no listed source supports those categories. Siblings cia2_d1_021 (leavers' access), cia2_d1_037 (a lockout test) and cia2_d1_031 (privacy apart from security); keep apart in one mock. Fix pass, 26 Nov 2026: key_concept no longer credits NIST with 'someone other than the author' (the split of duties is stated generally, the rest is the item's reasoning); stem opening varied from the round's shared frame. D kept: with cia2_d1_038 B replaced, no shared distractor family remains.",
    "style_version": 2
   }
  ]
