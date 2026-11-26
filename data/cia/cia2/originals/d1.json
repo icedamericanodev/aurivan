@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original KaiSip CIA Part 2 practice questions for Section A (Engagement Planning), written from KaiSip's own notes and the opened Global Internal Audit Standards (2024). No IIA practice question, textbook or prep-bank text used. Not affiliated with or endorsed by The IIA. Pilot cia2_d1_001 to cia2_d1_014, 25 Nov 2026; six pilot items cut in review (one repeated a Part 1 lesson; five stayed answerable from wording after one fix pass). Round 1 cia2_d1_015 to cia2_d1_022, 25 Nov 2026; three round 1 items cut in review before merge (two keyed on Background guidance, one answerable from wording) and the rest renumbered. Round 2 cia2_d1_023 to cia2_d1_026, 25 Nov 2026: first analysis items on 2A7b and 2A7d (keyed on the Standards), a first item on 2A5a (keyed on the Cybersecurity Topical Requirement and its user guide), and a second lesson on 2A1a and 2A1b; slots on 2A4a, 2A7c, 2A2a, 2A5c, 2A5e, 2A5f and 2A6c were left unwritten for want of a lesson with a Standards distinction not already in the bank. Round 3 cia2_d1_027 to cia2_d1_030, 25 Nov 2026: a second lesson on 2A5d (the plan's risk assessment is an input, not the engagement's), second lessons on 2A3a (a Topical Requirement is a minimum) and 2A3c (vendor-based controls), and a second lesson on 2A2b (criteria that cannot give reliable comparisons); second lessons on 2A5a, 2A5b, 2A6 and 2A1 bullets were left unwritten for want of a lesson not already in the bank; a 2A4a draft (remote work) was cut in review as a repeat of cia2_d2_020 and cia2_d2_003 with a common-sense key, and a 2A7c draft (a projected sample when the server is too slow) was cut after its fix pass because two independent blind testers chose the raise-it-with-the-chief-audit-executive option over the key; the later items were renumbered each time.",
+    "comment": "Original KaiSip CIA Part 2 practice questions for Section A (Engagement Planning), written from KaiSip's own notes and the opened Global Internal Audit Standards (2024). No IIA practice question, textbook or prep-bank text used. Not affiliated with or endorsed by The IIA. Pilot cia2_d1_001 to cia2_d1_014, 25 Nov 2026; six pilot items cut in review (one repeated a Part 1 lesson; five stayed answerable from wording after one fix pass). Round 1 cia2_d1_015 to cia2_d1_022, 25 Nov 2026; three round 1 items cut in review before merge (two keyed on Background guidance, one answerable from wording) and the rest renumbered. Round 2 cia2_d1_023 to cia2_d1_026, 25 Nov 2026: first analysis items on 2A7b and 2A7d (keyed on the Standards), a first item on 2A5a (keyed on the Cybersecurity Topical Requirement and its user guide), and a second lesson on 2A1a and 2A1b; slots on 2A4a, 2A7c, 2A2a, 2A5c, 2A5e, 2A5f and 2A6c were left unwritten for want of a lesson with a Standards distinction not already in the bank. Round 3 cia2_d1_027 to cia2_d1_030, 25 Nov 2026: a second lesson on 2A5d (the plan's risk assessment is an input, not the engagement's), second lessons on 2A3a (a Topical Requirement is a minimum) and 2A3c (vendor-based controls), and a second lesson on 2A2b (criteria that cannot give reliable comparisons); second lessons on 2A5a, 2A5b, 2A6 and 2A1 bullets were left unwritten for want of a lesson not already in the bank; a 2A4a draft (remote work) was cut in review as a repeat of cia2_d2_020 and cia2_d2_003 with a common-sense key, and a 2A7c draft (a projected sample when the server is too slow) was cut after its fix pass because two independent blind testers chose the raise-it-with-the-chief-audit-executive option over the key; the later items were renumbered each time. Round 4, 26 Nov 2026 (Knowledge sources) cia2_d1_031 to cia2_d1_037: first items on 2A3e and 2A3f, second items on 2A3d and 2A6e, a third lesson on 2A3c and a first analysis item on 2A4a, each keyed on a fact a free public Knowledge source states (NIST SP 800-34, SP 800-53 and 800-53A, the NIST Privacy Framework, OpenStax texts, Regulation S-X), with who acts and every must resting on the Standards.",
     "schema_version": 1
   },
   "domain": 1,
@@ -1175,6 +1175,282 @@
         "Performance targets"
       ],
       "_provenance": "Authored from concept: notes 2A2.2 Judging Whether Criteria Are Adequate. Sources opened 25 Nov 2026: Global Internal Audit Standards (2024), Standard 13.4 (requirements and considerations). Original scenario; no IIA practice question or prep-bank text used. Second lesson on 2A2b (reliable comparisons; cia2_d1_004 turned on a missing satisfactory level). Siblings: cia2_d1_004, cia1_d3_064 and cia1_d1_060 (the next step once criteria are inadequate), cia1_d2_077 (comparing with recommended practice) and cia1_d3_020; keep apart in one mock. Renumbered from cia2_d1_032 on 25 Nov 2026, before merge. Renumbered from cia2_d1_031 on 25 Nov 2026, before merge.",
+      "style_version": 2
+    },
+    {
+      "id": "cia2_d1_031",
+      "domain": 1,
+      "subtopic": "2A3 Planning around key risks and controls. Secure data put to a new use",
+      "principle_id": "risk-sets-plan-and-scope",
+      "challenge_ref": "C3",
+      "testable_from": null,
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Planning assurance on a Norwegian fitness app's member data, auditor Ingvild finds it encrypted with tightly limited access; marketing now uses workout logs collected for coaching to target insurance offers. Which risk MOST needs attention?",
+      "options": {
+        "A": "Workout logs used beyond the purpose members provided them for",
+        "B": "Workout logs exposed if attackers steal a marketing user's sign-in",
+        "C": "Workout logs kept after members close their coaching accounts",
+        "D": "Workout logs altered, so coaching advice rests on wrong data"
+      },
+      "correct": "A",
+      "key_concept": "Privacy risk can arise from an organization's own authorized use of personal data beyond its purpose, even when security controls are strong.",
+      "pre_read": "Recall whether managing cybersecurity risk also settles privacy risk, or whether privacy problems can come from how the organization itself uses data.",
+      "correct_explanation": "NIST's Privacy Framework treats security and privacy as overlapping, not identical: problems for individuals can come from how data is processed, with no breach at all. NIST SP 800-53's PT-3 limits processing to purposes compatible with the one identified. Encryption and tight access answer the security question; the open risk is coaching data reused for insurance offers. Option B names a security risk the stated controls already address.",
+      "wrong_explanations": {
+        "B": "Closest choice: account takeover is a real security risk, but encryption and tight access address it; the facts point to how the data is now used instead.",
+        "C": "Keeping data longer than needed is a privacy risk where retention is the issue, but nothing in the stem says logs outlive members' accounts.",
+        "D": "Altered records are an integrity risk where changes go uncontrolled; the stem shows no sign of changes, only a new use of the data."
+      },
+      "tips": [
+        "Eliminate: C, because the stem says nothing about how long logs are kept, and D, because nothing suggests the logs are being altered.",
+        "Final two: A beats B because the stated encryption and access limits answer the security risk; privacy risk can still arise from the organization's own use of the data.",
+        "Exam cue: on CIA planning questions, strong security does not close privacy; ask whether personal data is used only for the purpose it was collected for."
+      ],
+      "framework_ref": "NIST Privacy Framework 1.0, Privacy Risk Management; NIST SP 800-53 Rev. 5 PT-3 Personally Identifiable Information Processing Purposes; Global Internal Audit Standards (2024), Standard 13.2 Engagement Risk Assessment",
+      "related_concepts": [
+        "Data privacy",
+        "Data security",
+        "Purpose of processing"
+      ],
+      "_provenance": "Authored from concept: notes 2A3.2 Cybersecurity, IT Controls and Data Protection (data privacy and security). Sources opened 26 Nov 2026: NIST Privacy Framework 1.0, section 1.2.1 Cybersecurity and Privacy Risk Management (Knowledge, library topics 2A3), NIST SP 800-53 Rev. 5 PT-3, and Standard 13.2. Round 4, Knowledge sources. Original scenario; no IIA practice question or prep-bank text used. Third 2A3c item, a new lesson (privacy apart from security); siblings cia2_d1_017 and cia2_d1_029 (cyber planning, other lessons); keep apart in one mock.",
+      "style_version": 2
+    },
+    {
+      "id": "cia2_d1_032",
+      "domain": 1,
+      "subtopic": "2A3 Planning around key risks and controls. Recovery objectives against backups and restores",
+      "principle_id": "risk-sets-plan-and-scope",
+      "challenge_ref": "C3",
+      "testable_from": null,
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Planning a Rwandan lender's continuity engagement, auditor Aline notes loan records' recovery time objective is 6 hours and recovery point objective 1 hour; tested restores take 4 hours; backups run nightly. Which risk is GREATEST?",
+      "options": {
+        "A": "Restoring loan records could take longer than the lender can accept",
+        "B": "Nearly a day's new loan entries could be lost in an outage",
+        "C": "The business impact analysis could rank loan records above their need",
+        "D": "Restore tests could miss what a real outage brings"
+      },
+      "correct": "B",
+      "key_concept": "A recovery point objective caps how much recent data may be lost, so it rests on the latest backup; a recovery time objective caps downtime.",
+      "pre_read": "Recall which recovery objective is about lost data and which is about time offline, and which evidence speaks to each.",
+      "correct_explanation": "NIST SP 800-34 describes the recovery point objective as the point to which data can be restored from the most recent backup, a measure of tolerable data loss, while the recovery time objective limits how long a system may stay down. Nightly backups can lose almost a day of entries against a one-hour point. Option A applies the one-hour figure to restore time, yet four-hour restores meet the six-hour objective.",
+      "wrong_explanations": {
+        "A": "Closest choice: it reads the one-hour recovery point as a restore deadline; restore time is judged against the six-hour recovery time objective, which four-hour restores meet.",
+        "C": "An outdated business impact analysis can misrank records where it was never refreshed, but the stem gives no sign of that; the gap it shows lies in backups.",
+        "D": "Unrealistic tests weaken assurance where that is shown; here restores were tested, and the stated gap is how often data is backed up."
+      },
+      "tips": [
+        "Eliminate: C, because nothing suggests the business impact analysis is wrong, and D, because the stem gives no sign the restore tests were unrealistic.",
+        "Final two: B beats A because the recovery point objective limits lost data, which nightly backups cannot hold to one hour; four-hour restores meet the six-hour recovery time objective.",
+        "Exam cue: on CIA continuity questions, match each objective to its evidence: the recovery point to how often backups run, the recovery time to timed restores."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.2.1 Determine Business Processes and Recovery Criticality; NIST SP 800-34 Rev. 1 Section 3.4.1 Backup and Recovery; Global Internal Audit Standards (2024), Standard 13.2 Engagement Risk Assessment",
+      "related_concepts": [
+        "Recovery point objective",
+        "Recovery time objective",
+        "Business impact analysis",
+        "Backup and recovery"
+      ],
+      "_provenance": "Authored from concept: notes 2A3.3 Continuity, Recovery and Resilience Readiness. Sources opened 26 Nov 2026: NIST SP 800-34 Rev. 1, sections 3.2.1 (MTD, RTO and RPO) and 3.4.1 (Knowledge, library topics 2A3), and Standard 13.2. Round 4, Knowledge sources. Original scenario; no IIA practice question or prep-bank text used. Second 2A3d item, a new lesson (which objective each piece of evidence answers); siblings cia2_d1_007 (recovery tested, not just backed up) and cia1_d2_016 (restore-test evidence); keep apart in one mock.",
+      "style_version": 2
+    },
+    {
+      "id": "cia2_d1_033",
+      "domain": 1,
+      "subtopic": "2A3 Planning around key risks and controls. An installment left in long-term debt",
+      "principle_id": "risk-sets-plan-and-scope",
+      "challenge_ref": "C3",
+      "testable_from": null,
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Planning assurance on an Ecuadorian bottler's loan covenant, a current ratio of at least 1.2, auditor Ximena sees 1.25 reported; a loan's installment due in four months sits within long-term debt. Which conclusion is BEST?",
+      "options": {
+        "A": "Compliance is unaffected, as long-term debt falls outside the ratio",
+        "B": "Total liabilities may be understated by the installment's amount",
+        "C": "Owners' equity may be overstated by the installment's amount",
+        "D": "Compliance may be overstated, as current liabilities omit the installment"
+      },
+      "correct": "D",
+      "key_concept": "The part of a long-term loan due within the year is a current liability; leaving it in long-term debt makes the current ratio look stronger.",
+      "pre_read": "Recall where the part of a long-term loan due within the year belongs on the balance sheet, and what the current ratio compares.",
+      "correct_explanation": "OpenStax's accounting text classes the part of a long-term note due within the year as a current liability, and Regulation S-X lists the current portion of long-term debt among current liabilities. Left in long-term debt, the installment drops out of the current ratio's denominator, so 1.25 may overstate compliance with a 1.2 covenant. Option A treats the whole loan as long-term; Standard 13.2 has Ximena plan around this risk.",
+      "wrong_explanations": {
+        "A": "Closest choice: the loan is long-term, but its installment due within the year is a current liability, so where it sits does change the current ratio.",
+        "B": "Total liabilities stay the same whichever line holds the installment; the misclassification moves it between current and long-term debt without leaving it out.",
+        "C": "The installment is owed to the lender, so it is a liability, not owners' equity; equity changes only where a liability is wrongly recorded as capital."
+      },
+      "tips": [
+        "Eliminate: B, because moving the installment between lines leaves total liabilities unchanged, and C, because a lender's loan is a liability, not owners' equity.",
+        "Final two: D beats A because an installment due within the year is a current liability; leaving it in long-term debt lifts the current ratio above its true level.",
+        "Exam cue: on CIA planning questions about the balance sheet, ask when each item falls due or turns to cash; within the year means current."
+      ],
+      "framework_ref": "OpenStax Principles of Accounting Volume 1 Section 12.1 Identify and Describe Current Liabilities; 17 CFR 210.5-02 (Regulation S-X Rule 5-02), Current Liabilities captions 19 to 21; OpenStax Principles of Accounting Volume 1 Section 5.3 Apply the Results from the Adjusted Trial Balance to Compute Current Ratio and Working Capital Balance, and Explain How These Measures Represent Liquidity; Global Internal Audit Standards (2024), Standard 13.2 Engagement Risk Assessment",
+      "related_concepts": [
+        "Current liabilities",
+        "Current portion of long-term debt",
+        "Current ratio",
+        "Loan covenants"
+      ],
+      "_provenance": "Authored from concept: notes 2A3.4 Finance Basics and Business Process Risks. Sources opened 26 Nov 2026: OpenStax Principles of Accounting Volume 1, sections 12.1 (current portion of a noncurrent note) and 5.3 (current ratio), and Regulation S-X Rule 5-02 caption 20 (Knowledge, library topics 2A3), and Standard 13.2. Round 4, Knowledge sources. Original scenario; no IIA practice question or prep-bank text used. First 2A3e item; no near item in Part 1 or Part 2 (cia2_d2 ratio items are 2B5 analytical review, not classification).",
+      "style_version": 2
+    },
+    {
+      "id": "cia2_d1_034",
+      "domain": 1,
+      "subtopic": "2A3 Planning around key risks and controls. Bonds held for years in a funds report",
+      "principle_id": "answer-from-the-stem",
+      "challenge_ref": null,
+      "testable_from": null,
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Planning an engagement on an Ethiopian coffee cooperative's ability to meet next harvest's payments, auditor Selam finds the available-funds report includes bonds the board resolved to hold for five years. Which risk is MOST relevant?",
+      "options": {
+        "A": "Fixed assets may be overstated, since the bonds are held for years",
+        "B": "Long-term debt may be understated, since the bonds count as borrowing",
+        "C": "Cash available within the year may be overstated by the bonds' value",
+        "D": "Members' capital may be overstated, since the board controls the bonds"
+      },
+      "correct": "C",
+      "key_concept": "An investment management intends to hold beyond a year is a long-term investment, not a current asset, so it does not fund this year's payments.",
+      "pre_read": "Recall what makes an asset current, how a long-term investment differs from property, plant and equipment, and why intent matters.",
+      "correct_explanation": "OpenStax's accounting text treats a current asset as one turned into cash or used within a year or operating cycle, and a long-term investment as stocks or bonds management intends to hold for longer. Bonds the board resolved to keep five years are long-term investments, so counting them as available funds may overstate cash for next harvest's payments. Option A misreads them as property, plant and equipment, which covers tangible assets.",
+      "wrong_explanations": {
+        "A": "Closest choice: the bonds are long-term, but long-held does not make them fixed assets; property, plant and equipment are tangible, and bonds held are long-term investments.",
+        "B": "Bonds the cooperative holds are an investment it owns; bonds it had issued would be debt, and the stem describes none.",
+        "D": "A board resolution to hold an asset does not turn it into members' capital; the bonds stay an investment the cooperative owns."
+      },
+      "tips": [
+        "Eliminate: B, because bonds the cooperative holds are an asset, not borrowing, and D, because a board's decision to hold an asset does not make it capital.",
+        "Final two: C beats A because bonds held beyond a year are long-term investments, not current assets, while property, plant and equipment covers tangible assets only.",
+        "Exam cue: on CIA questions about assets, ask whether the item turns to cash within the year and whether it is tangible; intent to hold decides investments."
+      ],
+      "framework_ref": "OpenStax Principles of Accounting Volume 1 Section 5.3 Apply the Results from the Adjusted Trial Balance to Compute Current Ratio and Working Capital Balance, and Explain How These Measures Represent Liquidity; 17 CFR 210.5-02 (Regulation S-X Rule 5-02), captions 12 Other investments and 13 Property, plant and equipment; Global Internal Audit Standards (2024), Standard 13.2 Engagement Risk Assessment",
+      "related_concepts": [
+        "Current assets",
+        "Long-term investments",
+        "Property, plant and equipment"
+      ],
+      "_provenance": "Authored from concept: notes 2A3.4 Finance Basics and Business Process Risks. Sources opened 26 Nov 2026: OpenStax Principles of Accounting Volume 1, section 5.3 (the classified balance sheet: current assets, long-term investments, property, plant and equipment), and Regulation S-X Rule 5-02 captions 12 and 13 (Knowledge, library topics 2A3), and Standard 13.2. Round 4, Knowledge sources. Original scenario; no IIA practice question or prep-bank text used. Second 2A3e item, a distinct lesson (an asset's class by intent and form, against cia2_d1_033's liability timing); keep apart from cia2_d1_033 in one mock. Challenge tag null: basic classification, too basic for the experienced Challenge candidate.",
+      "style_version": 2
+    },
+    {
+      "id": "cia2_d1_035",
+      "domain": 1,
+      "subtopic": "2A3 Planning around key risks and controls. Real-time stock records without a count",
+      "principle_id": "relevant-reliable-sufficient",
+      "challenge_ref": "C3",
+      "testable_from": null,
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Planning an inventory engagement at a Tunisian phone distributor, auditor Amira hears that the new ERP system updates stock with every sale and delivery, so management dropped the yearly count. Which risk MOST needs rating?",
+      "options": {
+        "A": "The ERP system may hold cost of sales until year end",
+        "B": "Stolen or damaged phones may stay in recorded stock balances",
+        "C": "Deliveries may be paid before the warehouse records their receipt",
+        "D": "Counting may cost more than the stock differences it would reveal"
+      },
+      "correct": "B",
+      "key_concept": "A perpetual inventory system updates with each transaction but records no theft, damage or loss; only a physical count compares records with stock on hand.",
+      "pre_read": "Recall what a perpetual inventory system updates, and whether it removes the need for a physical count.",
+      "correct_explanation": "OpenStax's accounting text notes that a perpetual system keeps inventory current with every purchase and sale yet still needs a periodic physical count, because shrinkage, damage and obsolescence leave records and shelves apart. With the count dropped, nothing would reveal phones that vanished without a transaction, so Standard 13.2 has Amira rate that risk. Option D weighs cost, but its saving assumes the records are right, which only a count shows.",
+      "wrong_explanations": {
+        "A": "Updating cost of sales at period end describes a periodic system; the stem says the ERP system updates stock with every sale and delivery.",
+        "C": "Paying before receipt is recorded is a purchasing risk where receiving and paying are not matched, but the stem's change concerns the dropped count.",
+        "D": "Closest choice: cost against benefit is a fair test, but the benefit cannot be judged while the records go unchecked; losses without a transaction show up only in a count."
+      },
+      "tips": [
+        "Eliminate: A, because a perpetual system posts as each sale happens, not at year end, and C, because the stem's change is the dropped count, not purchasing.",
+        "Final two: B beats D because a perpetual system cannot record stock that disappears without a transaction; until a count compares records with shelves, the saving is unproven.",
+        "Exam cue: on CIA planning questions, a system that records transactions is not proof that assets exist; look for a physical check against the records."
+      ],
+      "framework_ref": "OpenStax Principles of Accounting Volume 1 Section 6.2 Compare and Contrast Perpetual versus Periodic Inventory Systems; OpenStax Introduction to Business 2e Section 10.4 Pulling It Together: Resource Planning; Global Internal Audit Standards (2024), Standard 13.2 Engagement Risk Assessment",
+      "related_concepts": [
+        "Perpetual inventory",
+        "Physical count",
+        "Shrinkage",
+        "ERP systems"
+      ],
+      "_provenance": "Authored from concept: notes 2A3.4 Finance Basics and Business Process Risks. Sources opened 26 Nov 2026: OpenStax Principles of Accounting Volume 1, section 6.2 (perpetual and periodic systems; a physical count is still required; shrinkage) and OpenStax Introduction to Business 2e, section 10.4 (ERP) (Knowledge, library topics 2A3), and Standard 13.2. Round 4, Knowledge sources. Original scenario; no IIA practice question or prep-bank text used. First 2A3f item; the notes' example (supplier set-up and payment rights in an ERP system) differs in scenario and trap. Near cia1_d4_029 (stock counts moved to quarterly, a distractor there); keep apart in one mock.",
+      "style_version": 2
+    },
+    {
+      "id": "cia2_d1_036",
+      "domain": 1,
+      "subtopic": "2A4 Choosing the engagement approach. A subject redesigned every month",
+      "principle_id": "plan-before-testing",
+      "challenge_ref": "C4",
+      "testable_from": null,
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Supervisor Inês plans assurance on intake controls at a Portuguese hospital opening in five months; management redesigns intake after each monthly staff trial, and the approved objective needs assurance before opening. Which approach is BEST?",
+      "options": {
+        "A": "Monthly audit cycles matched to each redesign, each cycle's program approved first",
+        "B": "One approved program, testing intake once the hospital has opened",
+        "C": "One approved program, fixed now on this month's intake design",
+        "D": "Monthly audit cycles matched to each redesign, programs written up afterward"
+      },
+      "correct": "A",
+      "key_concept": "Short audit cycles suit a subject that keeps changing under a deadline, but each cycle's work program is still approved before it runs.",
+      "pre_read": "Recall when an adaptive, cycle-based approach fits better than a plan fixed at the start, and what Standard 13.6 requires of any work program.",
+      "correct_explanation": "Standard 13.5 has the auditor weigh the engagement's nature and time frame. OpenStax's information systems text describes an adaptive approach as repeating short planning cycles to absorb changing requirements, while a predictive plan suits fixed, well-defined goals. Intake changes monthly and assurance is due before opening, so cycles matched to each redesign fit, and Standard 13.6 still needs each cycle's program approved before it runs. Option C would test a design about to change.",
+      "wrong_explanations": {
+        "B": "Testing after opening suits an objective about the running process; this objective needs assurance before opening, so it misses the time frame.",
+        "C": "Closest choice: a plan fixed at the start suits a stable subject, but intake changes monthly, so tests built on this month's design would not cover what opens.",
+        "D": "Cycles fit the changing subject, but Standard 13.6 needs each work program approved before it is carried out, not written up afterward."
+      },
+      "tips": [
+        "Eliminate: B, because testing after opening misses an objective that needs assurance before it, and D, because a work program is approved before the work, not after.",
+        "Final two: A beats C because a plan fixed now would test a design that changes monthly; short cycles absorb each redesign, each program approved first.",
+        "Exam cue: on CIA approach questions, fit the approach to how settled the subject is and when results are due; agile changes timing, never the approval rule."
+      ],
+      "framework_ref": "Global Internal Audit Standards (2024), Standard 13.5 Engagement Resources; OpenStax Foundations of Information Systems Section 9.1 Foundations of Information Systems Project Management; Global Internal Audit Standards (2024), Standard 13.6 Work Program; OpenStax Foundations of Information Systems Section 4.1 Systems Analysis and Design for Application Development",
+      "related_concepts": [
+        "Agile approach",
+        "Traditional approach",
+        "Work program approval"
+      ],
+      "_provenance": "Authored from concept: notes 2A4.2 Choosing the Approach That Fits. Sources opened 26 Nov 2026: Standards 13.5 and 13.6, and OpenStax Foundations of Information Systems, sections 9.1 (predictive, adaptive and incremental approaches) and 4.1 (Agile as an adaptive approach for uncertain, changing work) (Knowledge, library topics 2A4). The choice rests on Standard 13.5; the Knowledge source states what each approach suits. Round 4, Knowledge sources. Original scenario; no IIA practice question or prep-bank text used. First analysis item on 2A4a; the notes' examples (a payments app in two-week cycles; branch cash counts) differ in scenario. Sibling of cia2_d1_008 (approval of changes between agile cycles, whose lesson is option D's trap here); keep apart in one mock.",
+      "style_version": 2
+    },
+    {
+      "id": "cia2_d1_037",
+      "domain": 1,
+      "subtopic": "2A6 Procedures and the work program. Showing how a lockout setting behaves",
+      "principle_id": "relevant-reliable-sufficient",
+      "challenge_ref": "C6",
+      "testable_from": null,
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "In a Malaysian bank's IT systems engagement, auditor Farid must find whether online banking accounts lock after five failed sign-ins, as the settings screen shows. Which method shows that MOST directly?",
+      "options": {
+        "A": "Review the system's list of accounts locked during the past month",
+        "B": "Interview the security administrator on how lockouts are configured",
+        "C": "Inspect the lockout limit on the administration screen",
+        "D": "Try six wrong passwords on a test account, noting the result"
+      },
+      "correct": "D",
+      "key_concept": "Exercising a control under set conditions and comparing the result with what should happen tests behavior; inspecting its setting shows only its configuration.",
+      "pre_read": "Recall the difference between examining a setting or record, interviewing staff, and testing a mechanism by making it act.",
+      "correct_explanation": "NIST SP 800-53A separates three assessment methods: examine (inspect or review settings, records and documents), interview, and test, which exercises a mechanism under set conditions and compares actual with expected behavior. The objective is what accounts do after five failures, so making a test account fail six times shows it directly. Option C confirms the configured limit, which the stem already gives, not the behavior. Standard 14.1 favors evidence Farid obtains first-hand.",
+      "wrong_explanations": {
+        "A": "A list of locked accounts shows lockouts happened, not after how many failures; it comes from the system under review, whose behavior is the question.",
+        "B": "Interviews build understanding and clarify, but the administrator's account of the configuration says nothing about what the system does when tried.",
+        "C": "Closest choice: inspecting the setting shows how the control is configured, which the stem already states; only exercising it shows whether accounts actually lock."
+      },
+      "tips": [
+        "Eliminate: A, because a list of locked accounts does not show after how many failures they locked, and B, because an interview gives understanding, not behavior.",
+        "Final two: D beats C because the objective is what accounts do; a test exercises the control, while inspecting the setting only confirms what the stem already says.",
+        "Exam cue: on CIA test-method questions, match the method to the objective: settings answer how a control is configured, a test answers how it behaves."
+      ],
+      "framework_ref": "NIST SP 800-53A Rev. 5 Section 2.4.2 Assessment Methods; NIST SP 800-53A Rev. 5 Appendix C Assessment Method Descriptions; Global Internal Audit Standards (2024), Standard 14.1 Gathering Information for Analyses and Evaluation; Global Internal Audit Standards (2024), Standard 13.6 Work Program",
+      "related_concepts": [
+        "Test methods",
+        "Examine, interview and test",
+        "IT systems engagements"
+      ],
+      "_provenance": "Authored from concept: notes 2A6.4 Test Methods by Subject Area. Sources opened 26 Nov 2026: NIST SP 800-53A Rev. 5, section 2.4.2 and Appendix C (the examine, interview and test methods; Knowledge, library topics 2A6), and Standards 14.1 and 13.6. Round 4, Knowledge sources. Original scenario; no IIA practice question or prep-bank text used. Second 2A6e item (IT systems), a new lesson (test against examine); sibling of cia2_d1_021 (leavers' access, matching records); keep apart in one mock.",
       "style_version": 2
     }
   ]
