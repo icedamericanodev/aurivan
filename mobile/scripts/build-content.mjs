@@ -239,6 +239,12 @@ function toPackQuestion(q, certId) {
     // Content packs: a retired question stays in the pack (old progress still
     // resolves) but is never dealt again. Omitted when live (today: every one).
     retired: q.retired === true ? true : undefined,
+    // CIA (docs/content/CIA_BANK_PLAN.md section 8): an item on a Topical
+    // Requirement that is not on the exam yet carries the date it becomes
+    // testable ("2027-03-01"). Mocks leave it out until that day. Omitted when
+    // null or absent (CISA, CISM, CRISC and AAIA never carry it), so their
+    // pack files stay byte-identical. validate() checks the format.
+    testableFrom: q.testable_from == null ? undefined : q.testable_from,
   };
 }
 
@@ -267,6 +273,16 @@ function validate(q) {
   if (!letters.includes(q.correct)) problems.push(`correct "${q.correct}" not in options`);
   if (!q.stem) problems.push('empty stem');
   if (!q.tips || q.tips.length < 3) problems.push('fewer than 3 tips');
+  // testableFrom (optional): a real calendar date written YYYY-MM-DD, so the
+  // app can compare it with today's date as text. "2027-3-1" or "2027-02-30"
+  // fails the build. (Kept inline: the pack dry runs copy this function alone.)
+  if (q.testableFrom !== undefined) {
+    const s = q.testableFrom;
+    const d = typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s) ? new Date(`${s}T00:00:00Z`) : null;
+    // A month 13 gives an invalid Date; a 30 February rolls over to March.
+    const ok = d !== null && !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === s;
+    if (!ok) problems.push(`testable_from "${s}" is not a date (YYYY-MM-DD) or null`);
+  }
   return problems;
 }
 
@@ -620,6 +636,11 @@ function main() {
     console.log(`✓ content pack built: ${selection ? selection.ids.size : total} questions → src/content/generated/`);
   }
 }
+
+// For tests (src/__tests__/testable-from.test.ts) and the pack dry runs. A
+// separate export line on purpose: the dry runs find `\nfunction toPackQuestion(`
+// in this file's text, which `export function` would hide.
+export { toPackQuestion, validate };
 
 // Only run when executed directly (not when imported by tests).
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
