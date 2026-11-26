@@ -558,6 +558,9 @@ CASES = [
      then(library(LIB + "## Knowledge: opened 2026-11-26 Fixture Public Guide; topics 2B5 (https://example.org/g)\n"
                         "- Fixture Public Guide, section 2\n"),
           q0(setf("framework_ref", "Fixture Public Guide, section 2; " + STD))), "Knowledge source for topics 2B5 only"),
+    ("a Knowledge heading that names a topic the outline does not have", CIA_,
+     library(LIB + "## Knowledge: opened 2026-11-26 Fixture Public Guide; topics 2A9 (https://example.org/g)\n"
+                   "- Fixture Public Guide, section 2\n"), "names topic 2A9, which is not a Part topic"),
     ("a Knowledge heading that names no topics", CIA_,
      library(LIB + "## Knowledge: opened 2026-11-26 Fixture Public Guide (https://example.org/g)\n"
                    "- Fixture Public Guide, section 2\n"), "a Knowledge heading needs 'topics"),

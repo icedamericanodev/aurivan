@@ -370,6 +370,10 @@ def main(argv):
            "principles": ({p["id"] for p in c.read_json(ppath)["principles"]} if ppath.exists() else None)}
     print(f"outline: {len(ctx['topics'])} Part topics, {len(c.challenge_topics(outline))} Challenge topics · "
           f"library: {len(verified)} Verified, {len(likely)} Likely bullet(s)")
+    unknown = sorted({t for ts in ctx["knowledge"].values() for t in ts} - set(ctx["topics"]))
+    for t in unknown:                      # a typo such as "topics 2A9" would key nothing, silently
+        print(f"ERROR library: a Knowledge heading names topic {t}, which is not a Part topic in the outline")
+    errors += len(unknown)
     for pack in packs:
         errors += check_pack(root, pack, ctx, args)
     print(f"check_cia: {errors} error(s)")
