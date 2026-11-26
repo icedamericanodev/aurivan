@@ -1533,6 +1533,124 @@
    ],
    "_provenance": "Authored from concept: notes 2A3.2 Cybersecurity, IT Controls and Data Protection. Sources opened 26 Nov 2026: NIST SP 800-53 Rev. 5 CM-3 (proposed changes reviewed, approved or disapproved, documented, then implemented) and AC-5 (separation of duties) (Knowledge, library topics 2A3), and Standard 13.2 (specific fraud risks). Round 5, 26 Nov 2026. Original scenario; no IIA practice question or prep-bank text used. Fourth 2A3c item (lead R5-8), a new lesson: developers releasing their own unapproved changes; the control is never named general or application, as no listed source supports those categories. Siblings cia2_d1_021 (leavers' access), cia2_d1_037 (a lockout test) and cia2_d1_031 (privacy apart from security); keep apart in one mock. Fix pass, 26 Nov 2026: key_concept no longer credits NIST with 'someone other than the author' (the split of duties is stated generally, the rest is the item's reasoning); stem opening varied from the round's shared frame. D kept: with cia2_d1_038 B replaced, no shared distractor family remains.",
    "style_version": 2
+  },
+  {
+   "id": "ciac_d3_040",
+   "domain": 3,
+   "subtopic": "4C1 Engagement objectives and scope. A subcontractor inside the vendor's contract",
+   "principle_id": "risk-sets-plan-and-scope",
+   "challenge_ref": "C1",
+   "testable_from": "2027-03-01",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Planning third-party assurance at a Peruvian insurer, auditor Milagros learns its claims processor, as their contract permits, passes claimants' bank details to a smaller firm for keying. How should Milagros BEST treat that firm?",
+   "options": {
+    "A": "Exclude it, as the insurer signed no contract with the firm",
+    "B": "Include it, as subcontracted work within the processor's contract",
+    "C": "Include it once a right-to-audit clause is shown to reach it",
+    "D": "Exclude it until management records the firm in its vendor listing"
+   },
+   "correct": "B",
+   "key_concept": "The Third-Party Topical Requirement reaches subcontractors a vendor's contract allows; a missing right-to-audit clause limits evidence, a scope limitation, not the requirement's reach.",
+   "pre_read": "Recall how far down a vendor's chain the Third-Party Topical Requirement reaches, and what a missing right-to-audit clause changes.",
+   "correct_explanation": "The Third-Party Topical Requirement covers subcontracted relationships that a third party's contract allows, fourth parties and beyond, and asks internal auditors to prioritize them by risk; a firm keying claimants' bank details is high risk. Option C ties the firm's place in scope to a right-to-audit clause. The user guide says a missing clause can limit the assurance internal audit obtains, which Standard 13.3 treats as a scope limitation to discuss with management.",
+   "wrong_explanations": {
+    "A": "The requirement does not stop at contracts the insurer signed: it reaches subcontractors that a vendor's contract allows, which is this firm's position.",
+    "C": "Closest choice: an audit clause affects what evidence Milagros can obtain; without one, the gap is a scope limitation to discuss with management, not a reason to drop the firm.",
+    "D": "A complete listing of third-party relationships is a control the requirement has internal auditors assess; a gap in it may be a finding, not a gate on the scope."
+   },
+   "tips": [
+    "Eliminate: A, because the requirement reaches subcontractors a vendor's contract allows, and D, because the vendor listing is a control to assess, not a gate on the scope.",
+    "Final two: B beats C because a missing right-to-audit clause limits the evidence and is discussed with management as a scope limitation; it does not take an allowed subcontractor out of scope.",
+    "Exam cue: on CIA third-party questions, follow the organization's data down the vendor's chain; who signed the contract does not set the engagement's reach."
+   ],
+   "framework_ref": "Third-Party Topical Requirement; Third-Party Topical Requirement User Guide; Global Internal Audit Standards (2024), Standard 13.3 Engagement Objectives and Scope",
+   "related_concepts": [
+    "Third-Party Topical Requirement",
+    "Downstream subcontractors",
+    "Right-to-audit clause",
+    "Scope limitation"
+   ],
+   "_provenance": "Authored from concept: notes 2A1.2 Setting the Scope and Applying Topical Requirements. Sources opened 26 Nov 2026: Third-Party Topical Requirement (applicability: subcontracted relationships the third party's contract allows, fourth and further downstream, prioritized by risk) and its User Guide (Control Considerations B: without a right-to-audit clause, internal audit's ability to obtain assurance may be limited), and Global Internal Audit Standards (2024), Standard 13.3 (scope limitations: restricted access to data, discussed with management). Written ahead, 26 Nov 2026: testable from 2027-03-01, so out of mocks, forms and the free sample until then. Original scenario; no IIA practice question or prep-bank text used. Keyed on the requirement and its user guide, not on the Application Guidance. Third 2A1a lesson: how far down a vendor's chain the requirement reaches. Siblings cia1_d1_099 (an outside party's refusal with no audit clause is a scope limitation; here the clause is the runner-up's condition on reach), cia2_d1_001 and cia2_d1_026 (Cybersecurity applicability); keep apart in one mock.",
+   "style_version": 2
+  },
+  {
+   "id": "ciac_d3_041",
+   "domain": 3,
+   "subtopic": "4C3 Planning around key risks and controls. A high-risk vendor after its contract ends",
+   "principle_id": "answer-from-the-stem",
+   "challenge_ref": "C3",
+   "testable_from": "2027-03-01",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A Ghanaian bank ended its contract with a payroll bureau, one of its highest-risk vendors, in March and moved payroll in-house. Planning June's third-party assurance, how should auditor Akosua BEST treat the bureau?",
+   "options": {
+    "A": "Assess how the bureau was vetted before it was first selected",
+    "B": "Exclude the bureau, recording the contract's March end as the reason",
+    "C": "Assess whether the bureau lost access and returned or destroyed staff data",
+    "D": "Assess whether the bureau kept to its staff-data security terms until March"
+   },
+   "correct": "C",
+   "key_concept": "The third-party life cycle ends with offboarding: for vendors prioritized by risk, auditors assess that access is revoked and data returned or destroyed.",
+   "pre_read": "Recall the five stages of the third-party life cycle, and which controls the Third-Party Topical Requirement names for the last one.",
+   "correct_explanation": "For third parties prioritized by risk, the Third-Party Topical Requirement has internal auditors assess a formal offboarding plan, which revokes the vendor's access and returns or destroys the organization's data, and asks them to consider every life cycle stage, exit included. A payroll bureau leaving with staff data is at that stage, so Akosua plans to assess it. Option B treats the contract's end as a reason to exclude, yet that is when offboarding begins.",
+   "wrong_explanations": {
+    "A": "Due diligence at selection is a real control, but it bears on choosing a vendor; for a relationship that has ended, the exit holds the live risk.",
+    "B": "Closest choice: an exclusion with a recorded reason is allowed, but a contract's end opens the offboarding stage the requirement covers; data and access can outlast the contract.",
+    "D": "Monitoring checks a vendor's performance while the contract runs; with the contract over, it cannot show whether the bureau still holds staff data or access."
+   },
+   "tips": [
+    "Eliminate: A, because selection checks bear on choosing a vendor, not on one that has left, and D, because monitoring covers performance during the contract, not where staff data and access sit after it.",
+    "Final two: C beats B because offboarding is a life cycle stage the requirement covers for vendors prioritized by risk; a contract's end begins that stage rather than closing it.",
+    "Exam cue: on CIA third-party questions, a relationship ends at offboarding, not on the contract's end date; ask where the organization's data and access still sit."
+   ],
+   "framework_ref": "Third-Party Topical Requirement, Controls; Third-Party Topical Requirement; Third-Party Topical Requirement User Guide; Global Internal Audit Standards (2024), Standard 13.2 Engagement Risk Assessment",
+   "related_concepts": [
+    "Third-party life cycle",
+    "Offboarding",
+    "Data return and access revocation"
+   ],
+   "_provenance": "Authored from concept: notes 2A3.4 Finance Basics and Business Process Risks. Sources opened 26 Nov 2026: Third-Party Topical Requirement (the life cycle stages internal auditors should consider; Controls, assessed for third parties prioritized by risk, requirement I: a formalized offboarding plan covering access and the organization's data) and its User Guide (the offboarding stage; Control Considerations I), and Global Internal Audit Standards (2024), Standard 13.2. Written ahead, 26 Nov 2026: testable from 2027-03-01, so out of mocks, forms and the free sample until then. Original scenario; no IIA practice question or prep-bank text used. Keyed on the requirement and its user guide, not on the Application Guidance. Third 2A3f item, the first on the third-party life cycle: a contract's end opens offboarding. Siblings cia2_d1_029 (a cloud provider's controls, assessed through management's process), cia2_d1_025 (an exclusion with a recorded reason) and cia2_d1_038; keep apart in one mock.",
+   "style_version": 2
+  },
+  {
+   "id": "ciac_d3_042",
+   "domain": 3,
+   "subtopic": "4C5 Detailed engagement risk assessment. Billing risks a contract says the vendor owns",
+   "principle_id": "management-owns-risk-and-action",
+   "challenge_ref": "C5",
+   "testable_from": "2027-03-01",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "For assurance on a Jordanian utility's outsourced billing, auditor Rania finds management's risk register omits billing risks, saying the contract makes the billing firm own them. How should Rania's engagement risk assessment BEST treat them?",
+   "options": {
+    "A": "Rank them as the firm's risks, reviewed through its assurance report",
+    "B": "Leave them out, citing the contract's transfer of ownership",
+    "C": "Leave them out until management's register lists them",
+    "D": "Rank them as the utility's risks, with the contract as one response"
+   },
+   "correct": "D",
+   "key_concept": "An organization using a third party stays accountable for the risks to its objectives; a contract is a response to assess, not a new owner.",
+   "pre_read": "Recall who the Third-Party Topical Requirement holds accountable for risks when a third party does the work, and what Standard 13.2 asks.",
+   "correct_explanation": "The Third-Party Topical Requirement says an organization that engages a third party keeps accountability for the risks to its objectives, which must still be identified, assessed and managed. Standard 13.2 has Rania identify and rank significant risks and the controls meant to manage them, so the billing risks stay the utility's and the contract is one response to assess. Option A keeps the risks in view, but as the firm's.",
+   "wrong_explanations": {
+    "A": "Closest choice: it keeps the risks in view, but as the firm's; the utility stays accountable, and the firm's report needs its reliability checked before any reliance.",
+    "B": "A contract can share the cost of a failure, but the requirement keeps accountability with the organization that engaged the firm, so the risks stay in the assessment.",
+    "C": "Management's register is one input; Standard 13.2 has the internal auditor identify and rank significant risks, whether or not management lists them."
+   },
+   "tips": [
+    "Eliminate: B, because a contract does not move accountability for the risks off the utility, and C, because the internal auditor identifies risks whether or not management's register lists them.",
+    "Final two: D beats A because the requirement keeps accountability with the organization that engaged the firm; the risks are the utility's, and the contract is a response to assess, not a new owner.",
+    "Exam cue: on CIA third-party questions, outsourcing moves the work, not the accountability; rank the risk where the organization's objectives sit."
+   ],
+   "framework_ref": "Third-Party Topical Requirement; Global Internal Audit Standards (2024), Standard 13.2 Engagement Risk Assessment; Third-Party Topical Requirement User Guide",
+   "related_concepts": [
+    "Third-Party Topical Requirement",
+    "Retained accountability",
+    "Engagement risk assessment"
+   ],
+   "_provenance": "Authored from concept: notes 2A5.1 Completing the Engagement Risk Assessment. Sources opened 26 Nov 2026: Third-Party Topical Requirement (the primary organization keeps accountability for the risks to its objectives when it engages a third party; those risks must be identified, assessed and managed), its User Guide (Risk Management Considerations C: sharing as a risk response; Control Considerations B: documents from a third party's assurance providers reviewed for reliability before reliance) and Global Internal Audit Standards (2024), Standard 13.2 (identify, evaluate and prioritize the significant risks; management's input is considered). Written ahead, 26 Nov 2026: testable from 2027-03-01, so out of mocks, forms and the free sample until then. Original scenario; no IIA practice question or prep-bank text used. Keyed on the requirement and the Standards, not on the Application Guidance. Second 2A5a lesson, apart from cia2_d1_025 (coverage from an earlier engagement): a contract does not move a risk out of the organization's assessment. Siblings cia2_d1_027 (the plan's assessment is an input) and cia2_d1_029 (vendor controls over the organization's data); keep apart in one mock.",
+   "style_version": 2
   }
  ]
 }
