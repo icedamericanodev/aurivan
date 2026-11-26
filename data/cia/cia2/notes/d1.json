@@ -569,19 +569,20 @@
       "cia2_d1_006",
       "cia2_d1_017",
       "cia2_d1_029",
-      "cia2_d1_031"
+      "cia2_d1_031",
+      "cia2_d1_041"
      ],
      "definition": "Cybersecurity protects systems, networks and data from attack and misuse; it is part of information security, which keeps information confidential, accurate and available.",
      "why_it_matters": "Most processes run on technology, so cyber and IT weaknesses can defeat business controls; the Cybersecurity Topical Requirement sets a mandatory baseline and is testable now.",
      "how_it_works": [
       "Must: for cyber assurance, assess the requirement's three parts: governance, risk management (incident response and recovery included) and controls such as access, patching, encryption and network security.",
-      "Threats named in The IIA's user guides include ransomware, malware, denial of service, data breaches, phishing and insider threats; new technology such as artificial intelligence adds emerging ones.",
+      "Threats named in The IIA's user guides include ransomware, malware, denial of service, data breaches, phishing and insider threats; new technology adds more.",
       "Must: assess whether management continuously monitors emerging threats, and whether vendors' controls protect the organization's systems and data.",
       "Should: map planned cyber tests to the requirement; an IT control framework such as NIST's helps coverage, but adopting one does not prove controls work.",
       "Must (Standard 5.2): follow the privacy laws and policies that apply; planning asks what personal data is held, where, who can reach it and why.",
       "Knowledge (NIST Privacy Framework; SP 800-53 PT-3): strong security does not settle privacy; harm can come from the organization's own use of personal data beyond its collected purpose."
      ],
-     "example": "Planning an engagement on online grocery orders for a Polish supermarket chain, internal auditor Kasia sees customer addresses and payment details passing through a vendor's platform. Kasia assesses the Cybersecurity Topical Requirement for applicability, plans to review the vendor's assurance report and the chain's access controls, and records why governance items are excluded: the risk lies in how controls are run.",
+     "example": "Planning an engagement on a Polish supermarket chain's grocery orders, internal auditor Kasia sees customer addresses and payment details passing through a vendor's platform. Kasia assesses the Cybersecurity Topical Requirement for applicability, plans to review the vendor's assurance report and the chain's access controls, and records why governance items are excluded: the risk lies in how controls are run.",
      "audit_focus": {
       "review": [
        "Inspect the applicability record against each Cybersecurity Topical Requirement section",
@@ -611,6 +612,10 @@
       {
        "term": "Application controls",
        "definition": "Common usage: controls built into one system's processing, such as input checks and automatic matching."
+      },
+      {
+       "term": "Change control",
+       "definition": "Knowledge (NIST SP 800-53 CM-3, AC-5): system changes are approved before release; no one both writes and releases a change."
       }
      ]
     },
@@ -620,13 +625,14 @@
      "legacy_ids": [],
      "practice_ids": [
       "cia2_d1_007",
-      "cia2_d1_032"
+      "cia2_d1_032",
+      "cia2_d1_039"
      ],
      "definition": "Readiness for disruption is an organization's ability to keep critical services going and recover after a crisis, through continuity plans, recovery plans, incident response and tests.",
      "why_it_matters": "Disruption is when untested plans fail. Recognizing whether recovery has been proven, not just written down, shows where an engagement's real risk sits.",
      "how_it_works": [
       "A business continuity plan keeps critical work going in a disaster; a disaster recovery plan restores IT systems, data and operations afterward.",
-      "Knowledge (NIST SP 800-34): a business impact analysis ties systems to the processes they serve and what their disruption costs, and recovery priorities are set from it.",
+      "Knowledge (NIST SP 800-34): a business impact analysis sets each process's maximum tolerable downtime; a supporting system's recovery time objective is normally shorter, leaving time to catch up.",
       "Incident response covers detection, prioritization, containment, recovery and a post-incident review that feeds future plans.",
       "Sound practice: treat backups as unproven until data is restored; the resilience user guide links recovery objectives to restore testing.",
       "Must (resilience requirement, effective April 2027, on the exam from October 2027): assess whether plans are tested, as in tabletop rehearsals, and results go to the board and senior management.",
@@ -681,7 +687,9 @@
      "practice_ids": [
       "cia2_d1_033",
       "cia2_d1_034",
-      "cia2_d1_035"
+      "cia2_d1_035",
+      "cia2_d1_038",
+      "cia2_d1_040"
      ],
      "definition": "Recognize-level business knowledge means knowing the main financial terms and the key risks of common processes well enough to spot what an engagement must cover.",
      "why_it_matters": "An internal auditor who cannot tell an asset from a liability, or see why ordering and paying are kept apart, misses the risks that matter during planning.",
@@ -730,8 +738,8 @@
        {
         "label": "Capital",
         "cells": [
-         "The owners' funding of the organization",
-         "Authorized and recorded?"
+         "Knowledge (OpenStax Accounting 2.2, 14.4): contributed capital, what owners pay in for shares or a stake, plus profits kept; equity, not a debt",
+         "Recorded as equity, not as a loan?"
         ]
        }
       ]
@@ -775,7 +783,7 @@
      "exam_traps": [
       {
        "trap": "One approval on each payment makes the purchasing process safe.",
-       "why": "In common practice ordering, receiving and paying are separated and matched. A single approval does not stop one person creating a supplier and paying it."
+       "why": "Knowledge (OpenStax Accounting 8.3): ordering, receiving and paying sit with different people; an approval that rests on one person's order and delivery records cannot catch goods ordered and kept."
       }
      ],
      "key_terms": [
@@ -970,12 +978,13 @@
      "name": "Project Management in an Engagement",
      "legacy_ids": [],
      "practice_ids": [
-      "cia2_d1_018"
+      "cia2_d1_018",
+      "cia2_d1_042"
      ],
      "definition": "Project management in an engagement means running it like a project: a defined scope, a schedule, a time budget, assigned people, progress tracking and controlled changes.",
      "why_it_matters": "Engagements that drift miss reporting dates and overrun budgets, and stakeholders stop trusting the function. The IIA's Competency Framework lists project management among internal auditors' professional skills.",
      "how_it_works": [
-      "Scope and deliverables: the approved objectives and scope, and the final communication stakeholders expect.",
+      "Knowledge (OpenStax Information Systems 9.2): once scope is set, a work breakdown structure splits it into tasks small enough to estimate and order; the schedule is built from them.",
       "Should: set the timeline and assign staff by the work program's steps and the hours each needs (Standard 13.5).",
       "Must (Standard 13.6 Work Program): the work program names the internal auditor assigned to each task.",
       "Must: a supervisor guides the team and checks the work program is complete (Standard 12.3). May: compare actual with budgeted hours afterward.",
@@ -1015,6 +1024,10 @@
       {
        "term": "Budget-to-actual review",
        "definition": "Comparing the hours used with the hours planned, during or after the engagement."
+      },
+      {
+       "term": "Work breakdown structure",
+       "definition": "Knowledge (OpenStax Information Systems 9.2): the work split into smaller tasks, the basis for estimates, their order and the schedule."
       }
      ],
      "memory_aid": "Scope, schedule, hours, owners, tracking, change control."
