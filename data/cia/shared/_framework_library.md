@@ -300,6 +300,17 @@ prep provider.
 - NIST SP 800-213 Section 2.2 How IoT Devices Support Security
 - NIST SP 800-213 Section 2.3 How IoT Devices May Create Security Challenges
 
+## Knowledge: opened 2026-11-26 The Scrum Guide, November 2020 edition, by Ken Schwaber and Jeff Sutherland (the current edition: the revision history on scrumguides.org lists no change after 2020; the Guide never uses the word agile); topics 2A4 (https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-US.pdf)
+- The Scrum Guide 2020, Scrum Definition
+- The Scrum Guide 2020, Scrum Theory
+- The Scrum Guide 2020, Scrum Team
+- The Scrum Guide 2020, The Sprint
+- The Scrum Guide 2020, Sprint Planning
+- The Scrum Guide 2020, Daily Scrum
+- The Scrum Guide 2020, Sprint Review and Sprint Retrospective
+- The Scrum Guide 2020, Product Backlog and Sprint Backlog
+- The Scrum Guide 2020, Increment and Definition of Done
+
 ## Likely: not opened (for purchase: the textbook, primary reference 2, sold in the IIA Bookstore)
 - Internal Auditing: Assurance & Advisory Services, 6th edition
 
