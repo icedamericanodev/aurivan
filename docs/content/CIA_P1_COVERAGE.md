@@ -1,6 +1,7 @@
 # CIA Part 1: syllabus bullet coverage map
 
-Built 20 Nov 2026 and updated 21 Nov 2026 after rounds 12 to 14, to measure the sale gate (`docs/content/CIA_BANK_PLAN.md`,
+Built 20 Nov 2026, updated 21 Nov 2026 after rounds 12 to 14 and 26 Nov 2026 after the
+Organizational Behavior items written ahead, to measure the sale gate (`docs/content/CIA_BANK_PLAN.md`,
 section 3, decision 4, revised in round 14): (a) every syllabus bullet tested at its verb's
 depth with every gate passing; (b) two full exam-weighted forms of distinct items per
 section (Part 1: A 88, B 50, C 74, D 38); (c) one full form frozen and held back, and a
@@ -9,9 +10,11 @@ Three forms (Part 1 about 375: A 131, B 75, C 113, D 56) stay the target as sour
 
 Source: the opened Part 1 syllabus (V2.09.2024 FINAL, opened 19 Nov 2026). The
 "Covers" column is the blueprint's own wording (`docs/content/CIA_BLUEPRINT.md`), not
-The IIA's; the verb is the bullet's leading word. Bank: all 348 items in
-`data/cia/cia1/originals/d1.json` to `d4.json` as of round 15. This is an internal
-working document; it holds no item text.
+The IIA's; the verb is the bullet's leading word. Bank: all 350 items in
+`data/cia/cia1/originals/d1.json` to `d4.json` as of the Organizational Behavior items
+written ahead (round 15's 348, then `d3_106` and `d3_107` on 26 Nov 2026, each with
+`testable_from` 2027-06-01, none cut). This is an internal working document; it holds no
+item text.
 
 ## 1. How the map was made
 
@@ -49,9 +52,9 @@ the target as sources open. The "Three-form target" columns below track that tar
 |---|---|---|---|---|---|---|---|---|
 | A Foundations | 116 | 88, met | 131 | 15 | 35 | 0 | 4 | 0 |
 | B Ethics and Professionalism | 85 | 50, met | 75 | 0 (10 over) | 25 | 0 | 3 | 0 |
-| C Governance, Risk Management, and Control | 105 | 74, met | 113 | 8 | 20 | 0 | 0 | 0 |
+| C Governance, Risk Management, and Control | 107 (2 dated) | 74, met | 113 | 6 (8 today) | 20 | 0 | 0 | 0 |
 | D Fraud Risks | 42 | 38, met | 56 | 14 | 17 | 0 | 4 | 0 |
-| **Part 1** | **348** | **250, met** | **375** | **37** | **97** | **0** | **11** | **0** |
+| **Part 1** | **350 (2 dated)** | **250, met** | **375** | **35 (37 today)** | **97** | **0** | **11** | **0** |
 
 (The full and short mock splits are the app's own sum, `allocate()` in
 `data/cia/tools/cia_common.py`: 125 as 44/25/37/19 and 42 as 15/8/13/6.)
@@ -73,7 +76,16 @@ What the counts hide (after round 14):
 - **Section C's bulk sits in four bullets**: 1C1a (10), 1C8a (9), 1C6a (8) and 1C5c (7).
 - **Siblings to keep apart in one mock** are logged in each item's `_provenance` and in
   the plan's round write-ups (section 7).
-- **No item carries a future `testable_from`**, so every item can enter a form today.
+- **Two items carry a future `testable_from`**: `d3_106` and `d3_107`, the Organizational
+  Behavior items written ahead (2027-06-01). Until then they stay out of the held-back
+  form, the mocks and the free sample and do not count toward the gate; the plain figures
+  count them, "today" does not. 1C2a has two testable items without them, so nothing else
+  changes. Every other item can enter a form today.
+- **The Organizational Behavior requirement is now spent for Part 1.** It gave two 1C2a
+  lessons the bank did not hold (behavioral risk measured against objectives; a formal
+  driver told from a behavior, an outcome and an informal driver); its other areas repeat
+  Part 1 items (incentives `d4_033`, speak-up channels `d3_003`) or are recall only
+  (training lists).
 
 ## 3. The map
 
@@ -157,7 +169,7 @@ What the counts hide (after round 14):
 |---|---|---|---|---|---|---|
 | 1C1a | Who does what: the board, senior management, internal audit and other assurance providers | Describe (recall) | 10: d3_001, d3_002, d3_021, d3_041, d3_043, d3_053, d3_059, d3_067, d3_076, d3_097; also touched by d1_019, d1_022, d1_034 | 4/6/0 | yes | - |
 | 1C1b | Well-known frameworks, principles and models for governance | Recognize (recall) | 6: d3_022, d3_042, d3_071, d3_077, d3_078, d3_096; also touched by d3_025 | 1/5/0 | yes | - |
-| 1C2a | The meaning of culture and of the control environment | Define (recall) | 2: d3_003, d3_102 | 2/0/0 | yes | - |
+| 1C2a | The meaning of culture and of the control environment | Define (recall) | 4: d3_003, d3_102, d3_106 (dated 2027-06-01), d3_107 (dated 2027-06-01) | 3/1/0 | yes | - (`d3_106` and `d3_107`, written ahead on the Organizational Behavior requirement and its user guide: behavioral risk is measured against objectives, so a process that tracks only misconduct and policy breaches is incomplete (runner-up: incomplete only if a survey shows the pattern everywhere); and the user guide's definitions tell a formal driver (a ward target) from a behavior, an outcome and an informal belief about a written rule (runner-up: that belief). Siblings `d3_044`, `d3_093`, `d3_003`, `d3_024`, `d1_047`, and Part 2's 2A5g items `cia2_d1_046` to `048`; untagged for the Challenge. Organizational Behavior lessons here: spent) |
 | 1C2b | The meaning of risks and controls at engagement level | Define (recall) | 3: d3_004, d3_024, d3_090 | 2/1/0 | yes | - |
 | 1C2c | How the way decisions get made shapes governance, risk management and control | Recognize (recall) | 4: d3_005, d3_023, d3_025, d3_066 | 0/4/0 | yes | - |
 | 1C3a | Ethical, legal and compliance rules an organization must meet | Identify (recall) | 5: d3_006, d3_044, d3_065, d3_072, d3_079; also touched by d2_066 | 3/2/0 | yes | - |
@@ -211,7 +223,7 @@ lesson follow the sibling rule (at most two per lesson, about 15% of a section).
 |---|---|---|---|---|
 | A | 116 | 131 | 15 | Toward the three-form target only, from new sources or new lessons: round 14 found no lesson left on 1A1a, 1A4e, 1A3c, 1A4c, 1A6e or 1A2a in the opened sources. Leads for later: an independence problem found after an engagement closes (Standard 7.1 considerations); a request to add scope as a possible scope limitation (Standard 13.3 considerations). 1A4b: the textbook. |
 | B | 85 | 75 | 0 | Met. 1B4e, 1B4f and 1B5b keep one item each unless a new lesson appears. |
-| C | 105 | 113 | 8 | Toward the target only: round 14 found no lesson left on 1C6b, 1C8b, 1C2b, 1C5a, 1C2c, 1C6a or 1C7b, and cut a 1C7c analysis item as a giveaway. |
+| C | 107 (2 dated) | 113 | 6 (8 today) | Toward the target only (1C2a's two Organizational Behavior items count from 1 Jun 2027): round 14 found no lesson left on 1C6b, 1C8b, 1C2b, 1C5a, 1C2c, 1C6a or 1C7b, and cut a 1C7c analysis item as a giveaway. |
 | D | 42 | 56 | 14 | **From opened sources:** none left (round 15 added the second 1D3a analysis item, `cia1_d4_042`). **Blocked (14):** 1D1c +3, 1D5b +3, 1D5c +3, 1D5d +2, 1D3b +2, 1D4b +1. |
 
 **Section D's blocked bullets and the guide each needs.** The opened sources for D are
@@ -401,7 +413,10 @@ bullet and its runner-up, so the new item takes a different trap (sibling rule).
   is weak whatever the documents say (Standard 9.1: how the organization promotes an
   ethical culture; Standard 11.1, considerations, on the control environment).
   Runner-up: rate it strong because the policies are complete. Watch the overlap with
-  `d4_016` (tone at the top, fraud) by keeping fraud out.
+  `d4_016` (tone at the top, fraud) by keeping fraud out. *Organizational Behavior items
+  written ahead (26 Nov 2026): `d3_106` and `d3_107` took two other lessons on the
+  requirement and its user guide (dated 2027-06-01); any later 1C2a item must stay apart
+  from them and from Part 2's `cia2_d1_046` (tone needs staff feedback).*
 - **1D3c.** Existing `d4_012` (runner-up: senior management). Sibling: a red flag found
   mid-engagement that cannot wait for the final communication. Key: raise it promptly
   through the chief audit executive (Standard 13.1, considerations: issues needing
@@ -432,5 +447,14 @@ bullet and its runner-up, so the new item takes a different trap (sibling rule).
   `d2_051`, `d2_055`, `d2_062`, `d2_065`) and three in C (`d3_014`, `d3_049`, `d3_098`)
   test their topic line, not a lettered bullet. They are fair game (the bullets are not a
   closed list) but do not close any bullet gap.
+- **What the Organizational Behavior items written ahead taught (26 Nov 2026).** A
+  definition decides only when every option is the same kind: `d3_107`'s first draft fell
+  to test-taking (TOO EASY) because the key was the only option the organization sets, and
+  held once each wrong option touched something the hospital sets too (a check form, a
+  quality report, a written rule). `d3_106` was flagged a GIVEAWAY by one of its three
+  reviews and kept, with the stem's echo of the key removed. Notes 1C2.1 now teach
+  behavioral risk, conduct and outcomes; the re-audit noted its formal-driver list leaves
+  out policies, which the user guide names (add it with the next 1C2 edit), and that the
+  surname Phiri in `d3_107` also names a `d3_072` auditor.
 - Re-run this map after each round: the item mapping lives in the round's notes, and a
   new item's bullet should be set in the scaffold step before it is written.
