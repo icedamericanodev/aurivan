@@ -878,7 +878,7 @@
    "options": {
     "A": "Coverage not shown: many such devices cannot take updates or new passwords",
     "B": "Coverage shown: the patching and password controls tested clean this year",
-    "C": "Coverage not shown: new technology needs its own engagement before any rating",
+    "C": "Coverage not shown: a new technology needs its own engagement before rating",
     "D": "Coverage shown: their maker built them to a published security baseline"
    },
    "correct": "A",
@@ -888,7 +888,7 @@
    "wrong_explanations": {
     "B": "Closest choice: those controls do protect equipment able to run them, but a device that cannot take an update or a new password sits outside what they tested.",
     "C": "A new technology is rated in the risk assessment like any other risk; an engagement follows only if its rating warrants one, so no engagement comes before the rating.",
-    "D": "NIST notes that devices meeting the requirements set for them can still add risk once joined to a system; a maker's baseline does not settle the network's exposure."
+    "D": "A baseline shows what a device can support, not that IT's tested controls run on it, and NIST notes compliant devices can still add risk once joined."
    },
    "tips": [
     "Eliminate: C, because a new technology is rated like any other risk before any engagement is planned, and D, because devices meeting their own requirements can still add risk once joined.",
@@ -918,12 +918,12 @@
     "A": "Sound: without names or IDs, the histories are no longer personal",
     "B": "Sound: the engine's outputs are offers, not records about customers",
     "C": "Unsound: AI can infer identities and private traits from such data",
-    "D": "Unsound: the trained model may still hold the removed names"
+    "D": "Unsound: the trained AI model may still hold the removed names"
    },
    "correct": "C",
    "key_concept": "Removing names supports privacy, but AI can infer who people are or private facts about them, so privacy risk remains.",
    "pre_read": "Recall what NIST's AI Risk Management Framework says AI can work out from data about people.",
-   "correct_explanation": "NIST's AI Risk Management Framework counts de-identification among the methods that support privacy, yet warns that AI brings new privacy risk because it can infer who people are, or private facts about them. Purchase histories without names can still point to one customer and reveal traits. Standard 9.4's considerations have Pilar validate key risks independently rather than adopt management's rating, so the low rating does not stand.",
+   "correct_explanation": "NIST's AI Risk Management Framework counts de-identification among the methods that support privacy, yet warns that AI brings new privacy risk because it can infer who people are, or private facts about them. Purchase histories without names can still point to one customer and reveal traits. Standard 9.4's considerations have Pilar validate key risks independently rather than adopt management's rating, so the low rating is not supported as it stands.",
    "wrong_explanations": {
     "A": "Closest choice: removing names and IDs does support privacy, but AI can still infer identities and private traits from detailed histories, so the data remains a privacy exposure.",
     "B": "An offer aimed at an inferred trait can itself reveal private facts about a customer, so the outputs carry privacy risk as well as the data.",
@@ -940,7 +940,7 @@
     "AI privacy risk",
     "Validating key risks"
    ],
-   "_provenance": "Authored from concept: notes 3B1.3 Trends, Organizational Change and Emerging Technologies (bullet 3B1f; the notes' Knowledge (NIST AI RMF 3.6) line). Sources opened 26 Nov 2026: NIST AI 100-1 Section 3.6 (de-identification and aggregation can support privacy-enhanced AI; AI can present new privacy risks by allowing inference to identify individuals or previously private information) and Appendix B (privacy risk from AI's data aggregation capability); Global Internal Audit Standards (2024), Standard 9.4 (considerations: validate key risks independently; rely on management's risk information only where its processes are effective). Knowledge first: the source's fact decides the final two; the options are views of the rating, not steps, and the chief audit executive's independent validation rests on Standard 9.4. Seat: the chief audit executive rating a new technology's risk in the organizationwide risk assessment. Kept apart from the pilot cut (a new AI tool between risk assessments: when to assess), cia2_d2_031 (model drift, engagement level), cia2_d1_031 (privacy apart from security) and cia1_d3_058 (reliance on a register that omits a venture). Original scenario; no IIA practice question, prep-bank text or NIST sentence used. CIA Part 3 round 2, 26 Nov 2026 (Knowledge sources). Fix pass, 26 Nov 2026: option D's off-topic accuracy reason replaced by a privacy reason the stem rules out (names stripped before training), so a second unsound view now competes; the Eliminate tip follows. Sibling frame: cia3_d2_012 and cia3_d2_013 (management vouches for a low rating); keep apart in one mock.",
+   "_provenance": "Authored from concept: notes 3B1.3 Trends, Organizational Change and Emerging Technologies (bullet 3B1f; the notes' Knowledge (NIST AI RMF 3.6) line). Sources opened 26 Nov 2026: NIST AI 100-1 Section 3.6 (de-identification and aggregation can support privacy-enhanced AI; AI can present new privacy risks by allowing inference to identify individuals or previously private information) and Appendix B (privacy risk from AI's data aggregation capability); Global Internal Audit Standards (2024), Standard 9.4 (considerations: validate key risks independently; rely on management's risk information only where its processes are effective). Knowledge first: the source's fact decides the final two; the options are views of the rating, not steps, and the chief audit executive's independent validation rests on Standard 9.4. Seat: the chief audit executive rating a new technology's risk in the organizationwide risk assessment. Kept apart from the pilot cut (a new AI tool between risk assessments: when to assess), cia2_d2_031 (model drift, engagement level), cia2_d1_031 (privacy apart from security) and cia1_d3_058 (reliance on a register that omits a venture). Original scenario; no IIA practice question, prep-bank text or NIST sentence used. CIA Part 3 round 2, 26 Nov 2026 (Knowledge sources). Fix pass, 26 Nov 2026: option D's off-topic accuracy reason replaced by a privacy reason the stem rules out (names stripped before training), so a second unsound view now competes; the Eliminate tip follows. Sibling frame: cia3_d2_012 and cia3_d2_013 (management vouches for a low rating); keep apart in one mock. Re-audit 26 Nov 2026: option D names AI too, so the stem's word is not echoed only in the key.",
    "style_version": 2
   }
  ]
