@@ -16,6 +16,17 @@ How to read this file:
    The IIA's exam references (COSO's public summaries, a white paper): it may
    be cited after the first part and may inform a note, but it never carries
    a key.
+2b. A "Knowledge" heading marks a free public source outside The IIA (a
+   NIST publication, a standard setter's free concepts text, the Scrum Guide)
+   opened for the syllabus's knowledge bullets: IT, finance, business
+   processes and audit methods (owner decision, 26 Nov 2026). Its heading
+   reads "## Knowledge: opened YYYY-MM-DD <title>; topics 2A3, 2B5 (url)". It
+   may be the FIRST part only for an item in one of the topics it names, and
+   only for a fact the source itself states (what a current asset is, what a
+   recovery point objective means). Who does what in internal auditing (the
+   board, the CAE, management, the auditor) still rests on the Standards: an
+   item that keys on a role or a must cites the Standards first. Never a
+   prep provider, never a members-only guide, never copied wording.
 3. Verified means the file was downloaded from theiia.org and opened on the
    date in the heading. Likely means the title is on The IIA's exam reference
    list (V5.5.2026.10.15) but the text was not opened: a Likely bullet may
@@ -38,7 +49,8 @@ Not in this library on purpose: The IIA's Three Lines Model position paper of
 2020 (opened; replaced by the 2026 Statement of Position below), the two-way
 mapping and the glossary comparison (translation aids for old terms, never an
 authority for a key), COSO, ISO and ISACA publications (not on the exam
-reference list by name), and every prep provider.
+reference list by name; COSO's public summaries are Background), and every
+prep provider.
 
 ## Verified: opened 2026-11-19 Global Internal Audit Standards (2024) (https://www.theiia.org/globalassets/site/standards/globalinternalauditstandards_2024january9.pdf)
 - Global Internal Audit Standards (2024), About the International Professional Practices Framework
