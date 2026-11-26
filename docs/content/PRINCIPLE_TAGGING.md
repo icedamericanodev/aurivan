@@ -429,9 +429,9 @@ version bump today.
 ### Results
 | Domain | Questions | Tagged | Untagged |
 |---|---|---|---|
-| D1 | 330 | 210 | 120 |
+| D1 | 330 | 211 | 119 |
 | D2 | 460 | 375 | 85 |
-| D3 | 210 | 182 | 28 |
+| D3 | 210 | 181 | 29 |
 | All | 1000 | 767 | 233 |
 
 New principle `independence-of-ai-assurance` (role family): seeds and tags
@@ -1016,22 +1016,23 @@ is a real risk the facts never raise, as aaia_d1_097).
 - aaia_d1_319: fine-tuning knowledge (a tuned copy stays on its base version, so later fixes miss it).
 - aaia_d1_322: privacy-by-design knowledge (memory on a shared device passes details to the next user).
 - aaia_d1_323: membership-inference knowledge (exact scores reveal whose records trained the model).
-- aaia_d1_324: erasure knowledge (a semantic cache holds personal data outside the cleared records), as aaia_d1_269.
 - aaia_d1_325: erasure knowledge (retraining never reaches a licensed copy unless it can be replaced).
-- aaia_d1_327: legal knowledge (repurposing a general-purpose system into a high-risk use can carry provider duties), as aaia_d1_272.
+- aaia_d1_327: legal knowledge (a listed high-risk use that profiles people stays high risk, whatever exemption is claimed); the runner-up, supervisors who rarely depart, is `real-human-oversight`'s own move.
 - aaia_d1_328: framework knowledge (the NIST AI RMF expects human-subject protections in live tests), as aaia_d1_274.
 - aaia_d1_329: framework knowledge (the NIST AI RMF covers acquired AI), as aaia_d1_079.
 - aaia_d1_330: framework knowledge (a human baseline before AI replaces people's work); the runner-up, monthly tracking, is `accuracy-is-not-assurance`'s own recency move.
 - aaia_d3_180: criteria-selection knowledge (rules for recommending models cannot measure an agent), the auditor's own planning, as aaia_d3_002.
 - aaia_d3_183: test-design knowledge (seeded cases become training data where verdicts feed retraining), as aaia_d3_168; `ai-changes-are-changes`'s domains omit D3.
+- aaia_d3_185: metric knowledge (a false-negative rate counts over every eligible firm, so refusals alone never reach its denominator); the runner-up, sample size, is not a principle's trap.
 - aaia_d3_189: intervention knowledge (overhauls remove the failures that would score each flag), as aaia_d2_429.
 - aaia_d3_191: training-target knowledge (a model predicts the field it was trained against); the runner-up, input fields, is not a principle's trap.
 - aaia_d3_204: finding-status knowledge (a retrain reaches later decisions only, so past claimants stay in the finding).
 - aaia_d3_206: reporting knowledge (blocked attack prompts can be reworded, so they go to the owner, not the published report).
 
 **Medium confidence (tagged, review first):** aaia_d1_306 aaia_d1_310
-aaia_d1_311 aaia_d1_312 aaia_d1_317 aaia_d1_320 aaia_d1_321 aaia_d1_326
-aaia_d3_179 aaia_d3_184 aaia_d3_185 aaia_d3_187 aaia_d3_188 aaia_d3_190
+aaia_d1_311 aaia_d1_312 aaia_d1_317 aaia_d1_320 aaia_d1_321 aaia_d1_324
+aaia_d1_326
+aaia_d3_179 aaia_d3_184 aaia_d3_187 aaia_d3_188 aaia_d3_190
 aaia_d3_193 aaia_d3_194 aaia_d3_197 aaia_d3_198 aaia_d3_199 aaia_d3_205
 aaia_d3_207 aaia_d3_208 aaia_d3_210.
 
@@ -1039,4 +1040,8 @@ aaia_d1_306 stays on `rank-ai-risk-by-harm` (the runner-up, a late report,
 is the availability concern the card ranks below wrong output that looks
 complete). aaia_d3_190 stays on `test-the-ai-as-used` (the deployed system
 includes the output filter, so the model's own log is not what the customer
-saw; close to `reproducible-ai-evidence`).
+saw; close to `reproducible-ai-evidence`). aaia_d1_324, re-angled in the
+completeness round, is now tagged `test-the-ai-as-used` (more training
+passes raise memorization, so the earlier extraction tests no longer describe
+the model that will run). aaia_d3_185, re-angled in the same round, is now
+untagged (above).

@@ -6988,7 +6988,7 @@
         "A": "The model's output log, with version and prompt",
         "B": "The filter's settings in force on that date",
         "C": "The customer's own account of the conversation",
-        "D": "The log of each message as shown, after filtering"
+        "D": "The record of each message as displayed"
       },
       "correct": "D",
       "key_concept": "When an output filter can rewrite replies, the record of what a person saw is the text as shown, not the model's output.",
@@ -7010,7 +7010,7 @@
         "Decision logs",
         "Evidence sources"
       ],
-      "_provenance": "Authored from concept: notes 3C.1 Sources of AI Evidence (decision and prompt logs show what happened in production; an output filter can rewrite replies after the model). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3C.1 Sources of AI Evidence (decision and prompt logs show what happened in production; an output filter can rewrite replies after the model). Final pass: option D no longer says 'after filtering' (it stated the deciding fact) or 'chat log' (it echoed the stem's 'chatbot'). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
       "style_version": 2
     },
     {
@@ -7130,20 +7130,20 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor's approved AI video tool counted people per badge swipe at a Danish data center where shifts arrive together, flagging 0.5% of entries as tailgating. Which check BEST shows whether it misses tailgaters?",
+      "question": "An IS auditor's approved AI video tool counted people per badge swipe at a Danish data center where staff mostly enter alone, flagging 0.5% as tailgating. Which check BEST shows whether it misses tailgaters?",
       "options": {
         "A": "The vendor's accuracy figures on standard video test sets",
         "B": "Footage of randomly sampled entries, compared with the tool's counts",
-        "C": "Footage of a sample of crowded entries, compared with its counts",
+        "C": "Footage of entries at busy times, compared with its counts",
         "D": "Its total entry count, compared with the badge system's total"
       },
       "correct": "C",
       "key_concept": "AI tools err unevenly; a vision tool miscounts most in crowded scenes, so check its output there before relying on it.",
       "pre_read": "Compare what each check would actually examine.",
-      "correct_explanation": "A vision model counts worst where people overlap or walk close together, which is how tailgating happens and how staff arrive here at shift changes. People it misses in those crowds look like single entries and lower the rate. Checking footage of crowded entries tests the tool where its errors and the risk meet. A random sample is mostly people walking alone, where the tool rarely errs.",
+      "correct_explanation": "A vision model counts worst where people overlap or walk close together, which is how tailgating happens. People it misses there look like single entries and lower the rate. Checking footage from busy times, when people crowd the door, tests the tool where its errors and the risk meet. A random sample is mostly people entering alone, where the tool rarely errs.",
       "wrong_explanations": {
         "A": "Tempting because vendors test widely. But standard video sets are not this doorway's lighting, angles and crowds.",
-        "B": "Tempting because random samples are unbiased. But at a 0.5% rate few sampled entries hold tailgates, and the crowded scenes where the tool errs would rarely be drawn.",
+        "B": "Tempting because random samples are unbiased. But most draws are people entering alone, where the tool rarely errs; the crowded entries where its misses gather would seldom be drawn.",
         "D": "Tempting because reconciling totals checks completeness. But matching entry counts says nothing about how many people passed on each entry."
       },
       "tips": [
@@ -7157,7 +7157,7 @@
         "Computer vision",
         "Error concentration"
       ],
-      "_provenance": "Authored from concept: notes 3C.3 Evidence Produced by AI Tools (treat AI output as a lead until corroborated; check it where its errors are most likely). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3C.3 Evidence Produced by AI Tools (treat AI output as a lead until corroborated; check it where its errors are most likely). Final pass: option C now picks crowded entries by time of day, not by the tool's own counts, so the check is not circular. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
       "style_version": 2
     },
     {
@@ -7605,29 +7605,29 @@
     {
       "id": "aaia_d3_207",
       "domain": 3,
-      "subtopic": "3E Outputs and reports. A response that waits for a vendor",
+      "subtopic": "3E Outputs and reports. Data shown to the wrong customers",
       "principle_id": "limits-outside-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Brazilian fintech's vendor-hosted assistant looks up transactions to answer customers and revealed some to the wrong customers; management will adopt the vendor's next model, due next week. What should the IS auditor do FIRST?",
+      "question": "A Brazilian fintech's vendor-hosted assistant queries the fintech's transaction records and has revealed some to the wrong customers; management will adopt the vendor's next model, due next week. What should the IS auditor do FIRST?",
       "options": {
         "A": "Recommend the vendor retrain its current model now",
         "B": "Ask the vendor for test results showing the next model stops it",
         "C": "Ask which data-access limits will stop the disclosures",
-        "D": "Close the finding once the vendor confirms the fix"
+        "D": "Close the finding once the next model goes live"
       },
       "correct": "C",
-      "key_concept": "An assistant can reveal whatever its look-ups return; data-access limits stop the leak, while a new model reading the same data can leak it too.",
+      "key_concept": "An assistant can reveal whatever its queries return; data-access limits stop the leak, while a new model reading the same data can leak it too.",
       "pre_read": "Think about what each option changes, and when.",
-      "correct_explanation": "The assistant reveals what its look-ups return, and any model given another customer's transactions can repeat them; a new model from the vendor does not change what it is given. As deployer, the fintech can usually limit which records each look-up returns without the vendor, so the IS auditor first asks what data-access limits management will set. Vendor tests of the next model show how it behaved in testing, not what it can reach here.",
+      "correct_explanation": "Any model given another customer's transactions can repeat them, so a new model from the vendor does not stop the leak. The queries run over the fintech's own records, so it can limit each one to the asking customer's records without the vendor. The IS auditor first asks what data-access limits management will set. Vendor tests of the next model show how it behaved in testing, not what it can reach here.",
       "wrong_explanations": {
-        "A": "Tempting because the model is the source. But designing the vendor's fix is not the auditor's role, and a retrained model reading the same records can still reveal them.",
-        "B": "Tempting because a fix needs evidence. But any model can reveal records it is given, so tests of the next model leave the cause, what each look-up returns, in place.",
-        "D": "Tempting because the vendor builds the model. But closure needs the auditor's own evidence that disclosures stopped, not the vendor's word."
+        "A": "Tempting because the model is the source. But the auditor recommends to the fintech's management, not the vendor, and a retrained model can still reveal records it reads.",
+        "B": "Tempting because a fix needs evidence. But the cause is what each query returns, which the fintech can limit over its own records; tests of a new model leave it.",
+        "D": "Tempting because the new model is management's planned fix. But closure needs evidence that the disclosures stopped, not that a change went live."
       },
       "tips": [
-        "Eliminate: D closes on the vendor's word, and A has the auditor direct the vendor's model work.",
-        "Final two: C beats B because a model can reveal whatever records it is given; the cause is what each look-up returns, which the fintech can limit, not which model reads it.",
+        "Eliminate: D closes on a change going live, not on evidence, and A addresses its recommendation to the vendor rather than the fintech's management.",
+        "Final two: C beats B because a model can reveal whatever records it is given; the cause is what each query returns, which the fintech can limit, not which model reads it.",
         "Exam cue: When an AI leaks data, ask what it was given access to. Changing the model leaves the access, and the leak, in place."
       ],
       "framework_ref": "ISACA IT Audit Standard 1402 (Follow-up Activities); NIST AI 100-1 MANAGE 3.1 (Third-party AI risks monitored and controls applied); OWASP Top 10 for LLM Applications 2025 LLM02 (Sensitive Information Disclosure)",
@@ -7636,7 +7636,7 @@
         "Interim controls",
         "Vendor models"
       ],
-      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (actions must reach the cause; a new model reading the same data can leak it too, so expect data-access limits the organization owns). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (actions must reach the cause; a new model reading the same data can leak it too, so expect data-access limits the organization owns). Final pass: the stem says the assistant queries the fintech's own records (the fact behind the key), and A's explanation and tip 1 say the auditor recommends to management. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
       "style_version": 2
     },
     {
@@ -7646,25 +7646,25 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "After a finding that hidden text in sellers' listings steered a Japanese secondhand-goods app's buyer assistant, management began stripping out the hiding tricks the audit found. Which procedure BEST supports closing the finding?",
+      "question": "After a finding that hidden text in sellers' listings steered a Japanese secondhand-goods app's buyer assistant, management added a filter to remove hidden text from listings. Which procedure BEST supports closing the finding?",
       "options": {
         "A": "Rerun the hidden-text listings behind the original finding",
         "B": "Test staged listings that hide instructions in new ways",
-        "C": "Confirm the stripping step runs on every live listing",
+        "C": "Confirm the filter runs on every live listing",
         "D": "Have the vendor certify the assistant resists injection"
       },
       "correct": "B",
-      "key_concept": "A filter stripping known injection tricks can miss new forms; close the finding on fresh attack tests, not on proof the filter runs.",
+      "key_concept": "A hidden-text filter catches only the hiding methods it detects; close an injection finding on fresh attack tests, not proof the filter runs.",
       "pre_read": "Ask what each test would show if the fix did not work.",
-      "correct_explanation": "Stripping the hiding tricks the audit found removes those forms, but instructions can be hidden in forms the step misses, and the model may still follow them. Confirming the step runs on every listing shows it operates, not that it catches new forms. Only staged test listings that hide instructions in new ways show whether listings can still steer the assistant. Rerunning the original listings tests only the attack the fix was written against.",
+      "correct_explanation": "A hidden-text filter removes only the hiding methods it detects; instructions hidden in other ways pass through, and the model may follow them. Confirming the filter runs on every listing shows it operates, not that it catches new methods. Only staged listings that hide instructions in new ways show whether listings can still steer the assistant. Rerunning the original listings tests only the attack the fix was written against.",
       "wrong_explanations": {
-        "A": "Tempting because it retests the exception. But a fix aimed at known listings can pass them while new hiding tricks still work.",
-        "C": "Tempting because closure needs proof the action was taken. But a step that runs on every listing can still pass hiding tricks it does not recognize.",
+        "A": "Tempting because it retests the exception. But a filter can catch the original listings while new hiding methods still work.",
+        "C": "Tempting because closure needs proof the action was taken. But a filter that runs on every listing still passes hiding methods it does not detect.",
         "D": "Tempting because vendors test models. But closure needs the auditor's evidence on this assistant and these listings."
       },
       "tips": [
         "Eliminate: A retests only the attack the fix was written for, and D closes on a vendor's certificate.",
-        "Final two: B beats C because a step that runs on every listing can still miss hiding tricks it does not know; only new attack attempts show whether it stops them.",
+        "Final two: B beats C because a filter that runs on every listing can still miss hiding methods it does not detect; only new attack attempts show whether it stops them.",
         "Exam cue: A filter that runs on every input proves it operates, not that it works. Close injection findings on fresh attack attempts."
       ],
       "framework_ref": "ISACA IT Audit Standard 1402 (Follow-up Activities); NIST AI 100-2e2025 Section 3.4 (Indirect Prompt Injection Attacks and Mitigations); MITRE ATLAS AML.T0051.001 (LLM Prompt Injection: Indirect)",

@@ -247,6 +247,7 @@ the notice is part of the description.
 | Batch 12 (20 Nov 2026) | +30 | +42 | — | 819 |
 | Batch 13 (21 Nov 2026) | +30 | +32 | — | 881 |
 | Batch 14 (25 Nov 2026) | +30 | — | +32 | 943 |
+| Batch 15 (26 Nov 2026) | +25 | — | +32 | 1,000 |
 
 Pilot review, 30 Oct 2026:
 - **Blind tests:** 60/60 picks matched the keys on the first pass. After the
@@ -570,6 +571,33 @@ Batch 14 review, 25 Nov 2026 (D1 +30, D3 +32):
 - Length tell: D1 19.8%, D3 18.4% (up from 17.0%). Tags: 728 of 943 (PRINCIPLE_TAGGING.md, Batch 14).
 
 **Next round:** batch 15, D1 to its target of 330 (25 more) and D3 to 210 (32 more), which completes the bank at 1,000.
+
+Batch 15 review, 26 Nov 2026 (D1 +25, D3 +32; the bank is complete):
+- **Author:** D1 spread so every subtopic ends at 22 and every area at 66 (none in 1E.1); D3 spread so every area
+  ends at 42, with at least 11 items on using AI inside the audit. Difficulty D1 6/12/7 and D3 8/16/8; keys D1 A7
+  B7 C5 D6 and D3 A9 B7 C9 D7, which leaves the final key spread D1 A83 B83 C82 D82 and D3 A53 B52 C53 D52. The
+  brief added the five batch 14 lessons (grep the other domain's new items for settings, no subset keys, no
+  belief distractors under a concern stem, no stem fact that points straight at the key, no explanation that
+  rests on a fact the stem never gives). The D1 author dropped 15 drafts on the grep and moved four settings off
+  the D3 author's new items.
+- **Reviews:** first blind pass 57/57 (D1 25/25, D3 32/32). Five reviewers per domain (four HARD ERRORs, two per domain,
+  fixed in round 1), three fix rounds, the cross-domain gate (6 HARD/PRECISION) and the completeness critic (11 gaps:
+  reused frames in aaia_d1_314, aaia_d1_318, aaia_d1_324, aaia_d1_327, aaia_d3_185 and aaia_d3_202, reused
+  settings and a stem echo), with gap rounds that re-angled or moved every one. A final fix round took the
+  giveaway word "unnoticed" out of aaia_d1_306's key, replaced a routine example in aaia_d1_309's explanation,
+  stated in aaia_d3_207's stem that the assistant queries the fintech's own records (the fact behind the key),
+  described aaia_d3_208's fix by its purpose (a hidden-text filter) instead of "the tricks the audit found", and
+  took the deciding fact and a stem echo out of aaia_d3_190's key. My last pass made aaia_d3_194's key pick crowded
+  entries by time of day, not by the tool's own counts. A last blind test of 18 items, every changed one
+  included, matched 18/18. No key changed after the first draft.
+- **Notes:** each subtopic with new items gained the short fact its keys rely on, trimmed elsewhere so every
+  subtopic stays within 380 words.
+- **Citations:** one new library bullet, NIST AI 100-1 Section 1.2.1 (Risk Measurement), checked against the
+  opened text, for the human-baseline item aaia_d1_330.
+- Length tell: D1 19.5%, D2 19.4%, D3 19.2%. Tags: 767 of 1,000 (PRINCIPLE_TAGGING.md, Batch 15).
+
+**Bank complete:** 1,000 items (D1 330, D2 460, D3 210), matching the outline weights. AAIA stays app-ready and
+switched off until the paywall; the next AAIA work is the follow-ups in section 10.
 
 ## 10. Follow-ups outside this plan's scope
 
