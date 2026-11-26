@@ -217,6 +217,89 @@ prep provider.
 ## Background: opened 2026-11-19 IIA and Anti-Fraud Collaboration white paper on the internal auditor and fraud risk, April 2026; public, calls itself non-authoritative, not on The IIA's exam reference list (https://www.theiia.org/globalassets/site/content/white-paper/afc-role-of-ia-assessing-and-responding-to-fraud-risk.pdf)
 - IIA and Anti-Fraud Collaboration white paper on the internal auditor's role in fraud risk (2026)
 
+## Knowledge: opened 2026-11-26 NIST SP 800-34 Rev. 1, Contingency Planning Guide for Federal Information Systems (May 2010, updated 11 November 2010; the current final on CSRC, no later revision); topics 2A3 (https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-34r1.pdf)
+- NIST SP 800-34 Rev. 1 Section 2.1 Contingency Planning and Resilience
+- NIST SP 800-34 Rev. 1 Section 2.2 Types of Plans
+- NIST SP 800-34 Rev. 1 Section 2.2.5 Cyber Incident Response Plan
+- NIST SP 800-34 Rev. 1 Section 3.2 Conduct the Business Impact Analysis
+- NIST SP 800-34 Rev. 1 Section 3.2.1 Determine Business Processes and Recovery Criticality
+- NIST SP 800-34 Rev. 1 Section 3.4.1 Backup and Recovery
+- NIST SP 800-34 Rev. 1 Section 3.5.1 Testing
+
+## Knowledge: opened 2026-11-26 NIST SP 800-53 Rev. 5, Security and Privacy Controls for Information Systems and Organizations (September 2020, includes updates as of 10 December 2020; release 5.2.0 of 27 August 2025 checked on CSRC, it changes SA and SI controls and related-control lists only); topics 2A3 (https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf)
+- NIST SP 800-53 Rev. 5 Section 1.1 Purpose and Applicability
+- NIST SP 800-53 Rev. 5 AC-2 Account Management
+- NIST SP 800-53 Rev. 5 AC-5 Separation of Duties
+- NIST SP 800-53 Rev. 5 AC-6 Least Privilege
+- NIST SP 800-53 Rev. 5 AU-6 Audit Record Review, Analysis, and Reporting
+- NIST SP 800-53 Rev. 5 CM-3 Configuration Change Control
+- NIST SP 800-53 Rev. 5 CP-9 System Backup
+- NIST SP 800-53 Rev. 5 IR-4 Incident Handling
+- NIST SP 800-53 Rev. 5 PT-3 Personally Identifiable Information Processing Purposes
+- NIST SP 800-53 Rev. 5 SI-10 Information Input Validation
+
+## Knowledge: opened 2026-11-26 NIST Cybersecurity Framework (CSF) 2.0, CSWP 29 (26 February 2024; the current final on CSRC); topics 2A3 (https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf)
+- NIST CSF 2.0 Section 1 Cybersecurity Framework (CSF) Overview
+- NIST CSF 2.0 Section 2 Introduction to the CSF Core
+- NIST CSF 2.0 PR.AA Identity Management, Authentication, and Access Control
+- NIST CSF 2.0 PR.DS Data Security
+- NIST CSF 2.0 DE.CM Continuous Monitoring
+- NIST CSF 2.0 RS.MA Incident Management
+- NIST CSF 2.0 RC.RP Incident Recovery Plan Execution
+
+## Knowledge: opened 2026-11-26 NIST Privacy Framework, Version 1.0 (16 January 2020; Version 1.1 is still an initial public draft on NIST's page); topics 2A3 (https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.01162020.pdf)
+- NIST Privacy Framework 1.0, Privacy Risk Management
+- NIST Privacy Framework 1.0, Privacy Framework Basics: Core
+- NIST Privacy Framework 1.0, Appendix A Privacy Framework Core
+- NIST Privacy Framework 1.0, Appendix D Privacy Risk Management Practices
+
+## Knowledge: opened 2026-11-26 SEC Regulation S-X Rule 5-02 Balance sheets, 17 CFR 210.5-02, CFR edition revised as of 1 April 2025 (the 2026 edition is not yet on GovInfo; eCFR was blocked); topics 2A3 (https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol3/pdf/CFR-2025-title17-vol3-sec210-5-02.pdf)
+- 17 CFR 210.5-02 (Regulation S-X Rule 5-02), Current Assets captions 1 to 9
+- 17 CFR 210.5-02 (Regulation S-X Rule 5-02), caption 6 Inventories
+- 17 CFR 210.5-02 (Regulation S-X Rule 5-02), captions 12 Other investments and 13 Property, plant and equipment
+- 17 CFR 210.5-02 (Regulation S-X Rule 5-02), Current Liabilities captions 19 to 21
+- 17 CFR 210.5-02 (Regulation S-X Rule 5-02), caption 22 Bonds, mortgages and other long-term debt
+- 17 CFR 210.5-02 (Regulation S-X Rule 5-02), Stockholders' Equity captions 28 to 31
+
+## Knowledge: opened 2026-11-26 OMB Prompt Payment rule, 5 CFR part 1315, CFR edition of 1 January 2026 (United States federal payment practice); topics 2A3 (https://www.govinfo.gov/content/pkg/CFR-2026-title5-vol3/pdf/CFR-2026-title5-vol3-part1315.pdf)
+- 5 CFR 1315.2(cc) Receiving report
+- 5 CFR 1315.5 Accelerated payment methods
+- 5 CFR 1315.9 Required documentation
+
+## Knowledge: opened 2026-11-26 NIST SP 800-53A Rev. 5, Assessing Security and Privacy Controls in Information Systems and Organizations (January 2022; release 5.2.0 of 27 August 2025 adds SA and SI procedures only); topics 2A6 (https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53Ar5.pdf)
+- NIST SP 800-53A Rev. 5 Section 2.4.2 Assessment Methods
+- NIST SP 800-53A Rev. 5 Appendix C Assessment Method Descriptions
+
+## Knowledge: opened 2026-11-26 NIST SP 800-137, Information Security Continuous Monitoring (ISCM) for Federal Information Systems and Organizations (September 2011; the current final on CSRC); topics 2B3 (https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-137.pdf)
+- NIST SP 800-137 Chapter One Introduction
+- NIST SP 800-137 Section 2.3 Role of Automation in ISCM
+- NIST SP 800-137 Section 3.4 Analyze Data and Report Findings
+- NIST SP 800-137 Appendix D Technologies for Enabling ISCM
+
+## Knowledge: opened 2026-11-26 NIST AI 100-1, Artificial Intelligence Risk Management Framework (AI RMF 1.0) (26 January 2023; NIST's page says it is being revised); topics 2B3, 3B1 (https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf)
+- NIST AI 100-1 (AI RMF 1.0) Executive Summary
+- NIST AI 100-1 (AI RMF 1.0) Section 3 AI Risks and Trustworthiness
+- NIST AI 100-1 (AI RMF 1.0) Appendix B How AI Risks Differ from Traditional Software Risks
+
+## Knowledge: opened 2026-11-26 NIST IR 8202, Blockchain Technology Overview (October 2018; the current final on CSRC); topics 3B1 (https://nvlpubs.nist.gov/nistpubs/ir/2018/NIST.IR.8202.pdf)
+- NIST IR 8202 Executive Summary
+- NIST IR 8202 Section 2 Blockchain Categorization
+- NIST IR 8202 Section 6 Smart Contracts
+- NIST IR 8202 Section 7 Blockchain Limitations and Misconceptions
+
+## Knowledge: opened 2026-11-26 NIST IR 8301, Blockchain Networks: Token Design and Management Overview (February 2021; the current final on CSRC); topics 3B1 (https://nvlpubs.nist.gov/nistpubs/ir/2021/NIST.IR.8301.pdf)
+- NIST IR 8301 Section 2 Token Categorization
+- NIST IR 8301 Section 3 Wallet and Key Management
+- NIST IR 8301 Section 6.2 Tokenizing Money and Financial Products
+
+## Knowledge: opened 2026-11-26 NIST IR 8259 Rev. 1, Foundational Cybersecurity Activities for IoT Product Manufacturers (April 2026; supersedes IR 8259 of May 2020, withdrawn 20 April 2026); topics 3B1 (https://nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8259r1.pdf)
+- NIST IR 8259 Rev. 1 Section 2 Background
+- NIST IR 8259 Rev. 1 Appendix B Glossary
+
+## Knowledge: opened 2026-11-26 NIST SP 800-213, IoT Device Cybersecurity Guidance for the Federal Government (November 2021; the current final on CSRC); topics 3B1 (https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-213.pdf)
+- NIST SP 800-213 Section 2.2 How IoT Devices Support Security
+- NIST SP 800-213 Section 2.3 How IoT Devices May Create Security Challenges
+
 ## Likely: not opened (for purchase: the textbook, primary reference 2, sold in the IIA Bookstore)
 - Internal Auditing: Assurance & Advisory Services, 6th edition
 

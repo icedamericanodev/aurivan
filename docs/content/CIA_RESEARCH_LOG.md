@@ -545,3 +545,61 @@ merge.
 
 
 25 Nov 2026 (Part 3 pilot). Opened The IIA's Artificial Intelligence Auditing Framework, 2024 update (public access; file sha256 538b022a79e1a677...; labelled copyright 2024, file name sept-2024-update2). Background only: a tool, not on the exam reference list (V5.5.2026.10.15), and written in 2017 IPPF vocabulary. Part 3 note 3B1.3 cites it as guidance; no question keys on it.
+
+
+## Knowledge sources opened on 26 Nov 2026 (owner decision of 26 Nov 2026, plan section 9; citation library rule 2b)
+
+Opened by `cia-currency-checker` with curl and a generic browser user agent, for the
+syllabus's knowledge bullets that the IIA sources cannot support (Part 2 coverage section
+4 and section 5 item 6; Part 3 coverage section 5). Each file was downloaded and read as
+text; working copies are in the session scratchpad folder `knowledge_sources/` only (file
+name in the table), never in the repository. None is a prep provider, Wikipedia or an IIA
+members-only guide; each is free with no login. A Knowledge source keys only the fact it
+states, only in the topics its library heading names; who does what in internal auditing
+still rests on the Standards.
+
+| ID | Source, edition | Scratchpad file, sha256 prefix | Edition check (26 Nov 2026) | Supports (topics) | Does NOT support |
+|---|---|---|---|---|---|
+| K1 | NIST SP 800-34 Rev. 1, Contingency Planning Guide for Federal Information Systems, May 2010 (updated 11 Nov 2010), `nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-34r1.pdf` | `nist_sp800_34r1.pdf`, 476f04d4c60b0770, 149 pages | CSRC page: current final, no later revision | 2A3d: contingency planning and resilience (2.1), plan types incl. BCP, DRP, cyber incident response plan (2.2, 2.2.5), business impact analysis (3.2), MTD, RTO and RPO (3.2.1), backup and recovery (3.4.1), plan testing (3.5.1) | Business resilience as The IIA frames it (Organizational Resilience requirement, testable from 2027-10-01); federal vocabulary (ISCP, COOP) is not CIA vocabulary |
+| K2 | NIST SP 800-53 Rev. 5, Security and Privacy Controls, Sept 2020 (updates as of 10 Dec 2020), `nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf` | `nist_sp800_53r5.pdf`, fc63bcd61715d018, 492 pages | CSRC page: release 5.2.0 of 27 Aug 2025 adds or revises SA and SI controls and updates related-control lists (incl. CA-07, IR-04); none of the cited controls' text changed | 2A3c and 2A3f: purpose of a control catalog (1.1), account management (AC-2), separation of duties (AC-5), least privilege (AC-6), log review (AU-6), change control (CM-3), backup (CP-9), incident handling (IR-4), processing purposes for personal data (PT-3), input validation (SI-10) | "IT general controls" against "application controls" as named categories (NIST does not use them) |
+| K3 | NIST Cybersecurity Framework 2.0, CSWP 29, 26 Feb 2024, `nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf` | `nist_csf_2_0.pdf`, 3c31f46fee98cac0, 32 pages | CSRC page: current final (only a 2024 transition spreadsheet added) | 2A3c: what a framework is for (Section 1), the six Functions (Section 2), categories PR.AA, PR.DS, DE.CM, RS.MA, RC.RP | Anything the Cybersecurity Topical Requirement governs (that stays on The IIA's requirement) |
+| K4 | NIST Privacy Framework, Version 1.0, 16 Jan 2020, `nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.01162020.pdf` | `nist_privacy_framework_1_0.pdf`, 58e1f2373e1c8a57, 43 pages | nist.gov/privacy-framework: 1.0 is the final; 1.1 is an initial public draft | 2A3c: privacy risk management, the five Functions (Identify-P, Govern-P, Control-P, Communicate-P, Protect-P), the Core, privacy risk management practices (Appendix D) | Named privacy principles (OECD, the EU GDPR, the US FIPPs): no source for them was reachable (see blocked hosts) |
+| K5 | SEC Regulation S-X Rule 5-02 Balance sheets, 17 CFR 210.5-02, CFR revised as of 1 Apr 2025, `govinfo.gov/content/pkg/CFR-2025-title17-vol3/pdf/CFR-2025-title17-vol3-sec210-5-02.pdf` | `cfr_2025_17_210_5-02.pdf`, 3684801e9edadfea | The 2026 annual edition is not yet on GovInfo (page not found); eCFR could not be opened, so a 2025-26 amendment cannot be ruled out | 2A3e: the balance sheet captions for current assets (1 to 9, incl. 6 inventories), other investments (12), property, plant and equipment (13), current liabilities (19 to 21), long-term debt (22), equity (28 to 31) | A definition of "current" or of capital; ratios; anything beyond the SEC's caption list for commercial and industrial filers. Rule 5-03 (income statements, `cfr_2025_17_210_5-03.pdf`, 543bd75b8c7ea95a) was opened too but is not listed: no target bullet needs it |
+| K6 | OMB Prompt Payment rule, 5 CFR part 1315, CFR edition of 1 Jan 2026, `govinfo.gov/content/pkg/CFR-2026-title5-vol3/pdf/CFR-2026-title5-vol3-part1315.pdf` | `cfr_2026_5_part1315.pdf`, ae27bd394c9a806d, 15 pages | Current annual edition | 2A3f: what a receiving report is (1315.2(cc)); payment supported by the contract, the proper invoice and the receiving report (1315.9), and payment once those are matched (1315.5) | It is United States federal payment practice: an item keys only the documents matched, not a general purchase-to-pay control rule; inventory, ERP, CRM and GRC systems |
+| K7 | NIST SP 800-53A Rev. 5, Assessing Security and Privacy Controls, Jan 2022, `nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53Ar5.pdf` | `nist_sp800_53Ar5.pdf`, 75665570048b969a, 733 pages | CSRC page: release 5.2.0 of 27 Aug 2025 adds SA and SI procedures only | 2A6e (IT systems only): the assessment methods examine, interview and test (2.4.2, Appendix C) | Inquiry, observation, inspection, reperformance and analytical procedures as the CIA names them for accounting and operations |
+| K8 | NIST SP 800-137, Information Security Continuous Monitoring, Sept 2011, `nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-137.pdf` | `nist_sp800_137.pdf`, 2d1c0bf459f5e1bf, 80 pages | CSRC page: current final, no revision (SP 800-137A is a separate assessment guide) | 2B3a: what continuous monitoring is (Chapter One), automation (2.3), analysis and reporting (3.4), enabling technologies (Appendix D) | Embedded audit modules, dashboards, robotic process automation |
+| K9 | NIST AI 100-1, AI RMF 1.0, 26 Jan 2023, `nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf` | `nist_ai_100_1.pdf`, 7576edb531d98488, 48 pages | nist.gov AI RMF page: 1.0 current, "being revised" (watch item) | 3B1f and 2B3a: what an AI system is (Executive Summary), trustworthiness characteristics (Section 3), how AI risks differ from traditional software (Appendix B) | Machine learning methods in detail; AI as an audit tool beyond what an AI system is |
+| K10 | NIST IR 8202, Blockchain Technology Overview, Oct 2018, `nvlpubs.nist.gov/nistpubs/ir/2018/NIST.IR.8202.pdf` | `nist_ir8202.pdf`, 8cb346731900118b, 68 pages | CSRC page: current final | 3B1f: what a blockchain is (Executive Summary), permissionless and permissioned (2), smart contracts (6), limitations and misconceptions (7) | Accounting for digital assets |
+| K11 | NIST IR 8301, Blockchain Networks: Token Design and Management Overview, Feb 2021, `nvlpubs.nist.gov/nistpubs/ir/2021/NIST.IR.8301.pdf` | `nist_ir8301.pdf`, d4b8f88286d25bd3, 84 pages | CSRC page: current final | 3B1f: tokens as digital assets, fungible and non-fungible (2), wallets and custody (3), stablecoins and tokenized money (6.2) | Regulation or accounting of crypto assets |
+| K12 | NIST IR 8259 Rev. 1, Foundational Cybersecurity Activities for IoT Product Manufacturers, Apr 2026, `nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8259r1.pdf` | `nist_ir8259r1.pdf`, fb86f7ec8ec54791, 64 pages | CSRC page: IR 8259 (May 2020) was withdrawn on 20 Apr 2026 and superseded by this revision; the old file was deleted unused | 3B1f: what an IoT device and an IoT product are (Appendix B), product and system cybersecurity (2) | Manufacturer duties (not a CIA topic) |
+| K13 | NIST SP 800-213, IoT Device Cybersecurity Guidance for the Federal Government, Nov 2021, `nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-213.pdf` | `nist_sp800_213.pdf`, 8f90d1fc02a34364, 47 pages | CSRC page: current final | 3B1f: how IoT devices support security and the challenges they bring (2.2, 2.3) | |
+
+Edition pages opened the same day (scratchpad `csrc_*.html` and `page_*.html`): the CSRC pages
+of SP 800-53 Rev. 5, SP 800-53A Rev. 5, SP 800-34 Rev. 1, SP 800-137, CSF 2.0, IR 8202, IR
+8301, IR 8259, IR 8259 Rev. 1 and SP 800-213; nist.gov's AI RMF and Privacy Framework pages.
+
+**Knowledge bullets still unsupported, and why (26 Nov 2026).**
+
+| Bullet | What has no opened source | Why |
+|---|---|---|
+| 2A3c | IT general controls against application controls as named categories; named privacy principles | GAO's FISCAM (gao.gov) blocked by the session proxy; the OECD privacy guidelines (oecd.org), the EU GDPR (eur-lex.europa.eu: a challenge page, empty body) and the US FIPPs (fpc.gov) not reachable |
+| 2A3e | What makes an asset or liability current; capital; reading the balance sheet | investor.gov blocked; sec.gov answered with its automated-request block (it asks automated clients for contact details, which are not sent); fasb.org and ecfr.gov (redirects to unblock.federalregister.gov) blocked. Only the Regulation S-X captions (K5) |
+| 2A3f | ERP, CRM and GRC systems; inventory and supply-chain controls beyond K2, K5 and K6 | GAO Green Book 2025 and Financial Audit Manual (gao.gov) blocked |
+| 2A4a | Agile, integrated and remote audit approaches | scrumguides.org and agilemanifesto.org blocked; GAO Yellow Book blocked. No source |
+| 2A6e (non-IT), 2B4a, 2B4b | Inquiry, observation, inspection, reperformance, analytical procedures; process mapping; walk-throughs; RACI | pcaobus.org returned a Cloudflare challenge (not worked around); iaasb.org, ifac.org, issai.org, gao.gov blocked. No free standard-setter source for RACI was found; the pages search showed (state agencies, a university, Wikipedia, vendors) were not used, and their hosts were blocked anyway |
+| 2B3a | Embedded audit modules; dashboards; robotic process automation | No NIST source; the GSA RPA playbook (gsa.gov) blocked |
+| 2B5a | Ratios, variance and trend analysis | investor.gov and sec.gov (as above), PCAOB AS 2305 (Cloudflare) and GAO blocked |
+| 3B1f | Robotic process automation | As 2B3a |
+
+**Hosts blocked from this session on 26 Nov 2026** (proxy 403 or no connection, unless
+noted): gao.gov and www.gao.gov, investor.gov, ecfr.gov (redirect to
+unblock.federalregister.gov, refused), fasb.org, scrumguides.org, agilemanifesto.org,
+scrum.org, agilealliance.org, fpc.gov, oecd.org, gsa.gov, iaasb.org, ifac.org, issai.org,
+intosai.org, openstax.org, ifrs.org, acquisition.gov, treasury.gov, whitehouse.gov,
+ffiec.gov, cisa.gov. pcaobus.org: Cloudflare challenge. sec.gov: automated-request
+block. eur-lex.europa.eu: challenge page. Reachable: nvlpubs.nist.gov, csrc.nist.gov,
+www.nist.gov, www.govinfo.gov, coso.org, theiia.org.
+
+**Watch list additions.** NIST AI RMF 1.0 (its page says it is being revised); NIST Privacy
+Framework 1.1 (draft; when final, re-check K4's bullets); the 2026 CFR edition of 17 CFR
+210.5-02 on GovInfo; SP 800-53 releases after 5.2.0.
