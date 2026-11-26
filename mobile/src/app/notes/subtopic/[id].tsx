@@ -220,6 +220,8 @@ export default function NoteSubtopicScreen() {
         {/* Mobile 1.43: "In one line" leads; the lesson for this idea follows it. */}
         <NoteBody
           note={note}
+          // The open course's role names the "Think like the …" headings (CISA: the IS auditor).
+          role={cert.notesRole}
           lead={
             lesson ? (
               // Mobile 1.20: the lesson for this idea (Play = lessons). 1.22: its status in a kicker over its own title.

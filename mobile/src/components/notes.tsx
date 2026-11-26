@@ -4,7 +4,8 @@
  * Grove v2 primitives (docs/mobile/DESIGN_SYSTEM.md).
  *
  * Surface rules used here: text sits on the paper; lists use hairlines;
- * "The IS auditor’s lens" is the key-idea recipe (3px accent rule + italic
+ * "The IS auditor’s lens" (CISA; each course names its own role, see
+ * notesHeadings in content/certifications.ts) is the key-idea recipe (3px accent rule + italic
  * quote, never a card); exam traps are the one tinted block (tipBg).
  *
  * Mobile 1.21 (DESIGN_SYSTEM.md §11 "Study notes"): the page reads in three
@@ -25,6 +26,7 @@ import { Modal, Platform, Pressable, ScrollView, StyleSheet, useWindowDimensions
 import Animated, { ReduceMotion, useAnimatedProps, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Circle, parse, SvgAst, type JsxAST } from 'react-native-svg';
+import { notesHeadings } from '../content/certifications';
 import type { NoteAuditFocus, NoteCompare, NoteIllustration, NoteSubtopic, NoteTerm } from '../content/notes/types';
 import type { NoteReadState } from '../engine/noteReadState';
 import { svgMinFontSize, svgSize, themeSvg } from '../engine/notesSvg';
@@ -648,7 +650,8 @@ export function Movement({ n, title, ref }: { n: number; title: string; ref?: Re
 
 /**
  * "On this page" (mobile 1.21, design spec §3.4): the page's movements in one
- * 48pt row, "1 Understand · 2 Think like the IS auditor · 3 Keep it", each a
+ * 48pt row, "1 Understand · 2 Think like the IS auditor · 3 Keep it" (CISA's
+ * wording; the middle one follows the open course's role), each a
  * button that scrolls to its movement (smooth, instant under Reduce Motion)
  * and moves screen-reader focus there. A reference page is re-read the night
  * before; this shows its shape up front. At large text the items stack as
@@ -748,7 +751,17 @@ const FIRST = { marginTop: space.lg };
  * movements. Optional sections (compare, types, illustration, auditing it,
  * analogy, memory aid) are simply skipped; a movement with nothing in it is too.
  */
-export function NoteBody({ note, lead }: { note: NoteSubtopic; /** Mobile 1.43: right after "In one line" (the lesson row), before the movements. */ lead?: ReactNode }) {
+export function NoteBody({
+  note,
+  lead,
+  role,
+}: {
+  note: NoteSubtopic;
+  /** Mobile 1.43: right after "In one line" (the lesson row), before the movements. */
+  lead?: ReactNode;
+  /** The open course's `notesRole` (certifications.ts). Missing → the CISA "IS auditor" wording. */
+  role?: string;
+}) {
   const { c } = useTheme();
   const column = useColumnWidth();
   const native = nativeFigureFor(note.id);
@@ -756,9 +769,11 @@ export function NoteBody({ note, lead }: { note: NoteSubtopic; /** Mobile 1.43: 
   const understand = useRef<View>(null);
   const auditor = useRef<View>(null);
   const keep = useRef<View>(null);
+  // "Think like the IS auditor" / "The IS auditor’s lens" for CISA; the open course's own role otherwise.
+  const heads = notesHeadings(role);
   const movements = [
     { title: 'Understand', ref: understand },
-    { title: 'Think like the IS auditor', ref: auditor },
+    { title: heads.movement, ref: auditor },
     ...(keepIt ? [{ title: 'Keep it', ref: keep }] : []),
   ];
   return (
@@ -824,8 +839,8 @@ export function NoteBody({ note, lead }: { note: NoteSubtopic; /** Mobile 1.43: 
       <Section title="Example" />
       <T v="body">{note.example}</T>
 
-      {/* 2. Think like the IS auditor */}
-      <Movement n={2} title="Think like the IS auditor" ref={auditor} />
+      {/* 2. Think like the {role} (the IS auditor for CISA) */}
+      <Movement n={2} title={heads.movement} ref={auditor} />
       {/* Mobile 1.29: "Auditing it", after the example and right before the lens (learner review:
           kept apart from the compare table and diagram). Absent → nothing at all. */}
       {note.auditFocus && (
@@ -834,7 +849,7 @@ export function NoteBody({ note, lead }: { note: NoteSubtopic; /** Mobile 1.43: 
           <AuditFocus focus={note.auditFocus} />
         </>
       )}
-      <Section title="The IS auditor’s lens" style={note.auditFocus ? undefined : FIRST} />
+      <Section title={heads.lens} style={note.auditFocus ? undefined : FIRST} />
       <IsacaRule text={note.isacaRule} />
 
       {note.examTraps.length > 0 && (
