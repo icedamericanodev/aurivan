@@ -93,6 +93,13 @@ export interface ExamFormat {
   difficultyMix: Record<Difficulty, number>;
   /** Shown to learners as guidance, never as a promise of the real cut-off. */
   passingNote: string;
+  /**
+   * The scaled-score line the phone shows under mocks and readiness, in the owner's
+   * word rule ("the score needed", never "pass"). Optional: missing → today's line
+   * for the issuer (scaledScoreNote in content/scoreNote.ts), so ISACA and ISC2
+   * courses read exactly as before. A new issuer (The IIA) sets its own here.
+   */
+  scoreNote?: string;
 }
 
 export type CertStatus = 'available' | 'coming_soon';
@@ -106,6 +113,12 @@ export type CertStatus = 'available' | 'coming_soon';
 export interface CertIssuer {
   id: string;
   name: string;
+  /**
+   * Where a learner checks the issuer's booking rules, as a bare domain
+   * ("theiia.org"). Optional: missing → "isaca.org", the line every course
+   * live today shows (bookingLine in engine/readySigns.ts).
+   */
+  site?: string;
 }
 
 /** Everything the app needs to know about one certification. */
@@ -122,6 +135,12 @@ export interface Certification {
    * Missing → the CISA wording (notesHeadings in certifications.ts).
    */
   notesRole?: string;
+  /**
+   * The welcome screen's big line (and Settings → About's). Optional: missing →
+   * WELCOME_HEADLINE in content/brand.ts ("Think like an IS auditor."), so CISA
+   * never changes. A course whose role is not the IS auditor sets its own.
+   */
+  welcomeHeadline?: string;
   trademarkNotice: string;
   /** False when we can't confirm the mark is registered (plain "trademark", no ®). Defaults to true. */
   trademarkRegistered?: boolean;

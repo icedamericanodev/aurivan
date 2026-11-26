@@ -5488,9 +5488,10 @@ function unlockWeight(rec) {
     return rec.attempts <= 1 && rec.lastAssisted ? exports.ASSISTED_WEIGHT : 1;
 }
 exports.MIN_SAMPLE = 10;
+const QUESTION_DOMAIN = /^(?:[a-z][a-z0-9]*_)?d(\d+)_/;
 function domainOf(questionId) {
     var _a, _b;
-    return (_b = (_a = /^d(\d+)_/.exec(questionId)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : '?';
+    return (_b = (_a = QUESTION_DOMAIN.exec(questionId)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : '?';
 }
 function domainMastery(cert, answers) {
     var _a;
@@ -10375,7 +10376,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "b10fbd4836f5653c";
+  api.sourceHash = "c6ba9ec0f9a1d235";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

@@ -86,8 +86,8 @@ import { dayKey } from '../engine/streak';
 import { shortDate } from '../lib/format';
 import { DAILY_MINUTES, examFocusedOf, FAMILIARITIES, FAMILIARITY_INFO, KEEP_TODAY_LINE, minutesLabel, minutesSpoken, type DailyMinutes, type Familiarity } from '../engine/fit';
 import { MODE_INFO, STUDY_MODES, type StudyMode } from '../engine/studyModes';
-import { AI_DISCLAIMER_LINE, CERT_SCOPE_LINE, HOW_MADE_TITLE, PROVENANCE_LINE, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
-import { CERTIFICATIONS, DEFAULT_CERT_ID, combinedTrademarkNotice, selectableCertifications } from '../content/certifications';
+import { AI_DISCLAIMER_LINE, CERT_SCOPE_LINE, HOW_MADE_TITLE, PROVENANCE_LINE, WELCOME_LINE, welcomeHeadline } from '../content/brand';
+import { CERTIFICATIONS, DEFAULT_CERT_ID, combinedTrademarkNotice, getCertification, selectableCertifications } from '../content/certifications';
 import { effectiveCertId } from '../lib/activeCert';
 import { hasContent } from '../content/loader';
 import { hasNotes } from '../content/notes';
@@ -1050,7 +1050,8 @@ export default function Settings() {
         </View>
         {/* Mobile 1.39: the same lead as the welcome screen, one CISA story (no platform tagline). */}
         <T v="headline" accessibilityRole="header" style={{ marginTop: space.lg }}>The KaiSip way</T>
-        <T v="hero" style={{ marginTop: space.xs }}>{WELCOME_HEADLINE}</T>
+        {/* The open course's own welcome line, if it has one; CISA has none, so "Think like an IS auditor." (brand.ts). */}
+        <T v="hero" style={{ marginTop: space.xs }}>{welcomeHeadline(getCertification(effectiveCertId(s.activeCertId)))}</T>
         <T v="quote" color={c.ink2} style={{ marginTop: space.xs }}>{WELCOME_LINE}</T>
         <Gap h={space.lg} />
         <PillarList look="rows" />

@@ -70,6 +70,16 @@ export const HOW_MADE_TITLE = 'How questions are made';
  * live in Settings → About.)
  */
 export const WELCOME_HEADLINE = 'Think like an IS auditor.';
+
+/**
+ * The welcome headline for a course (CIA_BANK_PLAN.md section 11): the course's own
+ * `welcomeHeadline` when it has one, otherwise WELCOME_HEADLINE above. No course sets
+ * one today, so every screen still reads "Think like an IS auditor.". A missing course
+ * or a blank line also falls back, so the welcome is never empty.
+ */
+export function welcomeHeadline(cert?: { welcomeHeadline?: string }): string {
+  return cert?.welcomeHeadline?.trim() || WELCOME_HEADLINE;
+}
 /*
  * Premium round 2 (expert ruling C, growth-marketer, 30 Oct 2026): the welcome is a title page, and
  * its sub is one plain line. One string, changed here (the one-story rule), so Settings → About says

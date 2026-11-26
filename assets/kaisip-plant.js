@@ -10073,9 +10073,10 @@ function unlockWeight(rec) {
     return rec.attempts <= 1 && rec.lastAssisted ? exports.ASSISTED_WEIGHT : 1;
 }
 exports.MIN_SAMPLE = 10;
+const QUESTION_DOMAIN = /^(?:[a-z][a-z0-9]*_)?d(\d+)_/;
 function domainOf(questionId) {
     var _a, _b;
-    return (_b = (_a = /^d(\d+)_/.exec(questionId)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : '?';
+    return (_b = (_a = QUESTION_DOMAIN.exec(questionId)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : '?';
 }
 function domainMastery(cert, answers) {
     var _a;
@@ -10439,7 +10440,8 @@ function stepLabel(stage) {
   defs["src/engine/readySigns.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ISACA_LINE = exports.STUDY_BAR_NOTE = exports.SIGNS_HEADING_DATED = exports.SIGNS_HEADING = exports.SIGN_NOT_YET = exports.SIGN_MET = exports.SIGN_TITLE = exports.MOCKS_NEEDED = void 0;
+exports.ISACA_LINE = exports.DEFAULT_ISSUER_SITE = exports.STUDY_BAR_NOTE = exports.SIGNS_HEADING_DATED = exports.SIGNS_HEADING = exports.SIGN_NOT_YET = exports.SIGN_MET = exports.SIGN_TITLE = exports.MOCKS_NEEDED = void 0;
+exports.bookingLine = bookingLine;
 exports.allMetLine = allMetLine;
 exports.domainsMet = domainsMet;
 exports.mocksMet = mocksMet;
@@ -10458,7 +10460,11 @@ exports.SIGN_NOT_YET = 'Not yet';
 exports.SIGNS_HEADING = 'Ready to book?';
 exports.SIGNS_HEADING_DATED = 'Signs for your exam date';
 exports.STUDY_BAR_NOTE = 'This app’s own study bar, not a prediction of your result.';
-exports.ISACA_LINE = 'Check isaca.org before you book.';
+exports.DEFAULT_ISSUER_SITE = 'isaca.org';
+function bookingLine(site) {
+    return `Check ${(site === null || site === void 0 ? void 0 : site.trim()) || exports.DEFAULT_ISSUER_SITE} before you book.`;
+}
+exports.ISACA_LINE = bookingLine();
 const COUNT_WORD = { 2: 'Both signs are', 3: 'All three signs are' };
 function allMetLine(n) {
     var _a;
@@ -10479,7 +10485,7 @@ function readySigns(input) {
     if (input.mockSign !== false)
         signs.push({ id: 'mocks', title: exports.SIGN_TITLE.mocks, met: mocksMet(input.mocks, input.examQuestions) });
     const allMet = signs.every((s) => s.met);
-    return { signs, allMet, line: allMet ? allMetLine(signs.length) : exports.STUDY_BAR_NOTE, isacaLine: allMet ? exports.ISACA_LINE : null };
+    return { signs, allMet, line: allMet ? allMetLine(signs.length) : exports.STUDY_BAR_NOTE, isacaLine: allMet ? bookingLine(input.issuerSite) : null };
 }
   };
   links["src/engine/srs.ts"] = {};
@@ -11443,6 +11449,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "480a4614dcadbebd";
+  api.sourceHash = "b1a462d170fb7a8c";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

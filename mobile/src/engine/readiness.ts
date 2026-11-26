@@ -110,9 +110,17 @@ export interface DomainMastery {
 
 export const MIN_SAMPLE = 10;
 
-/** Domain id from a question id like "d4_217" → "4". */
+/**
+ * Domain id from a question id: "d4_217" → "4" (CISA), and a course-prefixed
+ * id "cia1_d1_001" / "crisc_d2_010" / "aaia_d3_001" → its domain number
+ * (CIA_BANK_PLAN.md section 11). The optional prefix is one lower-case word
+ * (letters, then letters or digits) and an underscore, so a CISA id reads the
+ * same as before. Anything else → "?".
+ */
+const QUESTION_DOMAIN = /^(?:[a-z][a-z0-9]*_)?d(\d+)_/;
+
 export function domainOf(questionId: string): string {
-  return /^d(\d+)_/.exec(questionId)?.[1] ?? '?';
+  return QUESTION_DOMAIN.exec(questionId)?.[1] ?? '?';
 }
 
 export function domainMastery(
