@@ -2119,6 +2119,42 @@ over waiting for the textbook. What it means:
 - **The textbook** is on hold. Buy it only if the section experts still find bullets the
   public sources cannot support.
 
+**Owner decision (27 Nov 2026): no IIA licence; KaiSip builds its own question banks and
+builds freely.** The licence question no longer gates building, publishing or selling the CIA
+packs. What still holds, because it is copyright and trademark law, not a licence: every item,
+note and guide is KaiSip's own wording (The IIA's text is never copied or closely paraphrased,
+and never stored in the repository; no prep provider's questions); The IIA's marks are used
+only to say what the course prepares for, with the trademark notice `app-store-compliance-reviewer`
+set (section 11), never in the app name or icon, and never suggesting endorsement. The
+compliance list for selling without a licence (`app-store-compliance-reviewer`, 27 Nov 2026;
+conditional go, the owner accepting that The IIA may complain to Google about commercial use
+of its marks):
+
+1. **No CIA, IIA or "Certified Internal Auditor" in the app name, icon or developer name.**
+   Products read like "KaiSip Internal Audit, 6 months (for CIA® Part 1)".
+2. **Never** "official", "approved", "endorsed", "accredited", "licensed", "partner",
+   "IIA-aligned", pass guarantees or pass rates, "real exam questions" or "dumps"; no IIA
+   logo or look-alike colours or exam screens. Allowed: "Original practice for the CIA®
+   Part 1 exam (2025 syllabus)."
+3. **The notice** (store description, each CIA paywall, `terms.html` §3, the `home.html`
+   footer and FAQ, the support page): "Certified Internal Auditor® and CIA® are registered
+   trademarks, and Global Internal Audit Standards™ is a trademark, of The Institute of
+   Internal Auditors, Inc. (The IIA). KaiSip is an independent study aid. It is not
+   affiliated with, sponsored, endorsed or licensed by The IIA. All notes and questions are
+   written by KaiSip; none are actual exam questions."
+4. **In-app notice:** paste the corrected block in section 11 (with `mark: 'CIA'`, without
+   `trademarkRegistered: false`, ISSUER_MARK `iia: 'The IIA®'`, ISSUER_OWNER `iia: 'The
+   Institute of Internal Auditors, Inc.'`), as `available` in the release that sells them,
+   never `coming_soon` (Apple 2.5.19); update `trademark-notice.test.ts`.
+5. **IIA text:** syllabus by topic code, KaiSip's own titles and a link only, never the
+   bullets; at most one short phrase from the Standards, credited.
+6. **Non-disclosure (Candidate Handbook, April 2026, appendix A):** never IIA practice
+   questions, recalled exam items or a prep provider's bank; no author draws on a remembered
+   exam item; `_provenance` on every item.
+7. **Board leak guard:** add `cia` to the dumps pattern in `mobile/src/engine/leakGuard.ts`
+   and `supabase/functions/_shared/leakGuard.ts`, with a test.
+8. **Takedown readiness:** keep the provenance and originality evidence ready to send.
+
 ## 10. Names and store copy (draft, not approved)
 
 growth-marketer drafted these inside the store length limits;
