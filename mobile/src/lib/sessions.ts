@@ -4,7 +4,7 @@
  */
 import { Alert } from 'react-native';
 import { getCertification } from '../content/certifications';
-import { findQuestion, getAllQuestions, siblingGroupOf } from '../content/loader';
+import { findQuestion, getAllQuestions, getAllQuestionsIncludingRetired, isHeldBackOut, siblingGroupOf } from '../content/loader';
 import type { Difficulty } from '../content/types';
 import { buildMockExam, mockPool } from '../engine/blueprint';
 import { mockPace, type MockTiming } from '../engine/pace';
@@ -32,6 +32,7 @@ import { weakDrillPool, weakDrillRanked } from '../engine/weakSpots';
 import { spreadSiblings } from '../engine/siblings';
 import { isFirstTryCourse, seenBy } from '../engine/firstTry';
 import { buildShortMock, type ShortMockDraw } from '../engine/shortMock';
+import { DISCARD_LINE, FORM_TITLE, heldBackFormIn, isTaken, SEEN_TITLE, type HeldBackForm } from '../engine/heldBack';
 
 /** A question that is in the pack and not retired (a spare must be one that can still be dealt). */
 function isLive(certId: string, id: string): boolean {
@@ -77,6 +78,10 @@ function newSession(
   // answer is marked: app/session.tsx). A mock's draw already holds one per group (buildMockExam).
   // With no group in the set (every live course) the ids are untouched.
   if (mode !== 'mock' && !keepOrder) ids = [...spreadSiblings(ids, siblingGroupOf(certId), spares)];
+  // The held-back form (engine/heldBack.ts): until it is taken, its questions are in no set but the
+  // form itself, whichever list asked for them (a note's questions, a lesson, a principle…). Every
+  // live course has no held-back question, so the ids are untouched.
+  if (!extra.heldBack && ids.some((id) => isHeldBackOut(certId, id))) ids = ids.filter((id) => !isHeldBackOut(certId, id));
   // A set asked for with a countdown is always timed: if the countdown cannot be made, it counts up.
   const timed = mode !== 'mock' && (countdownSec !== undefined ? true : (askTimed ?? useSettings.getState().practiceTimer));
   const rng = createRng(now);
@@ -131,6 +136,9 @@ function noteDiscardedMock() {
   if (!old) return;
   const ids = seenOnReplace(old, Date.now());
   if (ids.length) useProgress.getState().noteShown(old.certId, ids);
+  // The held-back form, discarded after it started (its first question was shown): it counts as
+  // taken (guardedStart said so before "Discard and start"), so its questions join practice.
+  if (old.heldBack && !old.finishedAt && ids.length) useProgress.getState().markHeldBackTaken(old.certId, old.heldBack.form);
 }
 
 /**
@@ -399,6 +407,38 @@ export interface MockOptions {
   seed?: number;
 }
 
+/**
+ * The held-back full form of this course and whether the learner has taken it (engine/heldBack.ts).
+ * Null for a course without one, or one that does not opt in (CISA: always null).
+ */
+export function heldBackOf(certId: string): (HeldBackForm & { taken: boolean }) | null {
+  const cert = getCertification(certId);
+  if (!cert || !isFirstTryCourse(cert)) return null;
+  const form = heldBackFormIn(getAllQuestionsIncludingRetired(certId));
+  if (!form) return null;
+  return { ...form, taken: isTaken(selectCert(useProgress.getState(), certId).heldBackTaken, form.key) };
+}
+
+/**
+ * Start the held-back full form: its questions (all of them, the same for everyone) in a random
+ * order, timed like the real exam for the form's length. A retake (the form already taken) is
+ * "Full exam (seen)". Null when the course has no form.
+ */
+export function startHeldBack(certId: string, opts: Omit<MockOptions, 'seed'> = {}) {
+  const cert = getCertification(certId);
+  const form = heldBackOf(certId);
+  if (!cert || !form) return null;
+  const timing = opts.timing ?? 'standard';
+  const ids = shuffled(form.ids, createRng(Date.now()));
+  const { minutesAllowed } = mockPace(cert.exam, ids.length, timing);
+  return newSession('mock', certId, form.taken ? SEEN_TITLE : FORM_TITLE, ids, {
+    ...(minutesAllowed !== null ? { deadline: Date.now() + minutesAllowed * 60_000 } : {}),
+    timing,
+    ...(opts.hideClock && minutesAllowed !== null ? { hideClock: true } : {}),
+    heldBack: { form: form.key, seen: form.taken },
+  });
+}
+
 /** True when a mock of `questions` for this course is the per-learner short mock (engine/shortMock.ts). */
 export function isShortMock(certId: string, questions: number): boolean {
   const cert = getCertification(certId);
@@ -480,9 +520,11 @@ export function guardedStart(
     current = useSession.getState().active;
   }
   if (current && !current.finishedAt) {
+    // The held-back form's one fresh try: discarding it counts as taking it, said before (engine/heldBack.ts).
+    const takes = current.heldBack && !current.heldBack.seen ? ` ${DISCARD_LINE}` : '';
     Alert.alert(
       'Replace your unfinished session?',
-      `You have an unfinished "${legacyTitle(current.title)}". Starting something new will discard it.`,
+      `You have an unfinished "${legacyTitle(current.title)}". Starting something new will discard it.${takes}`,
       [
         { text: 'Keep it', style: 'cancel' },
         { text: 'Discard and start', style: 'destructive', onPress: launch },

@@ -23,7 +23,9 @@ import { accuracyTile, twigWeek } from '../../engine/groveToday';
 import { SETTINGS_ROW_NOTE, YouSummaryLine } from '../../components/youTop';
 import { Button, EmptyState, Enter, ICON_SIZE, InviteRow, Lead, ListRow, Screen, T, useFontScale } from '../../components/ui';
 import { pacingStats, pacingStatsLine, spokenMin } from '../../engine/pace';
-import { mockSubtitle } from '../../components/readinessReport';
+import { readinessRead } from '../../lib/readinessRead';
+import { useToday } from '../../lib/useJourney';
+import { mockRowTitle, mockSubtitle } from '../../components/readinessReport';
 import { RANGE_MIN_ANSWERS, readinessRange, type ReadinessRange } from '../../engine/readinessRange';
 import { mockPct } from '../../engine/readinessReport';
 import { dayKey } from '../../engine/streak';
@@ -65,7 +67,10 @@ export default function You() {
   const { cert, readiness, progress, streak, dueCount, daysLeft } = useActiveCert();
   // One quiet line on pacing across timed mocks (engine/pace.ts; untimed mocks never count).
   const pacingLine = pacingStatsLine(pacingStats(progress.mocks));
-  const range = readinessRange(cert, readiness);
+  // The top range states readiness: an opted-in course's follows first tries (lib/readinessRead.ts).
+  // CISA reads every answer, exactly as before. Answered and mastered below keep counting every answer.
+  const todayKey = useToday().key;
+  const range = readinessRange(cert, readinessRead(cert, progress, todayKey));
   const answered = readiness.domains.reduce((s, d) => s + d.answered, 0);
   const mastered = readiness.domains.reduce((s, d) => s + d.mastered, 0);
   const growth = useMindsetGrowth(cert.id, progress);
@@ -555,12 +560,12 @@ const MockHistory = memo(function MockHistory({ mocks, miniMock }: { mocks: read
           <ListRow
             key={m.id}
             lead={<Lead value={`${mockPct(m)}%`} unit="score" />}
-            title={`${m.total} questions`}
+            title={mockRowTitle(m)}
             // Extra time and untimed mocks are labelled in history (older results were standard).
             // The time in the same words as Results ("3 h 31 min", "Under 1 min").
             subtitle={mockSubtitle(m)}
             // mockPct: a 0-question mock (a hand-edited backup) reads 0%, never NaN.
-            accessibilityLabel={`${m.total} questions, score ${mockPct(m)} percent, ${spokenMin(mockSubtitle(m))}`}
+            accessibilityLabel={`${mockRowTitle(m)}, score ${mockPct(m)} percent, ${spokenMin(mockSubtitle(m))}`}
             // Mobile 1.16 (Elena's gap): a past mock opens the report with its domains shown.
             accessibilityHint="Opens your readiness report with this mock’s domains"
             onPress={() => router.push({ pathname: '/readiness', params: { mock: m.id } })}

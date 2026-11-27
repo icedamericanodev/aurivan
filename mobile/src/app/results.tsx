@@ -112,6 +112,8 @@ import { moveFocus, sayLater } from '../lib/a11y';
 import { displayToOriginal, originalToDisplay, renderText, type Permutation } from '../engine/shuffle';
 import { aboutMin, coachingTag, practicePace, spokenMin, timeStat, TIMING_LABEL } from '../engine/pace';
 import { INCLUDES_SEEN } from '../engine/shortMock';
+import { FORM_SCORE_NOTE, SEEN_LINE, sectionResults, type SectionResult } from '../engine/heldBack';
+import { readinessRead } from '../lib/readinessRead';
 import { countdownResult, readCountdown, timerKindOf } from '../engine/practiceCountdown';
 import { coachingLine } from '../lib/coachingCopy';
 import { msUsed, scoreSession, sessionPacing } from '../lib/finishSession';
@@ -282,6 +284,8 @@ export default function Results() {
   const score = useMemo(() => (active ? scoreSession(active) : null), [active]);
   // Mobile 1.51: the areas now, for the growth plate (read from the saved answers, which this set already updated).
   const answersNow = useProgress((s) => (active ? selectCert(s, active.certId).answers : undefined));
+  // What the readiness note reads (lib/readinessRead.ts): an opted-in course's first tries. CISA: every answer.
+  const cpNow = useProgress((s) => (active ? selectCert(s, active.certId) : undefined));
   // Mock pacing: time used, median, checks, unanswered, last 10%, slowest domain.
   const pacing = useMemo(() => (active?.mode === 'mock' && active.deadline ? sessionPacing(active) : null), [active]);
   // The one milestone this session celebrates (lib/finishSession.ts picked it).
@@ -324,7 +328,8 @@ export default function Results() {
   // A new drag skips a playing moment to its end (motion.md §2.7: any tap or scroll).
   const skipMoment = useRef<(() => void) | null>(null);
   // One signature at a time: the moment also waits for the rings to settle.
-  const growing = Boolean(firstLook && score && active && Math.round((score.correct / (active.mode === 'mock' ? score.total : Math.max(score.answered, 1))) * 100) >= 60);
+  // A seen retake of the held-back form is never celebrated as progress: no growth plays (engine/heldBack.ts).
+  const growing = Boolean(firstLook && score && active && !active.heldBack?.seen && Math.round((score.correct / (active.mode === 'mock' ? score.total : Math.max(score.answered, 1))) * 100) >= 60);
   const [ringsDone, setRingsDone] = useState(!growing);
   useEffect(() => {
     if (ringsDone) return;
@@ -490,7 +495,10 @@ export default function Results() {
   const grow = growing;
   // Mobile 1.51: the growth plate's facts (engine/fieldGuide.ts), and readiness now for its NOTE.
   const readinessNow = readinessFor(cert, answersNow ?? {});
-  const range = readinessRange(cert, readinessNow);
+  // The note states readiness, so an opted-in course's follows first tries (CISA: readinessNow itself).
+  const range = readinessRange(cert, cpNow ? readinessRead(cert, cpNow, dayKey(active.finishedAt ?? active.startedAt)) : readinessNow);
+  // The held-back form (engine/heldBack.ts): percent and counts by section, never a scaled score.
+  const formRows = active.heldBack ? sectionResults(cert, score.byDomain) : null;
   const stems = setStems(cert.domains, readinessNow.domains, score.byDomain, active.before);
   const plateLine = emptyPlateLine(stems);
   const figure = stems.length === 1 ? growthFigure(stems[0]) : null;
@@ -538,6 +546,12 @@ export default function Results() {
 
       {/* Mobile 1.51 (Field Guide): Fig. 6, the growth plate. The areas this set asked about, now, on one scale,
           with this set's change where both ends have a number; "Plate not yet drawn" while none has one. */}
+      {formRows && active.heldBack && (
+        <Enter i={PLATE_GROUP} style={{ marginTop: space.xl }}>
+          <HeldBackResult rows={formRows} seen={active.heldBack.seen} />
+        </Enter>
+      )}
+      {!formRows && (
       <Enter i={PLATE_GROUP} style={{ marginTop: space.xl }}>
         {plateLine ? (
           <EmptyPlate fig={{ n: 6, title: plateTitle }} body={plateLine} />
@@ -562,6 +576,7 @@ export default function Results() {
           <KeyCaption label="Note">{`Readiness is ${range.low} to ${range.high}%: a study estimate, not a prediction.`}</KeyCaption>
         )}
       </Enter>
+      )}
 
       {/* Mobile 1.43: which ones, at a glance (up to 20 practice questions), or one line (a mock, a longer set). */}
       <Enter i={2} style={{ marginTop: space.xl }}>
@@ -600,11 +615,13 @@ export default function Results() {
             />
           ) : null}
         </SpecimenLabel>
-        {isMock && (
+        {/* The held-back form never shows a scaled-score line (its result is percent and counts only). */}
+        {isMock && !active.heldBack && (
           <T v="meta" style={{ marginTop: space.md }}>
             Practice scores are not scaled exam scores. {scaledScoreNote(cert)}
           </T>
         )}
+        {active.heldBack && <T v="meta" style={{ marginTop: space.md }}>{FORM_SCORE_NOTE}</T>}
         {/* How well "how sure I felt" matched the result (only when enough answers were rated). */}
         {calibration && <T v="meta" style={{ marginTop: space.md }}>{calibration}</T>}
         {isMock && !active.deadline && (
@@ -724,6 +741,36 @@ export default function Results() {
  * questions they got wrong, not only the notes. The action scrolls to Review answers (instant under
  * Reduce Motion) and moves screen-reader focus to its heading. A child of Screen, so it can scroll it.
  */
+/**
+ * The held-back form's result (engine/heldBack.ts): each section's count and percent, in the
+ * course's order. A retake says first, and plainly, that it was seen and is not counted.
+ */
+function HeldBackResult({ rows, seen }: { rows: SectionResult[]; seen: boolean }) {
+  const { c } = useTheme();
+  return (
+    <View testID="held-back-result">
+      {seen && (
+        <View testID="held-back-seen" style={{ borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md, marginBottom: space.md }}>
+          <T v="small">{SEEN_LINE}</T>
+        </View>
+      )}
+      <T v="caption" color={c.accentText} accessibilityRole="header">By section</T>
+      {rows.map((r, i) => (
+        <View
+          key={r.domainId}
+          accessible
+          accessibilityLabel={r.spoken}
+          testID={`held-back-row-${r.domainId}`}
+          style={{ paddingVertical: space.sm, borderBottomWidth: i === rows.length - 1 ? 0 : 1, borderBottomColor: c.line }}
+        >
+          <T v="label">{r.name}</T>
+          <T v="meta" num>{r.line}</T>
+        </View>
+      ))}
+    </View>
+  );
+}
+
 function JumpSection({ title, target }: { title: string; target: { current: View | null } }) {
   const scroll = useScreenScroll();
   return (

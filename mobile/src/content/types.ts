@@ -61,6 +61,15 @@ export interface PackQuestion {
    * siblings file (scripts/siblings-pack.cjs). Absent on every live course.
    */
   siblingGroup?: string;
+  /**
+   * The held-back full form (docs/content/CIA_BANK_PLAN.md section 11, item 7):
+   * the form's frozen date ("2026-11-27"), on each question of the one full
+   * exam a course keeps out of practice until the learner has taken it
+   * (engine/heldBack.ts). Written by the pack builder from the course's
+   * held-back file (scripts/heldback-pack.cjs). Read only for a course with
+   * `readinessRule: 'firstTry'`. Absent on every live course.
+   */
+  heldBack?: string;
 }
 
 /** One exam domain inside a certification. */

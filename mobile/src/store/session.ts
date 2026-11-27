@@ -131,6 +131,12 @@ export interface ActiveSession {
    * seen questions". Optional: every other session (CISA's mini mock included) has none.
    */
   seenReused?: number;
+  /**
+   * The held-back full form (engine/heldBack.ts): this mock IS the form `form` (its frozen date).
+   * `seen` is true for a retake ("Full exam (seen)": kept out of readiness, never celebrated).
+   * Optional: every other session has none.
+   */
+  heldBack?: { form: string; seen: boolean };
   finishedAt?: number; // set when the learner finishes / submits
 }
 

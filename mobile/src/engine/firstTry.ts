@@ -125,6 +125,69 @@ export function firstTryLabel(firstTries: number, right: number): string {
   return firstTries < FIRST_TRY_SETTLED ? `${line} · ${EARLY_READ}` : line;
 }
 
+/** The pack's questions that count today: not retired and on the exam (testableOn). */
+function liveToday(questions: readonly PackQuestion[], today: string): Map<string, PackQuestion> {
+  const live = new Map<string, PackQuestion>();
+  for (const q of questions) if (!q.retired && testableOn(q, today)) live.set(q.id, q);
+  return live;
+}
+
+/** One counted first try, with its question id. */
+interface CountedTry {
+  id: string;
+  first: FirstTry;
+}
+
+/**
+ * Each section's COUNTED first tries, newest first, at most FIRST_TRY_WINDOW:
+ * unhinted, at a question in `live`, and not seen before the try. The one
+ * rule both firstTryReadiness and firstTryAnswers read, so they never differ.
+ */
+function countedTries(live: ReadonlyMap<string, PackQuestion>, answers: Readonly<Record<string, AnswerRecord>>, shown: Shown | undefined): Map<string, CountedTry[]> {
+  const tries = new Map<string, CountedTry[]>();
+  for (const [id, rec] of Object.entries(answers)) {
+    const f = rec.first;
+    const q = live.get(id);
+    if (!f || !q || f.assisted) continue;
+    const seenAt = shown?.[id];
+    if (seenAt !== undefined && seenAt < f.at) continue;
+    const list = tries.get(q.domainId) ?? [];
+    list.push({ id, first: f });
+    tries.set(q.domainId, list);
+  }
+  // Newest first, then the window. Ties keep a stable order (by id).
+  for (const [d, list] of tries) {
+    tries.set(d, list.sort((a, b) => b.first.at - a.first.at || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)).slice(0, FIRST_TRY_WINDOW));
+  }
+  return tries;
+}
+
+/**
+ * Readiness wiring (CIA_BANK_PLAN.md section 11, "Which screens read first tries"):
+ * the answer records every readiness STATEMENT of an opted-in course reads (the
+ * range on Today, You and the report, the report's rows, the exam-ready hold).
+ * One record per counted first try (the same tries as firstTryReadiness: the
+ * latest 50 per section, unhinted, at unseen questions on the exam today),
+ * shaped as a single clean answer: right or not, at the try's time. So the
+ * existing readiness maths (engine/readiness.ts, readinessRange.ts) runs on
+ * first tries unchanged. The plant, streaks and activity counts never read
+ * this: they keep counting every answer.
+ */
+export function firstTryAnswers(
+  questions: readonly PackQuestion[],
+  answers: Readonly<Record<string, AnswerRecord>>,
+  shown: Shown | undefined,
+  today: string,
+): Record<string, AnswerRecord> {
+  const out: Record<string, AnswerRecord> = {};
+  for (const list of countedTries(liveToday(questions, today), answers, shown).values()) {
+    for (const { id, first } of list) {
+      out[id] = { attempts: 1, correctCount: first.correct ? 1 : 0, lastCorrect: first.correct, lastAt: first.at };
+    }
+  }
+  return out;
+}
+
 /**
  * First-try readiness, section by section in the course's order.
  *
@@ -144,20 +207,8 @@ export function firstTryReadiness(
   shown: Shown | undefined,
   today: string,
 ): FirstTrySection[] {
-  const live = new Map<string, PackQuestion>();
-  for (const q of questions) if (!q.retired && testableOn(q, today)) live.set(q.id, q);
-  // Each section's counted first tries.
-  const tries = new Map<string, FirstTry[]>();
-  for (const [id, rec] of Object.entries(answers)) {
-    const f = rec.first;
-    const q = live.get(id);
-    if (!f || !q || f.assisted) continue;
-    const seenAt = shown?.[id];
-    if (seenAt !== undefined && seenAt < f.at) continue;
-    const list = tries.get(q.domainId) ?? [];
-    list.push(f);
-    tries.set(q.domainId, list);
-  }
+  const live = liveToday(questions, today);
+  const tries = countedTries(live, answers, shown);
   // Each section: is anything on the exam today still unseen?
   const seen = seenBy(answers, shown);
   const unseenLeft = new Set<string>();
@@ -167,10 +218,9 @@ export function firstTryReadiness(
     if (!seen(q.id)) unseenLeft.add(q.domainId);
   }
   return cert.domains.map((d) => {
-    // Newest first, then the window. Ties keep a stable order (by the try itself).
-    const latest = (tries.get(d.id) ?? []).sort((a, b) => b.at - a.at).slice(0, FIRST_TRY_WINDOW);
+    const latest = tries.get(d.id) ?? [];
     const firstTries = latest.length;
-    const right = latest.filter((f) => f.correct).length;
+    const right = latest.filter((t) => t.first.correct).length;
     const metAll = hasAny.has(d.id) && !unseenLeft.has(d.id);
     return {
       domainId: d.id,

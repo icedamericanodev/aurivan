@@ -186,8 +186,12 @@ function finishSessionNow(opts: { celebrate?: boolean }) {
       ...(pacing.checkpoints.length ? { checkpoints: pacing.checkpoints.map((c) => c.deviation) } : {}),
       // First-try courses: a short mock that reused seen questions says so on its saved result.
       ...(s.seenReused ? { includesSeen: true } : {}),
+      // The held-back form: the one fresh try, or a seen retake (kept out of the mock trend).
+      ...(s.heldBack ? { heldBack: s.heldBack.seen ? ('seen' as const) : ('fresh' as const) } : {}),
     };
     progress.recordMock(s.certId, result);
+    // The held-back form, submitted (or its time ran out): taken, so its questions join practice.
+    if (s.heldBack) progress.markHeldBackTaken(s.certId, s.heldBack.form, endedAt);
   } else {
     // First-try courses: a practice set ended early still SHOWED the question the learner was on
     // (answers were recorded one by one; this one had none), so a later first try at it never
@@ -225,7 +229,9 @@ function finishSessionNow(opts: { celebrate?: boolean }) {
   checkPlant(s.certId);
   // Mobile 1.47: a session a home-screen widget started counts as completed (beta counters, this phone only).
   noteWidgetSessionEnd(s.widget, score.answered, s.questionIds.length);
-  if (opts.celebrate === false) return;
+  // A seen retake of the held-back form is never celebrated as progress (engine/heldBack.ts):
+  // any milestone it earned stays queued for a later session.
+  if (opts.celebrate === false || s.heldBack?.seen) return;
   const moment = celebrateNext(s.certId);
   if (moment) useSession.getState().setMilestone(moment.key);
 }

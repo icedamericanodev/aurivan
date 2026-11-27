@@ -37,10 +37,13 @@
  * - If the choices leave fewer questions than asked, the button and a line say the real length.
  */
 import { FeatureInfo } from '../../components/featureInfo';
-import { findQuestion } from '../../content/loader';
+import { findQuestion, getAllQuestionsIncludingRetired } from '../../content/loader';
+import { HeldBackRow } from '../../components/heldBack';
+import { isFirstTryCourse } from '../../engine/firstTry';
+import { heldBackFormIn, isTaken } from '../../engine/heldBack';
 import * as Router from 'expo-router';
 import { router } from 'expo-router';
-import { Children, memo, useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
+import { Children, memo, useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { AccessibilityInfo, Dimensions, Pressable, View } from 'react-native';
 import { ArrowRight, Bookmark, ChartColumn, ChevronRight, Compass, Crosshair, ICON_STROKE, Library, RotateCcw, SlidersHorizontal, X } from '../../components/icons';
 import { PracticeLeaf } from '../../components/glyphs';
@@ -1146,6 +1149,10 @@ const MockExams = memo(function MockExams({ cert, headRef }: { cert: Certificati
   const miniMinutes = Math.round((cert.exam.minutes / cert.exam.questions) * mini);
   const hours = cert.exam.minutes / 60;
   const stack = large || width < 340;
+  // The held-back full form (engine/heldBack.ts): a row under the tiles, only for a course that has one
+  // (never CISA). Never locked: "Full exam" until taken, then "Full exam (seen)".
+  const form = useMemo(() => (isFirstTryCourse(cert) ? heldBackFormIn(getAllQuestionsIncludingRetired(cert.id)) : null), [cert]);
+  const takenForms = useProgress((s) => selectCert(s, cert.id).heldBackTaken);
   return (
     <HubCard testID="practice-mocks" style={{ paddingBottom: space.md }}>
       <CardHead title="Mock exams" meta="Timed like the real exam" headRef={headRef} />
@@ -1165,6 +1172,15 @@ const MockExams = memo(function MockExams({ cert, headRef }: { cert: Certificati
           onPress={() => router.push({ pathname: '/mock-start', params: { questions: String(cert.exam.questions) } })}
         />
       </View>
+      {form && (
+        <View style={{ marginTop: space.sm }}>
+          <HeldBackRow
+            questions={form.ids.length}
+            hours={Math.round((cert.exam.minutes * form.ids.length) / cert.exam.questions / 6) / 10}
+            taken={isTaken(takenForms, form.key)}
+          />
+        </View>
+      )}
       <T v="meta" style={{ marginTop: space.md }}>{scaledScoreNote(cert)}</T>
     </HubCard>
   );

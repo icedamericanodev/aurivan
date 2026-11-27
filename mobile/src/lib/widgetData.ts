@@ -25,6 +25,7 @@ import { addDays, daysToExam } from '../engine/examDay';
 import type { PlanItem } from '../engine/planner';
 import { readinessFor } from '../engine/readiness';
 import { readinessRange } from '../engine/readinessRange';
+import { readinessRead } from './readinessRead';
 import { dueIds } from '../engine/srs';
 import { dayKey, daysBetween } from '../engine/streak';
 import {
@@ -135,6 +136,8 @@ function planFor(certId: string, now: number): { plan: DayPlan; live: ReturnType
     examFocused: settings.examFocused,
     streak: state.streak,
     now,
+    // The widget's range states readiness: an opted-in course's follows first tries (CISA: as before).
+    rangeReadiness: readinessRead(cert, progress, dayKey(now)),
   });
   const stored = state.days[certId];
   const today = dayKey(now);
@@ -451,8 +454,10 @@ export function grewTopic(certId: string, domainIds: readonly string[], start: r
 function readySnap(certId: string, today: string): ReadySnap | null {
   const cert = getCertification(certId);
   if (!cert) return null;
-  const readiness = readinessFor(cert, selectCert(useProgress.getState(), certId).answers);
-  const range = readinessRange(cert, readiness);
+  const cp = selectCert(useProgress.getState(), certId);
+  const readiness = readinessFor(cert, cp.answers);
+  // The range states readiness: an opted-in course's follows first tries (CISA: the same as `readiness`).
+  const range = readinessRange(cert, readinessRead(cert, cp, today));
   const rings = cert.domains.map((d) => Math.round((readiness.domains.find((x) => x.domainId === d.id)?.mastery ?? 0) * 100));
   const weights = cert.domains.map((d) => d.weight);
   // This week's starting rings (kept on this phone), so the widget can say what grew.

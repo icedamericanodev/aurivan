@@ -47,7 +47,7 @@ import { ReadinessFigure } from '../components/journey';
 import { ICON_STROKE, ListChecks } from '../components/icons';
 import { Collapse, useScreenFocus } from '../components/motion';
 import { DisclosureRow } from '../components/pathChooser';
-import { DomainReportRow, type DomainLink, FRAMING_LINE, HOW_LINE, lowMarks, mockSubtitle, PRACTICE_SCORES_NOTE, ScoreChart, TrendLegend, trendMarks, useChartWidth } from '../components/readinessReport';
+import { DomainReportRow, type DomainLink, FRAMING_LINE, HOW_LINE, lowMarks, mockRowTitle, mockSubtitle, PRACTICE_SCORES_NOTE, ScoreChart, TrendLegend, trendMarks, useChartWidth } from '../components/readinessReport';
 import { PlanLeaf } from '../components/glyphs';
 import { BigNum, Button, DomainDot, EmptyState, ICON_SIZE, Lead, ListRow, PushedHeader, Section, T, useFontScale } from '../components/ui';
 import type { Certification, DomainInfo } from '../content/types';
@@ -115,7 +115,9 @@ function ReadinessReportScreen() {
   // A repeated key arrives as an array: only a single id can open a mock (code review M5a).
   const want = typeof params.mock === 'string' ? params.mock : undefined;
   const j = useJourney();
-  const { cert, readiness, range, progress, dueCount, stage, examFocused, daysLeft, examDate } = j;
+  // `readiness` here is what the report STATES: for an opted-in course, first tries at unseen questions
+  // (lib/readinessRead.ts, the range's own source); for every other course (CISA), every answer, as before.
+  const { cert, rangeReadiness: readiness, range, progress, dueCount, stage, examFocused, daysLeft, examDate } = j;
   const minutes = useDailyMinutes();
   const savedSize = useSettings((s) => s.studySize);
   const size = sessionSize(savedSize, minutes);
@@ -170,7 +172,9 @@ function ReadinessReportScreen() {
   const momentsLog = progress.moments?.readiness;
   const data = useMemo(() => {
     const mocks = [...progress.mocks].sort((a, b) => b.finishedAt - a.finishedAt);
-    const trend = mockTrend(mocks, cert.exam.questions);
+    // A seen retake of the held-back form is never shown as progress: it stays in "Your mocks" (labelled),
+    // never in the trend. Every other mock (all of CISA's) is in the trend as before.
+    const trend = mockTrend(mocks.some((m) => m.heldBack === 'seen') ? mocks.filter((m) => m.heldBack !== 'seen') : mocks, cert.exam.questions);
     const low = lowSummary(lowSeries(momentsLog, today));
     return {
       mocks,
@@ -417,11 +421,11 @@ function ReadinessReportScreen() {
                   <DisclosureRow
                     ref={m.id === target ? targetRef : undefined}
                     lead={<Lead value={`${mockPct(m)}%`} unit="score" />}
-                    title={`${m.total} questions`}
+                    title={mockRowTitle(m)}
                     subtitle={mockSubtitle(m)}
                     expanded={isOpen}
                     onPress={() => toggle(m.id)}
-                    accessibilityLabel={`${m.total} questions, score ${mockPct(m)} percent, ${spokenMin(mockSubtitle(m))}`}
+                    accessibilityLabel={`${mockRowTitle(m)}, score ${mockPct(m)} percent, ${spokenMin(mockSubtitle(m))}`}
                     accessibilityHint={isOpen ? 'Hides how each domain went' : 'Shows how each domain went'}
                     last={isLast}
                   />
