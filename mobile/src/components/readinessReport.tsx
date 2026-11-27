@@ -18,6 +18,7 @@ import { domainColor, domainLabel } from '../content/certifications';
 import { chartScale, domainSpoken, evidenceLine, mockLine, readinessLine, type DomainRow, type TrendPoint } from '../engine/readinessReport';
 import type { DomainStyled } from '../engine/domainNaming';
 import { durationWords, TIMING_LABEL } from '../engine/pace';
+import { INCLUDES_SEEN } from '../engine/shortMock';
 import { shortDate } from '../lib/format';
 import type { MockResult } from '../store/progress';
 import { space } from '../theme/tokens';
@@ -35,7 +36,9 @@ export const PRACTICE_SCORES_NOTE = 'Practice scores are not scaled exam scores.
 /** A mock's row subtitle, the same words as You: "11 Oct · 1 h 12 min · untimed". */
 export function mockSubtitle(m: MockResult): string {
   const timing = m.timing && m.timing !== 'standard' ? ` · ${TIMING_LABEL[m.timing].toLowerCase()}` : '';
-  return `${shortDate(m.finishedAt)} · ${durationWords(m.minutesUsed * 60_000).text}${timing}`;
+  // First-try courses: a short mock that reused seen questions keeps its label (engine/shortMock.ts).
+  const seen = m.includesSeen ? ` · ${INCLUDES_SEEN}` : '';
+  return `${shortDate(m.finishedAt)} · ${durationWords(m.minutesUsed * 60_000).text}${timing}${seen}`;
 }
 
 /** One point's mark. `none`: just the line passes through it. */

@@ -24,12 +24,14 @@ import { selectCert, useProgress } from '../store/progress';
 import { useSession, type ActiveSession, type SessionMode } from '../store/session';
 import { dailyMinutesOf, useSettings } from '../store/settings';
 import { questionsFor } from '../engine/fit';
-import { finishSession } from './finishSession';
+import { finishSession, reachedIds } from './finishSession';
 import { claimWidgetStart } from './widgetStats';
 import { areaSnapshot, type AreaSnapshot } from '../engine/fieldGuide';
 import { readinessFor } from '../engine/readiness';
 import { weakDrillPool, weakDrillRanked } from '../engine/weakSpots';
 import { spreadSiblings } from '../engine/siblings';
+import { isFirstTryCourse, seenBy } from '../engine/firstTry';
+import { buildShortMock, type ShortMockDraw } from '../engine/shortMock';
 
 /** A question that is in the pack and not retired (a spare must be one that can still be dealt). */
 function isLive(certId: string, id: string): boolean {
@@ -113,8 +115,37 @@ function newSession(
     // Mobile 1.51: where each area stands now, so Results can show this set's growth (or drop) honestly.
     ...beforeOf(certId),
   };
+  noteDiscardedMock();
   useSession.getState().start(session);
   return session;
+}
+
+/**
+ * First-try courses (engine/firstTry.ts): an unfinished mock about to be replaced (the learner chose
+ * "Discard and start") showed questions that will never be recorded. Each one the learner reached
+ * (answered, visited, or up to where they were) counts as seen, so a later first try at it never
+ * counts toward readiness. Any other course, or no unfinished mock: nothing happens.
+ */
+function noteDiscardedMock() {
+  const old = useSession.getState().active;
+  if (!old) return;
+  const ids = seenOnReplace(old, Date.now());
+  if (ids.length) useProgress.getState().noteShown(old.certId, ids);
+}
+
+/**
+ * First-try courses: the questions an UNFINISHED mock will leave as seen once a new session replaces
+ * it. The short mock's draw (planShortMock) treats them as seen already, so the start sheet's
+ * "reuses N questions" line counts them, and the mock that starts is the one it described:
+ * - its time has run out: guardedStart records it first (finishSession), which saves every question
+ *   in it as answered or as shown, so all of them;
+ * - otherwise ("Discard and start"): the ones the learner reached (reachedIds), exactly the ones
+ *   noteDiscardedMock then saves as shown.
+ * Empty for a finished session, a non-mock, or any course that does not opt in (CISA).
+ */
+function seenOnReplace(old: ActiveSession, now: number): readonly string[] {
+  if (old.finishedAt || old.mode !== 'mock' || !isFirstTryCourse(getCertification(old.certId))) return [];
+  return old.deadline && now >= old.deadline ? old.questionIds : reachedIds(old);
 }
 
 /** The choices that decide which questions a practice set may draw from (Build a set). */
@@ -361,6 +392,36 @@ export interface MockOptions {
   timing?: MockTiming;
   /** "Hide the clock (checkpoints only)". The deadline still applies. */
   hideClock?: boolean;
+  /**
+   * First-try courses: the seed of the short mock the start sheet previewed (planShortMock), so the
+   * mock that starts is the one whose reused count the learner was told. Ignored by every other course.
+   */
+  seed?: number;
+}
+
+/** True when a mock of `questions` for this course is the per-learner short mock (engine/shortMock.ts). */
+export function isShortMock(certId: string, questions: number): boolean {
+  const cert = getCertification(certId);
+  return Boolean(cert && isFirstTryCourse(cert) && questions < cert.exam.questions);
+}
+
+/**
+ * First-try courses: the short mock of `total` questions this learner would get with `seed`: the ids
+ * and how many seen questions it reuses. Null for any other course, or a full-length mock.
+ */
+export function planShortMock(certId: string, total: number, seed: number): ShortMockDraw | null {
+  const cert = getCertification(certId);
+  if (!cert || !isShortMock(certId, total)) return null;
+  const cp = selectCert(useProgress.getState(), certId);
+  const pool = mockPool(getAllQuestions(certId), dayKey(seed));
+  // An unfinished mock of this course that the new one will replace: its questions count as seen
+  // NOW (they are saved as seen only when it is replaced, after this draw), so the draw never
+  // re-serves them as unseen. With none (the usual case), `pending` is empty.
+  const active = useSession.getState().active;
+  const pending = new Set(active && active.certId === certId ? seenOnReplace(active, Date.now()) : []);
+  const saved = seenBy(cp.answers, cp.shown);
+  const seen = (id: string) => saved(id) || pending.has(id);
+  return buildShortMock(cert, pool, seen, createRng(seed), total, certOutline(certId).topics);
 }
 
 /**
@@ -378,8 +439,11 @@ export function startMock(certId: string, questions?: number, opts: MockOptions 
   // mockPool leaves out a CIA item whose Topical Requirement is not on the
   // exam yet (testableFrom after today's local date); for every other exam the
   // pool is unchanged.
-  const pool = mockPool(getAllQuestions(certId), dayKey(Date.now()));
-  const ids = buildMockExam(cert, pool, createRng(Date.now()), total, certOutline(certId).topics);
+  // First-try courses: a mock shorter than the exam is drawn for this learner from questions they
+  // have not seen (engine/shortMock.ts). Every other course (CISA's mini mock too): as before.
+  const short = isShortMock(certId, total) ? planShortMock(certId, total, opts.seed ?? Date.now()) : null;
+  const pool = short ? [] : mockPool(getAllQuestions(certId), dayKey(Date.now()));
+  const ids = short ? short.ids : buildMockExam(cert, pool, createRng(Date.now()), total, certOutline(certId).topics);
   // The time allowed follows the mock as drawn: a pool cut to one question per sibling group (or a
   // small bank) can give fewer than `total`; for every live course today ids.length === total.
   const { minutesAllowed } = mockPace(cert.exam, ids.length, timing);
@@ -388,6 +452,8 @@ export function startMock(certId: string, questions?: number, opts: MockOptions 
     timing,
     // Hiding the clock only makes sense when there is one.
     ...(opts.hideClock && minutesAllowed !== null ? { hideClock: true } : {}),
+    // A short mock that reuses seen questions says so on Results and on its saved result.
+    ...(short && short.reused > 0 ? { seenReused: short.reused } : {}),
   });
 }
 

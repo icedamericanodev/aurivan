@@ -19,6 +19,7 @@ import { pushScore } from '../engine/games/recap';
 import type { GameId } from '../engine/games/registry';
 import { logActivity as logDayActivity, logAnswer, type Activity, type DayPlan } from '../engine/dayPlan';
 import { readinessFor, type AnswerRecord } from '../engine/readiness';
+import { firstTryUpdate, isFirstTryCourse, withShown, type Shown } from '../engine/firstTry';
 import { readinessRange } from '../engine/readinessRange';
 import { recordMastery, type SubtopicMastery } from '../engine/mastery';
 import { CATALOG_VERSION } from '../engine/badgeCatalog';
@@ -68,6 +69,12 @@ export interface MockResult {
   medianSec?: number;
   unanswered?: number;
   checkpoints?: number[];
+  /**
+   * First-try courses only: this short mock reused questions the learner had seen
+   * (engine/shortMock.ts), so its result is labelled "includes seen questions". Written only when
+   * true. Optional: every other result has none; an older app drops it and keeps the rest.
+   */
+  includesSeen?: boolean;
 }
 
 // The slip tags now live in the engine (slip coach); re-exported for screens.
@@ -197,6 +204,17 @@ export interface CertProgress {
    * analytics. Reset progress removes them (resetCert starts from emptyCert).
    */
   qNotes?: QuestionNotes;
+  /**
+   * First-try courses only (`readinessRule: 'firstTry'`, engine/firstTry.ts):
+   * questions SHOWN without a counted try (skipped or left in a mock, or
+   * answered in a game or as a relaxed sibling), id → the earliest time.
+   * With the answer records it says which questions the learner has seen, so
+   * a later first try at one of them never counts toward readiness, and the
+   * short mock draws unseen ones first. Optional: no live course writes it,
+   * and older saves have none. Backed up and synced (the earliest time wins);
+   * an older app drops it on a read and keeps everything else.
+   */
+  shown?: Shown;
 }
 
 export interface StudyPathState {
@@ -288,6 +306,11 @@ export interface ProgressState {
   ) => void;
   /** Log today's readiness lower bound from the saved answers (after a batch). */
   logReadinessNow: (certId: string) => void;
+  /**
+   * First-try courses only: these questions were shown without a counted try
+   * (engine/firstTry.ts withShown). Any other course: nothing happens, no save.
+   */
+  noteShown: (certId: string, questionIds: readonly string[], at?: number) => void;
   /** Put questions into review (Box 1, due at the start of tomorrow like a miss) WITHOUT counting them as answered. */
   queueForReview: (certId: string, questionIds: string[]) => void;
   toggleBookmark: (certId: string, questionId: string) => void;
@@ -432,6 +455,12 @@ export const useProgress = create<ProgressState>()(
           const retest = correct && isRetestAfterMiss(prev, now);
           // Half evidence for the milestone and mastery counters: a hint or a retest.
           const weak = opts?.assisted === true || retest;
+          // First-try courses only (engine/firstTry.ts): the write-once first try, and the "seen"
+          // record for a try that never counts (a game, a relaxed sibling). Any other course: no
+          // `first` is written and `shown` is untouched, so its saves are exactly as before.
+          const ft = isFirstTryCourse(getCertification(certId))
+            ? firstTryUpdate(prev, cp.shown, questionId, { correct, assisted: opts?.assisted === true, at: now, game: opts?.mastery === false, sibling: opts?.sibling === true })
+            : { first: prev?.first, shown: cp.shown };
           const answers = {
             ...cp.answers,
             [questionId]: {
@@ -453,6 +482,8 @@ export const useProgress = create<ProgressState>()(
               // Clamped to the answer clock's cap, so a record never breaks a backup.
               ...(typeof opts?.ms === 'number' && Number.isFinite(opts.ms) ? { ms: Math.min(MAX_ANSWER_MS, Math.max(0, Math.round(opts.ms))) } : {}),
               ...(confidence ? { lastConfidence: confidence } : {}),
+              // Write-once: carried from record to record (each answer rebuilds the record).
+              ...(ft.first ? { first: ft.first } : {}),
             },
           };
           // Mock exams record answers but don't reschedule reviews mid-exam.
@@ -505,7 +536,7 @@ export const useProgress = create<ProgressState>()(
           return {
             byCert: {
               ...s.byCert,
-              [certId]: { ...cp, answers, review, mistakes, milestones, ...(moments ? { moments } : {}), ...(mastery ? { mastery } : {}) },
+              [certId]: { ...cp, answers, review, mistakes, milestones, ...(moments ? { moments } : {}), ...(mastery ? { mastery } : {}), ...(ft.shown ? { shown: ft.shown } : {}) },
             },
             // An answer stamped on an EARLIER day than the latest study day
             // (an expired mock opened later) never rewinds the streak or today.
@@ -521,6 +552,15 @@ export const useProgress = create<ProgressState>()(
           const moments = withReadiness(cp.moments, certId, cp.answers, dayKey(Date.now()));
           if (moments === cp.moments) return s; // nothing changed: no save
           return { byCert: { ...s.byCert, [certId]: { ...cp, ...(moments ? { moments } : {}) } } };
+        }),
+
+      noteShown: (certId, questionIds, at) =>
+        set((s) => {
+          if (!isFirstTryCourse(getCertification(certId)) || questionIds.length === 0) return s;
+          const cp = normalize(ownOf(s.byCert, certId));
+          const shown = withShown(cp.shown, questionIds, at ?? Date.now(), cp.answers);
+          if (shown === cp.shown) return s; // nothing new: no save
+          return { byCert: { ...s.byCert, [certId]: { ...cp, shown } } };
         }),
 
       queueForReview: (certId, questionIds) =>
@@ -779,6 +819,8 @@ export const useProgress = create<ProgressState>()(
       // saves [] and the count of notes read).
       // "Your note" added CertProgress.qNotes, OPTIONAL: same (no notes until one is written).
       // Sibling groups added AnswerRecord.lastSibling, OPTIONAL: same (never written on a live course).
+      // First-try courses added AnswerRecord.first and CertProgress.shown, OPTIONAL: same (only a
+      // course with readinessRule 'firstTry' writes them; none is live).
       version: PROGRESS_VERSION,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
       // Round 4: on every load, records saved for the OLD wording of a question rewritten in place

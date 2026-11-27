@@ -69,6 +69,25 @@ export interface AnswerRecord {
    * Optional: absent when no rating was given, and in older saves.
    */
   lastConfidence?: Confidence;
+  /**
+   * The FIRST graded try at this question (engine/firstTry.ts), written once
+   * and never overwritten: right or not, with a hint or not, and when. Only a
+   * course with `readinessRule: 'firstTry'` writes it, and never for a game
+   * answer or a relaxed sibling's answer (lastSibling). Optional: every live
+   * course's records, and every older save, have none. An older app drops it
+   * when it reads a backup or a sync (unknown keys are dropped), and keeps
+   * everything else.
+   */
+  first?: FirstTry;
+}
+
+/** One question's first graded try (AnswerRecord.first). */
+export interface FirstTry {
+  correct: boolean;
+  /** True when a hint ("Coach me") was open before that try. */
+  assisted: boolean;
+  /** When it was given (epoch ms). */
+  at: number;
 }
 
 /** How much an assisted answer counts toward readiness (half). */
