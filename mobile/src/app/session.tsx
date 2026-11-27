@@ -119,7 +119,8 @@ import { questionTarget, sessionWhere } from '../lib/support';
 import { Button, Gap, groveCard, ICON_SIZE, IconButton, ListRow, Row, SegmentBar, Stem, T, Tag, useFontScale } from '../components/ui';
 import { getCertification, getDomain } from '../content/certifications';
 import { missLessons } from '../content/lessons';
-import { findQuestion } from '../content/loader';
+import { findQuestion, siblingGroupOf } from '../content/loader';
+import { isRelaxedSibling } from '../engine/siblings';
 import { findNote, subtopicOfQuestion } from '../content/notes';
 import { findPrinciple } from '../content/principles';
 import { REASON_LABEL } from '../engine/studyModes';
@@ -131,6 +132,7 @@ import { priorityWord } from '../engine/games/priorityLens';
 import { missCoachLine } from '../engine/slipCoach';
 import { pickCoachKind, pickCoachLine, tipPickLetter } from '../engine/pickCoach';
 import { RunningHead } from '../components/fieldguide';
+import { ExamDateTag, examDateLabel } from '../components/examDateTag';
 import { eliminateTip, runnerUp, tipParts } from '../engine/tips';
 import { finishSession } from '../lib/finishSession';
 import { QUICK_TITLE, RECALL_TITLE } from '../lib/widgetOpen';
@@ -678,7 +680,10 @@ export default function SessionScreen() {
     batchSaves(() => {
       // Progress first: the store decides whether this was a RETEST (a right answer under 4 hours after
       // a miss on this question, engine/srs.ts): it counts half and is not promoted.
-      recordAnswer(active.certId, qid, ok, confidence, { assisted: coached, ms });
+      // Sibling groups (engine/siblings.ts): a question that is in this set after a sibling of its own
+      // group came back by the relaxed rule, so its answer is marked (never on a live course today).
+      const sibling = isRelaxedSibling(active.questionIds, qid, siblingGroupOf(active.certId));
+      recordAnswer(active.certId, qid, ok, confidence, { assisted: coached, ms, ...(sibling ? { sibling: true } : {}) });
       const retest = ok && selectCert(useProgress.getState(), active.certId).answers[qid]?.lastRetest === true;
       // Answers after Coach me are "assisted": half weight toward readiness.
       answer(qid, { display: selected, correct: ok, confidence, ms, ...(coached ? { assisted: true } : {}), ...(retest ? { retest: true } : {}) });
@@ -966,6 +971,10 @@ export default function SessionScreen() {
   // the subtopic (1.39). A mock keeps its quiet domain tag: it has no answer screen to match.
   const headSection = [active.mode === 'review' ? 'Review' : 'Practice', domain?.short].filter(Boolean).join(' · ');
   const headAside = `Question ${active.index + 1} of ${total}`;
+  // Item 6 (CIA_BANK_PLAN.md section 11): a practice or review question that is not on the real exam
+  // yet shows "On the exam from 1 March 2027" until that date. Never in a mock (a mock leaves such a
+  // question out), and never for a question with no date (every live course).
+  const examDate = isMock ? null : examDateLabel(q);
 
   // The vine draws itself the first time it scrolls into view: on each
   // scroll we ask where it sits on screen (measureInWindow works on phones
@@ -1090,7 +1099,7 @@ export default function SessionScreen() {
               {/* Large text: the row wraps, the domain tag takes the full width and
                   "Flagged" / the reason tag drop under it (UX review P3). */}
               {!isMock && <RunningHead section={headSection} aside={headAside} style={{ marginTop: space.sm }} />}
-              {(isMock || flagged || reason) && (
+              {(isMock || flagged || reason || examDate) && (
                 <Row gap={space.sm} style={{ marginTop: isMock ? space.md : space.sm, alignItems: 'flex-start', flexWrap: largeText || !isMock ? 'wrap' : 'nowrap' }}>
                   {isMock && (
                     <View style={largeText ? { flexBasis: '100%' } : { flex: 1 }}>
@@ -1098,6 +1107,7 @@ export default function SessionScreen() {
                     </View>
                   )}
                   {flagged && <T v="caption" color={c.tip}>Flagged</T>}
+                  <ExamDateTag label={examDate} />
                   {reason && (
                     <T v="caption" color={c.accentText} accessibilityLabel={`Why this question: ${REASON_LABEL[reason]}`}>
                       {REASON_LABEL[reason]}

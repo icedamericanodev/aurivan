@@ -176,8 +176,10 @@ def section_file(pack, d, sec, qs):
 
 def make_fixture(root, ref):
     outline = c.load_outline(c.CIA)
+    # siblings.json names real items, and the fixture's made-up ids can match them by chance: left out
+    # (a fixture course has no sibling groups unless a case writes one).
     shutil.copytree(c.CIA / "shared", root / "shared", ignore=shutil.ignore_patterns("glossary.json", "principles.json",
-                    "currency.json", "_framework_library.md"))
+                    "currency.json", "_framework_library.md", "siblings.json"))
     (root / "shared" / "_framework_library.md").write_text(
         f"# Fixture library\n\n## Verified: opened {TODAY} Fixture Standards (https://example.org/standards)\n"
         f"- {STD}\n- {STD2}\n- {TOPICAL}\n\n## Likely: not opened (fixture)\n- Fixture Textbook, 1st edition\n",
@@ -881,6 +883,9 @@ CASES = [
      q0(setf("id", "cia2_d1_001")), "id appears in 2 packs (cia1, cia2)"),
     ("a principle tag that is not one of the pack's principles", [DRY],
      q0(setf("principle_id", "no-such-principle")), "is not a principle in the cia1 pack"),
+    ("a malformed sibling-groups file (a group of one question)", [DRY],
+     lambda r: c.write_json(r / "shared" / "siblings.json", {"groups": [{"ids": ["cia1_d1_001"]}]}),
+     "group 1: a group needs 2 or more different ids"),
     ("a hand-edited Challenge file when only cia1 is named (the gate across packs still runs)", [DRY, "cia1"],
      lambda r: edit(r, "ciac/originals/d1.json", lambda d: d["questions"][0].__setitem__("pre_read", "Edited by hand.")),
      "is not what build_challenge.py produces"),
@@ -968,6 +973,10 @@ PASSES = [
      "0 orphan(s)"),
     ("a question that is not testable until 2027 (left out of the mock pool: 39 of 40)", [DRY],
      q0(lambda q: q.update(framework_ref=STD + "; " + TOPICAL, testable_from="2027-03-01")), "mock pool: 39 of 40 live items"),
+    ("two siblings in one pack (tagged in that pack, the other pack's id ignored, one set aside from mocks)", [DRY],
+     lambda r: c.write_json(r / "shared" / "siblings.json",
+                            {"groups": [{"ids": ["cia1_d1_001", "cia1_d1_002", "cia2_d1_001"], "lesson": "Fixture lesson"}]}),
+     "siblings: 2 questions in 1 group with a sibling in cia1"),
     ("a retired question (left out of the mock pool: 3 of 3)", [DRY], retire(),
      "mock pool: 3 of 3 live items testable on 2026-11-19 (1 retired item"),
     ("a course with nothing written and no reference text (the last line must say what did not run)",

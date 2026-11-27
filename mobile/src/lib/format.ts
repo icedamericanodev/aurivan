@@ -47,6 +47,26 @@ export function isoLongDate(isoDate: string): string {
 }
 
 /**
+ * A calendar date "2027-03-01" (YYYY-MM-DD) as "1 March 2027": day, full month
+ * and year, read as written (no time zone shift). Anything that isn't such a
+ * date is returned as it is.
+ */
+export function isoFullDate(isoDate: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(isoDate);
+  const month = m ? MONTHS_LONG[Number(m[2]) - 1] : undefined;
+  return m && month ? `${Number(m[3])} ${month} ${m[1]}` : isoDate;
+}
+
+/**
+ * The neutral tag on a practice or review question that is not on the real
+ * exam yet (engine/blueprint.ts waitingUntil): "On the exam from 1 March 2027".
+ * Seen and spoken the same.
+ */
+export function onExamFromLabel(isoDate: string): string {
+  return `On the exam from ${isoFullDate(isoDate)}`;
+}
+
+/**
  * A subtopic shortened for the question meta line (≤ 3 words, sentence case):
  * "Year-End Close. Job Scheduling Control Bypass" → "Year-end close".
  * Keeps acronyms (BCM, IS) and drops a dangling "and"/"of"/"the".

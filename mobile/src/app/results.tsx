@@ -64,6 +64,7 @@
  *   Done is the plate button.
  */
 import { router, useFocusEffect } from 'expo-router';
+import { examDateLabel } from '../components/examDateTag';
 import { areasTitle } from '../components/youReadiness';
 import { scaledScoreNote } from '../content/scoreNote';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -84,7 +85,7 @@ import { FirstSetDone } from '../components/firstSet';
 import { MilestoneMomentView } from '../components/milestones';
 import { useOncePerDay } from '../components/motion';
 import { ICON_STROKE, Sprout } from '../components/icons';
-import { BigNum, Button, Enter, Gap, ICON_SIZE, InviteRow, Row, Screen, Section, T, useScreenScroll } from '../components/ui';
+import { BigNum, Button, Enter, Gap, ICON_SIZE, InviteRow, Row, Screen, Section, T, Tag, useScreenScroll } from '../components/ui';
 import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { questionExists } from '../lib/outline';
@@ -184,6 +185,9 @@ const ReviewRow = memo(function ReviewRow({
   // Each on its own line, so "You used a hint." never reads as the cause of the pace advice (UX review nit).
   const quietLines = [assisted ? 'You used a hint.' : null, coaching ? coachingLine(coaching) : null].filter((x): x is string => Boolean(x));
   const quiet = quietLines.join(' ');
+  // Item 6 (CIA_BANK_PLAN.md section 11): a question not on the real exam yet says so in the list, until
+  // its date. Only practice and review can hold one (a mock leaves it out); no date, no line.
+  const examDate = examDateLabel(q);
   const color = !r ? c.muted : r.correct ? c.correct : c.wrong;
   const picked = r ? displayToOriginal(r.display, perm) : undefined;
   const correctDisplay = originalToDisplay(q.correct, perm);
@@ -195,7 +199,7 @@ const ReviewRow = memo(function ReviewRow({
         accessibilityState={{ expanded: open }}
         // One sentence each; the coaching line ends with its own full stop (O2). Open or closed is said
         // once, from accessibilityState, and the gesture is the screen reader's own (release bug hunt round 3).
-        accessibilityLabel={`Question ${i + 1}, ${status}.${quiet ? ` ${quiet}` : ''}`}
+        accessibilityLabel={`Question ${i + 1}, ${status}.${examDate ? ` ${examDate}.` : ''}${quiet ? ` ${quiet}` : ''}`}
         accessibilityHint="Shows your answer and the explanation"
         onPress={() => onToggle(id)}
         style={({ pressed }) => ({ paddingVertical: 13, minHeight: 64, opacity: pressed ? 0.7 : 1 })}
@@ -204,6 +208,12 @@ const ReviewRow = memo(function ReviewRow({
           <T v="label" num>{`Question ${i + 1}`}</T>
           <T v="label" color={color}>{status}</T>
         </Row>
+        {/* Plain words here: the row is one button, and its spoken label already says them. */}
+        {examDate && (
+          <View style={{ marginTop: space.xs }}>
+            <Tag label={examDate} />
+          </View>
+        )}
         {quietLines.map((line) => (
           <T key={line} v="meta" style={{ marginTop: space.xs }}>{line}</T>
         ))}

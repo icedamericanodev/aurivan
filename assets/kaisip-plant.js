@@ -3,7 +3,7 @@
  * from the mobile app's own plant sources (growth engine, looks, SVG art),
  * so the website and the app grow the same plant. Rebuild after changing
  * any of them: cd mobile && npm run web-plant
- * TypeScript 6.0.3. Modules: 39.
+ * TypeScript 6.0.3. Modules: 40.
  */
 (function (root) {
   "use strict";
@@ -6220,7 +6220,7 @@ function examReadyDue(log, today, seen, examSoon = false) {
     return !seen && !examSoon && readyHoldDays(log !== null && log !== void 0 ? log : [], today) >= exports.READY_DAYS;
 }
   };
-  links["src/engine/games/callItFirst.ts"] = {"../random":"src/engine/random.ts"};
+  links["src/engine/games/callItFirst.ts"] = {"../random":"src/engine/random.ts","../siblings":"src/engine/siblings.ts"};
   defs["src/engine/games/callItFirst.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -6235,6 +6235,7 @@ exports.callPoints = callPoints;
 exports.callMax = callMax;
 exports.answerOptions = answerOptions;
 const random_1 = require("../random");
+const siblings_1 = require("../siblings");
 exports.CALL_SIZE = 5;
 exports.THINK_MS = 10000;
 exports.LEAK_LIMIT = 0.6;
@@ -6316,7 +6317,7 @@ function decoysFor(q, ctx, tier, rng) {
     }
     return out;
 }
-function buildCallRound(questions, ctx, tier, rng, size = exports.CALL_SIZE) {
+function buildCallRound(questions, ctx, tier, rng, size = exports.CALL_SIZE, groupOf) {
     var _a, _b;
     const pool = (0, random_1.shuffled)(callPool(questions), rng);
     const perDomain = new Map();
@@ -6334,6 +6335,13 @@ function buildCallRound(questions, ctx, tier, rng, size = exports.CALL_SIZE) {
             break;
         if (!picked.includes(q))
             picked.push(q);
+    }
+    if (groupOf) {
+        const byId = new Map(pool.map((q) => [q.id, q]));
+        const apart = (0, siblings_1.spreadSiblings)(picked.map((q) => q.id), groupOf, () => pool.map((q) => q.id));
+        if (apart.length !== picked.length || apart.some((id, k) => id !== picked[k].id)) {
+            picked.splice(0, picked.length, ...apart.map((id) => byId.get(id)));
+        }
     }
     return picked.map((q) => {
         if (tier === 'heartwood')
@@ -6474,7 +6482,7 @@ function confusionPairs(answers, deck, max = 3) {
     }));
 }
   };
-  links["src/engine/games/daylight.ts"] = {"../answerClock":"src/engine/answerClock.ts","../pace":"src/engine/pace.ts","../random":"src/engine/random.ts"};
+  links["src/engine/games/daylight.ts"] = {"../answerClock":"src/engine/answerClock.ts","../pace":"src/engine/pace.ts","../random":"src/engine/random.ts","../siblings":"src/engine/siblings.ts"};
   defs["src/engine/games/daylight.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -6508,6 +6516,7 @@ exports.slowestItem = slowestItem;
 const answerClock_1 = require("../answerClock");
 const pace_1 = require("../pace");
 const random_1 = require("../random");
+const siblings_1 = require("../siblings");
 exports.DAYLIGHT_SIZE = 5;
 exports.DAYLIGHT_TIERS = ['seedling', 'sapling', 'heartwood'];
 exports.TIER_NAME = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
@@ -6524,10 +6533,8 @@ function tierCanExtend(tier) {
 function daylightPool(pool) {
     return pool;
 }
-function buildDaylightRound(pool, rng, size = exports.DAYLIGHT_SIZE) {
-    return (0, random_1.shuffled)(daylightPool(pool), rng)
-        .slice(0, size)
-        .map((q) => q.id);
+function buildDaylightRound(pool, rng, size = exports.DAYLIGHT_SIZE, groupOf) {
+    return (0, siblings_1.takeApart)((0, random_1.shuffled)(daylightPool(pool), rng).map((q) => q.id), size, groupOf);
 }
 exports.SUGGEST_MIN_ANSWERS = 10;
 exports.SUGGEST_RECENT = 30;
@@ -6908,7 +6915,7 @@ function share(hits) {
     return hits.length ? hits.filter(Boolean).length / hits.length : 0;
 }
   };
-  links["src/engine/games/priorityLens.ts"] = {"../random":"src/engine/random.ts"};
+  links["src/engine/games/priorityLens.ts"] = {"../random":"src/engine/random.ts","../siblings":"src/engine/siblings.ts"};
   defs["src/engine/games/priorityLens.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -6922,6 +6929,7 @@ exports.fitWord = fitWord;
 exports.meaningFor = meaningFor;
 exports.askChoices = askChoices;
 const random_1 = require("../random");
+const siblings_1 = require("../siblings");
 exports.PRIORITY_WORDS = ['FIRST', 'BEST', 'MOST', 'PRIMARY', 'GREATEST'];
 function priorityWord(stem) {
     let found = null;
@@ -6945,10 +6953,8 @@ function lastWholeWordIndex(text, word) {
 function priorityPool(pool) {
     return pool.filter((q) => priorityWord(q.stem) !== null);
 }
-function buildPriorityRound(pool, rng, size = 5) {
-    return (0, random_1.shuffled)(priorityPool(pool), rng)
-        .slice(0, size)
-        .map((q) => q.id);
+function buildPriorityRound(pool, rng, size = 5, groupOf) {
+    return (0, siblings_1.takeApart)((0, random_1.shuffled)(priorityPool(pool), rng).map((q) => q.id), size, groupOf);
 }
 exports.ASK_FOR = {
     FIRST: 'sequence',
@@ -7566,7 +7572,7 @@ function ordinal(n) {
     return `${n}${s}`;
 }
   };
-  links["src/engine/games/trapSpotter.ts"] = {"../random":"src/engine/random.ts"};
+  links["src/engine/games/trapSpotter.ts"] = {"../random":"src/engine/random.ts","../siblings":"src/engine/siblings.ts"};
   defs["src/engine/games/trapSpotter.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -7579,6 +7585,7 @@ exports.closedInStep2 = closedInStep2;
 exports.snareWhy = snareWhy;
 exports.scoreTrapPick = scoreTrapPick;
 const random_1 = require("../random");
+const siblings_1 = require("../siblings");
 function trapTip(q) {
     var _a, _b;
     return (_b = (_a = q.tips.find((t) => t.startsWith('Final two:'))) !== null && _a !== void 0 ? _a : q.tips[0]) !== null && _b !== void 0 ? _b : '';
@@ -7602,10 +7609,8 @@ function trapLetter(q) {
 function trapPool(pool) {
     return pool.filter((q) => trapLetter(q) !== null);
 }
-function buildTrapRound(pool, rng, size = 5) {
-    return (0, random_1.shuffled)(trapPool(pool), rng)
-        .slice(0, size)
-        .map((q) => q.id);
+function buildTrapRound(pool, rng, size = 5, groupOf) {
+    return (0, siblings_1.takeApart)((0, random_1.shuffled)(trapPool(pool), rng).map((q) => q.id), size, groupOf);
 }
 function snareStep(q, trapPick) {
     if (trapPick === q.correct)
@@ -10546,6 +10551,89 @@ function readySigns(input) {
     return { signs, allMet, line: allMet ? allMetLine(signs.length) : exports.STUDY_BAR_NOTE, isacaLine: allMet ? bookingLine(input.issuerSite) : null };
 }
   };
+  links["src/engine/siblings.ts"] = {"./random":"src/engine/random.ts"};
+  defs["src/engine/siblings.ts"] = function (module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.spreadSiblings = spreadSiblings;
+exports.isRelaxedSibling = isRelaxedSibling;
+exports.oneOfEachGroup = oneOfEachGroup;
+exports.takeApart = takeApart;
+exports.relaxedMark = relaxedMark;
+const random_1 = require("./random");
+function anyGrouped(ids, groupOf) {
+    return ids.some((id) => groupOf(id) !== undefined);
+}
+function spreadSiblings(ids, groupOf, spares) {
+    if (!anyGrouped(ids, groupOf))
+        return ids;
+    const kept = [];
+    const setAside = [];
+    const used = new Set();
+    for (const id of ids) {
+        const g = groupOf(id);
+        if (g !== undefined && used.has(g)) {
+            setAside.push(id);
+            continue;
+        }
+        kept.push(id);
+        if (g !== undefined)
+            used.add(g);
+    }
+    if (setAside.length === 0)
+        return ids;
+    const target = ids.length;
+    const inSet = new Set(ids);
+    for (const id of spares ? spares() : []) {
+        if (kept.length >= target)
+            break;
+        if (inSet.has(id))
+            continue;
+        const g = groupOf(id);
+        if (g !== undefined && used.has(g))
+            continue;
+        kept.push(id);
+        inSet.add(id);
+        if (g !== undefined)
+            used.add(g);
+    }
+    for (const id of setAside) {
+        if (kept.length >= target)
+            break;
+        kept.push(id);
+    }
+    return kept;
+}
+function isRelaxedSibling(ids, id, groupOf) {
+    const g = groupOf(id);
+    if (g === undefined)
+        return false;
+    for (const other of ids) {
+        if (other === id)
+            return false;
+        if (groupOf(other) === g)
+            return true;
+    }
+    return false;
+}
+function oneOfEachGroup(pool, rng) {
+    if (!pool.some((q) => q.siblingGroup !== undefined))
+        return pool;
+    const chosen = new Map();
+    for (const q of (0, random_1.shuffled)(pool, rng)) {
+        if (q.siblingGroup !== undefined && !chosen.has(q.siblingGroup))
+            chosen.set(q.siblingGroup, q.id);
+    }
+    return pool.filter((q) => q.siblingGroup === undefined || chosen.get(q.siblingGroup) === q.id);
+}
+function takeApart(ordered, size, groupOf) {
+    const first = ordered.slice(0, size);
+    return groupOf ? [...spreadSiblings(first, groupOf, () => ordered.slice(size))] : first;
+}
+function relaxedMark(ids, id, groupOf) {
+    return isRelaxedSibling(ids, id, groupOf) ? { sibling: true } : {};
+}
+  };
   links["src/engine/srs.ts"] = {};
   defs["src/engine/srs.ts"] = function (module, exports, require) {
 "use strict";
@@ -11507,6 +11595,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "f973420ef42b87b7";
+  api.sourceHash = "37d350a2ae9c2c0a";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

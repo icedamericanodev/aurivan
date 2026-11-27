@@ -33,7 +33,8 @@ import { PaceStrip } from '../../components/pace';
 import { OptionCard } from '../../components/quiz';
 import { Button, groveCard, ICON_SIZE, Row, T, useFontScale } from '../../components/ui';
 import { missCoach, oneStepVerdict } from '../../lib/drillVerdict';
-import { getAllQuestions } from '../../content/loader';
+import { getAllQuestions, siblingGroupOf } from '../../content/loader';
+import { relaxedMark } from '../../engine/siblings';
 import { LETTERS, type Letter } from '../../content/types';
 import {
   answerCurrent,
@@ -183,7 +184,7 @@ function Daylight() {
   const { c } = useTheme();
   const { cert, progress } = useActiveCert();
   const large = useFontScale() >= LARGE_TEXT;
-  const { round: items, seed, restart } = useRound(cert.id, (s) => buildDaylightRound(getAllQuestions(cert.id), createRng(s)));
+  const { round: items, seed, restart } = useRound(cert.id, (s) => buildDaylightRound(getAllQuestions(cert.id), createRng(s), undefined, siblingGroupOf(cert.id)));
   // The app's suggestion, from the learner's recent answer times (Build C `ms`).
   const suggested = useMemo(() => suggestTier(Object.values(progress.answers), cert.exam), [progress.answers, cert.exam]);
   const [tier, setTier] = useState<DaylightTier | null>(null);
@@ -376,7 +377,8 @@ function Daylight() {
     // Feeds review like any practice answer; games never count toward mastery dates.
     // One save for the answer and its miss (release bug hunt round 3).
     batchSaves(() => {
-      p.recordAnswer(cert.id, q.id, correct, undefined, { ms, mastery: false });
+      // Sibling groups: a sibling back in the round after its partner is marked (engine/siblings.ts).
+      p.recordAnswer(cert.id, q.id, correct, undefined, { ms, mastery: false, ...relaxedMark(items.map((x) => x.q.id), q.id, siblingGroupOf(cert.id)) });
       if (!correct) p.recordMistake(cert.id, q.id, original);
     });
     if (!correct) {

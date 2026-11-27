@@ -2176,11 +2176,25 @@ decided the open items (their notes: scratchpad `app/pm.md`, `behavior.md`,
   spoken label (the tile width rule is measured for "DOMAINS"), and the badge case's own badge
   names (read from one fixed list by many screens; the marks' labels, moments and Results lines
   do follow the course). Tests: `mobile/src/__tests__/domain-naming.test.ts`; both website
-  bundles rebuilt (web output unchanged: it passes no style). Next: (5) sibling groups carried into the
-  pack, at most one item per group in any mock or session (relaxed only if a
-  non-mock session would be empty, and that sibling's first try then does not
-  count); (6) a neutral tag on dated items in practice and review ("On the exam
-  from 1 March 2027"), gone on that date; (7) the held-back full form, the
+  bundles rebuilt (web output unchanged: it passes no style). **(5) and (6) done (27 Nov 2026, not yet
+  committed), no IIA name in code or tests, CISA unchanged (its pack is byte-identical; its sets,
+  mocks and game rounds are drawn exactly as before):** (5) `mobile/scripts/siblings-pack.cjs` reads
+  a course's siblings file (a pack entry's optional `siblings`; a pack of copies under new ids adds
+  `siblingIdMap`), tags `siblingGroup` (the sorted first id) on a question only when its group has
+  another question of the same pack, joins groups that share a question inside a pack (a question has
+  one group), reports unknown and retired ids, and fails a malformed file; `engine/siblings.ts`:
+  every mock (full, short, mini) keeps one random member per group (`buildMockExam`); practice,
+  review, daily, chosen-list and game sets keep siblings apart, filling from the rest of the queue,
+  and relax only to keep the set its normal size (the relaxed sibling goes last and its answer
+  record gets `lastSibling: true`, kept by backup and sync; readiness does not read it yet). The CIA
+  dry run reads `shared/siblings.json` with the same reader (the Challenge pack through
+  `ciac/id_map.json`) and fails a mock draw holding two siblings; `prove_harness.py` plants a
+  malformed file and a two-sibling control, and its fixture no longer copies the real file. With the
+  27 Nov file: cia1 131 items in 44 groups, cia2 58 in 22, cia3 37 in 14, ciac 114 in 39; a mock
+  then draws from 263 cia1, 58 cia2 and 42 cia3 items. (6) `waitingUntil` (engine/blueprint.ts) and
+  `components/examDateTag.tsx`: practice and review show "On the exam from 1 March 2027" (seen and
+  spoken the same) above the stem and in Results' review list, until that date by the phone's
+  calendar. Tests: `siblings.test.ts`, `exam-date-tag.test.tsx`. Next: (7) the held-back full form, the
   per-learner short mock and first-try readiness, built as one piece for courses
   that opt in (CISA's readiness must not move: that would break saved progress).
 - **Still "Domain" for every course after batch 1 (review, 27 Nov 2026):** the Practice
@@ -2188,6 +2202,10 @@ decided the open items (their notes: scratchpad `app/pm.md`, `behavior.md`,
   (lines 155, 158), `practice.tsx` line 316 ("all domains"), `RINGS_NOTE` in
   `journey.tsx`, and the badge case's fixed `BADGES` names "Domain Mastery" and "All
   Domains" in `milestones.ts`. Fix with the section helper before a lettered course ships.
+- **Sibling groups shrink the mock pools (27 Nov 2026).** With at most one item per group
+  (groups that share an id are joined inside a pack), Part 2's mock pool falls from 92
+  testable items to 58 distinct ones, so a full 100-item Part 2 mock cannot be filled
+  yet; the sale gate's counts (decision 4) are counts of distinct items for this reason.
 - **Held-back form and short mock rules** (behavioral scientist): never locked;
   suggested by one Today card (no notification) once every section has 30 or more
   first tries and one short mock is done, or 3 weeks before a set exam date;

@@ -4,19 +4,19 @@
  */
 import { Alert } from 'react-native';
 import { getCertification } from '../content/certifications';
-import { findQuestion, getAllQuestions } from '../content/loader';
+import { findQuestion, getAllQuestions, siblingGroupOf } from '../content/loader';
 import type { Difficulty } from '../content/types';
 import { buildMockExam, mockPool } from '../engine/blueprint';
 import { mockPace, type MockTiming } from '../engine/pace';
 import { countdownFor } from '../engine/practiceCountdown';
 import { legacyTitle } from '../engine/planner';
 import { buildPracticeQueue, filterPool } from '../engine/queue';
-import { createRng } from '../engine/random';
+import { createRng, shuffled } from '../engine/random';
 import { dayKey } from '../engine/streak';
 import { buildSmart } from '../engine/smartMix';
 import { MODE_INFO, randomMix, scopeKey, type PathItem, type PathReason, type StudyMode } from '../engine/studyModes';
 import { guidedStep, inOrderSession, nextTopic, walkOrder } from '../engine/studyPath';
-import type { OutlineTopic } from '../engine/outline';
+import { topicQuestionIds, type OutlineTopic } from '../engine/outline';
 import { certOutline, guidedStatus, questionExists, scopeTopics } from './outline';
 import { identityPermutation, makePermutation, type Permutation } from '../engine/shuffle';
 import { dueIds, readyLine, readyToday, REVIEW_SESSION_CAP } from '../engine/srs';
@@ -29,6 +29,13 @@ import { claimWidgetStart } from './widgetStats';
 import { areaSnapshot, type AreaSnapshot } from '../engine/fieldGuide';
 import { readinessFor } from '../engine/readiness';
 import { weakDrillPool, weakDrillRanked } from '../engine/weakSpots';
+import { spreadSiblings } from '../engine/siblings';
+
+/** A question that is in the pack and not retired (a spare must be one that can still be dealt). */
+function isLive(certId: string, id: string): boolean {
+  const q = findQuestion(certId, id);
+  return Boolean(q && !q.retired);
+}
 
 /**
  * Every non-mock session starts timed when Settings → Study defaults →
@@ -54,8 +61,20 @@ function newSession(
   countdownSec?: number,
   /** Mobile 2.2: with a countdown, show words instead of ticking numbers (the mock's "Hide the clock"). */
   hideCountdown?: boolean,
+  /**
+   * Sibling groups (engine/siblings.ts): other questions this set could have used, best first, to
+   * fill a place freed by keeping two siblings apart. Read only when the set holds two siblings.
+   */
+  spares?: () => readonly string[],
+  /** A hand-picked list (mistakes, saved, a note's questions): keep the learner's order as given. */
+  keepOrder?: boolean,
 ): ActiveSession | null {
   const now = Date.now();
+  // Sibling groups: a non-mock set keeps two questions of one group apart, relaxing only when that
+  // would make the set shorter than asked (a relaxed sibling then sits after its partner, and its
+  // answer is marked: app/session.tsx). A mock's draw already holds one per group (buildMockExam).
+  // With no group in the set (every live course) the ids are untouched.
+  if (mode !== 'mock' && !keepOrder) ids = [...spreadSiblings(ids, siblingGroupOf(certId), spares)];
   // A set asked for with a countdown is always timed: if the countdown cannot be made, it counts up.
   const timed = mode !== 'mock' && (countdownSec !== undefined ? true : (askTimed ?? useSettings.getState().practiceTimer));
   const rng = createRng(now);
@@ -137,8 +156,13 @@ export function startPractice(
 ) {
   const pool = practicePool(certId, opts);
   const answers = selectCert(useProgress.getState(), certId).answers;
-  const ids = buildPracticeQueue(pool, answers, opts.count, createRng(Date.now()));
-  return newSession('practice', certId, opts.title ?? 'Practice', ids, opts.timed !== undefined ? { timed: opts.timed } : {}, opts.countdownSec, opts.hideClock);
+  // The whole queue in its order (unseen, missed, the rest): the set is its first `count`, exactly
+  // as before (buildPracticeQueue shuffles every list in full, then cuts), and the rest are the
+  // spares that keep the set full when two siblings are kept apart.
+  const queue = buildPracticeQueue(pool, answers, pool.length, createRng(Date.now()));
+  const count = Math.max(0, Math.floor(opts.count));
+  const ids = queue.slice(0, count);
+  return newSession('practice', certId, opts.title ?? 'Practice', ids, opts.timed !== undefined ? { timed: opts.timed } : {}, opts.countdownSec, opts.hideClock, () => queue.slice(count));
 }
 
 /** How many questions "Practice {area}" starts: You's summary button and Practice's "Weak spots" row. */
@@ -202,12 +226,22 @@ export function startStudy(certId: string, opts: { mode: Exclude<StudyMode, 'gui
   } else {
     items = randomMix(pool, weights, opts.count, rng);
   }
-  return newSession('practice', certId, pathTitle(certId, opts.mode, opts.domainId), items.map((i) => i.id), {
-    path: { mode: opts.mode, scope },
-    reasons: reasonsOf(items),
-    ...(support ? { support: true } : {}),
-    ...(opts.timed !== undefined ? { timed: opts.timed } : {}),
-  });
+  return newSession(
+    'practice',
+    certId,
+    pathTitle(certId, opts.mode, opts.domainId),
+    items.map((i) => i.id),
+    {
+      path: { mode: opts.mode, scope },
+      reasons: reasonsOf(items),
+      ...(support ? { support: true } : {}),
+      ...(opts.timed !== undefined ? { timed: opts.timed } : {}),
+    },
+    undefined,
+    undefined,
+    // Sibling groups: the rest of this scope's questions, in a random order.
+    () => shuffled(pool.map((q) => q.id), rng),
+  );
 }
 
 /**
@@ -250,11 +284,21 @@ export function startGuidedStep(certId: string, topicId: string, domainId?: stri
   const topic = topics.find((t) => t.id === topicId);
   if (!topic) return null;
   const items = guidedStep(topics, topic, (id) => findQuestion(certId, id), selectCert(useProgress.getState(), certId).answers, createRng(Date.now()));
-  return newSession('practice', certId, `Guided · ${topic.name}`, items.map((i) => i.id), {
-    path: { mode: 'guided', scope: scopeKey(domainId), topicId },
-    reasons: reasonsOf(items),
-    ...(timed !== undefined ? { timed } : {}),
-  });
+  return newSession(
+    'practice',
+    certId,
+    `Guided · ${topic.name}`,
+    items.map((i) => i.id),
+    {
+      path: { mode: 'guided', scope: scopeKey(domainId), topicId },
+      reasons: reasonsOf(items),
+      ...(timed !== undefined ? { timed } : {}),
+    },
+    undefined,
+    undefined,
+    // Sibling groups: the step's other questions on the same topic, in a random order.
+    () => shuffled(topicQuestionIds(topic).filter((id) => isLive(certId, id)), createRng(Date.now())),
+  );
 }
 
 /** The Questions to revisit row's subtitle, the same on Practice and You. */
@@ -268,8 +312,9 @@ export function reviewSubtitle(dueCount: number): string {
 export function startReview(certId: string, limit = REVIEW_SESSION_CAP) {
   const review = selectCert(useProgress.getState(), certId).review;
   // Retired questions are skipped before the cap, so a review is always a full one.
-  const ids = dueIds(review, Date.now(), questionExists(certId)).slice(0, limit);
-  return newSession('review', certId, 'Questions to revisit', ids);
+  const due = dueIds(review, Date.now(), questionExists(certId));
+  // Sibling groups: the next due questions fill a place freed by keeping two siblings apart.
+  return newSession('review', certId, 'Questions to revisit', due.slice(0, limit), {}, undefined, undefined, () => due.slice(limit));
 }
 
 /**
@@ -281,7 +326,7 @@ export function startReview(certId: string, limit = REVIEW_SESSION_CAP) {
  * set on the session (the first set passes `firstSet` and `timed: false`).
  */
 export function startFromIds(certId: string, ids: string[], title: string, extra: Partial<ActiveSession> = {}) {
-  return newSession('practice', certId, title, [...new Set(ids)], extra);
+  return newSession('practice', certId, title, [...new Set(ids)], extra, undefined, undefined, undefined, true);
 }
 
 /** The title of the Weak spots drill set (the website's own name for it). */
@@ -328,7 +373,6 @@ export function startMock(certId: string, questions?: number, opts: MockOptions 
   if (!cert) return null;
   const total = questions ?? cert.exam.questions;
   const timing = opts.timing ?? 'standard';
-  const { minutesAllowed } = mockPace(cert.exam, total, timing);
   // The outline spreads each domain's picks across its topics (Wave 5 / M1);
   // a cert without notes has an empty outline and keeps the random pick.
   // mockPool leaves out a CIA item whose Topical Requirement is not on the
@@ -336,6 +380,9 @@ export function startMock(certId: string, questions?: number, opts: MockOptions 
   // pool is unchanged.
   const pool = mockPool(getAllQuestions(certId), dayKey(Date.now()));
   const ids = buildMockExam(cert, pool, createRng(Date.now()), total, certOutline(certId).topics);
+  // The time allowed follows the mock as drawn: a pool cut to one question per sibling group (or a
+  // small bank) can give fewer than `total`; for every live course today ids.length === total.
+  const { minutesAllowed } = mockPace(cert.exam, ids.length, timing);
   return newSession('mock', certId, total === cert.exam.questions ? 'Full mock exam' : 'Mini mock', ids, {
     ...(minutesAllowed !== null ? { deadline: Date.now() + minutesAllowed * 60_000 } : {}),
     timing,

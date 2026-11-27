@@ -43,6 +43,11 @@
       website's rotating "Mindset." tips, read word for word from the
       MINDSET list in ../index.html via mindset-pack.cjs, for the Practice
       strip. A missing list fails the build (the strip never goes quietly empty).
+ *  10d. Sibling groups (optional `siblings` file, docs/content/CIA_BANK_PLAN.md
+ *      section 11): a question that shares a group with another question of
+ *      the same pack gets `siblingGroup`, via siblings-pack.cjs. A malformed
+ *      file fails the build; an unknown or retired id is reported. No file =
+ *      no field (CISA has none, so its pack is byte-identical).
   11. Writes <cert>/pack.json: the pack's `rev` and `schemaVersion`. The
  *      rev is the build commit's time in seconds (always increasing), so a
  *      downloaded pack (content packs, Phase C) replaces the bundled one only
@@ -69,6 +74,7 @@ const { buildExamPack } = require('./exam-guide-pack.cjs');
 const { buildTermsPack } = require('./terms-pack.cjs');
 const { buildLessonsPack } = require('./lessons-pack.cjs');
 const { buildMindsetPack } = require('./mindset-pack.cjs');
+const { readSiblingGroups, tagPack } = require('./siblings-pack.cjs');
 
 /**
  * The pack format's version (docs/mobile/ARCHITECTURE.md "Content packs").
@@ -109,8 +115,59 @@ const PACKS = [
     // The website's "Mindset." tips (owner answer O7): its MINDSET list, the only copy.
     // MINDSET_SRC points at another HTML file to preview a draft locally.
     mindset: process.env.MINDSET_SRC || path.join(REPO_ROOT, 'index.html'),
+    // Sibling groups (siblings-pack.cjs): optional. CISA has none, so no `siblings` line and no
+    // `siblingGroup` field. A course adds its file here (the CIA course: data/cia/shared/siblings.json,
+    // one file for its four packs); a missing file means no groups. A pack made of other packs'
+    // questions under new ids adds `siblingIdMap` (the CIA Challenge pack: data/cia/ciac/id_map.json).
   },
 ];
+
+/**
+ * Every question id of every pack that reads the same siblings file (a group
+ * may name another pack's question: that is not "unknown"). Read straight
+ * from the source files; an unreadable file is reported where it is built.
+ */
+function courseIds(siblingsFile) {
+  const ids = new Set();
+  for (const p of PACKS.filter((x) => x.siblings === siblingsFile)) {
+    for (const d of p.domains) {
+      try {
+        for (const q of JSON.parse(fs.readFileSync(p.source(d), 'utf8')).questions || []) ids.add(String(q.id));
+      } catch {
+        // Missing or broken: the pack's own build says so.
+      }
+    }
+  }
+  return ids;
+}
+
+/**
+ * A pack made of other packs' questions under new ids (`siblingIdMap`: an id
+ * map file, { "map": [{ "source", "id", "status" }] }) reads the siblings
+ * file through it: source id → this pack's id, active rows only. No file: none.
+ */
+function idMapAliases(file) {
+  const raw = file ? readOptional(file) : null;
+  if (!raw || !Array.isArray(raw.map)) return undefined;
+  return new Map(raw.map.filter((e) => e && e.status === 'active').map((e) => [String(e.source), String(e.id)]));
+}
+
+/**
+ * Tag this pack's questions with their sibling group (mutates them). A pack
+ * with no `siblings` file, or a file that does not exist yet, changes nothing.
+ * A malformed file fails the build; unknown and retired ids are warnings.
+ */
+function applySiblings(pack, questions) {
+  if (!pack.siblings || !fs.existsSync(pack.siblings)) return;
+  const raw = readOptional(pack.siblings);
+  if (raw === null) return; // not valid JSON: readOptional has failed the build
+  const read = readSiblingGroups(raw, { knownIds: courseIds(pack.siblings) });
+  const tag = read.problems.length ? { tagged: 0, groups: 0, joined: 0, warnings: [] } : tagPack(read.groups, questions, { aliases: idMapAliases(pack.siblingIdMap) });
+  for (const w of [...read.warnings, ...tag.warnings]) console.warn(`! ${pack.certId} siblings ${w}`);
+  for (const p of read.problems) console.error(`✗ ${pack.certId} siblings ${p}`);
+  if (read.problems.length) process.exitCode = 1;
+  else console.log(`✓ ${pack.certId} siblings: ${tag.tagged} questions in ${tag.groups} groups${tag.joined ? ` (${tag.joined} sharing a question joined)` : ''}`);
+}
 
 // ── Option-letter tokenizer ────────────────────────────────────────────
 // Words that LABEL something rather than point at an answer option:
@@ -559,6 +616,7 @@ function main() {
     fs.mkdirSync(certDir, { recursive: true });
     indexLines.push(`  ${pack.certId}: {`);
     const certQuestions = []; // every question written, for the notes' practice ids
+    const domainFiles = []; // [domain id, its questions]: written once the sibling groups are on
     for (const d of pack.domains) {
       const src = pack.source(d);
       if (!fs.existsSync(src)) {
@@ -575,8 +633,13 @@ function main() {
           console.error(`✗ ${q.id}: ${problems.join('; ')}`);
         }
       }
-      fs.writeFileSync(path.join(certDir, `d${d}.json`), JSON.stringify(questions));
+      domainFiles.push([d, questions]);
       certQuestions.push(...questions);
+    }
+    // Sibling groups span the pack's domains, so they go on before any file is written.
+    applySiblings(pack, certQuestions);
+    for (const [d, questions] of domainFiles) {
+      fs.writeFileSync(path.join(certDir, `d${d}.json`), JSON.stringify(questions));
       indexLines.push(`    '${d}': () => require('./${pack.certId}/d${d}.json') as PackQuestion[],`);
       total += questions.length;
     }

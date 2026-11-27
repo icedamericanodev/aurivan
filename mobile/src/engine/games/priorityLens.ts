@@ -13,6 +13,7 @@
  */
 import type { PackQuestion } from '../../content/types';
 import { shuffled, type Rng } from '../random';
+import { takeApart, type GroupOf } from '../siblings';
 
 // LEAST and MAIN were dropped: they never occur in the bank, so as decoys they taught learners to ignore them.
 export const PRIORITY_WORDS = ['FIRST', 'BEST', 'MOST', 'PRIMARY', 'GREATEST'] as const;
@@ -49,10 +50,9 @@ export function priorityPool(pool: PackQuestion[]): PackQuestion[] {
   return pool.filter((q) => priorityWord(q.stem) !== null);
 }
 
-export function buildPriorityRound(pool: PackQuestion[], rng: Rng, size = 5): string[] {
-  return shuffled(priorityPool(pool), rng)
-    .slice(0, size)
-    .map((q) => q.id);
+/** `groupOf` (optional): keep sibling groups apart (engine/siblings.ts); left out = exactly as before. */
+export function buildPriorityRound(pool: PackQuestion[], rng: Rng, size = 5, groupOf?: GroupOf): string[] {
+  return takeApart(shuffled(priorityPool(pool), rng).map((q) => q.id), size, groupOf);
 }
 
 /** What a priority word asks the learner to find. */

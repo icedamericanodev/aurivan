@@ -20,7 +20,8 @@ import { OptionCard } from '../../components/quiz';
 import { FieldText } from '../../components/fieldguide';
 import { Button, T } from '../../components/ui';
 import { missCoach, readHalf, twoHalfVerdict } from '../../lib/drillVerdict';
-import { getAllQuestions } from '../../content/loader';
+import { getAllQuestions, siblingGroupOf } from '../../content/loader';
+import { relaxedMark } from '../../engine/siblings';
 import { LETTERS, type Letter } from '../../content/types';
 import { acceptedAsks, ASK_LABEL, askChoices, buildPriorityRound, meaningFor, priorityWord, type Ask } from '../../engine/games/priorityLens';
 import { signpostMiss, type RecapMiss } from '../../engine/games/recap';
@@ -49,7 +50,7 @@ export default function SignpostScreen() {
 function Signpost() {
   const { c } = useTheme();
   const { cert } = useActiveCert();
-  const { round, seed, restart } = useRound(cert.id, (seed) => buildPriorityRound(getAllQuestions(cert.id), createRng(seed), SIZE));
+  const { round, seed, restart } = useRound(cert.id, (seed) => buildPriorityRound(getAllQuestions(cert.id), createRng(seed), SIZE, siblingGroupOf(cert.id)));
   const [i, setI] = useState(0);
   const [score, setScore] = useState(0);
   const [ask, setAsk] = useState<Ask | null>(null);
@@ -117,7 +118,8 @@ function Signpost() {
       const miss = signpostMiss(q, readRight, ok);
       if (miss) setMisses((m) => [...m, miss]);
       // Game answers never count toward the subtopic mastery date (mastery: false).
-      progress.recordAnswer(cert.id, q.id, ok, undefined, { ms: readClock(), mastery: false });
+      // Sibling groups: a sibling back in the round after its partner is marked (engine/siblings.ts).
+      progress.recordAnswer(cert.id, q.id, ok, undefined, { ms: readClock(), mastery: false, ...relaxedMark(round.map((x) => x.q.id), q.id, siblingGroupOf(cert.id)) });
       if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(d, perm));
       setItems((it) => [...it, readRight && ok ? 'right' : 'missed']);
       const nextReads = [...reads, { id: q.id, right: readRight, first: actual === 'FIRST' }];
