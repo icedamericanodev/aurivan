@@ -17,7 +17,7 @@ import { buildSmart } from '../engine/smartMix';
 import { MODE_INFO, randomMix, scopeKey, type PathItem, type PathReason, type StudyMode } from '../engine/studyModes';
 import { guidedStep, inOrderSession, nextTopic, walkOrder } from '../engine/studyPath';
 import { topicQuestionIds, type OutlineTopic } from '../engine/outline';
-import { certOutline, guidedStatus, questionExists, scopeTopics } from './outline';
+import { certOutline, guidedStatus, questionExists, questionInPlay, scopeTopics } from './outline';
 import { identityPermutation, makePermutation, type Permutation } from '../engine/shuffle';
 import { dueIds, readyLine, readyToday, REVIEW_SESSION_CAP } from '../engine/srs';
 import { selectCert, useProgress } from '../store/progress';
@@ -134,11 +134,24 @@ function newSession(
 function noteDiscardedMock() {
   const old = useSession.getState().active;
   if (!old) return;
-  const ids = seenOnReplace(old, Date.now());
+  const now = Date.now();
+  const ids = seenOnReplace(old, now);
   if (ids.length) useProgress.getState().noteShown(old.certId, ids);
+  if (!discardTakesForm(old, now)) return;
   // The held-back form, discarded after it started (its first question was shown): it counts as
   // taken (guardedStart said so before "Discard and start"), so its questions join practice.
-  if (old.heldBack && !old.finishedAt && ids.length) useProgress.getState().markHeldBackTaken(old.certId, old.heldBack.form);
+  useProgress.getState().markHeldBackTaken(old.certId, old.heldBack!.form);
+  // Its one fresh try is used up, so EVERY form question counts as seen (not only the ones reached):
+  // a later answer to any of them is never a first try, so a retake never lifts readiness.
+  if (!old.heldBack!.seen) useProgress.getState().noteShown(old.certId, old.questionIds);
+}
+
+/**
+ * True when replacing `old` now ("Discard and start") takes its held-back form: it is the form,
+ * unfinished, and a question of it was shown. The one rule noteDiscardedMock and startHeldBack read.
+ */
+function discardTakesForm(old: ActiveSession, now: number): boolean {
+  return Boolean(old.heldBack && !old.finishedAt && seenOnReplace(old, now).length);
 }
 
 /**
@@ -350,8 +363,8 @@ export function reviewSubtitle(dueCount: number): string {
 /** Due reviews, most overdue first: at most one session's worth (REVIEW_SESSION_CAP, 20). */
 export function startReview(certId: string, limit = REVIEW_SESSION_CAP) {
   const review = selectCert(useProgress.getState(), certId).review;
-  // Retired questions are skipped before the cap, so a review is always a full one.
-  const due = dueIds(review, Date.now(), questionExists(certId));
+  // Retired questions (and a held-back form's, until taken) are skipped before the cap, so a review is always a full one.
+  const due = dueIds(review, Date.now(), questionInPlay(certId));
   // Sibling groups: the next due questions fill a place freed by keeping two siblings apart.
   return newSession('review', certId, 'Questions to revisit', due.slice(0, limit), {}, undefined, undefined, () => due.slice(limit));
 }
@@ -428,14 +441,18 @@ export function startHeldBack(certId: string, opts: Omit<MockOptions, 'seed'> = 
   const cert = getCertification(certId);
   const form = heldBackOf(certId);
   if (!cert || !form) return null;
+  // An unfinished fresh try of this same form, about to be discarded ("Discard and start"), is taken
+  // by that discard (newSession notes it, after this is worked out), so this start is the retake.
+  const active = useSession.getState().active;
+  const taken = form.taken || Boolean(active && active.certId === certId && active.heldBack?.form === form.key && discardTakesForm(active, Date.now()));
   const timing = opts.timing ?? 'standard';
   const ids = shuffled(form.ids, createRng(Date.now()));
   const { minutesAllowed } = mockPace(cert.exam, ids.length, timing);
-  return newSession('mock', certId, form.taken ? SEEN_TITLE : FORM_TITLE, ids, {
+  return newSession('mock', certId, taken ? SEEN_TITLE : FORM_TITLE, ids, {
     ...(minutesAllowed !== null ? { deadline: Date.now() + minutesAllowed * 60_000 } : {}),
     timing,
     ...(opts.hideClock && minutesAllowed !== null ? { hideClock: true } : {}),
-    heldBack: { form: form.key, seen: form.taken },
+    heldBack: { form: form.key, seen: taken },
   });
 }
 

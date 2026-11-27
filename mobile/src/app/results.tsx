@@ -88,7 +88,7 @@ import { ICON_STROKE, Sprout } from '../components/icons';
 import { BigNum, Button, Enter, Gap, ICON_SIZE, InviteRow, Row, Screen, Section, T, Tag, useScreenScroll } from '../components/ui';
 import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
-import { questionExists } from '../lib/outline';
+import { questionInPlay } from '../lib/outline';
 import { findNote, subtopicOfQuestion } from '../content/notes';
 import { missedNoteGroups } from '../engine/outline';
 import { legacyTitle } from '../engine/planner';
@@ -456,7 +456,7 @@ export default function Results() {
   const todayPlan = storedPlan ? sizedToLeft(storedPlan) : undefined;
   // Grove Phase 4 (7.11 carry item): the questions due now, read once like the plan, so a review step with
   // nothing due adds no minutes. Today passes the same count, so both screens give the same total.
-  const dueNow = todayPlan ? dueIds(selectCert(useProgress.getState(), active.certId).review, openedAt, questionExists(active.certId)).length : 0;
+  const dueNow = todayPlan ? dueIds(selectCert(useProgress.getState(), active.certId).review, openedAt, questionInPlay(active.certId)).length : 0;
   const planLeft = todayPlan && todayPlan.day === dayKey(active.finishedAt ?? active.startedAt) && !planComplete(todayPlan) ? todayMinutes(todayPlan.items, todayPlan.done, dueNow) : 0;
   const continuePlan = () => {
     const plan = todayPlan;

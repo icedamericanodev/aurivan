@@ -19,7 +19,7 @@ import { clearContentCaches } from '../content/packs';
 import type { Certification, PackQuestion } from '../content/types';
 import { buildBackup, readBackup } from '../engine/backup';
 import { mockPool } from '../engine/blueprint';
-import { firstTryAnswers, firstTryReadiness } from '../engine/firstTry';
+import { firstTryAnswers, firstTryReadiness, firstTryUpdate } from '../engine/firstTry';
 import {
   DISCARD_LINE,
   EARLY_LINE,
@@ -38,11 +38,15 @@ import {
 import type { AnswerRecord } from '../engine/readiness';
 import { readinessFor } from '../engine/readiness';
 import { readinessRange } from '../engine/readinessRange';
+import { dueCountFor } from '../engine/srs';
 import { dayKey } from '../engine/streak';
 import { mergeSides, type SyncedProgress } from '../engine/syncMerge';
 import { finishSession } from '../lib/finishSession';
 import { heldBackStatus } from '../lib/heldBack';
+import { questionExists, questionInPlay } from '../lib/outline';
+import { principleIndex } from '../lib/principleQuestions';
 import { readinessAnswersOf, readinessRead } from '../lib/readinessRead';
+import { recallDays, recallFit } from '../lib/widgetData';
 import {
   guardedStart,
   heldBackOf,
@@ -64,6 +68,13 @@ jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
 jest.mock('expo-router', () => ({ router: { push: jest.fn(), replace: jest.fn(), back: jest.fn() } }));
+// lib/widgetData (the Recall card's picks) imports the icon set; icons are not needed here.
+jest.mock('../components/icons', () => {
+  const Icon = () => null;
+  return new Proxy({ __esModule: true, ICON_STROKE: 2 } as Record<string, unknown>, {
+    get: (t, k: string) => (k in t ? t[k] : Icon),
+  });
+});
 
 const T0 = Date.UTC(2027, 0, 10, 9);
 const DAY = 86_400_000;
@@ -193,6 +204,17 @@ describe('engine: the form, taken or not', () => {
     expect(FORM_INTRO).toBe(
       'A full exam, the same for everyone, kept out of practice so your result is a fair read. You get one fresh try; afterwards its questions and explanations join your practice.',
     );
+  });
+});
+
+describe('engine: a seen retake of the form writes no first try', () => {
+  it('seenRetake: no first try, the question is seen; an earlier first try is kept', () => {
+    const a = { correct: true, assisted: false, at: T0, game: false, sibling: false };
+    expect(firstTryUpdate(undefined, undefined, 'q1', { ...a, seenRetake: true })).toEqual({ shown: { q1: T0 } });
+    const first = { correct: false, assisted: false, at: T0 - DAY };
+    expect(firstTryUpdate({ attempts: 1, correctCount: 0, lastCorrect: false, lastAt: T0 - DAY, first }, undefined, 'q1', { ...a, seenRetake: true }).first).toBe(first);
+    // Without the flag (every other answer) the answer is the first try, as before.
+    expect(firstTryUpdate(undefined, undefined, 'q1', a)).toEqual({ first: { correct: true, assisted: false, at: T0 }, shown: undefined });
   });
 });
 
@@ -350,7 +372,7 @@ describe('rule 1: kept out of every other pool until taken, then joins practice'
 });
 
 describe('rule 4: discarding after a question was shown counts as taken, said first', () => {
-  it('"Discard and start" says so, then marks it taken and its reached questions seen', () => {
+  it('"Discard and start" says so, then marks it taken and EVERY form question seen', () => {
     withForm();
     const form = startHeldBack('cisa')!;
     useSession.getState().goTo(2);
@@ -362,7 +384,56 @@ describe('rule 4: discarding after a question was shown counts as taken, said fi
     expect(cp().heldBackTaken).toBeUndefined();
     (buttons as { text: string; onPress?: () => void }[]).find((b) => b.text === 'Discard and start')!.onPress!();
     expect(cp().heldBackTaken).toEqual({ [FORM]: expect.any(Number) });
-    expect(Object.keys(cp().shown ?? {}).sort()).toEqual(form.questionIds.slice(0, 3).sort());
+    // Review fix 2: not only the 3 reached: the one fresh try is used up, so a later answer to any
+    // form question is never a first try.
+    expect(Object.keys(cp().shown ?? {}).sort()).toEqual([...form.questionIds].sort());
+  });
+
+  it('review fix 1: discarding a paused fresh try to open the form again starts "Full exam (seen)"', () => {
+    withForm();
+    const first = startHeldBack('cisa')!;
+    useSession.getState().answer(first.questionIds[0], { display: 'A', correct: true });
+    // Paused: the learner leaves and opens the full exam again; "Discard and start".
+    const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+    guardedStart(() => startHeldBack('cisa'), () => {});
+    expect(alert.mock.calls[0][1]).toContain(DISCARD_LINE);
+    (alert.mock.calls[0][2] as { text: string; onPress?: () => void }[]).find((b) => b.text === 'Discard and start')!.onPress!();
+    const again = useSession.getState().active!;
+    expect(cp().heldBackTaken).toEqual({ [FORM]: expect.any(Number) });
+    expect(again.title).toBe(SEEN_TITLE);
+    expect(again.heldBack).toEqual({ form: FORM, seen: true });
+    finishSession({ celebrate: false });
+    expect(cp().mocks[0].heldBack).toBe('seen');
+  });
+
+  it('review fix 2: a retake after a discard at question 1 never lifts first-try readiness', () => {
+    withForm();
+    startHeldBack('cisa');
+    // Discarded at question 1.
+    const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+    guardedStart(() => startPractice('cisa', { count: 5 }), () => {});
+    (alert.mock.calls[0][2] as { text: string; onPress?: () => void }[]).find((b) => b.text === 'Discard and start')!.onPress!();
+    useSession.getState().clear();
+    const today = dayKey(Date.now());
+    const before = readinessRead(cisa, cp(), today).domains.map((d) => d.answered);
+    const again = startHeldBack('cisa')!;
+    expect(again.heldBack!.seen).toBe(true);
+    for (const id of again.questionIds.slice(0, 40)) useSession.getState().answer(id, { display: 'A', correct: true });
+    finishSession();
+    expect(readinessRead(cisa, cp(), today).domains.map((d) => d.answered)).toEqual(before);
+  });
+
+  it('review fix 2: a seen retake writes no first try even when the "seen" record is missing (an older sync)', () => {
+    withForm();
+    useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...s.byCert.cisa, heldBackTaken: { [FORM]: T0 } } } }));
+    const again = startHeldBack('cisa')!;
+    expect(again.heldBack!.seen).toBe(true);
+    for (const id of again.questionIds.slice(0, 40)) useSession.getState().answer(id, { display: 'A', correct: true });
+    finishSession({ celebrate: false });
+    const answered = again.questionIds.slice(0, 40);
+    expect(answered.every((id) => cp().answers[id] && cp().answers[id].first === undefined)).toBe(true);
+    // Seen instead, so a later practice answer is never a first try either.
+    expect(answered.every((id) => cp().shown?.[id] !== undefined)).toBe(true);
   });
 
   it('an ordinary unfinished mock: the usual words, nothing taken', () => {
@@ -392,6 +463,64 @@ describe('rule 5: the retake is "Full exam (seen)", out of readiness, never cele
     expect(useSession.getState().active!.milestone).toBeUndefined();
     // Readiness (first tries) is exactly where it was: a seen retake adds nothing.
     expect(readinessRead(cisa, cp(), today).domains.map((d) => d.answered)).toEqual(before.domains.map((d) => d.answered));
+  });
+});
+
+describe('review fix 3: submitting the fresh form logs readiness with its first tries', () => {
+  it('today’s exam-ready log has a low end from the form’s answers', () => {
+    withForm();
+    const s = startHeldBack('cisa')!;
+    for (const id of s.questionIds) useSession.getState().answer(id, { display: 'A', correct: true });
+    finishSession({ celebrate: false });
+    const day = dayKey(Date.now());
+    const logged = (cp().moments?.readiness ?? []).find((d) => d.day === day);
+    expect(logged?.last).toEqual(expect.any(Number));
+    expect(logged!.last).toBe(readinessRange(cisa, readinessRead(cisa, cp(), day)).enough ? (readinessRange(cisa, readinessRead(cisa, cp(), day)) as { low: number }).low : null);
+  });
+});
+
+describe('review fix 4: the principle index follows the form being taken', () => {
+  it('a principle’s questions include the form’s once it is taken, without a restart', () => {
+    withForm();
+    const id = tagged.find((x) => findQuestion('cisa', x)!.principleId)!;
+    expect(id).toBeDefined();
+    const principle = findQuestion('cisa', id)!.principleId!;
+    expect(principleIndex('cisa').get(principle) ?? []).not.toContain(id);
+    useProgress.getState().markHeldBackTaken('cisa', FORM, T0);
+    expect(principleIndex('cisa').get(principle)).toContain(id);
+  });
+});
+
+describe('review fix 5: older review, mistake, saved and Recall entries wait until the form is taken', () => {
+  it('not counted or listed while held back; back once taken (CISA keeps the very same check)', () => {
+    expect(questionInPlay('cisa')).toBe(questionExists('cisa'));
+    withForm();
+    // A form question that would make a Recall card.
+    const id = tagged.find((x) => recallFit(findQuestion('cisa', x)!))!;
+    expect(id).toBeDefined();
+    const old = T0 - 30 * DAY;
+    // An imported save from before the form was frozen: due in review, a mistake, saved, answered right a month ago.
+    useProgress.setState((s) => ({
+      byCert: {
+        ...s.byCert,
+        cisa: {
+          ...s.byCert.cisa,
+          review: { [id]: { box: 1, dueAt: 0, lastSeen: 0, reps: 0 } },
+          answers: { [id]: { attempts: 1, correctCount: 1, lastCorrect: true, lastAt: old } },
+        },
+      },
+    }));
+    const review = cp().review;
+    expect(dueCountFor(review, T0, questionInPlay('cisa'))).toBe(0);
+    expect(startReview('cisa')).toBeNull();
+    const recall = () => recallDays('cisa', dayKey(T0), {}, { [id]: { lastCorrect: true, lastAt: old } }).recall.map((x) => x.id);
+    // The Recall card never offers it.
+    expect(recall()).toEqual([]);
+    useProgress.getState().markHeldBackTaken('cisa', FORM, T0);
+    // The same review object: the count is not reused from before (a new check after the form is taken).
+    expect(dueCountFor(review, T0, questionInPlay('cisa'))).toBe(1);
+    expect(startReview('cisa')!.questionIds).toEqual([id]);
+    expect(recall()).toContain(id);
   });
 });
 

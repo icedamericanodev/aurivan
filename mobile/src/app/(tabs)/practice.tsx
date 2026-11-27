@@ -37,7 +37,7 @@
  * - If the choices leave fewer questions than asked, the button and a line say the real length.
  */
 import { FeatureInfo } from '../../components/featureInfo';
-import { findQuestion, getAllQuestionsIncludingRetired } from '../../content/loader';
+import { findQuestion, getAllQuestionsIncludingRetired, isHeldBackOut } from '../../content/loader';
 import { HeldBackRow } from '../../components/heldBack';
 import { isFirstTryCourse } from '../../engine/firstTry';
 import { heldBackFormIn, isTaken } from '../../engine/heldBack';
@@ -906,9 +906,10 @@ const ReviewSaved = memo(function ReviewSaved({ cert, timed, weakLine, buildFor,
   }, [buildFor, scroll]);
   // Primitives from the store, so the card re-renders only when its words change: the missed line
   // only says whether any are open (an answer that fixes one of several changes nothing here).
-  const anyMissed = useProgress((p) => Object.values(selectCert(p, cert.id).mistakes).some((m) => !m.resolved));
+  // A held-back full exam question is left out of both until its form is taken (isHeldBackOut: always false for CISA).
+  const anyMissed = useProgress((p) => Object.entries(selectCert(p, cert.id).mistakes).some(([id, m]) => !m.resolved && !isHeldBackOut(cert.id, id)));
   // Only saved questions this build has (the Saved list shows the same ones; mobile 2.3, free sample).
-  const savedCount = useProgress((p) => selectCert(p, cert.id).bookmarks.filter((id) => findQuestion(cert.id, id)).length);
+  const savedCount = useProgress((p) => selectCert(p, cert.id).bookmarks.filter((id) => findQuestion(cert.id, id) && !isHeldBackOut(cert.id, id)).length);
   const lines = reviewLines(anyMissed ? 1 : 0, savedCount);
   return (
     <HubCard testID="practice-more">

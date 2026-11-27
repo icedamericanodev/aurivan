@@ -2280,6 +2280,7 @@ decided the open items (their notes: scratchpad `app/pm.md`, `behavior.md`,
   plant, streaks and activity counts keep counting every answer, because they reward study,
   not a readiness read (the behavioral scientist's rule: readiness only from first tries at
   unseen items; nothing else claims readiness).
+  The plant's "ready" gate is the one exception, on purpose: it reads the exam-ready hold's log, a readiness claim, so in an opted-in course it follows first tries while the plant's growth still counts every answer.
 - **Can wait:** the pack glossary builder; the Challenge free-sample rule (with the
   Challenge pack); the welcome sub line and a course choice in onboarding (only
   once two or more courses are on sale).

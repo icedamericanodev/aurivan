@@ -317,8 +317,11 @@ export interface ProgressState {
      * deadline passes the exam's end, so days and mastery use that time.
      * sibling: the question came back into its set after a sibling earlier in the same set
      * (engine/siblings.ts isRelaxedSibling); the record is marked `lastSibling`.
+     * seenRetake: an answer in "Full exam (seen)", the held-back form's retake (engine/heldBack.ts):
+     * first-try courses write no first try for it (it is "Not counted in readiness"), only that
+     * the question was seen. Nothing else about the answer changes; every other course ignores it.
      */
-    opts?: { schedule?: boolean; assisted?: boolean; logReadiness?: boolean; ms?: number; mastery?: boolean; at?: number; sibling?: boolean },
+    opts?: { schedule?: boolean; assisted?: boolean; logReadiness?: boolean; ms?: number; mastery?: boolean; at?: number; sibling?: boolean; seenRetake?: boolean },
   ) => void;
   /** Log today's readiness lower bound from the saved answers (after a batch). */
   logReadinessNow: (certId: string) => void;
@@ -480,7 +483,7 @@ export const useProgress = create<ProgressState>()(
           // record for a try that never counts (a game, a relaxed sibling). Any other course: no
           // `first` is written and `shown` is untouched, so its saves are exactly as before.
           const ft = isFirstTryCourse(getCertification(certId))
-            ? firstTryUpdate(prev, cp.shown, questionId, { correct, assisted: opts?.assisted === true, at: now, game: opts?.mastery === false, sibling: opts?.sibling === true })
+            ? firstTryUpdate(prev, cp.shown, questionId, { correct, assisted: opts?.assisted === true, at: now, game: opts?.mastery === false, sibling: opts?.sibling === true, seenRetake: opts?.seenRetake === true })
             : { first: prev?.first, shown: cp.shown };
           const answers = {
             ...cp.answers,

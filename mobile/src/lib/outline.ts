@@ -5,7 +5,9 @@
  */
 import { lessonsFor, noteIdsForLesson } from '../content/lessons';
 import type { Lesson } from '../content/lessons/types';
-import { findQuestion } from '../content/loader';
+import { findQuestion, isHeldBackOut, onHeldBackTakenChange } from '../content/loader';
+import { getCertification } from '../content/certifications';
+import { isFirstTryCourse } from '../engine/firstTry';
 import { findNote, getNotes } from '../content/notes';
 import { onClearContentCaches } from '../content/packs';
 import type { NoteSubtopic } from '../content/notes/types';
@@ -73,9 +75,37 @@ export function questionExists(certId: string): (id: string) => boolean {
   return exists;
 }
 
+/**
+ * True when the question exists AND is in play: not held back in a full exam
+ * form the learner has not taken yet (engine/heldBack.ts). What review counts
+ * and lists, the mistake journal, Saved and the Recall widget read, so an
+ * older entry for a held-back question (an import, a save from before the
+ * form was frozen) is neither counted nor listed until the form is taken
+ * (a "1 due" review never starts empty).
+ *
+ * A course that does not opt in (CISA) gets questionExists itself: the very
+ * same function, so its counts and their caches are exactly as before. For an
+ * opted-in course the function is replaced whenever the taken forms change, so
+ * a count cached on the old one (engine/srs.ts dueCountFor) is never reused.
+ */
+const inPlayByCert = new Map<string, (id: string) => boolean>();
+export function questionInPlay(certId: string): (id: string) => boolean {
+  if (!isFirstTryCourse(getCertification(certId))) return questionExists(certId);
+  let inPlay = inPlayByCert.get(certId);
+  if (!inPlay) {
+    const exists = questionExists(certId);
+    inPlay = (id: string) => exists(id) && !isHeldBackOut(certId, id);
+    inPlayByCert.set(certId, inPlay);
+  }
+  return inPlay;
+}
+// A form taken (or a restore, a sync, a reset): a new function, so no count is reused.
+onHeldBackTakenChange(() => inPlayByCert.clear());
+
 /** Test helper: forget cached outlines. */
 export function clearOutlineCache(): void {
   cache.clear();
+  inPlayByCert.clear();
 }
 
 // clearContentCaches() (content/packs) empties these too.

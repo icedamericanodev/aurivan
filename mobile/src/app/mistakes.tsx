@@ -19,7 +19,7 @@ import { BookOpen, Compass, ICON_STROKE } from '../components/icons';
 import { ReportLink } from '../components/support';
 import { useMotion } from '../components/motion';
 import { Button, Chip, EmptyState, Gap, ICON_SIZE, PushedHeader, Row, Section, T } from '../components/ui';
-import { findQuestion, getAllQuestions } from '../content/loader';
+import { findQuestion, getAllQuestions, isHeldBackOut } from '../content/loader';
 import { findNote, subtopicOfQuestion } from '../content/notes';
 import { principleForSlip } from '../content/principles';
 import { shortDate } from '../lib/format';
@@ -231,7 +231,15 @@ export default function Mistakes() {
 
   // QA (2.2): only mistakes whose question is still in the pack are shown, so only those are counted
   // ("N open", the footer, "Show N fixed"); a retired id used to count with no card to show for it.
-  const known = useMemo(() => Object.entries(progress.mistakes).filter(([id]) => !!findQuestion(certId, id)), [certId, progress.mistakes]);
+  // A held-back full exam question is left out too until its form is taken (content/loader.ts isHeldBackOut;
+  // always false for CISA), so a count never names a mistake that cannot be practised yet.
+  const heldBackTaken = progress.heldBackTaken;
+  const known = useMemo(
+    () => Object.entries(progress.mistakes).filter(([id]) => !!findQuestion(certId, id) && !isHeldBackOut(certId, id)),
+    // heldBackTaken: taking the form brings its mistakes back (CISA: always undefined).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [certId, progress.mistakes, heldBackTaken],
+  );
   const entries = useMemo(
     () => known.filter(([, m]) => showFixed || !m.resolved).sort(([, a], [, b]) => b.at - a.at),
     [known, showFixed],

@@ -52,7 +52,7 @@ import { selectCert, useProgress } from '../store/progress';
 import { dailyMinutesOf, examDateOf, useSettings } from '../store/settings';
 import { effectiveCertId } from './activeCert';
 import { useWidgetStore } from '../store/widgets';
-import { questionExists } from './outline';
+import { questionInPlay } from './outline';
 import { questionsForPrinciple } from './principleQuestions';
 import { daysUntil } from './useActiveCert';
 import { buildJourney } from './useJourney';
@@ -129,7 +129,8 @@ function planFor(certId: string, now: number): { plan: DayPlan; live: ReturnType
     cert,
     progress,
     readiness,
-    dueCount: dueIds(progress.review, now, questionExists(certId)).length,
+    // Held-back form questions are not counted until the form is taken (lib/outline.ts questionInPlay).
+    dueCount: dueIds(progress.review, now, questionInPlay(certId)).length,
     daysLeft: daysUntil(examDateOf(settings.examDates, certId)),
     dailyMinutes: dailyMinutesOf(settings),
     familiarity: settings.familiarity,
@@ -152,7 +153,7 @@ function planSnap(certId: string, now: number): PlanSnap | null {
   // Sized to what is left (round 4): answers banked today lower a step's count and minutes.
   const plan = planLeft(got.plan);
   const progress = selectCert(useProgress.getState(), certId);
-  const due = dueIds(progress.review, now, questionExists(certId));
+  const due = dueIds(progress.review, now, questionInPlay(certId));
   const done = planComplete(plan);
   const item = plan.items[currentIndex(plan)];
   const name = item ? itemName(certId, item) : { title: '', short: '' };
@@ -258,7 +259,8 @@ export function thinkDays(
     const p = all.find((x) => x.id === id)!;
     const prompt = RULE_PROMPTS[p.id] ?? { ask: `${pack.families.find((f) => f.id === p.family)?.question ?? 'What is the rule?'}`, short: p.title };
     // "Try one": a question that tests this rule, one the learner hasn't answered (or the one answered longest ago).
-    const ids = questionsForPrinciple(certId, p).filter((q) => questionExists(certId)(q));
+    // Never a held-back form's question before the form is taken (its set would start empty).
+    const ids = questionsForPrinciple(certId, p).filter((q) => questionInPlay(certId)(q));
     const fresh = ids.filter((q) => !answers[q]);
     const pickFrom = fresh.length ? fresh : [...ids].sort((a, b) => (answers[a]?.lastAt ?? 0) - (answers[b]?.lastAt ?? 0)).slice(0, 3);
     const tryId = pickFrom.length ? pickFrom[hash(`${certId}:${day}:${p.id}`) % pickFrom.length] : undefined;
@@ -313,9 +315,11 @@ export function recallDays(
     .filter(([, a]) => a && a.lastCorrect === true && typeof a.lastAt === 'number')
     .sort((x, y) => x[1].lastAt - y[1].lastAt);
   const fits = new Map<string, NonNullable<ReturnType<typeof findQuestion>>>();
+  // A held-back form's question is never a Recall card until the form is taken (lib/outline.ts questionInPlay).
+  const inPlay = questionInPlay(certId);
   for (const [id] of right) {
     const q = findQuestion(certId, id);
-    if (q && recallFit(q)) fits.set(id, q);
+    if (q && recallFit(q) && inPlay(id)) fits.set(id, q);
   }
   const chosen: Record<string, string> = {};
   const recall: RecallSnap[] = [];

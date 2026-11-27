@@ -37,6 +37,20 @@ let takenOf: (certId: string) => Readonly<TakenForms> | undefined = () => undefi
 export function setHeldBackTaken(read: (certId: string) => Readonly<TakenForms> | undefined): void {
   takenOf = read;
   poolCache.clear();
+  // Other caches built on the pools (a principle's questions, the "still in play" check for
+  // review, mistakes and saved) are emptied too, so they see the form's questions without a restart.
+  for (const fn of heldBackListeners) fn();
+}
+
+/** Called after every setHeldBackTaken (a form taken, a restore, a sync, a reset). */
+const heldBackListeners = new Set<() => void>();
+
+/**
+ * Run `fn` whenever the taken forms change (setHeldBackTaken), for a cache built on the pools.
+ * For every live course this never fires after start-up: no course writes `heldBackTaken`.
+ */
+export function onHeldBackTakenChange(fn: () => void): void {
+  heldBackListeners.add(fn);
 }
 
 /** True when this question is left out of every pool: retired, or held back in an untaken form of an opted-in course. */

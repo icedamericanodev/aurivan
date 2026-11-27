@@ -78,18 +78,20 @@ export interface FirstTryUpdate {
 /**
  * One answer, for an opted-in course (store/progress.ts recordAnswer):
  * - a first try already written stays exactly as it is (write-once);
- * - a game answer or a relaxed sibling's answer writes no first try, but the
- *   question is now seen (`shown`), so a later first try at it never counts;
+ * - a game answer, a relaxed sibling's answer or an answer in a seen retake of
+ *   the held-back full exam (`seenRetake`: engine/heldBack.ts, "Not counted in
+ *   readiness") writes no first try, but the question is now seen (`shown`),
+ *   so a later first try at it never counts;
  * - otherwise this answer IS the first try.
  */
 export function firstTryUpdate(
   prev: AnswerRecord | undefined,
   shown: Shown | undefined,
   id: string,
-  a: { correct: boolean; assisted: boolean; at: number; game: boolean; sibling: boolean },
+  a: { correct: boolean; assisted: boolean; at: number; game: boolean; sibling: boolean; seenRetake?: boolean },
 ): FirstTryUpdate {
   if (prev?.first) return { first: prev.first, shown };
-  if (a.game || a.sibling) return { shown: withShown(shown, [id], a.at) };
+  if (a.game || a.sibling || a.seenRetake) return { shown: withShown(shown, [id], a.at) };
   return { first: { correct: a.correct, assisted: a.assisted, at: a.at }, shown };
 }
 
@@ -170,8 +172,10 @@ function countedTries(live: ReadonlyMap<string, PackQuestion>, answers: Readonly
  * latest 50 per section, unhinted, at unseen questions on the exam today),
  * shaped as a single clean answer: right or not, at the try's time. So the
  * existing readiness maths (engine/readiness.ts, readinessRange.ts) runs on
- * first tries unchanged. The plant, streaks and activity counts never read
- * this: they keep counting every answer.
+ * first tries unchanged. The plant's growth, streaks and activity counts keep
+ * counting every answer. The plant's "ready" gate does follow first tries, on
+ * purpose: it reads the exam-ready log (store/progress.ts withReadiness),
+ * which is a readiness claim, so for an opted-in course it is logged from this.
  */
 export function firstTryAnswers(
   questions: readonly PackQuestion[],

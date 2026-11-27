@@ -33,7 +33,7 @@ import { EmptyScreen } from '../components/emptyScreen';
 import { BookmarkCheck, ICON_STROKE, PencilLine } from '../components/icons';
 import { StickyFooter } from '../components/quiz';
 import { Button, ICON_SIZE, ListRow, PushedHeader, Row, Section, T } from '../components/ui';
-import { findQuestion } from '../content/loader';
+import { findQuestion, isHeldBackOut } from '../content/loader';
 import { liveNotes, noteSnippet } from '../engine/questionNotes';
 import { sayLater } from '../lib/a11y';
 import { guardedStart, startBookmarks, startFromIds, startPractice } from '../lib/sessions';
@@ -175,13 +175,18 @@ export default function Saved() {
   }, [certId]);
 
   // The learner's notes (tombstones left out), newest first, on questions this app still has.
+  // A held-back full exam question is left out until its form is taken (content/loader.ts isHeldBackOut;
+  // always false for CISA): its row would open an empty set.
   const qNotes = progress.qNotes;
+  const heldBackTaken = progress.heldBackTaken;
   const notes = useMemo(
     () =>
       liveNotes(qNotes)
         .map((n) => ({ ...n, q: findQuestion(certId, n.id) }))
-        .filter((n) => n.q),
-    [qNotes, certId],
+        .filter((n) => n.q && !isHeldBackOut(certId, n.id)),
+    // heldBackTaken: taking the form brings its rows back (CISA: always undefined).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [qNotes, certId, heldBackTaken],
   );
 
   const bookmarks = progress.bookmarks;
@@ -189,9 +194,10 @@ export default function Saved() {
     () =>
       bookmarks
         .map((id) => ({ id, q: findQuestion(certId, id) }))
-        .filter((x): x is { id: string; q: NonNullable<typeof x.q> } => Boolean(x.q))
+        .filter((x): x is { id: string; q: NonNullable<typeof x.q> } => Boolean(x.q) && !isHeldBackOut(certId, x.id))
         .map(({ id, q }) => ({ id, stem: q.stem, domain: cert.domains.find((d) => d.id === q.domainId)?.short })),
-    [bookmarks, certId, cert.domains],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [bookmarks, certId, cert.domains, heldBackTaken],
   );
   const lastIndex = saved.length - 1;
   const renderItem = useCallback(

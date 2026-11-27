@@ -12,7 +12,7 @@ import { dueCountFor } from '../engine/srs';
 import { dayKey, visibleStreak } from '../engine/streak';
 import { selectCert, useProgress } from '../store/progress';
 import { examDateOf, useSettings } from '../store/settings';
-import { questionExists } from './outline';
+import { questionInPlay } from './outline';
 import { useActiveCertId } from './activeCert';
 import { useHeld } from './holdWhileHidden';
 
@@ -50,10 +50,13 @@ export function useActiveCert() {
   // since the last foreground, without waiting for the next AppState change.
   const dueCount = useMemo(
     // Only questions the bank still has: a review session drops retired ones, so they are never counted.
+    // Nor a held-back full exam question before its form is taken (lib/outline.ts questionInPlay).
     // Shared with the other tabs (engine/srs.ts dueCountFor): counted once until the queue or a due time changes.
     // eslint-disable-next-line react-hooks/purity -- see the comment above
-    () => dueCountFor(progress.review, Math.max(now, Date.now()), questionExists(cert.id)),
-    [progress.review, now, cert.id],
+    () => dueCountFor(progress.review, Math.max(now, Date.now()), questionInPlay(cert.id)),
+    // heldBackTaken: taking the form brings its questions back into the count (CISA: always undefined).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [progress.review, now, cert.id, progress.heldBackTaken],
   );
   // Same reason: one clock read per render for the streak and today's count.
   // eslint-disable-next-line react-hooks/purity -- see the comment above

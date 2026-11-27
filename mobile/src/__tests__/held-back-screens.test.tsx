@@ -19,6 +19,8 @@ import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Today from '../app/(tabs)/home';
 import Practice from '../app/(tabs)/practice';
 import MockStart from '../app/mock-start';
+import Mistakes from '../app/mistakes';
+import Saved from '../app/saved';
 import Results from '../app/results';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { getCertification } from '../content/certifications';
@@ -193,6 +195,31 @@ describe('Practice: the row under the mock tiles', () => {
     take();
     mount(<Practice />);
     expect(textIn(byTestID('practice-held-back')[0])).toContain('Full exam (seen)');
+  });
+});
+
+describe('review fix 5: Mistakes and Saved wait for the form to be taken', () => {
+  it('an older mistake and a saved question from the form are not listed or counted until it is taken', () => {
+    withForm();
+    const id = tagged[0];
+    const stem = findQuestion('cisa', id)!.stem;
+    // A save from before the form was frozen: the question missed and saved.
+    act(() => {
+      useProgress.getState().recordMistake('cisa', id, 'B');
+      useProgress.getState().toggleBookmark('cisa', id);
+    });
+    mount(<Mistakes />);
+    expect(allText()).not.toContain('Practice this one');
+    act(() => r!.unmount());
+    mount(<Saved />);
+    expect(allText()).not.toContain(stem);
+    act(() => r!.unmount());
+    take();
+    mount(<Mistakes />);
+    expect(allText()).toContain('Practice this one');
+    act(() => r!.unmount());
+    mount(<Saved />);
+    expect(allText()).toContain(stem);
   });
 });
 
