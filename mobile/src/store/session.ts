@@ -125,6 +125,12 @@ export interface ActiveSession {
    * `readCountdown` (a damaged value reads as "no countdown"). Optional: older sessions have none.
    */
   countdown?: PracticeCountdown;
+  /**
+   * First-try courses only (engine/shortMock.ts): a short mock drawn per learner that had to reuse
+   * this many questions the learner had already seen. Results and the saved result say "includes
+   * seen questions". Optional: every other session (CISA's mini mock included) has none.
+   */
+  seenReused?: number;
   finishedAt?: number; // set when the learner finishes / submits
 }
 

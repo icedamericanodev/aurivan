@@ -151,6 +151,9 @@ function finishSessionNow(opts: { celebrate?: boolean }) {
     // Skipped questions come back for review, but don't count as studied
     // (no streak, daily-goal or readiness credit for answering nothing).
     if (skipped.length) progress.queueForReview(s.certId, skipped);
+    // First-try courses: a skipped question was still SHOWN, so a later first try at it never
+    // counts toward readiness (engine/firstTry.ts). Any other course: nothing happens.
+    if (skipped.length) progress.noteShown(s.certId, skipped, examEnd);
     progress.logReadinessNow(s.certId);
     const score = scoreSession(s);
     // If the learner reopens the app after the deadline, the exam ended AT
@@ -171,6 +174,8 @@ function finishSessionNow(opts: { celebrate?: boolean }) {
       ...(pacing.medianSec !== null ? { medianSec: pacing.medianSec } : {}),
       unanswered: pacing.unanswered,
       ...(pacing.checkpoints.length ? { checkpoints: pacing.checkpoints.map((c) => c.deviation) } : {}),
+      // First-try courses: a short mock that reused seen questions says so on its saved result.
+      ...(s.seenReused ? { includesSeen: true } : {}),
     };
     progress.recordMock(s.certId, result);
   }

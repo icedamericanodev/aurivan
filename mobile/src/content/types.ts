@@ -179,4 +179,14 @@ export interface Certification {
   domains: DomainInfo[];
   /** "Domain 1" or "Section A" (see DomainStyle). Missing → "Domain 1", as every course today. */
   domainStyle?: DomainStyle;
+  /**
+   * How readiness is read (docs/content/CIA_BANK_PLAN.md section 11, item 7).
+   * Missing → the blueprint-weighted range from every answer (engine/readiness.ts),
+   * as every course today. 'firstTry': the course also keeps a "seen" record and
+   * each question's first try (engine/firstTry.ts), its readiness report shows
+   * first tries by section, and its shorter mocks are drawn per learner from
+   * questions they have not seen (engine/shortMock.ts). Opt-in only: no live
+   * course sets it, so CISA's readiness, mocks and saves never change.
+   */
+  readinessRule?: 'firstTry';
 }

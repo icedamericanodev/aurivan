@@ -30,6 +30,8 @@ import { areaSnapshot, type AreaSnapshot } from '../engine/fieldGuide';
 import { readinessFor } from '../engine/readiness';
 import { weakDrillPool, weakDrillRanked } from '../engine/weakSpots';
 import { spreadSiblings } from '../engine/siblings';
+import { isFirstTryCourse, seenBy } from '../engine/firstTry';
+import { buildShortMock, type ShortMockDraw } from '../engine/shortMock';
 
 /** A question that is in the pack and not retired (a spare must be one that can still be dealt). */
 function isLive(certId: string, id: string): boolean {
@@ -113,8 +115,22 @@ function newSession(
     // Mobile 1.51: where each area stands now, so Results can show this set's growth (or drop) honestly.
     ...beforeOf(certId),
   };
+  noteDiscardedMock();
   useSession.getState().start(session);
   return session;
+}
+
+/**
+ * First-try courses (engine/firstTry.ts): an unfinished mock about to be replaced (the learner chose
+ * "Discard and start") showed questions that will never be recorded. Each one the learner reached
+ * (answered, visited, or up to where they were) counts as seen, so a later first try at it never
+ * counts toward readiness. Any other course, or no unfinished mock: nothing happens.
+ */
+function noteDiscardedMock() {
+  const old = useSession.getState().active;
+  if (!old || old.finishedAt || old.mode !== 'mock' || !isFirstTryCourse(getCertification(old.certId))) return;
+  const reached = new Set([...old.questionIds.slice(0, old.index + 1), ...Object.keys(old.responses), ...Object.keys(old.visitMs ?? {})]);
+  useProgress.getState().noteShown(old.certId, old.questionIds.filter((id) => reached.has(id)));
 }
 
 /** The choices that decide which questions a practice set may draw from (Build a set). */
@@ -361,6 +377,29 @@ export interface MockOptions {
   timing?: MockTiming;
   /** "Hide the clock (checkpoints only)". The deadline still applies. */
   hideClock?: boolean;
+  /**
+   * First-try courses: the seed of the short mock the start sheet previewed (planShortMock), so the
+   * mock that starts is the one whose reused count the learner was told. Ignored by every other course.
+   */
+  seed?: number;
+}
+
+/** True when a mock of `questions` for this course is the per-learner short mock (engine/shortMock.ts). */
+export function isShortMock(certId: string, questions: number): boolean {
+  const cert = getCertification(certId);
+  return Boolean(cert && isFirstTryCourse(cert) && questions < cert.exam.questions);
+}
+
+/**
+ * First-try courses: the short mock of `total` questions this learner would get with `seed`: the ids
+ * and how many seen questions it reuses. Null for any other course, or a full-length mock.
+ */
+export function planShortMock(certId: string, total: number, seed: number): ShortMockDraw | null {
+  const cert = getCertification(certId);
+  if (!cert || !isShortMock(certId, total)) return null;
+  const cp = selectCert(useProgress.getState(), certId);
+  const pool = mockPool(getAllQuestions(certId), dayKey(seed));
+  return buildShortMock(cert, pool, seenBy(cp.answers, cp.shown), createRng(seed), total, certOutline(certId).topics);
 }
 
 /**
@@ -378,8 +417,11 @@ export function startMock(certId: string, questions?: number, opts: MockOptions 
   // mockPool leaves out a CIA item whose Topical Requirement is not on the
   // exam yet (testableFrom after today's local date); for every other exam the
   // pool is unchanged.
-  const pool = mockPool(getAllQuestions(certId), dayKey(Date.now()));
-  const ids = buildMockExam(cert, pool, createRng(Date.now()), total, certOutline(certId).topics);
+  // First-try courses: a mock shorter than the exam is drawn for this learner from questions they
+  // have not seen (engine/shortMock.ts). Every other course (CISA's mini mock too): as before.
+  const short = isShortMock(certId, total) ? planShortMock(certId, total, opts.seed ?? Date.now()) : null;
+  const pool = short ? [] : mockPool(getAllQuestions(certId), dayKey(Date.now()));
+  const ids = short ? short.ids : buildMockExam(cert, pool, createRng(Date.now()), total, certOutline(certId).topics);
   // The time allowed follows the mock as drawn: a pool cut to one question per sibling group (or a
   // small bank) can give fewer than `total`; for every live course today ids.length === total.
   const { minutesAllowed } = mockPace(cert.exam, ids.length, timing);
@@ -388,6 +430,8 @@ export function startMock(certId: string, questions?: number, opts: MockOptions 
     timing,
     // Hiding the clock only makes sense when there is one.
     ...(opts.hideClock && minutesAllowed !== null ? { hideClock: true } : {}),
+    // A short mock that reuses seen questions says so on Results and on its saved result.
+    ...(short && short.reused > 0 ? { seenReused: short.reused } : {}),
   });
 }
 

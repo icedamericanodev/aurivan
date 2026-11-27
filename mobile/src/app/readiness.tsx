@@ -28,6 +28,11 @@
  *
  * Honest numbers: no pass, fail or guarantee wording anywhere; practice
  * scores are not scaled exam scores, and the screen says so.
+ *
+ * First-try courses only (`readinessRule: 'firstTry'`, CIA_BANK_PLAN.md section
+ * 11 item 7): "First tries by section" follows the framing, one row per section
+ * ("31 of 44 first tries right (70%)", engine/firstTry.ts). Every other course
+ * (CISA) never shows it: its screen is exactly as before.
  */
 import { HoldContext } from '../lib/holdWhileHidden';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -51,6 +56,9 @@ import { getFinalWeek } from '../content/exam';
 import { aboutSeconds, pacingStats, pacingStatsLine, spokenMin, timingOf } from '../engine/pace';
 import { YARDSTICK_LINE } from '../engine/domainBand';
 import { domainWord } from '../engine/domainNaming';
+import { domainLabel } from '../content/certifications';
+import { getAllQuestions } from '../content/loader';
+import { FIRST_TRY_WINDOW, firstTryReadiness, isFirstTryCourse, type FirstTrySection } from '../engine/firstTry';
 import { rangeSpoken } from '../engine/readinessRange';
 import {
   domainBreakdown,
@@ -182,6 +190,12 @@ function ReadinessReportScreen() {
     };
   }, [progress.mocks, momentsLog, readiness, cert, today]);
   const { mocks, trend, low, words, scores, rows, pacingLine, paced } = data;
+  // First-try courses only: each section's first tries (null for every other course, CISA included).
+  const shown = progress.shown;
+  const firstTries = useMemo(
+    () => (isFirstTryCourse(cert) ? firstTryReadiness(cert, getAllQuestions(cert.id), progress.answers, shown, today) : null),
+    [cert, progress.answers, shown, today],
+  );
 
   // Exam week: the checklist is one tap away here, even after Today's card was hidden.
   // With a final review week it is the plan (from 8 days out, as on Today), counting the days marked done.
@@ -252,6 +266,9 @@ function ReadinessReportScreen() {
           </View>
         </View>
         <HowItWorks />
+
+        {/* First-try courses only: first tries by section (engine/firstTry.ts). */}
+        {firstTries && <FirstTries cert={cert} sections={firstTries} />}
 
         {/* Exam week: the checklist sits right under the framing (UX review O6). */}
         {examWeekRow && (
@@ -457,6 +474,45 @@ function HowItWorks() {
           <T v="small">{HOW_LINE}</T>
         </View>
       </Collapse>
+    </View>
+  );
+}
+
+/**
+ * First-try courses: "First tries by section". KaiSip's own study read, one row per section in the
+ * course's order: the section, then "31 of 44 first tries right (70%)" (or "Too few to say yet
+ * (6 answered)", or the percent marked "early read"), then "You’ve met every question here; this
+ * won’t change." when no unseen question is left. Never a scaled score, a pass mark or "likely".
+ */
+function FirstTries({ cert, sections }: { cert: Certification; sections: FirstTrySection[] }) {
+  const { c } = useTheme();
+  return (
+    <View testID="first-tries">
+      <Section title={`First tries by ${domainWord(cert, 'domain')}`} />
+      <T v="small">
+        {`KaiSip’s own study read: your first try at each question you had not seen before, without a hint and outside games. The latest ${FIRST_TRY_WINDOW} in each ${domainWord(cert, 'domain')} count.`}
+      </T>
+      {sections.map((s, i) => {
+        const d = cert.domains.find((x) => x.id === s.domainId);
+        if (!d) return null;
+        const name = domainLabel(d, cert);
+        return (
+          <View
+            key={s.domainId}
+            testID={`first-tries-${s.domainId}`}
+            accessible
+            accessibilityLabel={`${name.replace(/ · /g, ', ')}. ${s.label.replace(/ · /g, ', ')}.${s.note ? ` ${s.note}` : ''}`}
+            style={{ paddingVertical: space.sm, borderBottomWidth: i === sections.length - 1 ? 0 : 1, borderBottomColor: c.line }}
+          >
+            <View style={{ flexDirection: 'row', gap: space.sm, alignItems: 'center' }}>
+              <DomainDot domain={d} />
+              <T v="label" style={{ flexShrink: 1 }}>{name}</T>
+            </View>
+            <T v="meta" num color={c.ink} style={{ marginTop: 2 }}>{s.label}</T>
+            {s.note && <T v="meta" style={{ marginTop: 2 }}>{s.note}</T>}
+          </View>
+        );
+      })}
     </View>
   );
 }

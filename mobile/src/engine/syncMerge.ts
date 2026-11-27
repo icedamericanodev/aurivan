@@ -233,7 +233,13 @@ export function clampFuture<T>(store: SyncStoreName, side: Side<T>, now: number)
   if (store === 'settings') return { state: side.state, stamps };
   const p = JSON.parse(JSON.stringify(side.state)) as SyncedProgress;
   for (const cp of Object.values(p.byCert)) {
-    for (const a of Object.values(cp.answers ?? {})) a.lastAt = t(a.lastAt) as number;
+    for (const a of Object.values(cp.answers ?? {})) {
+      a.lastAt = t(a.lastAt) as number;
+      // A first try "in the future" would win every later merge (the earliest wins): pulled back to now.
+      if (a.first) a.first.at = t(a.first.at) as number;
+    }
+    // First-try courses: when each question was first shown (the earliest wins), pulled back the same way.
+    if (cp.shown) cp.shown = times(cp.shown) as Record<string, number>;
     for (const r of Object.values(cp.review ?? {})) r.lastSeen = t(r.lastSeen) as number;
     for (const r of Object.values(cp.cards ?? {})) r.lastSeen = t(r.lastSeen) as number;
     for (const m of Object.values(cp.mistakes ?? {})) m.at = t(m.at) as number;
@@ -330,12 +336,17 @@ export function activityAt(cp: Cert): number {
   return at;
 }
 
-/** attempts and correct take the max (never inflated); the "last answer" fields come from the later answer. */
+/**
+ * attempts and correct take the max (never inflated); the "last answer" fields come from the later
+ * answer. First-try courses: `first` is the EARLIER first try of the two (it is write-once, so the
+ * earlier one really was first), ties by value; a side without one never removes the other's.
+ */
 function mergeAnswer(a: Answer, b: Answer): Answer {
   const lastOf = (x: Answer) => clean({ lastCorrect: x.lastCorrect, lastAt: x.lastAt, lastAssisted: x.lastAssisted, lastRetest: x.lastRetest, lastGame: x.lastGame, lastSibling: x.lastSibling, ms: x.ms, lastConfidence: x.lastConfidence });
   const last = pick(a, b, (x) => [x.lastAt, stableStringify(lastOf(x))]);
   const attempts = Math.max(a.attempts, b.attempts);
-  return clean({ ...lastOf(last), attempts, correctCount: Math.min(attempts, Math.max(a.correctCount, b.correctCount)) }) as Answer;
+  const first = !a.first || !b.first ? (a.first ?? b.first) : pick(a.first, b.first, (f) => [-f.at, stableStringify(f)]);
+  return clean({ ...lastOf(last), attempts, correctCount: Math.min(attempts, Math.max(a.correctCount, b.correctCount)), first }) as Answer;
 }
 
 /**
@@ -543,6 +554,8 @@ function mergeCert(certId: string, a: Cert, as: Stamps, b: Cert, bs: Stamps, fir
     plant: mergePlant(certId, a.plant, as, b.plant, bs, firstSync),
     // "Your note": per question, the newer edit wins, a deletion (tombstone) included.
     qNotes: mergeMap(a.qNotes, b.qNotes, mergeNote),
+    // First-try courses: a question seen on either phone is seen, from the earlier time.
+    shown: mergeMap(a.shown, b.shown, Math.min),
   }) as Cert;
 }
 

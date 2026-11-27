@@ -665,7 +665,8 @@ const CONFIDENCE = oneOf('sure', 'unsure', 'guessing');
 const LETTER = oneOf('A', 'B', 'C', 'D');
 const SLIP = oneOf('role', 'priority', 'tech-first', 'symptom', 'misread', 'knowledge');
 const id = str(MAX_KEY);
-const answerRecord = rule(obj({ attempts: count, correctCount: count, lastCorrect: bool, lastAt: ts }, { lastAssisted: bool, lastRetest: bool, lastGame: bool, lastSibling: bool, ms: int(0, answerClock_1.MAX_ANSWER_MS), lastConfidence: CONFIDENCE }), (a) => a.correctCount <= a.attempts, (a) => ({ ...a, correctCount: Math.min(a.correctCount, a.attempts) }));
+const firstTry = obj({ correct: bool, assisted: bool, at: ts });
+const answerRecord = rule(obj({ attempts: count, correctCount: count, lastCorrect: bool, lastAt: ts }, { lastAssisted: bool, lastRetest: bool, lastGame: bool, lastSibling: bool, ms: int(0, answerClock_1.MAX_ANSWER_MS), lastConfidence: CONFIDENCE, first: firstTry }), (a) => a.correctCount <= a.attempts, (a) => ({ ...a, correctCount: Math.min(a.correctCount, a.attempts) }));
 const reviewEntry = obj({ box: int(0, 100), dueAt: ts, lastSeen: ts, reps: count });
 const tally = rule(obj({ total: count, correct: count }), (t) => t.correct <= t.total, (t) => ({ ...t, correct: Math.min(t.correct, t.total) }));
 const mockResult = rule(obj({
@@ -681,6 +682,7 @@ const mockResult = rule(obj({
     medianSec: range(0, answerClock_1.MAX_ANSWER_MS / 1000),
     unanswered: count,
     checkpoints: list(range(-1000, 1), 10),
+    includesSeen: bool,
 }), (m) => { var _a; return m.correct <= m.total && ((_a = m.unanswered) !== null && _a !== void 0 ? _a : 0) <= m.total; }, (m) => ({ ...m, correct: Math.min(m.correct, m.total), ...(m.unanswered !== undefined ? { unanswered: Math.min(m.unanswered, m.total) } : {}) }));
 const mistakeEntry = obj({ at: ts }, { picked: LETTER, slip: SLIP, resolved: bool, confidence: CONFIDENCE, fixedLater: bool });
 const percent = range(0, 100);
@@ -782,6 +784,7 @@ const certProgress = obj({}, {
     milestones,
     plant,
     qNotes: map(questionNote, MAX_IDS),
+    shown: map(ts, MAX_IDS),
 });
 const reportRef = (x, at) => (typeof x === 'string' && support_1.REF_RE.test(x) ? x : bad(at));
 const appVersion = (x, at) => (typeof x === 'string' && (0, support_1.parseVersion)(x) ? x : bad(at));
@@ -973,6 +976,8 @@ function keepKnownIds(progress, known) {
                 next.bookmarks = keepIds(cp.bookmarks, k.questions);
             if (cp.qNotes)
                 next.qNotes = keepKeys(cp.qNotes, k.questions);
+            if (cp.shown)
+                next.shown = keepKeys(cp.shown, k.questions);
             if ((_a = cp.studyPath) === null || _a === void 0 ? void 0 : _a.inOrder)
                 next.studyPath = { ...cp.studyPath, inOrder: keepValues(cp.studyPath.inOrder, k.questions) };
             if ((_b = cp.milestones) === null || _b === void 0 ? void 0 : _b.gameMisses)
@@ -7077,8 +7082,13 @@ function clampFuture(store, side, now) {
         return { state: side.state, stamps };
     const p = JSON.parse(JSON.stringify(side.state));
     for (const cp of Object.values(p.byCert)) {
-        for (const a of Object.values((_a = cp.answers) !== null && _a !== void 0 ? _a : {}))
+        for (const a of Object.values((_a = cp.answers) !== null && _a !== void 0 ? _a : {})) {
             a.lastAt = t(a.lastAt);
+            if (a.first)
+                a.first.at = t(a.first.at);
+        }
+        if (cp.shown)
+            cp.shown = times(cp.shown);
         for (const r of Object.values((_b = cp.review) !== null && _b !== void 0 ? _b : {}))
             r.lastSeen = t(r.lastSeen);
         for (const r of Object.values((_c = cp.cards) !== null && _c !== void 0 ? _c : {}))
@@ -7191,10 +7201,12 @@ function activityAt(cp) {
     return at;
 }
 function mergeAnswer(a, b) {
+    var _a;
     const lastOf = (x) => clean({ lastCorrect: x.lastCorrect, lastAt: x.lastAt, lastAssisted: x.lastAssisted, lastRetest: x.lastRetest, lastGame: x.lastGame, lastSibling: x.lastSibling, ms: x.ms, lastConfidence: x.lastConfidence });
     const last = pick(a, b, (x) => [x.lastAt, stableStringify(lastOf(x))]);
     const attempts = Math.max(a.attempts, b.attempts);
-    return clean({ ...lastOf(last), attempts, correctCount: Math.min(attempts, Math.max(a.correctCount, b.correctCount)) });
+    const first = !a.first || !b.first ? ((_a = a.first) !== null && _a !== void 0 ? _a : b.first) : pick(a.first, b.first, (f) => [-f.at, stableStringify(f)]);
+    return clean({ ...lastOf(last), attempts, correctCount: Math.min(attempts, Math.max(a.correctCount, b.correctCount)), first });
 }
 function mergeMistake(a, b) {
     var _a;
@@ -7356,6 +7368,7 @@ function mergeCert(certId, a, as, b, bs, firstSync) {
         milestones: mergeMilestones(a.milestones, b.milestones),
         plant: mergePlant(certId, a.plant, as, b.plant, bs, firstSync),
         qNotes: mergeMap(a.qNotes, b.qNotes, questionNotes_1.mergeNote),
+        shown: mergeMap(a.shown, b.shown, Math.min),
     });
 }
 function runEndingOn(days, last) {
@@ -10520,7 +10533,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "67a947a7ad3b88b3";
+  api.sourceHash = "755d05d43841fc71";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

@@ -111,6 +111,7 @@ import {
 import { moveFocus, sayLater } from '../lib/a11y';
 import { displayToOriginal, originalToDisplay, renderText, type Permutation } from '../engine/shuffle';
 import { aboutMin, coachingTag, practicePace, spokenMin, timeStat, TIMING_LABEL } from '../engine/pace';
+import { INCLUDES_SEEN } from '../engine/shortMock';
 import { countdownResult, readCountdown, timerKindOf } from '../engine/practiceCountdown';
 import { coachingLine } from '../lib/coachingCopy';
 import { msUsed, scoreSession, sessionPacing } from '../lib/finishSession';
@@ -507,7 +508,12 @@ export default function Results() {
     <Screen edges={['top', 'bottom']} onScroll={moment && !momentSeen ? watch : undefined} onScrollBeginDrag={moment ? () => skipMoment.current?.() : undefined}>
       <Enter i={0}>
         {/* Mobile 1.51: the running head names the set. Extra time and untimed mocks say so (standard time is the norm). */}
-        <RunningHead section={active.mode === 'mock' && active.timing && active.timing !== 'standard' ? `${active.title} · ${TIMING_LABEL[active.timing].toLowerCase()}` : legacyTitle(active.title)} />
+        <RunningHead
+          section={`${active.mode === 'mock' && active.timing && active.timing !== 'standard' ? `${active.title} · ${TIMING_LABEL[active.timing].toLowerCase()}` : legacyTitle(active.title)}${
+            // First-try courses: a short mock that reused seen questions is labelled (engine/shortMock.ts).
+            active.mode === 'mock' && active.seenReused ? ` · ${INCLUDES_SEEN}` : ''
+          }`}
+        />
         {/* A timed mock that ended on the clock says so first (seen here, spoken by the effect above). */}
         {timedOut && (
           <View accessible accessibilityLabel={`${TIMES_UP_LINE} ${TIMES_UP_DETAIL}`} style={{ marginTop: space.sm }}>

@@ -324,10 +324,16 @@ const LETTER = oneOf('A', 'B', 'C', 'D');
 const SLIP = oneOf('role', 'priority', 'tech-first', 'symptom', 'misread', 'knowledge');
 const id = str(MAX_KEY);
 
+/**
+ * First-try courses (engine/firstTry.ts): the question's first graded try,
+ * written once. Optional: every live course's records and older files have
+ * none; an older app drops it (obj() ignores unknown keys) and keeps the rest.
+ */
+const firstTry = obj({ correct: bool, assisted: bool, at: ts });
 const answerRecord = rule(
   obj(
     { attempts: count, correctCount: count, lastCorrect: bool, lastAt: ts },
-    { lastAssisted: bool, lastRetest: bool, lastGame: bool, lastSibling: bool, ms: int(0, MAX_ANSWER_MS), lastConfidence: CONFIDENCE },
+    { lastAssisted: bool, lastRetest: bool, lastGame: bool, lastSibling: bool, ms: int(0, MAX_ANSWER_MS), lastConfidence: CONFIDENCE, first: firstTry },
   ),
   (a) => a.correctCount <= a.attempts,
   (a) => ({ ...a, correctCount: Math.min(a.correctCount, a.attempts) }),
@@ -352,6 +358,8 @@ const mockResult = rule(
       unanswered: count,
       // Signed share of the time off target; "ahead" can be well below −1.
       checkpoints: list(range(-1000, 1), 10),
+      // First-try courses: a short mock that reused seen questions (optional; an older app drops it).
+      includesSeen: bool,
     },
   ),
   (m) => m.correct <= m.total && (m.unanswered ?? 0) <= m.total,
@@ -542,6 +550,9 @@ const certProgress = obj(
     plant,
     // "Your note" per question (optional: older files have none). Same cap as answers.
     qNotes: map(questionNote, MAX_IDS),
+    // First-try courses: questions shown without a counted try, id → the earliest time
+    // (engine/firstTry.ts). Optional: no live course writes it; an older app drops it. Same cap as answers.
+    shown: map(ts, MAX_IDS),
   },
 );
 
@@ -884,6 +895,8 @@ export function keepKnownIds(progress: BackupProgress, known: (certId: string) =
       if (cp.bookmarks) next.bookmarks = keepIds(cp.bookmarks, k.questions);
       // A note on a question this app doesn't have can never be shown: dropped.
       if (cp.qNotes) next.qNotes = keepKeys(cp.qNotes, k.questions);
+      // First-try courses: "seen" times are keyed by question id, like the answers.
+      if (cp.shown) next.shown = keepKeys(cp.shown, k.questions);
       // In order's place is a question id: a removed question just starts that scope over.
       if (cp.studyPath?.inOrder) next.studyPath = { ...cp.studyPath, inOrder: keepValues(cp.studyPath.inOrder, k.questions) };
       // Game misses waiting to be fixed are question ids.

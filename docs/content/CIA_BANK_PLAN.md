@@ -2194,9 +2194,36 @@ decided the open items (their notes: scratchpad `app/pm.md`, `behavior.md`,
   then draws from 263 cia1, 58 cia2 and 42 cia3 items. (6) `waitingUntil` (engine/blueprint.ts) and
   `components/examDateTag.tsx`: practice and review show "On the exam from 1 March 2027" (seen and
   spoken the same) above the stem and in Results' review list, until that date by the phone's
-  calendar. Tests: `siblings.test.ts`, `exam-date-tag.test.tsx`. Next: (7) the held-back full form, the
-  per-learner short mock and first-try readiness, built as one piece for courses
-  that opt in (CISA's readiness must not move: that would break saved progress).
+  calendar. Tests: `siblings.test.ts`, `exam-date-tag.test.tsx`. (7) the held-back full form, the
+  per-learner short mock and first-try readiness, for courses that opt in (CISA's readiness must
+  not move: that would break saved progress). **(7), first half, done (27 Nov 2026, not yet
+  committed), no IIA name in code or tests, CISA unchanged (no live course opts in; its answers,
+  saves, mini mock and readiness screen are exactly as before):** `Certification.readinessRule:
+  'firstTry'` opts a course in. `engine/firstTry.ts`: a write-once `first: { correct, assisted, at }`
+  on the answer record (the first graded answer; never for a game answer or a relaxed sibling), and
+  `CertProgress.shown` (id → the earliest time a question was shown WITHOUT a counted try: skipped
+  in a submitted mock, reached in a discarded mock, or answered in a game or as a relaxed sibling).
+  "Seen" = any answer record or a `shown` time; the bank already opens an answer only for an
+  answered question, so it needs no extra record. Both written for opted-in courses only, kept by
+  backup (and trimmed to known ids) and by sync (the earlier first try and the earlier seen time
+  win; a side without them never removes them; wrong-clock times are pulled back), and dropped
+  without loss of anything else by an older app (unknown keys are dropped, the `lastSibling` rule).
+  `firstTryReadiness`: first, unhinted tries at questions not seen before the try and testable today,
+  the latest 50 per section: "31 of 44 first tries right (70%)", under 10 "Too few to say yet
+  (6 answered)" with no percent, 10 to 29 "· early read", and "You’ve met every question here; this
+  won’t change." when nothing unseen is left; never a scaled score, 600, "pass" or "likely". The
+  readiness report shows it as "First tries by section" for opted-in courses only.
+  `engine/shortMock.ts`: any mock shorter than the exam is drawn per learner from unseen, testable
+  questions at section weights, one per sibling group (an unseen member preferred), with the topic
+  spread; a short section is topped up with seen questions from that section, the start sheet says
+  so first ("This mock reuses 4 questions you have seen; those won’t count toward readiness") and
+  starts that very mock (a fixed seed), and Results and the saved result (`MockResult.includesSeen`)
+  say "includes seen questions". Tests: `first-try.test.ts`, `first-try-screens.test.tsx`; the
+  website's cloud bundle rebuilt (it carries the backup and sync rules; web behaviour unchanged).
+  **Left for the second half:** the held-back full form (its pool must also leave the short mock's),
+  its Today card, discard rule and "Full exam (seen)" retake; and, for opted-in courses, whether
+  the range figure on Today, You and the top of the report, the exam-ready hold and the plant
+  should read first tries instead of every answer (today they still read every answer, as CISA).
 - **Still "Domain" for every course after batch 1 (review, 27 Nov 2026):** the Practice
   hero's "Domains" tile (its width rule was measured for "DOMAINS"), `pathChooser.tsx`
   (lines 155, 158), `practice.tsx` line 316 ("all domains"), `RINGS_NOTE` in
@@ -2224,6 +2251,12 @@ decided the open items (their notes: scratchpad `app/pm.md`, `behavior.md`,
   10 tries "Too few to say yet (6 answered)" with no percent; 10 to 29 marked
   "early read". Never a scaled score, 600, "pass" or "likely". No countdowns,
   "last chance" copy, guilt nudges or locks.
+- **Which screens read first tries (decided 27 Nov 2026, for the second half of item 7):** in
+  a course with `readinessRule: 'firstTry'`, every place that states readiness follows first
+  tries: the readiness report, the top range on Today and You, and the exam-ready hold. The
+  plant, streaks and activity counts keep counting every answer, because they reward study,
+  not a readiness read (the behavioral scientist's rule: readiness only from first tries at
+  unseen items; nothing else claims readiness).
 - **Can wait:** the pack glossary builder; the Challenge free-sample rule (with the
   Challenge pack); the welcome sub line and a course choice in onboarding (only
   once two or more courses are on sale).
