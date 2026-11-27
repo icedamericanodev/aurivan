@@ -24,7 +24,7 @@ import { dayKey } from '../engine/streak';
 import { ownOf, useProgress } from '../store/progress';
 import { dailyMinutesOf, examDateOf, useSettings } from '../store/settings';
 import { effectiveCertId } from './activeCert';
-import { questionExists } from './outline';
+import { questionInPlay } from './outline';
 import { cancelReminders, notificationsAllowed, scheduleReminders } from './reminders';
 
 export function refreshReminders(now = Date.now()): Promise<void> {
@@ -52,7 +52,7 @@ export function refreshReminders(now = Date.now()): Promise<void> {
   // Mobile 1.41: the next reminder names what is waiting then (reviews due by its time).
   // Release bug hunt round 2: capped to the set one tap starts (at most 20), never the queue total.
   const cp = ownOf(progress.byCert, activeCertId);
-  const waitingFor = cp ? (at: number) => capWaiting(waitingAt(cp.review, cp.answers, at, questionExists(activeCertId))) : undefined;
+  const waitingFor = cp ? (at: number) => capWaiting(waitingAt(cp.review, cp.answers, at, questionInPlay(activeCertId))) : undefined;
   const cleared = Boolean(plan && plan.day === dayKey(now) && planComplete(plan));
   const certName = getCertification(activeCertId)?.name ?? 'your exam';
   // Release bug hunt round 1 (onlyIfAllowed): notifications blocked in the phone's settings schedule

@@ -24,6 +24,7 @@ import { useProgress, type CertProgress } from '../store/progress';
 import { useDailyMinutes, useSettings } from '../store/settings';
 import { useHeld } from './holdWhileHidden';
 import { useActiveCert } from './useActiveCert';
+import { readinessRead } from './readinessRead';
 
 export interface JourneyInput {
   cert: Certification;
@@ -39,6 +40,11 @@ export interface JourneyInput {
   streak: Streak;
   /** A moment inside "today", used for the week strip. */
   now: number;
+  /**
+   * What readiness STATEMENTS read (lib/readinessRead.ts): for an opted-in course, first tries at
+   * unseen questions. Left out (every other course, and lib/activity.ts's plan): `readiness`.
+   */
+  rangeReadiness?: Readiness;
 }
 
 /** Stage, plan and coach lines from progress. Pure: same input, same output. */
@@ -106,7 +112,10 @@ export function buildJourney(i: JourneyInput) {
      * numbered ladders side by side read as one (PR #43 review).
      */
     stageLine: STAGE_LABEL[stage],
-    range: readinessRange(cert, readiness),
+    // The range states readiness: an opted-in course's follows first tries (rangeReadiness).
+    range: readinessRange(cert, i.rangeReadiness ?? readiness),
+    /** Readiness as the report's rows and actions state it (CISA: `readiness` itself). */
+    rangeReadiness: i.rangeReadiness ?? readiness,
     stageProgress: stageProgress(stage),
     plan,
     /** The minutes the plan was sized for (saved with the day's plan). */
@@ -165,6 +174,8 @@ export function useJourney() {
   const storedDay = useHeld(useProgress, (s) => s.days[cert.id], `days:${cert.id}`);
   const startDay = useProgress((s) => s.startDay);
   const today = useToday();
+  // Every place that states readiness follows first tries in an opted-in course (CISA: the same object).
+  const rangeReadiness = readinessRead(cert, progress, today.key);
 
   const derived = useMemo(
     () =>
@@ -179,8 +190,9 @@ export function useJourney() {
         examFocused,
         streak: streakState,
         now: today.at,
+        rangeReadiness,
       }),
-    [cert, progress, readiness, dueCount, daysLeft, dailyMinutes, familiarity, examFocused, streakState, today.at],
+    [cert, progress, readiness, dueCount, daysLeft, dailyMinutes, familiarity, examFocused, streakState, today.at, rangeReadiness],
   );
 
   // Today's plan is frozen the first time Today is shown each day, so items

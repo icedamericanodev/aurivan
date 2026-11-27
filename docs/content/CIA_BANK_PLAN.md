@@ -2222,10 +2222,31 @@ decided the open items (their notes: scratchpad `app/pm.md`, `behavior.md`,
   from that section, so if every section has run out of unseen questions the mock can come out
   shorter. Tests: `first-try.test.ts`, `first-try-screens.test.tsx`; the
   website's cloud bundle rebuilt (it carries the backup and sync rules; web behaviour unchanged).
-  **Left for the second half:** the held-back full form (its pool must also leave the short mock's),
-  its Today card, discard rule and "Full exam (seen)" retake; and, for opted-in courses, whether
-  the range figure on Today, You and the top of the report, the exam-ready hold and the plant
-  should read first tries instead of every answer (today they still read every answer, as CISA).
+  **(7), second half, done (27 Nov 2026, not yet committed), no IIA name in code or tests, CISA
+  unchanged (no held-back file, no opt-in: its pack is byte-identical and its pools, sets, mocks,
+  saves and readiness are as before):** a pack entry's optional `heldBack` file
+  (`data/cia/<pack>/exam/held_back.json`, read by `mobile/scripts/heldback-pack.cjs`) tags each listed
+  question `heldBack: "<frozen date>"`; a malformed file, an unknown or retired id, a dated item after
+  the frozen date or another pack's file fails the build; no file, no form. `engine/heldBack.ts`: for
+  an opted-in course the form's questions leave every pool (practice, review, daily, games, every
+  mock and the short mock, the bank list; `content/loader.ts`, and every set in `lib/sessions.ts`)
+  until it is taken (`CertProgress.heldBackTaken`, form → time; submitted, timed out, or discarded
+  after it started, said first in the "Discard and start" alert), then join practice, misses to
+  review. Practice has a "Full exam" row, "Full exam (seen)" once taken; the start sheet shows the
+  intro (or, for a retake, "You’ve seen these questions, so this score runs high. Not counted in
+  readiness."); before it is due Start asks "Most useful in your last 2 to 3 weeks." [Take it now]
+  [Not yet], never a lock. Today shows one card (Hide on this phone) once every section has 30 or
+  more first tries and a short mock is done, or 3 weeks before a set exam date. Results show
+  percent and counts by section, no scaled-score line; a retake never grows or celebrates, is saved
+  as `MockResult.heldBack: 'seen'` and stays out of the mock trend. Readiness wiring
+  (`lib/readinessRead.ts`): the range on Today, You, the report and the widget, the report's rows
+  and actions, Results' note and the exam-ready hold's log read first tries; the plant's own clean
+  count, streaks and activity counts keep every answer (the plant's ready gate reads the hold's
+  log). New saved fields are optional, kept by backup and sync (earliest time wins) and dropped
+  safely by older apps; the website's cloud bundle rebuilt. Tests: `held-back.test.ts`,
+  `held-back-screens.test.tsx`. **Left:** wire each CIA pack's `heldBack` line in
+  `build-content.mjs` when the packs are switched on, and read the same file in the CIA dry run.
+  **The held-back form's content side is built (27 Nov 2026, not yet committed):** `data/cia/tools/build_held_back.py` draws and freezes `<pack>/exam/held_back.json` (rules in `data/cia/tools/README.md`, "The held-back form"; `--check` runs in `run_gates.sh`); only cia1 has a form (125, frozen 2026-11-27); cia2 and cia3 are short in every section, so they have none yet.
 - **Still "Domain" for every course after batch 1 (review, 27 Nov 2026):** the Practice
   hero's "Domains" tile (its width rule was measured for "DOMAINS"), `pathChooser.tsx`
   (lines 155, 158), `practice.tsx` line 316 ("all domains"), `RINGS_NOTE` in
@@ -2259,6 +2280,7 @@ decided the open items (their notes: scratchpad `app/pm.md`, `behavior.md`,
   plant, streaks and activity counts keep counting every answer, because they reward study,
   not a readiness read (the behavioral scientist's rule: readiness only from first tries at
   unseen items; nothing else claims readiness).
+  The plant's "ready" gate is the one exception, on purpose: it reads the exam-ready hold's log, a readiness claim, so in an opted-in course it follows first tries while the plant's growth still counts every answer.
 - **Can wait:** the pack glossary builder; the Challenge free-sample rule (with the
   Challenge pack); the welcome sub line and a course choice in onboarding (only
   once two or more courses are on sale).

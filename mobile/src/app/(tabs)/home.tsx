@@ -53,6 +53,8 @@ import { dayKey } from '../../engine/streak';
 import { useReports } from '../../lib/useReports';
 import { useProgress } from '../../store/progress';
 import { useSeen } from '../../store/seen';
+import { HeldBackCard } from '../../components/heldBack';
+import { heldBackStatus } from '../../lib/heldBack';
 import { useSession, type ActiveSession } from '../../store/session';
 import { useHeldWhen } from '../../lib/holdWhileHidden';
 import { legacyTitle, type PlanItem } from '../../engine/planner';
@@ -340,6 +342,15 @@ export default function Today() {
   // Mobile 1.16: the exam-week card, 7 to 2 days out, until hidden for this exam date.
   // With a final review week: 8 days out to the eve, and it opens the plan.
   // Never beside the eve / exam-day card (UX review H1): that card links to tonight's list itself.
+  // The held-back full form (engine/heldBack.ts): one calm card once it is due, for a course that
+  // has a form (never CISA: heldBackStatus is null). Hide keeps it hidden on this phone.
+  const heldBack = useMemo(
+    () => heldBackStatus(j.cert, j.progress, j.daysLeft, plan.day),
+    [j.cert, j.progress, j.daysLeft, plan.day],
+  );
+  const heldBackKey = heldBack ? `held-back-card:${j.cert.id}:${heldBack.form.key}` : '';
+  const heldBackHidden = useSeen((x) => Boolean(heldBackKey && x.moments[heldBackKey]));
+  const heldBackCardDue = Boolean(heldBack?.due) && !heldBackHidden;
   const examWeekDue = !moments.moment && examWeekCardDue(j.daysLeft, j.progress.moments?.examWeek, j.examDate, finalWeek ? FINAL_WEEK_WINDOW : undefined);
   // Count the day the card showed: after 3 separate days it stays away (code review M4).
   useEffect(() => {
@@ -698,6 +709,18 @@ export default function Today() {
       {allDone && firstRangeDue && <View style={{ marginTop: space.xl }}>{firstRangeCard}</View>}
 
       <Enter i={3}>
+        {/* The held-back full form: one card, no notification, never a countdown (engine/heldBack.ts). */}
+        {heldBackCardDue && (
+          <View style={{ marginTop: space.xl }}>
+            <HeldBackCard
+              onHide={() => {
+                useSeen.getState().played(heldBackKey);
+                sayLater('Hidden. The full exam stays in Practice.');
+                moveFocus(nextHeadRef, ANNOUNCE_DELAY + 50);
+              }}
+            />
+          </View>
+        )}
         {/* Mobile 1.16: exam week (7 to 2 days out): one calm card, under the readiness row. */}
         {examWeekDue && j.examDate && (
           <View style={{ marginTop: space.xl }}>

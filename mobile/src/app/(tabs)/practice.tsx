@@ -37,10 +37,13 @@
  * - If the choices leave fewer questions than asked, the button and a line say the real length.
  */
 import { FeatureInfo } from '../../components/featureInfo';
-import { findQuestion } from '../../content/loader';
+import { findQuestion, getAllQuestionsIncludingRetired, isHeldBackOut } from '../../content/loader';
+import { HeldBackRow } from '../../components/heldBack';
+import { isFirstTryCourse } from '../../engine/firstTry';
+import { heldBackFormIn, isTaken } from '../../engine/heldBack';
 import * as Router from 'expo-router';
 import { router } from 'expo-router';
-import { Children, memo, useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
+import { Children, memo, useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { AccessibilityInfo, Dimensions, Pressable, View } from 'react-native';
 import { ArrowRight, Bookmark, ChartColumn, ChevronRight, Compass, Crosshair, ICON_STROKE, Library, RotateCcw, SlidersHorizontal, X } from '../../components/icons';
 import { PracticeLeaf } from '../../components/glyphs';
@@ -903,9 +906,10 @@ const ReviewSaved = memo(function ReviewSaved({ cert, timed, weakLine, buildFor,
   }, [buildFor, scroll]);
   // Primitives from the store, so the card re-renders only when its words change: the missed line
   // only says whether any are open (an answer that fixes one of several changes nothing here).
-  const anyMissed = useProgress((p) => Object.values(selectCert(p, cert.id).mistakes).some((m) => !m.resolved));
+  // A held-back full exam question is left out of both until its form is taken (isHeldBackOut: always false for CISA).
+  const anyMissed = useProgress((p) => Object.entries(selectCert(p, cert.id).mistakes).some(([id, m]) => !m.resolved && !isHeldBackOut(cert.id, id)));
   // Only saved questions this build has (the Saved list shows the same ones; mobile 2.3, free sample).
-  const savedCount = useProgress((p) => selectCert(p, cert.id).bookmarks.filter((id) => findQuestion(cert.id, id)).length);
+  const savedCount = useProgress((p) => selectCert(p, cert.id).bookmarks.filter((id) => findQuestion(cert.id, id) && !isHeldBackOut(cert.id, id)).length);
   const lines = reviewLines(anyMissed ? 1 : 0, savedCount);
   return (
     <HubCard testID="practice-more">
@@ -1146,6 +1150,10 @@ const MockExams = memo(function MockExams({ cert, headRef }: { cert: Certificati
   const miniMinutes = Math.round((cert.exam.minutes / cert.exam.questions) * mini);
   const hours = cert.exam.minutes / 60;
   const stack = large || width < 340;
+  // The held-back full form (engine/heldBack.ts): a row under the tiles, only for a course that has one
+  // (never CISA). Never locked: "Full exam" until taken, then "Full exam (seen)".
+  const form = useMemo(() => (isFirstTryCourse(cert) ? heldBackFormIn(getAllQuestionsIncludingRetired(cert.id)) : null), [cert]);
+  const takenForms = useProgress((s) => selectCert(s, cert.id).heldBackTaken);
   return (
     <HubCard testID="practice-mocks" style={{ paddingBottom: space.md }}>
       <CardHead title="Mock exams" meta="Timed like the real exam" headRef={headRef} />
@@ -1165,6 +1173,15 @@ const MockExams = memo(function MockExams({ cert, headRef }: { cert: Certificati
           onPress={() => router.push({ pathname: '/mock-start', params: { questions: String(cert.exam.questions) } })}
         />
       </View>
+      {form && (
+        <View style={{ marginTop: space.sm }}>
+          <HeldBackRow
+            questions={form.ids.length}
+            hours={Math.round((cert.exam.minutes * form.ids.length) / cert.exam.questions / 6) / 10}
+            taken={isTaken(takenForms, form.key)}
+          />
+        </View>
+      )}
       <T v="meta" style={{ marginTop: space.md }}>{scaledScoreNote(cert)}</T>
     </HubCard>
   );

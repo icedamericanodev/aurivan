@@ -19,7 +19,9 @@ import { pushScore } from '../engine/games/recap';
 import type { GameId } from '../engine/games/registry';
 import { logActivity as logDayActivity, logAnswer, type Activity, type DayPlan } from '../engine/dayPlan';
 import { readinessFor, type AnswerRecord } from '../engine/readiness';
-import { firstTryUpdate, isFirstTryCourse, withShown, type Shown } from '../engine/firstTry';
+import { firstTryAnswers, firstTryUpdate, isFirstTryCourse, withShown, type Shown } from '../engine/firstTry';
+import { withTaken, type TakenForms } from '../engine/heldBack';
+import { getAllQuestions, setHeldBackTaken } from '../content/loader';
 import { readinessRange } from '../engine/readinessRange';
 import { recordMastery, type SubtopicMastery } from '../engine/mastery';
 import { CATALOG_VERSION } from '../engine/badgeCatalog';
@@ -75,6 +77,12 @@ export interface MockResult {
    * true. Optional: every other result has none; an older app drops it and keeps the rest.
    */
   includesSeen?: boolean;
+  /**
+   * The held-back full form (engine/heldBack.ts): 'fresh' for the learner's one fresh try, 'seen'
+   * for a retake ("Full exam (seen)", kept out of readiness and the mock trend). Written only for
+   * the form. Optional: every other result has none; an older app drops it and keeps the rest.
+   */
+  heldBack?: 'fresh' | 'seen';
 }
 
 // The slip tags now live in the engine (slip coach); re-exported for screens.
@@ -215,6 +223,14 @@ export interface CertProgress {
    * an older app drops it on a read and keeps everything else.
    */
   shown?: Shown;
+  /**
+   * The held-back full form (engine/heldBack.ts): form name (its frozen date) → when the learner
+   * took it (submitted, its time ran out, or discarded after it started). Until then the form's
+   * questions stay out of every pool (content/loader.ts); afterwards they join practice. Optional:
+   * only a course with a held-back form writes it, and older saves have none. Backed up and synced
+   * (the earliest time wins); an older app drops it on a read and keeps everything else.
+   */
+  heldBackTaken?: TakenForms;
 }
 
 export interface StudyPathState {
@@ -301,8 +317,11 @@ export interface ProgressState {
      * deadline passes the exam's end, so days and mastery use that time.
      * sibling: the question came back into its set after a sibling earlier in the same set
      * (engine/siblings.ts isRelaxedSibling); the record is marked `lastSibling`.
+     * seenRetake: an answer in "Full exam (seen)", the held-back form's retake (engine/heldBack.ts):
+     * first-try courses write no first try for it (it is "Not counted in readiness"), only that
+     * the question was seen. Nothing else about the answer changes; every other course ignores it.
      */
-    opts?: { schedule?: boolean; assisted?: boolean; logReadiness?: boolean; ms?: number; mastery?: boolean; at?: number; sibling?: boolean },
+    opts?: { schedule?: boolean; assisted?: boolean; logReadiness?: boolean; ms?: number; mastery?: boolean; at?: number; sibling?: boolean; seenRetake?: boolean },
   ) => void;
   /** Log today's readiness lower bound from the saved answers (after a batch). */
   logReadinessNow: (certId: string) => void;
@@ -311,6 +330,11 @@ export interface ProgressState {
    * (engine/firstTry.ts withShown). Any other course: nothing happens, no save.
    */
   noteShown: (certId: string, questionIds: readonly string[], at?: number) => void;
+  /**
+   * The held-back form `form` is taken (engine/heldBack.ts): its questions join every pool. The
+   * earliest time is kept; taking it again changes nothing and saves nothing. First-try courses only.
+   */
+  markHeldBackTaken: (certId: string, form: string, at?: number) => void;
   /** Put questions into review (Box 1, due at the start of tomorrow like a miss) WITHOUT counting them as answered. */
   queueForReview: (certId: string, questionIds: string[]) => void;
   toggleBookmark: (certId: string, questionId: string) => void;
@@ -459,7 +483,7 @@ export const useProgress = create<ProgressState>()(
           // record for a try that never counts (a game, a relaxed sibling). Any other course: no
           // `first` is written and `shown` is untouched, so its saves are exactly as before.
           const ft = isFirstTryCourse(getCertification(certId))
-            ? firstTryUpdate(prev, cp.shown, questionId, { correct, assisted: opts?.assisted === true, at: now, game: opts?.mastery === false, sibling: opts?.sibling === true })
+            ? firstTryUpdate(prev, cp.shown, questionId, { correct, assisted: opts?.assisted === true, at: now, game: opts?.mastery === false, sibling: opts?.sibling === true, seenRetake: opts?.seenRetake === true })
             : { first: prev?.first, shown: cp.shown };
           const answers = {
             ...cp.answers,
@@ -532,7 +556,7 @@ export const useProgress = create<ProgressState>()(
           const days = cur && cur.day === day ? { ...s.days, [certId]: logAnswer(cur, correct) } : s.days;
           // Exam-ready hold: log the new readiness lower bound for today, so a
           // dip during the day resets the 7-day hold (engine/examReady.ts).
-          const moments = opts?.logReadiness === false ? cp.moments : withReadiness(cp.moments, certId, answers, day);
+          const moments = opts?.logReadiness === false ? cp.moments : withReadiness(cp.moments, certId, answers, day, ft.shown ?? cp.shown);
           return {
             byCert: {
               ...s.byCert,
@@ -549,7 +573,7 @@ export const useProgress = create<ProgressState>()(
       logReadinessNow: (certId) =>
         set((s) => {
           const cp = normalize(ownOf(s.byCert, certId));
-          const moments = withReadiness(cp.moments, certId, cp.answers, dayKey(Date.now()));
+          const moments = withReadiness(cp.moments, certId, cp.answers, dayKey(Date.now()), cp.shown);
           if (moments === cp.moments) return s; // nothing changed: no save
           return { byCert: { ...s.byCert, [certId]: { ...cp, ...(moments ? { moments } : {}) } } };
         }),
@@ -561,6 +585,15 @@ export const useProgress = create<ProgressState>()(
           const shown = withShown(cp.shown, questionIds, at ?? Date.now(), cp.answers);
           if (shown === cp.shown) return s; // nothing new: no save
           return { byCert: { ...s.byCert, [certId]: { ...cp, shown } } };
+        }),
+
+      markHeldBackTaken: (certId, form, at) =>
+        set((s) => {
+          if (!isFirstTryCourse(getCertification(certId))) return s;
+          const cp = normalize(ownOf(s.byCert, certId));
+          const heldBackTaken = withTaken(cp.heldBackTaken, form, at ?? Date.now());
+          if (heldBackTaken === cp.heldBackTaken) return s; // already taken: no save
+          return { byCert: { ...s.byCert, [certId]: { ...cp, heldBackTaken } } };
         }),
 
       queueForReview: (certId, questionIds) =>
@@ -847,10 +880,15 @@ function withReadiness(
   certId: string,
   answers: Record<string, AnswerRecord>,
   day: string,
+  /** First-try courses: what was seen (engine/firstTry.ts). Ignored by every other course. */
+  shown?: Shown,
 ): CertMoments | undefined {
   const cert = getCertification(certId);
   if (!cert) return moments;
-  const range = readinessRange(cert, readinessFor(cert, answers));
+  // The exam-ready hold states readiness, so an opted-in course logs its first-try range
+  // (lib/readinessRead.ts, the same rule); every other course logs every answer, as before.
+  const read = isFirstTryCourse(cert) ? firstTryAnswers(getAllQuestions(certId), answers, shown, day) : answers;
+  const range = readinessRange(cert, readinessFor(cert, read));
   const log = moments?.readiness ?? [];
   const next = logReadinessDay(log, day, range.enough ? range.low : null);
   return next === log ? moments : { ...moments, readiness: next };
@@ -867,3 +905,22 @@ export function selectCert(s: ProgressState, certId: string): CertProgress {
   return cp ? normalize(cp) : EMPTY;
 }
 const EMPTY = emptyCert();
+
+/**
+ * The held-back form (engine/heldBack.ts): the loader leaves an untaken form's questions out of every
+ * pool, and it reads the taken forms from here. When they change (taken, a restore, a sync, a reset),
+ * its pool cache is emptied, so the next set, game or bank list sees the form's questions. A course
+ * without a form never writes `heldBackTaken`, so this never fires for CISA.
+ */
+const takenReader = (certId: string) => ownOf(useProgress.getState().byCert, certId)?.heldBackTaken;
+setHeldBackTaken(takenReader);
+useProgress.subscribe((s, prev) => {
+  if (s.byCert === prev.byCert) return;
+  const ids = new Set([...Object.keys(s.byCert), ...Object.keys(prev.byCert)]);
+  for (const id of ids) {
+    if (ownOf(s.byCert, id)?.heldBackTaken !== ownOf(prev.byCert, id)?.heldBackTaken) {
+      setHeldBackTaken(takenReader);
+      return;
+    }
+  }
+});

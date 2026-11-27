@@ -6,7 +6,7 @@
  * indexByPrinciple). After that, a principle page only looks its own list
  * up, so opening or re-rendering it never walks all ~1,250 questions again.
  */
-import { findQuestion, getAllQuestions } from '../content/loader';
+import { findQuestion, getAllQuestions, onHeldBackTakenChange } from '../content/loader';
 import { onClearContentCaches } from '../content/packs';
 import type { Principle } from '../content/principles/types';
 import {
@@ -67,3 +67,6 @@ export function clearPrincipleQuestionsCache(): void {
 
 // clearContentCaches() (content/packs) empties these too.
 onClearContentCaches(clearPrincipleQuestionsCache);
+// So does a held-back form being taken (content/loader.ts): the index is built from the pool, which
+// leaves an untaken form out, so the form's questions join principle practice without a restart.
+onHeldBackTakenChange(clearPrincipleQuestionsCache);

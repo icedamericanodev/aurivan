@@ -240,6 +240,8 @@ export function clampFuture<T>(store: SyncStoreName, side: Side<T>, now: number)
     }
     // First-try courses: when each question was first shown (the earliest wins), pulled back the same way.
     if (cp.shown) cp.shown = times(cp.shown) as Record<string, number>;
+    // The held-back form's taken time (the earliest wins), pulled back the same way.
+    if (cp.heldBackTaken) cp.heldBackTaken = times(cp.heldBackTaken) as Record<string, number>;
     for (const r of Object.values(cp.review ?? {})) r.lastSeen = t(r.lastSeen) as number;
     for (const r of Object.values(cp.cards ?? {})) r.lastSeen = t(r.lastSeen) as number;
     for (const m of Object.values(cp.mistakes ?? {})) m.at = t(m.at) as number;
@@ -556,6 +558,8 @@ function mergeCert(certId: string, a: Cert, as: Stamps, b: Cert, bs: Stamps, fir
     qNotes: mergeMap(a.qNotes, b.qNotes, mergeNote),
     // First-try courses: a question seen on either phone is seen, from the earlier time.
     shown: mergeMap(a.shown, b.shown, Math.min),
+    // The held-back form: taken on either phone is taken (its questions join practice), from the earlier time.
+    heldBackTaken: mergeMap(a.heldBackTaken, b.heldBackTaken, Math.min),
   }) as Cert;
 }
 

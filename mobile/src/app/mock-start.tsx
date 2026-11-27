@@ -21,6 +21,13 @@
  * readiness"), and starts that very mock. An unfinished mock it would replace
  * counts as seen in that draw (lib/sessions.ts planShortMock). Every other
  * course: unchanged.
+ *
+ * The held-back full form (`?form=held`, engine/heldBack.ts): the same sheet,
+ * titled "Full exam" with its intro, or "Full exam (seen)" with "You've seen
+ * these questions, so this score runs high. Not counted in readiness." for a
+ * retake. Never locked: before the form is due (lib/heldBack.ts), Start first
+ * asks "Most useful in your last 2 to 3 weeks." with Take it now (starts it)
+ * and Not yet (back out). A course without a form opens the full mock instead.
  */
 import { PageTitle } from '../components/groveHub';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -32,7 +39,10 @@ import { ArrowRight, ICON_STROKE } from '../components/icons';
 import { StickyFooter } from '../components/quiz';
 import { Button, Gap, ICON_SIZE, PushedHeader, Section, T, ToggleRow } from '../components/ui';
 import { durationSpoken, durationText, mockPace, MOCK_TIMINGS, TIMING_FACTOR, TIMING_LABEL, targetPaceWords, type MockTiming } from '../engine/pace';
-import { guardedStart, isShortMock, planShortMock, startMock } from '../lib/sessions';
+import { guardedStart, isShortMock, planShortMock, startHeldBack, startMock } from '../lib/sessions';
+import { EARLY_LINE, FORM_INTRO, FORM_TITLE, SEEN_LINE, SEEN_TITLE } from '../engine/heldBack';
+import { heldBackStatus } from '../lib/heldBack';
+import { dayKey } from '../engine/streak';
 import { useSession } from '../store/session';
 import { reusedLine } from '../engine/shortMock';
 import { useActiveCert } from '../lib/useActiveCert';
@@ -100,19 +110,25 @@ function TimingRow({
 }
 
 export default function MockStart() {
-  const { cert } = useActiveCert();
-  const params = useLocalSearchParams<{ questions?: string }>();
+  const { cert, progress, daysLeft } = useActiveCert();
+  const params = useLocalSearchParams<{ questions?: string; form?: string }>();
+  // The held-back form, when asked for and the course has one (null for CISA, or a plain mock).
+  // Read once for this visit: the status cannot change while the sheet is open.
+  const [held] = useState(() => (params.form === 'held' ? heldBackStatus(cert, progress, daysLeft, dayKey(Date.now())) : null));
   // Unknown or missing length: the full mock. Never more than the real exam.
   const asked = Number(params.questions);
-  const wanted = Number.isInteger(asked) && asked > 0 ? Math.min(asked, cert.exam.questions) : cert.exam.questions;
+  const wanted = held ? held.form.ids.length : Number.isInteger(asked) && asked > 0 ? Math.min(asked, cert.exam.questions) : cert.exam.questions;
   const full = wanted === cert.exam.questions;
+  const sheetTitle = held ? (held.taken ? SEEN_TITLE : FORM_TITLE) : full ? 'Full mock' : 'Mini mock';
+  // "Most useful in your last 2 to 3 weeks." Take it now / Not yet: only for a fresh form not yet due.
+  const [asking, setAsking] = useState(false);
   // First-try courses: this learner's short mock, drawn once for this visit (null for every other course).
   const [seed] = useState(() => Date.now());
   // The draw already counts an unfinished mock's questions as seen (planShortMock). If that mock's
   // time runs out while this sheet is open, starting will record ALL of its questions first, so the
   // preview is drawn again at that moment (same seed): the line below always matches the mock that
   // starts. Only for a first-try short mock with an unfinished timed mock of this course.
-  const shortMock = isShortMock(cert.id, wanted);
+  const shortMock = !held && isShortMock(cert.id, wanted);
   const [redraw, setRedraw] = useState(0);
   useEffect(() => {
     const old = useSession.getState().active;
@@ -123,7 +139,7 @@ export default function MockStart() {
     return () => clearTimeout(t);
   }, [shortMock, cert.id]);
   // `redraw` is read so the memo runs again when the unfinished mock's time runs out (see above).
-  const short = useMemo(() => (redraw >= 0 ? planShortMock(cert.id, wanted, seed) : null), [cert.id, wanted, seed, redraw]);
+  const short = useMemo(() => (redraw >= 0 && shortMock ? planShortMock(cert.id, wanted, seed) : null), [cert.id, wanted, seed, redraw, shortMock]);
   // The length as drawn: a short mock can come out shorter when the pool is small (never for CISA).
   const questions = short && short.ids.length > 0 ? short.ids.length : wanted;
   const [timing, setTiming] = useState<MockTiming>('standard');
@@ -136,17 +152,19 @@ export default function MockStart() {
     return m === null ? '' : say ? durationSpoken(m) : durationText(m);
   };
 
-  const start = () =>
+  const launch = () =>
     guardedStart(
-      () => startMock(cert.id, wanted, { timing, hideClock, ...(short ? { seed } : {}) }),
+      () => (held ? startHeldBack(cert.id, { timing, hideClock }) : startMock(cert.id, wanted, { timing, hideClock, ...(short ? { seed } : {}) })),
       () => router.replace('/session'),
     );
+  // Never a lock: an early fresh form asks once, and Take it now starts it.
+  const start = () => (held && !held.taken && !held.due && !asking ? setAsking(true) : launch());
 
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
-        <PushedHeader title={full ? 'Full mock' : 'Mini mock'} showTitle={false} onBack={() => backOr('/practice')} icon="close" />
-        <PageTitle title={full ? 'Full mock' : 'Mini mock'} />
+        <PushedHeader title={sheetTitle} showTitle={false} onBack={() => backOr('/practice')} icon="close" />
+        <PageTitle title={sheetTitle} />
         <T
           v="meta"
           num
@@ -155,6 +173,12 @@ export default function MockStart() {
         >
           {`${questions} questions · ${pace.minutesAllowed === null ? 'no time limit' : durationText(pace.minutesAllowed)} · feedback at the end`}
         </T>
+        {/* The held-back form: what it is (fresh), or that it was seen and is not counted (a retake). */}
+        {held && (
+          <View testID="held-back-intro" style={{ marginTop: space.md, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
+            <T v="small">{held.taken ? SEEN_LINE : FORM_INTRO}</T>
+          </View>
+        )}
         {/* First-try courses: said before the start, never after (behavioral notes, short mock). */}
         {short && short.reused > 0 && (
           <View testID="mock-reuses-seen" style={{ marginTop: space.md, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
@@ -191,17 +215,34 @@ export default function MockStart() {
         <Gap h={space.md} />
         <T v="small">
           {timing === 'untimed'
-            ? 'Your answers still count toward readiness.'
+            ? held?.taken
+              ? 'No clock. Left out of your pacing stats.'
+              : 'Your answers still count toward readiness.'
             : // Seconds, the same words as Practice and the exam-eve card (mobile 1.15, PHASE5.md C2).
               `Pace checks at 25, 50 and 75% of the time. ${targetPaceWords(cert.exam, TIMING_FACTOR[timing])}`}
         </T>
       </ScrollView>
       <StickyFooter onHeight={setFooterH}>
-        <Button
-          label="Start mock"
-          onPress={start}
-          icon={(col) => <ArrowRight size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
-        />
+        {asking ? (
+          // The early ask (behavioral notes): one plain line and two choices, no countdown, no guilt.
+          <View testID="held-back-early" accessibilityLiveRegion="polite">
+            <T v="label" style={{ marginBottom: space.sm }}>{EARLY_LINE}</T>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+              <View style={{ flexGrow: 1, flexBasis: 140 }}>
+                <Button label="Take it now" onPress={launch} />
+              </View>
+              <View style={{ flexGrow: 1, flexBasis: 140 }}>
+                <Button kind="secondary" label="Not yet" onPress={() => backOr('/practice')} />
+              </View>
+            </View>
+          </View>
+        ) : (
+          <Button
+            label={held ? 'Start exam' : 'Start mock'}
+            onPress={start}
+            icon={(col) => <ArrowRight size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+          />
+        )}
       </StickyFooter>
     </SafeAreaView>
   );

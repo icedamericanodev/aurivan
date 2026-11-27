@@ -153,7 +153,8 @@ function finishSessionNow(opts: { celebrate?: boolean }) {
         // Readiness is logged ONCE after the batch (below), not after each of
         // up to 150 answers: a low partway through must not reset the hold.
         // ms: the time this question took, added up over every visit (session.tsx).
-        progress.recordAnswer(s.certId, id, r.correct, r.confidence, { logReadiness: false, ms: r.ms, at: examEnd });
+        // A seen retake of the held-back form earns no first try (engine/heldBack.ts: "Not counted in readiness").
+        progress.recordAnswer(s.certId, id, r.correct, r.confidence, { logReadiness: false, ms: r.ms, at: examEnd, ...(s.heldBack?.seen ? { seenRetake: true } : {}) });
         if (!r.correct) progress.recordMistake(s.certId, id, displayToOriginal(r.display, s.perms[id]));
       }
       else skipped.push(id);
@@ -164,6 +165,10 @@ function finishSessionNow(opts: { celebrate?: boolean }) {
     // First-try courses: a skipped question was still SHOWN, so a later first try at it never
     // counts toward readiness (engine/firstTry.ts). Any other course: nothing happens.
     if (skipped.length) progress.noteShown(s.certId, skipped, examEnd);
+    // The held-back form, submitted (or its time ran out): taken, so its questions join practice.
+    // Before the readiness log below, so today's exam-ready log already counts the form's first tries
+    // (until it is taken they are outside the pool that log reads).
+    if (s.heldBack) progress.markHeldBackTaken(s.certId, s.heldBack.form, examEnd);
     progress.logReadinessNow(s.certId);
     const score = scoreSession(s);
     // If the learner reopens the app after the deadline, the exam ended AT
@@ -186,6 +191,8 @@ function finishSessionNow(opts: { celebrate?: boolean }) {
       ...(pacing.checkpoints.length ? { checkpoints: pacing.checkpoints.map((c) => c.deviation) } : {}),
       // First-try courses: a short mock that reused seen questions says so on its saved result.
       ...(s.seenReused ? { includesSeen: true } : {}),
+      // The held-back form: the one fresh try, or a seen retake (kept out of the mock trend).
+      ...(s.heldBack ? { heldBack: s.heldBack.seen ? ('seen' as const) : ('fresh' as const) } : {}),
     };
     progress.recordMock(s.certId, result);
   } else {
@@ -225,7 +232,9 @@ function finishSessionNow(opts: { celebrate?: boolean }) {
   checkPlant(s.certId);
   // Mobile 1.47: a session a home-screen widget started counts as completed (beta counters, this phone only).
   noteWidgetSessionEnd(s.widget, score.answered, s.questionIds.length);
-  if (opts.celebrate === false) return;
+  // A seen retake of the held-back form is never celebrated as progress (engine/heldBack.ts):
+  // any milestone it earned stays queued for a later session.
+  if (opts.celebrate === false || s.heldBack?.seen) return;
   const moment = celebrateNext(s.certId);
   if (moment) useSession.getState().setMilestone(moment.key);
 }

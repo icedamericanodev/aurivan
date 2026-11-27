@@ -683,6 +683,7 @@ const mockResult = rule(obj({
     unanswered: count,
     checkpoints: list(range(-1000, 1), 10),
     includesSeen: bool,
+    heldBack: oneOf('fresh', 'seen'),
 }), (m) => { var _a; return m.correct <= m.total && ((_a = m.unanswered) !== null && _a !== void 0 ? _a : 0) <= m.total; }, (m) => ({ ...m, correct: Math.min(m.correct, m.total), ...(m.unanswered !== undefined ? { unanswered: Math.min(m.unanswered, m.total) } : {}) }));
 const mistakeEntry = obj({ at: ts }, { picked: LETTER, slip: SLIP, resolved: bool, confidence: CONFIDENCE, fixedLater: bool });
 const percent = range(0, 100);
@@ -785,6 +786,7 @@ const certProgress = obj({}, {
     plant,
     qNotes: map(questionNote, MAX_IDS),
     shown: map(ts, MAX_IDS),
+    heldBackTaken: map(ts, 16, date),
 });
 const reportRef = (x, at) => (typeof x === 'string' && support_1.REF_RE.test(x) ? x : bad(at));
 const appVersion = (x, at) => (typeof x === 'string' && (0, support_1.parseVersion)(x) ? x : bad(at));
@@ -7089,6 +7091,8 @@ function clampFuture(store, side, now) {
         }
         if (cp.shown)
             cp.shown = times(cp.shown);
+        if (cp.heldBackTaken)
+            cp.heldBackTaken = times(cp.heldBackTaken);
         for (const r of Object.values((_b = cp.review) !== null && _b !== void 0 ? _b : {}))
             r.lastSeen = t(r.lastSeen);
         for (const r of Object.values((_c = cp.cards) !== null && _c !== void 0 ? _c : {}))
@@ -7369,6 +7373,7 @@ function mergeCert(certId, a, as, b, bs, firstSync) {
         plant: mergePlant(certId, a.plant, as, b.plant, bs, firstSync),
         qNotes: mergeMap(a.qNotes, b.qNotes, questionNotes_1.mergeNote),
         shown: mergeMap(a.shown, b.shown, Math.min),
+        heldBackTaken: mergeMap(a.heldBackTaken, b.heldBackTaken, Math.min),
     });
 }
 function runEndingOn(days, last) {
@@ -10533,7 +10538,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "755d05d43841fc71";
+  api.sourceHash = "a93215c2de78e3e5";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

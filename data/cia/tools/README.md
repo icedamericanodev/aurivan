@@ -23,6 +23,7 @@ A rule that is added or changed gets a row in its tables in the same change.
 | `style_cia.py` | Runs the shared exam-style linter (`scripts/lint_exam_style_v2.py`, unchanged) on every CIA question file. CIA has no exceptions to it. |
 | `build_packs.py` | Builds each pack's `glossary.json` and `mindset/principles.json` from the one shared source in `shared/`. A built glossary entry is the seven fields `id, term, acronym, def, scopeNotes, domain, category`, plus `formerly` when the term has older names; `notes`, `related` and `def_differs_from_notes` stay in `shared/`. `--check` fails on a hand-edited or out-of-date built file, and on a built file that no shared source produces any more (a normal build removes it). A shared glossary entry with a field missing is a problem line that names the term, and no glossary is built until it is fixed. |
 | `build_challenge.py` | Builds the Challenge pack's questions (`ciac/originals/`) from the Part items tagged with `challenge_ref`, under ids that never move (`ciac/id_map.json`, append-only). `--check` fails on drift or a hand edit of a built file. It starts from the id map on disk, so a hand edit of the id map itself is `check_ids.py`'s to catch. It counts one full mock the way the app deals it (150 questions are 30 / 23 / 30 / 37 / 30). |
+| `build_held_back.py` | A held-back full form that breaks a rule, or that changes under learners. Builds `<pack>/exam/held_back.json` for a Part pack (`cia1`, `cia2`, `cia3`; the Challenge pack is out of scope) and freezes it: a build never changes an existing file unless `--refreeze` is passed. `--check` fails when a frozen id is now retired, dated, missing or breaks any rule, and names the id and the rule; with no file it passes. A pack that cannot meet the rules gets no file, and the build prints what is short per section. Rules and sources: "The held-back form" below. |
 | `sync_practice_ids.py` | Fills each notes sub-topic's "Practice this concept" links from the questions' `_provenance`. `--check` reports drift. |
 | `score_blind.py` | Not a gate: scores a blind tester's answers, or a cue tester's options-only guesses, against the keys, for the round scorecard. The tester never runs it. |
 | `blind_copy.py` | An answer-free copy (id, outline code, stem, options) for `qa-question-tester`. The blind tester never sees a key. Retired items are left out. `--options-only` writes the cue test: only id and options, no stem, to measure how much the options give the answer away (chance is 25%; baselines in the plan, section 6b). |
@@ -61,6 +62,43 @@ new wording a new id at the end of the file. A retired item:
 `check_ids.py` enforces this against main: a missing id, an id whose stem is
 now another question, a removed or changed id-map row, or a status going back
 from retired to active is an ERROR. A light wording fix keeps the id.
+
+## The held-back form
+
+One full exam per Part, the same for every learner, kept out of practice until
+the learner has taken it (plan section 3, decision 4, and section 11, the expert
+decisions of 27 Nov 2026). `build_held_back.py` writes
+`<pack>/exam/held_back.json` as `{"_meta": {"comment", "frozen", "exam"}, "ids": [...]}`.
+The rules, each checked again by `--check`:
+
+- exactly the exam's count and section split, as the app deals it (`allocate()`:
+  Part 1 125 as 44/25/37/19, Part 2 100 as 50/40/10, Part 3 100 as 25/15/15/45);
+- every outline topic sampled;
+- no retired item, no dated item (`testable_from` set, whatever the date) and no
+  free-sample id. The free-sample list is `data/free/<pack>_sample_ids.json`
+  (`{"ids": [...]}`, as CISA's), read when it exists; none exists for CIA yet, and
+  the free-sample builder must leave the held-back ids out;
+- every bullet keeps at least one live, undated item in practice, so a one-item
+  bullet gives none. Bullets come from the coverage maps
+  (`docs/content/CIA_P{1,2,3}_COVERAGE.md`, section 3, each item's one primary
+  bullet; "also touched by" does not count; a topic-line row counts as a bullet),
+  not from `_provenance`, which names the notes sub-topic and not always the
+  bullet. An item the map does not place is never held back;
+- no two items of one sibling group (`shared/siblings.json`, cut to the pack's
+  live items, groups that share an id joined, as the app joins them). A held-back
+  sibling of a practised item is allowed: the pair is the transfer check;
+- a difficulty mix close to the pack's: drawn to each section's own mix, and
+  `--check` fails at more than 10 points off the pack's share of any level;
+- what is left still holds the short mock (a third of the exam at section
+  weights) in unseen, testable items, one per sibling group, so the short mock
+  never needs a held-back item.
+
+The draw is deterministic (items ordered by a SHA-256 of a fixed seed and the
+id), so a build into an empty folder gives the same form for the same bank. Once
+the file exists it is frozen: retiring a held-back item makes `--check` fail, and
+the fix is an owner decision (`--refreeze` changes what every learner gets). On
+another tree (`--root`, the harness fixture) the maps and free-sample lists are
+read from `<root>/_coverage/` and `<root>/_free/` (`--maps DIR`, `--free DIR`).
 
 ## A complete reference text
 
@@ -141,6 +179,7 @@ python3 data/cia/tools/check_originality.py --fetch --require   # own words (nee
 python3 data/cia/tools/check_ids.py                        # no shipped id deleted, renumbered or reused
 python3 data/cia/tools/blind_copy.py cia1 1 --ids 21-45 --out /path/outside/the/repo/blind.json
 python3 data/cia/tools/sync_practice_ids.py && python3 data/cia/tools/build_packs.py && python3 data/cia/tools/build_challenge.py
+python3 data/cia/tools/build_held_back.py --check             # the frozen held-back forms still hold every rule
 node scripts/cia_pack_dry_run.cjs
 bash scripts/verify_repo.sh && (cd mobile && npm run check)
 ```

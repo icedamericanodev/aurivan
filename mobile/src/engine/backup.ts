@@ -360,6 +360,8 @@ const mockResult = rule(
       checkpoints: list(range(-1000, 1), 10),
       // First-try courses: a short mock that reused seen questions (optional; an older app drops it).
       includesSeen: bool,
+      // The held-back full form: the one fresh try or a seen retake (optional; an older app drops it).
+      heldBack: oneOf<'fresh' | 'seen'>('fresh', 'seen'),
     },
   ),
   (m) => m.correct <= m.total && (m.unanswered ?? 0) <= m.total,
@@ -553,6 +555,10 @@ const certProgress = obj(
     // First-try courses: questions shown without a counted try, id → the earliest time
     // (engine/firstTry.ts). Optional: no live course writes it; an older app drops it. Same cap as answers.
     shown: map(ts, MAX_IDS),
+    // The held-back full form: form name (its frozen date) → when it was taken (engine/heldBack.ts).
+    // Optional: only a course with a form writes it; an older app drops it. A course has one form at a
+    // time, so a small cap; the key is a date like every other day key here.
+    heldBackTaken: map(ts, 16, date),
   },
 );
 

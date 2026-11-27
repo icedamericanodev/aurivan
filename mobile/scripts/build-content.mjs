@@ -48,6 +48,10 @@
  *      the same pack gets `siblingGroup`, via siblings-pack.cjs. A malformed
  *      file fails the build; an unknown or retired id is reported. No file =
  *      no field (CISA has none, so its pack is byte-identical).
+ *  10e. The held-back full form (optional `heldBack` file, CIA_BANK_PLAN.md
+ *      section 11 item 7): each question it lists gets `heldBack` (the form's
+ *      frozen date), via heldback-pack.cjs. A malformed file or an id the pack
+ *      does not have fails the build. No file = no field (CISA has none).
   11. Writes <cert>/pack.json: the pack's `rev` and `schemaVersion`. The
  *      rev is the build commit's time in seconds (always increasing), so a
  *      downloaded pack (content packs, Phase C) replaces the bundled one only
@@ -75,6 +79,7 @@ const { buildTermsPack } = require('./terms-pack.cjs');
 const { buildLessonsPack } = require('./lessons-pack.cjs');
 const { buildMindsetPack } = require('./mindset-pack.cjs');
 const { readSiblingGroups, tagPack } = require('./siblings-pack.cjs');
+const { readHeldBack, tagHeldBack } = require('./heldback-pack.cjs');
 
 /**
  * The pack format's version (docs/mobile/ARCHITECTURE.md "Content packs").
@@ -119,6 +124,9 @@ const PACKS = [
     // `siblingGroup` field. A course adds its file here (the CIA course: data/cia/shared/siblings.json,
     // one file for its four packs); a missing file means no groups. A pack made of other packs'
     // questions under new ids adds `siblingIdMap` (the CIA Challenge pack: data/cia/ciac/id_map.json).
+    // The held-back full form (heldback-pack.cjs): optional, one file per pack. CISA has none, so no
+    // `heldBack` line and no `heldBack` field on any question. A course adds its file here (the CIA
+    // packs: data/cia/<pack>/exam/held_back.json); a file that does not exist yet means no form.
   },
 ];
 
@@ -167,6 +175,26 @@ function applySiblings(pack, questions) {
   for (const p of read.problems) console.error(`✗ ${pack.certId} siblings ${p}`);
   if (read.problems.length) process.exitCode = 1;
   else console.log(`✓ ${pack.certId} siblings: ${tag.tagged} questions in ${tag.groups} groups${tag.joined ? ` (${tag.joined} sharing a question joined)` : ''}`);
+}
+
+/**
+ * Tag this pack's held-back form (mutates the questions: adds `heldBack`, the
+ * form's frozen date). A pack with no `heldBack` file, or a file that does not
+ * exist yet, changes nothing. A malformed file, or an id the pack does not
+ * have, fails the build (heldback-pack.cjs says what is checked).
+ */
+function applyHeldBack(pack, questions) {
+  if (!pack.heldBack || !fs.existsSync(pack.heldBack)) return;
+  const raw = readOptional(pack.heldBack);
+  if (raw === null) return; // not valid JSON: readOptional has failed the build
+  const read = readHeldBack(raw, { certId: pack.certId, questions });
+  for (const p of read.problems) console.error(`✗ ${pack.certId} held-back form ${p}`);
+  if (read.problems.length) {
+    process.exitCode = 1;
+    return;
+  }
+  const tagged = tagHeldBack(read.form, questions);
+  console.log(`✓ ${pack.certId} held-back form: ${tagged} questions, frozen ${read.form.key}`);
 }
 
 // ── Option-letter tokenizer ────────────────────────────────────────────
@@ -638,6 +666,8 @@ function main() {
     }
     // Sibling groups span the pack's domains, so they go on before any file is written.
     applySiblings(pack, certQuestions);
+    // The held-back form names questions of every domain too, so it goes on here as well.
+    applyHeldBack(pack, certQuestions);
     for (const [d, questions] of domainFiles) {
       fs.writeFileSync(path.join(certDir, `d${d}.json`), JSON.stringify(questions));
       indexLines.push(`    '${d}': () => require('./${pack.certId}/d${d}.json') as PackQuestion[],`);

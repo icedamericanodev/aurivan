@@ -13,7 +13,7 @@ import { dayKey } from '../engine/streak';
 import { selectCert, useProgress } from '../store/progress';
 import { dailyMinutesOf, examDateOf, useSettings } from '../store/settings';
 import { haptic } from './haptics';
-import { questionExists } from './outline';
+import { questionInPlay } from './outline';
 import { refreshReminders } from './reminderSync';
 import { noteWidgetStudy } from './widgetStats';
 import { daysUntil } from './useActiveCert';
@@ -50,7 +50,7 @@ export function buildTodayPlan(certId: string, keepToday: boolean) {
     cert,
     progress,
     readiness,
-    dueCount: dueIds(progress.review, now, questionExists(certId)).length,
+    dueCount: dueIds(progress.review, now, questionInPlay(certId)).length,
     daysLeft: daysUntil(examDateOf(settings.examDates, certId)),
     dailyMinutes: dailyMinutesOf(settings),
     familiarity: settings.familiarity,
