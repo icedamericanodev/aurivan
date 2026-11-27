@@ -15,7 +15,8 @@ import { seedlingHintDue, SNARE_HINT, StepSquares, type ItemResult } from '../..
 import { GameFrame, PlayableGate, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
 import { OptionCard, type OptionState } from '../../components/quiz';
 import { Button, Gap, T } from '../../components/ui';
-import { getAllQuestions } from '../../content/loader';
+import { getAllQuestions, siblingGroupOf } from '../../content/loader';
+import { relaxedMark } from '../../engine/siblings';
 import { LETTERS, type Letter } from '../../content/types';
 import { buildTrapRound, closedInStep2, scoreTrapPick, snareStep, snareWhy, trapLetter } from '../../engine/games/trapSpotter';
 import { createRng } from '../../engine/random';
@@ -51,7 +52,7 @@ const roundsPlayed = (certId: string) => selectCert(useProgress.getState(), cert
 function TrapSpotter() {
   const { c } = useTheme();
   const { cert } = useActiveCert();
-  const { round, restart } = useRound(cert.id, (seed) => buildTrapRound(getAllQuestions(cert.id), createRng(seed), SIZE));
+  const { round, restart } = useRound(cert.id, (seed) => buildTrapRound(getAllQuestions(cert.id), createRng(seed), SIZE, siblingGroupOf(cert.id)));
   const [i, setI] = useState(0);
   const [score, setScore] = useState(0);
   const [trapPick, setTrapPick] = useState<Letter | null>(null); // DISPLAY letters
@@ -128,7 +129,9 @@ function TrapSpotter() {
         // Once we've said which option is best, a right answer is assisted
         // (half credit in readiness, no box promotion), like Coach me.
         // Game answers never count toward the subtopic mastery date (mastery: false).
-        progress.recordAnswer(cert.id, q.id, result.correct, undefined, { assisted: step === 'key', ms: readClock(), mastery: false });
+        // Sibling groups: a sibling back in the round after its partner is marked (engine/siblings.ts).
+        const sibling = relaxedMark(round.map((x) => x.q.id), q.id, siblingGroupOf(cert.id));
+        progress.recordAnswer(cert.id, q.id, result.correct, undefined, { assisted: step === 'key', ms: readClock(), mastery: false, ...sibling });
         if (!result.correct) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm));
         const nextHits = [...hits, result.spotted];
         setHits(nextHits);

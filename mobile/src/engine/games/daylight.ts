@@ -28,6 +28,7 @@ import type { PackQuestion } from '../../content/types';
 import { addMs, MAX_ANSWER_MS } from '../answerClock';
 import { examPaceSeconds, median, PACE_TOLERANCE, type ExamFacts, type PaceStatus } from '../pace';
 import { shuffled, type Rng } from '../random';
+import { takeApart, type GroupOf } from '../siblings';
 
 export const DAYLIGHT_SIZE = 5;
 
@@ -62,10 +63,9 @@ export function daylightPool(pool: PackQuestion[]): PackQuestion[] {
   return pool;
 }
 
-export function buildDaylightRound(pool: PackQuestion[], rng: Rng, size = DAYLIGHT_SIZE): string[] {
-  return shuffled(daylightPool(pool), rng)
-    .slice(0, size)
-    .map((q) => q.id);
+/** `groupOf` (optional): keep sibling groups apart (engine/siblings.ts); left out = exactly as before. */
+export function buildDaylightRound(pool: PackQuestion[], rng: Rng, size = DAYLIGHT_SIZE, groupOf?: GroupOf): string[] {
+  return takeApart(shuffled(daylightPool(pool), rng).map((q) => q.id), size, groupOf);
 }
 
 /**

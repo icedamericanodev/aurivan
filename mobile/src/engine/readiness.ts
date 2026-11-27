@@ -49,6 +49,15 @@ export interface AnswerRecord {
    */
   lastGame?: boolean;
   /**
+   * Sibling groups (engine/siblings.ts): true when the LAST answer was to a
+   * question that came back into its set by the RELAXED rule, after a sibling
+   * (a question teaching the same lesson) earlier in the same set. Its first
+   * try may lean on that sibling, so a later first-try readiness can leave it
+   * out; nothing reads it yet. Written only when true; the record is rebuilt
+   * each answer, so a later answer drops it. Never on a live course today.
+   */
+  lastSibling?: boolean;
+  /**
    * Time to answer the LAST attempt, in ms (engine/answerClock.ts): from the
    * question being shown to the answer being committed, without background
    * time. Optional: older saves and answers without a clock have none.

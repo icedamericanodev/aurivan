@@ -69,6 +69,15 @@ export function findQuestion(certId: string, id: string): PackQuestion | undefin
   return index.get(id);
 }
 
+/**
+ * Sibling groups (engine/siblings.ts): a question id's group in this exam's
+ * pack, or undefined (no group, or an unknown id). Every live course: always
+ * undefined, so sets and games stay exactly as they were.
+ */
+export function siblingGroupOf(certId: string): (id: string) => string | undefined {
+  return (id) => findQuestion(certId, id)?.siblingGroup;
+}
+
 /** True when this certification has questions inside the app. */
 export function hasContent(certId: string): boolean {
   return packInstalled(certId);

@@ -281,8 +281,10 @@ export interface ProgressState {
      * subtopic mastery date (engine/mastery.ts).
      * at: when the answer was given (default now). A mock submitted after its
      * deadline passes the exam's end, so days and mastery use that time.
+     * sibling: the question came back into its set after a sibling earlier in the same set
+     * (engine/siblings.ts isRelaxedSibling); the record is marked `lastSibling`.
      */
-    opts?: { schedule?: boolean; assisted?: boolean; logReadiness?: boolean; ms?: number; mastery?: boolean; at?: number },
+    opts?: { schedule?: boolean; assisted?: boolean; logReadiness?: boolean; ms?: number; mastery?: boolean; at?: number; sibling?: boolean },
   ) => void;
   /** Log today's readiness lower bound from the saved answers (after a batch). */
   logReadinessNow: (certId: string) => void;
@@ -444,6 +446,8 @@ export const useProgress = create<ProgressState>()(
               // Like lastAssisted, the record is rebuilt each answer, so a
               // later non-game answer drops the flag again.
               ...(opts?.mastery === false ? { lastGame: true } : {}),
+              // Sibling groups: a relaxed sibling's answer is marked (only when true, like lastGame).
+              ...(opts?.sibling ? { lastSibling: true } : {}),
               // Build C quiet data: both describe THIS answer, so they are
               // left out (not carried over) when this answer has none.
               // Clamped to the answer clock's cap, so a record never breaks a backup.
@@ -774,6 +778,7 @@ export const useProgress = create<ProgressState>()(
       // notesEverRead (a count), both OPTIONAL: same (`normalize` gives old
       // saves [] and the count of notes read).
       // "Your note" added CertProgress.qNotes, OPTIONAL: same (no notes until one is written).
+      // Sibling groups added AnswerRecord.lastSibling, OPTIONAL: same (never written on a live course).
       version: PROGRESS_VERSION,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
       // Round 4: on every load, records saved for the OLD wording of a question rewritten in place

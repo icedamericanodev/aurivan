@@ -37,12 +37,22 @@
  *                 (the phone app has no builder for this file: shape only)
  *   exam          the exam-guide builder on <pack>/exam/<pack>_exam_guide.json
  *                 and final_review_week.json, with the outline's weights
+ *   siblings      shared/siblings.json (sibling groups: questions that teach the
+ *                 same lesson in nearly the same way), read by the app's own
+ *                 mobile/scripts/siblings-pack.cjs: each question with a sibling
+ *                 in THIS pack gets `siblingGroup` (groups sharing a question
+ *                 are joined). A malformed file fails; an id no pack has, or a
+ *                 retired id, is listed as a warning. No file yet: a note,
+ *                 never a failure
  *   mock pool     retired items (`"retired": true`: kept for their id, never
  *                 dealt again) and items whose `testableFrom` (read from the
  *                 pack question, as the app's mockPool does) is after today
  *                 are left out
  *   full mock     the real length (125, 100, 100, 150) split by section weight
  *   short mock    the app's mini mock (a third: 42, 33, 33, 50) likewise.
+ *                 Both draws keep one question per sibling group, as the app's
+ *                 engine/siblings.ts oneOfEachGroup does, and fail if a draw
+ *                 holds two siblings.
  *                 A pool too small for a mock is NOT a failure while a pack is
  *                 being written: the line says how many mocks the pool supports
  *                 and which section is short, and the draw is still checked on
@@ -230,6 +240,9 @@ function drawMock(name, total, exam, pool) {
     const problems = [];
     if (new Set(picked).size !== want) problems.push(`drew ${new Set(picked).size} distinct of ${want}`);
     if (picked.some((id) => !poolIds.has(id))) problems.push('drew an item from outside the mock pool');
+    // A mock never holds two questions of one sibling group.
+    const groups = picked.map((id) => pool.find((q) => q.id === id)).map((q) => q && q.siblingGroup).filter((g) => g !== undefined);
+    if (new Set(groups).size !== groups.length) problems.push('drew two questions of one sibling group');
     return problems;
   };
 
@@ -286,8 +299,31 @@ function rawQuestionIds(pack) {
   return ids;
 }
 
+/**
+ * CIA: the course's one sibling-groups file (shared/siblings.json), read once
+ * for every pack with the app's own reader. Returns { groups } for tagging,
+ * or null when there is no file yet or it is malformed (reported once here).
+ */
+function readSiblings(builders) {
+  const file = path.join(CIA, 'shared', 'siblings.json');
+  lines.push('Sibling groups:');
+  const raw = readJson(file, 'siblings');
+  if (raw === null) {
+    note('siblings', `${rel(file)} not written yet (no groups: every set and mock is drawn as if none)`);
+    return null;
+  }
+  if (raw === undefined) return null; // not valid JSON: readJson reported it
+  const knownIds = new Set(PACKS.flatMap((p) => rawQuestionIds(p)));
+  const r = builders.readSiblingGroups(raw, { knownIds });
+  report(!r.problems.length, 'siblings file', `${plural(r.groups.length, 'group')} in ${rel(file)}, ${r.problems.length} problem(s), ${r.warnings.length} warning(s)`, r.problems);
+  // Warnings (an id no pack has, an id written twice) are listed, ten at most.
+  for (const w of r.warnings.slice(0, 10)) lines.push(`      ! ${w}`);
+  if (r.warnings.length > 10) lines.push(`      ! … and ${r.warnings.length - 10} more`);
+  return r.problems.length ? null : r;
+}
+
 /** One pack, as far as it is written. */
-function dryRunPack(pack, exam, app, builders) {
+function dryRunPack(pack, exam, app, builders, siblings) {
   const dir = path.join(CIA, pack);
   lines.push(`${pack}: ${exam.name} (${exam.questions} questions, ${exam.minutes} minutes)`);
   const out = path.join(OUT, pack);
@@ -344,7 +380,6 @@ function dryRunPack(pack, exam, app, builders) {
       if (q.testable_from != null) datedSource += 1;
       converted.push(pq);
     }
-    fs.writeFileSync(path.join(out, `d${s.id}.json`), JSON.stringify(converted));
     questions.push(...converted);
     perSection.push(`${s.letter} ${converted.length}`);
   }
@@ -353,6 +388,25 @@ function dryRunPack(pack, exam, app, builders) {
   for (const f of fs.existsSync(origDir) ? fs.readdirSync(origDir).sort() : []) {
     const m = /^d(\d+)\.json$/.exec(f);
     if (m && !sectionIds.includes(m[1])) qProblems.push(`originals/${f}: this exam has no section ${m[1]} (it has ${sectionIds.join(', ')})`);
+  }
+  // Sibling groups go on across the pack's sections, so the files are written after them.
+  let siblingLine = null;
+  if (siblings && questions.length) {
+    // CIA: the Challenge pack's items are Part items under new ids: the id map leads the file's
+    // Part ids to them (active rows only), as the app builder's `siblingIdMap` does.
+    let aliases;
+    if (pack === CHALLENGE) {
+      const map = readJson(path.join(dir, 'id_map.json'), 'id map');
+      if (map && Array.isArray(map.map)) aliases = new Map(map.map.filter((e) => e && e.status === 'active').map((e) => [String(e.source), String(e.id)]));
+    }
+    const t = builders.tagPack(siblings.groups, questions, { aliases });
+    siblingLine = `${plural(t.tagged, 'question')} in ${plural(t.groups, 'group')} with a sibling in ${pack}`
+      + (t.joined ? ` (${plural(t.joined, 'group')} sharing a question with another joined to it: one per mock for all of them)` : '');
+    for (const w of t.warnings) siblingLine += `; ${w}`;
+  }
+  for (const s of exam.sections) {
+    const inSection = questions.filter((q) => q.domainId === s.id);
+    if (inSection.length) fs.writeFileSync(path.join(out, `d${s.id}.json`), JSON.stringify(inSection));
   }
   const ids = questions.map((q) => q.id);
   const dupes = [...new Set(ids.filter((id, i) => ids.indexOf(id) !== i))];
@@ -377,6 +431,8 @@ function dryRunPack(pack, exam, app, builders) {
         + (carried || !datedSource ? '' : ' (but no difference was seen: check toPackQuestion)'));
     }
   }
+
+  if (siblingLine) note('siblings', siblingLine);
 
   // ── Notes: one file per section, as one schema v2 notes file ──
   const notesDir = path.join(dir, 'notes');
@@ -520,12 +576,23 @@ function dryRunPack(pack, exam, app, builders) {
   const live = questions.filter((q) => !q.retired);
   const retiredCount = questions.length - live.length;
   const waiting = live.filter((q) => q.testableFrom !== undefined && !(isDate(q.testableFrom) && q.testableFrom <= ARGS.today));
-  const pool = live.filter((q) => !waiting.includes(q));
-  note('mock pool', `${pool.length} of ${live.length} live items testable on ${ARGS.today}`
+  const testable = live.filter((q) => !waiting.includes(q));
+  // One question per sibling group, as the app's oneOfEachGroup (there a random one; here the
+  // first, which is enough to prove a draw can be made with no two siblings).
+  const seenGroup = new Set();
+  const pool = testable.filter((q) => {
+    if (q.siblingGroup === undefined) return true;
+    if (seenGroup.has(q.siblingGroup)) return false;
+    seenGroup.add(q.siblingGroup);
+    return true;
+  });
+  const setAside = testable.length - pool.length;
+  note('mock pool', `${testable.length} of ${live.length} live items testable on ${ARGS.today}`
     + (retiredCount ? ` (${plural(retiredCount, 'retired item')} kept for the id, never dealt)` : '')
     + (waiting.length
       ? ` (${waiting.length} left out until testable_from: ${waiting.slice(0, 5).map((q) => `${q.id} ${q.testableFrom}`).join(', ')}${waiting.length > 5 ? ', …' : ''})`
-      : ''));
+      : '')
+    + (setAside ? `; one per sibling group, so a mock draws from ${pool.length} (${setAside} are a second or later sibling)` : ''));
   drawMock('full mock', exam.questions, exam, pool);
   drawMock('short mock', Math.round(exam.questions / 3), exam, pool); // engine/finalWeek.ts miniMockSize
 }
@@ -577,10 +644,12 @@ async function main() {
     buildPrinciplesPack: require(path.join(MOBILE_SCRIPTS, 'principles-pack.cjs')).buildPrinciplesPack,
     buildExamPack: require(path.join(MOBILE_SCRIPTS, 'exam-guide-pack.cjs')).buildExamPack,
     buildTermsPack: require(path.join(MOBILE_SCRIPTS, 'terms-pack.cjs')).buildTermsPack,
+    ...require(path.join(MOBILE_SCRIPTS, 'siblings-pack.cjs')),
   };
   const app = await appFunctions();
   const facts = examFacts();
   const started = (pack) => jsonFiles(path.join(CIA, pack)).length > 0;
+  const siblings = readSiblings(builders);
 
   for (const pack of ARGS.packs) {
     // The Challenge gate first: its files are only worth reading when they are what the builder produces.
@@ -591,7 +660,7 @@ async function main() {
       if (ARGS.requireFull) report(false, 'full mock', 'no questions, so no full mock can be drawn (--require-full)');
       continue;
     }
-    dryRunPack(pack, facts[pack], app, builders);
+    dryRunPack(pack, facts[pack], app, builders, siblings);
   }
 
   // The Challenge gate is a check across packs: it runs even when ciac was not named.

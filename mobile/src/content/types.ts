@@ -52,6 +52,15 @@ export interface PackQuestion {
    * question (CISA, CISM, CRISC, AAIA never carry it).
    */
   testableFrom?: string;
+  /**
+   * Sibling group (docs/content/CIA_BANK_PLAN.md section 11): questions that
+   * teach the same lesson in nearly the same way share this short id. A mock
+   * takes at most one of a group; other sets keep them apart when they can
+   * (engine/siblings.ts). Written by the pack builder only when the question
+   * shares a group with another question of the SAME pack, from the course's
+   * siblings file (scripts/siblings-pack.cjs). Absent on every live course.
+   */
+  siblingGroup?: string;
 }
 
 /** One exam domain inside a certification. */

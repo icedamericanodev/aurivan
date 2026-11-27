@@ -24,7 +24,8 @@ import { GameFrame, GameIntro, PlayableGate, QuestionHead, RevealCard, RoundEnd 
 import { EyeOff, ICON_STROKE, Lightbulb } from '../../components/icons';
 import { OptionCard, type OptionState } from '../../components/quiz';
 import { Button, ICON_SIZE, Row, T } from '../../components/ui';
-import { findQuestion, getAllQuestions } from '../../content/loader';
+import { findQuestion, getAllQuestions, siblingGroupOf } from '../../content/loader';
+import { relaxedMark } from '../../engine/siblings';
 import { LETTERS, type Letter } from '../../content/types';
 import {
   answerOptions,
@@ -118,7 +119,7 @@ function CallItFirst() {
   const start = (seed: number) => {
     const rng = createRng(seed);
     const ctx = { all: bank.filter((x) => x.keyConcept), topicOf: certOutline(cert.id).topicOf };
-    const items = buildCallRound(bank, ctx, tier, rng);
+    const items = buildCallRound(bank, ctx, tier, rng, undefined, siblingGroupOf(cert.id));
     // Settings → Shuffle answer options off: the bank's own order (release bug hunt round 3).
     const shuffle = useSettings.getState().shuffleOptions;
     const perms: Record<string, Permutation> = {};
@@ -202,7 +203,8 @@ function CallItFirst() {
       setScore((s) => s + pts);
       const p = useProgress.getState();
       // A hint (the pre-read line) makes the answer assisted; never a mastery date.
-      p.recordAnswer(cert.id, q.id, ok, undefined, answerOptions(hint, readClock()));
+      // Sibling groups: a sibling back in the round after its partner is marked (engine/siblings.ts).
+      p.recordAnswer(cert.id, q.id, ok, undefined, { ...answerOptions(hint, readClock()), ...relaxedMark(round.items.map((x) => x.id), q.id, siblingGroupOf(cert.id)) });
       if (!ok) p.recordMistake(cert.id, q.id, displayToOriginal(display, perm));
       const principleMissed = round.tier !== 'heartwood' && !principleRight;
       if (!ok || principleMissed) {

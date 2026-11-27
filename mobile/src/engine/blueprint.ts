@@ -10,6 +10,7 @@
 import type { Certification, Difficulty, PackQuestion } from '../content/types';
 import type { OutlineTopic } from './outline';
 import { shuffled, type Rng } from './random';
+import { oneOfEachGroup } from './siblings';
 
 /**
  * Split `total` into whole numbers proportional to `weights`
@@ -49,6 +50,21 @@ export function testableOn(q: Pick<PackQuestion, 'testableFrom'>, today: string)
 }
 
 /**
+ * The date a practice or review question is still waiting for, or null
+ * (docs/content/CIA_BANK_PLAN.md section 11, item 6). A question whose
+ * `testableFrom` is AFTER `today` (the phone's local date, "YYYY-MM-DD") gives
+ * that date, so the question screen and the review list can show the neutral
+ * tag "On the exam from 1 March 2027" (lib/format.ts onExamFromLabel). On the
+ * date itself and after: null, so the tag is gone. No field (every live
+ * course) or a malformed date: null, never a tag with a broken date.
+ */
+export function waitingUntil(q: Pick<PackQuestion, 'testableFrom'>, today: string): string | null {
+  const s = q.testableFrom;
+  if (s === undefined || !/^\d{4}-\d{2}-\d{2}$/.test(s)) return null;
+  return s > today ? s : null;
+}
+
+/**
  * The questions a mock (full or mini) may draw from on `today`: the pool
  * minus items whose `testableFrom` is still in the future. The very same
  * array when nothing waits (every CISA, CISM, CRISC and AAIA pack), so the
@@ -75,6 +91,11 @@ export function buildMockExam(
   total: number = cert.exam.questions,
   outline?: readonly OutlineTopic[],
 ): string[] {
+  // Sibling groups (engine/siblings.ts): a mock never holds two questions of
+  // one group, so the pool keeps one random member of each. With no group in
+  // the pool (every live course) this is the same pool and uses no random
+  // number, so those mocks are drawn exactly as before.
+  pool = oneOfEachGroup(pool, rng);
   const picked = new Set<string>();
   const domainTargets = allocate(total, cert.domains.map((d) => d.weight));
   const stratify = outline !== undefined && outline.length > 0;

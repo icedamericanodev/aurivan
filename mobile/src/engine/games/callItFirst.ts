@@ -30,6 +30,7 @@
  */
 import type { PackQuestion } from '../../content/types';
 import { shuffled, type Rng } from '../random';
+import { spreadSiblings, type GroupOf } from '../siblings';
 
 export const CALL_SIZE = 5;
 /** Heartwood: think this long, options hidden, before they appear. */
@@ -149,7 +150,8 @@ export interface CallItem {
 }
 
 /** A round: `size` playable questions, mixed domains, each with its cards. */
-export function buildCallRound(questions: PackQuestion[], ctx: CallContext, tier: CallTier, rng: Rng, size = CALL_SIZE): CallItem[] {
+/** `groupOf` (optional): keep sibling groups apart (engine/siblings.ts); left out = exactly as before. */
+export function buildCallRound(questions: PackQuestion[], ctx: CallContext, tier: CallTier, rng: Rng, size = CALL_SIZE, groupOf?: GroupOf): CallItem[] {
   const pool = shuffled(callPool(questions), rng);
   // Interleave domains: at most 2 per domain while others remain.
   const perDomain = new Map<string, number>();
@@ -163,6 +165,15 @@ export function buildCallRound(questions: PackQuestion[], ctx: CallContext, tier
   for (const q of pool) {
     if (picked.length >= size) break;
     if (!picked.includes(q)) picked.push(q);
+  }
+  // Sibling groups: the rest of the shuffled pool fills a place freed by keeping two siblings apart.
+  // With no group in the round this is the same list (and no random number is used), as before.
+  if (groupOf) {
+    const byId = new Map(pool.map((q) => [q.id, q]));
+    const apart = spreadSiblings(picked.map((q) => q.id), groupOf, () => pool.map((q) => q.id));
+    if (apart.length !== picked.length || apart.some((id, k) => id !== picked[k].id)) {
+      picked.splice(0, picked.length, ...apart.map((id) => byId.get(id)!));
+    }
   }
   return picked.map((q) => {
     if (tier === 'heartwood') return { id: q.id, cards: [], correct: -1 };

@@ -11,6 +11,7 @@
  */
 import type { Letter, PackQuestion } from '../../content/types';
 import { shuffled, type Rng } from '../random';
+import { takeApart, type GroupOf } from '../siblings';
 
 /** The tip that explains the trap: v2 "Final two: …", else the first tip. */
 export function trapTip(q: PackQuestion): string {
@@ -38,10 +39,9 @@ export function trapPool(pool: PackQuestion[]): PackQuestion[] {
   return pool.filter((q) => trapLetter(q) !== null);
 }
 
-export function buildTrapRound(pool: PackQuestion[], rng: Rng, size = 5): string[] {
-  return shuffled(trapPool(pool), rng)
-    .slice(0, size)
-    .map((q) => q.id);
+/** `groupOf` (optional): keep sibling groups apart (engine/siblings.ts); left out = exactly as before. */
+export function buildTrapRound(pool: PackQuestion[], rng: Rng, size = 5, groupOf?: GroupOf): string[] {
+  return takeApart(shuffled(trapPool(pool), rng).map((q) => q.id), size, groupOf);
 }
 
 /**

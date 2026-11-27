@@ -17,7 +17,8 @@ import { GameFrame, GameIntro, PlayableGate, QuestionHead, RoundEnd, useRound } 
 import { missCoach, oneStepVerdict } from '../../lib/drillVerdict';
 import { OptionCard } from '../../components/quiz';
 import { Button, Gap, ProgressBar, Segmented, T, useFontScale } from '../../components/ui';
-import { getAllQuestions } from '../../content/loader';
+import { getAllQuestions, siblingGroupOf } from '../../content/loader';
+import { relaxedMark, takeApart } from '../../engine/siblings';
 import { LETTERS, type Letter } from '../../content/types';
 import {
   calibration,
@@ -109,9 +110,12 @@ export default function ForecastScreen() {
 function Forecast() {
   const { c } = useTheme();
   const { cert } = useActiveCert();
-  const { round, restart } = useRound(cert.id, (seed) =>
-    buildPracticeQueue(getAllQuestions(cert.id), selectCert(useProgress.getState(), cert.id).answers, SIZE, createRng(seed)),
-  );
+  // The whole practice queue, cut to the round (the same first SIZE as before), with sibling groups
+  // kept apart from the rest of the queue (engine/siblings.ts; no group = exactly as before).
+  const { round, restart } = useRound(cert.id, (seed) => {
+    const all = getAllQuestions(cert.id);
+    return takeApart(buildPracticeQueue(all, selectCert(useProgress.getState(), cert.id).answers, all.length, createRng(seed)), SIZE, siblingGroupOf(cert.id));
+  });
   const [i, setI] = useState(0);
   const [footing, setFooting] = useState<Footing | null>(null);
   const [pick, setPick] = useState<Letter | null>(null);
@@ -212,7 +216,8 @@ function Forecast() {
       // The footing is kept on the answer record as its confidence (lastConfidence).
       // Game answers never count toward the subtopic mastery date (mastery: false).
       // Answered with the rules still open: the time isn't known, so none is saved.
-      progress.recordAnswer(cert.id, q.id, ok, FOOTING_CONFIDENCE[footing], { ms: rulesOpen ? undefined : readClock(), mastery: false });
+      // Sibling groups: a sibling back in the round after its partner is marked (engine/siblings.ts).
+      progress.recordAnswer(cert.id, q.id, ok, FOOTING_CONFIDENCE[footing], { ms: rulesOpen ? undefined : readClock(), mastery: false, ...relaxedMark(round.map((x) => x.q.id), q.id, siblingGroupOf(cert.id)) });
       if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm), FOOTING_CONFIDENCE[footing]);
       if (i === round.length - 1) {
         // The skill step is an honest level (calibration.ts wellJudged); the
