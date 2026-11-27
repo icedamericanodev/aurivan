@@ -2183,6 +2183,11 @@ decided the open items (their notes: scratchpad `app/pm.md`, `behavior.md`,
   from 1 March 2027"), gone on that date; (7) the held-back full form, the
   per-learner short mock and first-try readiness, built as one piece for courses
   that opt in (CISA's readiness must not move: that would break saved progress).
+- **Still "Domain" for every course after batch 1 (review, 27 Nov 2026):** the Practice
+  hero's "Domains" tile (its width rule was measured for "DOMAINS"), `pathChooser.tsx`
+  (lines 155, 158), `practice.tsx` line 316 ("all domains"), `RINGS_NOTE` in
+  `journey.tsx`, and the badge case's fixed `BADGES` names "Domain Mastery" and "All
+  Domains" in `milestones.ts`. Fix with the section helper before a lettered course ships.
 - **Held-back form and short mock rules** (behavioral scientist): never locked;
   suggested by one Today card (no notification) once every section has 30 or more
   first tries and one short mock is done, or 3 weeks before a set exam date;
