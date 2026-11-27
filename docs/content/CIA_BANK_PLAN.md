@@ -2218,7 +2218,9 @@ decided the open items (their notes: scratchpad `app/pm.md`, `behavior.md`,
   spread; a short section is topped up with seen questions from that section, the start sheet says
   so first ("This mock reuses 4 questions you have seen; those won’t count toward readiness") and
   starts that very mock (a fixed seed), and Results and the saved result (`MockResult.includesSeen`)
-  say "includes seen questions". Tests: `first-try.test.ts`, `first-try-screens.test.tsx`; the
+  say "includes seen questions". The short mock tops up a short section only with seen questions
+  from that section, so if every section has run out of unseen questions the mock can come out
+  shorter. Tests: `first-try.test.ts`, `first-try-screens.test.tsx`; the
   website's cloud bundle rebuilt (it carries the backup and sync rules; web behaviour unchanged).
   **Left for the second half:** the held-back full form (its pool must also leave the short mock's),
   its Today card, discard rule and "Full exam (seen)" retake; and, for opted-in courses, whether

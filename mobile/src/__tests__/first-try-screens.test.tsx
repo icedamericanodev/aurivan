@@ -23,6 +23,7 @@ import type { Certification } from '../content/types';
 import { addDays } from '../engine/examDay';
 import type { AnswerRecord } from '../engine/readiness';
 import { dayKey } from '../engine/streak';
+import { startMock } from '../lib/sessions';
 import { useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
@@ -180,5 +181,35 @@ describe('mock start sheet', () => {
     const note = byTestID('mock-reuses-seen');
     expect(note).toHaveLength(1);
     expect(allText()).toMatch(/This mock reuses \d+ questions you have seen; those won’t count toward readiness\./);
+  });
+
+  /** An unfinished short mock with its first 5 questions reached, and every other question already seen. */
+  function unfinishedMockReached5(deadline: number) {
+    optIn();
+    const a = startMock('cisa', Number(mini()), { seed: 1 })!;
+    const inA = new Set(a.questionIds);
+    act(() => {
+      useSession.getState().goTo(4);
+      useSession.setState((st) => ({ active: { ...st.active!, deadline } }));
+      useProgress.getState().noteShown('cisa', getAllQuestions('cisa').filter((q) => !inA.has(q.id)).map((q) => q.id), Date.now() - DAY);
+    });
+    jest.mocked(useLocalSearchParams).mockReturnValue({ questions: mini() });
+  }
+
+  it('an unfinished mock it would replace: the questions reached there are counted in the warning', () => {
+    unfinishedMockReached5(Date.now() + DAY);
+    mount(<MockStart />);
+    expect(allText()).toContain('This mock reuses 5 questions you have seen');
+  });
+
+  it('that mock’s time runs out while the sheet is open: the warning is redrawn to match the mock that will start', async () => {
+    unfinishedMockReached5(Date.now() + 60);
+    mount(<MockStart />);
+    expect(allText()).toContain('This mock reuses 5 questions you have seen');
+    await act(async () => {
+      await new Promise((done) => setTimeout(done, 150));
+    });
+    // Starting now records the old mock in full first, so every question of the new one is seen.
+    expect(allText()).toContain(`This mock reuses ${mini()} questions you have seen`);
   });
 });

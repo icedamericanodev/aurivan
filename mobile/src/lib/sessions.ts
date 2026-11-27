@@ -24,7 +24,7 @@ import { selectCert, useProgress } from '../store/progress';
 import { useSession, type ActiveSession, type SessionMode } from '../store/session';
 import { dailyMinutesOf, useSettings } from '../store/settings';
 import { questionsFor } from '../engine/fit';
-import { finishSession } from './finishSession';
+import { finishSession, reachedIds } from './finishSession';
 import { claimWidgetStart } from './widgetStats';
 import { areaSnapshot, type AreaSnapshot } from '../engine/fieldGuide';
 import { readinessFor } from '../engine/readiness';
@@ -128,9 +128,24 @@ function newSession(
  */
 function noteDiscardedMock() {
   const old = useSession.getState().active;
-  if (!old || old.finishedAt || old.mode !== 'mock' || !isFirstTryCourse(getCertification(old.certId))) return;
-  const reached = new Set([...old.questionIds.slice(0, old.index + 1), ...Object.keys(old.responses), ...Object.keys(old.visitMs ?? {})]);
-  useProgress.getState().noteShown(old.certId, old.questionIds.filter((id) => reached.has(id)));
+  if (!old) return;
+  const ids = seenOnReplace(old, Date.now());
+  if (ids.length) useProgress.getState().noteShown(old.certId, ids);
+}
+
+/**
+ * First-try courses: the questions an UNFINISHED mock will leave as seen once a new session replaces
+ * it. The short mock's draw (planShortMock) treats them as seen already, so the start sheet's
+ * "reuses N questions" line counts them, and the mock that starts is the one it described:
+ * - its time has run out: guardedStart records it first (finishSession), which saves every question
+ *   in it as answered or as shown, so all of them;
+ * - otherwise ("Discard and start"): the ones the learner reached (reachedIds), exactly the ones
+ *   noteDiscardedMock then saves as shown.
+ * Empty for a finished session, a non-mock, or any course that does not opt in (CISA).
+ */
+function seenOnReplace(old: ActiveSession, now: number): readonly string[] {
+  if (old.finishedAt || old.mode !== 'mock' || !isFirstTryCourse(getCertification(old.certId))) return [];
+  return old.deadline && now >= old.deadline ? old.questionIds : reachedIds(old);
 }
 
 /** The choices that decide which questions a practice set may draw from (Build a set). */
@@ -399,7 +414,14 @@ export function planShortMock(certId: string, total: number, seed: number): Shor
   if (!cert || !isShortMock(certId, total)) return null;
   const cp = selectCert(useProgress.getState(), certId);
   const pool = mockPool(getAllQuestions(certId), dayKey(seed));
-  return buildShortMock(cert, pool, seenBy(cp.answers, cp.shown), createRng(seed), total, certOutline(certId).topics);
+  // An unfinished mock of this course that the new one will replace: its questions count as seen
+  // NOW (they are saved as seen only when it is replaced, after this draw), so the draw never
+  // re-serves them as unseen. With none (the usual case), `pending` is empty.
+  const active = useSession.getState().active;
+  const pending = new Set(active && active.certId === certId ? seenOnReplace(active, Date.now()) : []);
+  const saved = seenBy(cp.answers, cp.shown);
+  const seen = (id: string) => saved(id) || pending.has(id);
+  return buildShortMock(cert, pool, seen, createRng(seed), total, certOutline(certId).topics);
 }
 
 /**

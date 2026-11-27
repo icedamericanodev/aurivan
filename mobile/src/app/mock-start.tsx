@@ -18,19 +18,22 @@
  * questions they have not seen (engine/shortMock.ts). The sheet draws it once
  * (a fixed seed), says BEFORE the start when it has to reuse seen questions
  * ("This mock reuses 4 questions you have seen; those won't count toward
- * readiness"), and starts that very mock. Every other course: unchanged.
+ * readiness"), and starts that very mock. An unfinished mock it would replace
+ * counts as seen in that draw (lib/sessions.ts planShortMock). Every other
+ * course: unchanged.
  */
 import { PageTitle } from '../components/groveHub';
 import { router, useLocalSearchParams } from 'expo-router';
 import { backOr } from '../lib/actions';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowRight, ICON_STROKE } from '../components/icons';
 import { StickyFooter } from '../components/quiz';
 import { Button, Gap, ICON_SIZE, PushedHeader, Section, T, ToggleRow } from '../components/ui';
 import { durationSpoken, durationText, mockPace, MOCK_TIMINGS, TIMING_FACTOR, TIMING_LABEL, targetPaceWords, type MockTiming } from '../engine/pace';
-import { guardedStart, planShortMock, startMock } from '../lib/sessions';
+import { guardedStart, isShortMock, planShortMock, startMock } from '../lib/sessions';
+import { useSession } from '../store/session';
 import { reusedLine } from '../engine/shortMock';
 import { useActiveCert } from '../lib/useActiveCert';
 import { space } from '../theme/tokens';
@@ -105,7 +108,22 @@ export default function MockStart() {
   const full = wanted === cert.exam.questions;
   // First-try courses: this learner's short mock, drawn once for this visit (null for every other course).
   const [seed] = useState(() => Date.now());
-  const short = useMemo(() => planShortMock(cert.id, wanted, seed), [cert.id, wanted, seed]);
+  // The draw already counts an unfinished mock's questions as seen (planShortMock). If that mock's
+  // time runs out while this sheet is open, starting will record ALL of its questions first, so the
+  // preview is drawn again at that moment (same seed): the line below always matches the mock that
+  // starts. Only for a first-try short mock with an unfinished timed mock of this course.
+  const shortMock = isShortMock(cert.id, wanted);
+  const [redraw, setRedraw] = useState(0);
+  useEffect(() => {
+    const old = useSession.getState().active;
+    if (!shortMock || !old || old.finishedAt || old.mode !== 'mock' || old.certId !== cert.id || !old.deadline) return;
+    const wait = old.deadline - Date.now();
+    if (wait < 0) return; // already over: the first draw counted it in full
+    const t = setTimeout(() => setRedraw((n) => n + 1), wait + 1);
+    return () => clearTimeout(t);
+  }, [shortMock, cert.id]);
+  // `redraw` is read so the memo runs again when the unfinished mock's time runs out (see above).
+  const short = useMemo(() => (redraw >= 0 ? planShortMock(cert.id, wanted, seed) : null), [cert.id, wanted, seed, redraw]);
   // The length as drawn: a short mock can come out shorter when the pool is small (never for CISA).
   const questions = short && short.ids.length > 0 ? short.ids.length : wanted;
   const [timing, setTiming] = useState<MockTiming>('standard');

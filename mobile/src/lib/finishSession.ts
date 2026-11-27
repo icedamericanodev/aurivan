@@ -116,6 +116,16 @@ export function scoreSession(s: ActiveSession): SessionScore {
 }
 
 /**
+ * The questions of a session the learner has REACHED, in the session's order: every one up to and
+ * including the current question, plus any answered or visited (a mock lets the learner jump
+ * ahead). Used for first-try courses (engine/firstTry.ts) to say which questions were shown.
+ */
+export function reachedIds(s: ActiveSession): string[] {
+  const reached = new Set([...s.questionIds.slice(0, s.index + 1), ...Object.keys(s.responses), ...Object.keys(s.visitMs ?? {})]);
+  return s.questionIds.filter((id) => reached.has(id));
+}
+
+/**
  * `celebrate: false` saves any milestone now earned but leaves it QUEUED:
  * for a session that ends without the learner seeing Results (an expired
  * mock recorded when they start something else), so the moment isn't
@@ -178,6 +188,12 @@ function finishSessionNow(opts: { celebrate?: boolean }) {
       ...(s.seenReused ? { includesSeen: true } : {}),
     };
     progress.recordMock(s.certId, result);
+  } else {
+    // First-try courses: a practice set ended early still SHOWED the question the learner was on
+    // (answers were recorded one by one; this one had none), so a later first try at it never
+    // counts toward readiness. Any other course (CISA): noteShown does nothing and saves nothing.
+    const leftOpen = reachedIds(s).filter((id) => !s.responses[id]);
+    if (leftOpen.length) useProgress.getState().noteShown(s.certId, leftOpen);
   }
   // A mock reopened after its deadline ended AT the deadline: Results and the pacing panel agree.
   useSession.getState().finish(Math.min(Date.now(), s.deadline ?? Infinity));

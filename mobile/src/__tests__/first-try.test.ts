@@ -35,7 +35,7 @@ import { PROGRESS_VERSION, SETTINGS_VERSION } from '../engine/saveMigrations';
 import { buildShortMock, INCLUDES_SEEN, reusedLine } from '../engine/shortMock';
 import { mergeSides, type SyncedProgress } from '../engine/syncMerge';
 import { finishSession } from '../lib/finishSession';
-import { isShortMock, planShortMock, startMock, startPractice } from '../lib/sessions';
+import { guardedStart, isShortMock, planShortMock, startMock, startPractice } from '../lib/sessions';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
@@ -374,6 +374,83 @@ describe('store: an opted-in course', () => {
     expect(s.seenReused).toBe(plan.reused);
     finishSession({ celebrate: false });
     expect(cp().mocks[0].includesSeen).toBe(true);
+  });
+});
+
+describe('store: the short mock and an unfinished mock it replaces (review fix)', () => {
+  const mini = () => Math.round(cisa.exam.questions / 3);
+  /** Start short mock A, reach its first 5 questions (answering the first), and mark every OTHER question seen. */
+  function mockAReached5() {
+    optIn();
+    const a = startMock('cisa', mini(), { seed: 1 })!;
+    useSession.getState().answer(a.questionIds[0], { display: 'A', correct: true });
+    useSession.getState().goTo(4);
+    const inA = new Set(a.questionIds);
+    useProgress.getState().noteShown('cisa', getAllQuestions('cisa').filter((q) => !inA.has(q.id)).map((q) => q.id), T0);
+    return a;
+  }
+  /** How many of a mock's questions the saved records call seen. */
+  const seenNow = (qs: readonly string[]) => qs.filter(seenBy(cp().answers, cp().shown)).length;
+
+  it('"Discard and start": the questions reached in the old mock count as seen in the new draw, and in its warning', () => {
+    const a = mockAReached5();
+    // Only A's questions are unseen, so a draw that ignored A would re-serve Q1 to Q5 as fresh.
+    const plan = planShortMock('cisa', mini(), 2)!;
+    expect(plan.reused).toBe(5);
+    const b = startMock('cisa', mini(), { seed: 2 })!; // what "Discard and start" runs
+    expect(b.questionIds).toEqual(plan.ids);
+    expect(b.seenReused).toBe(5);
+    // The warning's count is exactly what the saved records now say was seen.
+    expect(seenNow(b.questionIds)).toBe(5);
+    expect(a.questionIds.slice(0, 5).every((id) => cp().shown?.[id] !== undefined)).toBe(true);
+  });
+
+  it('an old mock whose time ran out: recorded in full before the draw, and the preview already counted all of it', () => {
+    const a = mockAReached5();
+    useSession.setState((st) => ({ active: { ...st.active!, deadline: Date.now() - 1 } }));
+    const plan = planShortMock('cisa', mini(), 2)!;
+    // Every unseen question was in A, and A is about to be recorded in full: all of the new mock is reused.
+    expect(plan.reused).toBe(plan.ids.length);
+    guardedStart(() => startMock('cisa', mini(), { seed: 2 }), () => {});
+    const b = useSession.getState().active!;
+    expect(b.id).not.toBe(a.id);
+    expect(cp().mocks).toHaveLength(1); // A was recorded, not discarded
+    expect(b.questionIds).toEqual(plan.ids);
+    expect(b.seenReused).toBe(plan.reused);
+    expect(seenNow(b.questionIds)).toBe(plan.reused);
+  });
+
+  it('CISA: an unfinished mini mock changes nothing about the next one (no plan, no seen record)', () => {
+    startMock('cisa', mini());
+    useSession.getState().goTo(4);
+    expect(planShortMock('cisa', mini(), 2)).toBeNull();
+    startMock('cisa', mini());
+    expect(cp()).not.toHaveProperty('shown');
+  });
+});
+
+describe('store: a practice set ended early', () => {
+  it('an opted-in course: the question shown but left unanswered is seen; answered and unreached ones are not', () => {
+    optIn();
+    const s = startPractice('cisa', { count: 5 })!;
+    const [q1, q2, q3] = s.questionIds;
+    useProgress.getState().recordAnswer('cisa', q1, true);
+    useSession.getState().answer(q1, { display: 'A', correct: true });
+    useSession.getState().goTo(1); // q2 on screen, then "End"
+    finishSession({ celebrate: false });
+    expect(cp().shown?.[q2]).toEqual(expect.any(Number));
+    expect(cp().shown?.[q1]).toBeUndefined();
+    expect(cp().shown?.[q3]).toBeUndefined();
+  });
+
+  it('CISA: no seen record', () => {
+    const s = startPractice('cisa', { count: 5 })!;
+    useSession.getState().goTo(1);
+    const before = cp();
+    finishSession({ celebrate: false });
+    expect(cp()).not.toHaveProperty('shown');
+    expect(cp().answers).toBe(before.answers);
+    expect(s.questionIds.length).toBeGreaterThan(1);
   });
 });
 
