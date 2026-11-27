@@ -410,6 +410,84 @@ def empty_course(root):
         (root / "shared" / name).unlink()
 
 
+HELD = "cia1/exam/held_back.json"
+HB = ["build_held_back.py", "--check"]
+
+
+def held_back_bank(per=(8, 7, 7, 7), build=True):
+    """A cia1 bank big enough for a held-back form: every topic of the four sections, `per` items a
+    topic (by section), two bullets a topic in the coverage map (<root>/_coverage, where the tool
+    reads it on a fixture), items alternating between them; then the form is built (frozen on TODAY)."""
+    def fault(root):
+        outline = c.load_outline(root)
+        topics, rows, i = c.part_topics(outline), [], 0
+        for s, n in zip(c.exam(outline, "cia1")["sections"], per):
+            qs, bullets = [], {}
+            for code in (t["code"] for t in s["topics"]):
+                for j in range(n):
+                    qs.append(item("cia1", s["domain"], len(qs) + 1, code, topics[code]["title"], i))
+                    bullets.setdefault(code + "ab"[j % 2], []).append(f"d{s['domain']}_{len(qs):03d}")
+                    i += 1
+            c.write_json(root / "cia1" / "originals" / f"d{s['domain']}.json", section_file("cia1", s["domain"], s, qs))
+            rows += [f"| {b} | Fixture bullet | Describe (recall) | {len(ids)}: {', '.join(ids)} | - |"
+                     for b, ids in bullets.items()]
+        (root / "_coverage").mkdir(exist_ok=True)
+        (root / "_coverage" / "CIA_P1_COVERAGE.md").write_text(
+            "# Fixture coverage map\n\n## 3. The map\n\n| Bullet | Covers | Verb (class) | Items | Gap |\n"
+            "|---|---|---|---|---|\n" + "\n".join(rows) + "\n\n## 4. Totals\n", encoding="utf-8")
+        if build:
+            run(root, None, ["build_held_back.py", "cia1"])
+    return fault
+
+
+def grow_section_a(root):
+    """Two new items on every section A topic, under a new bullet each, numbered after the others
+    (ids never move), so a fresh draw would differ."""
+    outline = c.load_outline(root)
+    rows = []
+    data = c.read_json(root / "cia1" / "originals" / "d1.json")
+    qs = data["questions"]
+    for t in c.exam(outline, "cia1")["sections"][0]["topics"]:
+        new = [item("cia1", 1, len(qs) + k + 1, t["code"], t["title"], len(qs) + k) for k in range(2)]
+        qs += new
+        rows.append(f"| {t['code']}c | Fixture bullet | Describe (recall) | 2: {', '.join(q['id'][5:] for q in new)} | - |")
+    c.write_json(root / "cia1" / "originals" / "d1.json", data)
+    path = root / "_coverage" / "CIA_P1_COVERAGE.md"
+    path.write_text(path.read_text(encoding="utf-8").replace("\n\n## 4.", "\n" + "\n".join(rows) + "\n\n## 4."),
+                    encoding="utf-8")
+
+
+def form_ids(root):
+    return c.read_json(root / HELD)["ids"]
+
+
+def form_item(fn, k=0):
+    """A change to the k-th held-back item, in its own question file."""
+    def fault(root):
+        qid = form_ids(root)[k]
+        edit(root, f"cia1/originals/d{qid.split('_')[1][1:]}.json",
+             lambda d: fn(next(q for q in d["questions"] if q["id"] == qid)))
+    return fault
+
+
+def form_siblings(inside=True):
+    """A sibling group of two held-back items (inside) or of a held-back item and a practised one."""
+    def fault(root):
+        held = form_ids(root)
+        other = held[1] if inside else next(q["id"] for q in c.read_json(root / "cia1/originals/d1.json")["questions"]
+                                            if q["id"] not in held)
+        c.write_json(root / "shared" / "siblings.json", {"groups": [{"ids": [held[0], other], "lesson": "Fixture lesson"}]})
+    return fault
+
+
+def drop_form_id(k=0):
+    return lambda root: edit(root, HELD, lambda d: d["ids"].pop(k))
+
+
+def free_sample_of_form(root):
+    c.write_json(root / "_free" / "cia1_sample_ids.json", {"ids": [form_ids(root)[0]]})
+
+
 def alt_ref(fn=None, copy=True):
     """A fault that gives the case its own reference folder, {root}-ref: a copy of the made-up
     reference (or an empty folder), changed by fn."""
@@ -835,6 +913,18 @@ CASES = [
      "ciac/id_map.json is not what build_challenge.py produces"),
     ("a Challenge tag that names no Challenge topic", ["build_challenge.py", "--check"], q0(setf("challenge_ref", "Z9")),
      "challenge_ref 'Z9' is not a Challenge topic"),
+    # ── the held-back full form (frozen; built on a cia1 bank of every topic) ──
+    ("a held-back item that is dated (testable_from set)", HB,
+     then(held_back_bank(), form_item(setf("testable_from", "2027-03-01"))), "is dated (testable_from 2027-03-01)"),
+    ("two siblings in the held-back form", HB, then(held_back_bank(), form_siblings()), "are siblings (group"),
+    ("a held-back form one item short in section A", HB, then(held_back_bank(), drop_form_id()),
+     "section A has 43 items; the exam has 44"),
+    ("an item retired after the form was frozen", HB, then(held_back_bank(), form_item(setf("retired", True))),
+     "is retired"),
+    ("a held-back item that the free sample publishes", HB, then(held_back_bank(), free_sample_of_form),
+     "is in the free sample"),
+    ("a bank too small for a form (nothing written; the shortfall per section)", ["build_held_back.py", "cia1"],
+     held_back_bank(per=(8, 7, 7, 3), build=False), "section D: needs 19, can hold back 5 (14 short)"),
     ("a hand-edited built glossary", ["build_packs.py", "--check"],
      lambda r: edit(r, "cia1/glossary.json", lambda d: d[0].__setitem__("def", "Edited by hand.")),
      "cia1/glossary.json is out of date or hand-edited"),
@@ -971,6 +1061,10 @@ PASSES = [
     ("a built file whose source is gone, after a normal build (removed)", ["build_packs.py", "--check"],
      then(lambda r: edit(r, "shared/principles.json", lambda d: d["principles"][0]["packs"].remove("cia3")), rebuild),
      "0 orphan(s)"),
+    ("a held-back form drawn from a bank that meets every rule", HB, held_back_bank(), "cia1 125 frozen 2026-11-19"),
+    ("a held-back sibling of a practised item (the pair is the transfer check)", HB,
+     then(held_back_bank(), form_siblings(inside=False)), "cia1 125 frozen 2026-11-19"),
+    ("no held-back form yet (nothing to check)", HB, lambda r: None, "cia1 no form yet"),
     ("a question that is not testable until 2027 (left out of the mock pool: 39 of 40)", [DRY],
      q0(lambda q: q.update(framework_ref=STD + "; " + TOPICAL, testable_from="2027-03-01")), "mock pool: 39 of 40 live items"),
     ("two siblings in one pack (tagged in that pack, the other pack's id ignored, one set aside from mocks)", [DRY],
@@ -1012,7 +1106,7 @@ SAYS = [
      "  glossary: 2 term(s), 1 defined as in the notes, 0 marked as differing from them, 1 with older names · 0 error(s)"),
 ]
 CLEAN = [CIA_, GLOSS, STALE, CUR, ORIG, ["style_cia.py"], ["build_challenge.py", "--check"], PACKS_CHECK,
-         ["sync_practice_ids.py", "--check"], IDS, [DRY]]
+         ["sync_practice_ids.py", "--check"], HB, IDS, [DRY]]
 
 
 def testable_today(root, ref):
@@ -1086,6 +1180,27 @@ def same_mock_split(case, ref):
     return ok, f"build_challenge: {a and a.group(1)}; dry run: {b and b.group(1)}"
 
 
+def held_back_frozen(case, ref):
+    """The held-back form is drawn the same way every time, and once frozen a build never redraws it
+    (even when the bank has changed so that a fresh draw would differ); only --refreeze does."""
+    held_back_bank()(case)
+    first = (case / HELD).read_text(encoding="utf-8")
+    (case / HELD).unlink()
+    run(case, ref, ["build_held_back.py", "cia1"])
+    again = (case / HELD).read_text(encoding="utf-8")
+    grow_section_a(case)
+    rc, out = run(case, ref, ["build_held_back.py", "cia1"])
+    kept = (case / HELD).read_text(encoding="utf-8")
+    rc2, out2 = run(case, ref, ["build_held_back.py", "cia1", "--refreeze"])
+    redrawn = (case / HELD).read_text(encoding="utf-8")
+    rc3, _ = run(case, ref, HB)
+    facts = {"an empty folder gives the same form": again == first,
+             "a build keeps the frozen file": rc == 0 and kept == first and "not redrawn" in out,
+             "--refreeze draws a new form that passes --check": rc2 == 0 and redrawn != first and "refrozen" in out2
+             and rc3 == 0}
+    return all(facts.values()), "failed: " + ", ".join(k for k, v in facts.items() if not v)
+
+
 def pack_glossary_shape(case, ref):
     """The builder's contract for a pack glossary: the seven fields in the house order; `formerly` after
     them, only on a term that has older names; `notes`, `related` and the differs mark never built in;
@@ -1106,6 +1221,7 @@ SCRIPTED = [
     ("a built pack glossary has the seven fields, `formerly` where a term has older names, and no gate-only field",
      pack_glossary_shape, ""),
     ("a not-yet-testable question is left out of the Challenge mock pool", waits_left_out, ""),
+    ("the held-back form is drawn the same way every time and never redrawn without --refreeze", held_back_frozen, ""),
     ("a retired Challenge id is never given to another question", retag, ""),
     ("a retired question leaves every built file and keeps its own id", retired_everywhere, ""),
     ("the blind copy carries no key, explanation, tip or citation", blind_has_no_answers, ""),

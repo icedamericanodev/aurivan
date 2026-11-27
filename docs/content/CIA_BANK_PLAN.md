@@ -2226,6 +2226,7 @@ decided the open items (their notes: scratchpad `app/pm.md`, `behavior.md`,
   its Today card, discard rule and "Full exam (seen)" retake; and, for opted-in courses, whether
   the range figure on Today, You and the top of the report, the exam-ready hold and the plant
   should read first tries instead of every answer (today they still read every answer, as CISA).
+  **The held-back form's content side is built (27 Nov 2026, not yet committed):** `data/cia/tools/build_held_back.py` draws and freezes `<pack>/exam/held_back.json` (rules in `data/cia/tools/README.md`, "The held-back form"; `--check` runs in `run_gates.sh`); only cia1 has a form (125, frozen 2026-11-27); cia2 and cia3 are short in every section, so they have none yet.
 - **Still "Domain" for every course after batch 1 (review, 27 Nov 2026):** the Practice
   hero's "Domains" tile (its width rule was measured for "DOMAINS"), `pathChooser.tsx`
   (lines 155, 158), `practice.tsx` line 316 ("all domains"), `RINGS_NOTE` in

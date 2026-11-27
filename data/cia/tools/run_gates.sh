@@ -71,6 +71,7 @@ esac
 cia_run "house style" python3 "$here/style_cia.py" "${opts[@]}"
 cia_run "built glossary and principles" python3 "$here/build_packs.py" --check "${opts[@]}"
 cia_run "Challenge pack" python3 "$here/build_challenge.py" --check "${opts[@]}"
+cia_run "held-back form" python3 "$here/build_held_back.py" --check "${opts[@]}"
 cia_run "practice links" python3 "$here/sync_practice_ids.py" --check "${opts[@]}"
 cia_run "ids against main" python3 "$here/check_ids.py" "${opts[@]}"
 case "$cia_out" in
