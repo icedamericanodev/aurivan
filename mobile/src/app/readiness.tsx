@@ -50,6 +50,7 @@ import { examWeekCount, examWeekOf, FINAL_WEEK_WINDOW, weekDaysCount, weekDaysOf
 import { getFinalWeek } from '../content/exam';
 import { aboutSeconds, pacingStats, pacingStatsLine, spokenMin, timingOf } from '../engine/pace';
 import { YARDSTICK_LINE } from '../engine/domainBand';
+import { domainWord } from '../engine/domainNaming';
 import { rangeSpoken } from '../engine/readinessRange';
 import {
   domainBreakdown,
@@ -323,13 +324,14 @@ function ReadinessReportScreen() {
         <T v="meta" style={{ marginTop: space.md }}>{`${PRACTICE_SCORES_NOTE} ${scaledScoreNote(cert)}`}</T>
 
         {/* 6. Domain by domain */}
-        <Section title="Domain by domain" />
+        <Section title={`${domainWord(cert, 'Domain')} by ${domainWord(cert, 'domain')}`} />
         {rows.map((r, i) => (
           <DomainReportRow
             key={r.domain.id}
             row={r}
             last={i === rows.length - 1}
             link={domainLink(r.domain)}
+            course={cert}
           />
         ))}
 

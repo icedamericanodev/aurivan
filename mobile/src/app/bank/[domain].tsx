@@ -142,7 +142,7 @@ function BankDomainScreen() {
 
   const header = (
     <View>
-      <PushedHeader title={domainLabel(domain)} onBack={goBack} />
+      <PushedHeader title={domainLabel(domain, cert)} onBack={goBack} />
       <Row gap={space.sm} style={{ marginTop: space.sm }}>
         <DomainDot domain={domain} />
         <T v="headline" accessibilityRole="header" style={{ flexShrink: 1 }}>{domain.name}</T>

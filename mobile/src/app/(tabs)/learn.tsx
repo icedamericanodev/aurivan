@@ -47,6 +47,7 @@ import { hasPrinciples } from '../../content/principles';
 import { hasTerms } from '../../content/terms';
 import type { Certification, DomainInfo } from '../../content/types';
 import { readCount, searchNotes } from '../../engine/notesSearch';
+import { domainTitle } from '../../engine/domainNaming';
 import { clearFinishedLessons, wasJustFinished } from '../../lib/lessonNews';
 import { readinessFor } from '../../engine/readiness';
 import { selectCert, useProgress } from '../../store/progress';
@@ -627,7 +628,7 @@ const LessonGroups = memo(function LessonGroups({
           <View key={d.id}>
             {gi > 0 && <CardDivider />}
             <GroupHeader
-              label={`Domain ${d.id}, ${d.short}, ${allDone ? 'all lessons done' : `${groupDone} of ${items.length} lessons done`}${isNext ? ', next lesson here' : ''}`}
+              label={`${domainTitle(d.id, cert)}, ${d.short}, ${allDone ? 'all lessons done' : `${groupDone} of ${items.length} lessons done`}${isNext ? ', next lesson here' : ''}`}
               open={isOpen}
               onPress={() => toggleGroup(d.id)}
             >

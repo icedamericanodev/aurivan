@@ -27,6 +27,7 @@ import type { CheatSheet } from '../content/exam/types';
 import { findNote } from '../content/notes';
 import { findPrinciple } from '../content/principles';
 import type { Certification } from '../content/types';
+import { domainTitle } from '../engine/domainNaming';
 import { sheetParts, weekFocus } from '../engine/finalWeek';
 import { moveFocus } from '../lib/a11y';
 import { useActiveCert } from '../lib/useActiveCert';
@@ -68,7 +69,7 @@ export default function CheatSheetScreen() {
   const shows = (p: string) => asked.length === 0 || asked.includes(p);
   const domains = sheet.domains.filter((d) => shows(d.id));
   const label = (p: string) =>
-    /^\d+$/.test(p) ? `Domain ${p}` : p === 'priority_words' ? 'Priority words' : p === 'routine' ? 'Answering routine' : p === 'pace' ? 'Pace' : 'Principles';
+    /^\d+$/.test(p) ? domainTitle(p, cert) : p === 'priority_words' ? 'Priority words' : p === 'routine' ? 'Answering routine' : p === 'pace' ? 'Pace' : 'Principles';
 
   return (
     <Screen edges={['top', 'bottom']} header={<PushedHeader title="Cheat sheet" onBack={goBack} />}>
@@ -173,7 +174,7 @@ function DomainPoints({ cert, domain, cover }: { cert: Certification; domain: Ch
   };
   return (
     <View testID={`sheet-domain-${domain.id}`}>
-      <Section title={`Domain ${domain.id} · ${info?.short ?? domain.name}`} />
+      <Section title={`${domainTitle(domain.id, cert)} · ${info?.short ?? domain.name}`} />
       <T v="meta">{domain.name}</T>
       {domain.points.map((p, i) => {
         const last = i === n - 1;

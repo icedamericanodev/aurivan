@@ -159,11 +159,26 @@ export const LESSON_MINUTES = 5;
  */
 export const EXAM_MINUTES_PER_QUESTION = 1.6;
 
+/**
+ * A course's exam pace in minutes per question: its own `minutes / questions`
+ * when both are known (course decisions of 27 Nov 2026, item 3), else
+ * EXAM_MINUTES_PER_QUESTION. CISA: 240 / 150 = 1.6, the same as before.
+ */
+export function examPace(exam?: { questions?: number; minutes?: number } | null): number {
+  const q = exam?.questions ?? 0;
+  const m = exam?.minutes ?? 0;
+  return q > 0 && m > 0 ? m / q : EXAM_MINUTES_PER_QUESTION;
+}
+
 const studyMinutes = (count: number) => Math.max(1, Math.round(count * MINUTES_PER_QUESTION));
 /** Questions that fit in `minutes` at study pace (no floor of 5). */
 const fitting = (minutes: number) => Math.max(0, Math.floor(minutes / MINUTES_PER_QUESTION + 1e-9));
 
-/** Rough minutes an item takes: study pace for questions, the lesson's own length, exam pace for a mock. */
+/**
+ * Rough minutes an item takes: study pace for questions, the lesson's own length, exam pace for a mock.
+ * One argument on purpose (callers pass it to .map). Every mock the planner makes carries its own
+ * minutes (examPace); only a mock item saved before mobile 1.15 has none, and those are CISA's (1.6).
+ */
 export function itemMinutes(item: PlanItem): number {
   switch (item.kind) {
     case 'review':
@@ -287,7 +302,8 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
     (p.lastMockAt == null || daysBetween(dayKey(p.lastMockAt), dayKey(p.now ?? Date.now())) >= MOCK_GAP_DAYS);
   const miniMock = (): PlanItem => {
     const questions = Math.round(p.examQuestions / 3);
-    const minutes = p.examMinutes ? Math.round((p.examMinutes / p.examQuestions) * questions) : Math.round(questions * EXAM_MINUTES_PER_QUESTION);
+    // The course's own pace (examPace); with no exam minutes, 1.6 a question as before.
+    const minutes = Math.round(examPace({ questions: p.examQuestions, minutes: p.examMinutes }) * questions);
     return { kind: 'mock', questions, label: `Mini mock · ${questions} questions`, minutes };
   };
   // Exam week's one full rehearsal: none finished in the last 14 calendar days.
@@ -297,7 +313,7 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
     kind: 'mock',
     questions: p.examQuestions,
     label: `Full mock · ${p.examQuestions} questions`,
-    minutes: p.examMinutes ?? Math.round(p.examQuestions * EXAM_MINUTES_PER_QUESTION),
+    minutes: p.examMinutes ?? Math.round(p.examQuestions * examPace(null)),
     why: 'final',
   });
   const practiceStage = () => {

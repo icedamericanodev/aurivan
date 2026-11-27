@@ -106,8 +106,12 @@ export interface CanopyItem {
   chips: string[];
 }
 
-/** A card's domain, from its note ("1A1.3" → "1"). */
-const domainOf = (card: RoleCard) => card.subtopicId.charAt(0);
+/**
+ * A card's domain: the one the loader read from its note, the course's way
+ * (content/games getRoleDeck, engine/domainNaming.ts domainOfCode), else the
+ * note code's first character ("1A1.3" → "1", CISA's reading).
+ */
+const domainOf = (card: RoleCard) => card.domainId ?? card.subtopicId.charAt(0);
 
 /**
  * A round: due cards from this level's pool first, then the rest, with at

@@ -18,6 +18,7 @@ import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { DomainDot, Enter, ListRow, PushedHeader, Section, T } from '../../components/ui';
 import { domainLabel } from '../../content/certifications';
+import { domainTitle, domainWord } from '../../engine/domainNaming';
 import { getAllQuestions, getDomainQuestions } from '../../content/loader';
 import { learnerCounts, progressSummary, youveSummary } from '../../engine/bank';
 import { useActiveCert } from '../../lib/useActiveCert';
@@ -65,7 +66,7 @@ function BankDomainsScreen() {
           <T v="meta" num style={{ marginTop: space.sm }}>{overall}</T>
         </Enter>
         <Enter i={1}>
-          <Section title="Domains" style={{ marginTop: space.xxl }} />
+          <Section title={domainWord(cert, 'Domains')} style={{ marginTop: space.xxl }} />
           {rows.map(({ domain, summary }, i) => (
             <ListRow
               key={domain.id}
@@ -76,14 +77,14 @@ function BankDomainsScreen() {
                 </View>
               }
               // C9: "Domain 4 · IS Operations", the full name under it.
-              title={domainLabel(domain)}
+              title={domainLabel(domain, cert)}
               subtitle={
                 <>
                   <T v="meta">{domain.name}</T>
                   <T v="meta" num>{summary}</T>
                 </>
               }
-              accessibilityLabel={`Domain ${domain.id}, ${domain.name}. ${summary}`}
+              accessibilityLabel={`${domainTitle(domain.id, cert)}, ${domain.name}. ${summary}`}
               accessibilityHint="Shows this domain's topics and questions"
               onPress={() => router.push({ pathname: '/bank/[domain]', params: { domain: domain.id } })}
               last={i === rows.length - 1}

@@ -13,6 +13,7 @@
  * does this for you. CISA weights mirror the web app's DI registry, which
  * is the canonical source (see CLAUDE.md hard rule 2).
  */
+import { domainTitle, type DomainStyled } from '../engine/domainNaming';
 import { domainPalette } from '../theme/tokens';
 import type { CertIssuer, Certification, DomainTone } from './types';
 
@@ -212,9 +213,11 @@ export function notesHeadings(role?: string): { movement: string; lens: string }
  * A domain's name in LISTS of domains (mobile 1.15, PHASE5.md C9): "Domain 4 ·
  * IS Operations", with the full name as the row's subtitle. Chips, legends,
  * plan items and session titles use the short name alone.
+ * `cert` (optional): a course with a `domainStyle` reads "Section A · Foundations"
+ * (engine/domainNaming.ts). Missing → "Domain 4", as every course today.
  */
-export function domainLabel(d: { id: string; short: string }): string {
-  return `Domain ${d.id} · ${d.short}`;
+export function domainLabel(d: { id: string; short: string }, cert?: DomainStyled): string {
+  return `${domainTitle(d.id, cert)} · ${d.short}`;
 }
 
 /**
@@ -254,8 +257,12 @@ export function combinedTrademarkNotice(certs: Certification[] = CERTIFICATIONS)
   const parts = [`KaiSip is not affiliated with or endorsed by ${joinList(issuers.map(issuerMark), 'or')}.`];
   for (const issuer of issuers) {
     const own = certs.filter((c) => c.issuer.id === issuer.id);
-    const registered = own.filter((c) => c.trademarkRegistered !== false).map((c) => `${c.name}®`);
-    const plain = own.filter((c) => c.trademarkRegistered === false).map((c) => c.name);
+    // Each exam's mark (its `mark`, else its name), each mark once: exams that share a mark print it once.
+    const marks = (registeredOnes: boolean) => [
+      ...new Set(own.filter((c) => (c.trademarkRegistered !== false) === registeredOnes).map((c) => c.mark ?? c.name)),
+    ];
+    const registered = marks(true).map((m) => `${m}®`);
+    const plain = marks(false);
     if (registered.length) {
       parts.push(sentence(`${joinList(registered)} ${registered.length > 1 ? 'are registered trademarks' : 'is a registered trademark'} of ${issuerOwner(issuer)}`));
     }

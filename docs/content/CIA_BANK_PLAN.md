@@ -2162,7 +2162,21 @@ decided the open items (their notes: scratchpad `app/pm.md`, `behavior.md`,
   "Section A" where a course asks for it: notes caption "Section A · 35% of the
   exam", "Section key terms", chip "Section A · Foundations", "all sections",
   readiness "Every section at 70%", badge "Section Mastery · Ethics" and "All
-  Sections"; saved badge ids never change); (5) sibling groups carried into the
+  Sections"; saved badge ids never change). **(1) to (4) done (27 Nov 2026, not yet
+  committed), with no IIA name in code or tests and CISA unchanged:** (1) `Certification.mark`,
+  read by `combinedTrademarkNotice` (each mark once; tests in `trademark-notice.test.ts`);
+  (2) `domainOfCode` in `mobile/src/engine/domainNaming.ts`, used by the games loader
+  (Canopy Call cards now carry `domainId`, Stepping Stones) and by the plant's restore check
+  (`supportSpread`), only for a course whose `domainStyle` is lettered; (3) `examPace` in
+  `planner.ts` sizes the mini mock (CISA's 240 / 150 is 1.6, unchanged; only a mock item saved
+  before mobile 1.15 still uses 1.6, and only CISA has those); (4) `Certification.domainStyle`
+  (`{ noun: 'Section', numbering: 'letter' }`) with `domainTitle`, `domainMark`, `domainWord`
+  applied to every place in the list below, plus the readiness sign ("Every section at 70%…",
+  `readySigns` `domainStyle`). Left as it is (layout): the Practice hero's "Domains" tile and its
+  spoken label (the tile width rule is measured for "DOMAINS"), and the badge case's own badge
+  names (read from one fixed list by many screens; the marks' labels, moments and Results lines
+  do follow the course). Tests: `mobile/src/__tests__/domain-naming.test.ts`; both website
+  bundles rebuilt (web output unchanged: it passes no style). Next: (5) sibling groups carried into the
   pack, at most one item per group in any mock or session (relaxed only if a
   non-mock session would be empty, and that sibling's first try then does not
   count); (6) a neutral tag on dated items in practice and review ("On the exam
@@ -2255,11 +2269,12 @@ const IIA_BASE = { issuer: IIA, mindset: IIA_MINDSET, notesRole: 'internal audit
   (every course today) keeps its line. Not `passingNote`: every course already
   has one, worded "the passing mark", so reading it would change CISA's line.
   The ready block above has The IIA's `IIA_SCORE`.
-- `mobile/src/content/games/index.ts` and `mobile/src/engine/games/canopyCall.ts`
-  take the domain from the first character of the sub-topic id, which under
-  `1A1` codes is the part number, not the section.
-- "Domain N" is hardcoded in about 27 places; The IIA says "Section A".
-  **Left as it is (26 Nov 2026):** no one course-level label fits cleanly. The
+- **Done (27 Nov 2026):** `mobile/src/content/games/index.ts` and `mobile/src/engine/games/canopyCall.ts`
+  took the domain from the first character of the sub-topic id, which under
+  `1A1` codes is the part number, not the section. They now read it with `domainOfCode`
+  (a lettered course reads the letter; CISA keeps the first character).
+- **Done (27 Nov 2026), see "Build now" (4) above.** "Domain N" is hardcoded in about 27 places; The IIA says "Section A".
+  **Was left as it is (26 Nov 2026):** no one course-level label fits cleanly. The
   places are spread over many screens and two website-bundled engines
   (`plant.ts` numbers domains by position, `readinessReport.ts` writes the
   spoken line), lower-case "domain" runs through the copy ("Every domain at
@@ -2278,7 +2293,8 @@ const IIA_BASE = { issuer: IIA, mindset: IIA_MINDSET, notesRole: 'internal audit
   keeps "Check isaca.org before you book." (the website, CISA only, passes
   none). The output keeps its name `isacaLine`, because the website reads it.
   The ready block's `IIA` has `site: 'theiia.org'`.
-- `mobile/src/engine/planner.ts` falls back to 1.6 minutes a question (CIA is 1.2).
+- **Done (27 Nov 2026):** `mobile/src/engine/planner.ts` fell back to 1.6 minutes a question (CIA is 1.2);
+  `examPace` now uses the course's own minutes and questions.
 - **Done (26 Nov 2026): `testable_from` reaches the app.** `mobile/scripts/build-content.mjs`
   carries it into the pack question as `testableFrom` (only when the item has a
   date; its `validate()` fails a malformed one), and the phone's mocks, full and

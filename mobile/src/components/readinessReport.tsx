@@ -16,6 +16,7 @@ import { View } from 'react-native';
 import Svg, { Circle, Line, Path } from 'react-native-svg';
 import { domainColor, domainLabel } from '../content/certifications';
 import { chartScale, domainSpoken, evidenceLine, mockLine, readinessLine, type DomainRow, type TrendPoint } from '../engine/readinessReport';
+import type { DomainStyled } from '../engine/domainNaming';
 import { durationWords, TIMING_LABEL } from '../engine/pace';
 import { shortDate } from '../lib/format';
 import type { MockResult } from '../store/progress';
@@ -152,14 +153,15 @@ export interface DomainLink {
   hint: string;
   onPress: () => void;
 }
-export function DomainReportRow({ row, last, link }: { row: DomainRow; last?: boolean; link?: DomainLink }) {
+/** `course` (optional): the open course, so a course with sections reads "Section A · Foundations" (engine/domainNaming.ts). */
+export function DomainReportRow({ row, last, link, course }: { row: DomainRow; last?: boolean; link?: DomainLink; course?: DomainStyled }) {
   const { c, isDark } = useTheme();
   const tone = domainColor(row.domain.tone, isDark);
   const mocks = mockLine(row);
   return (
     <View style={{ paddingVertical: 13, borderBottomWidth: last ? 0 : 1, borderBottomColor: c.line }}>
-      <View accessible accessibilityLabel={domainSpoken(row)} testID={`domain-row-${row.domain.id}`}>
-        <T v="label">{domainLabel(row.domain)}</T>
+      <View accessible accessibilityLabel={domainSpoken(row, course)} testID={`domain-row-${row.domain.id}`}>
+        <T v="label">{domainLabel(row.domain, course)}</T>
         <T v="meta" color={c.ink}>{readinessLine(row)}</T>
         <T v="meta">{evidenceLine(row)}</T>
         {mocks && <T v="meta">{mocks}</T>}

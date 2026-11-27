@@ -18,6 +18,7 @@
  * Pure TypeScript: no React, no storage.
  */
 import type { Certification, DomainInfo } from '../content/types';
+import { domainTitle, domainWord, type DomainStyled } from './domainNaming';
 import { shiftDay, type ReadinessDay } from './examReady';
 import { STAGE_LABEL, type Stage } from './journey';
 import { timingOf, type MockTiming } from './pace';
@@ -204,12 +205,16 @@ export function mockLine(r: DomainRow): string | null {
   return r.prevMock !== undefined ? `${last} · the one before ${tallyText(r.prevMock)}` : last;
 }
 
-/** One spoken stop per domain (full words, no symbols). */
-export function domainSpoken(r: DomainRow): string {
+/**
+ * One spoken stop per domain (full words, no symbols).
+ * `course` (optional): a course with sections says "Section A, …" and "Section readiness"
+ * (engine/domainNaming.ts). None (the website, CISA): "Domain 1", as before.
+ */
+export function domainSpoken(r: DomainRow, course?: DomainStyled): string {
   const mocks = mockCovers(r) ? ` Last mock ${tallySpoken(r.lastMock)}.${r.prevMock !== undefined ? ` The one before ${tallySpoken(r.prevMock)}.` : ''}` : '';
   const n = `${r.answered} ${r.answered === 1 ? 'answer' : 'answers'}`;
-  const readiness = r.answered === 0 ? 'Not started yet.' : `Domain readiness ${r.readinessPct} percent, based on ${n}${r.firm ? '' : ', still firming up'}.`;
-  return `Domain ${r.domain.id}, ${r.domain.short}, ${r.weightPct} percent of the exam. ${readiness}${mocks}`;
+  const readiness = r.answered === 0 ? 'Not started yet.' : `${domainWord(course, 'Domain')} readiness ${r.readinessPct} percent, based on ${n}${r.firm ? '' : ', still firming up'}.`;
+  return `${domainTitle(r.domain.id, course)}, ${r.domain.short}, ${r.weightPct} percent of the exam. ${readiness}${mocks}`;
 }
 
 // ── What would raise your low end ───────────────────────────────────────

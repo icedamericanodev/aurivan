@@ -63,7 +63,7 @@ function FieldGuide() {
   const { c } = useTheme();
   const large = useFontScale() >= LARGE_TEXT;
   const { cert } = useActiveCert();
-  const all = useMemo(() => fieldTerms(getNotes(cert.id)), [cert.id]);
+  const all = useMemo(() => fieldTerms(getNotes(cert.id), cert), [cert]);
   const [tier, setTier] = useState<FieldTier>(() => startingTier(cert.id, 'field'));
   const [round, setRound] = useState<{ boards: FieldBoard[]; tier: FieldTier } | null>(null);
   const [b, setB] = useState(0);
