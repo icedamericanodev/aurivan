@@ -164,11 +164,28 @@ describe('sessions: practice, review, mocks and sets of chosen questions', () =>
     expect(apart(two.questionIds, groupOf)).toBe(true);
   });
 
-  it('a chosen list (saved, missed) keeps every question; a sibling moves after its partner', () => {
+  it('a chosen list (saved, missed) keeps every question in the order given', () => {
     const [a, b] = pairs;
     const c = d1[45];
     const s = startFromIds('cisa', [a.id, b.id, c.id], 'Saved questions')!;
-    expect(s.questionIds).toEqual([a.id, c.id, b.id]);
+    expect(s.questionIds).toEqual([a.id, b.id, c.id]);
+  });
+
+  it('a mock that draws fewer questions than asked gets the time for the questions it holds', () => {
+    // Only the 40 grouped questions are testable today, so one per group leaves 20 for a 50 ask.
+    const spy = jest.spyOn(Date, 'now').mockReturnValue(1_800_000_000_000);
+    try {
+      const all = getAllQuestions('cisa');
+      for (const q of all) if (!pairs.includes(q)) (q as PackQuestion).testableFrom = '2999-01-01';
+      const s = startMock('cisa', 50)!;
+      const n = s.questionIds.length;
+      expect(n).toBeLessThan(50);
+      // CISA's pace is 240 minutes for 150 questions: 1.6 minutes a question.
+      expect(s.deadline).toBe(1_800_000_000_000 + Math.round(n * 1.6) * 60_000);
+    } finally {
+      for (const q of getAllQuestions('cisa')) delete (q as PackQuestion).testableFrom;
+      spy.mockRestore();
+    }
   });
 
   it('a review fills a sibling’s place from the next due question', () => {

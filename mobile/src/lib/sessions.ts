@@ -66,13 +66,15 @@ function newSession(
    * fill a place freed by keeping two siblings apart. Read only when the set holds two siblings.
    */
   spares?: () => readonly string[],
+  /** A hand-picked list (mistakes, saved, a note's questions): keep the learner's order as given. */
+  keepOrder?: boolean,
 ): ActiveSession | null {
   const now = Date.now();
   // Sibling groups: a non-mock set keeps two questions of one group apart, relaxing only when that
   // would make the set shorter than asked (a relaxed sibling then sits after its partner, and its
   // answer is marked: app/session.tsx). A mock's draw already holds one per group (buildMockExam).
   // With no group in the set (every live course) the ids are untouched.
-  if (mode !== 'mock') ids = [...spreadSiblings(ids, siblingGroupOf(certId), spares)];
+  if (mode !== 'mock' && !keepOrder) ids = [...spreadSiblings(ids, siblingGroupOf(certId), spares)];
   // A set asked for with a countdown is always timed: if the countdown cannot be made, it counts up.
   const timed = mode !== 'mock' && (countdownSec !== undefined ? true : (askTimed ?? useSettings.getState().practiceTimer));
   const rng = createRng(now);
@@ -324,7 +326,7 @@ export function startReview(certId: string, limit = REVIEW_SESSION_CAP) {
  * set on the session (the first set passes `firstSet` and `timed: false`).
  */
 export function startFromIds(certId: string, ids: string[], title: string, extra: Partial<ActiveSession> = {}) {
-  return newSession('practice', certId, title, [...new Set(ids)], extra);
+  return newSession('practice', certId, title, [...new Set(ids)], extra, undefined, undefined, undefined, true);
 }
 
 /** The title of the Weak spots drill set (the website's own name for it). */
@@ -371,7 +373,6 @@ export function startMock(certId: string, questions?: number, opts: MockOptions 
   if (!cert) return null;
   const total = questions ?? cert.exam.questions;
   const timing = opts.timing ?? 'standard';
-  const { minutesAllowed } = mockPace(cert.exam, total, timing);
   // The outline spreads each domain's picks across its topics (Wave 5 / M1);
   // a cert without notes has an empty outline and keeps the random pick.
   // mockPool leaves out a CIA item whose Topical Requirement is not on the
@@ -379,6 +380,9 @@ export function startMock(certId: string, questions?: number, opts: MockOptions 
   // pool is unchanged.
   const pool = mockPool(getAllQuestions(certId), dayKey(Date.now()));
   const ids = buildMockExam(cert, pool, createRng(Date.now()), total, certOutline(certId).topics);
+  // The time allowed follows the mock as drawn: a pool cut to one question per sibling group (or a
+  // small bank) can give fewer than `total`; for every live course today ids.length === total.
+  const { minutesAllowed } = mockPace(cert.exam, ids.length, timing);
   return newSession('mock', certId, total === cert.exam.questions ? 'Full mock exam' : 'Mini mock', ids, {
     ...(minutesAllowed !== null ? { deadline: Date.now() + minutesAllowed * 60_000 } : {}),
     timing,
