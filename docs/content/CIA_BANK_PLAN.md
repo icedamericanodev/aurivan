@@ -2141,6 +2141,61 @@ The trademark notice and the no-affiliation line are in the blueprint.
 Found by `mobile-app-engineer` on 19 Nov 2026 by reading the app code. None of
 this blocks content work; all of it is needed before a pack is switched on.
 
+**Expert decisions (27 Nov 2026; the owner chose "app work, experts decide").**
+`product-manager`, `behavioral-scientist` and `app-store-compliance-reviewer`
+decided the open items (their notes: scratchpad `app/pm.md`, `behavior.md`,
+`compliance.md`, summarised here).
+
+- **Do not add The IIA or the CIA exams to `certifications.ts` until the licence
+  is settled** (compliance, overriding the product manager's first item): the
+  file ships in the public Play bundle and in kaisip.com's `assets/kaisip-cloud.js`,
+  so even `coming_soon` entries would publish The IIA's marks, against the owner's
+  19 Nov decision (section 9); coming-soon courses are never shown anyway, and
+  Apple 2.5.19 bars dormant features. The ready block below is corrected
+  (trademark line) and stays here until then.
+- **Build now, with no IIA name in the code** (each a general course feature,
+  CISA unchanged): (1) the combined trademark notice uses an optional per-exam
+  `mark` (so four CIA exams would print "CIA®" once, not "CIA Part 1®…");
+  (2) games read the section from the sub-topic code's letter (`1A1` is section A);
+  (3) the planner's pace comes from the exam's own minutes and questions;
+  (4) a per-course section noun and letter helper ("Domain 1" for CISA,
+  "Section A" where a course asks for it: notes caption "Section A · 35% of the
+  exam", "Section key terms", chip "Section A · Foundations", "all sections",
+  readiness "Every section at 70%", badge "Section Mastery · Ethics" and "All
+  Sections"; saved badge ids never change); (5) sibling groups carried into the
+  pack, at most one item per group in any mock or session (relaxed only if a
+  non-mock session would be empty, and that sibling's first try then does not
+  count); (6) a neutral tag on dated items in practice and review ("On the exam
+  from 1 March 2027"), gone on that date; (7) the held-back full form, the
+  per-learner short mock and first-try readiness, built as one piece for courses
+  that opt in (CISA's readiness must not move: that would break saved progress).
+- **Held-back form and short mock rules** (behavioral scientist): never locked;
+  suggested by one Today card (no notification) once every section has 30 or more
+  first tries and one short mock is done, or 3 weeks before a set exam date;
+  earlier it asks "Most useful in your last 2 to 3 weeks." Intro: "A full exam, the
+  same for everyone, kept out of practice so your result is a fair read. You get
+  one fresh try; afterwards its questions and explanations join your practice."
+  Discarding it after an item is shown counts it as taken (said first). A retake
+  is "Full exam (seen)" and stays out of readiness. The short mock is one third of
+  the exam, drawn from unseen, testable items at section weights, one per sibling
+  group; if a section runs short it tops up with seen items, says so before the
+  start, and labels the result "includes seen questions". "Seen" means shown in
+  any mode (a new shown list is needed: skipped mock items and opened bank answers
+  leave no record today). Readiness counts first, unhinted, non-game tries at
+  unseen, testable items (a new write-once `first` field on the answer record),
+  the latest 50 per section, shown as "31 of 44 first tries right (70%)"; under
+  10 tries "Too few to say yet (6 answered)" with no percent; 10 to 29 marked
+  "early read". Never a scaled score, 600, "pass" or "likely". No countdowns,
+  "last chance" copy, guilt nudges or locks.
+- **Can wait:** the pack glossary builder; the Challenge free-sample rule (with the
+  Challenge pack); the welcome sub line and a course choice in onboarding (only
+  once two or more courses are on sale).
+- **Before a `ciac` score line:** confirm the Challenge Exam's scale (June 2026
+  "enhanced scoring"); a course without `scoreNote` falls back to ISACA's line.
+- **Don't build:** a general wording system, a per-course planner setting, a
+  draw-time sibling check for the fixed held-back form (the harness checks it
+  once), CIA on the website.
+
 - `mobile/src/content/certifications.ts`: add The IIA as an issuer and the four
   exams. **Not now**: the file is a hashed source of the website's
   `assets/kaisip-cloud.js` (any edit forces a website bundle rebuild), and
@@ -2150,7 +2205,9 @@ this blocks content work; all of it is needed before a pack is switched on.
 export const IIA: CertIssuer = { id: 'iia', name: 'The IIA', site: 'theiia.org' };
 // TO VERIFY before pasting: registration wording (USPTO), mindset wording, difficulty mix, short names,
 // and the welcome line (welcomeHeadline below follows CISA's "Think like an IS auditor.").
-const IIA_TM = 'Not affiliated with or endorsed by The IIA. CIA is a trademark of The IIA.';
+const IIA_TM = 'Not affiliated with or endorsed by The IIA®. Certified Internal Auditor® and CIA® are registered trademarks of The Institute of Internal Auditors, Inc.';
+// Compliance 27 Nov 2026: USPTO CIA 1882539 (Principal), CERTIFIED INTERNAL AUDITOR 1926790 (Supplemental), IIA 2704273. Drop trademarkRegistered: false;
+// add iia: 'The IIA®' to ISSUER_MARK and iia: 'The Institute of Internal Auditors, Inc.' to ISSUER_OWNER; give each CIA exam mark: 'CIA'.
 const IIA_MIX = { analysis: 0.3, application: 0.5, foundational: 0.2 };
 const IIA_NOTE = 'The IIA reports scaled scores from 250 to 750; 600 is the passing mark.';
 // What the phone shows (the owner's word rule: "the score needed", never "pass"); content/scoreNote.ts reads it.
