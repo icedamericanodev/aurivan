@@ -21,6 +21,7 @@ import { EmptyScreen } from '../../components/emptyScreen';
 import { ReadMark } from '../../components/notes';
 import { DomainDot, EmptyState, Enter, ListRow, PushedHeader, Screen, SearchField, Section, T, useFontScale } from '../../components/ui';
 import { domainLabel } from '../../content/certifications';
+import { domainTitle } from '../../engine/domainNaming';
 import { getNotes, noteSubtopics } from '../../content/notes';
 import { readCount, readProgressText, searchNotes } from '../../engine/notesSearch';
 import { groupReadState } from '../../engine/noteReadState';
@@ -140,7 +141,7 @@ export default function NotesHome() {
                   </View>
                 }
                 // C9: "Domain 4 · IS Operations", the full name under it.
-                title={domainLabel(d)}
+                title={domainLabel(d, cert)}
                 subtitle={
                   <>
                     <T v="meta">{d.name}</T>
@@ -149,7 +150,7 @@ export default function NotesHome() {
                   </>
                 }
                 trailing={<ReadMark state={mark} play={readMarkKey(cert.id, 'domain', d.id)} />}
-                accessibilityLabel={`Domain ${d.id}, ${d.name}. ${d.weight} percent of the exam.${state ? ` ${state}.` : mark === 'started' ? ' Started.' : ''}`}
+                accessibilityLabel={`${domainTitle(d.id, cert)}, ${d.name}. ${d.weight} percent of the exam.${state ? ` ${state}.` : mark === 'started' ? ' Started.' : ''}`}
                 onPress={() => router.push(`/notes/${d.id}`)}
                 chevron={!large}
                 last={i === domains.length - 1}

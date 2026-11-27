@@ -11,6 +11,7 @@ import { findNote, noteDomain } from '../content/notes';
 import { getTerms, type KeyTerm } from '../content/terms';
 import { glossaryGroups, matchTerms, type GlossaryGroup } from '../engine/glossary';
 import { openTab } from '../lib/actions';
+import { domainTitle } from '../engine/domainNaming';
 import { useActiveCertId } from '../lib/activeCert';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -31,7 +32,7 @@ function openTermNote(certId: string, note: KeyTerm['note']) {
  */
 const GlossaryList = memo(function GlossaryList({ groups, certId }: { groups: GlossaryGroup[]; certId: string }) {
   const cert = getCertification(certId) ?? CERTIFICATIONS[0];
-  const shortOf = (id: string) => cert.domains.find((d) => d.id === id)?.short ?? `Domain ${id}`;
+  const shortOf = (id: string) => cert.domains.find((d) => d.id === id)?.short ?? domainTitle(id, cert);
   return (
     <>
       {groups.map((g) => (

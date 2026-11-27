@@ -22,6 +22,7 @@ import { findNote, getNotes, subtopicOfQuestion } from '../content/notes';
 import { findPrinciple, getPrinciples, principleForSlip } from '../content/principles';
 import { hasTerms } from '../content/terms';
 import type { Certification } from '../content/types';
+import { domainTitle } from '../engine/domainNaming';
 import { mostMissedSubtopic, resolveAction, weekFocus, type ActionContext, type Destination, type TopSlip } from '../engine/finalWeek';
 import { readinessFor } from '../engine/readiness';
 import type { CertProgress } from '../store/progress';
@@ -95,7 +96,7 @@ export function destinationButton(d: Destination, cert: Certification): { label:
     }
     case 'practice': {
       const dm = domain(d.domainId);
-      return { label: `Practice ${dm?.short ?? `Domain ${d.domainId}`}`, hint: `Starts ${WEEK_PRACTICE_COUNT} questions in Domain ${d.domainId}` };
+      return { label: `Practice ${dm?.short ?? domainTitle(d.domainId, cert)}`, hint: `Starts ${WEEK_PRACTICE_COUNT} questions in ${domainTitle(d.domainId, cert)}` };
     }
     case 'mock':
       return d.full
@@ -122,7 +123,7 @@ export function openDestination(d: Destination, cert: Certification): void {
     case 'principles':
       return router.push(d.family ? { pathname: '/principles', params: { family: d.family } } : '/principles');
     case 'practice': {
-      const short = cert.domains.find((x) => x.id === d.domainId)?.short ?? `Domain ${d.domainId}`;
+      const short = cert.domains.find((x) => x.id === d.domainId)?.short ?? domainTitle(d.domainId, cert);
       return guardedStart(() => startPractice(cert.id, { count: WEEK_PRACTICE_COUNT, domainId: d.domainId, title: `Final week · ${short}` }), openSessionFromStack);
     }
     case 'mock':

@@ -25,6 +25,8 @@
  * Retired cards and sequences (content packs): a deck entry with
  * `retired: true` is never dealt; a flow whose lesson is retired is skipped.
  */
+import { domainOfCode } from '../../engine/domainNaming';
+import { getCertification } from '../certifications';
 import { lessonsFor } from '../lessons';
 import { onClearContentCaches, sourceFor } from '../packs';
 
@@ -48,6 +50,12 @@ export interface RoleCard {
   auditorMove?: string;
   /** The study-notes subtopic that teaches it ("1A1.3"). */
   subtopicId: string;
+  /**
+   * The exam domain, read from `subtopicId` the course's way (engine/domainNaming.ts
+   * domainOfCode: CISA "1A1.3" → "1"; a lettered course's "1B1.1" → "2").
+   * Optional: a card built elsewhere without it falls back to the code's first character.
+   */
+  domainId?: string;
   tier: GameTier;
   /** Roles never offered as chips on this card (the notes make them partly defensible). */
   excludeChips: string[];
@@ -155,6 +163,7 @@ export function getRoleDeck(certId: string): RoleDeck | null {
           why: c.why,
           ...(c.auditor_move ? { auditorMove: c.auditor_move } : {}),
           subtopicId: c.subtopicId,
+          domainId: domainOfCode(c.subtopicId, getCertification(certId)),
           tier: c.tier,
           excludeChips: c.exclude_chips ?? [],
         })),
@@ -182,9 +191,11 @@ export function getStepSequences(certId: string): StepSequence[] {
   const flows = rawFlows(certId);
   const out: StepSequence[] = [];
   if (sequences || flows) {
+    const cert = getCertification(certId);
     for (const s of sequences?.sequences ?? []) {
       if (s.retired) continue;
-      out.push({ id: s.id, title: s.title, steps: s.steps, caption: s.caption, tier: s.tier, domainId: s.subtopicId.charAt(0), subtopicId: s.subtopicId });
+      // The domain from the note's code, the course's way (CISA: its first character, as before).
+      out.push({ id: s.id, title: s.title, steps: s.steps, caption: s.caption, tier: s.tier, domainId: domainOfCode(s.subtopicId, cert), subtopicId: s.subtopicId });
     }
     const lessons = lessonsFor(certId);
     for (const f of flows?.flows ?? []) {

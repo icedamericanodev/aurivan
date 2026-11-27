@@ -29,6 +29,7 @@ import { GAMES } from './games/registry';
 import { DAYLIGHT_SIZE, PACE_RIGHT } from './games/daylight';
 import { share } from './games/growth';
 import { DIAGNOSTIC_SIZE, DOMAIN_TARGET, MAX_MOCKS, MOCK_DOMAIN_FLOOR } from './journey';
+import { domainWord, type DomainStyle } from './domainNaming';
 import { CLEAR_RIGHT } from './studyPath';
 import { CHECKPOINTS, PACE_TOLERANCE, type MockTiming } from './pace';
 import { domainOf, type AnswerRecord } from './readiness';
@@ -227,6 +228,12 @@ export interface MilestoneFacts {
   myths: readonly WindowHit[];
   paceRounds: number;
   gameFixes: number;
+  /**
+   * The course's domain words (course decisions of 27 Nov 2026, item 4). Missing → "Domain Mastery ·
+   * IS Operations" and "All Domains", as every course today; a course with sections reads "Section
+   * Mastery · Ethics" and "All Sections". Only the words change: mark keys ("firm-footing:2") never do.
+   */
+  domainStyle?: DomainStyle;
 }
 
 export interface BadgeDef {
@@ -397,7 +404,7 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
     out.push({
       key: `firm-footing:${d.id}`,
       badge: 'firm-footing',
-      label: `Domain Mastery · ${d.short}`,
+      label: `${domainWord(f, 'Domain')} Mastery · ${d.short}`,
       met,
       progress: met ? 1 : Math.min(frac(d.answered, FIRM_ANSWERS), frac(d.mastery, FIRM_MASTERY)),
       detail: `${pct(d.mastery)} mastery · ${of(d.answered, FIRM_ANSWERS, 'answered')}`,
@@ -406,7 +413,9 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
   const atFloor = f.domains.filter((d) => d.mastery >= WHOLE_MAP_FLOOR - 1e-9).length;
   const wholeMap = f.domains.length > 0 && atFloor === f.domains.length;
   const mapProgress = f.domains.length ? f.domains.reduce((s, d) => s + frac(d.mastery, WHOLE_MAP_FLOOR), 0) / f.domains.length : 0;
-  out.push(...one('whole-map', wholeMap, mapProgress, `${atFloor} of ${f.domains.length} domains at ${pct(WHOLE_MAP_FLOOR)}`));
+  // "All Domains" (BADGES), or "All Sections" for a course with sections; the key stays 'whole-map'.
+  const mapMarks = one('whole-map', wholeMap, mapProgress, `${atFloor} of ${f.domains.length} ${domainWord(f, 'domains')} at ${pct(WHOLE_MAP_FLOOR)}`);
+  out.push(...(f.domainStyle ? mapMarks.map((m) => ({ ...m, label: `All ${domainWord(f, 'Domains')}` })) : mapMarks));
   // Domain Mastery · 80% opens once All Domains is earned or is met right now
   // (the domain's own answers are the evidence, whenever they were given).
   const mapOpen = f.wholeMapAt !== undefined || wholeMap;
@@ -416,11 +425,11 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
     out.push({
       key: `firm-footing:${d.id}:80`,
       badge: 'firm-footing',
-      label: `Domain Mastery · ${d.short} · 80%`,
+      label: `${domainWord(f, 'Domain')} Mastery · ${d.short} · 80%`,
       met,
       progress: met ? 1 : Math.min(frac(d.answered, FIRM_DEEP_ANSWERS), frac(d.mastery, FIRM_DEEP)),
       detail: `${pct(d.mastery)} mastery · ${of(d.answered, FIRM_DEEP_ANSWERS, 'answered')}`,
-      rule: `Reach ${pct(FIRM_DEEP)} mastery in this domain, with ${FIRM_DEEP_ANSWERS} or more of its questions answered. Opens once every domain is at ${pct(WHOLE_MAP_FLOOR)}.`,
+      rule: `Reach ${pct(FIRM_DEEP)} mastery in this ${domainWord(f, 'domain')}, with ${FIRM_DEEP_ANSWERS} or more of its questions answered. Opens once every ${domainWord(f, 'domain')} is at ${pct(WHOLE_MAP_FLOOR)}.`,
     });
   }
   out.push(...one('loop-closed', f.loopFixed >= LOOP_FIXES, frac(f.loopFixed, LOOP_FIXES), of(f.loopFixed, LOOP_FIXES, 'fixed')));

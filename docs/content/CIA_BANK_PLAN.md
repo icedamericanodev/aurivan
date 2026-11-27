@@ -2141,6 +2141,80 @@ The trademark notice and the no-affiliation line are in the blueprint.
 Found by `mobile-app-engineer` on 19 Nov 2026 by reading the app code. None of
 this blocks content work; all of it is needed before a pack is switched on.
 
+**Expert decisions (27 Nov 2026; the owner chose "app work, experts decide").**
+`product-manager`, `behavioral-scientist` and `app-store-compliance-reviewer`
+decided the open items (their notes: scratchpad `app/pm.md`, `behavior.md`,
+`compliance.md`, summarised here).
+
+- **Do not add The IIA or the CIA exams to `certifications.ts` until the licence
+  is settled** (compliance, overriding the product manager's first item): the
+  file ships in the public Play bundle and in kaisip.com's `assets/kaisip-cloud.js`,
+  so even `coming_soon` entries would publish The IIA's marks, against the owner's
+  19 Nov decision (section 9); coming-soon courses are never shown anyway, and
+  Apple 2.5.19 bars dormant features. The ready block below is corrected
+  (trademark line) and stays here until then.
+- **Build now, with no IIA name in the code** (each a general course feature,
+  CISA unchanged): (1) the combined trademark notice uses an optional per-exam
+  `mark` (so four CIA exams would print "CIA®" once, not "CIA Part 1®…");
+  (2) games read the section from the sub-topic code's letter (`1A1` is section A);
+  (3) the planner's pace comes from the exam's own minutes and questions;
+  (4) a per-course section noun and letter helper ("Domain 1" for CISA,
+  "Section A" where a course asks for it: notes caption "Section A · 35% of the
+  exam", "Section key terms", chip "Section A · Foundations", "all sections",
+  readiness "Every section at 70%", badge "Section Mastery · Ethics" and "All
+  Sections"; saved badge ids never change). **(1) to (4) done (27 Nov 2026, not yet
+  committed), with no IIA name in code or tests and CISA unchanged:** (1) `Certification.mark`,
+  read by `combinedTrademarkNotice` (each mark once; tests in `trademark-notice.test.ts`);
+  (2) `domainOfCode` in `mobile/src/engine/domainNaming.ts`, used by the games loader
+  (Canopy Call cards now carry `domainId`, Stepping Stones) and by the plant's restore check
+  (`supportSpread`), only for a course whose `domainStyle` is lettered; (3) `examPace` in
+  `planner.ts` sizes the mini mock (CISA's 240 / 150 is 1.6, unchanged; only a mock item saved
+  before mobile 1.15 still uses 1.6, and only CISA has those); (4) `Certification.domainStyle`
+  (`{ noun: 'Section', numbering: 'letter' }`) with `domainTitle`, `domainMark`, `domainWord`
+  applied to every place in the list below, plus the readiness sign ("Every section at 70%…",
+  `readySigns` `domainStyle`). Left as it is (layout): the Practice hero's "Domains" tile and its
+  spoken label (the tile width rule is measured for "DOMAINS"), and the badge case's own badge
+  names (read from one fixed list by many screens; the marks' labels, moments and Results lines
+  do follow the course). Tests: `mobile/src/__tests__/domain-naming.test.ts`; both website
+  bundles rebuilt (web output unchanged: it passes no style). Next: (5) sibling groups carried into the
+  pack, at most one item per group in any mock or session (relaxed only if a
+  non-mock session would be empty, and that sibling's first try then does not
+  count); (6) a neutral tag on dated items in practice and review ("On the exam
+  from 1 March 2027"), gone on that date; (7) the held-back full form, the
+  per-learner short mock and first-try readiness, built as one piece for courses
+  that opt in (CISA's readiness must not move: that would break saved progress).
+- **Still "Domain" for every course after batch 1 (review, 27 Nov 2026):** the Practice
+  hero's "Domains" tile (its width rule was measured for "DOMAINS"), `pathChooser.tsx`
+  (lines 155, 158), `practice.tsx` line 316 ("all domains"), `RINGS_NOTE` in
+  `journey.tsx`, and the badge case's fixed `BADGES` names "Domain Mastery" and "All
+  Domains" in `milestones.ts`. Fix with the section helper before a lettered course ships.
+- **Held-back form and short mock rules** (behavioral scientist): never locked;
+  suggested by one Today card (no notification) once every section has 30 or more
+  first tries and one short mock is done, or 3 weeks before a set exam date;
+  earlier it asks "Most useful in your last 2 to 3 weeks." Intro: "A full exam, the
+  same for everyone, kept out of practice so your result is a fair read. You get
+  one fresh try; afterwards its questions and explanations join your practice."
+  Discarding it after an item is shown counts it as taken (said first). A retake
+  is "Full exam (seen)" and stays out of readiness. The short mock is one third of
+  the exam, drawn from unseen, testable items at section weights, one per sibling
+  group; if a section runs short it tops up with seen items, says so before the
+  start, and labels the result "includes seen questions". "Seen" means shown in
+  any mode (a new shown list is needed: skipped mock items and opened bank answers
+  leave no record today). Readiness counts first, unhinted, non-game tries at
+  unseen, testable items (a new write-once `first` field on the answer record),
+  the latest 50 per section, shown as "31 of 44 first tries right (70%)"; under
+  10 tries "Too few to say yet (6 answered)" with no percent; 10 to 29 marked
+  "early read". Never a scaled score, 600, "pass" or "likely". No countdowns,
+  "last chance" copy, guilt nudges or locks.
+- **Can wait:** the pack glossary builder; the Challenge free-sample rule (with the
+  Challenge pack); the welcome sub line and a course choice in onboarding (only
+  once two or more courses are on sale).
+- **Before a `ciac` score line:** confirm the Challenge Exam's scale (June 2026
+  "enhanced scoring"); a course without `scoreNote` falls back to ISACA's line.
+- **Don't build:** a general wording system, a per-course planner setting, a
+  draw-time sibling check for the fixed held-back form (the harness checks it
+  once), CIA on the website.
+
 - `mobile/src/content/certifications.ts`: add The IIA as an issuer and the four
   exams. **Not now**: the file is a hashed source of the website's
   `assets/kaisip-cloud.js` (any edit forces a website bundle rebuild), and
@@ -2150,7 +2224,9 @@ this blocks content work; all of it is needed before a pack is switched on.
 export const IIA: CertIssuer = { id: 'iia', name: 'The IIA', site: 'theiia.org' };
 // TO VERIFY before pasting: registration wording (USPTO), mindset wording, difficulty mix, short names,
 // and the welcome line (welcomeHeadline below follows CISA's "Think like an IS auditor.").
-const IIA_TM = 'Not affiliated with or endorsed by The IIA. CIA is a trademark of The IIA.';
+const IIA_TM = 'Not affiliated with or endorsed by The IIA®. Certified Internal Auditor® and CIA® are registered trademarks of The Institute of Internal Auditors, Inc.';
+// Compliance 27 Nov 2026: USPTO CIA 1882539 (Principal), CERTIFIED INTERNAL AUDITOR 1926790 (Supplemental), IIA 2704273. Drop trademarkRegistered: false;
+// add iia: 'The IIA®' to ISSUER_MARK and iia: 'The Institute of Internal Auditors, Inc.' to ISSUER_OWNER; give each CIA exam mark: 'CIA'.
 const IIA_MIX = { analysis: 0.3, application: 0.5, foundational: 0.2 };
 const IIA_NOTE = 'The IIA reports scaled scores from 250 to 750; 600 is the passing mark.';
 // What the phone shows (the owner's word rule: "the score needed", never "pass"); content/scoreNote.ts reads it.
@@ -2198,11 +2274,12 @@ const IIA_BASE = { issuer: IIA, mindset: IIA_MINDSET, notesRole: 'internal audit
   (every course today) keeps its line. Not `passingNote`: every course already
   has one, worded "the passing mark", so reading it would change CISA's line.
   The ready block above has The IIA's `IIA_SCORE`.
-- `mobile/src/content/games/index.ts` and `mobile/src/engine/games/canopyCall.ts`
-  take the domain from the first character of the sub-topic id, which under
-  `1A1` codes is the part number, not the section.
-- "Domain N" is hardcoded in about 27 places; The IIA says "Section A".
-  **Left as it is (26 Nov 2026):** no one course-level label fits cleanly. The
+- **Done (27 Nov 2026):** `mobile/src/content/games/index.ts` and `mobile/src/engine/games/canopyCall.ts`
+  took the domain from the first character of the sub-topic id, which under
+  `1A1` codes is the part number, not the section. They now read it with `domainOfCode`
+  (a lettered course reads the letter; CISA keeps the first character).
+- **Done (27 Nov 2026), see "Build now" (4) above.** "Domain N" is hardcoded in about 27 places; The IIA says "Section A".
+  **Was left as it is (26 Nov 2026):** no one course-level label fits cleanly. The
   places are spread over many screens and two website-bundled engines
   (`plant.ts` numbers domains by position, `readinessReport.ts` writes the
   spoken line), lower-case "domain" runs through the copy ("Every domain at
@@ -2221,7 +2298,8 @@ const IIA_BASE = { issuer: IIA, mindset: IIA_MINDSET, notesRole: 'internal audit
   keeps "Check isaca.org before you book." (the website, CISA only, passes
   none). The output keeps its name `isacaLine`, because the website reads it.
   The ready block's `IIA` has `site: 'theiia.org'`.
-- `mobile/src/engine/planner.ts` falls back to 1.6 minutes a question (CIA is 1.2).
+- **Done (27 Nov 2026):** `mobile/src/engine/planner.ts` fell back to 1.6 minutes a question (CIA is 1.2);
+  `examPace` now uses the course's own minutes and questions.
 - **Done (26 Nov 2026): `testable_from` reaches the app.** `mobile/scripts/build-content.mjs`
   carries it into the pack question as `testableFrom` (only when the item has a
   date; its `validate()` fails a malformed one), and the phone's mocks, full and

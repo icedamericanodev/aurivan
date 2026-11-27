@@ -37,6 +37,7 @@ import { interleaveTopic } from '../../engine/studyModes';
 import { openSessionFromStack } from '../../lib/actions';
 import { guardedStart, startFromIds } from '../../lib/sessions';
 import { domainColor } from '../../content/certifications';
+import { domainTitle, domainWord } from '../../engine/domainNaming';
 import { noteDomain, noteSubtopics } from '../../content/notes';
 import type { NoteDomain, NoteTopic } from '../../content/notes/types';
 import { readCount, readProgressText } from '../../engine/notesSearch';
@@ -119,7 +120,7 @@ export default function NotesDomain() {
         <HeroPanel
           // On the forest panel the brighter (dark-mode) domain tone reads best.
           captionLead={<View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: domainColor(info.tone, true) }} />}
-          caption={`Domain ${info.id} · ${info.weight}% of the exam`}
+          caption={`${domainTitle(info.id, cert)} · ${info.weight}% of the exam`}
           title={info.name}
           meta={readProgressText(done, ids.length) ?? undefined}
           art={`branch${info.tone % 5}` as BotanyKind}
@@ -275,13 +276,13 @@ export default function NotesDomain() {
             <Pressable
               accessibilityRole="button"
               accessibilityState={{ expanded: termsOpen }}
-              accessibilityLabel={`Domain key terms, ${notes.keyTerms.length} terms`}
+              accessibilityLabel={`${domainWord(cert, 'Domain')} key terms, ${notes.keyTerms.length} terms`}
               accessibilityHint={termsOpen ? 'Hides the terms' : 'Shows the terms'}
               onPress={() => setTermsOpen(!termsOpen)}
               style={({ pressed }) => ({ minHeight: 48, justifyContent: 'center', backgroundColor: pressed ? c.soft : 'transparent' })}
             >
               <Row gap={space.sm}>
-                <T v="headline" style={{ flex: 1 }}>Domain key terms</T>
+                <T v="headline" style={{ flex: 1 }}>{`${domainWord(cert, 'Domain')} key terms`}</T>
                 <Turn deg={termsOpen ? 0 : -90}>
                   <ChevronDown size={ICON_SIZE.row} color={c.muted} strokeWidth={ICON_STROKE} />
                 </Turn>

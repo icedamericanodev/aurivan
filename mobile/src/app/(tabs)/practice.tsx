@@ -56,6 +56,7 @@ import { mindsetTipsFor } from '../../content/mindset';
 import { scaledScoreNote } from '../../content/scoreNote';
 import type { Certification, Difficulty } from '../../content/types';
 import { BAND_MIN_ANSWERS, bandOf, STEADY_FROM } from '../../engine/domainBand';
+import { domainMark, domainTitle, domainWord } from '../../engine/domainNaming';
 import { topicQuestionIds } from '../../engine/outline';
 import { aboutMin, examPaceWords, MINUTES_PER_QUESTION, shouldOfferTimer, spokenMin } from '../../engine/pace';
 import { choiceFor, countdownChoices, countdownLabel, DEFAULT_COUNTDOWN_PACE, timerKindFromSetting, type PracticeTimerKind } from '../../engine/practiceCountdown';
@@ -330,7 +331,7 @@ export default function Practice() {
           <Button
             kind="ghost"
             label="Or 10 mixed questions"
-            accessibilityHint={`Starts 10 questions from all domains${timed ? ', timed' : ''}. Your path stays as it is.`}
+            accessibilityHint={`Starts 10 questions from all ${domainWord(cert, 'domains')}${timed ? ', timed' : ''}. Your path stays as it is.`}
             onPress={startQuickMix}
             // Text lines up with the gutter (the ghost button pads 8pt each side).
             style={{ alignSelf: 'flex-start', marginTop: space.xs, marginLeft: -space.sm }}
@@ -372,7 +373,7 @@ export default function Practice() {
       </Enter>
 
       <Enter i={4} style={{ marginTop: space.lg }}>
-        <ReviewSaved cert={cert} timed={timed} buildFor={buildFor} onBuildClosed={clearBuild} weakLine={weakDrillLine(weakDrillRanked(readiness.domains), (id) => cert.domains.find((d) => d.id === id)?.short ?? `Domain ${id}`, readiness.domains.some((d) => d.answered > 0))} />
+        <ReviewSaved cert={cert} timed={timed} buildFor={buildFor} onBuildClosed={clearBuild} weakLine={weakDrillLine(weakDrillRanked(readiness.domains), (id) => cert.domains.find((d) => d.id === id)?.short ?? domainTitle(id, cert), readiness.domains.some((d) => d.answered > 0))} />
       </Enter>
 
       {/* The brain games (mobile 1.51: the Play tab moved here). Its own outer view sits right in the page, so
@@ -796,7 +797,7 @@ const ByDomain = memo(function ByDomain({ cert, figures, onBuild }: { cert: Cert
   const byId = new Map(figures.split('|').map((f) => f.split(':')).map(([id, answered, mastery]) => [id, { answered: Number(answered), mastery: Number(mastery) }]));
   return (
     <HubCard testID="by-domain">
-      <CardHead title="By domain" meta="Starts a set in that domain" />
+      <CardHead title={`By ${domainWord(cert, 'domain')}`} meta={`Starts a set in that ${domainWord(cert, 'domain')}`} />
       {cert.domains.map((d, i) => {
         const r = byId.get(d.id);
         const answered = r?.answered ?? 0;
@@ -805,14 +806,14 @@ const ByDomain = memo(function ByDomain({ cert, figures, onBuild }: { cert: Cert
           <View key={d.id}>
             {i > 0 && <CardDivider />}
             <DomainRow
-              n={d.id}
+              n={domainMark(d.id, cert)}
               dot={domainColor(d.tone, isDark)}
               name={d.short}
               // Polish round 1: short enough for one line at 360pt ("18% · 40 seen"); the spoken words keep "of the exam".
               line={`${d.weight}% · ${answered} seen`}
               status={status.text}
               below={status.below}
-              spoken={`Domain ${d.id}, ${d.short}, ${d.weight} percent of the exam, ${answered} seen, ${status.spoken}`}
+              spoken={`${domainTitle(d.id, cert)}, ${d.short}, ${d.weight} percent of the exam, ${answered} seen, ${status.spoken}`}
               certId={cert.id}
               domainId={d.id}
               onBuild={onBuild}
@@ -1021,10 +1022,10 @@ const BuildASet = memo(function BuildASet({ cert, timed, preset }: { cert: Certi
   const startLabel = chosen ? `Start ${countdownLabel(length, chosen.minutes)}` : `Start ${questionsWord(length)}${timer === 'countUp' ? ', timed' : ''}`;
   return (
     <View testID="build-set" style={{ paddingBottom: space.md }}>
-      <FieldLabel>Domain</FieldLabel>
-      <View accessibilityLabel="Domain for this set">
+      <FieldLabel>{domainWord(cert, 'Domain')}</FieldLabel>
+      <View accessibilityLabel={`${domainWord(cert, 'Domain')} for this set`}>
         <ChipRow>
-          <Chip label="All domains" selected={domainId === undefined} onPress={() => { setDomainId(undefined); setTopicId(undefined); }} />
+          <Chip label={`All ${domainWord(cert, 'domains')}`} selected={domainId === undefined} onPress={() => { setDomainId(undefined); setTopicId(undefined); }} />
           {cert.domains.map((d) => (
             <Chip key={d.id} label={d.short} selected={domainId === d.id} onPress={() => { setDomainId(d.id); setTopicId(undefined); }} />
           ))}

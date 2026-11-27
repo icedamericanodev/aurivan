@@ -3,7 +3,7 @@
  * from the mobile app's own TypeScript (mobile/src/webcloud and the sync
  * engine it uses), so the website syncs with the same rules as the app.
  * Loaded only when an account is used. Rebuild: cd mobile && npm run web-plant
- * TypeScript 6.0.3. Modules: 61.
+ * TypeScript 6.0.3. Modules: 62.
  */
 (function (root) {
   "use strict";
@@ -65,7 +65,7 @@ function errorCode(e) {
     return e instanceof CloudError ? e.code : 'server';
 }
   };
-  links["src/content/certifications.ts"] = {"../theme/tokens":"src/theme/tokens.ts"};
+  links["src/content/certifications.ts"] = {"../engine/domainNaming":"src/engine/domainNaming.ts","../theme/tokens":"src/theme/tokens.ts"};
   defs["src/content/certifications.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -77,6 +77,7 @@ exports.notesHeadings = notesHeadings;
 exports.domainLabel = domainLabel;
 exports.domainColor = domainColor;
 exports.combinedTrademarkNotice = combinedTrademarkNotice;
+const domainNaming_1 = require("../engine/domainNaming");
 const tokens_1 = require("../theme/tokens");
 exports.ISACA = { id: 'isaca', name: 'ISACA' };
 exports.ISC2 = { id: 'isc2', name: 'ISC2' };
@@ -223,8 +224,8 @@ function notesHeadings(role) {
     const r = (role === null || role === void 0 ? void 0 : role.trim()) || exports.DEFAULT_NOTES_ROLE;
     return { movement: `Think like the ${r}`, lens: `The ${r}’s lens` };
 }
-function domainLabel(d) {
-    return `Domain ${d.id} · ${d.short}`;
+function domainLabel(d, cert) {
+    return `${(0, domainNaming_1.domainTitle)(d.id, cert)} · ${d.short}`;
 }
 function domainColor(tone, isDark) {
     return (isDark ? tokens_1.domainPalette.dark : tokens_1.domainPalette.light)[tone];
@@ -244,8 +245,11 @@ function combinedTrademarkNotice(certs = exports.CERTIFICATIONS) {
     const parts = [`KaiSip is not affiliated with or endorsed by ${joinList(issuers.map(issuerMark), 'or')}.`];
     for (const issuer of issuers) {
         const own = certs.filter((c) => c.issuer.id === issuer.id);
-        const registered = own.filter((c) => c.trademarkRegistered !== false).map((c) => `${c.name}®`);
-        const plain = own.filter((c) => c.trademarkRegistered === false).map((c) => c.name);
+        const marks = (registeredOnes) => [
+            ...new Set(own.filter((c) => (c.trademarkRegistered !== false) === registeredOnes).map((c) => { var _a; return (_a = c.mark) !== null && _a !== void 0 ? _a : c.name; })),
+        ];
+        const registered = marks(true).map((m) => `${m}®`);
+        const plain = marks(false);
         if (registered.length) {
             parts.push(sentence(`${joinList(registered)} ${registered.length > 1 ? 'are registered trademarks' : 'is a registered trademark'} of ${issuerOwner(issuer)}`));
         }
@@ -1217,6 +1221,48 @@ function greetingWithName(hour, name) {
     return clean ? `${greetingForHour(hour)}, ${clean}` : greetingForHour(hour);
 }
   };
+  links["src/engine/domainNaming.ts"] = {};
+  defs["src/engine/domainNaming.ts"] = function (module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isLettered = exports.DEFAULT_DOMAIN_STYLE = void 0;
+exports.domainStyleOf = domainStyleOf;
+exports.domainMark = domainMark;
+exports.domainTitle = domainTitle;
+exports.domainWord = domainWord;
+exports.domainOfCode = domainOfCode;
+exports.DEFAULT_DOMAIN_STYLE = { noun: 'Domain', numbering: 'number' };
+function domainStyleOf(c) {
+    var _a;
+    return (_a = c === null || c === void 0 ? void 0 : c.domainStyle) !== null && _a !== void 0 ? _a : exports.DEFAULT_DOMAIN_STYLE;
+}
+const isLettered = (c) => domainStyleOf(c).numbering === 'letter';
+exports.isLettered = isLettered;
+function domainMark(id, c) {
+    if (!(0, exports.isLettered)(c))
+        return id;
+    const n = Number(id);
+    return /^\d+$/.test(id) && n >= 1 && n <= 26 ? String.fromCharCode(64 + n) : id;
+}
+function domainTitle(id, c) {
+    return `${domainStyleOf(c).noun} ${domainMark(id, c)}`;
+}
+function domainWord(c, form) {
+    const noun = domainStyleOf(c).noun;
+    const plural = form.endsWith('s');
+    const lower = form.charAt(0) === 'd';
+    const word = plural ? `${noun}s` : noun;
+    return lower ? word.toLowerCase() : word;
+}
+function domainOfCode(code, c) {
+    if ((0, exports.isLettered)(c)) {
+        const m = /^\d*([A-Z])/.exec(code);
+        if (m)
+            return String(m[1].charCodeAt(0) - 64);
+    }
+    return code.charAt(0);
+}
+  };
   links["src/engine/examDay.ts"] = {"./pace":"src/engine/pace.ts","./streak":"src/engine/streak.ts"};
   defs["src/engine/examDay.ts"] = function (module, exports, require) {
 "use strict";
@@ -1716,7 +1762,7 @@ function canopyPool(deck, tier, size = exports.CANOPY_SIZE) {
     const order = tier === 'heartwood' ? ['sapling', 'seedling'] : tier === 'sapling' ? ['seedling', 'heartwood'] : ['sapling', 'heartwood'];
     return [...own, ...order.flatMap((t) => deck.cards.filter((c) => c.tier === t))];
 }
-const domainOf = (card) => card.subtopicId.charAt(0);
+const domainOf = (card) => { var _a; return (_a = card.domainId) !== null && _a !== void 0 ? _a : card.subtopicId.charAt(0); };
 function buildCanopyRound(deck, cards, tier, rng, now, size = exports.CANOPY_SIZE) {
     var _a, _b;
     const pool = canopyPool(deck, tier, size);
@@ -1965,7 +2011,7 @@ function slowestItem(r) {
     return best;
 }
   };
-  links["src/engine/games/fieldGuide.ts"] = {"../random":"src/engine/random.ts","./rootOrRumor":"src/engine/games/rootOrRumor.ts"};
+  links["src/engine/games/fieldGuide.ts"] = {"../domainNaming":"src/engine/domainNaming.ts","../random":"src/engine/random.ts","./rootOrRumor":"src/engine/games/rootOrRumor.ts"};
   defs["src/engine/games/fieldGuide.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -1979,6 +2025,7 @@ exports.recallChoices = recallChoices;
 exports.buildFieldRound = buildFieldRound;
 exports.fieldScore = fieldScore;
 exports.itemSpoken = itemSpoken;
+const domainNaming_1 = require("../domainNaming");
 const random_1 = require("../random");
 const rootOrRumor_1 = require("./rootOrRumor");
 exports.FIELD_BOARDS = 3;
@@ -2017,7 +2064,7 @@ function leaks(term, definition) {
     const acr = acronymOf(term);
     return Boolean(acr && new RegExp(`\\b${escape(acr)}s?\\b`).test(definition));
 }
-function termsFromNotes(pack) {
+function termsFromNotes(pack, course) {
     var _a;
     const out = [];
     const seenTerm = new Set();
@@ -2043,18 +2090,22 @@ function termsFromNotes(pack) {
             }
         }
         for (const k of d.keyTerms)
-            add(k, { topicId: `D${d.id}`, topicName: `Domain ${d.id} key terms`, domainId: d.id }, `D${d.id}`);
+            add(k, { topicId: `D${d.id}`, topicName: `${(0, domainNaming_1.domainTitle)(d.id, course)} key terms`, domainId: d.id }, `D${d.id}`);
     }
     return out;
 }
 const cache = new WeakMap();
-function fieldTerms(pack) {
+function fieldTerms(pack, course) {
+    var _a;
     if (!pack)
         return [];
-    let hit = cache.get(pack);
+    const byWords = (_a = cache.get(pack)) !== null && _a !== void 0 ? _a : new Map();
+    cache.set(pack, byWords);
+    const words = (0, domainNaming_1.domainTitle)('1', course);
+    let hit = byWords.get(words);
     if (!hit) {
-        hit = termsFromNotes(pack);
-        cache.set(pack, hit);
+        hit = termsFromNotes(pack, course);
+        byWords.set(words, hit);
     }
     return hit;
 }
@@ -2959,7 +3010,7 @@ function stageProgress(stage) {
     return exports.STAGE_ORDER.indexOf(stage) / (exports.STAGE_ORDER.length - 1);
 }
   };
-  links["src/engine/milestones.ts"] = {"./games/registry":"src/engine/games/registry.ts","./games/daylight":"src/engine/games/daylight.ts","./games/growth":"src/engine/games/growth.ts","./journey":"src/engine/journey.ts","./studyPath":"src/engine/studyPath.ts","./pace":"src/engine/pace.ts","./readiness":"src/engine/readiness.ts","./streak":"src/engine/streak.ts"};
+  links["src/engine/milestones.ts"] = {"./games/registry":"src/engine/games/registry.ts","./games/daylight":"src/engine/games/daylight.ts","./games/growth":"src/engine/games/growth.ts","./journey":"src/engine/journey.ts","./domainNaming":"src/engine/domainNaming.ts","./studyPath":"src/engine/studyPath.ts","./pace":"src/engine/pace.ts","./readiness":"src/engine/readiness.ts","./streak":"src/engine/streak.ts"};
   defs["src/engine/milestones.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -2994,6 +3045,7 @@ const registry_1 = require("./games/registry");
 const daylight_1 = require("./games/daylight");
 const growth_1 = require("./games/growth");
 const journey_1 = require("./journey");
+const domainNaming_1 = require("./domainNaming");
 const studyPath_1 = require("./studyPath");
 const pace_1 = require("./pace");
 const readiness_1 = require("./readiness");
@@ -3143,7 +3195,7 @@ function allMarks(f) {
         out.push({
             key: `firm-footing:${d.id}`,
             badge: 'firm-footing',
-            label: `Domain Mastery · ${d.short}`,
+            label: `${(0, domainNaming_1.domainWord)(f, 'Domain')} Mastery · ${d.short}`,
             met,
             progress: met ? 1 : Math.min(frac(d.answered, exports.FIRM_ANSWERS), frac(d.mastery, exports.FIRM_MASTERY)),
             detail: `${pct(d.mastery)} mastery · ${of(d.answered, exports.FIRM_ANSWERS, 'answered')}`,
@@ -3152,18 +3204,19 @@ function allMarks(f) {
     const atFloor = f.domains.filter((d) => d.mastery >= exports.WHOLE_MAP_FLOOR - 1e-9).length;
     const wholeMap = f.domains.length > 0 && atFloor === f.domains.length;
     const mapProgress = f.domains.length ? f.domains.reduce((s, d) => s + frac(d.mastery, exports.WHOLE_MAP_FLOOR), 0) / f.domains.length : 0;
-    out.push(...one('whole-map', wholeMap, mapProgress, `${atFloor} of ${f.domains.length} domains at ${pct(exports.WHOLE_MAP_FLOOR)}`));
+    const mapMarks = one('whole-map', wholeMap, mapProgress, `${atFloor} of ${f.domains.length} ${(0, domainNaming_1.domainWord)(f, 'domains')} at ${pct(exports.WHOLE_MAP_FLOOR)}`);
+    out.push(...(f.domainStyle ? mapMarks.map((m) => ({ ...m, label: `All ${(0, domainNaming_1.domainWord)(f, 'Domains')}` })) : mapMarks));
     const mapOpen = f.wholeMapAt !== undefined || wholeMap;
     for (const d of f.domains) {
         const met = mapOpen && d.answered >= exports.FIRM_DEEP_ANSWERS && d.mastery >= exports.FIRM_DEEP - 1e-9;
         out.push({
             key: `firm-footing:${d.id}:80`,
             badge: 'firm-footing',
-            label: `Domain Mastery · ${d.short} · 80%`,
+            label: `${(0, domainNaming_1.domainWord)(f, 'Domain')} Mastery · ${d.short} · 80%`,
             met,
             progress: met ? 1 : Math.min(frac(d.answered, exports.FIRM_DEEP_ANSWERS), frac(d.mastery, exports.FIRM_DEEP)),
             detail: `${pct(d.mastery)} mastery · ${of(d.answered, exports.FIRM_DEEP_ANSWERS, 'answered')}`,
-            rule: `Reach ${pct(exports.FIRM_DEEP)} mastery in this domain, with ${exports.FIRM_DEEP_ANSWERS} or more of its questions answered. Opens once every domain is at ${pct(exports.WHOLE_MAP_FLOOR)}.`,
+            rule: `Reach ${pct(exports.FIRM_DEEP)} mastery in this ${(0, domainNaming_1.domainWord)(f, 'domain')}, with ${exports.FIRM_DEEP_ANSWERS} or more of its questions answered. Opens once every ${(0, domainNaming_1.domainWord)(f, 'domain')} is at ${pct(exports.WHOLE_MAP_FLOOR)}.`,
         });
     }
     out.push(...one('loop-closed', f.loopFixed >= exports.LOOP_FIXES, frac(f.loopFixed, exports.LOOP_FIXES), of(f.loopFixed, exports.LOOP_FIXES, 'fixed')));
@@ -3954,7 +4007,7 @@ function pacingStatsLine(s) {
     return `In ${mocks} you took ${aboutSeconds(s.medianSec)} per question. ${all}`;
 }
   };
-  links["src/engine/plant.ts"] = {"./journey":"src/engine/journey.ts","./examReady":"src/engine/examReady.ts","./readiness":"src/engine/readiness.ts","./readinessRange":"src/engine/readinessRange.ts","./streak":"src/engine/streak.ts","./plantLooks":"src/engine/plantLooks.ts","./plantForms":"src/engine/plantForms.ts"};
+  links["src/engine/plant.ts"] = {"./domainNaming":"src/engine/domainNaming.ts","./journey":"src/engine/journey.ts","./examReady":"src/engine/examReady.ts","./readiness":"src/engine/readiness.ts","./readinessRange":"src/engine/readinessRange.ts","./streak":"src/engine/streak.ts","./plantLooks":"src/engine/plantLooks.ts","./plantForms":"src/engine/plantForms.ts"};
   defs["src/engine/plant.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -4006,6 +4059,7 @@ exports.formGrowthLine = formGrowthLine;
 exports.growthShort = growthShort;
 exports.grewLabel = grewLabel;
 exports.organLabel = organLabel;
+const domainNaming_1 = require("./domainNaming");
 const journey_1 = require("./journey");
 const examReady_1 = require("./examReady");
 const readiness_1 = require("./readiness");
@@ -4420,13 +4474,13 @@ function supportEvidence(i) {
     return {
         answered: dm.reduce((s, d) => s + d.answered, 0),
         answeredByDomain: dm.map((d) => d.answered),
-        spread: supportSpread(i.cert.domains.map((d) => ({ id: d.id, weight: d.weight })), i.subtopicsByDomain, i.mastery),
+        spread: supportSpread(i.cert.domains.map((d) => ({ id: d.id, weight: d.weight })), i.subtopicsByDomain, i.mastery, i.cert),
         mock50: capped || (dressMark && i.cert.exam.questions >= exports.CROWN_MOCK) || i.mocks.some((m) => m.total >= exports.CROWN_MOCK),
         dress,
         readyEver: readyEvidence(i),
     };
 }
-function supportSpread(domains, outline, mastery) {
+function supportSpread(domains, outline, mastery, course) {
     const mastered = Object.entries(mastery !== null && mastery !== void 0 ? mastery : {}).filter(([, m]) => !!(m === null || m === void 0 ? void 0 : m.masteredAt)).map(([id]) => id);
     if (!mastered.length)
         return 0;
@@ -4437,7 +4491,9 @@ function supportSpread(domains, outline, mastery) {
     for (const id of mastered) {
         if (listed.has(id))
             continue;
-        const d = domains.findIndex((x) => id.startsWith(x.id) && !/[0-9]/.test(id.charAt(x.id.length)));
+        const d = (0, domainNaming_1.isLettered)(course)
+            ? domains.findIndex((x) => x.id === (0, domainNaming_1.domainOfCode)(id, course))
+            : domains.findIndex((x) => id.startsWith(x.id) && !/[0-9]/.test(id.charAt(x.id.length)));
         if (d < 0)
             return 1;
         extra[d]++;
@@ -4724,9 +4780,9 @@ function growthShort(growth) {
 function grewLabel(p, growth) {
     return `${plantCallName(p)} grew to ${exports.GROWTH_NAMES[growth]}.`;
 }
-function organLabel(index, domainName, mastery, step, next = false) {
+function organLabel(index, domainName, mastery, step, next = false, course) {
     const pc = Math.round(Math.max(0, Math.min(1, mastery)) * 100);
-    return `Domain ${index + 1}, ${domainName}, ${pc} percent, ${exports.ORGAN_STEP_WORDS[step]}.${next ? ' Next to grow.' : ''}`;
+    return `${(0, domainNaming_1.domainTitle)(String(index + 1), course)}, ${domainName}, ${pc} percent, ${exports.ORGAN_STEP_WORDS[step]}.${next ? ' Next to grow.' : ''}`;
 }
   };
   links["src/engine/plantForms.ts"] = {};
@@ -10376,7 +10432,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "c6ba9ec0f9a1d235";
+  api.sourceHash = "20ffe5233d64e6ae";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

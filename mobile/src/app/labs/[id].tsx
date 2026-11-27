@@ -7,6 +7,8 @@ import { LabChoice, LabOutcomes, LabRange, LabTimeline } from '../../components/
 import { CardHead, HubCard, PageTitle } from '../../components/groveHub';
 import { Button, PushedHeader, Screen, T } from '../../components/ui';
 import { CONCEPT_LAB_ENABLED, findLab, type ConceptLab } from '../../content/labs';
+import { getCertification } from '../../content/certifications';
+import { domainTitle } from '../../engine/domainNaming';
 import { findLesson } from '../../content/lessons';
 import { findQuestion } from '../../content/loader';
 import { findNote } from '../../content/notes';
@@ -60,7 +62,7 @@ function RecoveryLab({ lab }: { lab: ConceptLab }) {
   };
   const move = (n: number) => { setStage(n); };
   return <Screen scrollRef={scroll} edges={['top', 'bottom']} header={<PushedHeader title="Concept Lab" onBack={() => router.canGoBack() ? router.back() : router.replace('/labs')} />}>
-    <T v="meta">Domain {lab.domainId} · Recovery objectives · {lab.minutes} min</T>
+    <T v="meta">{`${domainTitle(lab.domainId, getCertification(lab.certId))} · Recovery objectives · ${lab.minutes} min`}</T>
     <PageTitle title={lab.title} />
     <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.xs, marginVertical: space.lg }}>
       {stages.map((s, i) => <Button key={s} kind="ghost" selected={stage === i} label={`${i + 1}. ${s}`} onPress={() => move(i)} />)}

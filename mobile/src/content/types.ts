@@ -121,6 +121,20 @@ export interface CertIssuer {
   site?: string;
 }
 
+/**
+ * How a course names its domains (course decisions of 27 Nov 2026, item 4).
+ * Every course today says "Domain 1" (the default). A course may ask for
+ * "Section A": noun 'Section', numbering 'letter' (domain id "1" shows as "A").
+ * A lettered course also writes its sub-topic codes as part digit + section
+ * letter + topic ("1B1.1" is section B), so the games read the section from
+ * that letter (engine/domainNaming.ts domainOfCode). Domain ids stay "1".."n"
+ * everywhere in saved data; only the words on screen change.
+ */
+export interface DomainStyle {
+  noun: 'Domain' | 'Section';
+  numbering: 'number' | 'letter';
+}
+
 /** Everything the app needs to know about one certification. */
 export interface Certification {
   id: string;
@@ -142,9 +156,18 @@ export interface Certification {
    */
   welcomeHeadline?: string;
   trademarkNotice: string;
+  /**
+   * The trademark this exam is sold under, when it is not the exam's own `name`
+   * (course decisions of 27 Nov 2026, item 1). Several exams of one family share
+   * one mark ("Part 1" to "Part 3" of one course all print "XYZ®"), so the
+   * combined notice names it once. Missing → `name` (every course today).
+   */
+  mark?: string;
   /** False when we can't confirm the mark is registered (plain "trademark", no ®). Defaults to true. */
   trademarkRegistered?: boolean;
   status: CertStatus;
   exam: ExamFormat;
   domains: DomainInfo[];
+  /** "Domain 1" or "Section A" (see DomainStyle). Missing → "Domain 1", as every course today. */
+  domainStyle?: DomainStyle;
 }

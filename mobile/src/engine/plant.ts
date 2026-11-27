@@ -25,6 +25,7 @@
  * ignores fields a newer app may add.
  */
 import type { Certification } from '../content/types';
+import { domainOfCode, domainTitle, isLettered, type DomainStyled } from './domainNaming';
 import { MOCK_DOMAIN_FLOOR, DIAGNOSTIC_SIZE, DOMAIN_TARGET, MAX_MOCKS } from './journey';
 import { readyHoldDays, READY_DAYS, READY_LOW, type ReadinessDay } from './examReady';
 import type { SubtopicMastery } from './mastery';
@@ -325,7 +326,8 @@ export interface PlantMock {
 }
 
 export interface PlantFactsInput {
-  cert: Pick<Certification, 'domains' | 'exam'>;
+  /** `domainStyle` (optional): a lettered course's sub-topic codes name the section by letter (supportSpread). */
+  cert: Pick<Certification, 'domains' | 'exam' | 'domainStyle'>;
   answers: Record<string, AnswerRecord>;
   /** Subtopic mastery dates (CertProgress.mastery). */
   mastery?: Record<string, SubtopicMastery>;
@@ -808,6 +810,7 @@ export function supportEvidence(i: SupportInput): SupportEvidence {
       i.cert.domains.map((d) => ({ id: d.id, weight: d.weight })),
       i.subtopicsByDomain,
       i.mastery,
+      i.cert,
     ),
     mock50: capped || (dressMark && i.cert.exam.questions >= CROWN_MOCK) || i.mocks.some((m) => m.total >= CROWN_MOCK),
     dress,
@@ -828,6 +831,8 @@ export function supportSpread(
   domains: readonly { id: string; weight: number }[],
   outline: readonly (readonly string[])[],
   mastery: Record<string, SubtopicMastery> | undefined,
+  // The course (its domainStyle): a lettered course's "1B1.1" is section B (domainNaming.ts). None: CISA's reading.
+  course?: DomainStyled,
 ): number {
   const mastered = Object.entries(mastery ?? {}).filter(([, m]) => !!m?.masteredAt).map(([id]) => id);
   if (!mastered.length) return 0;
@@ -836,7 +841,9 @@ export function supportSpread(
   const extra = domains.map(() => 0);
   for (const id of mastered) {
     if (listed.has(id)) continue;
-    const d = domains.findIndex((x) => id.startsWith(x.id) && !/[0-9]/.test(id.charAt(x.id.length)));
+    const d = isLettered(course)
+      ? domains.findIndex((x) => x.id === domainOfCode(id, course))
+      : domains.findIndex((x) => id.startsWith(x.id) && !/[0-9]/.test(id.charAt(x.id.length)));
     if (d < 0) return 1;
     extra[d]++;
   }
@@ -1260,8 +1267,11 @@ export function grewLabel(p: Pick<CertPlant, 'name' | 'species'>, growth: Growth
   return `${plantCallName(p)} grew to ${GROWTH_NAMES[growth]}.`;
 }
 
-/** One domain organ as a text row or a screen-reader stop: "Domain 4, IS Operations…, 30 percent, budding. Next to grow." */
-export function organLabel(index: number, domainName: string, mastery: number, step: OrganStep, next = false): string {
+/**
+ * One domain organ as a text row or a screen-reader stop: "Domain 4, IS Operations…, 30 percent, budding. Next to grow."
+ * `course` (optional): a course with sections says "Section D, …" (engine/domainNaming.ts). None: "Domain 4", as before.
+ */
+export function organLabel(index: number, domainName: string, mastery: number, step: OrganStep, next = false, course?: DomainStyled): string {
   const pc = Math.round(Math.max(0, Math.min(1, mastery)) * 100);
-  return `Domain ${index + 1}, ${domainName}, ${pc} percent, ${ORGAN_STEP_WORDS[step]}.${next ? ' Next to grow.' : ''}`;
+  return `${domainTitle(String(index + 1), course)}, ${domainName}, ${pc} percent, ${ORGAN_STEP_WORDS[step]}.${next ? ' Next to grow.' : ''}`;
 }

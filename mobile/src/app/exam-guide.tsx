@@ -35,6 +35,7 @@ import { domainColor } from '../content/certifications';
 import { getExamGuide } from '../content/exam';
 import type { ExamGuide, GuideSection } from '../content/exam/types';
 import type { Certification } from '../content/types';
+import { domainTitle } from '../engine/domainNaming';
 import { moveFocus } from '../lib/a11y';
 import { isoLongDate } from '../lib/format';
 import { useActiveCert } from '../lib/useActiveCert';
@@ -191,10 +192,10 @@ function DomainWeights({ domains, cert }: { domains: NonNullable<GuideSection['d
       {domains.map((d) => {
         const tone = cert.domains.find((x) => x.id === d.id)?.tone ?? 0;
         return (
-          <View key={d.id} accessible accessibilityLabel={`Domain ${d.id}, ${d.name}, ${d.weight} percent of the exam`}>
+          <View key={d.id} accessible accessibilityLabel={`${domainTitle(d.id, cert)}, ${d.name}, ${d.weight} percent of the exam`}>
             <Row gap={space.sm} style={{ alignItems: 'flex-start' }}>
               <View style={{ flex: 1, minWidth: 0 }}>
-                <T v="caption">{`Domain ${d.id}`}</T>
+                <T v="caption">{domainTitle(d.id, cert)}</T>
                 <T v="label">{d.name}</T>
               </View>
               <T v="label" num>{`${d.weight}%`}</T>

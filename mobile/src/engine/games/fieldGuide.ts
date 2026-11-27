@@ -23,6 +23,7 @@
  * Pure TypeScript: no React, no storage. The notes pack is passed in.
  */
 import type { NotesPack } from '../../content/notes/types';
+import { domainTitle, type DomainStyled } from '../domainNaming';
 import { shuffled, type Rng } from '../random';
 import type { ReviewEntry } from '../srs';
 import { textHash } from './rootOrRumor';
@@ -95,7 +96,8 @@ export function leaks(term: string, definition: string): boolean {
 }
 
 /** Every playable term in a notes pack, in note order, leak-filtered and deduped. */
-export function termsFromNotes(pack: NotesPack | null | undefined): FieldTerm[] {
+// `course` (optional): a course with sections names a section's own terms "Section A key terms" (engine/domainNaming.ts).
+export function termsFromNotes(pack: NotesPack | null | undefined, course?: DomainStyled): FieldTerm[] {
   const out: FieldTerm[] = [];
   const seenTerm = new Set<string>();
   const seenDef = new Set<string>();
@@ -121,19 +123,27 @@ export function termsFromNotes(pack: NotesPack | null | undefined): FieldTerm[] 
         for (const k of s.keyTerms) add(k, { topicId: t.id, topicName: t.name, domainId: d.id, subtopicId: s.id, subtopicName: s.name }, s.id);
       }
     }
-    for (const k of d.keyTerms) add(k, { topicId: `D${d.id}`, topicName: `Domain ${d.id} key terms`, domainId: d.id }, `D${d.id}`);
+    for (const k of d.keyTerms) add(k, { topicId: `D${d.id}`, topicName: `${domainTitle(d.id, course)} key terms`, domainId: d.id }, `D${d.id}`);
   }
   return out;
 }
 
-const cache = new WeakMap<NotesPack, FieldTerm[]>();
-/** Terms per notes pack, filtered once (the pack never changes while the app runs). */
-export function fieldTerms(pack: NotesPack | null | undefined): FieldTerm[] {
+// Per pack, then per domain wording ("Domain 1" or "Section A"), so a call without the course
+// (the game registry only counts the terms) never fills the cache with the wrong words.
+const cache = new WeakMap<NotesPack, Map<string, FieldTerm[]>>();
+/**
+ * Terms per notes pack, filtered once (the pack never changes while the app runs).
+ * `course`: the pack's course, for its domain words (a pack belongs to one course, so the cache holds).
+ */
+export function fieldTerms(pack: NotesPack | null | undefined, course?: DomainStyled): FieldTerm[] {
   if (!pack) return [];
-  let hit = cache.get(pack);
+  const byWords = cache.get(pack) ?? new Map<string, FieldTerm[]>();
+  cache.set(pack, byWords);
+  const words = domainTitle('1', course);
+  let hit = byWords.get(words);
   if (!hit) {
-    hit = termsFromNotes(pack);
-    cache.set(pack, hit);
+    hit = termsFromNotes(pack, course);
+    byWords.set(words, hit);
   }
   return hit;
 }

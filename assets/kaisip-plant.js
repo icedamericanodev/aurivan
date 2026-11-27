@@ -3,7 +3,7 @@
  * from the mobile app's own plant sources (growth engine, looks, SVG art),
  * so the website and the app grow the same plant. Rebuild after changing
  * any of them: cd mobile && npm run web-plant
- * TypeScript 6.0.3. Modules: 38.
+ * TypeScript 6.0.3. Modules: 39.
  */
 (function (root) {
   "use strict";
@@ -6113,6 +6113,48 @@ function areaFigure(answered, pct) {
 }
 exports.YARDSTICK_LINE = `This app’s own yardstick: a low end of ${examReady_1.READY_LOW}% or more, with every domain at ${exports.STEADY_FROM}% or more. It is a study bar for this app, not a promise or a prediction of your exam result.`;
   };
+  links["src/engine/domainNaming.ts"] = {};
+  defs["src/engine/domainNaming.ts"] = function (module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isLettered = exports.DEFAULT_DOMAIN_STYLE = void 0;
+exports.domainStyleOf = domainStyleOf;
+exports.domainMark = domainMark;
+exports.domainTitle = domainTitle;
+exports.domainWord = domainWord;
+exports.domainOfCode = domainOfCode;
+exports.DEFAULT_DOMAIN_STYLE = { noun: 'Domain', numbering: 'number' };
+function domainStyleOf(c) {
+    var _a;
+    return (_a = c === null || c === void 0 ? void 0 : c.domainStyle) !== null && _a !== void 0 ? _a : exports.DEFAULT_DOMAIN_STYLE;
+}
+const isLettered = (c) => domainStyleOf(c).numbering === 'letter';
+exports.isLettered = isLettered;
+function domainMark(id, c) {
+    if (!(0, exports.isLettered)(c))
+        return id;
+    const n = Number(id);
+    return /^\d+$/.test(id) && n >= 1 && n <= 26 ? String.fromCharCode(64 + n) : id;
+}
+function domainTitle(id, c) {
+    return `${domainStyleOf(c).noun} ${domainMark(id, c)}`;
+}
+function domainWord(c, form) {
+    const noun = domainStyleOf(c).noun;
+    const plural = form.endsWith('s');
+    const lower = form.charAt(0) === 'd';
+    const word = plural ? `${noun}s` : noun;
+    return lower ? word.toLowerCase() : word;
+}
+function domainOfCode(code, c) {
+    if ((0, exports.isLettered)(c)) {
+        const m = /^\d*([A-Z])/.exec(code);
+        if (m)
+            return String(m[1].charCodeAt(0) - 64);
+    }
+    return code.charAt(0);
+}
+  };
   links["src/engine/examReady.ts"] = {"./streak":"src/engine/streak.ts"};
   defs["src/engine/examReady.ts"] = function (module, exports, require) {
 "use strict";
@@ -6382,7 +6424,7 @@ function canopyPool(deck, tier, size = exports.CANOPY_SIZE) {
     const order = tier === 'heartwood' ? ['sapling', 'seedling'] : tier === 'sapling' ? ['seedling', 'heartwood'] : ['sapling', 'heartwood'];
     return [...own, ...order.flatMap((t) => deck.cards.filter((c) => c.tier === t))];
 }
-const domainOf = (card) => card.subtopicId.charAt(0);
+const domainOf = (card) => { var _a; return (_a = card.domainId) !== null && _a !== void 0 ? _a : card.subtopicId.charAt(0); };
 function buildCanopyRound(deck, cards, tier, rng, now, size = exports.CANOPY_SIZE) {
     var _a, _b;
     const pool = canopyPool(deck, tier, size);
@@ -6631,7 +6673,7 @@ function slowestItem(r) {
     return best;
 }
   };
-  links["src/engine/games/fieldGuide.ts"] = {"../random":"src/engine/random.ts","./rootOrRumor":"src/engine/games/rootOrRumor.ts"};
+  links["src/engine/games/fieldGuide.ts"] = {"../domainNaming":"src/engine/domainNaming.ts","../random":"src/engine/random.ts","./rootOrRumor":"src/engine/games/rootOrRumor.ts"};
   defs["src/engine/games/fieldGuide.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -6645,6 +6687,7 @@ exports.recallChoices = recallChoices;
 exports.buildFieldRound = buildFieldRound;
 exports.fieldScore = fieldScore;
 exports.itemSpoken = itemSpoken;
+const domainNaming_1 = require("../domainNaming");
 const random_1 = require("../random");
 const rootOrRumor_1 = require("./rootOrRumor");
 exports.FIELD_BOARDS = 3;
@@ -6683,7 +6726,7 @@ function leaks(term, definition) {
     const acr = acronymOf(term);
     return Boolean(acr && new RegExp(`\\b${escape(acr)}s?\\b`).test(definition));
 }
-function termsFromNotes(pack) {
+function termsFromNotes(pack, course) {
     var _a;
     const out = [];
     const seenTerm = new Set();
@@ -6709,18 +6752,22 @@ function termsFromNotes(pack) {
             }
         }
         for (const k of d.keyTerms)
-            add(k, { topicId: `D${d.id}`, topicName: `Domain ${d.id} key terms`, domainId: d.id }, `D${d.id}`);
+            add(k, { topicId: `D${d.id}`, topicName: `${(0, domainNaming_1.domainTitle)(d.id, course)} key terms`, domainId: d.id }, `D${d.id}`);
     }
     return out;
 }
 const cache = new WeakMap();
-function fieldTerms(pack) {
+function fieldTerms(pack, course) {
+    var _a;
     if (!pack)
         return [];
-    let hit = cache.get(pack);
+    const byWords = (_a = cache.get(pack)) !== null && _a !== void 0 ? _a : new Map();
+    cache.set(pack, byWords);
+    const words = (0, domainNaming_1.domainTitle)('1', course);
+    let hit = byWords.get(words);
     if (!hit) {
-        hit = termsFromNotes(pack);
-        cache.set(pack, hit);
+        hit = termsFromNotes(pack, course);
+        byWords.set(words, hit);
     }
     return hit;
 }
@@ -7653,7 +7700,7 @@ function recordMastery(map, subtopic, day, answer, at) {
     return { ...map, [subtopic]: next };
 }
   };
-  links["src/engine/milestones.ts"] = {"./games/registry":"src/engine/games/registry.ts","./games/daylight":"src/engine/games/daylight.ts","./games/growth":"src/engine/games/growth.ts","./journey":"src/engine/journey.ts","./studyPath":"src/engine/studyPath.ts","./pace":"src/engine/pace.ts","./readiness":"src/engine/readiness.ts","./streak":"src/engine/streak.ts"};
+  links["src/engine/milestones.ts"] = {"./games/registry":"src/engine/games/registry.ts","./games/daylight":"src/engine/games/daylight.ts","./games/growth":"src/engine/games/growth.ts","./journey":"src/engine/journey.ts","./domainNaming":"src/engine/domainNaming.ts","./studyPath":"src/engine/studyPath.ts","./pace":"src/engine/pace.ts","./readiness":"src/engine/readiness.ts","./streak":"src/engine/streak.ts"};
   defs["src/engine/milestones.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -7688,6 +7735,7 @@ const registry_1 = require("./games/registry");
 const daylight_1 = require("./games/daylight");
 const growth_1 = require("./games/growth");
 const journey_1 = require("./journey");
+const domainNaming_1 = require("./domainNaming");
 const studyPath_1 = require("./studyPath");
 const pace_1 = require("./pace");
 const readiness_1 = require("./readiness");
@@ -7837,7 +7885,7 @@ function allMarks(f) {
         out.push({
             key: `firm-footing:${d.id}`,
             badge: 'firm-footing',
-            label: `Domain Mastery · ${d.short}`,
+            label: `${(0, domainNaming_1.domainWord)(f, 'Domain')} Mastery · ${d.short}`,
             met,
             progress: met ? 1 : Math.min(frac(d.answered, exports.FIRM_ANSWERS), frac(d.mastery, exports.FIRM_MASTERY)),
             detail: `${pct(d.mastery)} mastery · ${of(d.answered, exports.FIRM_ANSWERS, 'answered')}`,
@@ -7846,18 +7894,19 @@ function allMarks(f) {
     const atFloor = f.domains.filter((d) => d.mastery >= exports.WHOLE_MAP_FLOOR - 1e-9).length;
     const wholeMap = f.domains.length > 0 && atFloor === f.domains.length;
     const mapProgress = f.domains.length ? f.domains.reduce((s, d) => s + frac(d.mastery, exports.WHOLE_MAP_FLOOR), 0) / f.domains.length : 0;
-    out.push(...one('whole-map', wholeMap, mapProgress, `${atFloor} of ${f.domains.length} domains at ${pct(exports.WHOLE_MAP_FLOOR)}`));
+    const mapMarks = one('whole-map', wholeMap, mapProgress, `${atFloor} of ${f.domains.length} ${(0, domainNaming_1.domainWord)(f, 'domains')} at ${pct(exports.WHOLE_MAP_FLOOR)}`);
+    out.push(...(f.domainStyle ? mapMarks.map((m) => ({ ...m, label: `All ${(0, domainNaming_1.domainWord)(f, 'Domains')}` })) : mapMarks));
     const mapOpen = f.wholeMapAt !== undefined || wholeMap;
     for (const d of f.domains) {
         const met = mapOpen && d.answered >= exports.FIRM_DEEP_ANSWERS && d.mastery >= exports.FIRM_DEEP - 1e-9;
         out.push({
             key: `firm-footing:${d.id}:80`,
             badge: 'firm-footing',
-            label: `Domain Mastery · ${d.short} · 80%`,
+            label: `${(0, domainNaming_1.domainWord)(f, 'Domain')} Mastery · ${d.short} · 80%`,
             met,
             progress: met ? 1 : Math.min(frac(d.answered, exports.FIRM_DEEP_ANSWERS), frac(d.mastery, exports.FIRM_DEEP)),
             detail: `${pct(d.mastery)} mastery · ${of(d.answered, exports.FIRM_DEEP_ANSWERS, 'answered')}`,
-            rule: `Reach ${pct(exports.FIRM_DEEP)} mastery in this domain, with ${exports.FIRM_DEEP_ANSWERS} or more of its questions answered. Opens once every domain is at ${pct(exports.WHOLE_MAP_FLOOR)}.`,
+            rule: `Reach ${pct(exports.FIRM_DEEP)} mastery in this ${(0, domainNaming_1.domainWord)(f, 'domain')}, with ${exports.FIRM_DEEP_ANSWERS} or more of its questions answered. Opens once every ${(0, domainNaming_1.domainWord)(f, 'domain')} is at ${pct(exports.WHOLE_MAP_FLOOR)}.`,
         });
     }
     out.push(...one('loop-closed', f.loopFixed >= exports.LOOP_FIXES, frac(f.loopFixed, exports.LOOP_FIXES), of(f.loopFixed, exports.LOOP_FIXES, 'fixed')));
@@ -8648,7 +8697,7 @@ function pacingStatsLine(s) {
     return `In ${mocks} you took ${aboutSeconds(s.medianSec)} per question. ${all}`;
 }
   };
-  links["src/engine/plant.ts"] = {"./journey":"src/engine/journey.ts","./examReady":"src/engine/examReady.ts","./readiness":"src/engine/readiness.ts","./readinessRange":"src/engine/readinessRange.ts","./streak":"src/engine/streak.ts","./plantLooks":"src/engine/plantLooks.ts","./plantForms":"src/engine/plantForms.ts"};
+  links["src/engine/plant.ts"] = {"./domainNaming":"src/engine/domainNaming.ts","./journey":"src/engine/journey.ts","./examReady":"src/engine/examReady.ts","./readiness":"src/engine/readiness.ts","./readinessRange":"src/engine/readinessRange.ts","./streak":"src/engine/streak.ts","./plantLooks":"src/engine/plantLooks.ts","./plantForms":"src/engine/plantForms.ts"};
   defs["src/engine/plant.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -8700,6 +8749,7 @@ exports.formGrowthLine = formGrowthLine;
 exports.growthShort = growthShort;
 exports.grewLabel = grewLabel;
 exports.organLabel = organLabel;
+const domainNaming_1 = require("./domainNaming");
 const journey_1 = require("./journey");
 const examReady_1 = require("./examReady");
 const readiness_1 = require("./readiness");
@@ -9114,13 +9164,13 @@ function supportEvidence(i) {
     return {
         answered: dm.reduce((s, d) => s + d.answered, 0),
         answeredByDomain: dm.map((d) => d.answered),
-        spread: supportSpread(i.cert.domains.map((d) => ({ id: d.id, weight: d.weight })), i.subtopicsByDomain, i.mastery),
+        spread: supportSpread(i.cert.domains.map((d) => ({ id: d.id, weight: d.weight })), i.subtopicsByDomain, i.mastery, i.cert),
         mock50: capped || (dressMark && i.cert.exam.questions >= exports.CROWN_MOCK) || i.mocks.some((m) => m.total >= exports.CROWN_MOCK),
         dress,
         readyEver: readyEvidence(i),
     };
 }
-function supportSpread(domains, outline, mastery) {
+function supportSpread(domains, outline, mastery, course) {
     const mastered = Object.entries(mastery !== null && mastery !== void 0 ? mastery : {}).filter(([, m]) => !!(m === null || m === void 0 ? void 0 : m.masteredAt)).map(([id]) => id);
     if (!mastered.length)
         return 0;
@@ -9131,7 +9181,9 @@ function supportSpread(domains, outline, mastery) {
     for (const id of mastered) {
         if (listed.has(id))
             continue;
-        const d = domains.findIndex((x) => id.startsWith(x.id) && !/[0-9]/.test(id.charAt(x.id.length)));
+        const d = (0, domainNaming_1.isLettered)(course)
+            ? domains.findIndex((x) => x.id === (0, domainNaming_1.domainOfCode)(id, course))
+            : domains.findIndex((x) => id.startsWith(x.id) && !/[0-9]/.test(id.charAt(x.id.length)));
         if (d < 0)
             return 1;
         extra[d]++;
@@ -9418,9 +9470,9 @@ function growthShort(growth) {
 function grewLabel(p, growth) {
     return `${plantCallName(p)} grew to ${exports.GROWTH_NAMES[growth]}.`;
 }
-function organLabel(index, domainName, mastery, step, next = false) {
+function organLabel(index, domainName, mastery, step, next = false, course) {
     const pc = Math.round(Math.max(0, Math.min(1, mastery)) * 100);
-    return `Domain ${index + 1}, ${domainName}, ${pc} percent, ${exports.ORGAN_STEP_WORDS[step]}.${next ? ' Next to grow.' : ''}`;
+    return `${(0, domainNaming_1.domainTitle)(String(index + 1), course)}, ${domainName}, ${pc} percent, ${exports.ORGAN_STEP_WORDS[step]}.${next ? ' Next to grow.' : ''}`;
 }
   };
   links["src/engine/plantForms.ts"] = {};
@@ -10200,7 +10252,7 @@ function rangeSpoken(r) {
     return r.enough ? `between ${r.low} and ${r.high} percent` : 'not enough data yet';
 }
   };
-  links["src/engine/readinessReport.ts"] = {"./examReady":"src/engine/examReady.ts","./journey":"src/engine/journey.ts","./pace":"src/engine/pace.ts","./readiness":"src/engine/readiness.ts","./srs":"src/engine/srs.ts"};
+  links["src/engine/readinessReport.ts"] = {"./domainNaming":"src/engine/domainNaming.ts","./examReady":"src/engine/examReady.ts","./journey":"src/engine/journey.ts","./pace":"src/engine/pace.ts","./readiness":"src/engine/readiness.ts","./srs":"src/engine/srs.ts"};
   defs["src/engine/readinessReport.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -10222,6 +10274,7 @@ exports.lowWords = lowWords;
 exports.lowSpoken = lowSpoken;
 exports.chartScale = chartScale;
 exports.stepLabel = stepLabel;
+const domainNaming_1 = require("./domainNaming");
 const examReady_1 = require("./examReady");
 const journey_1 = require("./journey");
 const pace_1 = require("./pace");
@@ -10321,11 +10374,11 @@ function mockLine(r) {
     const last = `Last mock ${(0, exports.tallyText)((_a = r.lastMock) !== null && _a !== void 0 ? _a : null)}`;
     return r.prevMock !== undefined ? `${last} · the one before ${(0, exports.tallyText)(r.prevMock)}` : last;
 }
-function domainSpoken(r) {
+function domainSpoken(r, course) {
     const mocks = (0, exports.mockCovers)(r) ? ` Last mock ${(0, exports.tallySpoken)(r.lastMock)}.${r.prevMock !== undefined ? ` The one before ${(0, exports.tallySpoken)(r.prevMock)}.` : ''}` : '';
     const n = `${r.answered} ${r.answered === 1 ? 'answer' : 'answers'}`;
-    const readiness = r.answered === 0 ? 'Not started yet.' : `Domain readiness ${r.readinessPct} percent, based on ${n}${r.firm ? '' : ', still firming up'}.`;
-    return `Domain ${r.domain.id}, ${r.domain.short}, ${r.weightPct} percent of the exam. ${readiness}${mocks}`;
+    const readiness = r.answered === 0 ? 'Not started yet.' : `${(0, domainNaming_1.domainWord)(course, 'Domain')} readiness ${r.readinessPct} percent, based on ${n}${r.firm ? '' : ', still firming up'}.`;
+    return `${(0, domainNaming_1.domainTitle)(r.domain.id, course)}, ${r.domain.short}, ${r.weightPct} percent of the exam. ${readiness}${mocks}`;
 }
 exports.RAISE_MAX = 3;
 function raiseLowerBound(cert, readiness, range, dueCount) {
@@ -10436,17 +10489,19 @@ function stepLabel(stage) {
     return i < 0 ? journey_1.STAGE_LABEL[stage] : `Now: ${journey_1.STAGE_LABEL[stage]}`;
 }
   };
-  links["src/engine/readySigns.ts"] = {"./domainBand":"src/engine/domainBand.ts","./examReady":"src/engine/examReady.ts","./pace":"src/engine/pace.ts"};
+  links["src/engine/readySigns.ts"] = {"./domainBand":"src/engine/domainBand.ts","./domainNaming":"src/engine/domainNaming.ts","./examReady":"src/engine/examReady.ts","./pace":"src/engine/pace.ts"};
   defs["src/engine/readySigns.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ISACA_LINE = exports.DEFAULT_ISSUER_SITE = exports.STUDY_BAR_NOTE = exports.SIGNS_HEADING_DATED = exports.SIGNS_HEADING = exports.SIGN_NOT_YET = exports.SIGN_MET = exports.SIGN_TITLE = exports.MOCKS_NEEDED = void 0;
+exports.domainsSignTitle = domainsSignTitle;
 exports.bookingLine = bookingLine;
 exports.allMetLine = allMetLine;
 exports.domainsMet = domainsMet;
 exports.mocksMet = mocksMet;
 exports.readySigns = readySigns;
 const domainBand_1 = require("./domainBand");
+const domainNaming_1 = require("./domainNaming");
 const examReady_1 = require("./examReady");
 const pace_1 = require("./pace");
 exports.MOCKS_NEEDED = 2;
@@ -10455,6 +10510,9 @@ exports.SIGN_TITLE = {
     domains: `Every domain at ${domainBand_1.STEADY_FROM}% or more, from ${domainBand_1.BAND_MIN_ANSWERS}+ answers each`,
     mocks: `${exports.MOCKS_NEEDED} mocks, one a full timed mock`,
 };
+function domainsSignTitle(course) {
+    return (course === null || course === void 0 ? void 0 : course.domainStyle) ? `Every ${(0, domainNaming_1.domainWord)(course, 'domain')} at ${domainBand_1.STEADY_FROM}% or more, from ${domainBand_1.BAND_MIN_ANSWERS}+ answers each` : exports.SIGN_TITLE.domains;
+}
 exports.SIGN_MET = 'In place';
 exports.SIGN_NOT_YET = 'Not yet';
 exports.SIGNS_HEADING = 'Ready to book?';
@@ -10480,7 +10538,7 @@ function readySigns(input) {
     var _a;
     const signs = [
         { id: 'low', title: exports.SIGN_TITLE.low, met: (0, examReady_1.readyHoldDays)([...((_a = input.readinessLog) !== null && _a !== void 0 ? _a : [])], input.today) >= examReady_1.READY_DAYS },
-        { id: 'domains', title: exports.SIGN_TITLE.domains, met: domainsMet(input.domains) },
+        { id: 'domains', title: domainsSignTitle(input), met: domainsMet(input.domains) },
     ];
     if (input.mockSign !== false)
         signs.push({ id: 'mocks', title: exports.SIGN_TITLE.mocks, met: mocksMet(input.mocks, input.examQuestions) });
@@ -11449,6 +11507,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "b1a462d170fb7a8c";
+  api.sourceHash = "f973420ef42b87b7";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

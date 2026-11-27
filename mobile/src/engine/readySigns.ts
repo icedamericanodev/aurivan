@@ -18,6 +18,7 @@
  * app can never disagree about a sign.
  */
 import { BAND_MIN_ANSWERS, STEADY_FROM } from './domainBand';
+import { domainWord, type DomainStyle, type DomainStyled } from './domainNaming';
 import { READY_DAYS, READY_LOW, readyHoldDays, type ReadinessDay } from './examReady';
 import { timingOf, type MockTiming } from './pace';
 
@@ -61,6 +62,11 @@ export interface ReadySignsInput {
    * Missing → "isaca.org", today's line (CIA_BANK_PLAN.md section 11).
    */
   issuerSite?: string;
+  /**
+   * The course's domain words (engine/domainNaming.ts): a course with sections reads
+   * "Every section at 70%…". Missing → "Every domain…", today's line (the website passes none).
+   */
+  domainStyle?: DomainStyle;
 }
 
 export interface ReadySigns {
@@ -81,6 +87,10 @@ export const SIGN_TITLE: Record<SignId, string> = {
   domains: `Every domain at ${STEADY_FROM}% or more, from ${BAND_MIN_ANSWERS}+ answers each`,
   mocks: `${MOCKS_NEEDED} mocks, one a full timed mock`,
 };
+/** Sign 2's title in the course's words: SIGN_TITLE.domains for every course today, "Every section at 70%…" for one with sections. */
+export function domainsSignTitle(course?: DomainStyled): string {
+  return course?.domainStyle ? `Every ${domainWord(course, 'domain')} at ${STEADY_FROM}% or more, from ${BAND_MIN_ANSWERS}+ answers each` : SIGN_TITLE.domains;
+}
 export const SIGN_MET = 'In place';
 export const SIGN_NOT_YET = 'Not yet';
 /** The heading: no exam date set, or a date set. */
@@ -118,7 +128,7 @@ export function mocksMet(mocks: readonly SignMock[], examQuestions: number): boo
 export function readySigns(input: ReadySignsInput): ReadySigns {
   const signs: ReadySign[] = [
     { id: 'low', title: SIGN_TITLE.low, met: readyHoldDays([...(input.readinessLog ?? [])], input.today) >= READY_DAYS },
-    { id: 'domains', title: SIGN_TITLE.domains, met: domainsMet(input.domains) },
+    { id: 'domains', title: domainsSignTitle(input), met: domainsMet(input.domains) },
   ];
   if (input.mockSign !== false) signs.push({ id: 'mocks', title: SIGN_TITLE.mocks, met: mocksMet(input.mocks, input.examQuestions) });
   const allMet = signs.every((s) => s.met);

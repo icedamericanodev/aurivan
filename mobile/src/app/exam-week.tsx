@@ -45,6 +45,7 @@ import { dayForToday, sheetParts, type ActionContext } from '../engine/finalWeek
 import { actionContext, taskButton } from '../lib/finalWeek';
 import { moveFocus } from '../lib/a11y';
 import { useActiveCert } from '../lib/useActiveCert';
+import { domainTitle } from '../engine/domainNaming';
 import { useProgress } from '../store/progress';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -356,8 +357,8 @@ function DayCard({
         {day.tasks.map((task, i) => {
           const btn = taskButton(task.action, cert, ctx);
           const parts = task.sheet ? sheetParts(task.sheet, ctx.focus) : [];
-          const partNames = parts.map((p) => (/^\d+$/.test(p) ? `Domain ${p}` : p === 'priority_words' ? 'priority words' : p === 'routine' ? 'answering routine' : p));
-          const sheetLabel = parts.length === 1 && /^\d+$/.test(parts[0]) ? `Check the Domain ${parts[0]} list` : 'Check the list';
+          const partNames = parts.map((p) => (/^\d+$/.test(p) ? domainTitle(p, cert) : p === 'priority_words' ? 'priority words' : p === 'routine' ? 'answering routine' : p));
+          const sheetLabel = parts.length === 1 && /^\d+$/.test(parts[0]) ? `Check the ${domainTitle(parts[0], cert)} list` : 'Check the list';
           const sheetHint = `Opens the cheat sheet: ${partNames.join(', ')}`;
           return (
             <View key={i} testID={`${day.id}-task-${i}`} style={{ paddingVertical: space.sm, borderTopWidth: i === 0 ? 0 : 1, borderTopColor: c.line }}>

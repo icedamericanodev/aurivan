@@ -132,6 +132,8 @@ export function milestoneFacts(certId: string, cp: CertProgress, opts: { now: nu
     myths: m?.myths ?? [],
     paceRounds: counts.paceRounds ?? 0,
     gameFixes: counts.gameFixes ?? 0,
+    // A course with sections: "Section Mastery · Ethics", "All Sections" (none today: "Domain Mastery").
+    ...(cert.domainStyle ? { domainStyle: cert.domainStyle } : {}),
   };
 }
 
