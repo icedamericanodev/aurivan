@@ -1594,6 +1594,7 @@ header {
   display: flex; align-items: center; gap: 7px; color: var(--text2);
 }
 .act-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+a.act-btn { text-decoration: none; }
 .act-btn.primary { background: var(--ink); color: var(--ink-fg); border-color: var(--ink); }
 .act-btn.primary:hover { background: var(--accent-fill); border-color: var(--accent-fill); }
 .act-btn.secondary:hover { border-color: var(--warning); color: var(--warning); }
@@ -5972,12 +5973,12 @@ header.app-header .brand-lockup { height: 28px; }
 .app-cta-ios { font: var(--t-meta); color: var(--text2); margin: 0; }
 .app-cta-ios a { color: var(--accent-text); }
 /* Google's trademark line beside the Play badge (v13.2). */
-.app-cta-legal { flex-basis: 100%; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); margin: 0; }
+.app-cta-legal { flex-basis: 100%; font: var(--t-meta); letter-spacing: normal; color: var(--text2); margin: 0; }
 .app-cta-legal[hidden], .rail-app-legal[hidden] { display: none; }
 .rail-app-legal { margin: var(--sp-xs) 0 0; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
 /* A short rail keeps the title and badge first: the trademark line steps out
    in the tight fits (Today's footer and About still carry it). */
-#appRail[data-app-fit="tight"] .rail-app-legal, #appRail[data-app-fit="min"] .rail-app-legal { display: none; }
+#appRail[data-app-fit="plain"] .rail-app-legal, #appRail[data-app-fit="tight"] .rail-app-legal, #appRail[data-app-fit="min"] .rail-app-legal { display: none; }
 /* QR to the Play listing (desktop only). Dark on white in both themes so phone cameras can read it. */
 .app-cta-qr { display: flex; align-items: center; gap: var(--sp-lg); margin: var(--sp-lg) 0 0; }
 .app-cta-qr[hidden] { display: none; }
@@ -5991,8 +5992,8 @@ body[data-app-cta="android"][data-section="learn"] .app-cta-line { display: bloc
 body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: none; }
 
 /* Desktop rail: "Get KaiSip for Android" (shown from 768px; railAppFit picks
-   data-app-fit: "qr" with room, "base" badge or button only, "tight" pulls the
-   rail's top spacing in, "min" also keeps the title for screen readers only). */
+   data-app-fit: "qr" with room, "base" badge or button only, "plain" the same
+   without the trademark line, "tight" pulls the rail's top spacing in, "min" also keeps the title for screen readers only). */
 .rail-app { display: none; }
 .rail-app-t { margin: 0; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text); }
 .rail-app-qr { display: flex; align-items: center; gap: var(--sp-md); margin: var(--sp-md) 0 0; }
@@ -6011,7 +6012,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .td-app { margin: 0 0 var(--sp-xxl); padding: var(--sp-lg); background: var(--raised2); border-radius: var(--r-lg); }
 .td-app-t { margin: 0; font: var(--t-small); color: var(--text); }
 .td-app-acts { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-sm) var(--sp-lg); margin-top: var(--sp-sm); }
-.td-app-badge { display: inline-block; margin: 2px 0; line-height: 0; border-radius: var(--r-sm); }
+.td-app-badge { display: inline-block; padding: 2px 0; margin: 0; line-height: 0; border-radius: var(--r-sm); }
 .td-app-badge img { display: block; height: 40px; width: auto; }
 .td-app-acts .gt-btn-secondary { min-height: 44px; padding: 0 var(--sp-lg); text-decoration: none; }
 .td-app-hide { margin-right: -4px; }
@@ -6022,7 +6023,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .td-install-steps li { padding-left: 2px; }
 .td-install-steps li + li { margin-top: var(--sp-xs); }
 .td-install-steps strong { font-weight: 600; }
-.td-install-steps .ico { display: inline-block; vertical-align: -3px; margin: 0 4px; color: var(--accent-text); }
+.td-install-steps .ico { display: inline-block; vertical-align: -3px; margin: 0; color: var(--accent-text); }
 .td-install-note { margin: var(--sp-sm) 0 0; font: var(--t-meta); color: var(--text2); max-width: 60ch; }
 /* v12.50: "You've worked through the free questions" (Today, between sessions). */
 .td-fs { margin: var(--sp-2xl) 0 0; padding: var(--sp-lg); background: var(--raised2); border-radius: var(--r-lg); }
@@ -8839,7 +8840,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
 <!-- Address markers for the section links (#today, #notes ...). The router
      reads the address; these empty markers sit at the very top of the page so
      every in-page link has a real target and opening one never scrolls. -->
-<div class="route-marks" aria-hidden="true"><span id="today"></span><span id="learn"></span><span id="notes"></span><span id="glossary"></span><span id="principles"></span><span id="exam-guide"></span><span id="final-week"></span><span id="practice"></span><span id="mock"></span><span id="saved"></span><span id="you"></span><span id="weak-spots"></span><span id="progress"></span><span id="help"></span><span id="about"></span></div>
+<div class="route-marks" aria-hidden="true"><span id="today"></span><span id="learn"></span><span id="notes"></span><span id="glossary"></span><span id="principles"></span><span id="exam-guide"></span><span id="final-week"></span><span id="practice"></span><span id="mock"></span><span id="saved"></span><span id="you"></span><span id="settings"></span><span id="weak-spots"></span><span id="progress"></span><span id="help"></span><span id="about"></span></div>
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="app-rail" id="appRail">
 <header class="app-header">
@@ -9239,7 +9240,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
             <li id="setOthersLi" hidden><button type="button" class="you-row" id="setOthers" aria-haspopup="dialog" onclick="showYourData()" aria-labelledby="setOthersT" aria-describedby="setOthersM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/></svg></span><span class="you-text"><span class="you-t" id="setOthersT">Other saved progress</span><span class="you-m" id="setOthersM">Earlier records in this browser</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
           </ul>
           <!-- The one file input for a restore (Settings and the Your data sheet both use it). -->
-          <input type="file" id="setFile" accept=".json" hidden onchange="importProgress(this.files[0]);this.value=''">
+          <input type="file" id="setFile" accept=".json" hidden aria-label="Backup file to restore" onchange="importProgress(this.files[0]);this.value=''">
         </section>
         <section class="you-card set-card set-danger" aria-labelledby="setResetH">
           <h3 class="you-card-h" id="setResetH">Reset</h3>
@@ -26738,7 +26739,7 @@ function installTipHtml(answered) {
     + '<div class="plnt-invite-t"><h2 class="plnt-invite-h" id="tdInstallH">Add KaiSip to your Home Screen</h2>'
     + '<p class="plnt-invite-m">It opens full screen, like an app. It still needs an internet connection.</p>'
     + '<ol class="td-install-steps">'
-    + '<li>Tap <strong>Share</strong>' + ico('share', 18) + 'in Safari. Don&rsquo;t see it? Tap <strong>More</strong> (&middot;&middot;&middot;) first.</li>'
+    + '<li>Tap <strong>Share</strong> ' + ico('share', 18) + ' in Safari. Don&rsquo;t see it? Tap <strong>More</strong> <span aria-hidden="true">(&middot;&middot;&middot;)</span> first.</li>'
     + '<li>Choose <strong>Add to Home Screen</strong>.</li>'
     + '<li>Tap <strong>Add</strong>.</li></ol>'
     // Safari and the Home Screen app keep separate progress: before any
@@ -26811,6 +26812,13 @@ function freeDoneNextHtml() {
     return '<p class="td-fs-m">The iPhone app is planned, with no date yet.</p>'
       + '<div class="td-app-acts"><a class="gt-btn-secondary" href="' + escapeHtml(WAITLIST_URL) + '">Join the waitlist</a>' + hide + '</div>';
   }
+  // The Android phone card (#tdApp) already shows the badge at the top of
+  // Today: keep the sentence, leave out a second badge (nothing moves).
+  var appCardShown = document.body && document.body.getAttribute('data-app-cta-card') === 'shown';
+  if (appCardShown) {
+    return '<p class="td-fs-m">Meanwhile, the KaiSip app for Android has short lessons and a daily plan.</p>'
+      + '<div class="td-app-acts">' + hide + '</div>';
+  }
   return '<p class="td-fs-m">Meanwhile, the KaiSip app for Android has short lessons and a daily plan.</p>'
     + '<div class="td-app-acts"><a class="td-app-badge" href="' + escapeHtml(PLAY_WEB_URL) + '" target="_blank" rel="noopener"><img src="assets/google-play-badge.png" alt="Get it on Google Play (opens in a new tab)" width="135" height="40" decoding="async"></a>' + hide + '</div>';
 }
@@ -26859,7 +26867,7 @@ document.addEventListener('qb:domain-loaded', function () {
     if (S.activeTab !== 'home' || document.getElementById('tdFs') || document.querySelector('#homeArea .td-name')) return;
     var hero = document.querySelector('#homeArea .td-hero');
     var html = hero ? todayFreeDoneHtml() : '';
-    if (html) hero.insertAdjacentHTML('afterend', html);
+    if (html) { (document.getElementById('tdInstall') || hero).insertAdjacentHTML('afterend', html); appCtaTodayWire(); }
   } catch (e) {}
 });
 
@@ -26874,7 +26882,7 @@ function railAppFit() {
   var wide = !window.matchMedia || window.matchMedia('(min-width: 48em)').matches;
   if (panel.hidden || !wide) { rail.removeAttribute('data-app-fit'); return; }
   if (!rail.clientHeight) return; // hidden (a focused question): fit when it returns
-  var fits = ['qr', 'base', 'tight', 'min'];
+  var fits = ['qr', 'base', 'plain', 'tight', 'min'];
   if (document.getElementById('railAppQr').hidden) fits.shift();
   // Measured with the QR in place even on Today (where Today's own card may
   // hide it), so the fit holds on every page.
