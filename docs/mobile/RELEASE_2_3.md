@@ -180,6 +180,15 @@ in a domain, practice repeats questions without saying the sample has ended.
   the testers' one. Mobile CI now runs the same audit on a public-sample
   export on every run. The testers' JavaScript bundle is about 17 MB (budget
   now 20 MB). Details: `docs/mobile/SAMPLE_QUESTION_PACK.md`.
+- Mock exams and sibling groups (28 Nov 2026, `engine/siblings.ts`,
+  `engine/blueprint.ts`): when a group of look-alike questions has members in
+  more than one section, a full mock now keeps the member from the section
+  that would otherwise fall short of its share, instead of a random one. Only
+  the CIA packs have sibling groups and they are not switched on, so no
+  learner sees a change: CISA, CRISC and AAIA mocks are drawn exactly as
+  before (same questions, same order). To verify in a build: nothing visible;
+  the unit tests `mock-sibling-scarce.test.ts` and `mock-sibling-edges.test.ts`
+  cover it. Short mocks keep their own picker (not changed).
 
 ## Play release notes
 
