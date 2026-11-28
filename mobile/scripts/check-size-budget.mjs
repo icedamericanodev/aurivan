@@ -13,7 +13,14 @@
  *   1. The Android JavaScript bundle (Hermes bytecode, the .hbc file listed in
  *      <export-dir>/metadata.json). Every phone carries it, and every
  *      over-the-air update downloads and stores a full copy of it.
- *      Measured 15 Oct 2026 (mobile 1.23): 9.83 MB. Budget: 14 MB.
+ *      Measured 15 Oct 2026 (mobile 1.23): 9.83 MB. Budget: 14 MB until
+ *      28 Nov 2026, then 20 MB: the testers' build carries the full CRISC and
+ *      AAIA courses beside CISA (owner decision, docs/WEB_LAUNCH_PLAN.md
+ *      stream D). Measured 28 Nov 2026: 17.08 MB with the three full courses
+ *      (about 11.4 MB with CISA alone); the public build, samples only,
+ *      10.77 MB. Each further full course adds about 3 MB, so CC and CSOE in
+ *      full would pass this budget: that is the point to move full courses
+ *      into downloadable packs instead of the bundle.
  *   2. The study content of EACH certification: every file of its generated
  *      pack (src/content/generated/<cert>/: questions, notes, principles,
  *      exam, lessons.json, game decks, pack.json). Since content packs
@@ -40,7 +47,7 @@ import { fileURLToPath } from 'node:url';
 const MOBILE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 export const MB = 1_000_000;
-export const BUNDLE_BUDGET = 14 * MB;
+export const BUNDLE_BUDGET = 20 * MB;
 export const CONTENT_BUDGET_PER_CERT = 6 * MB;
 
 const mb = (bytes) => `${(bytes / MB).toFixed(2)} MB`;

@@ -14,16 +14,19 @@ name: Mobile
 # secrets, runs on every pull request in verify.yml.)
 # Plus two release guards (architecture decision, 15 Oct 2026): store builds
 # listen on the "production" update channel, never "preview"; and size budgets
-# for the Android JavaScript bundle (14 MB) and each certification's content
-# (6 MB).
+# for the Android JavaScript bundle (20 MB) and each certification's content
+# (6 MB). And the public-sample guard (28 Nov 2026, docs/mobile/
+# SAMPLE_QUESTION_PACK.md): a public-sample Android export, audited exactly
+# as the owner's .aab is, must PASS; then the full tree is rebuilt. CRISC and
+# AAIA are bundled from data/crisc/ and data/aaia/, so changes there run this too.
 
 on:
   pull_request:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', 'data/free/**', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', 'data/free/**', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'data/crisc/**', 'data/aaia/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
   push:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', 'data/free/**', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', 'data/free/**', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'data/crisc/**', 'data/aaia/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
 
 # Read-only token: `npm ci` runs third-party install scripts, which must not
 # be able to push to the repo.
@@ -51,6 +54,17 @@ jobs:
         run: npm ci
       - name: Opt-in sample question pack regression tests (restores full pack)
         run: node --test scripts/check-sample-content.mjs
+      - name: Public-sample export audit (only the free samples are bundled; restores full pack)
+        # The public Google Play build's settings (eas.json public-sample). The audit must say PASS.
+        run: |
+          KAISIP_RELEASE=public KAISIP_QUESTION_PACK=sample node scripts/build-content.mjs
+          node scripts/sample-content.mjs
+          KAISIP_RELEASE=public KAISIP_QUESTION_PACK=sample KAISIP_STORE_BUILD=1 EAS_BUILD_PROFILE=public-sample EXPO_OFFLINE=1 \
+            npx expo export --platform android --output-dir "$RUNNER_TEMP/public-android"
+          node scripts/audit-public-aab.mjs "$RUNNER_TEMP/public-android" | tee "$RUNNER_TEMP/public-audit.txt"
+          grep -q '^PASS: only the free sample is bundled.$' "$RUNNER_TEMP/public-audit.txt"
+          rm -rf "$RUNNER_TEMP/public-android"
+          node scripts/build-content.mjs
       - name: Typecheck
         run: npm run typecheck
       - name: Release channels (a store build never listens on preview)
@@ -73,5 +87,5 @@ jobs:
         run: |
           EXPO_OFFLINE=1 npx expo export --platform android --output-dir "$RUNNER_TEMP/off-android"
           bash scripts/check_off_bundle.sh "$RUNNER_TEMP/off-android"
-      - name: Size budgets (bundle under 14 MB, content per certification under 6 MB)
+      - name: Size budgets (bundle under 20 MB, content per certification under 6 MB)
         run: node scripts/check-size-budget.mjs "$RUNNER_TEMP/off-android"

@@ -108,8 +108,11 @@ describe('the real CISA exam pack', () => {
     expect(words).not.toMatch(/\bstem\b/i);
   });
 
-  it('only CISA has a pack today; another cert gets nothing and its rows hide', () => {
-    for (const c of CERTIFICATIONS.filter((x) => x.id !== 'cisa')) {
+  // CRISC and AAIA are bundled (still `coming_soon`) since 28 Nov 2026 (docs/WEB_LAUNCH_PLAN.md stream D).
+  it('CISA, CRISC and AAIA have a pack today; another cert gets nothing and its rows hide', () => {
+    const bundled = ['cisa', 'crisc', 'aaia'];
+    for (const id of bundled) expect([id, hasExamGuide(id), hasFinalWeek(id)]).toEqual([id, true, true]);
+    for (const c of CERTIFICATIONS.filter((x) => !bundled.includes(x.id))) {
       expect([c.id, hasExamGuide(c.id), hasFinalWeek(c.id)]).toEqual([c.id, false, false]);
     }
   });

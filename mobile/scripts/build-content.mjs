@@ -4,7 +4,10 @@
  * app's "content pack".
  *
  * WHAT IT DOES (plain English):
- *   1. Reads ../data/domain{1..5}.json (the same files the web app uses).
+ *   1. Reads ../data/domain{1..5}.json (the same files the web app uses), and
+ *      the CRISC and AAIA originals (../data/<cert>/originals/d<N>.json).
+ *      KAISIP_QUESTION_PACK=sample keeps only each course's free sample
+ *      (data/free/<cert>_sample_ids.json; sample-content.mjs), for the public build.
  *   2. Renames fields into the mobile app's cleaner, cert-neutral shape
  *      (an explicit list: a new source field is dropped until added here,
  *      e.g. principle_id → principleId).
@@ -128,6 +131,35 @@ const PACKS = [
     // `heldBack` line and no `heldBack` field on any question. A course adds its file here (the CIA
     // packs: data/cia/<pack>/exam/held_back.json); a file that does not exist yet means no form.
   },
+  // CRISC and AAIA (docs/WEB_LAUNCH_PLAN.md stream D, owner decision 28 Nov 2026): the full course
+  // in every build except the public one, which carries only each course's free sample
+  // (data/free/<cert>_sample_ids.json). Both stay `coming_soon` in src/content/certifications.ts, so
+  // no learner can pick them until a release switches them on. They have no generated domain
+  // files: the questions come straight from their originals, as in scripts/crisc_pack_dry_run.cjs
+  // and scripts/aaia_pack_dry_run.cjs. Their notes are one file per domain, read as one notes file
+  // (`notes: { parts, course }`). No lessons, games or website Mindset tips yet, so those stay empty.
+  {
+    certId: 'crisc',
+    domains: ['1', '2', '3', '4'],
+    source: (d) => path.join(REPO_ROOT, 'data', 'crisc', 'originals', `d${d}.json`),
+    notes: {
+      parts: ['1', '2', '3', '4'].map((d) => path.join(REPO_ROOT, 'data', 'crisc', 'notes', `d${d}.json`)),
+      // Course-wide strategy tips and cross-domain connections.
+      course: path.join(REPO_ROOT, 'data', 'crisc', 'notes', '_course.json'),
+    },
+    principles: path.join(REPO_ROOT, 'data', 'crisc', 'mindset', 'principles.json'),
+    examGuide: path.join(REPO_ROOT, 'data', 'crisc', 'exam', 'crisc_exam_guide.json'),
+    finalWeek: path.join(REPO_ROOT, 'data', 'crisc', 'exam', 'final_review_week.json'),
+  },
+  {
+    certId: 'aaia',
+    domains: ['1', '2', '3'],
+    source: (d) => path.join(REPO_ROOT, 'data', 'aaia', 'originals', `d${d}.json`),
+    notes: { parts: ['1', '2', '3'].map((d) => path.join(REPO_ROOT, 'data', 'aaia', 'notes', `d${d}.json`)) },
+    principles: path.join(REPO_ROOT, 'data', 'aaia', 'principles.json'),
+    examGuide: path.join(REPO_ROOT, 'data', 'aaia', 'exam_guide.json'),
+    finalWeek: path.join(REPO_ROOT, 'data', 'aaia', 'final_review_week.json'),
+  },
 ];
 
 /**
@@ -226,6 +258,8 @@ const VERBISH_AFTER_A = new Set([
   'answers', 'targets', 'substitutes', 'delegates', 'accepts', 'rejects',
   'recommends', 'requires', 'moves', 'puts', 'places', 'gives', 'takes',
   'makes', 'has', 'and', 'or', 'are', 'were', 'invites', 'tempts', 'never',
+  // "B and A both measure…": the article never comes before "both" (AAIA tips, 28 Nov 2026).
+  'both',
 ]);
 
 /**
@@ -245,6 +279,8 @@ export function tokenizeLetters(text, selfLetter) {
 
     // Second half of an abbreviation: "C&A", "M&A", "D&O".
     if (/&$/.test(before)) return false;
+    // A temperature: "40°C" is degrees Celsius, never option C.
+    if (/°$/.test(before)) return false;
     // Lists like "Class A/B/C": follow whatever the letter before the slash was.
     const slash = before.match(/\b([A-D])\/$/);
     if (slash) return isOptionRef(slash[1], offset - 2);
@@ -377,16 +413,30 @@ function validate(q) {
  * `questions` = this cert's questions (to check the "Practice this concept" ids).
  * Returns the index.ts line for this cert's notes loader, and the pack.
  */
-function buildNotes(pack, certDir, questions) {
-  let raw = null;
-  if (pack.notes && fs.existsSync(pack.notes)) {
-    try {
-      raw = JSON.parse(fs.readFileSync(pack.notes, 'utf8'));
-    } catch (e) {
-      console.error(`✗ ${pack.notes} is not valid JSON: ${e.message}`);
+/**
+ * The notes source as one schema v2 notes file. `notes` is either one file
+ * (CISA) or `{ parts, course }`: one file per domain plus an optional
+ * course-wide file (CRISC, AAIA), joined exactly as the pack dry runs do.
+ * A missing single file gives null (an empty notes pack). A missing domain
+ * file of a course that lists them FAILS the build: a course with one
+ * domain's notes gone must not ship quietly without them.
+ */
+function readNotesSource(notes) {
+  if (!notes) return null;
+  if (typeof notes === 'string') return readOptional(notes);
+  for (const file of notes.parts) {
+    if (!fs.existsSync(file)) {
+      console.error(`✗ missing notes file: ${file}`);
       process.exitCode = 1;
     }
   }
+  const domains = notes.parts.map(readOptional).filter(Boolean);
+  if (!domains.length) return null;
+  return { ...(readOptional(notes.course) || {}), schema_version: 2, domains };
+}
+
+function buildNotes(pack, certDir, questions) {
+  const raw = readNotesSource(pack.notes);
   const { pack: notes, problems, warnings, skipped } = buildNotesPack(raw, pack.certId, { questions });
   for (const w of warnings) console.warn(`! notes ${w}`);
   for (const p of problems) console.error(`✗ notes ${p}`);
@@ -607,9 +657,16 @@ function main() {
   // Generated files only. Never leave an old full pack or an extra cert behind.
   fs.rmSync(FINAL_ROOT, { recursive: true, force: true });
   const mode = questionPackMode(process.env);
-  const selection = mode === 'sample' ? sampleSelection(REPO_ROOT) : null;
-  if (selection && (PACKS.length !== 1 || PACKS[0].certId !== 'cisa')) {
-    throw new Error('Sample mode needs an explicit reviewed manifest for every certification');
+  const selection = mode === 'sample' ? sampleSelection(REPO_ROOT, PACKS.map((p) => p.certId)) : null;
+  // Every course in the build needs its own reviewed sample list, with the same domains, or the
+  // sample build stops (a new course can never ship in full by accident).
+  if (selection) {
+    for (const pack of PACKS) {
+      const course = Object.prototype.hasOwnProperty.call(selection.courses, pack.certId) ? selection.courses[pack.certId] : null;
+      if (!course || JSON.stringify(Object.keys(course.domains)) !== JSON.stringify(pack.domains)) {
+        throw new Error(`Sample mode needs an explicit reviewed manifest for every certification (${pack.certId})`);
+      }
+    }
   }
   OUT_ROOT = fs.mkdtempSync(path.join(path.dirname(FINAL_ROOT), '.generated-'));
   const notesLines = [];
@@ -717,7 +774,7 @@ function main() {
   if (selection && !errors && !process.exitCode) {
     filterSamplePack(OUT_ROOT, selection);
     checkSamplePack(OUT_ROOT, selection);
-    console.log(`✓ sample question pack verified: ${selection.ids.size} questions (not a release authorization gate)`);
+    console.log(`✓ sample question pack verified: ${Object.entries(selection.courses).map(([id, c]) => `${id} ${c.ids.size}`).join(', ')} questions (not a release authorization gate)`);
   }
   if (errors) {
     console.error(`✗ content pack built with ${errors} invalid question(s)`);

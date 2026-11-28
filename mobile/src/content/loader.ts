@@ -24,7 +24,7 @@
 import { getCertification } from './certifications';
 import { isHeldBackHidden, type TakenForms } from '../engine/heldBack';
 import { isFirstTryCourse } from '../engine/firstTry';
-import { onClearContentCaches, packInstalled, sourceFor } from './packs';
+import { BundledSource, onClearContentCaches, packInstalled, sourceFor } from './packs';
 import type { PackQuestion } from './types';
 
 /** Which held-back forms the learner has taken, per course (store/progress.ts sets it). None known: every form untaken. */
@@ -133,9 +133,28 @@ export function siblingGroupOf(certId: string): (id: string) => string | undefin
   return (id) => findQuestion(certId, id)?.siblingGroup;
 }
 
-/** True when this certification has questions inside the app. */
+/**
+ * True when this certification has questions inside the app.
+ *
+ * A course that is not switched on yet (`coming_soon` in certifications.ts)
+ * and whose only content is the one built into the app counts as NOT here
+ * (28 Nov 2026, docs/WEB_LAUNCH_PLAN.md stream D). CRISC and AAIA are
+ * bundled now (the free sample in the public build, the full course in the
+ * testers' build), but until a release flips their status they must behave
+ * exactly as before they were bundled: a restored or synced choice of one
+ * keeps studying CISA (lib/activeCert.ts), and a backup keeps its progress
+ * untouched. A pack from another source (content packs) still counts.
+ *
+ * Downloaded packs: a `coming_soon` course that arrives as a downloaded pack
+ * (content packs Phase C, not built yet) counts as here and is studied even
+ * though it is not offered in the picker. That is the existing content-pack
+ * rule (tested in content-packs-review and pack-registry); when downloads are
+ * built, decide whether a download for a parked course should be refused, and
+ * gate it in the download path, not here.
+ */
 export function hasContent(certId: string): boolean {
-  return packInstalled(certId);
+  if (!packInstalled(certId)) return false;
+  return getCertification(certId)?.status !== 'coming_soon' || sourceFor(certId) !== BundledSource;
 }
 
 onClearContentCaches(() => {

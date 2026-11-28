@@ -169,6 +169,18 @@ were available to Claude.
 Known, not changed (product call): when a learner finishes every free question
 in a domain, practice repeats questions without saying the sample has ended.
 
+## Merged after 2.3 (for the next bundle)
+
+- CRISC and AAIA are in the phone's content build (28 Nov 2026,
+  `docs/WEB_LAUNCH_PLAN.md` stream D): the full courses in the testers'
+  `production` bundle, only their free samples in `public-sample`. Both stay
+  `coming_soon`, so learners see no change. From the next bundle the audit
+  prints one block per course (CISA, CRISC, AAIA) and checks CC, CSOE and CIA
+  as the courses not bundled yet; expect PASS on the public bundle and FAIL on
+  the testers' one. Mobile CI now runs the same audit on a public-sample
+  export on every run. The testers' JavaScript bundle is about 17 MB (budget
+  now 20 MB). Details: `docs/mobile/SAMPLE_QUESTION_PACK.md`.
+
 ## Play release notes
 
 Production (code 5):

@@ -230,9 +230,12 @@ else
 fi
 
 # 5z. Free sample (web v12.50) -----------------------------------------------
-# kaisip.com publishes only the free sample in data/free/. It must match the
-# bank, cover every notes topic, and never lose an id (the list only grows).
-printf "\nFree sample (data/free, published on the website):\n"
+# kaisip.com publishes only the CISA free sample in data/free/; the public
+# phone build bundles only the CISA, CRISC and AAIA samples (web launch plan,
+# stream D). Each course's sample must match its bank, follow its own plan's
+# rules (CISA and AAIA: every notes subtopic; CRISC: every outline area, and
+# the free mini mock per domain), and never lose an id (each list only grows).
+printf "\nFree samples (data/free: CISA on the website; CISA, CRISC and AAIA in the public phone build):\n"
 if ! python3 scripts/build_free_sample.py --check; then
   status=1
 fi

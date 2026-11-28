@@ -22,6 +22,13 @@
  * REBUILD IT ON EVERY CONTENT RELEASE (security review P8, N9): a new or
  * edited question isn't guarded until board-submit is redeployed with a
  * fresh file. The Phase 9 release checklist (ARCHITECTURE §10) has the step.
+ *
+ * BUILD IT FROM THE FULL TREE (28 Nov 2026): a plain `npm run content`, never
+ * after a public-sample build (KAISIP_QUESTION_PACK=sample). A sample tree
+ * holds only the free questions of CISA, CRISC and AAIA, so the fingerprint
+ * would leave every paid question unguarded on the board. This script stops
+ * when any course with a free sample (mobile/scripts/sample-content.mjs) is
+ * missing from the generated packs or has fewer questions than its bank.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -44,6 +51,16 @@ for (const cert of certs.sort()) {
 if (questions.length === 0) {
   console.error('build-leakprint: no question pack found. Run `npm run content` in mobile/ first.');
   process.exit(1);
+}
+// The full tree only: every course with a free sample must be there with its whole bank.
+const { SAMPLE_COURSES } = await import(pathToFileURL(path.join(ROOT, 'mobile', 'scripts', 'sample-content.mjs')).href);
+for (const [cert, course] of Object.entries(SAMPLE_COURSES)) {
+  const bank = course.domains.reduce((n, d) => n + JSON.parse(fs.readFileSync(path.join(ROOT, course.source(d)), 'utf8')).questions.length, 0);
+  const built = questions.filter((q) => q.certId === cert).length;
+  if (built < bank) {
+    console.error(`build-leakprint: the ${cert} pack is not the full bank (a sample build?). Run a plain \`npm run content\` in mobile/ first.`);
+    process.exit(1);
+  }
 }
 // The server's fingerprint: with the squashed-letters check (fix round P8, SEC S5).
 fs.writeFileSync(OUT, `${JSON.stringify(encodeLeakprint(buildFingerprint(questions.map(leakItem), { squash: true })))}\n`);
