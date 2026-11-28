@@ -14,7 +14,8 @@
  *   was removed in 1.17.1: the plan is kept internal, outside this repo.)
  * Under the rows: the support address as its OWN selectable line (so iOS
  * copies just the address, UX P6), and the not-affiliated line (Apple 1.5:
- * an easy way to contact us; compliance T1 wording).
+ * an easy way to contact us; compliance T1 wording), naming the active
+ * course's issuer (ISACA for CISA).
  *
  * A problem in ONE question or note is best reported from the link under
  * it (it carries the code); the row here reports the app itself.
@@ -22,7 +23,7 @@
  */
 import { router } from 'expo-router';
 import { View } from 'react-native';
-import { getCertification } from '../content/certifications';
+import { getCertification, notAffiliatedLine } from '../content/certifications';
 import { hasExamGuide } from '../content/exam';
 import { shortVersion, WHATS_NEW } from '../content/support';
 import { config } from '../lib/config';
@@ -49,7 +50,8 @@ export const TESTER_SWITCH_HINT = 'A short question on Today on some days during
 
 /** The footer, in two pieces: the address is selectable on its own. */
 export const HELP_FOOTER_LEAD = 'Write to us any time at';
-export const NOT_AFFILIATED = 'KaiSip is independent and not affiliated with or endorsed by ISACA.';
+/** CISA's (ISACA's) footer line. The screen shows the active course's own (notAffiliatedLine). */
+export const NOT_AFFILIATED = notAffiliatedLine();
 
 /** "Something you reported was updated", by how many different things (useReports dueItems). */
 export function creditSubtitle(items: number): string {
@@ -116,7 +118,8 @@ export function HelpRows({ certId }: { certId: string }) {
 
       <T v="small" color={c.ink2} style={{ marginTop: space.lg }}>{HELP_FOOTER_LEAD}</T>
       <T v="label" selectable color={c.accentText}>{config.feedbackEmail}</T>
-      <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{NOT_AFFILIATED}</T>
+      {/* The active course's issuer: "ISACA" for CISA (unchanged), the course's own issuer otherwise. */}
+      <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{notAffiliatedLine(getCertification(certId)?.issuer)}</T>
       {support.sheet}
     </View>
   );

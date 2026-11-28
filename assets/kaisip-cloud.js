@@ -69,18 +69,20 @@ function errorCode(e) {
   defs["src/content/certifications.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DEFAULT_NOTES_ROLE = exports.DEFAULT_CERT_ID = exports.CERTIFICATIONS = exports.ISC2 = exports.ISACA = void 0;
+exports.DEFAULT_NOTES_ROLE = exports.DEFAULT_CERT_ID = exports.CERTIFICATIONS = exports.IIA = exports.ISC2 = exports.ISACA = void 0;
 exports.selectableCertifications = selectableCertifications;
 exports.getCertification = getCertification;
 exports.getDomain = getDomain;
 exports.notesHeadings = notesHeadings;
 exports.domainLabel = domainLabel;
 exports.domainColor = domainColor;
+exports.notAffiliatedLine = notAffiliatedLine;
 exports.combinedTrademarkNotice = combinedTrademarkNotice;
 const domainNaming_1 = require("../engine/domainNaming");
 const tokens_1 = require("../theme/tokens");
-exports.ISACA = { id: 'isaca', name: 'ISACA' };
-exports.ISC2 = { id: 'isc2', name: 'ISC2' };
+exports.ISACA = { id: 'isaca', name: 'ISACA', site: 'isaca.org' };
+exports.ISC2 = { id: 'isc2', name: 'ISC2', site: 'isc2.org' };
+exports.IIA = { id: 'iia', name: 'The IIA', site: 'theiia.org' };
 const ISACA_TM = (name, registered = true) => registered
     ? `Not affiliated with or endorsed by ISACA®. ${name}® is a registered trademark of ISACA.`
     : `Not affiliated with or endorsed by ISACA®. ${name} is a trademark of ISACA.`;
@@ -234,6 +236,10 @@ const ISSUER_MARK = { isaca: 'ISACA®', isc2: 'ISC2®' };
 const ISSUER_OWNER = { isaca: 'ISACA', isc2: 'ISC2, Inc.' };
 const issuerMark = (i) => { var _a; return (_a = ISSUER_MARK[i.id]) !== null && _a !== void 0 ? _a : i.name; };
 const issuerOwner = (i) => { var _a; return (_a = ISSUER_OWNER[i.id]) !== null && _a !== void 0 ? _a : i.name; };
+function notAffiliatedLine(issuer) {
+    const who = !issuer || issuer.id === exports.ISACA.id ? exports.ISACA.name : issuerMark(issuer);
+    return `KaiSip is independent and not affiliated with or endorsed by ${who}.`;
+}
 const sentence = (s) => (s.endsWith('.') ? s : `${s}.`);
 function joinList(items, word = 'and') {
     if (items.length <= 1)
@@ -3028,6 +3034,8 @@ function stageProgress(stage) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PLANTER_NEEDS = exports.GAME_MISSES_CAP = exports.SKILL_BADGES = exports.MILESTONES = exports.BADGES = exports.WINDOW_SIZE = exports.DRESS_GAP_DAYS = exports.DRESS_TIERS = exports.LONG_IDS_CAP = exports.LONG_LADDER = exports.LONG_TIERS = exports.FIRM_DEEP_ANSWERS = exports.FIRM_DEEP = exports.GAME_FIXES = exports.PACE_ROUNDS = exports.MYTH_RIGHT = exports.MYTH_WINDOW = exports.SIGNPOST_RIGHT = exports.SIGNPOST_WINDOW = exports.KEEL_ROUNDS = exports.SNARE_RIGHT = exports.SNARE_WINDOW = exports.FRESH_GAP_DAYS = exports.ROOTED_DAYS = exports.SURE_RIGHT = exports.SURE_MIN = exports.SURE_WINDOW = exports.GRADUATES = exports.LONG_GAP_DAYS = exports.LONG_RECALLS = exports.SLIP_TAGS = exports.LOOP_FIXES = exports.WHOLE_MAP_FLOOR = exports.FIRM_ANSWERS = exports.FIRM_MASTERY = exports.TEN_TOPICS = void 0;
 exports.badgeDef = badgeDef;
+exports.badgeName = badgeName;
+exports.badgeRule = badgeRule;
 exports.markBadge = markBadge;
 exports.sureShare = sureShare;
 exports.isDressRehearsal = isDressRehearsal;
@@ -3155,6 +3163,32 @@ exports.SKILL_BADGES = exports.BADGES.filter((b) => b.kind === 'skill');
 function badgeDef(id) {
     return exports.BADGES.find((b) => b.id === id);
 }
+function badgeName(id, course) {
+    const def = badgeDef(id);
+    if (!def)
+        return id;
+    if (!(course === null || course === void 0 ? void 0 : course.domainStyle))
+        return def.name;
+    if (id === 'firm-footing')
+        return `${(0, domainNaming_1.domainWord)(course, 'Domain')} Mastery`;
+    if (id === 'whole-map')
+        return `All ${(0, domainNaming_1.domainWord)(course, 'Domains')}`;
+    return def.name;
+}
+function badgeRule(id, course) {
+    const def = badgeDef(id);
+    if (!def)
+        return '';
+    if (!(course === null || course === void 0 ? void 0 : course.domainStyle))
+        return def.rule;
+    const one = (0, domainNaming_1.domainWord)(course, 'domain');
+    if (id === 'firm-footing') {
+        return `Reach ${Math.round(exports.FIRM_MASTERY * 100)}% mastery in a ${one}, with ${exports.FIRM_ANSWERS} or more of its questions answered. One badge per ${one}.`;
+    }
+    if (id === 'whole-map')
+        return `Reach ${Math.round(exports.WHOLE_MAP_FLOOR * 100)}% mastery in every ${one}.`;
+    return def.rule;
+}
 function markBadge(key) {
     return key.split(':')[0];
 }
@@ -3211,13 +3245,14 @@ function allMarks(f) {
             met,
             progress: met ? 1 : Math.min(frac(d.answered, exports.FIRM_ANSWERS), frac(d.mastery, exports.FIRM_MASTERY)),
             detail: `${pct(d.mastery)} mastery · ${of(d.answered, exports.FIRM_ANSWERS, 'answered')}`,
+            ...(f.domainStyle ? { rule: badgeRule('firm-footing', f) } : {}),
         });
     }
     const atFloor = f.domains.filter((d) => d.mastery >= exports.WHOLE_MAP_FLOOR - 1e-9).length;
     const wholeMap = f.domains.length > 0 && atFloor === f.domains.length;
     const mapProgress = f.domains.length ? f.domains.reduce((s, d) => s + frac(d.mastery, exports.WHOLE_MAP_FLOOR), 0) / f.domains.length : 0;
     const mapMarks = one('whole-map', wholeMap, mapProgress, `${atFloor} of ${f.domains.length} ${(0, domainNaming_1.domainWord)(f, 'domains')} at ${pct(exports.WHOLE_MAP_FLOOR)}`);
-    out.push(...(f.domainStyle ? mapMarks.map((m) => ({ ...m, label: `All ${(0, domainNaming_1.domainWord)(f, 'Domains')}` })) : mapMarks));
+    out.push(...(f.domainStyle ? mapMarks.map((m) => ({ ...m, label: badgeName('whole-map', f), rule: badgeRule('whole-map', f) })) : mapMarks));
     const mapOpen = f.wholeMapAt !== undefined || wholeMap;
     for (const d of f.domains) {
         const met = mapOpen && d.answered >= exports.FIRM_DEEP_ANSWERS && d.mastery >= exports.FIRM_DEEP - 1e-9;
@@ -3296,13 +3331,13 @@ function newlyMet(marks, earned) {
 function badgeCount(keys) {
     return new Set(keys.map(markBadge)).size;
 }
-function badgeViews(marks, earned, kind) {
+function badgeViews(marks, earned, kind, course) {
     return exports.BADGES.filter((b) => b.kind === kind).map((def) => {
         const mine = marks.filter((m) => m.badge === def.id);
         const got = mine.filter((m) => earned === null || earned === void 0 ? void 0 : earned[m.key]).map((m) => ({ key: m.key, label: m.label, at: earned[m.key] }));
         for (const [k, at] of Object.entries(earned !== null && earned !== void 0 ? earned : {})) {
             if (markBadge(k) === def.id && !got.some((x) => x.key === k))
-                got.push({ key: k, label: def.name, at });
+                got.push({ key: k, label: badgeName(def.id, course), at });
         }
         got.sort((a, b) => a.at - b.at);
         const open = mine.filter((m) => !(earned === null || earned === void 0 ? void 0 : earned[m.key]));
@@ -3318,9 +3353,9 @@ function nearest(views, n = 3) {
         .slice(0, n)
         .map((x) => x.v);
 }
-function markLabel(key, marks) {
-    var _a, _b, _c, _d;
-    return (_d = (_b = (_a = marks.find((m) => m.key === key)) === null || _a === void 0 ? void 0 : _a.label) !== null && _b !== void 0 ? _b : (_c = badgeDef(markBadge(key))) === null || _c === void 0 ? void 0 : _c.name) !== null && _d !== void 0 ? _d : key;
+function markLabel(key, marks, course) {
+    var _a, _b;
+    return (_b = (_a = marks.find((m) => m.key === key)) === null || _a === void 0 ? void 0 : _a.label) !== null && _b !== void 0 ? _b : (badgeDef(markBadge(key)) ? badgeName(markBadge(key), course) : key);
 }
 const bump = (m, id, by = 1) => { var _a, _b; return ({ ...m, counts: { ...m.counts, [id]: ((_b = (_a = m.counts) === null || _a === void 0 ? void 0 : _a[id]) !== null && _b !== void 0 ? _b : 0) + by } }); };
 exports.GAME_MISSES_CAP = 2000;
@@ -10538,7 +10573,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "a93215c2de78e3e5";
+  api.sourceHash = "be7110c3d4f719dd";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

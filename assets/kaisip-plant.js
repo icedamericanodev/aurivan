@@ -7711,6 +7711,8 @@ function recordMastery(map, subtopic, day, answer, at) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PLANTER_NEEDS = exports.GAME_MISSES_CAP = exports.SKILL_BADGES = exports.MILESTONES = exports.BADGES = exports.WINDOW_SIZE = exports.DRESS_GAP_DAYS = exports.DRESS_TIERS = exports.LONG_IDS_CAP = exports.LONG_LADDER = exports.LONG_TIERS = exports.FIRM_DEEP_ANSWERS = exports.FIRM_DEEP = exports.GAME_FIXES = exports.PACE_ROUNDS = exports.MYTH_RIGHT = exports.MYTH_WINDOW = exports.SIGNPOST_RIGHT = exports.SIGNPOST_WINDOW = exports.KEEL_ROUNDS = exports.SNARE_RIGHT = exports.SNARE_WINDOW = exports.FRESH_GAP_DAYS = exports.ROOTED_DAYS = exports.SURE_RIGHT = exports.SURE_MIN = exports.SURE_WINDOW = exports.GRADUATES = exports.LONG_GAP_DAYS = exports.LONG_RECALLS = exports.SLIP_TAGS = exports.LOOP_FIXES = exports.WHOLE_MAP_FLOOR = exports.FIRM_ANSWERS = exports.FIRM_MASTERY = exports.TEN_TOPICS = void 0;
 exports.badgeDef = badgeDef;
+exports.badgeName = badgeName;
+exports.badgeRule = badgeRule;
 exports.markBadge = markBadge;
 exports.sureShare = sureShare;
 exports.isDressRehearsal = isDressRehearsal;
@@ -7838,6 +7840,32 @@ exports.SKILL_BADGES = exports.BADGES.filter((b) => b.kind === 'skill');
 function badgeDef(id) {
     return exports.BADGES.find((b) => b.id === id);
 }
+function badgeName(id, course) {
+    const def = badgeDef(id);
+    if (!def)
+        return id;
+    if (!(course === null || course === void 0 ? void 0 : course.domainStyle))
+        return def.name;
+    if (id === 'firm-footing')
+        return `${(0, domainNaming_1.domainWord)(course, 'Domain')} Mastery`;
+    if (id === 'whole-map')
+        return `All ${(0, domainNaming_1.domainWord)(course, 'Domains')}`;
+    return def.name;
+}
+function badgeRule(id, course) {
+    const def = badgeDef(id);
+    if (!def)
+        return '';
+    if (!(course === null || course === void 0 ? void 0 : course.domainStyle))
+        return def.rule;
+    const one = (0, domainNaming_1.domainWord)(course, 'domain');
+    if (id === 'firm-footing') {
+        return `Reach ${Math.round(exports.FIRM_MASTERY * 100)}% mastery in a ${one}, with ${exports.FIRM_ANSWERS} or more of its questions answered. One badge per ${one}.`;
+    }
+    if (id === 'whole-map')
+        return `Reach ${Math.round(exports.WHOLE_MAP_FLOOR * 100)}% mastery in every ${one}.`;
+    return def.rule;
+}
 function markBadge(key) {
     return key.split(':')[0];
 }
@@ -7894,13 +7922,14 @@ function allMarks(f) {
             met,
             progress: met ? 1 : Math.min(frac(d.answered, exports.FIRM_ANSWERS), frac(d.mastery, exports.FIRM_MASTERY)),
             detail: `${pct(d.mastery)} mastery · ${of(d.answered, exports.FIRM_ANSWERS, 'answered')}`,
+            ...(f.domainStyle ? { rule: badgeRule('firm-footing', f) } : {}),
         });
     }
     const atFloor = f.domains.filter((d) => d.mastery >= exports.WHOLE_MAP_FLOOR - 1e-9).length;
     const wholeMap = f.domains.length > 0 && atFloor === f.domains.length;
     const mapProgress = f.domains.length ? f.domains.reduce((s, d) => s + frac(d.mastery, exports.WHOLE_MAP_FLOOR), 0) / f.domains.length : 0;
     const mapMarks = one('whole-map', wholeMap, mapProgress, `${atFloor} of ${f.domains.length} ${(0, domainNaming_1.domainWord)(f, 'domains')} at ${pct(exports.WHOLE_MAP_FLOOR)}`);
-    out.push(...(f.domainStyle ? mapMarks.map((m) => ({ ...m, label: `All ${(0, domainNaming_1.domainWord)(f, 'Domains')}` })) : mapMarks));
+    out.push(...(f.domainStyle ? mapMarks.map((m) => ({ ...m, label: badgeName('whole-map', f), rule: badgeRule('whole-map', f) })) : mapMarks));
     const mapOpen = f.wholeMapAt !== undefined || wholeMap;
     for (const d of f.domains) {
         const met = mapOpen && d.answered >= exports.FIRM_DEEP_ANSWERS && d.mastery >= exports.FIRM_DEEP - 1e-9;
@@ -7979,13 +8008,13 @@ function newlyMet(marks, earned) {
 function badgeCount(keys) {
     return new Set(keys.map(markBadge)).size;
 }
-function badgeViews(marks, earned, kind) {
+function badgeViews(marks, earned, kind, course) {
     return exports.BADGES.filter((b) => b.kind === kind).map((def) => {
         const mine = marks.filter((m) => m.badge === def.id);
         const got = mine.filter((m) => earned === null || earned === void 0 ? void 0 : earned[m.key]).map((m) => ({ key: m.key, label: m.label, at: earned[m.key] }));
         for (const [k, at] of Object.entries(earned !== null && earned !== void 0 ? earned : {})) {
             if (markBadge(k) === def.id && !got.some((x) => x.key === k))
-                got.push({ key: k, label: def.name, at });
+                got.push({ key: k, label: badgeName(def.id, course), at });
         }
         got.sort((a, b) => a.at - b.at);
         const open = mine.filter((m) => !(earned === null || earned === void 0 ? void 0 : earned[m.key]));
@@ -8001,9 +8030,9 @@ function nearest(views, n = 3) {
         .slice(0, n)
         .map((x) => x.v);
 }
-function markLabel(key, marks) {
-    var _a, _b, _c, _d;
-    return (_d = (_b = (_a = marks.find((m) => m.key === key)) === null || _a === void 0 ? void 0 : _a.label) !== null && _b !== void 0 ? _b : (_c = badgeDef(markBadge(key))) === null || _c === void 0 ? void 0 : _c.name) !== null && _d !== void 0 ? _d : key;
+function markLabel(key, marks, course) {
+    var _a, _b;
+    return (_b = (_a = marks.find((m) => m.key === key)) === null || _a === void 0 ? void 0 : _a.label) !== null && _b !== void 0 ? _b : (badgeDef(markBadge(key)) ? badgeName(markBadge(key), course) : key);
 }
 const bump = (m, id, by = 1) => { var _a, _b; return ({ ...m, counts: { ...m.counts, [id]: ((_b = (_a = m.counts) === null || _a === void 0 ? void 0 : _a[id]) !== null && _b !== void 0 ? _b : 0) + by } }); };
 exports.GAME_MISSES_CAP = 2000;
@@ -10498,7 +10527,7 @@ function stepLabel(stage) {
   defs["src/engine/readySigns.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ISACA_LINE = exports.DEFAULT_ISSUER_SITE = exports.STUDY_BAR_NOTE = exports.SIGNS_HEADING_DATED = exports.SIGNS_HEADING = exports.SIGN_NOT_YET = exports.SIGN_MET = exports.SIGN_TITLE = exports.MOCKS_NEEDED = void 0;
+exports.ISACA_LINE = exports.NO_SITE_BOOKING_LINE = exports.DEFAULT_ISSUER_SITE = exports.STUDY_BAR_NOTE = exports.SIGNS_HEADING_DATED = exports.SIGNS_HEADING = exports.SIGN_NOT_YET = exports.SIGN_MET = exports.SIGN_TITLE = exports.MOCKS_NEEDED = void 0;
 exports.domainsSignTitle = domainsSignTitle;
 exports.bookingLine = bookingLine;
 exports.allMetLine = allMetLine;
@@ -10524,8 +10553,15 @@ exports.SIGNS_HEADING = 'Ready to book?';
 exports.SIGNS_HEADING_DATED = 'Signs for your exam date';
 exports.STUDY_BAR_NOTE = 'This app’s own study bar, not a prediction of your result.';
 exports.DEFAULT_ISSUER_SITE = 'isaca.org';
-function bookingLine(site) {
-    return `Check ${(site === null || site === void 0 ? void 0 : site.trim()) || exports.DEFAULT_ISSUER_SITE} before you book.`;
+exports.NO_SITE_BOOKING_LINE = 'Check the exam body’s website before you book.';
+function bookingLine(issuer) {
+    var _a;
+    if (issuer === undefined || typeof issuer === 'string')
+        return `Check ${(issuer === null || issuer === void 0 ? void 0 : issuer.trim()) || exports.DEFAULT_ISSUER_SITE} before you book.`;
+    const site = (_a = issuer.site) === null || _a === void 0 ? void 0 : _a.trim();
+    if (site)
+        return `Check ${site} before you book.`;
+    return issuer.id === 'isaca' ? `Check ${exports.DEFAULT_ISSUER_SITE} before you book.` : exports.NO_SITE_BOOKING_LINE;
 }
 exports.ISACA_LINE = bookingLine();
 const COUNT_WORD = { 2: 'Both signs are', 3: 'All three signs are' };
@@ -10540,7 +10576,7 @@ function mocksMet(mocks, examQuestions) {
     return mocks.length >= exports.MOCKS_NEEDED && mocks.some((m) => m.total === examQuestions && (0, pace_1.timingOf)(m.timing) !== 'untimed');
 }
 function readySigns(input) {
-    var _a;
+    var _a, _b;
     const signs = [
         { id: 'low', title: exports.SIGN_TITLE.low, met: (0, examReady_1.readyHoldDays)([...((_a = input.readinessLog) !== null && _a !== void 0 ? _a : [])], input.today) >= examReady_1.READY_DAYS },
         { id: 'domains', title: domainsSignTitle(input), met: domainsMet(input.domains) },
@@ -10548,7 +10584,7 @@ function readySigns(input) {
     if (input.mockSign !== false)
         signs.push({ id: 'mocks', title: exports.SIGN_TITLE.mocks, met: mocksMet(input.mocks, input.examQuestions) });
     const allMet = signs.every((s) => s.met);
-    return { signs, allMet, line: allMet ? allMetLine(signs.length) : exports.STUDY_BAR_NOTE, isacaLine: allMet ? bookingLine(input.issuerSite) : null };
+    return { signs, allMet, line: allMet ? allMetLine(signs.length) : exports.STUDY_BAR_NOTE, isacaLine: allMet ? bookingLine((_b = input.issuer) !== null && _b !== void 0 ? _b : input.issuerSite) : null };
 }
   };
   links["src/engine/siblings.ts"] = {"./random":"src/engine/random.ts"};
@@ -11595,6 +11631,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "ae52e9a4086c2c06";
+  api.sourceHash = "eb01880a8abbd9c5";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

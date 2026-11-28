@@ -87,6 +87,44 @@ export function welcomeHeadline(cert?: { welcomeHeadline?: string }): string {
  */
 // Polish round 1 (DECISIONS 8, "No book labels on screen"): no "field guide" in what a learner reads.
 export const WELCOME_LINE = 'Your CISA® exam study, one day at a time.';
+
+/** What the welcome reads from a course: its name, its trademark and whether the mark is registered. */
+export interface WelcomeCourse {
+  name: string;
+  /** The family mark when it is not the whole name ("CIA" for "CIA Part 1"). Missing → `name`. */
+  mark?: string;
+  /** false: an unconfirmed mark, written without ® ("AAIA"). */
+  trademarkRegistered?: boolean;
+  trademarkNotice?: string;
+}
+
+/**
+ * A course's name with ® on its mark, for the welcome ("CISA®", "AAIA", and for a family mark
+ * "CIA" on "CIA Part 1": "CIA® Part 1"). A name that does not start with its mark keeps no ®,
+ * and neither does one where the mark is only the start of a longer word: the mark must be the
+ * whole name or be followed by a word break (a space, a dash), never a letter or digit, so a
+ * mark "CIA" never turns "CIAX" into "CIA®X".
+ */
+export function markedCourseName(cert: WelcomeCourse): string {
+  if (cert.trademarkRegistered === false) return cert.name;
+  const mark = cert.mark ?? cert.name;
+  if (!mark || !cert.name.startsWith(mark)) return cert.name;
+  const rest = cert.name.slice(mark.length);
+  // A word break after the mark: the name ends there, or the next character is not a letter or digit
+  // (a letter has an upper and a lower case; this also covers accented letters, with no regex flags).
+  const next = rest.charAt(0);
+  const wordBreak = rest === '' || !(/[0-9]/.test(next) || next.toLowerCase() !== next.toUpperCase());
+  return wordBreak ? `${mark}®${rest}` : cert.name;
+}
+
+/**
+ * The welcome's sub line for the chosen course (product review, 28 Nov 2026): "Your <course>
+ * exam study, one day at a time." CISA reads WELCOME_LINE word for word ("Your CISA® exam
+ * study…"); no course → WELCOME_LINE too, so the welcome is never empty.
+ */
+export function welcomeLine(cert?: WelcomeCourse): string {
+  return cert ? `Your ${markedCourseName(cert)} exam study, one day at a time.` : WELCOME_LINE;
+}
 export const WELCOME_FACTS: readonly string[] = [
   // Mobile 1.41: the best feature first, in the web welcome's words (pre-beta review #10).
   'Questions that explain every option, the trap included.',
@@ -101,6 +139,15 @@ export const WELCOME_FACTS: readonly string[] = [
  * available certifications only (today CISA), so the two say the same thing.
  */
 export const EXAM_TRADEMARK_LINE = 'Not affiliated with or endorsed by ISACA®. CISA® is a registered trademark of ISACA.';
+
+/**
+ * The welcome's trademark line for the chosen course: its own notice from certifications.ts
+ * (CISA's is EXAM_TRADEMARK_LINE word for word), so a course from another issuer names that
+ * issuer. A course with no notice → EXAM_TRADEMARK_LINE.
+ */
+export function welcomeTrademarkLine(cert?: WelcomeCourse): string {
+  return cert?.trademarkNotice?.trim() || EXAM_TRADEMARK_LINE;
+}
 
 export const PILLARS: readonly Pillar[] = [
   { glyph: 'path', title: 'See the path', body: 'Know what to study next, and why it matters.' },

@@ -316,7 +316,9 @@ export default function Practice() {
           title={heroTitle(mode, pathDomain?.short, guidedTopic?.name)}
           meta={heroMeta}
           domains={pathDomain ? pathDomain.short : `All ${cert.domains.length}`}
-          domainsSpoken={`Domains, ${pathDomain ? pathDomain.name : 'all domains'}`}
+          // The tile's key in the course's words: "Domains" (CISA, unchanged) or "Sections".
+          domainsKey={domainWord(cert, 'Domains')}
+          domainsSpoken={`${domainWord(cert, 'Domains')}, ${pathDomain ? pathDomain.name : `all ${domainWord(cert, 'domains')}`}`}
           count={mode === 'guided' ? null : pathSize}
           timed={timed}
           onTimed={setTimedHere}
@@ -525,6 +527,7 @@ const PracticeHero = memo(function PracticeHero({
   title,
   meta,
   domains,
+  domainsKey,
   domainsSpoken,
   count,
   timed,
@@ -548,6 +551,8 @@ const PracticeHero = memo(function PracticeHero({
   title: string;
   meta: string;
   domains: string;
+  /** The first tile's key: "Domains", or "Sections" for a course with sections (domainWord). */
+  domainsKey: string;
   domainsSpoken: string;
   /** null for Guided, which has no length. */
   count: number | null;
@@ -564,7 +569,7 @@ const PracticeHero = memo(function PracticeHero({
   pathSize: number;
 }) {
   const { c } = useTheme();
-  const choose = 'Opens the choices for your path: mode, domains and length';
+  const choose = `Opens the choices for your path: mode, ${domainsKey.toLowerCase()} and length`;
   const openChooser = () => {
     onChoose(true);
     moveFocus(chooserHeadRef, 400);
@@ -593,8 +598,8 @@ const PracticeHero = memo(function PracticeHero({
         </View>
         {/* One area picked: its name ("IT Governance") needs a whole row to stay unbroken, so Domains
             sits on its own line and Count and Timed share the next one. */}
-        <HeroTileRow domainsAlone={Boolean(pathDomainId)}>
-          <HeroChoice ref={domainsRef} k="Domains" value={domains} spoken={domainsSpoken} hint={choose} onPress={openChooser} />
+        <HeroTileRow domainsAlone={Boolean(pathDomainId)} keyWidth={heroKeyWidth(domainsKey)}>
+          <HeroChoice ref={domainsRef} k={domainsKey} value={domains} spoken={domainsSpoken} hint={choose} onPress={openChooser} />
           {count !== null && <HeroChoice k="Count" value={String(count)} spoken={`Count, ${count} questions`} hint={choose} onPress={openChooser} />}
           <TimedTile ref={timedRef} on={timed} onChange={onTimed} />
         </HeroTileRow>
@@ -612,15 +617,26 @@ const PracticeHero = memo(function PracticeHero({
   );
 });
 
+/** "DOMAINS" needs about 60pt at 1.0 text (measured). */
+const DOMAINS_KEY_WIDTH = 60;
+
 /**
  * Do three hero tiles fit side by side? Each tile's inner width is the window less the 20pt gutters,
  * the hero card's 16pt padding and the two 8pt gaps, split in three, less the tile's 12pt padding
  * each side. The widest key, "DOMAINS" (11pt caps, letter-spaced), needs about 60pt at 1.0 text,
  * and its spacing grows with the text size on Android.
  */
-export function heroTilesFit(windowWidth: number, fontScale: number): boolean {
+export function heroTilesFit(windowWidth: number, fontScale: number, keyWidth = DOMAINS_KEY_WIDTH): boolean {
   const inner = (windowWidth - 2 * 20 - 2 * 16 - 2 * 8) / 3 - 2 * 12;
-  return inner >= 60 * fontScale;
+  return inner >= keyWidth * fontScale;
+}
+
+/**
+ * The width the first tile's key needs at 1.0 text: 60pt for "Domains" (measured, unchanged);
+ * another word ("Sections") is scaled from it by its letters, rounded up, so it never breaks mid-word.
+ */
+export function heroKeyWidth(key: string): number {
+  return key === 'Domains' ? DOMAINS_KEY_WIDTH : Math.ceil((DOMAINS_KEY_WIDTH * key.length) / 'Domains'.length);
 }
 
 /**
@@ -628,14 +644,14 @@ export function heroTilesFit(windowWidth: number, fontScale: number): boolean {
  * picked), the first tile (Domains) takes a full row and the others share the row under it, so a long
  * area name is never broken mid-word. The font never shrinks to make it fit (the label stays 16).
  */
-export function HeroTileRow({ children, domainsAlone = false }: { children: ReactNode; domainsAlone?: boolean }) {
+export function HeroTileRow({ children, domainsAlone = false, keyWidth = DOMAINS_KEY_WIDTH }: { children: ReactNode; domainsAlone?: boolean; /** The first key's width at 1.0 text (heroKeyWidth). */ keyWidth?: number }) {
   const scale = useFontScale();
   const width = useContentWidth();
   const large = scale >= LARGE_TEXT;
   if (large) return <View style={{ flexDirection: 'column', gap: space.sm }}>{children}</View>;
   // Release bug hunt round 1: on a narrow phone (or at the next text size up) three tiles side by side
   // broke the tracked "DOMAINS" key mid-word ("DOMAIN / S"). Then Domains takes its own row too.
-  if (!domainsAlone && heroTilesFit(width, scale)) return <View style={{ flexDirection: 'row', gap: space.sm }}>{children}</View>;
+  if (!domainsAlone && heroTilesFit(width, scale, keyWidth)) return <View style={{ flexDirection: 'row', gap: space.sm }}>{children}</View>;
   const [first, ...rest] = Children.toArray(children);
   return (
     <View style={{ gap: space.sm }}>

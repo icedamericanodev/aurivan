@@ -13,7 +13,8 @@
  *   the saved earned keys alone (no catalogue walk on every render).
  * - `todayTitle`: Today's countdown title, "Maya, 38 days to go".
  */
-import { badgeDef, markBadge } from './milestones';
+import { badgeDef, badgeName, markBadge } from './milestones';
+import type { DomainStyled } from './domainNaming';
 import { caseKey, tierOf } from './badgeCatalog';
 import { areaFigure, BAND_MIN_ANSWERS, STEADY_FROM } from './domainBand';
 import { cleanDisplayName, greetingWithName } from './displayName';
@@ -181,7 +182,13 @@ export interface LastPressed {
 }
 
 /** The newest specimens, newest first (keys the case doesn't show are left out, as its count does). */
-export function lastPressed(earned: Record<string, number> | undefined, domains: readonly (AreaInfo & { emblem?: string })[], n = 3): LastPressed[] {
+export function lastPressed(
+  earned: Record<string, number> | undefined,
+  domains: readonly (AreaInfo & { emblem?: string })[],
+  n = 3,
+  /** The course's domain words: "Section Mastery · Ethics" for a course with sections. Missing → "Domain Mastery", as today. */
+  course?: DomainStyled,
+): LastPressed[] {
   return Object.entries(earned ?? {})
     .filter(([key]) => caseKey(key))
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
@@ -191,7 +198,7 @@ export function lastPressed(earned: Record<string, number> | undefined, domains:
       const def = badgeDef(badge);
       const tier = tierOf(key);
       const domain = badge === 'firm-footing' ? domains.find((d) => d.id === key.split(':')[1]) : undefined;
-      const base = def?.name ?? badge;
+      const base = def ? badgeName(badge, course) : badge;
       const name = domain ? `${base} · ${domain.short}` : badge === 'rooted' && tier ? `${base} · ${tier.tierLabel}` : base;
       return { key, badge, name, at, ...(tier ? { tier: tier.tier } : {}), ...(domain?.emblem ? { emblem: domain.emblem } : {}) };
     });

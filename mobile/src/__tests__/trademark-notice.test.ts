@@ -29,7 +29,7 @@ describe('combined trademark notice', () => {
 describe('ISC2 marks (owner decision, 27 Oct 2026)', () => {
   it('the CISSP notice writes ISC2® and CISSP®', () => {
     const cissp = CERTIFICATIONS.find((c) => c.id === 'cissp')!;
-    expect(cissp.issuer).toEqual({ id: 'isc2', name: 'ISC2' });
+    expect(cissp.issuer).toEqual({ id: 'isc2', name: 'ISC2', site: 'isc2.org' });
     expect(cissp.trademarkNotice).toBe('Not affiliated with or endorsed by ISC2®. CISSP® is a registered trademark of ISC2, Inc.');
   });
 

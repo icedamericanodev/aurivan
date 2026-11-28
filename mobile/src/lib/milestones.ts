@@ -32,6 +32,7 @@ import {
   allMarks,
   badgeCount,
   badgeDef,
+  badgeRule,
   earn,
   inferFromSaves,
   markBadge,
@@ -159,8 +160,9 @@ export interface BadgeCase {
 /** The badge case for some facts and earned marks. */
 export function caseFromFacts(cert: Certification, facts: MilestoneFacts, earned: Record<string, number> | undefined): BadgeCase {
   const ctx = caseContext(cert);
-  const marks = caseMarks({ marks: allMarks(facts), earned, ...ctx, mindsetData: Boolean(facts.mindsetData) });
-  return { marks, sets: caseSets(marks, ctx.exam, ctx.domains.length), mastery: Object.fromEntries(facts.domains.map((d) => [d.id, d.mastery])) };
+  // A course with sections: "Section Mastery" and "All Sections" on the case (none today: BADGES' names).
+  const marks = caseMarks({ marks: allMarks(facts), earned, ...ctx, mindsetData: Boolean(facts.mindsetData), ...(cert.domainStyle ? { domainStyle: cert.domainStyle } : {}) });
+  return { marks, sets: caseSets(marks, ctx.exam, ctx.domains.length, cert), mastery: Object.fromEntries(facts.domains.map((d) => [d.id, d.mastery])) };
 }
 
 /** The badge case for a cert's progress now (You → Herbarium). */
@@ -275,12 +277,14 @@ export function momentFor(certId: string, key: string, next?: string): Milestone
   const tierUp = (mark?.tier ?? 1) > 1;
   return {
     key,
-    label: mark?.name ?? markLabel(key, marksFor(certId, cp)),
-    rule: def.rule,
+    label: mark?.name ?? markLabel(key, marksFor(certId, cp), cert),
+    // BADGES' rule; a course with sections says "section" (badgeRule; CISA: word for word as before).
+    // The mark's own rule first (a Stretch tier says 80%), else the badge's rule in the course's words.
+    rule: mark?.rule ?? badgeRule(def.id, cert),
     kind: def.kind,
     set,
-    setName: view?.info.name ?? setInfo(set, cert.exam, cert.domains.length).name,
-    unlock: mark?.unlock ?? def.rule,
+    setName: view?.info.name ?? setInfo(set, cert.exam, cert.domains.length, cert).name,
+    unlock: mark?.unlock ?? badgeRule(def.id, cert),
     ...(completes ? { completes } : {}),
     ...(tierUp ? { tierUp } : {}),
     ...(next ? { next } : {}),

@@ -1,7 +1,7 @@
 /**
  * Certification descriptors (content packs, Phase A).
  *
- * - Every descriptor names its issuer as { id, name } (a downloaded pack's
+ * - Every descriptor names its issuer as { id, name, site } (a downloaded pack's
  *   manifest will carry the same shape).
  * - The exam picker offers only `available` exams whose content is on this
  *   phone: a `coming_soon` exam never shows, so none of its facts (its
@@ -19,8 +19,8 @@ describe('descriptors', () => {
       expect(c.issuer.id).toMatch(/^[a-z0-9-]+$/);
       expect(c.issuer.name).not.toMatch(/®/);
     }
-    expect(getCertification('cisa')!.issuer).toEqual({ id: 'isaca', name: 'ISACA' });
-    expect(getCertification('cissp')!.issuer).toEqual({ id: 'isc2', name: 'ISC2' });
+    expect(getCertification('cisa')!.issuer).toEqual({ id: 'isaca', name: 'ISACA', site: 'isaca.org' });
+    expect(getCertification('cissp')!.issuer).toEqual({ id: 'isc2', name: 'ISC2', site: 'isc2.org' });
   });
 
   it('every id has the shape a backup accepts for an exam (content packs, fix 2)', () => {

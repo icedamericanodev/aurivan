@@ -86,7 +86,8 @@ export default function You() {
   const badgeCount = caseEarnedCount(progress.milestones?.earned);
   // Mobile 1.51: the herbarium row's newest specimens, from the saved keys alone (worked out again only when they change).
   const earnedKeys = progress.milestones?.earned;
-  const pressed = useMemo(() => lastPressed(earnedKeys, cert.domains, SHELF_SLOTS), [earnedKeys, cert.domains]);
+  // The course's words on the shelf: "Section Mastery" for a course with sections (CISA: "Domain Mastery").
+  const pressed = useMemo(() => lastPressed(earnedKeys, cert.domains, SHELF_SLOTS, cert), [earnedKeys, cert]);
   const newBadge = useNewBadge();
   const badgesHidden = useSettings((s) => s.badgesHidden);
   // The back-fill line shows ONCE (code review): kept in state for this

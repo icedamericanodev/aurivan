@@ -19,6 +19,7 @@
  *
  * Pure TypeScript: no React, no storage.
  */
+import type { DomainStyle } from './domainNaming';
 import type { ReadinessRange } from './readinessRange';
 import { daysBetween } from './streak';
 
@@ -169,6 +170,8 @@ export interface ShareCert {
   trademarkNotice: string;
   /** false: an unconfirmed mark ("AAIA" without ®). */
   trademarkRegistered?: boolean;
+  /** The course's domain words: a course with sections shares "Section Mastery" (badgeName). Missing → "Domain Mastery". */
+  domainStyle?: DomainStyle;
 }
 
 /**

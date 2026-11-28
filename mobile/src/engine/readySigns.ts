@@ -63,6 +63,11 @@ export interface ReadySignsInput {
    */
   issuerSite?: string;
   /**
+   * The course's issuer (wins over `issuerSite`): its site, isaca.org for ISACA, and for
+   * another issuer with no site a line naming no site (bookingLine).
+   */
+  issuer?: BookingIssuer;
+  /**
    * The course's domain words (engine/domainNaming.ts): a course with sections reads
    * "Every section at 70%…". Missing → "Every domain…", today's line (the website passes none).
    */
@@ -100,9 +105,28 @@ export const STUDY_BAR_NOTE = 'This app’s own study bar, not a prediction of y
 /** The issuer's site when a course names none: every course live today is ISACA's. */
 export const DEFAULT_ISSUER_SITE = 'isaca.org';
 
-/** "Check <site> before you book." A missing or blank site → isaca.org. */
-export function bookingLine(site?: string): string {
-  return `Check ${site?.trim() || DEFAULT_ISSUER_SITE} before you book.`;
+/** The booking line for an issuer that names no website: it names no site at all (never isaca.org for another body). */
+export const NO_SITE_BOOKING_LINE = 'Check the exam body’s website before you book.';
+
+/** What the booking line needs from a course's issuer (a CertIssuer fits): its id and, when known, its site. */
+export interface BookingIssuer {
+  id: string;
+  site?: string;
+}
+
+/**
+ * "Check <site> before you book."
+ * Plain English for the founder:
+ * - A site (text) or nothing at all: the old behaviour. Nothing or blank → isaca.org, because
+ *   every course live today is ISACA's (the website calls it this way).
+ * - An issuer (the course's `issuer`): its own site; ISACA with no site → isaca.org; any other
+ *   issuer with no site → NO_SITE_BOOKING_LINE, so a CIA or CISSP learner never reads isaca.org.
+ */
+export function bookingLine(issuer?: string | BookingIssuer): string {
+  if (issuer === undefined || typeof issuer === 'string') return `Check ${issuer?.trim() || DEFAULT_ISSUER_SITE} before you book.`;
+  const site = issuer.site?.trim();
+  if (site) return `Check ${site} before you book.`;
+  return issuer.id === 'isaca' ? `Check ${DEFAULT_ISSUER_SITE} before you book.` : NO_SITE_BOOKING_LINE;
 }
 
 /** Today's line, "Check isaca.org before you book." (unchanged). */
@@ -132,5 +156,5 @@ export function readySigns(input: ReadySignsInput): ReadySigns {
   ];
   if (input.mockSign !== false) signs.push({ id: 'mocks', title: SIGN_TITLE.mocks, met: mocksMet(input.mocks, input.examQuestions) });
   const allMet = signs.every((s) => s.met);
-  return { signs, allMet, line: allMet ? allMetLine(signs.length) : STUDY_BAR_NOTE, isacaLine: allMet ? bookingLine(input.issuerSite) : null };
+  return { signs, allMet, line: allMet ? allMetLine(signs.length) : STUDY_BAR_NOTE, isacaLine: allMet ? bookingLine(input.issuer ?? input.issuerSite) : null };
 }
