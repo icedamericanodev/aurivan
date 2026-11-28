@@ -3,7 +3,7 @@
  * forced ON and the in-memory backend. Spec PHASE6_8.md §2.1 (A1–A6) and
  * §2.7 "Security tests (PR 6)":
  * - A1: only two ways in (You, Settings); nothing at onboarding or the first session;
- * - A2: the "16 or older" box gates every button; email code rules; Apple on iOS only;
+ * - A2: the "I agree" box gates every button; email code rules; Apple on iOS only;
  * - #3: no token, email or account id in AsyncStorage after a sign-in;
  * - #6: an old sign-in asks to confirm it's you before any delete call;
  * - #7: deleting offline deletes nothing and leaves the phone's progress;
@@ -287,7 +287,7 @@ describe('deep links with hostile params', () => {
     for (const k of ['confirm', 'scope', 'open']) delete routeParams[k];
   });
 
-  it('the email screen without the "16 or older" box goes back to the sheet', () => {
+  it('the email screen without the "I agree" box goes back to the sheet', () => {
     mount(<>{(() => { const E = screen('email'); return <E />; })()}</>);
     expect(mockRedirects).toEqual(['/account/sign-in']);
   });
@@ -295,14 +295,14 @@ describe('deep links with hostile params', () => {
 
 // ── A2: the sign-in sheet ──────────────────────────────────────────────
 describe('A2: sign in', () => {
-  it('every button waits for the "16 or older" box, and the hint says why', () => {
+  it('every button waits for the "I agree" box, and the hint says why', () => {
     const Account = screen('index');
     mount(<Account />);
     expect(allText()).toContain('Keep your progress on every device');
     expect(allText()).toContain('Tick the box above to continue.');
     for (const b of ['Continue with Apple', 'Continue with Google', 'Continue with email']) expect(disabled(b)).toBe(true);
     act(() => {
-      button('I’m 16 or older and I agree to the Terms of Use.').props.onPress();
+      button('I agree to the Terms of Use and Privacy Policy.').props.onPress();
     });
     expect(allText()).not.toContain('Tick the box above to continue.');
     for (const b of ['Continue with Apple', 'Continue with Google', 'Continue with email']) expect(disabled(b)).toBe(false);
@@ -329,7 +329,7 @@ describe('A2: sign in', () => {
     const Account = screen('index');
     mount(<Account />);
     act(() => {
-      button('I’m 16 or older and I agree to the Terms of Use.').props.onPress();
+      button('I agree to the Terms of Use and Privacy Policy.').props.onPress();
     });
     await press('Continue with Google');
     expect(facts()).toMatchObject({ signedIn: true, emailMasked: 'm•••@example.com' });
@@ -342,7 +342,7 @@ describe('A2: sign in', () => {
     const Account = screen('index');
     mount(<Account />);
     act(() => {
-      button('I’m 16 or older and I agree to the Terms of Use.').props.onPress();
+      button('I agree to the Terms of Use and Privacy Policy.').props.onPress();
     });
     await press('Continue with Apple');
     expect(facts()).toMatchObject({ signedIn: true, emailMasked: null, providers: ['apple'] });
@@ -354,7 +354,7 @@ describe('A2: sign in', () => {
     const Account = screen('index');
     mount(<Account />);
     act(() => {
-      button('I’m 16 or older and I agree to the Terms of Use.').props.onPress();
+      button('I agree to the Terms of Use and Privacy Policy.').props.onPress();
     });
     memory.control.failNext('auth.signInWithApple', 'cancelled');
     await press('Continue with Apple');

@@ -8998,7 +8998,13 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 .ka-box svg { width: 18px; height: 18px; }
 .ka-check input:checked + .ka-box { box-shadow: inset 0 0 0 2px var(--text); color: var(--clay); }
 .ka-check input:focus-visible + .ka-box { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
-.ka-opt { display: inline-block; margin-left: 4px; padding: 1px 8px; border-radius: 999px; font: 600 0.75rem/1.6 var(--f-sans); color: var(--text2); background: var(--surface2); }
+.ka-consent-age { margin: 0 0 0 36px !important; font: var(--t-meta); color: var(--text2); }
+.ka-consent .ka-hint { margin: 4px 0 0 36px !important; }
+.ka-consent .ka-hint[hidden] { display: none; }
+.ka-consent .ka-error { margin-top: 4px !important; }
+/* The optional news box: set apart, under its own label. */
+.ka-consent-opt { padding-top: 12px; border-top: 1px solid var(--border); }
+.ka-consent-opt .ka-label { margin: 0 !important; color: var(--text2); }
 .ka-adds { margin-top: 24px; padding: 16px 18px; border-radius: 16px; background: var(--surface2); font: 400 0.875rem/1.5 var(--f-sans); color: var(--text2); display: grid; gap: 6px; }
 .ka-adds-t { display: flex; gap: 8px; align-items: center; font: 600 0.875rem/1.3 var(--f-sans); color: var(--text); }
 .ka-adds-t .ico { color: var(--accent-text); }
@@ -27408,16 +27414,19 @@ function appCtaInit() {
 //   the learner ticks "remove my progress from this browser".
 var KA_ON = !!(window.KS_ACCT && window.KS_ACCT.enabled);
 // Kept in step with the bundle by mobile/scripts/build-web-plant.mjs (its --check fails on a stale value).
-var KA_CLOUD_SRC = 'assets/kaisip-cloud.js?v=2b4bc1b7eb';
+var KA_CLOUD_SRC = 'assets/kaisip-cloud.js?v=69a2a4b136';
 var KA_WORDS_SRC = 'assets/kaisip-password-words.js';
 // Cloudflare Turnstile, widget "KaiSip sign-in" (a public site key: docs/mobile/ACCOUNTS_BETA_PLAN.md, "Public config values").
 var KA_HUMAN_KEY = '0x4AAAAAAFptlSqMhAvLUI8w';
 var KA_HUMAN_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
-// The Terms version a learner agrees to (the client accepts YYYY-MM) and the
-// wording version of the three sign-up boxes (change it whenever their words change).
-var KA_TERMS_VERSION = '2026-11';
-var KA_CONSENT_WORDING = '2026-11-28';
-var KA_NEWS_WORDS = 'Email me study tips and KaiSip news. I can unsubscribe anytime.';
+// The Terms version a learner agrees to (the client accepts YYYY-MM; the ONE place it is
+// written on the website, and the same value as the phone's engine/account.ts TERMS_VERSION)
+// and the wording version of the sign-up boxes (change it whenever their words change).
+var KA_TERMS_VERSION = '2026-12';
+var KA_CONSENT_WORDING = '2026-12';
+var KA_AGREE_WORDS = 'I agree to the Terms of Use and Privacy Policy.';
+var KA_AGE_WORDS = 'Accounts are for learners 18 and older.';
+var KA_NEWS_WORDS = 'Email me KaiSip study tips and news (optional). Unsubscribe anytime.';
 // New saved keys (none replaces an older one). Session-only: the sign-up boxes
 // while the learner is on their way (they must survive the trip to Google),
 // and what to open after signing in. Kept: the masked email for the "sign in
@@ -27767,9 +27776,12 @@ function kaHumanReset() {
 }
 
 // ── Consent (the sign-up boxes) ──
-// The Terms and "16 or older" are saved by the client (acceptTerms), which the
-// first sync needs. The news choice, with its wording version and time, goes
-// through this small adapter.
+// One required box: the Terms of Use and the Privacy Policy. Accounts are for
+// learners 18 and older (owner decision, 28 Nov 2026): that is a line under
+// the box, not a second box, and agreeing records it (age_confirmed) with the
+// Terms version, through the client (acceptTerms), which the first sync
+// needs. The news choice, with its wording version and time, goes through
+// this small adapter.
 // TODO(consent-api): the consent API is being built by the database engineer.
 // When it lands, give the page window.KaiSipConsentApi = { saveConsent(cloud,
 // record), readConsent(cloud) } (or replace the two bodies below). Until
@@ -27983,8 +27995,7 @@ function kaShell(key, body) {
     + '<a class="ka-toplink" href="#today" onclick="event.preventDefault();kaGoApp(\'home\')">Study without an account ' + ico('arrow-right', 16) + '</a></header>'
     + '<aside class="ka-art" aria-hidden="true">' + kaArt(key) + '</aside>'
     + '<main class="ka-main"><div class="ka-form-col">' + body + '</div>'
-    + '<footer class="ka-foot">' + kaNewTab('terms.html', 'Terms') + kaNewTab('privacy.html', 'Privacy') + kaNewTab('support.html', 'Help')
-    + '<span>Not affiliated with or endorsed by ISACA</span></footer></main></div>';
+    + '<footer class="ka-foot">' + kaNewTab('terms.html', 'Terms') + kaNewTab('privacy.html', 'Privacy') + kaNewTab('support.html', 'Help') + '</footer></main></div>';
 }
 function kaErrorHtml(words) {
   return words ? kaIco('alert', 18) + '<span>' + escapeHtml(words) + '</span>' : '';
@@ -28004,25 +28015,35 @@ function kaReveal(btn) {
   inp.type = show ? 'text' : 'password';
   btn.firstChild.nodeValue = show ? 'Hide' : 'Show';
 }
-function kaCheck(id, html, optional) {
-  return '<label class="ka-check" for="' + id + '"><input type="checkbox" id="' + id + '"' + (optional ? '' : ' aria-required="true"') + ' onchange="kaSetError(\'kaConsentE\', \'\')">'
+function kaCheck(id, html, o) {
+  o = o || {};
+  return '<label class="ka-check" for="' + id + '"><input type="checkbox" id="' + id + '"' + (o.required ? ' aria-required="true"' : '') + (o.describedby ? ' aria-describedby="' + o.describedby + '"' : '') + (o.onchange ? ' onchange="' + o.onchange + '"' : '') + '>'
     + '<span class="ka-box" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4.5 13.2 9.4 18 19.5 6.2"/></svg></span>'
-    + '<span>' + html + (optional ? ' <span class="ka-opt">Optional</span>' : '') + '</span></label>';
+    + '<span>' + html + '</span></label>';
 }
-// The three sign-up boxes. The two without a tag are required; the news box is separate, optional and never pre-ticked.
+// The sign-up agreement. ONE required box (never pre-ticked), the age line under it, and,
+// set apart under its own "Optional" label, the news box (never pre-ticked either).
 function kaConsentHtml() {
-  return '<fieldset class="ka-consent"><legend class="sr-only">Agreements</legend>'
-    + kaCheck('kaTerms', 'I agree to the ' + kaNewTab('terms.html', 'Terms') + ' and ' + kaNewTab('privacy.html', 'Privacy Policy'))
-    + kaCheck('kaAge', 'I’m 16 or older')
-    + kaCheck('kaNews', escapeHtml(KA_NEWS_WORDS), true)
-    + '<p class="ka-error" id="kaConsentE" role="alert"></p></fieldset>';
+  return '<fieldset class="ka-consent"><legend class="sr-only">Agreement</legend>'
+    + kaCheck('kaTerms', 'I agree to the ' + kaNewTab('terms.html', 'Terms of Use') + ' and ' + kaNewTab('privacy.html', 'Privacy Policy') + '.', { required: true, describedby: 'kaAgeLine kaConsentHint kaConsentE', onchange: 'kaConsentDraw()' })
+    + '<p class="ka-consent-age" id="kaAgeLine">' + KA_AGE_WORDS + '</p>'
+    + '<p class="ka-hint" id="kaConsentHint">Tick the box above to continue.</p>'
+    + '<p class="ka-error" id="kaConsentE" role="alert"></p></fieldset>'
+    + '<div class="ka-consent ka-consent-opt"><p class="ka-label" id="kaOptL">Optional</p>' + kaCheck('kaNews', escapeHtml(KA_NEWS_WORDS), { describedby: 'kaOptL' }) + '</div>';
+}
+// The hint shows while the box is unticked; ticking it clears the hint and any refusal.
+function kaConsentDraw() {
+  var t = kaEl('kaTerms'), hint = kaEl('kaConsentHint');
+  if (!t) return;
+  if (t.checked) kaSetError('kaConsentE', '');
+  if (hint) hint.hidden = t.checked || !!(kaEl('kaConsentE') && kaEl('kaConsentE').textContent);
 }
 function kaConsentRead() {
-  var t = kaEl('kaTerms'), a = kaEl('kaAge'), n = kaEl('kaNews');
-  if (!t || !a || !t.checked || !a.checked) {
-    kaSetError('kaConsentE', 'Tick both agreements to continue.');
-    var first = t && !t.checked ? t : a;
-    if (first) { try { first.focus(); } catch (e) {} }
+  var t = kaEl('kaTerms'), n = kaEl('kaNews');
+  if (!t || !t.checked) {
+    kaSetError('kaConsentE', 'Tick the box above to continue.');
+    kaConsentDraw();
+    if (t) { try { t.focus(); } catch (e) {} }
     return null;
   }
   return kaConsent.record(!!(n && n.checked));
@@ -28220,7 +28241,7 @@ var KA_VIEWS = {
       + '<button type="submit" class="ka-btn ka-btn-primary" id="kaGo">Send my code ' + ico('arrow-right', 18) + '</button></form>'
       + '<div class="ka-divider"><span>or</span></div>'
       + kaGoogleBtn('Sign up with Google', 'kaGoogle(true)')
-      + '<p class="ka-fine">The two agreements above apply to Google sign-up too.</p>'
+      + '<p class="ka-fine">The agreement above applies to Google sign-up too.</p>'
       + '<div class="ka-adds"><p class="ka-adds-t">' + kaIco('sync', 18) + '<span>What an account adds</span></p>'
       + '<p>Your answers, missed questions, saved questions, notes read and mock results sync between this browser and the Android app.</p>'
       + '<p>Studying works without an account. Without one, your progress stays in this browser only.</p></div>'
@@ -28286,7 +28307,7 @@ var KA_VIEWS = {
   consent: function () {
     return kaShell('signup1',
       '<h1 class="ka-title" tabindex="-1">One more step</h1>'
-      + '<p class="ka-lede">You’re signed in. Before your progress syncs, we need two agreements.</p>'
+      + '<p class="ka-lede">You’re signed in. Before your progress syncs, please agree to the terms.</p>'
       + kaNoticeHtml()
       + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();kaSubmit(\'consent\')">'
       + kaConsentHtml()
@@ -28577,7 +28598,7 @@ function kaSubmit(view) {
       .catch(function (e) { kaBusy(false); kaFail(e); });
   }
 }
-// Google: the two agreements first when this is a sign-up. The PKCE secret stays in this tab.
+// Google: the agreement first when this is a sign-up. The PKCE secret stays in this tab.
 function kaGoogle(signUp) {
   if (ka.busy) return;
   kaClearErrors();

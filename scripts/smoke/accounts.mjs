@@ -171,7 +171,7 @@ async function makeAccount(server, email = EMAIL, pw = PW, { terms = true } = {}
   await call('POST', '/auth/v1/otp', { email, create_user: true, gotrue_meta_security: { captcha_token: 'setup' } });
   const s = await call('POST', '/auth/v1/verify', { type: 'email', email, token: server.codes.get(email) });
   await call('PUT', '/auth/v1/user', { password: pw }, s.access_token);
-  if (terms) await call('POST', '/rest/v1/profiles', { terms_version: '2026-11', age_confirmed: true }, s.access_token);
+  if (terms) await call('POST', '/rest/v1/profiles', { terms_version: '2026-12', age_confirmed: true }, s.access_token);
   await call('POST', '/auth/v1/logout?scope=local', undefined, s.access_token);
   server.calls.length = 0;
   return s.user.id;
@@ -378,33 +378,42 @@ if (wanted('A2')) {
       await waitView(page, 'signup1');
       c.check((await text(page, '#kaRoot h1')) === 'Create your KaiSip account', 'the Create account title');
       c.check(/^Step 1 of 3/.test(await text(page, '.ka-steps')) && (await page.getAttribute('.ka-step.is-current', 'aria-current')) === 'step', 'Step 1 of 3 in words, with the current step marked');
-      const boxes = await page.evaluate(() => ['kaTerms', 'kaAge', 'kaNews'].map((id) => { const e = document.getElementById(id); return { checked: e.checked, req: e.getAttribute('aria-required'), label: e.closest('label').innerText.replace(/\s+/g, ' ').trim() }; }));
+      const boxes = await page.evaluate(() => ['kaTerms', 'kaNews'].map((id) => { const e = document.getElementById(id); return { checked: e.checked, req: e.getAttribute('aria-required'), label: e.closest('label').innerText.replace(/\s+/g, ' ').trim() }; }));
+      c.check((await page.evaluate(() => document.querySelectorAll('#kaRoot input[type=checkbox]').length)) === 2 && !(await page.evaluate(() => document.getElementById('kaAge'))), 'two boxes only: the agreement and the optional news box (no age box)');
       c.check(boxes.every((b) => b.checked === false), 'no box is pre-ticked: ' + JSON.stringify(boxes));
-      c.check(/^I agree to the Terms .*and Privacy Policy/.test(boxes[0].label) && boxes[1].label === 'I’m 16 or older', 'the two required agreements: ' + boxes[0].label + ' / ' + boxes[1].label);
-      c.check(boxes[2].label === 'Email me study tips and KaiSip news. I can unsubscribe anytime. Optional' && boxes[2].req === null && boxes[0].req === 'true', 'the news box is separate and marked Optional: ' + boxes[2].label);
-      c.check(await page.evaluate(() => [...document.querySelectorAll('#kaRoot .ka-consent a')].map((a) => a.getAttribute('href')).join(',') === 'terms.html,privacy.html'), 'the agreement links go to the Terms and the Privacy Policy');
+      c.check(/^I agree to the Terms of Use( \(opens in a new tab\))? and Privacy Policy( \(opens in a new tab\))? ?\.$/.test(boxes[0].label) && boxes[0].req === 'true', 'the one required agreement: ' + boxes[0].label);
+      c.check(await page.evaluate(() => { const a = [...document.querySelectorAll('#kaRoot .ka-consent a')]; return a.map((x) => x.getAttribute('href')).join(',') === 'terms.html,privacy.html' && a.every((x) => x.target === '_blank'); }), 'the Terms of Use and the Privacy Policy are linked, in a new tab');
+      const age = await page.evaluate(() => { const l = document.getElementById('kaAgeLine'); const box = document.getElementById('kaTerms').closest('label'); const go = document.getElementById('kaGo'); return { words: l.textContent, under: box.nextElementSibling === l, above: !!(l.compareDocumentPosition(go) & 4), shown: l.getClientRects().length > 0 }; });
+      c.check(age.words === 'Accounts are for learners 18 and older.' && age.under && age.above && age.shown, 'the age line sits directly under the box and above the buttons: ' + JSON.stringify(age));
+      c.check((await text(page, '#kaConsentHint')) === 'Tick the box above to continue.' && await page.isVisible('#kaConsentHint'), 'the hint shows while the box is unticked');
+      const opt = await page.evaluate(() => { const g = document.querySelector('.ka-consent-opt'); return { label: g.querySelector('.ka-label').textContent, apart: g !== document.getElementById('kaTerms').closest('fieldset') && getComputedStyle(g).borderTopWidth !== '0px' }; });
+      c.check(boxes[1].label === 'Email me KaiSip study tips and news (optional). Unsubscribe anytime.' && boxes[1].req === null && opt.label === 'Optional' && opt.apart, 'the news box is separate, divided and labelled Optional: ' + boxes[1].label + ' ' + JSON.stringify(opt));
+      c.check(!/ISACA/.test(await text(page, '#kaRoot')), 'the "not affiliated" line is off the sign-up screens');
       await axe(page, c, `create account step 1 (${v})`);
       await noOverflow(page, c, 'Create account step 1');
-      // Nothing ticked: Send is refused in words, and so is Google.
+      // Not ticked: Send is refused in words, and so is Google.
       await page.fill('#kaEmail', MAIL);
       await page.press('#kaEmail', 'Enter');
-      c.check((await text(page, '#kaConsentE')) === 'Tick both agreements to continue.' && (await page.getAttribute('#kaConsentE', 'role')) === 'alert', 'unticked agreements stop the form, in words: ' + (await text(page, '#kaConsentE')));
+      c.check((await text(page, '#kaConsentE')) === 'Tick the box above to continue.' && (await page.getAttribute('#kaConsentE', 'role')) === 'alert' && !(await page.isVisible('#kaConsentHint')), 'an unticked agreement stops the form, in words about one box, said once: ' + (await text(page, '#kaConsentE')));
+      c.check(await page.evaluate(() => document.activeElement.id === 'kaTerms' && document.getElementById('kaTerms').getAttribute('aria-describedby').includes('kaConsentE')), 'focus goes to the box, which is described by the message');
       await page.click('.ka-btn-google');
       await sleep(200);
-      c.check((await view(page)) === 'signup1' && !(await store(page)).session.kaisip_pkce_v1, 'Google sign-up is stopped by the same agreements');
-      await page.check('#kaTerms', { force: true });
+      c.check((await view(page)) === 'signup1' && !(await store(page)).session.kaisip_pkce_v1, 'Google sign-up is stopped by the same agreement');
+      // The optional box alone is not the agreement.
+      await page.check('#kaNews', { force: true });
       await page.click('#kaGo');
-      c.check((await text(page, '#kaConsentE')) === 'Tick both agreements to continue.', 'one of two is not enough');
-      c.check(calls(server, '/auth/v1/otp').length === 0 && net.supabase === 0, 'no code is asked for (and nothing is sent) before both agreements');
+      c.check((await text(page, '#kaConsentE')) === 'Tick the box above to continue.', 'the optional box is not the agreement');
+      await page.uncheck('#kaNews', { force: true });
+      c.check(calls(server, '/auth/v1/otp').length === 0 && net.supabase === 0, 'no code is asked for (and nothing is sent) before the agreement');
       await c.shot(`a2-${v}-blocked`);
-      await page.check('#kaAge', { force: true });
-      c.check((await text(page, '#kaConsentE')) === '', 'the message clears when a box is ticked');
+      await page.check('#kaTerms', { force: true });
+      c.check((await text(page, '#kaConsentE')) === '' && !(await page.isVisible('#kaConsentHint')), 'ticking the box clears the message and the hint');
       await page.click('#kaGo');
       await waitView(page, 'signup2');
       const otp = calls(server, '/auth/v1/otp')[0];
       c.check(otp && otp.body.email === MAIL && otp.body.create_user === true && /^ts-token-/.test(otp.body.gotrue_meta_security?.captcha_token || '') && !('password' in otp.body), 'the code request: the email, the human-check token, no password: ' + JSON.stringify(otp && otp.body));
       const pending = JSON.parse((await store(page)).session.kaisip_signup_pending_v1 || 'null');
-      c.check(pending && pending.termsAccepted === true && pending.ageConfirmed === true && pending.marketingOptIn === false && pending.wordingVersion && pending.termsVersion === '2026-11' && !JSON.stringify(pending).includes('@'), 'the agreements wait in this tab only, with their wording version and time, and no email: ' + JSON.stringify(pending));
+      c.check(pending && pending.termsAccepted === true && pending.ageConfirmed === true && pending.marketingOptIn === false && pending.wordingVersion && pending.termsVersion === '2026-12' && !JSON.stringify(pending).includes('@'), 'the agreements wait in this tab only, with their wording version and time, and no email: ' + JSON.stringify(pending));
       // Step 2: one input drawn as joined cells.
       c.check((await text(page, '#kaRoot h1')) === 'Check your inbox' && (await text(page, '.ka-lede')).includes(MAIL), 'step 2 names the address');
       const code = await page.evaluate(() => { const e = document.getElementById('kaCode'); return { n: document.querySelectorAll('#kaRoot input:not([type=hidden])').length, ac: e.autocomplete, im: e.inputMode, max: e.maxLength, cells: document.querySelectorAll('.ka-cell').length, groups: document.querySelectorAll('.ka-code-grp').length, label: document.querySelector('label[for=kaCode]').textContent }; });
@@ -504,7 +513,9 @@ if (wanted('A2')) {
       const put = calls(server, '/auth/v1/user', 'PUT')[0];
       c.check(put && put.body.password === PW2, 'the password is saved with the fresh session');
       const user = server.userByEmail(MAIL);
-      c.check(user && server.profiles.get(user.id) === '2026-11', 'the Terms version and "16 or older" are saved for the account');
+      c.check(user && server.profiles.get(user.id) === '2026-12', 'the Terms version is saved for the account');
+      const prof = calls(server, '/rest/v1/profiles', 'POST')[0];
+      c.check(prof && prof.body.terms_version === '2026-12' && prof.body.age_confirmed === true, 'agreeing records the Terms version and the age confirmation: ' + JSON.stringify(prof && prof.body));
       const saved = await page.evaluate(() => window.KaiSipConsentApi.saved);
       c.check(saved.length === 1 && saved[0].marketingOptIn === false && saved[0].termsAccepted === true && saved[0].ageConfirmed === true && saved[0].wordingVersion === pending.wordingVersion && typeof saved[0].at === 'string', 'the consent record reaches the consent adapter once, news off: ' + JSON.stringify(saved));
       c.check(!(await store(page)).session.kaisip_signup_pending_v1, 'the waiting agreements are cleared once saved');
@@ -522,7 +533,7 @@ if (wanted('A2')) {
     await rec.run('A2-news', 'Create account with the news box ticked: the choice is recorded (kept in this browser until the consent API exists)', page, async (c) => {
       await open(page, '#create-account');
       await page.fill('#kaEmail', EMAIL);
-      for (const id of ['#kaTerms', '#kaAge', '#kaNews']) await page.check(id, { force: true });
+      for (const id of ['#kaTerms', '#kaNews']) await page.check(id, { force: true });
       await page.press('#kaEmail', 'Enter');
       await waitView(page, 'signup2');
       await page.fill('#kaCode', server.codes.get(EMAIL));
@@ -532,7 +543,7 @@ if (wanted('A2')) {
       await page.press('#kaPw', 'Enter');
       await waitView(page, '');
       const kept = JSON.parse((await store(page)).local.kaisip_consent_v1 || 'null');
-      c.check(kept && kept.marketingOptIn === true && kept.pending === true && kept.wordingVersion && kept.termsVersion === '2026-11' && !JSON.stringify(kept).includes('@') && !JSON.stringify(kept).includes(server.userByEmail(EMAIL).id), 'the news choice is kept with its wording version and time, with no email or account id: ' + JSON.stringify(kept));
+      c.check(kept && kept.marketingOptIn === true && kept.pending === true && kept.wordingVersion && kept.termsVersion === '2026-12' && !JSON.stringify(kept).includes('@') && !JSON.stringify(kept).includes(server.userByEmail(EMAIL).id), 'the news choice is kept with its wording version and time, with no email or account id: ' + JSON.stringify(kept));
       c.check(/Sync is on|signed in/.test(await toast(page)), 'created and signed in: ' + (await toast(page)));
     });
     await ctx.close();
@@ -1095,14 +1106,14 @@ if (wanted('A9')) {
       c.check(!page.url().includes(code) && !page.url().includes('code='), 'the code is taken out of the address: ' + page.url());
       c.check(seen.every((u) => !u.includes(code)), 'no request to another address carries the code in its address');
       c.check(!(await store(page)).session.kaisip_pkce_v1, 'the one-time PKCE secret is deleted');
-      c.check((await text(page, '#kaRoot h1')) === 'One more step' && (await page.evaluate(() => ['kaTerms', 'kaAge', 'kaNews'].every((id) => document.getElementById(id).checked === false))), 'a new Google account meets the agreements, all unticked');
+      c.check((await text(page, '#kaRoot h1')) === 'One more step' && (await page.evaluate(() => ['kaTerms', 'kaNews'].every((id) => document.getElementById(id).checked === false) && !document.getElementById('kaAge') && document.getElementById('kaAgeLine').textContent === 'Accounts are for learners 18 and older.')), 'a new Google account meets the same agreement, unticked, with the age line');
       c.check(calls(server, '/rest/v1/sync_snapshots').length === 0, 'nothing syncs before the agreements');
       await axe(page, c, 'the agreements after Google');
       await noOverflow(page, c, 'the agreements after Google');
       await c.shot('a9-consent');
       await page.click('#kaGo');
-      c.check((await text(page, '#kaConsentE')) === 'Tick both agreements to continue.', 'unticked agreements stop it');
-      await page.check('#kaTerms', { force: true }); await page.check('#kaAge', { force: true });
+      c.check((await text(page, '#kaConsentE')) === 'Tick the box above to continue.', 'the unticked agreement stops it');
+      await page.check('#kaTerms', { force: true });
       await page.click('#kaGo');
       await waitView(page, '');
       await settled(page);
@@ -1118,14 +1129,14 @@ if (wanted('A9')) {
     const { ctx, page, server } = await setup({ view: 'desktop' });
     await rec.run('A9-signup', 'Sign up with Google from Create account: the ticked agreements travel with it, and a cancelled sign-in is calm', page, async (c) => {
       await open(page, '#create-account');
-      for (const id of ['#kaTerms', '#kaAge', '#kaNews']) await page.check(id, { force: true });
+      for (const id of ['#kaTerms', '#kaNews']) await page.check(id, { force: true });
       const challenge = await startGoogle(page, c);
       const code = server.googleCode(challenge, 'noel@gmail.com');
       await page.goto(`${APP}?code=${code}`);
       await waitView(page, '');
       await settled(page);
       const u = server.userByEmail('noel@gmail.com');
-      c.check(server.profiles.get(u.id) === '2026-11', 'the agreements ticked before Google are saved for the new account, with no second ask');
+      c.check(server.profiles.get(u.id) === '2026-12', 'the agreements ticked before Google are saved for the new account, with no second ask');
       c.check(JSON.parse((await store(page)).local.kaisip_consent_v1).marketingOptIn === true, 'and so is the news choice');
       // Cancelled at Google (or any error it sends back): calm words, and nothing from the address is shown.
       await page.evaluate(() => navGoFocus(null, 'account'));
@@ -1217,7 +1228,7 @@ async function walk(v, scheme, shots, c, axeOnly = false) {
   await page.waitForFunction(() => document.getElementById('kaPassE').textContent.length > 0); await snap(page, '03-sign-in-error');
   await page.click('.ka-switch a'); await waitView(page, 'signup1'); await page.fill('#kaEmail', MAIL); await snap(page, '04-create-1-email');
   await page.click('#kaGo'); await snap(page, '05-create-1-agreements-needed');
-  await page.check('#kaTerms', { force: true }); await page.check('#kaAge', { force: true });
+  await page.check('#kaTerms', { force: true });
   await page.click('#kaGo'); await waitView(page, 'signup2');
   await page.fill('#kaCode', '482715'); await page.focus('#kaCode'); await snap(page, '06-create-2-code');
   await page.fill('#kaCode', '00000000'); await page.press('#kaCode', 'Enter');

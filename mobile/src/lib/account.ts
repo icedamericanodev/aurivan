@@ -172,7 +172,7 @@ export async function initAccount(): Promise<() => void> {
 
 // ── Sign in ───────────────────────────────────────────────────────────
 /**
- * The sign-in sheet's "I'm 16 or older and I agree to the Terms" box, for
+ * The sign-in sheet's "I agree to the Terms of Use and Privacy Policy" box (accounts are 18 and older), for
  * this visit only (never saved). The email screen takes no link parameters
  * (a deep link can't tick the box for the learner), so it reads this; it
  * lapses after 30 minutes and on every app start.
@@ -187,7 +187,7 @@ export function hasAgreed(now = Date.now()): boolean {
 }
 
 /**
- * After any sign-in: record the Terms (the learner ticked "16 or older and
+ * After any sign-in: record the Terms (the learner ticked "I agree
  * I agree" on the sheet before any sign-in button worked). If that fails,
  * the account isn't used: signed out again on this phone.
  */
@@ -221,7 +221,7 @@ export async function sendCode(email: string): Promise<Result> {
   }
 }
 
-/** Check a code and sign in. `agreed`: the sheet's "16 or older" box was ticked. */
+/** Check a code and sign in. `agreed`: the sheet's "I agree" box was ticked. */
 export async function verifyCode(email: string, code: string, agreed: true): Promise<Result> {
   void agreed;
   try {

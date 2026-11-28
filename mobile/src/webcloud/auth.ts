@@ -153,7 +153,7 @@ export interface WebAuth {
   callFunction(name: FunctionName, body: Record<string, unknown>): Promise<string>;
   /** The learner's accepted Terms version, or null before they accepted (public.profiles). */
   termsVersion(): Promise<string | null>;
-  /** Accept the Terms and confirm "16 or older" (needed before the first sync). */
+  /** Accept the Terms and record the age confirmation (accounts are 18 and older; needed before the first sync). */
   acceptTerms(v: { termsVersion: string; ageConfirmed: true }): Promise<void>;
 
   // ── Passwords ──

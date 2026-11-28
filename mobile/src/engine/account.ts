@@ -12,7 +12,7 @@ import { dayKey } from './streak';
 import { EMAIL_RE } from './support';
 
 /** The Terms of Use version a learner accepts when they make an account ("YYYY-MM"). */
-export const TERMS_VERSION = '2026-11';
+export const TERMS_VERSION = '2026-12';
 
 /** Sign-in codes are 6 digits. */
 export const CODE_LENGTH = 6;
