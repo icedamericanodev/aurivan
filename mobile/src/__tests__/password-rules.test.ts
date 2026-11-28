@@ -742,7 +742,7 @@ describe('cost budget', () => {
   // - a step count the rules keep (passwordCheckStepsForTest). It is the same on
   //   every machine, so the main budget cannot flake on a slow, shared runner;
   // - the clock, as a backstop for work the count does not see: the median of
-  //   five runs per input, so one slow moment on the runner does not fail it.
+  //   five runs per input in CPU time, so a busy runner does not fail it.
   // What the count sees: the per-position run, sequence and copy work, every
   // step of the word and name lookups, the app/exam/personal token matches and
   // the dynamic-programming moves over runs. What it does NOT see: building
@@ -770,12 +770,17 @@ describe('cost budget', () => {
   // machine; the step count above is the tight guard, this one catches work the
   // count does not see.
   const TYPICAL_CLOCK_RATIO = 250;
+  // CPU time of this process, not wall time: CI's shared runner once took 192 s for
+  // this file while other test files ran beside it, and a wall-clock median of an
+  // 11 ms check went past 50 ms there (28 Nov 2026, 'periodic abab1'). Time this
+  // process spends waiting for a busy machine says nothing about the rules.
   const median = (f: () => void) => {
     const t: number[] = [];
     for (let k = 0; k < 5; k++) {
-      const t0 = process.hrtime.bigint();
+      const c0 = process.cpuUsage();
       f();
-      t.push(Number(process.hrtime.bigint() - t0) / 1e6);
+      const c = process.cpuUsage(c0);
+      t.push((c.user + c.system) / 1000);
     }
     return t.sort((a, b) => a - b)[2];
   };
