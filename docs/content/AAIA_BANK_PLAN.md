@@ -605,7 +605,7 @@ Readability pass, 28 Nov 2026 (FB-013, after a tester said CISA questions read l
   `docs/content/EXAM_STYLE_V2.md`. Settings, facts, keys and priority words are unchanged.
 - The three domain experts compared every old and new wording (33 corrections, all where a split lost a link or a
   detail), and a blind test of all 557 matched 557, then 38 of 38 after the corrections.
-- Packed stems fell from 514 to 171; medians stay at 34–35 words, with 35, 35 and 24 stems over 35 words in D1–D3.
+- Packed stems fell from 514 to 172; medians stay at 34–35 words, with 35, 35 and 24 stems over 35 words in D1–D3.
 
 ## 10. Follow-ups outside this plan's scope
 
