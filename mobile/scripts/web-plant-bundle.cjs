@@ -74,6 +74,9 @@ const ENTRIES = {
 const CLOUD_ENTRIES = {
   browser: 'src/webcloud/browser.ts',
   config: 'src/webcloud/config.ts',
+  // The password rules, so the website's forms can say "too short" or "too common" as the
+  // learner types (the client checks them again before anything is sent).
+  passwordRules: 'src/engine/passwordRules.ts',
 };
 /** Bundled but not exposed. */
 const CLOUD_INTERNAL = { cloud: 'src/webcloud/index.ts' };

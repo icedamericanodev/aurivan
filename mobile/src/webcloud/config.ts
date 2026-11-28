@@ -40,5 +40,18 @@ export const SYNC_LOCK = 'kaisip-sync';
 
 /** Refresh the access token when it has less than this left (ms). */
 export const REFRESH_MARGIN_MS = 60_000;
+/**
+ * A sign-in lasts at most 30 days (owner decision 28 Nov 2026; NIST SP
+ * 800-63B-4 AAL1 reauthentication). The server's nightly job is the real
+ * limit; this client also treats an older session as signed out (local
+ * progress is never touched) and says "please sign in again to keep syncing".
+ */
+export const SESSION_MAX_AGE_MS = 30 * 86_400_000;
+/**
+ * "Set a password" is sent only within this long of the session's sign-in.
+ * The database allows 10 minutes (password guard rule 4); one minute is
+ * kept spare for clocks and slow networks (audit LOW-3).
+ */
+export const PASSWORD_FRESH_MS = 9 * 60_000;
 /** The certification the website studies (CISA only for now). */
 export const WEB_CERT = 'cisa';

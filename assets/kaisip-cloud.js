@@ -3,7 +3,7 @@
  * from the mobile app's own TypeScript (mobile/src/webcloud and the sync
  * engine it uses), so the website syncs with the same rules as the app.
  * Loaded only when an account is used. Rebuild: cd mobile && npm run web-plant
- * TypeScript 6.0.3. Modules: 63.
+ * TypeScript 6.0.3. Modules: 65.
  */
 (function (root) {
   "use strict";
@@ -1243,7 +1243,6 @@ exports.domainStyleOf = domainStyleOf;
 exports.domainMark = domainMark;
 exports.domainTitle = domainTitle;
 exports.domainWord = domainWord;
-exports.domainCopy = domainCopy;
 exports.domainOfCode = domainOfCode;
 exports.DEFAULT_DOMAIN_STYLE = { noun: 'Domain', numbering: 'number' };
 function domainStyleOf(c) {
@@ -1267,13 +1266,6 @@ function domainWord(c, form) {
     const lower = form.charAt(0) === 'd';
     const word = plural ? `${noun}s` : noun;
     return lower ? word.toLowerCase() : word;
-}
-function domainCopy(text, c) {
-    if (!(c === null || c === void 0 ? void 0 : c.domainStyle))
-        return text;
-    return text
-        .replace(/\bDomain (\d{1,2})\b/g, (_m, id) => domainTitle(id, c))
-        .replace(/\b[Dd]omains?\b/g, (m) => domainWord(c, m));
 }
 function domainOfCode(code, c) {
     if ((0, exports.isLettered)(c)) {
@@ -2278,13 +2270,8 @@ function share(hits) {
   defs["src/engine/games/priorityLens.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PRIORITY_MEANING = exports.ASK_MEANING = exports.ASKS = exports.ASK_LABEL = exports.ASK_FOR = exports.LEAST_MEANING = exports.PRIORITY_WORDS = void 0;
+exports.PRIORITY_MEANING = exports.ASK_MEANING = exports.ASKS = exports.ASK_LABEL = exports.ASK_FOR = exports.PRIORITY_WORDS = void 0;
 exports.priorityWord = priorityWord;
-exports.priorityWritten = priorityWritten;
-exports.findPriority = findPriority;
-exports.questionSpan = questionSpan;
-exports.shownWord = shownWord;
-exports.qualifierCopy = qualifierCopy;
 exports.lastWholeWordIndex = lastWholeWordIndex;
 exports.priorityPool = priorityPool;
 exports.buildPriorityRound = buildPriorityRound;
@@ -2295,173 +2282,12 @@ exports.askChoices = askChoices;
 const random_1 = require("../random");
 const siblings_1 = require("../siblings");
 exports.PRIORITY_WORDS = ['FIRST', 'BEST', 'MOST', 'PRIMARY', 'GREATEST'];
-function priorityWord(stem, qc) {
-    var _a, _b;
-    return (_b = (_a = findPriority(stem, qc)) === null || _a === void 0 ? void 0 : _a.word) !== null && _b !== void 0 ? _b : null;
-}
-function priorityWritten(stem, qc) {
-    var _a, _b;
-    return (_b = (_a = findPriority(stem, qc)) === null || _a === void 0 ? void 0 : _a.written) !== null && _b !== void 0 ? _b : null;
-}
-function findPriority(stem, qc = 'capitals') {
-    var _a;
-    if (qc !== 'lowercase')
-        return lastCapital(stem, 0, stem.length);
-    const question = questionSpan(stem);
-    const caps = lastCapital(stem, question.start, question.end);
-    if (caps)
-        return caps;
-    const { start, end } = askSpan(stem);
-    return (_a = lowerIn(stem, start, end)) !== null && _a !== void 0 ? _a : (start > question.start ? lowerIn(stem, question.start, start) : null);
-}
-function lastCapital(stem, start, end) {
+function priorityWord(stem) {
     let found = null;
-    for (const m of stem.slice(start, end).matchAll(/\b(FIRST|BEST|MOST|PRIMARY|GREATEST)\b/g)) {
-        found = { word: m[1], written: m[1], index: start + m.index };
+    for (const m of stem.matchAll(/\b(FIRST|BEST|MOST|PRIMARY|GREATEST)\b/g)) {
+        found = m[1];
     }
     return found;
-}
-function lowerIn(stem, start, end) {
-    const ask = stem.slice(start, end);
-    let earliest = null;
-    for (const m of ask.matchAll(/\b(first|best|most|least|main|primary|greatest)\b/gi)) {
-        const at = m.index;
-        const after = ask.slice(at + m[1].length);
-        if (!isAsk(m[1].toLowerCase(), ask.slice(0, at), after))
-            continue;
-        const hit = { word: LOWER_KEY[m[1].toLowerCase()], written: m[1], index: start + at };
-        if (hit.word === 'FIRST' && /^\s*\?/.test(after)) {
-            return earliest && !isLeast(earliest) ? { ...hit, earlier: { word: earliest.word, written: earliest.written, index: earliest.index } } : hit;
-        }
-        earliest !== null && earliest !== void 0 ? earliest : (earliest = hit);
-    }
-    return earliest;
-}
-const LOWER_KEY = {
-    first: 'FIRST',
-    best: 'BEST',
-    most: 'MOST',
-    primary: 'PRIMARY',
-    greatest: 'GREATEST',
-    main: 'PRIMARY',
-    least: 'MOST',
-};
-const DETERMINERS = new Set(['the', 'a', 'an', 'its', 'their', 'his', 'her', 'our', 'your', 'this', 'that', 'these', 'those', 'each', 'every', 'any', 'whose']);
-const PREPOSITIONS = new Set(['in', 'during', 'of', 'for', 'on', 'at', 'by', 'from', 'since', 'until', 'over', 'after', 'before', 'within', 'throughout', 'into', 'across', 'per', 'with', 'without', 'among']);
-const FIRST_THINGS = new Set(['year', 'years', 'quarter', 'quarters', 'month', 'months', 'week', 'weeks', 'day', 'days', 'time', 'times', 'half', 'line', 'round', 'phase', 'draft', 'place', 'stage', 'cycle', 'period', 'term', 'version', 'engagement', 'chief', 'person', 'one']);
-const FIRST_ASKS = new Set(['step', 'steps', 'action', 'actions', 'priority', 'move', 'task', 'thing', 'concern', 'response']);
-const MAIN_ASKS = new Set([
-    'purpose', 'reason', 'objective', 'aim', 'goal', 'intent', 'responsibility', 'duty', 'role', 'function', 'concern', 'risk',
-    'weakness', 'gap', 'cause', 'driver', 'factor', 'consideration', 'benefit', 'advantage', 'focus', 'thing', 'issue', 'problem',
-    'threat', 'limitation', 'task', 'priority', 'basis', 'deficiency', 'value', 'contribution', 'criterion', 'test',
-    'obligation', 'indicator', 'recommendation', 'authority', 'safeguard', 'means', 'need', 'output', 'finding', 'follow',
-]);
-const MAIN_THINGS = new Set(['office', 'offices', 'market', 'markets', 'street', 'road', 'building', 'site', 'entrance', 'account', 'accounts', 'school', 'care', 'key', 'keys', 'menu', 'contact', 'residence', 'language', 'election', 'line', 'lines']);
-const NOT_NOUNS = new Set(['to', 'in', 'for', 'when', 'if', 'because', 'during', 'after', 'before', 'while', 'and', 'or', 'than', 'within', 'under', 'at', 'on', 'by', 'about']);
-const MOST_ADJ = new Set([
-    'likely', 'complete', 'prompt', 'clear', 'strong', 'severe', 'secure', 'robust', 'sound', 'true', 'wise', 'apt', 'fair',
-    'common', 'valid', 'weak', 'direct', 'exact', 'precise', 'concise', 'current', 'recent', 'complex', 'mature', 'safe',
-    'strict', 'often', 'concerning', 'pressing', 'compelling', 'damaging', 'misleading', 'convincing', 'telling',
-    'revealing', 'worrying', 'troubling', 'alarming', 'striking', 'limiting', 'demanding', 'challenging', 'promising',
-]);
-const MOST_VERBS = new Set([
-    'need', 'needs', 'lack', 'lacks', 'determine', 'determines', 'undermine', 'undermines', 'warrant', 'warrants', 'stress',
-    'raise', 'raises', 'prompt', 'prompts', 'rely', 'relies', 'require', 'requires', 'threaten', 'threatens', 'weaken',
-    'weakens', 'strengthen', 'strengthens', 'improve', 'improves', 'reduce', 'reduces', 'increase', 'increases', 'affect',
-    'affects', 'depend', 'depends', 'contribute', 'contributes', 'influence', 'influences', 'deserve', 'deserves', 'justify',
-    'justifies', 'reflect', 'reflects', 'suggest', 'suggests', 'indicate', 'indicates', 'enhance', 'enhances', 'expose', 'exposes',
-]);
-const ADJ_ENDING = /(?:ly|ive|ent|ant|able|ible|ful|ous|ic|al|ary|ate|ile|less|ed)$/;
-const MOST_NOUNS = new Set([
-    'capital', 'material', 'materials', 'potential', 'collateral', 'approval', 'rental', 'proposal', 'removal', 'renewal', 'disposal',
-    'content', 'talent', 'rent', 'client', 'agent', 'event', 'parent', 'student', 'patent', 'percent', 'plant', 'salary', 'summary',
-    'executive', 'initiative', 'incentive', 'alternative', 'archive', 'directive', 'representative', 'narrative', 'estate',
-    'state', 'date', 'rate', 'climate', 'update', 'file', 'profile', 'traffic', 'logic', 'supply', 'family', 'assembly', 'speed', 'feed',
-]);
-function mostModifies(after) {
-    var _a, _b, _c, _d;
-    const compound = (_c = (_b = (_a = /^\s+([\p{L}]+(?:-[\p{L}]+)*)/u.exec(after)) === null || _a === void 0 ? void 0 : _a[1]) === null || _b === void 0 ? void 0 : _b.toLowerCase()) !== null && _c !== void 0 ? _c : '';
-    const word = (_d = compound.split('-').pop()) !== null && _d !== void 0 ? _d : '';
-    if (MOST_ADJ.has(word) || MOST_VERBS.has(word))
-        return true;
-    if (MOST_NOUNS.has(word) || /ment$/.test(word))
-        return false;
-    return word.length >= 4 && ADJ_ENDING.test(word);
-}
-function isAsk(word, before, after) {
-    var _a, _b, _c, _d, _e;
-    if (/-$/.test(before) || /^-/.test(after))
-        return false;
-    const prevRaw = (_b = (_a = /([\p{L}'’]+)\)?[,;:]?\s*$/u.exec(before)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : '';
-    const prev = prevRaw.toLowerCase();
-    const next = (_e = (_d = (_c = /^\s+([\p{L}]+)/u.exec(after)) === null || _c === void 0 ? void 0 : _c[1]) === null || _d === void 0 ? void 0 : _d.toLowerCase()) !== null && _e !== void 0 ? _e : '';
-    const atEnd = /^\s*(?:[?.!,;:)]|$)/.test(after);
-    if (!prev)
-        return false;
-    if (prev === 'at')
-        return false;
-    if (next === 'of' && (word === 'most' || word === 'first'))
-        return false;
-    if (word === 'best' && /^practices?$/.test(next))
-        return false;
-    const determined = DETERMINERS.has(prev) || /['’]s?$/.test(prevRaw);
-    switch (word) {
-        case 'first':
-            if (atEnd)
-                return true;
-            if (PREPOSITIONS.has(prev) || FIRST_THINGS.has(next))
-                return false;
-            return determined ? FIRST_ASKS.has(next) : true;
-        case 'main':
-        case 'primary':
-            if (atEnd || MAIN_ASKS.has(next))
-                return true;
-            return (determined || prev === 'as' || WH_WORDS.has(prev)) && !!next && !MAIN_THINGS.has(next);
-        case 'most':
-            if (atEnd || NOT_NOUNS.has(next))
-                return true;
-            if (PREPOSITIONS.has(prev) || prev === 'do' || prev === 'did')
-                return false;
-            if (prev === 'the')
-                return true;
-            return mostModifies(after);
-        default:
-            return true;
-    }
-}
-function questionSpan(stem) {
-    var _a, _b;
-    const q = stem.lastIndexOf('?');
-    const end = q >= 0 ? q + 1 : stem.trimEnd().length;
-    const head = stem.slice(0, end).trimEnd();
-    const body = /[.?!]$/.test(head) ? head.slice(0, -1) : head;
-    let start = 0;
-    for (const m of body.matchAll(/[.?!]["”’)]*\s+(?=["“‘(]?\p{Lu})/gu)) {
-        const word = (_b = (_a = /\S+$/.exec(body.slice(0, m.index + 1))) === null || _a === void 0 ? void 0 : _a[0]) !== null && _b !== void 0 ? _b : '';
-        if (m[0][0] === '.' && (/^(?:\p{L}\.)+$/u.test(word) || ABBREVIATIONS.has(word.slice(0, -1).toLowerCase())))
-            continue;
-        start = m.index + m[0].length;
-    }
-    return { start, end };
-}
-const ABBREVIATIONS = new Set(['mr', 'mrs', 'ms', 'dr', 'prof', 'st', 'no', 'vs', 'etc', 'inc', 'ltd', 'co', 'corp', 'jr', 'sr', 'approx', 'dept', 'fig']);
-function askSpan(stem) {
-    const span = questionSpan(stem);
-    const text = stem.slice(span.start, span.end);
-    if (WH.test(text))
-        return span;
-    const lead = /,\s+(?=(?:which|what|how|who|whom|whose|where|when|why)\b)/i.exec(text);
-    return lead ? { start: span.start + lead.index + lead[0].length, end: span.end } : span;
-}
-const WH_WORDS = new Set(['which', 'what', 'how', 'who', 'whom', 'whose', 'where', 'when', 'why']);
-const WH = /^\s*["“(]?(?:which|what|how|who|whom|whose|where|when|why)\b/i;
-function shownWord(written) {
-    return written === written.toUpperCase() ? written : `“${written}”`;
-}
-function qualifierCopy(text, qc, quote = false) {
-    if (qc !== 'lowercase')
-        return text;
-    return text.replace(/\b(FIRST|BEST|MOST|PRIMARY|GREATEST|LEAST|MAIN)\b/g, (w) => (quote ? `“${w.toLowerCase()}”` : w.toLowerCase()));
 }
 function lastWholeWordIndex(text, word) {
     if (!word)
@@ -2475,16 +2301,11 @@ function lastWholeWordIndex(text, word) {
     }
     return -1;
 }
-function priorityPool(pool, qc) {
-    return pool.filter((q) => {
-        const hit = findPriority(q.stem, qc);
-        return hit !== null && !isLeast(hit);
-    });
+function priorityPool(pool) {
+    return pool.filter((q) => priorityWord(q.stem) !== null);
 }
-const isLeast = (hit) => hit.written.toLowerCase() === 'least';
-exports.LEAST_MEANING = 'Compare degree: pick the option with the weakest effect on what is asked.';
-function buildPriorityRound(pool, rng, size = 5, groupOf, qc) {
-    return (0, siblings_1.takeApart)((0, random_1.shuffled)(priorityPool(pool, qc), rng).map((q) => q.id), size, groupOf);
+function buildPriorityRound(pool, rng, size = 5, groupOf) {
+    return (0, siblings_1.takeApart)((0, random_1.shuffled)(priorityPool(pool), rng).map((q) => q.id), size, groupOf);
 }
 exports.ASK_FOR = {
     FIRST: 'sequence',
@@ -2500,24 +2321,16 @@ exports.ASK_LABEL = {
     purpose: 'The main purpose or the main reason',
 };
 exports.ASKS = ['sequence', 'best-fit', 'degree', 'purpose'];
-function acceptedAsks(stem, qc) {
-    const hit = findPriority(stem, qc);
-    if (!hit)
+function acceptedAsks(stem) {
+    const word = priorityWord(stem);
+    if (!word)
         return [];
-    const own = fitAt(stem, hit) ? ['best-fit', 'degree'] : [exports.ASK_FOR[hit.word]];
-    if (!hit.earlier)
-        return own;
-    const also = fitAt(stem, hit.earlier) ? 'best-fit' : exports.ASK_FOR[hit.earlier.word];
-    return own.includes(also) ? own : [...own, also];
+    return fitWord(stem) ? ['best-fit', 'degree'] : [exports.ASK_FOR[word]];
 }
-function fitWord(stem, qc) {
-    const hit = findPriority(stem, qc);
-    return hit ? fitAt(stem, hit) : null;
-}
-function fitAt(stem, hit) {
-    if (hit.word !== 'MOST' || hit.written.toLowerCase() === 'least')
+function fitWord(stem) {
+    if (priorityWord(stem) !== 'MOST')
         return null;
-    const m = /^\s+(appropriate|appropriately|suitable)\b/i.exec(stem.slice(hit.index + hit.written.length));
+    const m = /^\s+(appropriate|appropriately|suitable)\b/i.exec(stem.slice(lastWholeWordIndex(stem, 'MOST') + 4));
     return m ? m[1].toLowerCase() : null;
 }
 exports.ASK_MEANING = {
@@ -2526,18 +2339,12 @@ exports.ASK_MEANING = {
     degree: 'Compare degree: pick the option with the strongest effect on what is asked.',
     purpose: 'Pick the main purpose or main reason, not a side benefit.',
 };
-function meaningFor(stem, qc) {
-    const hit = findPriority(stem, qc);
-    if (!hit)
+function meaningFor(stem) {
+    const word = priorityWord(stem);
+    if (!word)
         return '';
-    if (isLeast(hit))
-        return exports.LEAST_MEANING;
-    const fit = fitWord(stem, qc);
-    if (!fit)
-        return exports.PRIORITY_MEANING[hit.word];
-    return hit.written !== hit.word
-        ? `“${hit.written} ${fit}” works like “best”. ${exports.ASK_MEANING['best-fit']}`
-        : `MOST ${fit} works like BEST. ${exports.ASK_MEANING['best-fit']}`;
+    const fit = fitWord(stem);
+    return fit ? `MOST ${fit} works like BEST. ${exports.ASK_MEANING['best-fit']}` : exports.PRIORITY_MEANING[word];
 }
 function askChoices(rng) {
     return (0, random_1.shuffled)(exports.ASKS, rng);
@@ -2688,18 +2495,17 @@ function gameTitle(id, savedLabel) {
     var _a, _b;
     return (_b = (_a = gameInfo(id)) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : savedLabel.split(' · ')[0];
 }
-function isPlayable(id, questions, notes, content, qc) {
+function isPlayable(id, questions, notes, content) {
     const g = exports.GAMES[id];
-    const size = g.contentPool ? g.contentPool(content !== null && content !== void 0 ? content : {}) : g.notesPool ? g.notesPool(notes) : g.pool(questions, qc).length;
+    const size = g.contentPool ? g.contentPool(content !== null && content !== void 0 ? content : {}) : g.notesPool ? g.notesPool(notes) : g.pool(questions).length;
     return size >= g.minPool;
 }
   };
-  links["src/engine/games/rootOrRumor.ts"] = {"../domainNaming":"src/engine/domainNaming.ts","../random":"src/engine/random.ts"};
+  links["src/engine/games/rootOrRumor.ts"] = {"../random":"src/engine/random.ts"};
   defs["src/engine/games/rootOrRumor.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.READ_AGAIN_AT = exports.DENY_CARDS = exports.IMPERATIVE_VERBS = exports.RUMOR_TIER_LINE = exports.RUMOR_TIER_NAME = exports.RUMOR_TIERS = exports.MAX_WORDS = exports.MIN_WORDS = exports.RUMOR_MIN_POOL = exports.RUMOR_SIZE = void 0;
-exports.rumorTierLines = rumorTierLines;
 exports.wordCount = wordCount;
 exports.firstSentence = firstSentence;
 exports.leansBack = leansBack;
@@ -2718,7 +2524,6 @@ exports.whyChoices = whyChoices;
 exports.tapTitle = tapTitle;
 exports.tapVerdict = tapVerdict;
 exports.readAgain = readAgain;
-const domainNaming_1 = require("../domainNaming");
 const random_1 = require("../random");
 exports.RUMOR_SIZE = 12;
 exports.RUMOR_MIN_POOL = exports.RUMOR_SIZE * 2;
@@ -2726,16 +2531,11 @@ exports.MIN_WORDS = 8;
 exports.MAX_WORDS = 30;
 exports.RUMOR_TIERS = ['seedling', 'sapling', 'heartwood'];
 exports.RUMOR_TIER_NAME = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
-function rumorTierLines(course) {
-    const one = (0, domainNaming_1.domainWord)(course, 'domain');
-    const many = (0, domainNaming_1.domainWord)(course, 'domains');
-    return {
-        seedling: `One ${one} per round.`,
-        sapling: `All ${many}, mixed.`,
-        heartwood: `All ${many}, plus “Why?” on each myth.`,
-    };
-}
-exports.RUMOR_TIER_LINE = rumorTierLines();
+exports.RUMOR_TIER_LINE = {
+    seedling: 'One domain per round.',
+    sapling: 'All domains, mixed.',
+    heartwood: 'All domains, plus “Why?” on each myth.',
+};
 function wordCount(text) {
     return text.trim().split(/\s+/).filter(Boolean).length;
 }
@@ -3228,7 +3028,7 @@ function stageProgress(stage) {
     return exports.STAGE_ORDER.indexOf(stage) / (exports.STAGE_ORDER.length - 1);
 }
   };
-  links["src/engine/milestones.ts"] = {"./games/registry":"src/engine/games/registry.ts","./games/priorityLens":"src/engine/games/priorityLens.ts","./games/daylight":"src/engine/games/daylight.ts","./games/growth":"src/engine/games/growth.ts","./journey":"src/engine/journey.ts","./domainNaming":"src/engine/domainNaming.ts","./studyPath":"src/engine/studyPath.ts","./pace":"src/engine/pace.ts","./readiness":"src/engine/readiness.ts","./streak":"src/engine/streak.ts"};
+  links["src/engine/milestones.ts"] = {"./games/registry":"src/engine/games/registry.ts","./games/daylight":"src/engine/games/daylight.ts","./games/growth":"src/engine/games/growth.ts","./journey":"src/engine/journey.ts","./domainNaming":"src/engine/domainNaming.ts","./studyPath":"src/engine/studyPath.ts","./pace":"src/engine/pace.ts","./readiness":"src/engine/readiness.ts","./streak":"src/engine/streak.ts"};
   defs["src/engine/milestones.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -3262,7 +3062,6 @@ exports.keepSupported = keepSupported;
 exports.planterSupported = planterSupported;
 exports.withFrozenPlanters = withFrozenPlanters;
 const registry_1 = require("./games/registry");
-const priorityLens_1 = require("./games/priorityLens");
 const daylight_1 = require("./games/daylight");
 const growth_1 = require("./games/growth");
 const journey_1 = require("./journey");
@@ -3380,8 +3179,6 @@ function badgeRule(id, course) {
     const def = badgeDef(id);
     if (!def)
         return '';
-    if (id === 'signpost-reader')
-        return (0, priorityLens_1.qualifierCopy)(def.rule, course === null || course === void 0 ? void 0 : course.qualifierCase, true);
     if (!(course === null || course === void 0 ? void 0 : course.domainStyle))
         return def.rule;
     const one = (0, domainNaming_1.domainWord)(course, 'domain');
@@ -3507,7 +3304,7 @@ function allMarks(f) {
             met,
             progress: met ? 1 : frac(chain.length, n),
             detail: met ? 'Done' : `${Math.min(chain.length, n)} of ${n} full mocks, a week apart`,
-            rule: `Finish ${n} full, timed mocks with every question answered, each ${exports.DRESS_GAP_DAYS} days or more after the one before, once every ${(0, domainNaming_1.domainWord)(f, 'domain')} is at ${pct(exports.WHOLE_MAP_FLOOR)}.`,
+            rule: `Finish ${n} full, timed mocks with every question answered, each ${exports.DRESS_GAP_DAYS} days or more after the one before, once every domain is at ${pct(exports.WHOLE_MAP_FLOOR)}.`,
         });
     }
     const onPace = f.mocks.some(isOnPace);
@@ -3521,10 +3318,7 @@ function allMarks(f) {
     const snareRight = snares.filter(Boolean).length;
     out.push(...one('snare-wise', snares.length >= exports.SNARE_WINDOW && snareRight >= exports.SNARE_RIGHT, snares.length < exports.SNARE_WINDOW ? frac(snares.length, exports.SNARE_WINDOW) * 0.5 : frac(snareRight, exports.SNARE_RIGHT), snares.length < exports.SNARE_WINDOW ? of(snares.length, exports.SNARE_WINDOW, 'questions played') : `${snareRight} of your last ${exports.SNARE_WINDOW} snares spotted`));
     out.push(...one('even-keel', f.keelRun >= exports.KEEL_ROUNDS, frac(f.keelRun, exports.KEEL_ROUNDS), of(f.keelRun, exports.KEEL_ROUNDS, 'rounds in a row')));
-    const signpost = windowMark('signpost-reader', f.signposts, exports.SIGNPOST_WINDOW, exports.SIGNPOST_RIGHT, 'FIRST questions played', 'FIRST questions read right');
-    out.push(...(f.qualifierCase === 'lowercase'
-        ? signpost.map((m) => ({ ...m, detail: (0, priorityLens_1.qualifierCopy)(m.detail, 'lowercase', true), rule: badgeRule('signpost-reader', f) }))
-        : signpost));
+    out.push(...windowMark('signpost-reader', f.signposts, exports.SIGNPOST_WINDOW, exports.SIGNPOST_RIGHT, 'FIRST questions played', 'FIRST questions read right'));
     out.push(...windowMark('myth-clearer', f.myths, exports.MYTH_WINDOW, exports.MYTH_RIGHT, 'rumors played', 'rumors cleared'));
     out.push(...one('sure-footed-pace', f.paceRounds >= exports.PACE_ROUNDS, frac(f.paceRounds, exports.PACE_ROUNDS), of(f.paceRounds, exports.PACE_ROUNDS, 'rounds')));
     out.push(...one('whole-grove', f.gamesTotal > 0 && f.gamesPlayed >= f.gamesTotal, frac(f.gamesPlayed, f.gamesTotal), of(f.gamesPlayed, f.gamesTotal, 'games played')));
@@ -4258,6 +4052,197 @@ function pacingStatsLine(s) {
     const mocks = s.mocks === 1 ? 'your timed mock' : `your ${s.mocks} timed mocks`;
     const all = s.mocks === 1 ? (s.allAnswered ? 'You answered every question.' : 'Some questions were left unanswered.') : `You answered every question in ${s.allAnswered} of ${s.mocks}.`;
     return `In ${mocks} you took ${aboutSeconds(s.medianSec)} per question. ${all}`;
+}
+  };
+  links["src/engine/passwordBlocklist.ts"] = {};
+  defs["src/engine/passwordBlocklist.ts"] = function (module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PASSWORD_BLOCKLIST_TEXT = exports.PASSWORD_BLOCKLIST_SOURCE = exports.PASSWORD_BLOCKLIST_SIZE = exports.PASSWORD_BLOCKLIST_SHA256 = void 0;
+exports.PASSWORD_BLOCKLIST_SHA256 = '1dbd34f52adb41e13dafff9e6f56df3daa69f9120f6af547ecda1b83887623b4';
+exports.PASSWORD_BLOCKLIST_SIZE = 3000;
+exports.PASSWORD_BLOCKLIST_SOURCE = 'SecLists xato-net-10-million-passwords-1000000.txt @ c34ab251571b (MIT)';
+exports.PASSWORD_BLOCKLIST_TEXT = "!2h7=aol64#exq0q\n!cucij_ln942q0ew\n!qazxsw2#edcvfr4\n$xearoms8upwybts\n****intiitnikcuf\n*1879600505602*\n.mx18spider10man86\n0!g2437k8d#ntzue\n000000000000000\n0000000000000000\n00000000000000000000\n00112233445566778899\n0070011spbsshmd\n00rdtsau4leyzunckj121dwm\n0102030405060708\n010203040506070809\n010203040506bbb\n010519961111gfhjkm\n01092000saharok\n01234567890123456789\n01234567899876543210\n025230230243639\n0302multiblkjdcrbq0302\n030581810503alex\n040108anya110583\n04048011-2497242\n04051979sabrina\n040592ivatulina\n0505050583838383\n0506197819780605\n0508402e41d9a1f0\n0509672427nastya\n05259497031237899456\n052600888211335577998866442\n0526008882113355779988664422\n0535395515005353955150\n054624917100225588\n057yeja1zpc3ljx8ci\n05y9y0030000001bbi\n0602003644romcha\n060226marta3107\n0660144122sasha\n0671792904picasso\n0673677478naruto\n0681390835misha\n069003269schokk\n06ivip030000001\n07011988dfktynby\n079blp030000001de5\n0809konechka1971\n08521456alexandr54321\n08cc00339974383\n08pjjqmi4xoeawoc\n090807060504030201\n091zxp030000002\n09876543210987654321\n09876543211234567890\n0987654321234567890\n0987654321qwerty\n0987654321vadim\n0987654321zaqxsw\n0997450201cthbq\n0d0b446d14c7d2db\n0ee93c1e3d3352ab\n0k1o2v3a4l5e6v7\n0nel0ve0nedeath\n0o9i8u7y6t5r4e3w2q\n0raziel00leizar0\n0raziel00raziel0\n101628136025kate\n10191817161514131\n102030405060708090\n10293847561029384756\n1080snowboarding\n1099953187rbhbkk\n110889ilyavetrov\n111111111111111\n1111111111111111\n11111111111111111\n11111111111111111111\n11111111112222222222\n111111yfcnzafr11\n11111_fantastique\n1111222233334444\n1112195806032006\n111222333444555\n111222333polina\n112233445566778\n1122334455667788\n112233445566778899\n11223344556677889900\n112358132134558900\n11c645df6bc8a365\n11c645dffd546c11\n12021998wwehardy\n12121212121212121212\n1213141516171819\n122333444455555\n1223334444555550\n123066raduga777\n123123123123123\n123123456456789789\n123321456654789987\n12344321qwerrewq\n123451234512345\n123451234512345w\n12345543211234554321\n1234554321vfrcbv\n1234567812345678\n123456787654321\n1234567887654321\n1234567890098765\n1234567890098765432\n12345678900987654321\n123456789012345\n1234567890123456\n1234567890123456789\n12345678901234567890\n123456789098765\n1234567890987654321\n1234567890anton\n1234567890asdfgh\n1234567890diana\n1234567890kthfdbrf\n1234567890qazws\n1234567890qazwsx\n1234567890qweasd\n1234567890qwert\n1234567890qwerty\n1234567890qwertyuiop\n1234567890sasha\n1234567890zxcvbnm\n123456789101112\n12345678910111213\n1234567891011121314\n12345678910111213141\n12345678910aazz\n12345678910c333\n12345678910fhnb\n123456789123456\n1234567891234567\n12345678912345678\n123456789123456789\n12345678912345678912345678\n123456789123456789123456789\n123456789147258369\n1234567897418529630q\n12345678987456321\n12345678987654321\n1234567899876543\n12345678998765432\n123456789987654321\n123456789987654a\n123456789adgjmptw\n123456789andrei\n123456789asdfgh\n123456789evgenii\n123456789ghbdtn\n123456789ghjcnj\n123456789hiphop\n123456789qazwsx\n123456789qweasd\n123456789qweasdzxc\n123456789qwerty\n123456789qwertyu\n123456789qwertyuio\n123456789qwertyuiop\n123456789valera\n123456789zxcvbnm\n12345678qwertyu\n12345678qwertyui\n123456qwertyuiop\n12345dasha12345\n12345qwertasdfg\n12345qwertasdfgzxcvb\n12345qwertyuiop\n12345tanya12345\n1234qwer1234qwer\n1234qwerasdfzxcv\n123789456123789456\n123adidas123qqq\n123boots1123boots2\n123celfrjdf2580\n123pbenedict456\n123qwe123qwe123\n123qweasdqwe123\n123qweasdzxc123\n123qwezxc123asd\n12harry3pother4\n12qw34er12qw34er\n12qw34er56ty78ui\n12qw90op12qw90op\n12qwaszx12qwaszx\n12qwaszx34erdfcv\n1307199689156203637\n1312zxbu592898fie\n1324354657687980\n13467928465yaira\n135791113151719\n135791234567896325874\n135798642apomnp\n13615084jakelaforge\n14021992004urban\n140609kristinalove\n141791.htmtranslator\n1425366114253661\n146f87627fd863b8\n147258369147258\n147258369147258369\n147258369159357\n147mju258vfr369\n14938685-6351106\n1495519goroh3000\n15003f640a10fd13\n15021998chingis\n1503198820061948\n1505199129041991\n158910gtwo158910\n159357159357159357\n159753456123789\n159753456kjkszpj\n15angelina33329\n16111996kristina\n16756046rfntymrf\n170998linysik27\n1715782642jypp838b\n17f8kvl219rsva6ue4hhmbock\n17f8kvl219rsva6ue4hhmbock4\n17vuyjdtybqdtcys\n18spider10man86\n19061995yulenka\n190794180781cfyz\n1912demokpat777\n1922spartak1922\n1922yjdsqgfhjkm\n1929394959697989\n1944dbuthby2002\n1957482919574829\n1977197719982003\n19900943434029j88\n199203021597755\n1992polovnikova\n1993elviscancelled\n1993gfdkjdbx1993\n1995100119721006\n19frejus66-19gioia6\n1a2a3a4a5a6a7a8a\n1a2a3a4a5a6a7a8a9a\n1a2s3d4f5g6h7j8k\n1a2s3d4f5g6h7j8k9l\n1a2y3ahsyperxertsexc\n1beef2baad3f00d4\n1cc1zzz20100102.\n1dabe345bzaqwsxz\n1ewblooddoolbwe1\n1keks2keks3keks\n1mounte1fischer\n1pwhon42nnlvh1b\n1q1q1q1q1q1q1q1q\n1q2q3q4q5q6q7q8q\n1q2w3e4r1q2w3e4r\n1q2w3e4r5t6y7u8i\n1qa2ws3ed4rf5tg\n1qa2ws3ed4rf5tg6yh\n1qayxsw21234rtzu\n1qaz2wsx3edc4rfv\n1qaz2wsx3edc4rfv5tgb\n1qaz2wsx3edczxcc\n1qazxsw21qazxsw2\n1qazxsw23edcvfr4\n1qw23er45ty67ui8\n1wdx3wax1wdx3wax\n1xpx66blrumblst6bbus3\n1xythqnm6234311lwr\n2010benvanburen\n2014526rfyrelfq\n2043efb678687ccc\n20520yinshaolian\n20kh0itj2olrwezc\n21041996dkflzzzzzz\n21072005ltymcdflms\n2109982702www02\n2128227474rubenruben\n2158321anatolii\n218362kikakotik\n22111995aleksey\n2221763lenochka\n2222222222222222\n2222333344445555\n2228428ykenmyken\n22vlad3366g123456g1\n230694zxc041094\n23176djivanfros\n2345678923456789\n2345678998765432\n2345zet56776869\n23fduecn20020101\n23java08pyramid\n23sa24sr23sa24sr\n24071994ytrhfcjdf\n241296gfgfkbpf14\n2468101214161820\n24kent04kent83.\n24mjbqpsnqacm8gj\n2505vfnehsv2505\n251423698992qaz\n25384967dflbvhekbn\n258456789qazzaq5\n264321264321264321\n2684795130a1whitechapel\n2712199119911227\n2718281828459045\n277rte87hryloitru\n280519951703197\n280695chistyakov\n2890040veranika\n2890pumpingstation\n2907marusya2010\n2962pupsi4ek2703\n296434440838ira\n2a8e463d2720e5f7\n2frodjzzdmi6j7epsflxumjx\n2gtxcryuqqhwlyf\n2maniyuze120700\n2sexy2hottoh2yxes2\n2wsxzaq11qazxsw2\n2wsxzaq12wsxzaq1\n3007tatka199218\n302273df4d197e8\n30398351harrypotteralways\n3054665569yetti\n30fridgecutegirlz\n30secondstomars\n310192023102912495319463\n310333qweasdzxc\n3110199312241248iron\n31217221027711a\n314159265358979\n3156715331567153\n321673216732167\n321sahan123hero\n3232323232323232\n336755aa336755aa\n3403_1989_heromant\n34her7partner56\n35128460351vfvf\n351795067351795067\n3618.roxanne-kev\n375298648349mts\n379123791237912\n380634402095irm\n3f85c8645b23e9a0\n3mxjtcdsjb5d1i4d\n3skpil#c!1=62ehh\n405bd8af07713f74\n4152332919743063\n4154059234k3pklsun\n419196292dfefywjc\n420842084208555\n4444444444444444\n4455632344552101\n4508153046njvfc\n468imlovinit468\n4733473347334733\n478793000272757849\n481000060nastia\n4815162342irina\n4815162342lost4\n48417582r1a025x\n489563880ghjcnj\n48e5b56c539af982\n49351367771dkfl\n495342962679kir\n4999123789artur\n4e6a8c737c08b55f\n4fwlvrixzmd7kmsyoxsr50\n5#o7!0qfvwdi46df\n500daysofsummer\n5217351lubashka\n53johnny56depp67\n540614540614qwe\n543279937954lol\n54369963vasilii\n54518746206179u\n54565267msneteli\n54635422val1992\n549830271327stas\n555032212333366\n555555555555555\n55555gfkmvfhjpf\n557332709dmitry\n564413tatyankamiha\n583741554836salo\n5859000630310vv\n5870409-mariner\n5f4d6acebef58d4\n5ja4yrxlfrofwvoh\n5l6a2b3g3z5h4y9a\n5sh1v3yutdlhov5fk\n6158615861586158\n6158615885168516\n6521bf42403fc9d8\n654634536365354\n6666666666666666\n666tori666gura66\n666xbckjlmzdjkf\n6685yen2189sla9\n6986399veronica\n6bc8a36511c645df\n6d8369a953851a24\n6len9eldo001599\n6sigilli4chiusure\n6ybdntagreu1rg1\n7!k19cglxs_52zar\n710556890684rty\n721174730459913\n77403pendulumbright80856\n777yfcn.cbxrf777\n789456123321654987\n789456123789456123\n789456123qwerty\n79036877jeanpoo\n7=zarjk#bo928u4i\n7b6a50367d85492e\n7cem0s!#o4x8ng29\n7m9n6l1d5p8r3k2l4s6a\n80507546480vfvf\n806255ecnbv43774\n80634897292zack\n80688800742ilona\n80971542123gfif\n80989156260anton\n8122010zolushka\n842blin_zamanal842\n858585984321sat\n85fg754kl62br853lpq7\n8624ifrbhjdfzbns\n87057639158hero\n8765432112345678\n8765432187654321\n879465123lfyzdog\n88888888888888888888\n88underground88\n89030629246mama\n89031719600bhbyf\n89048866152yfcnz\n89054259895kosta\n89061376557nfyz\n89082720768asqw\n89084124515ninysik\n89109372912345ak\n89116446869tema\n89118314damdinov\n891254641221973\n89126439488rfrf\n89167234878lida\n89172162142liza\n89224191008alina\n89225433819dbrfb\n89233690915dbnmrf\n89233966277vova\n89263779488dana\n89269918740luda\n892740930306969\n89277759623kolo\n89278724282serg\n89501443144senya\n89502727543lexa\n89503193255gaal\n89505143510vika\n89514535214qqqq\n895167889787473217\n89607536027cfif\n89610558292diana\n89613725963bkmvbh\n89632907151vania\n89634228131umahan\n8ewblooddoolbwe1\n8fb442b3d93d497c\n8fb5df8e9aeb9461\n8hfktag45f3frjje\n8m917a753k98s25\n8ogsdieb3po0gnok\n8q908q947q77q57\n8ujmaksjhehy6t5jk\n904d057a76s72ha\n9116422594123z1\n923650asdfghjkl\n925099250992509\n9256379kristina\n9261729749gfhjkm\n938522062412355s\n9387205793vovan\n950296765523vik\n96014430windowslive\n96231997karen53\n9740903sveta1993\n9804000000211895\n987654321123456789\n987654321987654321\n987654321qwerty\n98785258nickolay2\n9946755822zoomin\n9997356392051364\n999888777666555\n999999999frbnzy\n9cfytr9fable500\n9j!7ct_3lhuolm#q\n9k3lriyuy0fjbhhy\n=80=80=80=80=80\n??????n?n?12345\na03mth9149pywphgp\na1973456123147258369\na1s2d3f4g5h6j7k8\na1s2d3f4g5h6j7k8l9\na8c87108478c26b\naaa..9afctqxksfy\naaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaa\naannaandreevnaa\nabcddesignbuild\nabcdef1234567891\nabcdefghabcdefgh\nabcdefghhgfedcba\nabcdefghijklmnop\nabd_kou-goldo123\nabl2fmuf1dnpdhvx\nabrakadabra1977\naccusynclcd51vm\nachilleus-chrisbln\nad4real-8826629\nad5gfd7df765hrhs\nadgjmptwwtpmjgda\nadidasonparas123\nadminwaslamm3r4us\nadorominhafamilia\nadrobbiehmin-youguess\nadultsitesurfer\nafcnevutkm28041990\naferran-aronny19\naffilrev897ttmm\naffilrev98779m9\naffilrevtkxk9pp\nagaldelyi541978\nahjkjdfdfktynbyf\naian123321456654\naikondedart22023\naimmx2lrocnelsce\nairmaxin-brooklyn\naksjdlasdakj89879\nalegra12476180ya\naleks1236556321\nalexander_lider\nalexanderayegg17\nalexmess4508388258\nalin_roony_gool\nalina20119925374\nalinelima123456\nalisaskidan199317\nalisha1234567899\nallergiyallergiy2411\nallston-prodojo\nallyouneedislove\naltaltaltaltalt\nalwaysandforever\namericandream23\namigasparasempre\namominhafamilia\nana.bnascimento\nananasbosnamama\nandjusticeforall\nandrei123456789\nandrei22199003en\nandrejs-iii0649\nandreone-ochorios\nandyhouddyoredo\nanelieseaneliese\nanhchiyeuminhem\nanhnhoemnhieulam\nanhyeuemnhieulam\nanhyeunguoikhacroi\nannemette_jerning\nantagonistically\nantifamilymang1\nantonelloangelini\nantoniobanderas\nanya0602drutinova\napplesandbananas\naqswdefrgthyjukilo\narsenalquintain\nartemka10001190\nasd98765432112345678\nasdf2210zx45wqe\nasdfgh0987654321\nasdfgh12345qwert\nasdfghjkl123456\nasdfghjklzxcvbnm\nashleywilliams2010\nassassinscreed2\nassemyouaretheking\nassholecancelled\nassmakesmehorny\nattantionladies\nautumnbreeze829\navengedsevenfold\nawesome3215sucksnachoness\naxax89197018531axax\nayrtonsennadasilva\naytak1234567890\naz123az123az123\nazsxdcfvgbhnjmk\nazsxdcfvgbhnjmkl\nb87b87b87b87b87\nbadguy-peace124\nbagirov150190123\nballoonsballoons\nballoonssnoollab\nbassingwell2000\nbassingwell2020\nbassingwellbassingw\nbassingwellbassingwel\nbawcat-taebo101\nbbbbbbbbbbbbbbbb\nbbbbbbbbbbbbbbbbbb\nbcfields-godzillaslpo\nbcgjldsgjldthnf\nbcnbyfyjvthjlby\nbeatricedesespi\nbeaver44-uncleewj\nbecky88819949bruninho\nbelinda.lewis82\nbelkabarsiklove\nbendis-chrisbln\nbenjaminbenjamin\nbenjo29123cf1fb8\nbennettburshnick\nbfmxu6uluygxiypj\nbhrh0h2oof6xbqjeh\nbigal37-lockdown\nbigchizzoachata\nbigdog1949-taratara\nbigracebooster01\nbiliameeeemailib\nbillbob1-rm4443\nbillybobbillybob\nbiosnex-hardrive\nbirkjen-jengele\nblacklord280195\nblackstarcat_ok\nblanked-levelone\nbogdanagent1995\nboilerma-mm150mr\nbones69-bones69\nbonniestapleton\nboosucka-wanger\nborcanasbogdanbogy\nborisov123456789\nbotherbubber812\nbpgjldsgjldthnf\nbr76vt466464443\nbreakthewalldown\nbrilliantstudent\nbrimitch-paladin\nbringyawholecrew\nbrista10-7525628\nbritneysbritney\nbryanvinsonbvinson\nbrynnismybestfriend\nbujhmcfvsqevysq\nbujhmyfcnzbujhm1\nbulls123bulls123\nbutterflies1959\nbylecnhbfkbpfwbz\nbyyf1991vensuper\nc.ballesterheaven\nc0904fd726fc565\nc0fa9f4bc88d14f5\nc1m0t0d13b0mb0m\nc3hfpyteuflftim\ncacapopo-letmein\ncactusesarecool\ncalifornication\ncallofduty136667\ncallofjuares1135\ncallsupport-callsupport\ncamper97camper97\ncanineparvovirus\ncarcrashhsarcrac\ncarolynespinosa\ncatalina-pod34dat\ncatastrofismoloc\ncatherinejames77\ncbljhjdlbvf2010\nccat7cbz20h0ojv\nccjmbx3shxd4fyhz\ncdznjclove1996180771boy\ncedrat86iloncillo\ncentredelacotte.\ncezhbxtdfkfhbcf\ncfif80931430402\ncfifljhjabtyrj2084175\ncfqaenlbyjdf2011\ncfrjkzcfrjkz8888\ncfvfpyftimrfrjq\ncfvfzcfvfzcfvfz\ncfvfzcxfcnkbdfz\ncfvfzrhfcbdfzltdeirf\ncfvfzvbkfzktyjxr\ncfvjfrnefkbpfwbz\ncfyzghbdtnrfrltkf\ncgjldsgjldthnjv\nchamillionaire1\nchampionchampion\nchampionlake409\nchanged_due_to_fraud\nchap118-811pahc\ncharles.v.michell\nchazofbaltimore\ncheaphornybastar\ncheaphornybastard\ncheapycancelled\nchesterbuddyogle\nchethanahambikkawe\nchicagoblackhawks\nchildrenofbodom\nchilingarashvili\nchilli1881villi\nchivascampeon2.\nchouraethiaci10\nchuckiecheese123\nchustapiapeap65\ncicciopasticcio\ncinnamon^21isonirc\ncjdthityyjctrhtnyj\ncjf7v4f4vbif9036\ncjkytxysqpfqxbr\nckflrbq123qwe123\nclacaiprecout39\nclmz4dyzxwup07nyj9u\ncnfc89222569040\ncnhfnjcathf1994\ncnhtkrf19941994\ncocacolacocacola\ncoelacanthsucks\ncoldplay9379992\ncoloradosprings\ncomicbookdb8771\ncomicbookdbpass\ncomplit66411lol\ncomser99comser88\ncomwangweijun123\ncontraspemspero\ncorinthians1910\ncoubeahecrubi49\ncoubeahecrubi49-claiclou\ncougarstollenn111301\ncounterproposal\ncounterstrike16\ncountrycottages\ncountrycottages123\ncrimsoncaborita\ncristianoronald\ncristianoronaldo\ncrusadercrusader\ncrystal-frogger55\ncthutqcthuttdbx\ncthuttd123fhntv\nctrhtnysqgfhjkm\ncuceacodroutr24\ncucumberevening\ncvabedouinmoubh3\ncvfhnyjrbz6120c\ncvollono-v8862u5t\ncxfcnkbdsdvtcnt\nd142da0305a51212\nd7d73e16wnah123\ndabitch2dabitch\ndabitchdabitch2\ndalmatiokman8364\ndamir4351461986\ndamonsalvatore2010\ndanielledanielle\ndanilka123123456\ndano2240parrott\ndanyadanyadanya\ndara4444west777\ndarinkabibalova\ndasha1234567890\ndashatwilight305\ndasistfantastisch\ndatamekaniker14\ndatatraveler120\ndavidjohnmoore3\ndawn_of_the_morning\ndaytrip-daycamp\ndbiytdjtdfhtymt\ndbrfrhtvtktdf201016\ndbrnjhbzdbrnjhbz\ndcbrown5-enujypegysu7eh\ndcfvltkbi4949yfz\ndctjnyjcbntkmyj\ndctvghbdtn123321\ndeadclownsatoshi\ndeadrosedeadrose\ndeatiphiliato27\ndedushkaltleirf\ndeflep27-starwars\ndeidarajustboom\ndenis1234567890\nderrickh-oklapro\ndesktops.comhieronymusdustbin\ndeusacimadetudo\ndeusdoimpossivel\ndevilmaycry1991\ndevilsnewjersey\ndf3syprobernard24\ndf4g7h89j21fgkj\ndfif89278157032\ndflbvybrjkftdbx\ndfp210831300kflf\ndhusvx2ot5zqfhwwbs\ndigitalplayground\ndima324315198540\ndiman89215057654\ndimarik777respekt\ndinda1236987450\ndiordliwaccused\ndirtysouth15243\ndiva1993thecall\ndjgmvbotj23556desf\ndjpdhfotybt1992\ndkflbdjcnjr2000\ndkflbvbhjdyf1990\ndkflcjrjkjdcrbq\ndkmbbsklgcbadnfwkmvf8\ndktcehjlbkfcmtkjxrf\ndnhiya199732557023\ndolbyhometheater\ndominik563431995\ndonaldduck19961230\ndontworrybehappy\ndoom89879550386\ndouglasrferrari\ndownwiththeclown\ndpkjvobrlehfr10\ndragonslayer123\ndrift89094072877\ndrowssappassword\nds6tetsfdsrfdfgd\ndsgtylhbdfntkm82\ndskscsgslscn1989\ndsl1acufjk6kbfauoro2lhrsb5\ndspjtmpz8zvecvc2\ndthfdkflbvbhjdyf\ndukiega-mandyga\ndust360271212009\ndusterduster2000\ndvdfkydleo1xk8hc\ndwf6h5omr0uhozcq\ndynaboboohennition\ndzyandzyukoleksandr\ne0b360487da6978\ne0por0xn8kt8lrk96+\ne159r951t159y951\ne1e2e3e4e5e6e7e8e9\ne7c0e71df5e7a815\neaavkypvychsbumu\neadleylunare2912\neagle1110-stimpy\neatmycum-02587410\nebeck0311eaddog1\necg49ers-49ersecg\necitcarppractice\nefwe5tgwa5twhgd\negew5twt3tgh65y\neidothea-chrisbln\nejxjzgbgunaz9z6j6exbniqga\nekaterina128500\nelenbergdefender\nelina12345elina\nelinkaknopkaigood\nelnagurunapa1987\neminiem-dirtybas\nemyeuanhnhieulam\nenidon-gandalf8\nenjoythesilence\nenrique18yari11\neovbhnzdzywxqius\neoznalgnairekwmv354\nepe34za7guh8bs9\nepiclightpassword\nereshkigal210686\nereyes4269-ryan1199\nerocdrahhardcore\nerondrahharduore\neropokereropoker\neuamomeusamigos\neuamominhafamilia\neugenio231976silv\neuq8pvhrnpssdymizqx+\nevcoihejnrjfo34\neveningcucumber\nevgeshamen744892dom\nevtyzdctjnkbxyj\nf0she0ykf8uwobcp\nf1x753951753951\nfalaschettichr88\nfallenangel1997\nfalmouthfalmouth\nfamwu9aswxwvenb\nfancyfeatherstx\nfantadeportocale\nfarida1a-rem710\nfarvas_number_one\nfca8797b976473f2\nfcayn3iqeujljxmw\nfdfqfdfq3007718\nfedrovkonstantun\nfeinstrumpfhose\nfenjbyntabrfwbz\nferrari360modena\nfetish.combeezer4topper4\nfffffffffffffff\nfhbcnjntkm12345\nfickteufelchen66\nfifa2008???????\nfischer1mounte1\nfishpondfishpond\nfixesixseveneight\nfkg7h4f3v6vm38j\nfktrcfylhjd1993\nfktrctqbujhtdbx\nfktymrbqwdtnjxtr\nfltkbyf13122009\nfmyq6ufvbq8i0xla8\nfootballbestgame\nfootballfootball\nfootballismylife\nforumanchorinstanceid\nfqvltjlgiqd6guzz\nfranklinfranklin\nfranklinnilknarf\nfree2meisohsogood\nfreestyleonline\nfreetrafficworld\nfrellingchristma\nfrephiotohaij65\nfroz3n4rrowiablo31993\nfuckyourbrain13\nfullmetaljacket\nfussballbekloppte\nfussballverruckte\nfuturamainmymind\nfyfcnfcbzjktujdyf\nfylhtq1234567890\nfylhtqcthuttdbx\nfypjhbr007dfcz007rfr\nfytxrfghjnfcjdf\nfyutkbyfutktxrf\ng123456789252454\ngarciamartin1995\ngargoylecarpathian\ngavetimerwulfxcat\ngbnbhbvjd3121988\ngbplfnsqgfhjkm1\ngergdsfgedhjdrg\ngettingthenetfucker\ngfhjkm123456789\ngfhjkmgfhjkmgfhjkm\ngfhjkmgfhjktdbx\ngfifvtldtltdghjcnjkfgjxrf\ngfirfrfrfirf101\ngfyfcjybr091068\nggdkflbrbhbkk321\ngggggggggggggggg\nghbdtn123ghbdtn\nghbdtngjrfghbdtn\nghbdtnkeyfnbrfv\nghbdtnlheu01293\nghbjhbntn123456\nghblevfqntgfhjkm\nghjcnj15z04jdty88\nghjcnjgfhjkm123\nghjcnjnfrghjcnj\nghjnbdjcnjzybt2\nghjuhfvvbhjdfybt\nghmazngoctbxlxqe\nghostintheshell\nghtlghbybvfntkm\nghtpthdfnbdyjcnm\ngjgeufqhjvfyfzif\ngjkbyf123ghjybyf\ngjlfhjxtr890098\ngjnjvexnjzytrcn\ngjoexmtvedtktyb\nglobalimmigratio\ngodsheisgorgeous\ngonewiththewind\ngordolee85-mac2olli\ngotscrewedbydeadjones\ngouchojostaet84\ngqlsstfhqgwwvqxjx\ngratefuljjacinto\ngreedisgood10987\ngreenlightstudio\ngregreget545tgr\ngrlfdyze1gsakog\ngrtyhrthwgrtghgtrhrfghfghgfh\ngrundackerstrasse77\ngthgtylbrekzhysq\ngthtgjldsgjldthn\ngtnhjdcrjuj3021\ngtnhjpfdjlcr123\ngunsandroses123\ngygypyfyyyposhy\ngzrqc6x64vifhpzo\nh380n8furzkelkjq\nh6y857t5y65hd6c7\nhack4653bigbabe\nhackernoirhacker\nhageoyaji144no44\nhahapodstava2010\nhaitham147963258\nhakerkiselevska\nhansaoff-99109910\nhappytreefriends\nhardcorehardcore\nhardguy-cupcake\nharringtonsteve\nharryjamespotte\nhassellrhassell\nhaxxwtfnerdzord\nhbphezekiah1812\nhd764nw5d7e1vb1\nhd764nw5d7e1vbv\nheatoclevaedr36\nheatoclevaedr36-ceasioke\nheckfydrjynfrnt\nhelen-elizabeth\nheqrjqy36fw6hwrf\nherecomessuccess\nherjgbcbytujhzn\nhfytnrbrtvthjdj1993\nhgdxtgttgfdtdtes\nhgfedcbaabcdefgh\nhightemplar2007\nhighwayto44hell\nhilfiger20002000\nhilfigerhilfiger\nhjpjdsqakfvbyuj\nhjpjxrf23062007\nhjvfirf04111990\nhjvfyekmzyjd1995\nhjvfyjdcrfz2000\nhki837bjk3hu23f23\nhl3fp5sjer8wmcyk\nhlazarou-scorpio1\nhobbitlobanovlavrov\nhometheater1995\nhondamotorcycle68\nhornygregg-nascar20\nhostingpass1984\nhostwiththemost\nhs49zu7wzpk2r5ac\nhtcnhernehbpfwbz\nhtutcnhfwbzkjkj\nhunter58-ashley\nhwfj00jgn1fje239\ni05#2vwet!gfco7m\ni4hnhoqaqko45gjp\nia!vk#s=72q0ujg4\niamalocksmith25\niamhiswifebitch\niaminlovewitduckyy\niaxe105-lanceman\nichmagschokolade\niddqdidkfaidclip\nievbmv27101989004500\nii369121518212427\niiilovesingle061196\nijnjnbgfctrcbkjk\nikhouvanjeomer12345\nilikedressingup\nilove2718991915\nilovegirls-likethat\nilovemybrothers\niloveyouforever\niloveyouineedyou\niloveyouverymuch\nilushka66693777\nimageresizeguide\nimnotthatstupid\nincredibleguest\nincrediblereview\niness89140547347\ninfernusvader66615\ningodwetrust310592\ninhocsignovinces\ninvisiblemark52549\niofdmaaycdbvrlbi\nirinazavarka123\nirkakoshka12cat\niseedeadpeople1\niseedeadpeoplee\nitnetliza1998342462\nivanjesuscastro\niwanmisailoff78\niwannafuckyou75\niwillk03657320258\nj3qq4h7h2v2hch4\njacare0102034561993\njack789-airedale\njackasslolfr21345\njackiebrotherton\njackieguenther0205\njadedragonflower\njamestkirk7769h\njardanes-chrisbln\njashha67123bbhs\njazzymanlfuckem\njefersonlindo123456789\njeffersonlibrar\njekasuper050499\njenniferjennifer\njenniferrefinnej\njesperkroghnielsen@msncom\njesuscristo2010\njesustransforma\njgthegjkyjvjxtyysq\njhajuhfabxtcrbq\njhfhgcgre65r7687\njhonatan24670913\njhood22-december\njhrl0821-jhrl0595\njhughes-asrocer1\njhx46s4w85sfjkh\njiueqqio0xst4gcirdnhk2\njivedaddydave08\njjjjjjjjjjjjjjjjjjj\njkzyjxrf1975vfvf\njlbyjrbqcnfhsqdjkr\njlbyyflwfnmvbyen\njndtncndtyyjcnm\njnhflyjt1234567\njohnnydepp290589\njohnwilson-kirkwall\njolyan9976291saad\njoseph31-lindsay\njpnxgzbynj2dgysu\njustice4allepier\njustinkislyanka\nkaeannadhyleantonette\nkaledinjora2002\nkalmar801415854\nkapitoshkaivolk111\nkarmapachena49876302\nkaterina09091976\nkaterinakaterina\nkatya0932687854\nkatya89166172604\nkawasakikawasaki\nkeeperofsecrets\nkeepitsimpletwo\nkensai-athena00\nkepnerstollin111001\nkfdhtynmtdf112233\nkfhbcfcfyfrbtdyf1\nkikuchi-1023kiku\nkiogouniakoui79-saecloub\nkirill123456789\nkjkyjqpeirfybvthekbn\nkjmkzej0sd4y9ti6\nkklages-slugger\nklocknerklockner\nkm694nbv45fa8phg\nkolechka9qwe12345\nkolob@ster720303\nkolya1234567890\nkootergirl-kooter11\nkorolevakrasoti\nkorolevskii2409\nkras95kira3329522395\nkristinakristina\nkristyna_samsonova\nksenia1995ksenia1995\nkthrf.czcegthjr\nktjyblidthbl80965137150\nktlybrjdsqgthbjl\nktonerabotaettotest\nkumarsouravarzoo\nkyk1rbk1hbw0uqkckwbh\nl2ze353gepulrvbg\nl7dg980a43rijfcnr3puk5faj\nlabradorretriever\nladkaringmybells1\nlamismadesiempr\nlanguagepowerboo\nlasnaloveafrosja\nlastlight-killyou\nlaurelindorenan\nlavidaesuncarnava\nlbublhjrdthwtnby\nlena89149404636\nlera10041997sveta\nlerka30vishenka\nletadlo741852963\nleticiaeestrela\nlevchenkoaleksey\nlfif89184833900\nlfybbkcthuttdbx\nlhbjkjubz2957704\nlifeisbeautiful\nllllllllllllllllll\nloanhouddyoredo\nloco68-impossib\nloki2496-nightwin\nlolfriendslaugh\nlonglivepakistan\nloosersneverwin\nloris1-tatjana9\nlosangeleslakers\nlouis.vd.bongaert\nlouisdog-hattydog\nlovesyoulovesyou\nlovethewayyoulie\nlovingirishprincess\nlrh195005041971\nlrodney-rrodney\nltdjxrfcgktthjv\nlubluanutu4326vv1\nlukaslopas860660501\nlukaslukaslukas1\nlumpkin-sandman\nluvamami-visacard\nluvbekkiikkebvul\nluvbekkikkevbul\nluvbekkiluvbekki\nluvstosuckcocks\nlvbnhbq1990psrjd\nlytdybrbdfvgbhf\nm#xi!rzyvh681=fn\nm0ynqplxama0yve\nm1dd2l3n414092002\nmadaclioweaph61\nmaddinibiza2004\nmadinashahmanova\nmailcreated5240\nmaimaimottinhyeu\nmaksmaksim300300\nmalcevranger505\nmanchesterunited\nmanicson-love908\nmarcelo35641782\nmarco.baumstark-5828\nmargohamakarevij\nmariarenemivida\nmarie-madeleine\nmarinanastua1313\nmarkus000-lovelybo\nmarounhajjloveyou\nmartenson908884\nmarty_klopfenstein\nmasa3364-33645962\nmasha0663655464\nmasha10031981mart\nmashabogak1234561995\nmashamashamasha\nmasterimargarita\nmasterofpuppets\nmateusz123456789\nmatheus34518247\nmatrix-outoutout\nmauriceundtommy\nmauroalessandro\nmaximka1234kent\nmaxsive23021997\nmazelaaleksandr\nmbnxmylxp7gxqv7hmi9gsoriz\nmcc1188391257ad\nmdmichener-kaines\nmeb266lavi11ym22\nmeninadosolhosdedeus\nmercedesbenz2000\nmerchantmerchant\nmerkava-ivanhar1\nmersedesbenz123\nmessygirl-girlmessy\nmethamphetamine\nmichael@gangbang\nmichaeljacksonj\nmichaelk-britney6\nmidnite.fantasy\nmifuckeduphentai\nmihaisurleanu2561\nmihamihamiharap\nmikeybihon-post12\nmikimousemylife\nmilana4772871714\nminhafelicidade\nminimicraft-youtube\nminimonk1997797\nmisha80685562476\nmissionimpossible\nmisskris4849004\nmjbalogh-19janu64\nmjwp8mnd2hi7upqg\nmkjleepyaitorddz\nmnbvcxzasdfghjkl\nmnbvcxzlkjhgfdsa\nmod=billing_core\nmogilev368088193\nmoi9643179063wow\nmoinomer0632969509\nmomsanaladventure\nmoneyfornothing\nmono.01.06.1995\nmontanabigsky2014\nmoonkusserver97\nmorethanicansay\nmostafa@halo1203405600\nmothercicket2001\nmountainman1952\nmoviedude1122fdd\nmp972sa007b006ussr\nmrsbuttersworth\nmrscristinagoncalves\nmullummul758712\nmusicitislive12345\nmuslim0626461997\nmv36hw74fcdub2rk\nmychemicalromance\nmyiqwvrkvf1pmiwqbdf4kneq\nmyponycancelled\nmyztee-trish123\nna1fikovai1bulat\nnadyamayher1982\nnagato123456789\nnaglyphsinsp8249\nnarsula20252401\nnastya1234567890\nnastya2010nastya\nnastyachestardolia\nnastyahapaevalove\nnastyanastya123\nnatali123456789\nnatali3344223xxx\nnatalu007025270\nnaughtyscotty4u\nnavykentron1994\nnbkbvbkbnhzvlbz\nnbkbvbkbnhzylbz\nne_e_pod_chehyl\nneedforspeed123\nnemvxyheqdd5oqxyxyzi\nneversaymypassword\nnevershoutnever\nnewsarama1pass1\nnewyork2newyork1\nnfhfrfybpfwbz62\nnguoitoiyeulaai\nnhbujyjvtnhbz212\nnhfdfytyfhrjnbr\nnhlzl1idnhlzl1id\nniceangelbaby2008\nnick1234-rem936\nnike80969158989\nnikita485974147\nnikita9609595982\nnikitasergeevich\nnikolay11vsemenkovo\nnimajnebbenjamin\nnissanskylinegtr\nnjwanazam6qazwsx\nnly2t29advyfhwrz\nnnslrt69r01l424q\nnoblekamael2010\nnokia2700classic\nnokiaxpressmusic\nnoneofyourbusiness\nnopasswordinass\nnsbfibd35mcrspc\nntdbixljnl2eai5gqqvhxbnp\nnumber123456789!!!\nnuttertools1234\nobskaya2akv71995\nocgatk2-llaveatk2\noezininainnaa11\nofokeha9hy8oifen6\noglocoglocogloc\nola5velq2pp093m\noleg.kapustin_95\nolegfirstalways\noliischdebescht\noliveiraanthony\noliviaisamazing\nomegamircolaura\nonetwothreefour\nonlyone4-excess\nonlyone4-myxworld\noooooooooooooooooooo\nopalpussycat334\nopezassociateslb\norientepetroler\noriginalganjaman\noscar_jose_2007\notvsehubegayu94\noy3k6af9kvhgvit\np.pz03012010rerepz\np0o9i8u7y6t5r4e3w2q1\np140499417feef870\np38p38p38p38p38\np4swd_6c805c3ad8\np6gfyojtl5artjb\npanicatthedisco\npapaandthewhitehouse\nparalelipiped98\nparasha11uvarova\nparba09305232165\nparliament12345\nparolparolparol\npashastolenn110601s\npassword123456789\npasswordassword\npassworddrowssap\npasswordpassword\npasswordstandard\npatrakovserega23\npatricia.miguel\npearson_88earson\nped100ananacnaveka\npedrocagatinhodanet140594\npedrolucasmunhoz\npepperminttea88\nperasperaadastra\nperfectexploiter\npeter.g.robinson\npeterrbaskerville\npezaregood88854\npfvjrpfvjrpfvjr\nphilipdannypaul\nphilipic-casimir\nphillipmichelle\nphotosmartexpres\nphs16l31pogosta\nphuslipraedre22\nphuslipraedre22-trimasto\npidaras12345098\npielegniarstwo3\npineapplehair887\npiratesofcaribea\npistoolboekjemetinho\nplasmaticrick69\nplatinumpussy47\npogo22-omegaome\npoiuytrewq0987654321\npoiuytrewq12345\npoiuytrewqpoiuytrewq\npoleuretan42rus\npolniypizdec0211\npolniypizdec1102\npolniypizdec110211\npolniypizdecachat@#!@\npopovich250293sanek\npoppers4-4r5t6y7u\npotqwerty545214\npowerdestiny090\npoweroverwhelming\npr1wualb179861p\npracticeecitcarp\npracticepractice\npreciousprotection\nprestigiousmodels\nprigoda25392637\nprimavera2006casa\nprinceofdarkness\nprisonfor10years\nprofessionaltools\nprogressivehouse\npsychedelic2010\npyjdbvhjrjv2011\npymcpp04doo5qi2t\npyqdtmed8thirci\nq1q1q1q1q1q1q1q1\nq1w2e3r4t5y6u7i8\nq1w2e3r4t5y6u7i8o9\nq1w2e3r4t5y6u7i8o9p0\nq5txlhw8swxtzvkl\nqaedrw9707134625\nqawsedrftgyhujik\nqawsedrftgyhujikol\nqaz123wsx123edc\nqaz123wsx456edc\nqazwsxedc1234567\nqazwsxedcrfv123\nqazwsxedcrfvtgb\nqazwsxedcrfvtgby\nqazwsxedcrfvtgbyhn\nqazwsxedcrfvtgbyhnuj\nqazwsxedcrfvtgbyhnujm\nqazwsxedcrfvtgbyhnujmikolp\nqazxswedcvfrtgb\nqazxswedcvfrtgbnhy\nqazxswedcvfrtgbnhyuj\nqdwlrsfy9ddqqgbsyx\nqmcxo8dv7la1xe65\nqpwoeirutyqpwoeiruty\nqq11ww22ee33rr44\nqqqqqqqqqq00000\nqqqqqqqqqqqqqqqq\nqqqqqqqqqqqqqqqqqqqq\nquant4307quant4307\nquienlovaasaber\nquiveringotter-im4sin\nqwaszx987412369\nqwe9876543211234567\nqweasd123456789\nqweasdzxc123321\nqweasdzxcqweasdzxc\nqweasdzxcrfv123\nqwerasdfzxcv123\nqwerasdfzxcv1234\nqwerasdfzxcvqaz\nqwertasdfgzxcvb\nqwerty123451994\nqwerty123456789\nqwerty1234567890\nqwerty123qwerty\nqwerty987654321\nqwertyasdfgh123\nqwertyasdfgh1971\nqwertyasdfghzxcvbn\nqwertyuiasdfghjk\nqwertyuiop12345\nqwertyuiop123456789\nqwertyuiop1234567890\nqwertyuiopasdfg\nqwertyuiopasdfgh\nqwertyuiopasdfghjkl\nqwertyuiopasdfghjklz\nqwertyuiopasdfghjklzxcvbnm\nqwertyuioppoiuytrewq\nqwertyuiopqwertyuiop\nqwertyuiopzxcvbnm\nqwqeqrqtqyquqiqoqp\nqwqw12233445qwqw\nr15mo5i1g23sh8p1a7pe\nr16241924132400\nr4e3w2q1r4e3w2q1\nrachelilletschko\nrada89248682908\nradeonradeon159\nraidersofthelostark\nrainbowinthesky\nrainbowskittles\nranchocucamonga\nrandomdude12000\nrastamanrastaman\nrbcf11219112008\nrdtynbynfhfynbyj\nredhamsterbluehamster\nreibreh11herbier\nrelaxwebbewxaler\nrepea0978102889\nrfevgqggdejjqcbr\nrfewtww5tgregtr\nrfgbnfycrfzljxrf\nrfgyuji8il0oksdfzx\nrfnhbyghbdfkjdf\nrfpfrcdtnkfyfutyflmtdyf45984\nrfpfynbgxbr1234\nrgihlxoyoclmgiqsu\nrhbcnbyfrhbcnbyf\nrhenjq159634789\nrhfcbdstvjycnhs\nrhfcjnfcgfctnvbh\nrhfcrf1999ghjikf\nrich1963-debbie\nrichardkiehn588\nrischat9195865247\nrjnsdjbntkb1998\nrjnvfnhjcrby1982\nrjulfjyljrehbn24\nrjyutybfkmyjcnm\nrmracinggnicarmr\nrmracingrmracing\nrobert123456789\nrobertpattinson\nrockalivesolomax\nromasxodizaxlebo\nromik199520109040465697\nromkathepapavk147896325\nroscoejschweins\nrosemaryrosemary\nrrrrrrrrrrrrrrr\nrrrrrrrrrrrrrrrr\nrtxbyf9491856061\nruenharn8ekzji4z\nrumpelstiltzkin\nruqiyahlovemuaz\nrydolf230031551\ns!osop8dugdbqech\ns1o2r3k4a5n6g7e8l\ns9bil1vrjn0yh1b\ns=#et!041maktoez\nsabaradarylromantic\nsachintendulkar\nsadlukkbnmz1234\nsaijajantunen94\nsalfetka11121992\nsalvowebsolutions\nsamsungkoze176351\nsan4er123san4er\nsandalio2906fhe\nsandralanoeskaa\nsanekneshko9609\nsanik89286532300\nsanju582realmadrid\nsanscontrefacons\nsarabelle252000\nsarahbenalvarez\nsaransk03513rus\nsasha1993150205\nsashasashasasha\nsashastalkerxaaa\nsataniquemizo-19\nsatogonap080718\nsaturn159248137\nsbevpkyro9pqmf1\nsbrouse-awesome\nschneefloeckche\nscofie4815162342\nscrotumniger11va\nsddpcht-1234567\nsdwhd6533vo32fjs\nsecuredbymelannie\nsemaj700007james\nsempreeparasempre\nsentinellenitnes\nserejenka2613982\nsergei123456789\nsergey1234567890\nsergey987654321\nsergeyt08980898\nsergiomonterrey\nsex.com77snnkesnakeman\nsexmaniacs-liverune\nshanekilpatrick\nsharpandshiny121\nshaxidshaxid1983\nsheffieldsheffield\nshishkabarakalum\nshithappendsshit\nshrike01-hyperion\nshta28011949lev\nshut_your_mouth\nsirock-cservice\nske9k9tch3r5w9s\nsl8facl7vrwfwvro\nsliajoraephae86\nslimewave4busch\nsliueaproulou81\nsliueaproulou81-druphach\nsmashingsundays\nsmileystolen101201\nsmirnov.lizuncova\nsmoke5577sunday\nsmokymomichail19871007\nsnowbars481516234270119\nsoeuseiminhasenha\nsonyericsson777\nsonyericssons312\nspalermo-middle\nspdjgutnvhfjghdnqliu\nspeakersystem22\nspectrumsonline\nsperryd-redsoxxx\nspliffed-spliffer\nsport80984975792\nsportsinengland\nsqmlkjcpoju0jswc\nsri0ivassri3ivas\nsri2ivassri9ivas\nsrinivassavinirs\nssssssssssssssss\nstairwaytoheaven\nstargateasgard2009\nstarwarsjfkrush\nstarwarsstarwars\nstilllikedressingup\nstlkylilix100pr\nstoudriaslama55\nstruhtdesigns97\nsuellembarbosadossan\nsupercutekawaii\nsupplementalincome\nsusie65-eurostra\nswthernsugr9tsou\nsyncmaster753dfx\nsyncmaster755dfx\nsyncmaster757nf\nsyncmaster763mb\nsyncmaster793df\nt6dlniahehjsktr60vp8rb50e2\nt_r_i_e_s_n_y_u_g_e_\ntakehana-take8422\ntakekazu7-kamikitakeiko\ntalamort?dukolak\ntaniafernandes_87\ntanya1234567890\ntawny21bii-access\ntaynagamaprimavera\ntbrunson-serihs\nteen.comcalculat\nteerbob1-faceman1\nterezaefernando\nterremotoenchil\nteshka_poltavka\ntestingcheatsenabled\ntexnolog511akatj\nthafriauuwrea21\nthalesaugusto37027269*\nthamires123456789\nthatmeansrevenge\nthatmeansrevenge-xxx\nthechampaloushi\nthedarkride2000\nthedeej-alex266\ntheforceunleashed\nthegathering1993\nthegimp-gr5av8b\nthelegendofcynder\nthetruesightomg333222444\ntheworldisyours\ntheylovemehbad123\nthiesing-daniela\nthisisapassword\nthisismypassword\nthisweekinpalestine\nthnarchyhalf3613\nthompsonthompson\nthreatenedagrip\nthreelittlebirds\nthrowyourassout\nthxthxcancelled\ntickled.comreaper999mor098go\ntktyfdbnfkmtdyf18\ntktyfghtrhfcyfz\ntltprokopyn199229\ntortuecrapaud12\ntoshiakitoshiaki\ntpepsucolia@1209\ntrafficexchange\ntrafficwonderland\ntranslatability\ntransplantation\ntreawrihaiphe58\ntrepescienucachisso\ntrusov4003014665\ntrying2getphatw00t\ntstapes5990comc\ntsueretorovalex111\ntttttttttttttttt\ntupacamarushakur\ntutephoconani40\ntwilighttennispenguins\nuchiha___itachi\nufkbyfdbrnjhjdyf\nufyttdhfabcjdbxnbveh\nuhtntkmvfhufhbnf\nujcfdnjljhyflpjh\nukfvehysqgjljyjr1993\nulrace173rfhgjd\nulysses-chrisbln\nunitedsheffield\nunlimitedqwerty\nuomapheveadou51\nuomapheveadou51-moudaicr\nupm6pcsfxrrgsff5\nusernameemanresu\nuthjbvtxfbvfubb\nuthvfybzrfekbnw\nutopiahillhorses\nuuuuuuuuuuuuuuuu\nuvfhdpnwisnfqk3\nuzf$vgpiwrobuxrc\nv1o9v7a8tulupov\nv6#wnsbldes2!7zg\nvadimpustovoitov\nvakinnkrutoi4el\nvalerakish963210\nvancouvercanucks\nvashthestampede\nvasilevich1967m\nvbh7vfrcbvjdf14\nvbhjckfdfrfhgjdbx\nvbkkbjyljkkfhjd\nvbn322jfg434rty\nvd5ca6j9koqmzdueagoocj\nvehfnjdfqaz123496\nvelesnickaya525\nveritas-chrisbln\nveronika2786350\nvertii1999masha1\nvettedude1964ailing1\nvfcnthbvfhufhbnf\nvfhbyfrfhgjdcrfz\nvfhnjdcrfzrjirf\nvfhujif21052007\nvfkmxbrcgfkmxbr\nvfnbkmlf2010cjfrf\nvfvjxrfbgfgjxrf\nvgtkau8f5zzimt6j\nvioqwert14041990\nvior3luzl6u1ry2e1\nvit38960540alik\nvividdottle2000\nvixens.comreaper999mor098go\nvj9inznaakqfe9pe\nvjhtdjkyetnczhfp\nvjqukflbfnjh123\nvjqvfktymrbqvbh\nvkliferita31214\nvlad911009291998\nvladivostok2000\nvocevirousaudad\nvoe0eqh4f0pzhqon\nvqgbshd5bmmw$lup\nvsebudethorosho\nvsebudetxorosho\nvtyltkttdrfrfhf\nvw1zzz70z2h047607\nvyhkbhe7gtvwjfv5\nw!2e3b#pszd9fxav\nw1w2w3w4w5w6w7w8w9\nw4606086013369w\nwanderwesen-leider\nwatashiwadesuka\nwaychuck-diamond\nwbfghjnb56zxc39as\nwbrkfvtyskyblue\nwebcrackers2oo3\nwebsolutions007\nwegangster4lifebitch\nwehotandwesmokin182\nweihnachtsbaumna71150\nweihnachtskugel\nweihnachtsmarkt\nwestcoastcustoms\nwh00ol00000se2208e\nwh8jkkrcxghud5en\nwheelman15011998\nwhigginb1-s739rht8\nwhiskeydynomite\nwhitezazabrowny\nwhysoserious2012\nwilco791-12345678\nwilmer-usmcduck\nwithintemptation\nwladwladwlad24413wlad\nwntoej19fziqv77p\nwoaded1-vampish7\nworldofwarcraft\nworldofwarkraft\nwpgyugvme58xghio\nwrhofigduwxy5sch\nwso9rycamguchqpdwwvbad\nwsxz3823922163845\nwutanga-killabee\nwuxiaofei19866110\nwww123456321www\nwww9356527575195\nwz4rypedrmufrllq\nwzzqfmnv06euakxs\nx4cc355b10wsy0urm1nd\nxarlamoff20003000\nxf6cmqlrpeuhjuvv\nxkzwnuxkdn9a8kcykuitbkg1g\nxovbjnfyn2fghsdv\nxozqeo3tbwnasiw\nxpressmusic5530\nxsl3irudtulwa1yl\nxthtpnthybbrpdtplfv\nxtkjdtrvjktrekf\nxtndthrf1994dfp\nxxxxxxxxxxxxxxxx\ny0cq9fpk9xz4vr5v\ny5hjkdg82490840\ny9fdtggjdbxrncpz\nyaddayaddayadda\nyaffkseict8enpkl\nyankapartizanka\nybrbnfhjvfyfnfif\nybrjkfqbdfyjdbx\nybrnjytdpkjvftn\nybrrblbrbycjy1992\nydnm5xmznozagt3\nyfcntyfckfcntyf\nyfcnz1234567890\nyfcnzyfcnzyfcnz\nyfltymrfxgjr0707\nyfujhirtcbltkrjhjkm\nygfgdfhjrrtree2\nyjdjrjcbyj19901\nyjdsqgfhjkm531466\nyjplhtvjxrf0102\nylzzirg11grizzly\nyouarethekingnoob\nyouknowyouloveme\nyoungandrestless\nyoungestamateurs\nyourguardianangel\nyousexymfyousexymf\nysumj9rfzfjmrhks\nytdlmaswrbyfkvin\nytgjdnjhbvfz923\nytjghtltktyyjcnm\nyuliyabanny030302\nz1c9r2m4l6v8sd54\nzaibuneng198710\nzaq12wsxcde34rfv\nzaq1xsw2cde3vfr4\nzaqwsxcderfvbgtyhn\nzaqxswcde691202q\nzaqxswcdeqwerty\nzaqxswcdevfrbgt\nzara221291200870\nzara2nk4kat5rus16\nzara37349zima17\nzaraabdullayeva\nzarabativaumilion\nzaranovo07082001\nzarazailinetmod\nzarechneva.oxana\nzarema.memetowa\nzarema_fattahova\nzarema_velieva7\nzaremasadadinova\nzaremasboevasulemanova\nzaremba_tatiana\nzarembitska46011\nzarethspellimon\nzarina.1995.9595\nzarina.abduvalikyzy.94\nzarina.alieva91\nzarina.kabeldino\nzarina.magomedova.85\nzarina.saduakasova\nzarina5930342937\nzarina_aljanova\nzarina_duchmukanova\nzarina_kulmagambetova\nzarina_muhtabarova\nzarina_zhanaeva\nzarinablondinka\nzarinashamardina\nzarinashokirova\nzarinatanabaeva\nzaripova_elmira\nzaripovaidarkazan\nzaripovyulai1998\nzarj1221zarj1221\nzaroffevans2001\nzartdinova451560\nzarulem123456789\nzary89505051746\nzasada4815162342\nzasecre4enoo4en\nzasnn1i0408oryw\nzatalokasan4ez1995\nzateevaleksandr\nzatey9231357065\nzatonckajaalena\nzatsarinski_evgeni\nzatynaychenko81\nzaubermaussandra\nzaukololzauko11\nzaur5927531648z\nzauschkawarriors\nzav312717312717\nzavalnyuk25052008\nzavarka123456789\nzavatskaya_lilya\nzavdvrazvedrotu\nzavertailenko231\nzavgorodneva.eka\nzavitixinasveta\nzavoalena3453547\nzavodnoy0apelsin\nzavoloka9998460\nzavolokina.anya\nzavolovaya.galin\nzavorotnyakskorkina.svetlana\nzaw7891238520456\nzawaruha858525ha\nzawarzin7415963\nzawwaz0675081750\nzaxarchenko10072003\nzaxarova_nadiy33\nzay256ana081993\nzaya380637667052\nzayacmoilubimii\nzayakindenisperm\nzayanochka123456\nzayaz9857651624\nzaychenkobiglove\nzaychenok392712\nzaychenok_tanya\nzaychick16996916\nzayka.poprygayka7\nzayka9152420086\nzaynikid105736914\nzaytcevairina1989112\nzaytsevadariabik\nzaytsyev29071988\nzaz9379992123321\nzaza553299zaak47\nzaza87015404490\nzaza89286077003\nzazazala2lazz222\nzazerkalova.yuli\nzaztetzaz2765743\nzb.cmrflove2401103250484254\nzb74or03ru31972\nzbcfdgadsgdsgds\nzbd11sitc3ggwqr\nzbhbirfvjhjpjdf\nzbhbyffktrcfylhjdyf1995\nzbk24yo8oyxn2phc\nzbmw530d245lsf00\nzbn83rt69gkjlmib\nzbqbtd66fksxows\nzbrrtsmrzrtrtmnz87\nzbtvjuumrcb36dn\nzc123456hgfhynb\nzc1928374654321\nzc66h8mkzc66h8mk\nzc@vsqnegjqxtkjdtr\nzcb450mmsa5673410\nzcdznjqjntw2010\nzcegth123456789\nzcegthgfhtym1993\nzcegthxbgcsktqc\nzcehfb00022160kk\nzcfvfz55rhfcbdfz\nzcfvfzcegthcrfz\nzcfvfzcfvfz57rus\nzcfvfzcfvfzcerf666\nzcfvfzcfvfzcfvfz\nzcfvfzcfvfzndjz\nzcfvfzcxfcnkbdf\nzcfvfzcxfcnkbdfz\nzcfvfzcxfcnkbdfz24\nzcfvfzghbcfvfz141516\nzcfvfzghbdktrfntkmyfz8\nzcfvfzghbrjkmyfz\nzcfvfzkelifz123\nzcfvfzkexifz2011\nzcfvfzkexifz362514\nzcfvfzkexifzvfvf\nzcfvfznjkcnfzlf\nzcfvfzrhfcbdfz1994\nzcfvfzrhfcbdfz2008\nzcfvfzrhfcbdfz22\nzcfvfzrhfcbdfz2584\nzcfvfzytjnhfpbvfz\nzcfvsqcfvsqgjxn\nzcfvsqutybfkmysq\nzcjdthitycndj11\nzckbdfkbkjdfzcgtkfzcfljdfz\nzcnfyevjhtvfybkjhfr\nzcnht198lekz715\nzcnjvfnjkju2011\nzcpr2mzaajy5ixu\nzcqrlhravwsrs01\nzcthelfqntgfgthe\nzctvthyz11vfhbyf\nzcvb1680sfghq2e4rdtf\nzcvtksqbcevfitlibq\nzcxfcnkbdfbnjxr\nzcxfcnkbdfyfdctulf\nzcymmsaiman1982\nzd2z3521bmsnbad\nzd7rkfcctdnjuexbyt\nzdanauskiene.gal\nzdbrx88hnx524829\nzdenkajohansson\nzdfhdfhfnjkcnsq\nzdfk.ifcjnybrjdf\nzdgswzfylwnysinkjn\nzdimon1234567890-x\nzdjdfrhbcnjdcrbq\nzdorovaya_russia\nzdoroviegeorgymarykety\nzdorovilo.lyudmila\nzdoroway20041967\nzdrasteninetailed\nzdravstvuyvasya\nzdrygwzxvesdhagyr2ru\nze0m7itftpbhbx2\nze42501371296468\nzebo.zebo.zebo1992\nzebofayzullaeva\nzebra1997nastya\nzebra3640453544\nzebra86lettucetj\nzebrakuritzebrakurit\nzebraprintchloe\nzebroid09041988\nzech.svetlana26\nzeck152novik1715\nzediloveloveloveyou\nzedrot876543123451\nzeferinopenholato\nzefgerzgerg2353\nzefirpisyazefirpisya\nzegbhodu6rensd4\nzegeia_x0ve05rz\nzeghetaanniemand\nzeka.slesarenko\nzekaycpenka1987\nzekepink-spudnick\nzeleboba0864213579\nzelenadyrashreka\nzelenasergeewna\nzelenin54430014\nzelenkakamila273\nzelenov05071997\nzelenova_tatyana\nzelenskayalyuda\nzelimkhan069911144698\nzelinskaya_natal\nzelinskogo20133\nzelinskyy_stepan\nzembal_oriflame\nzemi4tutzemi4tut\nzemlyanika20111\nzemlyaninus1905\nzemskov_alex_nik\nzenek1234567890\nzenek565345273st\nzenelevskaya111\nzenfirahaibullina\nzenhearfreetraffic\nzenia2202199423\nzenit139542zenit\nzenit1996.05.07\nzenit89081260558\nzenitchampion2010\nzenitethelios44m-4\nzenjaspiridonov1\nzenkina.olga.52\nzenylo9bemarina\nzenyzeny02081957\nzenzero0catwoman01\nzenzubel5609035\nzepretoclarice02106\nzerde_amiralieva\nzerifehumbetzade\nzernogradromario\nzero11203080sk8\nzero69cancelled\nzero80634821686\nzerocool9445346\nzerocoolpalacio\nzerocoolsiksik021\nzerocul93q1qsib\nzerofull18misha\nzerograviti99913\nzeromillenium1991\nzeroreq747038023\nzerotolerance13\nzetifi5689603801960\nzetikoskbelive7\nzetn1bobsemmire\nzetohexoviqo302\nzeus7169-ladidadi\nzeverendezeveraars\nzevfvsvjkjltw333\nzexrct-s1s2s3s4\nzexxsa123357123\nzeynablerajulia\nzeynelabidincoskuncay\nzeynepzeynep4199\nzezimathenoob136\nzezvawivwivadze\nzezvaxarashvili\nzezylyfedoseenko\nzezyulina018kma\nzf0gj80w5764zc9ckzb\nzfa558nxdconcat\nzfcz89265675789\nzfdunsfdfcn11111\nzfkbcfvfrfhtyrj\nzfkrfirfblehfirf1995\nzfktrcfylhyjdbrjd\nzflvbybgcp1989bndc\nzfmagguyglvoasf\nzfoqww6o4r8iemz\nzfuftdrfvhfyttb\nzfviejf7207cuux\nzfyfcnfcbzpfve;tv\nzg18433boaz_kalfo\nzg8aga47y0q1nyi\nzg9530samson198\nzgdsjr72acujch2\nzgereaigori180379\nzgevstra13538363\nzgfajcyfzrfnzuer\nzgfdkeibyutyyflbq10\nzgfp6kx9yfy778x\nzghblevfkfgfhjkm\nzghbrhfcyfzktlb\nzghbywtccffnsghbyw\nzghjcnbnenrfivfkm\nzghjcnj555vjlfltdrf\nzghjcnjcegth1997\nzghjcnjcegthzwtpyf.\nzghjcnjgfifujleyjd\nzghjcnjghtktcnm\nzghjcnjrbyulbvf\nzghtrhfcyfcsrnsdrfh\nzghtrhfcysqdcflybr\nzgjdtkbntkmvbhf\nzgjgjdffkbyf1988\nzgjkbyfvyt12ktn\nzgjme9g28staqze\nzgmfx10afreedom\nzgrebaniespameri\nzgtigjg7_sgcxvix4\nzguravlev140987\nzgx567tazgx567ta\nzgxdn4cfcg4cykt\nzgzmlqmpo72nvd0\nzh3y62vloc4f8hr\nzh_alya_kzzh_alya_kz\nzhadko_nastyaae\nzhadnayaal4nost3345\nzhadra_tuyakbaeva\nzhadyra.ongarbaeva\nzhadyra2605zhan\nzhadyra_12091994kz\nzhadyra_osipova\nzhakaeva_aidana\nzhakanova_ainura\nzhake_zhaksilik\nzhakenov.bekzhan\nzhaksylyk.alina\nzhalnin100196102503\nzham20al40nov60\nzhamanbaeva_alma\nzhambulova_aitoh\nzhamilya.dalieva\nzhamo.kuttykadam\nzhamshit_aidana\nzhan.erke.1990zhan.erke.1990\nzhanar_kenesova\nzhanar_kokanova\nzhanara.galimova\nzhanara_akanova\nzhanara_turmahanbetova\nzhanat_bekbolat\nzhanat_tleykenov\nzhanatkyzy_kymbat\nzhanatmultenova\nzhandos_bestobe\nzhandoskalkenov\nzhanel_atimtayeva\nzhanel_sultanova\nzhanelloverani$$\nzhanelya_zhumagalievna\nzhanetta.dzhekzhanetta.dzhek\nzhangelnovaroza\nzhangjiahang666\nzhangkeyu1117520\nzhangyun2012022\nzhanibek_serdali\nzhanibeksalim96\nzhanka_zhanabai\nzhanna.astapchuk.87\nzhanna.borisova\nzhanna.glasheva\nzhanna.krasnoshtanova\nzhanna.pogorelovagusha\nzhanna.reshetova\nzhanna.yadzevich\nzhanna.yashurina.79\nzhanna1998zhanna\nzhanna23isandyukova\nzhanna_kakenova\nzhanna_sizonova\nzhannabekzhanova\nzhannachezganova\nzhannaglukhareva\nzhannamalyarova5\nzhannamariamidze\nzhannat_utegulov\nzhannayakovleva\nzhannchik_chirchenkova\nzhannetochka1983\nzhannetyusupova\nzhannochka199608\nzhansaya_200590\nzhanserik.mondybaev\nzhanyzakzhanyzak\nzhao15873436192\nzhaoqian19870809\nzharikova661943\nzharki.gorynych\nzharkombaeva6-21\nzharkovvladimir\nzhas115599201085\nzhasik_13.08.94\nzhasik_sexy_boy\nzhasikzhunus-89\nzhaslan_husainov\nzhaukeshova_dina\nzhaulybaev.daniyar\nzhavoronkova_mar\nzhazibekova_aige\nzhazir.kamalova\nzhazira87023950561\nzhazira_borankul\nzhazira_zholdasbekova\nzhbrgfhfpbn560591\nzhcnhjqcnfylfhn\nzhdanovich_vital\nzhdimen9i9vernus\nzhdimenya5881733\nzhecka0500861232\nzheenbekov.erali\nzheenbekova.nazira\nzhehs78yft8kq7d\nzheka.gnezdilov\nzheka80986612008\nzheka9080245008\nzhekabashir1991\nzhekadenisyuk777\nzhekaivanov0609\nzhekarastaman2010\nzhekasuper76b8o7y666\nzhekbyfbhbyfcekbvfyjdyf\nzhekebatyroffice\nzhekkbyf13101994\nzheksembekov.gal\nzhekson643651419\nzheldibinalena98\nzheleznovviktor\nzheleznyi.sasha\nzhelezoglo1980zhelezoglo1980\nzhemchugova_margarita\nzhenechka.zhuzha\nzhenek.prosvirnov\nzhenekershov1990\nzhenja.bezruchak\nzhenjachka160287\nzhenka.lyaskovskaya\nzhenka1993fizik\nzhenya.baranov.1983\nzhenya.makarkin\nzhenya.sapyanov\nzhenya.stacenko\nzhenya.vorozhcova\nzhenya1234554321\nzhenya123456789\nzhenya1994nokia\nzhenya890280379840000\nzhenya89215961000\nzhenya_manghela\nzhenya_oblachenk\nzhenya_puschina\nzhenya_rozhko44\nzhenya_zemlyanski\nzhenyagrinev1992\nzhenyaibragimov\nzhenyakarabanov\nzhenyasaulin2011\nzhenyashabinski225577\nzhenyashevchenyuk\nzherdii19890624\nzhernakov.sasha\nzhestlenka.udaleccc\nzhetkizgenova_94\nzhetpisova.dina\nzhf98ufbqr73rwzg\nzhfljvfiyzzrjirf\nzhfnfvbkmyfpsvys\nzhien.berekezhien.bereke\nzhigailo28031967\nzhigalo.tatyana\nzhiglov_82zhiglov_82\nzhigulskaya1972\nzhilavii25011975\nzhilkibaev.asylbek\nzhimka1909678906\nzhirkova22091999\nzhivotkovaa1988\nzhivu_kak_hochu\nzhixarevdeniskabaev\nzhizhenko_artur\nzhiznya_xrenova\nzhjckfd01042000\nzhjckfd12031987\nzhjckfd15102009\nzhjckfd16072010\nzhjckfd25011995\nzhjckfd3006lvbnhb\nzhjckfd30071972\nzhjckfd41120071111\nzhjckfd78zhjckfd\nzhjckfdf19112011\nzhjckfdf2306201018071989\nzhjckfdf26102006\nzhjckfdf71uhbym\nzhjckfdjdyf25704\nzhjckfdmolinski\nzhjcnm3elf999666\nzhjdbqdkflbckfd\nzhjgjkjd2012elfxf123\nzhjlbkfcm64rbtd\nzhjlbkfcmpltcm410\nzhmurina.anastasiya\nzhmuro_konstant\nzholdasova.asel\nzholzhaksy03028\nzhoni_kazimzade\nzhora_rozha11111\nzhorabekova.aidana\nzhorikryazanov5\nzhorikvartanov13579\nzhornovaanastasiya\nzhosan1995253117\nzhq8h0i822nk0pc\nzhrjcdtnbncjkywt\nzhslhhwhhjzzt8a\nzhtpbyrfjnnhecjd\nzhtubyf1998djnm\nzhu4ek120566170489\nzhuangyuchen1973\nzhubrovskiy1990\nzhuckovakseniya17\nzhucovanastia28\nzhugina_nataliya\nzhuhalo666gothic\nzhukayevagulsaya\nzhukova__svetlana\nzhukovadejavu888\nzhukovagiiadeliya555\nzhukovairenyes81\nzhukovakatechka\nzhukovalena9614\nzhulduzgaliev.syrym\nzhuldyz_salihova\nzhuldyzkudaibergenova\nzhulinskaya.2000\nzhumabaevkutman\nzhumagulka.nadya\nzhumagulov_aibat\nzhumagulova_aiym\nzhumanova.almira\nzhumanova_balausa\nzhumasheva_madin\nzhumassultanova\nzhumaxmet_aidana\nzhunusbekova-aig\nzhunuskanova_zha\nzhunuspaevaaidana\nzhunuspekov-erm\nzhuo2k_1#dpargfg\nzhurahovskaya.klavdiya\nzhuravlev_taras\nzhuravleva.darya\nzhuravleva.lilya\nzhuravleva.nastyusha\nzhuravleva_liliya\nzhurikov.aleksey\nzhurinakaterina\nzhurova_natalya\nzhurzha_natalia\nzhushmanenokzhushmanenok\nzhusup.akmataliev\nzhusupbekova.zha\nzhvbkfvfrcigor2000\nzhvirzdinene.svetlana\nzhvrazhda2013viva\nzhxi38sdosidf28\nzhymanova_aidana\nzhyravskiy_vetol\nzhyrgalbek.temirbaev.78\nzhzashpaupat123tree\nzi08819588886056\nzi33br7412makado\nziallharryandmor\nzibagul17051967\nzibyfzyf.hmtdyf\nzidane200620718\nzidipyqx6xg1tr2\nzie7uqlloijnozf\nziegelstein2405\nzielovbluesaltire\nzigangirova_reg\nziganshina040689\nzigazagazigazaga\nziggiplastichero\nzigler201019952011\nzigmun619zigmun\nzigmund20074329\nzigunoff1986zigunoff\nzigzag-toga1414\nziianjazzballet\nzik7zqtptughc8q\nzikabest20822008\nzikel9277279181\nzikindima8950053587\nziklopziklopovich\nzil79138peoto7x36\nzilbetta2andrey\nziliboba4723433106\nzilidinov24081991\nzilinagizzatullina\nzilola.abdumannapova\nzilola1984zilola\nzilyaninanastena\nzima1996leto0107\nzima2013vnykovo\nzimarinslava6491\nzimazimazimazima\nzimbabweewbabmiz\nzimbaev17071985\nzimer80973355541\nzimfiraislamova\nzimin5258144580\nzimina_20032003\nziminatonya1968\nzimmermannlidia\nzimnyukovas11111991\nzimochkaahmatova\nzimushkazima123\nzin7kxp8nlqmhst\nzina93rus050991a\nzina_andriyanova\nzinaaika29121967\nzinababa940312de\nzinaida.chizhova\nzinaida.zinchenko.57\nzinaida111213ils\nzinaida_vdovenko\nzinaidakushlaba\nzinaidatyleneva\nzinatullindanil\nzinchuk19941010\nzinedinezidane10\nzinevich_aleksan\nzinewych19990203\nzingerzinger2746\nzinhorimanmori@123\nzinir.safin1988\nzinnurovna191201\nzinovenkov0985610\nzinyr16evgeniya11\nziopino20110214\nzipaszt23245violetta\nziperman1859067\nziperus19711971\nzippy222-rem757\nzirekkyzy.gulina\nzirfrfrfirf1243\nzirianlesha1982\nziripke928-wiinw98\nzirkiinfowww0810\nziubxaf8alwaysvacant96\nziyashev_91temir\nziznprekrasna6078\nzizzyzucker8538\nzj8riseanitzpayb2\nzjcbkhl_6hhc2ah\nzjdu9hngi10ec86t\nzjfdlatuyxborns\nzjjz1gtg4vz8tkc\nzjkmqliodhjx347hkgoz\nzjktczvfqjhtyrjd\nzjohbyzwovqaalrk6f2islgv\nzjqghfdbnvbhjv18\nzjrcfyrfbdfyjdf\nzk201086zk201086zk\nzk39g0odpopfr$$\nzkccjc863ghjcnjnfr\nzkexifzvfvfdvbht\nzkgl4f2fo7i4mde\nzkjdbxbyf1578rhenj\nzkublucdjuctvmu\nzl892690845050zl\nzlata2612zoloto\nzlataslava100908\nzlatevblack110292zlatevblackoleg.\nzlatik8095892665\nzlatovlaska1969a\nzlayakaka102514\nzlcs6fzrdfw1yrt\nzlehytdfdtxyjcnm\nzleitxrfctujlyz\nzlfirfcbdfz101998\nzlhjxeyfdbyrcx3\nzljnk7se6t0f32s\nzlobina_yulia84\nzlobnickiy.dima\nzlobniytipspaun\nzlobnyihflxtyrj\nzlodeidns5111987\nzlodeivot88w3er\nzloeban192734011\nzloielektrik0983\nzlostka55442formation\nzlotnikova_valya\nzlouh3fmh61b1ik\nzlthysqrjkkfqlth\nzltoxddj_bbvvl2u0\nzlwa5hf2rcm0jm6\nzlyuka1991zaraza\nzm6jvr01i7bkbo9w\nzm7801051227product\nzmd6bn2s23nvcuc\nzmeikov_aleksand\nzmes_nikzmes_nik\nzmm4cx2eaj9eaag\nzmoney.mymoneyz\nzmw701bdcnkdto4\nzn48bwus8ux5xvl\nzn61bx1bu46qpua\nzn8fihquds6eprf\nznahar2995915zor\nznai_p_r_a_v_d_u\nzndjqlshrf3hfpfpyfk\nznegjq20051997x\nznfrfzcevfitlifz\nznfrfzrfrfztcnm\nzngsengwa747maj\nznightrider2000\nznjth25ab76mine\nzno_rivne_avtotr\nznsdvtcntyfdctulf\nzobova.galina.77\nzobr36917598673\nzoccolificiobarra\nzod745896iac070\nzoe4ka89222829869\nzofima567890123\nzohanscrappycoco\nzohantwir19734682\nzoi437011301zoii\nzoiavas26021959\nzoirkulov.sheroz\nzolotareva.ira.9\nzolotaya_rushka\nzolotayaelya123\nzolotayalunka1991\nzolotayaprincessa\nzolotnik12061961\nzolotoekolechko\nzolotoi69818575\nzolotoi_zaichik\nzolotojkaras1521\nzolotonikolaykomino\nzolotonogka_kris\nzolotonosha1972\nzolotoy_karasik\nzolotoymalchik7\nzolotuxin14041975sv\nzolsanebacode78\nzomaamkomputer18\nzombaks23zombaks23\nzombaks55zombaks55\nzombaks61zombaks61\nzombaks7zombaks7\nzombeemoution27\nzombiealwaysand\nzombiesareawesome\nzombieyeplaysminecraf\nzombieyeplaysminecraft\nzombiezombiezombie\nzomerfeld.frida\nzona1500nadianadia\nzone51-topsecre\nzonenshtral_fany\nzonina.mariyazonina.mariya\nzoom0527lovemaradior\nzoom3272784panda\nzoomiecmalston3\nzooshineforlife2014\nzoozoozoozoozooz\nzoozoozozoozoozo\nzopachka7121987\nzophisicatedclub\nzopirmmadxfzqud\nzoriana_hovalko\nzorila123456789\nzorina.nataliya\nzorina_verunchik\nzoro019863183609\nzoroastrizm1989\nzorro0147852963\nzorrooo747zair91\nzoryana.shelenko\nzoryana18091999\nzoryana_dudchak\nzoryanasilvashi\nzotov.dimok170190\nzotova_karolina\nzotova_svetlana\nzoya.golovko.61\nzoya.hamidullina\nzoya_bogatyreva\nzoyabezruchkina\nzoyazacharchenko\nzoyilin21121950\nzoyuxa_verhotina\nzp4txzheyfufrlef\nzp8l5oini2nrdju\nzpdbyffhrflmtdyf\nzpdtpljxrfrjynfrnf23\nzpnz8tt9hdyvz5bz\nzps8t85pj_p4hnq\nzpyf.bcnbyfddbyt\nzpyf.vbhjycnfhbgjkjylhzyb1987\nzpyfkfxnjdctcerb\nzq5erel4xh32jyc\nzqc25xe2tpxwcwm\nzqek6v51v706fgp\nzqjphsyf6ctifgu\nzqlxu61j2uquoeo\nzqt3q1ynsxy1l41\nzqt5m2b9h78kpw3\nzqwerty23162000\nzqwj89046030015\nzqwtrkfl1183722\nzqxw123zqxw123zqxw123\nzqy1a4qvyng7nf5\nzr350bisxuen0nu\nzrbhfbvytgjchfnm\nzrbnjhbfdnjceib\nzregjdfkbhfyjdsq\nzreh.zdepjkjne.\nzrenis88zrenis89\nzrftdrjkz170587\nzrga5oq5lx1lld2\nzrhfcbdfzbgjabu\nzrhfcbdfzltdjxrf\nzrhfcfdbwf2912858\nzrhfcjnekz230296\nzrikiunynhiunhiu\nzrjdktd1974bujh\nzrjdktd22121986\nzrjdktdcthutq911\nzrkfcc123456789\nzrkfccysqgfhtym\nzrtp214yci66i8i\nzrusauto21081981\nzrust9272337299\nzrzz63ke_gicc0s\nzs-dnxaybbshsmlcrvn-gg\nzs457zkmr8as5if\nzs68fxg8jd4kdjf65g\nzse4xdr5cft6vgy7\nzsefvbhyuioplkjn\nzshuravlevvalera\nzsifgar1010106pdfa\nzskripchenko1992\nzsr589lgfnae48th\nzstarchenkovazstarchenkova\nzstrekolovskaya\nzsvqwzj7oaxup0z\nzswdfergthyjuki\nzsxawq134679852\nzsy98lu_iqvd7k2i\nzt1jxrw2dbih3ga\nztcnmfkmafbjvtuf\nztcvmnjxnjztcvm\nzthgo2m173ekk2j\nzthpzvetpiiahij\nztng9y1zwsy8edm\nzts_zagreb_kikica\nztx83t5t-saceacr5\nzu3chpziskmccloske\nzubastik.viorelia\nzubko1891aleksei1891\nzubotykin.aleksandr\nzubova_victoriya\nzuckerschnecke88\nzucxyqyjlvrr5m3\nzugfqtjtgxjnreh\nzugzwangiloveyou\nzuhra.kubanova.84\nzuhra1997.26.12.z\nzujedemdasseine\nzujh.zdczdjdrec\nzujlfvfkbyf1976\nzulayha.kamilova\nzulfiya.halikova\nzulfiya.klycheva\nzulfiya.musakyzy\nzulfiya.nabieva.78\nzulfiya.nurumova\nzulfiya.saparymb\nzulfiya28011991\nzulfiya_asainova\nzulfiya_piralieva\nzulfiya_skarpion\nzulkiwynkirinadar\nzulma19ivan18lov\nzulmagabriela12\nzulpieva.nurgul\nzulufox19945377390\nzulumbekov.bolot\nzunix9032944755\nzurafeiqrishvili\nzuramindiashvili\nzurash_shuraeva\nzurat.mamaevzurat.mamaev\nzurisho.muborakshoev\nzurmillionerzak\nzusammenzustellen\nzusvxvsg01071984\nzuzuu8378seruga\nzvbkkbfhlth1984\nzverev_7979zverev_7979\nzverevaolga1604\nzverptz19960110\nzvezda3025355333\nzvezda553824531\nzvezda_vostochnaya\nzvezdapoimenisolnce\nzvezdasuperpuper\nzvezdochka_lily\nzvfhctkmufhbgjd\nzvfhecz4249pfz7115\nzvfiehvf19961803\nzvfirffkrfirf90\nzvfknlbyjdf159753\nzvfktymrfzjdtxrf\nzvfqrf1984311vfvf7777777\nzvfuybnlkzgfhytq\nzvfuybnlkzltytu\nzvgjkmcrfzjkmuf\nzvgkxq52f4uj5zv\nzviadinarchemashvili\nzvit_dnkomplekt\nzvit_grandaktiv\nzvlyubov29081973\nzvnbumu6nnknpss\nzvncak35mu2vt3q\nzvnrwuw5p4mmrwz\nzvonkovich_oksan\nzvovafighter27z\nzvtxnf.jbyjvfhrt\nzvyagincev.alekse\nzvzlomvkontaktez\nzweiger27011989\nzwertfc5n4n7u6#q\nzwezdablagininadiana18\nzwin_bassetomahd\nzwq17dp67890123456gfgfvfvf\nzwtke.cmkexitxtvujnjdk.357951\nzwy5ftneynaibtgxalqc\nzwz3uz2agder1gy\nzx11223344556677\nzx65pda5sfk60m8w\nzx80291144177zx\nzxasqw12cvdfer34\nzxasqwcvdferbnghty12381238\nzxc113060008464\nzxc123asdqwe123\nzxc123cxz456zxc\nzxc123vbn159753\nzxc123zxc456zxc789\nzxc1970zxc0209q\nzxc9876543211234567\nzxc98765432112345678\nzxcasd0110096nik\nzxcasdewqrfv144\nzxcasdfgh2691910\nzxcasdqwe123098poilkjmnb\nzxcasdqwe123qaz\nzxcasdqwe123valera\nzxcasdqwe987654321\nzxccde12344321vbn1\nzxcdewqas45456510\nzxcost2012bobrof1982\nzxcqaziop558asdkoko\nzxcv04051978vcx\nzxcv1234zxcv1234\nzxcv89536037991\nzxcvasdfqwer1234\nzxcvasdqw1lyubashka\nzxcvb1112131415\nzxcvbasdfgqwert\nzxcvbgtrewqasdf\nzxcvbn123456789\nzxcvbn1234567890\nzxcvbnasdfghqwerty\nzxcvbnm0147852369\nzxcvbnm09051992\nzxcvbnm123321mnbvcxz\nzxcvbnm12345678\nzxcvbnm123456789\nzxcvbnm1234567890\nzxcvbnm123654lkj\nzxcvbnm13092001\nzxcvbnm147852369\nzxcvbnm1530798566\nzxcvbnm19931987\nzxcvbnm19982011\nzxcvbnm1zxcvbnm2\nzxcvbnm666zxcvbnm\nzxcvbnm789123456\nzxcvbnm80313112\nzxcvbnm98765432\nzxcvbnmasdfghjk\nzxcvbnmasdfghjkl\nzxcvbnmasdfghjklqwertyuiop\nzxcvbnmjuytrewqf\nzxcvbnmlkjhgfdsa\nzxcvbnmmnbvcxzx\nzxcvbnmmnbvcxzzxcvbnm\nzxcvbnmqwertyuiop\nzxcvbnmzxcvbnmzxcvbnm\nzxcvbnqwerty123\nzxcvbzxcvbzxcvb\nzxcvfdsa753qwer\nzxcvfdsaqwer4321\nzxcvvcxzzxcvvcxz2301\nzxcvzxcvzxcvzxcvzxcvzxcvzxcv\nzxczxc123123zxczxcv\nzxczxczxczxczxc\nzxekovgy2691667\nzxpv6nlwcxgnlheh\nzxsd7856xcas8945\nzxvbym264975765\nzxvnqwmpyr346568\nzxzxzx111222333444\nzxzxzx569012zx77\nzy5jgxf4rrktxnu\nzy8buik18n63mcx\nzybneva987654321\nzyciejestpiekne\nzydbwbawanqndmc\nzydilovo2011polimer\nzyerjdbxhekbncegth\nzyf200508040585240478\nzyf21.10.1998ujl\nzyf335998965zyf\nzyfcnjzobqgblfhfc\nzyfn1999ahflrbyf\nzyfrfnsitdf1979\nzyftdutybzzyfdbnfkz\nzyfuhji648ktytyf60122\nzyfujhfr16021997\nzyjxrfgkfdeyjdf\nzyjxrfzyekmrf1235\nzykin.kuzma1991\nzykovroma2250322503\nzykqkyslq53z8fw\nzyltrcgjxnf007zyfbhf\nzymomonas.mobilis\nzyrfzyrffrcfvbn\nzyrkina.natalya\nzytcuennjtcatdjhbn1\nzytdthyecmghjofq\nzytuekzzbbuekmvyt5\nzyxwvutsrqqrstuvwxyz\nzyxwvutsstuvwxyz\nzz123zz123zz123\nzz543228097123zz\nzz89504439854zz\nzz9pluralzalpha\nzzhjckfdd123321\nzzkcotna01oyw8u\nzzlt822vgnr6nio\nzzntv9axebdrxmqoe\nzzphilip_olsson23\nzzqe03b5fo0buqn\nzzz327101969zzz\nzzzcfvfzukfdyfzz\nzzznitachi95rus\nzzzvadzzz123456\nzzzxxxcccaaasss\nzzzz06091982zzzz\nzzzzxxxx1122yy22\nzzzzxxxxcccc22223333\nzzzzxxxxccccvvvvbbbb\nzzzzz0974799498\nzzzzzzuui7122728892bbvvctyw\nzzzzzzzzzzzzzz14\nzzzzzzzzzzzzzzz\nzzzzzzzzzzzzzzzz\nzzzzzzzzzzzzzzzzzzzz\nzzzzzzzzzzzzzzzzzzzzzzz\nzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\n~censored~man69\n~sonyxperiaz2013~\n~thamara172221pinho~";
+  };
+  links["src/engine/passwordRules.ts"] = {"./account":"src/engine/account.ts","./passwordBlocklist":"src/engine/passwordBlocklist.ts"};
+  defs["src/engine/passwordRules.ts"] = function (module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.COMMON_WORDS = exports.SERVICE_WORDS = exports.PASSWORD_MAX_BYTES = exports.PASSWORD_MIN_CHARS = void 0;
+exports.normalizePassword = normalizePassword;
+exports.passwordLength = passwordLength;
+exports.passwordBytes = passwordBytes;
+exports.isCommonPassword = isCommonPassword;
+exports.patternPieces = patternPieces;
+exports.emailWords = emailWords;
+exports.checkPassword = checkPassword;
+exports.passwordProblem = passwordProblem;
+const account_1 = require("./account");
+const passwordBlocklist_1 = require("./passwordBlocklist");
+exports.PASSWORD_MIN_CHARS = 15;
+exports.PASSWORD_MAX_BYTES = 72;
+exports.SERVICE_WORDS = ['kaisip', 'cisa', 'isaca'];
+exports.COMMON_WORDS = ['password', 'passwort', 'qwerty', 'letmein', 'welcome', 'iloveyou', 'changeme', 'admin', 'login', 'secret'];
+const MIN_PIECES = 6;
+const MIN_DISTINCT = 5;
+const RUN = 3;
+const KEY_ROWS = ['`1234567890-=', 'qwertyuiop[]\\', "asdfghjkl;'", 'zxcvbnm,./'];
+const LEET = { '0': 'o', '1': 'i', '3': 'e', '4': 'a', '5': 's', '7': 't', '@': 'a', $: 's', '!': 'i' };
+const JOINERS = /[\s._-]+/g;
+let blocklist = null;
+function blocked() {
+    if (!blocklist)
+        blocklist = new Set(passwordBlocklist_1.PASSWORD_BLOCKLIST_TEXT.split('\n'));
+    return blocklist;
+}
+function normalizePassword(password) {
+    return typeof password.normalize === 'function' ? password.normalize('NFC') : password;
+}
+function passwordLength(password) {
+    return Array.from(normalizePassword(password)).length;
+}
+function passwordBytes(password) {
+    let n = 0;
+    for (const ch of normalizePassword(password)) {
+        const c = ch.codePointAt(0);
+        n += c < 0x80 ? 1 : c < 0x800 ? 2 : c < 0x10000 ? 3 : 4;
+    }
+    return n;
+}
+function isCommonPassword(password) {
+    const p = normalizePassword(password).toLowerCase();
+    const set = blocked();
+    return set.has(p) || set.has(p.replace(JOINERS, ''));
+}
+function runAt(s, i) {
+    let best = 0;
+    for (let j = 0; j < i; j++) {
+        let k = 0;
+        while (i + k < s.length && s[j + k] === s[i + k])
+            k++;
+        if (k > best)
+            best = k;
+    }
+    let k = 1;
+    while (i + k < s.length && s[i + k] === s[i])
+        k++;
+    if (k > best)
+        best = k;
+    for (const d of [1, -1]) {
+        let n = 1;
+        while (i + n < s.length && /[a-z0-9]/.test(s[i + n]) && /[a-z0-9]/.test(s[i + n - 1]) && s[i + n].charCodeAt(0) - s[i + n - 1].charCodeAt(0) === d)
+            n++;
+        if (n > best)
+            best = n;
+    }
+    for (const row of KEY_ROWS) {
+        const at = row.indexOf(s[i]);
+        if (at < 0)
+            continue;
+        for (const d of [1, -1]) {
+            let n = 1;
+            while (i + n < s.length && row[at + n * d] === s[i + n])
+                n++;
+            if (n > best)
+                best = n;
+        }
+    }
+    return best >= RUN ? best : 0;
+}
+function patternPieces(text) {
+    const s = Array.from(text);
+    let pieces = 0;
+    for (let i = 0; i < s.length;) {
+        const run = runAt(s, i);
+        i += run || 1;
+        pieces++;
+    }
+    return pieces;
+}
+function strip(text, words) {
+    let rest = text;
+    let hit = false;
+    for (const w of [...words].sort((a, b) => b.length - a.length)) {
+        if (!w)
+            continue;
+        const next = rest.split(w).join('');
+        if (next !== rest)
+            hit = true;
+        rest = next;
+    }
+    return { rest, hit };
+}
+const fold = (s) => Array.from(s, (c) => { var _a; return (_a = LEET[c]) !== null && _a !== void 0 ? _a : c; }).join('');
+function kindOf(ch) {
+    if (ch >= '0' && ch <= '9')
+        return 'd';
+    return ch.toLowerCase() !== ch.toUpperCase() ? 'l' : 'o';
+}
+function emailWords(email) {
+    if (typeof email !== 'string' || !email)
+        return [];
+    const e = normalizePassword((0, account_1.normalizeEmail)(email));
+    const at = e.lastIndexOf('@');
+    const local = at > 0 ? e.slice(0, at) : e;
+    const out = new Set();
+    if (Array.from(local).length >= RUN)
+        out.add(local);
+    let piece = '';
+    let kind = 'o';
+    for (const ch of [...Array.from(local), '.']) {
+        const k = kindOf(ch);
+        if (k !== kind || k === 'o') {
+            if (kind !== 'o' && Array.from(piece).length >= RUN)
+                out.add(piece);
+            piece = '';
+        }
+        kind = k;
+        if (k !== 'o')
+            piece += ch;
+    }
+    return [...out];
+}
+function checkPassword(password, email) {
+    const p = normalizePassword(typeof password === 'string' ? password : '');
+    if (passwordBytes(p) > exports.PASSWORD_MAX_BYTES)
+        return ['too_long'];
+    const out = [];
+    if (Array.from(p).length < exports.PASSWORD_MIN_CHARS)
+        out.push('too_short');
+    const lower = p.toLowerCase();
+    const mine = emailWords(email);
+    const kinds = [
+        ['contains_email', mine],
+        ['contains_service_word', exports.SERVICE_WORDS],
+        ['common', exports.COMMON_WORDS],
+    ];
+    const found = new Set();
+    let a = lower;
+    let b = fold(lower);
+    for (const [kind, words] of kinds) {
+        const ra = strip(a, words);
+        const rb = strip(b, words.map(fold));
+        if (ra.hit || rb.hit)
+            found.add(kind);
+        a = ra.rest;
+        b = rb.rest;
+    }
+    const weakRest = found.size > 0 && Math.min(patternPieces(a.replace(JOINERS, '')), patternPieces(b.replace(JOINERS, ''))) < MIN_PIECES;
+    if (isCommonPassword(p))
+        out.push('common');
+    if (weakRest) {
+        const why = ['contains_email', 'contains_service_word', 'common'].find((k) => found.has(k));
+        if (!out.includes(why))
+            out.push(why);
+    }
+    const distinct = new Set(Array.from(lower)).size;
+    if (distinct < MIN_DISTINCT || patternPieces(lower) < MIN_PIECES)
+        out.push('too_simple');
+    return out;
+}
+function passwordProblem(password, email) {
+    var _a;
+    return (_a = checkPassword(password, email)[0]) !== null && _a !== void 0 ? _a : null;
 }
   };
   links["src/engine/plant.ts"] = {"./domainNaming":"src/engine/domainNaming.ts","./journey":"src/engine/journey.ts","./examReady":"src/engine/examReady.ts","./readiness":"src/engine/readiness.ts","./readinessRange":"src/engine/readinessRange.ts","./streak":"src/engine/streak.ts","./plantLooks":"src/engine/plantLooks.ts","./plantForms":"src/engine/plantForms.ts"};
@@ -9287,13 +9272,15 @@ exports.fieldInk = {
     },
 };
   };
-  links["src/webcloud/auth.ts"] = {"../engine/account":"src/engine/account.ts","../cloud/types":"src/cloud/types.ts","./config":"src/webcloud/config.ts","./errors":"src/webcloud/errors.ts","./pkce":"src/webcloud/pkce.ts","./session":"src/webcloud/session.ts"};
+  links["src/webcloud/auth.ts"] = {"../engine/account":"src/engine/account.ts","../engine/passwordRules":"src/engine/passwordRules.ts","../cloud/types":"src/cloud/types.ts","./config":"src/webcloud/config.ts","./errors":"src/webcloud/errors.ts","./pkce":"src/webcloud/pkce.ts","./session":"src/webcloud/session.ts"};
   defs["src/webcloud/auth.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PKCE_MAX_AGE_MS = void 0;
+exports.passwordRuleError = passwordRuleError;
 exports.createWebAuth = createWebAuth;
 const account_1 = require("../engine/account");
+const passwordRules_1 = require("../engine/passwordRules");
 const types_1 = require("../cloud/types");
 const config_1 = require("./config");
 const errors_1 = require("./errors");
@@ -9304,6 +9291,24 @@ const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 const CODE_RE = /^\d{6,10}$/;
 exports.PKCE_MAX_AGE_MS = 10 * 60000;
 const KNOWN_PROVIDERS = ['email', 'google', 'apple'];
+function passwordRuleError(problem) {
+    return new types_1.CloudError('invalid', undefined, `password_${problem}`);
+}
+function saveProblem(e) {
+    if (e.code === 'invalid' && typeof e.detail === 'string' && e.detail.startsWith('password_')) {
+        const d = e.detail.slice('password_'.length);
+        if (d === 'leaked' || d === 'weak')
+            return d;
+        if (['too_short', 'too_long', 'common', 'contains_email', 'contains_service_word', 'too_simple'].includes(d))
+            return d;
+        return 'weak';
+    }
+    if (e.code === 'reauth_required' || e.code === 'unauthorized')
+        return 'reauth';
+    if (e.code === 'rate_limited' || e.code === 'offline')
+        return e.code;
+    return 'server';
+}
 function sessionFrom(body, now) {
     const at = body.access_token;
     const rt = body.refresh_token;
@@ -9312,7 +9317,11 @@ function sessionFrom(body, now) {
         return null;
     const expiresIn = typeof body.expires_in === 'number' && body.expires_in > 0 ? body.expires_in : 3600;
     const expiresAt = typeof body.expires_at === 'number' && body.expires_at > 0 ? body.expires_at * 1000 : now + expiresIn * 1000;
-    return { v: 1, accessToken: at, refreshToken: rt, expiresAt, userId: user.id, email: typeof user.email === 'string' ? user.email : null, providers: providersOf(user) };
+    const s = { v: 1, accessToken: at, refreshToken: rt, expiresAt, userId: user.id, email: typeof user.email === 'string' ? user.email : null, providers: providersOf(user), signedInAt: now };
+    const iat = (0, pkce_1.tokenClaims)(at).iat;
+    if (typeof iat === 'number' && Number.isFinite(iat) && iat > 0 && Math.abs(iat * 1000 - now) <= 7 * 86400000)
+        s.skewMs = iat * 1000 - now;
+    return s;
 }
 function providersOf(user) {
     const meta = user.app_metadata && typeof user.app_metadata === 'object' ? user.app_metadata : {};
@@ -9324,8 +9333,33 @@ function createWebAuth(deps) {
     const base = ((_a = deps.url) !== null && _a !== void 0 ? _a : config_1.SUPABASE_URL).replace(/\/+$/, '');
     const apiKey = (_b = deps.apiKey) !== null && _b !== void 0 ? _b : config_1.PUBLISHABLE_KEY;
     const redirectTo = (_c = deps.redirectTo) !== null && _c !== void 0 ? _c : config_1.REDIRECT_URL;
-    const store = (0, session_1.createSessionStore)(deps.stores);
     const now = () => deps.clock.now();
+    let ended = null;
+    const sessionAge = (s) => {
+        var _a;
+        const ages = [];
+        if (s.signedInAt)
+            ages.push(now() - s.signedInAt);
+        const start = (0, pkce_1.sessionStartAt)((0, pkce_1.tokenClaims)(s.accessToken));
+        if (start)
+            ages.push(now() + ((_a = s.skewMs) !== null && _a !== void 0 ? _a : 0) - start);
+        return ages.length ? Math.max(...ages) : Infinity;
+    };
+    const raw = (0, session_1.createSessionStore)(deps.stores);
+    const store = {
+        ...raw,
+        read() {
+            const s = raw.read();
+            if (!s)
+                return null;
+            if (sessionAge(s) < config_1.SESSION_MAX_AGE_MS)
+                return s;
+            raw.clear();
+            ended = 'expired';
+            return null;
+        },
+    };
+    const signedOut = () => new types_1.CloudError('unauthorized', undefined, ended === 'expired' ? 'session_expired' : undefined);
     const send = async (path, init) => {
         try {
             const res = await deps.fetch(`${base}${path}`, {
@@ -9345,7 +9379,7 @@ function createWebAuth(deps) {
     const fail = (call, r) => { var _a; return (0, errors_1.toCloudError)(call, r.res ? r.res.status : 0, r.text, (_a = r.res) !== null && _a !== void 0 ? _a : undefined); };
     const info = (s) => {
         const claims = (0, pkce_1.tokenClaims)(s.accessToken);
-        const fromToken = Array.isArray(claims.amr) ? KNOWN_PROVIDERS.filter((p) => claims.amr.some((a) => a && (a.method === p || (p === 'email' && a.method === 'otp') || (p === 'google' && a.method === 'oauth')))) : [];
+        const fromToken = Array.isArray(claims.amr) ? KNOWN_PROVIDERS.filter((p) => claims.amr.some((a) => a && (a.method === p || (p === 'email' && (a.method === 'otp' || a.method === 'password' || a.method === 'recovery')) || (p === 'google' && a.method === 'oauth')))) : [];
         return {
             userId: s.userId,
             emailMasked: (0, account_1.maskEmail)(s.email),
@@ -9366,7 +9400,7 @@ function createWebAuth(deps) {
         var _a, _b;
         const cur = store.read();
         if (!cur)
-            throw new types_1.CloudError('unauthorized');
+            throw signedOut();
         const adopted = stale !== null && cur.refreshToken !== stale.refreshToken;
         if (adopted && cur.expiresAt - now() > config_1.REFRESH_MARGIN_MS)
             return cur;
@@ -9386,7 +9420,14 @@ function createWebAuth(deps) {
         const next = sessionFrom((0, errors_1.bodyObject)(r.text), now());
         if (!next)
             throw new types_1.CloudError('server');
-        save({ ...next, email: (_a = next.email) !== null && _a !== void 0 ? _a : cur.email, providers: next.providers.length ? next.providers : cur.providers }, shared);
+        const kept = { ...next, email: (_a = next.email) !== null && _a !== void 0 ? _a : cur.email, providers: next.providers.length ? next.providers : cur.providers };
+        if (cur.signedInAt)
+            kept.signedInAt = cur.signedInAt;
+        else
+            delete kept.signedInAt;
+        if (cur.needsPassword)
+            kept.needsPassword = true;
+        save(kept, shared);
         return (_b = store.read()) !== null && _b !== void 0 ? _b : next;
     });
     const clearLocked = async () => {
@@ -9396,7 +9437,7 @@ function createWebAuth(deps) {
     const accessToken = async () => {
         const s = store.read();
         if (!s)
-            throw new types_1.CloudError('unauthorized');
+            throw signedOut();
         if (s.expiresAt - now() > config_1.REFRESH_MARGIN_MS)
             return s.accessToken;
         return (await refreshLocked(s)).accessToken;
@@ -9415,34 +9456,176 @@ function createWebAuth(deps) {
             return { status: r.res.status, headers: r.res.headers, text: async () => r.text };
         }
     };
+    const emailOf = (email) => {
+        const e = (0, account_1.normalizeEmail)(typeof email === 'string' ? email : '');
+        if (!(0, account_1.validEmail)(e))
+            throw new types_1.CloudError('invalid', undefined, 'email');
+        return e;
+    };
+    const withCaptcha = (body, captchaToken) => {
+        if (captchaToken)
+            body.gotrue_meta_security = { captcha_token: captchaToken };
+        return body;
+    };
+    const newPasswordOf = (password, email) => {
+        const p = (0, passwordRules_1.normalizePassword)(typeof password === 'string' ? password : '');
+        const problems = (0, passwordRules_1.checkPassword)(p, email);
+        if (problems.length)
+            throw passwordRuleError(problems[0]);
+        return p;
+    };
+    const signedIn = (text, shared, needsPassword) => {
+        const s = sessionFrom((0, errors_1.bodyObject)(text), now());
+        if (!s)
+            throw new types_1.CloudError('server');
+        if (needsPassword)
+            s.needsPassword = true;
+        save(s, shared);
+        ended = null;
+        return s;
+    };
+    const markPassword = (userId, needed) => {
+        const cur = store.read();
+        if (!cur || cur.userId !== userId)
+            return;
+        const next = { ...cur };
+        if (needed)
+            next.needsPassword = true;
+        else
+            delete next.needsPassword;
+        try {
+            store.write(next, store.shared());
+        }
+        catch {
+        }
+    };
+    const requestCode = async (e, captchaToken) => {
+        const r = await send('/auth/v1/otp', { method: 'POST', body: JSON.stringify(withCaptcha({ email: e, create_user: true }, captchaToken)) });
+        if (!ok(r))
+            throw fail('otp', r);
+    };
+    const verifyCode = async (e, code, type, shared) => {
+        const c = typeof code === 'string' ? code.replace(/\s+/g, '') : '';
+        if (!CODE_RE.test(c))
+            throw new types_1.CloudError('invalid', undefined, 'code_wrong');
+        const r = await send('/auth/v1/verify', { method: 'POST', body: JSON.stringify({ type, email: e, token: c }) });
+        if (!ok(r))
+            throw fail('verify', r);
+        return signedIn(r.text, shared, true);
+    };
+    const putPassword = async (s, password, currentPassword, sameIsFine) => {
+        const body = { password };
+        if (currentPassword !== undefined)
+            body.current_password = currentPassword;
+        const res = await authedFetch('/auth/v1/user', { method: 'PUT', body: JSON.stringify(body) }, 'user_update');
+        const text = await res.text();
+        if (res.status < 200 || res.status >= 300) {
+            const e = (0, errors_1.toCloudError)('user_update', res.status, text, res);
+            if (!(sameIsFine && e.code === 'invalid' && e.detail === 'password_same'))
+                throw e;
+        }
+        markPassword(s.userId, false);
+    };
+    const finishWithPassword = async (s, password) => {
+        var _a, _b;
+        try {
+            await putPassword(s, password, undefined, true);
+            return { account: info((_a = store.read()) !== null && _a !== void 0 ? _a : s), passwordSaved: true };
+        }
+        catch (e) {
+            const ce = e instanceof types_1.CloudError ? e : new types_1.CloudError('server');
+            return { account: info((_b = store.read()) !== null && _b !== void 0 ? _b : s), passwordSaved: false, problem: saveProblem(ce) };
+        }
+    };
+    const freshForPassword = (s) => {
+        var _a;
+        const start = (0, pkce_1.sessionStartAt)((0, pkce_1.tokenClaims)(s.accessToken));
+        if (!start)
+            return false;
+        const serverAge = now() + ((_a = s.skewMs) !== null && _a !== void 0 ? _a : 0) - start;
+        const localAge = s.signedInAt ? now() - s.signedInAt : serverAge;
+        return Math.max(serverAge, localAge) < config_1.PASSWORD_FRESH_MS && serverAge > -5 * 60000;
+    };
+    const passwordGrant = async (e, password, captchaToken) => {
+        const p = (0, passwordRules_1.normalizePassword)(typeof password === 'string' ? password : '');
+        if (!p || (0, passwordRules_1.passwordBytes)(p) > passwordRules_1.PASSWORD_MAX_BYTES)
+            throw new types_1.CloudError('invalid', undefined, 'password_wrong');
+        const r = await send('/auth/v1/token?grant_type=password', { method: 'POST', body: JSON.stringify(withCaptcha({ email: e, password: p }, captchaToken)) });
+        if (!ok(r))
+            throw fail('password', r);
+        return r.text;
+    };
     return {
         async sendEmailCode(email, opts) {
-            const e = (0, account_1.normalizeEmail)(email);
-            if (!(0, account_1.validEmail)(e))
-                throw new types_1.CloudError('invalid', undefined, 'email');
-            const body = { email: e, create_user: true };
-            if (opts === null || opts === void 0 ? void 0 : opts.captchaToken)
-                body.gotrue_meta_security = { captcha_token: opts.captchaToken };
-            const r = await send('/auth/v1/otp', { method: 'POST', body: JSON.stringify(body) });
-            if (!ok(r))
-                throw fail('otp', r);
+            await requestCode(emailOf(email), opts === null || opts === void 0 ? void 0 : opts.captchaToken);
         },
         async verifyEmailCode(email, code, opts) {
-            const e = (0, account_1.normalizeEmail)(email);
-            const c = code.replace(/\s+/g, '');
-            if (!(0, account_1.validEmail)(e))
-                throw new types_1.CloudError('invalid', undefined, 'email');
-            if (!CODE_RE.test(c))
-                throw new types_1.CloudError('invalid', undefined, 'code_wrong');
-            const r = await send('/auth/v1/verify', { method: 'POST', body: JSON.stringify({ type: 'email', email: e, token: c }) });
-            if (!ok(r))
-                throw fail('verify', r);
-            const s = sessionFrom((0, errors_1.bodyObject)(r.text), now());
-            if (!s)
-                throw new types_1.CloudError('server');
-            save(s, Boolean(opts === null || opts === void 0 ? void 0 : opts.shared));
-            return info(s);
+            const e = emailOf(email);
+            return info(await verifyCode(e, code, 'email', Boolean(opts === null || opts === void 0 ? void 0 : opts.shared)));
         },
+        async signInWithPassword(email, password, opts) {
+            const e = emailOf(email);
+            const text = await passwordGrant(e, password, opts === null || opts === void 0 ? void 0 : opts.captchaToken);
+            return info(signedIn(text, Boolean(opts === null || opts === void 0 ? void 0 : opts.shared), false));
+        },
+        async startPasswordSignUp(email, password, opts) {
+            const e = emailOf(email);
+            newPasswordOf(password, e);
+            await requestCode(e, opts === null || opts === void 0 ? void 0 : opts.captchaToken);
+        },
+        async finishPasswordSignUp(email, code, password, opts) {
+            const e = emailOf(email);
+            const p = newPasswordOf(password, e);
+            const s = await verifyCode(e, code, 'email', Boolean(opts === null || opts === void 0 ? void 0 : opts.shared));
+            return finishWithPassword(s, p);
+        },
+        async sendPasswordResetCode(email, opts) {
+            var _a, _b;
+            const e = emailOf(email);
+            const r = await send('/auth/v1/recover', { method: 'POST', body: JSON.stringify(withCaptcha({ email: e }, opts === null || opts === void 0 ? void 0 : opts.captchaToken)) });
+            if (ok(r))
+                return;
+            if (((_a = r.res) === null || _a === void 0 ? void 0 : _a.status) === 429 && /over_email_send_rate_limit/.test(String((_b = (0, errors_1.bodyObject)(r.text).error_code) !== null && _b !== void 0 ? _b : '')))
+                return;
+            throw fail('recover', r);
+        },
+        async finishPasswordReset(email, code, newPassword, opts) {
+            const e = emailOf(email);
+            const p = newPasswordOf(newPassword, e);
+            const s = await verifyCode(e, code, 'recovery', Boolean(opts === null || opts === void 0 ? void 0 : opts.shared));
+            return finishWithPassword(s, p);
+        },
+        async setPassword(newPassword, opts) {
+            const s = store.read();
+            if (!s)
+                throw signedOut();
+            const p = newPasswordOf(newPassword, s.email);
+            const current = (opts === null || opts === void 0 ? void 0 : opts.currentPassword) !== undefined ? (0, passwordRules_1.normalizePassword)(String(opts.currentPassword)) : undefined;
+            if (!current && !freshForPassword(s))
+                throw new types_1.CloudError('reauth_required', undefined, 'recent_sign_in');
+            await putPassword(s, p, current || undefined, Boolean(s.needsPassword));
+        },
+        async reauthWithPassword(password, opts) {
+            const s = store.read();
+            if (!s)
+                throw signedOut();
+            if (!s.email)
+                throw new types_1.CloudError('invalid', undefined, 'email');
+            const e = emailOf(s.email);
+            const text = await passwordGrant(e, password, opts === null || opts === void 0 ? void 0 : opts.captchaToken);
+            const next = sessionFrom((0, errors_1.bodyObject)(text), now());
+            if (!next)
+                throw new types_1.CloudError('server');
+            if (next.userId !== s.userId)
+                throw new types_1.CloudError('invalid', undefined, 'password_wrong');
+            const shared = store.shared();
+            save(next, shared);
+            ended = null;
+            await send('/auth/v1/logout?scope=local', { method: 'POST', headers: { authorization: `Bearer ${s.accessToken}` } });
+            return info(next);
+        },
+        passwordNeeded: () => { var _a; return ((_a = store.read()) === null || _a === void 0 ? void 0 : _a.needsPassword) === true; },
+        sessionEnded: () => (store.read() ? null : ended),
         googleSignInUrl(opts) {
             const verifier = (0, pkce_1.makeVerifier)(deps.random);
             deps.stores.session.setItem(config_1.PKCE_KEY, JSON.stringify({ verifier, shared: Boolean(opts === null || opts === void 0 ? void 0 : opts.shared), at: now() }));
@@ -9479,11 +9662,7 @@ function createWebAuth(deps) {
             const r = await send('/auth/v1/token?grant_type=pkce', { method: 'POST', body: JSON.stringify({ auth_code: code, code_verifier: saved.verifier }) });
             if (!ok(r))
                 throw fail('pkce', r);
-            const s = sessionFrom((0, errors_1.bodyObject)(r.text), now());
-            if (!s)
-                throw new types_1.CloudError('server');
-            save(s, saved.shared === true);
-            return info(s);
+            return info(signedIn(r.text, saved.shared === true, false));
         },
         current() {
             const s = store.read();
@@ -9826,7 +10005,7 @@ function streamGzip(env) {
   defs["src/webcloud/config.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WEB_CERT = exports.REFRESH_MARGIN_MS = exports.SYNC_LOCK = exports.AUTH_LOCK = exports.DEVICE_ID_KEY = exports.SYNC_UNDO_KEY = exports.SYNC_MIRROR_KEY = exports.SYNC_META_KEY = exports.PKCE_KEY = exports.SESSION_KEY = exports.ACCOUNT_ORIGIN = exports.REDIRECT_URL = exports.PUBLISHABLE_KEY = exports.SUPABASE_URL = void 0;
+exports.WEB_CERT = exports.PASSWORD_FRESH_MS = exports.SESSION_MAX_AGE_MS = exports.REFRESH_MARGIN_MS = exports.SYNC_LOCK = exports.AUTH_LOCK = exports.DEVICE_ID_KEY = exports.SYNC_UNDO_KEY = exports.SYNC_MIRROR_KEY = exports.SYNC_META_KEY = exports.PKCE_KEY = exports.SESSION_KEY = exports.ACCOUNT_ORIGIN = exports.REDIRECT_URL = exports.PUBLISHABLE_KEY = exports.SUPABASE_URL = void 0;
 exports.SUPABASE_URL = 'https://ziadnvepttlgcowvqvom.supabase.co';
 exports.PUBLISHABLE_KEY = 'sb_publishable_s9eKQUQ0w3MTnCUBF05EkA_5e_kGEw2';
 exports.REDIRECT_URL = 'https://kaisip.com/';
@@ -9840,6 +10019,8 @@ exports.DEVICE_ID_KEY = 'kaisip_device_v1';
 exports.AUTH_LOCK = 'kaisip-auth';
 exports.SYNC_LOCK = 'kaisip-sync';
 exports.REFRESH_MARGIN_MS = 60000;
+exports.SESSION_MAX_AGE_MS = 30 * 86400000;
+exports.PASSWORD_FRESH_MS = 9 * 60000;
 exports.WEB_CERT = 'cisa';
   };
   links["src/webcloud/device.ts"] = {"../engine/syncMeta":"src/engine/syncMeta.ts","../engine/syncMerge":"src/engine/syncMerge.ts","../engine/webImport":"src/engine/webImport.ts","../engine/streak":"src/engine/streak.ts","./config":"src/webcloud/config.ts","./toWeb":"src/webcloud/toWeb.ts"};
@@ -10057,6 +10238,8 @@ function toCloudError(call, status, text, res) {
     const after = res ? retryAfter(res) : undefined;
     if (status === 429)
         return new types_1.CloudError('rate_limited', after);
+    if (call === 'user_update' && status === 500)
+        return new types_1.CloudError('reauth_required', undefined, 'recent_sign_in');
     if (status >= 500)
         return new types_1.CloudError('server');
     if (call === 'function') {
@@ -10100,12 +10283,56 @@ function toCloudError(call, status, text, res) {
             return new types_1.CloudError('invalid', undefined, 'oauth');
         case 'refresh':
             return new types_1.CloudError('unauthorized');
+        case 'password':
+            if (word.includes('captcha'))
+                return new types_1.CloudError('invalid', undefined, 'captcha');
+            if (word.includes('rate_limit'))
+                return new types_1.CloudError('rate_limited', after);
+            return new types_1.CloudError('invalid', undefined, 'password_wrong');
+        case 'recover':
+            if (word.includes('captcha'))
+                return new types_1.CloudError('invalid', undefined, 'captcha');
+            if (word.includes('rate_limit'))
+                return new types_1.CloudError('rate_limited', after);
+            if (word === 'email_provider_disabled')
+                return new types_1.CloudError('invalid', undefined, 'signup_disabled');
+            return new types_1.CloudError('invalid', undefined, 'email');
+        case 'user_update':
+            return userUpdateError(status, word, b);
         case 'logout':
         case 'user':
             return new types_1.CloudError(status === 401 || status === 403 || status === 404 ? 'unauthorized' : 'invalid');
         default:
             return new types_1.CloudError('server');
     }
+}
+function userUpdateError(status, word, b) {
+    const bad = (d) => new types_1.CloudError('invalid', undefined, d);
+    switch (word) {
+        case 'weak_password': {
+            const wp = b.weak_password && typeof b.weak_password === 'object' ? b.weak_password : {};
+            const reasons = Array.isArray(wp.reasons) ? wp.reasons.filter((r) => typeof r === 'string') : [];
+            if (reasons.includes('pwned'))
+                return bad('password_leaked');
+            if (reasons.includes('length'))
+                return bad('password_too_short');
+            return bad('password_weak');
+        }
+        case 'same_password':
+            return bad('password_same');
+        case 'current_password_required':
+            return bad('password_current_needed');
+        case 'current_password_mismatch':
+            return bad('password_current_wrong');
+        case 'reauthentication_needed':
+        case 'reauthentication_not_valid':
+            return new types_1.CloudError('reauth_required', undefined, 'recent_sign_in');
+        case 'insufficient_aal':
+            return new types_1.CloudError('reauth_required', undefined, 'aal2');
+    }
+    if (status === 401 || status === 403 || status === 404 || word === 'bad_jwt' || word === 'session_not_found' || word === 'user_not_found')
+        return new types_1.CloudError('unauthorized');
+    return bad('password_weak');
 }
 function asCloudError(e) {
     return e instanceof types_1.CloudError ? e : new types_1.CloudError('offline');
@@ -10253,6 +10480,7 @@ exports.makeVerifier = makeVerifier;
 exports.isVerifier = isVerifier;
 exports.challengeFor = challengeFor;
 exports.tokenClaims = tokenClaims;
+exports.sessionStartAt = sessionStartAt;
 exports.lastSignInAt = lastSignInAt;
 const sha256_1 = require("../engine/sha256");
 const base64_1 = require("./base64");
@@ -10287,6 +10515,14 @@ function tokenClaims(token) {
     catch {
         return {};
     }
+}
+function sessionStartAt(claims) {
+    let at = 0;
+    for (const a of Array.isArray(claims.amr) ? claims.amr : []) {
+        if (a && typeof a.timestamp === 'number' && Number.isFinite(a.timestamp) && a.timestamp > 0)
+            at = at === 0 ? a.timestamp * 1000 : Math.min(at, a.timestamp * 1000);
+    }
+    return at;
 }
 function lastSignInAt(claims) {
     let at = 0;
@@ -10432,7 +10668,14 @@ function readSession(raw) {
         return null;
     const email = typeof o.email === 'string' && o.email.length <= 320 ? o.email : null;
     const providers = Array.isArray(o.providers) ? o.providers.filter((p) => typeof p === 'string' && /^[a-z]{2,20}$/.test(p)).slice(0, 5) : [];
-    return { v: 1, accessToken: o.accessToken, refreshToken: o.refreshToken, expiresAt: o.expiresAt, userId: o.userId, email, providers };
+    const out = { v: 1, accessToken: o.accessToken, refreshToken: o.refreshToken, expiresAt: o.expiresAt, userId: o.userId, email, providers };
+    if (typeof o.signedInAt === 'number' && Number.isFinite(o.signedInAt) && o.signedInAt > 0)
+        out.signedInAt = o.signedInAt;
+    if (typeof o.skewMs === 'number' && Number.isFinite(o.skewMs) && Math.abs(o.skewMs) <= 7 * 86400000)
+        out.skewMs = o.skewMs;
+    if (o.needsPassword === true)
+        out.needsPassword = true;
+    return out;
 }
 function safeGet(s, key) {
     try {
@@ -10779,7 +11022,8 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "45eccc63159f52d0";
+  api["passwordRules"] = load("src/engine/passwordRules.ts");
+  api.sourceHash = "78faa0f6e7c7ca5c";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

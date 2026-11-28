@@ -23,13 +23,37 @@
  *   offline. "Everywhere" needs the server, and keeps the session if the
  *   server can't be reached (nothing changes).
  *
+ * Passwords (owner decisions 28 Nov 2026; design PASSWORD_SIGN_IN_DESIGN.md §4):
+ * - Sign-in is Google, or email + password (`signInWithPassword`, with the
+ *   human-check token). Emailed codes only confirm an address at sign-up and
+ *   reset a forgotten password, and both always end with saving a password.
+ * - Create an account: `startPasswordSignUp` checks the password with the
+ *   app's rules (engine/passwordRules.ts) and emails a code. The password is
+ *   NOT sent then. `finishPasswordSignUp` trades the code for a session and
+ *   at once saves the password with that brand-new session (PUT /user), the
+ *   only way the database's password guard keeps it.
+ * - Forgot password: `sendPasswordResetCode` (no link, no redirect), then
+ *   `finishPasswordReset` (the reset code, then the new password).
+ * - Add or change a password later: `setPassword`, only within 9 minutes of
+ *   signing in (the database allows 10); otherwise it says "sign in again"
+ *   before sending anything (`reauthWithPassword`, or a reset code).
+ * - After any code session the account "needs a password" until one is
+ *   saved (`passwordNeeded()`), so the screens can insist on it, even after
+ *   a reload.
+ * - The password is never saved anywhere, never logged, and sent only to the
+ *   two places that need it (the password sign-in and PUT /user). It is put
+ *   in Unicode NFC form first, the same on every device.
+ * - Sessions end 30 days after sign-in: an older saved session reads as
+ *   signed out (`sessionEnded()` says why); this browser's progress is untouched.
+ *
  * Pure TypeScript: no React. Network, storage, random, lock and clock are ports.
  */
 import { maskEmail, normalizeEmail, validEmail } from '../engine/account';
+import { checkPassword, normalizePassword, PASSWORD_MAX_BYTES, passwordBytes, type PasswordProblem } from '../engine/passwordRules';
 import { CloudError, type AccountInfo, type Provider } from '../cloud/types';
-import { AUTH_LOCK, PKCE_KEY, PUBLISHABLE_KEY, REDIRECT_URL, REFRESH_MARGIN_MS, SUPABASE_URL } from './config';
-import { bodyObject, toCloudError, type Call } from './errors';
-import { challengeFor, isVerifier, lastSignInAt, makeVerifier, tokenClaims } from './pkce';
+import { AUTH_LOCK, PASSWORD_FRESH_MS, PKCE_KEY, PUBLISHABLE_KEY, REDIRECT_URL, REFRESH_MARGIN_MS, SESSION_MAX_AGE_MS, SUPABASE_URL } from './config';
+import { bodyObject, toCloudError, type Call, type PasswordDetail } from './errors';
+import { challengeFor, isVerifier, lastSignInAt, makeVerifier, sessionStartAt, tokenClaims } from './pkce';
 import type { BrowserStores, ClockPort, FetchPort, HttpResponse, LockPort, RandomPort } from './ports';
 import { createSessionStore, type SessionStore, type StoredSession } from './session';
 
@@ -81,6 +105,66 @@ export interface WebAuth {
   termsVersion(): Promise<string | null>;
   /** Accept the Terms and confirm "16 or older" (needed before the first sync). */
   acceptTerms(v: { termsVersion: string; ageConfirmed: true }): Promise<void>;
+
+  // ── Passwords ──
+  /** Password sign-in (with the human-check token when captcha is on). A wrong password and an unknown address get the same answer. */
+  signInWithPassword(email: string, password: string, opts?: { captchaToken?: string; shared?: boolean }): Promise<AccountInfo>;
+  /** "Create an account", step 1: checks the password with the app's rules, then emails a code. The password is NOT sent. */
+  startPasswordSignUp(email: string, password: string, opts?: { captchaToken?: string }): Promise<void>;
+  /**
+   * Step 2: the code → a session (saved), then the password is saved with that fresh session.
+   * If the code works but the password is refused, the learner stays signed in, `passwordSaved`
+   * is false and `passwordNeeded()` stays true (the screen asks for a password again).
+   */
+  finishPasswordSignUp(email: string, code: string, password: string, opts?: { shared?: boolean }): Promise<PasswordFinish>;
+  /**
+   * "Forgot password" (also "set a password later"): emails a reset code. The first answer is
+   * the same whether or not the account exists, and a "wait a minute" for this address reads
+   * as sent too (audit LOW-1), so the screen can't tell anyone which addresses have accounts.
+   */
+  sendPasswordResetCode(email: string, opts?: { captchaToken?: string }): Promise<void>;
+  /** The reset code → a session (saved), then the new password. The server signs out every other session. Same answer shape as sign-up. */
+  finishPasswordReset(email: string, code: string, newPassword: string, opts?: { shared?: boolean }): Promise<PasswordFinish>;
+  /**
+   * Add or change the signed-in account's password. Refused before sending
+   * (CloudError reauth_required, detail recent_sign_in) unless this session
+   * signed in under 9 minutes ago, or `currentPassword` is given (a change;
+   * the server then decides).
+   */
+  setPassword(newPassword: string, opts?: { currentPassword?: string }): Promise<void>;
+  /** "Confirm it's you" with the password (delete account, add or change a password): a fresh session for the same account. */
+  reauthWithPassword(password: string, opts?: { captchaToken?: string }): Promise<AccountInfo>;
+  /** True after a sign-in with an emailed code until a password is saved (the screens insist on one). */
+  passwordNeeded(): boolean;
+  /** Why this page is signed out, when it was the 30-day limit ("please sign in again to keep syncing"); else null. */
+  sessionEnded(): 'expired' | null;
+}
+
+/** What a sign-up or reset finished with. `problem` says why the password wasn't saved (the learner is signed in either way). */
+export interface PasswordFinish {
+  account: AccountInfo;
+  passwordSaved: boolean;
+  problem?: PasswordSaveProblem;
+}
+/** The app's own rules, the server's leaked/other refusals, or the usual codes. */
+export type PasswordSaveProblem = PasswordProblem | 'leaked' | 'weak' | 'reauth' | 'rate_limited' | 'offline' | 'server';
+
+/** The CloudError a broken app rule throws: invalid, with detail password_<problem>. */
+export function passwordRuleError(problem: PasswordProblem): CloudError {
+  return new CloudError('invalid', undefined, `password_${problem}` as PasswordDetail);
+}
+
+/** A failed PUT /user → the short reason PasswordFinish reports. */
+function saveProblem(e: CloudError): PasswordSaveProblem {
+  if (e.code === 'invalid' && typeof e.detail === 'string' && e.detail.startsWith('password_')) {
+    const d = e.detail.slice('password_'.length);
+    if (d === 'leaked' || d === 'weak') return d;
+    if (['too_short', 'too_long', 'common', 'contains_email', 'contains_service_word', 'too_simple'].includes(d)) return d as PasswordProblem;
+    return 'weak';
+  }
+  if (e.code === 'reauth_required' || e.code === 'unauthorized') return 'reauth';
+  if (e.code === 'rate_limited' || e.code === 'offline') return e.code;
+  return 'server';
 }
 
 /** The fields of a GoTrue session answer the client reads. */
@@ -91,7 +175,11 @@ function sessionFrom(body: Record<string, unknown>, now: number): StoredSession 
   if (typeof at !== 'string' || typeof rt !== 'string' || !user || typeof user.id !== 'string' || !UUID_RE.test(user.id)) return null;
   const expiresIn = typeof body.expires_in === 'number' && body.expires_in > 0 ? body.expires_in : 3600;
   const expiresAt = typeof body.expires_at === 'number' && body.expires_at > 0 ? body.expires_at * 1000 : now + expiresIn * 1000;
-  return { v: 1, accessToken: at, refreshToken: rt, expiresAt, userId: user.id, email: typeof user.email === 'string' ? user.email : null, providers: providersOf(user) };
+  const s: StoredSession = { v: 1, accessToken: at, refreshToken: rt, expiresAt, userId: user.id, email: typeof user.email === 'string' ? user.email : null, providers: providersOf(user), signedInAt: now };
+  // How far the server's clock is from this one (audit LOW-3): its token's issue time against ours.
+  const iat = tokenClaims(at).iat;
+  if (typeof iat === 'number' && Number.isFinite(iat) && iat > 0 && Math.abs(iat * 1000 - now) <= 7 * 86_400_000) s.skewMs = iat * 1000 - now;
+  return s;
 }
 
 function providersOf(user: Record<string, unknown>): Provider[] {
@@ -104,8 +192,42 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
   const base = (deps.url ?? SUPABASE_URL).replace(/\/+$/, '');
   const apiKey = deps.apiKey ?? PUBLISHABLE_KEY;
   const redirectTo = deps.redirectTo ?? REDIRECT_URL;
-  const store: SessionStore = createSessionStore(deps.stores);
   const now = () => deps.clock.now();
+  /** Set when this page found its session past the 30-day limit; cleared by the next sign-in. */
+  let ended: 'expired' | null = null;
+
+  /**
+   * How long ago this session signed in (ms), the larger of: this computer's
+   * clock since `signedInAt`, and the server's clock since the token's first
+   * sign-in time. Neither known: Infinity (treated as too old: fail closed).
+   */
+  const sessionAge = (s: StoredSession): number => {
+    const ages: number[] = [];
+    if (s.signedInAt) ages.push(now() - s.signedInAt);
+    const start = sessionStartAt(tokenClaims(s.accessToken));
+    if (start) ages.push(now() + (s.skewMs ?? 0) - start);
+    return ages.length ? Math.max(...ages) : Infinity;
+  };
+
+  /**
+   * The saved session, where every read applies the 30-day limit: an older
+   * session is forgotten here (its tokens only; progress, the sync record and
+   * the undo copy stay) and the page reads as signed out, with
+   * sessionEnded() 'expired'. The server's nightly job ends it there too.
+   */
+  const raw: SessionStore = createSessionStore(deps.stores);
+  const store: SessionStore = {
+    ...raw,
+    read() {
+      const s = raw.read();
+      if (!s) return null;
+      if (sessionAge(s) < SESSION_MAX_AGE_MS) return s;
+      raw.clear();
+      ended = 'expired';
+      return null;
+    },
+  };
+  const signedOut = () => new CloudError('unauthorized', undefined, ended === 'expired' ? 'session_expired' : undefined);
 
   /** One request. A network failure reads as status 0 (offline); never throws anything but CloudError. */
   const send = async (path: string, init: { method: string; headers?: Record<string, string>; body?: string; keepalive?: boolean }): Promise<{ res: HttpResponse | null; text: string }> => {
@@ -127,7 +249,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
 
   const info = (s: StoredSession): AccountInfo => {
     const claims = tokenClaims(s.accessToken);
-    const fromToken = Array.isArray(claims.amr) ? KNOWN_PROVIDERS.filter((p) => claims.amr!.some((a) => a && (a.method === p || (p === 'email' && a.method === 'otp') || (p === 'google' && a.method === 'oauth')))) : [];
+    const fromToken = Array.isArray(claims.amr) ? KNOWN_PROVIDERS.filter((p) => claims.amr!.some((a) => a && (a.method === p || (p === 'email' && (a.method === 'otp' || a.method === 'password' || a.method === 'recovery')) || (p === 'google' && a.method === 'oauth')))) : [];
     return {
       userId: s.userId,
       emailMasked: maskEmail(s.email),
@@ -152,7 +274,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     deps.lock.request(AUTH_LOCK, async () => {
       // Read again INSIDE the lock: another tab may have refreshed (or signed out) meanwhile.
       const cur = store.read();
-      if (!cur) throw new CloudError('unauthorized');
+      if (!cur) throw signedOut();
       const adopted = stale !== null && cur.refreshToken !== stale.refreshToken;
       if (adopted && cur.expiresAt - now() > REFRESH_MARGIN_MS) return cur;
       const shared = store.shared();
@@ -170,7 +292,12 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
       }
       const next = sessionFrom(bodyObject(r.text), now());
       if (!next) throw new CloudError('server');
-      save({ ...next, email: next.email ?? cur.email, providers: next.providers.length ? next.providers : cur.providers }, shared);
+      // A refresh is not a sign-in: the 30-day clock and "needs a password" carry over.
+      const kept: StoredSession = { ...next, email: next.email ?? cur.email, providers: next.providers.length ? next.providers : cur.providers };
+      if (cur.signedInAt) kept.signedInAt = cur.signedInAt;
+      else delete kept.signedInAt;
+      if (cur.needsPassword) kept.needsPassword = true;
+      save(kept, shared);
       return store.read() ?? next;
     });
 
@@ -185,7 +312,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
 
   const accessToken = async (): Promise<string> => {
     const s = store.read();
-    if (!s) throw new CloudError('unauthorized');
+    if (!s) throw signedOut();
     if (s.expiresAt - now() > REFRESH_MARGIN_MS) return s.accessToken;
     return (await refreshLocked(s)).accessToken;
   };
@@ -206,28 +333,185 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     }
   };
 
+  // ── Shared steps of the code and password flows ──
+
+  /** A checked, normalised email, or CloudError invalid:email. */
+  const emailOf = (email: string): string => {
+    const e = normalizeEmail(typeof email === 'string' ? email : '');
+    if (!validEmail(e)) throw new CloudError('invalid', undefined, 'email');
+    return e;
+  };
+  /** The human-check token, when the screen has one (captcha on). */
+  const withCaptcha = (body: Record<string, unknown>, captchaToken?: string) => {
+    if (captchaToken) body.gotrue_meta_security = { captcha_token: captchaToken };
+    return body;
+  };
+  /** The password as sent, after the app's rules (refused here, before anything leaves the page). */
+  const newPasswordOf = (password: string, email: string | null): string => {
+    const p = normalizePassword(typeof password === 'string' ? password : '');
+    const problems = checkPassword(p, email);
+    if (problems.length) throw passwordRuleError(problems[0]);
+    return p;
+  };
+  /** A new session from a sign-in answer, saved. `needsPassword` after a code: the screens then insist on a password. */
+  const signedIn = (text: string, shared: boolean, needsPassword: boolean): StoredSession => {
+    const s = sessionFrom(bodyObject(text), now());
+    if (!s) throw new CloudError('server');
+    if (needsPassword) s.needsPassword = true;
+    save(s, shared);
+    ended = null;
+    return s;
+  };
+  /** Change the saved session's "needs a password" mark (the same session only). */
+  const markPassword = (userId: string, needed: boolean) => {
+    const cur = store.read();
+    if (!cur || cur.userId !== userId) return;
+    const next: StoredSession = { ...cur };
+    if (needed) next.needsPassword = true;
+    else delete next.needsPassword;
+    try {
+      store.write(next, store.shared());
+    } catch {
+      // Storage refused: the mark stays as it was (the screen may ask for a password once more).
+    }
+  };
+  /** Ask for an emailed code (sign-up confirmation; also a code sign-in for an existing address). */
+  const requestCode = async (e: string, captchaToken?: string) => {
+    const r = await send('/auth/v1/otp', { method: 'POST', body: JSON.stringify(withCaptcha({ email: e, create_user: true }, captchaToken)) });
+    if (!ok(r)) throw fail('otp', r);
+  };
+  /** A typed code → a saved session that still needs a password. `type`: 'email' (sign-up code) or 'recovery' (reset code). */
+  const verifyCode = async (e: string, code: string, type: 'email' | 'recovery', shared: boolean): Promise<StoredSession> => {
+    const c = typeof code === 'string' ? code.replace(/\s+/g, '') : '';
+    if (!CODE_RE.test(c)) throw new CloudError('invalid', undefined, 'code_wrong');
+    const r = await send('/auth/v1/verify', { method: 'POST', body: JSON.stringify({ type, email: e, token: c }) });
+    if (!ok(r)) throw fail('verify', r);
+    return signedIn(r.text, shared, true);
+  };
+  /**
+   * PUT /user with the password (already normalised and checked). Throws CloudError.
+   * `sameIsFine`: after a code, "that is already your password" means the account has it: done.
+   */
+  const putPassword = async (s: StoredSession, password: string, currentPassword: string | undefined, sameIsFine: boolean) => {
+    const body: Record<string, unknown> = { password };
+    if (currentPassword !== undefined) body.current_password = currentPassword;
+    const res = await authedFetch('/auth/v1/user', { method: 'PUT', body: JSON.stringify(body) }, 'user_update');
+    const text = await res.text();
+    if (res.status < 200 || res.status >= 300) {
+      const e = toCloudError('user_update', res.status, text, res);
+      if (!(sameIsFine && e.code === 'invalid' && e.detail === 'password_same')) throw e;
+    }
+    markPassword(s.userId, false);
+  };
+  /** A code flow's last step: save the password with the session the code just made. */
+  const finishWithPassword = async (s: StoredSession, password: string): Promise<PasswordFinish> => {
+    try {
+      await putPassword(s, password, undefined, true);
+      return { account: info(store.read() ?? s), passwordSaved: true };
+    } catch (e) {
+      const ce = e instanceof CloudError ? e : new CloudError('server');
+      return { account: info(store.read() ?? s), passwordSaved: false, problem: saveProblem(ce) };
+    }
+  };
+  /** Under 9 minutes since this session signed in, by both clocks (the server's, via the skew, and this one's). */
+  const freshForPassword = (s: StoredSession): boolean => {
+    const start = sessionStartAt(tokenClaims(s.accessToken));
+    if (!start) return false;
+    const serverAge = now() + (s.skewMs ?? 0) - start;
+    const localAge = s.signedInAt ? now() - s.signedInAt : serverAge;
+    return Math.max(serverAge, localAge) < PASSWORD_FRESH_MS && serverAge > -5 * 60_000;
+  };
+  /** The password sign-in request. Never checks the app's rules (an older password still signs in). */
+  const passwordGrant = async (e: string, password: string, captchaToken?: string) => {
+    const p = normalizePassword(typeof password === 'string' ? password : '');
+    // Empty, or longer than the server could ever have stored: the same answer as a wrong one, without asking.
+    if (!p || passwordBytes(p) > PASSWORD_MAX_BYTES) throw new CloudError('invalid', undefined, 'password_wrong');
+    const r = await send('/auth/v1/token?grant_type=password', { method: 'POST', body: JSON.stringify(withCaptcha({ email: e, password: p }, captchaToken)) });
+    if (!ok(r)) throw fail('password', r);
+    return r.text;
+  };
+
   return {
     async sendEmailCode(email, opts) {
-      const e = normalizeEmail(email);
-      if (!validEmail(e)) throw new CloudError('invalid', undefined, 'email');
-      const body: Record<string, unknown> = { email: e, create_user: true };
-      if (opts?.captchaToken) body.gotrue_meta_security = { captcha_token: opts.captchaToken };
-      const r = await send('/auth/v1/otp', { method: 'POST', body: JSON.stringify(body) });
-      if (!ok(r)) throw fail('otp', r);
+      await requestCode(emailOf(email), opts?.captchaToken);
     },
 
     async verifyEmailCode(email, code, opts) {
-      const e = normalizeEmail(email);
-      const c = code.replace(/\s+/g, '');
-      if (!validEmail(e)) throw new CloudError('invalid', undefined, 'email');
-      if (!CODE_RE.test(c)) throw new CloudError('invalid', undefined, 'code_wrong');
-      const r = await send('/auth/v1/verify', { method: 'POST', body: JSON.stringify({ type: 'email', email: e, token: c }) });
-      if (!ok(r)) throw fail('verify', r);
-      const s = sessionFrom(bodyObject(r.text), now());
-      if (!s) throw new CloudError('server');
-      save(s, Boolean(opts?.shared));
-      return info(s);
+      const e = emailOf(email);
+      // A code session must end with a password (owner decision 28 Nov 2026): marked until one is saved.
+      return info(await verifyCode(e, code, 'email', Boolean(opts?.shared)));
     },
+
+    async signInWithPassword(email, password, opts) {
+      const e = emailOf(email);
+      const text = await passwordGrant(e, password, opts?.captchaToken);
+      return info(signedIn(text, Boolean(opts?.shared), false));
+    },
+
+    async startPasswordSignUp(email, password, opts) {
+      const e = emailOf(email);
+      newPasswordOf(password, e); // refused here if the rules fail; the password itself is not sent
+      await requestCode(e, opts?.captchaToken);
+    },
+
+    async finishPasswordSignUp(email, code, password, opts) {
+      const e = emailOf(email);
+      const p = newPasswordOf(password, e); // checked BEFORE the code is used up
+      const s = await verifyCode(e, code, 'email', Boolean(opts?.shared));
+      return finishWithPassword(s, p);
+    },
+
+    async sendPasswordResetCode(email, opts) {
+      const e = emailOf(email);
+      // No redirect_to and no code_challenge: the email carries a code, never a link.
+      const r = await send('/auth/v1/recover', { method: 'POST', body: JSON.stringify(withCaptcha({ email: e }, opts?.captchaToken)) });
+      if (ok(r)) return;
+      // A second ask within a minute answers 429 only for a real account: read it as "sent" so the
+      // screen says the same thing for every address (audit LOW-1). Per-IP limits stay real errors.
+      if (r.res?.status === 429 && /over_email_send_rate_limit/.test(String(bodyObject(r.text).error_code ?? ''))) return;
+      throw fail('recover', r);
+    },
+
+    async finishPasswordReset(email, code, newPassword, opts) {
+      const e = emailOf(email);
+      const p = newPasswordOf(newPassword, e);
+      const s = await verifyCode(e, code, 'recovery', Boolean(opts?.shared));
+      return finishWithPassword(s, p);
+    },
+
+    async setPassword(newPassword, opts) {
+      const s = store.read();
+      if (!s) throw signedOut();
+      const p = newPasswordOf(newPassword, s.email);
+      const current = opts?.currentPassword !== undefined ? normalizePassword(String(opts.currentPassword)) : undefined;
+      // A first password needs a sign-in in the last 10 minutes (the database's rule 4): ask for a
+      // fresh sign-in now instead of meeting the server's 500. A change with the current password
+      // goes to the server, which applies its own checks (500 still reads as reauth_required).
+      if (!current && !freshForPassword(s)) throw new CloudError('reauth_required', undefined, 'recent_sign_in');
+      await putPassword(s, p, current || undefined, Boolean(s.needsPassword));
+    },
+
+    async reauthWithPassword(password, opts) {
+      const s = store.read();
+      if (!s) throw signedOut();
+      if (!s.email) throw new CloudError('invalid', undefined, 'email');
+      const e = emailOf(s.email);
+      const text = await passwordGrant(e, password, opts?.captchaToken);
+      const next = sessionFrom(bodyObject(text), now());
+      if (!next) throw new CloudError('server');
+      // The same address is the same account; anything else is refused and nothing is saved.
+      if (next.userId !== s.userId) throw new CloudError('invalid', undefined, 'password_wrong');
+      const shared = store.shared();
+      save(next, shared);
+      ended = null;
+      // The old session's tokens are gone from here; end it on the server too (best effort).
+      await send('/auth/v1/logout?scope=local', { method: 'POST', headers: { authorization: `Bearer ${s.accessToken}` } });
+      return info(next);
+    },
+
+    passwordNeeded: () => store.read()?.needsPassword === true,
+
+    sessionEnded: () => (store.read() ? null : ended),
 
     googleSignInUrl(opts) {
       const verifier = makeVerifier(deps.random);
@@ -265,10 +549,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
       if (typeof code !== 'string' || !/^[A-Za-z0-9._~-]{8,512}$/.test(code)) throw new CloudError('invalid', undefined, 'oauth');
       const r = await send('/auth/v1/token?grant_type=pkce', { method: 'POST', body: JSON.stringify({ auth_code: code, code_verifier: saved.verifier }) });
       if (!ok(r)) throw fail('pkce', r);
-      const s = sessionFrom(bodyObject(r.text), now());
-      if (!s) throw new CloudError('server');
-      save(s, saved.shared === true);
-      return info(s);
+      return info(signedIn(r.text, saved.shared === true, false));
     },
 
     current() {

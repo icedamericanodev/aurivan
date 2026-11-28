@@ -51,7 +51,11 @@ describe('the cloud bundle', () => {
     expect(K.liveStoreVersions).toEqual(LIVE_STORES);
     expect(typeof K.create).toBe('function');
     expect(K.cloud).toBeUndefined();
-    expect(Object.keys(K).sort()).toEqual(['accountsAllowed', 'browser', 'config', 'create', 'liveStoreVersions', 'liveVersion', 'sourceHash']);
+    expect(Object.keys(K).sort()).toEqual(['accountsAllowed', 'browser', 'config', 'create', 'liveStoreVersions', 'liveVersion', 'passwordRules', 'sourceHash']);
+    // The password rules are there for the forms (the client checks again before sending).
+    expect(K.passwordRules.checkPassword('aaaaaaaaaaaaaaa')).toEqual(['common', 'too_simple']);
+    expect(K.passwordRules.checkPassword('ocean violet lamp seven')).toEqual([]);
+    expect(K.passwordRules.PASSWORD_MIN_CHARS).toBe(15);
     expect(typeof K.browser.browserLocks).toBe('function');
     expect(K.config.SUPABASE_URL).toBe(SUPABASE_URL);
     expect(Object.isFrozen(K)).toBe(true);

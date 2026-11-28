@@ -83,8 +83,20 @@ export class FakeSupabase {
   /** The next response for a path prefix is this status and body (one use). */
   private forced = new Map<string, { status: number; body: unknown; headers?: Record<string, string> }>();
   calls: Call[] = [];
-  users = new Map<string, { id: string; email: string; providers: string[] }>();
+  users = new Map<string, { id: string; email: string; providers: string[]; password?: string }>();
   codes = new Map<string, string>();
+  /** Reset codes from /recover (GoTrue keeps them apart from sign-up codes in its own columns). */
+  resetCodes = new Map<string, string>();
+  /** When /recover last sent a code to an address (one a minute per address, like GoTrue). */
+  resetSentAt = new Map<string, number>();
+  /** Session family → when it signed in (s, the server's clock) and how: refreshes keep both, like GoTrue's amr. */
+  families = new Map<string, { userId: string; createdAt: number; method: string }>();
+  /** The human check (Turnstile) is on: /otp, /recover and the password grant need a token. */
+  captchaOn = false;
+  /** The server's clock minus the test's (ms): a learner's computer clock that is off. */
+  skewMs = 0;
+  /** Passwords the (Pro-only) leaked-password check would refuse. */
+  pwned = new Set<string>();
   /** refresh token → its session family and whether it was spent. */
   refresh = new Map<string, { userId: string; family: string; used: boolean }>();
   /** access token → who and until when (s). */
@@ -128,9 +140,16 @@ export class FakeSupabase {
     const h = (++this.n).toString(16).padStart(12, '0');
     return `aaaaaaaa-bbbb-4ccc-8ddd-${h}`;
   }
+  /** The server's clock (ms). */
+  serverNow() {
+    return this.now() + this.skewMs;
+  }
   private session(userId: string, method: string, family = this.uuid()) {
-    const exp = Math.floor(this.now() / 1000) + this.tokenTtl;
-    const at = fakeJwt({ sub: userId, exp, amr: [{ method, timestamp: Math.floor(this.now() / 1000) }], n: ++this.n });
+    const nowS = Math.floor(this.serverNow() / 1000);
+    if (!this.families.has(family)) this.families.set(family, { userId, createdAt: nowS, method });
+    const fam = this.families.get(family)!;
+    const exp = nowS + this.tokenTtl;
+    const at = fakeJwt({ sub: userId, exp, iat: nowS, amr: [{ method: fam.method, timestamp: fam.createdAt }], n: ++this.n });
     const rt = `rt-${this.n}-${family.slice(-4)}xyz`;
     this.access.set(at, { userId, exp, family });
     this.refresh.set(rt, { userId, family, used: false });
@@ -148,8 +167,23 @@ export class FakeSupabase {
   private who(headers: Record<string, string>): string | null {
     const m = /^Bearer (.+)$/.exec(headers.authorization ?? '');
     const a = m ? this.access.get(m[1]) : undefined;
-    if (!a || a.exp * 1000 <= this.now() || this.revokedFamilies.has(a.family) || !this.users.has(a.userId)) return null;
+    if (!a || a.exp * 1000 <= this.serverNow() || this.revokedFamilies.has(a.family) || !this.users.has(a.userId)) return null;
     return a.userId;
+  }
+  /** The session family of a request's token (who() must have passed). */
+  private familyOf(headers: Record<string, string>): string {
+    return this.access.get(/^Bearer (.+)$/.exec(headers.authorization)![1])!.family;
+  }
+  /** The human check, as GoTrue answers when it is missing. */
+  private captchaMissing(body: any): boolean {
+    return this.captchaOn && !(typeof body?.gotrue_meta_security?.captcha_token === 'string' && body.gotrue_meta_security.captcha_token.length > 0);
+  }
+  /** GoTrue's weak-password and length rules with the dashboard at 15 characters, no required types. */
+  private passwordRefusal(pw: unknown): { status: number; body: unknown } | null {
+    if (typeof pw !== 'string' || [...pw].length < 15) return { status: 422, body: { code: 422, error_code: 'weak_password', msg: 'Password should be at least 15 characters.', weak_password: { reasons: ['length'] } } };
+    if (utf8(pw).length > 72) return { status: 422, body: { code: 422, error_code: 'validation_failed', msg: 'Password cannot be longer than 72 characters' } };
+    if (this.pwned.has(pw)) return { status: 422, body: { code: 422, error_code: 'weak_password', msg: 'Password is known to be weak and easy to guess', weak_password: { reasons: ['pwned'] } } };
+    return null;
   }
 
   readonly fetch: FetchPort = async (url, init) => {
@@ -182,17 +216,63 @@ export class FakeSupabase {
     const q = u.searchParams;
     // ── GoTrue ──
     if (p === '/auth/v1/otp' && method === 'POST') {
+      if (this.captchaMissing(body)) return res(400, { code: 400, error_code: 'captcha_failed', msg: 'captcha protection: request disallowed (no captcha response)' });
       if (typeof body?.email !== 'string' || !body.email.includes('@')) return res(400, { code: 400, error_code: 'validation_failed', msg: 'bad email' });
       this.codes.set(body.email, String(10_000_000 + ((this.n++ * 7919) % 89_999_999)));
       return res(200, {});
     }
+    if (p === '/auth/v1/recover' && method === 'POST') {
+      if (this.captchaMissing(body)) return res(400, { code: 400, error_code: 'captcha_failed', msg: 'captcha protection: request disallowed (no captcha response)' });
+      if (typeof body?.email !== 'string' || !body.email.includes('@')) return res(400, { code: 400, error_code: 'validation_failed', msg: 'bad email' });
+      // An unknown address: 200 and nothing sent (recover.go). A real one: one email a minute.
+      if (!this.userByEmail(body.email)) return res(200, {});
+      const last = this.resetSentAt.get(body.email);
+      if (last !== undefined && this.serverNow() - last < 60_000) return res(429, { code: 429, error_code: 'over_email_send_rate_limit', msg: 'For security purposes, you can only request this after 60 seconds.' });
+      this.resetSentAt.set(body.email, this.serverNow());
+      this.resetCodes.set(body.email, String(20_000_000 + ((this.n++ * 7919) % 79_999_999)));
+      return res(200, {});
+    }
     if (p === '/auth/v1/verify' && method === 'POST') {
-      if (body?.type !== 'email' || this.codes.get(body.email) !== body.token) return res(403, { code: 403, error_code: 'otp_expired', msg: 'Token has expired or is invalid' });
-      this.codes.delete(body.email);
+      const pool = body?.type === 'email' ? this.codes : body?.type === 'recovery' ? this.resetCodes : null;
+      if (!pool || pool.get(body.email) !== body.token) return res(403, { code: 403, error_code: 'otp_expired', msg: 'Token has expired or is invalid' });
+      pool.delete(body.email);
       return res(200, this.signIn(body.email, 'email', 'otp'));
+    }
+    if (p === '/auth/v1/user' && method === 'PUT') {
+      const id = this.who(headers);
+      if (!id) return res(401, { code: 401, error_code: 'bad_jwt', msg: 'invalid JWT' });
+      const usr = this.users.get(id)!;
+      const fam = this.families.get(this.familyOf(headers))!;
+      const ageS = Math.floor(this.serverNow() / 1000) - fam.createdAt;
+      const refused = this.passwordRefusal(body?.password);
+      if (refused) return res(refused.status, refused.body);
+      if (usr.password) {
+        if (usr.password === body.password) return res(422, { code: 422, error_code: 'same_password', msg: 'New password should be different from the old password.' });
+        // Secure password change: a session older than 24 hours needs a reauthentication code.
+        if (ageS > 86_400) return res(400, { code: 400, error_code: 'reauthentication_needed', msg: 'Password update requires reauthentication.' });
+        // Require current password, except in a code or reset session (a "recovery" session).
+        if (fam.method !== 'otp') {
+          if (typeof body.current_password !== 'string') return res(400, { code: 400, error_code: 'current_password_required', msg: 'Current password required' });
+          if (body.current_password !== usr.password) return res(400, { code: 400, error_code: 'current_password_mismatch', msg: 'Current password mismatch' });
+        }
+      } else if (ageS >= 600) {
+        // The database's password guard (rule 4/4b): a first password needs a session under 10 minutes old.
+        return res(500, { code: 500, error_code: 'unexpected_failure', msg: 'Error during password storage' });
+      }
+      usr.password = body.password;
+      // UpdatePassword signs out every OTHER session of the account.
+      const mine = this.familyOf(headers);
+      for (const [f, info] of this.families) if (info.userId === id && f !== mine) this.revokedFamilies.add(f);
+      return res(200, { id: usr.id, email: usr.email, app_metadata: { providers: usr.providers } });
     }
     if (p === '/auth/v1/token' && method === 'POST') {
       const grant = q.get('grant_type');
+      if (grant === 'password') {
+        if (this.captchaMissing(body)) return res(400, { code: 400, error_code: 'captcha_failed', msg: 'captcha protection: request disallowed (no captcha response)' });
+        const usr = typeof body?.email === 'string' ? this.userByEmail(body.email) : undefined;
+        if (!usr || !usr.password || usr.password !== body?.password) return res(400, { code: 400, error_code: 'invalid_credentials', msg: 'Invalid login credentials' });
+        return res(200, this.session(usr.id, 'password'));
+      }
       if (grant === 'pkce') {
         const o = this.oauth.get(body?.auth_code);
         if (!o || challengeFor(String(body?.code_verifier)) !== o.challenge) return res(404, { code: 404, error_code: 'flow_state_not_found', msg: 'invalid flow state' });
@@ -208,7 +288,7 @@ export class FakeSupabase {
           return res(400, { code: 400, error_code: 'refresh_token_already_used', msg: 'Invalid Refresh Token: Already Used' });
         }
         r.used = true;
-        return res(200, this.session(r.userId, 'otp', r.family));
+        return res(200, this.session(r.userId, 'otp', r.family)); // the family keeps its first sign-in's amr
       }
     }
     if (p === '/auth/v1/logout' && method === 'POST') {
