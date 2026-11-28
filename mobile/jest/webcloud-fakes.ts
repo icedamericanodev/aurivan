@@ -136,7 +136,31 @@ export class FakeSupabase {
   rows = new Map<string, Row>();
   lastRev = new Map<string, number>();
   writes = new Map<string, { start: number; n: number }>();
+  /** Each account's accepted Terms version (the consent record's other fields are in `consent`). */
   profiles = new Map<string, string>();
+  /**
+   * The rest of the consent record, as migration 20261128020000_consent_record.sql keeps it:
+   * the app may write only privacy_version, marketing_opt_in, marketing_wording and source
+   * (web, android or ios); the server sets every time.
+   */
+  consent = new Map<string, { privacy_version: string | null; marketing_opt_in: boolean; marketing_wording: string | null; source: string | null; everOptedIn: boolean }>();
+  /** When each account's record changed (ms, the server's clock): 20 changes in 24 hours, a withdrawal always allowed. */
+  consentLog = new Map<string, number[]>();
+  /**
+   * The email service behind newsletter-sync (Kit). null: not connected yet (the function answers
+   * not_configured). Else each address's state there: 'inactive' (a confirmation email is out),
+   * 'active' (confirmed), 'cancelled' (unsubscribed, bounced or complained: never added again).
+   */
+  kit: Map<string, 'inactive' | 'active' | 'cancelled'> | null = null;
+  /** Kit can't be reached: newsletter-sync answers 503 kit_unavailable. */
+  kitDown = false;
+  /** Addresses the app itself added to Kit (only those are unsubscribed there when the learner switches off). */
+  kitAdded = new Set<string>();
+  /** Accounts whose email address is not confirmed (newsletter-sync answers "unconfirmed" and sends nothing). */
+  unconfirmed = new Set<string>();
+  /** newsletter-sync: one call per account every `newsWaitMs` (10 seconds on the real function). */
+  newsWaitMs = 10_000;
+  newsCalledAt = new Map<string, number>();
   /** Accept an access token this long (s). */
   tokenTtl = 3600;
   private n = 0;
@@ -220,11 +244,25 @@ export class FakeSupabase {
   private captchaMissing(body: any): boolean {
     return this.captchaOn && !(typeof body?.gotrue_meta_security?.captcha_token === 'string' && body.gotrue_meta_security.captcha_token.length > 0);
   }
-  /** GoTrue's weak-password and length rules with the dashboard at 15 characters, no required types. */
+  /**
+   * GoTrue's weak-password rules as the project's dashboard sets them (owner's rule): at least 12
+   * characters, and one of each of GoTrue's four sets (lower, upper, digits, and its symbol list,
+   * the same one as the app's PASSWORD_SYMBOLS). A failure answers 422 weak_password with the
+   * reasons 'length' and/or 'characters' (password.go).
+   */
   private passwordRefusal(pw: unknown): { status: number; body: unknown } | null {
-    if (typeof pw !== 'string' || [...pw].length < 15) return { status: 422, body: { code: 422, error_code: 'weak_password', msg: 'Password should be at least 15 characters.', weak_password: { reasons: ['length'] } } };
-    if (utf8(pw).length > 72) return { status: 400, body: { code: 400, error_code: 'validation_failed', msg: 'Password cannot be longer than 72 characters' } };
-    if (this.pwned.has(pw)) return { status: 422, body: { code: 422, error_code: 'weak_password', msg: 'Password is known to be weak and easy to guess', weak_password: { reasons: ['pwned'] } } };
+    const p = typeof pw === 'string' ? pw : '';
+    // The 72-byte limit is checked first (password.go checkPasswordStrength).
+    if (utf8(p).length > 72) return { status: 400, body: { code: 400, error_code: 'validation_failed', msg: 'Password cannot be longer than 72 characters' } };
+    const reasons: string[] = [];
+    if ([...p].length < 12) reasons.push('length');
+    const sets = [/[a-z]/, /[A-Z]/, /[0-9]/, /[!@#$%^&*()_+\-=[\]{};'\\:"|<>?,./`~]/];
+    if (!sets.every((re) => re.test(p))) reasons.push('characters');
+    if (reasons.length) {
+      const msg = reasons[0] === 'length' ? 'Password should be at least 12 characters.' : 'Password should contain at least one character of each: abcdefghijklmnopqrstuvwxyz, ABCDEFGHIJKLMNOPQRSTUVWXYZ, 0123456789, !@#$%^&*()_+-=[]{};\'\\:"|<>?,./`~.';
+      return { status: 422, body: { code: 422, error_code: 'weak_password', msg, weak_password: { reasons } } };
+    }
+    if (this.pwned.has(p)) return { status: 422, body: { code: 422, error_code: 'weak_password', msg: 'Password is known to be weak and easy to guess', weak_password: { reasons: ['pwned'] } } };
     return null;
   }
 
@@ -359,7 +397,7 @@ export class FakeSupabase {
     if (p.startsWith('/rest/v1/')) {
       const id = this.who(headers);
       if (!id) return res(401, { code: 'PGRST301', message: 'JWT expired' });
-      if (p === '/rest/v1/profiles') return this.profilesRoute(method, id, q, body, res);
+      if (p === '/rest/v1/profiles') return this.profilesRoute(method, id, q, body, res, headers);
       if (p === '/rest/v1/sync_snapshots') return this.snapshots(method, id, q, headers, body, res);
       return res(404, { code: 'PGRST205', message: 'no table' });
     }
@@ -367,7 +405,8 @@ export class FakeSupabase {
     if (p.startsWith('/functions/v1/') && method === 'POST') {
       const id = this.who(headers);
       if (!id) return res(401, { error: 'unauthorized' });
-      if (p === '/functions/v1/export-my-data') return res(200, { app: 'kaisip', schema: 1, stores: {} });
+      if (p === '/functions/v1/export-my-data') return res(200, { app: 'kaisip', schema: 1, stores: {}, newsletter: { addedToEmailService: this.kit === null ? null : this.kitAdded.has(this.users.get(id)!.email) } });
+      if (p === '/functions/v1/newsletter-sync') return this.newsletterSync(id, res);
       if (p === '/functions/v1/delete-account') {
         if (body?.confirm !== 'DELETE') return res(400, { error: 'invalid', detail: 'confirm_required' });
         this.users.delete(id);
@@ -377,17 +416,122 @@ export class FakeSupabase {
     return res(404, { message: 'not found' });
   }
 
-  private profilesRoute(method: string, id: string, q: URLSearchParams, body: any, res: (s: number, b?: unknown) => HttpResponse): HttpResponse {
-    if (method === 'GET') return res(200, this.profiles.has(id) ? [{ terms_version: this.profiles.get(id) }] : []);
+  /** Kit's side of newsletter-sync (supabase/functions/newsletter-sync/handler.ts), without the email service. */
+  private newsletterSync(id: string, res: (s: number, b?: unknown, h?: Record<string, string>) => HttpResponse): HttpResponse {
+    if (this.kit === null) return res(200, { synced: false, state: 'not_configured' });
+    if (this.unconfirmed.has(id)) return res(200, { synced: false, state: 'unconfirmed' });
+    const now = this.serverNow();
+    const last = this.newsCalledAt.get(id);
+    if (last !== undefined && now - last < this.newsWaitMs) return res(429, { error: 'rate_limited' }, { 'retry-after': String(Math.max(1, Math.ceil(this.newsWaitMs / 1000))) });
+    this.newsCalledAt.set(id, now);
+    const email = this.users.get(id)!.email;
+    const c = this.consent.get(id);
+    const wants = c?.marketing_opt_in === true;
+    // Kit is only needed when there is something to tell it (a switch-on, or a switch-off of an address the app added).
+    if (this.kitDown && (wants || this.kitAdded.has(email))) return res(503, { error: 'server', detail: 'kit_unavailable' }, { 'retry-after': '60' });
+    if (c && wants) {
+      const held = this.kit.get(email);
+      if (held === 'cancelled') {
+        // Kit holds the address as stopped: never re-added. The record follows Kit (source 'email_service').
+        c.marketing_opt_in = false;
+        c.source = 'email_service';
+        this.kitAdded.delete(email);
+        return res(200, { synced: true, optIn: false, state: 'blocked' });
+      }
+      if (!held) this.kit.set(email, 'inactive');
+      this.kitAdded.add(email);
+      return res(200, { synced: true, optIn: true, state: held === 'active' ? 'subscribed' : 'pending' });
+    }
+    if (this.kitAdded.has(email)) {
+      // Switched off in the app, and the app had added this address: stop the emails at Kit.
+      this.kit.set(email, 'cancelled');
+      this.kitAdded.delete(email);
+      return res(200, { synced: true, optIn: false, state: 'unsubscribed' });
+    }
+    return res(200, { synced: true, optIn: false, state: 'none' });
+  }
+
+  /** What the database refuses in a consent write, before anything is saved. */
+  private consentRefusal(body: any): { status: number; body: unknown } | null {
+    const WRITABLE = ['terms_version', 'age_confirmed', 'privacy_version', 'marketing_opt_in', 'marketing_wording', 'source'];
+    const check = { status: 400, body: { code: '23514', message: 'new row for relation "profiles" violates check constraint' } };
+    if (!body || typeof body !== 'object' || Array.isArray(body)) return { status: 400, body: { code: 'PGRST102', message: 'bad body' } };
+    // Any other column (every time among them: created_at, terms_accepted_at, marketing_set_at, marketing_withdrawn_at) has no grant.
+    for (const k of Object.keys(body)) if (!WRITABLE.includes(k)) return { status: 403, body: { code: '42501', message: 'permission denied for table profiles' } };
+    const version = (v: unknown) => v === undefined || v === null || (typeof v === 'string' && /^\d{4}-\d{2}$/.test(v));
+    if (!version(body.terms_version) || !version(body.privacy_version) || !version(body.marketing_wording)) return check;
+    // 'email_service' is the server's own label; from a client it is dropped (profilesRoute). Anything else unknown fails the check.
+    if (body.source !== undefined && body.source !== null && !['web', 'android', 'ios', 'email_service'].includes(body.source)) return check;
+    if (body.marketing_opt_in !== undefined && typeof body.marketing_opt_in !== 'boolean') return check;
+    return null;
+  }
+  /** 20 changes per account in 24 hours; a withdrawal always goes through. */
+  private consentLimited(id: string, withdrawing: boolean): boolean {
+    const now = this.serverNow();
+    const log = (this.consentLog.get(id) ?? []).filter((t) => now - t < 86_400_000);
+    if (!withdrawing && log.length >= 20) return true;
+    log.push(now);
+    this.consentLog.set(id, log);
+    return false;
+  }
+
+  private profilesRoute(method: string, id: string, q: URLSearchParams, body: any, res: (s: number, b?: unknown) => HttpResponse, headers: Record<string, string> = {}): HttpResponse {
+    // "Prefer: return=representation": the changed rows come back (the selected columns), an empty list when the filter matched none.
+    const rows = /return=representation/.test(headers.prefer ?? '');
+    const shown = (): Record<string, unknown> => {
+      const c = this.consent.get(id);
+      const row: Record<string, unknown> = { id, terms_version: this.profiles.get(id), age_confirmed: true, privacy_version: c?.privacy_version ?? null, marketing_opt_in: c?.marketing_opt_in ?? false, marketing_wording: c?.marketing_wording ?? null, source: c?.source ?? null };
+      const cols = (q.get('select') ?? '*').split(',');
+      return cols.includes('*') ? row : Object.fromEntries(cols.map((k) => [k, row[k] ?? null]));
+    };
+    if (method === 'GET') {
+      if (!this.profiles.has(id)) return res(200, []);
+      const c = this.consent.get(id);
+      const row: Record<string, unknown> = { id, terms_version: this.profiles.get(id), age_confirmed: true, privacy_version: c?.privacy_version ?? null, marketing_opt_in: c?.marketing_opt_in ?? false, marketing_wording: c?.marketing_wording ?? null, source: c?.source ?? null };
+      const cols = (q.get('select') ?? '*').split(',');
+      return res(200, [cols.includes('*') ? row : Object.fromEntries(cols.map((k) => [k, row[k] ?? null]))]);
+    }
+    const limited = { code: 'P0001', message: 'rate_limited' };
+    const check = { code: '23514', message: 'new row for relation "profiles" violates check constraint' };
+    // The database drops the server-only label from a client's write and keeps what was there.
+    if (body && typeof body === 'object' && !Array.isArray(body) && body.source === 'email_service') body = { ...body, source: undefined };
     if (method === 'POST') {
+      const refused = this.consentRefusal(body);
+      if (refused) return res(refused.status, refused.body);
       if (this.profiles.has(id)) return res(409, { code: '23505', message: 'duplicate key value violates unique constraint "profiles_pkey"' });
-      if (body?.age_confirmed !== true) return res(400, { code: '23514', message: 'check' });
+      if (body.age_confirmed !== true || typeof body.terms_version !== 'string') return res(400, check);
+      const optIn = body.marketing_opt_in === true;
+      // An opt-in says which wording was shown and where.
+      if (optIn && (!body.marketing_wording || !body.source)) return res(400, check);
+      if (this.consentLimited(id, false)) return res(400, limited);
       this.profiles.set(id, body.terms_version);
+      this.consent.set(id, { privacy_version: body.privacy_version ?? null, marketing_opt_in: optIn, marketing_wording: body.marketing_wording ?? null, source: body.source ?? null, everOptedIn: optIn });
       return res(201);
     }
     if (method === 'PATCH' && q.get('id') === `eq.${id}`) {
-      this.profiles.set(id, body.terms_version);
-      return res(204);
+      const refused = this.consentRefusal(body);
+      if (refused) return res(refused.status, refused.body);
+      if (!this.profiles.has(id)) return rows ? res(200, []) : res(204); // no row: nothing matches, nothing changes
+      const old = this.consent.get(id) ?? { privacy_version: null, marketing_opt_in: false, marketing_wording: null, source: null, everOptedIn: false };
+      const next = { ...old };
+      // A value on record is replaced, never blanked.
+      next.privacy_version = body.privacy_version ?? old.privacy_version;
+      next.source = body.source ?? old.source;
+      if (typeof body.marketing_opt_in === 'boolean') next.marketing_opt_in = body.marketing_opt_in;
+      if (next.marketing_opt_in) {
+        next.marketing_wording = body.marketing_wording ?? old.marketing_wording;
+        // An opt-in says where it was made: the label left by the server's own switch-off does not count.
+        if (!next.marketing_wording || !next.source || (next.source === 'email_service' && !body.source)) return res(400, check);
+        next.everOptedIn = true;
+      } else if (!old.everOptedIn && body.marketing_wording !== undefined) {
+        next.marketing_wording = body.marketing_wording; // once an opt-in was given, its wording stays with it
+      }
+      const terms = typeof body.terms_version === 'string' ? body.terms_version : this.profiles.get(id)!;
+      const same = terms === this.profiles.get(id) && JSON.stringify(next) === JSON.stringify(old);
+      if (!same && this.consentLimited(id, old.marketing_opt_in && !next.marketing_opt_in)) return res(400, limited);
+      this.profiles.set(id, terms);
+      this.consent.set(id, next);
+      return rows ? res(200, [shown()]) : res(204);
     }
     return res(400, { code: 'PGRST100', message: 'bad' });
   }

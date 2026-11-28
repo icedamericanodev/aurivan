@@ -254,22 +254,28 @@ pages not on https).
    sign-up confirms the email with a code), the Account section (status, Sync now, Download my
    data, Delete synced progress, Delete account, sign out), first-sync
    preview and undo, Terms and 16+.
+   **Built 28 Nov 2026, behind the switch (OFF); see "B1 as built" below.**
 2. New pages: `delete-account.html`, `human-check.html` (Turnstile); CSP and
    `_headers` updates; `build_site.sh` publishes them.
+   **Built 28 Nov 2026.** Published only when `ACCOUNTS_ON` is true or the
+   build sets `SITE_ACCOUNTS_PREVIEW=1`; noindex until accounts are on.
 3. The study app goes to `https://kaisip.com/app/` (owner, 28 Nov 2026: open
    the web version now for iPhone users; free CISA sample, no sign-in yet),
    with the home page staying at `/`.
 4. Stays behind the `ACCOUNTS_ON` switch (preview only) until every go-live
    gate is ticked.
-5. **Sign-up consent (owner, 28 Nov 2026).** On the first sign-up step,
-   before "Send my code" and before Google: required "I agree to the Terms
-   and Privacy Policy" and "I'm 16 or older"; a separate, optional, unticked
-   "Email me study tips and KaiSip news. I can unsubscribe anytime." The
-   choice is stored with its wording version and time, can be changed in the
-   Account section, and every such email has an unsubscribe link. Sending the
-   opted-in addresses to Kit comes later (an Edge Function with Kit's key as
-   a Function secret). Wording checked by `app-store-compliance-reviewer`
-   and `growth-marketer`; the privacy policy is updated in the same release.
+5. **Sign-up consent (owner, 28 Nov 2026; revised the same day).** On the
+   first sign-up step, before "Send my code" and before Google: ONE required,
+   unticked box, "I agree to the Terms of Use and Privacy Policy." (both
+   linked); the line "Accounts are for learners 18 and older." directly
+   under it (no separate age box); and, divided off and labelled Optional,
+   an unticked "Email me KaiSip study tips and news (optional). Unsubscribe
+   anytime." The record (versions `2026-12`, the server's times, the source)
+   is described in `docs/legal/consent_wording.md`; the choice can be changed
+   in the Account section and every such email has an unsubscribe link. The
+   opted-in address goes to Kit through the `newsletter-sync` function (Kit's
+   key is a Function secret; until it is set the function does nothing).
+   The privacy policy is updated in the same release.
 6. **Design (owner asked for a creative web design, 28 Nov 2026).** Three
    directions were drawn (Grove Atelier, Working Paper, Canopy); the designer
    recommends Grove Atelier with Working Paper's joined code cells and tick
@@ -283,6 +289,211 @@ pages not on https).
    allow-list of the owner's email, as a layer in front of the existing
    two-step sign-in. The old `kaisip.certprep-support.workers.dev` address
    must be switched off or covered too, or it bypasses Access.
+
+#### B1 as built (28 Nov 2026, three rounds; nothing a visitor can reach changed)
+
+- **The switch.** `ACCOUNTS_ON = false` in the first script of `index.html`.
+  With it off no account element is created, the accounts client
+  (`assets/kaisip-cloud.js`), the password word lists and Cloudflare's human
+  check are never loaded, and no request goes to the sign-in service or any
+  other party. Account screens exist only on `https://kaisip.com` (never
+  `file://`, a preview host or a copy of the site). The owner's preview needs
+  her secret phrase: `#accounts-preview=<phrase>` saves it in her own
+  browser, the page holds only its SHA-256 and checks the saved phrase at
+  every load, and `#accounts-preview=off` removes it for anyone (security
+  review B2; steps in `docs/WEBSITE_DEPLOY.md`). The phrase is in no file.
+  A link, the word "on" or a value typed into storage switches nothing on.
+  What protects accounts before launch is still the server side (the go-live
+  gates, and sign-ups kept off in the dashboard).
+- **With the switch on, the website asks for an account** (owner, 28 Nov
+  2026: "when they using website sign up be required to secure their
+  profile"). With it off, today's open app is unchanged; the tests prove
+  both states.
+  - A visitor who is not signed in gets the welcome and the sign-in screens,
+    and no path into the study app. The welcome says so and why in one line
+    ("You need an account to study here. It's free, and it keeps your
+    progress safe and in sync with the Android app.") and links Terms,
+    Privacy, Help and "About KaiSip" (the home page, for someone who only
+    wanted a look).
+  - **A code is not a sign-in** (security review B1). After the emailed code
+    and before a password is saved, the session opens nothing: every address
+    and door keeps "Create a password" (with "Sign out instead"), the app is
+    hidden from the first draw, and the shared client refuses every other
+    call for that session before sending it. The functions and the row rules
+    must refuse it on the server too (the database engineer's half).
+  - No flash: the page's first script marks the page (`data-ka-gate`) before
+    anything is drawn when this browser holds no live sign-in; the styles
+    hide the app while the mark is there.
+  - A signed-in learner is never locked out. The gate reads only what this
+    browser holds, so studying goes on offline, while the sync service
+    answers with errors, and when the accounts script cannot be loaded.
+  - A sign-in that ends (30 days, 14 unused days, or ended by the service)
+    asks to sign in again ("Please sign in again to keep studying. Your
+    progress is safe in this browser.") and touches nothing saved. If a
+    question or a mock is open it waits until that is over, and the learner
+    returns to the page they were on.
+  - A study address opened while signed out is remembered for that tab and
+    opens after sign-in. The legal pages, Help, `delete-account.html` and
+    `human-check.html` stay public.
+  - A visitor with progress from before accounts is told it is kept, is
+    offered it into the new account at the first sign-in (the preview and its
+    undo), and the preview says plainly that answers for questions outside
+    the free sample stay in this browser and cannot be added to the account.
+  - The guest card on You, its slim row and its offer sheet are gone (there
+    is no guest in the app once accounts are on).
+  - **A brand-new account that came in through Google agrees before it
+    studies** (owner, round 3). "One more step" then offers Agree or Sign
+    out and nothing else, across reloads, addresses and tabs (a note kept in
+    the browser, `kaisip_acct_agree_v1`, until they agree or sign out; the
+    page asks the service at each start, so agreeing on the phone lets them
+    in). An account that agreed before and is asked again for a later Terms
+    version keeps "Back to studying": it studies on with sync paused,
+    because a signed-in learner is never locked out of their own progress.
+  - **The app's own first-visit sheet** (what KaiSip is, "Start 5
+    questions", then the exam date) runs once after a new account's first
+    sign-in. A learner with progress in the browser or in the account does
+    not get it; a learner who asked for a page gets the page, and the sheet
+    at the next plain visit. Its last line reads "Your account keeps your
+    progress safe and in sync." instead of "No account."
+- **Screens** (direction A, Grove Atelier, with joined code cells and audit
+  ticks; `docs/mobile/DESIGN_SYSTEM.md` §22): the welcome; Sign in; Create
+  account in the order email and agreement, the 8-digit code, the password;
+  Forgot password; the agreement after a first Google sign-in ("One more
+  step"); the first-sync preview (This browser, Account, After) with Combine,
+  "Use the account's progress here" (a 7-day undo copy) and Not now; the
+  account card on You (synced, syncing, waiting for a connection, couldn't
+  sync, one step left); the Account page; `delete-account.html`;
+  `human-check.html`.
+- **Passwords** (owner's rule, recorded as deviations D3 and D4): 12 or more
+  characters with a lowercase letter, an uppercase letter, a number and a
+  symbol. A live five-item checklist sits under every new password (Create
+  account, the reset, Change password), each item with an icon and the words
+  "Met" or "Not yet", said politely to screen readers a second after typing
+  stops. The labels are the shared rules' own ("A lowercase letter (a to
+  z)" ...). An accepted password reads "This password works." and nothing
+  more: the rules' `long` (15 or more characters) is a length label, never
+  shown as strength. A password the shared rules refuse as common, as two
+  common words, or as too simple gets the
+  rules' own guidance sentence in the same card. The rules run on a pause
+  in typing (200 ms after the last key), never on every key press, and at
+  once when the form is sent. (One voice; the red line
+  under the field is only for a leak found at save or a server refusal). New
+  passwords are hidden as typed, with Show. No example password anywhere.
+  Sign-in applies none of this and keeps "Email or password is incorrect".
+- **Shared client** (`mobile/src/webcloud/`): `sendSignUpCode` and
+  `confirmSignUpCode` (a code session that only "needs a password": no sync,
+  no account call of any kind, signed out after 10 minutes), then the
+  existing `setPassword`; one sign-up code a minute from a page; and, for
+  the consent record, `acceptTerms` (now with the Privacy Policy version,
+  the source and the optional emails), `consent`, `setNews` and `syncNews`.
+  Google returns to `https://kaisip.com/app/` (`REDIRECT_URL`), so **the
+  Supabase redirect list must hold that address before Google is tried**
+  (owner checklist).
+- **Consent.** One required, unticked box, the "18 and older" line under it
+  and the separate, optional, unticked news box sit before "Send my code"
+  and before Google, and on the Google "One more step" screen. Agreeing
+  writes the learner's own record once: `terms_version`, `privacy_version`,
+  `age_confirmed`, `source: 'web'`, and the opt-in with its wording version
+  only when the box is ticked. No time is ever sent (the server sets each
+  one). The three labels are written once, in
+  `mobile/src/engine/account.ts`, and reach the page as
+  `KaiSipCloud.config.CONSENT`; the page names no version. An account that
+  agreed to earlier Terms is asked again at sign-in. The words and labels
+  are tested against the consent registry (`docs/legal/consent_wording.md`,
+  arriving with the database branch; a copy stands in until then), and the
+  screen as shipped is kept in `docs/legal/consent_screens/2026-12-web.png`.
+- **News emails on Account.** The switch writes the record, then asks the
+  `newsletter-sync` function to make the email service agree; the same ask
+  runs each time Account opens. "Check your inbox to confirm your email"
+  while a confirmation is out. The row is always the switch with one line
+  under it, following the function's answer (`docs/mobile/ACCOUNTS_BETA_PLAN.md`,
+  "What the clients get back"): `unsubscribed` (the learner's own switch-off
+  reached the service) is just Off; `blocked` (the service holds the address
+  as stopped) is Off with "You're unsubscribed from KaiSip news, and it
+  can't be restarted here.", plus a link to the email service's own sign-up
+  form once the owner supplies its address (`KA_NEWS_FORM_URL`, empty for
+  now, so no link is drawn; it is not the home page's waitlist form);
+  `unconfirmed` shows the choice as saved and says news starts once the
+  email is confirmed. The line never says how a stop happened. The record's
+  server-only label is `email_service`; the clients read it and never send
+  it. The email service being
+  away loses nothing; the 21st change in a day is refused in words, and
+  switching off always works.
+- **The Google button** follows Google's sign-in branding on that one
+  control: their colours for the light and the dark theme, the 12/10/12
+  spacing, "Continue with Google" / "Sign up with Google", and the label in
+  Roboto Medium 14/20 (a 7 KB self-hosted subset with its licence,
+  `assets/fonts/OFL-Roboto.txt`; only this button uses it). **The "G" is
+  Google's own file and is not in the repo yet** (Google's branding host
+  could not be reached from the build machine, and the mark is never
+  redrawn). Until `assets/google-g.svg` is added, the button, its divider
+  and every mention of Google stay hidden (tested). Steps:
+  `docs/WEBSITE_DEPLOY.md`, "Google's G file".
+- **Tests:** `node scripts/smoke/accounts.mjs <repo> <out>` (or
+  `scripts/smoke/run.sh accounts`) drives the real page at
+  `https://kaisip.com/app/` (intercepted, with the site's real
+  Content-Security-Policy) with the real client against the Jest fake
+  Supabase, at 390 and 1280. The paths: A0 the switch off (nothing loads);
+  A1 to A12 every flow and failure (wrong code, each refused password,
+  leaked, leak check unreachable, rate limit, offline, unticked agreement),
+  two tabs, Google, axe on every account screen in light and dark, 320 to
+  1280 wide and text at 200%; G1 to G7 the gate (every address and door, the
+  public pages, deep links, three outages, four ways a sign-in ends, the
+  returning visitor, a brand-new Google account that must agree, the
+  first-visit sheet); N1 to N3 the news switch and the email service; U1 to
+  U5 the review's fixes, the Google button with and without its file, and
+  the checklist at 320px.
+  `--shots <dir>` saves every screen at 390 and 1280, light and dark, and
+  fails if KaiSip Serif was not loaded.
+- **Round 4 (both reviews of 7e7b894).** Security: B1 and B2 above; a new
+  account whose agreement cannot be read gets three tries, then the
+  agreement screen (S1); the agreement carried from the Create account form
+  has an owner and 30 minutes (S2); Create account on an address that
+  already had an account says so (S3); `?error=` / `?code=` never puts a
+  sign-in form in front of a signed-in learner (S4); a consent write must
+  come back as the learner's one row (S5); tokens in the address are removed
+  at once (N2); the account block has no inline handlers, and `_headers`
+  carries the target script policy as Report-Only, which blocks nothing and
+  lets the tests count what is left (S7, part). UX: forced colours (an
+  unticked box draws no tick; buttons, fields and the switch keep an edge);
+  the "One more step" panel; the agreement box's description for screen
+  readers; no toast over the first-visit sheet; fields are 52 tall like the
+  buttons.
+- **Follow-ups listed, not done:** the spacing sweep (about 35 off-scale
+  gaps and paddings in the account styles, and `font:` shorthands that
+  bypass the type tokens); moving the page's four inline script blocks and
+  the rest of the app's inline handlers out, so the Report-Only policy can
+  be enforced (the reviewer's phases 1 and 2); the review's S6 (email budget
+  and a purge of unconfirmed accounts) and the `magic_link` email template
+  (S3) are the database engineer's.
+- **Open before launch:**
+  1. Add Google's "G" file (above). Until then accounts made with Google on
+     the phone cannot sign in on the website, except by setting a password
+     with "Forgot password?".
+  2. The sync engine writes back only questions the website has loaded (the
+     free sample). Answers from before web v12.50 for other questions stay
+     in the browser (`kaKeepUnknown`, tested) and never reach the account;
+     the first-sync preview now says so. Fix in the client (`toWeb` /
+     `fromWeb`) if they should travel.
+  3. The real project's password setting (12 characters, the four character
+     sets) is the owner's, in the dashboard; the fake server the tests use
+     now keeps the same rule.
+  4. If the agreement lookup fails at the moment a brand-new Google account
+     first signs in (the service is away), the learner is let in with sync
+     off and is asked at the next start. Accepted, so that an existing
+     learner is never locked out by an outage.
+  4b. The email service's sign-up form address for the app's news
+     (`KA_NEWS_FORM_URL` in `index.html`) is empty until the owner makes the
+     form; the "blocked" line then gains its link.
+  5. `delete-account.html` still needs the developer name exactly as on
+     Google Play and the database provider's log period (both left out
+     rather than guessed), and the compliance reviewer's read.
+  6. Not built here: the remote "hide the password form" brake, the
+     in-app "password changed on" banner (the Account page shows the date),
+     a service worker, and the privacy policy and Terms updates (gate 19).
+     The live Terms and Privacy pages do not state a minimum age yet; the
+     2026-12 texts must (18), because agreeing to them is how the age is
+     declared.
 
 ### C. Android 2.4 with sign-in and sync
 1. Supabase adapters, the sign-in and account screens, in-app account
@@ -495,8 +706,13 @@ traffic.
      token refreshes 150 (password sign-ins share this one, so don't lower
      it); per-address waits at 60 seconds.
    - **Leave as they are:** Phone OFF, Anonymous sign-ins OFF, Manual
-     linking OFF, Allow new users to sign up ON, URL Configuration unchanged.
-     Multi-factor (TOTP) stays on: only staff can enrol now.
+     linking OFF, Allow new users to sign up ON. Multi-factor (TOTP) stays
+     on: only staff can enrol now.
+   - **Authentication → URL Configuration → Redirect URLs:** add
+     `https://kaisip.com/app/` (exactly, with the last slash), beside
+     `https://kaisip.com/` and `kaisip://auth-callback`. The web app lives
+     at `/app/`, and Google sends the learner back there. Without it Google
+     sign-in on the website lands on the home page and does not finish.
    - **Authentication → Attack Protection → CAPTCHA (Turnstile):** ON, on
      go-live day, last; then Claude runs `bash scripts/cloud_smoke.sh captcha`.
    - Make test accounts the way learners do (code first, then the

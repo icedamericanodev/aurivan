@@ -78,7 +78,7 @@ describe('PKCE (RFC 7636)', () => {
     const url = new URL(a.googleSignInUrl());
     expect(url.origin + url.pathname).toBe(`${FAKE_URL}/auth/v1/authorize`);
     expect(url.searchParams.get('provider')).toBe('google');
-    expect(url.searchParams.get('redirect_to')).toBe('https://kaisip.com/');
+    expect(url.searchParams.get('redirect_to')).toBe('https://kaisip.com/app/');
     expect(url.searchParams.get('code_challenge_method')).toBe('s256');
     const saved = JSON.parse(session.getItem(PKCE_KEY)!);
     expect(url.searchParams.get('code_challenge')).toBe(challengeFor(saved.verifier));
@@ -389,7 +389,7 @@ describe('the account functions and the Terms', () => {
     expect(await a.termsVersion()).toBe('2026-11');
     await a.acceptTerms({ termsVersion: '2027-01', ageConfirmed: true });
     expect(await a.termsVersion()).toBe('2027-01');
-    expect(server.calls.some((c) => c.method === 'PATCH' && c.path === `/rest/v1/profiles?id=eq.${info.userId}`)).toBe(true);
+    expect(server.calls.some((c) => c.method === 'PATCH' && c.path.startsWith(`/rest/v1/profiles?id=eq.${info.userId}`))).toBe(true);
     expect(await codeOf(a.acceptTerms({ termsVersion: 'soon', ageConfirmed: true }))).toBe('invalid');
   });
 

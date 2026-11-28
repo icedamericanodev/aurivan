@@ -23,7 +23,7 @@ read them from repository variables, apps from their build settings.
 |---|---|---|
 | 1 | Database fixes before the first apply (§3.1), Edge Function changes (§3.3), workflows (§6), docs, legal drafts, email templates, Data safety answers; then the security audit's fixes (below) | **Done** (PR #141) |
 | 2 | MCP apply, SQL checks, advisors, function deploy (§3.3) | **Done 28 Oct 2026.** All five migrations are applied byte-for-byte, with checks and advisors clean (see "Hosted apply record" below). Both functions are deployed and smoke-tested; `DELETION_PEPPER` is set and read |
-| 3 | Web client (§1, web engineer) and mobile go-live (§2, mobile engineer) | Not started |
+| 3 | Web client (§1, web engineer) and mobile go-live (§2, mobile engineer) | **Web: built 28 Nov 2026 behind `ACCOUNTS_ON = false`** (the screens, the Account page, the first-sync preview and undo, `delete-account.html`, `human-check.html`; `docs/WEB_LAUNCH_PLAN.md`, "B1 as built"). Mobile: not started |
 | 4 | Sky's checklist (§9) | **29 Oct 2026:** A, A2a, B3–B5, C, D, E and F are done (F30, CAPTCHA, waits for go-live day). **G is done:** R2 bucket `kaisip-db-backups` (30-day delete rule, storage alert at 5 GB), the `db-backup` environment (main only) and its secrets and variables. The first manual run (29 Oct, run 2) dumped, encrypted and uploaded an 11 MB database. Sky decrypted the first backup on 29 Oct and found schema.sql, data.sql and stats.txt (gate 12, first half). Still open: a full restore drill into a scratch database before go-live (gate 12, second half) and H (go-live day) |
 
 ### Public config values (safe to commit; no secrets here)
@@ -725,7 +725,7 @@ The real figure is lower, because not every monthly user is active every day. At
 
 **Mirror `supabase/config.toml` on the dashboard:**
 - Site URL `https://kaisip.com`.
-- Redirect URLs exactly `https://kaisip.com/` and `kaisip://auth-callback`. No wildcards, no `pages.dev`, no `workers.dev`.
+- Redirect URLs exactly `https://kaisip.com/`, `https://kaisip.com/app/` (the web app's own address since web v13.2; the website's Google sign-in returns there) and `kaisip://auth-callback`. No wildcards, no `pages.dev`, no `workers.dev`.
 - JWT 3600 s. Refresh rotation on, reuse interval 10 s.
 - Email: confirmations on, secure email change on, OTP 8 digits (security audit L7), expiry 600 s, resend 60 s.
 - Anonymous sign-ins off; manual linking off; phone off.

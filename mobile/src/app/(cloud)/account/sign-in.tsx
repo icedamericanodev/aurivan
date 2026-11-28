@@ -5,7 +5,7 @@
  * feedback board, PR 8). Once signed in it hands over to /account.
  *
  * Takes no link parameters, and starts nothing on its own: every sign-in
- * waits for the learner's tap (and the "16 or older" box).
+ * waits for the learner's tap (and the "I agree" box).
  */
 import { Redirect, router } from 'expo-router';
 import { SignInContent } from '../../../components/account';

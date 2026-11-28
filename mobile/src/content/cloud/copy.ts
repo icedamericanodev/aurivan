@@ -32,7 +32,9 @@ export const ACCOUNT_COPY = {
   'signin.body3': 'We store your email to sign you in and your progress to sync it. No ads, no tracking.',
   'signin.privacy': 'Privacy policy',
   'signin.terms': 'Terms of Use',
-  'signin.age': 'I’m 16 or older and I agree to the Terms of Use.',
+  // One box for the Terms and the Privacy Policy; the age is a line under it, not a second box (owner, 28 Nov 2026).
+  'signin.age': 'I agree to the Terms of Use and Privacy Policy.',
+  'signin.age.line': 'Accounts are for learners 18 and older.',
   'signin.age.hint': 'Tick the box above to continue.',
   'signin.apple': 'Continue with Apple',
   'signin.google': 'Continue with Google',

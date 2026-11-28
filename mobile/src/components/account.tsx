@@ -12,7 +12,7 @@
  * - aboutLine: Settings → About's last sentence.
  * - AccountNotice: one calm message after an action (the `tip` tint, like
  *   Your data's problems: Grove keeps red for wrong answers).
- * - SignInContent: the sign-in sheet's words, the "16 or older" box and the
+ * - SignInContent: the sign-in sheet's words, the "I agree" box (accounts are 18 and older) and the
  *   three buttons, shared by /account (signed out) and /account/sign-in.
  */
 import { router } from 'expo-router';
@@ -134,7 +134,7 @@ export function signInProblem(code: string): string | null {
 
 // ── The sign-in sheet ─────────────────────────────────────────────────
 /**
- * The words, the "16 or older and I agree" box and the buttons. Until the
+ * The words, the "I agree to the Terms of Use and Privacy Policy" box, the "18 and older" line and the buttons. Until the
  * box is ticked every button is disabled and the hint says why. Apple and
  * Google sign in here (a cancelled sheet just comes back); email opens the
  * email screen. Phase 9 swaps the Apple button for Apple's own system button.
@@ -181,6 +181,7 @@ export function SignInContent({ onClose }: { onClose: () => void }) {
       <View style={{ marginTop: space.sm }}>
         <CheckRow label={copy('signin.age')} checked={agreed} onPress={toggle} last />
       </View>
+      <T v="meta" style={{ marginTop: space.xs }}>{copy('signin.age.line')}</T>
       {!agreed && <T v="meta" style={{ marginTop: space.xs }}>{copy('signin.age.hint')}</T>}
       <View style={{ gap: space.sm, marginTop: space.lg }}>
         {shown.map((p) => (

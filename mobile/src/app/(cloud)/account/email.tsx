@@ -7,7 +7,7 @@
  * the learner must ask for a new one. No password and no magic link, so no
  * link ever carries a sign-in token.
  *
- * Reached only after the sign-in sheet's "16 or older" box was ticked in
+ * Reached only after the sign-in sheet's "I agree" box was ticked in
  * this visit (lib/account.ts hasAgreed); a link straight here goes back to
  * the sheet. Takes no link parameters and sends nothing until a tap.
  * Signed in → back to /account, which now shows the account.

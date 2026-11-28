@@ -92,6 +92,7 @@ Cloudflare publishes `_site/`:
 | `assets/` (images, icons, fonts, stylesheets, plus one named script: `assets/kaisip-plant.js`) | Icons and fonts the pages use, and the plant companion (generated from the mobile app by `mobile/scripts/build-web-plant.mjs`) |
 | `data/free/cisa_d1.json` … `cisa_d5.json` (the free question sample, from `scripts/build_free_sample.py`), `data/cisa_notes.json`, `data/mindset/principles.json`, the two `data/exam/` files | The data the web app loads. The full bank `data/domain*.json` is **not** published since web v12.50; the build fails if any question outside the sample appears in `_site/` |
 | `manifest.webmanifest` (with the app only) | The install manifest: "Add to Home Screen" name, icons and full screen |
+| `delete-account.html`, `human-check.html` (**only** with accounts on, or `SITE_ACCOUNTS_PREVIEW=1`) | The two account pages: Google Play's web deletion address, and the Android app's human check. Not in a normal build (see "Accounts: the switch and the owner's preview") |
 | `_headers`, `_redirects` | Security headers and friendly redirects (and the `/app/` rules) |
 | `favicon.ico` | Browsers ask for it at the top level |
 
@@ -105,16 +106,121 @@ To try it on your computer: `bash scripts/build_site.sh`, then
 `python3 -m http.server 8000 -d _site` and open http://localhost:8000.
 (This simple server ignores `_headers`; Cloudflare applies them.)
 
-**Adding a page** (for example `delete-account.html`): add it to `PAGES` in
-`scripts/build_site.sh`, add it to the final check in the same file, and give
-it its own two rules in `_headers` (`/delete-account` and
-`/delete-account.html`), copied from the privacy page's rules.
+**Adding a page:** add it to `PAGES` in `scripts/build_site.sh`, add it to
+the final check in the same file, and give it its own two rules in `_headers`
+(`/name` and `/name.html`), copied from the privacy page's rules. (The two
+account pages are different: the build writes their rules itself, only when
+it publishes them.)
 
 **Decided 4 Nov 2026:** the website publishes only the free sample, never the
 full bank (`docs/business/monetization/WEB_GATE_PLAN.md`). After each deploy
 that touches data, check that `https://kaisip.com/data/domain1.json` returns
 the app page and not JSON (look at the body: the single-page fallback
 answers 200).
+
+## Accounts: the switch and the owner's preview
+
+Sign-in on the website is **built and switched off** (stream B1 of
+`docs/WEB_LAUNCH_PLAN.md`). A visitor sees no account screen, and the page
+loads no account code and contacts no sign-in service.
+
+**The switch** is one line in the first script of `index.html`:
+`var ACCOUNTS_ON = false;`. Do not change it until every go-live gate is
+ticked. When it is `true`, the build also publishes the two account pages.
+
+**To try the screens yourself on the live site (owner only):**
+
+1. On the computer or phone you want to test with, open a **new tab** and go
+   to `https://kaisip.com/app/#accounts-preview=` followed by **your secret
+   phrase** (no spaces). The phrase was given to you privately; it is not in
+   this repo, in any document or in the page. The page holds only a
+   fingerprint of it (its SHA-256, `KS_PREVIEW_HASH` in the first script of
+   `index.html`) and checks what you typed against that. A wrong phrase, the
+   word "on", or a value typed into the browser's storage does nothing.
+2. From now on, **in this browser only**, the site behaves as it will once
+   accounts are on: it opens on the welcome screen and asks you to create an
+   account or sign in before the study app opens (owner decision, 28 Nov
+   2026). Progress already saved in that browser is kept and offered into the
+   account at your first sign-in. Nobody else sees anything: the phrase is
+   saved in your browser (`kaisip_accounts_preview`), not on the site, and
+   is checked again every time the page loads. It leaves the address bar at
+   once, but do not open that address on a shared computer or share your
+   screen while typing it.
+3. To switch it off again, open `https://kaisip.com/app/#accounts-preview=off`
+   in a new tab (or clear the site's data).
+
+Things to know:
+
+- It works only at `https://kaisip.com`. A copy of the site, a preview
+  address or a file on your computer never shows account screens.
+- Use a new tab (or reload after typing the address). The switch is read when
+  the page loads.
+- A Home Screen copy on an iPhone has its own storage, so switch it on there
+  separately.
+- The preview talks to the **real** sign-in service. Until the go-live gates
+  are done, use only your own test addresses.
+- Without the phrase nobody can switch the screens on from the page: not by
+  a link, and not by reading the page's code (a fingerprint cannot be turned
+  back into the phrase). Anyone can switch them **off** (`=off`), so a
+  browser can never get stuck behind the sign-up screen. Keep "Allow new
+  users to sign up" and the Google provider OFF in the Supabase dashboard
+  until go-live all the same: the server-side gates are what protect
+  accounts.
+- **To change the phrase** (if it may have been seen): make a new random
+  phrase of 22 or more letters and digits, work out its SHA-256 (on a Mac:
+  `printf '%s' 'the-new-phrase' | shasum -a 256`), put the 64 characters in
+  `KS_PREVIEW_HASH`, and deploy. The old phrase stops working at once, in
+  every browser.
+- **Google sign-in** needs `https://kaisip.com/app/` in Supabase →
+  Authentication → URL Configuration → Redirect URLs first, and Google's "G"
+  file (next).
+
+**Google's G file (needed before the website offers Google sign-in).**
+Google's sign-in branding rules ask for their own "G" logo, unaltered, on the
+"Continue with Google" button. It is not in this repo: Google's page could
+not be reached from the build machine, and the logo must never be redrawn.
+Until the file is added, the sign-in screens hide the Google button, its
+"or" divider and every mention of Google (email and password work as usual),
+and the site build prints a note.
+
+1. Open `https://developers.google.com/identity/branding-guidelines` and
+   download Google's sign-in assets from that page.
+2. Take the standard colour "G" logo by itself (the four-colour G on a clear
+   background, not a whole pre-made button), as an SVG if the download has
+   one. Do not edit, recolour, crop or redraw it.
+3. Save it as `assets/google-g.svg` (if Google only gives a PNG, save a
+   square one at least 40 pixels wide as `assets/google-g.png`; the page
+   looks for the `.svg` first, then the `.png`).
+4. While on that page, check the button against it: light theme fill
+   `#FFFFFF`, 1px edge `#747775`, label `#1F1F1F`; dark theme fill `#131314`,
+   edge `#8E918F`, label `#E3E3E3`; 12px before the G, 10px between the G and
+   the words, 12px after; label in Roboto Medium 14/20. These are the values
+   built into the button (the `--ka-g-*` lines and `.ka-btn-google` in
+   `index.html`); they were written from memory of the guideline, so tell the
+   engineer if the page says otherwise.
+5. Commit the file. Nothing else changes: the button appears by itself.
+   `node scripts/smoke/accounts.mjs` path U3 then tests the real file.
+
+The button's label font is a small self-hosted piece of Roboto
+(`assets/fonts/Roboto_500Medium_latin.woff2`, made from Google's own fonts
+repository; licence in `assets/fonts/OFL-Roboto.txt`). Only that one button
+uses it, because Google's rule for its button outranks our two-font rule
+there.
+
+**The two account pages** (`/delete-account`, `/human-check`) are not on the
+live site in a normal build. To publish them for your preview, or because
+the Google Play listing of the Android release with accounts needs the
+deletion address before the website's own switch is on: in Cloudflare →
+the site → Settings → Build → Variables, add `SITE_ACCOUNTS_PREVIEW` = `1`
+and redeploy. They are then served with "noindex" (search engines are told
+not to list them). Remove the variable and redeploy to take them down. Once
+`ACCOUNTS_ON` is `true` they are published without the variable, and
+`/delete-account` may be listed.
+
+**To check it locally:** `node scripts/smoke/accounts.mjs . <out folder>`
+(needs `mobile/node_modules`). It runs the real page at the kaisip.com
+address against a pretend sign-in service; nothing leaves the computer.
+Add `--shots <folder>` for pictures of every screen.
 
 ## The new home page (`home.html`, not live yet)
 
@@ -231,6 +337,14 @@ pull request). The beta page returns to `/` on the next deploy.
   for feedback and flags. Fonts are self-hosted. Checked on 21 Oct 2026 in
   Chromium with a local server that applies `_headers`: no violations on any
   screen, light or dark.
+- **Accounts (built, switched off):** the same `/*` policy already names
+  what the sign-in screens need and nothing more: the sign-in service by its
+  exact address (`connect-src`), Cloudflare's human check as a script and a
+  frame, and the leaked-password lookup (`connect-src`). The build fails if
+  any of them is missing from `/*`, is written with a wildcard, or appears
+  in the home page's policy. `/delete-account` gets the legal pages' strict
+  policy and `/human-check` its own (its one script by hash, Cloudflare's
+  widget, nothing else); the build writes both rules.
 - Cloudflare **joins** the values when two rules match the same path. For
   Content-Security-Policy that is safe: the browser enforces both policies,
   so the legal pages, `/data/*` and `/assets/*` keep their own stricter

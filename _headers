@@ -19,6 +19,10 @@
 # Cloudflare serves /privacy.html at /privacy (it drops ".html"), so each page
 # is listed both ways. A new page needs its own rule here (and a line in
 # scripts/build_site.sh).
+# Two pages are NOT listed here: /delete-account and /human-check, the account
+# pages. They are published only when accounts are on (or the build is asked
+# for them), and scripts/build_site.sh writes their rules into _site/_headers
+# then, with each page's one inline script allowed by its hash.
 
 # Every response.
 #   HSTS: browsers use HTTPS only for this site for a year. ("preload" is left
@@ -27,6 +31,11 @@
 #   nothing else. Scripts: this site, the inline scripts and onclick handlers
 #   ('unsafe-inline' stays until they move into a .js file), Google Analytics
 #   (loaded only after the visitor accepts) and Cloudflare Web Analytics.
+#   Content-Security-Policy-Report-Only (web accounts, security review S7): the
+#   script policy the app is heading for, with no 'unsafe-inline'. It blocks
+#   NOTHING: browsers only note in their console what it would have blocked,
+#   and scripts/smoke/accounts.mjs counts those, so the remaining inline
+#   scripts and onclick handlers can be moved out before it is enforced.
 #   Fonts are self-hosted. Connections: this site, the Google Forms used for
 #   feedback and flags, Google Analytics, Cloudflare Web Analytics. No
 #   plugins, no <base>, no framing.
@@ -49,6 +58,7 @@
   Cross-Origin-Opener-Policy: same-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com/gtag/js https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://docs.google.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com https://ziadnvepttlgcowvqvom.supabase.co https://api.pwnedpasswords.com; frame-src https://docs.google.com https://challenges.cloudflare.com; form-action https://docs.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'
+  Content-Security-Policy-Report-Only: script-src 'self' 'report-sample' https://www.googletagmanager.com/gtag/js https://static.cloudflareinsights.com https://challenges.cloudflare.com
 
 # The home page. While SITE_MODE=landing (the default in
 # scripts/build_site.sh) it is the beta landing page (a copy of beta.html), so

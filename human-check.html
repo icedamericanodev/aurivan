@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- The human check for the KaiSip Android app (accounts plan, 2.1). The app
+     opens https://kaisip.com/human-check in a browser sheet before it asks for
+     an emailed code, a password sign-in or a reset code. Cloudflare Turnstile
+     runs here (it has no Android version), and the one-time token goes back
+     to the app at kaisip://human-check?t=... and nowhere else.
+     Published by scripts/build_site.sh only when accounts are on (ACCOUNTS_ON
+     in index.html) or the build is asked for the account pages
+     (SITE_ACCOUNTS_PREVIEW=1). Always noindex. Its rule in _site/_headers is
+     written by the build with this page's one inline script allowed by its
+     hash: nothing else may run here but Cloudflare's widget. -->
+<meta name="robots" content="noindex, nofollow">
+<title>Human check — KaiSip</title>
+<link rel="icon" href="assets/favicon.ico" sizes="48x48">
+<style>
+  :root { color-scheme: light dark; --bg: #F3F1EA; --ink: #17231B; --ink2: #465349; --accent-text: #24603F; --line: #DFDCD1; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #111613; --ink: #ECEFE8; --ink2: #B4BFB6; --accent-text: #93CFAA; --line: #29322B; } }
+  @font-face { font-family: 'KaiSip Serif'; font-style: normal; font-weight: 400 500; font-display: swap; src: url('assets/fonts/KaiSipSerif_500Medium.woff2') format('woff2'); }
+  @font-face { font-family: 'Figtree'; font-style: normal; font-weight: 400; font-display: swap; src: url('assets/fonts/Figtree_400Regular.woff2') format('woff2'); }
+  @font-face { font-family: 'Figtree'; font-style: normal; font-weight: 600 700; font-display: swap; src: url('assets/fonts/Figtree_600SemiBold.woff2') format('woff2'); }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--bg); color: var(--ink); font: 400 1rem/1.5 Figtree, system-ui, -apple-system, 'Segoe UI', sans-serif; }
+  main { width: 100%; max-width: 26rem; padding: 32px 20px; text-align: center; }
+  h1 { font: 500 1.75rem/1.2 'KaiSip Serif', Georgia, serif; margin: 0 0 8px; }
+  p { margin: 0 0 16px; color: var(--ink2); }
+  #box { display: flex; justify-content: center; min-height: 70px; margin: 20px 0; }
+  a, button { color: var(--accent-text); font: 600 1rem/1.3 inherit; font-family: inherit; }
+  .act { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 10px 18px; border-radius: 16px; border: 1.5px solid var(--line); background: transparent; text-decoration: none; cursor: pointer; }
+  .act:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <h1>One quick check</h1>
+  <p id="msg" role="status">Checking that you’re a person. This takes a moment.</p>
+  <div id="box"></div>
+  <p><button type="button" class="act" id="again" hidden>Try again</button></p>
+  <p><a class="act" id="back" href="kaisip://human-check" hidden>Back to the KaiSip app</a></p>
+  <noscript><p>This check needs JavaScript. Go back to the KaiSip app and try again in another browser.</p></noscript>
+</main>
+<script>
+  /* Runs Cloudflare's human check and hands its one-time token to the KaiSip
+     app. The return address is fixed (never read from this page's address). */
+  (function () {
+    var KEY = '0x4AAAAAAFptlSqMhAvLUI8w';
+    var BACK = 'kaisip://human-check';
+    var ACTIONS = ['sign_up', 'password_sign_in', 'password_reset'];
+    var msg = document.getElementById('msg'), again = document.getElementById('again'), back = document.getElementById('back');
+    var action = '';
+    try { action = new URLSearchParams(location.search).get('a') || ''; } catch (e) {}
+    if (ACTIONS.indexOf(action) < 0) action = 'sign_up';
+    var id = null;
+    function fail() {
+      msg.textContent = 'The check didn’t finish. Check your connection and try again.';
+      again.hidden = false;
+      back.hidden = false;
+    }
+    window.ksHumanReady = function () {
+      try {
+        id = window.turnstile.render('#box', {
+          sitekey: KEY, action: action, size: 'flexible',
+          callback: function (token) {
+            msg.textContent = 'Done. Taking you back to KaiSip.';
+            back.hidden = false;
+            location.replace(BACK + '?t=' + encodeURIComponent(token));
+          },
+          'error-callback': function () { fail(); return true; },
+          'expired-callback': function () { fail(); }
+        });
+      } catch (e) { fail(); }
+    };
+    again.addEventListener('click', function () {
+      again.hidden = true;
+      msg.textContent = 'Checking that you’re a person. This takes a moment.';
+      try { if (id !== null) window.turnstile.reset(id); else location.reload(); } catch (e) { location.reload(); }
+    });
+    // Cloudflare's script never arrived (offline, or blocked).
+    setTimeout(function () { if (!window.turnstile) fail(); }, 10000);
+  })();
+</script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=ksHumanReady" async defer></script>
+</body>
+</html>

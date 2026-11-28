@@ -7,6 +7,7 @@
 #   web     index.html over a local server, 390x844 and 1280x800, light and dark
 #   mobile  the phone app exported for the web, 390x844, plus `npm run check`
 #   all     both (default)
+#   accounts  the website's sign-in and account screens only (accounts.mjs)
 #   out_dir screenshots + *-results.json + logs (default: ./smoke-out)
 #   repo_root the checkout to test (default: SMOKE_REPO, else this script's repo),
 #           e.g. a clean `git worktree add --detach <path> <sha>`. It needs
@@ -42,10 +43,20 @@ REPO="${3:-${SMOKE_REPO:-$(cd "$HERE/../.." && pwd)}}"
 REPO="$(cd "$REPO" && pwd)"
 mkdir -p "$OUT"; OUT="$(cd "$OUT" && pwd)"
 WEB_PORT="${SMOKE_WEB_PORT:-8030}"; MOB_PORT="${SMOKE_MOBILE_PORT:-8031}"; DLG_PORT="${SMOKE_DIALOGS_PORT:-8032}"
-case "$WHAT" in web|mobile|all) ;; *) echo "usage: $0 [web|mobile|all] [out_dir] [repo_root]" >&2; exit 2;; esac
+case "$WHAT" in web|mobile|all|accounts) ;; *) echo "usage: $0 [web|mobile|all|accounts] [out_dir] [repo_root]" >&2; exit 2;; esac
 
 if [ -d /opt/node-tools/node_modules/playwright ]; then export PLAYWRIGHT_REQUIRE_FROM=/opt/node-tools/node_modules/; fi
 if [ -x /opt/pw-browsers/chromium-1194/chrome-linux/chrome ]; then export CHROME_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome; fi
+
+# accounts: the website's sign-in and account screens (built, switched off), on
+# their own. The real page runs at the kaisip.com address (intercepted) with
+# the real accounts client against a pretend sign-in service; nothing leaves
+# this machine. Not part of "all" (the screens are not live yet).
+if [ "$WHAT" = accounts ]; then
+  [ -e "$REPO/mobile/node_modules/typescript" ] || { echo "mobile/node_modules is missing in $REPO (the pretend sign-in service is compiled with its TypeScript)" >&2; exit 1; }
+  node "$HERE/accounts.mjs" "$REPO" "$OUT" 2>&1 | tee "$OUT/accounts.log"
+  exit "${PIPESTATUS[0]}"
+fi
 
 SHA="$(git -C "$REPO" rev-parse HEAD)"
 DIRTY="$(git -C "$REPO" status --porcelain --untracked-files=no | wc -l | tr -d ' ')"

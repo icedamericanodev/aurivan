@@ -77,7 +77,10 @@ describe('the exact §2.3 strings', () => {
 
   it('keeps the spec’s wording for the key promises', () => {
     expect(ACCOUNT_COPY['signin.body1']).toBe('An account is optional. Everything in KaiSip works without one.');
-    expect(ACCOUNT_COPY['signin.age']).toBe('I’m 16 or older and I agree to the Terms of Use.');
+    expect(ACCOUNT_COPY['signin.age']).toBe('I agree to the Terms of Use and Privacy Policy.');
+    // The age is a line under the one box, never a second box, and the website says the same words.
+    expect(ACCOUNT_COPY['signin.age.line']).toBe('Accounts are for learners 18 and older.');
+    expect(Object.values(ACCOUNT_COPY).join(' ')).not.toMatch(/16 or older/);
     expect(ACCOUNT_COPY['delete.s1.body']).toBe(
       'This permanently deletes your account, your synced progress, and your posts, comments and votes on the feedback board. Progress saved on this phone stays here unless you tick the box below. This can’t be undone.',
     );

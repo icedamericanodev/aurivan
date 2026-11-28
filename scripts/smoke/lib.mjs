@@ -27,7 +27,8 @@ export const norm = (s) => String(s || '')
 // Console noise that is not an app failure. The web app's GA dataLayer stub
 // is the known exception (agent definition); third-party hosts can be blocked
 // by the sandbox network, so their failures are logged as notes, not FAILs.
-const IGNORED_CONSOLE = [/dataLayer/i, /gtag/i, /googletagmanager/i, /google-analytics/i];
+// ("[Report Only]": a Content-Security-Policy-Report-Only finding blocks nothing; accounts.mjs counts them.)
+const IGNORED_CONSOLE = [/dataLayer/i, /gtag/i, /googletagmanager/i, /google-analytics/i, /\[Report Only\]/];
 export const isThirdParty = (url, origin) => { try { return new URL(url).origin !== origin; } catch { return false; } };
 
 // Records path results. Each path: { id, name, status, shots, notes, errors, steps, ms }.

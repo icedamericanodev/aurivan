@@ -44,6 +44,19 @@
 #       CRISC and AAIA samples in data/free/ are for the phone app, and a
 #       second guard stops the build if any other course's question id or
 #       data/free/ file is in _site/.
+#     - delete-account.html and human-check.html, the two account pages, ONLY
+#       when accounts are on for everyone (ACCOUNTS_ON = true in index.html)
+#       or the build is asked for them (SITE_ACCOUNTS_PREVIEW=1). Otherwise
+#       they are not in the site at all, so nothing tells a visitor that
+#       accounts exist before they can make one. delete-account.html is the
+#       web deletion address Google Play asks for; human-check.html is the
+#       Android app's human check (Cloudflare Turnstile). SITE_ACCOUNTS_PREVIEW
+#       is for the owner's preview and for the Play listing of the Android
+#       release with accounts, which needs the deletion address before the
+#       website's own switch is flipped. Until ACCOUNTS_ON is true both pages
+#       are served "noindex" (human-check always is). Their rules in
+#       _site/_headers are written by this script, with each page's one
+#       inline script allowed by its hash.
 #     - manifest.webmanifest (web app mode only): the install manifest, so
 #       "Add to Home Screen" (iPhone) and "Install" (computers) give the app
 #       its name and icon and open it full screen. It names assets/icon-192.png
@@ -119,6 +132,8 @@ THANKS_CSP="default-src 'none'; style-src 'self'; img-src 'self'; font-src 'self
 HOME_CSP="default-src 'none'; style-src 'self'; img-src 'self'; font-src 'self'; script-src 'self' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; $HOME_FORM_ACTION; frame-ancestors 'none'"
 # The home page keeps its stricter policy: no leaked-password host there (the web app has it).
 case "$HOME_CSP $THANKS_CSP" in *pwnedpasswords*) echo "build_site: the home and thanks policies must not allow api.pwnedpasswords.com" >&2; exit 1;; esac
+# Nor the sign-in service or the human check: accounts belong to the web app's pages only.
+case "$HOME_CSP $THANKS_CSP" in *supabase.co*|*challenges.cloudflare.com*) echo "build_site: the home and thanks policies must not allow the sign-in service or the human check" >&2; exit 1;; esac
 HOME_DRAFT=""
 PAGES=(index.html 404.html privacy.html terms.html support.html how-questions-are-made.html beta.html)
 DATA=(data/free/cisa_d1.json data/free/cisa_d2.json data/free/cisa_d3.json data/free/cisa_d4.json data/free/cisa_d5.json data/cisa_notes.json data/mindset/principles.json data/exam/cisa_exam_guide.json data/exam/final_review_week.json)
@@ -184,6 +199,21 @@ DESK=""
 if [ -z "${SITE_OUT:-}" ]; then
   DESK=1
   cp beta-desk.html "$OUT/beta-desk.html"
+fi
+
+# The account pages (see the list at the top). The switch is read from the
+# page itself, so the site and the pages can never disagree.
+grep -qE '^  var ACCOUNTS_ON = (true|false);$' index.html || fail "index.html: the ACCOUNTS_ON switch (var ACCOUNTS_ON = true|false;) was not found"
+ACCOUNTS_ON=""
+if grep -qE '^  var ACCOUNTS_ON = true;$' index.html; then ACCOUNTS_ON=1; fi
+case "${SITE_ACCOUNTS_PREVIEW:-}" in ""|0|1) ;; *) fail "SITE_ACCOUNTS_PREVIEW must be 1 or unset (got: $SITE_ACCOUNTS_PREVIEW)";; esac
+ACCT_PAGES=""
+if [ -z "${SITE_APP_FOLDER:-}" ] && { [ -n "$ACCOUNTS_ON" ] || [ "${SITE_ACCOUNTS_PREVIEW:-}" = "1" ]; }; then
+  ACCT_PAGES=1
+  for f in delete-account.html human-check.html; do
+    [ -f "$f" ] || fail "missing $f"
+    cp "$f" "$OUT/$f"
+  done
 fi
 
 if [ "$SITE_MODE" = "landing" ]; then
@@ -388,6 +418,21 @@ if not connect or LEAK_HOST not in connect[0].split():
     bad.append("the /* policy's connect-src needs " + LEAK_HOST + " (the leaked-password check)")
 if any(LEAK_HOST in h for r, hs in rules.items() if r != "/*" for h in hs):
     bad.append(LEAK_HOST + " belongs only in the /* policy (pages with their own policy keep it out)")
+# The web app's accounts: the sign-in service by its exact address (never a
+# wildcard), and Cloudflare's human check as a script and a frame.
+SIGN_IN = "https://ziadnvepttlgcowvqvom.supabase.co"
+HUMAN = "https://challenges.cloudflare.com"
+def directive(name):
+    got = [d.split() for h in app_csp for d in h.split(";") if d.strip().startswith(name + " ")]
+    return got[0] if got else []
+if SIGN_IN not in directive("connect-src"):
+    bad.append("the /* policy's connect-src needs " + SIGN_IN + " (the web app's sign-in and sync)")
+if any("*.supabase.co" in h or "supabase.co/" in h for h in app_csp):
+    bad.append("the /* policy must name the sign-in service by its exact address, with no wildcard")
+if HUMAN not in directive("script-src") or HUMAN not in directive("frame-src"):
+    bad.append("the /* policy's script-src and frame-src need " + HUMAN + " (the human check on the sign-in forms)")
+if 'var KA_HUMAN_SRC = \'' + HUMAN + '/turnstile/v0/api.js?render=explicit\';' not in open("index.html", encoding="utf-8").read():
+    bad.append("index.html must load the human check only from " + HUMAN + "/turnstile/v0/api.js")
 redirects = [ln.split() for ln in open("_redirects") if ln.strip() and not ln.lstrip().startswith("#")]
 need = [["/%s" % old, "/%s/" % app, "301"], ["/%s/*" % old, "/%s/:splat" % app, "301"]]
 for page in ("privacy", "terms", "support", "how-questions-are-made", "beta"):
@@ -498,6 +543,65 @@ if bad:
     print("build_site: " + "; ".join(bad), file=sys.stderr)
     sys.exit(1)
 PY
+
+# The account pages: checked on every build (so they stay ready), and given
+# their rules in _site/_headers only when they are published. Each page keeps
+# exactly one inline script, allowed by its hash; delete-account.html holds no
+# placeholder or draft wording; human-check.html loads only Cloudflare's
+# widget and returns only to the app's own address.
+python3 - "$OUT/_headers" "$ACCT_PAGES" "$ACCOUNTS_ON" <<'PYACCT' || fail "the account pages are not ready to publish (see above)"
+import re, sys, hashlib, base64
+path, publish, on = sys.argv[1:4]
+bad = []
+def inline(page):
+    src = open(page, encoding="utf-8").read()
+    scripts = re.findall(r"<script>(.*?)</script>", src, re.S)
+    if len(scripts) != 1:
+        bad.append("%s: expected 1 inline <script>, found %d" % (page, len(scripts)))
+        return src, "'none'"
+    return src, "'sha256-" + base64.b64encode(hashlib.sha256(scripts[0].encode()).digest()).decode() + "'"
+d, dh = inline("delete-account.html")
+h, hh = inline("human-check.html")
+text = re.sub(r"<!--.*?-->|<style>.*?</style>|<script>.*?</script>|<svg.*?</svg>", "", d, flags=re.S)
+if re.search(r"\[[^\]]*\]", text) or re.search(r"\bdraft\b|not in effect", text, re.I):
+    bad.append("delete-account.html still holds a placeholder or draft wording")
+if re.search(r"<script[^>]*\ssrc=", d, re.I) or re.search(r"\son[a-z]+\s*=", d, re.I):
+    bad.append("delete-account.html may not load a script file or use an inline handler")
+for need in ("mailto:certprep.support@gmail.com", 'href="app/#delete-account"', "What we delete", "What we keep"):
+    if need not in d: bad.append("delete-account.html lost: " + need)
+if re.search(r'<meta\s+name="robots"', d, re.I):
+    bad.append("delete-account.html: no robots meta (the build's header decides, by the ACCOUNTS_ON switch)")
+srcs = re.findall(r'<script[^>]*\ssrc="([^"]+)"', h)
+if srcs != ["https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=ksHumanReady"]:
+    bad.append("human-check.html may load only Cloudflare's Turnstile script: %r" % srcs)
+if not re.search(r'<meta name="robots" content="noindex, nofollow">', h):
+    bad.append("human-check.html lost its noindex meta tag")
+if re.findall(r"kaisip://[a-z-]*", h) != ["kaisip://human-check"] * len(re.findall(r"kaisip://[a-z-]*", h)) or "kaisip://human-check" not in h:
+    bad.append("human-check.html may return only to kaisip://human-check")
+if "var BACK = 'kaisip://human-check';" not in h or len(re.findall(r"\bBACK\s*=[^=]", h)) != 1:
+    bad.append("human-check.html: the return address must be a fixed string")
+if "0x4AAAAAAFptlSqMhAvLUI8w" not in h or "0x4AAAAAAFptlSqMhAvLUI8w" not in open("index.html", encoding="utf-8").read():
+    bad.append("the Turnstile site key differs between human-check.html and index.html")
+if re.search(r"\son[a-z]+\s*=", h, re.I):
+    bad.append("human-check.html may not use an inline handler")
+if bad:
+    print("build_site: " + "; ".join(bad), file=sys.stderr); sys.exit(1)
+if publish:
+    noindex = [] if on else ["  X-Robots-Tag: noindex, nofollow"]
+    dcsp = "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; script-src " + dh + " https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+    hcsp = "default-src 'none'; script-src " + hh + " https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; style-src 'unsafe-inline'; font-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+    out = ["", "# The account pages (written by scripts/build_site.sh: only in a build that publishes them)."]
+    for r in ("/delete-account", "/delete-account.html"):
+        out += [r, "  Cache-Control: public, max-age=0, must-revalidate"] + noindex + ["  Content-Security-Policy: " + dcsp]
+    for r in ("/human-check", "/human-check.html"):
+        out += [r, "  Cache-Control: no-store", "  X-Robots-Tag: noindex, nofollow", "  Content-Security-Policy: " + hcsp]
+    with open(path, "a", encoding="utf-8") as f:
+        f.write("\n".join(out) + "\n")
+else:
+    cur = open(path, encoding="utf-8").read()
+    if re.search(r"^/(delete-account|human-check)", cur, re.M):
+        print("build_site: _headers has a rule for an account page that this build does not publish", file=sys.stderr); sys.exit(1)
+PYACCT
 
 # The full question bank must never be published (web v12.50). For every
 # question outside the free sample, its stem, explanations and tips (any text
@@ -618,6 +722,7 @@ while IFS= read -r -d '' f; do
     beta-desk.html) [ -n "$DESK" ] || fail "the Beta Desk must not be in the web app folder" ;;
     manifest.webmanifest) [ "$SITE_MODE" = "app" ] || fail "the install manifest belongs to the web app (SITE_MODE=app): $rel" ;;
     waitlist-thanks.html|waitlist-confirmed.html) [ "$SITE_MODE" = "home" ] || fail "$rel belongs to SITE_MODE=home only" ;;
+    delete-account.html|human-check.html) [ -n "$ACCT_PAGES" ] || fail "$rel is published only with accounts on (ACCOUNTS_ON) or SITE_ACCOUNTS_PREVIEW=1" ;;
     data/free/cisa_d[1-5].json|data/cisa_notes.json|data/mindset/principles.json) ;;
     data/exam/cisa_exam_guide.json|data/exam/final_review_week.json) ;;
     assets/home.css|assets/home.js|assets/home/*) [ "$SITE_MODE" = "home" ] || fail "the home page's files must not be published in SITE_MODE=$SITE_MODE: $rel" ;;
@@ -639,5 +744,10 @@ done < <(find "$OUT" -type f -print0)
 
 count="$(find "$OUT" -type f | wc -l | tr -d ' ')"
 size="$(du -sh "$OUT" | cut -f1)"
-echo "build_site: $count files ($size) in $OUT/ (SITE_MODE=$SITE_MODE)"
+echo "build_site: $count files ($size) in $OUT/ (SITE_MODE=$SITE_MODE${ACCT_PAGES:+, account pages published${ACCOUNTS_ON:+ and indexable}})"
+# Google sign-in on the website needs Google's own "G" file (never a redrawn
+# one). Until the owner adds it, the sign-in screens hide the Google button.
+if [ -n "$ACCT_PAGES" ] && [ ! -f assets/google-g.svg ] && [ ! -f assets/google-g.png ]; then
+  echo "build_site: note: assets/google-g.svg is missing, so the website will not offer Google sign-in (docs/WEBSITE_DEPLOY.md, \"Google's G file\")"
+fi
 find "$OUT" -type f | sed "s|^$OUT/|  |" | sort
