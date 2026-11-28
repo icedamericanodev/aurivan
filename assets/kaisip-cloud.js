@@ -6245,6 +6245,7 @@ function isCheckCorrect(correctIndex, displayChoice, perm) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.spreadSiblings = spreadSiblings;
 exports.isRelaxedSibling = isRelaxedSibling;
+exports.groupsForShortDomains = groupsForShortDomains;
 exports.oneOfEachGroup = oneOfEachGroup;
 exports.takeApart = takeApart;
 exports.relaxedMark = relaxedMark;
@@ -6304,13 +6305,66 @@ function isRelaxedSibling(ids, id, groupOf) {
     }
     return false;
 }
-function oneOfEachGroup(pool, rng) {
+function groupsForShortDomains(pool, targets) {
+    const need = new Map(targets);
+    const lower = (domainId) => {
+        const n = need.get(domainId);
+        if (n !== undefined)
+            need.set(domainId, n - 1);
+    };
+    const domainsOf = new Map();
+    for (const q of pool) {
+        if (q.siblingGroup === undefined) {
+            lower(q.domainId);
+            continue;
+        }
+        const domains = domainsOf.get(q.siblingGroup);
+        if (domains)
+            domains.add(q.domainId);
+        else
+            domainsOf.set(q.siblingGroup, new Set([q.domainId]));
+    }
+    const cross = [];
+    for (const [group, domains] of domainsOf) {
+        if (domains.size === 1)
+            lower([...domains][0]);
+        else
+            cross.push([group, domains]);
+    }
+    const given = new Map();
+    for (;;) {
+        let toDomain;
+        let theGroup;
+        for (const [domainId, n] of need) {
+            if (n <= 0)
+                continue;
+            if (toDomain !== undefined && n <= need.get(toDomain))
+                continue;
+            const free = cross.find(([group, domains]) => !given.has(group) && domains.has(domainId));
+            if (!free)
+                continue;
+            toDomain = domainId;
+            theGroup = free[0];
+        }
+        if (toDomain === undefined || theGroup === undefined)
+            return given;
+        given.set(theGroup, toDomain);
+        need.set(toDomain, need.get(toDomain) - 1);
+    }
+}
+function oneOfEachGroup(pool, rng, targets) {
     if (!pool.some((q) => q.siblingGroup !== undefined))
         return pool;
+    const mustBeFrom = targets ? groupsForShortDomains(pool, targets) : undefined;
     const chosen = new Map();
     for (const q of (0, random_1.shuffled)(pool, rng)) {
-        if (q.siblingGroup !== undefined && !chosen.has(q.siblingGroup))
-            chosen.set(q.siblingGroup, q.id);
+        const g = q.siblingGroup;
+        if (g === undefined || chosen.has(g))
+            continue;
+        const domainId = mustBeFrom === null || mustBeFrom === void 0 ? void 0 : mustBeFrom.get(g);
+        if (domainId !== undefined && q.domainId !== domainId)
+            continue;
+        chosen.set(g, q.id);
     }
     return pool.filter((q) => q.siblingGroup === undefined || chosen.get(q.siblingGroup) === q.id);
 }
@@ -10779,7 +10833,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "45eccc63159f52d0";
+  api.sourceHash = "957271d979bc44b3";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

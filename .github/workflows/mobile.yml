@@ -19,14 +19,17 @@ name: Mobile
 # SAMPLE_QUESTION_PACK.md): a public-sample Android export, audited exactly
 # as the owner's .aab is, must PASS; then the full tree is rebuilt. CRISC and
 # AAIA are bundled from data/crisc/ and data/aaia/, so changes there run this too.
+# And the CIA question files (data/cia/): not bundled yet, but the suite reads every
+# CIA stem to check the app finds its priority word (qualifier-case.test.ts), so a
+# CIA content change must run this too (a stem broke that test unseen, 28 Nov 2026).
 
 on:
   pull_request:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', 'data/free/**', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'data/crisc/**', 'data/aaia/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', 'data/free/**', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'data/crisc/**', 'data/aaia/**', 'data/cia/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
   push:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', 'data/free/**', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'data/crisc/**', 'data/aaia/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', 'data/free/**', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'data/crisc/**', 'data/aaia/**', 'data/cia/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
 
 # Read-only token: `npm ci` runs third-party install scripts, which must not
 # be able to push to the repo.

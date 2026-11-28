@@ -91,13 +91,17 @@ export function buildMockExam(
   total: number = cert.exam.questions,
   outline?: readonly OutlineTopic[],
 ): string[] {
-  // Sibling groups (engine/siblings.ts): a mock never holds two questions of
-  // one group, so the pool keeps one random member of each. With no group in
-  // the pool (every live course) this is the same pool and uses no random
-  // number, so those mocks are drawn exactly as before.
-  pool = oneOfEachGroup(pool, rng);
-  const picked = new Set<string>();
+  // How many questions each domain gets (no random number is used for this).
   const domainTargets = allocate(total, cert.domains.map((d) => d.weight));
+  // Sibling groups (engine/siblings.ts): a mock never holds two questions of
+  // one group, so the pool keeps one random member of each. A group with
+  // members in more than one domain keeps a member from the domain that would
+  // otherwise fall short of its target above, so a small domain is not left
+  // one question short by bad luck. With no group in the pool (every live
+  // course) this is the same pool and uses no random number, so those mocks
+  // are drawn exactly as before.
+  pool = oneOfEachGroup(pool, rng, new Map(cert.domains.map((d, di) => [d.id, domainTargets[di]])));
+  const picked = new Set<string>();
   const stratify = outline !== undefined && outline.length > 0;
 
   cert.domains.forEach((dom, di) => {

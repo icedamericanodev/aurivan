@@ -63,7 +63,14 @@
  *   short mock    the app's mini mock (a third: 42, 33, 33, 50) likewise.
  *                 Both draws keep one question per sibling group, as the app's
  *                 engine/siblings.ts oneOfEachGroup does, and fail if a draw
- *                 holds two siblings.
+ *                 holds two siblings. In the FULL mock a group whose questions
+ *                 sit in more than one section gives its question to the section
+ *                 that would otherwise be short of its share, as the app does
+ *                 (the rule is mobile/scripts/mock-siblings.cjs, the same steps
+ *                 as the app's groupsForShortDomains; a Jest test holds the two
+ *                 together). The short mock is drawn by the app's buildShortMock,
+ *                 which does not use that rule, so here it keeps each group's
+ *                 first question, as before.
  *                 A pool too small for a mock is NOT a failure while a pack is
  *                 being written: the line says how many mocks the pool supports
  *                 and which section is short, and the draw is still checked on
@@ -75,9 +82,11 @@
  *   form          mock (mobile/src/content/loader.ts leftOut, engine/heldBack.ts
  *                 isHeldBackHidden). These two lines draw the same mocks from the
  *                 pool WITHOUT the form's questions and say, section by section,
- *                 what that pool holds against the quota ("D 16 to 17 of 19": the
- *                 app keeps a random question of each sibling group, so a group
- *                 that spans two sections makes a range). A mock that cannot be
+ *                 what that pool holds against the quota. In the full mock a group
+ *                 that spans two sections counts for the section that needs it;
+ *                 one that no section needs (and, in the short mock, every such
+ *                 group) is kept at random by the app, so it makes a range
+ *                 ("B 53 to 56 of 25"). A mock that cannot be
  *                 filled at the exam's weights is a named WARNING line ("!"),
  *                 not a failure: it says what the app then does (buildMockExam in
  *                 engine/blueprint.ts: every question of the short section, then
@@ -116,6 +125,10 @@ const CHALLENGE = 'ciac';
 /** CIA: the two item fields only this course has (docs/content/CIA_BANK_PLAN.md). */
 const EXTRA_FIELDS = ['challenge_ref', 'testable_from'];
 const GLOSSARY_KEYS = ['id', 'term', 'acronym', 'def', 'scopeNotes', 'domain', 'category'];
+// The mock's sibling rule (one question per group; a group that spans sections gives its
+// question to the section that would otherwise be short): the same steps as the app's
+// mobile/src/engine/siblings.ts, kept in step with it by a Jest test (see that file's header).
+const { firstOfEachGroup } = require(path.join(MOBILE_SCRIPTS, 'mock-siblings.cjs'));
 
 // ── Command line ─────────────────────────────────────────────────────────
 function usage(message) {
@@ -247,8 +260,31 @@ function allocate(total, weights) {
 }
 
 /**
- * Draw `total` questions split by section weight from `pool` (live and
- * testable today), and report whether it works without repeats.
+ * The pool a mock with these section targets draws from: one question per
+ * sibling group, as the app keeps them. Returns { pool, given }.
+ *
+ * `byRule` true (a FULL mock, and the smaller mocks tried when a full one does
+ * not fit): engine/blueprint.ts buildMockExam, so engine/siblings.ts
+ * oneOfEachGroup with the section targets. A group whose questions sit in more
+ * than one section gives its question to the section that would otherwise be
+ * short of its target (`given`: group → that section's id); every other group
+ * gives its first question here, where the app keeps a random one.
+ *
+ * `byRule` false (a SHORT mock): this course's short mock is drawn by
+ * engine/shortMock.ts buildShortMock, which keeps a random question of each
+ * group the learner has not seen and does not look at the section targets. So
+ * no group is given to a section (`given` is empty) and each gives its first.
+ */
+function mockPoolFor(questions, exam, targets, byRule) {
+  return firstOfEachGroup(questions, new Map(byRule ? exam.sections.map((s, i) => [s.id, targets[i]]) : []));
+}
+
+/**
+ * Draw `total` questions split by section weight from `questions` (live and
+ * testable today, siblings still in), and report whether it works without
+ * repeats. Each mock size is drawn from its own pool (mockPoolFor): for a
+ * full mock, which sibling a group gives depends on the section targets, as
+ * in the app. `byRule` is false for the short mock (see mockPoolFor).
  *
  * CIA: a pool too small for the mock is expected while a pack is being
  * written, so that is a note, not a failure (unless --require-full). The line
@@ -256,13 +292,17 @@ function allocate(total, weights) {
  * the draw is then checked on the largest mock that still fits AND keeps the
  * exam's weights, so the logic is proven on whatever the pack has today.
  */
-function drawMock(name, total, exam, pool, after = '') {
+function drawMock(name, total, exam, questions, byRule, after = '') {
   const weights = exam.sections.map((s) => s.weight);
-  const live = exam.sections.map((s) => [...new Set(pool.filter((q) => q.domainId === s.id).map((q) => q.id))]);
-  const poolIds = new Set(pool.map((q) => q.id));
+  /** Each section's distinct ids in the pool a mock with targets `t` draws from. */
+  const liveFor = (t) => {
+    const { pool } = mockPoolFor(questions, exam, t, byRule);
+    return { pool, live: exam.sections.map((s) => [...new Set(pool.filter((q) => q.domainId === s.id).map((q) => q.id))]) };
+  };
   const split = (t) => exam.sections.map((s, i) => `${s.letter} ${t[i]}`).join(' / ');
   /** Take the first `t[i]` ids of each section and check the draw: the full size, no repeats, only pool items. */
-  const draw = (t) => {
+  const draw = (t, { pool, live }) => {
+    const poolIds = new Set(pool.map((q) => q.id));
     // A seeded shuffle is not needed: any draw of `target` distinct ids proves it.
     const picked = live.flatMap((ids, i) => ids.slice(0, t[i]));
     const want = t.reduce((n, x) => n + x, 0);
@@ -276,10 +316,12 @@ function drawMock(name, total, exam, pool, after = '') {
   };
 
   const targets = allocate(total, weights);
+  const whole = liveFor(targets);
+  const { live } = whole;
   // How many whole mocks with no item used twice: the tightest section decides.
   const forms = Math.min(...targets.map((t, i) => (t > 0 ? Math.floor(live[i].length / t) : Infinity)));
   if (forms >= 1) {
-    const problems = draw(targets);
+    const problems = draw(targets, whole);
     report(!problems.length, name, `${total} items (${split(targets)}) ${problems.length ? 'cannot be drawn' : 'drawn without repeats'}; the pool supports ${plural(forms, name)} with no item used twice${after}`, problems);
     return;
   }
@@ -289,15 +331,18 @@ function drawMock(name, total, exam, pool, after = '') {
   // The largest smaller mock whose weight-true split fits the pool.
   let fit = 0;
   let fitTargets = weights.map(() => 0);
+  let fitPool = null;
   for (let t = total - 1; t >= 1; t--) {
     const a = allocate(t, weights);
-    if (a.every((n, i) => n <= live[i].length)) {
+    const smaller = liveFor(a); // a smaller mock has smaller targets, so its own pool
+    if (a.every((n, i) => n <= smaller.live[i].length)) {
       fit = t;
       fitTargets = a;
+      fitPool = smaller;
       break;
     }
   }
-  const problems = fit ? draw(fitTargets) : [];
+  const problems = fit ? draw(fitTargets, fitPool) : [];
   const checked = fit
     ? `Draw logic checked on the largest weight-true mock that fits today: ${plural(fit, 'item')} (${split(fitTargets)}) ${problems.length ? 'could not be drawn' : 'drawn without repeats'}`
     : 'No weight-true mock of any size fits yet, so nothing was drawn';
@@ -333,11 +378,16 @@ function drawBeforeForm(kind, total, exam, before) {
   const name = `${kind} before the form`;
   const targets = allocate(total, exam.sections.map((s) => s.weight));
   const split = (t) => exam.sections.map((s, i) => `${s.letter} ${t[i]}`).join(' / ');
-  // One question per sibling group (the first; the app keeps a random one).
-  const seenGroup = new Set();
-  const pool = before.filter((q) => q.siblingGroup === undefined || (!seenGroup.has(q.siblingGroup) && seenGroup.add(q.siblingGroup)));
-  // What each section holds, whichever sibling the app keeps: a group whose questions sit in two
-  // sections counts for either, so the least and the most can differ.
+  // One question per sibling group, as the app keeps them (mockPoolFor). For a full mock a group
+  // that spans sections gives its question to the section that would otherwise be short of its
+  // target (`given`); every other group gives its first question here (the app keeps a random one).
+  // For a short mock no group is given (`given` is empty): see mockPoolFor.
+  const full = total === exam.questions;
+  const { pool, given } = mockPoolFor(before, exam, targets, full);
+  // What each section holds, whichever sibling the app keeps. A group inside one section counts 1
+  // for it. A group that spans sections counts for the section it was given to, and only for that
+  // one. A group that spans sections and was not given is free: the app keeps a random question
+  // of it, so it counts for any of its sections (the least and the most differ).
   const groupSections = new Map();
   for (const q of before) {
     if (q.siblingGroup === undefined) continue;
@@ -348,10 +398,13 @@ function drawBeforeForm(kind, total, exam, before) {
     const alone = before.filter((q) => q.domainId === s.id && q.siblingGroup === undefined).length;
     let least = alone;
     let most = alone;
-    for (const sections of groupSections.values()) {
+    for (const [group, sections] of groupSections) {
       if (!sections.has(s.id)) continue;
-      most += 1;
-      if (sections.size === 1) least += 1;
+      const givenTo = given.get(group);
+      if (sections.size === 1 || givenTo === s.id) {
+        least += 1;
+        most += 1;
+      } else if (givenTo === undefined) most += 1;
     }
     return { least, most };
   });
@@ -375,7 +428,9 @@ function drawBeforeForm(kind, total, exam, before) {
   if (new Set(groups).size !== groups.length) problems.push('drew two questions of one sibling group');
   if (picked.some((q) => q.heldBack !== undefined)) problems.push('drew a question of the held-back form');
 
-  // Sure to fit only when every section holds its share whichever sibling the app keeps.
+  // Sure to fit only when every section holds its share whichever sibling the app keeps. In a full
+  // mock a section still short here is short in the app too: every group that could have helped
+  // it was given, to it or to a section that needed it more.
   const shortSections = exam.sections
     .map((s, i) => (range[i].least < targets[i] ? `section ${s.letter} holds ${count(range[i])} of the ${targets[i]} needed` : null))
     .filter(Boolean);
@@ -383,8 +438,8 @@ function drawBeforeForm(kind, total, exam, before) {
     report(!problems.length, name, `${total} items (${split(targets)}) ${problems.length ? 'cannot be drawn' : 'drawn without repeats'} with the held-back form's questions left out. ${poolLine}`, problems);
     return;
   }
-  const title = total === exam.questions ? 'Full mock exam' : 'Mini mock';
-  const engine = total === exam.questions ? 'engine/blueprint.ts buildMockExam' : 'engine/shortMock.ts buildShortMock, then buildMockExam';
+  const title = full ? 'Full mock exam' : 'Mini mock';
+  const engine = full ? 'engine/blueprint.ts buildMockExam' : 'engine/shortMock.ts buildShortMock, then buildMockExam';
   const gets = exam.sections
     .map((s, i) => (range[i].least < targets[i] ? `section ${s.letter} ${count({ least: range[i].least, most: Math.min(range[i].most, targets[i]) })}, not ${targets[i]}` : null))
     .filter(Boolean)
@@ -735,8 +790,9 @@ function dryRunPack(pack, exam, app, builders, siblings) {
   const retiredCount = questions.length - live.length;
   const waiting = live.filter((q) => q.testableFrom !== undefined && !(isDate(q.testableFrom) && q.testableFrom <= ARGS.today));
   const testable = live.filter((q) => !waiting.includes(q));
-  // One question per sibling group, as the app's oneOfEachGroup (there a random one; here the
-  // first, which is enough to prove a draw can be made with no two siblings).
+  // One question per sibling group, as the app's oneOfEachGroup: counted here (how many a mock
+  // draws from is the same whichever sibling is kept). Which sibling each draw keeps is decided
+  // in drawMock and drawBeforeForm, by the app's rule (mockPoolFor).
   const seenGroup = new Set();
   const pool = testable.filter((q) => {
     if (q.siblingGroup === undefined) return true;
@@ -766,8 +822,8 @@ function dryRunPack(pack, exam, app, builders, siblings) {
   // With a form, say which pool the two usual lines are: the whole one, as after the form.
   const after = heldForm ? ' (the whole pool: what a learner has after taking the held-back form)' : '';
   const shortSize = Math.round(exam.questions / 3); // engine/finalWeek.ts miniMockSize
-  drawMock('full mock', exam.questions, exam, pool, after);
-  drawMock('short mock', shortSize, exam, pool, after);
+  drawMock('full mock', exam.questions, exam, testable, true, after);
+  drawMock('short mock', shortSize, exam, testable, false, after);
   if (heldForm) {
     drawBeforeForm('full mock', exam.questions, exam, before);
     drawBeforeForm('short mock', shortSize, exam, before);
