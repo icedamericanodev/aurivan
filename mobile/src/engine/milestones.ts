@@ -29,7 +29,7 @@ import { GAMES } from './games/registry';
 import { DAYLIGHT_SIZE, PACE_RIGHT } from './games/daylight';
 import { share } from './games/growth';
 import { DIAGNOSTIC_SIZE, DOMAIN_TARGET, MAX_MOCKS, MOCK_DOMAIN_FLOOR } from './journey';
-import { domainWord, type DomainStyle } from './domainNaming';
+import { domainWord, type DomainStyle, type DomainStyled } from './domainNaming';
 import { CLEAR_RIGHT } from './studyPath';
 import { CHECKPOINTS, PACE_TOLERANCE, type MockTiming } from './pace';
 import { domainOf, type AnswerRecord } from './readiness';
@@ -327,6 +327,35 @@ export function badgeDef(id: string): BadgeDef | undefined {
   return BADGES.find((b) => b.id === id);
 }
 
+/**
+ * A badge's SHOWN name in the course's words (product review, 28 Nov 2026). Plain English:
+ * BADGES keeps one fixed list (its ids are saved and never change); only two names carry the
+ * domain noun, so a course with sections reads "Section Mastery" and "All Sections". A course
+ * without a `domainStyle` (CISA, every course today) gets BADGES' own name, word for word.
+ * An unknown id comes back as it is.
+ */
+export function badgeName(id: string, course?: DomainStyled): string {
+  const def = badgeDef(id);
+  if (!def) return id;
+  if (!course?.domainStyle) return def.name;
+  if (id === 'firm-footing') return `${domainWord(course, 'Domain')} Mastery`;
+  if (id === 'whole-map') return `All ${domainWord(course, 'Domains')}`;
+  return def.name;
+}
+
+/** A badge's rule in the course's words: the two domain badges say "section" for a course with sections; the rest as BADGES. */
+export function badgeRule(id: string, course?: DomainStyled): string {
+  const def = badgeDef(id);
+  if (!def) return '';
+  if (!course?.domainStyle) return def.rule;
+  const one = domainWord(course, 'domain');
+  if (id === 'firm-footing') {
+    return `Reach ${Math.round(FIRM_MASTERY * 100)}% mastery in a ${one}, with ${FIRM_ANSWERS} or more of its questions answered. One badge per ${one}.`;
+  }
+  if (id === 'whole-map') return `Reach ${Math.round(WHOLE_MAP_FLOOR * 100)}% mastery in every ${one}.`;
+  return def.rule;
+}
+
 /** The badge a mark belongs to ("firm-footing:4" → "firm-footing"). */
 export function markBadge(key: string): string {
   return key.split(':')[0];
@@ -408,6 +437,8 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
       met,
       progress: met ? 1 : Math.min(frac(d.answered, FIRM_ANSWERS), frac(d.mastery, FIRM_MASTERY)),
       detail: `${pct(d.mastery)} mastery · ${of(d.answered, FIRM_ANSWERS, 'answered')}`,
+      // A course with sections: the rule says "section" too (none today: BADGES' rule, as before).
+      ...(f.domainStyle ? { rule: badgeRule('firm-footing', f) } : {}),
     });
   }
   const atFloor = f.domains.filter((d) => d.mastery >= WHOLE_MAP_FLOOR - 1e-9).length;
@@ -415,7 +446,7 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
   const mapProgress = f.domains.length ? f.domains.reduce((s, d) => s + frac(d.mastery, WHOLE_MAP_FLOOR), 0) / f.domains.length : 0;
   // "All Domains" (BADGES), or "All Sections" for a course with sections; the key stays 'whole-map'.
   const mapMarks = one('whole-map', wholeMap, mapProgress, `${atFloor} of ${f.domains.length} ${domainWord(f, 'domains')} at ${pct(WHOLE_MAP_FLOOR)}`);
-  out.push(...(f.domainStyle ? mapMarks.map((m) => ({ ...m, label: `All ${domainWord(f, 'Domains')}` })) : mapMarks));
+  out.push(...(f.domainStyle ? mapMarks.map((m) => ({ ...m, label: badgeName('whole-map', f), rule: badgeRule('whole-map', f) })) : mapMarks));
   // Domain Mastery · 80% opens once All Domains is earned or is met right now
   // (the domain's own answers are the evidence, whenever they were given).
   const mapOpen = f.wholeMapAt !== undefined || wholeMap;
@@ -538,13 +569,13 @@ export interface BadgeView {
 }
 
 /** Every badge of a kind with its earned marks and the next mark to earn. */
-export function badgeViews(marks: readonly MarkState[], earned: Record<string, number> | undefined, kind: BadgeDef['kind']): BadgeView[] {
+export function badgeViews(marks: readonly MarkState[], earned: Record<string, number> | undefined, kind: BadgeDef['kind'], course?: DomainStyled): BadgeView[] {
   return BADGES.filter((b) => b.kind === kind).map((def) => {
     const mine = marks.filter((m) => m.badge === def.id);
     const got = mine.filter((m) => earned?.[m.key]).map((m) => ({ key: m.key, label: m.label, at: earned![m.key] }));
     // A mark earned before but no longer in the list (a domain removed) still shows.
     for (const [k, at] of Object.entries(earned ?? {})) {
-      if (markBadge(k) === def.id && !got.some((x) => x.key === k)) got.push({ key: k, label: def.name, at });
+      if (markBadge(k) === def.id && !got.some((x) => x.key === k)) got.push({ key: k, label: badgeName(def.id, course), at });
     }
     got.sort((a, b) => a.at - b.at);
     // The next mark: the closest one not earned (Rooted: the next tier).
@@ -569,8 +600,8 @@ export function nearest(views: readonly BadgeView[], n = 3): BadgeView[] {
 }
 
 /** What a mark is called in its moment ("Domain Mastery · IS Operations"). */
-export function markLabel(key: string, marks: readonly MarkState[]): string {
-  return marks.find((m) => m.key === key)?.label ?? badgeDef(markBadge(key))?.name ?? key;
+export function markLabel(key: string, marks: readonly MarkState[], course?: DomainStyled): string {
+  return marks.find((m) => m.key === key)?.label ?? (badgeDef(markBadge(key)) ? badgeName(markBadge(key), course) : key);
 }
 
 // ── Recording: the few facts that can't be worked out later ──────────────

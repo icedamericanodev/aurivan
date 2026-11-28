@@ -21,11 +21,11 @@ import { memo, useEffect, useRef, useState } from 'react';
 import { Modal, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { DomainInfo } from '../content/types';
-import { completingMark, MOCK_SUGGEST_LINE, setSpoken, spokenDetail, STRETCH, stretchLine, studyNote, studyTarget, suggestLine, type CaseMark, type SetView, type StudyTarget } from '../engine/badgeCatalog';
+import { completingMark, mockSuggestLine, setSpoken, spokenDetail, STRETCH, stretchLine, studyNote, studyTarget, suggestLine, type CaseMark, type SetView, type StudyTarget } from '../engine/badgeCatalog';
 import type { Stage } from '../engine/journey';
 import { moveFocus } from '../lib/a11y';
 import { longDate, shortDate, spokenShortDate } from '../lib/format';
-import { badgeDef } from '../engine/milestones';
+import { badgeDef, badgeName } from '../engine/milestones';
 import { badgeCardText, badgeShareable, type BadgeCardText, type ShareCert } from '../engine/shareCard';
 import { STORE_LINK } from '../content/storeLinks';
 import { BadgeSharePanel } from './shareCard';
@@ -526,7 +526,8 @@ export function cardText(mark: CaseMark, cert: ShareCert, quiet: Quiet = NO_QUIE
   if (mark.status !== 'earned' || mark.earnedAt === undefined) return null;
   const badge = {
     badge: mark.badge,
-    name: badgeDef(mark.badge)?.name ?? mark.name,
+    // The plain badge name in the course's words ("Section Mastery" for a course with sections; CISA unchanged).
+    name: badgeDef(mark.badge) ? badgeName(mark.badge, cert) : mark.name,
     ...(mark.tier ? { tierLine: `${tierName(mark)} · tier ${mark.tier} of ${mark.tiers ?? 3}` } : {}),
     skill: mark.skill,
     set: mark.set,
@@ -600,7 +601,8 @@ export function BadgeSheet({
   };
   const target = studyTarget(mark, weakest);
   const note = target ? studyNote(mark, target, dueCount) : undefined;
-  const best = suggestLine(mark, stage, daysLeft, wholeMap);
+  // The course's words: "every section" for a course with sections (CISA: "every domain", as before).
+  const best = suggestLine(mark, stage, daysLeft, wholeMap, cert);
   const quietly = earned && isQuiet(mark, quiet);
   // "This completed Groundwork": only the one badge that did, and never for a set a quiet fill completed (the order is unknown).
   const completedHere = earned && !quietly && completingMark(set) === mark.key;
@@ -732,7 +734,7 @@ export function BadgeSheet({
                 <View style={{ marginTop: space.md }}>
                   <FeatureInfo inline title="About this milestone" label={`About earning ${mark.name}`}>
                     {!earned && showProgress && mark.howTo !== '' && <T v="body">{mark.howTo}</T>}
-                    {best && <T v="body">{best === MOCK_SUGGEST_LINE ? `${best} It counts whenever you do it.` : best}</T>}
+                    {best && <T v="body">{best === mockSuggestLine(cert) ? `${best} It counts whenever you do it.` : best}</T>}
                     <T v="body">{mark.effort}</T>
                   </FeatureInfo>
                 </View>

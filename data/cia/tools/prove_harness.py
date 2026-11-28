@@ -314,6 +314,48 @@ def key_longest_everywhere(data):
         q["options"][q["correct"]] = max(q["options"].values(), key=len) + " now"
 
 
+# The CIA format exceptions in style_cia.py (owner decision, 28 Nov 2026). The stems are the fixture's first stem,
+# grown: 48 words in 3 sentences (the scenario variant), 51 words (one over its cap) and 4 sentences.
+VARIANT = ("During a review of purchasing at a regional hospital, an internal auditor finds that a required approval step "
+           "is often skipped, and the manager of the area says the step slows urgent orders. No loss has been found in "
+           "the sample. What should the internal auditor do FIRST?")
+VARIANT_51 = VARIANT.replace("urgent orders.", "urgent night orders.").replace("sample.", "sample so far.")
+FOUR_SENTENCES = VARIANT.replace(", and the manager", ". The manager")
+FIRST_STEM = STEMS[0].format(org=ORGS[0])
+SWITCH = "--require-lowercase-qualifiers"
+LONG_WRONG = ("Report the finding directly to the audit committee chair and ask the chair to tell the board at once "
+              "before anyone replies").split()
+
+
+def first_wrong(n_words=None, text=None):
+    """Give a question's first wrong option n words of LONG_WRONG (or the text); the key is unchanged."""
+    return lambda q: q["options"].__setitem__(next(k for k in "ABCD" if k != q["correct"]),
+                                              text or " ".join(LONG_WRONG[:n_words]))
+
+
+def variant_stems(k):
+    """Make the first k stems of the 40-question cia1 file the 48-word scenario variant."""
+    return lambda root: edit(root, "cia1/originals/d1.json",
+                             lambda d: [q.__setitem__("question", VARIANT) for q in d["questions"][:k]])
+
+
+def lowercase_qualifiers(data):
+    for q in data["questions"]:
+        q["question"] = re.sub(r"\b(FIRST|BEST|MOST)\b", lambda m: m.group(1).lower(), q["question"])
+
+
+def name_people(k):
+    """Put a person's name in the first k stems of the cia1 file."""
+    return lambda root: edit(root, "cia1/originals/d1.json", lambda d: [
+        q.__setitem__("question", q["question"].replace("internal auditor", "internal auditor Amara", 1))
+        for q in d["questions"][:k]])
+
+
+def add_periods(data):
+    for q in data["questions"]:
+        q["options"] = {k: v + "." for k, v in q["options"].items()}
+
+
 def then(*faults):
     return lambda root: [f(root) for f in faults]
 
@@ -903,6 +945,28 @@ CASES = [
      lambda r: edit(r, "cia1/originals/d1.json", key_longest_everywhere), "ERROR key is the longest option"),
     ("an option far too long for the house style", ["style_cia.py"],
      q0(lambda q: q["options"].__setitem__(q["correct"], " ".join(["Discuss the finding with the manager"] * 5))), "ERROR"),
+    # The CIA format exceptions (style_cia.py, owner decision 28 Nov 2026): each limit, one step past it.
+    ("a 19-word wrong option (the CIA option cap is 18)", ["style_cia.py"], q0(first_wrong(19), n=2),
+     "ERROR cia1_d1_003: option over 18w (the CIA option cap): {'A': 19}"),
+    ("5 of 40 stems in the scenario variant (12%, over the 10% a section file may hold)", ["style_cia.py"],
+     variant_stems(5), "ERROR cia1 d1: 5 of 40 stems (12%) use the scenario variant"),
+    ("a 51-word stem (over the scenario variant's 50)", ["style_cia.py"], q0(setf("question", VARIANT_51)),
+     "ERROR cia1_d1_001: stem 51w > 50 (the CIA scenario variant's cap"),
+    ("a stem of 4 sentences (the scenario variant allows 3)", ["style_cia.py"], q0(setf("question", FOUR_SENTENCES)),
+     "ERROR cia1_d1_001: stem has 4 sentences (max 3"),
+    ("an EXCEPT ask", ["style_cia.py"], q0(setf("question", "An internal auditor at a regional hospital finds that a "
+                                              "required approval step is often skipped. Each of these is a BEST first step EXCEPT which one?")),
+     "ERROR cia1_d1_001: EXCEPT or NOT ask"),
+    ("a capitalised NOT ask", ["style_cia.py"], q0(setf("question", FIRST_STEM.replace("What should the internal auditor do FIRST?",
+                                                                                      "Which step should the internal auditor NOT take FIRST?"))),
+     "ERROR cia1_d1_001: EXCEPT or NOT ask"),
+    ("a lowercase 'which ... is not' ask", ["style_cia.py"], q0(setf("question", FIRST_STEM.replace(
+        "What should the internal auditor do FIRST?", "Which of the following is not the BEST first step?"))),
+     "ERROR cia1_d1_001: EXCEPT or NOT ask"),
+    ("a stem with no qualifier in any case (lowercase is allowed, none is not)", ["style_cia.py"],
+     q0(setf("question", FIRST_STEM.replace("do FIRST?", "do?"))), "ERROR cia1_d1_001: stem has no qualifier"),
+    ("a capitalised qualifier with the stage 1 switch on", ["style_cia.py", SWITCH], lambda r: None,
+     "ERROR cia1_d1_001: capitalised qualifier 'FIRST' in the stem"),
     ("a hand-edited Challenge pack file", ["build_challenge.py", "--check"],
      lambda r: edit(r, "ciac/originals/d1.json", lambda d: d["questions"][0].__setitem__("correct", "A" if d["questions"][0]["correct"] != "A" else "B")),
      "ciac/originals/d1.json is not what build_challenge.py produces"),
@@ -1005,6 +1069,31 @@ PASSES = [
     # A small file's longest-option share is noise (the generated Challenge section files start small).
     ("the key made the longest option throughout a 4-question file: a note, not a failure", ["style_cia.py"],
      lambda r: edit(r, "cia2/originals/d1.json", key_longest_everywhere), "note (not enforced below 40 items)"),
+    # The forms The IIA's format allows (style_cia.py, owner decision 28 Nov 2026): each passes, and only warns where
+    # a warning is the rule.
+    ("a lowercase qualifier in the question (the shared linter wants capitals)", ["style_cia.py"],
+     q0(setf("question", FIRST_STEM.replace("FIRST", "first"))), "cia1 d1: 40 v2 question(s) checked", "ERROR"),
+    ("a 15-word wrong option (over the shared 12, inside the CIA 18)", ["style_cia.py"], q0(first_wrong(15), n=2),
+     "cia1 d1: 40 v2 question(s) checked", "ERROR"),
+    ("4 of 40 stems in the 48-word, 3-sentence scenario variant (one in ten)", ["style_cia.py"], variant_stems(4),
+     "cia1 d1: 40 v2 question(s) checked", "scenario variant"),
+    ("every qualifier lowercase, with the stage 1 switch on", ["style_cia.py", SWITCH, "cia1"],
+     lambda r: edit(r, "cia1/originals/d1.json", lowercase_qualifiers), "capitalised qualifiers are errors", "ERROR"),
+    ("capitalised qualifiers with the switch off (today's bank): a warning only", ["style_cia.py"], lambda r: None,
+     "warn  cia1 d1: 40 of 40 stems carry a capitalised qualifier"),
+    ("options without a terminal period: a warning only", ["style_cia.py"], lambda r: None,
+     "warn  cia1 d1: 160 of 160 options lack a terminal period"),
+    ("every option ending with a period (no period warning)", ["style_cia.py", "cia1"],
+     lambda r: edit(r, "cia1/originals/d1.json", add_periods), "cia1 d1: 40 v2 question(s) checked", "terminal period"),
+    ("11 of 40 stems naming a person: a warning only", ["style_cia.py"], name_people(11),
+     "warn  cia1 d1: 11 of 40 stems (28%) name a person or a place"),
+    ("10 of 40 stems naming a person (25%): no warning", ["style_cia.py"], name_people(10),
+     "cia1 d1: 40 v2 question(s) checked", "name a person"),
+    ("'IIA guidance' in a stem: a warning only", ["style_cia.py"],
+     q0(setf("question", "According to IIA guidance, what should the internal auditor do FIRST about a skipped "
+                         "approval step?")), "warn  cia1_d1_001: 'IIA guidance' in the stem"),
+    ("an 'I and II' option: a warning only", ["style_cia.py"], q0(first_wrong(text="I and II only"), n=2),
+     "warn  cia1_d1_003: an 'I and II' combination option"),
     # The 'consulting services' case above proves pre_read is read, so these words were seen and let through.
     ("wording that only looks old (Standard 7.1, Standards 2024, internal audit activities, IPPF, 'performance "
      "standards for staff', 'is auditor independence')", STALE, pre_read(CONTROLS), "0 hit(s)"),

@@ -133,8 +133,9 @@ export interface CertIssuer {
   name: string;
   /**
    * Where a learner checks the issuer's booking rules, as a bare domain
-   * ("theiia.org"). Optional: missing → "isaca.org", the line every course
-   * live today shows (bookingLine in engine/readySigns.ts).
+   * ("theiia.org"). Optional: missing → "isaca.org" for ISACA only; any other
+   * issuer with no site reads "Check the exam body’s website before you book."
+   * (bookingLine in engine/readySigns.ts).
    */
   site?: string;
 }

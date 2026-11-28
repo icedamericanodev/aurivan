@@ -18,8 +18,11 @@ import { domainPalette } from '../theme/tokens';
 import type { CertIssuer, Certification, DomainTone } from './types';
 
 /** The issuers the app names today. A downloaded pack's manifest carries its own (content packs). */
-export const ISACA: CertIssuer = { id: 'isaca', name: 'ISACA' };
-export const ISC2: CertIssuer = { id: 'isc2', name: 'ISC2' };
+// `site` is where a learner checks the booking rules ("Check isc2.org before you book.").
+export const ISACA: CertIssuer = { id: 'isaca', name: 'ISACA', site: 'isaca.org' };
+export const ISC2: CertIssuer = { id: 'isc2', name: 'ISC2', site: 'isc2.org' };
+/** The IIA, for the CIA packs when they are switched on (their manifests carry the same issuer). */
+export const IIA: CertIssuer = { id: 'iia', name: 'The IIA', site: 'theiia.org' };
 
 // Use registered: false for marks we can't confirm are registered yet (plain "trademark", no ®).
 const ISACA_TM = (name: string, registered = true) =>
@@ -235,6 +238,19 @@ const ISSUER_MARK: Record<string, string> = { isaca: 'ISACA®', isc2: 'ISC2®' }
 const ISSUER_OWNER: Record<string, string> = { isaca: 'ISACA', isc2: 'ISC2, Inc.' };
 const issuerMark = (i: CertIssuer) => ISSUER_MARK[i.id] ?? i.name;
 const issuerOwner = (i: CertIssuer) => ISSUER_OWNER[i.id] ?? i.name;
+
+/**
+ * The Help screen's footer line, naming the ACTIVE course's issuer (product review, 28 Nov 2026).
+ * Plain English: a CISA learner still reads "…not affiliated with or endorsed by ISACA." word for
+ * word (the line since mobile 1.7 keeps ISACA's plain name). Any other issuer is written the way its
+ * trademark notice writes it (ISSUER_MARK above: "ISC2®"), or by its plain name when it has no entry.
+ * A new issuer's ® comes from adding it to ISSUER_MARK, never from this line. No issuer → ISACA's line.
+ * The wording only ever says "not affiliated with or endorsed by"; never "official" or "partner".
+ */
+export function notAffiliatedLine(issuer?: CertIssuer): string {
+  const who = !issuer || issuer.id === ISACA.id ? ISACA.name : issuerMark(issuer);
+  return `KaiSip is independent and not affiliated with or endorsed by ${who}.`;
+}
 
 /** Ends a sentence without doubling a period ("ISC2, Inc." stays as is). */
 const sentence = (s: string) => (s.endsWith('.') ? s : `${s}.`);

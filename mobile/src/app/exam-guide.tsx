@@ -10,6 +10,10 @@
  * - The title and one line on what the page is.
  * - ONE calm notice: "check isaca.org before you book" with the date the
  *   facts were last checked (the content says it once, never per item).
+ *   The line is the course's own guide text; a guide without one falls back
+ *   to "Check <the course issuer's site> before you book." (bookingLine):
+ *   isaca.org only for ISACA, and an issuer with no site gets a line that
+ *   names no site, so a course from another issuer never reads isaca.org.
  * - "On this page": a row per section that scrolls there (smooth, or at
  *   once under Reduce Motion) and moves screen-reader focus to its heading.
  * - Each section: its title, a short summary, the domain weights (in the
@@ -36,6 +40,7 @@ import { getExamGuide } from '../content/exam';
 import type { ExamGuide, GuideSection } from '../content/exam/types';
 import type { Certification } from '../content/types';
 import { domainTitle } from '../engine/domainNaming';
+import { bookingLine } from '../engine/readySigns';
 import { moveFocus } from '../lib/a11y';
 import { isoLongDate } from '../lib/format';
 import { useActiveCert } from '../lib/useActiveCert';
@@ -115,7 +120,8 @@ function GuideBody({ guide, cert, openAt }: { guide: ExamGuide; cert: Certificat
     <>
       <Enter i={1} style={{ marginTop: space.lg }}>
         <Plate testID="guide-check-line">
-          <T v="small" color={c.ink}>{guide.checkBeforeBooking}</T>
+          {/* The guide's own line (CISA's says isaca.org); none → the issuer's site, isaca.org only for ISACA, else a line naming no site. */}
+          <T v="small" color={c.ink}>{guide.checkBeforeBooking.trim() ? guide.checkBeforeBooking : bookingLine(cert.issuer)}</T>
           {guide.lastChecked ? (
             <T v="meta" style={{ marginTop: space.xs }}>{`Last checked ${isoLongDate(guide.lastChecked)}`}</T>
           ) : null}

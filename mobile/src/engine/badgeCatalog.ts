@@ -26,8 +26,11 @@
  */
 import { GAMES, type GameId } from './games/registry';
 import { DIAGNOSTIC_SIZE, MOCK_DOMAIN_FLOOR, type Stage } from './journey';
+import { domainWord, type DomainStyle, type DomainStyled } from './domainNaming';
 import {
   badgeDef,
+  badgeName,
+  badgeRule,
   DRESS_GAP_DAYS,
   FIRM_ANSWERS,
   FIRM_DEEP,
@@ -154,8 +157,12 @@ export function examLength(minutes: number): string {
   return m ? `${hours} ${m} minutes` : hours;
 }
 
-/** A set's name and purpose line. The domains set follows the exam: "The Four Domains" for a four-domain exam. */
-export function setInfo(id: SetId, exam: ExamFacts, domainCount: number): SetInfo {
+/**
+ * A set's name and purpose line. The domains set follows the exam: its count and its noun
+ * ("The Five Domains" for CISA, "The Three Sections" for a course with three sections).
+ * No `course` (or one without a domainStyle) → "Domains", as before.
+ */
+export function setInfo(id: SetId, exam: ExamFacts, domainCount: number, course?: DomainStyled): SetInfo {
   const counted = COUNTED_SETS.includes(id);
   switch (id) {
     case 'groundwork':
@@ -163,7 +170,7 @@ export function setInfo(id: SetId, exam: ExamFacts, domainCount: number): SetInf
     case 'domains':
       return {
         id,
-        name: `The ${NUMBER_WORD[domainCount] ?? domainCount} Domains`,
+        name: `The ${NUMBER_WORD[domainCount] ?? domainCount} ${domainWord(course, 'Domains')}`,
         purpose: 'Cover the exam as it’s weighted.',
         counted,
         counter: true,
@@ -234,8 +241,11 @@ const ROOTED_UNLOCK: Record<number, string> = {
 };
 const TIER_WORD: Record<number, string> = { 10: 'Ten', 30: 'Thirty', 60: 'Sixty' };
 
-function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDomain): Copy {
+function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDomain, course?: DomainStyled): Copy {
   const hours = examLength(exam.minutes);
+  // The course's noun: "domain" for CISA (unchanged), "section" for a course with sections.
+  const one = domainWord(course, 'domain');
+  const many = domainWord(course, 'domains');
   switch (badge) {
     case 'first-foothold':
       return {
@@ -262,12 +272,12 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
         minDays: 0,
       };
     case 'firm-footing': {
-      const name = domain?.short ?? 'this domain';
+      const name = domain?.short ?? `this ${one}`;
       if (key.endsWith(':80')) {
         return {
-          howTo: 'A stretch. Breadth wins exams, so keep the other domains moving too.',
+          howTo: `A stretch. Breadth wins exams, so keep the other ${many} moving too.`,
           unlock: `${Math.round(FIRM_DEEP * 100)}% in ${name}: depth beyond what the exam needs.`,
-          effort: `${STRETCH}. The exam needs breadth more than one strong domain.`,
+          effort: `${STRETCH}. The exam needs breadth more than one strong ${one}.`,
           skill: `Reached ${Math.round(FIRM_DEEP * 100)}% in ${name} in practice`,
           minDays: 0,
           gate: 'wholeMap',
@@ -276,7 +286,7 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
       return {
         howTo: domain
           ? `${name} is ${domain.weight}% of the exam. Practise it in Smart until ${Math.round(FIRM_MASTERY * 100)}% holds.`
-          : `Practise this domain in Smart until ${Math.round(FIRM_MASTERY * 100)}% holds.`,
+          : `Practise this ${one} in Smart until ${Math.round(FIRM_MASTERY * 100)}% holds.`,
         unlock: `Firm footing in ${name}: ${Math.round(FIRM_MASTERY * 100)}% mastery across ${FIRM_ANSWERS} or more questions.`,
         effort: `Needs ${FIRM_ANSWERS} or more of its questions answered, at ${Math.round(FIRM_MASTERY * 100)}% mastery.`,
         skill: `Reached ${Math.round(FIRM_MASTERY * 100)}% in ${name} in practice`,
@@ -285,10 +295,10 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
     }
     case 'whole-map':
       return {
-        howTo: 'Your weakest domain is the shortest path. Study for this opens it.',
-        unlock: `Every domain is at ${Math.round(MOCK_DOMAIN_FLOOR * 100)}%. Time to rehearse with mocks.`,
-        effort: `Needs every domain at ${Math.round(MOCK_DOMAIN_FLOOR * 100)}% at the same time.`,
-        skill: `Reached ${Math.round(MOCK_DOMAIN_FLOOR * 100)}% in every exam domain in practice`,
+        howTo: `Your weakest ${one} is the shortest path. Study for this opens it.`,
+        unlock: `Every ${one} is at ${Math.round(MOCK_DOMAIN_FLOOR * 100)}%. Time to rehearse with mocks.`,
+        effort: `Needs every ${one} at ${Math.round(MOCK_DOMAIN_FLOOR * 100)}% at the same time.`,
+        skill: `Reached ${Math.round(MOCK_DOMAIN_FLOOR * 100)}% in every exam ${one} in practice`,
         minDays: 0,
       };
     case 'long-memory': {
@@ -373,7 +383,7 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
       const days = (n - 1) * DRESS_GAP_DAYS + 1;
       const top = n === DRESS_TIERS[DRESS_TIERS.length - 1];
       return {
-        howTo: `Sit another full mock ${DRESS_GAP_DAYS} days or more after your last one. Mocks from before every domain reached ${Math.round(MOCK_DOMAIN_FLOOR * 100)}% don’t count here.`,
+        howTo: `Sit another full mock ${DRESS_GAP_DAYS} days or more after your last one. Mocks from before every ${one} reached ${Math.round(MOCK_DOMAIN_FLOOR * 100)}% don’t count here.`,
         unlock: top
           ? `${NUMBER_WORD[n]} full sittings, each a week apart. That’s all the rehearsal the exam needs.`
           : `${NUMBER_WORD[n]} full sittings, a week apart. The exam’s length won’t surprise you.`,
@@ -469,14 +479,28 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
   }
 }
 
-/** The gate's line (no progress bar while gated: "Opens when…", never an empty bar). */
+/**
+ * The gate's line (no progress bar while gated: "Opens when…", never an empty bar), in the
+ * course's words: "every section" for a course with sections. No course → GATE_LINE's words.
+ */
+export function gateLine(gate: Gate, course?: DomainStyled): string {
+  if (gate === 'mindsetData') return `Opens after ${GROWTH_WINDOW * 2} first tries spread over ${GROWTH_MIN_DAYS / 7} weeks or more.`;
+  return `Opens when every ${domainWord(course, 'domain')} reaches ${Math.round(MOCK_DOMAIN_FLOOR * 100)}%.`;
+}
+
+/** The gate lines for every course without a domainStyle (CISA: word for word as before). */
 export const GATE_LINE: Record<Gate, string> = {
-  mindsetData: `Opens after ${GROWTH_WINDOW * 2} first tries spread over ${GROWTH_MIN_DAYS / 7} weeks or more.`,
-  wholeMap: `Opens when every domain reaches ${Math.round(MOCK_DOMAIN_FLOOR * 100)}%.`,
+  mindsetData: gateLine('mindsetData'),
+  wholeMap: gateLine('wholeMap'),
 };
 
-/** Mock badges are earnable any time, but suggested only once every domain is at the floor. */
-export const MOCK_SUGGEST_LINE = `Best once every domain reaches ${Math.round(MOCK_DOMAIN_FLOOR * 100)}%.`;
+/** Mock badges are earnable any time, but suggested only once every domain (or section) is at the floor. */
+export function mockSuggestLine(course?: DomainStyled): string {
+  return `Best once every ${domainWord(course, 'domain')} reaches ${Math.round(MOCK_DOMAIN_FLOOR * 100)}%.`;
+}
+
+/** The mock suggestion for every course without a domainStyle (CISA: word for word as before). */
+export const MOCK_SUGGEST_LINE = mockSuggestLine();
 const MOCK_BADGES = new Set<BadgeId>(['dress-rehearsal', 'on-pace']);
 
 // ── Marks on the case ────────────────────────────────────────────────────
@@ -545,6 +569,8 @@ export interface CaseInput {
   exam: ExamFacts;
   /** Better Judgement has enough answers to be judged (100 first tries, 2+ weeks apart). */
   mindsetData: boolean;
+  /** The course's domain words: "Section Mastery", "All Sections" (badgeName). Missing → BADGES' names, as every course today. */
+  domainStyle?: DomainStyle;
 }
 
 /** Domain Mastery's leaves, heaviest domain first (ties: the domain order). */
@@ -615,6 +641,8 @@ export function caseKey(key: string): boolean {
 /** Every medallion on the case, in shelf order, with its state, copy and effort. */
 export function caseMarks(input: CaseInput): CaseMark[] {
   const { marks, earned = {}, domains, exam } = input;
+  // The shown badge name in the course's words (ids and keys never change).
+  const shownName = (id: string) => badgeName(id, input);
   const rank = domainRank(domains);
   const byId = new Map(domains.map((d) => [d.id, d]));
   const wholeMap = earned['whole-map'] !== undefined;
@@ -624,7 +652,7 @@ export function caseMarks(input: CaseInput): CaseMark[] {
     const def = badgeDef(badge)!;
     const domainId = badge === 'firm-footing' ? key.split(':')[1] : undefined;
     const domain = domainId ? byId.get(domainId) : undefined;
-    const copy = copyFor(key, badge, exam, domain);
+    const copy = copyFor(key, badge, exam, domain, input);
     const t = tierOf(key);
     // Domain Mastery's leaves sort by domain weight, its Stretch row after them; ladders by tier.
     const within = domainId !== undefined ? (t?.stretch ? 50 : 0) + (rank.get(domainId) ?? 40) : (t?.tier ?? 0);
@@ -636,7 +664,7 @@ export function caseMarks(input: CaseInput): CaseMark[] {
         badge,
         set: BADGE_SET[badge],
         name,
-        caption: domain ? domain.short : t ? `${def.name} · ${t.tierLabel}` : def.name,
+        caption: domain ? domain.short : t ? `${shownName(def.id)} · ${t.tierLabel}` : shownName(def.id),
         ...(t ? { tier: t.tier, tiers: t.tiers, tierLabel: t.tierLabel, ladder: t.ladder } : {}),
         ...(t?.stretch ? { stretch: true } : {}),
         rule,
@@ -661,8 +689,8 @@ export function caseMarks(input: CaseInput): CaseMark[] {
       ...fields,
       status,
       progress: at !== undefined ? 1 : gate ? 0 : m.progress,
-      detail: at !== undefined ? '' : gate ? GATE_LINE[gate] : markDetail(m, domain),
-      ...(gate ? { gateLine: GATE_LINE[gate] } : {}),
+      detail: at !== undefined ? '' : gate ? gateLine(gate, input) : markDetail(m, domain),
+      ...(gate ? { gateLine: gateLine(gate, input) } : {}),
       counted: true,
     });
   }
@@ -673,8 +701,8 @@ export function caseMarks(input: CaseInput): CaseMark[] {
     if (out.some((m) => m.key === key)) continue;
     const def = badgeDef(markBadge(key));
     if (!def || !caseKey(key)) continue;
-    const { fields } = base(key, def.id, def.name, def.rule, at);
-    out.push({ ...fields, caption: def.name, status: 'earned', progress: 1, detail: '', counted: false, order: BADGE_ORDER.indexOf(def.id) * 100 + 99 });
+    const { fields } = base(key, def.id, shownName(def.id), badgeRule(def.id, input), at);
+    out.push({ ...fields, caption: shownName(def.id), status: 'earned', progress: 1, detail: '', counted: false, order: BADGE_ORDER.indexOf(def.id) * 100 + 99 });
   }
   return out.sort((a, b) => a.order - b.order);
 }
@@ -694,9 +722,10 @@ function markDetail(m: MarkState, domain?: CaseDomain): string {
 }
 
 /** The case's shelves, in journey order, with each set's own count. No grand total. */
-export function caseSets(marks: readonly CaseMark[], exam: ExamFacts, domainCount: number): SetView[] {
+export function caseSets(marks: readonly CaseMark[], exam: ExamFacts, domainCount: number, course?: DomainStyled): SetView[] {
   return SET_ORDER.map((id) => {
-    const info = setInfo(id, exam, domainCount);
+    // course: "The Three Sections" for a course with sections; none → "The Five Domains" (CISA).
+    const info = setInfo(id, exam, domainCount, course);
     const mine = marks.filter((m) => m.set === id);
     const core = mine.filter((m) => m.counted && !m.stretch);
     const stretch = mine.filter((m) => m.counted && m.stretch);
@@ -910,9 +939,9 @@ export function nextForExam({ marks, stage, daysLeft, mastery }: NextInput): Nex
   return { ...(best ? { best } : {}), nearest };
 }
 
-/** Before its time, a mock badge says when it is best (not suggested yet). */
-export function suggestLine(m: CaseMark, stage: Stage, daysLeft: number | null, wholeMap = false): string | undefined {
-  return m.status !== 'earned' && MOCK_BADGES.has(m.badge) && !mockTime(stage, daysLeft, wholeMap) ? MOCK_SUGGEST_LINE : undefined;
+/** Before its time, a mock badge says when it is best (not suggested yet), in the course's words. */
+export function suggestLine(m: CaseMark, stage: Stage, daysLeft: number | null, wholeMap = false, course?: DomainStyled): string | undefined {
+  return m.status !== 'earned' && MOCK_BADGES.has(m.badge) && !mockTime(stage, daysLeft, wholeMap) ? mockSuggestLine(course) : undefined;
 }
 
 /** The one Results line under a moment: "Next: Domain Mastery · IS Operations, 62% → 70% · 14 of 20 answered". */

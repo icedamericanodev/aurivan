@@ -1,4 +1,11 @@
-/** Set up study preferences and start the first questions. */
+/**
+ * Set up study preferences and start the first questions.
+ *
+ * The exam: with ONE course on offer (CISA today) it is chosen for the learner and there is no
+ * extra step, exactly as before. With two or more (the courses Settings offers: `available` and
+ * their content on this phone), a short "Which exam?" step comes first, and the welcome then
+ * speaks for the chosen course: its headline, its sub line and its own trademark line.
+ */
 import { FeatureInfo } from '../components/featureInfo';
 import { Redirect, router } from 'expo-router';
 import { useEffect, useRef, useState, type RefObject } from 'react';
@@ -7,21 +14,23 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { DisplayNameField } from '../components/displayName';
 import { cleanDisplayName } from '../engine/displayName';
 import { KaisipLockup } from '../components/brand';
-import { FamiliarityRows, FAMILIARITY_QUESTION, MinutesControl } from '../components/fit';
+import { ChoiceRow, FamiliarityRows, FAMILIARITY_QUESTION, MinutesControl } from '../components/fit';
 import { FieldText } from '../components/fieldguide';
 import { StickyFooter } from '../components/quiz';
 import { Button, Chip, Enter, Gap, T } from '../components/ui';
 import { DataMessage, RestorePreview } from '../components/yourData';
 import { WebImportPreview } from '../components/webImport';
-import { AI_DISCLAIMER_LINE, EXAM_TRADEMARK_LINE, WELCOME_FACTS, WELCOME_LINE, welcomeHeadline } from '../content/brand';
-import { DEFAULT_CERT_ID, getCertification } from '../content/certifications';
+import { AI_DISCLAIMER_LINE, WELCOME_FACTS, welcomeHeadline, welcomeLine, welcomeTrademarkLine } from '../content/brand';
+import { combinedTrademarkNotice, DEFAULT_CERT_ID, getCertification, selectableCertifications } from '../content/certifications';
+import { hasContent } from '../content/loader';
+import type { Certification } from '../content/types';
 import { dateInMonths, daysToExam, EXAM_DATE_PRESETS, presetIndexFor } from '../engine/examDay';
 import { planConsequence } from '../engine/firstRun';
 import { moveFocus } from '../lib/a11y';
 import { buildTodayPlan } from '../lib/activity';
 import { startFirstSet } from '../lib/firstSet';
 import { useKeyboardShown } from '../lib/useKeyboardShown';
-import { useRestoreFlow } from '../lib/useRestoreFlow';
+import { useRestoreFlow, type Busy } from '../lib/useRestoreFlow';
 import { CalendarSheet, chosenLine } from '../components/calendar';
 import { DEFAULT_MINUTES, type DailyMinutes, type Familiarity } from '../engine/fit';
 import { dayKey } from '../engine/streak';
@@ -39,6 +48,18 @@ const WELCOME_ROW_PAD = 10;
 
 /** The steps in order: welcome, where you start, date and minutes. */
 type Step = 0 | 1 | 2;
+
+/** The course step's question (only shown when two or more courses are on offer). */
+export const COURSE_QUESTION = 'Which exam are you preparing for?';
+
+/**
+ * The courses onboarding offers: the same list as Settings → Certification (available, with its
+ * content on this phone). One (or none) means no course step: the learner gets that course, or
+ * the default (CISA), as before.
+ */
+export function onboardingCourses(installed: (certId: string) => boolean = hasContent): Certification[] {
+  return selectableCertifications(installed);
+}
 
 /**
  * Release bug hunt round 2: onboarding is only for learners who have not finished it. An outside link
@@ -67,10 +88,17 @@ function OnboardingFlow() {
   const [minutes, setMinutes] = useState<DailyMinutes>(DEFAULT_MINUTES);
   // The keyboard and the sticky footer never cover a field (UX review H2). The nickname uses the shared accessible field.
   const typing = useKeyboardShown();
-  // CISA is the only exam today, so it is chosen for the learner (no exam step).
-  const certId = DEFAULT_CERT_ID;
-  // The course's own welcome line, if it has one; CISA has none, so "Think like an IS auditor." (brand.ts).
-  const headline = welcomeHeadline(getCertification(certId));
+  // The courses on offer, read once. One (CISA today): chosen for the learner, no exam step.
+  // Two or more: the learner picks one first (the course step), nothing picked to start.
+  const [courses] = useState(() => onboardingCourses());
+  const chooseCourse = courses.length > 1;
+  const [pickedId, setPickedId] = useState<string | undefined>(undefined);
+  const [picking, setPicking] = useState(chooseCourse);
+  const certId = chooseCourse ? (pickedId ?? DEFAULT_CERT_ID) : (courses[0]?.id ?? DEFAULT_CERT_ID);
+  const cert = getCertification(certId);
+  // The course's own welcome lines (brand.ts). CISA: "Think like an IS auditor.", "Your CISA® exam
+  // study, one day at a time." and ISACA's trademark line, word for word as before.
+  const headline = welcomeHeadline(cert);
   // The exam date ("YYYY-MM-DD"), none to start ("Not sure yet").
   // A quick choice or the calendar ("Pick the exact date") sets it.
   // "Now" is read again on each quick choice and each calendar open, so a step
@@ -96,6 +124,12 @@ function OnboardingFlow() {
     onboard: true,
     onRestored: () => router.replace('/home'),
     onWebAdded: () => {
+      // Added from the course step: website progress is CISA's, so CISA becomes the choice
+      // when none was made (a choice already made is kept), and the welcome is passed.
+      if (picking) {
+        setPickedId((p) => p ?? DEFAULT_CERT_ID);
+        setPicking(false);
+      }
       const added = examDateOf(useSettings.getState().examDates, certId);
       if (added) setExamDate(added);
       setStep(1);
@@ -109,26 +143,62 @@ function OnboardingFlow() {
     if (step >= 1) moveFocus(headRef);
   }, [step]);
 
+  // Course step ⇄ welcome (Continue, Back, Android back): screen-reader focus moves to the new
+  // page's header (the course question, or the welcome's headline), so it is never left on a
+  // button that has gone. Not on the first frame: only when `picking` actually changes.
+  const welcomeRef = useRef<View>(null);
+  const wasPicking = useRef(picking);
+  useEffect(() => {
+    if (wasPicking.current === picking) return;
+    wasPicking.current = picking;
+    if (step !== 0) return;
+    return moveFocus(picking ? headRef : welcomeRef);
+  }, [picking, step]);
+
   // Android's back button steps back through onboarding; on the welcome step
   // it does the default (onboarding is the first screen, so the app closes).
+  // With a course step, back on the welcome returns to it (and back on the course step closes the app).
   useEffect(() => {
     const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (step === 0 && chooseCourse && !picking) {
+        setPicking(true);
+        return true;
+      }
       if (step === 0) return false;
       setStep((step - 1) as Step);
       return true;
     });
     return () => sub.remove();
-  }, [step]);
+  }, [step, chooseCourse, picking]);
+
+  // The course step (two or more courses only): one radio row per course, then their trademark notice.
+  const courseStep = (
+    <Enter key="course">
+      <View testID="course-step" style={{ paddingHorizontal: space.gutter, paddingTop: space.lg }}>
+        <KaisipLockup height={34} decorative />
+        <StepHeader title={COURSE_QUESTION} headRef={headRef} />
+        <T v="meta" style={{ marginTop: space.sm }}>You can change it any time in Settings.</T>
+        <Gap h={space.xl} />
+        <View accessibilityRole="radiogroup" accessibilityLabel={COURSE_QUESTION}>
+          {courses.map((x) => (
+            <ChoiceRow key={x.id} title={x.name} subtitle={x.fullName} selected={pickedId === x.id} onPress={() => setPickedId(x.id)} />
+          ))}
+        </View>
+        <T v="meta" color={c.muted} style={{ marginTop: space.lg }}>{combinedTrademarkNotice(courses)}</T>
+      </View>
+    </Enter>
+  );
 
   // A direct welcome with the course promise and first action.
   const welcome = (
     <Enter key="s0">
       <View testID="welcome-page" style={{ paddingHorizontal: space.gutter, paddingTop: space.lg }}>
         <KaisipLockup height={34} decorative />
-        <T v="display" accessibilityRole="header" accessibilityLabel={`Welcome to KaiSip. ${headline}`} style={{ marginTop: space.lg }}>
-          {headline}
-        </T>
-        <FieldText v="sub" style={{ marginTop: space.xs }}>{WELCOME_LINE}</FieldText>
+        {/* One header stop (on the wrapper, so focus can move here from the course step); it looks as before. */}
+        <View ref={welcomeRef} accessible accessibilityRole="header" accessibilityLabel={`Welcome to KaiSip. ${headline}`} style={{ marginTop: space.lg }}>
+          <T v="display">{headline}</T>
+        </View>
+        <FieldText v="sub" style={{ marginTop: space.xs }}>{welcomeLine(cert)}</FieldText>
 
       </View>
       <View style={{ paddingHorizontal: space.gutter, paddingTop: space.sm }}>
@@ -146,12 +216,12 @@ function OnboardingFlow() {
         ))}
         {/* Transparency (5 Nov 2026, TRANSPARENCY.md P4): the short AI disclaimer, one muted line right above the not-affiliated line. */}
         <T v="meta" color={c.muted} style={{ marginTop: space.sm }}>{AI_DISCLAIMER_LINE}</T>
-        <T v="meta" color={c.muted} style={{ marginTop: space.xs }}>{EXAM_TRADEMARK_LINE}</T>
+        <T v="meta" color={c.muted} style={{ marginTop: space.xs }}>{welcomeTrademarkLine(cert)}</T>
       </View>
     </Enter>
   );
 
-  // One tap saves everything and starts the first five questions. CISA is chosen for the learner.
+  // One tap saves everything and starts the first five questions, for the course chosen above.
   const finish = () => {
     // Empty or rejected drafts never erase a saved/restored name. Settings can clear it.
     complete(certId, examDate, { familiarity, dailyMinutes: minutes }, cleanDisplayName(nickname) || undefined);
@@ -242,7 +312,7 @@ function OnboardingFlow() {
     // and the app's own status bar (no forest strip behind it any more).
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       {step === 0 ? (
-        <ScrollView contentContainerStyle={{ paddingBottom: footerH + space.xl }}>{welcome}</ScrollView>
+        <ScrollView contentContainerStyle={{ paddingBottom: footerH + space.xl }}>{picking ? courseStep : welcome}</ScrollView>
       ) : (
         // iOS moves the scroll insets itself; Android shrinks the view (the support sheet's pattern).
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? undefined : 'height'}>
@@ -258,19 +328,28 @@ function OnboardingFlow() {
       {/* Hidden while the keyboard is up, so it never covers a field. */}
       {!typing && (
         <StickyFooter onHeight={setFooterH}>
-          {step === 0 ? (
+          {step === 0 && picking ? (
+            <>
+              {/* A bad file's message sits right above the buttons, where the learner is looking. */}
+              {restore.message && <DataMessage message={restore.message} />}
+              <Button
+                label="Continue"
+                onPress={() => setPicking(false)}
+                disabled={!pickedId || restore.busy !== null}
+                accessibilityHint={pickedId ? undefined : 'Choose the exam you are preparing for.'}
+              />
+              {/* A new phone: restore (or add website progress) here too, before choosing a course. */}
+              <RestoreButton busy={restore.busy} onPress={restore.pick} />
+            </>
+          ) : step === 0 ? (
             <>
               {/* A bad file's message sits right above the buttons, where the learner is looking. */}
               {restore.message && <DataMessage message={restore.message} />}
               <Button label="Get started" onPress={() => setStep(1)} disabled={restore.busy !== null} />
               {/* A new phone: restore here instead of setting up again. */}
-              <Button
-                kind="ghost"
-                label={restore.busy === 'pick' ? 'Opening…' : 'Restore from a backup'}
-                accessibilityHint="Studied on another phone or on the KaiSip website? Pick your backup or progress file to bring your progress here."
-                disabled={restore.busy !== null}
-                onPress={restore.pick}
-              />
+              <RestoreButton busy={restore.busy} onPress={restore.pick} />
+              {/* Only with a course step: back to the exam choice. */}
+              {chooseCourse ? <Button kind="ghost" label="Back" onPress={() => setPicking(true)} disabled={restore.busy !== null} /> : null}
             </>
           ) : step === 1 ? (
             <>
@@ -315,6 +394,19 @@ function OnboardingFlow() {
       {/* Mobile 1.42: progress exported from the KaiSip website can start the app too. */}
       <WebImportPreview web={restore.web} busy={restore.busy === 'web'} onConfirm={restore.confirmWeb} onCancel={restore.cancelWeb} onboarding />
     </SafeAreaView>
+  );
+}
+
+/** "Restore from a backup": a backup file or a KaiSip website progress file (the welcome and the course step). */
+function RestoreButton({ busy, onPress }: { busy: Busy; onPress: () => void }) {
+  return (
+    <Button
+      kind="ghost"
+      label={busy === 'pick' ? 'Opening…' : 'Restore from a backup'}
+      accessibilityHint="Studied on another phone or on the KaiSip website? Pick your backup or progress file to bring your progress here."
+      disabled={busy !== null}
+      onPress={onPress}
+    />
   );
 }
 
