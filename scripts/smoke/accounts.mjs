@@ -40,8 +40,8 @@ const APP = SITE + '/app/';
 const SUPA = 'https://ziadnvepttlgcowvqvom.supabase.co';
 const PUBLIC_KEY = 'sb_publishable_s9eKQUQ0w3MTnCUBF05EkA_5e_kGEw2';
 const EMAIL = 'maya@example.com';
-const PW = 'ocean violet lamp seven';
-const PW2 = 'copper falcon wobbly harbor';
+const PW = 'Ocean violet lamp 7!';
+const PW2 = 'Copper falcon wobbly harbor 9#';
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.webp': 'image/webp', '.webmanifest': 'application/manifest+json', '.txt': 'text/plain' };
 
 const html = fs.readFileSync(path.join(repo, 'index.html'), 'utf8');
@@ -430,44 +430,74 @@ if (wanted('A2')) {
       // Step 3: the password.
       c.check((await text(page, '#kaRoot h1')) === 'Create a password' && /^Step 3 of 3/.test(await text(page, '.ka-steps')), 'step 3');
       const pwf = await page.evaluate(() => { const e = document.getElementById('kaPw'); const u = document.querySelector('#kaForm input[autocomplete=username]'); return { ac: e.autocomplete, type: e.type, user: u && u.value, label: document.querySelector('label[for=kaPw]').textContent, forms: document.querySelectorAll('#kaRoot form').length }; });
-      c.check(pwf.ac === 'new-password' && pwf.type === 'text' && pwf.user === MAIL && pwf.label === 'New password' && pwf.forms === 1, 'the new password field: autocomplete=new-password, shown at first, with the email beside it for password managers: ' + JSON.stringify(pwf));
+      c.check(pwf.ac === 'new-password' && pwf.type === 'password' && /^Show/.test(await text(page, '.ka-reveal')) && pwf.user === MAIL && pwf.label === 'New password' && pwf.forms === 1, 'the new password field: autocomplete=new-password, hidden as typed with a Show button, with the email beside it for password managers: ' + JSON.stringify(pwf));
       await page.waitForFunction(() => window.KaiSipCloud && window.KaiSipCloud.passwordRules.passwordWordsLoaded(), null, { timeout: 15000 });
       c.check(net.wordsJs === 1, 'the word lists load when the password form opens, once');
       c.check(await page.evaluate(() => { const x = [...document.scripts].find((e) => /kaisip-password-words/.test(e.src)); return !!x && /^sha256-/.test(x.integrity) && x.integrity === window.KaiSipCloud.passwordWordsIntegrity; }), 'the word lists are loaded with their fingerprint (the browser refuses a changed file)');
-      c.check(/15 more characters to go/.test(await text(page, '#kaPwHelp')) && /0 characters · at least 15/.test(await text(page, '#kaPwHelp')), 'the helper counts from the start: ' + (await text(page, '#kaPwHelp')));
+      // The checklist: five items, each with an icon and the words Met or Not yet.
+      const list = () => page.evaluate(() => [...document.querySelectorAll('#kaPwHelp .ka-pw-list li')].map((li) => ({ label: li.querySelector('.ka-pw-l').textContent, word: li.querySelector('.ka-pw-s').textContent, met: li.classList.contains('is-met'), icon: !!li.querySelector('svg') })));
+      const empty = await list();
+      c.check(JSON.stringify(empty.map((x) => x.label)) === JSON.stringify(['12 or more characters', 'A lowercase letter', 'An uppercase letter', 'A number', 'A symbol']), 'the five items, in order: ' + empty.map((x) => x.label).join(' / '));
+      c.check(empty.every((x) => !x.met && x.word === 'Not yet' && x.icon), 'before typing every item reads "Not yet", with an icon');
+      c.check(/Your password needs/.test(await text(page, '#kaPwHelp')) && (await page.getAttribute('#kaPw', 'aria-describedby')).includes('kaPwHelp'), 'the list is tied to the field');
+      c.check(!/No symbols or numbers required|\b15\b/.test(await text(page, '#kaRoot')), 'the old "15 characters, nothing else required" wording is gone');
       await axe(page, c, `create account step 3 (${v})`);
       await noOverflow(page, c, 'Create account step 3');
+      await c.shot(`a2-${v}-checklist-empty`);
+      // Typing ticks items one by one; the summary for screen readers waits until typing stops.
+      await page.fill('#kaPw', 'ocean violet');
+      let now = await list();
+      c.check(JSON.stringify(now.map((x) => x.word)) === JSON.stringify(['Met', 'Met', 'Not yet', 'Not yet', 'Not yet']), '"ocean violet": length and lowercase met: ' + now.map((x) => x.word).join(','));
+      c.check((await page.evaluate(() => document.getElementById('kaPwSay').textContent)) === '', 'nothing is announced on the keystroke itself');
+      await page.waitForFunction(() => /2 of 5 met\. Still needed: an uppercase letter, a number, a symbol\./.test(document.getElementById('kaPwSay').textContent), null, { timeout: 4000 }).catch(() => {});
+      c.check(/2 of 5 met\. Still needed: an uppercase letter, a number, a symbol\./.test(await page.evaluate(() => document.getElementById('kaPwSay').textContent)), 'one polite summary after typing stops: ' + (await page.evaluate(() => document.getElementById('kaPwSay').textContent)));
+      c.check((await page.getAttribute('#kaPwSay', 'aria-live')) === 'polite', 'the summary is polite, never an interruption');
+      // Sent while items are missing: the card says exactly what to add; no second red line.
+      await page.press('#kaPw', 'Enter');
+      await page.waitForFunction(() => /Not saved yet/.test(document.getElementById('kaPwHelp').textContent));
+      c.check(/Add an uppercase letter, a number and a symbol\./.test(await text(page, '#kaPwHelp')) && (await text(page, '#kaPwE')) === '' && (await page.getAttribute('#kaPw', 'aria-invalid')) === 'true', 'a refused send: the card says what to add, once, and the field is marked: ' + (await text(page, '#kaPwHelp')));
+      c.check((await page.getAttribute('#kaPw', 'type')) === 'password', 'the field stays hidden when it is sent');
+      await page.fill('#kaPw', 'Oc7!');
+      c.check((await page.getAttribute('#kaPw', 'aria-invalid')) === null && /Your password needs/.test(await text(page, '#kaPwHelp')), 'typing again clears the refusal');
+      now = await list();
+      c.check(JSON.stringify(now.map((x) => x.word)) === JSON.stringify(['Not yet', 'Met', 'Met', 'Met', 'Met']), 'four kinds but too short: ' + now.map((x) => x.word).join(','));
+      // All five met, but the shared rules still refuse it: the card says why, in the rules' own words.
       const refused = [
-        ['short words', /Use at least 15 characters/, /4 more characters to go/],
-        ['passwordpass', /Use at least 15 characters/, /3 more characters to go/],
-        ['passwordpassword', /used by many people or is easy to guess/, /would be refused/],
-        ['zyxwvutsrqponmlkj', /Avoid repeats, sequences/, /would be refused/],
-        ['xochitl brennagh 1990', /from your email address or your name/, /would be refused/],
-        ['kaisip kaisip 2026', /the app.s or the exam.s name/, /would be refused/],
-        ['x'.repeat(73), /Use up to 72/, /would be refused/],
+        ['Passwordpassword1!', /used by many people or is easy to guess, even with capitals, numbers and symbols added/],
+        ['Qwertyuiop123!', /Avoid repeats, sequences, dates, keyboard patterns/],
+        ['Xochitl brennagh 1990!', /from your email address or your name/],
+        ['Kaisip kaisip 2026!', /the app.s or the exam.s name/],
+        ['Aa1!' + 'x'.repeat(70), /Use up to 72/],
       ];
-      for (const [pw, words, live] of refused) {
+      for (const [pw, words] of refused) {
         await page.fill('#kaPw', pw);
-        c.check(live.test(await text(page, '#kaPwHelp')), `the live helper for "${pw.slice(0, 12)}…": ` + (await text(page, '#kaPwHelp')));
+        const card = await text(page, '#kaPwHelp');
+        c.check(/This one would be refused/.test(card) && words.test(card) && (await page.evaluate(() => document.getElementById('kaPwHelp').classList.contains('is-refused') && !!document.querySelector('#kaPwHelp .ka-pw-head svg'))), `the live card for "${pw.slice(0, 12)}…" (an icon and the reason): ` + card);
         await page.press('#kaPw', 'Enter');
-        await waitText(page, 'kaPwE', /./, c);
-        c.check(words.test(await text(page, '#kaPwE')) && (await page.getAttribute('#kaPwE', 'role')) === 'alert', `the reason and guidance for "${pw.slice(0, 12)}…": ` + (await text(page, '#kaPwE')));
-        c.check((await page.getAttribute('#kaPw', 'type')) === 'password' && /^Show/.test(await text(page, '.ka-reveal')), 'after sending, the field is hidden and its button reads Show');
-        await page.click('.ka-reveal');
+        await page.waitForFunction(() => /Not saved yet/.test(document.getElementById('kaPwHelp').textContent));
+        c.check(words.test(await text(page, '#kaPwHelp')) && (await text(page, '#kaPwE')) === '', `sent: the same reason, said once, for "${pw.slice(0, 12)}…"`);
       }
+      await c.shot(`a2-${v}-refused`);
+      // Show / Hide on the new password.
+      await page.click('.ka-reveal');
+      c.check((await page.getAttribute('#kaPw', 'type')) === 'text' && /^Hide/.test(await text(page, '.ka-reveal')), 'Show reveals the password');
+      await page.click('.ka-reveal');
       c.check(calls(server, '/auth/v1/user', 'PUT').length === 0, 'a refused password is never sent');
       await c.shot(`a2-${v}-refused`);
       // A leaked password: refused with its own words; only 5 characters of each hash leave.
       net.leaked.add(PW);
       await page.fill('#kaPw', PW);
-      c.check(/Long and hard to guess|Long enough/.test(await text(page, '#kaPwHelp')), 'the helper for a long passphrase: ' + (await text(page, '#kaPwHelp')));
+      c.check(/Strong password\. Nicely done\./.test(await text(page, '#kaPwHelp')) && (await list()).every((x) => x.met && x.word === 'Met'), 'a good password: all five met, in words: ' + (await text(page, '#kaPwHelp')));
+      await c.shot(`a2-${v}-good`);
       await page.press('#kaPw', 'Enter');
       await waitText(page, 'kaPwE', /data leak/, c);
+      c.check((await page.getAttribute('#kaPwE', 'role')) === 'alert' && (await page.getAttribute('#kaPw', 'aria-invalid')) === 'true', 'a leak found at save is the one refusal shown under the field (the card cannot know it)');
       c.check(calls(server, '/auth/v1/user', 'PUT').length === 0, 'a leaked password is not saved');
       c.check(net.hibp.length > 0 && net.hibp.every((p) => /^\/range\/[0-9A-Fa-f]{5}$/.test(p)), 'the leak lookup sends 5 characters of a hash and nothing else: ' + net.hibp.join(','));
       // The lookup can't be reached: the password is saved, and the screen says so calmly.
       net.hibpMode = 'down';
       await page.fill('#kaPw', PW2);
+      c.check((await text(page, '#kaPwE')) === '' && (await page.getAttribute('#kaPw', 'aria-invalid')) === null, 'typing a new password clears the leak message (never two opposite messages)');
       await page.press('#kaPw', 'Enter');
       await waitView(page, '');
       c.check(/couldn.t check this password against known leaks/.test(await toast(page)) && /signed in/.test(await toast(page)), 'the "couldn’t check" state is said calmly after saving: ' + (await toast(page)));
@@ -480,7 +510,7 @@ if (wanted('A2')) {
       c.check(!(await store(page)).session.kaisip_signup_pending_v1, 'the waiting agreements are cleared once saved');
       await page.waitForFunction(() => /Synced/.test((document.getElementById('kaCard') || {}).textContent || ''), null, { timeout: 10000 });
       c.check(/x•••@example\.com/.test(await text(page, '#kaCard')), 'signed in on You: ' + (await text(page, '#kaCard')));
-      await noSecrets(page, c, [PW, PW2, real, 'passwordpassword', 'ts-token-'], 'after creating the account');
+      await noSecrets(page, c, [PW, PW2, real, 'Passwordpassword1!', 'ts-token-'], 'after creating the account');
       const all = await text(page, 'body');
       c.check(!/maple tea|coffee before|correct horse/i.test(all), 'no example password anywhere');
     });
@@ -547,12 +577,12 @@ if (wanted('A3')) {
       const code = server.codes.get(EMAIL);
       // A refused password is caught before the code is used up.
       await page.fill('#kaCode', code);
-      await page.fill('#kaPw', 'passwordpassword');
+      c.check((await page.evaluate(() => document.querySelectorAll('#kaPwHelp .ka-pw-list li').length)) === 5 && (await page.getAttribute('#kaPw', 'type')) === 'password', 'the same five-item checklist, on a hidden field');
+      await page.fill('#kaPw', 'Passwordpassword1!');
       await page.press('#kaPw', 'Enter');
-      await waitText(page, 'kaPwE', /easy to guess/, c);
+      await waitText(page, 'kaPwHelp', /Not saved yet.*easy to guess/, c);
       c.check(calls(server, '/auth/v1/verify').filter((x) => x.body.email === EMAIL).length === 0, 'the code is not spent on a refused password');
       // A wrong code.
-      await page.click('.ka-reveal');
       await page.fill('#kaPw', PW2);
       await page.fill('#kaCode', '00000000');
       await page.press('#kaPw', 'Enter');
@@ -566,7 +596,7 @@ if (wanted('A3')) {
       c.check(server.userByEmail(EMAIL).password === PW2, 'the new password is saved');
       await page.waitForSelector('#kaCard .ka-card-act');
       c.check(/m•••@example\.com/.test(await text(page, '#kaCard')), 'signed in after the reset');
-      await noSecrets(page, c, [PW2, code, 'passwordpassword'], 'after the reset');
+      await noSecrets(page, c, [PW2, code, 'Passwordpassword1!'], 'after the reset');
       c.check(net.third.length === 0, 'no other address was contacted: ' + net.third.join(','));
     });
     await ctx.close();
@@ -760,9 +790,10 @@ if (wanted('A5')) {
       await page.press('#kaPw', 'Enter');
       await waitText(page, 'kaCurE', /isn.t your current password/, c);
       await page.fill('#kaCur', PW);
-      await page.fill('#kaPw', 'passwordpassword');
+      c.check((await page.evaluate(() => document.querySelectorAll('#flagModal #kaPwHelp .ka-pw-list li').length)) === 5, 'the same checklist on Change password');
+      await page.fill('#kaPw', 'ocean violet lamp');
       await page.press('#kaPw', 'Enter');
-      await waitText(page, 'kaPwE', /easy to guess/, c);
+      await waitText(page, 'kaPwHelp', /Not saved yet.*Add an uppercase letter, a number and a symbol\./, c);
       c.check(server.userByEmail(EMAIL).password === PW, 'nothing changed yet');
       await page.fill('#kaPw', PW2);
       await page.press('#kaPw', 'Enter');
@@ -1193,9 +1224,9 @@ async function walk(v, scheme, shots, c, axeOnly = false) {
   await page.waitForFunction(() => document.getElementById('kaCodeE').textContent.length > 0); await snap(page, '07-create-2-wrong-code');
   await page.fill('#kaCode', server.codes.get(MAIL)); await page.press('#kaCode', 'Enter'); await waitView(page, 'signup3');
   await page.waitForFunction(() => window.KaiSipCloud && window.KaiSipCloud.passwordRules.passwordWordsLoaded(), null, { timeout: 15000 });
-  await page.fill('#kaPw', 'lantern'); await snap(page, '08-create-3-password-short');
-  await page.fill('#kaPw', 'passwordpassword'); await page.press('#kaPw', 'Enter');
-  await page.waitForFunction(() => document.getElementById('kaPwE').textContent.length > 0); await page.click('.ka-reveal'); await snap(page, '09-create-3-password-refused');
+  await snap(page, '08-create-3-checklist-empty');
+  await page.fill('#kaPw', 'Passwordpassword1!'); await page.press('#kaPw', 'Enter');
+  await page.waitForFunction(() => /Not saved yet/.test(document.getElementById('kaPwHelp').textContent)); await snap(page, '09-create-3-password-refused');
   s.net.hibpMode = 'down';
   await page.fill('#kaPw', PW); await snap(page, '10-create-3-password-good');
   await page.press('#kaPw', 'Enter'); await waitView(page, ''); await settled(page);

@@ -9043,19 +9043,19 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 @keyframes kaCaret { 50% { opacity: 0; } }
 .ka-resend { margin-top: 18px; font: 400 0.875rem/1.5 var(--f-sans); color: var(--text2); display: grid; gap: 2px; justify-items: start; }
 
-/* The password helper: a sprig that grows with the length (one leaf per three
-   characters, a bud from 20). Words and a count carry the meaning. */
-.ka-pw { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start; padding: 14px 16px; border-radius: 16px; background: var(--raised2); box-shadow: inset 0 0 0 1px var(--border); }
-.ka-sprig { width: 40px; height: 62px; display: block; }
-.ka-sprig .ka-stem { fill: none; stroke: var(--track); stroke-width: 2; stroke-linecap: round; }
-.ka-sprig .ka-stem-grown { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; }
-.ka-sprig .is-on { fill: var(--accent); }
-.ka-sprig .is-off { fill: none; stroke: var(--control); stroke-width: 1.2; stroke-dasharray: 2 2; }
-.ka-sprig .ka-bud { fill: var(--sap); stroke: var(--accent); stroke-width: 1.2; }
-.ka-pw-head { display: flex; gap: 6px; align-items: center; font: 600 0.9375rem/1.35 var(--f-sans); color: var(--text); margin: 0; }
+/* The password checklist: five items, each an icon and words (met or not). */
+.ka-pw { padding: 12px 16px; border-radius: var(--r-md); background: var(--raised2); box-shadow: inset 0 0 0 1px var(--border); }
+.ka-pw-head { display: flex; gap: 8px; align-items: center; font: var(--t-chip); color: var(--text); margin: 0 !important; }
 .ka-pw-head .ico { color: var(--accent-text); flex-shrink: 0; }
-.ka-pw-count { font: 500 0.8125rem/1.4 var(--f-sans); color: var(--text2); margin: 2px 0 0 !important; font-variant-numeric: tabular-nums; }
-.ka-pw-sub { font: 400 0.875rem/1.45 var(--f-sans); color: var(--text2); margin: 6px 0 0 !important; }
+.ka-pw.is-refused .ka-pw-head, .ka-pw.is-refused .ka-pw-head .ico { color: var(--wrong); }
+.ka-pw-list { display: grid; gap: 4px; margin: 8px 0 0 !important; padding: 0 !important; list-style: none; }
+.ka-pw-list li { display: grid; grid-template-columns: 20px 1fr auto; gap: 8px; align-items: center; min-height: 24px; font: var(--t-small); color: var(--text2); }
+.ka-pw-list .ico { color: var(--control); }
+.ka-pw-list .is-met { color: var(--text); }
+.ka-pw-list .is-met .ico { color: var(--accent-text); }
+.ka-pw-s { font: var(--t-meta); color: var(--text2); }
+.ka-pw-list .is-met .ka-pw-s { color: var(--accent-text); }
+.ka-pw-guide { margin: 8px 0 0 !important; font: var(--t-small); color: var(--text); }
 
 /* First visit: the welcome choice. */
 .ka-welcome { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
@@ -27716,9 +27716,9 @@ function kaWords(e) {
   return KA_WORDS.server;
 }
 // The reason and the guidance for a refused password (the shared rules' own words).
-function kaGuide(problem) {
+function kaGuide(problem, password) {
   try {
-    var g = window.KaiSipCloud.passwordRules.passwordGuidance(problem);
+    var g = window.KaiSipCloud.passwordRules.passwordGuidance(problem, password);
     return g ? g.text : '';
   } catch (e) { return ''; }
 }
@@ -27960,7 +27960,7 @@ var KA_ART = {
   signin: ['Your progress, on every device you study on.', 'Sign in here, carry on in the Android app.'],
   signup1: ['Three short steps. Then your study travels with you.', 'Email, a code, a password. That’s all.'],
   signup2: ['One code, so we know the inbox is yours.', 'It only confirms your email. It never signs you in on its own.'],
-  signup3: ['Long beats complex.', 'A few everyday words you can picture make a strong password.'],
+  signup3: ['One password, kept safe.', 'It is stored only as a salted one-way hash. No one at KaiSip can read it.'],
   forgot: ['Back in, in a minute.', 'A reset code, a new password, and you are studying again.'],
   sync: ['Nothing you’ve answered is lost.', 'Combining only adds: your best results are kept.']
 };
@@ -28003,13 +28003,6 @@ function kaReveal(btn) {
   var show = inp.type === 'password';
   inp.type = show ? 'text' : 'password';
   btn.firstChild.nodeValue = show ? 'Hide' : 'Show';
-}
-// As a password field again while it is sent (so a password manager offers to save it), with its button back to "Show".
-function kaPwHide(inp) {
-  if (!inp || inp.type === 'password') return;
-  inp.type = 'password';
-  var b = inp.parentNode ? inp.parentNode.querySelector('.ka-reveal') : null;
-  if (b) b.firstChild.nodeValue = 'Show';
 }
 function kaCheck(id, html, optional) {
   return '<label class="ka-check" for="' + id + '"><input type="checkbox" id="' + id + '"' + (optional ? '' : ' aria-required="true"') + ' onchange="kaSetError(\'kaConsentE\', \'\')">'
@@ -28086,58 +28079,92 @@ function kaCodePaste(e) {
   e.target.value = digits;
   kaCodeDraw();
 }
-// The sprig: one leaf per three characters, a bud from 20.
-function kaSprig(len, strong) {
-  var grown = Math.min(6, Math.floor(len / 3)), leaves = '';
-  for (var i = 0; i < 6; i++) {
-    var y = 62 - i * 9.5;
-    var d = i % 2 === 0 ? 'M24 ' + y + ' q-6 -2 -12 -9 q8 -1 12 9Z' : 'M24 ' + y + ' q6 -2 12 -9 q-8 -1 -12 9Z';
-    leaves += '<path class="' + (i < grown ? 'is-on' : 'is-off') + '" d="' + d + '"/>';
-  }
-  return '<svg class="ka-sprig" viewBox="0 0 48 72" aria-hidden="true" focusable="false"><path class="ka-stem" d="M24 70 C24 50 23 30 24 6"/>'
-    + '<path class="ka-stem-grown" d="M24 70 C24 50 23 30 24 6" pathLength="100" style="stroke-dasharray:' + Math.min(100, Math.round(len / 20 * 100)) + ' 100"/>'
-    + leaves + (strong ? '<circle class="ka-bud" cx="24" cy="5" r="3.2"/>' : '') + '</svg>';
-}
-// The live helper under a new password. No rule about character types and no
-// example password: length first, then the shared rules' own guidance when
-// they would refuse it. Said aloud only when the state changes, not per key.
-var kaPwState = '';
-function kaPwHelp() {
-  var inp = kaEl('kaPw'), box = kaEl('kaPwHelp');
-  if (!inp || !box) return;
-  var v = inp.value, len = Array.from(v).length, problem = '';
+// The live checklist under a new password (the owner's rule: 12 or more
+// characters with a lowercase letter, an uppercase letter, a number and a
+// symbol; the shared rules in the accounts client decide, and their own words
+// are shown). Each item is an icon AND words, met or not, never colour alone.
+// When all five are met the shared rules may still refuse the password (a
+// common one, the email's own words ...): then the card says why, in the
+// rules' guidance sentence. The card is the one voice for these refusals; the
+// red line under the field is only for what the card cannot know (a leak
+// found at save, a server refusal). No example password, ever.
+// Screen readers: the list is read when the field takes focus (described
+// by it); after that one polite summary, a second after typing stops.
+var KA_PW_ITEMS = ['12 or more characters', 'A lowercase letter', 'An uppercase letter', 'A number', 'A symbol'];
+var kaPwState = '';     // what the card shows now ('' before the first draw)
+var kaPwTold = '';      // the problem a send was refused for (shown until the next keystroke)
+var kaPwSayTimer = null;
+function kaPwRead() {
+  var inp = kaEl('kaPw');
+  var v = inp ? inp.value : '';
+  var out = { v: v, items: KA_PW_ITEMS.map(function (label) { return { label: label, met: false }; }), state: 'refused', problems: v ? [] : ['too_short'], complete: false };
   try {
     var R = window.KaiSipCloud.passwordRules;
-    len = R.passwordLength(v);
-    if (v) {
-      var a = R.assessPassword(v, { email: ka.email || null });
-      problem = a.problems.filter(function (p) { return p !== 'too_short'; })[0] || '';
-    }
+    var c = R.passwordChecklist(v, { email: ka.email || null });
+    out.items = c.items.map(function (it) { return { label: it.label, met: it.met }; });
+    out.state = c.state; out.problems = c.problems; out.complete = c.complete;
   } catch (e) {}
-  // Length first: under 15 the count is the whole message; from 15 the shared rules may still refuse it.
-  var st = len < 15 ? 'short' : problem ? 'refused' : len < 20 ? 'ok' : 'strong';
-  var head = st === 'refused' ? 'This one would be refused'
-    : st === 'short' ? (15 - len) + (15 - len === 1 ? ' more character to go' : ' more characters to go')
-    : st === 'ok' ? 'Long enough. A word or two more makes it stronger.' : 'Long and hard to guess. Nicely done.';
-  var sub = st === 'refused' ? kaGuide(problem)
-    : st === 'short' ? 'Three or four ordinary words with spaces are easy to remember.'
-    : st === 'ok' ? 'Spaces are fine. Everyday words you can picture work best.'
-    : 'Long and memorable beats short and complex. Your password manager can save it too.';
-  box.innerHTML = '<div>' + kaSprig(st === 'refused' ? 0 : len, st === 'strong') + '</div><div>'
-    + '<p class="ka-pw-head">' + (st === 'ok' || st === 'strong' ? ico('check', 18) : '') + '<span>' + escapeHtml(head) + '</span></p>'
-    + '<p class="ka-pw-count">' + len + (len === 1 ? ' character' : ' characters') + ' · at least 15</p>'
-    + '<p class="ka-pw-sub">' + escapeHtml(sub) + '</p></div>';
-  var key = st + (st === 'refused' ? ':' + problem : '');
-  if (key !== kaPwState) {
-    kaPwState = key;
-    var say = kaEl('kaPwSay');
-    if (say) say.textContent = st === 'short' ? 'At least 15 characters. ' + head + '.' : head + (st === 'refused' ? '. ' + sub : '');
-  }
+  return out;
+}
+function kaPwHelp(typed) {
+  var inp = kaEl('kaPw'), box = kaEl('kaPwHelp');
+  if (!inp || !box) return;
+  // Typing answers the last refusal: its words and the field's "invalid" mark go.
+  if (typed) { kaPwTold = ''; if (inp.getAttribute('aria-invalid')) kaSetError('kaPwE', ''); }
+  var c = kaPwRead();
+  var met = c.items.filter(function (it) { return it.met; }).length;
+  var allMet = met === c.items.length;
+  // A problem the five items do not show (a common password, the email's words, too long ...).
+  var other = c.problems.filter(function (p) { return p !== 'too_short' && p !== 'missing_characters'; })[0] || '';
+  var problem = kaPwTold || (allMet || c.problems.indexOf('too_long') >= 0 || c.problems.indexOf('invalid_characters') >= 0 ? other : '');
+  var st = problem ? 'refused' : !allMet ? 'needs' : c.state === 'refused' ? 'needs' : !c.complete ? 'checking' : c.state;
+  var head = st === 'refused' ? (kaPwTold ? 'Not saved yet' : 'This one would be refused')
+    : st === 'needs' ? 'Your password needs'
+    : st === 'checking' ? 'Checking…'
+    : st === 'strong' ? 'Strong password. Nicely done.' : 'This password works.';
+  var guide = st === 'refused' ? kaGuide(problem, c.v) : '';
+  var rows = c.items.map(function (it) {
+    return '<li class="' + (it.met ? 'is-met' : 'is-not') + '">'
+      + (it.met ? kaIco('okcircle', 20) : '<svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" stroke-dasharray="3 3"/></svg>')
+      + '<span class="ka-pw-l">' + escapeHtml(it.label) + '</span><span class="ka-pw-s">' + (it.met ? 'Met' : 'Not yet') + '</span></li>';
+  }).join('');
+  var html = '<p class="ka-pw-head">' + (st === 'refused' ? kaIco('alert', 18) : st === 'ok' || st === 'strong' ? ico('check', 18) : '') + '<span>' + escapeHtml(head) + '</span></p>'
+    + '<ul class="ka-pw-list">' + rows + '</ul>'
+    + (guide ? '<p class="ka-pw-guide">' + escapeHtml(guide) + '</p>' : '');
+  if (box.innerHTML !== html) box.innerHTML = html;
+  box.classList.toggle('is-refused', st === 'refused');
+  // One polite summary when the picture changes, a second after typing stops (never per key).
+  var missing = c.items.filter(function (it) { return !it.met; }).map(function (it) { return it.label.charAt(0).toLowerCase() + it.label.slice(1); });
+  var words = st === 'refused' ? head + '. ' + guide
+    : st === 'needs' ? (c.v ? met + ' of 5 met. Still needed: ' + missing.join(', ') + '.' : '')
+    : st === 'checking' ? '' : 'All 5 met. ' + head;
+  var key = st + ':' + problem + ':' + met + ':' + missing.join('|');
+  if (key === kaPwState) return;
+  var first = kaPwState === '';
+  kaPwState = key;
+  if (kaPwSayTimer) clearTimeout(kaPwSayTimer);
+  if (first || !words) return;
+  kaPwSayTimer = setTimeout(function () { var say = kaEl('kaPwSay'); if (say) say.textContent = words; }, kaPwTold ? 60 : 1000);
+}
+// A send was refused by the shared rules: the card says it (once, and aloud), the field is marked.
+function kaPwRefused(detail) {
+  var inp = kaEl('kaPw');
+  kaPwTold = String(detail || '').replace(/^password_/, '') || 'too_short';
+  // While an item of the list is still missing, that is what to fix first (whatever else the rules also saw).
+  var c = kaPwRead();
+  if (c.items.some(function (it) { return !it.met; })) kaPwTold = c.items[0].met ? 'missing_characters' : 'too_short';
+  kaPwState = 'told';
+  kaSetError('kaPwE', '');
+  if (inp) inp.setAttribute('aria-invalid', 'true');
+  kaPwHelp();
+  if (inp) { try { inp.focus(); } catch (e) {} }
 }
 function kaNewPasswordField(label) {
   kaPwState = '';
+  kaPwTold = '';
+  // Hidden as typed, with a Show button (web.dev sign-in form practice; password managers offer to make and save one).
   return '<input type="email" class="sr-only" name="email" autocomplete="username" tabindex="-1" aria-hidden="true" readonly value="' + escapeHtml(ka.email || '') + '">'
-    + kaField({ id: 'kaPw', name: 'new-password', label: label || 'New password', type: 'text', ac: 'new-password', reveal: true, describedby: 'kaPwHelp', oninput: 'kaPwHelp()',
+    + kaField({ id: 'kaPw', name: 'new-password', label: label || 'New password', type: 'password', ac: 'new-password', reveal: true, describedby: 'kaPwHelp', oninput: 'kaPwHelp(true)',
       after: '<div class="ka-pw" id="kaPwHelp"></div><p class="sr-only" id="kaPwSay" role="status" aria-live="polite"></p>' });
 }
 function kaGoogleBtn(label, onclick) {
@@ -28220,7 +28247,7 @@ var KA_VIEWS = {
     return kaShell('signup3',
       (fresh ? kaSteps(3) : '')
       + '<h1 class="ka-title" tabindex="-1">Create a password</h1>'
-      + '<p class="ka-lede">' + (fresh ? 'Email confirmed. Now choose' : 'Your email is confirmed. Choose') + ' a password of at least 15 characters. No symbols or numbers required.</p>'
+      + '<p class="ka-lede">' + (fresh ? 'Email confirmed. Now choose a password.' : 'Your email is confirmed. Choose a password.') + '</p>'
       + kaNoticeHtml()
       + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();kaSubmit(\'signup3\')">'
       + kaNewPasswordField()
@@ -28347,10 +28374,14 @@ function kaClearErrors() {
   ['kaEmailE', 'kaPassE', 'kaPwE', 'kaCodeE', 'kaFormE', 'kaConsentE', 'kaCurE'].forEach(function (id) { if (kaEl(id)) kaSetError(id, ''); });
 }
 // Puts an error where it belongs (its field when there is one) and moves focus there.
+// The refusals the checklist card can show itself (the shared rules' reasons).
+var KA_PW_RULES = ['password_too_short', 'password_missing_characters', 'password_too_long', 'password_invalid_characters', 'password_common', 'password_too_simple', 'password_contains_email', 'password_contains_service_word'];
 function kaFail(e, fieldId) {
   var words = typeof e === 'string' ? e : kaWords(e);
   var detail = e && typeof e.detail === 'string' ? e.detail : '';
   var id = fieldId || (detail === 'email' ? 'kaEmail' : detail === 'code_wrong' ? 'kaCode' : detail === 'password_wrong' ? 'kaPass' : detail.indexOf('password_current') === 0 ? 'kaCur' : detail.indexOf('password_') === 0 && kaEl('kaPw') ? 'kaPw' : '');
+  // A new password the shared rules refuse: the checklist card says it (one voice), not a second red line.
+  if (id === 'kaPw' && kaEl('kaPwHelp') && KA_PW_RULES.indexOf(detail) >= 0) { kaPwRefused(detail); return; }
   if (id && kaEl(id + 'E')) {
     kaSetError(id + 'E', words);
     try { kaEl(id).focus(); } catch (ex) {}
@@ -28478,8 +28509,7 @@ function kaSubmit(view) {
   }
   if (view === 'signup3') {
     var pwEl = kaEl('kaPw');
-    if (!pwEl.value) { kaFail(kaGuide('too_short') || 'Choose a password of at least 15 characters.', 'kaPw'); return; }
-    kaPwHide(pwEl);
+    if (!pwEl.value) { kaPwRefused('too_short'); return; }
     kaBusy(true, 'Saving…');
     kaGetCloud().then(function (c) { cloud = c; return cloud.auth.setPassword(pwEl.value); }).then(function () {
       pwEl.value = '';
@@ -28522,15 +28552,14 @@ function kaSubmit(view) {
     var rc = kaCodeValue();
     if (!rc) return;
     var np = kaEl('kaPw');
-    if (!np.value) { kaFail(kaGuide('too_short') || 'Choose a password of at least 15 characters.', 'kaPw'); return; }
-    kaPwHide(np);
+    if (!np.value) { kaPwRefused('too_short'); return; }
     kaBusy(true, 'Saving…');
     kaGetCloud().then(function (c) { cloud = c; return cloud.auth.finishPasswordReset(ka.email, rc, np.value, { shared: ka.shared }); }).then(function (done) {
       np.value = '';
       if (!done.passwordSaved) {
         // The code worked but the password wasn't saved: ask once more, with the reason.
         var p = done.problem;
-        ka.notice = p === 'leaked' || p === 'weak' ? kaGuide(p) : p === 'offline' ? KA_WORDS.offline : p === 'rate_limited' ? kaWords({ code: 'rate_limited' }) : (kaGuide(p) || 'Your email is confirmed, but the password wasn’t saved. Please choose it again.');
+        ka.notice = p === 'leaked' || p === 'weak' ? kaGuide(p) : p === 'offline' ? KA_WORDS.offline : p === 'rate_limited' ? kaWords({ code: 'rate_limited' }) : 'Your email is confirmed, but the password wasn’t saved. Please choose it again.';
         kaShow('signup3');
         return null;
       }
@@ -29145,7 +29174,7 @@ function kaPasswordDialog() {
   ka.pwNeedsCurrent = hasPw;
   kaSheet({
     title: hasPw ? 'Change password' : 'Add a password',
-    body: '<p>' + (hasPw ? 'Changing it signs you out on your other devices.' : 'Then you can sign in with your email as well as Google.') + ' At least 15 characters; no symbols or numbers required.</p>',
+    body: '<p>' + (hasPw ? 'Changing it signs you out on your other devices.' : 'Then you can sign in with your email as well as Google.') + '</p>',
     fields: (hasPw ? kaField({ id: 'kaCur', name: 'password', label: 'Current password', type: 'password', ac: 'current-password', reveal: true }) : '') + kaNewPasswordField(),
     go: 'Save password', onsubmit: 'kaPasswordGo'
   });
@@ -29157,8 +29186,7 @@ function kaPasswordGo() {
   kaClearErrors();
   var cur = kaEl('kaCur'), np = kaEl('kaPw');
   if (cur && !cur.value) { kaFail('Enter your current password.', 'kaCur'); return; }
-  if (!np.value) { kaFail(kaGuide('too_short'), 'kaPw'); return; }
-  kaPwHide(np);
+  if (!np.value) { kaPwRefused('too_short'); return; }
   kaBusy(true, 'Saving…');
   var cloud = ka.cloud;
   cloud.auth.setPassword(np.value, cur ? { currentPassword: cur.value } : undefined).then(function () {
