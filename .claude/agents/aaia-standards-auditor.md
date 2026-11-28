@@ -28,7 +28,7 @@ Read first:
 
 ## Item construction rules
 1. **Length and difficulty.**
-   - Stems ≤ 35 words, at most 2 sentences, end with `?`, contain a CAPITALIZED priority word (FIRST, BEST, MOST, PRIMARY, GREATEST).
+   - Stems aim for 35 words, at most 45 words and 4 short sentences (over 35 only if plain: no semicolon, no stacked possessives, no sentence over 20 words; see `docs/content/EXAM_STYLE_V2.md`, "Plain stems"), end with `?`, contain a CAPITALIZED priority word (FIRST, BEST, MOST, PRIMARY, GREATEST).
    - The stem names who acts (the IS auditor, the audit team, management, the model owner) and holds the one fact that decides the key.
    - Mix per domain: about 25% foundational, 50% application, 25% analysis.
 2. **Four options, exactly one best answer (two plus two).**

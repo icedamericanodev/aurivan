@@ -13,7 +13,7 @@ ISACA mindset picks one.
 
 | Field | Rule |
 |---|---|
-| `question` | ≤ 35 words, at most 2 sentences (harness-checked), ends with `?`, contains a CAPITALISED priority word. Names who acts (IS auditor, audit firm, management…). Keeps at least one concrete fact the candidate must weigh. |
+| `question` | Aim for 35 words; at most 45 words and 4 sentences (the scenario in short sentences, then the question). A stem over 35 words must be plain: no semicolon, no two possessives in one noun phrase, no sentence over 20 words. Per domain, the median stem stays at 35 words or fewer and no more than 25% of stems go over 35 (owner decision, 28 Nov 2026, after FB-013). Harness-checked. Ends with `?`, contains a CAPITALISED priority word. Names who acts (IS auditor, audit firm, management…). Keeps at least one concrete fact the candidate must weigh. |
 | `scenario_context` | **Removed.** Fold the one fact that matters into the stem. |
 | `options` A–D | ≤ 12 words each, grammatically parallel, each a **full plain statement** a learner can read aloud: no "+" lists, arrows or a/b/c shorthand (harness-checked). The key's length is 0.67–1.5× the distractor average, and by characters it is at most 8 longer than the longest distractor. Test-wise candidates pick the longest answer, so per domain the guess "always pick the longest option" (ties shared) should win about 20% of the time: below the 25% chance level, but not so low that "never pick the longest" pays instead (`scripts/check_longest_option.py`, run by `verify_repo.sh`: error outside 15–24%). By words the same guess should win at least 10% (harness warning). |
 | `correct_explanation` | 40–75 words. Why the key wins, then why the runner-up loses. |
@@ -95,3 +95,32 @@ ships only after ALL of these, in order:
 
 Never show the total question count, of the bank or of a domain, anywhere a learner can see it.
 
+## Plain stems (FB-013, 28 Nov 2026)
+
+**Why:** a beta tester said some questions read like "jumbled words". The
+35-word, two-sentence cap had pushed writers to pack each scenario into one
+sentence: possessive chains ("an IS auditor's sample of a Montenegrin
+probation service's decisions"), facts glued with semicolons, and dropped
+small words. Three expert reviews (ISACA item style, a first-time learner on a
+phone, learning science) agreed that the packing, not the length, makes a
+stem hard to read, above all for candidates who read English as a second
+language. The owner approved the new rule in the item table above.
+
+**How to write a stem now:**
+- One fact per short sentence, then the question in its own last sentence.
+  Keep the question sentence to about 15 words.
+- Put the place after the organization: "a probation service in Montenegro",
+  not "a Montenegrin probation service's".
+- Keep the small words ("the", "that", "is"). Join facts with "and", "but",
+  "after" or "because", so the reader sees how they relate. Do not add a
+  contrast word ("but", "though") that the original facts do not carry: it
+  can hint at the answer.
+- Name the thing instead of "it" or "its" when two things could be meant.
+- Aim for 35 words; go longer only when the plain version needs it.
+
+**Checks:** `scripts/lint_exam_style_v2.py` enforces the caps, the
+plain-stem rule for stems over 35 words and the per-domain median and share.
+`scripts/check_readability.py` (run by `verify_repo.sh`) counts the packed
+stems that are left in each bank and fails if a count goes up. The
+`question-readability-reviewer` agent rewrites packed stems. CIA files keep
+their own caps (`data/cia/tools/style_cia.py` passes `--legacy-stem`).

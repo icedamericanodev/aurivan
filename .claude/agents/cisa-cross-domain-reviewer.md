@@ -58,6 +58,6 @@ Every fix must keep the harness limits:
 - the key not uniquely the longest option;
 - wrong_explanations of 30 words or fewer;
 - correct_explanation of 40–75 words;
-- stems of 35 words or fewer and at most 2 sentences.
+- stems that aim for 35 words, at most 45 words and 4 short sentences (`docs/content/EXAM_STYLE_V2.md`, "Plain stems").
 
 Report in under 400 words: counts by type and severity, the worst five findings, and your verdict on whether the bank reads as one coherent teacher. Never surface the total question count in any learner-facing text you propose.

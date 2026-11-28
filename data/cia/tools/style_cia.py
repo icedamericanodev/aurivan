@@ -190,7 +190,7 @@ def lint_file(pack, d, path, args, require_lower):
     """Lint one file. Returns (failed, lines to print, n errors, n CIA warnings)."""
     items = [q for q in c.read_json(path)["questions"] if q.get("style_version") == 2]
     by_id = {q.get("id"): q for q in items}
-    out = subprocess.run([sys.executable, str(c.REPO / "scripts" / "lint_exam_style_v2.py"), "--file", str(path)],
+    out = subprocess.run([sys.executable, str(c.REPO / "scripts" / "lint_exam_style_v2.py"), "--file", str(path), "--legacy-stem"],
                          capture_output=True, text=True)
     lines = out.stdout.strip().splitlines()
     summary = lines[-1] if lines and "v2 question(s) checked" in lines[-1] else None

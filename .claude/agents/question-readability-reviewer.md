@@ -45,8 +45,8 @@ caused it.
    passages". Unpack one: "the model that sets supervision levels".
 3. **Glued facts.** Several facts joined with semicolons or commas in one
    sentence ("…by region; officers override 4%; complaints are rare.").
-   The harness allows two sentences in a stem: use them as one plain
-   scenario sentence plus the question. Join facts with "and", "but", "so",
+   Split them into short sentences: one fact per sentence, then the
+   question in its own last sentence. Join facts with "and", "but", "so",
    "after", "because" so the reader sees how they relate.
 4. **Headline style.** Missing small words: articles, "that", "which",
    "is", "are", helper verbs. "Its risk assessment tested it on last year's
@@ -81,8 +81,13 @@ caused it.
   actor, the priority word in CAPITALS, the key letter and what each option
   says. Never add a fact, a hint or a hedge. Never drop a fact because it
   seems minor: it may be the deciding one.
-- **Harness limits.** Stem at most 35 words and at most 2 sentences, ending
-  with `?`, counted by splitting on spaces. Options at most 12 words, and
+- **Harness limits.** Stem aims for 35 words, at most 45 words and 4
+  sentences, ending with `?`, counted by splitting on spaces. A stem over 35
+  words must have no semicolon, no two possessives in one noun phrase and no
+  sentence over 20 words. Per domain, the median stays at 35 or fewer and at
+  most 25% of stems go over 35, so prefer the shortest plain version. CIA
+  items keep their own caps (35 words and 2 sentences, plus the CIA scenario
+  variant in `data/cia/tools/style_cia.py`). Options at most 12 words, and
   parallel. `correct_explanation` 40–75 words, each `wrong_explanations`
   entry at most 30, `key_concept` and `pre_read` at most 25. Give the word
   count of every rewrite.
@@ -95,10 +100,10 @@ caused it.
 - **Plain, not padded.** Shorter words and clear order, not more words. Use
   US spelling and the course's role names (IS auditor, management, the board,
   the model owner).
-- **When 35 words is not enough.** If a stem cannot read plainly within 35
-  words and 2 sentences without losing a deciding fact, do not squeeze it.
-  Give your plainest version with its word count, and mark the finding
-  `needs_more_words: true`. The owner decides whether to change the limit.
+- **When 45 words is not enough.** If a stem cannot read plainly within the
+  caps without losing a deciding fact, do not squeeze it. Give your plainest
+  version with its word count, and mark the finding `needs_more_words: true`
+  so a domain expert can trim the scenario.
 
 ## Tiers
 

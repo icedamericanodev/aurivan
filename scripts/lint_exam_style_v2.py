@@ -45,7 +45,15 @@ GAP_STOP = STOP | set("each every their they them than then into only been has h
 DISMISSIVE = re.compile(r"\b(ignor\w*|abandon\w*|discard\w*|throws? away|hides?|fakes?|overreact\w*|strawman|nonsense|"
                         r"stalls?|blame|altogether|at all)\b", re.I)
 
-MAX_STEM = 35
+MAX_STEM = 35          # target stem length (and the hard cap for CIA files, which add their own scenario variant)
+HARD_STEM = 45         # hard cap for ISACA courses since FB-013 (28 Nov 2026); a stem over 35 words must be plain
+MAX_SENTENCES = 4      # scenario sentences plus the question (CIA files: 2, widened by data/cia/tools/style_cia.py)
+MAX_SENTENCE_WORDS = 20
+MEDIAN_STEM = 35       # per-domain median stem length, so stems do not drift back to paragraphs
+MAX_LONG_SHARE = 0.25  # share of a domain's stems over MAX_STEM words
+LEGACY = False         # CIA files (--legacy-stem, passed by data/cia/tools/style_cia.py): old caps, 35 words and 2 sentences
+# Two possessives in one noun phrase ("a Slovak charity's vendor's model"): hard to read (FB-013).
+STACKED_POSSESSIVE = re.compile(r"\b[\w-]+'s\s+(?:[\w-]+\s+){0,3}?[\w-]+'s\b")
 MAX_OPTION = 12
 CE_MIN, CE_MAX = 40, 75
 MAX_WRONG = 30
@@ -57,13 +65,20 @@ def words(s):
     return len((s or "").split())
 
 
+def stem_sentences(stem):
+    return re.findall(r"[^.?!]+(?:[.?!](?=\s|$))", re.sub(r"(\d)\.(\d)|\b(e\.g|i\.e|vs|Inc|U\.S)\.", r"\1\2", stem or ""))
+
+
 def content_words(s):
     return {w for w in re.findall(r"[a-z]+", (s or "").lower()) if w not in STOP and len(w) > 3}
 
 
 def load(args):
+    global LEGACY
     if "--file" in args:
-        data = json.loads(Path(args[args.index("--file") + 1]).read_text())
+        path = Path(args[args.index("--file") + 1])
+        LEGACY = "--legacy-stem" in args or "data/cia/" in path.resolve().as_posix()
+        data = json.loads(path.read_text())
     else:
         n = int(next(a for a in args if a.isdigit()))
         data = json.loads((ROOT / "data" / "originals" / f"d{n}.json").read_text())
@@ -81,16 +96,27 @@ def check(q):
     # 1. Short stem with a capitalised priority word, ending in a question mark
     if q.get("scenario_context"):
         errs.append("scenario_context must be removed (fold the one fact that matters into the stem)")
-    if words(stem) > MAX_STEM:
-        errs.append(f"stem {words(stem)}w > {MAX_STEM}")
+    cap = MAX_STEM if LEGACY else HARD_STEM
+    if words(stem) > cap:
+        errs.append(f"stem {words(stem)}w > {cap}")
     if not any(re.search(rf"\b{p}\b", stem) for p in PRIORITY_WORDS):
         errs.append("stem has no capitalised priority word (BEST/MOST/FIRST/…)")
     if not stem.rstrip().endswith("?"):
         errs.append("stem must end with '?'")
-    # Real items are one or two sentences. Ignore dots inside numbers and abbreviations.
-    sentences = re.findall(r"[^.?!]+(?:[.?!](?=\s|$))", re.sub(r"(\d)\.(\d)|\b(e\.g|i\.e|vs|Inc|U\.S)\.", r"\1\2", stem))
-    if len(sentences) > 2:
-        errs.append(f"stem has {len(sentences)} sentences (max 2)")
+    # Short plain sentences: scenario sentences plus the question. Ignore dots inside numbers and abbreviations.
+    sentences = stem_sentences(stem)
+    max_sent = 2 if LEGACY else MAX_SENTENCES
+    if len(sentences) > max_sent:
+        errs.append(f"stem has {len(sentences)} sentences (max {max_sent})")
+    # A stem may run past the 35-word target only if it reads plainly (FB-013).
+    if not LEGACY and words(stem) > MAX_STEM:
+        if ";" in stem:
+            errs.append(f"stem over {MAX_STEM} words uses a semicolon (split it into short sentences)")
+        if STACKED_POSSESSIVE.search(stem):
+            errs.append(f"stem over {MAX_STEM} words stacks possessives ('{STACKED_POSSESSIVE.search(stem).group(0)}')")
+        longest = max((words(x) for x in sentences), default=0)
+        if longest > MAX_SENTENCE_WORDS:
+            errs.append(f"stem over {MAX_STEM} words has a {longest}-word sentence (max {MAX_SENTENCE_WORDS})")
     # 2. Named actor (rule: the stem says who acts)
     if not any(a in stem.lower() for a in ACTOR_WORDS):
         warns.append("stem names no actor (IS auditor, audit firm, management…)")
@@ -236,6 +262,17 @@ def main(args):
             print(f"warn  picking the wordiest option (ties shared) wins only {wrate:.0%} of items (min 10%): "
                   "'never pick the wordiest' is a reverse tell; lengthen some keys with precise qualifiers")
             n_warn += 1
+        # Stems may reach 45 words, but a domain stays short overall (FB-013).
+        if not LEGACY and len(v2) >= 40:
+            lens = sorted(words(q.get("question", "")) for q in v2)
+            median = lens[len(lens) // 2]
+            long_share = sum(1 for n in lens if n > MAX_STEM) / len(lens)
+            if median > MEDIAN_STEM:
+                print(f"ERROR median stem is {median} words (max {MEDIAN_STEM})")
+                n_err += 1
+            if long_share > MAX_LONG_SHARE:
+                print(f"ERROR {long_share:.0%} of stems are over {MAX_STEM} words (max {MAX_LONG_SHARE:.0%})")
+                n_err += 1
         spread = ", ".join(f"{k}{keys[k]}" for k in "ABCD")
         top = max(keys.values()) / len(v2)
         if len(v2) >= 12 and top > 0.35:
