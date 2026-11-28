@@ -4306,7 +4306,7 @@ function breachRangeResult(answer, suffix) {
   defs["src/engine/passwordRules.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MAX_NAME_PIECES = exports.PASSWORD_CHECKLIST_ITEMS = exports.PASSWORD_OTHER_GUIDANCE = exports.PASSWORD_GUIDANCE = exports.MONTH_WORDS = exports.STUDY_WORDS = exports.SERVICE_WORDS = exports.MIN_MATERIAL_LONG = exports.MIN_MATERIAL = exports.MAX_WORD_PIECES = exports.MAX_LIST_WORDS = exports.MAX_LEFT_OVER = exports.PASSWORD_MAX_BYTES = exports.PASSWORD_STRONG_CHARS = exports.PASSWORD_CHAR_TYPES = exports.PASSWORD_SYMBOLS = exports.PASSWORD_MIN_CHARS = void 0;
+exports.MAX_NAME_PIECES = exports.PASSWORD_CHECKLIST_ITEMS = exports.PASSWORD_OTHER_GUIDANCE = exports.PASSWORD_GUIDANCE = exports.MONTH_WORDS = exports.BOOK_WORDS = exports.STUDY_WORDS = exports.SERVICE_WORDS = exports.MIN_MATERIAL_LONG = exports.MIN_MATERIAL = exports.MAX_WORD_PIECES = exports.MAX_LIST_WORDS = exports.MAX_LEFT_OVER = exports.PASSWORD_MAX_BYTES = exports.PASSWORD_LONG_CHARS = exports.PASSWORD_CHAR_TYPES = exports.PASSWORD_SYMBOLS = exports.PASSWORD_MIN_CHARS = void 0;
 exports.passwordGuidance = passwordGuidance;
 exports.decodeList = decodeList;
 exports.passwordCheckStepsForTest = passwordCheckStepsForTest;
@@ -4332,7 +4332,7 @@ const sha256_1 = require("./sha256");
 exports.PASSWORD_MIN_CHARS = 12;
 exports.PASSWORD_SYMBOLS = "!@#$%^&*()_+-=[]{};'\\:\"|<>?,./`~";
 exports.PASSWORD_CHAR_TYPES = ['lower', 'upper', 'digit', 'symbol'];
-exports.PASSWORD_STRONG_CHARS = 15;
+exports.PASSWORD_LONG_CHARS = 15;
 exports.PASSWORD_MAX_BYTES = 72;
 exports.MAX_LEFT_OVER = 2;
 exports.MAX_LIST_WORDS = 2;
@@ -4344,6 +4344,14 @@ exports.STUDY_WORDS = [
     'exam', 'study', 'pass', 'passer', 'prep', 'cert', 'certified', 'audit', 'auditor', 'auditing', 'information', 'systems', 'system', 'security', 'control', 'controls',
     'internal', 'risk', 'governance', 'review', 'reviewer', 'board', 'license', 'accountant', 'accounting', 'app', 'ipasa', 'papasa', 'pasado', 'pumasa',
 ];
+exports.BOOK_WORDS = [
+    'genesis', 'gen', 'exodus', 'exod', 'leviticus', 'lev', 'numbers', 'deuteronomy', 'deut', 'joshua', 'josh', 'judges', 'ruth', 'samuel', 'sam', 'kings',
+    'chronicles', 'chron', 'ezra', 'nehemiah', 'neh', 'esther', 'job', 'psalm', 'psalms', 'psa', 'proverbs', 'prov', 'ecclesiastes', 'eccl', 'isaiah', 'isa',
+    'jeremiah', 'jer', 'lamentations', 'lam', 'ezekiel', 'ezek', 'daniel', 'dan', 'hosea', 'joel', 'amos', 'obadiah', 'jonah', 'micah', 'nahum', 'habakkuk',
+    'zephaniah', 'haggai', 'zechariah', 'zech', 'malachi', 'mal', 'matthew', 'matt', 'mark', 'luke', 'john', 'acts', 'romans', 'rom', 'corinthians', 'cor',
+    'galatians', 'gal', 'ephesians', 'eph', 'philippians', 'phil', 'colossians', 'col', 'thessalonians', 'thess', 'timothy', 'tim', 'titus', 'philemon',
+    'hebrews', 'heb', 'james', 'peter', 'pet', 'jude', 'revelation', 'revelations', 'rev',
+];
 exports.MONTH_WORDS = [
     'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december',
     'jan', 'feb', 'mar', 'apr', 'jun', 'jul', 'aug', 'sep', 'sept', 'oct', 'nov', 'dec',
@@ -4353,7 +4361,8 @@ exports.PASSWORD_GUIDANCE = {
     invalid_characters: { key: 'password.guide.invalid_characters', text: 'Your password has a hidden character, often from copy and paste. Please type it by hand. Accents and emoji are fine.' },
     too_short: { key: 'password.guide.too_short', text: 'Use at least 12 characters. A few ordinary words with a number and a symbol are easy to remember.' },
     too_long: { key: 'password.guide.too_long', text: 'Use up to 72 letters, fewer with accents or emoji.' },
-    missing_characters: { key: 'password.guide.missing_characters', text: 'Use at least one lowercase letter, one uppercase letter, one number and one symbol.' },
+    missing_characters: { key: 'password.guide.missing_characters', text: 'Use at least one lowercase letter (a to z), one uppercase letter (A to Z), one number (0 to 9) and one symbol such as ! ? # @.' },
+    two_common_words: { key: 'password.guide.two_common_words', text: 'Two common words are easy to guess, even with a number and a symbol. Add another word that doesn’t go with them.' },
     contains_email: { key: 'password.guide.contains_email', text: 'Don’t build your password from your email address or your name. Add words only you would pick.' },
     contains_service_word: { key: 'password.guide.contains_service_word', text: 'Don’t build your password from the app’s or the exam’s name. Add words only you would pick.' },
     common: { key: 'password.guide.common', text: 'That password is used by many people or is easy to guess, even with capitals, numbers and symbols added. Try a few words that don’t usually go together.' },
@@ -4529,7 +4538,12 @@ function passwordBytes(password) {
     }
     return n;
 }
-const TYPE_WORDS = { lower: 'a lowercase letter', upper: 'an uppercase letter', digit: 'a number', symbol: 'a symbol' };
+const TYPE_WORDS = {
+    lower: 'a lowercase letter (a to z)',
+    upper: 'an uppercase letter (A to Z)',
+    digit: 'a number (0 to 9)',
+    symbol: 'a symbol such as ! ? # @',
+};
 function passwordTypes(password) {
     var _a;
     const p = (_a = normalizePassword(password)) !== null && _a !== void 0 ? _a : '';
@@ -4554,10 +4568,10 @@ function passwordMissingText(password) {
 }
 exports.PASSWORD_CHECKLIST_ITEMS = [
     { id: 'length', key: 'password.check.length', label: `${exports.PASSWORD_MIN_CHARS} or more characters` },
-    { id: 'lower', key: 'password.check.lower', label: 'A lowercase letter' },
-    { id: 'upper', key: 'password.check.upper', label: 'An uppercase letter' },
-    { id: 'digit', key: 'password.check.digit', label: 'A number' },
-    { id: 'symbol', key: 'password.check.symbol', label: 'A symbol' },
+    { id: 'lower', key: 'password.check.lower', label: 'A lowercase letter (a to z)' },
+    { id: 'upper', key: 'password.check.upper', label: 'An uppercase letter (A to Z)' },
+    { id: 'digit', key: 'password.check.digit', label: 'A number (0 to 9)' },
+    { id: 'symbol', key: 'password.check.symbol', label: 'A symbol such as ! ? # @' },
 ];
 function passwordChecklist(password, context) {
     const { problems, complete } = assessPassword(password, context);
@@ -4566,7 +4580,7 @@ function passwordChecklist(password, context) {
     const nfc = form(raw, 'NFC');
     const chars = Math.min(passwordLength(password), nfc === null ? 0 : Array.from(nfc).length);
     const items = exports.PASSWORD_CHECKLIST_ITEMS.map((it) => ({ ...it, met: it.id === 'length' ? chars >= exports.PASSWORD_MIN_CHARS : t[it.id] }));
-    const state = problems.length ? 'refused' : chars >= exports.PASSWORD_STRONG_CHARS ? 'strong' : 'ok';
+    const state = problems.length ? 'refused' : chars >= exports.PASSWORD_LONG_CHARS ? 'long' : 'ok';
     return { items, state, problems, complete };
 }
 function comparedForm(s) {
@@ -4584,13 +4598,16 @@ function comparedWords(s) {
 }
 const LEET_I = { '0': 'o', '1': 'i', '2': 'z', '3': 'e', '4': 'a', '5': 's', '7': 't', '8': 'b', '9': 'g', '@': 'a', $: 's', '!': 'i', '+': 't' };
 const LEET_L = { ...LEET_I, '1': 'l', '!': 'l' };
+const LEET_IL = { ...LEET_I, '1': 'l' };
+const LEET_LI = { ...LEET_I, '!': 'l' };
+const LEETS = [LEET_I, LEET_L, LEET_IL, LEET_LI];
 const fold = (s, map) => Array.from(s, (c) => { var _a; return (_a = map[c]) !== null && _a !== void 0 ? _a : c; }).join('');
 function isCommonPassword(password) {
     const p = normalizePassword(password);
     if (p === null)
         return false;
     const c = comparedForm(p);
-    return [c, fold(c, LEET_I), fold(c, LEET_L)].some((x) => long().has(x));
+    return [c, ...LEETS.map((m) => fold(c, m))].some((x) => long().has(x));
 }
 function kindOf(ch) {
     if (ch === undefined)
@@ -4915,6 +4932,17 @@ function lattice(forms, personal, service, bounds) {
     const names = endsOf(nameMark);
     const monthsAll = tokenEnds([plain], exports.MONTH_WORDS.map((m) => Array.from(m)));
     const months = monthsAll.map((ends, i) => ends.filter((j) => isDigit(plain[i - 1]) || isDigit(plain[j])));
+    const verseAt = (j) => {
+        let k = j;
+        while (k < n && isDigit(plain[k]))
+            k++;
+        return k > j && plain[k] === ':';
+    };
+    tokenEnds([plain], exports.BOOK_WORDS.map((m) => Array.from(m))).forEach((ends, i) => {
+        for (const j of ends)
+            if (verseAt(j) && !months[i].includes(j))
+                months[i].push(j);
+    });
     const service3 = tokenEnds(fs, service).map((ends, i) => ends.filter((j) => j - i > 3 || (kindOf(plain[i - 1]) !== 'l' && kindOf(plain[j]) !== 'l')));
     return { n, plain, runs, numbers: numberEnds(plain), months, words, personal: tokenEnds(fs, personal), service: service3, names };
 }
@@ -4997,7 +5025,7 @@ function namesLeftOver(l) {
     }
     return Math.min(...cost.map((row) => row[n]));
 }
-function material(l, from, to) {
+function material(l, from, to, long) {
     const { n, plain } = l;
     const cost = new Array(n + 1).fill(Infinity);
     cost[0] = 0;
@@ -5013,7 +5041,8 @@ function material(l, from, to) {
         const c = cost[i];
         if (c === Infinity)
             continue;
-        const step = isSymbol(plain[i]) ? (plain[i - 1] === plain[i] || i === firstLead || i === firstTrail ? 0 : 1) : 1;
+        const swapInWord = long && SWAP_SYMBOLS.includes(plain[i]) && kindOf(plain[i - 1]) === 'l' && kindOf(plain[i + 1]) === 'l';
+        const step = isSymbol(plain[i]) ? (plain[i - 1] === plain[i] || i === firstLead || i === firstTrail || swapInWord ? 0 : 1) : 1;
         if (c + step < cost[i + 1])
             cost[i + 1] = c + step;
         for (const j of l.runs[i])
@@ -5026,11 +5055,31 @@ function material(l, from, to) {
     return cost[n];
 }
 const reverseStr = (s) => Array.from(s).reverse().join('');
+const SWAP_SYMBOLS = '@$!+';
+const SHIFT_DIGIT = { '!': '1', '@': '2', '#': '3', $: '4', '%': '5', '^': '6', '&': '7', '*': '8', '(': '9', ')': '0' };
+function runsLeft(seq) {
+    const m = seq.length;
+    if (!m)
+        return 0;
+    const mark = marks(m);
+    runEnds(formTables(seq), new Set([0, m]), mark);
+    const ends = endsOf(mark);
+    const cost = new Array(m + 1).fill(Infinity);
+    cost[0] = 0;
+    for (let i = 0; i < m; i++) {
+        if (cost[i] + 1 < cost[i + 1])
+            cost[i + 1] = cost[i] + 1;
+        for (const j of ends[i])
+            if (cost[i] < cost[j])
+                cost[j] = cost[i];
+    }
+    return cost[m];
+}
 function predictable(p, ctx) {
     var _a;
     const pieces = comparedWords(p);
     const c = pieces.join('');
-    const readings = [c, fold(c, LEET_I), fold(c, LEET_L)];
+    const readings = [...new Set([c, ...LEETS.map((m) => fold(c, m))])];
     const n = Array.from(c).length;
     const bounds = new Set([0, n]);
     let at = 0;
@@ -5057,9 +5106,24 @@ function predictable(p, ctx) {
             return 'contains_email';
         if (worst({ personal: false, service: false, listWords: exports.MAX_LIST_WORDS, numbers: true }) > exports.MAX_LEFT_OVER)
             return 'contains_service_word';
+        if (!exact && worst({ personal: false, service: false, listWords: 1, numbers: true }) > exports.MAX_LEFT_OVER && !(nameSet && Math.min(...lats.map(namesLeftOver)) <= exports.MAX_LEFT_OVER))
+            return 'two_common_words';
         if (exact || worst({ personal: false, service: false, listWords: 0, numbers: true }) > exports.MAX_LEFT_OVER)
             return 'common';
         return 'too_simple';
+    }
+    const ONE_LEFT = exports.MAX_LEFT_OVER + 1;
+    if (all <= ONE_LEFT && worst({ personal: true, service: true, listWords: 1, numbers: true }) <= ONE_LEFT) {
+        if (worst({ personal: false, service: true, listWords: 1, numbers: true }) > ONE_LEFT)
+            return 'contains_email';
+        if (worst({ personal: false, service: false, listWords: 1, numbers: true }) > ONE_LEFT) {
+            if (readings.some((r) => exports.SERVICE_WORDS.some((w) => w.length >= 5 && (r.includes(w) || reverseStr(r).includes(w)))))
+                return 'contains_service_word';
+        }
+        else if (worst({ personal: false, service: false, listWords: 0, numbers: true }) > ONE_LEFT)
+            return 'common';
+        else if (Array.from(c).filter((ch) => ch >= 'a' && ch <= 'z').length >= 4)
+            return 'too_simple';
     }
     if (lats.some((l) => l.personal.some((e) => e.length))) {
         const withAccount = worst({ personal: true, service: true, listWords: 0, numbers: true });
@@ -5102,6 +5166,8 @@ function predictable(p, ctx) {
             if (l.runs[i].includes(j))
                 return 'too_simple';
         }
+        if (unit < core.length && unit >= 3 && unit <= 14 && core.every((ch) => ch >= 'a' && ch <= 'z') && worst({ personal: false, service: false, listWords: 0, numbers: true }) <= core.length + exports.MAX_LEFT_OVER)
+            return 'too_simple';
     }
     const lettered = pieces.filter((x) => /[a-z]/.test(x));
     const one = lettered.length === 1 ? /^[^a-z]*([a-z]+)[^a-z]*$/.exec(lettered[0]) : null;
@@ -5120,8 +5186,19 @@ function predictable(p, ctx) {
         if (period <= 14 && plainCase && worst({ personal: false, service: false, listWords: 0, numbers: true }) <= period + exports.MAX_LEFT_OVER)
             return 'too_simple';
     }
+    const letterSeq = chars.filter((ch) => kindOf(ch) === 'l');
+    const digitSeq = chars.filter(isDigit);
+    const symbolSeq = chars.filter(isSymbol).map((ch) => { var _a; return (_a = SHIFT_DIGIT[ch]) !== null && _a !== void 0 ? _a : ch; });
+    let switches = 0;
+    for (let i = 1; i < n; i++)
+        if (kindOf(chars[i]) !== kindOf(chars[i - 1]))
+            switches++;
+    const lettersLeft = () => Math.min(runsLeft(letterSeq), runsLeft(letterSeq.filter((_, k) => k % 2 === 0)) + runsLeft(letterSeq.filter((_, k) => k % 2 === 1)));
+    if (letterSeq.length >= 3 && digitSeq.length >= 2 && switches >= 5 && runsLeft(digitSeq) + runsLeft(symbolSeq) <= exports.MAX_LEFT_OVER && runsLeft(digitSeq) + runsLeft(symbolSeq) + lettersLeft() <= exports.MAX_LEFT_OVER)
+        return 'too_simple';
     const floor = Math.min(exports.MIN_MATERIAL_LONG, Math.max(exports.MIN_MATERIAL, Array.from(p).length - (exports.PASSWORD_MIN_CHARS - exports.MIN_MATERIAL)));
-    if (Math.min(material(lats[0], from, to), material(lats[1], n - to, n - from)) < floor || new Set(Array.from(c)).size < 5)
+    const long15 = Array.from(p).length >= exports.PASSWORD_LONG_CHARS;
+    if (Math.min(material(lats[0], from, to, long15), material(lats[1], n - to, n - from, long15)) < floor || new Set(Array.from(c)).size < 5)
         return 'too_simple';
     return null;
 }
@@ -12359,7 +12436,7 @@ function decodeUtf8(bytes) {
   api["config"] = pub(load("src/webcloud/config.ts"));
   api["passwordRules"] = pub(load("src/engine/passwordRules.ts"));
   api["breach"] = pub(load("src/webcloud/breach.ts"));
-  api.sourceHash = "0fd51ff01e76b665";
+  api.sourceHash = "9c6561d5e22ced9e";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

@@ -14,7 +14,9 @@
  *   sign-in server checks with "lowercase, uppercase letters, digits and
  *   symbols" (Supabase Auth: each set must appear at least once, plain
  *   ASCII only), so the app never accepts a password the server would refuse
- *   and never refuses one it would take for these reasons. So "ñ" is not the
+ *   for these reasons. It is stricter than the server in two places, on
+ *   purpose: hidden characters, and a password that NFKC makes longer than
+ *   what was typed (both forms must reach 12). So "ñ" is not the
  *   lowercase letter and a space is not the symbol; they are still allowed
  *   as extra characters. Spaces, accents, other alphabets and emoji are fine
  *   beside the four types, and so are pasting and password managers.
@@ -45,11 +47,18 @@
  *   letter-for-number swaps read both ways, position by position; and read
  *   backwards too). Then:
  *   A. Structural rules, which work on passwords nobody listed:
- *      - fewer than 8 real characters left after repeats, sequences,
- *        keyboard runs, copies, mirrors and years (symbols inside the
- *        password count, the ones around it do not);
+ *      - fewer than 8 to 10 real characters (by length) left after repeats,
+ *        sequences, keyboard runs, copies, mirrors and years (symbols inside
+ *        the password count, the first one around it does not, and at 15+
+ *        a swap symbol inside a word does not);
  *      - the core (without the numbers and symbols around it) is one list
- *        entry, one name, one run, or the account's or the app's own word;
+ *        entry, one name, one run, or the account's or the app's own word,
+ *        or any word typed twice;
+ *      - one list entry, app word or account word with 3 or fewer other
+ *        characters besides numbers and symbols;
+ *      - letters, digits and symbols that are each a run on their own (the
+ *        mechanical four-type patterns);
+ *      - verse references (a book, a chapter and ":") are read like dates;
  *      - one ordinary word typed as one (up to 14 letters) with only
  *        numbers, symbols or runs besides;
  *      - mostly the account's own words (the email, its domain, the name);
@@ -64,17 +73,24 @@
  *      app's own hints, exam and work vocabulary, and Filipino, other Asian
  *      and name lists.
  *   What it cannot do: a phrase, name or slogan that is on no list passes
- *   (a famous line, a celebrity, a school). Measured on a tester's
- *   held-out set of predictable passwords the rules were never tuned on,
- *   11.5% still passed (down from 30.6%; 4.4% on the half used for tuning,
- *   from 33.9%): see docs/WEB_LAUNCH_PLAN.md, "What the password rules
- *   cannot do". The leaked-password check (webcloud/breach.ts, ON since
+ *   (a famous line, a celebrity, a school), and so do two uncommon words,
+ *   an unlisted word with letter-for-number swaps, dates written with
+ *   separators and a short label, and text-speak. Measured: an independent
+ *   reviewer's attack on the 12-character, four-types rule (round 5) still
+ *   passes 5.7% of its held-out half (9.8% before round 5; 7.0% of the
+ *   tuning half); round 4, new words in one known shape, 0%; round 3 (15+
+ *   characters), 45 of 434 held out. See docs/WEB_LAUNCH_PLAN.md, "What the
+ *   password rules cannot do". The leaked-password check (webcloud/breach.ts, ON since
  *   28 Nov 2026) catches such passwords when they have leaked anywhere;
  *   an uncommon phrase that never leaked still passes, and so does any
  *   password while the check can't reach the service (it fails open).
  *   Four or more different ordinary words pass by design (a passphrase), and
- *   so do three in nearly all cases (fewer than 1 random triple in 200 is
- *   refused, when a word is itself a pattern or two make a list entry).
+ *   so do three in nearly all cases: with spaces, under 1 random triple in
+ *   100 is refused (a word is itself a pattern, two make a list entry, a
+ *   month before the number reads as a date); typed as one word, under 4 in
+ *   100 (14 letters or fewer run together look like one word). Two common
+ *   words with a number and a symbol are refused at every length
+ *   (two_common_words: a third unrelated word fixes it).
  *   Passphrases in Tagalog, Thai, Hindi or with accents pass too.
  * - The check runs only in our apps: someone calling the server directly for
  *   their own account could skip it (a documented deviation until the Pro
@@ -109,8 +125,11 @@ export const PASSWORD_SYMBOLS = "!@#$%^&*()_+-=[]{};'\\:\"|<>?,./`~";
 /** The four types the server requires, in the order the checklist shows them. */
 export const PASSWORD_CHAR_TYPES = ['lower', 'upper', 'digit', 'symbol'] as const;
 export type PasswordCharType = (typeof PASSWORD_CHAR_TYPES)[number];
-/** Length at or above which an accepted password is called "strong" on the checklist (NIST's single-factor minimum). */
-export const PASSWORD_STRONG_CHARS = 15;
+/**
+ * Length at or above which an accepted password gets the checklist state
+ * 'long' (NIST's single-factor minimum). It says nothing else about strength.
+ */
+export const PASSWORD_LONG_CHARS = 15;
 /** The sign-in server's limit (bcrypt): at most 72 bytes of UTF-8. */
 export const PASSWORD_MAX_BYTES = 72;
 /** At most this many characters may be left over after the predictable pieces. */
@@ -138,10 +157,12 @@ export const MIN_MATERIAL_LONG = 10;
  *   symbol); passwordTypes says which, passwordMissingText says it in words;
  * - contains_email: mostly the email address or the learner's name;
  * - contains_service_word: mostly "kaisip", the exam names or study words;
+ * - two_common_words: two common words (with numbers and symbols): a
+ *   third unrelated word fixes it;
  * - common: a common password, phrase or words with small changes;
  * - too_simple: repeats, sequences, keyboard patterns, dates or too few real characters.
  */
-export type PasswordProblem = 'invalid_characters' | 'too_short' | 'too_long' | 'missing_characters' | 'contains_email' | 'contains_service_word' | 'common' | 'too_simple';
+export type PasswordProblem = 'invalid_characters' | 'too_short' | 'too_long' | 'missing_characters' | 'contains_email' | 'contains_service_word' | 'two_common_words' | 'common' | 'too_simple';
 
 /** What the app knows about the learner (NIST: "context-specific words"). */
 export interface PasswordContext {
@@ -158,6 +179,19 @@ export const STUDY_WORDS: readonly string[] = [
   'internal', 'risk', 'governance', 'review', 'reviewer', 'board', 'license', 'accountant', 'accounting', 'app', 'ipasa', 'papasa', 'pasado', 'pumasa',
 ];
 /** Month names and short forms (English and Tagalog): a piece only next to a number ("jan011990", "November2026"). */
+/**
+ * Bible books and their usual short forms (3+ letters): a piece only next to
+ * a number, like the months, so a verse reference ("book 3:16") is not new
+ * material. "job", "mark", "acts" alone are ordinary words.
+ */
+export const BOOK_WORDS: readonly string[] = [
+  'genesis', 'gen', 'exodus', 'exod', 'leviticus', 'lev', 'numbers', 'deuteronomy', 'deut', 'joshua', 'josh', 'judges', 'ruth', 'samuel', 'sam', 'kings',
+  'chronicles', 'chron', 'ezra', 'nehemiah', 'neh', 'esther', 'job', 'psalm', 'psalms', 'psa', 'proverbs', 'prov', 'ecclesiastes', 'eccl', 'isaiah', 'isa',
+  'jeremiah', 'jer', 'lamentations', 'lam', 'ezekiel', 'ezek', 'daniel', 'dan', 'hosea', 'joel', 'amos', 'obadiah', 'jonah', 'micah', 'nahum', 'habakkuk',
+  'zephaniah', 'haggai', 'zechariah', 'zech', 'malachi', 'mal', 'matthew', 'matt', 'mark', 'luke', 'john', 'acts', 'romans', 'rom', 'corinthians', 'cor',
+  'galatians', 'gal', 'ephesians', 'eph', 'philippians', 'phil', 'colossians', 'col', 'thessalonians', 'thess', 'timothy', 'tim', 'titus', 'philemon',
+  'hebrews', 'heb', 'james', 'peter', 'pet', 'jude', 'revelation', 'revelations', 'rev',
+];
 export const MONTH_WORDS: readonly string[] = [
   'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december',
   'jan', 'feb', 'mar', 'apr', 'jun', 'jul', 'aug', 'sep', 'sept', 'oct', 'nov', 'dec',
@@ -172,7 +206,8 @@ export const PASSWORD_GUIDANCE: Readonly<Record<PasswordProblem, { key: string; 
   invalid_characters: { key: 'password.guide.invalid_characters', text: 'Your password has a hidden character, often from copy and paste. Please type it by hand. Accents and emoji are fine.' },
   too_short: { key: 'password.guide.too_short', text: 'Use at least 12 characters. A few ordinary words with a number and a symbol are easy to remember.' },
   too_long: { key: 'password.guide.too_long', text: 'Use up to 72 letters, fewer with accents or emoji.' },
-  missing_characters: { key: 'password.guide.missing_characters', text: 'Use at least one lowercase letter, one uppercase letter, one number and one symbol.' },
+  missing_characters: { key: 'password.guide.missing_characters', text: 'Use at least one lowercase letter (a to z), one uppercase letter (A to Z), one number (0 to 9) and one symbol such as ! ? # @.' },
+  two_common_words: { key: 'password.guide.two_common_words', text: 'Two common words are easy to guess, even with a number and a symbol. Add another word that doesn’t go with them.' },
   contains_email: { key: 'password.guide.contains_email', text: 'Don’t build your password from your email address or your name. Add words only you would pick.' },
   contains_service_word: { key: 'password.guide.contains_service_word', text: 'Don’t build your password from the app’s or the exam’s name. Add words only you would pick.' },
   common: { key: 'password.guide.common', text: 'That password is used by many people or is easy to guess, even with capitals, numbers and symbols added. Try a few words that don’t usually go together.' },
@@ -405,7 +440,14 @@ export function passwordBytes(password: unknown): number {
 // ── The four types (what the server checks) ────────────────────────────
 
 /** In words, for the guidance and the checklist. */
-const TYPE_WORDS: Readonly<Record<PasswordCharType, string>> = { lower: 'a lowercase letter', upper: 'an uppercase letter', digit: 'a number', symbol: 'a symbol' };
+// Which characters count, in words: the server takes only plain a to z, A to Z, 0 to 9 and ASCII
+// punctuation, so "É", "ñ", "₱" or a space do not tick an item.
+const TYPE_WORDS: Readonly<Record<PasswordCharType, string>> = {
+  lower: 'a lowercase letter (a to z)',
+  upper: 'an uppercase letter (A to Z)',
+  digit: 'a number (0 to 9)',
+  symbol: 'a symbol such as ! ? # @',
+};
 
 /**
  * Which of the four types the password has, read on the form that is sent
@@ -440,31 +482,32 @@ export function passwordMissingText(password: unknown): string | null {
 /** The checklist items, in order: id, the copy key and the default English. */
 export const PASSWORD_CHECKLIST_ITEMS: readonly { id: 'length' | PasswordCharType; key: string; label: string }[] = [
   { id: 'length', key: 'password.check.length', label: `${PASSWORD_MIN_CHARS} or more characters` },
-  { id: 'lower', key: 'password.check.lower', label: 'A lowercase letter' },
-  { id: 'upper', key: 'password.check.upper', label: 'An uppercase letter' },
-  { id: 'digit', key: 'password.check.digit', label: 'A number' },
-  { id: 'symbol', key: 'password.check.symbol', label: 'A symbol' },
+  { id: 'lower', key: 'password.check.lower', label: 'A lowercase letter (a to z)' },
+  { id: 'upper', key: 'password.check.upper', label: 'An uppercase letter (A to Z)' },
+  { id: 'digit', key: 'password.check.digit', label: 'A number (0 to 9)' },
+  { id: 'symbol', key: 'password.check.symbol', label: 'A symbol such as ! ? # @' },
 ];
 
 /**
  * What a password form draws as the learner types: the five checklist items,
  * each met or not, and the overall state: 'refused' (any reason, see
- * `problems`), 'ok' (accepted), or 'strong' (accepted and at least
- * PASSWORD_STRONG_CHARS long). `complete` false: the word lists are not
+ * `problems`), 'ok' (accepted), or 'long' (accepted and at least
+ * PASSWORD_LONG_CHARS characters: a length label only, not a strength
+ * rating; a predictable password the rules miss can be 'long' too). `complete` false: the word lists are not
  * loaded yet, so the screen should say "checking" rather than "ok".
  * Only for choosing a password: sign-in never applies these rules.
  */
 export function passwordChecklist(
   password: unknown,
   context?: string | PasswordContext | null,
-): { items: { id: 'length' | PasswordCharType; key: string; label: string; met: boolean }[]; state: 'refused' | 'ok' | 'strong'; problems: PasswordProblem[]; complete: boolean } {
+): { items: { id: 'length' | PasswordCharType; key: string; label: string; met: boolean }[]; state: 'refused' | 'ok' | 'long'; problems: PasswordProblem[]; complete: boolean } {
   const { problems, complete } = assessPassword(password, context);
   const t = passwordTypes(password);
   const raw = typeof password === 'string' ? password : '';
   const nfc = form(raw, 'NFC');
   const chars = Math.min(passwordLength(password), nfc === null ? 0 : Array.from(nfc).length);
   const items = PASSWORD_CHECKLIST_ITEMS.map((it) => ({ ...it, met: it.id === 'length' ? chars >= PASSWORD_MIN_CHARS : t[it.id] }));
-  const state = problems.length ? 'refused' : chars >= PASSWORD_STRONG_CHARS ? 'strong' : 'ok';
+  const state = problems.length ? 'refused' : chars >= PASSWORD_LONG_CHARS ? 'long' : 'ok';
   return { items, state, problems, complete };
 }
 
@@ -491,6 +534,11 @@ function comparedWords(s: string): string[] {
 /** Letter-for-number swaps ("p4ssw0rd"), two readings: 1 and ! as "i", or as "l". */
 const LEET_I: Record<string, string> = { '0': 'o', '1': 'i', '2': 'z', '3': 'e', '4': 'a', '5': 's', '7': 't', '8': 'b', '9': 'g', '@': 'a', $: 's', '!': 'i', '+': 't' };
 const LEET_L: Record<string, string> = { ...LEET_I, '1': 'l', '!': 'l' };
+// The two mixed readings ("Ph!1!pp!nes": 1 as l and ! as i in one word). Only different
+// texts are looked at, so a password without both 1 and ! costs nothing more.
+const LEET_IL: Record<string, string> = { ...LEET_I, '1': 'l' };
+const LEET_LI: Record<string, string> = { ...LEET_I, '!': 'l' };
+const LEETS = [LEET_I, LEET_L, LEET_IL, LEET_LI];
 const fold = (s: string, map: Record<string, string>) => Array.from(s, (c) => map[c] ?? c).join('');
 
 /** True when the whole password (any case, any joiners, swaps undone) is on the 15+ list. */
@@ -498,7 +546,7 @@ export function isCommonPassword(password: unknown): boolean {
   const p = normalizePassword(password);
   if (p === null) return false;
   const c = comparedForm(p);
-  return [c, fold(c, LEET_I), fold(c, LEET_L)].some((x) => long().has(x));
+  return [c, ...LEETS.map((m) => fold(c, m))].some((x) => long().has(x));
 }
 
 // ── Context words ──────────────────────────────────────────────────────
@@ -870,6 +918,15 @@ function lattice(forms: string[], personal: string[][], service: string[][], bou
   const names = endsOf(nameMark);
   const monthsAll = tokenEnds([plain], MONTH_WORDS.map((m) => Array.from(m)));
   const months = monthsAll.map((ends, i) => ends.filter((j) => isDigit(plain[i - 1]) || isDigit(plain[j])));
+  // A book name counts only as a verse reference: the book, a chapter and ":" ("book3:16").
+  const verseAt = (j: number) => {
+    let k = j;
+    while (k < n && isDigit(plain[k])) k++;
+    return k > j && plain[k] === ':';
+  };
+  tokenEnds([plain], BOOK_WORDS.map((m) => Array.from(m))).forEach((ends, i) => {
+    for (const j of ends) if (verseAt(j) && !months[i].includes(j)) months[i].push(j);
+  });
   // A 3-letter app or exam word ("cia", "cpa", "app") counts only standing alone: "special" is not "cia".
   const service3 = tokenEnds(fs, service).map((ends, i) => ends.filter((j) => j - i > 3 || (kindOf(plain[i - 1]) !== 'l' && kindOf(plain[j]) !== 'l')));
   return { n, plain, runs, numbers: numberEnds(plain), months, words, personal: tokenEnds(fs, personal), service: service3, names };
@@ -954,7 +1011,7 @@ function namesLeftOver(l: Lattice): number {
  * symbol of the numbers and symbols around the core [from, to) (the "!" of
  * a word, a year and "!"). Keyboard runs of symbols are runs.
  */
-function material(l: Lattice, from: number, to: number): number {
+function material(l: Lattice, from: number, to: number, long: boolean): number {
   const { n, plain } = l;
   const cost = new Array<number>(n + 1).fill(Infinity);
   cost[0] = 0;
@@ -966,7 +1023,11 @@ function material(l: Lattice, from: number, to: number): number {
   for (let i = 0; i < n; i++) {
     const c = cost[i];
     if (c === Infinity) continue;
-    const step = isSymbol(plain[i]) ? (plain[i - 1] === plain[i] || i === firstLead || i === firstTrail ? 0 : 1) : 1;
+    // A swap symbol between letters ("gov@rn") is a letter, already counted as part of the word.
+    // Only at 15+ characters (where the floor stayed at 10): under 15, a random string's
+    // symbols between letters are real material.
+    const swapInWord = long && SWAP_SYMBOLS.includes(plain[i]) && kindOf(plain[i - 1]) === 'l' && kindOf(plain[i + 1]) === 'l';
+    const step = isSymbol(plain[i]) ? (plain[i - 1] === plain[i] || i === firstLead || i === firstTrail || swapInWord ? 0 : 1) : 1;
     if (c + step < cost[i + 1]) cost[i + 1] = c + step;
     for (const j of l.runs[i]) if (c < cost[j]) cost[j] = c;
     if (isDigit(plain[i]) && i + 4 <= n && plain.slice(i, i + 4).every(isDigit) && validYear(Number(plain.slice(i, i + 4).join('')))) if (c < cost[i + 4]) cost[i + 4] = c;
@@ -975,12 +1036,32 @@ function material(l: Lattice, from: number, to: number): number {
 }
 
 const reverseStr = (s: string) => Array.from(s).reverse().join('');
+/** Symbols that stand for a letter in a swap ("@" for a, "$" for s, "!" for i, "+" for t). */
+const SWAP_SYMBOLS = '@$!+';
+/** A symbol as the digit key it sits on ("!" is shift-1), for the mechanical four-type patterns. */
+const SHIFT_DIGIT: Readonly<Record<string, string>> = { '!': '1', '@': '2', '#': '3', $: '4', '%': '5', '^': '6', '&': '7', '*': '8', '(': '9', ')': '0' };
+
+/** Characters left over when a short sequence is written as runs (repeats, sequences, walks, copies). */
+function runsLeft(seq: string[]): number {
+  const m = seq.length;
+  if (!m) return 0;
+  const mark = marks(m);
+  runEnds(formTables(seq), new Set([0, m]), mark);
+  const ends = endsOf(mark);
+  const cost = new Array<number>(m + 1).fill(Infinity);
+  cost[0] = 0;
+  for (let i = 0; i < m; i++) {
+    if (cost[i] + 1 < cost[i + 1]) cost[i + 1] = cost[i] + 1;
+    for (const j of ends[i]) if (cost[i] < cost[j]) cost[j] = cost[i];
+  }
+  return cost[m];
+}
 
 /** The reason the whole password is predictable, or null. `p` is NFKC already. */
 function predictable(p: string, ctx: PasswordContext): PasswordProblem | null {
   const pieces = comparedWords(p);
   const c = pieces.join('');
-  const readings = [c, fold(c, LEET_I), fold(c, LEET_L)];
+  const readings = [...new Set([c, ...LEETS.map((m) => fold(c, m))])];
   // Where the words began and ended (code points), forwards and backwards.
   const n = Array.from(c).length;
   const bounds = new Set<number>([0, n]);
@@ -1013,8 +1094,27 @@ function predictable(p: string, ctx: PasswordContext): PasswordProblem | null {
     // Name the piece the refusal needs: without it, the password would pass this test.
     if (worst({ personal: false, service: true, listWords: MAX_LIST_WORDS, numbers: true }) > MAX_LEFT_OVER) return 'contains_email';
     if (worst({ personal: false, service: false, listWords: MAX_LIST_WORDS, numbers: true }) > MAX_LEFT_OVER) return 'contains_service_word';
+    // Two list entries are needed (one is not enough): its own words, "add a third word".
+    // A full name ("MarkAnthonyCruz88") stays "common": the names are list entries too.
+    if (!exact && worst({ personal: false, service: false, listWords: 1, numbers: true }) > MAX_LEFT_OVER && !(nameSet && Math.min(...lats.map(namesLeftOver)) <= MAX_LEFT_OVER)) return 'two_common_words';
     if (exact || worst({ personal: false, service: false, listWords: 0, numbers: true }) > MAX_LEFT_OVER) return 'common';
     return 'too_simple';
+  }
+  // ONE list entry, the app's or exam's word, or the account's word, with at most 3 characters
+  // besides the numbers and symbols ("the", "old", "com", "app", "cpa" or a short tag in front
+  // or behind): the word carries the password. The app-word reading needs an app or exam
+  // name of 5+ letters, so a random string with "cis@" in it is not read as "cisa".
+  const ONE_LEFT = MAX_LEFT_OVER + 1;
+  // (`all` is a lower bound of every narrower question: only when it is exactly 3 can one word be enough.)
+  if (all <= ONE_LEFT && worst({ personal: true, service: true, listWords: 1, numbers: true }) <= ONE_LEFT) {
+    if (worst({ personal: false, service: true, listWords: 1, numbers: true }) > ONE_LEFT) return 'contains_email';
+    if (worst({ personal: false, service: false, listWords: 1, numbers: true }) > ONE_LEFT) {
+      if (readings.some((r) => SERVICE_WORDS.some((w) => w.length >= 5 && (r.includes(w) || reverseStr(r).includes(w))))) return 'contains_service_word';
+    } else if (worst({ personal: false, service: false, listWords: 0, numbers: true }) > ONE_LEFT) return 'common';
+    // No list entry needed: at most 3 characters besides numbers, symbols, runs, dates and
+    // verse references. Only with 4+ letters: a random string of digits and symbols with three
+    // letters is not a pattern, its digits are just not counted here.
+    else if (Array.from(c).filter((ch) => ch >= 'a' && ch <= 'z').length >= 4) return 'too_simple';
   }
   // Mostly the account's own words: they cover 8+ characters and at most 4 are left over
   // ("MrsGraceVillanueva1", "yahoo.com.grace0312").
@@ -1062,6 +1162,9 @@ function predictable(p: string, ctx: PasswordContext): PasswordProblem | null {
       if (l.words[i].includes(j) || l.names[i].includes(j) || MONTH_WORDS.includes(l.plain.slice(i, j).join(''))) return 'common';
       if (l.runs[i].includes(j)) return 'too_simple';
     }
+    // Any word of 3 to 14 letters typed twice or more, with only numbers and symbols besides,
+    // listed or not ("a word typed twice").
+    if (unit < core.length && unit >= 3 && unit <= 14 && core.every((ch) => ch >= 'a' && ch <= 'z') && worst({ personal: false, service: false, listWords: 0, numbers: true }) <= core.length + MAX_LEFT_OVER) return 'too_simple';
   }
   // One ordinary word of up to 14 letters, typed as one (no joiner inside, no capital inside),
   // and only numbers, symbols or runs besides; the same word typed again counts once
@@ -1084,8 +1187,20 @@ function predictable(p: string, ctx: PasswordContext): PasswordProblem | null {
     const plainCase = chunks.length > 0 && (chunks.every((x) => /^[A-Za-z][a-z]*$/.test(x)) || /^[A-Z]+$/.test(letters));
     if (period <= 14 && plainCase && worst({ personal: false, service: false, listWords: 0, numbers: true }) <= period + MAX_LEFT_OVER) return 'too_simple';
   }
+  // Mechanical four-type patterns: a letter pair, a digit and its shifted symbol, stepping
+  // along ("letters, digits and symbols interleaved"). Read the letters, the digits and the
+  // symbols (as their digit keys) as three strings: when each is a run, it is a pattern.
+  const letterSeq = chars.filter((ch) => kindOf(ch) === 'l');
+  const digitSeq = chars.filter(isDigit);
+  const symbolSeq = chars.filter(isSymbol).map((ch) => SHIFT_DIGIT[ch] ?? ch);
+  let switches = 0;
+  for (let i = 1; i < n; i++) if (kindOf(chars[i]) !== kindOf(chars[i - 1])) switches++;
+  // The letters may also be two interleaved runs ("q?z?w?x?e?c": the keyboard's columns).
+  const lettersLeft = () => Math.min(runsLeft(letterSeq), runsLeft(letterSeq.filter((_, k) => k % 2 === 0)) + runsLeft(letterSeq.filter((_, k) => k % 2 === 1)));
+  if (letterSeq.length >= 3 && digitSeq.length >= 2 && switches >= 5 && runsLeft(digitSeq) + runsLeft(symbolSeq) <= MAX_LEFT_OVER && runsLeft(digitSeq) + runsLeft(symbolSeq) + lettersLeft() <= MAX_LEFT_OVER) return 'too_simple';
   const floor = Math.min(MIN_MATERIAL_LONG, Math.max(MIN_MATERIAL, Array.from(p).length - (PASSWORD_MIN_CHARS - MIN_MATERIAL)));
-  if (Math.min(material(lats[0], from, to), material(lats[1], n - to, n - from)) < floor || new Set(Array.from(c)).size < 5) return 'too_simple';
+  const long15 = Array.from(p).length >= PASSWORD_LONG_CHARS;
+  if (Math.min(material(lats[0], from, to, long15), material(lats[1], n - to, n - from, long15)) < floor || new Set(Array.from(c)).size < 5) return 'too_simple';
   return null;
 }
 

@@ -45,6 +45,7 @@ import {
   passwordMissingText,
   passwordMissingTypes,
   PASSWORD_SYMBOLS,
+  PASSWORD_LONG_CHARS,
   passwordTypes,
   passwordCheckStepsForTest,
   PASSWORD_OTHER_GUIDANCE,
@@ -65,6 +66,7 @@ import { breachForms, createBreachCheck } from '../webcloud/breach';
 import { ADVERSARIAL } from '../../jest/password-adversarial';
 import { withAllTypes } from '../../jest/password-mix';
 import { R4_CONTEXT, R4_FAMILIES, R4_GOOD, R4_HELD_OUT, R4_TUNING } from '../../jest/password-fixtures-r4';
+import { R5_CONTEXT, R5_FAMILIES, R5_GOOD, R5_HOSTILE } from '../../jest/password-fixtures-r5';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const lists = require('../../scripts/password-lists.cjs');
@@ -180,32 +182,36 @@ describe('the four types (owner decision 28 Nov 2026: exactly what the server ch
   it('refused with missing_characters, and the guidance says exactly what is missing, in plain words', () => {
     const p = ofLength(12).toLowerCase().replace(/[^a-z]/g, 'k'); // lower case only
     expect(checkPassword(p)).toContain('missing_characters');
-    expect(passwordMissingText('abcdefgh')).toBe('Add an uppercase letter, a number and a symbol.');
-    expect(passwordMissingText('Abcdefgh')).toBe('Add a number and a symbol.');
-    expect(passwordMissingText('Abcdefgh1')).toBe('Add a symbol.');
-    expect(passwordMissingText('ABCDEFGH1!')).toBe('Add a lowercase letter.');
-    expect(passwordMissingText('abc1!')).toBe('Add an uppercase letter.');
-    expect(passwordMissingText('')).toBe('Add a lowercase letter, an uppercase letter, a number and a symbol.');
+    // Which characters count is said in the words (the server takes only a to z, A to Z, 0 to 9
+    // and ASCII symbols, so someone who typed "É" or "₱" knows why it did not tick).
+    expect(passwordMissingText('abcdefgh')).toBe('Add an uppercase letter (A to Z), a number (0 to 9) and a symbol such as ! ? # @.');
+    expect(passwordMissingText('Abcdefgh')).toBe('Add a number (0 to 9) and a symbol such as ! ? # @.');
+    expect(passwordMissingText('Abcdefgh1')).toBe('Add a symbol such as ! ? # @.');
+    expect(passwordMissingText('ABCDEFGH1!')).toBe('Add a lowercase letter (a to z).');
+    expect(passwordMissingText('abc1!')).toBe('Add an uppercase letter (A to Z).');
+    expect(passwordMissingText('ÉLAN ñ 7!')).toBe('Add a lowercase letter (a to z).');
+    expect(passwordMissingText('')).toBe('Add a lowercase letter (a to z), an uppercase letter (A to Z), a number (0 to 9) and a symbol such as ! ? # @.');
     expect(passwordMissingText('Ab1!')).toBeNull();
-    expect(passwordGuidance('missing_characters', 'Abcdefgh')!).toEqual({ key: 'password.guide.missing_characters', text: 'Add a number and a symbol.' });
-    expect(passwordGuidance('password_missing_characters', 'abcdefgh1!')!.text).toBe('Add an uppercase letter.');
-    expect(passwordGuidance('missing_characters')!.text).toBe('Use at least one lowercase letter, one uppercase letter, one number and one symbol.');
+    expect(passwordGuidance('missing_characters', 'Abcdefgh')!).toEqual({ key: 'password.guide.missing_characters', text: 'Add a number (0 to 9) and a symbol such as ! ? # @.' });
+    expect(passwordGuidance('password_missing_characters', 'abcdefgh1!')!.text).toBe('Add an uppercase letter (A to Z).');
+    expect(passwordGuidance('missing_characters')!.text).toBe('Use at least one lowercase letter (a to z), one uppercase letter (A to Z), one number (0 to 9) and one symbol such as ! ? # @.');
   });
 
-  it('the checklist: five items, each met or not, and refused / ok / strong', () => {
+  it('the checklist: five items, each met or not, and refused / ok / long (15 or more characters, a length label only)', () => {
     const labels = (p: string) => passwordChecklist(p, CTX).items.map((i) => `${i.met ? 'Y' : 'n'} ${i.label}`);
     expect(PASSWORD_CHECKLIST_ITEMS.map((i) => [i.id, i.key, i.label])).toEqual([
       ['length', 'password.check.length', '12 or more characters'],
-      ['lower', 'password.check.lower', 'A lowercase letter'],
-      ['upper', 'password.check.upper', 'An uppercase letter'],
-      ['digit', 'password.check.digit', 'A number'],
-      ['symbol', 'password.check.symbol', 'A symbol'],
+      ['lower', 'password.check.lower', 'A lowercase letter (a to z)'],
+      ['upper', 'password.check.upper', 'An uppercase letter (A to Z)'],
+      ['digit', 'password.check.digit', 'A number (0 to 9)'],
+      ['symbol', 'password.check.symbol', 'A symbol such as ! ? # @'],
     ]);
-    expect(labels('')).toEqual(['n 12 or more characters', 'n A lowercase letter', 'n An uppercase letter', 'n A number', 'n A symbol']);
-    expect(labels('abc')).toEqual(['n 12 or more characters', 'Y A lowercase letter', 'n An uppercase letter', 'n A number', 'n A symbol']);
+    expect(labels('')).toEqual(['n 12 or more characters', 'n A lowercase letter (a to z)', 'n An uppercase letter (A to Z)', 'n A number (0 to 9)', 'n A symbol such as ! ? # @']);
+    expect(labels('abc')).toEqual(['n 12 or more characters', 'Y A lowercase letter (a to z)', 'n An uppercase letter (A to Z)', 'n A number (0 to 9)', 'n A symbol such as ! ? # @']);
     expect(passwordChecklist('', CTX).state).toBe('refused');
     expect(passwordChecklist(ofLength(12), CTX)).toMatchObject({ state: 'ok', problems: [], complete: true });
-    expect(passwordChecklist(ofLength(15), CTX).state).toBe('strong');
+    expect(passwordChecklist(ofLength(15), CTX).state).toBe('long');
+    expect(PASSWORD_LONG_CHARS).toBe(15);
     // All five met and still refused: a common password with the four types around it.
     const common = passwordChecklist('Password2026!', CTX);
     expect(common.items.every((i) => i.met)).toBe(true);
@@ -349,7 +355,7 @@ describe('the bundled lists (ASVS 6.2.4; sources, picking rules, fingerprints)',
     } finally {
       expect(loadPasswordWords(WORDS)).toBe(true);
     }
-    expect(assessPassword('Monkey dragon 2026!!')).toEqual({ problems: ['common'], complete: true });
+    expect(assessPassword('Monkey dragon 2026!!')).toEqual({ problems: ['two_common_words'], complete: true });
   });
 
   it('are stored scrambled, not as readable text, and decode the same way in the builder and the app', () => {
@@ -430,7 +436,9 @@ describe('independent measures (fixtures; not built from the bundled lists)', ()
 
   it('the round-2 good passphrases all pass (62: the 70 less 8 clichés and hint echoes, see the fixture)', () => {
     expect(GOOD).toHaveLength(62);
-    expect(GOOD.filter((p) => !ok(p, HOSTILE_CONTEXT))).toEqual([]);
+    // One is refused on purpose since round 5: with "The" in front it is the app's own old hint
+    // phrase plus one 3-letter word (a list entry and 3 characters).
+    expect(GOOD.filter((p) => !ok(p, HOSTILE_CONTEXT))).toEqual(['the maple cloud tiger']);
   });
 
   it('English words ranked after the bundled 100,000 (not on any list): doubled, + a sequence, + a year', () => {
@@ -463,28 +471,37 @@ describe('independent measures (fixtures; not built from the bundled lists)', ()
     }
   });
 
-  it('three random ordinary words pass: refused under 1%, with or without spaces; four words almost never', () => {
+  it('three random ordinary words: refused under 1% with spaces, under 4% typed as one; four words almost never (from 12 characters, every digit)', () => {
     // The words are not filtered: a few are themselves patterns ("mmmm", "wert"), which is why
-    // the rate is above zero. With the four types added the way a learner adds them (a capital,
-    // and a number and a symbol at the end) it rose from under 0.5% to about 0.9% (36 of 3,991
-    // with spaces, 28 Nov 2026): a month word just before the number reads as a date, and three
-    // given names with a number as a name and a number.
+    // the rate is above zero. Each phrase gets the four types the way a learner adds them (a
+    // capital first, then each digit 0 to 9 and "!"), and every one of 12+ characters counts.
+    // Measured 28 Nov 2026 (round 5): three words with spaces 162 of 20,000 (0.8%; a month word
+    // before the number reads as a date, three given names with a number as a name and a
+    // number, two list words as two common words); typed as one, 750 of 20,000 (3.75%): three
+    // short words run together into 14 letters or fewer look like ONE word with a number and a
+    // symbol, which the one-word rule refuses (it has no dictionary to tell them apart). Four
+    // words: 1 of 19,980 either way.
     const words = unscramble(ORDINARY_WORDS);
-    for (const [k, sep, limit] of [[3, ' ', 0.01], [3, '', 0.01], [4, ' ', 0.001], [4, '', 0.001]] as const) {
+    const rates: string[] = [];
+    for (const [k, sep, limit] of [[3, ' ', 0.01], [3, '', 0.04], [4, ' ', 0.001], [4, '', 0.001]] as const) {
       const rnd = random(987654321);
       const pick = () => words[Math.floor(rnd() * words.length)];
       let n = 0;
       let refused = 0;
-      for (let i = 0; i < 4000; i++) {
+      for (let i = 0; i < 2000; i++) {
         const ws = Array.from({ length: k }, pick);
         if (new Set(ws).size < k) continue;
-        const p = ws.join(sep);
-        if (Array.from(p).length < 15) continue;
-        n++;
-        if (checkPassword(withAllTypes(p)).length) refused++;
+        for (let d = 0; d <= 9; d++) {
+          const p = `${ws[0][0].toUpperCase()}${ws[0].slice(1)}${sep}${ws.slice(1).join(sep)}${sep}${d}!`;
+          if (Array.from(p).length < PASSWORD_MIN_CHARS) continue;
+          n++;
+          if (checkPassword(p).length) refused++;
+        }
       }
+      rates.push(`${k}${JSON.stringify(sep)} ${refused}/${n}`);
       expect([k, sep, refused / n <= limit]).toEqual([k, sep, true]);
     }
+    if (process.env.PASSWORD_BUDGET_PRINT) console.log(rates.join(' | '));
   });
 });
 
@@ -521,10 +538,11 @@ describe('round 3: an attack the rules were not tuned on (jest/password-fixtures
   });
 });
 
-describe('round 4: the 12-to-14-character, four-types space (jest/password-fixtures-r4.ts)', () => {
+describe('round 4: new words in ONE known shape (a word plus a suffix; jest/password-fixtures-r4.ts)', () => {
   // Split by vocabulary: pool A words build the tuning half, pool B words the held-out half
-  // (report-only: never tuned on). Same author as the rules this round, so the held-out
-  // figure is a weaker measure than round 3's. Ceilings may only fall.
+  // (report-only: never tuned on). Same author as the rules, and every candidate is one word
+  // plus numbers and a symbol, so it measures that shape only (round 5 is the broad,
+  // independent measure). Ceilings may only fall.
   const accepted = (set: readonly [string, string][]) => set.filter(([, p]) => checkPassword(p, R4_CONTEXT).length === 0);
 
   it('every candidate is 12 to 14 characters with all four types; the pools do not share a word', () => {
@@ -539,9 +557,9 @@ describe('round 4: the 12-to-14-character, four-types space (jest/password-fixtu
     expect(accepted(R4_TUNING)).toEqual([]);
   });
 
-  it('held-out half (report-only): at most 13 of 2,833 accepted (0.5%), none of them a common password, walk or season', () => {
+  it('held-out half (report-only): 0 of 2,833 accepted (13 before round 5), none of them a common password, walk or season', () => {
     const acc = accepted(R4_HELD_OUT);
-    expect(acc.length).toBeLessThanOrEqual(13);
+    expect(acc.length).toBeLessThanOrEqual(0);
     for (const [family] of acc) expect(['word', 'name', 'service']).toContain(family);
   });
 
@@ -568,6 +586,55 @@ describe('round 4: the 12-to-14-character, four-types space (jest/password-fixtu
   });
 });
 
+describe('round 5: the independent attack on the 12-character, four-types rule (jest/password-fixtures-r5.ts)', () => {
+  // The reviewer's 5,220 candidates in 17 families, split by a rule fixed before any result was
+  // looked at (the SHA-256 of the alphabetically first base word: 0-7 tuning, 8-f held-out).
+  // The held-out half is REPORT-ONLY. Honest caveat: the round-5 fixes follow the reviewer's
+  // prototypes, which were made with the whole set in view, so the held-out figure after them
+  // is somewhat optimistic. Ceilings may only fall.
+  const u = (s: string) => unscramble([s])[0];
+  const accepted = (half: 0 | 1) => R5_HOSTILE.filter(([, s, h, c]) => h === half && checkPassword(u(s), c ? R5_CONTEXT : {}).length === 0);
+
+  it('5,220 candidates in 17 families, 12 to 16 characters, all four types; the split is fixed', () => {
+    expect(R5_HOSTILE).toHaveLength(5220);
+    expect(R5_FAMILIES).toHaveLength(17);
+    expect([R5_HOSTILE.filter((r) => r[2] === 0).length, R5_HOSTILE.filter((r) => r[2] === 1).length]).toEqual([3206, 2014]);
+    for (const [, s] of R5_HOSTILE) expect([u(s), passwordMissingTypes(u(s))]).toEqual([u(s), []]);
+  });
+
+  it('tuning half: at most 225 of 3,206 accepted (7.0%; 368, 11.5%, before round 5)', () => {
+    expect(accepted(0).length).toBeLessThanOrEqual(225);
+  });
+
+  it('held-out half (report-only): at most 115 of 2,014 accepted (5.7%; 197, 9.8%, before round 5)', () => {
+    expect(accepted(1).length).toBeLessThanOrEqual(115);
+  });
+
+  it('the reviewer\'s 370 good passwords: 6 refused, all on purpose (4 have no ASCII capital or lowercase letter, 2 are two common words)', () => {
+    const refused = R5_GOOD.filter(([, s]) => checkPassword(u(s)).length).map(([, s]) => checkPassword(u(s))[0]);
+    expect(R5_GOOD).toHaveLength(370);
+    expect(refused.sort()).toEqual(['missing_characters', 'missing_characters', 'missing_characters', 'missing_characters', 'two_common_words', 'two_common_words']);
+  });
+
+  it('first guesses for this policy are refused (the review\'s B2, S1, S5, S6, S7 examples)', () => {
+    for (const p of [
+      // B2a: letters, digits and symbols each a run on their own.
+      'Aa1!Bb2@Cc3#', 'Aa1!Bb2@Cc3#Dd4$', '1Aa!2Bb@3Cc#', 'Qq1!Ww2@Ee3#', 'Qw1!Er2@Ty3#', 'As12!@Df34#$', 'Xx1!Yy2@Zz3#', 'Zz1!Xx2@Cc3#', 'Qz1!Wx2@Ec3#',
+      // B2b: one list entry or app word and 3 characters.
+      'OldPassword1!', 'OurPassword1!', 'HisPassword1!', 'XyzPassword1!', 'Kaisip.com1!', 'Www.Kaisip.com1', 'KaisipApp123!', 'KaisipapP123!', 'TheKaisip26!!', 'Isaca.org1!!', 'SirReyes28!!', 'TheWindow21-', 'Meralco#1Fan!',
+      // S1: swap symbols inside a word are not new material at 15+.
+      'G0vern@nce2025$$', 'H1m@g$1k@n*54321',
+      // S5: any word typed twice; S6: mixed swap readings; S7: verse references.
+      'TapirTapir321?', 'GubatGubat1!', 'NarraNarra69#', 'Ph!1!pp!nes1', 'L!tt1e2026!A', 'S!1ver2026!A', 'Br!11iant26A', 'John14:6Way!', 'Psalm23:1God', 'Rom8:28Good!',
+    ]) {
+      expect([p, ok(p, {})]).toEqual([p, false]);
+    }
+    for (const p of ['JhunreyCPA26!', 'CpaJhunrey26!', 'Jhunrey.com1!', 'DimaanoFam94!']) expect([p, ok(p, R5_CONTEXT)]).toEqual([p, false]);
+    // Not the app's name: a random string with "cis@" in it.
+    expect(checkPassword('/+Cis@/Lek%:8')).toEqual([]);
+  });
+});
+
 describe('the guidance describes, it never shows an example (S2)', () => {
   const echoes = ['atleast15characters', 'at least 15 characters', 'three or four ordinary words', 'Use three or four ordinary words', 'maple cloud tiger!', 'correct horse battery', 'thisisaverylongpassword', 'passphrase12345678', 'pleasechangeyourpassword', 'three random words 2026'];
 
@@ -578,7 +645,7 @@ describe('the guidance describes, it never shows an example (S2)', () => {
   it('no guidance text holds an example: no quotes, no digits except the two limits', () => {
     for (const g of [...Object.values(PASSWORD_GUIDANCE), ...Object.values(PASSWORD_OTHER_GUIDANCE)]) {
       expect(g.text).not.toMatch(/["“”‘]|’[a-z]+’/i);
-      expect(g.text.replace(/\b(12|72)\b/g, '')).not.toMatch(/\d/);
+      expect(g.text.replace(/\b(12|72)\b/g, '').replace('(0 to 9)', '')).not.toMatch(/\d/);
     }
   });
 
@@ -693,13 +760,13 @@ describe('the whole-password rule', () => {
 
 describe('guidance after a refusal (NIST: SHALL offer guidance)', () => {
   it('every reason has a key and plain words in the app\'s style', () => {
-    const reasons: PasswordProblem[] = ['invalid_characters', 'too_short', 'too_long', 'missing_characters', 'contains_email', 'contains_service_word', 'common', 'too_simple'];
+    const reasons: PasswordProblem[] = ['invalid_characters', 'too_short', 'too_long', 'missing_characters', 'contains_email', 'contains_service_word', 'two_common_words', 'common', 'too_simple'];
     expect(Object.keys(PASSWORD_GUIDANCE).sort()).toEqual([...reasons].sort());
     for (const r of reasons) {
       const g = passwordGuidance(r)!;
       expect(g.key).toBe(`password.guide.${r}`);
       expect(g.text).toMatch(/^[A-Z].*\.$/);
-      expect(g.text).not.toMatch(/'|!|isaca/i);
+      expect(g.text.replace('such as ! ? # @', '')).not.toMatch(/'|!|isaca/i);
     }
     expect(passwordGuidance('nope')).toBeNull();
     expect(passwordGuidance(undefined)).toBeNull();
@@ -891,9 +958,12 @@ describe('cost budget', () => {
   // the per-reading tables (the copy and mirror tables, n² per reading), the
   // normal-form and compared-form work, number and month matching, and the
   // list lookups' own hashing; a slowdown there shows only on the clock.
-  // Measured 28 Nov 2026 on this list, lists loaded: 105,179 steps for the
-  // worst check ('441' repeated), 19,056,137 for the whole list (each input
-  // with and without CTX); in plain Node (the website bundle) at most about
+  // Re-recorded 28 Nov 2026 (round 5), on this list, lists loaded: 114,157
+  // steps for the worst check ('441' repeated), 22,534,065 for the whole list
+  // (each input with and without CTX). The rise is on purpose: the two mixed
+  // readings of "1" and "!" (an input with both is read five ways, not three),
+  // the one-word-and-three-characters question and the three-strings pattern
+  // check. Before round 5: 105,179 and 19,056,243. In plain Node (the website bundle) at most about
   // 2.7 ms median, in Jest about 11 ms (Jest's transformed code is several
   // times slower). The version before this budget took up to 23 ms in plain
   // Node and failed CI at 50 ms. The counts only change when the code or the
@@ -901,12 +971,14 @@ describe('cost budget', () => {
   // the "no entry starts like this" stop, or looking at identical readings
   // twice, fails. A change that adds work on purpose updates these numbers,
   // with the reason.
-  const STEP_WORST = 110_000;
-  const STEP_TOTAL = 19_800_000;
+  const STEP_WORST = 120_000;
+  const STEP_TOTAL = 23_600_000;
   const MEDIAN_MS = 50;
-  const TYPICAL_STEPS = 1_450_000; // measured 1,367,194 (28 Nov 2026)
+  // Measured 2,421,471 (28 Nov 2026, round 5; 1,320,745 before it). These inputs contain
+  // both "1" and "!", so they pay for the two mixed readings in full.
+  const TYPICAL_STEPS = 2_540_000;
   // The clock backstop for typical checks: their CPU time as a multiple of a fixed
-  // reference loop timed in the same test. Measured 44 to 51 locally in Jest (about
+  // reference loop timed in the same test. Measured 77 locally in Jest after round 5 (44 to 51 before; about
   // 4 ms a check there; about 0.6 ms in plain Node). The limit is five times that,
   // because the two sides do not slow down by exactly the same factor on another
   // machine; the step count above is the tight guard, this one catches work the
@@ -959,11 +1031,13 @@ describe('cost budget', () => {
   it('the answers on the adversarial list do not drift', () => {
     // The speed rewrite was checked against the previous version input by input
     // (17,949 inputs: every fixture and this list, 0 differences). Re-recorded
-    // once, on purpose, for the owner's four-types rule (28 Nov 2026, evening):
-    // the answers now include missing_characters and the core rule.
+    // on purpose for the owner's four-types rule (28 Nov 2026, evening: every
+    // change was missing_characters added) and for round 5 (the mixed swap
+    // readings, the three-strings pattern, one word and three characters,
+    // two_common_words).
     const h = createHash('sha256');
     for (const [name, p] of ADVERSARIAL) h.update(`${name}\t${checkPassword(p, CTX).join(',')}\t${checkPassword(p).join(',')}\n`);
-    expect(h.digest('hex')).toBe('a81b488e720af43bfc5a093037d98932ad781e36920be3e02e25c207a31ec143');
+    expect(h.digest('hex')).toBe('d72ae5e5e680df1e2e8496ee02da44f7093df0d22a9cde0503ab53cb7c37e12f');
   });
 
   it('every adversarial input takes well under 50 ms (median of five)', () => {

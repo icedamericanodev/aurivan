@@ -74,8 +74,8 @@ describe('the cloud bundle', () => {
     expect(K.passwordRules.checkPassword('aaaaaaaaaaaaaaa')).toEqual(['common', 'missing_characters']);
     expect(K.passwordRules.checkPassword('Ocean violet lamp 7!')).toEqual([]);
     expect(K.passwordRules.PASSWORD_MIN_CHARS).toBe(12);
-    expect(K.passwordRules.passwordChecklist('Ocean violet lamp 7!').state).toBe('strong');
-    expect(K.passwordRules.passwordMissingText('ocean violet lamp')).toBe('Add an uppercase letter, a number and a symbol.');
+    expect(K.passwordRules.passwordChecklist('Ocean violet lamp 7!').state).toBe('long');
+    expect(K.passwordRules.passwordMissingText('ocean violet lamp')).toBe('Add an uppercase letter (A to Z), a number (0 to 9) and a symbol such as ! ? # @.');
     // The leaked-password check is on, with its one host and the SHA-1 adapter for the page.
     expect(K.config.BREACH_CHECK_ON).toBe(true);
     expect(K.config.BREACH_HOST).toBe('https://api.pwnedpasswords.com');
