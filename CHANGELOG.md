@@ -62,6 +62,12 @@ The first update after the 2.0.0 launch (closed testing). Play version name exac
 - A learner saw Android's navigation buttons covering the buttons at the bottom of a screen; bottom buttons now sit above the navigation bar.
 - A learner found a password policy question unclear; it now states that management requires the controls.
 
+## Web [v13.2.2] · 2026-11-28
+
+### Improved
+- The beta has ended, so the wording that still mentioned it is updated.
+- The home page is calmer: one clear way to start on the web, on Android and on iPhone, a waitlist for the iPhone app only, and less small print.
+
 ## Web [v13.2.1] · 2026-11-28
 
 ### Fixed
