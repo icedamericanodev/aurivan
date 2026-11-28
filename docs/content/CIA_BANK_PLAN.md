@@ -16,6 +16,7 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
 | **Rounds 1 to 15, the Part 2 pilot, Part 2 rounds 1 to 6, Part 3 rounds 1 and 2, and the Third-Party and Organizational Behavior items written ahead done (28 Nov 2026)** | Part 1 stands at **349 questions (A 116, B 85, C 106, D 42; `cia1_d3_057` retired 28 Nov 2026), all in The IIA's question format since the stage 2 restyle** and meets the revised sale gate's counts (section 3, decision 4); two of them (`cia1_d3_106`, `cia1_d3_107`, on 1C2a) are Organizational Behavior items written ahead, dated 2027-06-01. **Part 2 stands at 105 questions (A 52, B 42, C 11)**, every key confirmed by blind tests and Standards audits; six of them are written ahead and dated: `cia2_d1_043` to `045` (Third-Party, 2027-03-01) and `cia2_d1_046` to `048` (Organizational Behavior, 2027-06-01, the first items on 2A5g), so out of the held-back form, the mocks and the free sample until their dates. **Part 2's gate (owner, 26 Nov 2026) is about A 67, B 53, C 13**: 21, 11 and 2 short today; A is 18 short from 1 Mar 2027 and 15 from 1 Jun 2027. **Rounds 4 and 5 (26 Nov 2026) were keyed on free public Knowledge sources** (K1 to K18): round 4 kept 14 of 14 and brought four bullets to depth; round 5 kept 7 of 7, all second or later lessons (2A3f, 2A4b, 2B4c and 2B5b now have two items each), and left three of its ten leads empty. **Round 6 (28 Nov 2026) was keyed on ISA 500 and ISA 520** (K19, K20; the owner cleared them on 28 Nov 2026 for method facts only, cited by title and paragraph): it kept 7 of 9 (A 4 of 5, B 3 of 4), cut a 2A6b and a 2B2b draft that stayed test-taking in both blind tests, left leads R6-1 to R6-3 empty, gave 2A6e its first items outside IT and 2B2c its second item; but options-only guessing stayed at 7 of 9 after the fix pass, so the self-check is not yet enough on ISA method items. 52 of 60 bullets meet their depth today, 7 have no testable item and only 2A7c is below depth; from 1 Jun 2027, when 2A5g's three dated items count, 53 meet it and 6 have none. **Part 3's study notes are done** (63 sub-topics, audited and learner-read) and **its bank holds 66 questions (A 17, B 15, C 15, D 19)** after the pilot, rounds 1 and 2 and the Third-Party items written ahead (`cia3_d2_014`, `d2_015`, `d3_015`, dated 2027-03-01), every key confirmed by blind tests and Standards audits. **Part 3 round 2 (26 Nov 2026)** kept 3 of 3 items on 3B1f (blockchain, connected devices, AI), keyed on NIST Knowledge sources with the chief audit executive's step on Standard 9.4. **The Third-Party and Organizational Behavior Topical Requirements are now spent** (six and five items written ahead, all kept; section 7). **The opened sources are now close to spent across all three parts**: the IIA sources after Part 2 round 3 and Part 1 round 14, the Knowledge sources after Part 2 round 6 and Part 3 round 2 (three thin Part 2 leads on ISA 500 and 520 and one Part 3 lead left), and both requirements that can be written ahead now. The Challenge pack holds 223 items, nine of them dated (six 2027-03-01, three 2027-06-01); its Section B fills one mock (26, 24 testable today, of 23), but Section E, fed by Part 3's Section D, holds 15 of 30, so no full Challenge mock can be drawn yet. The Topical Requirements Application Guidance is Background only (Part 2 round 1). |
 | **Next step** | Owner decisions of 26 Nov 2026 (section 9): Part 2's gate is about A 67, B 53, C 13; **write our own questions from free public sources** for the knowledge bullets (the textbook is on hold); and one expert agent per section. **Done 26 Nov 2026:** eleven section experts; 18 public Knowledge sources opened and listed (research log K1 to K18); **Part 2 rounds 4 and 5** (14 kept of 14, then 7 of 7); **Part 3 round 2** (3B1f, 3 kept of 3); **the Third-Party items written ahead** (6 kept of 6, `testable_from` 2027-03-01); and **the Organizational Behavior items written ahead** (5 kept of 5, `testable_from` 2027-06-01: Part 2's 2A5g three times, its first items, and Part 1's 1C2a twice; incentives, speak-up channels, training lists and gap follow-up left empty as repeats or recall only; nothing for Part 3, as the plan expected). **Done 28 Nov 2026: Part 2 round 6** on ISA 500 and 520 (K19, K20; opened 27 Nov 2026 once the owner allowed their host, use cleared by the owner 28 Nov 2026): 7 kept of 9 (`cia2_d1_049` to `052`, `cia2_d2_040` to `042`), two cut, R6-1 to R6-3 left empty. Scorecards in section 7. The two stems changed after the fresh blind test (`cia2_d2_040`, whose days off; `cia2_d2_042`, the limit set for normal-risk shops) were blind re-tested 2 of 2, both classed knowledge, neither ambiguous (step 7 of section 6). **Spent now:** the IIA sources, the Knowledge leads (Part 2 has three thin leads on ISA 500 and 520, R7-1 to R7-3 in `CIA_P2_COVERAGE.md` section 6; Part 3 one, 3B1f tokens on K11), and the Third-Party and Organizational Behavior requirements. **The opened sources are close to spent across all three parts:** another content round would yield a few items at best, against Part 2's gap of 21, 11 and 2 (15 in A from 1 Jun 2027). Before any round 7 on ISA 500 and 520, change the brief: the authors' options-only self-check did not lower round 6's options-only result (7 of 9 before and after the fix pass), so an independent options-only tester reads the drafts before the audit, keys name a concrete procedure rather than the principle, and one lesson list is agreed across the two sections first. Topic 2B5 takes no eighth item alone (its Apply mix; `CIA_P2_COVERAGE.md` section 4). What would open more, none of it available now: the textbook (on hold, owner, 26 Nov 2026); and the Organizational Resilience requirement (testable 2027-10-01), only if its text opens lessons distinct from the three items already on 2A3d, its one Part 2 bullet. **Next (recommended):** the app items still open in section 11 (wire each CIA pack's held-back form, the remaining "Domain" spots, the onboarding course choice, the glossary builder) and the compliance items for selling (section 9: the in-app IIA course switched to `available` only in the selling release, the trademark notice on the listing, paywall, terms, home and support pages, the free-sample builder for CIA). Why: every content lead left is thin, and none of these waits on a source. The owner decided on 27 Nov 2026 to build our own banks without an IIA licence (section 9); copyright and trademark rules still hold. After that, if no source opens: the hardening pass (section 6b, rule 12; `cia2_d1_047`'s two weak distractors are logged for it) and Part 3's Section D, the pinch for a full Challenge mock (Section E 15 of 30), which still waits on a new source or the owner's sale-gate decision. |
+| **Plain stems, stage 3 (opened 28 Nov 2026)** | FB-013: CIA stems now take the shared plain-stem caps (section 6d, rule 5; `style_cia.py` has no stem caps of its own, and the scenario variant is gone). The gate, the harness and the readability ratchet are changed, and the five stems that failed the new gate are rewritten (they still need their blind re-test). **Next for this pass:** rewrite the packed stems one section at a time, Part 1 Section A first (section 6d, the stages table and "Stage 3 opened"); 183 packed stems are left by the ratchet's count. |
 | **Then** | Part 2, Part 3, the Challenge build and the CISA bridge notes (from the outline), the cross-part release gate. |
 | **Known weak spot** | Difficulty. No pilot key was wrong and all four blind rounds agreed 80 of 80, but the last testers still called 21 of 80 answerable by test-taking alone, most in Sections B and D, and 8 items carry a TOO EASY or GIVEAWAY flag (section 7). New rounds must do better; the pilot items are candidates for a later hardening pass, not for more polishing now (section 6b, rule 12). |
 
@@ -222,14 +223,20 @@ The gates, in the order a round runs them (details in `data/cia/tools/README.md`
 2. `style_cia.py`: the shared exam-style linter, run unchanged, then read with the
    CIA format exceptions written down in its docstring and in section 6d (owner
    decision, 28 Nov 2026): a lowercase qualifier is accepted; options may run to
-   18 words; the scenario variant (36 to 50 words, or 3 sentences) is let
-   through for at most 10% of a section file; an EXCEPT or NOT ask is an error.
-   Warnings, never failing: more than 25% of a file's stems naming a person or a
-   place, options without a terminal period, capitalised qualifiers left before
-   the stage 1 restyle, "IIA guidance" in a stem, "I and II" options. The switch
-   `--require-lowercase-qualifiers` (and `REQUIRE_LOWERCASE_QUALIFIERS` in the
-   script, off until the stage 1 restyle lands) makes a capitalised qualifier an
-   error. Every other shared rule, the length tells included, is unchanged.
+   18 words; an EXCEPT or NOT ask is an error; a capitalised qualifier is an
+   error (`REQUIRE_LOWERCASE_QUALIFIERS`, on since the stage 1 restyle).
+   **Stems take the shared plain-stem caps with no CIA exception** (FB-013,
+   28 Nov 2026; section 6d, rule 5): at most 45 words and 4 sentences; over 35
+   words no semicolon, no two possessives in one noun phrase and no sentence
+   over 20 words; per file, from 40 items, a median of 35 words or under and at
+   most 25% of stems over 35. In the generated Challenge files those two
+   per-file lines are a note, not a failure (the fix belongs in the Part
+   files). Warnings, never failing: more than 25% of a file's stems naming a
+   person or a place, options without a terminal period, "IIA guidance" in a
+   stem, "I and II" options. Every other shared rule, the length tells
+   included, is unchanged. `scripts/check_readability.py` (in
+   `scripts/verify_repo.sh`) counts the packed stems left in each Part file
+   and fails if a count rises above `scripts/readability_baseline.json`.
 3. `check_stale_terms.py`: no 2019-syllabus, 2017-Standards or ISACA wording. Each banned term carries its evidence in `shared/stale_terms.json`. "IPPF" alone is not banned: the 2024 Standards still describe the framework. The 2019 part and domain names are not on the list yet because no opened source confirms them (an open item in the blueprint).
 4. `check_currency.py`: dated facts, and Topical Requirements that are not testable yet.
 5. Citations: inside `check_cia.py` (library bullets; the first citation Verified).
@@ -404,12 +411,14 @@ WOULD be right | key letter | key longest or shortest`.
    does not fit this stem's facts. Then a final blind test of what changed.
 9. **Write in The IIA's question format** (section 6d): roles, not names; a
    lowercase qualifier; options as full sentences or parallel verb phrases of
-   up to 18 words, each ending with a period; a stem median of 20 to 28 words
-   for the round, at least a third at 25 words or fewer, at most one semicolon
-   a stem, and the scenario variant (up to 3 sentences and 50 words) for at
-   most 1 item in 10 of a section file. The scaffold table adds a column: the
-   stem's word count, and the one fact that decides the final two. A shorter
-   stem keeps that fact; difficulty never comes from padding.
+   up to 18 words, each ending with a period; plain stems (section 6d, rule
+   5): one fact per short sentence, then the question in its own sentence, no
+   semicolon and no possessive chain; a stem median of 20 to 28 words for the
+   round, at least a third at 25 words or fewer, at most 1 stem in 10 over 35
+   words and no sentence over 25 words (the gate's hard limits are 45 words
+   and 4 sentences). The scaffold table adds a column: the stem's word count,
+   and the one fact that decides the final two. A shorter stem keeps that
+   fact; difficulty never comes from padding.
 10. **Calculation items** (only on 2B5a and 2B5b today; the section 6d rules):
     every input in the stem, at most four round figures in one currency;
     numeric options in ascending order, the key letter balanced by choosing
@@ -461,10 +470,23 @@ question format" in `.claude/agents/cia-standards-auditor.md`; the gate is
    cited ("Under the Global Internal Audit Standards"), occasionally; never
    "IIA guidance" in a stem (warning).
 4. **"The chief audit executive (CAE)"** once in the stem, then "CAE".
-5. **Stems.** The 35-word cap stays; new rounds aim at a median of 20 to 28
-   words (section 6c, rule 9). The scenario variant, up to 3 sentences and 50
-   words, for at most 1 item in 10 per section file (error above). No
-   `scenario_context` field.
+5. **Stems: plain sentences** (FB-013; owner decision, 28 Nov 2026; the
+   shared rule in `docs/content/EXAM_STYLE_V2.md`, "Plain stems", with no CIA
+   exception). A beta tester said some questions read like "jumbled words":
+   the old 35-word, two-sentence cap had pushed each scenario into one packed
+   sentence. The IIA's own samples are plain short sentences (0 semicolons and
+   0 possessive chains in 23). So: one fact per short sentence, then the
+   question in its own last sentence; the organization after the role ("the
+   maintenance head at a ferry operator"); the small words kept; the thing
+   named instead of "it" or "its" when two things could be meant. The gate
+   (errors): aim for 35 words; at most 45 words and 4 sentences; a stem over
+   35 words has no semicolon, no two possessives in one noun phrase and no
+   sentence over 20 words; per file, a median of 35 words or under and at most
+   25% of stems over 35. **New rounds still aim shorter:** a median of 20 to
+   28 words, at most 1 stem in 10 over 35 words, no sentence over 25 words
+   (section 6c, rule 9; scorecard measures). This replaces the 35-word cap and
+   the scenario variant (up to 3 sentences and 50 words for 1 item in 10),
+   both gone. No `scenario_context` field.
 6. **Options** up to 18 words (error above), full sentences or parallel verb
    phrases, each ending with a period (warning); no trailing ", as ..." reason
    frame unless all four carry one; no "I and II" combinations (warning).
@@ -494,9 +516,25 @@ The CISA, CRISC and AAIA banks keep the shared v2 standard
 |---|---|---|---|
 | 1, mechanical | Qualifiers to lowercase in every stem (and the 2 items whose tips or explanations capitalise one); a period on every option | After the phone app's priority-word fix (below) | No key re-test: meaning and key unchanged. Every gate, the Challenge pack rebuilt, the alignment read on a sample. In the same change `REQUIRE_LOWERCASE_QUALIFIERS` goes on in `style_cia.py`. |
 | 2, section by section | Names and countries to generic roles (stems, explanations and tips together), and tighter stems only where no deciding fact is lost | Folded into the hardening pass (section 6b, rule 12), one section at a time | Every changed stem blind re-tested (section 6c, rule 7) |
+| 3, plain-sentence pass | Packed stems rewritten in plain short sentences under rule 5 (semicolons, possessive chains, one long sentence carrying the whole scenario): about 210 stems. Every deciding fact, the key, the options, the lowercase qualifier and the generic roles stay; a stem may grow to 45 words | One section at a time, Part 1 Section A first, by its section expert with `question-readability-reviewer` | Every changed stem blind re-tested (section 6c, rule 7); each stem at least 0.5 similar to main (`check_ids.py`); after each section, `python3 scripts/check_readability.py --update` locks the lower count in |
 
 Not done on existing items: shortening stems toward The IIA's median (it would
 remove deciding facts), and longer, full-sentence options (new items only).
+
+**Stage 3 opened (28 Nov 2026).** The gate changed first: `style_cia.py` dropped
+its own stem caps and the scenario variant for the shared plain-stem caps, the
+harness proves each new limit, and the readability ratchet now counts the Part
+files. Five stems failed the new gate (each over 35 words with a semicolon or
+one sentence over 20 words) and were rewritten in the same change, with no key,
+option, explanation, tip or citation touched: `cia1_d1_115`, `cia1_d2_044`,
+`cia1_d3_099`, `cia2_d1_016`, `cia3_d4_010`. **These five still need their
+blind re-test**, with the section they belong to. Packed stems left (a
+semicolon or a possessive chain; the ratchet's baseline): Part 1 A 26, B 30,
+C 46, D 10 (112); Part 2 A 23, B 21, C 5 (49); Part 3 A 2, B 6, C 3, D 11
+(22); 183 in all, from 186 before the five rewrites. The pass's "about 210"
+adds the readability review's estimate of stems that are hard on a first read
+for another reason. Two expert reviews (the standards audit and the
+readability review, 28 Nov 2026) agreed CIA should take the shared caps.
 
 **Stage 1 done (28 Nov 2026, merged):** every CIA stem lowercased (MAIN made "primary"),
 a period on every option, the teaching pieces matched, `REQUIRE_LOWERCASE_QUALIFIERS`
@@ -598,8 +636,9 @@ in a row below 90%: stop and tell the owner.
 
 From 28 Nov 2026 (The IIA's question format, section 6d) each round's scorecard
 notes also give the round's stem median in words (target 20 to 28, at least a
-third at 25 or fewer) and its share of stems that name a person or a place
-(target about 1 in 5 at most).
+third at 25 or fewer), its share of stems over 35 words (target at most 1 in
+10), its longest sentence (target at most 25 words) and its share of stems
+that name a person or a place (target about 1 in 5 at most).
 
 | Round | Date | Pack and sections | Items | Blind agreement | HARD / PRECISION / OBSERVATION per 25 | Pick-longest | Items cut | Sources newly opened |
 |---|---|---|---|---|---|---|---|---|
@@ -2466,9 +2505,10 @@ IIA's 23 opened sample questions with the bank; counts only, nothing copied). Wh
 - **The format** (section 6d): generic roles by default (a name only to tell apart two
   people of the same role, a country only when its law or setting decides the key; about 1
   in 5 at most), lowercase qualifiers (required when the final two are both real duties),
-  "Which of the following ..." allowed, "the chief audit executive (CAE)" then "CAE", a stem
-  median of 20 to 28 words for new rounds with the 35-word cap kept and a scenario variant
-  (up to 3 sentences, 50 words) for at most 1 item in 10 per section file, options up to 18
+  "Which of the following ..." allowed, "the chief audit executive (CAE)" then "CAE", plain
+  stems under the shared rule (at most 45 words and 4 sentences; over 35 words no semicolon,
+  no possessive chain and no sentence over 20 words; the 35-word cap and the scenario
+  variant are gone) with a median of 20 to 28 words for new rounds, options up to 18
   words as full sentences or parallel verb phrases ending with a period, no EXCEPT or NOT
   asks, no "I and II" options, never "IIA guidance" in a stem, and calculation items on
   2B5a and 2B5b only. The length-tell gates and the two-plus-two rule are unchanged. The
@@ -2476,7 +2516,9 @@ IIA's 23 opened sample questions with the bank; counts only, nothing copied). Wh
 - **The existing bank is restyled in stages.** Stage 1, mechanical (lowercase qualifiers, a
   period on every option), after the phone app's priority-word fix. Stage 2, section by
   section: names and countries to generic roles, and tighter stems only where no deciding
-  fact is lost, each changed stem blind re-tested.
+  fact is lost, each changed stem blind re-tested. Stage 3, the plain-sentence pass
+  (FB-013): packed stems rewritten in short sentences, one section at a time, each changed
+  stem blind re-tested (section 6d).
 - **Current syllabuses only:** Parts 1 to 3 effective 2025, the Challenge effective 1 June
   2026.
 

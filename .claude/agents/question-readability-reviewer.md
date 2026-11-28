@@ -86,8 +86,9 @@ caused it.
   words must have no semicolon, no two possessives in one noun phrase and no
   sentence over 20 words. Per domain, the median stays at 35 or fewer and at
   most 25% of stems go over 35, so prefer the shortest plain version. CIA
-  items keep their own caps (35 words and 2 sentences, plus the CIA scenario
-  variant in `data/cia/tools/style_cia.py`). Options at most 12 words, and
+  items take the same stem caps since 28 Nov 2026 (`data/cia/tools/style_cia.py`
+  keeps only CIA's lowercase qualifiers, 18-word options and no EXCEPT or NOT
+  ask). Options at most 12 words, and
   parallel. `correct_explanation` 40–75 words, each `wrong_explanations`
   entry at most 30, `key_concept` and `pre_read` at most 25. Give the word
   count of every rewrite.
