@@ -162,9 +162,24 @@ Act when any of these holds:
   Phones and the web say "We'll try again soon". Grant it back to undo.
 - **Stop new sign-ups:** Supabase → Authentication → turn off "Allow new
   users to sign up".
-- **The no-password trigger disturbs a real sign-in flow:**
-  `drop trigger kaisip_clear_password on auth.users;` then fix it in a new
-  migration. (It never raises, so this should not happen.)
+- **The password guard disturbs a real flow** (since
+  `20261128000000_password_guard.sql`, which replaced `kaisip_clear_password`).
+  The guard never refuses a sign-in or a confirmation; it only wipes passwords
+  that arrived before the inbox was proven, and it raises
+  `kaisip_password_needs_recent_sign_in` (a 500 from PUT /user) on a stale
+  first password. Brake it graded, after re-running the three
+  `cloud_smoke.sh pre-register` probes:
+  - only adding a first password is refused wrongly: switch off rule 4b and
+    keep `kaisip_password_guard` (the H1 fix). Ownership-free:
+    `create or replace function private.guard_first_password_session() returns trigger language plpgsql set search_path = '' as $$ begin return null; end $$;`
+    (or `drop trigger kaisip_first_password_session on auth.users;` if allowed);
+  - only staff can't enrol an authenticator app:
+    `create or replace function private.guard_mfa_enrol() returns trigger language plpgsql security definer set search_path = '' as $$ begin return new; end $$;`
+    (or `drop trigger kaisip_mfa_staff_only on auth.mfa_factors;`);
+  - last resort, a sign-in or confirmation itself fails: also
+    `drop trigger kaisip_password_guard on auth.users;`.
+  Then fix it in a new migration. Runbook: `ACCOUNTS_BETA_PLAN.md`,
+  "Applying the password guard".
 - **A workflow changed without the owner's review** (`.github/CODEOWNERS`,
   security audit M3): reset the database password at once (Database →
   Settings), update `SUPABASE_DB_URL` in the `db-backup` environment, and

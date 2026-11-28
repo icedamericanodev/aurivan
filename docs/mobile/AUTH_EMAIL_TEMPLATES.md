@@ -37,11 +37,18 @@ For each template below:
 
 ---
 
-## 1. Magic Link (the sign-in code for an existing account)
+> **Owner decision, 28 Nov 2026 (second):** learners sign in with Google or
+> email + password. Emailed codes only confirm an email address and reset a
+> password (`docs/WEB_LAUNCH_PLAN.md`), so these emails say "confirmation
+> code". Beta Desk staff still sign in with an email code plus an
+> authenticator app (`docs/beta/BETA_DESK.md`); that staff sign-in is not
+> covered by the learner rule and uses template 1.
+
+## 1. Magic Link (a code for an existing account; Beta Desk staff sign-in)
 
 **Subject:**
 ```
-Your KaiSip sign-in code
+Your KaiSip confirmation code
 ```
 
 **Body:**
@@ -49,7 +56,7 @@ Your KaiSip sign-in code
 <h2 style="font-family:Arial,Helvetica,sans-serif;color:#17231B">Your KaiSip code</h2>
 <p style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#17231B">Enter this 8-digit code in the KaiSip app or on the KaiSip website to continue:</p>
 <p style="font-family:'Courier New',Courier,monospace;font-size:32px;font-weight:700;letter-spacing:8px;color:#17231B">{{ .Token }}</p>
-<p style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#17231B">It works for 10 minutes. If you didn’t ask for it, you can ignore this email: nobody can sign in without the code.</p>
+<p style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#17231B">It works for 10 minutes. If you didn’t ask for it, you can ignore this email: nobody can use your account without the code.</p>
 <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#465349">KaiSip never asks for this code by email, chat or phone. Don’t share it with anyone.</p>
 ```
 
@@ -57,7 +64,7 @@ Your KaiSip sign-in code
 
 **Subject:**
 ```
-Your KaiSip sign-in code
+Your KaiSip confirmation code
 ```
 
 **Body:** the same as template 1. (A learner signing in for the first time
@@ -102,11 +109,11 @@ Confirm your new email for KaiSip
 ## 5. Reset Password (the "Forgot password" code)
 
 Sent when a learner taps **Forgot password** (passwords: owner decision,
-28 Nov 2026). It is also how someone who signed up with Google or a code adds
-a password later. A code, never a link: it works on any device, and email
+28 Nov 2026). It is also how someone who signed up with Google adds a
+password later. A code, never a link: it works on any device, and email
 scanners can't use it up. (Since 28 Nov 2026 this replaces the old "sign-in
 code" wording here.) The wording does not claim the reset code is the only way
-in: a sign-in code works the same way (password audit MEDIUM-1).
+in: an email confirmation code works the same way (the Auth server keeps both in one token; password audit MEDIUM-1).
 
 **Subject:**
 ```

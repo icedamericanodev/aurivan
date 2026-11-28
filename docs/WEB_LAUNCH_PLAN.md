@@ -68,16 +68,39 @@ loop. Nothing goes public until its gate says so.
    client (`mobile/src/webcloud/`), so web and phone use one implementation.
 
 ### B. Website version with sign-in and sync (web v14, MAJOR)
-1. `index.html`: sign-in screen (Google, emailed code, email + password,
-   forgot password), the Account section (status, Sync now, Download my
+1. `index.html`: sign-in screen (Google, email + password, forgot password;
+   sign-up confirms the email with a code), the Account section (status, Sync now, Download my
    data, Delete synced progress, Delete account, sign out), first-sync
    preview and undo, Terms and 16+.
 2. New pages: `delete-account.html`, `human-check.html` (Turnstile); CSP and
    `_headers` updates; `build_site.sh` publishes them.
-3. Where the study app lives on kaisip.com (keep the home page at `/` and
-   the app at a short path) is a step-4 decision for the experts.
+3. The study app goes to `https://kaisip.com/app/` (owner, 28 Nov 2026: open
+   the web version now for iPhone users; free CISA sample, no sign-in yet),
+   with the home page staying at `/`.
 4. Stays behind the `ACCOUNTS_ON` switch (preview only) until every go-live
    gate is ticked.
+5. **Sign-up consent (owner, 28 Nov 2026).** On the first sign-up step,
+   before "Send my code" and before Google: required "I agree to the Terms
+   and Privacy Policy" and "I'm 16 or older"; a separate, optional, unticked
+   "Email me study tips and KaiSip news. I can unsubscribe anytime." The
+   choice is stored with its wording version and time, can be changed in the
+   Account section, and every such email has an unsubscribe link. Sending the
+   opted-in addresses to Kit comes later (an Edge Function with Kit's key as
+   a Function secret). Wording checked by `app-store-compliance-reviewer`
+   and `growth-marketer`; the privacy policy is updated in the same release.
+6. **Design (owner asked for a creative web design, 28 Nov 2026).** Three
+   directions were drawn (Grove Atelier, Working Paper, Canopy); the designer
+   recommends Grove Atelier with Working Paper's joined code cells and tick
+   marks. Waiting for the owner's pick. Sign-up order is email, then the
+   code, then the password.
+7. **Sessions.** A sign-in lasts at most 30 days (NIST SP 800-63B-4 2.1.3):
+   a nightly database job removes older sessions, and the apps say "please
+   sign in again to keep syncing" and never touch saved progress.
+8. **Beta Desk behind Cloudflare Access (owner approved, 28 Nov 2026).** A
+   Zero Trust Access application on `kaisip.com/beta-desk` (and its script),
+   allow-list of the owner's email, as a layer in front of the existing
+   two-step sign-in. The old `kaisip.certprep-support.workers.dev` address
+   must be switched off or covered too, or it bypasses Access.
 
 ### C. Android 2.4 with sign-in and sync
 1. Supabase adapters, the sign-in and account screens, in-app account
@@ -184,7 +207,9 @@ Public sign-in waits for every gate in `docs/mobile/ACCOUNTS_BETA_PLAN.md`
   `app-store-compliance-reviewer`.
 - [ ] 20. The Phone provider stays OFF (the guard watches the email columns
   only), and `auth.mfa_factors` has no learner rows (only accounts in
-  `private.beta_desk_admins` or `private.staff`).
+  `private.beta_desk_admins` or `private.staff`). Hosted proof: the full
+  `cloud_smoke.sh` run's "learner A cannot enrol an authenticator app" answers
+  500 (POST `/auth/v1/factors`, the database refusing the row).
 
 Emergency-brake numbers (audit MEDIUM-1 and MEDIUM-2): in the weekly Auth-log
 look, more than 20 `invalid_credentials` for one address in a day, more than
@@ -195,8 +220,10 @@ traffic.
 
 ## Owner checklist for this plan (only you can do these)
 
-1. Buy GitHub Pro, then turn on "Require review from Code Owners" on `main`
-   (gate 4). Recreate the `ota` and `db-backup` environments.
+1. GitHub Pro is active (28 Nov 2026). Gate 4 as rewritten in
+   `ACCOUNTS_BETA_PLAN.md`: both environments limited to `main` with the only
+   copies of their secrets, admin bypass off, `main` protected, Code Owners
+   review left off (Claude acts through the owner's account).
 2. The remaining items in `ACCOUNTS_BETA_PLAN.md` section 9 (Supabase
    settings, Turnstile, the restore drill, go-live day).
 3. Passwords: after Claude says the password guard is applied and its

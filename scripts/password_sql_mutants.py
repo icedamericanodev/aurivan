@@ -51,7 +51,7 @@ MUTANTS = {
     ],
     "rule 3 case-sensitive": [(r"lower\(new\.email\) is distinct from", "new.email is distinct from")],
     "rule 4 never refuses (before the write)": [
-        (r"    raise exception 'kaisip_password_needs_recent_sign_in'\n      using errcode = 'P0001',\n            hint = 'Sign in again[^;]*;",
+        (r"    raise exception 'kaisip_password_needs_recent_sign_in'\n      using errcode = 'P0001',\n            hint = 'Confirm it is you again[^;]*;",
          "    return new;"),
     ],
     "rule 1 gone (insert keeps the password)": [
@@ -99,11 +99,51 @@ MUTANTS = {
     "MFA refuses board staff": [
         (r"\n     and not exists \(select 1 from private\.staff s where s\.user_id = new\.user_id\) then", " then"),
     ],
-    "MFA guard runs as the caller": [(r"language plpgsql security definer set search_path = ''", "language plpgsql set search_path = ''")],
+    "MFA guard runs as the caller": [
+        (r"(create function private\.guard_mfa_enrol\(\) returns trigger\nlanguage plpgsql) security definer", r"\1"),
+    ],
     "MFA trigger missing": [(r"create trigger kaisip_mfa_staff_only\n[^;]*;", "")],
     "MFA guard executable by learners": [
-        (r"revoke all on function private\.guard_mfa_enrol\(\) from public, anon, authenticated;",
+        (r"revoke all on function private\.guard_mfa_enrol\(\) from public, anon, authenticated, service_role;",
          "grant execute on function private.guard_mfa_enrol() to authenticated;"),
+    ],
+    "commit-time guard executable by the service role": [
+        (r"revoke all on function private\.guard_first_password_session\(\) from public, anon, authenticated, service_role;",
+         "revoke all on function private.guard_first_password_session() from public, anon, authenticated;"
+         " grant execute on function private.guard_first_password_session() to service_role;"),
+    ],
+    # ── Implementation review (N1, N2, N4, S3) ──
+    "rule 2 removed": [
+        (r"  -- Rule 2: becoming confirmed now\.\n  if new\.email_confirmed_at is not null and old\.email_confirmed_at is null then\n"
+         r"    new\.encrypted_password := '';\n    return new;\n  end if;\n", ""),
+    ],
+    "rule 3 removed": [
+        (r"  -- Rule 3: the address changed[^\n]*\n  if old\.email is not null[^\n]*\n    new\.encrypted_password := '';\n    return new;\n  end if;\n", ""),
+    ],
+    "rule 4 counts other accounts' sessions": [
+        (r"(       select 1 from auth\.sessions s\n)       where s\.user_id = new\.id\n         and (s\.created_at > now\(\))",
+         r"\1       where \2"),
+    ],
+    "rule 4b: 'at least one fresh session' removed": [
+        (r"  if not exists \(select 1 from auth\.sessions s\n                 where s\.user_id = new\.id and s\.created_at > now\(\) - interval '10 minutes'\)\n     or exists",
+         "  if exists"),
+    ],
+    "rule 4b: any account's fresh session counts": [
+        (r"where s\.user_id = new\.id and s\.created_at > now\(\) - interval '10 minutes'\)\n     or exists",
+         "where s.created_at > now() - interval '10 minutes')\n     or exists"),
+    ],
+    "rule 4b: any account's old session counts": [
+        (r"                where s\.user_id = new\.id\n                  and \(s\.created_at is null", "                where (s.created_at is null"),
+    ],
+    "rule 4b: exactly one session": [
+        (r"  if not exists \(select 1 from auth\.sessions s\n                 where s\.user_id = new\.id and s\.created_at > now\(\) - interval '10 minutes'\)\n",
+         "  if (select count(*) from auth.sessions s where s.user_id = new.id) <> 1\n"),
+    ],
+    "rule 4b: a deleted account is still checked": [
+        (r"  if not exists \(select 1 from auth\.users u where u\.id = new\.id\) then\n    return null;[^\n]*\n  end if;\n", ""),
+    ],
+    "MFA guard ignores a factor moved to a learner": [
+        (r"before insert or update of user_id on auth\.mfa_factors", "before insert on auth.mfa_factors"),
     ],
     "password guard without a fixed search_path": [
         (r"(create function private\.guard_password\(\) returns trigger\nlanguage plpgsql) set search_path = ''", r"\1"),
@@ -114,8 +154,28 @@ MUTANTS = {
 }
 
 
+def code_only(sql: str) -> str:
+    """The SQL without its -- comment lines, so a mutant that only edits a comment is caught here."""
+    return "\n".join(line for line in sql.splitlines() if not line.lstrip().startswith("--"))
+
+
+def order_ok(src: str) -> bool:
+    """Audit LOW-2, checked on the text (no test can see statement order): the
+    old trigger is dropped only after every new trigger exists."""
+    src = code_only(src)
+    drop = src.find("drop trigger kaisip_clear_password on auth.users;")
+    creates = [src.find(t) for t in ("create trigger kaisip_password_guard",
+                                     "create constraint trigger kaisip_first_password_session",
+                                     "create trigger kaisip_mfa_staff_only")]
+    return drop > 0 and all(0 <= c < drop for c in creates)
+
+
 def main() -> int:
     src = open(os.path.join(MIG_DIR, TARGET)).read()
+    if not order_ok(src):
+        print("the old trigger must be dropped AFTER every new trigger is created (audit LOW-2)")
+        return 2
+    print("  ok: the old trigger is dropped after the new ones are created")
     work = tempfile.mkdtemp(prefix="password-mutants-")
     try:
         clean = os.path.join(work, "clean")
@@ -130,8 +190,8 @@ def main() -> int:
                 mutated, n = re.subn(pattern, replacement, mutated, count=1)
                 if n != 1:
                     ok = False
-            if not ok or mutated == src:
-                print(f"  ? {name}: pattern not found (update this script with the migration)")
+            if not ok or code_only(mutated) == code_only(src):
+                print(f"  ? {name}: pattern not found, or it only changed a comment (update this script)")
                 missed += 1
                 continue
             d = os.path.join(work, "mut")

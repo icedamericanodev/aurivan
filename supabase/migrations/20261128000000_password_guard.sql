@@ -1,6 +1,5 @@
 -- KaiSip: passwords allowed, the pre-registration takeover still blocked
--- (28 Nov 2026; owner decision: Google, an emailed 8-digit code, and email +
--- password). NOT APPLIED ANYWHERE. Applied after
+-- (28 Nov 2026; owner decision: Google or email + password; emailed 8-digit codes only confirm an email address and reset a password). NOT APPLIED ANYWHERE. Applied after
 -- 20261109000000_beta_desk_sign_in.sql. Append-only once applied.
 -- Design: docs/mobile/PASSWORD_SIGN_IN_DESIGN.md (§3); security audit:
 -- docs/mobile/PASSWORD_DESIGN_AUDIT.md (HIGH-1, HIGH-2, LOW-2 are fixed here).
@@ -44,9 +43,9 @@
 --
 --  6. Authenticator apps (MFA factors) are for STAFF only (audit HIGH-2): only
 --     an account in private.beta_desk_admins or private.staff may enrol a
---     factor. With passwords, a thief who got a password in could enrol TOTP
+--     factor (or have one moved to it). With passwords, a thief who got a password in could enrol TOTP
 --     and lock the real owner out ("Forgot password" and removing the factor
---     both need aal2). Existing factors are untouched (insert only), so the
+--     both need aal2). Existing factors are untouched (new rows only), so the
 --     Beta Desk admins and board staff keep their authenticator apps. To add
 --     a staff member: put the account on the list FIRST, then they enrol.
 --
@@ -55,14 +54,25 @@
 -- only: extend this guard before phone is ever enabled).
 -- Restores (SCALING.md §7) load data with session_replication_role =
 -- replica, so these triggers do not fire and restored passwords survive.
--- Emergency brake, if it ever disturbs a real sign-in flow (no app release),
--- after re-running the three `cloud_smoke.sh pre-register` probes:
---   drop trigger kaisip_first_password_session on auth.users;
---   drop trigger kaisip_password_guard on auth.users;
--- (the Auth server still clears pre-registered passwords on the code, reset
--- and Google paths, and the apps never call /signup), then fix it in a new
--- migration. The MFA rule has its own brake:
---   drop trigger kaisip_mfa_staff_only on auth.mfa_factors;
+-- Emergency brakes, if a guard ever disturbs a real flow (no app release;
+-- re-run the three `cloud_smoke.sh pre-register` probes first). Graded: undo
+-- only the part that misbehaves.
+--  * Only ADDING a first password is refused wrongly: switch off rule 4b and
+--    keep kaisip_password_guard (rules 1 to 4, the H1 fix). Ownership-free
+--    (works even if `drop trigger` on auth.users is not allowed):
+--      create or replace function private.guard_first_password_session() returns trigger
+--        language plpgsql set search_path = '' as $b$ begin return null; end $b$;
+--    or, if allowed: drop trigger kaisip_first_password_session on auth.users;
+--  * Only staff can't enrol an authenticator app:
+--      create or replace function private.guard_mfa_enrol() returns trigger
+--        language plpgsql security definer set search_path = '' as $b$ begin return new; end $b$;
+--    or, if allowed: drop trigger kaisip_mfa_staff_only on auth.mfa_factors;
+--  * A sign-in or confirmation itself fails (last resort): also
+--      drop trigger kaisip_password_guard on auth.users;
+--    (the Auth server still clears pre-registered passwords on the code, reset
+--    and Google paths, and the apps never call /signup).
+-- Then fix it in a new migration. Runbook: docs/mobile/ACCOUNTS_BETA_PLAN.md
+-- "Applying the password guard".
 --
 -- Order (audit LOW-2): the new functions and triggers are created FIRST and
 -- the old trigger is dropped LAST, so even if this file ever ran outside one
@@ -119,13 +129,13 @@ begin
   then
     raise exception 'kaisip_password_needs_recent_sign_in'
       using errcode = 'P0001',
-            hint = 'Sign in again (code, Google or password), then set the password within 10 minutes.';
+            hint = 'Confirm it is you again (Google, password, or a reset code), then set the password within 10 minutes.';
   end if;
 
   -- Rule 5: a change to an existing password, or any other update.
   return new;
 end $$;
-revoke all on function private.guard_password() from public, anon, authenticated;
+revoke all on function private.guard_password() from public, anon, authenticated, service_role;
 
 create trigger kaisip_password_guard
   before insert or update of email_confirmed_at, encrypted_password, email on auth.users
@@ -135,7 +145,8 @@ create trigger kaisip_password_guard
 -- Runs at COMMIT. PUT /auth/v1/user has by then deleted every OTHER session of
 -- the account in the same transaction (models.LogoutAllExceptMe), so what is
 -- left is the requester's own session. A session with no created_at counts
--- as old.
+-- as old. An account deleted later in the same transaction is skipped (its
+-- sessions went with it, and so did the password).
 create function private.guard_first_password_session() returns trigger
 language plpgsql set search_path = '' as $$
 begin
@@ -143,6 +154,9 @@ begin
      or coalesce(new.encrypted_password, '') = ''
      or coalesce(old.encrypted_password, '') <> '' then
     return null;                       -- not a first password on a confirmed account
+  end if;
+  if not exists (select 1 from auth.users u where u.id = new.id) then
+    return null;                       -- the account is gone by commit
   end if;
   if not exists (select 1 from auth.sessions s
                  where s.user_id = new.id and s.created_at > now() - interval '10 minutes')
@@ -156,7 +170,7 @@ begin
   end if;
   return null;
 end $$;
-revoke all on function private.guard_first_password_session() from public, anon, authenticated;
+revoke all on function private.guard_first_password_session() from public, anon, authenticated, service_role;
 
 create constraint trigger kaisip_first_password_session
   after update of encrypted_password on auth.users
@@ -175,10 +189,10 @@ begin
   end if;
   return new;
 end $$;
-revoke all on function private.guard_mfa_enrol() from public, anon, authenticated;
+revoke all on function private.guard_mfa_enrol() from public, anon, authenticated, service_role;
 
 create trigger kaisip_mfa_staff_only
-  before insert on auth.mfa_factors
+  before insert or update of user_id on auth.mfa_factors
   for each row execute function private.guard_mfa_enrol();
 
 -- ── Retire the wipe-every-password rule (last: audit LOW-2) ─────────

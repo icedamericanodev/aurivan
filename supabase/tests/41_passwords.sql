@@ -10,18 +10,53 @@
 -- Run: supabase test db   (CI: .github/workflows/supabase.yml)
 --      or bash scripts/beta_desk/pg_local.sh supabase/tests/41_passwords.sql
 begin;
-select plan(70);
+select plan(75);
+
+-- The Auth server writes as its own role, supabase_auth_admin, which owns the
+-- auth tables and has NO execute grant on the guards (the triggers must still
+-- fire, and the MFA guard must still read the private lists). Where this
+-- session may become that role (the local shim, scripts/beta_desk/shim.sql),
+-- the writes below run as it; on a stack where it can't, they run as the test
+-- user. pgTAP's own bookkeeping always runs as the test user.
+create function pg_temp.become_auth() returns void language plpgsql as $f$
+begin
+  if exists (select 1 from pg_roles where rolname = 'supabase_auth_admin')
+     and pg_has_role(current_user, 'supabase_auth_admin', 'MEMBER') then
+    set local role supabase_auth_admin;
+  end if;
+end $f$;
+
+-- One write as the Auth server (no commit-time check).
+create function pg_temp.as_auth(p_sql text) returns void language plpgsql as $f$
+begin
+  perform pg_temp.become_auth();
+  execute p_sql;
+  reset role;
+end $f$;
+
+-- One write as the Auth server, then its COMMIT: the test file ends in
+-- rollback, so the commit-time check is forced with SET CONSTRAINTS ...
+-- IMMEDIATE, then deferred again for the next case. It also runs any check
+-- still pending from earlier statements, so use it only where those are valid.
+create function pg_temp.commit_as_auth(p_sql text) returns void language plpgsql as $f$
+begin
+  perform pg_temp.become_auth();
+  execute p_sql;
+  set constraints all immediate;   -- the COMMIT-time check runs here
+  set constraints all deferred;
+  reset role;
+end $f$;
 
 -- PUT /auth/v1/user as the Auth server runs it (internal/api/user.go,
 -- models.User.UpdatePassword), in one transaction: write the hash, sign out
 -- every OTHER session (LogoutAllExceptMe; every session when p_session is
--- NULL, as the admin API does), then COMMIT. The test file ends in rollback, so
--- the commit-time check is forced with SET CONSTRAINTS ... IMMEDIATE, then
--- deferred again for the next case. p_sign_in_now adds a fresh session of the
--- same account just before the commit (the owner signing in at that moment).
+-- NULL, as the admin API does), then COMMIT. p_sign_in_now adds a fresh
+-- session of the same account just before the commit (a sign-in landing at
+-- that moment).
 create function pg_temp.put_user(p_user uuid, p_session uuid, p_hash text, p_sign_in_now boolean default false)
 returns void language plpgsql as $f$
 begin
+  perform pg_temp.become_auth();
   update auth.users set encrypted_password = p_hash where id = p_user;
   delete from auth.sessions where user_id = p_user and (p_session is null or id <> p_session);
   if p_sign_in_now then
@@ -29,6 +64,7 @@ begin
   end if;
   set constraints all immediate;   -- the COMMIT-time check runs here
   set constraints all deferred;
+  reset role;
 end $f$;
 
 -- ── 0. The triggers and their functions ────────────────────────────
@@ -40,8 +76,11 @@ select ok(not has_function_privilege('anon', 'private.guard_password()', 'execut
           and not has_function_privilege('anon', 'private.guard_first_password_session()', 'execute')
           and not has_function_privilege('authenticated', 'private.guard_first_password_session()', 'execute')
           and not has_function_privilege('anon', 'private.guard_mfa_enrol()', 'execute')
-          and not has_function_privilege('authenticated', 'private.guard_mfa_enrol()', 'execute'),
-  'app roles cannot execute any of the three guards');
+          and not has_function_privilege('authenticated', 'private.guard_mfa_enrol()', 'execute')
+          and not has_function_privilege('service_role', 'private.guard_password()', 'execute')
+          and not has_function_privilege('service_role', 'private.guard_first_password_session()', 'execute')
+          and not has_function_privilege('service_role', 'private.guard_mfa_enrol()', 'execute'),
+  'app roles and the service role cannot execute any of the three guards');
 select is((select prosecdef from pg_proc where oid = 'private.guard_password()'::regprocedure), false,
   'the password guard runs as the caller, not as its owner');
 select is((select prosecdef from pg_proc where oid = 'private.guard_first_password_session()'::regprocedure), false,
@@ -76,7 +115,11 @@ select is((select array_agg(a.attname::text order by a.attname) from pg_trigger 
 select trigger_is('auth', 'mfa_factors', 'kaisip_mfa_staff_only', 'private', 'guard_mfa_enrol',
   'kaisip_mfa_staff_only calls private.guard_mfa_enrol');
 select is((select tgtype::int from pg_trigger where tgrelid = 'auth.mfa_factors'::regclass and tgname = 'kaisip_mfa_staff_only'),
-  7, 'kaisip_mfa_staff_only is BEFORE INSERT, FOR EACH ROW');
+  23, 'kaisip_mfa_staff_only is BEFORE INSERT OR UPDATE, FOR EACH ROW');
+select is((select array_agg(a.attname::text order by a.attname) from pg_trigger t
+           join pg_attribute a on a.attrelid = t.tgrelid and a.attnum = any (t.tgattr)
+           where t.tgrelid = 'auth.mfa_factors'::regclass and t.tgname = 'kaisip_mfa_staff_only'),
+  array['user_id'], 'it fires on updates of user_id (a factor moved to another account)');
 select is((select count(*)::int from pg_trigger
            where tgname in ('kaisip_password_guard', 'kaisip_first_password_session', 'kaisip_mfa_staff_only')
              and tgenabled = 'O'),
@@ -104,6 +147,39 @@ select lives_ok($$ select pg_temp.put_user('00000000-0000-0000-0000-0000000000c1
   'the owner''s own fresh session adds a first password (checked at commit)');
 select is((select encrypted_password from auth.users where id = '00000000-0000-0000-0000-0000000000c1'),
   '$2a$10$owner.fresh', 'and it is kept');
+
+-- c8: the owner's fresh session sets a first password while another fresh
+-- sign-in of the same account lands before the commit: two fresh sessions are
+-- fine (the rule is "none old", not "exactly one").
+insert into auth.users (id, email, email_confirmed_at, encrypted_password)
+  values ('00000000-0000-0000-0000-0000000000c8', 'c8@test.invalid', now() - interval '1 day', '');
+insert into auth.sessions (id, user_id, created_at)
+  values ('00000000-0000-0000-0000-0000000000b9', '00000000-0000-0000-0000-0000000000c8', now() - interval '1 minute');
+select lives_ok($$ select pg_temp.put_user('00000000-0000-0000-0000-0000000000c8',
+                                           '00000000-0000-0000-0000-0000000000b9', '$2a$10$c8.owner', true) $$,
+  'a fresh session adds a first password even if another fresh sign-in lands at the same moment');
+
+-- c9: ANOTHER account's old sessions don't count against this one at commit.
+insert into auth.users (id, email, email_confirmed_at, encrypted_password) values
+  ('00000000-0000-0000-0000-0000000000c9', 'c9@test.invalid', now() - interval '1 day', ''),
+  ('00000000-0000-0000-0000-0000000000ca', 'ca@test.invalid', now() - interval '1 day', '');
+insert into auth.sessions (id, user_id, created_at) values
+  ('00000000-0000-0000-0000-0000000000ba', '00000000-0000-0000-0000-0000000000c9', now() - interval '1 minute'),
+  ('00000000-0000-0000-0000-0000000000bb', '00000000-0000-0000-0000-0000000000ca', now() - interval '3 hours');
+select lives_ok($$ select pg_temp.put_user('00000000-0000-0000-0000-0000000000c9',
+                                           '00000000-0000-0000-0000-0000000000ba', '$2a$10$c9.owner') $$,
+  'another account''s old session does not block a first password at commit');
+
+-- cb: a first password, then the account is deleted in the same transaction:
+-- nothing is left to check at commit.
+insert into auth.users (id, email, email_confirmed_at, encrypted_password)
+  values ('00000000-0000-0000-0000-0000000000cb', 'cb@test.invalid', now() - interval '1 day', '');
+insert into auth.sessions (id, user_id, created_at)
+  values ('00000000-0000-0000-0000-0000000000bc', '00000000-0000-0000-0000-0000000000cb', now());
+select lives_ok($$ select pg_temp.commit_as_auth($q$
+                     update auth.users set encrypted_password = '$2a$10$cb.gone' where id = '00000000-0000-0000-0000-0000000000cb';
+                     delete from auth.users where id = '00000000-0000-0000-0000-0000000000cb' $q$) $$,
+  'an account deleted after its first password, before the commit, is not checked');
 
 -- c2: an old session asks while the owner holds a fresh one (so the check
 -- before the write passes), and another fresh sign-in of the same account
@@ -195,9 +271,13 @@ select lives_ok($$ update auth.users set encrypted_password = '$2a$10$owner.chos
   'right after the code, the owner''s own new session saves a password');
 select is((select encrypted_password from auth.users where id = '00000000-0000-0000-0000-0000000000f1'),
   '$2a$10$owner.chosen', 'and it is kept');
-select lives_ok($$ update auth.users set last_sign_in_at = now()
-                   where id = '00000000-0000-0000-0000-0000000000f1' $$,
-  'other changes to the account still work...');
+-- A sign-in's write, touching every column the two password triggers watch,
+-- run to its commit: both triggers fire, nothing is refused.
+select lives_ok($$ select pg_temp.commit_as_auth($q$
+                     update auth.users set last_sign_in_at = now(), encrypted_password = encrypted_password,
+                            email = email, email_confirmed_at = email_confirmed_at
+                     where id = '00000000-0000-0000-0000-0000000000f1' $q$) $$,
+  'other changes to the account still work, through to the commit...');
 select is((select encrypted_password from auth.users where id = '00000000-0000-0000-0000-0000000000f1'),
   '$2a$10$owner.chosen', '...and keep the password');
 
@@ -277,7 +357,7 @@ select throws_ok($$ update auth.users set encrypted_password = '$2a$10$admin.set
                     where id = '00000000-0000-0000-0000-0000000000f6' $$,
   'P0001', 'kaisip_password_needs_recent_sign_in',
   'with no recent sign-in of its own (another account''s fresh session doesn''t count), no first password');
--- f5 signs in again (a code, Google or a reset code): a new session.
+-- f5 confirms it is them again (Google, a password or a reset code): a new session.
 insert into auth.sessions (id, user_id, created_at)
   values ('00000000-0000-0000-0000-0000000000a6', '00000000-0000-0000-0000-0000000000f5', now() - interval '9 minutes');
 select lives_ok($$ update auth.users set encrypted_password = '$2a$10$owner.later'
@@ -302,32 +382,37 @@ insert into auth.users (id, email, email_confirmed_at) values
   ('00000000-0000-0000-0000-0000000000d3', 'board-staff@test.invalid', now());
 insert into private.beta_desk_admins (user_id) values ('00000000-0000-0000-0000-0000000000d2');
 insert into private.staff (user_id, role) values ('00000000-0000-0000-0000-0000000000d3', 'moderator');
-select throws_ok($$ insert into auth.mfa_factors (id, user_id, friendly_name, factor_type, status, created_at, updated_at)
-                    values (gen_random_uuid(), '00000000-0000-0000-0000-0000000000d1', 'thief', 'totp', 'unverified', now(), now()) $$,
+select throws_ok($$ select pg_temp.as_auth($q$ insert into auth.mfa_factors (id, user_id, friendly_name, factor_type, status, created_at, updated_at)
+                    values (gen_random_uuid(), '00000000-0000-0000-0000-0000000000d1', 'thief', 'totp', 'unverified', now(), now()) $q$) $$,
   'P0001', 'kaisip_mfa_staff_only',
   'a learner''s account cannot enrol an authenticator app (a thief could lock the owner out)');
-select throws_ok($$ insert into auth.mfa_factors (id, user_id, friendly_name, factor_type, status, created_at, updated_at, phone)
-                    values (gen_random_uuid(), '00000000-0000-0000-0000-0000000000d1', 'phone', 'phone', 'unverified', now(), now(), '15550001') $$,
+select throws_ok($$ select pg_temp.as_auth($q$ insert into auth.mfa_factors (id, user_id, friendly_name, factor_type, status, created_at, updated_at, phone)
+                    values (gen_random_uuid(), '00000000-0000-0000-0000-0000000000d1', 'phone', 'phone', 'unverified', now(), now(), '15550001') $q$) $$,
   'P0001', 'kaisip_mfa_staff_only',
   'nor any other second factor (phone)');
 select is((select count(*)::int from auth.mfa_factors where user_id = '00000000-0000-0000-0000-0000000000d1'), 0,
   'and the learner has no factor');
-select lives_ok($$ insert into auth.mfa_factors (id, user_id, friendly_name, factor_type, status, created_at, updated_at)
-                   values ('00000000-0000-0000-0000-0000000000e2', '00000000-0000-0000-0000-0000000000d2', 'desk', 'totp', 'unverified', now(), now()) $$,
+select lives_ok($$ select pg_temp.as_auth($q$ insert into auth.mfa_factors (id, user_id, friendly_name, factor_type, status, created_at, updated_at)
+                   values ('00000000-0000-0000-0000-0000000000e2', '00000000-0000-0000-0000-0000000000d2', 'desk', 'totp', 'unverified', now(), now()) $q$) $$,
   'a Beta Desk admin can still set up an authenticator app');
-select lives_ok($$ update auth.mfa_factors set status = 'verified', updated_at = now()
-                   where id = '00000000-0000-0000-0000-0000000000e2' $$,
+select lives_ok($$ select pg_temp.as_auth($q$ update auth.mfa_factors set status = 'verified', updated_at = now()
+                   where id = '00000000-0000-0000-0000-0000000000e2' $q$) $$,
   'and verify it (the second step of the Beta Desk sign-in)');
-select lives_ok($$ insert into auth.mfa_factors (id, user_id, friendly_name, factor_type, status, created_at, updated_at)
-                   values (gen_random_uuid(), '00000000-0000-0000-0000-0000000000d3', 'board', 'totp', 'unverified', now(), now()) $$,
+select lives_ok($$ select pg_temp.as_auth($q$ insert into auth.mfa_factors (id, user_id, friendly_name, factor_type, status, created_at, updated_at)
+                   values (gen_random_uuid(), '00000000-0000-0000-0000-0000000000d3', 'board', 'totp', 'unverified', now(), now()) $q$) $$,
   'board staff can still set up an authenticator app');
 delete from private.beta_desk_admins where user_id = '00000000-0000-0000-0000-0000000000d2';
 select is((select status::text from auth.mfa_factors where id = '00000000-0000-0000-0000-0000000000e2'), 'verified',
-  'an admin taken off the list keeps the factor already enrolled (insert only)...');
-select throws_ok($$ insert into auth.mfa_factors (id, user_id, friendly_name, factor_type, status, created_at, updated_at)
-                    values (gen_random_uuid(), '00000000-0000-0000-0000-0000000000d2', 'second', 'totp', 'unverified', now(), now()) $$,
+  'an admin taken off the list keeps the factor already enrolled (new rows only)...');
+select throws_ok($$ select pg_temp.as_auth($q$ insert into auth.mfa_factors (id, user_id, friendly_name, factor_type, status, created_at, updated_at)
+                    values (gen_random_uuid(), '00000000-0000-0000-0000-0000000000d2', 'second', 'totp', 'unverified', now(), now()) $q$) $$,
   'P0001', 'kaisip_mfa_staff_only',
   '...but cannot enrol a new one');
+
+select throws_ok($$ select pg_temp.as_auth($q$ update auth.mfa_factors set user_id = '00000000-0000-0000-0000-0000000000d1'
+                    where id = '00000000-0000-0000-0000-0000000000e2' $q$) $$,
+  'P0001', 'kaisip_mfa_staff_only',
+  'and no factor can be moved onto a learner''s account');
 
 select * from finish();
 rollback;
