@@ -169,8 +169,9 @@ the website"). Every tester quote card says testers are offered free Premium.
 **To go live (owner approval first):**
 
 1. Waitlist (done in code, 18 Nov 2026): the form posts straight to Kit
-   (form 10207004, fields `email_address` and `fields[phone_type]`; the
-   consent box has no name and is not sent). The build refuses any other
+   (form 10207004, fields `email_address` and a fixed hidden
+   `fields[phone_type]` of iPhone; no consent box since 28 Nov 2026: the consent
+   line sits under the button and Kit's confirm email is the record). The build refuses any other
    form address, and in home mode adds `'self' https://app.kit.com` to the
    site-wide `form-action` too, because the browser enforces every policy on
    `/`. privacy.html section 3f describes the list; the build refuses to

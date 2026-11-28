@@ -276,7 +276,7 @@ const settle = async page => { let last = -1; for (let i = 0; i < 40; i++) { con
       };
     });
     check(form.named === 'email_address,fields[phone_type]' && form.boxes === 0 && form.phone === 'iPhone', 'the form has an email field and a fixed hidden phone type of iPhone, and no tick box or phone choice: ' + JSON.stringify(form));
-    check(/^By joining, you agree to get these emails\. For ages 18 and older\. Unsubscribe anytime\. Privacy Policy$/.test(form.line) && form.link === 'privacy#s3f' && form.described === 'waitlist-terms', 'the consent line must keep its wording, link to privacy#s3f and describe the button: ' + JSON.stringify(form));
+    check(/^By joining, you agree to get emails about the iPhone app and new KaiSip courses\. For ages 18 and older\. Unsubscribe anytime\. Privacy Policy$/.test(form.line) && form.link === 'privacy#s3f' && form.described === 'waitlist-terms', 'the consent line must keep its wording, link to privacy#s3f and describe the button: ' + JSON.stringify(form));
     check(form.together, 'the consent line must sit right beside the button, on screen with it');
     await page.click('.waitlist-form button[type=submit]');
     await page.waitForTimeout(300);

@@ -59,7 +59,7 @@ a,button,summary,label{-webkit-tap-highlight-color:transparent;touch-action:mani
    <img> are the same size, so a stale or missing stylesheet cannot blow it up. */
 .play-badge{display:inline-flex;flex:none;line-height:0;border-radius:8px}
 .play-badge img{width:162px;max-width:100%;height:auto}
-.text-link{display:inline-flex;align-items:center;gap:10px;min-height:44px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:1px solid var(--control)}
+.text-link{display:inline-flex;align-items:center;gap:10px;min-height:44px;font-weight:600;font-size:15px;text-decoration:none;background:linear-gradient(var(--control),var(--control)) 0 calc(50% + 12px)/100% 1px no-repeat}
 .text-link .arrow{display:inline-block;transition:transform .3s var(--ease)}
 @media(hover:hover){
   .button:hover{transform:translateY(-2px);box-shadow:0 14px 26px -14px color-mix(in srgb,var(--btn) 70%,transparent)}
@@ -250,6 +250,9 @@ a,button,summary,label{-webkit-tap-highlight-color:transparent;touch-action:mani
 }
 
 @media(min-width:981px){.line{white-space:nowrap}}
+/* Desktop: the headline sits at the top beside the actions (no empty block
+   under the logo); reading order stays headline, lead, button. */
+@media(min-width:981px){.hero-side{display:contents}.hero-head>div:first-child{grid-column:1;grid-row:1}.hero-head .lead{grid-column:1;grid-row:2;max-width:44ch}.hero-side .start{grid-column:2;grid-row:1/3;align-self:end;margin-top:0}}
 
 /* ---------- Smaller screens ---------- */
 @media(max-width:980px){
@@ -264,6 +267,8 @@ a,button,summary,label{-webkit-tap-highlight-color:transparent;touch-action:mani
   .hero-side{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px clamp(28px,5vw,56px);align-items:start}
   .hero-side .start{margin-top:0}
 }
+/* Tablet widths: the first panel shows its title left and a larger phone right. */
+@media(min-width:720px) and (max-width:980px){.panel-forest{height:400px}.panel-forest .phone{left:auto;right:clamp(40px,9vw,96px);translate:0 0;top:56px;--pw:clamp(230px,30vw,280px)}}
 /* The waitlist keeps two columns down to 860px, so its form stays a compact
    card (never a full-width slab) when a phone shows the desktop layout. */
 @media(max-width:859px){.waitlist-panel{grid-template-columns:1fr}}
