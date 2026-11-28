@@ -74,6 +74,9 @@ MIX = {"application": 0.55, "analysis": 0.30, "foundational": 0.15}
 AAIA_MIX = {"foundational": 0.25, "application": 0.50, "analysis": 0.25}
 
 
+TRIAGE_FIELDS = {"is_human_verified", "triage_status", "audit_note", "domain_tag", "verified_date"}
+
+
 def load_json(path):
     with open(path, encoding="utf-8") as f:
         return json.load(f)
@@ -296,7 +299,8 @@ def build(cert):
         if live_free < need:
             problems.append(f"domain {d} has {live_free} free questions, its free mock needs {need}")
         out = dict(bank)
-        out["questions"] = sample
+        # Triage fields are for the owner's sign-off, not for learners (scripts/check_triage.py).
+        out["questions"] = [{k: v for k, v in q.items() if k not in TRIAGE_FIELDS} for q in sample]
         out["count"] = len(sample)
         out["free_sample"] = True
         domain_files[d] = out
