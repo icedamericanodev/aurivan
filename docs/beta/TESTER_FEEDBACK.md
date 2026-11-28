@@ -41,7 +41,7 @@ cause in the app, and slots it into the plan below.
 | FB-010 | By 19 Nov 2026 | R-ZXUQ | Phone · practice answer (question d4_134): could not find the whole question and its options after answering | UX | Medium | Every answered practice question | Implemented with FB-009: one "Show question & options" switch; phone check pending | 2.2 |
 | FB-011 | 2026-11-19 | Owner review | Phone · Learn · Concept Lab (RTO/RPO): made the topic more confusing | Learning design | Medium | Learners who open the lab | Hidden in 2.2 behind one switch; redesign and uncoached learner testing before it returns | 2.2 (hide) · Later (redesign) |
 | FB-012 | By 19 Nov 2026 | Tester suggestions (messages and the testers' PDF) | Phone · question list, Practice, Settings | Feature requests | Medium | All learners | Implemented in a pull request for 2.2: read-only review of answered questions; a gentle practice countdown with length and area choice; Rate and Share rows in Settings | 2.2 |
-| FB-013 | 2026-11-28 | Owner relay of tester feedback (no report code) | Web and phone · CISA question wording | Content (readability) | Medium | Whole bank (also AAIA, written in the same style) | CISA: 171 hard-to-read questions rewritten in plainer, shorter sentences for web v13.1 (blind retest 170 of 171 matched; the one miss was ambiguous before the rewrite and is followed up separately). AAIA next | Web v13.1 · phone: next bundle |
+| FB-013 | 2026-11-28 | Owner relay of tester feedback (no report code) | Web and phone · CISA question wording | Content (readability) | Medium | Whole bank (also AAIA, written in the same style) | Shipped on the web: CISA v13.1 (171 questions in plainer, shorter sentences) and v13.2.1 (the one ambiguous question fixed). AAIA (557) and CRISC (524) rewritten, live when those courses switch on. Tester thanked by the owner | Web v13.1 and v13.2.1 · phone: next bundle |
 | FB-014 | 2026-11-28 | Owner report (no report code) | Web and phone · every heading, name and avatar initial with a capital J; and the letter f on the website | UX (typography, cosmetic) | Low | Every learner whose name or text has a capital J; every web page for the f | Implemented: web v13.2; phone fonts merged for 2.4 (native phone check pending) | Web v13.2 · phone 2.4 |
 
 ## Feedback quoted on the website
@@ -335,8 +335,8 @@ questions. Domain experts made 18 corrections; the blind test matched 521 of
 524, then 22 of 22. Five items with a key in doubt are listed for review in
 `docs/content/CRISC_BANK_PLAN.md` section 9.
 
-**Tester reply:** none yet; reply when the phone build with the new wording
-ships.
+**Tester reply:** the owner thanked the tester (28 Nov 2026). The phone app
+picks up the new wording in its next bundle.
 
 ### FB-014 · The capital J looks weird (and the f is still the old one on the website)
 
