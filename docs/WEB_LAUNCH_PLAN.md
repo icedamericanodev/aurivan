@@ -140,6 +140,7 @@ and lists can see:
   |---|---|---|
   | At dc23533 (before) | 147 (33.9%) | 133 (30.6%) |
   | Now | 19 (4.4%) | 50 (11.5%: 22 the tester judged to matter, 28 obscure) |
+  | Under the 12-character, four-types rule (each with the four types added) | 15 (3.5%) | 45 (10.4%) |
 
   The held-out figure is the one to quote. It is held out from tuning, but
   NOT from the tester's candidate vocabulary list, which was added to the
@@ -148,9 +149,36 @@ and lists can see:
   somewhere between 11.5% and about 30% on vocabulary families (phrases,
   names, brands), which is what the leaked-password check is for. Both
   figures are ceilings in the tests and may only fall. The good side: 0 of the tester's 164 good passphrases
-  and 0 of the 62 round-2 ones are refused; fewer than 0.5% of random
-  three-word phrases are; four or more different ordinary words pass by
+  and 0 of the 62 round-2 ones are refused (one round-2 phrase is refused
+  since round 5 on purpose: the app's own old hint with "The" in front);
+  with the four types added (a capital, a number and a symbol), under 1 in
+  100 random three-word phrases with spaces is refused, and under 4 in 100
+  when the three words are typed as one (14 letters or fewer run together
+  look like one word); four or more different ordinary words pass by
   design.
+- **The 12-character, four-types rule (owner decision 28 Nov 2026,
+  evening), measured twice.**
+
+  | Measure | Tuning half | Held-out half (report-only) | Good passwords refused |
+  |---|---|---|---|
+  | Round 4 (same author; new words in ONE shape, a word plus numbers and a symbol; `password-fixtures-r4.ts`) | 0 of 2,900 | 0 of 2,833 (13 before round 5) | 0 of 240 |
+  | Round 5 (an **independent** reviewer's 5,220 candidates in 17 families; `password-fixtures-r5.ts`, split by base word before any result was seen) | 225 of 3,206 (7.0%; 368 before) | **115 of 2,014 (5.7%; 197, 9.8%, before)** | 6 of 370, all on purpose |
+
+  Round 5's held-out figure is the one to quote. It is somewhat optimistic:
+  the round-5 fixes follow the reviewer's prototypes, which were made with
+  the whole set in view. Before round 5 the reviewer measured 10.8% of the
+  whole set (12.1% on fresh vocabulary). What still passes, in words: two
+  uncommon words with a number and a symbol; an unlisted word with
+  letter-for-number swaps; a date or phone number written with separators
+  and a short label; text-speak and expressions; names and places that are
+  on no list; a short random core padded with repeated symbols or spaces.
+  The good passwords the rules refuse on purpose: four with no plain ASCII
+  capital or lowercase letter (the server would refuse them too), and two
+  made of two common words. Two common words with a number and a symbol are
+  refused at every length (owner question settled by the reviewer's
+  numbers: about 90% of natural two-word choices are refused at 12 and at
+  18 characters, and the cheapest fall within about 60 million guesses), and
+  the guidance says that a third unrelated word fixes it.
 - **The leaked-password check is ON** (owner decision 28 Nov 2026, below).
   It closes most of the gap for passwords that leaked anywhere. What still
   passes: an uncommon phrase, name or slogan that is on no list and has
@@ -310,25 +338,29 @@ failed-attempt limit, the 72-byte limit, client-side-only blocklist) are in
 
 | # | Date, decision | Requirement | What KaiSip does | Status |
 |---|---|---|---|---|
-| D3 | 28 Nov 2026, owner decision ("Require all 4 types, 12+") | NIST SP 800-63B-4 §3.1.1.2: verifiers SHALL NOT impose composition rules (such as requiring mixtures of character types). OWASP ASVS 5.0 **6.2.5** (L1): passwords of any composition can be used, with no requirement for upper or lower case characters, numbers or special characters | A new password needs at least one lowercase letter (a-z), uppercase letter (A-Z), digit (0-9) and symbol (ASCII punctuation), checked by the apps and by the sign-in server (Supabase Auth `password_requirements = lower_upper_letters_digits_symbols`) | **Does not meet** NIST §3.1.1.2 (composition) or ASVS 6.2.5 |
+| D3 | 28 Nov 2026, owner decision ("Require all 4 types, 12+") | NIST SP 800-63B-4 §3.1.1.2: verifiers SHALL NOT impose composition rules (such as requiring mixtures of character types); §3.1.1.1 says the same of other composition requirements *(as cited by the independent review; verify the wording)*. OWASP ASVS 5.0 **6.2.5** (L1): passwords of any composition can be used, with no requirement for upper or lower case characters, numbers or special characters | A new password needs at least one lowercase letter (a-z), uppercase letter (A-Z), digit (0-9) and symbol (ASCII punctuation), checked by the apps and by the sign-in server (Supabase Auth `password_requirements = lower_upper_letters_digits_symbols`) | **Does not meet** NIST §3.1.1.2 (composition) or ASVS 6.2.5 |
+| D5 | Earlier (design), recorded 28 Nov 2026 | OWASP ASVS 5.0 **6.2.8** (L1): verify the password exactly as received, without modifications. NIST SP 800-63B-4 asks for normalisation as a SHOULD, and names NFC *(per the independent review; verify)* | The apps send the password in **NFKC** (full-width letters, ligatures and compatibility forms made plain), so the same keys make the same password on every device | **Does not meet** ASVS 6.2.8 as written; NFKC instead of NIST's NFC |
 | D4 | 28 Nov 2026, the same decision | NIST SP 800-63B-4 §3.1.1.2: a password used as a single-factor authenticator SHALL be at least 15 characters. OWASP ASVS 5.0 **6.2.1** (L1): at least 8 characters, 15 strongly recommended | At least 12 characters (code points, in NFC and NFKC), server and apps | **Does not meet** NIST's 15 for a single factor (KaiSip passwords are single-factor). **Meets** ASVS 6.2.1's minimum of 8, below its recommended 15 |
 
 **Compensating controls (both rows):**
 - The apps refuse predictable passwords before anything is sent: the bundled
   common-password lists, the whole-password comparison and the structural
   rules (repeats, sequences, keyboard walks, dates, the account's own words,
-  the app's and exam names), including the shape composition rules invite: a
-  capitalised word, name, walk or season with numbers and a symbol around it
-  (the "core" rule in `mobile/src/engine/passwordRules.ts`). Measured on a
-  fresh attack in this space (12 to 14 characters, all four types): 0 of
-  2,900 accepted on the tuning half, 13 of 2,833 (0.5%) on the held-out half,
-  0 of 240 good passwords refused (`mobile/jest/password-fixtures-r4.ts`;
-  same author as the rules, so a weaker measure than an independent tester).
+  the app's and exam names), including the shapes composition rules invite:
+  a capitalised word, name, walk or season with numbers and a symbol around
+  it, a list word with a short tag, and letters, digits and symbols each in
+  a run. Measured: an independent reviewer's attack (round 5, 5,220
+  candidates) still passes **115 of its 2,014 held-out candidates (5.7%)**;
+  the author's own round 4, which tests one shape only, passes 0. Shapes that
+  still pass are named in "What the password rules cannot do".
 - The leaked-password check (Have I Been Pwned range API, k-anonymity) when a
   password is chosen; it fails open when the service can't be reached.
-- The human check (captcha) on every password sign-in, sign-up and reset;
-  Supabase's per-IP rate limits.
-- Sessions end 30 days after sign-in and after 14 days unused.
+- **From go-live, not today:** the human check (captcha) on every password
+  sign-in, sign-up and reset (go-live gate 16; it is off in
+  `supabase/config.toml` until then), and the sessions' 30-day and 14-day
+  end on the server (gate 21; today only the client ends them). Supabase's
+  per-IP rate limits apply now (local values in `supabase/config.toml`; the
+  hosted values to confirm).
 - These client checks run only in the apps: a learner calling the server
   directly for their own account can skip everything except the server's own
   length and composition checks (the earlier client-side-only deviation).

@@ -520,13 +520,13 @@ describe('round 3: an attack the rules were not tuned on (jest/password-fixtures
     expect([tuning.length, heldOut.length]).toEqual([433, 434]);
   });
 
-  it('tuning half: at most 19 of 433 accepted (4.4%; it was 147, 33.9%, at dc23533)', () => {
-    expect(accepted(tuning).length).toBeLessThanOrEqual(19);
+  it('tuning half: at most 15 of 433 accepted (3.5%; it was 147, 33.9%, at dc23533)', () => {
+    expect(accepted(tuning).length).toBeLessThanOrEqual(15);
   });
 
-  it('held-out half (report-only): at most 50 of 434 accepted (11.5%; it was 133, 30.6%, at dc23533)', () => {
+  it('held-out half (report-only): at most 45 of 434 accepted (10.4%; it was 133, 30.6%, at dc23533)', () => {
     const acc = accepted(heldOut);
-    expect(acc.length).toBeLessThanOrEqual(50);
+    expect(acc.length).toBeLessThanOrEqual(45);
     // Of those, the tester judged 28 "obscure" (unlikely to be tried early) and 22 to matter.
     expect(acc.filter(([, , obscure]) => !obscure).length).toBeLessThanOrEqual(22);
   });

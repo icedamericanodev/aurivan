@@ -810,11 +810,14 @@ phone fields use the matching autofill hints.
 >   is sent in **NFKC** form, and 12 code points are needed in both NFC and
 >   NFKC. `passwordChecklist` gives the five checklist items (12 or more
 >   characters; a lowercase letter; an uppercase letter; a number; a symbol)
->   and refused / ok / strong; `passwordMissingText` says what is missing.
+>   and refused / ok / long (`long`: accepted and 15 or more characters, a
+>   length label only); `passwordMissingText` says what is missing, naming
+>   a to z, A to Z, 0 to 9 and "a symbol such as ! ? # @".
 >   Sign-in applies none of this. The whole password is
 >   compared (NIST §3.1.1.2): it is refused when it can be written as
 >   predictable pieces with at most 2 characters left over (up to two list
->   entries and three word pieces in all), or when fewer than 10 real
+>   entries and three word pieces in all), or when fewer than 8 to 10 real
+>   (by length: 8 at 12 characters, 10 at 14 and over)
 >   characters remain after repeats, sequences, copies and years. The
 >   comparison form strips accents and invisible characters, reads Cyrillic
 >   and Greek look-alikes as Latin and letter-for-number swaps per position,
@@ -831,7 +834,15 @@ phone fields use the matching autofill hints.
 >   k-anonymity queries, 3-second timeout, fails open, `breachState()`) is
 >   ON since 28 Nov 2026 (owner decision; `BREACH_CHECK_ON = true`), on
 >   sign-up, reset and "set a password", never at sign-in. Its privacy
->   paragraph is a draft in §7.
+>   paragraph is a draft in §7. For the 12-character, four-types rule,
+>   round 5 (an independent reviewer's 5,220 candidates) added: one list,
+>   app or account word with 3 or fewer other characters; letters, digits
+>   and symbols each a run; any word typed twice; the mixed readings of 1
+>   and !; verse references; swap symbols inside a word not counted as
+>   material at 15+; and `two_common_words` as its own reason. Held-out
+>   acceptance on the reviewer's set: 5.7% (9.8% before). The shapes that
+>   still pass are named in `docs/WEB_LAUNCH_PLAN.md`. The captcha (gate
+>   16) and the server-side end of sessions (gate 21) apply from go-live.
 >   The word lists are loaded with `loadPasswordWords` (on the website a
 >   separate file, `assets/kaisip-password-words.js`, fetched when a password
 >   form opens; no password is saved until it is loaded).
