@@ -219,7 +219,17 @@ to ship. The seven rules of the kickoff prompt, and where each lives:
 The gates, in the order a round runs them (details in `data/cia/tools/README.md`):
 
 1. `check_cia.py`: structure, links, tips, key balance, length tells, difficulty by verb, the Challenge tag, a lens backstop.
-2. `style_cia.py`: the shared exam-style linter, unchanged. CIA has no exceptions.
+2. `style_cia.py`: the shared exam-style linter, run unchanged, then read with the
+   CIA format exceptions written down in its docstring and in section 6d (owner
+   decision, 28 Nov 2026): a lowercase qualifier is accepted; options may run to
+   18 words; the scenario variant (36 to 50 words, or 3 sentences) is let
+   through for at most 10% of a section file; an EXCEPT or NOT ask is an error.
+   Warnings, never failing: more than 25% of a file's stems naming a person or a
+   place, options without a terminal period, capitalised qualifiers left before
+   the stage 1 restyle, "IIA guidance" in a stem, "I and II" options. The switch
+   `--require-lowercase-qualifiers` (and `REQUIRE_LOWERCASE_QUALIFIERS` in the
+   script, off until the stage 1 restyle lands) makes a capitalised qualifier an
+   error. Every other shared rule, the length tells included, is unchanged.
 3. `check_stale_terms.py`: no 2019-syllabus, 2017-Standards or ISACA wording. Each banned term carries its evidence in `shared/stale_terms.json`. "IPPF" alone is not banned: the 2024 Standards still describe the framework. The 2019 part and domain names are not on the list yet because no opened source confirms them (an open item in the blueprint).
 4. `check_currency.py`: dated facts, and Topical Requirements that are not testable yet.
 5. Citations: inside `check_cia.py` (library bullets; the first citation Verified).
@@ -276,7 +286,9 @@ The first blind test agreed with the key on 80 of 80, and the four audits
 found no wrong key. What they found instead decides how every later round is
 written. These rules are part of the item standard
 (`.claude/agents/cia-standards-auditor.md`), and the scaffold of every round
-states how it meets them.
+states how it meets them. They hold unchanged in The IIA's question format
+(section 6d, owner decision 28 Nov 2026): shorter stems and longer options
+change the shape, not the bar.
 
 1. **Agreement is not difficulty, and difficulty is measured, not judged.** A
    blind tester who gets 20 of 20 with high confidence has shown the keys are
@@ -352,7 +364,8 @@ states how it meets them.
 
 ## 6c. The author brief for a round (what made round 1 harder than the pilot)
 
-The pilot's item format stays (section 2). On top of it, every author gets
+The pilot's item fields stay (section 2), written in The IIA's question format
+(section 6d). On top of it, every author gets
 these instructions, and delivers the scaffold as a table BEFORE writing:
 `id | topic and notes sub-topic | the distinction the item turns on | the key's
 kind (firm, modest, measured) | the runner-up and why a half-prepared
@@ -389,12 +402,120 @@ WOULD be right | key letter | key longest or shortest`.
    cue tester guessed with high confidence, each with its cue named, and the
    instruction to give one wrong option a reason that is true in general but
    does not fit this stem's facts. Then a final blind test of what changed.
+9. **Write in The IIA's question format** (section 6d): roles, not names; a
+   lowercase qualifier; options as full sentences or parallel verb phrases of
+   up to 18 words, each ending with a period; a stem median of 20 to 28 words
+   for the round, at least a third at 25 words or fewer, at most one semicolon
+   a stem, and the scenario variant (up to 3 sentences and 50 words) for at
+   most 1 item in 10 of a section file. The scaffold table adds a column: the
+   stem's word count, and the one fact that decides the final two. A shorter
+   stem keeps that fact; difficulty never comes from padding.
+10. **Calculation items** (only on 2B5a and 2B5b today; the section 6d rules):
+    every input in the stem, at most four round figures in one currency;
+    numeric options in ascending order, the key letter balanced by choosing
+    which value is right; each distractor a named calculation mistake that its
+    wrong explanation names and works out; the working in `correct_explanation`;
+    `difficulty` application; the first citation the OpenStax or ISA 520
+    bullet the formula or method fact rests on, plus Standard 14.2 when the
+    stem asks for the auditor's next step.
+
+## 6d. The IIA's question format (owner decision, 28 Nov 2026)
+
+**Why.** The IIA, not ISACA, sets these exams, and learners should be
+conditioned on The IIA's format. `cia-standards-auditor` measured The IIA's own
+opened sample questions (23 items: the sample questions page, five per part,
+and the Part 1 Guidebook of 16 Apr 2026, two per section; every one on a 2025
+topic; counts only, no IIA wording kept) against the bank's 521 active items
+on 28 Nov 2026:
+
+| | The IIA's samples | KaiSip CIA bank, 28 Nov 2026 |
+|---|---|---|
+| Stem words | median 19; 21 of 23 at 35 or fewer | median 34; written to the 35-word cap |
+| Named people, countries | 0 of 23 | about 4 in 5 stems |
+| Qualifier | lowercase in 13 of 23, none in 10 | capitalised in every stem |
+| "Which of the following ..." | 11 of 23 | 0 |
+| Option words | median 13, max 25 | median 10, max 12 (the shared cap) |
+| Terminal period on options | 23 of 23 | 0 |
+| EXCEPT / NOT, "I and II" | 0 | 0 (LEAST twice) |
+| Key is the longest option | 5 of 15 keyed samples (33%) | 15 to 24% per Part file (gate) |
+
+Current syllabuses only: Parts 1 to 3 effective 2025, the Challenge effective
+1 June 2026. The sample page's wording traces of the old framework ("audit
+client", a fourth evidence attribute, "IIA guidance") are not a model.
+
+**The rules** (the full text, binding for authors and auditors, is "The IIA's
+question format" in `.claude/agents/cia-standards-auditor.md`; the gate is
+`style_cia.py`, section 5):
+
+1. **Generic roles by default.** "An internal auditor", "the engagement
+   supervisor", "the audit committee"; an industry for the setting. A name only
+   to tell apart two people of the same role; a country only when its law or
+   setting decides the key. At most about 1 in 5 items per round named
+   (warning above 25% of a file).
+2. **Lowercase qualifiers** ("first", "best", "most likely", "primary"),
+   required whenever the final two are both real duties; absent only for a
+   single-answer factual ask on a recall-verb topic. No EXCEPT or NOT asks
+   (error); LEAST only with an owner-level reason.
+3. **Openers.** "Which of the following ..." allowed; "Which statement is true
+   regarding ..." on recall-verb topics only. A source frame names what is
+   cited ("Under the Global Internal Audit Standards"), occasionally; never
+   "IIA guidance" in a stem (warning).
+4. **"The chief audit executive (CAE)"** once in the stem, then "CAE".
+5. **Stems.** The 35-word cap stays; new rounds aim at a median of 20 to 28
+   words (section 6c, rule 9). The scenario variant, up to 3 sentences and 50
+   words, for at most 1 item in 10 per section file (error above). No
+   `scenario_context` field.
+6. **Options** up to 18 words (error above), full sentences or parallel verb
+   phrases, each ending with a period (warning); no trailing ", as ..." reason
+   frame unless all four carry one; no "I and II" combinations (warning).
+7. **Unchanged:** the length-tell gates (pick-the-longest 15 to 24% per
+   section, pick-the-shortest at most 30%, the key at most 8 characters longer
+   than the longest distractor, no option carrying its own reason), and the
+   two-plus-two rule as written: the two eliminable options are real
+   misconceptions, never straw.
+8. **Calculation items**, the one syllabus case for them: 2B5a (analyze
+   ratios, variances, trends, benchmarks) and 2B5b (choose the technique),
+   keyed on OpenStax *Principles of Accounting* Vol. 1 (Section 5.3,
+   Appendix A) or ISA 520 (method facts only). 2A5d and 2A7a only as arithmetic
+   on figures the stem gives, never a keyed formula; 2A3e and 3C3 never. Not
+   current, never written: EOQ, break-even, ROI, NPV, sampling intervals,
+   monetary-unit sampling. The item rules are section 6c, rule 10, and rule 9
+   of the auditor's format section; the working goes in `correct_explanation`
+   (no new field). No claim about an exam calculator. Watch that several
+   numeric items with equal-length options do not push a file's
+   pick-the-longest above 24%.
+
+The CISA, CRISC and AAIA banks keep the shared v2 standard
+(`docs/content/EXAM_STYLE_V2.md`) unchanged.
+
+**Restyling the existing bank, in stages:**
+
+| Stage | Change | When | Re-test |
+|---|---|---|---|
+| 1, mechanical | Qualifiers to lowercase in every stem (and the 2 items whose tips or explanations capitalise one); a period on every option | After the phone app's priority-word fix (below) | No key re-test: meaning and key unchanged. Every gate, the Challenge pack rebuilt, the alignment read on a sample. In the same change `REQUIRE_LOWERCASE_QUALIFIERS` goes on in `style_cia.py`. |
+| 2, section by section | Names and countries to generic roles (stems, explanations and tips together), and tighter stems only where no deciding fact is lost | Folded into the hardening pass (section 6b, rule 12), one section at a time | Every changed stem blind re-tested (section 6c, rule 7) |
+
+Not done on existing items: shortening stems toward The IIA's median (it would
+remove deciding facts), and longer, full-sentence options (new items only).
+
+**App dependency, before any lowercase item ships:** the phone app finds the
+ask by capitals only (the priority-word match behind the session hint, the
+Priority Lens game and the mistake coach's "Look for FIRST, BEST or MOST").
+Lowercase CIA stems would silently lose all three. `mobile-app-engineer` makes
+the match case-insensitive on the question's last sentence for the IIA packs
+(or `build_packs.py` writes a per-item ask), with a test, first. The CIA packs
+are not wired yet, so this blocks nothing live.
 
 ## 7. Round scorecard
 
 Written here after every round. **Blind-test agreement below 90% means the
 round does not merge** until the disputed items are fixed or cut. Two rounds
 in a row below 90%: stop and tell the owner.
+
+From 28 Nov 2026 (The IIA's question format, section 6d) each round's scorecard
+notes also give the round's stem median in words (target 20 to 28, at least a
+third at 25 or fewer) and its share of stems that name a person or a place
+(target about 1 in 5 at most).
 
 | Round | Date | Pack and sections | Items | Blind agreement | HARD / PRECISION / OBSERVATION per 25 | Pick-longest | Items cut | Sources newly opened |
 |---|---|---|---|---|---|---|---|---|
@@ -2252,6 +2373,28 @@ of its marks):
 7. **Board leak guard:** add `cia` to the dumps pattern in `mobile/src/engine/leakGuard.ts`
    and `supabase/functions/_shared/leakGuard.ts`, with a test.
 8. **Takedown readiness:** keep the provenance and originality evidence ready to send.
+
+**Owner decision (28 Nov 2026): CIA items are written in The IIA's question format.** The
+IIA, not ISACA, sets these exams, and learners should be conditioned on that format. The
+measured basis, the rules and the gate are section 6d (`cia-standards-auditor` compared The
+IIA's 23 opened sample questions with the bank; counts only, nothing copied). What it means:
+
+- **The format** (section 6d): generic roles by default (a name only to tell apart two
+  people of the same role, a country only when its law or setting decides the key; about 1
+  in 5 at most), lowercase qualifiers (required when the final two are both real duties),
+  "Which of the following ..." allowed, "the chief audit executive (CAE)" then "CAE", a stem
+  median of 20 to 28 words for new rounds with the 35-word cap kept and a scenario variant
+  (up to 3 sentences, 50 words) for at most 1 item in 10 per section file, options up to 18
+  words as full sentences or parallel verb phrases ending with a period, no EXCEPT or NOT
+  asks, no "I and II" options, never "IIA guidance" in a stem, and calculation items on
+  2B5a and 2B5b only. The length-tell gates and the two-plus-two rule are unchanged. The
+  CISA, CRISC and AAIA banks keep the shared v2 standard.
+- **The existing bank is restyled in stages.** Stage 1, mechanical (lowercase qualifiers, a
+  period on every option), after the phone app's priority-word fix. Stage 2, section by
+  section: names and countries to generic roles, and tighter stems only where no deciding
+  fact is lost, each changed stem blind re-tested.
+- **Current syllabuses only:** Parts 1 to 3 effective 2025, the Challenge effective 1 June
+  2026.
 
 ## 10. Names and store copy (draft, not approved)
 
