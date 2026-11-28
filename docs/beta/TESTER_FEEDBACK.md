@@ -41,6 +41,7 @@ cause in the app, and slots it into the plan below.
 | FB-010 | By 19 Nov 2026 | R-ZXUQ | Phone · practice answer (question d4_134): could not find the whole question and its options after answering | UX | Medium | Every answered practice question | Implemented with FB-009: one "Show question & options" switch; phone check pending | 2.2 |
 | FB-011 | 2026-11-19 | Owner review | Phone · Learn · Concept Lab (RTO/RPO): made the topic more confusing | Learning design | Medium | Learners who open the lab | Hidden in 2.2 behind one switch; redesign and uncoached learner testing before it returns | 2.2 (hide) · Later (redesign) |
 | FB-012 | By 19 Nov 2026 | Tester suggestions (messages and the testers' PDF) | Phone · question list, Practice, Settings | Feature requests | Medium | All learners | Implemented in a pull request for 2.2: read-only review of answered questions; a gentle practice countdown with length and area choice; Rate and Share rows in Settings | 2.2 |
+| FB-013 | 2026-11-28 | Owner relay of tester feedback (no report code) | Web and phone · CISA question wording | Content (readability) | Medium | Whole bank (also AAIA, written in the same style) | Reproduced; readability reviewer created and piloted on CISA and AAIA samples | Next content release |
 
 ## Feedback quoted on the website
 
@@ -288,3 +289,25 @@ Full scope, decisions and what is still unverified: `docs/mobile/RELEASE_2_2.md`
 - **FB-012.** The answered review cannot show which option was picked for most past answers, because the app never stored it; it says so instead of guessing. Saving the pick for new answers is a later storage change. A tester's idea of making answered review a paid feature is NOT adopted: pricing is the owner's decision.
 - **Not adopted from the testers' PDFs:** an exit confirmation on every Back press (no data-loss defect shown), keyword-stuffed store text, a minimum description length, and review prompts or rewards (against Google's guidance).
 - **Tester replies:** none sent for this round. Do not claim any of this is fixed until 2.2 is live.
+
+### FB-013 · Some questions read like jumbled words
+
+**Tester said (relayed by the owner, 28 Nov 2026):** some CISA questions
+sound like jumbled words, so they are hard to understand.
+
+**Reproduced:** the stems are grammatical but packed. The house style
+(`docs/content/EXAM_STYLE_V2.md`: at most 35 words and 2 sentences) pushes
+writers to stack possessives ("an IS auditor's sample of a Montenegrin
+probation service's decisions"), glue facts with semicolons, and drop small
+words. A rough count flags about half of the AAIA stems; the AAIA bank uses
+the same style, so it is in scope too.
+
+**Plan:** a new agent, `question-readability-reviewer`, reads each item the
+way a candidate does (on a phone, often in English as a second language) and
+proposes plain rewrites that keep every fact, the key and the harness limits.
+Pilot on samples first, then the whole AAIA bank and the CISA bank, with a
+blind retest of every changed question. CISA rewrites are a learner-visible
+content change (web version bump and What's New). Changing the 35-word limit,
+if the pilot shows it is needed, is the owner's decision.
+
+**Tester reply:** none yet; reply when the CISA rewrite ships.

@@ -248,6 +248,14 @@ if ! python3 scripts/check_longest_option.py; then
   status=1
 fi
 
+# 6a1. Readability ratchet (FB-013) -------------------------------------------
+# Counts packed stems (semicolons, stacked possessives) per bank; fails only if
+# a count rises above scripts/readability_baseline.json.
+printf "\nReadability (packed stems may only go down):\n"
+if ! python3 scripts/check_readability.py; then
+  status=1
+fi
+
 # 6a2. AAIA course (data/aaia/) ---------------------------------------------
 # The paid AAIA pack: item style (lint_exam_style_v2 --file, exit 1 = error),
 # notes against the AAIA outline and bank, and the bank checks (citations in
