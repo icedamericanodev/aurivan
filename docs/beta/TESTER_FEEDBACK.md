@@ -41,7 +41,7 @@ cause in the app, and slots it into the plan below.
 | FB-010 | By 19 Nov 2026 | R-ZXUQ | Phone · practice answer (question d4_134): could not find the whole question and its options after answering | UX | Medium | Every answered practice question | Implemented with FB-009: one "Show question & options" switch; phone check pending | 2.2 |
 | FB-011 | 2026-11-19 | Owner review | Phone · Learn · Concept Lab (RTO/RPO): made the topic more confusing | Learning design | Medium | Learners who open the lab | Hidden in 2.2 behind one switch; redesign and uncoached learner testing before it returns | 2.2 (hide) · Later (redesign) |
 | FB-012 | By 19 Nov 2026 | Tester suggestions (messages and the testers' PDF) | Phone · question list, Practice, Settings | Feature requests | Medium | All learners | Implemented in a pull request for 2.2: read-only review of answered questions; a gentle practice countdown with length and area choice; Rate and Share rows in Settings | 2.2 |
-| FB-013 | 2026-11-28 | Owner relay of tester feedback (no report code) | Web and phone · CISA question wording | Content (readability) | Medium | Whole bank (also AAIA, written in the same style) | Reproduced; readability reviewer created and piloted on CISA and AAIA samples | Next content release |
+| FB-013 | 2026-11-28 | Owner relay of tester feedback (no report code) | Web and phone · CISA question wording | Content (readability) | Medium | Whole bank (also AAIA, written in the same style) | CISA: 171 hard-to-read questions rewritten in plainer, shorter sentences for web v13.1 (blind retest 170 of 171 matched; the one miss was ambiguous before the rewrite and is followed up separately). AAIA next | Web v13.1 · phone: next bundle |
 
 ## Feedback quoted on the website
 
@@ -310,4 +310,12 @@ blind retest of every changed question. CISA rewrites are a learner-visible
 content change (web version bump and What's New). Changing the 35-word limit,
 if the pilot shows it is needed, is the owner's decision.
 
-**Tester reply:** none yet; reply when the CISA rewrite ships.
+**CISA rewrite (web v13.1, 28 Nov 2026):** the reviewer read all 1,279 CISA
+questions and rewrote 171 stems or options. Five domain auditors compared
+every old and new wording (three small corrections), and a blind tester
+answered all 171 without the key: 170 matched. The one miss, d3_087, was
+ambiguous before the rewrite (the rewrite only moved a phrase) and is
+followed up on its own. Packed CISA stems fell from 62 to 23.
+
+**Tester reply:** none yet; reply when the phone build with the new wording
+ships.
