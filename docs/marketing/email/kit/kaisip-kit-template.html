@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="x-apple-disable-message-reformatting">
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<title>KaiSip</title>
+<!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript><![endif]-->
+<style>
+/* KaiSip email shell (Grove). Colours: paper #F3F1EA, card #FCFBF7, ink #17231B,
+   ink2 #465349, green text #24603F, forest #1E4A34, sap #A9D9BA, line #DFDCD1. */
+:root{color-scheme:light dark;supported-color-schemes:light dark}
+html,body{margin:0!important;padding:0!important;width:100%!important}
+body{background-color:#F3F1EA;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+table{mso-table-lspace:0pt;mso-table-rspace:0pt}
+img{border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic}
+
+/* What Kit puts in the message slot: paragraphs, headings, links, lists, quotes, rules. */
+.kmsg{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:17px;line-height:27px;color:#17231B}
+.kmsg p{margin:0 0 18px}
+.kmsg h1{margin:0 0 18px;font-family:Georgia,'Times New Roman',Times,serif;font-size:32px;line-height:38px;font-weight:normal;letter-spacing:-0.4px;color:#17231B}
+.kmsg h2{margin:30px 0 10px;font-family:Georgia,'Times New Roman',Times,serif;font-size:23px;line-height:30px;font-weight:normal;letter-spacing:-0.2px;color:#17231B}
+.kmsg h3{margin:0 0 12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:12px;line-height:18px;font-weight:bold;letter-spacing:1.8px;text-transform:uppercase;color:#24603F}
+.kmsg h1 em,.kmsg h2 em,.kmsg h1 i,.kmsg h2 i{font-style:italic;color:#24603F}
+.kmsg a{color:#24603F;text-decoration:underline}
+.kmsg strong,.kmsg b{font-weight:bold}
+.kmsg ul,.kmsg ol{margin:0 0 18px;padding:0 0 0 22px}
+.kmsg li{margin:0 0 8px}
+.kmsg blockquote{margin:0 0 18px;padding:2px 0 2px 16px;border-left:3px solid #2B6E4A;font-family:Georgia,'Times New Roman',Times,serif;font-style:italic;color:#465349}
+.kmsg hr{height:0;border:0;border-top:1px solid #DFDCD1;margin:28px 0}
+.kmsg img{max-width:100%;height:auto}
+
+/* Wider side padding when there is room. Phones keep the 24px written inline. */
+@media screen and (min-width:600px){
+  .k-pad{padding-left:44px!important;padding-right:44px!important}
+  .k-mastpad{padding-left:32px!important}
+}
+
+/* Dark mode, for apps that follow the phone's setting (Apple Mail and others).
+   Gmail and Outlook recolour by themselves; the palette is chosen to survive that. */
+@media (prefers-color-scheme:dark){
+  body,.k-page{background-color:#111613!important}
+  .k-card{background-color:#1B231E!important;border-color:#29322B!important}
+  .kmsg,.kmsg p,.kmsg li,.kmsg td,.kmsg h1,.kmsg h2,.kmsg .k-ink{color:#ECEFE8!important}
+  .kmsg h3,.kmsg a,.kmsg h1 em,.kmsg h2 em,.kmsg h1 i,.kmsg h2 i,.k-green{color:#93CFAA!important}
+  .kmsg blockquote,.kmsg .k-ink2,.kmsg .k-ink2 a,.k-foot,.k-foot a{color:#B4BFB6!important}
+  .kmsg blockquote{border-left-color:#7FC39C!important}
+  .kmsg hr,.k-rule{border-top-color:#29322B!important}
+  .kmsg .k-btn{background-color:#A9D9BA!important}
+  .kmsg .k-btn a{color:#0F1F16!important}
+  .kmsg .k-tip{background-color:#202A23!important;border-left-color:#7FC39C!important}
+  .kmsg .k-leaf,.k-leaf{background-color:#7FC39C!important}
+  .kmsg .k-onforest,.kmsg .k-panel h2,.kmsg .k-panel a{color:#F3F1EA!important}
+  .kmsg .k-onforest2,.kmsg .k-panel p{color:#C9DACD!important}
+  .kmsg .k-sap,.kmsg .k-panel h3,.kmsg .k-panel h2 em{color:#A9D9BA!important}
+  .kmsg .k-pill a{color:#17231B!important}
+}
+/* The same dark colours for Outlook's apps, which use their own markers. */
+[data-ogsb] .k-card{background-color:#1B231E!important}
+[data-ogsc] .kmsg,[data-ogsc] .kmsg p,[data-ogsc] .kmsg li,[data-ogsc] .kmsg td,[data-ogsc] .kmsg h1,[data-ogsc] .kmsg h2{color:#ECEFE8!important}
+[data-ogsc] .kmsg h3,[data-ogsc] .kmsg a,[data-ogsc] .kmsg h1 em,[data-ogsc] .kmsg h2 em{color:#93CFAA!important}
+[data-ogsc] .k-foot,[data-ogsc] .k-foot a{color:#B4BFB6!important}
+[data-ogsb] .kmsg .k-btn{background-color:#A9D9BA!important}
+[data-ogsc] .kmsg .k-btn a{color:#0F1F16!important}
+[data-ogsc] .kmsg .k-panel h2,[data-ogsc] .kmsg .k-panel a{color:#F3F1EA!important}
+[data-ogsc] .kmsg .k-panel p{color:#C9DACD!important}
+[data-ogsc] .kmsg .k-panel h3,[data-ogsc] .kmsg .k-panel h2 em{color:#A9D9BA!important}
+[data-ogsc] .kmsg .k-pill a{color:#17231B!important}
+</style>
+</head>
+<body class="k-page" style="margin:0;padding:0;background-color:#F3F1EA;">
+<div role="article" aria-roledescription="email" aria-label="KaiSip" lang="en" class="k-page" style="background-color:#F3F1EA;">
+<table role="presentation" class="k-page" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F3F1EA;">
+<tr>
+<td align="center" style="padding:20px 12px 40px;">
+<!--[if mso]><table role="presentation" width="600" align="center" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;margin:0 auto;">
+
+<!-- Card -->
+<tr>
+<td class="k-card" style="background-color:#FCFBF7;border:1px solid #DFDCD1;border-radius:20px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;">
+
+<!-- Masthead: the logo on forest, with a leaf pattern made of plain table cells -->
+<tr>
+<td bgcolor="#1E4A34" style="background-color:#1E4A34;border-radius:19px 19px 0 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;">
+<tr>
+<td class="k-mastpad" valign="middle" style="padding:0 0 0 12px;">
+<a href="https://kaisip.com" style="display:block;text-decoration:none;color:#F3F1EA;"><img src="https://kaisip.com/assets/email/kaisip-email-logo-forest.png" width="168" height="48" alt="KaiSip" style="display:block;width:168px;height:48px;border:0;font-family:Georgia,'Times New Roman',Times,serif;font-size:28px;line-height:48px;letter-spacing:-0.3px;text-transform:lowercase;color:#F3F1EA;background-color:#1E4A34;"></a>
+</td>
+<td valign="top" align="right" width="90" style="width:90px;font-size:0;line-height:0;">
+<table role="presentation" aria-hidden="true" width="90" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;width:90px;">
+<tr>
+<td width="30" height="30" bgcolor="#2A5F45" style="width:30px;height:30px;font-size:0;line-height:0;background-color:#2A5F45;border-radius:0 30px 0 30px;">&nbsp;</td>
+<td width="30" height="30" bgcolor="#245A40" style="width:30px;height:30px;font-size:0;line-height:0;background-color:#245A40;border-radius:30px 0 30px 0;">&nbsp;</td>
+<td width="30" height="30" bgcolor="#2A5F45" style="width:30px;height:30px;font-size:0;line-height:0;background-color:#2A5F45;border-radius:0 30px 0 30px;">&nbsp;</td>
+</tr>
+<tr>
+<td width="30" height="30" bgcolor="#245A40" style="width:30px;height:30px;font-size:0;line-height:0;background-color:#245A40;border-radius:30px 0 30px 0;">&nbsp;</td>
+<td width="30" height="30" bgcolor="#3A6B51" style="width:30px;height:30px;font-size:0;line-height:0;background-color:#3A6B51;border-radius:0 30px 0 30px;">&nbsp;</td>
+<td width="30" height="30" bgcolor="#245A40" style="width:30px;height:30px;font-size:0;line-height:0;background-color:#245A40;border-radius:30px 0 30px 0;">&nbsp;</td>
+</tr>
+<tr>
+<td width="30" height="30" bgcolor="#2A5F45" style="width:30px;height:30px;font-size:0;line-height:0;background-color:#2A5F45;border-radius:0 30px 0 30px;">&nbsp;</td>
+<td width="30" height="30" bgcolor="#245A40" style="width:30px;height:30px;font-size:0;line-height:0;background-color:#245A40;border-radius:30px 0 30px 0;">&nbsp;</td>
+<td width="30" height="30" bgcolor="#2A5F45" style="width:30px;height:30px;font-size:0;line-height:0;background-color:#2A5F45;border-radius:0 30px 0 30px;">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<!-- Message: Kit puts the email's content here -->
+<tr>
+<td class="k-pad kmsg" style="padding:36px 24px 26px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:17px;line-height:27px;color:#17231B;">
+{{ message_content }}
+</td>
+</tr>
+
+</table>
+</td>
+</tr>
+
+<!-- Footer, on the paper below the card -->
+<tr>
+<td class="k-pad" style="padding:26px 24px 0;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;">
+<tr>
+<td aria-hidden="true" valign="middle" style="padding:0 12px 0 0;font-size:0;line-height:0;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;">
+<tr>
+<td class="k-leaf" width="11" height="11" bgcolor="#1E4A34" style="width:11px;height:11px;font-size:0;line-height:0;background-color:#1E4A34;border-radius:11px 0 11px 0;">&nbsp;</td>
+<td width="3" style="width:3px;font-size:0;line-height:0;">&nbsp;</td>
+<td class="k-leaf" width="11" height="11" bgcolor="#2B6E4A" style="width:11px;height:11px;font-size:0;line-height:0;background-color:#2B6E4A;border-radius:11px 0 11px 0;">&nbsp;</td>
+<td width="3" style="width:3px;font-size:0;line-height:0;">&nbsp;</td>
+<td class="k-leaf" width="11" height="11" bgcolor="#5E9B78" style="width:11px;height:11px;font-size:0;line-height:0;background-color:#5E9B78;border-radius:11px 0 11px 0;">&nbsp;</td>
+</tr>
+</table>
+</td>
+<td class="k-green" valign="middle" style="font-family:Georgia,'Times New Roman',Times,serif;font-size:16px;line-height:22px;font-style:italic;color:#24603F;">Make room for better thinking.</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="k-pad k-foot" style="padding:14px 24px 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:20px;color:#465349;">
+<p style="margin:0 0 4px;">You're getting this because this email address was signed up for KaiSip emails, on the iPhone waitlist at kaisip.com or in the KaiSip app.</p>
+<p style="margin:0 0 4px;"><a href="{{ unsubscribe_url }}" style="display:inline-block;padding:10px 0;color:#465349;font-weight:bold;text-decoration:underline;">Unsubscribe</a> <span aria-hidden="true">&nbsp;&middot;&nbsp;</span> <a href="https://kaisip.com/privacy" style="display:inline-block;padding:10px 0;color:#465349;text-decoration:underline;">Privacy</a> <span aria-hidden="true">&nbsp;&middot;&nbsp;</span> <a href="https://kaisip.com" style="display:inline-block;padding:10px 0;color:#465349;text-decoration:underline;">kaisip.com</a></p>
+<p style="margin:0 0 12px;">{{ address }}</p>
+<p style="margin:0;font-size:12px;line-height:18px;">KaiSip is independent and not affiliated with or endorsed by ISACA. CISA is a registered trademark of ISACA.</p>
+</td>
+</tr>
+
+</table>
+<!--[if mso]></td></tr></table><![endif]-->
+</td>
+</tr>
+</table>
+</div>
+</body>
+</html>
