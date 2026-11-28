@@ -2384,7 +2384,7 @@ function isAsk(word, before, after) {
     var _a, _b, _c, _d, _e;
     if (/-$/.test(before) || /^-/.test(after))
         return false;
-    const prevRaw = (_b = (_a = /([\p{L}'’]+)[,;:]?\s*$/u.exec(before)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : '';
+    const prevRaw = (_b = (_a = /([\p{L}'’]+)\)?[,;:]?\s*$/u.exec(before)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : '';
     const prev = prevRaw.toLowerCase();
     const next = (_e = (_d = (_c = /^\s+([\p{L}]+)/u.exec(after)) === null || _c === void 0 ? void 0 : _c[1]) === null || _d === void 0 ? void 0 : _d.toLowerCase()) !== null && _e !== void 0 ? _e : '';
     const atEnd = /^\s*(?:[?.!,;:)]|$)/.test(after);
@@ -10764,7 +10764,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "06477aa64f1ab5e4";
+  api.sourceHash = "8c5d3df8d545f9b4";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

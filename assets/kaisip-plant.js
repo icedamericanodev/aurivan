@@ -7033,7 +7033,7 @@ function isAsk(word, before, after) {
     var _a, _b, _c, _d, _e;
     if (/-$/.test(before) || /^-/.test(after))
         return false;
-    const prevRaw = (_b = (_a = /([\p{L}'’]+)[,;:]?\s*$/u.exec(before)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : '';
+    const prevRaw = (_b = (_a = /([\p{L}'’]+)\)?[,;:]?\s*$/u.exec(before)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : '';
     const prev = prevRaw.toLowerCase();
     const next = (_e = (_d = (_c = /^\s+([\p{L}]+)/u.exec(after)) === null || _c === void 0 ? void 0 : _c[1]) === null || _d === void 0 ? void 0 : _d.toLowerCase()) !== null && _e !== void 0 ? _e : '';
     const atEnd = /^\s*(?:[?.!,;:)]|$)/.test(after);
@@ -11822,6 +11822,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "18de4bbce59a5516";
+  api.sourceHash = "e3e735c84f5c83c2";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -181,8 +181,9 @@ function mostModifies(after: string): boolean {
 function isAsk(word: string, before: string, after: string): boolean {
   // Part of a hyphenated word: "first-line", "best-fitting", "most-used".
   if (/-$/.test(before) || /^-/.test(after)) return false;
-  // The word before it, past a comma: "approved by Tiago, best state?" has "Tiago" before "best".
-  const prevRaw = /([\p{L}'’]+)[,;:]?\s*$/u.exec(before)?.[1] ?? '';
+  // The word before it, past a comma or a closing bracket: "approved by Tiago, best state?" has "Tiago"
+  // before "best"; "the chief audit executive (CAE) most clearly do?" has "CAE" before "most".
+  const prevRaw = /([\p{L}'’]+)\)?[,;:]?\s*$/u.exec(before)?.[1] ?? '';
   const prev = prevRaw.toLowerCase();
   const next = /^\s+([\p{L}]+)/u.exec(after)?.[1]?.toLowerCase() ?? '';
   // Nothing (or only a mark) follows: "take first?", "Which is best?", "greatest,".
