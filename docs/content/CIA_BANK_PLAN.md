@@ -498,6 +498,29 @@ The CISA, CRISC and AAIA banks keep the shared v2 standard
 Not done on existing items: shortening stems toward The IIA's median (it would
 remove deciding facts), and longer, full-sentence options (new items only).
 
+**Stage 1 done (28 Nov 2026, merged):** every CIA stem lowercased (MAIN made "primary"),
+a period on every option, the teaching pieces matched, `REQUIRE_LOWERCASE_QUALIFIERS`
+on, and the phone app reads lowercase qualifiers (`qualifierCase: 'lowercase'`).
+
+**Stage 2, run as its own pass (owner, 28 Nov 2026: "restyle all, in stages"),** one
+section at a time, each with a fresh blind test and a before-and-after audit.
+- **Pilot, Part 1 Section D (28 Nov 2026):** all 42 stems restyled; 0 left naming a
+  person or a country ("monsoon" kept in `cia1_d4_011`, its key tests rainfall).
+  Median stem 34 to 33 words; every stem at least 0.74 similar to main; 19 held-back
+  items restyled, ids and keys unchanged. Blind test 42 of 42; the audit found 0 HARD
+  and 0 PRECISION (5 OBSERVATION), so the method is safe. Two option referents were
+  made clear (`cia1_d4_015` "the first officer", `cia1_d4_021` "two colleagues").
+- **Lessons** (in the stage 2 brief): length drops by 1 to 2 words on dense sections,
+  never by cutting facts; a role is longer than a name, so recheck every field's cap;
+  swap in an industry when the nationality was the only noun; "(CAE)" only when the
+  stem names the title twice.
+- **Found by the pilot, older than the restyle (for the hardening pass, rule 12):**
+  Section D's options-only cue test is 38 of 42 (90%), as the options were not
+  touched: a balanced or cautious option is usually the key, and `cia1_d4_010`'s key
+  is the only option without an absolute. Classed ambiguous by the blind tester:
+  `cia1_d4_022` (an unused copied client list), `cia1_d4_025` (12 lost files),
+  `cia1_d4_037` (the board's "dealt with it" reply).
+
 **App dependency, before any lowercase item ships:** the phone app finds the
 ask by capitals only (the priority-word match behind the session hint, the
 Priority Lens game and the mistake coach's "Look for FIRST, BEST or MOST").
