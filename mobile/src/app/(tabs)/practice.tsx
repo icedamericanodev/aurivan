@@ -59,7 +59,7 @@ import { mindsetTipsFor } from '../../content/mindset';
 import { scaledScoreNote } from '../../content/scoreNote';
 import type { Certification, Difficulty } from '../../content/types';
 import { BAND_MIN_ANSWERS, bandOf, STEADY_FROM } from '../../engine/domainBand';
-import { domainMark, domainTitle, domainWord } from '../../engine/domainNaming';
+import { domainMark, domainTitle, domainWord, type DomainStyled } from '../../engine/domainNaming';
 import { topicQuestionIds } from '../../engine/outline';
 import { aboutMin, examPaceWords, MINUTES_PER_QUESTION, shouldOfferTimer, spokenMin } from '../../engine/pace';
 import { choiceFor, countdownChoices, countdownLabel, DEFAULT_COUNTDOWN_PACE, timerKindFromSetting, type PracticeTimerKind } from '../../engine/practiceCountdown';
@@ -300,7 +300,7 @@ export default function Practice() {
       <Enter i={0}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
           <T v="display" accessibilityRole="header" style={{ flex: 1, marginTop: space.xs }}>Practice</T>
-          <FeatureInfo title="Practice"><T v="body">Choose a study path or build a one-off set by domain, topic and difficulty. Drills are short games that practice specific skills.</T></FeatureInfo>
+          <FeatureInfo title="Practice"><T v="body">{`Choose a study path or build a one-off set by ${domainWord(cert, 'domain')}, topic and difficulty. Drills are short games that practice specific skills.`}</T></FeatureInfo>
         </View>
         <JumpBar onJump={jump} inView={sectionInView} />
         <MindsetStrip tips={mindsetTipsFor(cert.id)} />
@@ -350,6 +350,7 @@ export default function Practice() {
               mode={mode}
               suggested={suggested}
               domains={cert.domains}
+              course={cert}
               domainId={pathDomain?.id}
               size={pathSize}
               onMode={(m) => useSettings.getState().setStudyMode(m)}
@@ -378,7 +379,7 @@ export default function Practice() {
       </Enter>
 
       <Enter i={4} style={{ marginTop: space.lg }}>
-        <ReviewSaved cert={cert} timed={timed} buildFor={buildFor} onBuildClosed={clearBuild} weakLine={weakDrillLine(weakDrillRanked(readiness.domains), (id) => cert.domains.find((d) => d.id === id)?.short ?? domainTitle(id, cert), readiness.domains.some((d) => d.answered > 0))} />
+        <ReviewSaved cert={cert} timed={timed} buildFor={buildFor} onBuildClosed={clearBuild} weakLine={weakDrillLine(weakDrillRanked(readiness.domains), (id) => cert.domains.find((d) => d.id === id)?.short ?? domainTitle(id, cert), readiness.domains.some((d) => d.answered > 0), cert)} />
       </Enter>
 
       {/* The brain games (mobile 1.51: the Play tab moved here). Its own outer view sits right in the page, so
@@ -403,13 +404,13 @@ type BuildRequest = { domainId: string };
  * the row's own button (never inside it, so a screen reader reaches both), 48pt wide and as tall as the
  * row, in the place the row's chevron had. The row's one tap still starts the usual 10 questions.
  */
-function BuildButton({ name, onPress }: { name: string; onPress: () => void }) {
+function BuildButton({ name, onPress, course }: { name: string; onPress: () => void; /** The course, for its word: "this domain" (CISA) or "this section". */ course?: DomainStyled }) {
   const { c } = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={`Choose length and timer for ${name}`}
-      accessibilityHint="Opens Build a set with this domain chosen"
+      accessibilityHint={`Opens Build a set with this ${domainWord(course, 'domain')} chosen`}
       onPress={onPress}
       // The card pads 16pt: the button reaches its edge, so the icon sits where the chevron sat.
       style={({ pressed }) => ({ width: 48, minHeight: 48, alignSelf: 'stretch', alignItems: 'center', justifyContent: 'center', marginRight: -space.lg, borderRadius: groveRadius.tile, backgroundColor: pressed ? c.soft : 'transparent' })}
@@ -709,6 +710,7 @@ function CardRow({
   onPress,
   badgeTone,
   onBuild,
+  course,
 }: {
   icon: (color: string) => ReactNode;
   title: string;
@@ -722,6 +724,8 @@ function CardRow({
   badgeTone?: string;
   /** Mobile 2.2: a domain's row ends with "Choose length and timer" (in the chevron's place) instead of the chevron. */
   onBuild?: () => void;
+  /** The course, for the build button's hint ("this domain" or "this section"). */
+  course?: DomainStyled;
 }) {
   const { c } = useTheme();
   // From text scale 1.3 the icon badge goes and the trailing part (the count chip) moves under the
@@ -755,7 +759,7 @@ function CardRow({
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       {row}
-      <BuildButton name={title} onPress={onBuild} />
+      <BuildButton name={title} onPress={onBuild} course={course} />
     </View>
   );
 }
@@ -802,6 +806,7 @@ const FocusNext = memo(function FocusNext({ cert, dueCount, focus, hasAnswers, o
             onPress={() => guardedStart(() => startFocusPractice(cert.id, focus), open)}
             // Mobile 2.2: the one tap above is unchanged; this opens Build a set for another length or a timer.
             onBuild={() => onBuild(focus.id)}
+            course={cert}
           />
         </>
       )}
@@ -836,6 +841,7 @@ const ByDomain = memo(function ByDomain({ cert, figures, onBuild }: { cert: Cert
               certId={cert.id}
               domainId={d.id}
               onBuild={onBuild}
+              course={cert}
             />
           </View>
         );
@@ -845,7 +851,7 @@ const ByDomain = memo(function ByDomain({ cert, figures, onBuild }: { cert: Cert
   );
 });
 
-const DomainRow = memo(function DomainRow({ n, dot, name, line, status, below, spoken, certId, domainId, onBuild }: { n: string; dot: string; name: string; line: string; status: string; /** Under 70: the status in clay (its words say "below 70" too). */ below: boolean; spoken: string; certId: string; domainId: string; onBuild: (domainId: string) => void }) {
+const DomainRow = memo(function DomainRow({ n, dot, name, line, status, below, spoken, certId, domainId, onBuild, course }: { /** The course, for its word in the hints ("this domain" or "this section"). */ course?: DomainStyled; n: string; dot: string; name: string; line: string; status: string; /** Under 70: the status in clay (its words say "below 70" too). */ below: boolean; spoken: string; certId: string; domainId: string; onBuild: (domainId: string) => void }) {
   // One tap, as before 2.2: 10 questions in this domain with the usual timer setting.
   const onPress = () => guardedStart(() => startPractice(certId, { count: DOMAIN_SET, domainId, title: name }), open);
   const { c } = useTheme();
@@ -862,7 +868,7 @@ const DomainRow = memo(function DomainRow({ n, dot, name, line, status, below, s
       <AnimatedPressable
         accessibilityRole="button"
         accessibilityLabel={spoken}
-        accessibilityHint="Starts a set in this domain"
+        accessibilityHint={`Starts a set in this ${domainWord(course, 'domain')}`}
         onPress={onPress}
         onPressIn={press.onPressIn}
         onPressOut={press.onPressOut}
@@ -880,7 +886,7 @@ const DomainRow = memo(function DomainRow({ n, dot, name, line, status, below, s
         </View>
         {!under && <T v="meta" num color={below ? c.clay : c.ink2}>{status}</T>}
       </AnimatedPressable>
-      <BuildButton name={name} onPress={() => onBuild(domainId)} />
+      <BuildButton name={name} onPress={() => onBuild(domainId)} course={course} />
     </View>
   );
 });
@@ -943,7 +949,7 @@ const ReviewSaved = memo(function ReviewSaved({ cert, timed, weakLine, buildFor,
         icon={(col) => <ChartColumn size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />}
         title="Weak spots drill"
         line={weakLine}
-        hint="Starts a set from the domains you miss most"
+        hint={`Starts a set from the ${domainWord(cert, 'domains')} you miss most`}
         // Nothing to drill (a course with no questions): the usual "Nothing to practice yet" note.
         onPress={() => guardedStart(() => startWeakSpotsDrill(cert.id), open)}
       />
@@ -960,7 +966,7 @@ const ReviewSaved = memo(function ReviewSaved({ cert, timed, weakLine, buildFor,
       <CardRow
         icon={(col) => <Library size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />}
         title="Question bank"
-        line="Browse by domain and topic"
+        line={`Browse by ${domainWord(cert, 'domain')} and topic`}
         onPress={() => router.push('/bank')}
       />
       <RowDivider />
@@ -1184,8 +1190,8 @@ const MockExams = memo(function MockExams({ cert, headRef }: { cert: Certificati
         <MockTile
           n={cert.exam.questions}
           title="Full mock"
-          line={`${hours} hours · weighted by domain`}
-          spoken={`Full mock, ${cert.exam.questions} questions, ${hours} hours, weighted by domain`}
+          line={`${hours} hours · weighted by ${domainWord(cert, 'domain')}`}
+          spoken={`Full mock, ${cert.exam.questions} questions, ${hours} hours, weighted by ${domainWord(cert, 'domain')}`}
           onPress={() => router.push({ pathname: '/mock-start', params: { questions: String(cert.exam.questions) } })}
         />
       </View>

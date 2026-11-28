@@ -1243,6 +1243,7 @@ exports.domainStyleOf = domainStyleOf;
 exports.domainMark = domainMark;
 exports.domainTitle = domainTitle;
 exports.domainWord = domainWord;
+exports.domainCopy = domainCopy;
 exports.domainOfCode = domainOfCode;
 exports.DEFAULT_DOMAIN_STYLE = { noun: 'Domain', numbering: 'number' };
 function domainStyleOf(c) {
@@ -1266,6 +1267,13 @@ function domainWord(c, form) {
     const lower = form.charAt(0) === 'd';
     const word = plural ? `${noun}s` : noun;
     return lower ? word.toLowerCase() : word;
+}
+function domainCopy(text, c) {
+    if (!(c === null || c === void 0 ? void 0 : c.domainStyle))
+        return text;
+    return text
+        .replace(/\bDomain (\d{1,2})\b/g, (_m, id) => domainTitle(id, c))
+        .replace(/\b[Dd]omains?\b/g, (m) => domainWord(c, m));
 }
 function domainOfCode(code, c) {
     if ((0, exports.isLettered)(c)) {
@@ -2686,11 +2694,12 @@ function isPlayable(id, questions, notes, content, qc) {
     return size >= g.minPool;
 }
   };
-  links["src/engine/games/rootOrRumor.ts"] = {"../random":"src/engine/random.ts"};
+  links["src/engine/games/rootOrRumor.ts"] = {"../domainNaming":"src/engine/domainNaming.ts","../random":"src/engine/random.ts"};
   defs["src/engine/games/rootOrRumor.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.READ_AGAIN_AT = exports.DENY_CARDS = exports.IMPERATIVE_VERBS = exports.RUMOR_TIER_LINE = exports.RUMOR_TIER_NAME = exports.RUMOR_TIERS = exports.MAX_WORDS = exports.MIN_WORDS = exports.RUMOR_MIN_POOL = exports.RUMOR_SIZE = void 0;
+exports.rumorTierLines = rumorTierLines;
 exports.wordCount = wordCount;
 exports.firstSentence = firstSentence;
 exports.leansBack = leansBack;
@@ -2709,6 +2718,7 @@ exports.whyChoices = whyChoices;
 exports.tapTitle = tapTitle;
 exports.tapVerdict = tapVerdict;
 exports.readAgain = readAgain;
+const domainNaming_1 = require("../domainNaming");
 const random_1 = require("../random");
 exports.RUMOR_SIZE = 12;
 exports.RUMOR_MIN_POOL = exports.RUMOR_SIZE * 2;
@@ -2716,11 +2726,16 @@ exports.MIN_WORDS = 8;
 exports.MAX_WORDS = 30;
 exports.RUMOR_TIERS = ['seedling', 'sapling', 'heartwood'];
 exports.RUMOR_TIER_NAME = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
-exports.RUMOR_TIER_LINE = {
-    seedling: 'One domain per round.',
-    sapling: 'All domains, mixed.',
-    heartwood: 'All domains, plus “Why?” on each myth.',
-};
+function rumorTierLines(course) {
+    const one = (0, domainNaming_1.domainWord)(course, 'domain');
+    const many = (0, domainNaming_1.domainWord)(course, 'domains');
+    return {
+        seedling: `One ${one} per round.`,
+        sapling: `All ${many}, mixed.`,
+        heartwood: `All ${many}, plus “Why?” on each myth.`,
+    };
+}
+exports.RUMOR_TIER_LINE = rumorTierLines();
 function wordCount(text) {
     return text.trim().split(/\s+/).filter(Boolean).length;
 }
@@ -3492,7 +3507,7 @@ function allMarks(f) {
             met,
             progress: met ? 1 : frac(chain.length, n),
             detail: met ? 'Done' : `${Math.min(chain.length, n)} of ${n} full mocks, a week apart`,
-            rule: `Finish ${n} full, timed mocks with every question answered, each ${exports.DRESS_GAP_DAYS} days or more after the one before, once every domain is at ${pct(exports.WHOLE_MAP_FLOOR)}.`,
+            rule: `Finish ${n} full, timed mocks with every question answered, each ${exports.DRESS_GAP_DAYS} days or more after the one before, once every ${(0, domainNaming_1.domainWord)(f, 'domain')} is at ${pct(exports.WHOLE_MAP_FLOOR)}.`,
         });
     }
     const onPace = f.mocks.some(isOnPace);
@@ -10764,7 +10779,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "8c5d3df8d545f9b4";
+  api.sourceHash = "45eccc63159f52d0";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

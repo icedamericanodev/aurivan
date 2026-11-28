@@ -61,6 +61,25 @@ export function domainWord(c: DomainStyled, form: DomainWordForm): string {
 }
 
 /**
+ * A fixed sentence written in CISA's words, said in the course's words.
+ *
+ * Plain English: some app copy is one fixed sentence shared by every screen
+ * ("Every domain reached 60%…", "Domain 1 is the inner ring."). Rather than
+ * write each sentence twice, the screen passes it through here:
+ * - a course with NO `domainStyle` (CISA, every course today) gets the very
+ *   same text back, untouched;
+ * - a course with sections gets "Domain 1" → "Section A" and the word
+ *   "domain(s)" → "section(s)", capital kept.
+ * Only for the app's own fixed copy, never for a learner's or an author's text.
+ */
+export function domainCopy(text: string, c?: DomainStyled): string {
+  if (!c?.domainStyle) return text;
+  return text
+    .replace(/\bDomain (\d{1,2})\b/g, (_m, id: string) => domainTitle(id, c))
+    .replace(/\b[Dd]omains?\b/g, (m) => domainWord(c, m as DomainWordForm));
+}
+
+/**
  * The domain id a sub-topic code belongs to.
  * - Numbered (CISA): the code's first character, exactly as before ("2A1.3" → "2").
  * - Lettered: the first letter after the part digits ("1B1.1" → "2", "3D4.2" → "4");

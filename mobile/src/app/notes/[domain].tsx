@@ -91,7 +91,7 @@ export default function NotesDomain() {
   const [defaultOpen] = useState(() => (notes ? firstUnreadTopic(notes, progress.notesRead) : undefined));
 
   if (!info || !notes) {
-    return <EmptyScreen header="Study notes" fallback="/learn" title="Notes not found" body="This domain has no study notes yet." primary={{ label: 'All study notes', onPress: () => router.replace('/notes') }} />;
+    return <EmptyScreen header="Study notes" fallback="/learn" title="Notes not found" body={`This ${domainWord(cert, 'domain')} has no study notes yet.`} primary={{ label: 'All study notes', onPress: () => router.replace('/notes') }} />;
   }
 
   const read = progress.notesRead;

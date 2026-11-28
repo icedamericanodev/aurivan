@@ -7,6 +7,7 @@ import { getCertification } from '../content/certifications';
 import { findQuestion, getAllQuestions, getAllQuestionsIncludingRetired, isHeldBackOut, siblingGroupOf } from '../content/loader';
 import type { Difficulty } from '../content/types';
 import { buildMockExam, mockPool } from '../engine/blueprint';
+import { domainWord } from '../engine/domainNaming';
 import { mockPace, type MockTiming } from '../engine/pace';
 import { countdownFor } from '../engine/practiceCountdown';
 import { legacyTitle } from '../engine/planner';
@@ -230,8 +231,10 @@ export function startFocusPractice(certId: string, domain: { id: string; short: 
 
 /** The title of a study-mode session: "Smart · All domains", "In order · Governance". */
 function pathTitle(certId: string, mode: StudyMode, domainId?: string): string {
-  const d = domainId ? getCertification(certId)?.domains.find((x) => x.id === domainId) : undefined;
-  return `${MODE_INFO[mode].name} · ${d ? d.short : 'All domains'}`;
+  const cert = getCertification(certId);
+  const d = domainId ? cert?.domains.find((x) => x.id === domainId) : undefined;
+  // "All domains" in the course's words ("All sections" for a course with sections).
+  return `${MODE_INFO[mode].name} · ${d ? d.short : `All ${domainWord(cert, 'domains')}`}`;
 }
 
 const reasonsOf = (items: PathItem[]) => {

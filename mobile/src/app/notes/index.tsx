@@ -21,7 +21,7 @@ import { EmptyScreen } from '../../components/emptyScreen';
 import { ReadMark } from '../../components/notes';
 import { DomainDot, EmptyState, Enter, ListRow, PushedHeader, Screen, SearchField, Section, T, useFontScale } from '../../components/ui';
 import { domainLabel } from '../../content/certifications';
-import { domainTitle } from '../../engine/domainNaming';
+import { domainTitle, domainWord } from '../../engine/domainNaming';
 import { getNotes, noteSubtopics } from '../../content/notes';
 import { readCount, readProgressText, searchNotes } from '../../engine/notesSearch';
 import { groupReadState } from '../../engine/noteReadState';
@@ -120,7 +120,7 @@ export default function NotesHome() {
       ) : (
         <Enter i={1}>
           {/* Mobile 1.24: no "0 of 252 read" to start with; the counts show once a note has been read. */}
-          <Section variant="head" title="By domain" meta={readProgressText(readCount(noteSubtopics(cert.id).map((s) => s.id), read), total) ?? undefined} />
+          <Section variant="head" title={`By ${domainWord(cert, 'domain')}`} meta={readProgressText(readCount(noteSubtopics(cert.id).map((s) => s.id), read), total) ?? undefined} />
           {/* Grove Phase 4 (PHASE4.md 7.2): the rows in one card, 1pt dividers between them. */}
           {/* From text scale 1.3 the card gives its side padding back (padTight) and the rows drop their
               chevron (the read mark still ends each row), so a domain name like "IS Acquisition" and
@@ -171,7 +171,7 @@ export default function NotesHome() {
           )}
           {pack && pack.connections.length > 0 && (
             <HubCard testID="notes-connections" style={{ marginTop: space.lg, paddingBottom: space.md }}>
-              <CardHead title="Across the domains" />
+              <CardHead title={`Across the ${domainWord(cert, 'domains')}`} />
               {pack.connections.map((x, i) => (
                 <View key={i} accessible accessibilityLabel={`${x.connection}. ${x.note}`} style={[{ paddingVertical: space.sm }, i > 0 && { borderTopWidth: 1, borderTopColor: c.line }]}>
                   <T v="label">{x.connection}</T>
