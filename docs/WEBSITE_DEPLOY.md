@@ -19,7 +19,7 @@ is in `docs/ARCHITECTURE_E2E.md` (sections 2, 4 and 5).
   the "Open the web app" links back to `beta.html`, and check
   `https://kaisip.com/` shows the app.
 - **The web study app is public at https://kaisip.com/app/ (owner, 28 Nov
-  2026, web v13.1).** The home page stays at `/`; its "Study free on the web"
+  2026, web v13.2).** The home page stays at `/`; its "Study free on the web"
   button and the FAQ link to `/app/`. Free sample only, never the full bank, no
   sign-in. In home (and landing) mode `scripts/build_site.sh` builds the app
   (app mode, with all its checks) into `_site/app/` (`APP_DIR`): only

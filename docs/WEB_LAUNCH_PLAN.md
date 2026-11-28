@@ -51,7 +51,7 @@ and the owner's decisions.
   rules.
 - Nightly encrypted backups to Cloudflare R2.
 - The web study app loads only the free CISA sample (web v12.50+). Since
-  28 Nov 2026 (web v13.1) it is public at https://kaisip.com/app/ (see
+  28 Nov 2026 (web v13.2) it is public at https://kaisip.com/app/ (see
   stream B, step 0).
 - Course content: CRISC 1,000, AAIA 1,000, CC 1,000 and CSOE 392 questions,
   each with notes, principles, an exam guide and a final review week. CIA
@@ -82,7 +82,7 @@ loop. Nothing goes public until its gate says so.
    client (`mobile/src/webcloud/`), so web and phone use one implementation.
 
 ### B. Website version with sign-in and sync (web v14, MAJOR)
-0. **Done (28 Nov 2026, web v13.1, owner decision): the web app is public
+0. **Done (28 Nov 2026, web v13.2, owner decision): the web app is public
    without sign-in**, so iPhone users can study before the App Store app.
    The home page stays at `/`; the app is at `/app/` (step 3
    below); the old preview folder redirects there. It installs with "Add to

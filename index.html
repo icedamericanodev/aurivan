@@ -82,7 +82,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
-<!-- Install (v13.1): "Add to Home Screen" on iPhone and iPad, "Install" on
+<!-- Install (v13.2): "Add to Home Screen" on iPhone and iPad, "Install" on
      computers. The manifest gives the name, icons and full screen; the Apple
      tags do the same on older iOS. Relative, so it works at /app/. -->
 <link rel="manifest" href="manifest.webmanifest">
@@ -5971,7 +5971,7 @@ header.app-header .brand-lockup { height: 28px; }
 .app-cta-badge img { display: block; height: 60px; width: auto; }
 .app-cta-ios { font: var(--t-meta); color: var(--text2); margin: 0; }
 .app-cta-ios a { color: var(--accent-text); }
-/* Google's trademark line beside the Play badge (v13.1). */
+/* Google's trademark line beside the Play badge (v13.2). */
 .app-cta-legal { flex-basis: 100%; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); margin: 0; }
 .app-cta-legal[hidden], .rail-app-legal[hidden] { display: none; }
 .rail-app-legal { margin: var(--sp-xs) 0 0; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
@@ -6015,7 +6015,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .td-app-badge img { display: block; height: 40px; width: auto; }
 .td-app-acts .gt-btn-secondary { min-height: 44px; padding: 0 var(--sp-lg); text-decoration: none; }
 .td-app-hide { margin-right: -4px; }
-/* Today, iPhone and iPad Safari (v13.1): add KaiSip to the Home Screen. An
+/* Today, iPhone and iPad Safari (v13.2): add KaiSip to the Home Screen. An
    InviteRow on a Today card (the td-app card rules), with the three steps. */
 .td-install .plnt-invite-h { font: var(--t-title); letter-spacing: var(--tr-title); }
 .td-install-steps { margin: var(--sp-sm) 0 0; padding-left: 1.4em; font: var(--t-small); color: var(--text); }
@@ -9071,7 +9071,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
     <h2 class="vision-title" id="aboutVisionT">Think like an IS auditor.</h2>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v13.1</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v13.2</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -9392,7 +9392,7 @@ var ICONS = {
   "sliders": "<path d=\"M4 7h9M17 7h3M4 17h3M11 17h9\"/><circle cx=\"15\" cy=\"7\" r=\"2\"/><circle cx=\"9\" cy=\"17\" r=\"2\"/>",
   "retry": "<path d=\"M9 14 4 9l5-5\"/><path d=\"M4 9h10.5a5.5 5.5 0 0 1 0 11H11\"/>",
   "install": "<path d=\"M12 3.5v11M7.5 10l4.5 4.5 4.5-4.5\"/><path d=\"M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17\"/>",
-  // Add to Home Screen (v13.1): Safari's Share glyph and the add-to-home square.
+  // Add to Home Screen (v13.2): Safari's Share glyph and the add-to-home square.
   "share": "<path d=\"M12 14.5v-11\"/><path d=\"m8 7.5 4-4 4 4\"/><path d=\"M8.5 10H7a1.5 1.5 0 0 0-1.5 1.5v8A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 17 10h-1.5\"/>",
   "add-square": "<rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"4\"/><path d=\"M12 8.5v7M8.5 12h7\"/>",
   // The study-day streak's glyph (mobile Sprig, components/glyphs.tsx).
@@ -9422,7 +9422,7 @@ function ico(name, size, cls) {
 // hides it for 14 days); computers get a panel at the foot of the desktop
 // rail (with the QR when it fits); the first-visit welcome has a small "Also
 // on Android" link (not on iPhone); iPhones see "The iPhone app is planned,
-// with no date yet" and the waitlist link instead of a button (v13.1: live). The badge image is assets/google-play-badge.png
+// with no date yet" and the waitlist link instead of a button (v13.2: live). The badge image is assets/google-play-badge.png
 // (see appCtaInit). Plain links only: nothing extra loads, the CSP is unchanged.
 const APP_CTA = { mode: 'live', betaUrl: '', playUrl: 'https://play.google.com/store/apps/details?id=com.kaisip.app' };
 
@@ -9484,7 +9484,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v13.1';
+const APP_VERSION = 'v13.2';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -10207,7 +10207,7 @@ var MOCK_TYPES = {
   full: { total: MOCK_TOTAL, minutes: 240, name: 'Full mock', locked: true },
   mini: { total: MOCK_MINI_TOTAL, minutes: Math.round(240 * MOCK_MINI_TOTAL / MOCK_TOTAL), name: 'Mini mock' }
 };
-// v13.1 (owner, 28 Nov 2026): the Android beta has closed and the full course
+// v13.2 (owner, 28 Nov 2026): the Android beta has closed and the full course
 // is not open to everyone yet, so nothing links to it. Learners who finish the
 // free questions get the Android app on Google Play (the official badge) or,
 // on iPhone, the home page's waitlist (WAITLIST_URL is kaisip.com/#waitlist
@@ -16678,7 +16678,7 @@ function renderHome() {
   // other invitation or setup card is on Today this visit (the other goes
   // first; the name waits). Showing it counts, for today only.
   var appCard = appCtaTodayHtml();
-  // iPhone and iPad Safari: how to add KaiSip to the Home Screen (v13.1).
+  // iPhone and iPad Safari: how to add KaiSip to the Home Screen (v13.2).
   var installCard = installTipHtml(r.answered);
   var finalWeek = todayFinalWeekHtml(days);
   var freeDone = todayFreeDoneHtml();
@@ -26708,7 +26708,7 @@ function appCtaNotNow() {
   showToast('Hidden for 14 days. The app link stays in About.', 'info', 2600);
 }
 
-// ── ADD TO HOME SCREEN (v13.1): iPhone and iPad Safari only ──
+// ── ADD TO HOME SCREEN (v13.2): iPhone and iPad Safari only ──
 // Safari has no install prompt, so Today shows the three steps in one quiet
 // card under the plan, until "Hide tip" (a NEW device-only key, 'hidden').
 // Never when KaiSip already runs from the Home Screen, in another iOS browser
@@ -27841,6 +27841,12 @@ const CHANGELOG = [
       { cat: 'new', text: 'On iPhone and iPad, add KaiSip to your Home Screen from Safari to open it full screen, like an app. Today shows the steps.' },
       { cat: 'new', text: 'KaiSip is also on Google Play for Android phones.' },
       { cat: 'improved', text: 'The Android beta has finished. Thank you to everyone who tested KaiSip.' },
+    ],
+  },
+  {
+    version: 'v13.1',
+    items: [
+      { cat: 'improved', text: 'Practice questions that were hard to follow now read more plainly, in short sentences, so you can focus on the answer instead of the wording.' },
     ],
   },
   {
