@@ -10001,7 +10001,7 @@ exports.fieldInk = {
     },
 };
   };
-  links["src/webcloud/auth.ts"] = {"../engine/account":"src/engine/account.ts","../engine/passwordRules":"src/engine/passwordRules.ts","../cloud/types":"src/cloud/types.ts","./config":"src/webcloud/config.ts","./errors":"src/webcloud/errors.ts","./pkce":"src/webcloud/pkce.ts","./session":"src/webcloud/session.ts"};
+  links["src/webcloud/auth.ts"] = {"../engine/account":"src/engine/account.ts","../engine/passwordRules":"src/engine/passwordRules.ts","../cloud/types":"src/cloud/types.ts","./config":"src/webcloud/config.ts","./breach":"src/webcloud/breach.ts","./errors":"src/webcloud/errors.ts","./pkce":"src/webcloud/pkce.ts","./session":"src/webcloud/session.ts"};
   defs["src/webcloud/auth.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -10012,6 +10012,7 @@ const account_1 = require("../engine/account");
 const passwordRules_1 = require("../engine/passwordRules");
 const types_1 = require("../cloud/types");
 const config_1 = require("./config");
+const breach_1 = require("./breach");
 const errors_1 = require("./errors");
 const pkce_1 = require("./pkce");
 const session_1 = require("./session");
@@ -10074,7 +10075,7 @@ function strongSignIn(s) {
     return Array.isArray(amr) && amr.some((a) => a && typeof a.method === 'string' && STRONG_METHODS.includes(a.method));
 }
 function createWebAuth(deps) {
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
     const base = ((_a = deps.url) !== null && _a !== void 0 ? _a : config_1.SUPABASE_URL).replace(/\/+$/, '');
     const apiKey = (_b = deps.apiKey) !== null && _b !== void 0 ? _b : config_1.PUBLISHABLE_KEY;
     const redirectTo = (_c = deps.redirectTo) !== null && _c !== void 0 ? _c : config_1.REDIRECT_URL;
@@ -10315,14 +10316,16 @@ function createWebAuth(deps) {
         clearEnded();
         return { s, user: body.user && typeof body.user === 'object' ? body.user : null };
     };
+    const breachLookup = (_d = deps.breachedPassword) !== null && _d !== void 0 ? _d : (deps.sha1Hex ? (0, breach_1.createBreachCheck)({ fetch: deps.fetch, sha1Hex: deps.sha1Hex }) : undefined);
     const breachCheck = async (password) => {
-        if (!config_1.BREACH_CHECK_ON || !deps.breachedPassword) {
+        if (!config_1.BREACH_CHECK_ON) {
             breach = 'off';
             return;
         }
         let verdict = 'unknown';
         try {
-            verdict = await deps.breachedPassword(password);
+            if (breachLookup)
+                verdict = await breachLookup(password);
         }
         catch {
             verdict = 'unknown';
@@ -10376,7 +10379,6 @@ function createWebAuth(deps) {
     const finishWithPassword = async (s, password) => {
         var _a, _b;
         try {
-            await breachCheck(password);
             const how = await putPassword(s, password, undefined, true);
             const done = { account: info((_a = store.read()) !== null && _a !== void 0 ? _a : s), passwordSaved: true };
             if (how === 'unchanged')
@@ -10429,13 +10431,14 @@ function createWebAuth(deps) {
         async startPasswordSignUp(email, password, opts) {
             const e = emailOf(email);
             await ensureWords();
-            newPasswordOf(password, e);
+            const p = newPasswordOf(password, e);
+            await breachCheck(p);
             await requestCode(e, opts === null || opts === void 0 ? void 0 : opts.captchaToken);
         },
         async finishPasswordSignUp(email, code, password, opts) {
             const e = emailOf(email);
             await ensureWords();
-            newPasswordOf(password, e);
+            await breachCheck(newPasswordOf(password, e));
             const { s, user } = await verifyCode(e, code, 'email', Boolean(opts === null || opts === void 0 ? void 0 : opts.shared));
             const names = namesOf(user);
             if (names.length && (0, passwordRules_1.checkPassword)(password, { email: e, names }).length) {
@@ -10462,7 +10465,7 @@ function createWebAuth(deps) {
         async finishPasswordReset(email, code, newPassword, opts) {
             const e = emailOf(email);
             await ensureWords();
-            newPasswordOf(newPassword, e);
+            await breachCheck(newPasswordOf(newPassword, e));
             const { s, user } = await verifyCode(e, code, 'recovery', Boolean(opts === null || opts === void 0 ? void 0 : opts.shared));
             const names = namesOf(user);
             if (names.length && (0, passwordRules_1.checkPassword)(newPassword, { email: e, names }).length) {
@@ -10700,11 +10703,12 @@ function decodeWith(body, alphabet) {
   defs["src/webcloud/breach.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BREACH_RANGE_URL = void 0;
+exports.BREACH_RANGE_URL = exports.BREACH_TIMEOUT_MS = void 0;
 exports.breachForms = breachForms;
 exports.createBreachCheck = createBreachCheck;
 const passwordBreach_1 = require("../engine/passwordBreach");
 const passwordRules_1 = require("../engine/passwordRules");
+exports.BREACH_TIMEOUT_MS = 3000;
 exports.BREACH_RANGE_URL = 'https://api.pwnedpasswords.com/range';
 const TAIL = /[0-9!-/:-@[-`{-~]+$/;
 function breachForms(password) {
@@ -10715,8 +10719,13 @@ function breachForms(password) {
     return [...new Set([p, c, c.replace(TAIL, '')])].filter((x) => x.length > 0);
 }
 function createBreachCheck(deps) {
-    var _a;
+    var _a, _b;
     const base = ((_a = deps.url) !== null && _a !== void 0 ? _a : exports.BREACH_RANGE_URL).replace(/\/+$/, '');
+    const wait = (_b = deps.wait) !== null && _b !== void 0 ? _b : ((ms) => new Promise((r) => setTimeout(r, ms)));
+    const lookups = lookupAll(deps, base);
+    return (password) => { var _a; return Promise.race([lookups(password), wait((_a = deps.timeoutMs) !== null && _a !== void 0 ? _a : exports.BREACH_TIMEOUT_MS).then(() => 'unknown')]); };
+}
+function lookupAll(deps, base) {
     return async (password) => {
         let unknown = false;
         for (const f of breachForms(password)) {
@@ -10742,7 +10751,7 @@ function createBreachCheck(deps) {
     };
 }
   };
-  links["src/webcloud/browser.ts"] = {};
+  links["src/webcloud/browser.ts"] = {"../engine/sha256":"src/engine/sha256.ts"};
   defs["src/webcloud/browser.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -10750,7 +10759,9 @@ exports.noStorage = exports.browserClock = void 0;
 exports.browserLocks = browserLocks;
 exports.pageLocks = pageLocks;
 exports.browserRandom = browserRandom;
+exports.browserSha1Hex = browserSha1Hex;
 exports.browserStorage = browserStorage;
+const sha256_1 = require("../engine/sha256");
 function browserLocks(locks) {
     if (locks && typeof locks.request === 'function') {
         return { request: (name, fn) => locks.request(name, fn) };
@@ -10771,6 +10782,9 @@ function pageLocks() {
 }
 function browserRandom(crypto) {
     return { bytes: (n) => crypto.getRandomValues(new Uint8Array(n)) };
+}
+function browserSha1Hex(subtle) {
+    return async (text) => (0, sha256_1.toHex)(new Uint8Array(await subtle.digest('SHA-1', (0, sha256_1.utf8)(text))));
 }
 exports.browserClock = { now: () => Date.now() };
 exports.noStorage = {
@@ -10933,7 +10947,7 @@ function streamGzip(env) {
   defs["src/webcloud/config.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WEB_CERT = exports.PASSWORD_FRESH_MS = exports.AUTH_ENDED_KEY = exports.RESET_RESEND_MS = exports.BREACH_CHECK_ON = exports.CODE_SESSION_MAX_MS = exports.SESSION_IDLE_MAX_MS = exports.SESSION_MAX_AGE_MS = exports.REFRESH_MARGIN_MS = exports.SYNC_LOCK = exports.AUTH_LOCK = exports.DEVICE_ID_KEY = exports.SYNC_UNDO_KEY = exports.SYNC_MIRROR_KEY = exports.SYNC_META_KEY = exports.PKCE_KEY = exports.SESSION_KEY = exports.ACCOUNT_ORIGIN = exports.REDIRECT_URL = exports.PUBLISHABLE_KEY = exports.SUPABASE_URL = void 0;
+exports.WEB_CERT = exports.PASSWORD_FRESH_MS = exports.AUTH_ENDED_KEY = exports.RESET_RESEND_MS = exports.BREACH_HOST = exports.BREACH_CHECK_ON = exports.CODE_SESSION_MAX_MS = exports.SESSION_IDLE_MAX_MS = exports.SESSION_MAX_AGE_MS = exports.REFRESH_MARGIN_MS = exports.SYNC_LOCK = exports.AUTH_LOCK = exports.DEVICE_ID_KEY = exports.SYNC_UNDO_KEY = exports.SYNC_MIRROR_KEY = exports.SYNC_META_KEY = exports.PKCE_KEY = exports.SESSION_KEY = exports.ACCOUNT_ORIGIN = exports.REDIRECT_URL = exports.PUBLISHABLE_KEY = exports.SUPABASE_URL = void 0;
 exports.SUPABASE_URL = 'https://ziadnvepttlgcowvqvom.supabase.co';
 exports.PUBLISHABLE_KEY = 'sb_publishable_s9eKQUQ0w3MTnCUBF05EkA_5e_kGEw2';
 exports.REDIRECT_URL = 'https://kaisip.com/';
@@ -10950,7 +10964,8 @@ exports.REFRESH_MARGIN_MS = 60000;
 exports.SESSION_MAX_AGE_MS = 30 * 86400000;
 exports.SESSION_IDLE_MAX_MS = 14 * 86400000;
 exports.CODE_SESSION_MAX_MS = 10 * 60000;
-exports.BREACH_CHECK_ON = false;
+exports.BREACH_CHECK_ON = true;
+exports.BREACH_HOST = 'https://api.pwnedpasswords.com';
 exports.RESET_RESEND_MS = 60000;
 exports.AUTH_ENDED_KEY = 'kaisip_auth_ended_v1';
 exports.PASSWORD_FRESH_MS = 9 * 60000;
@@ -11343,7 +11358,7 @@ function createWebCloud(o) {
     if (sv && !(Number.isInteger(sv.progress) && sv.progress >= 1 && Number.isInteger(sv.settings) && sv.settings >= 1))
         throw new Error('KaiSipCloud: storeVersions must be whole numbers');
     const gzip = 'gunzipCapped' in o.gzip ? o.gzip : (0, codec_1.streamGzip)(o.gzip);
-    const auth = (0, auth_1.createWebAuth)({ fetch: o.fetch, stores: o.stores, random: o.random, lock: o.lock, clock: o.clock, url: o.url, apiKey: o.apiKey, passwordWords: o.passwordWords, breachedPassword: o.breachedPassword });
+    const auth = (0, auth_1.createWebAuth)({ fetch: o.fetch, stores: o.stores, random: o.random, lock: o.lock, clock: o.clock, url: o.url, apiKey: o.apiKey, passwordWords: o.passwordWords, breachedPassword: o.breachedPassword, sha1Hex: o.sha1Hex });
     const sync = (0, rest_1.createRestSync)(auth, gzip);
     const device = (0, device_1.createWebDevice)({ host: o.host, storage: syncStorage(o.stores, () => auth.sharedComputer()), bank: o.bank, clock: o.clock });
     const wait = (_a = o.wait) !== null && _a !== void 0 ? _a : ((ms) => new Promise((r) => setTimeout(r, ms)));
@@ -11968,7 +11983,7 @@ function decodeUtf8(bytes) {
   api["config"] = load("src/webcloud/config.ts");
   api["passwordRules"] = load("src/engine/passwordRules.ts");
   api["breach"] = load("src/webcloud/breach.ts");
-  api.sourceHash = "e0087541a8d2f612";
+  api.sourceHash = "d4360f8f662109cf";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

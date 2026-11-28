@@ -111,7 +111,7 @@ loop. Nothing goes public until its gate says so.
    `docs/content/PASSWORD_LIST_FILIPINO.md`. No second ranked password list
    with Asian coverage and a clear licence was found, so none is used.
    Guidance words for every refusal, which describe and never show an
-   example. A breached-password range check is designed but OFF (below).
+   example. A leaked-password range check is ON (below).
    Tests: `password-rules.test.ts`, `webcloud-password.test.ts` (gate 17 for
    the web client). The phone's `AuthPort` and memory backend get the same
    methods with the phone screens (stream C).
@@ -142,30 +142,39 @@ and lists can see:
   and 0 of the 62 round-2 ones are refused; fewer than 0.5% of random
   three-word phrases are; four or more different ordinary words pass by
   design.
-- **What would close the gap** is a leaked-password check: Supabase Pro's
-  server check, or the range check below. Both are an owner decision.
+- **The leaked-password check is ON** (owner decision 28 Nov 2026, below).
+  It closes most of the gap for passwords that leaked anywhere. What still
+  passes: an uncommon phrase, name or slogan that is on no list and has
+  never appeared in a leak, and any password chosen while the check can't
+  reach the service (it fails open and says so).
 
-#### Breached-password check (designed, OFF; needed only if switched on)
+#### Leaked-password check (ON since 28 Nov 2026)
 
 `mobile/src/webcloud/breach.ts` (with `engine/passwordBreach.ts`) looks up
 three forms of a new password (as typed; the compared form; the compared
 form without trailing numbers and symbols) with Have I Been Pwned's
-k-anonymity range API: only the first 5 characters of each SHA-1 leave the
-device, the `Add-Padding` header pads the answer, a network problem never
-blocks a password (the screen says it couldn't check), nothing is logged.
-`BREACH_CHECK_ON` in `mobile/src/webcloud/config.ts` is `false`. If the
-owner switches it on:
+k-anonymity range API, when a password is chosen (sign-up, reset, "set a
+password"), after the app's rules have passed it, and never at sign-in.
+Only the first 5 characters of each SHA-1 leave the device; the
+`Add-Padding` header pads the answer; the email and the full hash are never
+sent; nothing is logged. A hit refuses with `password_leaked` and the
+guidance text. A network failure, or no answer within 3 seconds in all,
+fails open: the password is accepted and `breachState()` is `unchecked`, so
+the screen can say it couldn't check. `BREACH_CHECK_ON` in
+`mobile/src/webcloud/config.ts` is `true`; the page passes
+`sha1Hex: KaiSipCloud.browser.browserSha1Hex(crypto.subtle)` to
+`KaiSipCloud.create`.
 
-- **Privacy policy line:** "When you set or change a password, the app
-  checks whether it has appeared in a known data leak. It sends only the
-  first 5 characters of a one-way fingerprint of the password to Have I
-  Been Pwned's Pwned Passwords service (operated by Troy Hunt), which
-  cannot work out your password from them. Your password itself never
-  leaves your device."
-- **Website CSP:** add `https://api.pwnedpasswords.com` to `connect-src`
-  in `_headers` (and the phone needs no change: no CSP).
-- The page passes `breachedPassword: createBreachCheck({ fetch, sha1Hex })`
-  to `KaiSipCloud.create`, with `sha1Hex` from `crypto.subtle.digest('SHA-1')`.
+- **Privacy:** the paragraph is a DRAFT in
+  `docs/mobile/PASSWORD_SIGN_IN_DESIGN.md` §7; it goes into `privacy.html`
+  with the sign-in release, after `app-store-compliance-reviewer` checks it
+  (together with the Play Data safety view written there).
+- **Website CSP:** `https://api.pwnedpasswords.com` is in `connect-src` for
+  the study app's pages (set in `scripts/build_site.sh`); the home page's
+  policy is unchanged. Nothing calls it until a password form exists.
+- **To verify on the live site:** the service answers the browser's CORS
+  preflight for the `Add-Padding` header (its documentation says browsers
+  may call it; check once when the password form ships).
 
 ### B. Website version with sign-in and sync (web v14, MAJOR)
 0. **Done (28 Nov 2026, web v13.2, owner decision): the web app is public

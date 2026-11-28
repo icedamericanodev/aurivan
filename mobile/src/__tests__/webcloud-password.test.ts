@@ -23,14 +23,16 @@
  *   outside the two endpoints, and codes and captcha tokens never stored or
  *   put in an address.
  */
+import { createHash } from 'crypto';
 import { CloudError } from '../cloud/types';
+import { BREACH_TIMEOUT_MS, createBreachCheck } from '../webcloud/breach';
 import { pageLocks } from '../webcloud/browser';
 import { createWebAuth, type WebAuth } from '../webcloud/auth';
-import { AUTH_ENDED_KEY, CODE_SESSION_MAX_MS, PASSWORD_FRESH_MS, SESSION_IDLE_MAX_MS, SESSION_KEY, SESSION_MAX_AGE_MS, SYNC_META_KEY } from '../webcloud/config';
+import { AUTH_ENDED_KEY, BREACH_CHECK_ON, BREACH_HOST, CODE_SESSION_MAX_MS, PASSWORD_FRESH_MS, SESSION_IDLE_MAX_MS, SESSION_KEY, SESSION_MAX_AGE_MS, SYNC_META_KEY } from '../webcloud/config';
 import { toCloudError } from '../webcloud/errors';
 import { createWebCloud } from '../webcloud/index';
 import { readSession } from '../webcloud/session';
-import { loadPasswordWords, unloadPasswordWordsForTest } from '../engine/passwordRules';
+import { loadPasswordWords, passwordGuidance, unloadPasswordWordsForTest } from '../engine/passwordRules';
 import type { LockPort } from '../webcloud/ports';
 import { CompressionStream, DecompressionStream, ReadableStream } from 'stream/web';
 import { FAKE_KEY, FAKE_URL, FakeSupabase, fakeJwt, memoryStorage, seqRandom, testPasswordWords } from '../../jest/webcloud-fakes';
@@ -595,13 +597,110 @@ describe('this review\'s client fixes', () => {
     expect(tab().sessionEnded()).toBe('idle');
   });
 
-  it('the breached-password hook is OFF: the port is never called and no other address is ever asked', async () => {
-    let asked = 0;
-    const a = createWebAuth({ fetch: server.fetch, stores: { local, session }, random: seqRandom(), lock: sharedLock, clock, url: FAKE_URL, apiKey: FAKE_KEY, passwordWords: testPasswordWords, breachedPassword: async () => (asked++, 'breached' as const) });
-    expect((await signUp(a)).passwordSaved).toBe(true);
-    expect(asked).toBe(0);
-    expect(a.breachState()).toBe('off');
-    for (const c of server.calls) expect(c.path).toMatch(/^\/auth\/v1\//);
+});
+
+describe('the leaked-password check (ON: Pwned Passwords range API, k-anonymity)', () => {
+  const sha1 = (t: string) => createHash('sha1').update(t, 'utf8').digest('hex');
+  const sha1Hex = async (t: string) => sha1(t);
+  const GOOD_PW = 'copper falcon wobbly harbor';
+  /** The fake range service beside the fake Supabase: knows `leaked`, pads when asked, records every call. */
+  function withRange(leaked: string[], mode: 'ok' | 'hang' | 'down' = 'ok') {
+    const calls: { url: string; headers: Record<string, string> }[] = [];
+    const fetch: typeof server.fetch = async (url, init) => {
+      if (!url.startsWith(BREACH_HOST)) return server.fetch(url, init);
+      calls.push({ url, headers: init.headers });
+      if (mode === 'hang') return new Promise(() => {});
+      if (mode === 'down') throw new TypeError('Failed to fetch');
+      const prefix = url.slice(url.lastIndexOf('/') + 1);
+      const lines = leaked.map((p) => sha1(p).toUpperCase()).filter((h) => h.startsWith(prefix)).map((h) => `${h.slice(5)}:7`);
+      if (init.headers['Add-Padding'] === 'true') lines.push('00000000000000000000000000000000000:0');
+      return { status: 200, headers: { get: () => null }, text: async () => lines.join('\r\n') };
+    };
+    const a = createWebAuth({ fetch, stores: { local, session }, random: seqRandom(), lock: sharedLock, clock, url: FAKE_URL, apiKey: FAKE_KEY, passwordWords: testPasswordWords, sha1Hex });
+    return { a, calls };
+  }
+
+  it('is switched on, and gives up after 3 seconds at most', () => {
+    expect(BREACH_CHECK_ON).toBe(true);
+    expect(BREACH_TIMEOUT_MS).toBe(3000);
+  });
+
+  it('refuses a leaked password on each of the three forms (typed, compared, compared without its tail), before any code is emailed', async () => {
+    const cases: [string, string][] = [
+      ['Copper Falcon Wobbly Harbor', 'Copper Falcon Wobbly Harbor'], // as typed
+      ['Copper Falcon Wobbly Harbor', 'copperfalconwobblyharbor'], // the compared form
+      ['copper falcon wobbly harbor 2026!', 'copperfalconwobblyharbor'], // without trailing numbers and symbols
+    ];
+    for (const [typed, leaked] of cases) {
+      const { a, calls } = withRange([leaked]);
+      expect([typed, leaked, await codeOf(a.startPasswordSignUp(EMAIL, typed))]).toEqual([typed, leaked, 'invalid:password_leaked']);
+      expect(calls.length).toBeGreaterThan(0);
+      expect(server.calls.some((c) => c.path === '/auth/v1/otp')).toBe(false);
+      expect(passwordGuidance('password_leaked')!.text).toBe('This password has appeared in a data leak. Please choose a different one.');
+    }
+  });
+
+  it('a password on no leak list is saved; every lookup sends only a 5-character prefix, with padding, to the one host', async () => {
+    const { a, calls } = withRange(['something else entirely']);
+    const done = await signUp(a, EMAIL, GOOD_PW);
+    expect(done.passwordSaved).toBe(true);
+    expect(a.breachState()).toBe('clean');
+    expect(calls.length).toBeGreaterThan(0);
+    const forms = [GOOD_PW, 'copperfalconwobblyharbor'];
+    for (const c of calls) {
+      expect(c.url).toMatch(/^https:\/\/api\.pwnedpasswords\.com\/range\/[0-9A-F]{5}$/);
+      expect(c.headers['Add-Padding']).toBe('true');
+      expect(c.headers.authorization).toBeUndefined();
+      expect(c.headers.apikey).toBeUndefined();
+      expect(c.url.toLowerCase()).not.toContain('maya');
+      for (const f of forms) expect(c.url.toUpperCase()).not.toContain(sha1(f).toUpperCase().slice(5, 12));
+    }
+    // Nothing else outside the project was contacted.
+    expect(server.calls.every((c) => c.path.startsWith('/auth/v1/') || c.path.startsWith('/rest/v1/'))).toBe(true);
+  });
+
+  it('fails open: a timeout or a network error accepts the password (the rules passed) and says it could not check', async () => {
+    for (const mode of ['hang', 'down'] as const) {
+      server = new FakeSupabase(() => now);
+      const { calls } = withRange([], mode);
+      const fetch: typeof server.fetch = async (url, init) => (url.startsWith(BREACH_HOST) ? (calls.push({ url, headers: init.headers }), mode === 'hang' ? new Promise(() => {}) : Promise.reject(new TypeError('down'))) : server.fetch(url, init));
+      const quick = createBreachCheck({ fetch, sha1Hex, timeoutMs: 30 });
+      const a = createWebAuth({ fetch, stores: { local: memoryStorage(), session: memoryStorage() }, random: seqRandom(), lock: pageLocks(), clock, url: FAKE_URL, apiKey: FAKE_KEY, passwordWords: testPasswordWords, breachedPassword: quick });
+      const done = await signUp(a, EMAIL, GOOD_PW);
+      expect([mode, done.passwordSaved, a.breachState()]).toEqual([mode, true, 'unchecked']);
+      expect(passwordGuidance('breach_unchecked')).not.toBeNull();
+    }
+  });
+
+  it('no lookup at sign-in, and none when the app\'s own rules already refused the password', async () => {
+    const { a, calls } = withRange([]);
+    await signUp(a, EMAIL, GOOD_PW);
+    const before = calls.length;
+    await a.signOut('local');
+    await a.signInWithPassword(EMAIL, GOOD_PW);
+    expect(calls.length).toBe(before);
+    expect(await codeOf(a.startPasswordSignUp('other@example.com', 'monkeymonkeymonkey'))).toBe('invalid:password_common');
+    expect(calls.length).toBe(before);
+  });
+
+  it('reset and "set a password" are checked too; nothing is logged', async () => {
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    try {
+      const { a } = withRange(['copperfalconwobblyharbor']);
+      await signUp(a, EMAIL, PW);
+      await a.signOut('local');
+      await a.sendPasswordResetCode(EMAIL);
+      expect(await codeOf(a.finishPasswordReset(EMAIL, server.codes.get(EMAIL)!, GOOD_PW))).toBe('invalid:password_leaked');
+      expect(a.current()).toBeNull(); // refused before the reset code was used
+      await a.signInWithPassword(EMAIL, PW);
+      expect(await codeOf(a.setPassword(GOOD_PW, { currentPassword: PW }))).toBe('invalid:password_leaked');
+      expect(log).not.toHaveBeenCalled();
+      expect(warn).not.toHaveBeenCalled();
+    } finally {
+      log.mockRestore();
+      warn.mockRestore();
+    }
   });
 });
 

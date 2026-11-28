@@ -818,9 +818,11 @@ phone fields use the matching autofill hints.
 >   words; a full name with numbers; a repeated word counts once; diagonal
 >   walks, doubled-letter sequences, mirrors) and states what the rules
 >   cannot do, with a held-out measure (`docs/WEB_LAUNCH_PLAN.md`). A
->   breached-password range check is designed (`webcloud/breach.ts`: three
->   forms, padded k-anonymity queries, fails open, `breachState()`) but OFF
->   (`BREACH_CHECK_ON = false`).
+>   leaked-password range check (`webcloud/breach.ts`: three forms, padded
+>   k-anonymity queries, 3-second timeout, fails open, `breachState()`) is
+>   ON since 28 Nov 2026 (owner decision; `BREACH_CHECK_ON = true`), on
+>   sign-up, reset and "set a password", never at sign-in. Its privacy
+>   paragraph is a draft in §7.
 >   The word lists are loaded with `loadPasswordWords` (on the website a
 >   separate file, `assets/kaisip-password-words.js`, fetched when a password
 >   form opens; no password is saved until it is loaded).
@@ -1087,6 +1089,46 @@ and no new data type or company.**
   not "sensitive personal information", so NPC registration is unchanged
   (still "not mandatory" by the earlier analysis; that analysis's own
   *(verify)* items stand).
+
+**Leaked-password check (ON since 28 Nov 2026, owner decision). DRAFT for the
+sign-in release; not in the live `privacy.html` yet. It goes live with the
+sign-in release after `app-store-compliance-reviewer` checks it.**
+
+- **Where:** section 6A (the KaiSip account) of the cloud privacy draft,
+  `docs/legal/cloud/privacy.html`, which becomes the live `privacy.html` with
+  the sign-in release: a new paragraph right after the sentence about how the
+  password is stored (the §7 table below). Section 5 (third-party services)
+  also gains one row: "Have I Been Pwned (Pwned Passwords), Troy Hunt /
+  Superlative Enterprises Pty Ltd, served through Cloudflare: checks a new
+  password against known leaks; receives only a 5-character hash prefix."
+- **Wording (draft):**
+
+  > **Checking for leaked passwords.** When you choose a password (when you
+  > create an account, reset your password or set a new one), the app checks
+  > whether that password has appeared in a known data leak, so you don't
+  > pick one that criminals already have. To do this, your device makes a
+  > one-way fingerprint of the password (a SHA-1 hash) and sends only its
+  > first 5 characters to the Pwned Passwords service of Have I Been Pwned,
+  > run by Troy Hunt (Superlative Enterprises Pty Ltd) on Cloudflare's
+  > network. The service sends back a long list of fingerprints that start
+  > the same way, padded with made-up ones, and your device looks for a match
+  > itself. Your password, your email address and the full fingerprint never
+  > leave your device, and nothing sent can be linked to you or your
+  > account. We don't check when you sign in. If the service can't be
+  > reached, the app accepts your password without the check and tells you it
+  > couldn't check.
+
+- **Play Data safety (for the compliance check):** no new data type is
+  collected or shared. The 5-character prefix of a password hash is not
+  personal data: it can't be linked to a person or an account (about a
+  million passwords share each prefix), no identifier goes with it, and the
+  answer is padded. Our view is that the form's answers stay as they are
+  ("Data shared: none" for this flow); **flag it for
+  `app-store-compliance-reviewer`** to confirm, together with whether Apple's
+  privacy label needs a line.
+- **Website CSP:** `https://api.pwnedpasswords.com` is in `connect-src` for
+  the study app's pages (the policy `scripts/build_site.sh` writes into
+  `_headers`); the home page's stricter policy is unchanged.
 
 **Edits needed (for `app-store-compliance-reviewer` and the legal drafts):**
 

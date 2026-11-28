@@ -67,7 +67,7 @@ import {
   SESSION_MAX_AGE_MS,
   SUPABASE_URL,
 } from './config';
-import type { BreachVerdict } from './breach';
+import { createBreachCheck, type BreachVerdict } from './breach';
 import { authWord, bodyObject, toCloudError, type Call, type PasswordDetail } from './errors';
 import { challengeFor, isVerifier, lastSignInAt, makeVerifier, sessionStartAt, tokenClaims } from './pkce';
 import type { BrowserStores, ClockPort, FetchPort, HttpResponse, LockPort, RandomPort } from './ports';
@@ -88,8 +88,10 @@ export interface WebAuthDeps {
    * fails) no password is saved: CloudError offline, detail password_rules.
    */
   passwordWords?: () => Promise<PasswordWordLists>;
-  /** The breached-password check (see BreachedPasswordPort). Used only when BREACH_CHECK_ON is true; today it is false. */
+  /** The leaked-password check (see BreachedPasswordPort); default: createBreachCheck with `fetch` and `sha1Hex`. */
   breachedPassword?: BreachedPasswordPort;
+  /** SHA-1 as hex (browser.ts browserSha1Hex(crypto.subtle)), for the default leaked-password check. */
+  sha1Hex?: (text: string) => Promise<string>;
   /** Defaults: the public values in config.ts (tests point them at a fake server). */
   url?: string;
   apiKey?: string;
@@ -182,7 +184,7 @@ export interface WebAuth {
   reauthWithPassword(password: string, opts?: { captchaToken?: string }): Promise<AccountInfo>;
   /** True while the session began with an emailed code and has saved no password (no sync until it has). */
   passwordNeeded(): boolean;
-  /** The last breached-password check: 'off' (today), 'clean', or 'unchecked' (it couldn't check; show passwordGuidance('breach_unchecked')). */
+  /** The last leaked-password check: 'clean', 'unchecked' (it couldn't check; show passwordGuidance('breach_unchecked')), or 'off' (none yet, or switched off). */
   breachState(): 'off' | 'clean' | 'unchecked';
   /** Why this browser is signed out, when it wasn't the learner's choice (kept across reloads); null when signed in or signed out on purpose. */
   sessionEnded(): SessionEnd | null;
@@ -207,13 +209,11 @@ export interface PasswordFinish {
 export type PasswordSaveProblem = PasswordProblem | 'leaked' | 'weak' | 'reauth' | 'rate_limited' | 'offline' | 'server';
 
 /**
- * DESIGN FOR LATER (owner decision pending; OFF): a breached-password range
- * check, k-anonymity style (webcloud/breach.ts createBreachCheck makes one:
- * three forms of the password, padded range queries). Nothing calls a
- * network service today: the hook runs only when BREACH_CHECK_ON (config.ts)
- * is true AND the page passes `breachedPassword`. It fails open (a network
- * error never blocks a password), as the audit recommends, and then
- * breachState() says 'unchecked' so the screen can say so.
+ * The leaked-password check (ON; owner decision 28 Nov 2026): k-anonymity
+ * range queries for three forms of the password (webcloud/breach.ts
+ * createBreachCheck). It fails open (a network error or a 3-second timeout
+ * never blocks a password), as the audit recommends, and then breachState()
+ * says 'unchecked' so the screen can say so.
  */
 export type BreachedPasswordPort = (password: string) => Promise<BreachVerdict>;
 
@@ -284,7 +284,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
   const now = () => deps.clock.now();
   /** When this page last asked for a reset code (any address). In memory only. */
   let lastResetAsk = -Infinity;
-  /** The last breached-password check: off (today), clean, or unchecked (it couldn't check; the password was saved). */
+  /** The last leaked-password check: off (none yet), clean, or unchecked (it couldn't check; the password is accepted). */
   let breach: 'off' | 'clean' | 'unchecked' = 'off';
 
   /** One request. A network failure reads as status 0 (offline); never throws anything but CloudError. */
@@ -543,15 +543,21 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     clearEnded();
     return { s, user: body.user && typeof body.user === 'object' ? (body.user as Record<string, unknown>) : null };
   };
-  /** The optional breached-password check (OFF today). A known-breached password is refused; any failure lets it through. */
+  /**
+   * The leaked-password check (ON). Runs only after the app's rules have
+   * accepted the password, and only when one is chosen (never at sign-in). A
+   * known-leaked password is refused (password_leaked); a failure, a timeout
+   * or no SHA-1 port lets it through, with breachState() 'unchecked'.
+   */
+  const breachLookup: BreachedPasswordPort | undefined = deps.breachedPassword ?? (deps.sha1Hex ? createBreachCheck({ fetch: deps.fetch, sha1Hex: deps.sha1Hex }) : undefined);
   const breachCheck = async (password: string) => {
-    if (!BREACH_CHECK_ON || !deps.breachedPassword) {
+    if (!BREACH_CHECK_ON) {
       breach = 'off';
       return;
     }
     let verdict: BreachVerdict = 'unknown';
     try {
-      verdict = await deps.breachedPassword(password);
+      if (breachLookup) verdict = await breachLookup(password);
     } catch {
       verdict = 'unknown'; // fail open
     }
@@ -609,7 +615,6 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
   /** A code flow's last step: save the password with the session the code just made. */
   const finishWithPassword = async (s: StoredSession, password: string): Promise<PasswordFinish> => {
     try {
-      await breachCheck(password);
       const how = await putPassword(s, password, undefined, true);
       const done: PasswordFinish = { account: info(store.read() ?? s), passwordSaved: true };
       if (how === 'unchanged') done.unchanged = true;
@@ -660,14 +665,15 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     async startPasswordSignUp(email, password, opts) {
       const e = emailOf(email);
       await ensureWords();
-      newPasswordOf(password, e); // refused here if the rules fail; the password itself is not sent
+      const p = newPasswordOf(password, e); // refused here if the rules fail; the password itself is not sent
+      await breachCheck(p); // a leaked password is refused before any code is emailed
       await requestCode(e, opts?.captchaToken);
     },
 
     async finishPasswordSignUp(email, code, password, opts) {
       const e = emailOf(email);
       await ensureWords();
-      newPasswordOf(password, e); // checked BEFORE the code is used up
+      await breachCheck(newPasswordOf(password, e)); // checked BEFORE the code is used up
       const { s, user } = await verifyCode(e, code, 'email', Boolean(opts?.shared));
       // An address that already had an account (maybe Google): its name counts too.
       const names = namesOf(user);
@@ -695,7 +701,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     async finishPasswordReset(email, code, newPassword, opts) {
       const e = emailOf(email);
       await ensureWords();
-      newPasswordOf(newPassword, e);
+      await breachCheck(newPasswordOf(newPassword, e)); // checked BEFORE the code is used up
       const { s, user } = await verifyCode(e, code, 'recovery', Boolean(opts?.shared));
       const names = namesOf(user);
       if (names.length && checkPassword(newPassword, { email: e, names }).length) {

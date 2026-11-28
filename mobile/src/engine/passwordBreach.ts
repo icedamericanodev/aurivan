@@ -1,8 +1,7 @@
 /**
- * DESIGN FOR LATER (OFF; the owner has not decided): the pure half of a
- * breached-password range check, k-anonymity style (Have I Been Pwned's
- * "range" API). Nothing here talks to the network, and nothing calls it
- * today (webcloud/config.ts BREACH_CHECK_ON is false).
+ * The pure half of the leaked-password range check, k-anonymity style (Have
+ * I Been Pwned's "range" API; ON since 28 Nov 2026, webcloud/breach.ts has
+ * the network half). Nothing here talks to the network.
  *
  * Plain English for the founder:
  * - The page would make the password's SHA-1 fingerprint (40 hex

@@ -56,12 +56,15 @@ export const SESSION_IDLE_MAX_MS = 14 * 86_400_000;
  */
 export const CODE_SESSION_MAX_MS = 10 * 60_000;
 /**
- * The breached-password range check (k-anonymity; api.pwnedpasswords.com):
- * OFF. The owner has not decided on a third-party lookup (design decision
- * 5). Turning it on also needs a privacy-policy line and the page's
- * `breachedPassword` port (auth.ts BreachedPasswordPort).
+ * The leaked-password range check (k-anonymity; api.pwnedpasswords.com): ON
+ * (owner decision 28 Nov 2026, "Do as recommended"). It runs when a password
+ * is chosen, never at sign-in, and fails open (webcloud/breach.ts). The page
+ * gives the SHA-1 port (browser.ts browserSha1Hex). The privacy-policy
+ * paragraph goes live with the sign-in release (draft: design doc §7).
  */
-export const BREACH_CHECK_ON = false;
+export const BREACH_CHECK_ON = true;
+/** The only address the leaked-password check contacts (the website CSP's connect-src allows it). */
+export const BREACH_HOST = 'https://api.pwnedpasswords.com';
 /** One reset code a minute from this page, for every address alike (audit LOW-1). */
 export const RESET_RESEND_MS = 60_000;
 /**

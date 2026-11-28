@@ -77,7 +77,7 @@ const CLOUD_ENTRIES = {
   // The password rules, so the website's forms can say "too short" or "too common" as the
   // learner types (the client checks them again before anything is sent).
   passwordRules: 'src/engine/passwordRules.ts',
-  // The breached-password range check, designed and OFF (config.BREACH_CHECK_ON is false).
+  // The leaked-password range check (ON: config.BREACH_CHECK_ON); the page passes browser.browserSha1Hex.
   breach: 'src/webcloud/breach.ts',
 };
 /** Bundled but not exposed. */

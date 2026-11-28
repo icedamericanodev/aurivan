@@ -49,9 +49,10 @@
  *   held-out set of predictable passwords the rules were never tuned on,
  *   11.5% still passed (down from 30.6%; 4.4% on the half used for tuning,
  *   from 33.9%): see docs/WEB_LAUNCH_PLAN.md, "What the password rules
- *   cannot do". Only a leaked-password check (Pro's server check, or the
- *   range check designed in engine/passwordBreach.ts, both an owner
- *   decision and OFF today) would catch passwords that leaked elsewhere.
+ *   cannot do". The leaked-password check (webcloud/breach.ts, ON since
+ *   28 Nov 2026) catches such passwords when they have leaked anywhere;
+ *   an uncommon phrase that never leaked still passes, and so does any
+ *   password while the check can't reach the service (it fails open).
  *   Four or more different ordinary words pass by design (a passphrase), and
  *   so do three in nearly all cases (fewer than 1 random triple in 200 is
  *   refused, when a word is itself a pattern or two make a list entry).

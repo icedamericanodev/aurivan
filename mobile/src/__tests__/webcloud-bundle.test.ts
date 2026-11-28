@@ -67,8 +67,10 @@ describe('the cloud bundle', () => {
     expect(K.passwordRules.checkPassword('aaaaaaaaaaaaaaa')).toEqual(['common']);
     expect(K.passwordRules.checkPassword('ocean violet lamp seven')).toEqual([]);
     expect(K.passwordRules.PASSWORD_MIN_CHARS).toBe(15);
-    // The breached-password check is in the bundle but OFF: nothing calls it.
-    expect(K.config.BREACH_CHECK_ON).toBe(false);
+    // The leaked-password check is on, with its one host and the SHA-1 adapter for the page.
+    expect(K.config.BREACH_CHECK_ON).toBe(true);
+    expect(K.config.BREACH_HOST).toBe('https://api.pwnedpasswords.com');
+    expect(typeof K.browser.browserSha1Hex).toBe('function');
     expect(typeof K.breach.createBreachCheck).toBe('function');
     expect(typeof K.browser.browserLocks).toBe('function');
     expect(K.config.SUPABASE_URL).toBe(SUPABASE_URL);

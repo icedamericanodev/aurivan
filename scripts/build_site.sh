@@ -117,6 +117,8 @@ HOME_FORM_ACTION="form-action 'self' $KIT_FORM_ACTION"
 # The two waitlist pages Kit redirects to: no script of their own, no form.
 THANKS_CSP="default-src 'none'; style-src 'self'; img-src 'self'; font-src 'self'; script-src https://static.cloudflareinsights.com; connect-src https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
 HOME_CSP="default-src 'none'; style-src 'self'; img-src 'self'; font-src 'self'; script-src 'self' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; $HOME_FORM_ACTION; frame-ancestors 'none'"
+# The home page keeps its stricter policy: no leaked-password host there (the web app has it).
+case "$HOME_CSP $THANKS_CSP" in *pwnedpasswords*) echo "build_site: the home and thanks policies must not allow api.pwnedpasswords.com" >&2; exit 1;; esac
 HOME_DRAFT=""
 PAGES=(index.html 404.html privacy.html terms.html support.html how-questions-are-made.html beta.html)
 DATA=(data/free/cisa_d1.json data/free/cisa_d2.json data/free/cisa_d3.json data/free/cisa_d4.json data/free/cisa_d5.json data/cisa_notes.json data/mindset/principles.json data/exam/cisa_exam_guide.json data/exam/final_review_week.json)
@@ -368,6 +370,15 @@ if any("noindex" in h for r, hs in rules.items() if r.startswith("/%s/" % app) f
     bad.append("the web app is public: no noindex under /%s/" % app)
 if any(r.startswith("/%s/" % old) for r in rules):
     bad.append("the old preview folder's rule should be gone (it redirects now)")
+# The leaked-password check (the web app's password forms) may connect to its
+# one lookup host, and to it only through the app's catch-all policy.
+LEAK_HOST = "https://api.pwnedpasswords.com"
+app_csp = [h for h in rules.get("/*", []) if h.startswith("Content-Security-Policy:")]
+connect = [d for h in app_csp for d in h.split(";") if d.strip().startswith("connect-src")]
+if not connect or LEAK_HOST not in connect[0].split():
+    bad.append("the /* policy's connect-src needs " + LEAK_HOST + " (the leaked-password check)")
+if any(LEAK_HOST in h for r, hs in rules.items() if r != "/*" for h in hs):
+    bad.append(LEAK_HOST + " belongs only in the /* policy (pages with their own policy keep it out)")
 redirects = [ln.split() for ln in open("_redirects") if ln.strip() and not ln.lstrip().startswith("#")]
 need = [["/%s" % old, "/%s/" % app, "301"], ["/%s/*" % old, "/%s/:splat" % app, "301"]]
 for page in ("privacy", "terms", "support", "how-questions-are-made", "beta"):
