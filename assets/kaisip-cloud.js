@@ -6306,7 +6306,7 @@ function isRelaxedSibling(ids, id, groupOf) {
     }
     return false;
 }
-const MOST_DOMAINS_TRIED = 12;
+const MOST_DOMAINS_TRIED = 8;
 function groupsForShortDomains(pool, targets) {
     var _a;
     const need = new Map(targets);
@@ -10872,7 +10872,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "6040413a916c81e2";
+  api.sourceHash = "3958be01b51f3a09";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

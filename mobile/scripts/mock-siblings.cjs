@@ -37,10 +37,10 @@
  *    Whenever a domain wants a group another domain holds, the holder hands
  *    it over if it can take a different group instead. So no other way of
  *    sharing out the groups fills more domains, or more places in total.
- *    (More than 12 short domains: step a is skipped, as in the app.)
+ *    (More than 8 short domains: step a is skipped, as in the app.)
  * The Map comes back in the pool's order of the groups.
  */
-const MOST_DOMAINS_TRIED = 12;
+const MOST_DOMAINS_TRIED = 8;
 function groupsForShortDomains(pool, targets) {
   const need = new Map(targets);
   const lower = (domainId) => {

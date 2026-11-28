@@ -10861,7 +10861,7 @@ function isRelaxedSibling(ids, id, groupOf) {
     }
     return false;
 }
-const MOST_DOMAINS_TRIED = 12;
+const MOST_DOMAINS_TRIED = 8;
 function groupsForShortDomains(pool, targets) {
     var _a;
     const need = new Map(targets);
@@ -11931,6 +11931,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "7e9c34f012586c81";
+  api.sourceHash = "a755f24fe785f79c";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

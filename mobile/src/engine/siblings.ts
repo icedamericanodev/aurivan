@@ -150,10 +150,13 @@ export function isRelaxedSibling(ids: readonly string[], id: string, groupOf: Gr
  * Cost: step 2a tries every set of short domains, so it doubles with each
  * domain. A course has a handful of domains (CISA 5), so that is a few dozen
  * tiny passes. With more than MOST_DOMAINS_TRIED short domains (no course
- * comes near) step 2a is skipped so the function can never hang; step 2b
- * alone still fills as many places in total as possible.
+ * comes near: the largest has 5 domains) step 2a is skipped; step 2b alone
+ * still fills as many places in total as possible. The cap bounds the work
+ * at 255 sets: measured on a made-up worst case of 8 short domains, 600
+ * cross-domain groups take about a quarter of a second, where a real course
+ * has a few dozen such groups at most and takes no measurable time.
  */
-const MOST_DOMAINS_TRIED = 12;
+const MOST_DOMAINS_TRIED = 8;
 export function groupsForShortDomains(pool: readonly PackQuestion[], targets: ReadonlyMap<string, number>): Map<string, string> {
   // Step 1. `need` starts at each domain's target and counts down by what the domain is sure to have.
   const need = new Map(targets);
