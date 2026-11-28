@@ -28,6 +28,19 @@ and the owner's decisions.
 | Leaked-password lookup | **No third-party lookup for now** (no HIBP range check from the apps; Pro's server check is not on Free) | Listed risk R2; the Pro upgrade path stays open |
 | CIA | **Placeholder until it is done** | Stays out of the apps (expert decision 27 Nov: not until The IIA licence question is settled). The pack pipeline keeps passing its dry run so it can be switched on later. |
 
+## Owner decisions (28 Nov 2026, later the same day)
+
+| Topic | Decision |
+|---|---|
+| Web design | Direction A, "Grove Atelier" (Grove, elevated), with joined code cells and tick marks; **one design across the website, Android and iPhone**. It ships to existing Android users in 2.4 |
+| Common passwords | "Apply the password security standard and reject all common passwords": the whole password is compared (NIST SP 800-63B-4 3.1.1.2), against a common-password list, patterns (repeats, sequences, keyboard walks, years), the service's own words and the learner's email and name. Normal phrases pass |
+| Idle sign-in | A sign-in unused for 14 days ends, on top of the 30-day limit (the owner's checklist asked for an idle timeout) |
+| Sign-up for new learners | A step of onboarding on every platform, shown as **optional**, explaining that an account lets them study on the website too and keeps progress in sync; "Continue without an account" stays |
+| Existing Android users | 2.4 shows a one-time, dismissible pop-up inviting them to sign in; afterwards an account card on the You tab ("Saved on this phone only", create a free account, sign in). Mockups reviewed by the owner |
+| Ratings | 2.4 asks for a Google Play rating with Google's own sheet. Experts' agreed rule (behaviour, compliance, growth, support): celebrate every milestone, ask only at the best ones; first ask after about 7 days and 5 study days; at least 90 days apart, at most 3 a year, once per app version; never on day one, mid-question, after a poor mock, in exam week or where the free questions end. "Rate KaiSip on Google Play" and "Tell us what to improve" are always in the app. No reward, no "do you like it?" question, no request for 5 stars anywhere. Reviews with a problem go into `docs/beta/TESTER_FEEDBACK.md` |
+| Android beta | **Closed** (no new testers, no new reward). Existing Alpha testers keep their track and their 6 months. The "Testers Community" tester list is left as it is |
+| After the free questions on the web | The Google Play badge to the Android app, and the waitlist for iPhone |
+
 ## What already exists
 
 - Supabase project (Singapore, Free plan): sync, snapshots, deletion,

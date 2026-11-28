@@ -269,6 +269,13 @@ if it words them differently.
   when the owner says so for that pull request, after Claude says in plain
   words what the workflow change does. Recorded as a documented deviation
   from finding M3's original fix.
+  **Met on 28 Nov 2026 (owner's report):** `db-backup` (main only, four
+  secrets; nightly backups green on 26, 27 and 28 Nov); `ota` (main only) now
+  holds a new Expo token, proven by the EAS Update run of 28 Nov 07:04 UTC;
+  the old token is revoked and no repository-level copy remains; admin
+  bypass is off on both; `main` has a protection rule (pull request required
+  with no approval count, the "Repo health (verify_repo.sh)" check required,
+  no bypass for admins, no force pushes, no deletions).
 - [ ] 5. `list_edge_functions` shows only `delete-account` and
   `export-my-data` (no board function deployed).
 - [ ] 6. `DELETION_PEPPER` set (40 random characters, Function secret)
