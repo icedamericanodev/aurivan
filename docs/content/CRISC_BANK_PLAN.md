@@ -1186,4 +1186,10 @@ CRISC stems and options under the plain-stem rule in
   crisc_d2_202 were called debatable. Each was already open to two readings
   before the rewrite. They need the same key review as CISA d3_087: experts
   first, then a blind retest.
+- **Key review done (28 Nov 2026):** every key stands. The domain experts and
+  the CRISC standards auditor revised each item; facts written only to rule
+  out the runner-up were rejected as cues after a first round made d2_202 and
+  d3_129 too easy. crisc_d1_229 had a second defensible option (B), which is
+  now replaced. The final versions matched the key 9 of 9 (three testers, the
+  three hardest items), and d1_123 and d1_216 matched 2 of 2 in round one.
 
