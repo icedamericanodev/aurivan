@@ -730,8 +730,8 @@ fi
 
 | Learner action | What happens | Emails sent |
 |---|---|---|
-| Create account with a password | Human check → we email a code → they type it → signed in → the app saves the password with that brand-new session | 1 code |
-| ...the address already has an account | The code signs them in to it, and their new password is saved (they proved the inbox). Screen: "This email already had a KaiSip account. You're signed in and your password is saved." | 1 code |
+| Create account with a password | Human check → we email a code → they type it → signed in → the app saves the password with that brand-new session | **2**: the code, then the "password changed" notice (saving the first password is a change to the Auth server). Both count against the same hourly "Emails sent" limit (corrected in step A3) |
+| ...the address already has an account | The code signs them in to it, and their new password is saved (they proved the inbox). Screen: "This email already had a KaiSip account. You're signed in and your password is saved." | 2 (code + notice; only the code when the password was already theirs) |
 | Sign in with a password | Human check → signed in | none |
 | Wrong password | "That email and password don't match." The same words whether or not the address exists | none |
 | Forgot password | Human check → "If there's an account for this email, we've sent a code." → code + new password → signed in, every other device signed out | 1 reset code (+1 "password changed" notice if turned on) |
@@ -794,6 +794,47 @@ phone fields use the matching autofill hints.
   `password`; code and reset sessions add `otp`; Google adds `oauth`.
 
 ### 4.3 Technical: how `mobile/src/webcloud/auth.ts` grows (signatures only)
+
+> **As built in step A3 (28 Nov 2026); the repo files win.** Names that
+> changed from this draft:
+> - `passwordRules.ts`: `checkPassword(password, context?: string | { email?, names? })`
+>   returns, most important first: `invalid_characters`, `too_short`,
+>   `too_long`, `contains_email` (the email or the learner's Google name),
+>   `contains_service_word`, `common`, `too_simple`. No `missing_characters`
+>   (no composition rules). The password is sent in **NFKC** form, and 15
+>   code points are needed in both NFC and NFKC. The whole password is
+>   compared (NIST §3.1.1.2): it is refused when it can be written as
+>   predictable pieces with at most 2 characters left over.
+>   `passwordGuidance(problem)` gives the words to show after a refusal.
+>   The word lists are loaded with `loadPasswordWords` (on the website a
+>   separate file, `assets/kaisip-password-words.js`, fetched when a password
+>   form opens; no password is saved until it is loaded).
+> - `finishPasswordReset` returns the same `{ account, passwordSaved,
+>   unchanged?, problem? }` as `finishPasswordSignUp`. `unchanged`: the new
+>   password was already the account's; the client then signs out every other
+>   session itself (`POST /logout?scope=others`), as a change would have.
+> - `signInWithPassword` returns the account plus `passwordChangeSuggested`
+>   when the password fails today's rules.
+> - Added: `passwordNeeded()` (a code session without a saved password: no
+>   sync, signed out after 10 minutes) and `sessionEnded()` (`expired`, `idle`,
+>   `password_not_set`, `revoked`; kept across reloads in
+>   `kaisip_auth_ended_v1`, a reason and a time only). Removed from the public
+>   client: `sendEmailCode` / `verifyEmailCode` (no code sign-in).
+> - `errors.ts` detail words: `password_wrong`, `password_invalid_characters`,
+>   `password_too_short`, `password_too_long`, `password_common`,
+>   `password_too_simple`, `password_contains_email`,
+>   `password_contains_service_word`, `password_leaked`, `password_weak`,
+>   `password_same`, `password_current_needed`, `password_current_wrong`,
+>   `password_needed`; with `reauth_required`: `recent_sign_in`, `aal2`; with
+>   `unauthorized`: `session_expired`, `password_not_set`; with `offline`:
+>   `password_rules`. (This draft's `password_long` is `password_too_long`;
+>   `password_current` is split in two.)
+> - `config.ts` gains one storage key, `kaisip_auth_ended_v1` (no
+>   identifiers), and the limits `SESSION_MAX_AGE_MS` (30 days),
+>   `SESSION_IDLE_MAX_MS` (14 days), `CODE_SESSION_MAX_MS` (10 minutes),
+>   `PASSWORD_FRESH_MS` (9 minutes), `RESET_RESEND_MS` (60 seconds).
+
+The draft as reviewed:
 
 A new shared, pure module (used by the web and the phone):
 
@@ -897,8 +938,14 @@ are green. Each step is a box to tick.
 
 **Authentication → Rate Limits** (the box next to each value shows its unit,
 per hour or per 5 minutes; note which it is *(verify)*)
-12. [ ] Emails sent: **20** (unchanged; a password sign-up still sends one code,
-    password sign-ins send none).
+12. [ ] Emails sent: **20** (unchanged). A password sign-up sends **two** emails
+    under this one hourly limit: the code and the "password changed" notice
+    (so about 10 sign-ups an hour at most); a reset sends two as well;
+    password sign-ins send none. Raise it with the owner if sign-ups queue.
+    The apps also record the time in the account (`user_metadata
+    .kaisip_password_set_at`, written with every password save) so a
+    "password changed on <date>" line can show in the app as a second
+    channel beside the email (data only today; the screen comes later).
 13. [ ] Sign-ups and sign-ins: **30** (unchanged). This bucket covers `/otp`,
     `/signup`, `/recover`, `/resend` and saving a password, per IP address.
 14. [ ] Token verifications: **30** (unchanged; covers typed codes and reset

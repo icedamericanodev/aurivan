@@ -24,11 +24,13 @@
 #     - assets/ (icons, the self-hosted fonts and og-kaisip.png, the
 #       link-preview card that index.html names in og:image). Only image,
 #       font and stylesheet files: anything else in assets/ stops the build.
-#       Two scripts are listed by name, both generated from the mobile
+#       Three scripts are listed by name, all generated from the mobile
 #       app's TypeScript by mobile/scripts/build-web-plant.mjs:
-#       assets/kaisip-plant.js (the plant companion) and
+#       assets/kaisip-plant.js (the plant companion),
 #       assets/kaisip-cloud.js (the accounts client and sync engine; loaded
-#       only when an account is used). A third, assets/beta-desk.js, is
+#       only when an account is used) and assets/kaisip-password-words.js
+#       (the password rules' word lists; loaded only when a password form
+#       opens). Another, assets/beta-desk.js, is
 #       hand-written: the Beta Desk page's code (top level only). No other .js
 #       file is allowed.
 #     - the data the web app really loads (index.html fetches the FREE
@@ -298,8 +300,9 @@ while IFS= read -r -d '' f; do
   case "$name" in .*) fail "hidden file $f is not allowed in assets/";; esac
   # Font licences must travel with the fonts (the SIL Open Font Licence asks for it).
   case "$f" in assets/fonts/OFL-*.txt) mkdir -p "$OUT/$(dirname "$f")"; cp "$f" "$OUT/$f"; continue;; esac
-  # The two scripts on the list: the plant companion and the accounts client.
-  case "$f" in assets/kaisip-plant.js|assets/kaisip-cloud.js) cp "$f" "$OUT/$f"; continue;; esac
+  # The scripts on the list: the plant companion, the accounts client and its
+  # password word lists (fetched only when a password form opens).
+  case "$f" in assets/kaisip-plant.js|assets/kaisip-cloud.js|assets/kaisip-password-words.js) cp "$f" "$OUT/$f"; continue;; esac
   case "$f" in assets/beta-desk.js) [ -n "$DESK" ] && cp "$f" "$OUT/$f"; continue;; esac
   # The home page's own files travel only with the home page (SITE_MODE=home):
   # its stylesheet, its one script and its pictures.

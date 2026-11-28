@@ -30,7 +30,7 @@ import { SYNC_META_KEY, SYNC_MIRROR_KEY, SYNC_UNDO_KEY } from '../webcloud/confi
 import { createWebDevice, type WebDevice } from '../webcloud/device';
 import { createWebCloud, accountsAllowed, type WebCloud } from '../webcloud/index';
 import { fromWeb } from '../webcloud/toWeb';
-import { FAKE_KEY, FAKE_URL, FakeSupabase, memoryStorage, seqRandom } from '../../jest/webcloud-fakes';
+import { FAKE_KEY, FAKE_URL, FakeSupabase, memoryStorage, passwordSignIn, seqRandom, testPasswordWords } from '../../jest/webcloud-fakes';
 import { BANK, clone, fakeWeb, QUESTION_IDS, webAnswer, type FakeWeb } from '../../jest/webcloud-web';
 
 const T0 = new Date(2026, 9, 20, 9, 0, 0).getTime();
@@ -278,12 +278,9 @@ describe('the website over REST (fake Supabase)', () => {
   const make = () => {
     web = fakeWeb();
     local = memoryStorage();
-    cloud = createWebCloud({ fetch: server.fetch, stores: { local, session: memoryStorage() }, random: seqRandom(), lock: pageLocks(), clock: { now: () => now }, gzip: env, host: web.host, bank: BANK, appVersion: LIVE, origin: 'https://kaisip.com', url: FAKE_URL, apiKey: FAKE_KEY, wait: async () => {} });
+    cloud = createWebCloud({ fetch: server.fetch, stores: { local, session: memoryStorage() }, random: seqRandom(), lock: pageLocks(), clock: { now: () => now }, gzip: env, host: web.host, bank: BANK, appVersion: LIVE, origin: 'https://kaisip.com', url: FAKE_URL, apiKey: FAKE_KEY, passwordWords: testPasswordWords, wait: async () => {} });
   };
-  const signIn = async () => {
-    await cloud.auth.sendEmailCode('maya@example.com');
-    return cloud.auth.verifyEmailCode('maya@example.com', server.codes.get('maya@example.com')!);
-  };
+  const signIn = () => passwordSignIn(server, cloud.auth, 'maya@example.com');
   beforeEach(() => {
     now = T0;
     server = new FakeSupabase(() => now);
@@ -292,9 +289,8 @@ describe('the website over REST (fake Supabase)', () => {
 
   it('a shared computer keeps the sync record, the mirror and the undo copy in sessionStorage too (M2)', async () => {
     const session = memoryStorage();
-    cloud = createWebCloud({ fetch: server.fetch, stores: { local, session }, random: seqRandom(), lock: pageLocks(), clock: { now: () => now }, gzip: env, host: web.host, bank: BANK, appVersion: LIVE, origin: 'https://kaisip.com', url: FAKE_URL, apiKey: FAKE_KEY, wait: async () => {} });
-    await cloud.auth.sendEmailCode('maya@example.com');
-    await cloud.auth.verifyEmailCode('maya@example.com', server.codes.get('maya@example.com')!, { shared: true });
+    cloud = createWebCloud({ fetch: server.fetch, stores: { local, session }, random: seqRandom(), lock: pageLocks(), clock: { now: () => now }, gzip: env, host: web.host, bank: BANK, appVersion: LIVE, origin: 'https://kaisip.com', url: FAKE_URL, apiKey: FAKE_KEY, passwordWords: testPasswordWords, wait: async () => {} });
+    await passwordSignIn(server, cloud.auth, 'maya@example.com', true);
     await cloud.auth.acceptTerms({ termsVersion: TERMS_VERSION, ageConfirmed: true });
     webAnswer(web, ids[0], true, now - 1000);
     const prep = await cloud.prepareFirst();
@@ -313,7 +309,7 @@ describe('the website over REST (fake Supabase)', () => {
   });
 
   it('pushes are stamped with the store versions passed in (the Play release\'s), not the engine\'s', async () => {
-    cloud = createWebCloud({ fetch: server.fetch, stores: { local, session: memoryStorage() }, random: seqRandom(), lock: pageLocks(), clock: { now: () => now }, gzip: env, host: web.host, bank: BANK, appVersion: LIVE, storeVersions: { progress: 2, settings: 1 }, origin: 'https://kaisip.com', url: FAKE_URL, apiKey: FAKE_KEY, wait: async () => {} });
+    cloud = createWebCloud({ fetch: server.fetch, stores: { local, session: memoryStorage() }, random: seqRandom(), lock: pageLocks(), clock: { now: () => now }, gzip: env, host: web.host, bank: BANK, appVersion: LIVE, storeVersions: { progress: 2, settings: 1 }, origin: 'https://kaisip.com', url: FAKE_URL, apiKey: FAKE_KEY, passwordWords: testPasswordWords, wait: async () => {} });
     const info = await signIn();
     await cloud.auth.acceptTerms({ termsVersion: TERMS_VERSION, ageConfirmed: true });
     webAnswer(web, ids[0], true, now - 1000);
@@ -442,8 +438,7 @@ describe('the website over REST (fake Supabase)', () => {
     if (!prep.ok) throw new Error('prep');
     await cloud.confirmFirst(prep.prep, 'merge');
     await cloud.auth.signOut('local');
-    await cloud.auth.sendEmailCode('other@example.com');
-    await cloud.auth.verifyEmailCode('other@example.com', server.codes.get('other@example.com')!);
+    await passwordSignIn(server, cloud.auth, 'other@example.com');
     expect(cloud.accountChanged()).toBe(true);
     const calls = server.calls.length;
     expect((await cloud.syncNow()).kind).toBe('idle');

@@ -31,6 +31,15 @@ const APP = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'app.jso
 
 const LIVE_STORES = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'LIVE_STORE_VERSIONS.json'), 'utf8'));
 
+const WORDS_ASSET = path.join(ROOT, 'assets', 'kaisip-password-words.js');
+/** The committed word-list file, run like a browser script (window.KaiSipPasswordWords). */
+function loadWords(): any {
+  const sandbox: Record<string, unknown> = {};
+  sandbox.window = sandbox;
+  vm.runInNewContext(fs.readFileSync(WORDS_ASSET, 'utf8'), sandbox, { filename: 'kaisip-password-words.js' });
+  return sandbox.KaiSipPasswordWords;
+}
+
 /** The committed bundle, run like a browser script. `origin`: the page's location.origin (none: like Node). */
 function loadCloud(origin?: string): any {
   const sandbox: Record<string, unknown> = {};
@@ -53,7 +62,7 @@ describe('the cloud bundle', () => {
     expect(K.cloud).toBeUndefined();
     expect(Object.keys(K).sort()).toEqual(['accountsAllowed', 'browser', 'config', 'create', 'liveStoreVersions', 'liveVersion', 'passwordRules', 'sourceHash']);
     // The password rules are there for the forms (the client checks again before sending).
-    expect(K.passwordRules.checkPassword('aaaaaaaaaaaaaaa')).toEqual(['common', 'too_simple']);
+    expect(K.passwordRules.checkPassword('aaaaaaaaaaaaaaa')).toEqual(['common']);
     expect(K.passwordRules.checkPassword('ocean violet lamp seven')).toEqual([]);
     expect(K.passwordRules.PASSWORD_MIN_CHARS).toBe(15);
     expect(typeof K.browser.browserLocks).toBe('function');
@@ -104,10 +113,20 @@ describe('the cloud bundle', () => {
       devOrigin: true,
       url: FAKE_URL,
       apiKey: FAKE_KEY,
+      // The page fetches the word lists only when a password form opens (a separate file).
+      passwordWords: async () => {
+        const W = loadWords();
+        return { short: W.words.PASSWORD_SHORT_LIST, dict: W.words.PASSWORD_DICT_LIST };
+      },
       wait: async () => {},
     });
-    await c.auth.sendEmailCode('maya@example.com');
-    const info = await c.auth.verifyEmailCode('maya@example.com', server.codes.get('maya@example.com')!);
+    // The sign-up loads the lists first (fail closed), so "monkeymonkeymonkey" is refused.
+    expect(await c.auth.startPasswordSignUp('maya@example.com', 'monkeymonkeymonkey').then(() => 'ok', (e: { detail?: string }) => e.detail)).toBe('password_common');
+    expect(K.passwordRules.passwordWordsLoaded()).toBe(true);
+    await c.auth.startPasswordSignUp('maya@example.com', 'ocean violet lamp seven');
+    const done = await c.auth.finishPasswordSignUp('maya@example.com', server.codes.get('maya@example.com')!, 'ocean violet lamp seven');
+    expect(done.passwordSaved).toBe(true);
+    const info = done.account;
     await c.auth.acceptTerms({ termsVersion: TERMS_VERSION, ageConfirmed: true });
     webAnswer(web, QUESTION_IDS[0], true, now - 1000);
     const prep = await c.prepareFirst();
@@ -129,6 +148,23 @@ describe('the cloud bundle', () => {
       .filter((l) => l.trim() && !l.trim().startsWith('#'));
     for (const p of patterns) expect(new RegExp(p).test(text)).toBe(false);
   });
+});
+
+describe('the password word-list file (loaded only when a password form opens)', () => {
+  it('is up to date with its source, holds only the two scrambled lists, and is not in the cloud bundle', () => {
+    expect(bundle.checkBundle(undefined, 'passwordWords')).toEqual([]);
+    const W = loadWords();
+    expect(Object.keys(W).sort()).toEqual(['sourceHash', 'words']);
+    expect(W.words.PASSWORD_SHORT_SIZE).toBe(10000);
+    expect(W.words.PASSWORD_DICT_SIZE).toBeGreaterThan(15000);
+    const cloudText = fs.readFileSync(ASSET, 'utf8');
+    expect(cloudText).not.toContain('PASSWORD_DICT_LIST');
+    expect(cloudText).not.toContain('PASSWORD_SHORT_LIST');
+    // Scrambled: a common word is not there as plain text.
+    const wordsText = fs.readFileSync(WORDS_ASSET, 'utf8');
+    expect(wordsText).not.toMatch(/\bcongratulations\b/);
+    expect(wordsText).not.toMatch(/\nfootball\b/);
+  }, 60_000);
 });
 
 describe('the version-stamp rule (LIVE_VERSION)', () => {

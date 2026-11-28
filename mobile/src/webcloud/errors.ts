@@ -29,8 +29,11 @@ export type Call = 'otp' | 'verify' | 'pkce' | 'refresh' | 'logout' | 'user' | '
  * - password_wrong: "That email and password don't match" (the same words
  *   whether or not the address has an account, or a password);
  * - password_too_short / _too_long / _common / _too_simple /
- *   _contains_email / _contains_service_word: the app's own rules
- *   (engine/passwordRules.ts), refused before anything is sent;
+ *   _contains_email / _contains_service_word / _invalid_characters: the
+ *   app's own rules (engine/passwordRules.ts), refused before anything is
+ *   sent (passwordGuidance has the words to show);
+ * - password_needed: a session that began with an emailed code has saved
+ *   no password yet, so it may not sync (codes only confirm or recover);
  * - password_leaked: the server's leaked-password check (Pro plan only);
  * - password_weak: the server refused it for another reason (its settings
  *   ask for more than the app does);
@@ -40,10 +43,16 @@ export type Call = 'otp' | 'verify' | 'pkce' | 'refresh' | 'logout' | 'user' | '
  * - with code 'reauth_required': recent_sign_in (sign in again first: the
  *   database's 10-minute rule, or the server's 24-hour one) and aal2 (staff
  *   with an authenticator app);
- * - with code 'unauthorized': session_expired (the 30-day limit).
+ * - with code 'unauthorized': session_expired (the 30-day limit or 14 days
+ *   unused) and password_not_set (a code session that saved no password
+ *   within 10 minutes);
+ * - with code 'offline': password_rules (the word lists couldn't be loaded,
+ *   so no password is saved: fail closed).
  */
 export type PasswordDetail =
   | 'password_wrong'
+  | 'password_invalid_characters'
+  | 'password_needed'
   | 'password_too_short'
   | 'password_too_long'
   | 'password_common'
@@ -77,7 +86,8 @@ const str = (x: unknown) => (typeof x === 'string' ? x : '');
 
 /** GoTrue's machine word for the error (new `error_code`, or the older `error`). */
 function authWord(b: Record<string, unknown>): string {
-  return (str(b.error_code) || str(b.error)).toLowerCase();
+  // Newer answers carry `error_code`; some carry the word in `code` (older ones put the HTTP number there).
+  return (str(b.error_code) || str(b.code) || str(b.error)).toLowerCase();
 }
 
 /** The account functions' codes that the app knows (supabase/functions/_shared/http.ts ErrorCode). */
@@ -180,6 +190,8 @@ function userUpdateError(status: number, word: string, b: Record<string, unknown
       return new CloudError('reauth_required', undefined, 'aal2');
   }
   if (status === 401 || status === 403 || status === 404 || word === 'bad_jwt' || word === 'session_not_found' || word === 'user_not_found') return new CloudError('unauthorized');
+  // "Password cannot be longer than 72 characters" (password.go): the app checks first, so rare.
+  if (word === 'validation_failed' && /\b72\b/.test(str(b.msg) || str(b.message))) return bad('password_too_long');
   return bad('password_weak');
 }
 

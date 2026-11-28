@@ -14,9 +14,9 @@
  *   working at its next refresh (within the hour).
  * - What is saved: the two tokens, when the access token expires, the
  *   account id and email (for the account screen), when this sign-in
- *   happened (sessions end after 30 days), how far the server's clock is
- *   from this computer's, and "a password still needs setting" after an
- *   emailed code. Never a password.
+ *   happened and when it was last renewed (sessions end after 30 days, or
+ *   14 days unused), how far the server's clock is from this computer's,
+ *   and "this session saved a password". Never a password.
  * - A damaged or odd-looking saved value reads as "signed out" and is
  *   removed, never half-used.
  *
@@ -39,8 +39,14 @@ export interface StoredSession {
   signedInAt?: number;
   /** The server's clock minus this computer's (ms), from the access token's `iat` when it arrived. */
   skewMs?: number;
-  /** True after a sign-in with an emailed code, until a password is saved (codes only confirm or recover). */
-  needsPassword?: boolean;
+  /** When this session was last renewed (sign-in or token refresh; epoch ms, this computer's clock): the 14-day idle rule. */
+  lastActiveAt?: number;
+  /**
+   * True once this session saved a password. A session that began with an
+   * emailed code (the token's sign-in method) needs one; Google and password
+   * sessions never do. Only ever set by a successful save.
+   */
+  passwordSaved?: true;
 }
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -68,7 +74,8 @@ export function readSession(raw: string | null): StoredSession | null {
   // Optional fields (added with passwords): an odd value is dropped, never half-used.
   if (typeof o.signedInAt === 'number' && Number.isFinite(o.signedInAt) && o.signedInAt > 0) out.signedInAt = o.signedInAt;
   if (typeof o.skewMs === 'number' && Number.isFinite(o.skewMs) && Math.abs(o.skewMs) <= 7 * 86_400_000) out.skewMs = o.skewMs;
-  if (o.needsPassword === true) out.needsPassword = true;
+  if (typeof o.lastActiveAt === 'number' && Number.isFinite(o.lastActiveAt) && o.lastActiveAt > 0) out.lastActiveAt = o.lastActiveAt;
+  if (o.passwordSaved === true) out.passwordSaved = true;
   return out;
 }
 

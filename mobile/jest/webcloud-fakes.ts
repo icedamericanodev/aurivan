@@ -15,6 +15,31 @@ import { toBase64Url } from '../src/webcloud/base64';
 import { challengeFor } from '../src/webcloud/pkce';
 import type { FetchPort, HttpResponse, RandomPort, StoragePort } from '../src/webcloud/ports';
 import { utf8 } from '../src/engine/sha256';
+import { PASSWORD_DICT_LIST, PASSWORD_SHORT_LIST } from '../src/engine/passwordWords';
+import type { AccountInfo } from '../src/cloud/types';
+import type { WebAuth } from '../src/webcloud/auth';
+
+/** The password rules' word lists, as the website's lazy loader gives them. */
+export const testPasswordWords = async () => ({ short: PASSWORD_SHORT_LIST, dict: PASSWORD_DICT_LIST });
+/** A password the rules accept (three ordinary words and one more). */
+export const TEST_PASSWORD = 'ocean violet lamp seven';
+
+/**
+ * Signs `a` in the way learners do: the first time a password sign-up (a code, then the
+ * password), afterwards a password sign-in. Returns the account.
+ */
+export async function passwordSignIn(
+  server: { codes: Map<string, string>; userByEmail(e: string): { password?: string } | undefined },
+  a: Pick<WebAuth, 'startPasswordSignUp' | 'finishPasswordSignUp' | 'signInWithPassword'>,
+  email = 'maya@example.com',
+  shared = false,
+): Promise<AccountInfo> {
+  if (server.userByEmail(email)?.password) return a.signInWithPassword(email, TEST_PASSWORD, { shared });
+  await a.startPasswordSignUp(email, TEST_PASSWORD);
+  const done = await a.finishPasswordSignUp(email, server.codes.get(email)!, TEST_PASSWORD, { shared });
+  if (!done.passwordSaved) throw new Error('test sign-up: the password was not saved');
+  return done.account;
+}
 
 export const FAKE_URL = 'https://fake.supabase.test';
 export const FAKE_KEY = 'sb_publishable_test_only_not_a_real_key';
@@ -83,10 +108,14 @@ export class FakeSupabase {
   /** The next response for a path prefix is this status and body (one use). */
   private forced = new Map<string, { status: number; body: unknown; headers?: Record<string, string> }>();
   calls: Call[] = [];
-  users = new Map<string, { id: string; email: string; providers: string[]; password?: string }>();
+  users = new Map<string, { id: string; email: string; providers: string[]; password?: string; meta: Record<string, unknown> }>();
+  /**
+   * The emailed codes, ONE pool for sign-up and reset codes: GoTrue accepts either code with
+   * type "email" or "recovery" (both live in the same token column; audit MEDIUM-1).
+   */
   codes = new Map<string, string>();
-  /** Reset codes from /recover (GoTrue keeps them apart from sign-up codes in its own columns). */
-  resetCodes = new Map<string, string>();
+  /** Passwords whose sign-in answer carries GoTrue's weak_password hint (they fail today's rules). */
+  weakOnSignIn = new Set<string>();
   /** When /recover last sent a code to an address (one a minute per address, like GoTrue). */
   resetSentAt = new Map<string, number>();
   /** Session family → when it signed in (s, the server's clock) and how: refreshes keep both, like GoTrue's amr. */
@@ -103,7 +132,7 @@ export class FakeSupabase {
   access = new Map<string, { userId: string; exp: number; family: string }>();
   revokedFamilies = new Set<string>();
   /** Google: the code Google "sent back" → the challenge it was started with. */
-  oauth = new Map<string, { challenge: string; email: string }>();
+  oauth = new Map<string, { challenge: string; email: string; name?: string }>();
   rows = new Map<string, Row>();
   lastRev = new Map<string, number>();
   writes = new Map<string, { start: number; n: number }>();
@@ -121,9 +150,9 @@ export class FakeSupabase {
     this.forced.set(prefix, { status, body, headers });
   }
   /** Google sign-in finished for `email`: the code the website receives on ?code=. */
-  googleCode(challenge: string, email: string): string {
+  googleCode(challenge: string, email: string, name?: string): string {
     const code = `oauth-code-${++this.n}-abcdef`;
-    this.oauth.set(code, { challenge, email });
+    this.oauth.set(code, { challenge, email, name });
     return code;
   }
   userByEmail(email: string) {
@@ -153,22 +182,35 @@ export class FakeSupabase {
     const rt = `rt-${this.n}-${family.slice(-4)}xyz`;
     this.access.set(at, { userId, exp, family });
     this.refresh.set(rt, { userId, family, used: false });
-    const u = this.users.get(userId)!;
-    return { access_token: at, token_type: 'bearer', expires_in: this.tokenTtl, expires_at: exp, refresh_token: rt, user: { id: u.id, email: u.email, app_metadata: { provider: u.providers[0], providers: u.providers } } };
+    return { access_token: at, token_type: 'bearer', expires_in: this.tokenTtl, expires_at: exp, refresh_token: rt, user: this.userJson(userId) };
   }
-  private signIn(email: string, provider: string, method: string) {
+  private userJson(userId: string) {
+    const u = this.users.get(userId)!;
+    return { id: u.id, email: u.email, app_metadata: { provider: u.providers[0], providers: u.providers }, user_metadata: { ...u.meta } };
+  }
+  private signIn(email: string, provider: string, method: string, name?: string) {
     let u = this.userByEmail(email);
     if (!u) {
-      u = { id: this.uuid(), email, providers: [provider] };
+      u = { id: this.uuid(), email, providers: [provider], meta: {} };
       this.users.set(u.id, u);
     } else if (!u.providers.includes(provider)) u.providers.push(provider);
+    if (name) u.meta = { ...u.meta, full_name: name, name };
     return this.session(u.id, method);
   }
   private who(headers: Record<string, string>): string | null {
+    const w = this.whoWhy(headers);
+    return 'id' in w ? w.id : null;
+  }
+  /** GoTrue's answer for a token: the user, or why not (403 bad_jwt for a bad or expired token, 403 session_not_found for an ended session). */
+  private whoWhy(headers: Record<string, string>): { id: string } | { err: 'bad_jwt' | 'session_not_found' } {
     const m = /^Bearer (.+)$/.exec(headers.authorization ?? '');
     const a = m ? this.access.get(m[1]) : undefined;
-    if (!a || a.exp * 1000 <= this.serverNow() || this.revokedFamilies.has(a.family) || !this.users.has(a.userId)) return null;
-    return a.userId;
+    if (!a || a.exp * 1000 <= this.serverNow() || !this.users.has(a.userId)) return { err: 'bad_jwt' };
+    if (this.revokedFamilies.has(a.family)) return { err: 'session_not_found' };
+    return { id: a.userId };
+  }
+  private userRefusal(w: { err: 'bad_jwt' | 'session_not_found' }) {
+    return w.err === 'bad_jwt' ? { code: 'bad_jwt', error_code: 'bad_jwt', msg: 'invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired' } : { code: 'session_not_found', error_code: 'session_not_found', msg: 'Session from session_id claim in JWT does not exist' };
   }
   /** The session family of a request's token (who() must have passed). */
   private familyOf(headers: Record<string, string>): string {
@@ -181,7 +223,7 @@ export class FakeSupabase {
   /** GoTrue's weak-password and length rules with the dashboard at 15 characters, no required types. */
   private passwordRefusal(pw: unknown): { status: number; body: unknown } | null {
     if (typeof pw !== 'string' || [...pw].length < 15) return { status: 422, body: { code: 422, error_code: 'weak_password', msg: 'Password should be at least 15 characters.', weak_password: { reasons: ['length'] } } };
-    if (utf8(pw).length > 72) return { status: 422, body: { code: 422, error_code: 'validation_failed', msg: 'Password cannot be longer than 72 characters' } };
+    if (utf8(pw).length > 72) return { status: 400, body: { code: 400, error_code: 'validation_failed', msg: 'Password cannot be longer than 72 characters' } };
     if (this.pwned.has(pw)) return { status: 422, body: { code: 422, error_code: 'weak_password', msg: 'Password is known to be weak and easy to guess', weak_password: { reasons: ['pwned'] } } };
     return null;
   }
@@ -229,18 +271,18 @@ export class FakeSupabase {
       const last = this.resetSentAt.get(body.email);
       if (last !== undefined && this.serverNow() - last < 60_000) return res(429, { code: 429, error_code: 'over_email_send_rate_limit', msg: 'For security purposes, you can only request this after 60 seconds.' });
       this.resetSentAt.set(body.email, this.serverNow());
-      this.resetCodes.set(body.email, String(20_000_000 + ((this.n++ * 7919) % 79_999_999)));
+      this.codes.set(body.email, String(20_000_000 + ((this.n++ * 7919) % 79_999_999)));
       return res(200, {});
     }
     if (p === '/auth/v1/verify' && method === 'POST') {
-      const pool = body?.type === 'email' ? this.codes : body?.type === 'recovery' ? this.resetCodes : null;
-      if (!pool || pool.get(body.email) !== body.token) return res(403, { code: 403, error_code: 'otp_expired', msg: 'Token has expired or is invalid' });
-      pool.delete(body.email);
+      if ((body?.type !== 'email' && body?.type !== 'recovery') || this.codes.get(body.email) !== body.token) return res(403, { code: 403, error_code: 'otp_expired', msg: 'Token has expired or is invalid' });
+      this.codes.delete(body.email);
       return res(200, this.signIn(body.email, 'email', 'otp'));
     }
     if (p === '/auth/v1/user' && method === 'PUT') {
-      const id = this.who(headers);
-      if (!id) return res(401, { code: 401, error_code: 'bad_jwt', msg: 'invalid JWT' });
+      const w = this.whoWhy(headers);
+      if (!('id' in w)) return res(403, this.userRefusal(w));
+      const id = w.id;
       const usr = this.users.get(id)!;
       const fam = this.families.get(this.familyOf(headers))!;
       const ageS = Math.floor(this.serverNow() / 1000) - fam.createdAt;
@@ -260,10 +302,11 @@ export class FakeSupabase {
         return res(500, { code: 500, error_code: 'unexpected_failure', msg: 'Error during password storage' });
       }
       usr.password = body.password;
+      if (body.data && typeof body.data === 'object') usr.meta = { ...usr.meta, ...body.data };
       // UpdatePassword signs out every OTHER session of the account.
       const mine = this.familyOf(headers);
       for (const [f, info] of this.families) if (info.userId === id && f !== mine) this.revokedFamilies.add(f);
-      return res(200, { id: usr.id, email: usr.email, app_metadata: { providers: usr.providers } });
+      return res(200, this.userJson(id));
     }
     if (p === '/auth/v1/token' && method === 'POST') {
       const grant = q.get('grant_type');
@@ -271,13 +314,15 @@ export class FakeSupabase {
         if (this.captchaMissing(body)) return res(400, { code: 400, error_code: 'captcha_failed', msg: 'captcha protection: request disallowed (no captcha response)' });
         const usr = typeof body?.email === 'string' ? this.userByEmail(body.email) : undefined;
         if (!usr || !usr.password || usr.password !== body?.password) return res(400, { code: 400, error_code: 'invalid_credentials', msg: 'Invalid login credentials' });
-        return res(200, this.session(usr.id, 'password'));
+        const out: Record<string, unknown> = this.session(usr.id, 'password');
+        if (this.weakOnSignIn.has(body.password)) out.weak_password = { reasons: ['length'] };
+        return res(200, out);
       }
       if (grant === 'pkce') {
         const o = this.oauth.get(body?.auth_code);
         if (!o || challengeFor(String(body?.code_verifier)) !== o.challenge) return res(404, { code: 404, error_code: 'flow_state_not_found', msg: 'invalid flow state' });
         this.oauth.delete(body.auth_code);
-        return res(200, this.signIn(o.email, 'google', 'oauth'));
+        return res(200, this.signIn(o.email, 'google', 'oauth', o.name));
       }
       if (grant === 'refresh_token') {
         const r = this.refresh.get(body?.refresh_token);
@@ -298,16 +343,17 @@ export class FakeSupabase {
       const fam = this.access.get(m[1])!.family;
       if (q.get('scope') === 'global') {
         for (const a of this.access.values()) if (a.userId === id) this.revokedFamilies.add(a.family);
+      } else if (q.get('scope') === 'others') {
+        for (const a of this.access.values()) if (a.userId === id && a.family !== fam) this.revokedFamilies.add(a.family);
       } else {
         this.revokedFamilies.add(fam);
       }
       return res(204);
     }
     if (p === '/auth/v1/user' && method === 'GET') {
-      const id = this.who(headers);
-      if (!id) return res(401, { code: 401, error_code: 'bad_jwt', msg: 'invalid JWT' });
-      const usr = this.users.get(id)!;
-      return res(200, { id: usr.id, email: usr.email, app_metadata: { providers: usr.providers } });
+      const w = this.whoWhy(headers);
+      if (!('id' in w)) return res(403, this.userRefusal(w));
+      return res(200, this.userJson(w.id));
     }
     // ── PostgREST ──
     if (p.startsWith('/rest/v1/')) {

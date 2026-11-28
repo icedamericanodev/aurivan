@@ -120,6 +120,25 @@ const TARGETS = {
     ],
     stamp: true,
   },
+  // The password rules' word lists (10,000 short common passwords and the English words of
+  // 15+ letters, ~270 KB): too big for every visit, so the page fetches this file only when
+  // a password form opens and passes it to KaiSipCloud.create({ passwordWords }).
+  passwordWords: {
+    out: path.join(REPO, 'assets', 'kaisip-password-words.js'),
+    file: 'assets/kaisip-password-words.js',
+    global: 'KaiSipPasswordWords',
+    entries: { words: 'src/engine/passwordWords.ts' },
+    refRe: /assets\/kaisip-password-words\.js\?v=([0-9a-f]*)/g,
+    refRequired: false,
+    what: 'the mobile password word lists',
+    header: [
+      ' * GENERATED FILE: do not edit. Built by mobile/scripts/build-web-plant.mjs',
+      " * from mobile/src/engine/passwordWords.ts (the password rules' word lists,",
+      ' * stored lightly scrambled). Loaded only when a password form opens.',
+      ' * Rebuild: cd mobile && npm run web-plant',
+    ],
+    stamp: false,
+  },
 };
 /** Older names (the plant), kept for callers and tests. */
 const OUT = TARGETS.plant.out;

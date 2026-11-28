@@ -47,6 +47,22 @@ export const REFRESH_MARGIN_MS = 60_000;
  * progress is never touched) and says "please sign in again to keep syncing".
  */
 export const SESSION_MAX_AGE_MS = 30 * 86_400_000;
+/** A session nobody used (no token refresh) for 14 days ends too (owner decision; server job to follow). */
+export const SESSION_IDLE_MAX_MS = 14 * 86_400_000;
+/**
+ * A session that began with an emailed code and saved no password ends after
+ * this long (codes only confirm an address or reset a password; owner
+ * decision 28 Nov 2026). The database's first-password window is the same.
+ */
+export const CODE_SESSION_MAX_MS = 10 * 60_000;
+/** One reset code a minute from this page, for every address alike (audit LOW-1). */
+export const RESET_RESEND_MS = 60_000;
+/**
+ * Why this browser was signed out without asking ({ reason, at }: no email,
+ * no account id), so the page can say "please sign in again to keep
+ * syncing" after a reload. Cleared by the next sign-in or a sign-out.
+ */
+export const AUTH_ENDED_KEY = 'kaisip_auth_ended_v1';
 /**
  * "Set a password" is sent only within this long of the session's sign-in.
  * The database allows 10 minutes (password guard rule 4); one minute is

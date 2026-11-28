@@ -115,7 +115,7 @@ export type CycleResult =
   | { kind: 'paused'; reason: SyncPause }
   /** The account's copy was deleted from another device: sync is off on this phone now. */
   | { kind: 'stopped' }
-  | { kind: 'failed'; code: CloudErrorCode; retryAfterSec?: number };
+  | { kind: 'failed'; code: CloudErrorCode; retryAfterSec?: number; detail?: string };
 
 export type Sides = { settings: Side<SyncedSettings>; progress: Side<SyncedProgress> };
 
@@ -385,7 +385,7 @@ export interface FirstSyncPrep {
   keepUndo: boolean;
 }
 
-export type PrepResult = { ok: true; prep: FirstSyncPrep } | { ok: false; code: CloudErrorCode | 'newer' | 'unreadable' | 'toobig' };
+export type PrepResult = { ok: true; prep: FirstSyncPrep } | { ok: false; code: CloudErrorCode | 'newer' | 'unreadable' | 'toobig'; detail?: string };
 
 /** What a first sync would do. Reads the account; changes nothing anywhere. */
 export async function prepareFirstSync(ctx: Omit<CycleCtx, 'device' | 'wait' | 'deviceId'> & { read: () => PhoneData; stamps: PerStore<Stamps> }): Promise<PrepResult> {
