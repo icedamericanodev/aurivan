@@ -177,6 +177,30 @@ describe('recall score (support.md §10.3)', () => {
     expect(recallScore(text, ref)).toBe(score);
   });
 
+  // CIA_BANK_PLAN.md §9, item 7: CIA (The IIA's exam) dumps are held like CISA ones.
+  it.each([
+    'selling CIA part 1 dumps',
+    'CIA exam questions pdf',
+    'CIA® real questions',
+    'Anyone have CIA dumps?',
+    'cia exam dumps link in my profile',
+  ])('holds CIA dump wording: %j', (text) => {
+    expect(recallScore(text, null)).toBeGreaterThanOrEqual(RECALL_HOLD);
+  });
+
+  // "cia" counts only as its own word, never inside an ordinary one.
+  it.each([
+    'special dumps of the payroll table',
+    'social real questions from the study group',
+    'financial part 1 dumps are a memory forensics topic',
+    'beneficial dumps',
+    'a special exam session for social and financial auditors',
+    'are the practice questions like the real CIA exam questions?',
+    'I passed CIA part 1 last week, any tips for part 2?',
+  ])('does not hold ordinary text: %j', (text) => {
+    expect(recallScore(text, null)).toBe(0);
+  });
+
   it('look-alike letters and odd spacing do not hide recall language', () => {
     expect(recallScore(cyrillic('on my exam I got one about BCP'), null)).toBeGreaterThanOrEqual(RECALL_HOLD);
     expect(recallScore(`brain${ZW}dump for sale`, null)).toBeGreaterThanOrEqual(RECALL_HOLD);

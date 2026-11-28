@@ -332,12 +332,22 @@ const RECALL = [
  * "core dump" are audit topics, so plain "dump" isn't here; and "are the
  * practice questions like the real exam questions?" isn't an offer: "real
  * questions" counts only next to sharing, selling or asking for them: CR N6.)
+ *
+ * CIA (The IIA's exam) is an exam name too (CIA_BANK_PLAN.md §9, item 7).
+ * Every exam name is matched as its own word (`\b` before it, a space or
+ * "®" after it), so "special", "social", "financial" and "beneficial" never
+ * count. A "part 1" (CIA's three parts) or "exam" may sit between the name
+ * and "dumps", and a "®" may follow the name, the way dump sellers write it.
+ * An exam name right before "real questions" ("CIA® real questions") is a
+ * dump seller's title; "the real CIA exam questions" a learner asks about
+ * is not (the name isn't right before "real").
  */
 const DUMPS = [
   /\bbrain ?dumps?\b/,
-  /\b(exam|cisa|cism|crisc|cgeit|cdpse|aaia|test|question|questions) dumps?\b/,
+  /\b(exam|cisa|cism|crisc|cgeit|cdpse|aaia|cia|test|question|questions)®? (part [1-3] |exam )?dumps?\b/,
   /\bdumps? (site|sites|pdf|pdfs|file|files|link|links)\b/,
-  /\bexam (pdf|leak|leaks)\b/,
+  /\bexam (questions? |answers? )?(pdf|pdfs|leak|leaks)\b/,
+  /\b(cisa|cism|crisc|cgeit|cdpse|aaia|cia)®? (part [1-3] )?(real|actual) (questions|answers)\b/,
   /\b(share|sharing|send|sell|selling|buy|buying|leaked|anyone have|anybody have|someone have|who has)\b[^.?!\n]{0,60}\b(actual|real) (exam )?(questions|answers)\b/,
   /\b(actual|real) (exam )?(questions|answers)\b[^.?!\n]{0,60}\b(share|sharing|send|sell|selling|for sale|dm me|message me|pm me)\b/,
 ];
