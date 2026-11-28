@@ -6306,7 +6306,9 @@ function isRelaxedSibling(ids, id, groupOf) {
     }
     return false;
 }
+const MOST_DOMAINS_TRIED = 12;
 function groupsForShortDomains(pool, targets) {
+    var _a;
     const need = new Map(targets);
     const lower = (domainId) => {
         const n = need.get(domainId);
@@ -6332,26 +6334,62 @@ function groupsForShortDomains(pool, targets) {
         else
             cross.push([group, domains]);
     }
-    const given = new Map();
-    for (;;) {
-        let toDomain;
-        let theGroup;
-        for (const [domainId, n] of need) {
-            if (n <= 0)
+    const short = [...need].filter(([domainId, n]) => n > 0 && cross.some(([, domains]) => domains.has(domainId)));
+    if (short.length === 0)
+        return new Map();
+    const giveOne = (holder, domainId, asked) => {
+        asked.add(domainId);
+        for (const [group, domains] of cross) {
+            if (!domains.has(domainId) || holder.has(group))
                 continue;
-            if (toDomain !== undefined && n <= need.get(toDomain))
-                continue;
-            const free = cross.find(([group, domains]) => !given.has(group) && domains.has(domainId));
-            if (!free)
-                continue;
-            toDomain = domainId;
-            theGroup = free[0];
+            holder.set(group, domainId);
+            return true;
         }
-        if (toDomain === undefined || theGroup === undefined)
-            return given;
-        given.set(theGroup, toDomain);
-        need.set(toDomain, need.get(toDomain) - 1);
+        for (const [group, domains] of cross) {
+            if (!domains.has(domainId))
+                continue;
+            const other = holder.get(group);
+            if (asked.has(other) || !giveOne(holder, other, asked))
+                continue;
+            holder.set(group, domainId);
+            return true;
+        }
+        return false;
+    };
+    const fillAll = (holder, wanted) => wanted.every(([domainId, n]) => {
+        for (let k = 0; k < n; k++)
+            if (!giveOne(holder, domainId, new Set()))
+                return false;
+        return true;
+    });
+    const count = short.length;
+    const sets = count > MOST_DOMAINS_TRIED
+        ? []
+        : Array.from({ length: 2 ** count - 1 }, (_, i) => short.filter((_d, j) => ((2 ** count - 1 - i) >> (count - 1 - j)) & 1));
+    sets.sort((a, b) => b.length - a.length);
+    const full = (_a = sets.find((set) => fillAll(new Map(), set))) !== null && _a !== void 0 ? _a : [];
+    const holder = new Map();
+    fillAll(holder, full);
+    const open = new Map(short.filter((d) => !full.includes(d)));
+    for (;;) {
+        let next;
+        for (const [domainId, n] of open)
+            if (n > 0 && (next === undefined || n > open.get(next)))
+                next = domainId;
+        if (next === undefined)
+            break;
+        if (giveOne(holder, next, new Set()))
+            open.set(next, open.get(next) - 1);
+        else
+            open.delete(next);
     }
+    const given = new Map();
+    for (const [group] of cross) {
+        const domainId = holder.get(group);
+        if (domainId !== undefined)
+            given.set(group, domainId);
+    }
+    return given;
 }
 function oneOfEachGroup(pool, rng, targets) {
     if (!pool.some((q) => q.siblingGroup !== undefined))
@@ -10834,7 +10872,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "a6a0283da089c2bf";
+  api.sourceHash = "6040413a916c81e2";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

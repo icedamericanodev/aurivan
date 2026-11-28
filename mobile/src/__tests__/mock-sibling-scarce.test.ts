@@ -159,23 +159,32 @@ describe('a cross-domain group no domain needs is picked as before', () => {
   });
 });
 
-describe('two short domains and one group: the larger need wins', () => {
+describe('two short domains and one group: the group goes where it fills a domain', () => {
   // Targets 4 / 3 / 3. Domain 2 is sure of 1 (needs 2 more), domain 3 of 2 (needs 1 more).
+  // One group cannot fill domain 2, but it fills domain 3: so only domain 2 is left off its weight.
   const cert = course([40, 30, 30]);
   const pool = [...plain('a', '1', 8), q('b1', '2'), q('bx', '2', 'X'), ...plain('c', '3', 2), q('cx', '3', 'X')];
   const targets = targetsOf(cert);
 
-  it('the group goes to the domain that needs more, on every seed', () => {
-    expect([...groupsForShortDomains(pool, targets)]).toEqual([['X', '2']]);
+  it('the group goes to the domain it can fill, on every seed', () => {
+    expect([...groupsForShortDomains(pool, targets)]).toEqual([['X', '3']]);
     for (const seed of SEEDS) {
       const kept = oneOfEachGroup(pool, createRng(seed), targets);
-      expect(kept.map((x) => x.id)).toContain('bx');
-      expect(kept.map((x) => x.id)).not.toContain('cx');
+      expect(kept.map((x) => x.id)).toContain('cx');
+      expect(kept.map((x) => x.id)).not.toContain('bx');
     }
   });
 
   it('the order of the questions in the pool does not change who wins', () => {
-    expect([...groupsForShortDomains([...pool].reverse(), targets)]).toEqual([['X', '2']]);
+    expect([...groupsForShortDomains([...pool].reverse(), targets)]).toEqual([['X', '3']]);
+  });
+
+  it('no domain can be filled: the group goes to the domain that needs the most', () => {
+    // Without c2, domain 3 needs 2 as well as domain 2; with one more question gone from domain 3 it needs 3.
+    const both = pool.filter((x) => x.id !== 'c2');
+    expect([...groupsForShortDomains(both, targets)]).toEqual([['X', '2']]);
+    const more = both.filter((x) => x.id !== 'c1');
+    expect([...groupsForShortDomains(more, targets)]).toEqual([['X', '3']]);
   });
 
   it('equal needs: the domain listed first in the course wins', () => {
@@ -185,9 +194,9 @@ describe('two short domains and one group: the larger need wins', () => {
     expect([...groupsForShortDomains([...tie].reverse(), targets)]).toEqual([['X', '2']]);
   });
 
-  it('more groups: one at a time, each to the domain that still needs the most', () => {
-    // Two cross-domain groups, needs 2 and 1: X to domain 2 (2 against 1), then
-    // the tie at 1 and 1 goes to domain 2 again, the domain listed first.
+  it('more groups: as many domains filled as the groups allow, the domain listed first when either could be', () => {
+    // Two cross-domain groups, needs 2 and 1: they can fill domain 2 or domain 3, not both.
+    // Either way one domain is left short by 1; the domain listed first is the one filled.
     const two = [...pool, q('bz', '2', 'Z'), q('cz', '3', 'Z')];
     expect([...groupsForShortDomains(two, targets)]).toEqual([['X', '2'], ['Z', '2']]);
     // With one more sure question in domain 2 (needs 1 and 1) each domain gets one.
@@ -202,10 +211,155 @@ describe('two short domains and one group: the larger need wins', () => {
     for (const seed of SEEDS.slice(0, 50)) {
       const ids = buildMockExam(cert, pool, createRng(seed), TOTAL);
       expect(apart(pool, ids)).toBe(true);
-      // 8 + 2 (b1, bx) + 2 (c1, c2): the top-up makes up for the domains that stay short.
+      // 4 + 1 (b1) + 3 (c1, c2, cx): domain 3 has its share, and the top-up makes up for domain 2.
       expect(ids).toHaveLength(TOTAL);
-      expect(perDomain(cert, pool, ids).slice(1)).toEqual([2, 2]);
+      expect(perDomain(cert, pool, ids).slice(1)).toEqual([1, 3]);
     }
+  });
+});
+
+describe('the groups are shared out so that every domain is filled when that is possible', () => {
+  it('two domains one short each, two groups: the group only one of them can use is not taken by the other', () => {
+    // Targets 3 / 3 / 4. Domains 1 and 2 are sure of 2 each. Group X spans domains 1 and 2,
+    // group Y spans domains 1 and 3. Domain 1 could take either; domain 2 can only take X.
+    const cert = course([30, 30, 40]);
+    const pool = [...plain('a', '1', 2), q('ax', '1', 'X'), q('ay', '1', 'Y'), ...plain('b', '2', 2), q('bx', '2', 'X'), ...plain('c', '3', 8), q('cy', '3', 'Y')];
+    const targets = targetsOf(cert);
+    expect([...targets.values()]).toEqual([3, 3, 4]);
+    expect([...groupsForShortDomains(pool, targets)]).toEqual([['X', '2'], ['Y', '1']]);
+    for (const seed of SEEDS) {
+      const ids = buildMockExam(cert, pool, createRng(seed), TOTAL);
+      expect(ids).toHaveLength(TOTAL);
+      expect(perDomain(cert, pool, ids)).toEqual([3, 3, 4]);
+      expect(apart(pool, ids)).toBe(true);
+      expect(ids).toEqual(expect.arrayContaining(['ay', 'bx']));
+    }
+  });
+
+  it('the same with the groups the other way round in the pool', () => {
+    // Groups in pool order: g1 {1, 2}, g2 {1, 3}; domains 1 and 2 need 1 each, domain 3 none.
+    const pool = [q('p1', '1', 'g1'), q('p2', '1', 'g2'), q('p3', '2', 'g1'), ...plain('c', '3', 5), q('p4', '3', 'g2')];
+    const targets = new Map([['1', 1], ['2', 1], ['3', 2]]);
+    expect([...groupsForShortDomains(pool, targets)]).toEqual([['g1', '2'], ['g2', '1']]);
+    // Listed the other way (domain 2 first) the answer is the same: there is only one way to fill both.
+    expect([...groupsForShortDomains(pool, new Map([['2', 1], ['1', 1], ['3', 2]]))]).toEqual([['g1', '2'], ['g2', '1']]);
+  });
+
+  it('a chain of three: each domain hands its group on so that the last one is filled too', () => {
+    // g1 {1, 2}, g2 {2, 3}, g3 {3, 4}: domains 1, 2 and 3 need 1 each, and domain 3 is asked last
+    // of them only by the order of the list. One answer fills all three.
+    const pool = [q('p1', '1', 'g1'), q('p2', '2', 'g1'), q('p3', '2', 'g2'), q('p4', '3', 'g2'), q('p5', '3', 'g3'), ...plain('d', '4', 5), q('p6', '4', 'g3')];
+    const given = groupsForShortDomains(pool, new Map([['3', 1], ['2', 1], ['1', 1], ['4', 2]]));
+    expect([...given.values()].sort()).toEqual(['1', '2', '3']);
+    expect(given.get('g1')).toBe('1');
+  });
+
+  it('a domain that cannot be filled does not take the group that fills another', () => {
+    // Domain 1 needs 2 and only g1 reaches it; domain 2 needs 2 and g1 and g2 reach it.
+    // Filling domain 2 leaves one domain short; giving g1 to domain 1 would leave two.
+    const pool = [q('p1', '1', 'g1'), q('p2', '2', 'g1'), q('p3', '2', 'g2'), ...plain('c', '3', 5), q('p4', '3', 'g2')];
+    expect([...groupsForShortDomains(pool, new Map([['1', 2], ['2', 2], ['3', 2]]))]).toEqual([['g1', '2'], ['g2', '2']]);
+  });
+
+  it('a small need does not block two larger ones that could both be filled', () => {
+    // Domain 1 needs 2 (g1, g2 reach it). Domain 2 needs 3 (g1, g3, g4). Domain 3 needs 3 (g2, g5, g6).
+    // Filling domain 1 first would leave domains 2 and 3 short; filling those two leaves only domain 1.
+    const reach: [string, string[]][] = [['g1', ['1', '2']], ['g2', ['1', '3']], ['g3', ['2', '4']], ['g4', ['2', '4']], ['g5', ['3', '4']], ['g6', ['3', '4']]];
+    const pool = [...reach.flatMap(([g, ds]) => ds.map((d) => q(`${g}_${d}`, d, g))), ...plain('d', '4', 9)];
+    const given = groupsForShortDomains(pool, new Map([['1', 2], ['2', 3], ['3', 3], ['4', 2]]));
+    expect([...given]).toEqual([['g1', '2'], ['g2', '3'], ['g3', '2'], ['g4', '2'], ['g5', '3'], ['g6', '3']]);
+  });
+
+  it('more short domains than the rule tries sets for: still every place that can be filled, and it ends', () => {
+    // 14 domains, each one short, and 14 groups in a ring (group k spans domains k and k + 1).
+    const ids = Array.from({ length: 14 }, (_, i) => String(i + 1));
+    const pool = ids.flatMap((d, i) => [q(`r${d}a`, d, `g${i}`), q(`r${d}b`, ids[(i + 1) % 14], `g${i}`)]);
+    const given = groupsForShortDomains(pool, new Map(ids.map((d) => [d, 1])));
+    expect([...given.values()].sort()).toEqual([...ids].sort());
+  });
+});
+
+/**
+ * Every way of sharing out the groups, tried one by one (only possible on tiny banks):
+ * the most places that can be filled, and the most short domains that can be filled right up.
+ */
+function bestByTrying(pool: PackQuestion[], targets: Map<string, number>): { places: number; domains: number } {
+  const need = new Map(targets);
+  const domainsOf = new Map<string, Set<string>>();
+  for (const x of pool) {
+    if (x.siblingGroup === undefined) need.set(x.domainId, (need.get(x.domainId) ?? 0) - 1);
+    else domainsOf.set(x.siblingGroup, (domainsOf.get(x.siblingGroup) ?? new Set<string>()).add(x.domainId));
+  }
+  const cross: string[][] = [];
+  for (const domains of domainsOf.values()) {
+    if (domains.size === 1) need.set([...domains][0], (need.get([...domains][0]) ?? 0) - 1);
+    else cross.push([...domains]);
+  }
+  const short = [...need].filter(([, k]) => k > 0);
+  let places = 0;
+  let domains = 0;
+  const got = new Map<string, number>();
+  const walk = (i: number) => {
+    if (i === cross.length) {
+      places = Math.max(places, short.reduce((sum, [d, k]) => sum + Math.min(k, got.get(d) ?? 0), 0));
+      domains = Math.max(domains, short.filter(([d, k]) => (got.get(d) ?? 0) >= k).length);
+      return;
+    }
+    walk(i + 1); // this group goes to nobody
+    for (const d of cross[i]) {
+      got.set(d, (got.get(d) ?? 0) + 1);
+      walk(i + 1);
+      got.set(d, got.get(d)! - 1);
+    }
+  };
+  walk(0);
+  return { places, domains };
+}
+
+describe('no other way of sharing out the groups does better (checked by trying every way)', () => {
+  it('400 tiny made-up banks: the most places filled, the most domains filled, never more than a domain needs', () => {
+    const rng = createRng(4242);
+    const pick = (k: number) => Math.floor(rng() * k);
+    let helped = 0;
+    let notAllFilled = 0;
+    for (let b = 0; b < 400; b++) {
+      const domainIds = Array.from({ length: 2 + pick(4) }, (_, i) => String(i + 1));
+      const pool: PackQuestion[] = [];
+      const size = 4 + pick(16);
+      for (let i = 0; i < size; i++) {
+        const domainId = domainIds[pick(domainIds.length)];
+        const kind = pick(5); // 0: alone; 1: a group of its own domain; 2 to 4: a group shared across domains
+        pool.push(q(`t${b}_${i}`, domainId, kind === 0 ? undefined : kind === 1 ? `in${domainId}` : `across_${pick(6)}`));
+      }
+      const targets = new Map(domainIds.map((d) => [d, pick(5)]));
+      const given = groupsForShortDomains(pool, targets);
+      const best = bestByTrying(pool, targets);
+
+      // What the rule gave each domain, and what each domain was short by.
+      const got = new Map<string, number>();
+      for (const [group, domainId] of given) {
+        // Only to a domain the group has a question in.
+        expect(pool.some((x) => x.siblingGroup === group && x.domainId === domainId)).toBe(true);
+        got.set(domainId, (got.get(domainId) ?? 0) + 1);
+      }
+      const sure = (d: string) => new Set(pool.filter((x) => x.domainId === d && (x.siblingGroup === undefined || pool.every((y) => y.siblingGroup !== x.siblingGroup || y.domainId === d))).map((x) => x.siblingGroup ?? x.id)).size;
+      let places = 0;
+      let filled = 0;
+      for (const d of domainIds) {
+        const shortBy = Math.max(0, targets.get(d)! - sure(d));
+        const mine = got.get(d) ?? 0;
+        expect(mine).toBeLessThanOrEqual(shortBy); // never more than it needs
+        places += mine;
+        if (shortBy > 0 && mine === shortBy) filled++;
+      }
+      expect({ bank: b, places, domains: filled }).toEqual({ bank: b, places: best.places, domains: best.domains });
+      helped += places;
+      if (domainIds.some((d) => targets.get(d)! - sure(d) > (got.get(d) ?? 0))) notAllFilled++;
+    }
+    // The banks really do exercise the rule, both where every domain can be filled and where not.
+    expect(helped).toBeGreaterThan(300);
+    expect(notAllFilled).toBeGreaterThan(50);
+    expect(notAllFilled).toBeLessThan(350);
   });
 });
 

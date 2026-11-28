@@ -64,8 +64,10 @@
  *                 Both draws keep one question per sibling group, as the app's
  *                 engine/siblings.ts oneOfEachGroup does, and fail if a draw
  *                 holds two siblings. In the FULL mock a group whose questions
- *                 sit in more than one section gives its question to the section
- *                 that would otherwise be short of its share, as the app does
+ *                 sit in more than one section gives its question to a section
+ *                 that would otherwise be short of its share, as the app does:
+ *                 the groups are shared out so that as many sections as possible
+ *                 have their share, then as many places as possible are filled
  *                 (the rule is mobile/scripts/mock-siblings.cjs, the same steps
  *                 as the app's groupsForShortDomains; a Jest test holds the two
  *                 together). The short mock is drawn by the app's buildShortMock,
@@ -83,9 +85,9 @@
  *                 isHeldBackHidden). These two lines draw the same mocks from the
  *                 pool WITHOUT the form's questions and say, section by section,
  *                 what that pool holds against the quota. In the full mock a group
- *                 that spans two sections counts for the section that needs it;
- *                 one that no section needs (and, in the short mock, every such
- *                 group) is kept at random by the app, so it makes a range
+ *                 that spans two sections counts for the short section it was
+ *                 given to; one that no section needs (and, in the short mock,
+ *                 every such group) is kept at random by the app, so it makes a range
  *                 ("B 53 to 56 of 25"). A mock that cannot be
  *                 filled at the exam's weights is a named WARNING line ("!"),
  *                 not a failure: it says what the app then does (buildMockExam in
@@ -266,9 +268,12 @@ function allocate(total, weights) {
  * `byRule` true (a FULL mock, and the smaller mocks tried when a full one does
  * not fit): engine/blueprint.ts buildMockExam, so engine/siblings.ts
  * oneOfEachGroup with the section targets. A group whose questions sit in more
- * than one section gives its question to the section that would otherwise be
- * short of its target (`given`: group → that section's id); every other group
- * gives its first question here, where the app keeps a random one.
+ * than one section gives its question to a section that would otherwise be
+ * short of its target (`given`: group → that section's id). The groups are
+ * shared out so that as many sections as possible reach their target, then so
+ * that as many places as possible are filled; no other way of sharing them
+ * out does better. Every other group gives its first question here, where the
+ * app keeps a random one.
  *
  * `byRule` false (a SHORT mock): this course's short mock is drawn by
  * engine/shortMock.ts buildShortMock, which keeps a random question of each
@@ -429,8 +434,9 @@ function drawBeforeForm(kind, total, exam, before) {
   if (picked.some((q) => q.heldBack !== undefined)) problems.push('drew a question of the held-back form');
 
   // Sure to fit only when every section holds its share whichever sibling the app keeps. In a full
-  // mock a section still short here is short in the app too: every group that could have helped
-  // it was given, to it or to a section that needed it more.
+  // mock a section still short here is short in the app too: every group with a question in it
+  // was given, to it or to another short section, and no other way of sharing out the groups
+  // leaves fewer sections short or fills more places (mobile/scripts/mock-siblings.cjs).
   const shortSections = exam.sections
     .map((s, i) => (range[i].least < targets[i] ? `section ${s.letter} holds ${count(range[i])} of the ${targets[i]} needed` : null))
     .filter(Boolean);

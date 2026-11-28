@@ -1295,15 +1295,28 @@ PASSES = [
      "✓ short mock before the form: 42 items (A 15 / B 8 / C 13 / D 6) drawn without repeats with the held-back form's "
      "questions left out. Before the form a mock draws from 134 questions; by section against the quota: A 44 of 15 / "
      "B 28 to 29 of 8 / C 43 of 13 / D 18 to 19 of 6"),
-    ("two short sections and one sibling group that spans them (the section that needs more gets it; "
-     "both are named in the warning, never a failure)", [DRY, "cia1"],
+    # Section A is 3 short and section D 1 short; one group spans them. It cannot fill A, but it
+    # fills D, so only A is left off its weight (the rule leaves as few sections short as it can).
+    ("two short sections and one sibling group that spans them (the section it can fill gets it; "
+     "only the other is named in the warning, never a failure)", [DRY, "cia1"],
      then(held_back_bank(per=FULL_BANK), rebuild, spare_siblings([(1, 3)], [(4, 3)], [(4, 1), (1, 1)])),
      "! full mock before the form: WARNING: until the learner takes the held-back form, a full mock of 125 "
-     "(A 44 / B 25 / C 37 / D 19) cannot be filled at the exam's weights: section A holds 42 of the 44 needed, "
-     "section D holds 18 of the 19 needed. Before the form a mock draws from 132 questions; by section against the quota: "
-     "A 42 of 44 / B 29 of 25 / C 43 of 37 / D 18 of 19", "✗"),
+     "(A 44 / B 25 / C 37 / D 19) cannot be filled at the exam's weights: section A holds 41 of the 44 needed. "
+     "Before the form a mock draws from 132 questions; by section against the quota: "
+     "A 41 of 44 / B 29 of 25 / C 43 of 37 / D 19 of 19", "✗"),
+    # Sections B and D are 1 short each. Group X spans B and D, group Y spans B and C, and X comes
+    # first. B must take Y so that D can have X: handing B the first group it can use leaves D short.
+    ("two short sections and two sibling groups, one of which only one section can use "
+     "(the groups are shared out so that both sections have their share: passes the release check)",
+     [DRY, "cia1", "--require-full"],
+     then(held_back_bank(per=FULL_BANK), rebuild,
+          spare_siblings([(2, 4)], [(4, 3)], [(2, 1), (4, 1)], [(2, 1), (3, 1)])),
+     "✓ full mock before the form: 125 items (A 44 / B 25 / C 37 / D 19) drawn without repeats with the held-back form's "
+     "questions left out. Before the form a mock draws from 130 questions; by section against the quota: A 44 of 44 / B 25 of 25 / "
+     "C 42 of 37 / D 19 of 19"),
     # The whole pool (no form): the full mock uses the same rule, the short mock does not.
-    ("a sibling group that spans two sections in the whole pool (the full mock counts it for the section that needs more)",
+    ("a sibling group that spans two sections in the whole pool (it can fill neither, so the full mock counts it "
+     "for the section that needs more)",
      [DRY, "cia1"], then(add_fraud_section, spare_siblings([(1, 1), (4, 1)])),
      "full mock: 0 full mocks yet (125 items, A 44 / B 25 / C 37 / D 19): section A has 39 of 44 needed, "
      "section B has 0 of 25 needed, section C has 0 of 37 needed, section D has 4 of 19 needed"),

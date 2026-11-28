@@ -27,11 +27,20 @@
  * 1. Count what each domain is sure to have whichever sibling is kept: its
  *    questions with no group, plus 1 for each group whose questions all sit
  *    in that domain. A domain is short when that is below its target.
- * 2. Give groups that span domains to short domains one at a time: each time
- *    the short domain that still needs the most (a tie: the domain listed
- *    first) takes the first group, in the pool's order, that has a question
- *    in it and has not been given yet.
+ * 2. Give groups that span domains to short domains, each group to ONE
+ *    domain it has a question in, never more to a domain than it is short by:
+ *    a. First fill as many short domains as possible right up to their
+ *       target: every set of short domains is tried, the largest first; of
+ *       two sets of the same size, the one with the domains listed first.
+ *    b. Then the groups still free go, one at a time, to the short domain
+ *       that still needs the most (a tie: the domain listed first).
+ *    Whenever a domain wants a group another domain holds, the holder hands
+ *    it over if it can take a different group instead. So no other way of
+ *    sharing out the groups fills more domains, or more places in total.
+ *    (More than 12 short domains: step a is skipped, as in the app.)
+ * The Map comes back in the pool's order of the groups.
  */
+const MOST_DOMAINS_TRIED = 12;
 function groupsForShortDomains(pool, targets) {
   const need = new Map(targets);
   const lower = (domainId) => {
@@ -51,22 +60,57 @@ function groupsForShortDomains(pool, targets) {
     if (domains.size === 1) lower([...domains][0]);
     else cross.push([group, domains]);
   }
-  const given = new Map();
-  for (;;) {
-    let toDomain;
-    let theGroup;
-    for (const [domainId, n] of need) {
-      if (n <= 0) continue; // not short (any more)
-      if (toDomain !== undefined && n <= need.get(toDomain)) continue; // an earlier domain needs as much or more
-      const free = cross.find(([group, domains]) => !given.has(group) && domains.has(domainId));
-      if (!free) continue; // no group left that could help this domain
-      toDomain = domainId;
-      theGroup = free[0];
+  // The short domains a group that spans domains could help: [domain id, how many it is short by].
+  const short = [...need].filter(([domainId, n]) => n > 0 && cross.some(([, domains]) => domains.has(domainId)));
+  if (short.length === 0) return new Map();
+
+  // One move: give `domainId` one more group. `holder`: group → the domain that holds it so far;
+  // `asked`: the domains already asked in this move.
+  const giveOne = (holder, domainId, asked) => {
+    asked.add(domainId);
+    for (const [group, domains] of cross) {
+      if (!domains.has(domainId) || holder.has(group)) continue;
+      holder.set(group, domainId); // a group nobody holds yet
+      return true;
     }
-    if (toDomain === undefined) return given;
-    given.set(theGroup, toDomain);
-    need.set(toDomain, need.get(toDomain) - 1);
+    for (const [group, domains] of cross) {
+      if (!domains.has(domainId)) continue;
+      const other = holder.get(group);
+      // A group another domain holds, if that domain can take a different one instead.
+      if (asked.has(other) || !giveOne(holder, other, asked)) continue;
+      holder.set(group, domainId);
+      return true;
+    }
+    return false;
+  };
+  const fillAll = (holder, wanted) => wanted.every(([domainId, n]) => {
+    for (let k = 0; k < n; k++) if (!giveOne(holder, domainId, new Set())) return false;
+    return true;
+  });
+
+  // Step a: every set of short domains, the largest first, then the domains listed first.
+  const count = short.length;
+  const sets = count > MOST_DOMAINS_TRIED
+    ? []
+    : Array.from({ length: 2 ** count - 1 }, (_, i) => short.filter((_d, j) => ((2 ** count - 1 - i) >> (count - 1 - j)) & 1));
+  sets.sort((a, b) => b.length - a.length);
+  const full = sets.find((set) => fillAll(new Map(), set)) || [];
+  const holder = new Map();
+  fillAll(holder, full);
+
+  // Step b: the groups still free, one at a time to the domain that still needs the most.
+  const open = new Map(short.filter((d) => !full.includes(d)));
+  for (;;) {
+    let next;
+    for (const [domainId, n] of open) if (n > 0 && (next === undefined || n > open.get(next))) next = domainId;
+    if (next === undefined) break;
+    if (giveOne(holder, next, new Set())) open.set(next, open.get(next) - 1);
+    else open.delete(next); // no group can reach it, now or later
   }
+
+  const given = new Map();
+  for (const [group] of cross) if (holder.has(group)) given.set(group, holder.get(group));
+  return given;
 }
 
 /**
