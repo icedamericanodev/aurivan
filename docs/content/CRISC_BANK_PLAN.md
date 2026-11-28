@@ -1164,3 +1164,32 @@ random sample (d3_319); telling people about a disclosure the law requires
   `npm run web-plant` in a session with the mobile packages installed.
 - `notes-application-tester` and `isaca-concept-reviewer` passes on the notes
   after round 2.
+
+## 9. Readability pass (28 Nov 2026, FB-013)
+
+A tester said some CISA questions read like "jumbled words". CRISC was written
+in the same packed style, so the `question-readability-reviewer` read all 1,000
+CRISC stems and options under the plain-stem rule in
+`docs/content/EXAM_STYLE_V2.md`.
+
+- **Rewrites:** 524 of 1,000 items were rewritten in short plain sentences
+  (facts glued with semicolons, possessive chains, dropped small words, unclear
+  "it"). Settings, facts, actors, keys and priority words are unchanged.
+- **Fidelity:** the four domain experts compared every old and new wording and
+  asked for 18 corrections, each where a split had lost a link or a detail.
+- **Blind tests:** 521 of 524 matched the key; the 22 items corrected
+  afterwards matched 22 of 22.
+- **Packed stems** fell from 300 to 6. Medians stay at 34 words, with 7% of
+  stems over 35.
+- **Follow-up (content, not wording):** crisc_d1_216, crisc_d1_229 and
+  crisc_d3_129 went against the key in the blind test, and crisc_d1_123 and
+  crisc_d2_202 were called debatable. Each was already open to two readings
+  before the rewrite. They need the same key review as CISA d3_087: experts
+  first, then a blind retest.
+- **Key review done (28 Nov 2026):** every key stands. The domain experts and
+  the CRISC standards auditor revised each item; facts written only to rule
+  out the runner-up were rejected as cues after a first round made d2_202 and
+  d3_129 too easy. crisc_d1_229 had a second defensible option (B), which is
+  now replaced. The final versions matched the key 9 of 9 (three testers, the
+  three hardest items), and d1_123 and d1_216 matched 2 of 2 in round one.
+
