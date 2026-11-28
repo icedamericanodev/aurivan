@@ -242,11 +242,25 @@ export class FakeSupabase {
   private captchaMissing(body: any): boolean {
     return this.captchaOn && !(typeof body?.gotrue_meta_security?.captcha_token === 'string' && body.gotrue_meta_security.captcha_token.length > 0);
   }
-  /** GoTrue's weak-password and length rules with the dashboard at 15 characters, no required types. */
+  /**
+   * GoTrue's weak-password rules as the project's dashboard sets them (owner's rule): at least 12
+   * characters, and one of each of GoTrue's four sets (lower, upper, digits, and its symbol list,
+   * the same one as the app's PASSWORD_SYMBOLS). A failure answers 422 weak_password with the
+   * reasons 'length' and/or 'characters' (password.go).
+   */
   private passwordRefusal(pw: unknown): { status: number; body: unknown } | null {
-    if (typeof pw !== 'string' || [...pw].length < 15) return { status: 422, body: { code: 422, error_code: 'weak_password', msg: 'Password should be at least 15 characters.', weak_password: { reasons: ['length'] } } };
-    if (utf8(pw).length > 72) return { status: 400, body: { code: 400, error_code: 'validation_failed', msg: 'Password cannot be longer than 72 characters' } };
-    if (this.pwned.has(pw)) return { status: 422, body: { code: 422, error_code: 'weak_password', msg: 'Password is known to be weak and easy to guess', weak_password: { reasons: ['pwned'] } } };
+    const p = typeof pw === 'string' ? pw : '';
+    // The 72-byte limit is checked first (password.go checkPasswordStrength).
+    if (utf8(p).length > 72) return { status: 400, body: { code: 400, error_code: 'validation_failed', msg: 'Password cannot be longer than 72 characters' } };
+    const reasons: string[] = [];
+    if ([...p].length < 12) reasons.push('length');
+    const sets = [/[a-z]/, /[A-Z]/, /[0-9]/, /[!@#$%^&*()_+\-=[\]{};'\\:"|<>?,./`~]/];
+    if (!sets.every((re) => re.test(p))) reasons.push('characters');
+    if (reasons.length) {
+      const msg = reasons[0] === 'length' ? 'Password should be at least 12 characters.' : 'Password should contain at least one character of each: abcdefghijklmnopqrstuvwxyz, ABCDEFGHIJKLMNOPQRSTUVWXYZ, 0123456789, !@#$%^&*()_+-=[]{};\'\\:"|<>?,./`~.';
+      return { status: 422, body: { code: 422, error_code: 'weak_password', msg, weak_password: { reasons } } };
+    }
+    if (this.pwned.has(p)) return { status: 422, body: { code: 422, error_code: 'weak_password', msg: 'Password is known to be weak and easy to guess', weak_password: { reasons: ['pwned'] } } };
     return null;
   }
 

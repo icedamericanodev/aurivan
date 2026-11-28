@@ -954,6 +954,29 @@ describe('error mapping for the password calls', () => {
     expect(res.status).toBe(400);
     expect(toCloudError('user_update', res.status, await res.text()).detail).toBe('password_too_long');
   });
+
+  it('the fake server keeps the same rule as the real one: 12 or more characters with the four character sets', async () => {
+    const a = tab();
+    await google(a);
+    const put = async (password: string) => {
+      const res = await a.authedFetch('/auth/v1/user', { method: 'PUT', body: JSON.stringify({ password }) }, 'user_update');
+      const text = await res.text();
+      return res.status >= 200 && res.status < 300 ? 'saved' : `${res.status} ${(JSON.parse(text).weak_password?.reasons ?? []).join('+')} ${toCloudError('user_update', res.status, text).detail}`;
+    };
+    // Sent raw (the app's own rules refuse each of these first).
+    expect(await put('Tidal lam 7!')).toBe('saved'); // 12 characters, all four sets: the floor
+    expect(await put('Tidal la 7!')).toBe('422 length password_too_short'); // 11
+    expect(await put('tidal lamp oyster 7!')).toBe('422 characters password_missing_characters'); // no uppercase
+    expect(await put('Tidal lamp oyster seven!')).toBe('422 characters password_missing_characters'); // no number
+    expect(await put('Tidal lamp oyster 77')).toBe('422 characters password_missing_characters'); // no symbol
+    expect(await put('TIDAL LAMP OYSTER 7!')).toBe('422 characters password_missing_characters'); // no lowercase
+    expect(await put('tidal')).toBe('422 length+characters password_too_short');
+    // A 13-character password the app accepts goes all the way through the client.
+    const b = elsewhere();
+    await google(b, 'thirteen@gmail.com');
+    await b.setPassword('Tidal lamp 7!');
+    expect(server.userByEmail('thirteen@gmail.com')!.password).toBe('Tidal lamp 7!');
+  });
 });
 
 describe('go-live gate 17: the password is never stored or logged', () => {
