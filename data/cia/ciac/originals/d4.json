@@ -1800,6 +1800,162 @@
    ],
    "_provenance": "Authored from concept: notes 2B4.4 Data Types and Analysis Methods. Sources opened 26 Nov 2026: OpenStax, Foundations of Information Systems, Section 3.1 and Table 3.1 (Knowledge source, library rule 2b, topic 2B4: structured data sit in tables of rows and columns and are easy to query; semistructured data, such as XML and JSON files, are partly organized, use tags to separate elements, do not fit neatly into tables and are read with parsers; unstructured data lack a predefined structure and need advanced techniques), Global Internal Audit Standards (2024), Standard 14.1 (requirements: relevant and reliable information, reliability strengthened when obtained directly; considerations: directly accessing systems to extract data) and the CIA Part 2 syllabus (bullet 2B4c names data types). Bullet 2B4c. The stem asks for a data-handling method, not the auditor's next step, so the Knowledge fact keys the method and decides the final two (semistructured against structured); option D falls on the objective's subject, approvers rather than amounts (Standard 14.1). New lesson: semistructured data, the type between tables and free text. Transfer pair with cia2_d2_008 (unstructured contract text, where a keyword search was the key); near cia2_d2_019 and cia2_d2_034 (data preparation). Fix pass 26 Nov 2026 (standards audit, blind and options-only tests): D is now anomaly detection on amounts (the management-prepared list was that family's fourth time at D in Section B and shared it with transfer partner cia2_d2_008; the audit's sample swap would have shared cia2_d2_008's B); B now exports the log as text before searching, a two-step option tied to a data type like the key's parse; wrong explanation A no longer says semistructured data cannot be queried until parsed (the source also lists NoSQL tools). Original scenario; no IIA practice question, prep-bank text or Knowledge-source sentence used. CIA Part 2 round 5, 26 Nov 2026.",
    "style_version": 2
+  },
+  {
+   "id": "ciac_d4_047",
+   "domain": 4,
+   "subtopic": "4D1 Sources of engagement information. An interview claim the approval log cannot rule out",
+   "principle_id": "relevant-reliable-sufficient",
+   "challenge_ref": "D1",
+   "testable_from": null,
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Testing this year's approvals, internal auditor Lucia hears a Uruguayan dairy's clerk say the finance manager uses the clerk's login on the clerk's days off; the log shows only authorized users. Which treatment is BEST?",
+   "options": {
+    "A": "As grounds to test that login's approvals against leave records",
+    "B": "As outweighed by the log, a record of every approval's user",
+    "C": "As outside the objective, which covers approvals rather than logins",
+    "D": "As grounds to observe approvals during the clerk's next leave"
+   },
+   "correct": "A",
+   "key_concept": "An interview can surface facts a record cannot show, such as who really used a login; a conflicting claim is grounds to change the tests.",
+   "pre_read": "Ask what each piece of evidence actually records, and whether it could prove a person's claim wrong.",
+   "correct_explanation": "Inquiry can bring out information that conflicts with other evidence, such as possible management override, and justify changing the tests (ISA 500, paragraphs A26 to A29). The log shows the login, not who used it, so it cannot rule the claim out; under Standard 14.1 Lucia decides whether more information is needed, and leave records kept outside finance can test it. The closest choice lets the log outweigh a claim it cannot test.",
+   "wrong_explanations": {
+    "B": "Closest choice: documents usually outweigh oral evidence, but only on what they record. The log names the login used, not the person using it, so it cannot disprove the clerk.",
+    "C": "Who really approved each payment is the core of an approval test, so a claim that another person used the clerk's login bears directly on the objective.",
+    "D": "Observation shows only the period watched, and people may act differently when observed. Watching a future leave says nothing about this year's approvals, which the records can test."
+   },
+   "tips": [
+    "Eliminate: C, because who really approved is the core of an approval test, and D, because watching a future leave says nothing about this year's approvals, and people act differently when watched.",
+    "Final two: A beats B because the log records which login approved, not who used it, so it cannot disprove the clerk; a claim it cannot test is grounds for a test that can.",
+    "Exam cue: on CIA questions, an interview claim that conflicts with a record calls for more work; first ask whether the record could actually show the claim false."
+   ],
+   "framework_ref": "Global Internal Audit Standards (2024), Standard 14.1 Gathering Information for Analyses and Evaluation; ISA 500 Audit Evidence, paragraphs A26 to A29 Inquiry; Global Internal Audit Standards (2024), Standard 4.3 Professional Skepticism; ISA 500 Audit Evidence, paragraph A21 Observation",
+   "related_concepts": [
+    "Inquiry as evidence",
+    "Limits of a system log",
+    "Corroboration"
+   ],
+   "_provenance": "Authored from concept: notes 2B1.1 Ways of Gathering Engagement Information. Sources opened 28 Nov 2026: ISA 500 Audit Evidence, IAASB 2026 Handbook (Knowledge source K19, library rule 2b, topic 2B1; method facts only: paragraphs A26 to A29, answers to inquiry may conflict with other evidence, for example on possible management override, and may be the basis for changing or adding procedures; paragraph A21, observation covers only the time observed and may change how the work is done; paragraph A35, its reliability rules are generalizations with exceptions), Global Internal Audit Standards (2024), Standard 14.1 (requirements: reliability judged with professional skepticism; determine whether to gather additional information when evidence is not reliable) and Standard 4.3. Bullet 2B1a. The stem asks how to treat an interview claim, so Standard 14.1 carries the step and ISA 500 the method fact that decides the final two (a log of which login approved, against who used it). New lesson: an interview claim that a record cannot disprove is grounds to change the tests; a document outweighs oral evidence only on what it records. Near cia2_d2_023 (an approver field clerks key; its key is a second record) and cia1_d2_016 (corroborating a statement with logs, observation its runner-up); not a sibling, as neither keys the weight of an interview claim. Teaching pair with cia2_d2_041, where minutes made at each meeting do outweigh later spoken accounts. Original scenario; no IIA practice question, prep-bank text or Knowledge-source sentence used. CIA Part 2 round 6, 28 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "ciac_d4_048",
+   "domain": 4,
+   "subtopic": "4D2 Judging the quality of evidence. Two spoken accounts and the minutes of the meetings",
+   "principle_id": "relevant-reliable-sufficient",
+   "challenge_ref": "D2",
+   "testable_from": null,
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "The plant manager tells internal auditor Mwila that a Zambian smelter's safety committee, which minutes its meetings, reviewed each incident logged this year; its chair says only serious ones were. Which evidence BEST settles it?",
+   "options": {
+    "A": "The account of the secretary who took each meeting's minutes",
+    "B": "A joint account that the manager and the chair agree on",
+    "C": "The severity rating the incident log gives each incident",
+    "D": "The minutes of each meeting, set against the incident log"
+   },
+   "correct": "D",
+   "key_concept": "Documents generally outweigh oral evidence, and minutes written at each meeting outweigh anyone's later account of it, however neutral the speaker.",
+   "pre_read": "Ask when each piece of evidence was made and in what form: at the time or later, written or spoken.",
+   "correct_explanation": "Documentary evidence is generally more reliable than oral evidence, and a record written at the time of a meeting outweighs a later spoken account of it (ISA 500, paragraph A35). When accounts conflict, Standard 14.1 has Mwila decide whether to gather more information; minutes read against the incident log show which incidents were reviewed. The secretary's account, the closest choice, comes from a neutral, informed witness but is still a later recollection.",
+   "wrong_explanations": {
+    "A": "Closest choice: the secretary is informed and has no stake, but a recollection given now is oral and later; the minutes record the same meetings as they happened.",
+    "B": "An agreed account still comes from the two people whose claims conflict, given after the event and orally; agreeing on one version does not make either more reliable.",
+    "C": "Severity ratings show which incidents were serious, not which the committee reviewed, so they cannot settle whether every logged incident was reviewed."
+   },
+   "tips": [
+    "Eliminate: B, because an agreed account still comes later and orally from the two people in dispute, and C, because severity shows which incidents were serious, not which were reviewed.",
+    "Final two: D beats A because minutes written at each meeting outweigh a later spoken account, even from a neutral and informed witness like the secretary.",
+    "Exam cue: on CIA questions, when spoken accounts conflict, look for a written record made at the time; it usually settles the matter better than another witness."
+   ],
+   "framework_ref": "ISA 500 Audit Evidence, paragraph A35 Reliability; Global Internal Audit Standards (2024), Standard 14.1 Gathering Information for Analyses and Evaluation; ISA 500 Audit Evidence, paragraphs 11 and A68 Inconsistency in, or Doubts over Reliability of, Audit Evidence",
+   "related_concepts": [
+    "Documentary against oral evidence",
+    "Conflicting evidence",
+    "Reliability of evidence"
+   ],
+   "_provenance": "Authored from concept: notes 2B2.2 What Makes Evidence More Reliable. Sources opened 28 Nov 2026: ISA 500 Audit Evidence, IAASB 2026 Handbook (Knowledge source K19, library rule 2b, topic 2B2; method facts only: paragraph A35, documentary evidence is generally more reliable than oral, and a record written at the time of a meeting more reliable than a later oral account of it; paragraphs 11 and A68, evidence from one source that conflicts with another calls for further procedures), Global Internal Audit Standards (2024), Standard 14.1 (requirements: reliability judged with professional skepticism; determine whether to gather additional information). Bullet 2B2b. The stem asks which evidence settles a conflict, not for the auditor's next step, so the Knowledge fact decides the final two (a record made at the time against a later account from a neutral witness). New lesson: the form and timing of evidence, which no Section B item had keyed; the key is an internal record, not an independent source or a reperformance. Near cia2_d2_004 (a weakly controlled system) and cia2_d2_023 (a second record corroborates); not a sibling. Teaching pair with cia2_d2_040, where a record that cannot show who acted does not outweigh an interview claim. Original scenario; no IIA practice question, prep-bank text or Knowledge-source sentence used. CIA Part 2 round 6, 28 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "ciac_d4_049",
+   "domain": 4,
+   "subtopic": "4D2 Judging the quality of evidence. Every payment over a threshold, then a conclusion on all",
+   "principle_id": "relevant-reliable-sufficient",
+   "challenge_ref": "D2",
+   "testable_from": null,
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "Testing whether a Colombian airline's 2,800 supplier payments this year were approved, internal auditor Camila checked all 40 over $250,000, 70% of the value; all approved. Which step BEST supports a conclusion on all 2,800?",
+   "options": {
+    "A": "Recalculate each of the 40 payments against its invoice",
+    "B": "Conclude on the 2,800 from the 40 already tested",
+    "C": "Test a random sample drawn from the other 2,760 payments",
+    "D": "Test every payment among the other 2,760 to new suppliers"
+   },
+   "correct": "C",
+   "key_concept": "Items chosen for size or risk, such as every large payment, are not a sample: their results speak for them alone, not for the rest.",
+   "pre_read": "Ask which population the conclusion covers, and whether the items tested can stand for all of it.",
+   "correct_explanation": "Selecting every payment over an amount covers much of the value, but such specific items are not a sample: their results cannot be projected to the rest (ISA 500, paragraphs A63 to A67). Standard 14.1 requires sufficient evidence, and a sample should represent its population, so the other 2,760 need a random sample. Testing new suppliers' payments, the closest choice, aims at risk but still speaks only for those tested.",
+   "wrong_explanations": {
+    "A": "Recalculation checks arithmetic, which bears on accuracy, not approval; and it adds nothing about the 2,760 payments the conclusion must also cover.",
+    "B": "Covering 70% of the value does not cover the payments: the other 2,760 are untested, and 40 chosen by size cannot stand for them.",
+    "D": "Closest choice: payments to new suppliers are a sensible risk target, but like the 40 they are specific items; their results cannot be projected to the remaining payments."
+   },
+   "tips": [
+    "Eliminate: A, because recalculating the 40 checks arithmetic, not approval, and adds nothing about the rest, and B, because covering most of the value leaves the other 2,760 payments untested.",
+    "Final two: C beats D because only a sample chosen to represent the 2,760 can be projected to them; items picked for risk, like items picked for size, speak only for themselves.",
+    "Exam cue: on CIA questions, a conclusion reaches only as far as its evidence: high-value or targeted items support a conclusion about those items, not about the population."
+   ],
+   "framework_ref": "Global Internal Audit Standards (2024), Standard 14.1 Gathering Information for Analyses and Evaluation; ISA 500 Audit Evidence, paragraphs A63 to A67 Selecting Items for Testing to Obtain Audit Evidence; Global Internal Audit Standards (2024), Standard 13.6 Work Program",
+   "related_concepts": [
+    "Selecting specific items",
+    "Representative sample",
+    "Sufficient evidence"
+   ],
+   "_provenance": "Authored from concept: notes 2B2.3 Sufficient Evidence and the Informed Reviewer Test. Sources opened 28 Nov 2026: ISA 500 Audit Evidence, IAASB 2026 Handbook (Knowledge source K19, library rule 2b, topic 2B2; method facts only: paragraphs A63 to A67, items are selected as all items, specific items (high-value or key items, all items over an amount, unusual or risk-prone items) or a sample, and results from specific items cannot be projected to the rest of the population), Global Internal Audit Standards (2024), Standard 14.1 (requirements: sufficient information; considerations: test the full population or a sample as representative of it as possible) and Standard 13.6 (considerations: the sampling method and whether results can be projected). Bullet 2B2c. The stem asks for a step, so Standard 14.1 carries it and ISA 500 the method fact that decides the final two (a random sample against items picked for risk). New lesson: items picked by size or risk speak only for themselves. Sibling of cia2_d2_005 (a sample the audited unit chose cannot speak for the population; logged in siblings.json); near cia2_d2_015 (a full-population run) and cia1_d2_050 (full-population analysis against sampling). Original scenario; no IIA practice question, prep-bank text or Knowledge-source sentence used. CIA Part 2 round 6, 28 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "ciac_d4_050",
+   "domain": 4,
+   "subtopic": "4D5 Analytical review techniques. A difference inside the limit at a high-risk shop",
+   "principle_id": "risk-sets-plan-and-scope",
+   "challenge_ref": "D5",
+   "testable_from": null,
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "Internal auditor Shanice's approved program accepts shop takings within 5% of expectation across a Jamaican bakery chain's 20 shops; Shop 7, rated high fraud risk at planning, is 4% short. Which view is MOST accurate?",
+   "options": {
+    "A": "A potential finding, as takings fell short of the expectation",
+    "B": "Worth following up, as a riskier shop warrants a tighter limit",
+    "C": "Acceptable, as it falls inside the program's approved limit",
+    "D": "Worth following up once the lower-risk shops fall short too"
+   },
+   "correct": "B",
+   "key_concept": "The difference accepted without follow-up should shrink as risk rises, so a result inside a single limit can still need follow-up where risk is high.",
+   "pre_read": "Ask whether one limit set for every unit fits a unit whose assessed risk is higher than the rest.",
+   "correct_explanation": "The difference an auditor accepts without investigating shrinks as assessed risk rises (ISA 520, paragraphs 5(d) and A16), so one 5% limit for all 20 shops is too wide for Shop 7. Standard 14.2 has Shanice use due care, weighing the engagement risk assessment, to decide whether more analysis is needed; the adjusted program then needs the chief audit executive's approval. Accepting the result because the limit allows it, the closest choice, ignores that risk.",
+   "wrong_explanations": {
+    "A": "An expectation is the auditor's estimate, not criteria; a shortfall against it is a lead, and only follow-up showing a gap against criteria makes a potential finding.",
+    "C": "Closest choice: the approved limit is the starting rule, but one limit for every shop ignores Shop 7's higher risk; a riskier unit warrants a smaller accepted difference.",
+    "D": "Shop 7's risk is its own; whether the lower-risk shops fall short says nothing about why Shop 7 is short, so its follow-up need not wait on them."
+   },
+   "tips": [
+    "Eliminate: A, because a shortfall against an expectation is a lead, not yet a gap against criteria, and D, because Shop 7's own risk, not the other shops' results, decides its follow-up.",
+    "Final two: B beats C because the difference accepted without investigation shrinks as risk rises; a limit set for all 20 shops is too wide for the one rated high.",
+    "Exam cue: on CIA questions, a result inside a limit is not automatically fine; ask whether that unit's risk justifies the same limit as the rest."
+   ],
+   "framework_ref": "Global Internal Audit Standards (2024), Standard 14.2 Analyses and Potential Engagement Findings; ISA 520 Analytical Procedures, paragraphs 5(d) and A16 Amount of Difference of Recorded Amounts from Expected Values that Is Acceptable; Global Internal Audit Standards (2024), Standard 13.2 Engagement Risk Assessment",
+   "related_concepts": [
+    "Expectation and threshold",
+    "Risk-based follow-up",
+    "Analytical review"
+   ],
+   "_provenance": "Authored from concept: notes 2B5.1 Ratios, Trends and Variances. Sources opened 28 Nov 2026: ISA 520 Analytical Procedures, IAASB 2026 Handbook (Knowledge source K20, library rule 2b, topic 2B5; method facts only: paragraphs 5(d) and A16, the difference from an expectation that is accepted without investigation falls as the assessed risk rises), Global Internal Audit Standards (2024), Standard 14.2 (requirements: due professional care decides whether additional analyses are required, and the adjusted work program is approved by the chief audit executive; considerations: the results of the engagement risk assessment and significance among the factors) and Standard 13.2. Bullet 2B5a. The stem asks for a view of one result, which is a follow-up judgment, so Standard 14.2 is cited first and ISA 520 gives the fact that decides the final two (one limit for every shop against one shop's higher risk). An expectation is not criteria, so the result is no finding yet. New lesson: a result inside a uniform limit can still need follow-up where the assessed risk is high. Sibling of cia2_d2_026 (which differences from an expectation to follow up; logged in siblings.json); near cia2_d2_036 and cia2_d2_037 (a ratio's move is a lead, not a finding), whose finding option sits at D, so this item's sits at A. Original scenario; no IIA practice question, prep-bank text or Knowledge-source sentence used. CIA Part 2 round 6, 28 Nov 2026.",
+   "style_version": 2
   }
  ]
 }
