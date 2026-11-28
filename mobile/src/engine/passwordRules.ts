@@ -44,7 +44,8 @@
  *   WHOLE password, including derivatives, so the comparison first makes a
  *   "compared form" (lower case; accents, invisible characters and spaces
  *   taken out; Cyrillic and Greek look-alike letters read as Latin;
- *   letter-for-number swaps read both ways, position by position; and read
+ *   letter-for-number swaps read as four whole-word readings, "1" and "!"
+ *   as i or l in each combination; and read
  *   backwards too). Then:
  *   A. Structural rules, which work on passwords nobody listed:
  *      - fewer than 8 to 10 real characters (by length) left after repeats,
@@ -77,9 +78,12 @@
  *   an unlisted word with letter-for-number swaps, dates written with
  *   separators and a short label, and text-speak. Measured: an independent
  *   reviewer's attack on the 12-character, four-types rule (round 5) still
- *   passes 5.7% of its held-out half (9.8% before round 5; 7.0% of the
- *   tuning half); round 4, new words in one known shape, 0%; round 3 (15+
- *   characters), 45 of 434 held out. See docs/WEB_LAUNCH_PLAN.md, "What the
+ *   passes 5.8% of its held-out half (9.8% before round 5; 7.1% of the
+ *   tuning half): the broad figure, somewhat optimistic. The reviewer's
+ *   verification round, new candidates aimed at the fixed shapes and their
+ *   neighbours, passes 15.4% (117 of 758; 44.6% before the fixes): a
+ *   worst-area figure, not an average. Round 4, new words in one known
+ *   shape, 0%; round 3 (15+ characters), 45 of 434 held out. See docs/WEB_LAUNCH_PLAN.md, "What the
  *   password rules cannot do". The leaked-password check (webcloud/breach.ts, ON since
  *   28 Nov 2026) catches such passwords when they have leaked anywhere;
  *   an uncommon phrase that never leaked still passes, and so does any
@@ -939,7 +943,8 @@ function lattice(forms: string[], personal: string[][], service: string[][], bou
  * Word pieces (list entries, app and exam words) are capped at
  * MAX_WORD_PIECES in all: four or more words is a passphrase, not a pattern.
  */
-function leftOver(l: Lattice, use: { personal: boolean; service: boolean; listWords: number; numbers: boolean }): number {
+function leftOver(l: Lattice, use: { personal: boolean; service: boolean; listWords: number; numbers: boolean; minWord?: number }): number {
+  const minWord = use.minWord ?? 0;
   const { n, plain } = l;
   const W = MAX_WORD_PIECES;
   const at = (k: number, w: number) => k * (W + 1) + w;
@@ -950,14 +955,15 @@ function leftOver(l: Lattice, use: { personal: boolean; service: boolean; listWo
       for (let w = 0; w <= W; w++) {
         const c = cost[at(k, w)][i];
         if (c === Infinity) continue;
+        opCount++;
         const relax = (kk: number, ww: number, j: number) => {
+          opCount++;
           const row = cost[at(kk, ww)];
           if (c < row[j]) row[j] = c;
         };
         const lit = isSymbol(plain[i]) ? 0 : 1;
         const here = cost[at(k, w)];
         if (c + lit < here[i + 1]) here[i + 1] = c + lit;
-        opCount += l.runs[i].length;
         for (const j of l.runs[i]) relax(k, w, j);
         if (use.numbers) {
           for (const j of l.numbers[i]) relax(k, w, j);
@@ -966,7 +972,8 @@ function leftOver(l: Lattice, use: { personal: boolean; service: boolean; listWo
         if (use.personal) for (const j of l.personal[i]) relax(k, w, j);
         if (w < W) {
           if (use.service) for (const j of l.service[i]) relax(k, w + 1, j);
-          if (k < use.listWords) for (const j of l.words[i]) relax(k + 1, w + 1, j);
+          // A shorter entry counts only when it is plain letters (no swap read into it).
+          if (k < use.listWords) for (const j of l.words[i]) if (j - i >= minWord || plain.slice(i, j).every((ch) => kindOf(ch) === 'l')) relax(k + 1, w + 1, j);
         }
       }
     }
@@ -1036,6 +1043,8 @@ function material(l: Lattice, from: number, to: number, long: boolean): number {
 }
 
 const reverseStr = (s: string) => Array.from(s).reverse().join('');
+/** What follows an app's or exam's name in its web address (the dots are joiners). */
+const WEB_AFTER = ['com', 'comph', 'ph', 'org', 'net', 'app'];
 /** Symbols that stand for a letter in a swap ("@" for a, "$" for s, "!" for i, "+" for t). */
 const SWAP_SYMBOLS = '@$!+';
 /** A symbol as the digit key it sits on ("!" is shift-1), for the mechanical four-type patterns. */
@@ -1046,11 +1055,13 @@ function runsLeft(seq: string[]): number {
   const m = seq.length;
   if (!m) return 0;
   const mark = marks(m);
+  opCount += m * m; // the copy and mirror tables
   runEnds(formTables(seq), new Set([0, m]), mark);
   const ends = endsOf(mark);
   const cost = new Array<number>(m + 1).fill(Infinity);
   cost[0] = 0;
   for (let i = 0; i < m; i++) {
+    opCount += 1 + ends[i].length;
     if (cost[i] + 1 < cost[i + 1]) cost[i + 1] = cost[i] + 1;
     for (const j of ends[i]) if (cost[i] < cost[j]) cost[j] = cost[i];
   }
@@ -1078,12 +1089,16 @@ function predictable(p: string, ctx: PasswordContext): PasswordProblem | null {
   // names and terms on their own ("certified information systems auditor", "internal
   // controls") are phrases on the bundled list.
   const has = (w: string) => readings.some((r) => r.includes(w) || reverseStr(r).includes(w));
-  const serviceTokens = [...SERVICE_WORDS, ...(SERVICE_WORDS.some(has) ? STUDY_WORDS : [])].map((t) => Array.from(t));
+  // The app's or exam's name with its web address around it ("www", ".com", ".ph", "app";
+  // the dots are joiners) is one piece; "http" and "https" count beside it.
+  const named = SERVICE_WORDS.filter(has);
+  const web = named.flatMap((w) => [...WEB_AFTER.map((a) => w + a), ...['', ...WEB_AFTER].map((a) => `www${w}${a}`)]);
+  const serviceTokens = [...SERVICE_WORDS, ...web, ...(named.length ? [...STUDY_WORDS, 'http', 'https'] : [])].map((t) => Array.from(t));
   // Forwards and backwards ("drowssap").
   const lats = [lattice(readings, personalTokens, serviceTokens, bounds), lattice(readings.map(reverseStr), personalTokens, serviceTokens, backBounds)];
   const asked = new Map<string, number>();
   const worst = (use: Parameters<typeof leftOver>[1]) => {
-    const key = `${+use.personal}${+use.service}${use.listWords}${+use.numbers}`;
+    const key = `${+use.personal}${+use.service}${use.listWords}${+use.numbers}:${use.minWord ?? 0}`;
     if (!asked.has(key)) asked.set(key, Math.min(...lats.map((l) => leftOver(l, use))));
     return asked.get(key)!;
   };
@@ -1102,13 +1117,15 @@ function predictable(p: string, ctx: PasswordContext): PasswordProblem | null {
   }
   // ONE list entry, the app's or exam's word, or the account's word, with at most 3 characters
   // besides the numbers and symbols ("the", "old", "com", "app", "cpa" or a short tag in front
-  // or behind): the word carries the password. The app-word reading needs an app or exam
-  // name of 5+ letters, so a random string with "cis@" in it is not read as "cisa".
+  // or behind): the word carries the password. The list entry must be 5+ characters and the
+  // app-word reading needs an app or exam name of 5+ letters: random strings hold 4-character
+  // entries through swaps ("cis@" as "cisa") far too often to call them common.
   const ONE_LEFT = MAX_LEFT_OVER + 1;
+  const oneWord = (personal: boolean, service: boolean) => worst({ personal, service, listWords: 1, numbers: true, minWord: 5 });
   // (`all` is a lower bound of every narrower question: only when it is exactly 3 can one word be enough.)
-  if (all <= ONE_LEFT && worst({ personal: true, service: true, listWords: 1, numbers: true }) <= ONE_LEFT) {
-    if (worst({ personal: false, service: true, listWords: 1, numbers: true }) > ONE_LEFT) return 'contains_email';
-    if (worst({ personal: false, service: false, listWords: 1, numbers: true }) > ONE_LEFT) {
+  if (all <= ONE_LEFT && oneWord(true, true) <= ONE_LEFT) {
+    if (oneWord(false, true) > ONE_LEFT) return 'contains_email';
+    if (oneWord(false, false) > ONE_LEFT) {
       if (readings.some((r) => SERVICE_WORDS.some((w) => w.length >= 5 && (r.includes(w) || reverseStr(r).includes(w))))) return 'contains_service_word';
     } else if (worst({ personal: false, service: false, listWords: 0, numbers: true }) > ONE_LEFT) return 'common';
     // No list entry needed: at most 3 characters besides numbers, symbols, runs, dates and

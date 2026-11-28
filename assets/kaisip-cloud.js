@@ -4947,6 +4947,8 @@ function lattice(forms, personal, service, bounds) {
     return { n, plain, runs, numbers: numberEnds(plain), months, words, personal: tokenEnds(fs, personal), service: service3, names };
 }
 function leftOver(l, use) {
+    var _a;
+    const minWord = (_a = use.minWord) !== null && _a !== void 0 ? _a : 0;
     const { n, plain } = l;
     const W = exports.MAX_WORD_PIECES;
     const at = (k, w) => k * (W + 1) + w;
@@ -4958,7 +4960,9 @@ function leftOver(l, use) {
                 const c = cost[at(k, w)][i];
                 if (c === Infinity)
                     continue;
+                opCount++;
                 const relax = (kk, ww, j) => {
+                    opCount++;
                     const row = cost[at(kk, ww)];
                     if (c < row[j])
                         row[j] = c;
@@ -4967,7 +4971,6 @@ function leftOver(l, use) {
                 const here = cost[at(k, w)];
                 if (c + lit < here[i + 1])
                     here[i + 1] = c + lit;
-                opCount += l.runs[i].length;
                 for (const j of l.runs[i])
                     relax(k, w, j);
                 if (use.numbers) {
@@ -4985,7 +4988,8 @@ function leftOver(l, use) {
                             relax(k, w + 1, j);
                     if (k < use.listWords)
                         for (const j of l.words[i])
-                            relax(k + 1, w + 1, j);
+                            if (j - i >= minWord || plain.slice(i, j).every((ch) => kindOf(ch) === 'l'))
+                                relax(k + 1, w + 1, j);
                 }
             }
         }
@@ -5055,6 +5059,7 @@ function material(l, from, to, long) {
     return cost[n];
 }
 const reverseStr = (s) => Array.from(s).reverse().join('');
+const WEB_AFTER = ['com', 'comph', 'ph', 'org', 'net', 'app'];
 const SWAP_SYMBOLS = '@$!+';
 const SHIFT_DIGIT = { '!': '1', '@': '2', '#': '3', $: '4', '%': '5', '^': '6', '&': '7', '*': '8', '(': '9', ')': '0' };
 function runsLeft(seq) {
@@ -5062,11 +5067,13 @@ function runsLeft(seq) {
     if (!m)
         return 0;
     const mark = marks(m);
+    opCount += m * m;
     runEnds(formTables(seq), new Set([0, m]), mark);
     const ends = endsOf(mark);
     const cost = new Array(m + 1).fill(Infinity);
     cost[0] = 0;
     for (let i = 0; i < m; i++) {
+        opCount += 1 + ends[i].length;
         if (cost[i] + 1 < cost[i + 1])
             cost[i + 1] = cost[i] + 1;
         for (const j of ends[i])
@@ -5090,11 +5097,14 @@ function predictable(p, ctx) {
     const personal = [...new Set([...account, ...account.map(reverseStr)])];
     const personalTokens = [...new Set([...personal, ...personal.map((t) => fold(t, LEET_I)), ...personal.map((t) => fold(t, LEET_L))])].map((t) => Array.from(t));
     const has = (w) => readings.some((r) => r.includes(w) || reverseStr(r).includes(w));
-    const serviceTokens = [...exports.SERVICE_WORDS, ...(exports.SERVICE_WORDS.some(has) ? exports.STUDY_WORDS : [])].map((t) => Array.from(t));
+    const named = exports.SERVICE_WORDS.filter(has);
+    const web = named.flatMap((w) => [...WEB_AFTER.map((a) => w + a), ...['', ...WEB_AFTER].map((a) => `www${w}${a}`)]);
+    const serviceTokens = [...exports.SERVICE_WORDS, ...web, ...(named.length ? [...exports.STUDY_WORDS, 'http', 'https'] : [])].map((t) => Array.from(t));
     const lats = [lattice(readings, personalTokens, serviceTokens, bounds), lattice(readings.map(reverseStr), personalTokens, serviceTokens, backBounds)];
     const asked = new Map();
     const worst = (use) => {
-        const key = `${+use.personal}${+use.service}${use.listWords}${+use.numbers}`;
+        var _a;
+        const key = `${+use.personal}${+use.service}${use.listWords}${+use.numbers}:${(_a = use.minWord) !== null && _a !== void 0 ? _a : 0}`;
         if (!asked.has(key))
             asked.set(key, Math.min(...lats.map((l) => leftOver(l, use))));
         return asked.get(key);
@@ -5113,10 +5123,11 @@ function predictable(p, ctx) {
         return 'too_simple';
     }
     const ONE_LEFT = exports.MAX_LEFT_OVER + 1;
-    if (all <= ONE_LEFT && worst({ personal: true, service: true, listWords: 1, numbers: true }) <= ONE_LEFT) {
-        if (worst({ personal: false, service: true, listWords: 1, numbers: true }) > ONE_LEFT)
+    const oneWord = (personal, service) => worst({ personal, service, listWords: 1, numbers: true, minWord: 5 });
+    if (all <= ONE_LEFT && oneWord(true, true) <= ONE_LEFT) {
+        if (oneWord(false, true) > ONE_LEFT)
             return 'contains_email';
-        if (worst({ personal: false, service: false, listWords: 1, numbers: true }) > ONE_LEFT) {
+        if (oneWord(false, false) > ONE_LEFT) {
             if (readings.some((r) => exports.SERVICE_WORDS.some((w) => w.length >= 5 && (r.includes(w) || reverseStr(r).includes(w)))))
                 return 'contains_service_word';
         }
@@ -12436,7 +12447,7 @@ function decodeUtf8(bytes) {
   api["config"] = pub(load("src/webcloud/config.ts"));
   api["passwordRules"] = pub(load("src/engine/passwordRules.ts"));
   api["breach"] = pub(load("src/webcloud/breach.ts"));
-  api.sourceHash = "9c6561d5e22ced9e";
+  api.sourceHash = "4e9e6691187ab29d";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

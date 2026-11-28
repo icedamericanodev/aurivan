@@ -602,12 +602,15 @@ describe('round 5: the independent attack on the 12-character, four-types rule (
     for (const [, s] of R5_HOSTILE) expect([u(s), passwordMissingTypes(u(s))]).toEqual([u(s), []]);
   });
 
-  it('tuning half: at most 225 of 3,206 accepted (7.0%; 368, 11.5%, before round 5)', () => {
-    expect(accepted(0).length).toBeLessThanOrEqual(225);
+  it('tuning half: at most 228 of 3,206 accepted (7.1%; 368, 11.5%, before round 5)', () => {
+    // 225 after round 5; 228 since a list entry of 4 characters read through a swap no longer
+    // carries the "one word and 3 characters" refusal (it refused random generated passwords).
+    expect(accepted(0).length).toBeLessThanOrEqual(228);
   });
 
-  it('held-out half (report-only): at most 115 of 2,014 accepted (5.7%; 197, 9.8%, before round 5)', () => {
-    expect(accepted(1).length).toBeLessThanOrEqual(115);
+  it('held-out half (report-only): at most 116 of 2,014 accepted (5.8%; 197, 9.8%, before round 5)', () => {
+    // 115 after round 5, 116 since the same change (see the tuning half).
+    expect(accepted(1).length).toBeLessThanOrEqual(116);
   });
 
   it('the reviewer\'s 370 good passwords: 6 refused, all on purpose (4 have no ASCII capital or lowercase letter, 2 are two common words)', () => {
@@ -632,6 +635,52 @@ describe('round 5: the independent attack on the 12-character, four-types rule (
     for (const p of ['JhunreyCPA26!', 'CpaJhunrey26!', 'Jhunrey.com1!', 'DimaanoFam94!']) expect([p, ok(p, R5_CONTEXT)]).toEqual([p, false]);
     // Not the app's name: a random string with "cis@" in it.
     expect(checkPassword('/+Cis@/Lek%:8')).toEqual([]);
+  });
+
+  it('the app\'s or exam\'s web address is one piece, so one more character does not hide it', () => {
+    for (const p of ['Kaisip.comA1!', 'Www.Kaisip.com1x', 'https://Kaisip.ph7', 'Isaca.orgZ1!', 'KaisipApp.com9!', 'Crisc.netQ1!']) {
+      expect([p, checkPassword(p)[0]]).toEqual([p, 'contains_service_word']);
+    }
+  });
+});
+
+describe('random generated passwords (what a password manager makes)', () => {
+  // Uniform printable ASCII, and browser style (letters and digits, about 1 symbol in 7), with
+  // the four types, 1,000 of each length from a fixed seed. Measured 28 Nov 2026; ceilings so
+  // the refusal rate cannot drift up again (it rose to 2.9% at 12 for uniform when 4-character
+  // list entries read through swaps carried the "one word and 3 characters" refusal).
+  function mulberry(seed: number) {
+    let a = seed;
+    return () => {
+      a = (a + 0x6d2b79f5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  const gens: Record<string, (r: () => number) => string> = {
+    uniform: (r) => String.fromCharCode(33 + Math.floor(r() * 94)),
+    browser: (r) => (r() < 0.14 ? '!@#$%^&*-_'[Math.floor(r() * 10)] : 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[Math.floor(r() * 62)]),
+  };
+  const CEILING: Record<string, number> = { 'uniform 12': 23, 'uniform 14': 17, 'uniform 16': 3, 'browser 12': 18, 'browser 14': 12, 'browser 16': 5 };
+
+  it('refused at most: uniform 12/14/16 and browser style 12/14/16, out of 1,000 each', () => {
+    const got: Record<string, number> = {};
+    for (const [g, f] of Object.entries(gens)) {
+      for (const len of [12, 14, 16]) {
+        const r = mulberry(2000 + len);
+        let refused = 0;
+        for (let i = 0; i < 1000; i++) {
+          let p: string;
+          do p = Array.from({ length: len }, () => f(r)).join('');
+          while (passwordMissingTypes(p).length);
+          if (checkPassword(p).length) refused++;
+        }
+        got[`${g} ${len}`] = refused;
+      }
+    }
+    if (process.env.PASSWORD_BUDGET_PRINT) console.log(JSON.stringify(got));
+    for (const k of Object.keys(CEILING)) expect([k, got[k] <= CEILING[k]]).toEqual([k, true]);
   });
 });
 
@@ -963,7 +1012,12 @@ describe('cost budget', () => {
   // (each input with and without CTX). The rise is on purpose: the two mixed
   // readings of "1" and "!" (an input with both is read five ways, not three),
   // the one-word-and-three-characters question and the three-strings pattern
-  // check. Before round 5: 105,179 and 19,056,243. In plain Node (the website bundle) at most about
+  // check. Before round 5: 105,179 and 19,056,243. Re-recorded again after the
+  // verification round: the counter now also counts every dynamic-programming
+  // state and move (not only the moves over runs) and the three-strings check's
+  // tables, because it under-reported round 5's new work (the auditor measured
+  // the slowest input's clock up about 70% while the count rose about 8%):
+  // 121,587 worst, 25,551,101 in all. In plain Node (the website bundle) at most about
   // 2.7 ms median, in Jest about 11 ms (Jest's transformed code is several
   // times slower). The version before this budget took up to 23 ms in plain
   // Node and failed CI at 50 ms. The counts only change when the code or the
@@ -971,12 +1025,13 @@ describe('cost budget', () => {
   // the "no entry starts like this" stop, or looking at identical readings
   // twice, fails. A change that adds work on purpose updates these numbers,
   // with the reason.
-  const STEP_WORST = 120_000;
-  const STEP_TOTAL = 23_600_000;
+  const STEP_WORST = 128_000;
+  const STEP_TOTAL = 26_800_000;
   const MEDIAN_MS = 50;
-  // Measured 2,421,471 (28 Nov 2026, round 5; 1,320,745 before it). These inputs contain
-  // both "1" and "!", so they pay for the two mixed readings in full.
-  const TYPICAL_STEPS = 2_540_000;
+  // Measured 2,776,693 (28 Nov 2026, after the verification round and the fuller count;
+  // 2,421,471 after round 5, 1,320,745 before it). These inputs contain both "1" and "!",
+  // so they pay for the two mixed readings in full.
+  const TYPICAL_STEPS = 2_910_000;
   // The clock backstop for typical checks: their CPU time as a multiple of a fixed
   // reference loop timed in the same test. Measured 77 locally in Jest after round 5 (44 to 51 before; about
   // 4 ms a check there; about 0.6 ms in plain Node). The limit is five times that,
