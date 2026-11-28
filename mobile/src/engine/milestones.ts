@@ -26,6 +26,8 @@
  * Pure TypeScript: no React, no storage.
  */
 import { GAMES } from './games/registry';
+import { qualifierCopy } from './games/priorityLens';
+import type { QualifierCase } from '../content/types';
 import { DAYLIGHT_SIZE, PACE_RIGHT } from './games/daylight';
 import { share } from './games/growth';
 import { DIAGNOSTIC_SIZE, DOMAIN_TARGET, MAX_MOCKS, MOCK_DOMAIN_FLOOR } from './journey';
@@ -234,6 +236,11 @@ export interface MilestoneFacts {
    * Mastery · Ethics" and "All Sections". Only the words change: mark keys ("firm-footing:2") never do.
    */
   domainStyle?: DomainStyle;
+  /**
+   * How the course writes its qualifier (content/types.ts QualifierCase). Missing → capitals: Signpost
+   * Reader says "FIRST questions", as every course today; a lowercase course reads "“first” questions".
+   */
+  qualifierCase?: QualifierCase;
 }
 
 export interface BadgeDef {
@@ -347,6 +354,8 @@ export function badgeName(id: string, course?: DomainStyled): string {
 export function badgeRule(id: string, course?: DomainStyled): string {
   const def = badgeDef(id);
   if (!def) return '';
+  // Signpost Reader names FIRST: quoted lowercase for a lowercase course ("“first” questions"), else as BADGES.
+  if (id === 'signpost-reader') return qualifierCopy(def.rule, course?.qualifierCase, true);
   if (!course?.domainStyle) return def.rule;
   const one = domainWord(course, 'domain');
   if (id === 'firm-footing') {
@@ -539,7 +548,13 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
     ),
   );
   out.push(...one('even-keel', f.keelRun >= KEEL_ROUNDS, frac(f.keelRun, KEEL_ROUNDS), of(f.keelRun, KEEL_ROUNDS, 'rounds in a row')));
-  out.push(...windowMark('signpost-reader', f.signposts, SIGNPOST_WINDOW, SIGNPOST_RIGHT, 'FIRST questions played', 'FIRST questions read right'));
+  const signpost = windowMark('signpost-reader', f.signposts, SIGNPOST_WINDOW, SIGNPOST_RIGHT, 'FIRST questions played', 'FIRST questions read right');
+  // A lowercase course: "“first” questions" in the progress line and the rule (none today: as before, word for word).
+  out.push(
+    ...(f.qualifierCase === 'lowercase'
+      ? signpost.map((m) => ({ ...m, detail: qualifierCopy(m.detail, 'lowercase', true), rule: badgeRule('signpost-reader', f) }))
+      : signpost),
+  );
   out.push(...windowMark('myth-clearer', f.myths, MYTH_WINDOW, MYTH_RIGHT, 'rumors played', 'rumors cleared'));
   out.push(...one('sure-footed-pace', f.paceRounds >= PACE_ROUNDS, frac(f.paceRounds, PACE_ROUNDS), of(f.paceRounds, PACE_ROUNDS, 'rounds')));
   out.push(

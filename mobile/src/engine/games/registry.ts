@@ -18,7 +18,7 @@
  */
 import type { RoleDeck, StepSequence } from '../../content/games';
 import type { NotesPack } from '../../content/notes/types';
-import type { PackQuestion } from '../../content/types';
+import type { PackQuestion, QualifierCase } from '../../content/types';
 import { MINUTES_PER_QUESTION } from '../pace';
 import { CALL_SIZE, callPool } from './callItFirst';
 import { CANOPY_MIN_POOL, CANOPY_SIZE } from './canopyCall';
@@ -55,8 +55,11 @@ export interface GameInfo {
   minutes: number;
   /** Fewest playable questions before the game is offered. */
   minPool: number;
-  /** The questions this game can use. */
-  pool: (questions: PackQuestion[]) => PackQuestion[];
+  /**
+   * The questions this game can use. `qc`: the course's QualifierCase (content/types.ts), so Signpost
+   * finds "first" in a lowercase course; left out = capitals, as every course today. Other games ignore it.
+   */
+  pool: (questions: PackQuestion[], qc?: QualifierCase) => PackQuestion[];
   /**
    * Note-based games (Root or Rumor) play statements from the study notes,
    * not questions: this counts them, and `minPool` applies to that count.
@@ -213,9 +216,11 @@ export function gameTitle(id: string, savedLabel: string): string {
  * True when this certification has enough content for the game: questions,
  * note statements for a note-based game (pass the cert's notes pack), or a
  * deck for a deck-based game (pass the cert's game content).
+ * `qc`: the cert's QualifierCase, so Signpost counts the same questions its round
+ * is built from (buildPriorityRound); left out = capitals, exactly as before.
  */
-export function isPlayable(id: GameId, questions: PackQuestion[], notes?: NotesPack | null, content?: GameContent): boolean {
+export function isPlayable(id: GameId, questions: PackQuestion[], notes?: NotesPack | null, content?: GameContent, qc?: QualifierCase): boolean {
   const g = GAMES[id];
-  const size = g.contentPool ? g.contentPool(content ?? {}) : g.notesPool ? g.notesPool(notes) : g.pool(questions).length;
+  const size = g.contentPool ? g.contentPool(content ?? {}) : g.notesPool ? g.notesPool(notes) : g.pool(questions, qc).length;
   return size >= g.minPool;
 }

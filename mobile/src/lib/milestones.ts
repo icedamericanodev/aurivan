@@ -135,6 +135,8 @@ export function milestoneFacts(certId: string, cp: CertProgress, opts: { now: nu
     gameFixes: counts.gameFixes ?? 0,
     // A course with sections: "Section Mastery · Ethics", "All Sections" (none today: "Domain Mastery").
     ...(cert.domainStyle ? { domainStyle: cert.domainStyle } : {}),
+    // A lowercase course: Signpost Reader says "“first” questions" (none today: "FIRST questions").
+    ...(cert.qualifierCase ? { qualifierCase: cert.qualifierCase } : {}),
   };
 }
 
@@ -161,7 +163,7 @@ export interface BadgeCase {
 export function caseFromFacts(cert: Certification, facts: MilestoneFacts, earned: Record<string, number> | undefined): BadgeCase {
   const ctx = caseContext(cert);
   // A course with sections: "Section Mastery" and "All Sections" on the case (none today: BADGES' names).
-  const marks = caseMarks({ marks: allMarks(facts), earned, ...ctx, mindsetData: Boolean(facts.mindsetData), ...(cert.domainStyle ? { domainStyle: cert.domainStyle } : {}) });
+  const marks = caseMarks({ marks: allMarks(facts), earned, ...ctx, mindsetData: Boolean(facts.mindsetData), ...(cert.domainStyle ? { domainStyle: cert.domainStyle } : {}), ...(cert.qualifierCase ? { qualifierCase: cert.qualifierCase } : {}) });
   return { marks, sets: caseSets(marks, ctx.exam, ctx.domains.length, cert), mastery: Object.fromEntries(facts.domains.map((d) => [d.id, d.mastery])) };
 }
 

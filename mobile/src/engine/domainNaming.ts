@@ -16,15 +16,19 @@
  * Pure TypeScript: no React, no storage. The website's plant bundle uses it too
  * (engine/plant.ts, engine/readinessReport.ts), with no style: "Domain 1".
  */
-import type { DomainStyle } from '../content/types';
+import type { DomainStyle, QualifierCase } from '../content/types';
 
 export type { DomainStyle };
 
 /** What every course today uses: "Domain 1". */
 export const DEFAULT_DOMAIN_STYLE: DomainStyle = { noun: 'Domain', numbering: 'number' };
 
-/** Anything that may carry a style: a Certification, a pick of one, or nothing. */
-export type DomainStyled = { domainStyle?: DomainStyle } | null | undefined;
+/**
+ * Anything that may carry a style: a Certification, a pick of one, or nothing.
+ * `qualifierCase` rides along for the copy that names FIRST or BEST (the
+ * Signpost Reader badge): missing → capitals, as every course today.
+ */
+export type DomainStyled = { domainStyle?: DomainStyle; qualifierCase?: QualifierCase } | null | undefined;
 
 export function domainStyleOf(c: DomainStyled): DomainStyle {
   return c?.domainStyle ?? DEFAULT_DOMAIN_STYLE;

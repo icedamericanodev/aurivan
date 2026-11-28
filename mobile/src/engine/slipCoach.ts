@@ -11,7 +11,9 @@
  *                    "Final two:" tip (tips.ts runnerUp). Compared on
  *                    ORIGINAL letters, never display letters.
  *   - priority:      tagged "Missed FIRST/BEST", or tagged "Misread" on a
- *                    stem that has a capitalised priority word (FIRST, BEST…).
+ *                    stem that has a priority word (FIRST, BEST… in capitals;
+ *                    in a course whose qualifierCase is 'lowercase', also
+ *                    "first", "best"… in the question sentence).
  *   - overconfident: answered while marked "Sure", and still wrong.
  *   - role / tech-first / symptom / misread / knowledge: the learner's tag.
  *
@@ -20,8 +22,9 @@
  *
  * Pure TypeScript: no React, no storage.
  */
+import type { QualifierCase } from '../content/types';
 import type { GameId } from './games/registry';
-import { priorityWord } from './games/priorityLens';
+import { priorityWord, qualifierCopy } from './games/priorityLens';
 import type { Confidence } from './srs';
 import { runnerUp } from './tips';
 
@@ -47,6 +50,8 @@ export interface SlipInput {
   correct: string; // ORIGINAL letter of the key
   tips: string[];
   stem: string;
+  /** The course's QualifierCase (content/types.ts). Missing → capitals, exactly as before. */
+  qualifierCase?: QualifierCase;
 }
 
 export interface SlipCoachCopy {
@@ -66,6 +71,18 @@ export const PATTERN_COPY: Record<SlipPattern, SlipCoachCopy> = {
   misread: { title: 'You misread the question', coach: 'Slow down on the last line of the question.', game: 'priority' },
   knowledge: { title: 'Most misses are content gaps', coach: 'A lesson or a review session will close them.', game: null },
 };
+
+/** The priority pattern's copy for a lowercase course: "…like “first” and “best”" (built once, so a memo keeps it). */
+const PRIORITY_COPY_LOWER: SlipCoachCopy = { ...PATTERN_COPY.priority, title: qualifierCopy(PATTERN_COPY.priority.title, 'lowercase', true) };
+
+/**
+ * A pattern's copy in the course's style (`qc`: its QualifierCase). Capitals
+ * (CISA, every course today): PATTERN_COPY itself, word for word. Lowercase:
+ * the priority title names the words as the course writes them.
+ */
+export function patternCopy(pattern: SlipPattern, qc?: QualifierCase): SlipCoachCopy {
+  return qc === 'lowercase' && pattern === 'priority' ? PRIORITY_COPY_LOWER : PATTERN_COPY[pattern];
+}
 
 /** Tie-break order: game-backed, derived patterns first. */
 export const PATTERN_ORDER: SlipPattern[] = ['runner-up', 'priority', 'overconfident', 'role', 'tech-first', 'symptom', 'misread', 'knowledge'];
@@ -98,7 +115,7 @@ export function patternsOf(m: SlipInput): SlipPattern[] {
   const out: SlipPattern[] = [];
   const wrongPick = !!m.picked && /^[A-D]$/.test(m.picked) && /^[A-D]$/.test(m.correct) && m.picked !== m.correct;
   if (wrongPick && m.picked === runnerUp(m.tips, m.correct)) out.push('runner-up');
-  if (m.slip === 'priority' || (m.slip === 'misread' && priorityWord(m.stem) !== null)) out.push('priority');
+  if (m.slip === 'priority' || (m.slip === 'misread' && priorityWord(m.stem, m.qualifierCase) !== null)) out.push('priority');
   if (wrongPick && m.confidence === 'sure') out.push('overconfident');
   if (m.slip && isThinkingSlip(m.slip) && m.slip !== 'priority') out.push(m.slip);
   return out;
@@ -112,7 +129,8 @@ export type SlipCoach =
  * The learner's top slip. Only TAGGED mistakes count (the tag is the
  * learner's own reflection; untagged misses are not evidence yet).
  */
-export function slipCoach(mistakes: SlipInput[]): SlipCoach {
+/** `qc` (optional): the course's QualifierCase, for the copy; left out = capitals, exactly as before. */
+export function slipCoach(mistakes: SlipInput[], qc?: QualifierCase): SlipCoach {
   const tagged = mistakes.filter((m) => isThinkingSlip(m.slip));
   if (tagged.length < SLIP_COACH_MIN) {
     return { ready: false, tagged: tagged.length, needed: SLIP_COACH_MIN - tagged.length };
@@ -128,5 +146,5 @@ export function slipCoach(mistakes: SlipInput[]): SlipCoach {
       bestN = n;
     }
   }
-  return { ready: true, tagged: tagged.length, pattern: best, count: bestN, ...PATTERN_COPY[best] };
+  return { ready: true, tagged: tagged.length, pattern: best, count: bestN, ...patternCopy(best, qc) };
 }

@@ -6919,8 +6919,13 @@ function share(hits) {
   defs["src/engine/games/priorityLens.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PRIORITY_MEANING = exports.ASK_MEANING = exports.ASKS = exports.ASK_LABEL = exports.ASK_FOR = exports.PRIORITY_WORDS = void 0;
+exports.PRIORITY_MEANING = exports.ASK_MEANING = exports.ASKS = exports.ASK_LABEL = exports.ASK_FOR = exports.LEAST_MEANING = exports.PRIORITY_WORDS = void 0;
 exports.priorityWord = priorityWord;
+exports.priorityWritten = priorityWritten;
+exports.findPriority = findPriority;
+exports.questionSpan = questionSpan;
+exports.shownWord = shownWord;
+exports.qualifierCopy = qualifierCopy;
 exports.lastWholeWordIndex = lastWholeWordIndex;
 exports.priorityPool = priorityPool;
 exports.buildPriorityRound = buildPriorityRound;
@@ -6931,12 +6936,173 @@ exports.askChoices = askChoices;
 const random_1 = require("../random");
 const siblings_1 = require("../siblings");
 exports.PRIORITY_WORDS = ['FIRST', 'BEST', 'MOST', 'PRIMARY', 'GREATEST'];
-function priorityWord(stem) {
+function priorityWord(stem, qc) {
+    var _a, _b;
+    return (_b = (_a = findPriority(stem, qc)) === null || _a === void 0 ? void 0 : _a.word) !== null && _b !== void 0 ? _b : null;
+}
+function priorityWritten(stem, qc) {
+    var _a, _b;
+    return (_b = (_a = findPriority(stem, qc)) === null || _a === void 0 ? void 0 : _a.written) !== null && _b !== void 0 ? _b : null;
+}
+function findPriority(stem, qc = 'capitals') {
+    var _a;
+    if (qc !== 'lowercase')
+        return lastCapital(stem, 0, stem.length);
+    const question = questionSpan(stem);
+    const caps = lastCapital(stem, question.start, question.end);
+    if (caps)
+        return caps;
+    const { start, end } = askSpan(stem);
+    return (_a = lowerIn(stem, start, end)) !== null && _a !== void 0 ? _a : (start > question.start ? lowerIn(stem, question.start, start) : null);
+}
+function lastCapital(stem, start, end) {
     let found = null;
-    for (const m of stem.matchAll(/\b(FIRST|BEST|MOST|PRIMARY|GREATEST)\b/g)) {
-        found = m[1];
+    for (const m of stem.slice(start, end).matchAll(/\b(FIRST|BEST|MOST|PRIMARY|GREATEST)\b/g)) {
+        found = { word: m[1], written: m[1], index: start + m.index };
     }
     return found;
+}
+function lowerIn(stem, start, end) {
+    const ask = stem.slice(start, end);
+    let earliest = null;
+    for (const m of ask.matchAll(/\b(first|best|most|least|main|primary|greatest)\b/gi)) {
+        const at = m.index;
+        const after = ask.slice(at + m[1].length);
+        if (!isAsk(m[1].toLowerCase(), ask.slice(0, at), after))
+            continue;
+        const hit = { word: LOWER_KEY[m[1].toLowerCase()], written: m[1], index: start + at };
+        if (hit.word === 'FIRST' && /^\s*\?/.test(after)) {
+            return earliest && !isLeast(earliest) ? { ...hit, earlier: { word: earliest.word, written: earliest.written, index: earliest.index } } : hit;
+        }
+        earliest !== null && earliest !== void 0 ? earliest : (earliest = hit);
+    }
+    return earliest;
+}
+const LOWER_KEY = {
+    first: 'FIRST',
+    best: 'BEST',
+    most: 'MOST',
+    primary: 'PRIMARY',
+    greatest: 'GREATEST',
+    main: 'PRIMARY',
+    least: 'MOST',
+};
+const DETERMINERS = new Set(['the', 'a', 'an', 'its', 'their', 'his', 'her', 'our', 'your', 'this', 'that', 'these', 'those', 'each', 'every', 'any', 'whose']);
+const PREPOSITIONS = new Set(['in', 'during', 'of', 'for', 'on', 'at', 'by', 'from', 'since', 'until', 'over', 'after', 'before', 'within', 'throughout', 'into', 'across', 'per', 'with', 'without', 'among']);
+const FIRST_THINGS = new Set(['year', 'years', 'quarter', 'quarters', 'month', 'months', 'week', 'weeks', 'day', 'days', 'time', 'times', 'half', 'line', 'round', 'phase', 'draft', 'place', 'stage', 'cycle', 'period', 'term', 'version', 'engagement', 'chief', 'person', 'one']);
+const FIRST_ASKS = new Set(['step', 'steps', 'action', 'actions', 'priority', 'move', 'task', 'thing', 'concern', 'response']);
+const MAIN_ASKS = new Set([
+    'purpose', 'reason', 'objective', 'aim', 'goal', 'intent', 'responsibility', 'duty', 'role', 'function', 'concern', 'risk',
+    'weakness', 'gap', 'cause', 'driver', 'factor', 'consideration', 'benefit', 'advantage', 'focus', 'thing', 'issue', 'problem',
+    'threat', 'limitation', 'task', 'priority', 'basis', 'deficiency', 'value', 'contribution', 'criterion', 'test',
+    'obligation', 'indicator', 'recommendation', 'authority', 'safeguard', 'means', 'need', 'output', 'finding', 'follow',
+]);
+const MAIN_THINGS = new Set(['office', 'offices', 'market', 'markets', 'street', 'road', 'building', 'site', 'entrance', 'account', 'accounts', 'school', 'care', 'key', 'keys', 'menu', 'contact', 'residence', 'language', 'election', 'line', 'lines']);
+const NOT_NOUNS = new Set(['to', 'in', 'for', 'when', 'if', 'because', 'during', 'after', 'before', 'while', 'and', 'or', 'than', 'within', 'under', 'at', 'on', 'by', 'about']);
+const MOST_ADJ = new Set([
+    'likely', 'complete', 'prompt', 'clear', 'strong', 'severe', 'secure', 'robust', 'sound', 'true', 'wise', 'apt', 'fair',
+    'common', 'valid', 'weak', 'direct', 'exact', 'precise', 'concise', 'current', 'recent', 'complex', 'mature', 'safe',
+    'strict', 'often', 'concerning', 'pressing', 'compelling', 'damaging', 'misleading', 'convincing', 'telling',
+    'revealing', 'worrying', 'troubling', 'alarming', 'striking', 'limiting', 'demanding', 'challenging', 'promising',
+]);
+const MOST_VERBS = new Set([
+    'need', 'needs', 'lack', 'lacks', 'determine', 'determines', 'undermine', 'undermines', 'warrant', 'warrants', 'stress',
+    'raise', 'raises', 'prompt', 'prompts', 'rely', 'relies', 'require', 'requires', 'threaten', 'threatens', 'weaken',
+    'weakens', 'strengthen', 'strengthens', 'improve', 'improves', 'reduce', 'reduces', 'increase', 'increases', 'affect',
+    'affects', 'depend', 'depends', 'contribute', 'contributes', 'influence', 'influences', 'deserve', 'deserves', 'justify',
+    'justifies', 'reflect', 'reflects', 'suggest', 'suggests', 'indicate', 'indicates', 'enhance', 'enhances', 'expose', 'exposes',
+]);
+const ADJ_ENDING = /(?:ly|ive|ent|ant|able|ible|ful|ous|ic|al|ary|ate|ile|less|ed)$/;
+const MOST_NOUNS = new Set([
+    'capital', 'material', 'materials', 'potential', 'collateral', 'approval', 'rental', 'proposal', 'removal', 'renewal', 'disposal',
+    'content', 'talent', 'rent', 'client', 'agent', 'event', 'parent', 'student', 'patent', 'percent', 'plant', 'salary', 'summary',
+    'executive', 'initiative', 'incentive', 'alternative', 'archive', 'directive', 'representative', 'narrative', 'estate',
+    'state', 'date', 'rate', 'climate', 'update', 'file', 'profile', 'traffic', 'logic', 'supply', 'family', 'assembly', 'speed', 'feed',
+]);
+function mostModifies(after) {
+    var _a, _b, _c, _d;
+    const compound = (_c = (_b = (_a = /^\s+([\p{L}]+(?:-[\p{L}]+)*)/u.exec(after)) === null || _a === void 0 ? void 0 : _a[1]) === null || _b === void 0 ? void 0 : _b.toLowerCase()) !== null && _c !== void 0 ? _c : '';
+    const word = (_d = compound.split('-').pop()) !== null && _d !== void 0 ? _d : '';
+    if (MOST_ADJ.has(word) || MOST_VERBS.has(word))
+        return true;
+    if (MOST_NOUNS.has(word) || /ment$/.test(word))
+        return false;
+    return word.length >= 4 && ADJ_ENDING.test(word);
+}
+function isAsk(word, before, after) {
+    var _a, _b, _c, _d, _e;
+    if (/-$/.test(before) || /^-/.test(after))
+        return false;
+    const prevRaw = (_b = (_a = /([\p{L}'’]+)[,;:]?\s*$/u.exec(before)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : '';
+    const prev = prevRaw.toLowerCase();
+    const next = (_e = (_d = (_c = /^\s+([\p{L}]+)/u.exec(after)) === null || _c === void 0 ? void 0 : _c[1]) === null || _d === void 0 ? void 0 : _d.toLowerCase()) !== null && _e !== void 0 ? _e : '';
+    const atEnd = /^\s*(?:[?.!,;:)]|$)/.test(after);
+    if (!prev)
+        return false;
+    if (prev === 'at')
+        return false;
+    if (next === 'of' && (word === 'most' || word === 'first'))
+        return false;
+    if (word === 'best' && /^practices?$/.test(next))
+        return false;
+    const determined = DETERMINERS.has(prev) || /['’]s?$/.test(prevRaw);
+    switch (word) {
+        case 'first':
+            if (atEnd)
+                return true;
+            if (PREPOSITIONS.has(prev) || FIRST_THINGS.has(next))
+                return false;
+            return determined ? FIRST_ASKS.has(next) : true;
+        case 'main':
+        case 'primary':
+            if (atEnd || MAIN_ASKS.has(next))
+                return true;
+            return (determined || prev === 'as' || WH_WORDS.has(prev)) && !!next && !MAIN_THINGS.has(next);
+        case 'most':
+            if (atEnd || NOT_NOUNS.has(next))
+                return true;
+            if (PREPOSITIONS.has(prev) || prev === 'do' || prev === 'did')
+                return false;
+            if (prev === 'the')
+                return true;
+            return mostModifies(after);
+        default:
+            return true;
+    }
+}
+function questionSpan(stem) {
+    var _a, _b;
+    const q = stem.lastIndexOf('?');
+    const end = q >= 0 ? q + 1 : stem.trimEnd().length;
+    const head = stem.slice(0, end).trimEnd();
+    const body = /[.?!]$/.test(head) ? head.slice(0, -1) : head;
+    let start = 0;
+    for (const m of body.matchAll(/[.?!]["”’)]*\s+(?=["“‘(]?\p{Lu})/gu)) {
+        const word = (_b = (_a = /\S+$/.exec(body.slice(0, m.index + 1))) === null || _a === void 0 ? void 0 : _a[0]) !== null && _b !== void 0 ? _b : '';
+        if (m[0][0] === '.' && (/^(?:\p{L}\.)+$/u.test(word) || ABBREVIATIONS.has(word.slice(0, -1).toLowerCase())))
+            continue;
+        start = m.index + m[0].length;
+    }
+    return { start, end };
+}
+const ABBREVIATIONS = new Set(['mr', 'mrs', 'ms', 'dr', 'prof', 'st', 'no', 'vs', 'etc', 'inc', 'ltd', 'co', 'corp', 'jr', 'sr', 'approx', 'dept', 'fig']);
+function askSpan(stem) {
+    const span = questionSpan(stem);
+    const text = stem.slice(span.start, span.end);
+    if (WH.test(text))
+        return span;
+    const lead = /,\s+(?=(?:which|what|how|who|whom|whose|where|when|why)\b)/i.exec(text);
+    return lead ? { start: span.start + lead.index + lead[0].length, end: span.end } : span;
+}
+const WH_WORDS = new Set(['which', 'what', 'how', 'who', 'whom', 'whose', 'where', 'when', 'why']);
+const WH = /^\s*["“(]?(?:which|what|how|who|whom|whose|where|when|why)\b/i;
+function shownWord(written) {
+    return written === written.toUpperCase() ? written : `“${written}”`;
+}
+function qualifierCopy(text, qc, quote = false) {
+    if (qc !== 'lowercase')
+        return text;
+    return text.replace(/\b(FIRST|BEST|MOST|PRIMARY|GREATEST|LEAST|MAIN)\b/g, (w) => (quote ? `“${w.toLowerCase()}”` : w.toLowerCase()));
 }
 function lastWholeWordIndex(text, word) {
     if (!word)
@@ -6950,11 +7116,16 @@ function lastWholeWordIndex(text, word) {
     }
     return -1;
 }
-function priorityPool(pool) {
-    return pool.filter((q) => priorityWord(q.stem) !== null);
+function priorityPool(pool, qc) {
+    return pool.filter((q) => {
+        const hit = findPriority(q.stem, qc);
+        return hit !== null && !isLeast(hit);
+    });
 }
-function buildPriorityRound(pool, rng, size = 5, groupOf) {
-    return (0, siblings_1.takeApart)((0, random_1.shuffled)(priorityPool(pool), rng).map((q) => q.id), size, groupOf);
+const isLeast = (hit) => hit.written.toLowerCase() === 'least';
+exports.LEAST_MEANING = 'Compare degree: pick the option with the weakest effect on what is asked.';
+function buildPriorityRound(pool, rng, size = 5, groupOf, qc) {
+    return (0, siblings_1.takeApart)((0, random_1.shuffled)(priorityPool(pool, qc), rng).map((q) => q.id), size, groupOf);
 }
 exports.ASK_FOR = {
     FIRST: 'sequence',
@@ -6970,16 +7141,24 @@ exports.ASK_LABEL = {
     purpose: 'The main purpose or the main reason',
 };
 exports.ASKS = ['sequence', 'best-fit', 'degree', 'purpose'];
-function acceptedAsks(stem) {
-    const word = priorityWord(stem);
-    if (!word)
+function acceptedAsks(stem, qc) {
+    const hit = findPriority(stem, qc);
+    if (!hit)
         return [];
-    return fitWord(stem) ? ['best-fit', 'degree'] : [exports.ASK_FOR[word]];
+    const own = fitAt(stem, hit) ? ['best-fit', 'degree'] : [exports.ASK_FOR[hit.word]];
+    if (!hit.earlier)
+        return own;
+    const also = fitAt(stem, hit.earlier) ? 'best-fit' : exports.ASK_FOR[hit.earlier.word];
+    return own.includes(also) ? own : [...own, also];
 }
-function fitWord(stem) {
-    if (priorityWord(stem) !== 'MOST')
+function fitWord(stem, qc) {
+    const hit = findPriority(stem, qc);
+    return hit ? fitAt(stem, hit) : null;
+}
+function fitAt(stem, hit) {
+    if (hit.word !== 'MOST' || hit.written.toLowerCase() === 'least')
         return null;
-    const m = /^\s+(appropriate|appropriately|suitable)\b/i.exec(stem.slice(lastWholeWordIndex(stem, 'MOST') + 4));
+    const m = /^\s+(appropriate|appropriately|suitable)\b/i.exec(stem.slice(hit.index + hit.written.length));
     return m ? m[1].toLowerCase() : null;
 }
 exports.ASK_MEANING = {
@@ -6988,12 +7167,18 @@ exports.ASK_MEANING = {
     degree: 'Compare degree: pick the option with the strongest effect on what is asked.',
     purpose: 'Pick the main purpose or main reason, not a side benefit.',
 };
-function meaningFor(stem) {
-    const word = priorityWord(stem);
-    if (!word)
+function meaningFor(stem, qc) {
+    const hit = findPriority(stem, qc);
+    if (!hit)
         return '';
-    const fit = fitWord(stem);
-    return fit ? `MOST ${fit} works like BEST. ${exports.ASK_MEANING['best-fit']}` : exports.PRIORITY_MEANING[word];
+    if (isLeast(hit))
+        return exports.LEAST_MEANING;
+    const fit = fitWord(stem, qc);
+    if (!fit)
+        return exports.PRIORITY_MEANING[hit.word];
+    return hit.written !== hit.word
+        ? `“${hit.written} ${fit}” works like “best”. ${exports.ASK_MEANING['best-fit']}`
+        : `MOST ${fit} works like BEST. ${exports.ASK_MEANING['best-fit']}`;
 }
 function askChoices(rng) {
     return (0, random_1.shuffled)(exports.ASKS, rng);
@@ -7144,9 +7329,9 @@ function gameTitle(id, savedLabel) {
     var _a, _b;
     return (_b = (_a = gameInfo(id)) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : savedLabel.split(' · ')[0];
 }
-function isPlayable(id, questions, notes, content) {
+function isPlayable(id, questions, notes, content, qc) {
     const g = exports.GAMES[id];
-    const size = g.contentPool ? g.contentPool(content !== null && content !== void 0 ? content : {}) : g.notesPool ? g.notesPool(notes) : g.pool(questions).length;
+    const size = g.contentPool ? g.contentPool(content !== null && content !== void 0 ? content : {}) : g.notesPool ? g.notesPool(notes) : g.pool(questions, qc).length;
     return size >= g.minPool;
 }
   };
@@ -7705,7 +7890,7 @@ function recordMastery(map, subtopic, day, answer, at) {
     return { ...map, [subtopic]: next };
 }
   };
-  links["src/engine/milestones.ts"] = {"./games/registry":"src/engine/games/registry.ts","./games/daylight":"src/engine/games/daylight.ts","./games/growth":"src/engine/games/growth.ts","./journey":"src/engine/journey.ts","./domainNaming":"src/engine/domainNaming.ts","./studyPath":"src/engine/studyPath.ts","./pace":"src/engine/pace.ts","./readiness":"src/engine/readiness.ts","./streak":"src/engine/streak.ts"};
+  links["src/engine/milestones.ts"] = {"./games/registry":"src/engine/games/registry.ts","./games/priorityLens":"src/engine/games/priorityLens.ts","./games/daylight":"src/engine/games/daylight.ts","./games/growth":"src/engine/games/growth.ts","./journey":"src/engine/journey.ts","./domainNaming":"src/engine/domainNaming.ts","./studyPath":"src/engine/studyPath.ts","./pace":"src/engine/pace.ts","./readiness":"src/engine/readiness.ts","./streak":"src/engine/streak.ts"};
   defs["src/engine/milestones.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -7739,6 +7924,7 @@ exports.keepSupported = keepSupported;
 exports.planterSupported = planterSupported;
 exports.withFrozenPlanters = withFrozenPlanters;
 const registry_1 = require("./games/registry");
+const priorityLens_1 = require("./games/priorityLens");
 const daylight_1 = require("./games/daylight");
 const growth_1 = require("./games/growth");
 const journey_1 = require("./journey");
@@ -7856,6 +8042,8 @@ function badgeRule(id, course) {
     const def = badgeDef(id);
     if (!def)
         return '';
+    if (id === 'signpost-reader')
+        return (0, priorityLens_1.qualifierCopy)(def.rule, course === null || course === void 0 ? void 0 : course.qualifierCase, true);
     if (!(course === null || course === void 0 ? void 0 : course.domainStyle))
         return def.rule;
     const one = (0, domainNaming_1.domainWord)(course, 'domain');
@@ -7995,7 +8183,10 @@ function allMarks(f) {
     const snareRight = snares.filter(Boolean).length;
     out.push(...one('snare-wise', snares.length >= exports.SNARE_WINDOW && snareRight >= exports.SNARE_RIGHT, snares.length < exports.SNARE_WINDOW ? frac(snares.length, exports.SNARE_WINDOW) * 0.5 : frac(snareRight, exports.SNARE_RIGHT), snares.length < exports.SNARE_WINDOW ? of(snares.length, exports.SNARE_WINDOW, 'questions played') : `${snareRight} of your last ${exports.SNARE_WINDOW} snares spotted`));
     out.push(...one('even-keel', f.keelRun >= exports.KEEL_ROUNDS, frac(f.keelRun, exports.KEEL_ROUNDS), of(f.keelRun, exports.KEEL_ROUNDS, 'rounds in a row')));
-    out.push(...windowMark('signpost-reader', f.signposts, exports.SIGNPOST_WINDOW, exports.SIGNPOST_RIGHT, 'FIRST questions played', 'FIRST questions read right'));
+    const signpost = windowMark('signpost-reader', f.signposts, exports.SIGNPOST_WINDOW, exports.SIGNPOST_RIGHT, 'FIRST questions played', 'FIRST questions read right');
+    out.push(...(f.qualifierCase === 'lowercase'
+        ? signpost.map((m) => ({ ...m, detail: (0, priorityLens_1.qualifierCopy)(m.detail, 'lowercase', true), rule: badgeRule('signpost-reader', f) }))
+        : signpost));
     out.push(...windowMark('myth-clearer', f.myths, exports.MYTH_WINDOW, exports.MYTH_RIGHT, 'rumors played', 'rumors cleared'));
     out.push(...one('sure-footed-pace', f.paceRounds >= exports.PACE_ROUNDS, frac(f.paceRounds, exports.PACE_ROUNDS), of(f.paceRounds, exports.PACE_ROUNDS, 'rounds')));
     out.push(...one('whole-grove', f.gamesTotal > 0 && f.gamesPlayed >= f.gamesTotal, frac(f.gamesPlayed, f.gamesTotal), of(f.gamesPlayed, f.gamesTotal, 'games played')));
@@ -11631,6 +11822,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "eb01880a8abbd9c5";
+  api.sourceHash = "18de4bbce59a5516";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

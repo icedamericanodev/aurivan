@@ -33,7 +33,7 @@ import { GAME_TIER_NAME, growthTier } from '../engine/games/growth';
 import { scoreSpoken, scoreText } from '../engine/games/recap';
 import { GAMES, type GameId } from '../engine/games/registry';
 import { availableGames, drillPlan, moreGamesOpen, MORE_GAMES_AT, waitingGames } from '../engine/games/todaysDrill';
-import { PATTERN_COPY } from '../engine/slipCoach';
+import { patternCopy } from '../engine/slipCoach';
 import { CERTIFICATIONS, getCertification } from '../content/certifications';
 import { useActiveCertId } from '../lib/activeCert';
 import { moveFocus } from '../lib/a11y';
@@ -118,7 +118,8 @@ export const Drills = memo(function Drills({
   // The learner's recent mistake pattern picks Today's drill: the Mistake journal's own leading pattern
   // (lib/slipPattern.ts), so Play never names one the journal doesn't. Subscribed as a small cached value.
   const top = useProgress((s) => topSlipPattern(cert.id, selectCert(s, certId).mistakes));
-  const pattern = top ? PATTERN_COPY[top.pattern] : null;
+  // In the course's style: "…like FIRST and BEST" (CISA), "…like first and best" (a lowercase course).
+  const pattern = top ? patternCopy(top.pattern, cert.qualifierCase) : null;
   const plan = useMemo(() => drillPlan(pattern ? pattern.game : null, available), [pattern, available]);
   const [moreOpen, setMoreOpen] = useState(false);
   const level = (id: GameId) => growthTier(gameGrowth?.[id]);

@@ -17,6 +17,8 @@
  *
  * Pure TypeScript: no React, no storage.
  */
+import type { QualifierCase } from '../content/types';
+import { qualifierCopy } from './games/priorityLens';
 import { DNA_MIN_PATTERN, type DNAWindow } from './mistakeDNA';
 import { SLIP_COACH_MIN, type SlipPattern } from './slipCoach';
 
@@ -49,9 +51,13 @@ export function ownEvePatterns(window: Pick<DNAWindow, 'classified' | 'patterns'
     .map((p) => p.pattern);
 }
 
-/** The card's three lines, and whether all three are the learner's own (the caption says "Your…"). */
-export function eveReminders(window: Pick<DNAWindow, 'classified' | 'patterns'>): { own: boolean; lines: string[] } {
+/**
+ * The card's three lines, and whether all three are the learner's own (the caption says "Your…").
+ * `qc` (optional): the course's QualifierCase. Capitals (CISA): the lines word for word. Lowercase:
+ * the priority line names the words as the course writes them, quoted ("Find the “first” or “best” word…").
+ */
+export function eveReminders(window: Pick<DNAWindow, 'classified' | 'patterns'>, qc?: QualifierCase): { own: boolean; lines: string[] } {
   const own = ownEvePatterns(window);
   const picks = [...own, ...EVE_DEFAULTS.filter((p) => !own.includes(p))].slice(0, EVE_LINES);
-  return { own: own.length === EVE_LINES, lines: picks.map((p) => EVE_REMINDER[p]) };
+  return { own: own.length === EVE_LINES, lines: picks.map((p) => qualifierCopy(EVE_REMINDER[p], qc, true)) };
 }

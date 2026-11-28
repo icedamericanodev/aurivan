@@ -128,7 +128,7 @@ import { LETTERS, type Letter } from '../content/types';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../engine/shuffle';
 import { RETEST_LINE, type Confidence } from '../engine/srs';
 import { shortDate } from '../lib/format';
-import { priorityWord } from '../engine/games/priorityLens';
+import { priorityWritten, shownWord } from '../engine/games/priorityLens';
 import { missCoachLine } from '../engine/slipCoach';
 import { pickCoachKind, pickCoachLine, tipPickLetter } from '../engine/pickCoach';
 import { RunningHead } from '../components/fieldguide';
@@ -945,9 +945,10 @@ export default function SessionScreen() {
   // row as square icon buttons (their spoken names unchanged) and Next has its own: 2 rows.
   const compactMockFooter = isMock && largeText && screenW < 360;
   // Coach me content: the Eliminate tip (letters mapped to what's on screen)
-  // and the stem's capitalised priority word.
+  // and the stem's priority word, as the stem writes it: "FIRST" in CISA,
+  // "first" in a course whose qualifierCase is 'lowercase' (The IIA's style).
   const hintTip = eliminateTip(q.tips);
-  const hintWord = priorityWord(q.stem);
+  const hintWord = priorityWritten(q.stem, cert.qualifierCase);
   const canCoach = !isMock && Boolean(hintTip || hintWord);
   // Grove Phase 4, owner answer O1 (5 Nov 2026; PHASE4.md 4.2 step 4): every tip is open in every
   // state, right, miss or Time's up, in the written order. Only a long Why folds after a miss.
@@ -1149,7 +1150,7 @@ export default function SessionScreen() {
                     {/* hintRef = the first hint line; screen-reader focus lands here. */}
                     {hintWord && (
                       <View ref={hintRef} accessible>
-                        <T v="small" color={c.ink}>{`Priority word: ${hintWord}. Let it decide.`}</T>
+                        <T v="small" color={c.ink}>{`Priority word: ${shownWord(hintWord)}. Let it decide.`}</T>
                       </View>
                     )}
                     {hintTip && (

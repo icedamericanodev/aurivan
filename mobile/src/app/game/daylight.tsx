@@ -382,7 +382,7 @@ function Daylight() {
       if (!correct) p.recordMistake(cert.id, q.id, original);
     });
     if (!correct) {
-      const miss = pickMiss(q, original, false, (t) => renderText(t, perm));
+      const miss = pickMiss(q, original, false, (t) => renderText(t, perm), cert.qualifierCase);
       if (miss) setMisses((m) => [...m, miss]);
     }
     setState(next);
