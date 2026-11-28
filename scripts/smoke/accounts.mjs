@@ -1118,6 +1118,7 @@ if (wanted('A10')) {
 // One walk through every screen. `shots` saves a picture of each (the folder);
 // `c` (a test) checks no sideways scroll at five widths and with text at 200%.
 const WIDTHS = [320, 360, 768, 1024, 1280];
+const shotFontMisses = [];
 async function walk(v, scheme, shots, c, axeOnly = false) {
   const snap = async (page, name, full = false) => {
     if (c && axeOnly) await axe(page, c, `${name} (${v}, ${scheme})`, /delete-account-page|human-check-page/.test(name));
@@ -1134,9 +1135,31 @@ async function walk(v, scheme, shots, c, axeOnly = false) {
       await page.evaluate(() => { document.documentElement.style.fontSize = ''; });
       await sleep(60);
     }
-    if (shots) { await sleep(120); await page.screenshot({ path: path.join(shots, `${name}_${v === 'phone' ? '390' : '1280'}_${scheme}.png`), fullPage: full }); }
+    if (shots) {
+      await sleep(120);
+      // The pictures are for the owner: the fonts must be the real ones (KaiSip Serif with its own f and J).
+      const fonts = await page.evaluate(async () => { await document.fonts.ready; const has = (fam) => [...document.fonts].some((f) => f.family.replace(/["']/g, '') === fam && f.status === 'loaded'); return { serif: has('KaiSip Serif'), sans: has('Figtree') }; });
+      if (!fonts.serif || !fonts.sans) { shotFontMisses.push(`${name} ${v} ${scheme}`); console.log(`shots: FONT NOT LOADED on ${name} (${v}, ${scheme}): ${JSON.stringify(fonts)}`); }
+      await page.screenshot({ path: path.join(shots, `${name}_${v === 'phone' ? '390' : '1280'}_${scheme}.png`), fullPage: full });
+    }
   };
   const MAIL = 'jamie.reyes@example.com';
+  // 0. Pictures only: the screens as the repo publishes them today. Google's "G" file is not in
+  // assets/ yet, so Google sign-in is hidden. (Every other picture uses the test's dashed-square
+  // stand-in for that file, to show where Google's button goes once the file is added.)
+  if (shots) {
+    const t = await setup({ view: v, scheme, googleG: 'missing' });
+    await open(t.page, '#sign-in'); await sleep(400); await snap(t.page, '02b-sign-in-today-without-google');
+    await t.page.evaluate(() => kaGo('create-account')); await waitView(t.page, 'signup1'); await sleep(300); await snap(t.page, '04b-create-1-today-without-google', true);
+    // The consent screen as shipped, kept as evidence beside the consent registry
+    // (docs/legal/consent_wording.md: docs/legal/consent_screens/<version>-web.png).
+    if (v === 'phone' && scheme === 'light') {
+      await t.page.waitForFunction(() => window.KaiSipCloud && window.KaiSipCloud.config);
+      const version = await t.page.evaluate(() => window.KaiSipCloud.config.CONSENT.terms);
+      await t.page.screenshot({ path: path.join(shots, `consent_${version}-web.png`), fullPage: true });
+    }
+    await t.ctx.close();
+  }
   // 1. A first visit, then the sign-in and create-account screens.
   let s = await setup({ view: v, scheme, onboarded: false });
   let page = s.page, server = s.server;
@@ -1166,7 +1189,9 @@ async function walk(v, scheme, shots, c, axeOnly = false) {
   // 2. Signed in: You and the Account page.
   await goYou(page);
   await snap(page, '12-you-signed-in');
-  await page.evaluate(() => navGoFocus(null, 'account')); await page.waitForFunction((e) => document.getElementById('kaHero').textContent.includes(e), MAIL); await snap(page, '13-account', true);
+  // Opened the way a learner does (a click), so the title is not drawn with the keyboard's focus box.
+  await page.click(v === 'phone' ? '#kaTop' : '#kaRail'); await page.waitForFunction((e) => document.getElementById('kaHero').textContent.includes(e), MAIL); await page.waitForFunction(() => !ka.newsBusy);
+  await page.mouse.move(2, 2); await snap(page, '13-account'); await snap(page, '13b-account-whole-page', true);
   await page.click('#kaPwRow'); await page.waitForSelector('#flagModal #kaPw'); await snap(page, '14-account-change-password');
   await page.keyboard.press('Escape'); await sleep(200);
   await page.click('#kaDel'); await page.waitForSelector('#flagModal #kaDelWord'); await snap(page, '15-account-delete');
@@ -1223,7 +1248,7 @@ if (SHOTS) {
   fs.mkdirSync(SHOTS, { recursive: true });
   for (const v of ['phone', 'desktop']) for (const scheme of ['light', 'dark']) { console.log(`shots: ${v} ${scheme}`); await walk(v, scheme, SHOTS, null); }
   // The contact sheet: every picture, by screen.
-  const files = fs.readdirSync(SHOTS).filter((f) => /^\d\d-.*\.png$/.test(f)).sort();
+  const files = fs.readdirSync(SHOTS).filter((f) => /^\d\db?-.*\.png$/.test(f)).sort();
   const names = [...new Set(files.map((f) => f.replace(/_(390|1280)_(light|dark)\.png$/, '')))];
   const cell = (n, k) => `<figure><img src="${n}_${k}.png" loading="eager"><figcaption>${k.replace('_', ' ')}</figcaption></figure>`;
   const sheet = `<!doctype html><meta charset="utf-8"><title>KaiSip web accounts: every screen</title><style>body{margin:24px;background:#e9e6dc;font:14px/1.4 system-ui,sans-serif;color:#17231b}h1{font-size:22px}h2{font-size:16px;margin:28px 0 8px}.row{display:grid;grid-template-columns:1fr 1fr 3.2fr 3.2fr;gap:12px;align-items:start}figure{margin:0}img{width:100%;height:auto;display:block;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.2)}figcaption{font-size:12px;margin-top:4px;color:#465349}</style><h1>KaiSip web accounts (stream B1): every screen at 390 and 1280, light and dark</h1>${names.map((n) => `<h2>${n}</h2><div class="row">${['390_light', '390_dark', '1280_light', '1280_dark'].map((k) => cell(n, k)).join('')}</div>`).join('')}`;
@@ -1235,6 +1260,8 @@ if (SHOTS) {
   await sp.screenshot({ path: path.join(SHOTS, 'contact_sheet.png'), fullPage: true });
   await sp.close();
   console.log(`shots: ${files.length} pictures and contact_sheet.png in ${SHOTS}`);
+  if (shotFontMisses.length) { console.error(`shots: ${shotFontMisses.length} pictures were taken without the real fonts: ${shotFontMisses.join(', ')}`); process.exitCode = 1; }
+  else console.log('shots: KaiSip Serif and Figtree were loaded for every picture');
 }
 
 // ── A7 (more). Another account signs in on the same browser ──

@@ -254,4 +254,14 @@ describe('the consent registry (docs/legal/consent_wording.md)', () => {
     expect(html.slice(start, end)).not.toMatch(/'20\d\d-\d\d'/);
     expect(html.slice(start, end)).toContain('KaiSipCloud.config.CONSENT');
   });
+
+  it('keeps the website\'s sign-up screen for this version as evidence (docs/legal/consent_screens/<version>-web.png)', () => {
+    const shot = path.join(ROOT, 'docs', 'legal', 'consent_screens', `${TERMS_VERSION}-web.png`);
+    expect(fs.existsSync(shot)).toBe(true);
+    // A real PNG of a phone-width page, not a placeholder.
+    const png = fs.readFileSync(shot);
+    expect(png.subarray(1, 4).toString('latin1')).toBe('PNG');
+    expect(png.readUInt32BE(16)).toBeGreaterThanOrEqual(390);
+    expect(png.readUInt32BE(20)).toBeGreaterThan(png.readUInt32BE(16));
+  });
 });

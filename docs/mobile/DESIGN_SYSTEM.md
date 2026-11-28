@@ -167,7 +167,7 @@ Names keep the current `Palette` keys where the meaning is the same, so screens 
 | `sap` (v2) | `#A9D9BA` | `#A9D9BA` | Leaf progress marks and the mini ring on `forest` (6.4:1 / 7.0:1) |
 | `pill` / `onPill` (v2) | `#F3F1EA` / `#17231B` | `#EEF2EA` / `#0F1F16` | On-forest pill button (was hard-coded) |
 | `grainOp` (v2) | **`0.035`** (warm-black noise; 0.05 before 1.21) | `0.045` (white noise; 0.06 before 1.9) | Paper grain overlay opacity. Never higher: at 5% the weakest pair (`muted`/`bg`) stays ≥ 4.7:1. Dark went down in 1.9: white specks over the forest night read as dust. Light went down in 1.21: white cards read speckled, like slightly dirty paper |
-| `clay` | `#9A4F26` | `#E9A07A` | The streak, an area below 70, and the focus area's badge (Grove Phase 4, PHASE4.md O13: pace attention, the 2-minute cue and the last 5 minutes are said in `ink2` words with the clock glyph, no longer clay). Never for errors |
+| `clay` | `#9A4F26` | `#E9A07A` | The streak, an area below 70, the audit ticks on the web account screens (a done step and a ticked agreement box, §22), and the focus area's badge (Grove Phase 4, PHASE4.md O13: pace attention, the 2-minute cue and the last 5 minutes are said in `ink2` words with the clock glyph, no longer clay). Never for errors |
 | `correct` / `correctBg` | `#1D6A43` / `#E0EDE2` | `#8AD6A8` / `#173022` | Answer feedback only |
 | `wrong` / `wrongBg` | `#A3333D` / `#F7E3E1` | `#FF9CA6` / **`#2C1A1D`** (1.43; was `#3A1A1D`) | Answer feedback only (and the danger button, the game tiles' wrong state). Dark went calmer in 1.43 (owner decision): a learner who is already wrong does not need a shouting slab. Dark `wrong` on it 8.30, `ink` 14.21 (both up); it sits closer to the page (ΔE 13.3 from `bg`), and the row's words carry the meaning. Fallback if the danger pill gets lost on a dim LCD: `#301B1E` |
 | `tip` / `tipBg` | `#7A5100` / `#F3EAD3` | `#E9C46A` / **`#2B2418`** (1.21; was `#2C2715`, which read muddy olive) | Trap warnings. Dark `tip` on `tipBg` 9.19, `ink` 13.21 |
@@ -2263,35 +2263,51 @@ The owner picked direction A, "Grove Atelier", with direction B's joined code
 cells and audit ticks, as one design for the website, Android and iPhone
 (`docs/WEB_LAUNCH_PLAN.md`). This section is the web build (`index.html`,
 every class starts `ka-`); the phone's sign-in screens follow the same
-components and words. Nothing here shows while `ACCOUNTS_ON` is false.
+components and words. Nothing here shows while `ACCOUNTS_ON` is false. Round
+2 (28 Nov 2026) applied the owner's decisions and the UX review: the website
+asks for an account, the password checklist, one agreement box, 52px
+buttons, and Google's own button.
 
 **Tokens: none new.** Every colour is a Grove token already in `:root`
 (`--bg`, `--surface`, `--surface2`, `--raised2`, `--border`, `--border2`,
 `--control`, `--text`, `--text2`, `--accent`, `--accent-text`, `--btn`,
-`--forest`, `--forest-top`, `--sap`, `--clay`, `--tip`, `--wrong`). Four
-helpers only: `--ka-r-btn` (16px: the phone's shipped button corner; the one
-place to change the shape), `--ka-r-field` (16px), `--ka-halo` and
-`--ka-danger-halo` (the soft ring round a focused or refused field). KaiSip
-Serif and Figtree from `assets/fonts/`; every size is rem.
+`--pill`, `--on-pill`, `--forest`, `--forest-top`, `--forest-hl`, `--sap`,
+`--clay`, `--tip`, `--wrong`). Spacing, corners and type use the scale's
+tokens (`--sp-*`, `--r-*`, `--t-*`) wherever one fits. The block's own
+helpers are declared once, in its first two rules: `--ka-r-btn` (=
+`--r-tile`, the one place the button corner lives), `--ka-r-field` (=
+`--r-md`), `--ka-halo` and `--ka-danger-halo` (the soft ring round a focused
+or refused field), five shadow and overlay tints, and `--ka-g-fill`,
+`--ka-g-edge`, `--ka-g-text`: **Google's** colours, for the Google button
+only. KaiSip Serif and Figtree from `assets/fonts/`; every size is rem.
+
+**The one exception to the two-font rule.** The "Continue with Google"
+button follows Google's sign-in branding (a third-party rule that outranks
+ours on that one control): its label is Roboto Medium 14/20 from a small
+self-hosted subset (`assets/fonts/Roboto_500Medium_latin.woff2`, licence
+beside it). No other element may use Roboto; `accounts.mjs` U3 checks it.
 
 ### 22.1 Components
 
 | Component | What it is | Rules |
 |---|---|---|
-| Auth shell (`.ka-auth`) | The form on paper; from 900px a forest panel beside it (fronds, one serif line, one italic line, and either "what an account keeps in step" or three facts) | One forest panel a screen. The panel is decoration (`aria-hidden`); below 900px it is gone and nothing is lost. "Study without an account" is on every screen |
+| The gate | With accounts on, a visitor who is not signed in sees the welcome or a sign-in screen, never the study app | The page's first script marks the page (`data-ka-gate`) before anything is drawn, so the app never flashes. It reads only what the browser holds: a signed-in learner studies offline, during an outage and when the accounts script cannot load. A sign-in that ends waits for an open question or mock to finish, then asks to sign in again and returns to the same page. Nothing saved is touched |
+| Auth shell (`.ka-auth`) | The form on paper; from 900px a forest panel beside it (fronds, one serif line, one italic line, and either "what an account keeps in step" or three facts) | One forest panel a screen. The panel is decoration (`aria-hidden`); below 900px it is gone and nothing is lost. Signed out, the top bar is the wordmark (back to the welcome) and Help; there is no way into the app |
 | Step leaves (`.ka-steps`) | "Step N of 3" in words, then Email, Confirm, Password | To do: an outlined leaf. Current: a filled leaf (`--btn`), `aria-current="step"`. Done: an **audit tick** in `--clay` and ", done" for screen readers. At large text the row becomes a column |
-| Agreement box (`.ka-check`) | A real checkbox with a 24px box in a 44px row | Ticked: a 2px ink edge and a `--clay` tick, never a green fill (green is progress). Required boxes carry no tag; the optional one says "Optional". Never pre-ticked |
-| Code field (`.ka-code`) | **One** input (`autocomplete="one-time-code"`, numeric, 8) drawn as two joined groups of four ruled cells | Never eight inputs: paste (with spaces), one-time-code autofill and select-all-and-type must work. The active cell has the 2px ink edge and a caret |
-| Password helper (`.ka-pw`) | A plate with a sprig that grows one leaf per three characters and buds at 20 | Length first: "N more characters to go", "Long enough…", "Long and hard to guess". From 15, the shared rules' own reason and guidance when they would refuse it. **No example password, ever**, and no rule about character types. Said aloud only when the state changes |
-| Buttons (`.ka-btn`) | Primary (`--btn`), secondary (1.5px `--control` edge), Google (white, `--border2` edge), quiet, danger (edge and words in `--wrong`) | 54 tall, 44 floor. One primary a screen. Busy: the same button says "Signing in…" and stays focusable. The Google button is words only until Google's own mark file is in `assets/` |
+| Agreement (`.ka-consent`, `.ka-check`) | ONE required box ("I agree to the Terms of Use and Privacy Policy."), the line "Accounts are for learners 18 and older." directly under it, a hint while it is unticked, and, divided off under its own "Optional" label, the news box | A real checkbox with a 24px box in a 44px row. Ticked: a 2px ink edge and a `--clay` tick, never a green fill (green is progress). Never pre-ticked. No separate age box. The refusal is about one box ("Tick the box above to continue.") and replaces the hint. The words are versioned in `docs/legal/consent_wording.md`: change them only with a new version |
+| Code field (`.ka-code`) | **One** input (`autocomplete="one-time-code"`, numeric, 8) drawn as two joined groups of four ruled cells | Never eight inputs: paste (with spaces), one-time-code autofill and select-all-and-type must work. The caret's cell has the 2px ink edge; a tap on a cell picks that cell and the next digit replaces it; one selected digit lights one cell. Forced colours show the real field |
+| Password checklist (`.ka-pw`) | Five items under every new password: "12 or more characters", "A lowercase letter", "An uppercase letter", "A number", "A symbol" | Each item is an icon AND the words "Met" or "Not yet", never colour alone. The head says where things stand ("Your password needs", "This password works.", "Strong password. Nicely done."). A password the shared rules refuse as common or too simple shows their guidance sentence in the same card, with an alert icon and `--wrong` words: the card is the one voice, and the red line under the field is only for a leak found at save or a server refusal. Said to screen readers once, a second after typing stops. **No example password, ever.** Hidden as typed, with Show. The same component on Create account, the reset and Change password; sign-in has none of it |
+| Buttons (`.ka-btn`) | Primary (`--btn`), secondary (1.5px `--control` edge), quiet, danger (edge and words in `--wrong`) | 52 tall with `--r-tile` (the web app's own primary), 44 floor. One primary a screen. Busy: the same button says "Signing in…", stays focusable and keeps its full contrast |
+| Google button (`.ka-btn-google`) | Google's "custom button": their fill, 1px edge and label colours for the light and the dark theme, 12px before the "G", 10px between the "G" and the words, 12px after, "Continue with Google" or "Sign up with Google" in Roboto Medium 14/20 | The "G" is Google's own file, unaltered, at `assets/google-g.svg` (or `.png`); it is never redrawn. While the file is missing the button, its divider and every mention of Google are hidden. A Google step in a sheet (`kaSheet({ google: true })`) uses this button, never the green one |
 | Error (`.ka-error`) | An icon and words under the field it is about | `role="alert"`, `aria-invalid` and `aria-describedby` on the field, focus moves to the field. Colour is never the only signal. Never the server's words: every error goes through one list (`KA_WORDS`, `kaWords`) |
-| Account card (`.ka-card`, You) | Radius 20, the You board's own surface, a 40px disc, title and one line | Guest: the full card on the first 3 different days it is seen, then the slim row for good; it collapses at once when Create or Sign in is opened from it. Signed in: the masked email and the status in words, with the one action that fits (Sync now, Try again, Sign in again). Attention uses `--tip`, never red. No dead buttons |
-| One-line account (`.ka-rail`, `.ka-top`) | The desktop rail's foot; "Sign in" or the initial in the phone's top bar | The same words as the card |
-| Status panel (`.ka-hero`, Account) | The page's forest panel: initial, the full email, how they sign in, status, last synced, "This browser ⋯ Android app", one action | Status is an icon and words |
-| Switch with words (`.ka-toggle`) | `role="switch"` and the word On or Off beside it | The word is part of the control's look, not decoration |
+| Account card (`.ka-card`, You) | Radius `--r-card`, the You board's own surface, a 40px disc, title and one line | The masked email and the status in words, with the one action that fits (Sync now, Try again, Finish setting up). Attention uses `--tip`, never red. No dead buttons. (The guest card and its slim row were removed when the website began asking for an account) |
+| One-line account (`.ka-rail`, `.ka-top`) | The desktop rail's foot; the initial in the phone's top bar | The same words as the card |
+| Status panel (`.ka-hero`, Account) | The page's forest panel: initial, the full email, how they sign in, status, last synced, "This browser ⋯ Android app", one action | Status is an icon and words. Its button is `--pill` on forest |
+| Switch with words (`.ka-toggle`) | `role="switch"` and the word On or Off beside it | The word is part of the control's look, not decoration. 32px tall to look at, 44 to tap |
+| News row (`#kaNewsRow`) | The switch for study tips and news, with one line under it | The line follows the email service: the usual line, or "Check your inbox to confirm your email. News starts after that." After an unsubscribe made through an email there is no switch, only how to get news again (a switch would flip back). A refusal or a wait is never shown as an error |
 | Data rows (`.ka-item`) | White rows with a 40px disc; a status line under the row acted on | Confirmations say it at the row (§21.12). Danger rows are words first, in `--wrong` |
-| First-sync table (`.ka-cols`) | This browser, Account, After | A real table with a caption. "After" in `--accent-text` and bold. It always asks before a browser's progress goes into an account |
-| Welcome paths (`.ka-path`) | Two large rows: the filled one is "Start studying free", the white one "Sign in to sync with your Android app" | Studying free is always the main path |
+| First-sync table (`.ka-cols`) | This browser, Account, After | A real table with a caption. "After" in `--accent-text` and bold. It always asks before a browser's progress goes into an account, and says when some older answers can only stay in the browser |
+| Welcome paths (`.ka-path`) | Two large rows: the filled one is "Create a free account", the white one "Sign in" | Both lead to an account. One honest line says why ("KaiSip is free. A free account keeps your progress safe and in sync with the Android app."). No hurry words, no way round |
 | Sheets | The app's own sheet (`#flagModal`) with a `.ka-form` inside | One form a sheet; the safe choice first |
 
 ### 22.2 Words (final strings are in `index.html`)
@@ -2300,21 +2316,25 @@ Serif and Figtree from `assets/fonts/`; every size is rem.
   address: "Email or password is incorrect. Check them and try again, or
   reset your password."
 - Create account: "We’ll email you an 8-digit code to confirm it’s you. No
-  links, ever." The agreements: "I agree to the Terms and Privacy Policy",
-  "I’m 16 or older", and, separate and optional, "Email me study tips and
-  KaiSip news. I can unsubscribe anytime." Unticked: "Tick both agreements to
-  continue."
-- The card: "Saved in this browser only", "Synced just now / N min ago /
-  today at 9:39 AM / 26 Nov", "Waiting for a connection", "Couldn’t sync
-  just now", "Please sign in again to keep syncing", and "Your progress is
-  safe in this browser."
+  links, ever." The agreement: "I agree to the Terms of Use and Privacy
+  Policy.", then "Accounts are for learners 18 and older.", and, separate
+  and optional, "Email me KaiSip study tips and news (optional). Unsubscribe
+  anytime." Unticked: "Tick the box above to continue."
+- A sign-in that ended: "Please sign in again to keep studying. Your
+  progress is safe in this browser."
+- The card: "Synced just now / N min ago / today at 9:39 AM / 26 Nov",
+  "Waiting for a connection", "Couldn’t sync just now", "One step left to
+  turn sync on", and "Your progress is safe in this browser."
 - Curly apostrophes, no exclamation marks, no bank size, sentence case.
 
 ### 22.3 Accessibility (tested by `scripts/smoke/accounts.mjs`)
 
 - axe (WCAG 2.2 AA and best practice): no finding on any account screen.
-- Focus lands on the screen's title; the next Tab is the first control.
-  Keyboard focus is a 3px ink outline at 3px; fields also show the halo.
+- Focus lands on the screen's title (no box is drawn on it: it is not a
+  control); the next Tab is the first control. Keyboard focus is a 3px ink
+  outline at 3px; fields also show the halo. On Sign in, Tab goes email,
+  password, Show, then "Forgot password?".
+- Every control is 44 by 44 or more to tap, links included.
 - Labels above fields, never placeholders. `autocomplete` is `username`,
   `current-password`, `new-password` and `one-time-code`; paste is never
   blocked; Enter sends the one form on the screen.

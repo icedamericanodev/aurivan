@@ -132,9 +132,12 @@ ticked. When it is `true`, the build also publishes the two account pages.
 
 1. On the computer or phone you want to test with, open a **new tab** and go
    to `https://kaisip.com/app/#accounts-preview=on`.
-2. The page loads as usual. From now on, **in this browser only**, You shows
-   the account card and "Sign in" appears. Nobody else sees anything: the
-   note is saved in your browser (`kaisip_accounts_preview`), not on the site.
+2. From now on, **in this browser only**, the site behaves as it will once
+   accounts are on: it opens on the welcome screen and asks you to create an
+   account or sign in before the study app opens (owner decision, 28 Nov
+   2026). Progress already saved in that browser is kept and offered into the
+   account at your first sign-in. Nobody else sees anything: the note is
+   saved in your browser (`kaisip_accounts_preview`), not on the site.
 3. To switch it off again, open `https://kaisip.com/app/#accounts-preview=off`
    in a new tab (or clear the site's data).
 
@@ -152,7 +155,40 @@ Things to know:
   reads it could switch the screens on in their own browser. The server-side
   gates are what protect accounts.
 - **Google sign-in** needs `https://kaisip.com/app/` in Supabase →
-  Authentication → URL Configuration → Redirect URLs first.
+  Authentication → URL Configuration → Redirect URLs first, and Google's "G"
+  file (next).
+
+**Google's G file (needed before the website offers Google sign-in).**
+Google's sign-in branding rules ask for their own "G" logo, unaltered, on the
+"Continue with Google" button. It is not in this repo: Google's page could
+not be reached from the build machine, and the logo must never be redrawn.
+Until the file is added, the sign-in screens hide the Google button, its
+"or" divider and every mention of Google (email and password work as usual),
+and the site build prints a note.
+
+1. Open `https://developers.google.com/identity/branding-guidelines` and
+   download Google's sign-in assets from that page.
+2. Take the standard colour "G" logo by itself (the four-colour G on a clear
+   background, not a whole pre-made button), as an SVG if the download has
+   one. Do not edit, recolour, crop or redraw it.
+3. Save it as `assets/google-g.svg` (if Google only gives a PNG, save a
+   square one at least 40 pixels wide as `assets/google-g.png`; the page
+   looks for the `.svg` first, then the `.png`).
+4. While on that page, check the button against it: light theme fill
+   `#FFFFFF`, 1px edge `#747775`, label `#1F1F1F`; dark theme fill `#131314`,
+   edge `#8E918F`, label `#E3E3E3`; 12px before the G, 10px between the G and
+   the words, 12px after; label in Roboto Medium 14/20. These are the values
+   built into the button (the `--ka-g-*` lines and `.ka-btn-google` in
+   `index.html`); they were written from memory of the guideline, so tell the
+   engineer if the page says otherwise.
+5. Commit the file. Nothing else changes: the button appears by itself.
+   `node scripts/smoke/accounts.mjs` path U3 then tests the real file.
+
+The button's label font is a small self-hosted piece of Roboto
+(`assets/fonts/Roboto_500Medium_latin.woff2`, made from Google's own fonts
+repository; licence in `assets/fonts/OFL-Roboto.txt`). Only that one button
+uses it, because Google's rule for its button outranks our two-font rule
+there.
 
 **The two account pages** (`/delete-account`, `/human-check`) are not on the
 live site in a normal build. To publish them for your preview, or because
