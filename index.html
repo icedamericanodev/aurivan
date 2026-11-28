@@ -9138,9 +9138,9 @@ div.ka-card-main { cursor: default; }
 @container (max-width: 17.5em) { .ka-card-row { flex-direction: column; } .ka-card-act { flex-direction: row; gap: 8px; min-height: 48px; border-left: 0; border-top: 1px solid var(--border); border-radius: 0 0 20px 20px; } .ka-card-chev { display: none; } .ka-card-acts .ka-btn { width: 100%; } }
 @media (min-width: 77.5em) { .you.has-ka { display: grid; grid-template-columns: minmax(0, 1fr) 25rem; column-gap: 20px; } .you.has-ka > * { grid-column: 1 / -1; } .you.has-ka > .you-top { grid-column: 1; } .you.has-ka > .ka-card { grid-column: 2; grid-row: 1; align-self: start; } }
 /* The one-line version: the desktop rail's foot and the phone's top bar. */
-.ka-rail { display: none; }
-@media (min-width: 48em) { .ka-rail { display: flex; align-items: center; gap: 10px; margin-top: auto; padding: 10px 12px; border-radius: 16px; background: var(--surface); box-shadow: var(--card-shadow); color: var(--text) !important; text-decoration: none !important; min-height: 56px; } .ka-rail .ka-disc { width: 36px; height: 36px; } }
-@media (min-width: 48em) { .rail-app:not([hidden]) ~ .ka-rail, .rail-foot:not([hidden]) ~ .ka-rail { margin-top: var(--sp-lg); } }
+.ka-rail, .ka-rail-wrap { display: none; }
+@media (min-width: 48em) { .ka-rail-wrap { display: block; margin-top: auto; } .ka-rail { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 16px; background: var(--surface); box-shadow: var(--card-shadow); color: var(--text) !important; text-decoration: none !important; min-height: 56px; } .ka-rail .ka-disc { width: 36px; height: 36px; } }
+@media (min-width: 48em) { .rail-app:not([hidden]) ~ .ka-rail-wrap, .rail-foot:not([hidden]) ~ .ka-rail-wrap { margin-top: var(--sp-lg); } }
 .ka-rail-t { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .ka-rail-h { font: var(--t-caption); color: var(--text); overflow-wrap: anywhere; }
 .ka-rail-m { font: var(--t-meta); color: var(--text2); }
@@ -27446,7 +27446,8 @@ var ka = {
   pwNeedsCurrent: false,
   bootHash: '',
   firstBusy: false,
-  resetFor: ''        // the address the last reset code was asked for
+  resetFor: '',       // the address the last reset code was asked for
+  bankWait: false
 };
 
 function kaGet(k, session) { try { return (session ? sessionStorage : localStorage).getItem(k); } catch (e) { return null; } }
@@ -27546,7 +27547,8 @@ function kaKeepUnknown(cur, next) {
 // ── This browser as a sync device (the client's WebHost) ──
 var kaHost = {
   readWeb: function () {
-    try { saveState({ quiet: true }); } catch (e) {}
+    // What is saved is what syncs. getProfiles() first writes a save still waiting; nothing is
+    // saved just for the read (a save stamps the record, and other tabs reload on a new stamp).
     var p = getProfiles()[getActiveProfileId()];
     return p && isPlainObj(p.state) ? JSON.parse(JSON.stringify(p.state)) : {};
   },
@@ -27809,7 +27811,14 @@ function kaSyncNow(manual) {
   if (!cloud || !kaAccount() || ka.syncBusy) return Promise.resolve();
   var meta = cloud.device.meta();
   if (!meta.enabled) { kaPaint(); return Promise.resolve(); }
-  if (!kaBankReady()) { ka.syncErr = 'wait'; kaBankWarm(); kaPaint(); return Promise.resolve(); }
+  if (!kaBankReady()) {
+    // The questions and notes are still loading: wait for them (once), then sync.
+    ka.syncErr = 'wait';
+    kaPaint();
+    if (ka.bankWait) return Promise.resolve();
+    ka.bankWait = true;
+    return kaWaitBank().then(function (ok) { ka.bankWait = false; if (!ok) return null; ka.syncErr = ''; return kaSyncNow(manual); });
+  }
   ka.syncBusy = true;
   kaPaint();
   var t0 = Date.now();
@@ -28574,7 +28583,7 @@ function kaAfterSignIn() {
 function kaStartSync() {
   var cloud = ka.cloud;
   var meta = cloud.device.meta();
-  if (meta.enabled && !cloud.accountChanged()) { kaLand(); kaSyncSoon(); return Promise.resolve(); }
+  if (meta.enabled && !cloud.accountChanged()) { kaLand('You’re signed in. Sync is on.'); kaSyncNow(false); return Promise.resolve(); }
   ka.setupDue = true;
   return kaWaitBank().then(function (ready) {
     if (!ready) { ka.syncErr = 'wait'; kaLand('You’re signed in. Sync starts once the questions have loaded.'); return null; }
@@ -28659,7 +28668,8 @@ function kaFirstConfirm(mode) {
     ka.setupDue = false;
     ka.syncErr = '';
     kaLand(mode === 'replace' ? 'Sync is on. This browser now shows your account’s progress.' : 'You’re signed in. Sync is on.');
-    kaSyncSoon();
+    // The combined result goes to the account now (not "when idle": the learner has just asked for it).
+    kaSyncNow(false);
   });
 }
 function kaFirstLater() {
@@ -28991,9 +29001,11 @@ function kaDownload() {
     var url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
     a.href = url;
     a.download = 'kaisip-my-data-' + isoLocalDate(new Date()) + '.json';
+    a.hidden = true;
     document.body.appendChild(a);
     a.click();
-    setTimeout(function () { URL.revokeObjectURL(url); if (a.parentNode) a.parentNode.removeChild(a); }, 1000);
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
     kaSayRow('kaDl', 'Saved to your downloads.');
   }).catch(function (e) { kaSayRow('kaDl', kaWords(e)); if (e && e.code === 'unauthorized') kaPaint(); });
 }
@@ -29230,10 +29242,15 @@ function kaBoot() {
     set.parentNode.insertBefore(scr, set.nextSibling);
   }
   if (rail) {
+    // Its own labelled region, so the line is inside a landmark like the rest of the rail.
+    var wrap = document.createElement('section');
+    wrap.className = 'ka-rail-wrap';
+    wrap.setAttribute('aria-label', 'Account and sync');
     var a = document.createElement('a');
     a.id = 'kaRail'; a.className = 'ka-rail'; a.href = '#sign-in';
     a.onclick = kaRailGo;
-    rail.appendChild(a);
+    wrap.appendChild(a);
+    rail.appendChild(wrap);
   }
   var head = document.querySelector('header.app-header');
   if (head) {
