@@ -18,3 +18,17 @@
 /testers          /beta      301
 /tester           /beta      301
 /join             /beta      301
+
+# The web study app moved from its unlisted preview folder to /app/ when it
+# opened to everyone (28 Nov 2026). Same site, so progress saved in the
+# preview stays. scripts/build_site.sh checks these lines.
+/preview-u63raxyfxc     /app/          301
+/preview-u63raxyfxc/*   /app/:splat    301
+
+# The web app at /app/ links to the legal pages and the beta page by their
+# file names (privacy.html ...). Those pages live once, at the top of the site.
+/app/privacy.html                 /privacy                 301
+/app/terms.html                   /terms                   301
+/app/support.html                 /support                 301
+/app/how-questions-are-made.html  /how-questions-are-made  301
+/app/beta.html                    /beta                    301

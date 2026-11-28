@@ -62,6 +62,12 @@ The first update after the 2.0.0 launch (closed testing). Play version name exac
 - A learner saw Android's navigation buttons covering the buttons at the bottom of a screen; bottom buttons now sit above the navigation bar.
 - A learner found a password policy question unclear; it now states that management requires the controls.
 
+## Web [v13.1] · 2026-11-28 · KaiSip is on the web
+
+### New
+- KaiSip is now on the web for everyone: study free in any browser.
+- On iPhone and iPad, add KaiSip to your Home Screen from Safari to open it full screen, like an app. Today shows the steps.
+
 ## Web [v13.0.3] · 2026-11-25
 
 ### Improved

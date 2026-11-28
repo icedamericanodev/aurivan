@@ -18,14 +18,52 @@ is in `docs/ARCHITECTURE_E2E.md` (sections 2, 4 and 5).
   already builds the app mode on every pull request, so it stays ready), add
   the "Open the web app" links back to `beta.html`, and check
   `https://kaisip.com/` shows the app.
-- **Preview of the web app while closed:** https://kaisip.com/preview-u63raxyfxc/
-  (unlisted, `noindex`, free sample only, rebuilt on every merge; the folder
-  name is `PREVIEW_DIR` in `scripts/build_site.sh` and has its own rule in
-  `_headers`). Same address as the live site, so progress saved there stays
-  when the app reopens. Optional lock: Cloudflare Zero Trust → Access →
-  Applications → Add (Self-hosted), domain `kaisip.com`, path
-  `preview-u63raxyfxc`, policy "Allow" with the owner's email (one-time PIN).
-  At launch, delete the folder setting, its `_headers` rule and any Access app.
+- **The web study app is public at https://kaisip.com/app/ (owner, 28 Nov
+  2026, web v13.1).** The home page stays at `/`; its "Study free on the web"
+  button and the FAQ link to `/app/`. Free sample only, never the full bank, no
+  sign-in. In home (and landing) mode `scripts/build_site.sh` builds the app
+  (app mode, with all its checks) into `_site/app/` (`APP_DIR`): only
+  `index.html`, `manifest.webmanifest`, the data files and `assets/`. Its links
+  to the legal pages and `/beta` (`privacy.html` ...) go to the top-level pages
+  through `_redirects` (`/app/privacy.html` → `/privacy` ...). `_headers` has
+  `/app/` rules: the app's own policy is the site-wide `/*` one, the page and
+  the manifest are always revalidated, data 5 minutes, assets a day (one
+  Cache-Control per address: never add an `/app/*` catch-all). It is
+  indexable (canonical `https://kaisip.com/app/`). The build stops if any of
+  these rules or redirects is missing.
+  - **Install (Add to Home Screen).** `manifest.webmanifest` (name and short
+    name KaiSip, start and scope `./` = `/app/`, standalone, Grove paper
+    `#F3F1EA`, icons `assets/icon-192.png`, `assets/icon-512.png`, also as
+    maskable) plus the Apple tags in `index.html`. On iPhone and iPad Safari,
+    Today shows a dismissible "Add KaiSip to your Home Screen" card with the
+    three steps (hidden for good with "Hide tip", key `aurivan_install_tip`).
+    No service worker yet (see the note below).
+  - **The old preview address** https://kaisip.com/preview-u63raxyfxc/ is no
+    longer built. `_redirects` sends it (and anything under it, keeping the
+    rest of the path and any `#` route) to `/app/` with a 301. Learners'
+    progress is saved per site (origin), not per folder, so whatever was saved
+    in the preview is there in `/app/`. If a Cloudflare Access app was set up
+    for the preview path, delete it (Zero Trust → Access → Applications).
+  - **Check after the deploy:** `https://kaisip.com/app/` shows the app;
+    `curl -sI https://kaisip.com/app/manifest.webmanifest` says
+    `content-type: application/manifest+json` (Cloudflare picks the type from
+    the `.webmanifest` name); `https://kaisip.com/preview-u63raxyfxc/` lands on
+    `/app/`; `https://kaisip.com/data/domain1.json` and
+    `https://kaisip.com/app/data/domain1.json` return a page, not JSON.
+    On an iPhone: open `/app/` in Safari, Share → Add to Home Screen: the
+    name reads KaiSip, the icon is the Kasama mark, and it opens full screen.
+  - **To roll back** (take the web app offline again): revert the pull request
+    that opened it, or set the build variable `SITE_NO_APP=1` in Cloudflare
+    (Workers & Pages → kaisip → Settings → Build → Variables) and redeploy.
+    Either way `/app/` and the preview redirect then show the not-found page;
+    remove the "Study free on the web" links from `home.html` in the same step.
+  - **Service worker: not yet.** Without one, the app needs a connection to
+    open and has no offline mode. One is worth adding later (offline study on
+    a train, faster repeat loads), but it needs a careful update strategy so a
+    learner never gets stuck on an old copy of the app or the question data,
+    so it is its own pull request.
+  - **Accounts later:** Supabase sign-in redirect addresses will need
+    `https://kaisip.com/app/` (stream B of `docs/WEB_LAUNCH_PLAN.md`).
 
 - **Live addresses:** https://kaisip.com and https://www.kaisip.com (custom
   domains on the Cloudflare Worker `kaisip`), plus the test address
@@ -53,7 +91,8 @@ Cloudflare publishes `_site/`:
 | `index.html`, `privacy.html`, `terms.html`, `support.html`, `how-questions-are-made.html`, `beta.html` | The pages (`how-questions-are-made.html` is how questions are made and checked; `beta.html` is the beta-tester sign-up page at `/beta`; `/testers`, `/tester` and `/join` redirect to it) |
 | `assets/` (images, icons, fonts, stylesheets, plus one named script: `assets/kaisip-plant.js`) | Icons and fonts the pages use, and the plant companion (generated from the mobile app by `mobile/scripts/build-web-plant.mjs`) |
 | `data/free/cisa_d1.json` … `cisa_d5.json` (the free question sample, from `scripts/build_free_sample.py`), `data/cisa_notes.json`, `data/mindset/principles.json`, the two `data/exam/` files | The data the web app loads. The full bank `data/domain*.json` is **not** published since web v12.50; the build fails if any question outside the sample appears in `_site/` |
-| `_headers`, `_redirects` | Security headers and friendly redirects |
+| `manifest.webmanifest` (with the app only) | The install manifest: "Add to Home Screen" name, icons and full screen |
+| `_headers`, `_redirects` | Security headers and friendly redirects (and the `/app/` rules) |
 | `favicon.ico` | Browsers ask for it at the top level |
 
 Nothing else goes public: not `docs/`, `supabase/`, `mobile/`, `.claude/`,
@@ -94,7 +133,8 @@ site changes**: Cloudflare still runs the plain build, which is landing mode.
 | Its checks | `scripts/home_page/check.cjs`, served by `scripts/home_page/serve_site.cjs` |
 
 How the mode works: `/` becomes `home.html`; `/beta`, the legal pages, the Beta
-Desk and the unlisted app preview stay exactly as in landing mode. The home
+Desk and the web app at `/app/` (the unlisted preview until 28 Nov 2026) stay
+exactly as in landing mode. The home
 page's files are copied only in this mode, so in landing and app mode they are
 not public.
 
@@ -228,7 +268,7 @@ pull request). The beta page returns to `/` on the next deploy.
 6. Fewer, safer builds: open the project → **Settings → Builds**:
    - **Branch control → Preview branches:** *None* (or *Custom branches*,
      include `claude/*`, if you want a preview link for each pull request).
-   - **Build watch paths → Include paths:** `index.html`, `privacy.html`,
+   - **Build watch paths → Include paths:** `index.html`, `manifest.webmanifest`, `privacy.html`,
      `terms.html`, `support.html`, `how-questions-are-made.html`, `beta.html`,
      `assets/*`, `data/free/*`,
      `data/cisa_notes.json`, `data/mindset/principles.json`, `_headers`,

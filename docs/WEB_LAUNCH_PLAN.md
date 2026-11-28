@@ -37,8 +37,9 @@ and the owner's decisions.
   own TypeScript (`mobile/src/webcloud/`), so both apps sync with the same
   rules.
 - Nightly encrypted backups to Cloudflare R2.
-- The web study app already loads only the free CISA sample (web v12.50+),
-  and is built at a hidden preview path under the home page.
+- The web study app loads only the free CISA sample (web v12.50+). Since
+  28 Nov 2026 (web v13.1) it is public at https://kaisip.com/app/ (see
+  stream B, step 0).
 - Course content: CRISC 1,000, AAIA 1,000, CC 1,000 and CSOE 392 questions,
   each with notes, principles, an exam guide and a final review week. CIA
   Part 1 meets its gate; Parts 2 and 3 do not yet.
@@ -68,6 +69,14 @@ loop. Nothing goes public until its gate says so.
    client (`mobile/src/webcloud/`), so web and phone use one implementation.
 
 ### B. Website version with sign-in and sync (web v14, MAJOR)
+0. **Done (28 Nov 2026, web v13.1, owner decision): the web app is public
+   without sign-in**, so iPhone users can study before the App Store app.
+   The home page stays at `/`; the app is at `/app/` (step 3
+   below); the old preview folder redirects there. It installs with "Add to
+   Home Screen" (manifest, Apple tags, an iPhone Safari tip on Today). No
+   service worker yet. Details and rollback: `docs/WEBSITE_DEPLOY.md`.
+   Sign-in (the steps below) is unchanged and still waits for the go-live gates;
+   its redirect addresses must include `https://kaisip.com/app/`.
 1. `index.html`: sign-in screen (Google, email + password, forgot password;
    sign-up confirms the email with a code), the Account section (status, Sync now, Download my
    data, Delete synced progress, Delete account, sign out), first-sync

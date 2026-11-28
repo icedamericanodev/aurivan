@@ -61,7 +61,9 @@
 <meta property="og:site_name" content="KaiSip">
 <meta property="og:title" content="KaiSip: CISA exam prep that teaches the auditor’s mindset">
 <meta property="og:description" content="Think like an IS auditor. Practice questions that explain every option, mock exams and plain-language study notes for the CISA exam.">
-<meta property="og:url" content="https://kaisip.com/">
+<meta property="og:url" content="https://kaisip.com/app/">
+<!-- The web app lives at kaisip.com/app/ (the home page is at /). -->
+<link rel="canonical" href="https://kaisip.com/app/">
 <!-- Link previews (Reddit, Threads, iMessage, Slack): a 1200×630 card. Crawlers
      fetch it from the live site, so the URL is absolute. Master: design-notes/brand-kaisip/og/. -->
 <meta property="og:image" content="https://kaisip.com/assets/og-kaisip.png">
@@ -80,6 +82,15 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<!-- Install (v13.1): "Add to Home Screen" on iPhone and iPad, "Install" on
+     computers. The manifest gives the name, icons and full screen; the Apple
+     tags do the same on older iOS. Relative, so it works at /app/. -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="application-name" content="KaiSip">
+<meta name="apple-mobile-web-app-title" content="KaiSip">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#F3F1EA" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#111613" media="(prefers-color-scheme: dark)">
 
@@ -5996,6 +6007,15 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .td-app-badge img { display: block; height: 40px; width: auto; }
 .td-app-acts .gt-btn-secondary { min-height: 44px; padding: 0 var(--sp-lg); text-decoration: none; }
 .td-app-hide { margin-right: -4px; }
+/* Today, iPhone and iPad Safari (v13.1): add KaiSip to the Home Screen. An
+   InviteRow on a Today card (the td-app card rules), with the three steps. */
+.td-install .plnt-invite-h { font: var(--t-title); letter-spacing: var(--tr-title); }
+.td-install-steps { margin: var(--sp-sm) 0 0; padding-left: 1.4em; font: var(--t-small); color: var(--text); }
+.td-install-steps li { padding-left: 2px; }
+.td-install-steps li + li { margin-top: var(--sp-xs); }
+.td-install-steps strong { font-weight: 600; }
+.td-install-steps .ico { display: inline-block; vertical-align: -3px; margin: 0 4px; color: var(--accent-text); }
+.td-install-note { margin: var(--sp-sm) 0 0; font: var(--t-meta); color: var(--text2); max-width: 60ch; }
 /* v12.50: "You've worked through the free questions" (Today, between sessions). */
 .td-fs { margin: var(--sp-2xl) 0 0; padding: var(--sp-lg); background: var(--raised2); border-radius: var(--r-lg); }
 .td-fs-t { margin: 0; font: var(--t-headline); color: var(--text); }
@@ -9042,7 +9062,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
     <h2 class="vision-title" id="aboutVisionT">Think like an IS auditor.</h2>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v13.0.3</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v13.1</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -9362,6 +9382,9 @@ var ICONS = {
   "sliders": "<path d=\"M4 7h9M17 7h3M4 17h3M11 17h9\"/><circle cx=\"15\" cy=\"7\" r=\"2\"/><circle cx=\"9\" cy=\"17\" r=\"2\"/>",
   "retry": "<path d=\"M9 14 4 9l5-5\"/><path d=\"M4 9h10.5a5.5 5.5 0 0 1 0 11H11\"/>",
   "install": "<path d=\"M12 3.5v11M7.5 10l4.5 4.5 4.5-4.5\"/><path d=\"M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17\"/>",
+  // Add to Home Screen (v13.1): Safari's Share glyph and the add-to-home square.
+  "share": "<path d=\"M12 14.5v-11\"/><path d=\"m8 7.5 4-4 4 4\"/><path d=\"M8.5 10H7a1.5 1.5 0 0 0-1.5 1.5v8A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 17 10h-1.5\"/>",
+  "add-square": "<rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"4\"/><path d=\"M12 8.5v7M8.5 12h7\"/>",
   // The study-day streak's glyph (mobile Sprig, components/glyphs.tsx).
   "sprig": "<path d=\"M11 21c.2-5 1.5-9.4 5-13\"/><path d=\"M12.2 14.5C8.6 15 5.6 13.4 4.6 10c3.6-.6 6.6.9 7.6 4.5z\" fill=\"currentColor\" fill-opacity=\".22\"/><path d=\"M14.5 10.5c-.6-3.6 1-6.6 4.9-8 .6 3.7-1.2 6.8-4.9 8z\" fill=\"currentColor\" fill-opacity=\".22\"/>"
   };
@@ -9451,7 +9474,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v13.0.3';
+const APP_VERSION = 'v13.1';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -16641,10 +16664,12 @@ function renderHome() {
   // other invitation or setup card is on Today this visit (the other goes
   // first; the name waits). Showing it counts, for today only.
   var appCard = appCtaTodayHtml();
+  // iPhone and iPad Safari: how to add KaiSip to the Home Screen (v13.1).
+  var installCard = installTipHtml();
   var finalWeek = todayFinalWeekHtml(days);
   var freeDone = todayFreeDoneHtml();
   var todayKey = parityDayKey(now.getTime());
-  var askName = !todayNameNote && nameAskDue(st, todayKey, !!(backup || appCard || finalWeek || freeDone || plantInviteDue()));
+  var askName = !todayNameNote && nameAskDue(st, todayKey, !!(backup || appCard || installCard || finalWeek || freeDone || plantInviteDue()));
   if (askName && nameAskRead() === '') { try { localStorage.setItem(NAME_ASK_KEY, 'shown:' + todayKey); } catch (e) {} }
   // Only ask when the "shown" day sticks; otherwise a browser that can't save
   // would ask on every visit.
@@ -16706,7 +16731,7 @@ function renderHome() {
     + '</div>'
     // Phones read it top to bottom: the hero, the plan, the week, what else, then the column.
     + appCard
-    + hero + freeDone + nameCard + finalWeek
+    + hero + installCard + freeDone + nameCard + finalWeek
     + (showTwig ? todayTwigHtml(now, st, 'm', twigGrow) : '')
     + next
     + '<div class="td-pair">' + todayMindSlotHtml(st) + backup + '</div>'
@@ -26671,6 +26696,52 @@ function appCtaNotNow() {
   showToast('Hidden for 14 days. The app link stays in About.', 'info', 2600);
 }
 
+// ── ADD TO HOME SCREEN (v13.1): iPhone and iPad Safari only ──
+// Safari has no install prompt, so Today shows the three steps in one quiet
+// card under the plan, until "Hide tip" (a NEW device-only key, 'hidden').
+// Never when KaiSip already runs from the Home Screen, in another iOS browser
+// or an in-app browser, or off https (a saved file or a plain address).
+var INSTALL_TIP_KEY = 'aurivan_install_tip';
+function installTipStandalone() {
+  try {
+    if (navigator.standalone === true) return true;
+    return !!(window.matchMedia && (window.matchMedia('(display-mode: standalone)').matches
+      || window.matchMedia('(display-mode: fullscreen)').matches));
+  } catch (e) { return false; }
+}
+function installTipDue() {
+  try {
+    if (appCtaPlatform() !== 'ios' || installTipStandalone()) return false;
+    var ua = String(navigator.userAgent || '');
+    // Other iOS browsers and in-app browsers name themselves in the UA.
+    if (!/Safari\//.test(ua) || /CriOS|FxiOS|EdgiOS|OPiOS|OPT\/|YaBrowser|DuckDuckGo|Ddg\/|GSA\/|FBAN|FBAV|Instagram|Line\/|LinkedInApp|MicroMessenger|Snapchat|Pinterest|Twitter/i.test(ua)) return false;
+    if (location.protocol !== 'https:' && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) return false;
+    return localStorage.getItem(INSTALL_TIP_KEY) !== 'hidden';
+  } catch (e) { return false; }
+}
+function installTipHtml() {
+  if (!installTipDue()) return '';
+  return '<section class="td-app td-install" id="tdInstall" aria-labelledby="tdInstallH">'
+    + '<div class="plnt-invite"><span class="you-ico" aria-hidden="true">' + ico('add-square', 20) + '</span>'
+    + '<div class="plnt-invite-t"><h2 class="plnt-invite-h" id="tdInstallH">Add KaiSip to your Home Screen</h2>'
+    + '<p class="plnt-invite-m">It opens full screen, like an app.</p>'
+    + '<ol class="td-install-steps">'
+    + '<li>Tap <strong>Share</strong>' + ico('share', 18) + 'in Safari. Don&rsquo;t see it? Tap <strong>More</strong> (&middot;&middot;&middot;) first.</li>'
+    + '<li>Choose <strong>Add to Home Screen</strong>.</li>'
+    + '<li>Tap <strong>Add</strong>.</li></ol>'
+    + '<p class="td-install-note">The Home Screen app keeps its own progress. Studied here already? Use Back up in Settings, then Restore in the Home Screen app.</p>'
+    + '<div class="plnt-invite-acts"><button type="button" class="plnt-ghost plnt-ghost-quiet" onclick="installTipHide()" aria-describedby="tdInstallH">Hide tip</button></div>'
+    + '</div></div></section>';
+}
+function installTipHide() {
+  try { localStorage.setItem(INSTALL_TIP_KEY, 'hidden'); } catch (e) {}
+  var card = document.getElementById('tdInstall');
+  if (card && card.parentNode) card.parentNode.removeChild(card);
+  var next = document.getElementById('tdGo') || document.getElementById('tdTitle');
+  if (next) { try { next.focus({ preventScroll: true }); } catch (e) {} }
+  showToast('Tip hidden. Safari\u2019s Share menu can still add KaiSip to your Home Screen.', 'info', 3200);
+}
+
 // ── "You've worked through the free questions" (web v12.50) ──
 // Today only, between sessions (never with a set left open or a mock
 // unfinished): once every loaded question has been answered at least once,
@@ -27718,6 +27789,14 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'KaiSip is on the web',
+    items: [
+      { cat: 'new', text: 'KaiSip is now on the web for everyone: study free in any browser.' },
+      { cat: 'new', text: 'On iPhone and iPad, add KaiSip to your Home Screen from Safari to open it full screen, like an app. Today shows the steps.' },
+    ],
+  },
+  {
+    version: 'v13.0.3',
     items: [
       { cat: 'improved', text: 'A few more practice questions are free to try, including the first questions new learners see in the phone app.' },
     ],

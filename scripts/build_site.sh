@@ -16,7 +16,7 @@
 #       beta-desk.html (the private Beta Desk, kaisip.com/beta-desk: the page
 #       holds no tester data; rows load only after an admin's two-step
 #       sign-in, and the database checks it). The desk is published only at
-#       the top of the site, never inside the preview folder.
+#       the top of the site, never inside the web app folder (/app/).
 #     - 404.html: the not-found page. With it, Cloudflare answers a missing
 #       address with a real 404 instead of its single-page fallback (which
 #       showed the home page, broken by the strict /data/* and /assets/*
@@ -42,6 +42,10 @@
 #       CRISC and AAIA samples in data/free/ are for the phone app, and a
 #       second guard stops the build if any other course's question id or
 #       data/free/ file is in _site/.
+#     - manifest.webmanifest (web app mode only): the install manifest, so
+#       "Add to Home Screen" (iPhone) and "Install" (computers) give the app
+#       its name and icon and open it full screen. It names assets/icon-192.png
+#       and assets/icon-512.png. No service worker.
 #     - _headers (security and cache headers) and _redirects
 #     - favicon.ico at the top level (browsers ask for /favicon.ico by
 #       themselves)
@@ -67,20 +71,29 @@ OUT="${SITE_OUT:-_site}"
 #     How questions are made. The
 #     web study app and every data file are not published; any other address
 #     gets the not-found page (404.html, status 404).
-#   app: the full web study app as before (index.html + the free sample).
-#     CI and the smoke tester build this too, so the app stays deployable.
-# To reopen the web app at launch: change "home" to "app" on the next line.
+#   app: the web study app at the top of the site (index.html + the free
+#     sample). CI and the smoke tester build this too, so it stays deployable.
 SITE_MODE="${SITE_MODE:-home}"
-# While the site is closed, the web study app is still built into this
-# unlisted folder, so the owner can preview it at https://kaisip.com/<folder>/
-# (free sample only, never the full bank; marked noindex in _headers). Keep the
-# name in step with its rule in _headers. Remove the preview at launch.
-PREVIEW_DIR="preview-u63raxyfxc"
-#   home (not live yet, owner approval needed): the new marketing home page
+# The web study app, public since 28 Nov 2026 (owner): in home and landing
+# mode it is built (app mode, with all its own checks) into this folder, so it
+# lives at https://kaisip.com/app/ under the home page. Free sample only, never
+# the full bank. Its rules in _headers (/app/...) give it the app's policy and
+# sane caching; it is indexable. Only index.html, the manifest, the data and
+# assets/ go in it: its links to the legal pages and /beta go to the top-level
+# pages through _redirects (/app/privacy.html -> /privacy ...).
+# SITE_NO_APP=1 leaves the folder out (CI's quick home check; the old name
+# SITE_NO_PREVIEW still works). To take the web app offline again: build with
+# SITE_NO_APP=1 (a Cloudflare build variable) or revert the launch pull request.
+APP_DIR="app"
+# The unlisted preview folder the app lived in from 4 to 28 Nov 2026. It is no
+# longer built; _redirects sends /preview-u63raxyfxc/... to /app/... (same
+# origin, so progress saved in the preview stays). The build checks that line.
+OLD_PREVIEW_DIR="preview-u63raxyfxc"
+#   home (the default since 18 Nov 2026): the marketing home page
 #     (home.html, with assets/home.css, assets/home.js and assets/home/) is
-#     the home page; /beta, the legal pages and the unlisted app preview stay
+#     the home page; /beta, the legal pages and the web app at /app/ stay
 #     exactly as in landing mode. Its files are left out of the other two
-#     modes, so merging them publishes nothing.
+#     modes.
 #     The page is a DRAFT unless its <meta name="kaisip-home-status"> says
 #     "approved", and also while it holds draft wording (sample feedback, the
 #     waitlist mockup) or a quote without recorded permission. A draft refuses
@@ -106,6 +119,12 @@ HOME_DRAFT=""
 PAGES=(index.html 404.html privacy.html terms.html support.html how-questions-are-made.html beta.html)
 DATA=(data/free/cisa_d1.json data/free/cisa_d2.json data/free/cisa_d3.json data/free/cisa_d4.json data/free/cisa_d5.json data/cisa_notes.json data/mindset/principles.json data/exam/cisa_exam_guide.json data/exam/final_review_week.json)
 SITE_CONFIG=(_headers _redirects)
+# Inside /app/ (the outer build sets SITE_APP_FOLDER=1): the app page only.
+# The legal pages, /beta and the not-found page stay at the top of the site.
+if [ -n "${SITE_APP_FOLDER:-}" ]; then
+  [ "$SITE_MODE" = "app" ] || { echo "build_site: SITE_APP_FOLDER needs SITE_MODE=app" >&2; exit 1; }
+  PAGES=(index.html)
+fi
 # File types allowed inside assets/ (lower case).
 ASSET_TYPES='png|ico|svg|webp|jpg|jpeg|woff2|woff|css'
 
@@ -131,7 +150,31 @@ for f in "${PAGES[@]}" "${SITE_CONFIG[@]}"; do
   cp "$f" "$OUT/$f"
 done
 
-# The Beta Desk: top level only (the preview build sets SITE_OUT), so its own
+# The web app's install manifest (app mode only). Relative start_url and
+# scope ("./"), so it opens the folder it is served from: /app/ on kaisip.com,
+# the top of the site in plain app mode. Its icons must be published files.
+if [ "$SITE_MODE" = "app" ]; then
+  [ -f manifest.webmanifest ] || fail "missing manifest.webmanifest"
+  python3 - <<'PYMAN' || fail "manifest.webmanifest is not valid (see above)"
+import json, os, sys
+m = json.load(open("manifest.webmanifest"))
+bad = []
+if m.get("name") != "KaiSip" or m.get("short_name") != "KaiSip": bad.append("name and short_name must be KaiSip")
+if m.get("start_url") != "./" or m.get("scope") != "./": bad.append('start_url and scope must be "./"')
+if m.get("display") != "standalone": bad.append("display must be standalone")
+icons = m.get("icons") or []
+for i in icons:
+    src = i.get("src", "")
+    if not src.startswith("assets/") or not os.path.isfile(src): bad.append("icon not in assets/: " + src)
+sizes = {i.get("sizes") for i in icons}
+if not {"192x192", "512x512"} <= sizes: bad.append("needs 192x192 and 512x512 icons")
+if bad:
+    print("build_site: manifest.webmanifest: " + "; ".join(bad), file=sys.stderr); sys.exit(1)
+PYMAN
+  cp manifest.webmanifest "$OUT/manifest.webmanifest"
+fi
+
+# The Beta Desk: top level only (the web app build sets SITE_OUT), so its own
 # strict rules in _headers (no-store, noindex, CSP) always apply to it.
 DESK=""
 if [ -z "${SITE_OUT:-}" ]; then
@@ -274,13 +317,50 @@ done < <(find assets -type f -print0)
 
 [ -f assets/favicon.ico ] && cp assets/favicon.ico "$OUT/favicon.ico"
 
-# Landing mode: build the web app (app mode, with all its own checks) into the
-# unlisted preview folder. Its _headers/_redirects are dropped: Cloudflare
-# reads only the ones at the top of the site.
-if { [ "$SITE_MODE" = "landing" ] || [ "$SITE_MODE" = "home" ]; } && [ -z "${SITE_NO_PREVIEW:-}" ]; then
-  grep -qxF "/$PREVIEW_DIR/*" _headers || fail "_headers has no rule for /$PREVIEW_DIR/* (noindex)"
-  SITE_MODE=app SITE_OUT="$OUT/$PREVIEW_DIR" bash "$0" > /dev/null || fail "the preview build (web app mode) failed"
-  rm -f "$OUT/$PREVIEW_DIR/_headers" "$OUT/$PREVIEW_DIR/_redirects"
+# Home and landing mode: build the web app (app mode, with all its own checks)
+# into /app/. Its _headers/_redirects are dropped: Cloudflare reads only the
+# ones at the top of the site, which carry the /app/ rules (checked here).
+APP_BUILT=""
+if { [ "$SITE_MODE" = "landing" ] || [ "$SITE_MODE" = "home" ]; } && [ -z "${SITE_NO_APP:-}${SITE_NO_PREVIEW:-}" ]; then
+  python3 - "$APP_DIR" "$OLD_PREVIEW_DIR" <<'PYAPP' || fail "_headers or _redirects do not fit the web app at /$APP_DIR/ (see above)"
+import sys
+app, old = sys.argv[1:3]
+rules, cur = {}, None
+for ln in open("_headers"):
+    if not ln.strip() or ln.strip().startswith("#"):
+        continue
+    if not ln[0].isspace():
+        cur = ln.strip(); rules.setdefault(cur, [])
+    elif cur:
+        rules[cur].append(ln.strip())
+bad = []
+def has(rule, text):
+    return any(text in h for h in rules.get(rule, []))
+for r in ("/%s/" % app, "/%s/index.html" % app, "/%s/manifest.webmanifest" % app):
+    if not has(r, "Cache-Control: public, max-age=0, must-revalidate"): bad.append(r + " needs Cache-Control: public, max-age=0, must-revalidate")
+for r in ("/%s/data/*" % app, "/%s/assets/*" % app):
+    if not has(r, "Content-Security-Policy: default-src 'none'"): bad.append(r + " needs the strict default-src 'none' policy (as /data/* and /assets/*)")
+    if not has(r, "Cache-Control: public, max-age="): bad.append(r + " needs a Cache-Control")
+# One Cache-Control per address: Cloudflare joins values from rules that match
+# the same path, so no catch-all rule over the whole folder may set one.
+if any(r.startswith("/%s/" % app) and r.endswith("*") and r not in ("/%s/data/*" % app, "/%s/assets/*" % app) for r in rules):
+    bad.append("no other wildcard rule under /%s/ (its Cache-Control would be joined with the folder rules)" % app)
+if any("noindex" in h for r, hs in rules.items() if r.startswith("/%s/" % app) for h in hs):
+    bad.append("the web app is public: no noindex under /%s/" % app)
+if any(r.startswith("/%s/" % old) for r in rules):
+    bad.append("the old preview folder's rule should be gone (it redirects now)")
+redirects = [ln.split() for ln in open("_redirects") if ln.strip() and not ln.lstrip().startswith("#")]
+need = [["/%s" % old, "/%s/" % app, "301"], ["/%s/*" % old, "/%s/:splat" % app, "301"]]
+for page in ("privacy", "terms", "support", "how-questions-are-made", "beta"):
+    need.append(["/%s/%s.html" % (app, page), "/" + page, "301"])
+for n in need:
+    if n not in redirects: bad.append("_redirects needs: " + " ".join(n))
+if bad:
+    print("build_site: " + "; ".join(bad), file=sys.stderr); sys.exit(1)
+PYAPP
+  SITE_MODE=app SITE_APP_FOLDER=1 SITE_OUT="$OUT/$APP_DIR" bash "$0" > /dev/null || fail "the web app build (app mode, into /$APP_DIR/) failed"
+  rm -f "$OUT/$APP_DIR/_headers" "$OUT/$APP_DIR/_redirects"
+  APP_BUILT=1
 fi
 
 # The legal pages' inline theme script is allowed in _headers by its sha256
@@ -496,13 +576,24 @@ while IFS= read -r -d '' f; do
   rel="${f#"$OUT"/}"
   case "$rel" in
     index.html|404.html|privacy.html|terms.html|support.html|how-questions-are-made.html|beta.html|_headers|_redirects|favicon.ico) ;;
-    beta-desk.html) [ -n "$DESK" ] || fail "the Beta Desk must not be in the preview folder" ;;
+    beta-desk.html) [ -n "$DESK" ] || fail "the Beta Desk must not be in the web app folder" ;;
+    manifest.webmanifest) [ "$SITE_MODE" = "app" ] || fail "the install manifest belongs to the web app (SITE_MODE=app): $rel" ;;
     waitlist-thanks.html|waitlist-confirmed.html) [ "$SITE_MODE" = "home" ] || fail "$rel belongs to SITE_MODE=home only" ;;
     data/free/cisa_d[1-5].json|data/cisa_notes.json|data/mindset/principles.json) ;;
     data/exam/cisa_exam_guide.json|data/exam/final_review_week.json) ;;
     assets/home.css|assets/home.js|assets/home/*) [ "$SITE_MODE" = "home" ] || fail "the home page's files must not be published in SITE_MODE=$SITE_MODE: $rel" ;;
     assets/*) ;;
-    "$PREVIEW_DIR"/*) [ "$SITE_MODE" != "app" ] || fail "unexpected file in the site: $rel" ;;
+    "$APP_DIR"/*)
+      [ -n "$APP_BUILT" ] || fail "unexpected file in the site: $rel"
+      # The web app folder holds the app page, its manifest, its data and assets only.
+      case "${rel#"$APP_DIR"/}" in
+        index.html|manifest.webmanifest|favicon.ico) ;;
+        data/free/cisa_d[1-5].json|data/cisa_notes.json|data/mindset/principles.json) ;;
+        data/exam/cisa_exam_guide.json|data/exam/final_review_week.json) ;;
+        assets/home.css|assets/home.js|assets/home/*|assets/beta-desk.js) fail "not part of the web app: $rel" ;;
+        assets/*) ;;
+        *) fail "unexpected file in the web app folder: $rel" ;;
+      esac ;;
     *) fail "unexpected file in the site: $rel" ;;
   esac
 done < <(find "$OUT" -type f -print0)

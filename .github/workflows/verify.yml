@@ -52,10 +52,10 @@ jobs:
       # so a missing page or a stray file fails here, before it can deploy.
       - name: Website build (allowlist only)
         run: bash scripts/build_site.sh
-      # The web study app is closed until the store launch (SITE_MODE=home,
-      # the marketing home page, is the default). Build the app mode too, so it is
-      # always ready to reopen.
-      - name: Website build, web app mode (kept ready for launch)
+      # The default build (SITE_MODE=home) already builds the web study app
+      # into /app/. Build the plain app mode too (the app at the top of the
+      # site), so it stays ready as a fallback.
+      - name: Website build, web app mode (kept ready as a fallback)
         run: SITE_MODE=app bash scripts/build_site.sh
       # The new marketing home page (home.html) is not live. While it is a
       # draft, the plain home build must refuse it with the draft message; the
@@ -66,7 +66,7 @@ jobs:
       # is a draft; this step only checks that it refuses one for publishing.
       - name: Website build, home page mode (draft, not deployed)
         run: |
-          if out="$(SITE_MODE=home SITE_NO_PREVIEW=1 SITE_OUT=/tmp/site-home-nodraft bash scripts/build_site.sh 2>&1)"; then
+          if out="$(SITE_MODE=home SITE_NO_APP=1 SITE_OUT=/tmp/site-home-nodraft bash scripts/build_site.sh 2>&1)"; then
             echo "The home page is approved and builds for publishing."
           else
             echo "$out" | grep -q 'is a draft' || { echo "$out"; exit 1; }
