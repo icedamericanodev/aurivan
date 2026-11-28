@@ -1144,9 +1144,10 @@ if (wanted('A10')) {
 // One walk through every screen. `shots` saves a picture of each (the folder);
 // `c` (a test) checks no sideways scroll at five widths and with text at 200%.
 const WIDTHS = [320, 360, 768, 1024, 1280];
-async function walk(v, scheme, shots, c) {
+async function walk(v, scheme, shots, c, axeOnly = false) {
   const snap = async (page, name, full = false) => {
-    if (c) {
+    if (c && axeOnly) await axe(page, c, `${name} (${v}, ${scheme})`, /delete-account-page|human-check-page/.test(name));
+    else if (c) {
       const size = page.viewportSize();
       for (const w of WIDTHS) { await page.setViewportSize({ width: w, height: size.height }); await sleep(60); await noOverflow(page, c, `${name} at ${w}px`); }
       await page.setViewportSize(size);
@@ -1243,6 +1244,14 @@ if (wanted('A11')) {
   await rec.run('A11', 'Every screen: no sideways scroll from 320 to 1280 wide, and none with text at 200%', probe.page, async (c) => { await walk('phone', 'light', '', c); }, { allowErrors: true });
   await probe.ctx.close();
 }
+// The same walk in the dark theme, with axe at every screen (contrast is checked per theme).
+if (wanted('A12')) {
+  for (const v of ['phone', 'desktop']) {
+    const probe = await setup({ view: v, scheme: 'dark' });
+    await rec.run(`A12-${v}`, 'Every screen in the dark theme: axe finds nothing', probe.page, async (c) => { await walk(v, 'dark', '', c, true); }, { allowErrors: true });
+    await probe.ctx.close();
+  }
+}
 if (SHOTS) {
   fs.mkdirSync(SHOTS, { recursive: true });
   for (const v of ['phone', 'desktop']) for (const scheme of ['light', 'dark']) { console.log(`shots: ${v} ${scheme}`); await walk(v, scheme, SHOTS, null); }
@@ -1259,6 +1268,38 @@ if (SHOTS) {
   await sp.screenshot({ path: path.join(SHOTS, 'contact_sheet.png'), fullPage: true });
   await sp.close();
   console.log(`shots: ${files.length} pictures and contact_sheet.png in ${SHOTS}`);
+}
+
+// ── A7 (more). Another account signs in on the same browser ──
+if (wanted('A7')) {
+  const ids = freeIds(4, 2);
+  const { ctx, page, server } = await setup({ view: 'phone', seed: profileSeed(ids) });
+  const idA = await makeAccount(server);
+  const idB = await makeAccount(server, 'noel@example.com', PW2);
+  await rec.run('A7-switch', 'A different account on the same browser: it asks first, Start fresh is the main choice, and Combine sends only this browser’s own progress', page, async (c) => {
+    await signIn(page);
+    await waitView(page, 'firstsync'); await page.click('#kaGo'); await waitView(page, ''); await settled(page);
+    const hashA = JSON.parse((await store(page)).local.kaisip_sync_v1).accountHash;
+    await page.evaluate(() => navGoFocus(null, 'account')); await page.click('#kaOut'); await page.click('#flagModal #kaGo');
+    await page.waitForFunction(() => !localStorage.getItem('kaisip_auth_v1') && /Saved in this browser only/.test((document.getElementById('kaCard') || {}).textContent || ''));
+    c.check(!!(await store(page)).local.kaisip_sync_mirror_v1, 'signing out keeps this browser’s sync record, so the same account carries on later');
+    await signIn(page, 'noel@example.com', PW2);
+    await waitView(page, 'firstsync');
+    c.check((await text(page, '#kaRoot h1')) === 'A different account', 'the title: ' + (await text(page, '#kaRoot h1')));
+    const btns = await page.evaluate(() => [...document.querySelectorAll('.ka-choices button')].map((b) => [b.textContent.trim(), b.className]));
+    c.check(btns[0][0] === 'Start fresh with this account' && /primary/.test(btns[0][1]) && btns[1][0] === 'Combine them' && btns[2][0] === 'Not now', 'Start fresh is the main choice: ' + JSON.stringify(btns.map((b) => b[0])));
+    c.check(!server.row(idB, 'progress'), 'nothing is sent to the second account before the choice');
+    await axe(page, c, 'a different account');
+    await noOverflow(page, c, 'a different account');
+    await c.shot('a7-switch');
+    await page.click('.ka-choices .ka-btn-secondary');
+    await waitView(page, ''); await settled(page);
+    const st = await store(page);
+    c.check(JSON.parse(st.local.kaisip_sync_v1).accountHash !== hashA && !!server.row(idB, 'progress'), 'this browser now syncs with the second account');
+    c.check(ids.every((id) => (JSON.parse(st.local.cisa_profiles_v1)['CISA-AAAAA'].state.answerLog || {})[id]), 'and keeps its own progress');
+    c.check(!!server.row(idA, 'progress'), 'the first account keeps its copy');
+  });
+  await ctx.close();
 }
 
 await browser.close();

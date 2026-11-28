@@ -8883,7 +8883,9 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 #kaRoot fieldset { border: 0; min-width: 0; }
 #kaRoot a, .ka-acct a, .ka-card a, .ka-dlg a { color: var(--accent-text); text-underline-offset: 3px; text-decoration-thickness: 1px; }
 #kaRoot :focus-visible, .ka-card :focus-visible, .ka-acct :focus-visible, .ka-dlg :focus-visible, .ka-rail:focus-visible, .ka-top:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
-#kaRoot h1:focus { outline: none; }
+/* A screen's title takes focus when the screen opens: ringed for keyboard users only (:focus-visible above). */
+#kaRoot h1:focus:not(:focus-visible) { outline: none; }
+.ka-btn, .ka-path, .ka-card-main, .ka-card-act, .ka-item, .ka-toggle, .ka-linkbtn, .ka-reveal, .ka-check { touch-action: manipulation; }
 /* A hidden label inside a flex link keeps to its link (it would otherwise widen the page). */
 #kaRoot a, .ka-card a, .ka-acct a, .ka-rail, .ka-top { position: relative; }
 #kaRoot .sr-only, .ka-card .sr-only, .ka-acct .sr-only, .ka-rail .sr-only, .ka-top .sr-only { left: 0; top: 0; }
@@ -8916,7 +8918,7 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
   .ka-foot span { width: auto; margin-left: auto; align-self: center; }
   .ka-title { font-size: 2.5rem; }
 }
-.ka-panel { position: relative; height: 100%; min-height: 40rem; border-radius: 28px; overflow: hidden; isolation: isolate; padding: 72px 64px 56px; display: flex; flex-direction: column; color: var(--on-forest); background: linear-gradient(180deg, var(--forest-top), var(--forest) 60%); box-shadow: inset 0 1px 0 var(--forest-hl); position: sticky; top: 16px; max-height: calc(100vh - 32px); }
+.ka-panel { height: 100%; min-height: 40rem; border-radius: 28px; overflow: hidden; isolation: isolate; padding: 72px 64px 56px; display: flex; flex-direction: column; color: var(--on-forest); background: linear-gradient(180deg, var(--forest-top), var(--forest) 60%); box-shadow: inset 0 1px 0 var(--forest-hl); position: sticky; top: 16px; max-height: calc(100vh - 32px); }
 .ka-fronds { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
 .ka-fronds path { fill: none; stroke: var(--forest-line); stroke-width: 1.6; stroke-linejoin: round; }
 .ka-fronds .ka-sap path { stroke: var(--sap); opacity: .35; }
@@ -27451,7 +27453,8 @@ var ka = {
   bootHash: '',
   firstBusy: false,
   resetFor: '',       // the address the last reset code was asked for
-  bankWait: false
+  bankWait: false,
+  loadFailed: false   // a session is saved here, but the accounts client couldn't be loaded (offline)
 };
 
 function kaGet(k, session) { try { return (session ? sessionStorage : localStorage).getItem(k); } catch (e) { return null; } }
@@ -27848,7 +27851,11 @@ function kaSyncSoon() {
 // What the account card and the Account page say. One word per state.
 function kaState() {
   var acct = kaAccount();
-  if (!acct) return kaEnded() || (!ka.cloud && kaGet('kaisip_auth_ended_v1')) ? 'expired' : 'guest';
+  if (!acct) {
+    // A saved session, but the client is still on its way (or couldn't load): not a guest.
+    if (!ka.cloud && kaHasSession()) return ka.loadFailed ? 'offline' : 'checking';
+    return kaEnded() || (!ka.cloud && kaGet('kaisip_auth_ended_v1')) ? 'expired' : 'guest';
+  }
   var cloud = ka.cloud;
   try { if (cloud.auth.passwordNeeded()) return 'needpw'; } catch (e) {}
   var meta = cloud.device.meta();
@@ -27870,12 +27877,12 @@ function kaSyncedWords(long) {
   if (mins < 1) return long ? 'Last synced just now' : 'Synced just now';
   if (mins < 60) return long ? 'Last synced ' + mins + (mins === 1 ? ' minute' : ' minutes') + ' ago, at ' + time : 'Synced ' + mins + ' min ago';
   if (isoLocalDate(d) === isoLocalDate(new Date(now))) return (long ? 'Last synced today at ' : 'Synced today at ') + time;
-  var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  return (long ? 'Last synced ' : 'Synced ') + d.getDate() + ' ' + MON[d.getMonth()];
+  return (long ? 'Last synced ' : 'Synced ') + d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
 }
 // The status line in words (the card's second line).
 function kaStateWords(st) {
   if (st === 'syncing') return 'Syncing…';
+  if (st === 'checking') return 'Checking your sign-in…';
   if (st === 'offline') return 'Waiting for a connection';
   if (st === 'error') return 'Couldn’t sync just now';
   if (st === 'expired') return 'Please sign in again to keep syncing';
@@ -28648,8 +28655,8 @@ function kaFirstSyncHtml() {
   }
   return kaShell('sync',
     '<h1 class="ka-title" tabindex="-1">' + title + '</h1><p class="ka-lede">' + body + '</p>'
-    + '<table class="ka-cols"><caption class="sr-only">What each side holds, and the result of combining</caption><thead><tr><th scope="col"><span class="sr-only">What</span></th><th scope="col">This browser</th><th scope="col">Account</th><th scope="col">After</th></tr></thead><tbody>' + rows + '</tbody></table>'
-    + '<p class="ka-fine">Questions answered on both count once. “After” is the result of combining.</p>'
+    + (switched ? '' : '<table class="ka-cols"><caption class="sr-only">What each side holds, and the result of combining</caption><thead><tr><th scope="col"><span class="sr-only">What</span></th><th scope="col">This browser</th><th scope="col">Account</th><th scope="col">After</th></tr></thead><tbody>' + rows + '</tbody></table>'
+    + '<p class="ka-fine">Questions answered on both count once. “After” is the result of combining.</p>')
     + '<p class="ka-error" id="kaFormE" role="alert"></p>'
     + '<div class="ka-choices">' + main + alt + '<button type="button" class="ka-btn ka-btn-quiet" onclick="kaFirstLater()">Not now</button></div>'
     + (alt ? '<p class="ka-note">' + kaIco('undo', 18) + '<span>If you replace this browser’s progress, we keep a copy for 7 days. You can put it back from your Account page.</span></p>' : ''));
@@ -28659,7 +28666,16 @@ function kaFirstConfirm(mode) {
   if (!cloud || !prep || ka.firstBusy) return Promise.resolve();
   ka.firstBusy = true;
   if (ka.view === 'firstsync') kaBusy(true, 'Syncing your progress…');
-  return cloud.confirmFirst(prep, mode).catch(function () { return { kind: 'failed', code: 'server' }; }).then(function (r) {
+  var go;
+  if (mode === 'merge' && cloud.accountChanged()) {
+    // Another account synced here before. Its copy is forgotten first, so only what this
+    // browser itself shows is combined with the new account (never the other account's data).
+    cloud.device.forget();
+    go = cloud.prepareFirst().then(function (r) { return r.ok ? cloud.confirmFirst(r.prep, 'merge') : { kind: 'failed', code: r.code === 'offline' ? 'offline' : 'server' }; });
+  } else {
+    go = cloud.confirmFirst(prep, mode);
+  }
+  return go.catch(function () { return { kind: 'failed', code: 'server' }; }).then(function (r) {
     ka.firstBusy = false;
     if (r.kind === 'failed' || r.kind === 'paused') {
       var words = r.kind === 'paused' ? 'This browser’s progress is too large to sync. It is safe here; nothing was changed.' : r.code === 'offline' ? KA_WORDS.offline : 'We couldn’t sync just now. Nothing was changed. Try again in a little while.';
@@ -28793,6 +28809,7 @@ function kaCardHtml() {
   var act = function (label, icon, busy) {
     return '<button type="button" class="ka-card-act' + (busy ? ' is-busy' : '') + '" data-f="sync"' + (busy ? ' aria-disabled="true"' : '') + ' onclick="kaCardSync()">' + kaIco(icon, 20) + '<span>' + label + '</span></button>';
   };
+  if (st === 'checking') return head + '<div class="ka-card-row"><div class="ka-card-main">' + disc('sync', 'is-quiet') + text + '</div></div>';
   if (st === 'syncing') return head + '<div class="ka-card-row">' + open(disc('sync')) + act('Syncing…', 'sync', true) + '</div>';
   if (st === 'offline') return head + '<div class="ka-card-row">' + open(disc('cloudoff', 'is-quiet')) + '</div>';
   if (st === 'error') return head + '<div class="ka-card-row">' + open(disc('alert', 'is-attn')) + act('Try again', 'sync') + '</div>';
@@ -28844,7 +28861,7 @@ function kaRailDraw() {
   var rail = kaEl('kaRail');
   if (rail) {
     rail.setAttribute('href', guest || st === 'expired' ? '#sign-in' : '#account');
-    var html = '<span class="ka-disc' + (st === 'expired' || st === 'error' || st === 'setup' || st === 'needpw' || st === 'paused' ? ' is-attn' : '') + '" aria-hidden="true">' + kaIco(guest ? 'laptop' : st === 'synced' || st === 'syncing' ? 'okcircle' : st === 'offline' ? 'cloudoff' : st === 'off' ? 'sync' : 'alert', 18) + '</span>'
+    var html = '<span class="ka-disc' + (st === 'expired' || st === 'error' || st === 'setup' || st === 'needpw' || st === 'paused' ? ' is-attn' : '') + '" aria-hidden="true">' + kaIco(guest ? 'laptop' : st === 'synced' || st === 'syncing' ? 'okcircle' : st === 'offline' ? 'cloudoff' : st === 'off' || st === 'checking' ? 'sync' : 'alert', 18) + '</span>'
       + '<span class="ka-rail-t"><span class="ka-rail-h">' + (guest ? 'Not signed in' : '<span aria-hidden="true">' + escapeHtml(mail || 'Your account') + '</span><span class="sr-only">Account, ' + escapeHtml(kaMailSpoken(mail)) + '</span>') + '</span>'
       + '<span class="ka-rail-m">' + escapeHtml(guest ? 'Saved in this browser' : kaStateWords(st)) + '</span></span>';
     if (rail.innerHTML !== html) rail.innerHTML = html;
@@ -28934,7 +28951,13 @@ function kaRenderAccount() {
   if (!who) {
     // Not signed in (or not known yet): the Account page has nothing to show.
     box.innerHTML = '<h1 class="you-title" id="kaAcctTitle" tabindex="-1">Account</h1>';
-    kaWhenKnown(function () { if (kaAccount()) kaRenderAccount(); else { switchTab('you', { noScroll: true }); kaShow('signin'); } });
+    kaWhenKnown(function () {
+      if (kaAccount()) { kaRenderAccount(); return; }
+      switchTab('you', { noScroll: true });
+      // A session is saved here but the client couldn't load: say so; never ask a signed-in learner to sign in.
+      if (!ka.cloud && kaHasSession()) { ka.loadFailed = true; kaPaint(); showToast(KA_WORDS.offline, 'info', 3600); return; }
+      kaShow('signin');
+    });
     return;
   }
   var cloud = ka.cloud;
@@ -29101,8 +29124,9 @@ function kaAfterSignOut(wipe) {
     try { ka.cloud.device.forget(); ka.cloud.device.dropUndo(); } catch (e) {}
     kaDel(KA_CONSENT_KEY);
   }
-  if (ka.view) kaGoApp('you');
-  else if (S.activeTab === 'account') { switchTab('you', { noScroll: true }); window.scrollTo(0, 0); try { navFocusTitle(); } catch (e2) {} }
+  // Leave a screen that needs a signed-in learner; a sign-in screen already open stays.
+  if (ka.view === 'consent' || ka.view === 'firstsync' || ka.view === 'signup3') kaGoApp('you');
+  else if (!ka.view && S.activeTab === 'account') { switchTab('you', { noScroll: true }); window.scrollTo(0, 0); try { navFocusTitle(); } catch (e2) {} }
   kaPaint();
   if (wipe) { try { doResetProgress(); } catch (e3) {} showToast('Signed out. Your progress was removed from this browser.', 'info', 4200); }
   else showToast('Signed out. Your progress stays in this browser.', 'info', 3600);
@@ -29297,7 +29321,7 @@ function kaStart() {
       if (!kaAccount()) return null;
       if (cloud.auth.passwordNeeded() || !cloud.device.meta().enabled || cloud.accountChanged()) { ka.setupDue = true; kaPaint(); return null; }
       return kaWaitBank().then(function (ready) { if (ready) return kaSyncNow(false); ka.syncErr = 'wait'; return null; });
-    }).catch(function () {});
+    }).catch(function () { ka.loadFailed = true; kaPaint(); });
   }
   var h = ka.bootHash || '';
   if (/^#(sign-in|create-account|forgot-password|delete-account)$/i.test(h) && kaRoute(h)) {

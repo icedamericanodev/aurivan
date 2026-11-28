@@ -92,6 +92,7 @@ Cloudflare publishes `_site/`:
 | `assets/` (images, icons, fonts, stylesheets, plus one named script: `assets/kaisip-plant.js`) | Icons and fonts the pages use, and the plant companion (generated from the mobile app by `mobile/scripts/build-web-plant.mjs`) |
 | `data/free/cisa_d1.json` … `cisa_d5.json` (the free question sample, from `scripts/build_free_sample.py`), `data/cisa_notes.json`, `data/mindset/principles.json`, the two `data/exam/` files | The data the web app loads. The full bank `data/domain*.json` is **not** published since web v12.50; the build fails if any question outside the sample appears in `_site/` |
 | `manifest.webmanifest` (with the app only) | The install manifest: "Add to Home Screen" name, icons and full screen |
+| `delete-account.html`, `human-check.html` (**only** with accounts on, or `SITE_ACCOUNTS_PREVIEW=1`) | The two account pages: Google Play's web deletion address, and the Android app's human check. Not in a normal build (see "Accounts: the switch and the owner's preview") |
 | `_headers`, `_redirects` | Security headers and friendly redirects (and the `/app/` rules) |
 | `favicon.ico` | Browsers ask for it at the top level |
 
@@ -105,16 +106,68 @@ To try it on your computer: `bash scripts/build_site.sh`, then
 `python3 -m http.server 8000 -d _site` and open http://localhost:8000.
 (This simple server ignores `_headers`; Cloudflare applies them.)
 
-**Adding a page** (for example `delete-account.html`): add it to `PAGES` in
-`scripts/build_site.sh`, add it to the final check in the same file, and give
-it its own two rules in `_headers` (`/delete-account` and
-`/delete-account.html`), copied from the privacy page's rules.
+**Adding a page:** add it to `PAGES` in `scripts/build_site.sh`, add it to
+the final check in the same file, and give it its own two rules in `_headers`
+(`/name` and `/name.html`), copied from the privacy page's rules. (The two
+account pages are different: the build writes their rules itself, only when
+it publishes them.)
 
 **Decided 4 Nov 2026:** the website publishes only the free sample, never the
 full bank (`docs/business/monetization/WEB_GATE_PLAN.md`). After each deploy
 that touches data, check that `https://kaisip.com/data/domain1.json` returns
 the app page and not JSON (look at the body: the single-page fallback
 answers 200).
+
+## Accounts: the switch and the owner's preview
+
+Sign-in on the website is **built and switched off** (stream B1 of
+`docs/WEB_LAUNCH_PLAN.md`). A visitor sees no account screen, and the page
+loads no account code and contacts no sign-in service.
+
+**The switch** is one line in the first script of `index.html`:
+`var ACCOUNTS_ON = false;`. Do not change it until every go-live gate is
+ticked. When it is `true`, the build also publishes the two account pages.
+
+**To try the screens yourself on the live site (owner only):**
+
+1. On the computer or phone you want to test with, open a **new tab** and go
+   to `https://kaisip.com/app/#accounts-preview=on`.
+2. The page loads as usual. From now on, **in this browser only**, You shows
+   the account card and "Sign in" appears. Nobody else sees anything: the
+   note is saved in your browser (`kaisip_accounts_preview`), not on the site.
+3. To switch it off again, open `https://kaisip.com/app/#accounts-preview=off`
+   in a new tab (or clear the site's data).
+
+Things to know:
+
+- It works only at `https://kaisip.com`. A copy of the site, a preview
+  address or a file on your computer never shows account screens.
+- Use a new tab (or reload after typing the address). The switch is read when
+  the page loads.
+- A Home Screen copy on an iPhone has its own storage, so switch it on there
+  separately.
+- The preview talks to the **real** sign-in service. Until the go-live gates
+  are done, use only your own test addresses.
+- It is a convenience, not a lock: the page's code is public, so someone who
+  reads it could switch the screens on in their own browser. The server-side
+  gates are what protect accounts.
+- **Google sign-in** needs `https://kaisip.com/app/` in Supabase →
+  Authentication → URL Configuration → Redirect URLs first.
+
+**The two account pages** (`/delete-account`, `/human-check`) are not on the
+live site in a normal build. To publish them for your preview, or because
+the Google Play listing of the Android release with accounts needs the
+deletion address before the website's own switch is on: in Cloudflare →
+the site → Settings → Build → Variables, add `SITE_ACCOUNTS_PREVIEW` = `1`
+and redeploy. They are then served with "noindex" (search engines are told
+not to list them). Remove the variable and redeploy to take them down. Once
+`ACCOUNTS_ON` is `true` they are published without the variable, and
+`/delete-account` may be listed.
+
+**To check it locally:** `node scripts/smoke/accounts.mjs . <out folder>`
+(needs `mobile/node_modules`). It runs the real page at the kaisip.com
+address against a pretend sign-in service; nothing leaves the computer.
+Add `--shots <folder>` for pictures of every screen.
 
 ## The new home page (`home.html`, not live yet)
 
@@ -231,6 +284,14 @@ pull request). The beta page returns to `/` on the next deploy.
   for feedback and flags. Fonts are self-hosted. Checked on 21 Oct 2026 in
   Chromium with a local server that applies `_headers`: no violations on any
   screen, light or dark.
+- **Accounts (built, switched off):** the same `/*` policy already names
+  what the sign-in screens need and nothing more: the sign-in service by its
+  exact address (`connect-src`), Cloudflare's human check as a script and a
+  frame, and the leaked-password lookup (`connect-src`). The build fails if
+  any of them is missing from `/*`, is written with a wildcard, or appears
+  in the home page's policy. `/delete-account` gets the legal pages' strict
+  policy and `/human-check` its own (its one script by hash, Cloudflare's
+  widget, nothing else); the build writes both rules.
 - Cloudflare **joins** the values when two rules match the same path. For
   Content-Security-Policy that is safe: the browser enforces both policies,
   so the legal pages, `/data/*` and `/assets/*` keep their own stricter

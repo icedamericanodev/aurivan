@@ -254,8 +254,11 @@ pages not on https).
    sign-up confirms the email with a code), the Account section (status, Sync now, Download my
    data, Delete synced progress, Delete account, sign out), first-sync
    preview and undo, Terms and 16+.
+   **Built 28 Nov 2026, behind the switch (OFF); see "B1 as built" below.**
 2. New pages: `delete-account.html`, `human-check.html` (Turnstile); CSP and
    `_headers` updates; `build_site.sh` publishes them.
+   **Built 28 Nov 2026.** Published only when `ACCOUNTS_ON` is true or the
+   build sets `SITE_ACCOUNTS_PREVIEW=1`; noindex until accounts are on.
 3. The study app goes to `https://kaisip.com/app/` (owner, 28 Nov 2026: open
    the web version now for iPhone users; free CISA sample, no sign-in yet),
    with the home page staying at `/`.
@@ -283,6 +286,76 @@ pages not on https).
    allow-list of the owner's email, as a layer in front of the existing
    two-step sign-in. The old `kaisip.certprep-support.workers.dev` address
    must be switched off or covered too, or it bypasses Access.
+
+#### B1 as built (28 Nov 2026; nothing a visitor can reach changed)
+
+- **The switch.** `ACCOUNTS_ON = false` in the first script of `index.html`.
+  With it off no account element is created, the accounts client
+  (`assets/kaisip-cloud.js`), the password word lists and Cloudflare's human
+  check are never loaded, and no request goes to the sign-in service or any
+  other party. Account screens exist only on `https://kaisip.com` (never
+  `file://`, a preview host or a copy of the site). The owner's preview is a
+  note saved in her own browser by opening
+  `https://kaisip.com/app/#accounts-preview=on` (`=off` removes it); steps in
+  `docs/WEBSITE_DEPLOY.md`. It is not access control: the page's code is
+  public, so anyone who reads it can switch the screens on for their own
+  browser. What protects accounts before launch is the server side (the
+  go-live gates), not this switch.
+- **Screens** (direction A, Grove Atelier, with joined code cells and audit
+  ticks; `docs/mobile/DESIGN_SYSTEM.md` §22): Sign in; Create account in the
+  order email and agreements, the 8-digit code, the password; Forgot
+  password; the agreements after a first Google sign-in; the first-visit
+  welcome choice; the first-sync preview (This browser, Account, After) with
+  Combine, "Use the account's progress here" (a 7-day undo copy) and Not
+  now; the account card on You (full for 3 days seen, then slim; synced,
+  syncing, waiting for a connection, couldn't sync, sign in again); the
+  Account page; `delete-account.html`; `human-check.html`.
+- **Shared client** (`mobile/src/webcloud/`, part of this step because the
+  owner's order needs it): `sendSignUpCode` and `confirmSignUpCode` (a code
+  session that only "needs a password": no sync, signed out after 10
+  minutes), then the existing `setPassword`. Google now returns to
+  `https://kaisip.com/app/` (`REDIRECT_URL`), so **the Supabase redirect
+  list must hold that address before Google is tried** (owner checklist).
+- **Consent.** The two required agreements and the separate, optional,
+  unticked news box sit before "Send my code" and before Google. Terms and
+  "16 or older" are saved through the client (`acceptTerms`). The news
+  choice, with its wording version and time, goes through a small adapter in
+  `index.html` (`kaConsent.saveConsent` / `readConsent`); until the consent
+  API exists it is kept in the browser only, marked pending. **To do with
+  the consent API:** give the page `window.KaiSipConsentApi` (or replace the
+  two bodies) and send the pending record.
+- **Tests:** `node scripts/smoke/accounts.mjs <repo> <out>` (or
+  `scripts/smoke/run.sh accounts`) drives the real page at
+  `https://kaisip.com/app/` (intercepted) with the real client against the
+  Jest fake Supabase: 34 paths at 390 and 1280. They cover the switch off
+  (nothing loads), every flow and failure (wrong code, each refused
+  password, leaked, leak check unreachable, rate limit, offline, expired
+  session, unticked agreements), two tabs, Google, axe on every account
+  screen in light and dark, 320 to 1280 wide and text at 200%. `--shots <dir>` saves every
+  screen at 390 and 1280, light and dark.
+- **Found while building (decide before launch):**
+  1. The sync engine writes back only questions the website has loaded (the
+     free sample). A browser that still holds answers for full-course
+     questions (study from before web v12.50) would have lost them from its
+     own record at its first sync. The page now carries those entries and
+     their counts over (`kaKeepUnknown`, tested), but they still never reach
+     the account, so they do not show on the phone. Fix in the client
+     (`toWeb` / `fromWeb`) or accept and say so.
+  2. Google's "G" mark is not in `assets/`, so the Google buttons are words
+     only. Google's branding rules ask for their own mark file: add it (light
+     and dark) and the button before launch.
+  3. The buttons use the phone's shipped shape (54 tall, 16 corners), not
+     the pills drawn in the direction A mockups (open decision D2 of the You
+     tab design). One CSS variable, `--ka-r-btn`, changes it.
+  4. New passwords are shown as typed at first (the approved design), with a
+     Hide button. On a shared screen that is a shoulder-surfing risk; the
+     alternative is hidden at first with Show.
+  5. `delete-account.html` still needs the developer name exactly as on
+     Google Play and the database provider's log period (both left out
+     rather than guessed), and the compliance reviewer's read.
+  6. Not built here: the remote "hide the password form" brake, the
+     in-app "password changed on" banner (the Account page shows the date),
+     a service worker, and the privacy policy and Terms updates (gate 19).
 
 ### C. Android 2.4 with sign-in and sync
 1. Supabase adapters, the sign-in and account screens, in-app account
@@ -495,8 +568,13 @@ traffic.
      token refreshes 150 (password sign-ins share this one, so don't lower
      it); per-address waits at 60 seconds.
    - **Leave as they are:** Phone OFF, Anonymous sign-ins OFF, Manual
-     linking OFF, Allow new users to sign up ON, URL Configuration unchanged.
-     Multi-factor (TOTP) stays on: only staff can enrol now.
+     linking OFF, Allow new users to sign up ON. Multi-factor (TOTP) stays
+     on: only staff can enrol now.
+   - **Authentication → URL Configuration → Redirect URLs:** add
+     `https://kaisip.com/app/` (exactly, with the last slash), beside
+     `https://kaisip.com/` and `kaisip://auth-callback`. The web app lives
+     at `/app/`, and Google sends the learner back there. Without it Google
+     sign-in on the website lands on the home page and does not finish.
    - **Authentication → Attack Protection → CAPTCHA (Turnstile):** ON, on
      go-live day, last; then Claude runs `bash scripts/cloud_smoke.sh captcha`.
    - Make test accounts the way learners do (code first, then the
