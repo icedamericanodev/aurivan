@@ -653,6 +653,14 @@ describe('cost budget', () => {
   const STEP_WORST = 88_000;
   const STEP_TOTAL = 18_900_000;
   const MEDIAN_MS = 50;
+  const TYPICAL_STEPS = 1_450_000; // measured 1,367,194 (28 Nov 2026)
+  // The clock backstop for typical checks: their CPU time as a multiple of a fixed
+  // reference loop timed in the same test. Measured 44 to 51 locally in Jest (about
+  // 4 ms a check there; about 0.6 ms in plain Node). The limit is five times that,
+  // because the two sides do not slow down by exactly the same factor on another
+  // machine; the step count above is the tight guard, this one catches work the
+  // count does not see.
+  const TYPICAL_CLOCK_RATIO = 250;
   const median = (f: () => void) => {
     const t: number[] = [];
     for (let k = 0; k < 5; k++) {
@@ -701,17 +709,50 @@ describe('cost budget', () => {
     expect(h.digest('hex')).toBe('4f7c69058fcf1b935617d6c0e017f76458410dc9f8281bc6cae2a618482b6961');
   });
 
-  it('every adversarial input takes well under 50 ms (median of five); a thousand typical checks well under six seconds', () => {
+  it('every adversarial input takes well under 50 ms (median of five)', () => {
     for (const [, p] of ADVERSARIAL.slice(0, 40)) checkPassword(p, CTX); // warm up
     for (const [name, p] of ADVERSARIAL) {
       const ms = median(() => checkPassword(p, CTX));
       expect([name, ms < MEDIAN_MS]).toEqual([name, true]);
     }
+  });
+
+  it('a thousand typical checks stay inside a step budget, and inside a clock budget measured against this machine', () => {
+    // CI's shared runner took 14 s of wall time for these 1000 checks while other
+    // test files ran beside it (28 Nov 2026), against about 3 s locally, so a fixed
+    // number of seconds says more about the runner than about the rules. Two checks:
+    // - the step count, the same on every machine;
+    // - the clock as a backstop, in CPU time (other processes do not count) and as a
+    //   multiple of a fixed reference loop timed in the same test, so a slower
+    //   machine moves both sides.
     const inputs = Array.from({ length: 1000 }, (_, i) => `${ofLength(40)}${String(i).padStart(4, '0')}`);
-    const t0 = Date.now();
+    for (const p of inputs.slice(0, 50)) checkPassword(p, CTX); // warm up
+    passwordCheckStepsForTest(true);
     for (const p of inputs) checkPassword(p, CTX);
-    // About 0.6 ms a check in Node or a browser; Jest's transformed code is several times slower.
-    expect(Date.now() - t0).toBeLessThan(6000);
+    const steps = passwordCheckStepsForTest(true);
+    for (const p of inputs) checkPassword(p, CTX);
+    expect(passwordCheckStepsForTest(true)).toBe(steps);
+    expect(steps).toBeLessThanOrEqual(TYPICAL_STEPS);
+    expect(steps).toBeGreaterThan(TYPICAL_STEPS * 0.9);
+
+    const cpuMs = (f: () => void) => {
+      const c0 = process.cpuUsage();
+      f();
+      const c = process.cpuUsage(c0);
+      return (c.user + c.system) / 1000;
+    };
+    const reference = () => {
+      // Plain string work of the kind the rules do: fixed, and unrelated to them.
+      let acc = 0;
+      for (let r = 0; r < 400; r++) for (const p of inputs) for (let i = 0; i < p.length; i++) acc = (acc * 31 + p.charCodeAt(i)) | 0;
+      return acc;
+    };
+    reference();
+    const refMs = [0, 0, 0].map(() => cpuMs(reference)).sort((a, b) => a - b)[1];
+    const runMs = [0, 0, 0].map(() => cpuMs(() => { for (const p of inputs) checkPassword(p, CTX); })).sort((a, b) => a - b)[1];
+    // PASSWORD_BUDGET_PRINT=1 prints the measured numbers, for when a budget is updated.
+    if (process.env.PASSWORD_BUDGET_PRINT) console.log(JSON.stringify({ steps, refMs, runMs, ratio: runMs / refMs }));
+    expect(runMs / refMs).toBeLessThan(TYPICAL_CLOCK_RATIO);
   });
 
   it('loading the lists (fingerprints checked) takes well under a second', () => {
