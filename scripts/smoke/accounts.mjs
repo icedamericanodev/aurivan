@@ -1450,7 +1450,7 @@ if (wanted('G3')) {
 }
 
 if (wanted('G4')) {
-  for (const how of ['30 days', '14 unused days', 'ended by the service']) {
+  for (const how of ['30 days', '14 unused days', 'ended by the service', 'gone on the service']) {
     const ids = freeIds(3, 3);
     const { ctx, page, server } = await setup({ view: how === '30 days' ? 'desktop' : 'phone', seed: profileSeed(ids) });
     await ctx.addInitScript(WATCH_APP);
@@ -1462,7 +1462,17 @@ if (wanted('G4')) {
       await waitView(page, '');
       await settled(page);
       const before = await answerKeys(page);
-      if (how === 'ended by the service') {
+      if (how === 'gone on the service') {
+        // The token is still in date, but the service no longer knows the session: the account
+        // call answers 403 session_not_found (the refresh path, 400 refresh_token_not_found, is the next case).
+        const uid = server.userByEmail(EMAIL).id;
+        for (const [f, info] of server.families) if (info.userId === uid) server.revokedFamilies.add(f);
+        server.calls.length = 0;
+        await page.evaluate(() => navGoFocus(null, 'account'));
+        await waitView(page, 'signin');
+        const asked = server.calls.filter((x) => x.path.startsWith('/auth/v1/user') || x.path.startsWith('/auth/v1/token')).map((x) => x.method + ' ' + x.path.split('?')[0]);
+        c.check(asked.includes('GET /auth/v1/user') && JSON.parse((await store(page)).local.kaisip_auth_ended_v1).reason === 'revoked', 'the 403 from the account call ends the sign-in here: ' + asked.join(', '));
+      } else if (how === 'ended by the service') {
         // The service ends the session (signed out everywhere, a changed password elsewhere).
         const uid = server.userByEmail(EMAIL).id;
         for (const [f, info] of server.families) if (info.userId === uid) server.revokedFamilies.add(f);
@@ -1504,9 +1514,9 @@ if (wanted('G4')) {
       await waitView(page, '');
       await settled(page);
       c.check(await appShown(page) && !(await store(page)).local.kaisip_auth_ended_v1, 'signed in again: back in the app, the note cleared, no preview the second time');
-      if (how !== 'ended by the service') c.check(true, 'landed on ' + (await page.evaluate(() => S.activeTab)));
+
       c.check(JSON.stringify((await answerKeys(page)).ids) === JSON.stringify(before.ids), 'and the same progress');
-    }, { allowErrors: how === 'ended by the service' });
+    }, { allowErrors: how === 'ended by the service' || how === 'gone on the service' });
     await ctx.close();
   }
 }
