@@ -209,6 +209,15 @@ if re.search(r"\sstyle\s*=", page, I): bad.append("a style attribute")
 if re.search(r"\son[a-z]+\s*=", page, I): bad.append("an inline event handler")
 srcs = re.findall(r"<script\b[^>]*\ssrc\s*=\s*[\"']([^\"']+)[\"']", page, I)
 if srcs != ["assets/home.js"]: bad.append("scripts other than assets/home.js: %r" % srcs)
+# The stylesheet's address carries a stamp of its own content, so a visitor
+# whose browser kept an older copy fetches the new one with the new page
+# (28 Nov 2026: new HTML met yesterday's stylesheet and the Google Play badge
+# showed at its raw size). A changed stylesheet without a new stamp stops the build.
+import hashlib
+css_v = hashlib.sha256(open("assets/home.css", "rb").read()).hexdigest()[:10]
+sheets = re.findall(r"<link\b[^>]*\brel\s*=\s*[\"']stylesheet[\"'][^>]*\bhref\s*=\s*[\"']([^\"']+)[\"']", page, I)
+if sheets != ["assets/home.css?v=" + css_v]:
+    bad.append("the stylesheet link must be assets/home.css?v=%s (the stamp of today's assets/home.css), found %r" % (css_v, sheets))
 urls = [a or b or c for a, b, c in re.findall(r"\s(?:src|href|action|poster|formaction|data|imagesrcset|xlink:href)\s*=\s*(?:\"([^\"]*)\"|'([^']*)'|([^\s>]+))", page, I)]
 for v in re.findall(r"\ssrcset\s*=\s*[\"']([^\"']*)[\"']", page, I):
     urls += [part.strip().split()[0] for part in v.split(",") if part.strip()]
@@ -251,7 +260,7 @@ blocks = [b for _, b in re.findall(r'<(\w+)\b([^>]*\bclass\s*=\s*["\']?[^"\'>]*\
 n_quotes = len(re.findall(r"<blockquote\b", page, re.I))
 if n_quotes != len(blocks) or any(not re.search(r'data-quote-permission\s*=\s*["\']?recorded\b', b, re.I) for b in blocks):
     draft.append("a quote without recorded permission")
-if any("CISA Premium free" not in b for b in blocks):
+if any("offered free Premium access" not in b for b in blocks):
     draft.append("a quote without the reward disclosure")
 # The waitlist needs its own section in the privacy policy before it goes live.
 if forms and 'id="s3f"' not in open("privacy.html").read():

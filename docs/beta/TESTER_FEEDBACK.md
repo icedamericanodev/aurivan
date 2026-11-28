@@ -49,7 +49,7 @@ cause in the app, and slots it into the plan below.
 A tester's words go on kaisip.com only with that tester's own yes to the exact
 text and name, kept by the owner outside the repo (privacy.html section 3e).
 Every quote card carries `data-quote-permission="recorded"` and the reward
-disclosure ("CISA Premium free"); `scripts/build_site.sh` treats a home page
+disclosure ("offered free Premium access"); `scripts/build_site.sh` treats a home page
 quote without them as a draft, which cannot be published. For a translated or
 trimmed quote, the tester says yes to the English wording shown, not only to
 the original.

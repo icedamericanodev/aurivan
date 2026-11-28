@@ -14,6 +14,8 @@ const WIDTHS = [[320, 640], [360, 760], [390, 844], [768, 1024], [844, 390], [10
 const HOME_SCRIPT_SRC = "'self' https://static.cloudflareinsights.com";
 let failures = 0;
 const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', label); } };
+// Waits until the page has stopped scrolling (the page scrolls smoothly).
+const settle = async page => { let last = -1; for (let i = 0; i < 40; i++) { const y = await page.evaluate(() => Math.round(scrollY)); if (y === last) return; last = y; await page.waitForTimeout(150); } };
 
 (async () => {
   const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
@@ -93,7 +95,7 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
       const height = document.documentElement.scrollHeight;
       for (let y = 0; y < height; y += innerHeight / 2) { scrollTo(0, y); await new Promise(r => setTimeout(r, 40)); }
       await new Promise(r => setTimeout(r, 400));
-      const targets = [...document.querySelectorAll('.site-header a, main a.button, main a.text-link, main a.play-badge, main button, summary, .device-grid label, .site-footer nav a')];
+      const targets = [...document.querySelectorAll('.site-header a, main a.button, main a.text-link, main a.play-badge, main button, summary, .site-footer nav a')];
       return {
         overflow: document.documentElement.scrollWidth - innerWidth,
         h1: document.querySelectorAll('h1').length,
@@ -129,7 +131,7 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
     check(!info.wrapped.length, `${width}x${height} buttons wrapped to two lines: ${info.wrapped}`);
     check(!info.ids.length, `${width}x${height} duplicate ids: ${info.ids}`);
     check(info.enhanced === (width >= 900 && height >= 560), `${width}x${height} story enhancement state ${info.enhanced}`);
-    check(info.badges.length >= 1 && info.legal, `${width}x${height} the Google Play badge shows, with the trademark line in the footer`);
+    check(info.badges.length === 1 && info.legal, `${width}x${height} the Google Play badge shows once, with the trademark line in the footer`);
     for (const b of info.badges) {
       check(b.src === 'assets/google-play-badge.png' && b.alt === 'Get it on Google Play' && b.loaded, `${width}x${height} badge must be the official file, loaded, alt "Get it on Google Play": ${JSON.stringify(b)}`);
       check(b.h >= 40 && (!b.btnH || b.h <= b.btnH + 1), `${width}x${height} badge height ${b.h} must be 40px or more and not taller than the button (${b.btnH})`);
@@ -170,7 +172,7 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
     await page.goto(BASE);
     const quotes = await page.evaluate(() => [...document.querySelectorAll('.quote-card')].map(c => ({
       permission: c.dataset.quotePermission,
-      disclosure: /CISA Premium free/.test(c.textContent),
+      disclosure: /offered free Premium access/.test(c.textContent),
     })));
     check(quotes.length >= 1, 'no feedback quote found');
     check(quotes.every(q => q.permission === 'recorded'), 'every quote needs data-quote-permission="recorded"');
@@ -191,8 +193,7 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
       const stop = await page.evaluate(() => {
         const el = document.activeElement;
         if (!el || el === document.body) return null;
-        const target = el.matches('.device-grid input') ? el.nextElementSibling : el;
-        const cs = getComputedStyle(target);
+        const cs = getComputedStyle(el);
         return { name: (el.textContent || el.value || el.className).trim().slice(0, 30), ring: cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) >= 2 };
       });
       if (!stop) break;
@@ -236,16 +237,15 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
       let body = null;
       await page.route('https://app.kit.com/**', route => { body = route.request().postData(); route.fulfill({ status: 302, headers: { Location: ORIGIN + '/waitlist-thanks' } }); });
       await page.fill('#waitlist-email', 'nojs@example.com');
-      await page.check('input[value=iPhone]', { force: true });
-      await page.check('#waitlist-consent');
+      await settle(page);
       await Promise.all([page.waitForURL('**/waitlist-thanks', { timeout: 10000 }).catch(() => {}), page.click('.waitlist-form button[type=submit]')]);
       check(new URLSearchParams(body || '').get('fields[phone_type]') === 'iPhone' && /\/waitlist-thanks$/.test(page.url()), 'no-JS: the waitlist form must still send: ' + body + ' ' + page.url());
     }
     await context.close();
   }
 
-  // Waitlist: the form posts only to Kit, sends exactly the email and phone
-  // type (never the consent box), and the policy lets Kit redirect back to
+  // Waitlist: the form posts only to Kit, sends exactly the email and the
+  // fixed phone type (iPhone), and the policy lets Kit redirect back to
   // the thank-you page. Kit itself is stubbed, so no real sign-up is made.
   if (!isMockup) {
     const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
@@ -259,21 +259,39 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
       route.fulfill({ status: 302, headers: { Location: ORIGIN + '/waitlist-thanks' } });
     });
     await page.goto(BASE);
-    check(!(await page.isChecked('#waitlist-consent')), 'consent must start unchecked');
+    const form = await page.evaluate(() => {
+      const f = document.querySelector('.waitlist-form');
+      const line = document.getElementById('waitlist-terms');
+      const button = f.querySelector('button[type=submit]');
+      const hidden = f.querySelector('input[type=hidden][name="fields[phone_type]"]');
+      const b = button.getBoundingClientRect(); const l = line.getBoundingClientRect();
+      return {
+        named: [...f.querySelectorAll('[name]')].map(e => e.name).sort().join(),
+        boxes: f.querySelectorAll('input[type=checkbox], input[type=radio]').length,
+        phone: hidden && hidden.value,
+        line: line.textContent.replace(/\s+/g, ' ').trim(),
+        link: line.querySelector('a') && line.querySelector('a').getAttribute('href'),
+        described: button.getAttribute('aria-describedby'),
+        together: Math.max(b.bottom, l.bottom) - Math.min(b.top, l.top) <= innerHeight && Math.min(Math.abs(l.top - b.bottom), Math.abs(b.top - l.bottom)) <= 24,
+      };
+    });
+    check(form.named === 'email_address,fields[phone_type]' && form.boxes === 0 && form.phone === 'iPhone', 'the form has an email field and a fixed hidden phone type of iPhone, and no tick box or phone choice: ' + JSON.stringify(form));
+    check(/^By joining, you agree to get emails about the iPhone app and new KaiSip courses\. For ages 18 and older\. Unsubscribe anytime\. Privacy Policy$/.test(form.line) && form.link === 'privacy#s3f' && form.described === 'waitlist-terms', 'the consent line must keep its wording, link to privacy#s3f and describe the button: ' + JSON.stringify(form));
+    check(form.together, 'the consent line must sit right beside the button, on screen with it');
     await page.click('.waitlist-form button[type=submit]');
     await page.waitForTimeout(300);
     check(!posted.length, 'an empty form must not be sent');
-    await page.fill('#waitlist-email', 'reviewer@example.com');
-    await page.check('input[value=Android]', { force: true });
+    await page.fill('#waitlist-email', 'not-an-email');
+    await settle(page);
     await page.click('.waitlist-form button[type=submit]');
     await page.waitForTimeout(300);
-    check(!posted.length, 'the form must not be sent without the consent box');
-    await page.check('#waitlist-consent');
+    check(!posted.length, 'the form must not be sent with a bad email address');
+    await page.fill('#waitlist-email', 'reviewer@example.com');
     await Promise.all([page.waitForURL('**/waitlist-thanks', { timeout: 10000 }).catch(() => {}), page.click('.waitlist-form button[type=submit]')]);
     const sent = posted[0] || {};
     const fields = new URLSearchParams(sent.body || '');
     check(posted.length === 1 && sent.method === 'POST' && sent.url === 'https://app.kit.com/forms/10207004/subscriptions', 'form must post once to Kit form 10207004: ' + JSON.stringify(posted));
-    check(fields.get('email_address') === 'reviewer@example.com' && fields.get('fields[phone_type]') === 'Android' && [...fields.keys()].length === 2, 'form must send only email_address and fields[phone_type]: ' + (sent.body || ''));
+    check(fields.get('email_address') === 'reviewer@example.com' && fields.get('fields[phone_type]') === 'iPhone' && [...fields.keys()].length === 2, 'form must send only email_address and fields[phone_type]: ' + (sent.body || ''));
     check(/\/waitlist-thanks$/.test(page.url()), 'after Kit, the visitor must land on /waitlist-thanks: ' + page.url());
     check(/Check your/.test(await page.textContent('h1').catch(() => '')), 'the thank-you page must load');
     // A blocked redirect does not always raise this event; the URL check
