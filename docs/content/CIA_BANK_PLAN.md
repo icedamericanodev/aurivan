@@ -544,6 +544,28 @@ section at a time, each with a fresh blind test and a before-and-after audit.
   90%; chance 25%), because the options were not touched. Most options carry their
   own "Sound / Unsound: because ..." reason, so a knowledgeable reader can rule out
   the false reasons without the stem. This is the next quality lever for Part 1.
+- **Parts 2 and 3 (28 Nov 2026): stage 2 done for the whole bank.** Seven section
+  experts restyled every item to the same brief, with Part 1's lessons added (one
+  referent per pronoun, never "the executive" for the CAE, name the owner of a
+  charter, the ask names who acts): Part 2 A 52, B 42, C 11 (105 of 105); Part 3 A 17
+  (the retired `cia3_d1_009` untouched), B 15, C 15, D 19 (66 of 66). No stem in
+  either part names a person or a country. No key, citation, difficulty,
+  `testable_from` date or Knowledge-source fact changed. Blind tests: Part 2 104 of
+  105, Part 3 66 of 66. Audits (HARD / PRECISION / OBSERVATION): Part 2 0 / 1 / 10,
+  Part 3 0 / 1 / 7. One fix pass per part (8 and 12 items), a final blind test of
+  those 20 (19 of 20), then 2 of 2 on the two reworded after it.
+- **Kept after a third test:** `cia2_d1_016` (a request to add work to a full
+  20-day engagement). Two testers missed its key when option D named the label
+  "scope limitation"; D now states the action ("adding refunds would curtail planned
+  tests") and the explanation still teaches the label (Standard 13.3). A fresh
+  tester then chose D with high confidence, so it stays.
+- **For the hardening pass:** `cia3_d4_016` (a finding calling supervisors
+  "negligent": Objective and Constructive both fit; needs another runner-up),
+  `cia3_d2_011` (a "least reduced" ask, which section 6d discourages), and the
+  options-only cue score, 91% on both parts (chance 25%), unchanged by the restyle.
+- **The whole CIA bank is now in The IIA's question format:** lowercase qualifiers,
+  a period on every option, generic roles, no nationality (one Part 1 item keeps two
+  countries because its key is which country's law governs).
 
 **App dependency, before any lowercase item ships:** the phone app finds the
 ask by capitals only (the priority-word match behind the session hint, the
