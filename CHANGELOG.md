@@ -67,6 +67,10 @@ The first update after the 2.0.0 launch (closed testing). Play version name exac
 ### New
 - KaiSip is now on the web for everyone: study free in any browser.
 - On iPhone and iPad, add KaiSip to your Home Screen from Safari to open it full screen, like an app. Today shows the steps.
+- KaiSip is also on Google Play for Android phones.
+
+### Improved
+- The Android beta has finished. Thank you to everyone who tested KaiSip.
 
 ## Web [v13.0.3] · 2026-11-25
 

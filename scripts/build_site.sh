@@ -12,7 +12,7 @@
 #   The list:
 #     - the pages: index.html, privacy.html, terms.html, support.html,
 #       how-questions-are-made.html (how questions are made and checked),
-#       beta.html (the beta-tester sign-up page, kaisip.com/beta), and
+#       beta.html (kaisip.com/beta: the Android beta has finished, 28 Nov 2026; it thanks testers and keeps their terms), and
 #       beta-desk.html (the private Beta Desk, kaisip.com/beta-desk: the page
 #       holds no tester data; rows load only after an admin's two-step
 #       sign-in, and the database checks it). The desk is published only at

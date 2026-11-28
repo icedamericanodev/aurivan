@@ -250,11 +250,14 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
       const lk = await ev(page, () => ({ card: !!document.querySelector('#screen-mock .mk-type-locked #mkT-full, .mk-type-locked #mkT-full'),
         startBtn: [...document.querySelectorAll('button')].some((b) => b.offsetParent && /Start full mock/i.test(b.textContent)),
         cap: (document.querySelector('.mk-type-locked .mk-type-cap') || {}).textContent || '',
-        link: (document.querySelector('.mk-type-locked a.mk-course-link') || {}).href || '' }));
+        line: (document.querySelector('.mk-type-locked .mk-type-m') || {}).textContent || '',
+        link: (document.querySelector('.mk-type-locked a') || {}).href || '' }));
       c.check(lk.card && /Part of the full course/.test(lk.cap), 'the locked Full mock card ("Part of the full course") is missing');
       c.check(!lk.startBtn, 'a "Start full mock" button is still on screen');
-      c.check(!!lk.link, 'the locked Full mock card has no link to the full course');
-      c.note(`Full mock is locked; its link goes to ${lk.link}`);
+      // Web v13.1: the beta has closed and the full course is not open to
+      // everyone yet, so the card says so and links nowhere.
+      c.check(/not open to everyone yet/.test(lk.line), `the locked Full mock card does not say the full course is not open yet: "${lk.line}"`);
+      c.check(!lk.link, `the locked Full mock card still links to ${lk.link}`);
     }
     c.step('Start mini mock → confirm');
     await page.locator('.mock-start-mini:visible').first().click();
