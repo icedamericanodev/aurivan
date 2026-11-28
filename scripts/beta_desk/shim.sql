@@ -8,6 +8,8 @@ do $$ begin
   if not exists (select 1 from pg_roles where rolname='authenticated') then create role authenticated nologin; end if;
   if not exists (select 1 from pg_roles where rolname='service_role') then create role service_role nologin bypassrls; end if;
   if not exists (select 1 from pg_roles where rolname='authenticator') then create role authenticator noinherit login; end if;
+  -- The Auth server's role (GoTrue): owns the auth tables, as on hosted Supabase.
+  if not exists (select 1 from pg_roles where rolname='supabase_auth_admin') then create role supabase_auth_admin nologin noinherit; end if;
 end $$;
 grant anon, authenticated, service_role to authenticator;
 create schema auth; create schema extensions;
@@ -51,6 +53,22 @@ create table auth.mfa_factors (
   phone text unique default null, last_challenged_at timestamptz unique default null,
   web_authn_credential jsonb, web_authn_aaguid uuid, last_webauthn_challenge_data jsonb);
 create index mfa_factors_user_id_idx on auth.mfa_factors (user_id);
+create unique index mfa_factors_user_friendly_name_unique on auth.mfa_factors (friendly_name, user_id) where trim(friendly_name) <> '';
+-- As on hosted Supabase: RLS on (no policies), owned by the Auth server's role,
+-- which therefore runs the triggers on them with its own rights; postgres (the
+-- migrations' role) has TRIGGER on the two tables the guards watch.
+alter table auth.users enable row level security;
+alter table auth.sessions enable row level security;
+alter table auth.mfa_factors enable row level security;
+alter table auth.users owner to supabase_auth_admin;
+alter table auth.sessions owner to supabase_auth_admin;
+alter table auth.mfa_factors owner to supabase_auth_admin;
+alter table auth.identities owner to supabase_auth_admin;
+alter type auth.aal_level owner to supabase_auth_admin;
+alter type auth.factor_type owner to supabase_auth_admin;
+alter type auth.factor_status owner to supabase_auth_admin;
+grant usage on schema auth to supabase_auth_admin;
+grant trigger on auth.users, auth.mfa_factors to postgres;
 create function auth.uid() returns uuid language sql stable as $$ select coalesce(nullif(current_setting('request.jwt.claim.sub', true), ''), (nullif(current_setting('request.jwt.claims', true), '')::jsonb ->> 'sub'))::uuid $$;
 create function auth.role() returns text language sql stable as $$ select nullif(current_setting('request.jwt.claim.role', true), '')::text $$;
 create function auth.jwt() returns jsonb language sql stable as $$ select coalesce(nullif(current_setting('request.jwt.claims', true), ''), '{}')::jsonb $$;

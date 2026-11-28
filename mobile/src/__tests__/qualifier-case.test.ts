@@ -322,6 +322,14 @@ describe('review 2: a counting "most" before a noun is never the ask', () => {
     expect(findPriority('Which control covering most transactions is best?', 'lowercase')).toMatchObject({ word: 'BEST', written: 'best' });
   });
 
+  it('reads the word before "most" past a closing bracket: "(CAE) most clearly"', () => {
+    // cia1_d1_107 after its restyle: "(CAE)" sits right before the qualifier.
+    expect(findPriority('What must the chief audit executive (CAE) most clearly do?', 'lowercase'))
+      .toMatchObject({ word: 'MOST', written: 'most' });
+    // A bracketed count is still a count: "(roughly) most staff" stays out.
+    expect(findPriority('Which control covers (roughly) most transactions?', 'lowercase')).toBeNull();
+  });
+
   it('"most" before an adjective or adverb, or at the end of the ask, is the ask', () => {
     for (const w of ['likely', 'effective', 'appropriate', 'important', 'clearly', 'reliable', 'cost-effective']) {
       expect(findPriority(`Which control would be most ${w} here?`, 'lowercase')).toMatchObject({ word: 'MOST', written: 'most' });

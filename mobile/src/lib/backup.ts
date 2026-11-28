@@ -126,11 +126,14 @@ onClearContentCaches(() => knownCache.clear());
 export function knownIds(certId: string): KnownIds {
   let k = knownCache.get(certId);
   if (!k) {
-    const questions = new Set(getAllQuestionsIncludingRetired(certId).map((q) => q.id));
+    // A course not on this phone, or parked (a bundled `coming_soon` course, content/loader.ts
+    // hasContent): its questions are never read, so nothing here depends on the bundled copy.
+    const here = hasContent(certId);
+    const questions = new Set(here ? getAllQuestionsIncludingRetired(certId).map((q) => q.id) : []);
     k = {
       // Installed = this phone has the exam's content AND its question ids (MEDIUM-2): an empty
       // pack never counts, so it can never trim a restored exam's progress to nothing.
-      installed: hasContent(certId) && questions.size > 0,
+      installed: here && questions.size > 0,
       questions,
       lessons: new Set(lessonsIncludingRetired(certId).map((l) => l.id)),
       notes: new Set(noteSubtopics(certId).map((n) => n.id)),

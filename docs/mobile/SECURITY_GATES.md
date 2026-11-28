@@ -14,7 +14,9 @@
 ## Status, accounts beta (27 Oct 2026)
 
 The owner chose a smaller first step than Phase 9: optional accounts on the
-web and Android (Google or an email code), progress sync between them, on
+web and Android (Google or an email code; since 28 Nov 2026 Google or email +
+password, with codes only to confirm an email and reset a password, see
+`docs/WEB_LAUNCH_PLAN.md`), progress sync between them, on
 the Supabase Free plan, with the **feedback board OFF** (its own build flag,
 and posting paused on the server). Moment **(B)** below now means "the
 accounts beta goes live". What that changes:

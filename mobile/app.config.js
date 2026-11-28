@@ -83,7 +83,8 @@ function isPublicBuild(env) {
  * 3. The public build bundles only the free question sample, and fails closed
  *    (docs/mobile/SAMPLE_QUESTION_PACK.md). Its settings must say so
  *    explicitly. On the EAS build machine (EAS_BUILD=true) the generated
- *    content is also checked against the sample list every time Expo reads
+ *    content is also checked against every course's sample list (CISA,
+ *    CRISC, AAIA: sample-content.mjs SAMPLE_COURSES) every time Expo reads
  *    this file, including right before the JavaScript bundle is made, so a
  *    later install or content build can't swap the full bank back in.
  *    The built .aab is audited separately (scripts/audit-public-aab.mjs).

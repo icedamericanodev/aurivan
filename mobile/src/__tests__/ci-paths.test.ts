@@ -6,7 +6,8 @@ import fs from 'fs';
 import path from 'path';
 
 const REPO = path.join(__dirname, '..', '..', '..');
-const SOURCES = ["'data/domain*.json'", "'data/cisa_notes.json'", "'data/mindset/**'", "'data/exam/**'", "'data/lessons/**'"];
+// CRISC and AAIA are bundled from their own folders since 28 Nov 2026 (docs/WEB_LAUNCH_PLAN.md stream D).
+const SOURCES = ["'data/domain*.json'", "'data/cisa_notes.json'", "'data/mindset/**'", "'data/exam/**'", "'data/lessons/**'", "'data/crisc/**'", "'data/aaia/**'"];
 
 it.each(['mobile.yml', 'eas-update.yml'])('%s watches every content source', (wf) => {
   const yml = fs.readFileSync(path.join(REPO, '.github', 'workflows', wf), 'utf8');

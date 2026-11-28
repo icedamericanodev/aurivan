@@ -1,0 +1,752 @@
+{
+  "domain": 4,
+  "title": "Technology and Security",
+  "weight": 20,
+  "count": 20,
+  "questions": [
+    {
+      "id": "crisc_d4_007",
+      "domain": 4,
+      "subtopic": "4A4 Data lifecycle management. Approving a new data use",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A grocery chain's analytics team asks a risk practitioner about copying loyalty-card purchase records into a new reporting tool. Which of the following is the MOST appropriate approver for this new use?",
+      "options": {
+        "A": "The business manager accountable for the customer records",
+        "B": "The risk analyst who assessed the reporting tool's security",
+        "C": "The CISO, who sets the organization's data security policy",
+        "D": "The IT manager who runs the database for the business"
+      },
+      "correct": "A",
+      "key_concept": "The data owner, an accountable business manager, approves access to and new uses of data; IT is the custodian.",
+      "pre_read": "For each person named, ask what their role lets them decide about the data.",
+      "correct_explanation": "The data owner, the business manager accountable for the customer records, sets the rules for using the data. They can judge whether the reporting use fits the purpose the data was collected for and its classification. The CISO sets security policy and advises on controls, but does not own business data or decide its uses; the IT manager is the custodian who carries out the owner's rules.",
+      "wrong_explanations": {
+        "B": "Tempting because the analyst knows the tool's risks. But the analyst assesses and advises; approving a new use of business data is the data owner's decision.",
+        "C": "Closest choice: the CISO sets security policy and can advise on controls. But policy authority is not data ownership; the accountable business manager approves uses.",
+        "D": "Tempting because IT runs the database. But IT is the custodian: it applies the owner's rules and cannot judge the data's business value or permitted uses."
+      },
+      "tips": [
+        "Eliminate: D names the custodian, who carries out the owner's rules, and B names the risk analyst, who advises but does not approve uses of business data.",
+        "Final two: A beats C because data ownership sits with the accountable business manager; the CISO sets security policy but does not decide business uses.",
+        "Exam cue: who decides access, use or retention of data? The data owner, a business role, not IT, security or the risk function."
+      ],
+      "framework_ref": "ISACA Glossary (data owner); NIST SP 800-12 Rev. 1 Section 3.4 (Information Owner/Steward)",
+      "related_concepts": [
+        "Data owner",
+        "Data custodian",
+        "Data classification"
+      ],
+      "_provenance": "Authored from concept: notes 4A4.1 Data Lifecycle, Classification and Ownership (data belongs to the business; IT is custodian). Original grocery loyalty-data scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): stem names the risk practitioner (rule 8); pre_read made non-revealing; options re-lettered (key now A) to break the key cycle. Cross-domain fix 30 Oct 2026: 'business' added to distractor D so the lens word is not key-only. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): converted to a 'Which of the following' stem that still names the risk practitioner; B's explanation credits what is partly right; ISACA Glossary (data owner) cited.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_009",
+      "domain": 4,
+      "subtopic": "4A5 Portfolio and project management. Investment prioritization",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A hospital's investment committee must choose between two projects with similar returns; one retires a system tied to a high-rated patient-safety risk. Which of the following inputs from the risk practitioner is MOST useful?",
+      "options": {
+        "A": "Each project manager's own project risk log",
+        "B": "A ranking of the projects by return on investment",
+        "C": "A new rating of the patient-safety risk against appetite",
+        "D": "Each project's effect on the enterprise risk profile"
+      },
+      "correct": "D",
+      "key_concept": "Portfolio decisions weigh value and risk together, including the enterprise risk a project would reduce.",
+      "pre_read": "Note what the two projects share and what separates them, then ask which information shows that difference.",
+      "correct_explanation": "With returns roughly equal, the deciding difference is risk. Showing how each project would change the enterprise risk profile, including the patient-safety risk one would reduce, lets the committee weigh value and risk together and make the call. Re-rating the patient-safety risk, already rated high, sizes one effect but misses any risk the other project would reduce or add, so it cannot settle the comparison.",
+      "wrong_explanations": {
+        "A": "Tempting because project teams know their own risks. But project logs track delivery risks such as delay and overrun, not how each choice changes the enterprise's exposure.",
+        "B": "Tempting because return is the usual basis for investment. But it cannot separate two projects with similar returns, and it hides the risk reduction one of them offers.",
+        "C": "Closest choice: it sizes the risk one project would retire. But the committee is comparing two projects, so it needs each one's effect on the whole risk profile."
+      },
+      "tips": [
+        "Eliminate: B ranks on return, which cannot separate projects with similar returns, and A offers project delivery logs that do not show enterprise exposure.",
+        "Final two: D beats C because the committee is choosing between two projects; rating one risk alone misses what else each project adds or removes.",
+        "Exam cue: in portfolio items, the practitioner gives decision-makers value and risk together, including risks a project would reduce; the committee decides."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RM-03 (cybersecurity risk management activities and outcomes are included in enterprise risk management processes)",
+      "related_concepts": [
+        "Portfolio management",
+        "Enterprise risk profile",
+        "Investment committee"
+      ],
+      "_provenance": "Authored from concept: notes 4A5.1 Portfolio Management by Value and Risk (score value and risk together, counting risks a project reduces). Original hospital investment scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): strawman C replaced with a real runner-up (re-rate the safety risk); explanations and tips reworked; options re-lettered (key now D) to break the key cycle. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): converted to a short 'Which of the following' stem with shorter noun-phrase options; A and B explanations credit what is partly right.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_012",
+      "domain": 4,
+      "subtopic": "4A6 Technology resilience and disaster response/recovery. Ransomware restore sequence",
+      "principle_id": "final-two",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Ransomware has encrypted a distributor's order system, and the operations director urges an immediate restore from last night's backup to resume shipping. What should the risk practitioner advise FIRST?",
+      "options": {
+        "A": "Restore the order system from last night's backup",
+        "B": "Contain the attack before the order system is restored",
+        "C": "Pay the ransom if it costs less than the outage losses",
+        "D": "Restore from an older backup made before the attack began"
+      },
+      "correct": "B",
+      "key_concept": "During ransomware recovery, contain the attack first, then verify the backup is clean before restoring.",
+      "pre_read": "Notice the pressure in the stem and what is still unknown about the attack.",
+      "correct_explanation": "Restoring while the attacker still has access, or from a backup that holds the malware, invites a second encryption and a longer outage. Containment comes first; the backup is then verified as clean, and only then is the system restored. An older backup lowers the chance of restoring malware, but without containment the attacker can simply encrypt the restored system again, and an older copy also loses more orders.",
+      "wrong_explanations": {
+        "A": "Tempting because it is fastest. But if the attacker is still inside or the backup carries the malware, the restored system is encrypted again.",
+        "C": "Tempting because it may look like the quickest way back. But paying is a senior management and legal decision, does not guarantee recovery and may breach sanctions rules.",
+        "D": "Closest choice: an older copy is less likely to hold malware. But without containment the attacker can re-encrypt it, and it loses more data."
+      },
+      "tips": [
+        "Eliminate: A restores into a live attack, and C reduces a legal and senior management decision about paying criminals to a cost comparison.",
+        "Final two: B beats D because containment must come first; an older backup restored without containment can be encrypted again and costs extra lost data.",
+        "Exam cue: in ransomware recovery the order is contain, verify the backup is clean, then restore; the practitioner advises on that order, and the incident lead and business owner decide."
+      ],
+      "framework_ref": "NIST CSF 2.0 RS.MI-01 (incidents are contained); NIST CSF 2.0 RC.RP-03 (the integrity of backups and other restoration assets is verified before using them for restoration)",
+      "related_concepts": [
+        "Ransomware recovery",
+        "Backup integrity",
+        "Containment"
+      ],
+      "_provenance": "Authored from concept: notes 4A6.2 Backups and Ransomware Recovery (contain, verify the backup is clean, then restore). Original distributor order-system scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): A loses its purpose tail; pre_read non-revealing. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): priority word changed to FIRST (containment is honestly the first step), giving a non-assess FIRST key; key made a single action (contain the attack), with backup verification kept in the explanation and Exam cue; 'without delay' removed from A (audit text); Exam cue has the practitioner advise while the incident lead and business owner decide (concept review D4-1); C's explanation credits what is partly right.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_016",
+      "domain": 4,
+      "subtopic": "4B1 Security concepts, frameworks and standards. Framework alignment and ratings",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A bank's latest framework assessment shows its cybersecurity practices meet the target profile, and the CIO proposes lowering every cyber risk rating in the register by one level. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Lower the ratings, taking the assessment as evidence",
+        "B": "Lower the ratings for scenarios the improved practices address",
+        "C": "Convert the profile's outcome scores into new risk ratings",
+        "D": "Reassess each scenario on evidence before changing its rating"
+      },
+      "correct": "D",
+      "key_concept": "Framework alignment is evidence about controls; a risk rating changes only when the scenario's likelihood and impact are reassessed.",
+      "pre_read": "Ask what a framework profile measures and what a risk rating measures.",
+      "correct_explanation": "A profile shows which framework outcomes the bank achieves; it does not measure the likelihood and impact of each risk scenario. A register rating records current risk, so it changes only when that scenario is reassessed on evidence such as control test results, threats and impacts. Lowering the ratings for scenarios the improved practices address is closer, but it still moves ratings on alignment, not on each scenario's reassessment.",
+      "wrong_explanations": {
+        "A": "Tempting because the assessment is recent and favorable. But profiles describe outcomes achieved, not exposure; a bank can meet its target profile and still face scenarios rated high.",
+        "B": "Closest choice: it targets the scenarios the practices touch. But it still lowers ratings on alignment alone; without evidence of the effect on likelihood or impact, no rating should move.",
+        "C": "Tempting because the scores are recent and structured. But they show which practices the bank achieves, not any scenario's likelihood or impact; converting them skips the reassessment they should inform."
+      },
+      "tips": [
+        "Eliminate: A treats framework alignment as proof of lower risk, and C turns outcome scores, which measure practices achieved, straight into ratings.",
+        "Final two: D beats B because a rating reflects a scenario's likelihood and impact; matching practices to scenarios is not evidence that either has changed.",
+        "Exam cue: framework alignment and certification are evidence about controls; a risk rating changes only when its scenario is reassessed."
+      ],
+      "framework_ref": "NIST CSF 2.0 Section 3.1 (CSF Profiles: a Current Profile describes outcomes being achieved and a Target Profile the outcomes selected for risk management objectives); NIST CSF 2.0 ID.RA-05 (threats, vulnerabilities, likelihoods and impacts are used to understand inherent risk and inform risk response prioritization); ISACA Glossary (current risk)",
+      "related_concepts": [
+        "Framework profile",
+        "Risk rating",
+        "Framework alignment"
+      ],
+      "_provenance": "Authored from concept: notes 4B1.3 Security Frameworks and Standards (frameworks organize and benchmark; risk assessment decides). Original bank CSF profile scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026. Cross-domain fix 30 Oct 2026: re-angled from certificate scope (duplicate lesson of crisc_d3_006, drift to 3A3) to framework alignment, notes 4B1.3. Final blind re-test 31 Oct 2026: stem asks for a recommendation and A is phrased as an action, so all four options share one form. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): stem and options rewritten from the authenticity audit (no CSF profile terms in the stem; the two accept-the-proposal distractors, with 'every' and 'at once', replaced by a partial cut that is now the runner-up); priority word BEST, since the options are alternatives, not steps; explanations and tips rewritten for the new runner-up; the explanation names a register rating as current risk (ISACA Glossary cited). Repair round 3, 31 Oct 2026 (independent verification, gate 2): option C no longer waits for an auditor to certify the assessment, which mirrored crisc_d1_020 (a second examiner confirming a clean result); it now uses the profile's outcome scores as evidence for new ratings, so 'evidence' also sits in a distractor; wrong explanation C and the Eliminate tip updated. Gate follow-up 31 Oct 2026 (gate 3): option C now converts outcome scores straight into ratings; the earlier wording (scores used as evidence for new ratings) matched notes 4B1.3 and the evidence-before-credit principle, so it was not a misconception. Wrong explanation C and the Eliminate tip updated; key D unchanged. Parity finish 31 Oct 2026: 'only' removed from option B so no absolute word marks a distractor; the correct explanation quotes the new wording. Key D unchanged.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_019",
+      "domain": 4,
+      "subtopic": "4B3 Data privacy and data protection principles. New use of customer data",
+      "principle_id": "priority-word-decides",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A retailer collects purchase history for its loyalty program, encrypts it and restricts access, and marketing now wants to infer customers' health conditions from it for ads. What PRIMARY concern should the risk practitioner raise?",
+      "options": {
+        "A": "The encryption keys become a target for attackers",
+        "B": "Marketing staff gain access to more customer records",
+        "C": "Customer access requests extend to the inferred health data",
+        "D": "The new use goes beyond the original collection purpose"
+      },
+      "correct": "D",
+      "key_concept": "Privacy governs whether a use of personal data fits its stated purpose; security only protects the data from unauthorized access.",
+      "pre_read": "Note what the retailer already does well, then ask what the new proposal changes.",
+      "correct_explanation": "Purpose limitation means personal data is collected for stated purposes and not used later in ways incompatible with them. Inferring health conditions from purchases for ads is a new and sensitive purpose customers never agreed to, whatever the encryption. Strong security keeps outsiders out but does not make an unfair use by authorized staff acceptable. Access requests are a real privacy right, but they follow from the use; they are not its main problem.",
+      "wrong_explanations": {
+        "A": "Tempting because keys guard the whole data set. But key theft is a security risk that existing controls address; the proposal raises how authorized staff will use the data.",
+        "B": "Tempting because wider access raises exposure. But access can be limited to what the campaign needs; the deeper problem is whether this use is allowed at all.",
+        "C": "Closest choice: customers' right of access covers inferred data, a real privacy point. But it follows from the use; the problem is a sensitive new purpose customers never agreed to."
+      },
+      "tips": [
+        "Eliminate: A is a security concern about data that is already well protected, and B is about access scope; neither asks whether the new use is permitted.",
+        "Final two: D beats C because the proposal creates a new, sensitive use beyond the stated purpose; access requests follow from that use and are not its main problem.",
+        "Exam cue: privacy asks whether a use is fair and fits the stated purpose; strong encryption never answers that question."
+      ],
+      "framework_ref": "ISACA Glossary (purpose limitation); NIST SP 800-53 Rev. 5 PT-3 (Personally Identifiable Information Processing Purposes); NIST Privacy Framework Version 1.0 Section 1.2.1 (Cybersecurity and Privacy Risk Management: privacy risk can arise from data processing unrelated to cybersecurity incidents)",
+      "related_concepts": [
+        "Purpose limitation",
+        "Privacy versus security",
+        "Sensitive inferences"
+      ],
+      "_provenance": "Authored from concept: notes 4B3.1 Privacy Principles (privacy is not security; encryption does not make an unfair use acceptable). Original retailer health-inference scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): stem states the collection purpose (deciding fact); pre_read and subtopic no longer point at the key. Cross-domain fix 30 Oct 2026: distractor C shortened so the key is not a never-wordiest tell. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): options replaced with the audit's flat statements (no hedged 'could'/'may' distractors against a flat key); explanations and tips rewritten to match; purpose limitation worded as in the ISACA Glossary (not used later in incompatible ways), which is now cited. Repair round 1, 31 Oct 2026 (independent verification): C names customer access requests (not staff system access) and is in the present tense like the other options. Repair round 2, 31 Oct 2026 (independent verification): tip 2 matches the correct and C explanations (access requests follow from the use and are not its main problem).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_024",
+      "domain": 4,
+      "subtopic": "4A2 Operations management. Rising emergency changes",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Emergency changes at an online retailer rose from 5% to 30% of all changes in six months; the on-call manager approves each, and each is reviewed afterward. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "A second approver for each emergency change request",
+        "B": "Analysis of why changes are routed as emergencies",
+        "C": "More frequent change board meetings for normal changes",
+        "D": "Reporting of emergency change volume to senior management"
+      },
+      "correct": "B",
+      "key_concept": "A growing share of emergency changes signals the normal change path is being avoided; analyze why before adding approvals.",
+      "pre_read": "Notice which part of the emergency process works and what has changed.",
+      "correct_explanation": "A rise from 5% to 30% means the emergency route has become a normal path, and each case skips the full impact assessment and testing that normal changes get. The reviews afterward work, so the useful question is why teams use the route: slow approvals, poor planning or a way around scrutiny. Analyzing the cause lets the change manager fix it. More frequent board meetings guess at one cause.",
+      "wrong_explanations": {
+        "A": "A second approver tightens each emergency change; however, it adds weight to a path that should be rare and leaves the reason for the sixfold rise untouched.",
+        "C": "Quicker approvals could help if delay is the cause; however, that is a guess until the reasons for the rise are analyzed.",
+        "D": "Reporting keeps leaders informed of the trend; however, counting emergency changes does not explain why they rose or how to bring them down."
+      },
+      "tips": [
+        "Eliminate: A strengthens approval on a path whose after-the-fact reviews already work, and D keeps counting the rise without explaining it.",
+        "Final two: B beats C because the cause of the rise is not yet known; more frequent board meetings fix one guessed cause.",
+        "Exam cue: when a control's exception path becomes routine, find out why before adding steps; the volume is a symptom, not the cause."
+      ],
+      "framework_ref": "NIST SP 800-128 Section 3.3.2 (Implement the Configuration Change Control Process: unscheduled changes are reviewed by the CCB as soon as practical); NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control)",
+      "related_concepts": [
+        "Emergency change",
+        "Change advisory board (CAB)",
+        "Root cause analysis"
+      ],
+      "_provenance": "Authored from concept: notes 4A2.1 Change and Configuration Management. Round 2, 31 Oct 2026: authored from notes 4A2.1 (a growing share of emergency changes is analyzed for its cause before approvals are added); original online retailer emergency change trend scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): options A and B re-worded so the key is no longer the single longest (lengths now 51/49/54/58); notes 4A2.1 recommend line aligned so it no longer points to the monthly-reporting distractor. Review fixes 31 Oct 2026 (repair round 2, verifiers): converted to a short 'Which of the following' stem (rule 13) with the deciding fact kept in the stem; key letter unchanged. Parity finish 31 Oct 2026: Stem turned back into a short scenario with a named role to bring the domain's 'Which of the following' share to about 29%; lesson, options and key letter unchanged (named role: on-call manager). Review fixes 12 Nov 2026 (round 13 cross-domain gate): distractor D drops 'Monthly' (fixed-period cue) and names senior management (senior-management options were keyed 13 of 17).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_029",
+      "domain": 4,
+      "subtopic": "4A4 Data lifecycle management. Retrained model with unknown training data",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Monitoring showed a water utility's leak-prediction model got worse after retraining, and the data team cannot tell which data set trained it. Which of the following gaps does this MOST directly reveal?",
+      "options": {
+        "A": "No record linking model versions to training data",
+        "B": "No fixed schedule for retraining the model",
+        "C": "Weak access control over the training data store",
+        "D": "No human review of the model's leak predictions"
+      },
+      "correct": "A",
+      "key_concept": "AI training data needs lineage: each model version is linked to the exact data that trained it, so faults can be traced and versions compared.",
+      "pre_read": "Separate what the stem states as fact from what might have caused the problem.",
+      "correct_explanation": "The stem gives one hard fact: nobody can say which data set trained the live model. That is a missing lineage record, which links each model version to the exact data used, so the team cannot trace the fault, compare versions or roll back with confidence. Weak access control is the runner-up: tampering could explain a worse model, but the stem gives no sign of it, while the missing record is certain.",
+      "wrong_explanations": {
+        "B": "A retraining schedule controls when models are refreshed; however, the problem here is not timing but that nobody can trace which data produced the live version.",
+        "C": "Tampering with training data can degrade a model; however, nothing in the stem points to it, and any investigation first needs to know which data was used.",
+        "D": "Human review can catch bad predictions; however, it oversees outputs and would not tell the team which data produced the worse model."
+      },
+      "tips": [
+        "Eliminate: B concerns when retraining happens, not what it used, and D reviews outputs without showing which data trained the model.",
+        "Final two: A beats C because the stem states the lineage gap as fact; tampering is a possible cause the stem gives no sign of.",
+        "Exam cue: for MOST directly, pick the gap the stem's facts prove, not one that might explain the event; training data needs lineage to each model version."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) Section 3.4 (Accountable and Transparent: maintaining the provenance of training data supports transparency and accountability); NIST AI 100-1 (AI RMF 1.0) MEASURE 2.4 (the functionality and behavior of the AI system are monitored when in production)",
+      "related_concepts": [
+        "Data lineage",
+        "Model versioning",
+        "AI training data"
+      ],
+      "_provenance": "Authored from concept: notes 4A4.3 AI Training Data Through the Lifecycle. Round 2, 31 Oct 2026: authored from notes 4A4.3 (training data lineage links each model version to the data that trained it); original water utility leak-prediction model scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): option B was ruled out by the stem's own words, so it now offers a retraining-schedule gap; difficulty set to application.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_044",
+      "domain": 4,
+      "subtopic": "4B3 Data privacy and data protection principles. Releasing de-identified trip data",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A transit authority's data team will publish trip records that give each card one fixed random code and keep exact times and stops. What is the GREATEST privacy risk the risk practitioner should raise?",
+      "options": {
+        "A": "Decrypting the codes back into the card numbers",
+        "B": "Errors in the trip data that mislead outside researchers",
+        "C": "Linking each code's travel pattern to a known person",
+        "D": "Authority staff misusing the records once published"
+      },
+      "correct": "C",
+      "key_concept": "De-identified records can be re-identified by linking what remains, such as exact times and places, to known people.",
+      "pre_read": "Look at what the authority keeps in the records, not only what it removes.",
+      "correct_explanation": "Replacing card numbers does not make data anonymous when each code follows one person and exact times and stops remain. A few known trips, such as a home stop at a regular hour, can tie a code to a person and expose all their travel. Decrypting the codes is the runner-up: random replacement values have no key to break, so the real exposure is linkage, not decryption.",
+      "wrong_explanations": {
+        "A": "Weak pseudonyms can sometimes be reversed; however, these codes are random replacements, not encrypted card numbers, so there is nothing to decrypt.",
+        "B": "Data quality matters for research; however, errors mislead users of the data, while the privacy question is whether people can be identified.",
+        "D": "Insider misuse is a real concern; however, once published the records are open to everyone, so staff access adds little to the exposure."
+      },
+      "tips": [
+        "Eliminate: B is a data quality concern, not a privacy one, and D worries about insiders when the data will be public.",
+        "Final two: C beats A because random codes cannot be decrypted, but a stable code with exact times and stops can be linked to a person.",
+        "Exam cue: de-identified data can still be re-identified; look at what remains, such as exact times, places or rare details, not just what was removed."
+      ],
+      "framework_ref": "NIST SP 800-188 Section 2.2 (Terminology: de-identified data can be re-identified by joining it with other datasets, and pseudonyms can raise that risk); ISACA Glossary (anonymization)",
+      "related_concepts": [
+        "De-identification",
+        "Re-identification",
+        "Pseudonymization"
+      ],
+      "_provenance": "Authored from concept: notes 4B3.3 Personal Data in AI and Cross-Border Transfers. Round 2, 31 Oct 2026: authored from notes 4B3.3 (removing names is not enough when exact times and places remain, because records can be re-identified); original city transport authority trip records scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (repair round 1, standards audit and verifiers): stem now states each card keeps the same code on every trip, the fact the linkage key depends on; option A no longer hedged; ISACA Glossary (anonymization) added to show the records are pseudonymized, not anonymized. Review fixes 31 Oct 2026 (repair round 2, verifiers): converted to a short 'Which of the following' stem (rule 13) with the deciding fact kept in the stem; key letter unchanged. Parity finish 31 Oct 2026: Stem turned back into a short scenario with a named role to bring the domain's 'Which of the following' share to about 29%; lesson, options and key letter unchanged (named role: data team). Cross-domain recheck 31 Oct 2026: closing question reworded to standard form.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_049",
+      "domain": 4,
+      "subtopic": "4B2 Security/risk awareness and training. Executives exempt from a control",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "In a property developer's staff survey, most respondents say security rules feel optional because senior executives were exempted from the new sign-in checks. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "A refresher security course for the whole staff",
+        "B": "Disciplinary action for staff who bypass the sign-in checks",
+        "C": "Executives using the same sign-in checks as their staff",
+        "D": "A message from the CEO on why security rules matter"
+      },
+      "correct": "C",
+      "key_concept": "Tone at the top is set by leaders' actions; leaders exempt from a control signal that the control does not matter.",
+      "pre_read": "Notice why staff say the rules feel optional, then ask which option removes that reason.",
+      "correct_explanation": "Staff are reading the exemption as the real message: if leaders skip a control, the control must not matter. Culture follows what leaders do, so the fix is for executives to use the same checks. A message from the CEO is the runner-up; it sets the right words, but while the exemption stands, staff will believe the behavior rather than the message.",
+      "wrong_explanations": {
+        "A": "Staff already know the rules; the survey says they doubt them because of the exemption, which more training does not change.",
+        "B": "Punishing staff treats a culture signal as misconduct and leaves in place the exemption that caused the doubt.",
+        "D": "A CEO message answers a signal that was sent in words; here the signal is an exemption, and staff will weigh any message against what the executives visibly do."
+      },
+      "tips": [
+        "Eliminate: A retrains staff who already know the rules, and B punishes staff for a doubt that leaders created.",
+        "Final two: C beats D because tone at the top is set by what leaders do; a message cannot outweigh a visible exemption.",
+        "Exam cue: when a culture problem traces to leaders' own behavior, the BEST fix changes that behavior rather than training staff."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RR-01 (organizational leadership is responsible and accountable for cybersecurity risk and fosters a culture that is risk-aware, ethical and continually improving); ISACA Glossary (risk culture)",
+      "related_concepts": [
+        "Tone at the top",
+        "Risk culture",
+        "Leadership accountability"
+      ],
+      "_provenance": "Authored from concept: notes 4B2.1 (Risk-Aware Culture and Role-Based Training: leaders set the tone by following the same controls as staff, and culture is a control). Round 3, 4 Nov 2026: original scenario (property developer whose executives were exempted from new sign-in checks) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Cross-domain fixes 4 Nov 2026: wrong D now says why a CEO message fails here (the signal was an exemption, not words), so it reads apart from crisc_d1_055, where the CEO restating support is the key.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_066",
+      "domain": 4,
+      "subtopic": "4A1 Technology roadmaps and enterprise architecture (EA). Logging that differs by team",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Incident reviews at a telecom found that each of its 30 product teams designs its own logging, and two customer apps kept no sign-in records. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Sign-in logging added to the two apps that lack it",
+        "B": "A logging standard set in the enterprise architecture",
+        "C": "A logging check in each product owner's go-live review",
+        "D": "Each product owner's acceptance of their app's logging gaps"
+      },
+      "correct": "B",
+      "key_concept": "Security requirements set in the enterprise architecture are inherited by every new design, so a gap shared by many teams is fixed at that level.",
+      "pre_read": "Read both findings of the incident reviews before weighing the options.",
+      "correct_explanation": "Logging differs by team because nothing above the teams sets what must be logged, so new apps can repeat the gaps. A logging standard in the enterprise architecture defines the events every design records, so teams build it in and the two apps are brought up to it. A go-live check is the runner-up; it needs a standard to check against and catches gaps late, one app at a time, after each design is settled.",
+      "wrong_explanations": {
+        "A": "Adding sign-in logs fixes the two apps found so far; the other teams keep designing their own logging, so new gaps keep appearing.",
+        "C": "A go-live check finds gaps when they are costliest to fix and still lets 30 teams design logging their own way.",
+        "D": "Owner acceptance leaves the cause in place, and gaps that weaken incident investigations across the telecom are not one product team's decision."
+      },
+      "tips": [
+        "Eliminate: A patches the two apps found so far, and D has each product owner accept gaps whose cause sits above any one team.",
+        "Final two: B beats C because a requirement set in the architecture is built into every design; a go-live check finds gaps late, one app at a time.",
+        "Exam cue: when the same control gap appears across many teams' systems, look for the architecture standard that would build the control into every design."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 PM-7 (Enterprise Architecture); NIST SP 800-53 Rev. 5 AU-2 (Event Logging)",
+      "related_concepts": [
+        "Enterprise architecture",
+        "Security requirements",
+        "Event logging"
+      ],
+      "_provenance": "Authored from concept: notes 4A1.1 (Enterprise Architecture and Architecture Review: security and privacy requirements are built into the architecture, so each new system inherits them instead of reinventing them). Round 5, 4 Nov 2026: original scenario (a telecom's 30 product teams each designing their own logging, two customer apps with no sign-in records) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_021, crisc_d4_046 and crisc_d4_052 (CRISC D4); CISA d2_090, d2_152, d2_162 and d4_309; CC cc_d4_009; AAIA none on logging standards. Judged distinct: none keys an architecture-level requirement for a gap shared by many teams (d4_052 fixes one team's process across releases). Review fixes 4 Nov 2026 (standards audit and concept review): the explanation now says the two apps are brought up to the standard and that a go-live check needs a standard to check against ('settled' replaces 'fixed', which could read as 'repaired'); pre_read made neutral. Cue pass 5 Nov 2026: C now places the check in each product owner's go-live review, a second owner-naming distractor, so owner options no longer point to the key.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_070",
+      "domain": 4,
+      "subtopic": "4A5 Portfolio and project management. Risks kept in the project log",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A risk analyst is reviewing the risk log of a hotel group's payroll upgrade project. Which of the following risks BEST belongs only in the project's log, not the enterprise risk register?",
+      "options": {
+        "A": "Key developers may leave before the build is finished",
+        "B": "The new system may go live with a weak access control",
+        "C": "Errors in migrated records may carry into live payroll",
+        "D": "The hosting vendor may miss its uptime target after launch"
+      },
+      "correct": "A",
+      "key_concept": "A project log holds delivery risks that end with the project; risks that continue into operation, or threaten enterprise objectives, go to the enterprise register.",
+      "pre_read": "Picture each risk happening, then note who would feel its effect and when.",
+      "correct_explanation": "A project log holds risks to delivery, which end when the project closes; developers leaving threatens the schedule and cost, then stops mattering. Risks whose effects continue in operation, or that threaten enterprise objectives, go to the enterprise register with an owner. Errors in migrated records are the runner-up; migration happens in the project, but wrong pay would keep reaching staff after go-live, so that risk outlasts the project.",
+      "wrong_explanations": {
+        "B": "A weak access control remains after go-live, so the risk outlasts the project and belongs with an operational owner in the enterprise register.",
+        "C": "Migration happens during the project, but bad records would keep producing wrong pay after launch, so the risk reaches operations.",
+        "D": "Vendor uptime is an operating risk from launch onward; it belongs in the enterprise register with the payroll process owner."
+      },
+      "tips": [
+        "Eliminate: B and D describe the system in use after launch, so both risks outlast the project and need an operational owner.",
+        "Final two: A beats C because developer turnover ends with delivery; migration errors start in the project but keep affecting pay afterward.",
+        "Exam cue: ask whether a risk's effect ends at project closure; if it continues into operation, or could threaten enterprise objectives, it belongs in the enterprise register."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RM-03 (cybersecurity risk management activities and outcomes are included in enterprise risk management processes); NIST IR 8286 Rev. 1 Section 3.8 (Creating and Maintaining an Enterprise-Level Cybersecurity Risk Register)",
+      "related_concepts": [
+        "Project risk",
+        "Enterprise risk register",
+        "Data migration"
+      ],
+      "_provenance": "Authored from concept: notes 4A5.2 (Project Risk and Agile Delivery: project risks are linked to the enterprise risk register when they could outlast the project; delivery risks that end at closure stay in the project log). Round 5, 4 Nov 2026: original scenario (a hotel group's payroll upgrade project log holding delivery and operational risks side by side) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_010 (a team accepting a risk that lasts past go-live), crisc_d4_032 (open risks handed over at closure), crisc_d4_051 and crisc_d4_061 (CRISC); CISA, CC and AAIA have no item on sorting project and enterprise risks. Judged distinct: this asks which risk stays in the project log, the reverse view of d4_010 and d4_032. Review fixes 4 Nov 2026 (standards audit and concept review): the explanation, key_concept, Exam cue tip and notes 4A5.2 now add that a delivery risk threatening enterprise objectives is also escalated (Risk IT counts programme and project delivery among IT risk categories), so the rule is not 'ends at closure' alone; the stem shows no enterprise-level stakes, so the key holds.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_076",
+      "domain": 4,
+      "subtopic": "4A6 Technology resilience and disaster response/recovery. Standby vendor for an AI service",
+      "principle_id": "proportionate-response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A clinic's medical director adopted an AI scribe saving doctors an hour daily; outages, covered by typing, cost $10,000 yearly, within appetite; a standby vendor costs $90,000 yearly. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "A standby contract with a second AI scribe vendor",
+        "B": "The medical director's recorded acceptance of the risk",
+        "C": "Removal of the outage risk entry from the register",
+        "D": "The medical director's withdrawal of the AI scribe tool"
+      },
+      "correct": "B",
+      "key_concept": "When the risk is within appetite and more recovery capacity costs more than the loss it prevents, the owner accepts on record and monitors.",
+      "pre_read": "Weigh the figures in the stem before reading the options.",
+      "correct_explanation": "The standby vendor would cost $90,000 a year to prevent $10,000 of loss that is within appetite and limited by typing, so more treatment does not pay. The proportionate response is acceptance by the medical director, who adopted the scribe, recorded with a review date and monitored in case outages grow. Withdrawing the scribe is the runner-up; it ends the outage risk but gives up an hour a day per doctor for a small loss.",
+      "wrong_explanations": {
+        "A": "A standby vendor would cost $90,000 a year to prevent about $10,000 of loss; spending nine times the benefit is not a proportionate treatment.",
+        "C": "An accepted risk stays in the register with its owner and is monitored; removing it means nobody would notice if the vendor's outages grew.",
+        "D": "Withdrawal ends the outage risk, but it gives up an hour a day per doctor to avoid a small loss that the typing fallback already limits."
+      },
+      "tips": [
+        "Eliminate: A spends $90,000 a year to prevent $10,000 of loss, and C drops a risk from the register although accepted risks stay recorded and monitored.",
+        "Final two: B beats D because the scribe earns its keep and the loss is small; avoidance gives up that benefit, while acceptance keeps it.",
+        "Exam cue: within appetite, when treatment costs more than the loss it prevents and the technology earns its keep, expect the owner's recorded acceptance, with monitoring."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MANAGE 2.1 (resources required to manage AI risks are taken into account along with viable non-AI alternative systems, approaches or methods); NIST SP 800-39 Section 3.3 Task 3-2 (Evaluation of Alternatives: effectiveness, feasibility and cost); ISACA Glossary (risk acceptance)",
+      "related_concepts": [
+        "Risk acceptance",
+        "Cost-benefit analysis",
+        "AI service resilience"
+      ],
+      "_provenance": "Authored from concept: notes 4A6.1 (Recovery Strategies and Alternate Sites: the strategy meets RTO and RPO at a cost the owner accepts; too much capability wastes money; the business owner accepts the cost and residual risk within appetite). Round 6, 4 Nov 2026: original scenario (a clinic's AI scribe with typing as the fallback, where a standby second vendor would cost nine times the expected outage loss) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 6 priority: owner acceptance keyed, on the cost-exceeds-benefit case; the practitioner recommends and the medical director, who adopted the tool, accepts. Neighbours checked: crisc_d3_087 (avoid a little-used donation page whose fix costs more than it is worth), crisc_d3_002 (within appetite, the director accepts instead of an IT manager's extra tool), crisc_d3_021 and crisc_d3_110 (review date and monitoring of an accepted risk), crisc_d3_086 (insure the financial tail), crisc_d3_010, crisc_d4_011, crisc_d4_033 and crisc_d4_056 (CRISC); CC cc_d2_076 (a fallback for a provider's AI model) and cc_d2_008 (hot site against a three-week RTO); AAIA aaia_d2_089 (rehearse a manual fallback for a model); CISA d4_255 (formal acceptance for an isolated unsupported system) and d4_299. Judged distinct: this keys acceptance where the technology earns its keep and a fallback exists, with avoidance (d3_087's key, for a tool that adds little) as the runner-up and d3_002's IT-manager trap absent; keep apart from d3_087 and d3_002 in practice sets. Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): stem now states the loss is within appetite and the vendor's cost is $90,000 a year (one reconciled version of the audit and concept-review stems, two sentences, 35 words, with 'typing covers outages' in place of 'with typing as fallback' to fit); key_concept, explanation and Exam cue anchor acceptance to appetite as well as cost (concept review). Keep apart from crisc_d1_099 and crisc_d3_087.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_089",
+      "domain": 4,
+      "subtopic": "4B3 Data privacy and data protection principles. What a privacy impact assessment rates",
+      "principle_id": "final-two",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A dating service's privacy impact assessment for a feature showing members' location to their matches rates each risk only by the fines and press coverage it would face. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Fine estimates updated from recent enforcement cases",
+        "B": "A penetration test of the feature before launch",
+        "C": "Ratings that also count members who leave the service",
+        "D": "Ratings that start from the harm that members could suffer"
+      },
+      "correct": "D",
+      "key_concept": "A privacy impact assessment rates the problems processing could cause people first, then the impacts that follow for the organization.",
+      "pre_read": "Note what the assessment's ratings measure before weighing the options.",
+      "correct_explanation": "Privacy risk is the chance that people suffer problems from how their data is processed. Showing members' location to their matches could lead to stalking or physical harm; fines and press coverage are costs that follow for the service. Rating harm to members first, then the service's impacts, shows the owner the real exposure. Counting members who leave is the runner-up: it is one more cost to the service and still omits the harm.",
+      "wrong_explanations": {
+        "A": "Sharper fine estimates refine the same narrow measure; a feature can be lawful and still expose members to stalking, which no fine figure captures.",
+        "B": "The harm comes from the feature working as designed; a penetration test looks for security flaws, not the risk of showing members' location.",
+        "C": "Members leaving is a cost to the service that follows from harm; adding it keeps every rating on the service's losses and still omits the harm to members."
+      },
+      "tips": [
+        "Eliminate: A sharpens the fine estimates the ratings already use, and B tests for security flaws when the harm comes from the feature working as designed.",
+        "Final two: D beats C because members leaving is still a cost to the service; a privacy assessment rates the problems for the people first, then the costs that follow.",
+        "Exam cue: privacy risk starts with the people whose data is processed; fines, lost customers and press coverage follow from their harm."
+      ],
+      "framework_ref": "NIST Privacy Framework Version 1.0 Section 1.2.1 Figure 3 (Relationship Between Privacy Risk and Organizational Risk: individuals experience the direct impact of problems from data processing, and organizational impacts such as noncompliance costs, customer abandonment and reputational harm follow); NIST Privacy Framework Version 1.0 ID.RA-P (Risk Assessment: the organization understands the privacy risks to individuals and how they may create follow-on impacts on organizational operations); NIST SP 800-53 Rev. 5 RA-8 (Privacy Impact Assessments)",
+      "related_concepts": [
+        "Privacy impact assessment",
+        "Privacy risk",
+        "Harm to individuals"
+      ],
+      "_provenance": "Authored from concept: notes 4B3.2 (Privacy by Design and Privacy Impact Assessment: a PIA maps data flows, rates the problems processing could cause individuals and the organizational impacts that follow, and proposes mitigations). Round 8, 5 Nov 2026: original scenario (a dating service's privacy impact assessment for a location-sharing feature that rates each risk only by fines and press coverage) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Angle note: the 4B3 ideas tried first mirrored existing items (deciding the purpose after collecting data for AI training: CC cc_d1_004; an AI model revealing training data: AAIA aaia_d1_043, CISA d4_247 and d5_248; the NIST Privacy Framework's privacy-versus-security point: crisc_d4_019), so this takes the 4B3.2 line that a PIA rates risks to individuals and the organization, which no item keyed. Neighbours checked: crisc_d4_019 (purpose limitation), crisc_d4_020 (updating a PIA for new sharing), crisc_d4_043 (privacy by design defaults), crisc_d4_081 (PIA mitigations never built), crisc_d4_044 (re-identification), crisc_d4_063 (stored face templates); AAIA aaia_d1_042 (a PIA limited to encryption and access) and aaia_d1_012 (an AI model's risk rating that leaves out harm to tenants; same idea of weighing harm to people, different trigger and lens); CISA d2_084 (a DPIA before facial recognition) and d5_028 (pre-ticked consent); CC cc_d1_028 (a new use of guests' numbers). Judged distinct: this keys what a PIA's ratings measure, harm to individuals before the organization's costs, with lost members as the runner-up. Review fixes 5 Nov 2026 (round 8 standards audit, ISACA concept review and blind test): Keep apart from AAIA aaia_d1_012 in practice sets. Key unchanged (D).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_098",
+      "domain": 4,
+      "subtopic": "4B1 Security concepts, frameworks and standards. What Zero Trust access changes",
+      "principle_id": "priority-word-decides",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A courier firm's depot applications now sit behind tested Zero Trust access that checks the user and device in each session. Which register scenario's rating should the risk practitioner expect to fall MOST?",
+      "options": {
+        "A": "An intruder using one stolen login to reach other systems",
+        "B": "A driver misusing customer addresses within their job access",
+        "C": "A cloud outage taking the depot applications offline",
+        "D": "Depot staff mistyping parcel details that misroute deliveries"
+      },
+      "correct": "A",
+      "key_concept": "Zero Trust removes trust based on network location, so its largest effect is on lateral movement from a compromised account or device.",
+      "pre_read": "Match each scenario to the kind of control that would change its likelihood or impact.",
+      "correct_explanation": "Zero Trust grants no trust for network location and checks the user and device in each session, so an intruder with one stolen login can no longer move freely from system to system; NIST SP 800-207 says this stops compromised accounts moving laterally. A driver misusing permitted addresses is the runner-up: the checks confirm a valid driver on a valid device, so access the job grants is still allowed.",
+      "wrong_explanations": {
+        "B": "Per-session checks confirm a valid driver on a valid device; misuse of addresses the job allows passes them, so this rating moves little.",
+        "C": "Zero Trust governs who may connect, not whether the cloud service runs; its policy service can even add a dependency for availability.",
+        "D": "Typing errors by authorized staff happen inside permitted access; input checks, not access decisions, change this rating."
+      },
+      "tips": [
+        "Eliminate: C is an availability event that access checks cannot prevent, and D is an error by authorized staff that input controls, not access decisions, address.",
+        "Final two: A beats B because a valid driver on a valid device passes every check, while a stolen login can no longer move freely from system to system.",
+        "Exam cue: Zero Trust cuts the reach of a compromised account or device; it does little against outages, honest errors or misuse within granted access."
+      ],
+      "framework_ref": "NIST SP 800-207 Section 2.1 (Tenets of Zero Trust: network location alone does not imply trust, and access to each enterprise resource is granted per session); NIST SP 800-207 Section 5.3 (Stolen Credentials/Insider Threat: Zero Trust stops compromised accounts or assets from moving laterally, but a valid account can still reach the resources it is granted)",
+      "related_concepts": [
+        "Zero Trust",
+        "Lateral movement",
+        "Insider threat"
+      ],
+      "_provenance": "Authored from concept: notes 4B1.2 (Zero Trust Architecture: network location grants no trust and access is granted per session, so one stolen login does not open other systems). Round 10, 5 Nov 2026: original short stem (a courier firm's depot applications behind tested Zero Trust access, and which register scenario's rating falls most) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_040 (rating a partial Zero Trust rollout), crisc_d4_062 (ranking processes for the first Zero Trust move), crisc_d4_073 (two firewalls with copied rules), crisc_d4_053 (removing layers around customer data), crisc_d4_087 (an AI assistant's edit access); CISA d5_050 (VPN users reaching every application), d5_336 (the ZTNA feature that limits a compromised laptop), d5_306 (unauthenticated calls to a network controller) and d5_046 (personal devices admitted on credentials alone); CC cc_d4_012 (a per-session access decision for a teacher) and cc_d4_089 (what a posture check examines). Two earlier angles for this slot (implicit trust on depot networks, device state for drivers' phones) were dropped as too close to cc_d4_012 and CISA d5_046. Judged distinct: the item asks which register scenario a working Zero Trust control changes most, with insider misuse inside granted access as the runner-up. Review fixes 5 Nov 2026 (round 10 standards audit, concept review and blind test): correct explanation, Final two tip and notes 4B1.2 no longer overstate Zero Trust: a stolen login can no longer roam freely, but SP 800-207 Section 5.3 says a valid account still reaches what it is granted. Cross-domain gate 12 Nov 2026 (round 18): neighbour added: crisc_d4_139 (round 18, 4B1: per-session checks do not replace access-rights reviews), which turns this item's cue (misuse within granted access) into a control decision. 4B1 now holds five Zero Trust items (crisc_d4_040, crisc_d4_062, crisc_d4_098, crisc_d4_128, crisc_d4_139): pause Zero Trust settings in round 19. Keep apart in practice sets.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_101",
+      "domain": 4,
+      "subtopic": "4A1 Technology roadmaps and enterprise architecture (EA). Unpatched controllers awaiting replacement",
+      "principle_id": "proportionate-response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A semiconductor fab's lithography controllers run an operating system the vendor no longer patches; replacement is due in 2029, and their analyzed risk is above appetite. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Acceptance of the risk by the lithography process owner",
+        "B": "Vulnerability scans of the controllers, reported to the process owner",
+        "C": "Isolation of the controllers on a separate network segment",
+        "D": "A request that the process owner raise the risk appetite"
+      },
+      "correct": "C",
+      "key_concept": "Unpatchable legacy technology needs a compensating control, such as isolation, until replacement; finding flaws no one can fix lowers nothing.",
+      "pre_read": "Note where the rating sits against appetite and what the vendor still provides.",
+      "correct_explanation": "With no patches coming and replacement years away, the risk above appetite must be treated now. Isolating the controllers on a separate segment removes most routes an attacker could use to reach them; NIST SP 800-53 SA-22 names isolation as a way to reduce the risk of unsupported components. Vulnerability scans are the runner-up: they show which flaws exist, but none can be patched, so the exposure stays above appetite.",
+      "wrong_explanations": {
+        "A": "An owner may accept risk within appetite; this rating is above it, so the process owner cannot accept it, and the exposure would continue as it is.",
+        "B": "Scans list the controllers' flaws, but the vendor issues no patches, so the findings cannot be fixed and the exposure stays where it is.",
+        "D": "Senior management and the board set risk appetite; a process owner cannot raise it, and loosening the limit to fit one risk does not reduce that risk."
+      },
+      "tips": [
+        "Eliminate: A and D both turn to the process owner, who can accept only risk within appetite and cannot change appetite, which senior management and the board set.",
+        "Final two: C beats B because scans find flaws that no patch will fix, while isolation cuts the routes an attacker would use until the 2029 replacement.",
+        "Exam cue: when legacy technology cannot be patched and its risk is above appetite, look for a compensating control that reduces exposure, not more ways to watch it."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SA-22 (Unsupported System Components); NIST CSF 2.0 PR.PS-02 (software is maintained, replaced and removed commensurate with risk)",
+      "related_concepts": [
+        "Technical debt",
+        "Unsupported systems",
+        "Compensating controls"
+      ],
+      "_provenance": "Authored from concept: notes 4A1.3 (Technical Debt and Legacy Systems: options for legacy risk include isolating with compensating controls until a dated replacement; scanning a system that can no longer be patched finds flaws but lowers no risk). Round 11, 5 Nov 2026: original scenario (a semiconductor fab's lithography controllers on an operating system the vendor no longer patches, replacement due in 2029, analyzed risk above appetite) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_002 (a legacy court system said to need no risk entry), crisc_d4_022 (a retirement slip and re-rating), crisc_d4_064 (technical debt restated as business loss), crisc_d4_091 (acceptance of an unsupported server above the director's money limit), crisc_d1_110 (vendor support end dates in the asset inventory), crisc_d3_146 (an unpatched bus-routing server's exception reviewed at its due date), crisc_d2_026 (monthly scans read as low exposure), crisc_d2_096 (rating an airport's baggage-sorting controllers); CISA d4_255 (formal acceptance with a funded exit plan for an isolated unsupported OS) and d5_326 (segmenting printers and badge readers exempt from network access control); AAIA aaia_d2_031 (a chip fab's wafer-defect model rollback); CC cc_d4_158 (a PaaS runtime losing support) and cc_d4_115 (separate switches for a heating plant's safety controllers). Judged distinct: no bank item keys isolation as the treatment for unpatchable legacy technology above appetite, and the final two is isolation against scanning flaws that cannot be fixed. Owner pattern: the key names no owner; the runner-up B and both easy distractors (A, D) name the process owner, so the key is the lone option without an owner. Review fixes 5 Nov 2026 (round 11 audit, concept review and blind test): owner shape varied (rule 20): runner-up B now reports to the process owner, so the owner options are no longer exactly the Eliminate pair. Cue pass 12 Nov 2026 (fixed periods): option B dropped an incidental period word.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_112",
+      "domain": 4,
+      "subtopic": "4A2 Operations management. An AI coding agent in the build pipeline",
+      "principle_id": "final-two",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A credit bureau's build pipeline lets an AI coding agent write fixes for failed builds, then merge and deploy each fix itself once the automated tests pass. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Weekly review of the agent's merged fixes by the service owner",
+        "B": "More automated tests that each agent fix must pass",
+        "C": "An engineer's approval before each agent fix is merged",
+        "D": "Removal of the agent from the build pipeline"
+      },
+      "correct": "C",
+      "key_concept": "Separation of duties in a pipeline covers AI agents: a change an agent writes still needs approval by someone else before it is merged.",
+      "pre_read": "Trace one fix from the failed build to production before reading the options.",
+      "correct_explanation": "When the agent merges its own fixes, the same actor writes and approves each change, so passing tests are the only check. An engineer's approval before each merge restores separation of duties in the pipeline, as for code people write. A weekly review by the service owner is the runner-up: it is a real check, but it comes after the fixes are merged and released, when a faulty or unsafe change may already be running.",
+      "wrong_explanations": {
+        "A": "A weekly review finds problems only after the fixes are merged and released, so a faulty or unsafe change can run in production for days first.",
+        "B": "More tests widen what the agent's fixes must pass, but the agent still approves its own changes, and tests check only what they were written to check.",
+        "D": "Removing the agent gives up its benefit when an approval step can control the risk; banning a new tool outright is rarely the proportionate response."
+      },
+      "tips": [
+        "Eliminate: B adds tests yet leaves the agent approving its own changes, and D bans a useful tool when an approval step can control the risk.",
+        "Final two: C beats A because approval before merging stops a bad fix reaching production; a weekly review finds it only after it has run.",
+        "Exam cue: separation of duties applies to AI agents too; whoever, or whatever, writes a change should not be the one that approves it."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-5 (Separation of Duties); NIST SP 800-53 Rev. 5 CM-5 (Access Restrictions for Change); NIST AI 100-1 (AI RMF 1.0) GOVERN 3.2 (roles and responsibilities for human-AI configurations and oversight of AI systems are defined)",
+      "related_concepts": [
+        "Separation of duties",
+        "CI/CD pipeline",
+        "AI coding agents"
+      ],
+      "_provenance": "Authored from concept: notes 4A2.3 (DevOps and Pipeline Controls: separation of duties needs a second person to approve code before merge, including code an AI agent writes; passing tests do not replace that approval). Round 13, 12 Nov 2026: original scenario (a credit bureau's build pipeline that lets an AI coding agent write fixes for failed builds and merge each fix itself once the automated tests pass) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_050 (a CTO asks the risk analyst to approve every release in a pipeline that already enforces peer review), crisc_d4_067 (evidence that a peer-review gate administrators can switch off works), crisc_d4_026 (chatbot instruction edits treated as changes), crisc_d4_048 (limits on an AI maintenance agent acting on its own), crisc_d4_087 (an AI assistant's edit rights to risk ratings), crisc_d4_006 (a vendor's AI model swap); CISA d3_136 (data scientists who retrain and deploy a pricing model themselves), d4_153 (developers merging straight into the release branch); CC cc_d3_013 (one developer writes and releases code), cc_d4_155 (developers copying models into production); AAIA aaia_d2_004 (an MLOps pipeline that promotes any retrained model once code tests pass). Options compared with every 4A2 item and with crisc_d4_048's decoys: no vendor-liability, certification or KRI decoy is reused. Judged distinct: no bank item has an AI agent approving its own code changes; the final two is approval before merge against a weekly review after release. Consistent with crisc_d4_050 (the first line runs the gate; the risk function does not approve releases) and crisc_d4_087 (removing a right the AI should not hold). Owner pattern: k=1, the runner-up A (the service owner's weekly review) is the lone owner option; the key C and the easy distractors B and D name no owner. Review fixes 12 Nov 2026 (round 13 concept review and blind test): distractors B and D lose their 'by the service owner' tails, so the key is no longer the plain odd one out among three owner options; their wrong explanations and the tips still describe them unchanged.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_126",
+      "domain": 4,
+      "subtopic": "4A3 System development life cycle (SDLC). One password across every unit",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A medical device maker's infusion pump design gives every unit the same administrator password, and the draft manual tells hospitals to change it at setup. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "A longer shared pump password chosen by the product owner",
+        "B": "Training for hospital staff on changing it at setup",
+        "C": "A risk owner's contract term making hospitals liable",
+        "D": "A unique password set on each pump at the factory"
+      },
+      "correct": "D",
+      "key_concept": "Secure settings belong in the design by default; relying on each customer to change a shared default password leaves units exposed.",
+      "pre_read": "Note who must act for the design to be safe, and what happens when one of them does not.",
+      "correct_explanation": "One password shared by every pump means a single leak exposes every unit whose hospital skipped the change, and the design relies on each customer to act. Setting a unique password on each pump at the factory removes the shared secret at the source. Training hospital staff is the runner-up: it raises how many hospitals change the password, but any that miss the step still leave pumps open to anyone who knows it.",
+      "wrong_explanations": {
+        "A": "A longer password is harder to guess but is still one secret shared by every pump; once it leaks or is published, every unchanged unit is open.",
+        "B": "Training helps more hospitals make the change, but security that depends on every customer acting leaves pumps exposed wherever one step is missed.",
+        "C": "Shifting liability to hospitals moves cost, not the hazard; patients are still at risk from pumps that anyone with the shared password can reach."
+      },
+      "tips": [
+        "Eliminate: A keeps one secret shared across every pump, and C shifts liability while the hazard to patients stays.",
+        "Final two: D beats B because a unique factory password removes the shared secret by design; training still relies on each hospital acting.",
+        "Exam cue: when a design leaves a security step to every customer, prefer the option that makes the default secure before the product ships."
+      ],
+      "framework_ref": "NIST SP 800-218 Version 1.1 PW.9 (Configure Software to Have Secure Settings by Default: reduce the likelihood of software being deployed with weak security settings); NIST SP 800-53 Rev. 5 IA-5 (Authenticator Management: default authenticators are changed before first use, as factory default credentials are often well known and a significant risk)",
+      "related_concepts": [
+        "Secure by default",
+        "Default credentials",
+        "Security requirements"
+      ],
+      "_provenance": "Authored from concept: notes 4A3.2 (Secure Development and Testing: security requirements are set early, including secure defaults such as a unique password per device). Round 16, 12 Nov 2026: original scenario (a medical device maker whose infusion pump design gives every unit one administrator password and leaves hospitals to change it at setup) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_027 (requirements in vendor selection criteria), crisc_d4_096 (requirements from the new product's own risk assessment), crisc_d4_115 (valve controllers with three years of patches), crisc_d4_106 (a public route for flaw reports, with a 'support staff training' decoy), crisc_d4_116 (vetting AI-named packages), crisc_d4_052 (recurring injection flaw), crisc_d3_078 (a medical device maker's monitoring checks: a different activity); CC cc_d4_051 (a technician gives each new gym camera its own password before connecting it), cc_d3_090 and cc_d5_129 (changing a storage device's default admin password at install), cc_d5_039 (purchase requirements for thermostats); CISA d3_023 and d5_353 (tracing a library flaw to products: an SBOM idea first drafted for this slot was dropped as a near-copy of d3_023); AAIA: no item on a maker's default credentials. Judged distinct: the CC items fix defaults at installation on the customer's side; this item keys the maker's design choice, so the shared secret never ships, and its runner-up is the customer-side fix. No pen-test, patch-deadline or package-scan decoy, to stay off the 4A3 decoys in d4_027, d4_052, d4_106 and d4_116. Owner pattern: k=2, both owner options (A product owner, C risk owner) are the easy distractors and the key D names no owner (shape: key outside the owner pair). Round 16 asks: no period word on any option; no defer option; key opener 'A' (noun phrase). Audit 12 Nov 2026 (round 16 standards audit): option C says what the clause is (a contract term) instead of an unclear 'risk owner's clause'.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_179",
+      "domain": 4,
+      "subtopic": "4B2 Security/risk awareness and training. Clicks falling on reused lures",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A zipper maker's phishing simulations reuse the same five lure templates; clicks fell from 20% to 3%, and the security manager reports staff awareness as fixed. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Further training for the staff who clicked on the lures",
+        "B": "Fresh lures of difficulty comparable to earlier ones",
+        "C": "Report rates tracked alongside the click rates",
+        "D": "Review of the content in the awareness course"
+      },
+      "correct": "B",
+      "key_concept": "An awareness result counts when the test stays comparable; reused lures measure memory of the templates, so fresh lures of similar difficulty are needed.",
+      "pre_read": "Ask what the falling click rate could be measuring besides awareness.",
+      "correct_explanation": "Reusing five templates lets staff learn the lures themselves, so the fall from 20% to 3% may show recognition of those emails rather than better judgment of real phishing. Fresh lures of comparable difficulty keep the trend comparable while testing whether staff spot phishing they have not seen. Report rates are the runner-up: reporting is a better behavior measure, but staff can report familiar templates as easily, so the reused lures inflate it too.",
+      "wrong_explanations": {
+        "A": "With clicks at 3%, more training for a few staff leaves the question open: the drop may reflect familiarity with five reused templates, not better judgment.",
+        "C": "Report rates measure behavior better than clicks, but staff who recognize a reused template can report it as easily, so the same five lures inflate both figures.",
+        "D": "Nothing points to a fault in the course; the doubt is whether simulations reusing five templates still measure how staff handle real phishing."
+      },
+      "tips": [
+        "Eliminate: A trains the few who clicked and D reviews a course nothing faults; neither tells whether the fall to 3% reflects better judgment or familiar templates.",
+        "Final two: B beats C because the same five templates are reused; report rates are a better measure, but familiar lures inflate them too, while fresh lures test real judgment.",
+        "Exam cue: before crediting an improving awareness figure, check whether the test has grown familiar; compare results on fresh tests of similar difficulty."
+      ],
+      "framework_ref": "NIST TN 2276 (NIST Phish Scale User Guide: rating a phishing email's detection difficulty gives context to click and reporting rates); NIST SP 800-50 Rev. 1 Section 2.4.1.1 (Quantitative Measurements: metrics on incident reporting that show employees can recognize and report potential events, and the ability to recognize and report privacy disclosures)",
+      "related_concepts": [
+        "Phishing simulations",
+        "Awareness metrics",
+        "Measurement validity",
+        "Detection difficulty"
+      ],
+      "_provenance": "Authored from concept: notes 4B2.2 (Measuring Awareness, Phishing Simulations and Shadow AI: outcome measures and fair simulations; bullet extended in round 26: results are compared over time on fresh lures of similar difficulty). Round 26, 12 Nov 2026: original scenario (a zipper maker whose phishing simulations reuse the same five lure templates while clicks fell from 20% to 3%, and whose security manager reports awareness as fixed) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_159 (refreshers when clicks climb between yearly courses; its 'simulations of steady difficulty' agrees with this key), crisc_d4_140 (announcing simulations, paused family, not used), crisc_d4_109 and crisc_d4_018 (behavior measures), crisc_d2_149 (click rates weighed by access, paused family, not used), crisc_d1_024 (near-miss reports counted against staff); cross-bank mirrors: CISA d5_114 (an IS auditor finds this year's lures were easier and recommends rating each test's difficulty) and CC cc_d2_108 (a harder lure makes click rates incomparable). This item differs: the same five templates are reused, so familiarity, not ease, inflates the result, and the practitioner's move is fresh lures of comparable difficulty before the figure is credited. Runner-up C (report rates beside click rates): closest older cues in lesson are crisc_d4_109 (compare behavior with an independent record) and crisc_d4_018 (track the risky behavior itself over time); the stem fact 'the same five lure templates' rules C out, as familiar templates inflate report rates too. Owner pattern: no option names an owner. Round 26 asks: D4's 4B2 item; training option on eliminated A only (D4 training options stay wrong); a 'Review' opener on eliminated D (round-wide ask); key B not strictly longest or shortest by words (8 against 10, 7 and 8) or characters (52 against 55, 46 and 45). Audit 12 Nov 2026 (round 26 standards audit): no content change. Cross-bank mirrors re-read (CISA d5_114, easier lures, rate each test's difficulty; CC cc_d2_108, a harder lure makes click rates incomparable): same comparability principle, different trigger (five reused templates: familiarity, not ease) and a different move (fresh lures of comparable difficulty). Not re-angled.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_187",
+      "domain": 4,
+      "subtopic": "4A7 Emerging technologies. Starting a post-quantum move",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An invoice finance firm's CIO wants its post-quantum move to start with the customer portal, its most visible system; no record shows which systems use quantum-vulnerable algorithms. What should the risk practitioner recommend FIRST?",
+      "options": {
+        "A": "Cryptographic inventory of the systems and the data they protect",
+        "B": "Migration order set by how long the systems' data must stay secret",
+        "C": "Post-quantum algorithms on the customer portal, as planned",
+        "D": "A gateway its vendor says makes old algorithms quantum-safe"
+      },
+      "correct": "A",
+      "key_concept": "With no record of where quantum-vulnerable algorithms are used, post-quantum migration starts with a cryptographic inventory; ranking by how long data must stay secret follows.",
+      "pre_read": "Notice what the firm has no record of, and what each option assumes.",
+      "correct_explanation": "No record shows where quantum-vulnerable algorithms are used, so neither the CIO's plan nor any other order can be judged against the firm's real exposure. An inventory of the systems and the data those algorithms protect comes first, as NIST's transition guidance advises. Ordering by how long each system's data must stay secret is the runner-up: it is how migration is prioritized, but it needs to know which systems use vulnerable algorithms first.",
+      "wrong_explanations": {
+        "B": "Ordering by how long data must stay secret is how migration is prioritized, but it needs the inventory first; no record shows which systems use vulnerable algorithms.",
+        "C": "Starting with the most visible system orders the move by appearance, not exposure; without an inventory, the portal may not be where long-lived data is at risk.",
+        "D": "A vendor's quantum-safe claim is unverified, and a gateway covers traffic through it, not systems nobody has listed."
+      },
+      "tips": [
+        "Eliminate: C picks the first system by visibility, and D relies on a vendor's quantum-safe claim; neither starts from knowing where vulnerable algorithms protect data.",
+        "Final two: A beats B because no record shows which systems use vulnerable algorithms; ranking by how long data must stay secret comes once the inventory exists.",
+        "Exam cue: when a post-quantum move is planned with no record of where vulnerable algorithms are used, recommend the cryptographic inventory first; prioritizing by data lifetime comes next."
+      ],
+      "framework_ref": "NIST IR 8547 Section 1 (Introduction: organizations should treat the migration to post-quantum cryptography as a current priority, beginning with cryptographic inventories and migration planning); NIST IR 8547 Section 3 (Migration Considerations: the harvest now, decrypt later threat makes migration urgent for data that must stay secure for many years)",
+      "related_concepts": [
+        "Post-quantum cryptography",
+        "Cryptographic inventory",
+        "Harvest now, decrypt later",
+        "Migration planning"
+      ],
+      "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: what exists is inventoried before risk can be assessed; bullet extended in round 28: post-quantum migration starts from an inventory of quantum-vulnerable algorithms and the data they protect). Round 28, 13 Nov 2026: original scenario (an invoice finance firm whose CIO wants the post-quantum move to start with the most visible system, the customer portal, while no record shows which systems use quantum-vulnerable algorithms) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d3_049 (rating a distant quantum threat with ranges and stated confidence; a rating item, not migration), crisc_d4_055 (inventory low-code apps FIRST, with a vendor-certification option wrong; same inventory-first rule and a similar option skeleton on a different trigger, consistent), crisc_d4_115 (vendor patch support for long-lived devices), crisc_d4_167 (custody of signing keys), crisc_d4_013, crisc_d4_157 and crisc_d4_036 (vendor claims, trials and pilots; their cues do not key B, C or D here), crisc_d1_213 (value lost by slow adoption); cross-bank mirrors: CISA d5_079 (inventory first for a post-quantum plan; same rule, here framed against a CIO's visibility-led start), CISA d5_074 and CC cc_d5_024 (with an inventory done, rank by how long data must stay secret: consistent with B being the right next step but not first here), CISA d5_338 (validating an inventory by discovery scan), CISA d2_174 (an executive owner for a stalled migration), CC cc_d5_070 (a vendor upgrade path for a VPN). Runner-up B (order by data lifetime): closest older keys in lesson are CISA d5_074 and CC cc_d5_024, both set after the inventory exists; the stem fact 'no record shows which systems use quantum-vulnerable algorithms' decides. Not an AI item. Owner pattern: no option names an owner. Round 28 asks: D4's 4A7 item; key A; application; key not strictly longest or shortest by words (9 against 12, 8 and 9) or characters (65 against 67, 58 and 59); 'each' on wrong option B; no same-opener pair; no restricted or rarely keyed opener. Audit 13 Nov 2026 (round 28 standards audit): 'each' dropped from runner-up B ('how long the systems' data must stay secret'), since keys never carry each/every/all/any and the word let a test-wise reader strike the runner-up; B 66 characters, so key A (65) stays not longest. Cross-bank mirror ruling: CISA d5_079 keys the same inventory-first rule for a post-quantum plan and CISA d5_074 and CC cc_d5_024 key B's data-lifetime ordering once an inventory exists; consistent, different stem (a CIO's visibility-led start) and the CRISC lens; accepted, and no further post-quantum inventory-first item in any course. Source re-read 13 Nov 2026: NIST IR 8547 (October 2026, final; Sections 1 and 3 as quoted in the library). Review 13 Nov 2026 (round 28 concept and blind review): Wrong explanation D no longer repeats itself ('adoption on vendor claims'; concept review). Key A reworded (blind review) so 'vulnerable' is no longer shared only by the stem and key: the blind's 'Cryptographic inventory of the firm's systems and their data' would have made 'firm's' a stem-and-key-only word, so A follows the correct explanation's wording, 'Cryptographic inventory of the systems and the data they protect' (64 characters, 10 words; B 66 and 12, C 58 and 8, D 59 and 9; opener unique). Re-blind 13 Nov 2026 (round 28): pre_read no longer names the runner-up's idea or settles the order.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_188",
+      "domain": 4,
+      "subtopic": "4B1 Security concepts, frameworks and standards. One administrator holding a master key",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "One IT administrator at an ink maker can obtain and use the master key to its encrypted formula archive without anyone else. Which of the following should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "A renewed background check on the IT administrator",
+        "B": "A tamper-evident log of who uses the master key",
+        "C": "Backup copy of the master key held in a separate secure location",
+        "D": "Two-person control over retrieving and using the master key"
+      },
+      "correct": "D",
+      "key_concept": "When one person can obtain and use a key to critical data alone, two-person control applies separation of duties, so key use needs two people.",
+      "pre_read": "Note what one person can do with the key, and what each option changes about that.",
+      "correct_explanation": "One administrator can obtain and use the key to the formula archive with no one else involved, so a single person could decrypt and copy the formulas. Two-person control applies separation of duties to the key: retrieving and using it needs a second person, stopping misuse by one. A tamper-evident log is the runner-up: it records each use, but it reveals misuse after the formulas are copied, and a leaked formula cannot be recalled.",
+      "wrong_explanations": {
+        "A": "Screening lowers the chance of hiring someone untrustworthy, but trusted people can still misuse access; the administrator could still use the key with no one else involved.",
+        "B": "A tamper-evident log detects misuse after it happens; it does not stop one administrator decrypting and copying the formulas, which cannot be recalled once leaked.",
+        "C": "A second copy guards against losing the key, not against misuse; it adds another place the key can be taken from."
+      },
+      "tips": [
+        "Eliminate: A screens the person and C keeps a spare key elsewhere; neither stops one administrator from using the key with no one else involved.",
+        "Final two: D beats B because a log shows misuse after the formulas are copied, while two-person control needs a second person before the key can be used.",
+        "Exam cue: when one person can obtain and use the key to a critical asset with no one else involved, apply separation of duties to the key through two-person control, not logs."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AC-3(2) (Access Enforcement | Dual Authorization: dual authorization, also known as two-person control, needs two authorized people to act and reduces insider risk); NIST SP 800-53 Rev. 5 AC-5 (Separation of Duties)",
+      "related_concepts": [
+        "Separation of duties",
+        "Two-person control",
+        "Key management",
+        "Insider risk"
+      ],
+      "_provenance": "Authored from concept: notes 4B1.1 (Core Security Principles: critical tasks are split so no one can complete and hide a harmful action alone; exam trap added in round 28: relying on logs when one person can use the key to critical data alone). Round 28, 13 Nov 2026: original scenario (an ink maker where one IT administrator can obtain and use the master key to the encrypted formula archive with no one else involved) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_015 (separation of duties named as the violated principle; definitional), crisc_d4_155 (an independent review where a small team cannot split duties; here nothing says duties cannot be split, and runner-up B is a log, not an independent review), crisc_d4_168 (a count of users holding conflicting roles), crisc_d4_097 (backup keys kept only at the main site; an availability lesson, which is why C is wrong here), crisc_d4_039 and crisc_d4_087 (least privilege), crisc_d4_053 and crisc_d4_073 (defense in depth); cross-bank mirrors: CC cc_d3_106 (two-person control told apart from separation of duties, definitional), CISA d5_068 (keys moved into a hardware security module), CISA d1_219 (a limitation of two-person approval). This item differs: the decision is the BEST control for one person's sole use of a key to the most sensitive data. Runner-up B (a tamper-evident log): no older cue keys a log over a preventive split; crisc_d4_053's cue asks for detection beside prevention, consistent with D here because prevention is what is missing. Owner pattern: no option names an owner; 'IT' named on wrong option A only. Round 28 asks: D4's 4B1 item; key D; analysis; 'Which of the following' stem (1 of D4's 2); D4's one same-opener pair, the article 'A', on eliminated A and runner-up B; 'each' on wrong option B; key not strictly longest or shortest by words (9 against 8, 10 and 12) or characters (59 against 50, 50 and 64). Audit 13 Nov 2026 (round 28 standards audit): 'each' dropped from runner-up B ('A tamper-evident log of who uses the master key', 47 characters, 9 words); key D (59, 9) is neither longest nor shortest. Article ruling confirmed: exactly two options (A eliminated, B runner-up) open 'A', so it counts as D4's one same-opener pair, in an allowed shape; C has no article on purpose.",
+      "style_version": 2
+    }
+  ],
+  "free_sample": true
+}

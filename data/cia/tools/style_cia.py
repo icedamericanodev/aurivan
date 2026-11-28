@@ -95,7 +95,9 @@ ANY_CASE = re.compile(r"\b(" + "|".join(shared.PRIORITY_WORDS) + r")\b", re.I)
 NOT_CAPS = re.compile(r"\b(EXCEPT|NOT)\b")
 NOT_ASK = re.compile(r"\bexcept\b|^(?:which|what)\b(?:\s+\S+){0,5}?\s+(?:is|are|was|were|would|should|could|does|do|"
                      r"did|can|will|might|must)\s+not\b", re.I)
-IIA_GUIDANCE = re.compile(r"\bIIA(?:['’]s)?\s+guidance\b", re.I)
+# "IIA guidance" and the same with up to three words between ("current IIA Three Lines guidance",
+# found by the Part 1 Section A restyle audit, 28 Nov 2026).
+IIA_GUIDANCE = re.compile(r"\bIIA(?:['’]s)?(?:\s+[\w-]+){0,3}?\s+guidance\b", re.I)
 # A whole option that is a set of numbered statements ("I and II", "II only", "Both I and II."), not a
 # phrase that names Domains II and V.
 ROMAN_SET = re.compile(r"(?:[Bb]oth |[Nn]either |[Oo]nly |[Aa]ll of )?(?:[Ss]tatements? )?(?:I|II|III|IV)"

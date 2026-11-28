@@ -68,16 +68,39 @@ loop. Nothing goes public until its gate says so.
    client (`mobile/src/webcloud/`), so web and phone use one implementation.
 
 ### B. Website version with sign-in and sync (web v14, MAJOR)
-1. `index.html`: sign-in screen (Google, emailed code, email + password,
-   forgot password), the Account section (status, Sync now, Download my
+1. `index.html`: sign-in screen (Google, email + password, forgot password;
+   sign-up confirms the email with a code), the Account section (status, Sync now, Download my
    data, Delete synced progress, Delete account, sign out), first-sync
    preview and undo, Terms and 16+.
 2. New pages: `delete-account.html`, `human-check.html` (Turnstile); CSP and
    `_headers` updates; `build_site.sh` publishes them.
-3. Where the study app lives on kaisip.com (keep the home page at `/` and
-   the app at a short path) is a step-4 decision for the experts.
+3. The study app goes to `https://kaisip.com/app/` (owner, 28 Nov 2026: open
+   the web version now for iPhone users; free CISA sample, no sign-in yet),
+   with the home page staying at `/`.
 4. Stays behind the `ACCOUNTS_ON` switch (preview only) until every go-live
    gate is ticked.
+5. **Sign-up consent (owner, 28 Nov 2026).** On the first sign-up step,
+   before "Send my code" and before Google: required "I agree to the Terms
+   and Privacy Policy" and "I'm 16 or older"; a separate, optional, unticked
+   "Email me study tips and KaiSip news. I can unsubscribe anytime." The
+   choice is stored with its wording version and time, can be changed in the
+   Account section, and every such email has an unsubscribe link. Sending the
+   opted-in addresses to Kit comes later (an Edge Function with Kit's key as
+   a Function secret). Wording checked by `app-store-compliance-reviewer`
+   and `growth-marketer`; the privacy policy is updated in the same release.
+6. **Design (owner asked for a creative web design, 28 Nov 2026).** Three
+   directions were drawn (Grove Atelier, Working Paper, Canopy); the designer
+   recommends Grove Atelier with Working Paper's joined code cells and tick
+   marks. Waiting for the owner's pick. Sign-up order is email, then the
+   code, then the password.
+7. **Sessions.** A sign-in lasts at most 30 days (NIST SP 800-63B-4 2.1.3):
+   a nightly database job removes older sessions, and the apps say "please
+   sign in again to keep syncing" and never touch saved progress.
+8. **Beta Desk behind Cloudflare Access (owner approved, 28 Nov 2026).** A
+   Zero Trust Access application on `kaisip.com/beta-desk` (and its script),
+   allow-list of the owner's email, as a layer in front of the existing
+   two-step sign-in. The old `kaisip.certprep-support.workers.dev` address
+   must be switched off or covered too, or it bypasses Access.
 
 ### C. Android 2.4 with sign-in and sync
 1. Supabase adapters, the sign-in and account screens, in-app account
@@ -102,6 +125,32 @@ loop. Nothing goes public until its gate says so.
    course besides CISA is offered publicly.
 5. The website course switcher comes after the phone app (web is CISA-only
    today).
+
+**Status (28 Nov 2026): steps 1 and 2 done for CRISC and AAIA.**
+- `scripts/build_free_sample.py` builds every course's sample with its own
+  plan's rules: CRISC 100 (26 / 22 / 32 / 20; every outline area, the 50-item
+  mini mock fits), AAIA 200 (66 / 92 / 42; every notes subtopic). CISA's files
+  are unchanged. Each list only grows (`verify_repo.sh`). The website still
+  publishes CISA only, and a `build_site.sh` guard now refuses any other
+  course's id or sample file.
+- The picked samples were read by the content auditors before the lists were
+  committed: 6 CRISC and 20 AAIA items were swapped for stronger ones (and
+  the AAIA areas evened out), and seven CRISC wordings were tidied.
+- The phone app's content build carries the full CRISC and AAIA courses in
+  the testers' build and only their samples in the public build, with the
+  same fail-closed guards; `audit-public-aab.mjs` checks every bundled course
+  and that CC, CSOE and CIA are absent, and mobile CI now builds and audits a
+  public-sample export on every run.
+- Both stay `coming_soon` (step 4). A bundled `coming_soon` course is treated
+  as not on the phone, so nothing a learner sees changes yet. What switching
+  one on takes: `docs/mobile/SAMPLE_QUESTION_PACK.md`.
+- The testers' bundle grew to about 17 MB (budget raised from 14 to 20 MB).
+  Adding CC and CSOE in full would pass it: plan downloadable packs first.
+- Follow-up (not built): give the sample builder a "best-reviewed first"
+  input, a reviewed list of preferred ids per course, so the next course's
+  sample starts from the auditors' picks instead of the hash order and the
+  manual swap step goes away.
+- Next: CC and CSOE (step 3, then steps 1 and 2 for them).
 
 ### E. Apple App Store
 After the website and Android 2.4. Needs an Apple Developer account
@@ -158,7 +207,9 @@ Public sign-in waits for every gate in `docs/mobile/ACCOUNTS_BETA_PLAN.md`
   `app-store-compliance-reviewer`.
 - [ ] 20. The Phone provider stays OFF (the guard watches the email columns
   only), and `auth.mfa_factors` has no learner rows (only accounts in
-  `private.beta_desk_admins` or `private.staff`).
+  `private.beta_desk_admins` or `private.staff`). Hosted proof: the full
+  `cloud_smoke.sh` run's "learner A cannot enrol an authenticator app" answers
+  500 (POST `/auth/v1/factors`, the database refusing the row).
 
 Emergency-brake numbers (audit MEDIUM-1 and MEDIUM-2): in the weekly Auth-log
 look, more than 20 `invalid_credentials` for one address in a day, more than
@@ -169,8 +220,10 @@ traffic.
 
 ## Owner checklist for this plan (only you can do these)
 
-1. Buy GitHub Pro, then turn on "Require review from Code Owners" on `main`
-   (gate 4). Recreate the `ota` and `db-backup` environments.
+1. GitHub Pro is active (28 Nov 2026). Gate 4 as rewritten in
+   `ACCOUNTS_BETA_PLAN.md`: both environments limited to `main` with the only
+   copies of their secrets, admin bypass off, `main` protected, Code Owners
+   review left off (Claude acts through the owner's account).
 2. The remaining items in `ACCOUNTS_BETA_PLAN.md` section 9 (Supabase
    settings, Turnstile, the restore drill, go-live day).
 3. Passwords: after Claude says the password guard is applied and its

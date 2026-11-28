@@ -138,7 +138,8 @@ are built, and CI tests all of it. What is missing is mostly free settings:
 ## 6. What Claude builds next (no owner action needed)
 
 - Android code shrinking (R8) and a release-build smoke test.
-- CI limits on bundle size (about 14 MB) and content per certification
+- CI limits on bundle size (about 20 MB since the testers' build carries the
+  full CRISC and AAIA courses, 28 Nov 2026; was 14 MB) and content per certification
   (about 6 MB).
 - `scripts/build_site.sh`, which publishes only an allowlist of files to the
   website. Today the whole repo is public on GitHub Pages.
