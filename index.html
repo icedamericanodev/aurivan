@@ -27470,7 +27470,7 @@ function appCtaInit() {
 //   the learner ticks "remove my progress from this browser".
 var KA_ON = !!(window.KS_ACCT && window.KS_ACCT.enabled);
 // Kept in step with the bundle by mobile/scripts/build-web-plant.mjs (its --check fails on a stale value).
-var KA_CLOUD_SRC = 'assets/kaisip-cloud.js?v=71864a9583';
+var KA_CLOUD_SRC = 'assets/kaisip-cloud.js?v=a105d2c97a';
 var KA_WORDS_SRC = 'assets/kaisip-password-words.js';
 // Cloudflare Turnstile, widget "KaiSip sign-in" (a public site key: docs/mobile/ACCOUNTS_BETA_PLAN.md, "Public config values").
 var KA_HUMAN_KEY = '0x4AAAAAAFptlSqMhAvLUI8w';
@@ -28064,10 +28064,10 @@ function kaTopbarHtml() {
       + kaNewTab('support.html', 'Help').replace('<a ', '<a class="ka-toplink" ');
   }
   if (kaAccount() && !ka.cloud.auth.passwordNeeded()) {
-    return '<a class="ka-brand" href="#today" aria-label="KaiSip, back to studying" onclick="event.preventDefault();kaLand()">' + kaLockup() + '</a>'
-      + '<a class="ka-toplink" href="#today" onclick="event.preventDefault();kaLand()">Back to studying ' + ico('arrow-right', 16) + '</a>';
+    return '<a class="ka-brand" href="#today" aria-label="KaiSip, back to studying" data-ka-click="kaLand">' + kaLockup() + '</a>'
+      + '<a class="ka-toplink" href="#today" data-ka-click="kaLand">Back to studying ' + ico('arrow-right', 16) + '</a>';
   }
-  return '<a class="ka-brand" href="#welcome" aria-label="KaiSip, the welcome page" onclick="event.preventDefault();kaHome()">' + kaLockup() + '</a>'
+  return '<a class="ka-brand" href="#welcome" aria-label="KaiSip, the welcome page" data-ka-click="kaHome">' + kaLockup() + '</a>'
     + kaNewTab('support.html', 'Help').replace('<a ', '<a class="ka-toplink" ');
 }
 // The wordmark on a signed-out screen: back to the welcome, with the address cleared of the screen's name.
@@ -28082,8 +28082,8 @@ function kaField(o) {
   return '<div class="ka-field' + (o.aside ? ' has-aside' : '') + '"><div class="ka-field-top"><label class="ka-label" for="' + o.id + '">' + o.label + '</label></div>'
     + '<div class="ka-input-wrap"><input class="ka-input' + (o.reveal ? ' has-reveal' : '') + '" id="' + o.id + '" name="' + o.name + '" type="' + o.type + '" autocomplete="' + o.ac + '"'
     + ' autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="' + o.id + 'E' + (o.describedby ? ' ' + o.describedby : '') + '"'
-    + (o.value ? ' value="' + escapeHtml(o.value) + '"' : '') + (o.oninput ? ' oninput="' + o.oninput + '"' : '') + ' required>'
-    + (o.reveal ? '<button type="button" class="ka-reveal" aria-controls="' + o.id + '" onclick="kaReveal(this)">' + (o.type === 'text' ? 'Hide' : 'Show') + '<span class="sr-only"> password</span></button>' : '')
+    + (o.value ? ' value="' + escapeHtml(o.value) + '"' : '') + (o.oninput ? ' data-ka-input="' + o.oninput + '"' : '') + ' required>'
+    + (o.reveal ? '<button type="button" class="ka-reveal" aria-controls="' + o.id + '" data-ka-click="kaReveal:@el">' + (o.type === 'text' ? 'Hide' : 'Show') + '<span class="sr-only"> password</span></button>' : '')
     + '</div>' + (o.aside || '') + '<p class="ka-error" id="' + o.id + 'E" role="alert"></p>' + (o.after || '') + '</div>';
 }
 function kaReveal(btn) {
@@ -28095,7 +28095,7 @@ function kaReveal(btn) {
 }
 function kaCheck(id, html, o) {
   o = o || {};
-  return '<label class="ka-check" for="' + id + '"><input type="checkbox" id="' + id + '"' + (o.required ? ' aria-required="true"' : '') + (o.describedby ? ' aria-describedby="' + o.describedby + '"' : '') + (o.onchange ? ' onchange="' + o.onchange + '"' : '') + '>'
+  return '<label class="ka-check" for="' + id + '"><input type="checkbox" id="' + id + '"' + (o.required ? ' aria-required="true"' : '') + (o.describedby ? ' aria-describedby="' + o.describedby + '"' : '') + (o.onchange ? ' data-ka-change="' + o.onchange + '"' : '') + '>'
     + '<span class="ka-box" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4.5 13.2 9.4 18 19.5 6.2"/></svg></span>'
     + '<span>' + html + '</span></label>';
 }
@@ -28103,7 +28103,7 @@ function kaCheck(id, html, o) {
 // set apart under its own "Optional" label, the news box (never pre-ticked either).
 function kaConsentHtml() {
   return '<fieldset class="ka-consent"><legend class="sr-only">Agreement</legend>'
-    + kaCheck('kaTerms', 'I agree to the ' + kaNewTab('terms.html', 'Terms of Use') + ' and ' + kaNewTab('privacy.html', 'Privacy Policy') + '.', { required: true, describedby: 'kaAgeLine kaConsentHint kaConsentE', onchange: 'kaConsentDraw()' })
+    + kaCheck('kaTerms', 'I agree to the ' + kaNewTab('terms.html', 'Terms of Use') + ' and ' + kaNewTab('privacy.html', 'Privacy Policy') + '.', { required: true, describedby: 'kaAgeLine kaConsentHint kaConsentE', onchange: 'kaConsentDraw' })
     + '<p class="ka-consent-age" id="kaAgeLine">' + KA_AGE_WORDS + '</p>'
     + '<p class="ka-hint" id="kaConsentHint">Tick the box above to continue.</p>'
     + '<p class="ka-error" id="kaConsentE" role="alert"></p></fieldset>'
@@ -28147,7 +28147,7 @@ function kaCodeField() {
   return '<div class="ka-field"><div class="ka-field-top"><label class="ka-label" for="kaCode">8-digit code</label></div>'
     + '<div class="ka-code" id="kaCodeBox"><div class="ka-code-cells" aria-hidden="true">' + cells + '</div>'
     + '<input class="ka-code-input" id="kaCode" name="code" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" maxlength="8" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="kaCodeE" required'
-    + ' oninput="kaCodeDraw()" onpaste="kaCodePaste(event)" onfocus="kaCodeDraw()" onkeyup="kaCodeDraw()" onclick="kaCodePick(event)" onselect="kaCodeDraw()"></div>'
+    + ' data-ka-input="kaCodeDraw" data-ka-paste="kaCodePaste:@event" data-ka-focus="kaCodeDraw" data-ka-keyup="kaCodeDraw" data-ka-click="kaCodePick:@event" data-ka-select="kaCodeDraw"></div>'
     + '<p class="ka-error" id="kaCodeE" role="alert"></p></div>';
 }
 function kaCodeDraw() {
@@ -28299,7 +28299,7 @@ function kaNewPasswordField(label) {
   if (kaPwTimer) { clearTimeout(kaPwTimer); kaPwTimer = null; }
   // Hidden as typed, with a Show button (web.dev sign-in form practice; password managers offer to make and save one).
   return '<input type="email" class="sr-only" name="email" autocomplete="username" tabindex="-1" aria-hidden="true" readonly value="' + escapeHtml(ka.email || '') + '">'
-    + kaField({ id: 'kaPw', name: 'new-password', label: label || 'New password', type: 'password', ac: 'new-password', reveal: true, describedby: 'kaPwHelp', oninput: 'kaPwTyped()',
+    + kaField({ id: 'kaPw', name: 'new-password', label: label || 'New password', type: 'password', ac: 'new-password', reveal: true, describedby: 'kaPwHelp', oninput: 'kaPwTyped',
       after: '<div class="ka-pw" id="kaPwHelp"></div><p class="sr-only" id="kaPwSay" role="status" aria-live="polite"></p>' });
 }
 // ── The Google button ──
@@ -28332,7 +28332,7 @@ function kaGoogleDraw() {
   });
 }
 function kaGoogleBtn(label, onclick, id) {
-  return '<button type="button" class="ka-btn ka-btn-google"' + (id ? ' id="' + id + '"' : '') + ' onclick="' + onclick + '"><img alt="" width="20" height="20" data-g' + (kaGoogleG ? ' src="' + kaGoogleG + '"' : '') + '><span>' + label + '</span></button>';
+  return '<button type="button" class="ka-btn ka-btn-google"' + (id ? ' id="' + id + '"' : '') + ' data-ka-click="' + onclick + '"><img alt="" width="20" height="20" data-g' + (kaGoogleG ? ' src="' + kaGoogleG + '"' : '') + '><span>' + label + '</span></button>';
 }
 // Everything that goes with the button (a divider, a line of small print) hides with it.
 function kaGooglePart(html) {
@@ -28345,7 +28345,7 @@ function kaNoticeHtml() {
 }
 function kaResendHtml(label) {
   return '<div class="ka-resend"><p>Nothing yet? Check your spam folder. <span id="kaResendWait"></span></p>'
-    + '<button type="button" class="ka-linkbtn" id="kaResend" onclick="kaResend()">' + label + '</button>'
+    + '<button type="button" class="ka-linkbtn" id="kaResend" data-ka-click="kaResend">' + label + '</button>'
     + '<p class="ka-hint" id="kaResendSay" role="status"></p></div>';
 }
 
@@ -28357,19 +28357,19 @@ var KA_VIEWS = {
       '<h1 class="ka-title" tabindex="-1">Welcome back</h1>'
       + '<p class="ka-lede">Sign in to study, with your progress kept safe and in sync with the KaiSip Android app.</p>'
       + kaNoticeHtml()
-      + kaGooglePart('<div class="ka-google-slot">' + kaGoogleBtn('Continue with Google', 'kaGoogle(false)') + '</div>'
+      + kaGooglePart('<div class="ka-google-slot">' + kaGoogleBtn('Continue with Google', 'kaGoogle:false') + '</div>'
         + '<div class="ka-divider"><span>or sign in with email</span></div>')
-      + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();kaSubmit(\'signin\')">'
+      + '<form class="ka-form" id="kaForm" method="post" novalidate data-ka-submit="kaSubmit:signin">'
       + kaField({ id: 'kaEmail', name: 'email', label: 'Email', type: 'email', ac: 'username', value: ka.email })
       + kaField({ id: 'kaPass', name: 'password', label: 'Password', type: 'password', ac: 'current-password', reveal: true,
-        aside: '<a class="ka-aside" href="#forgot-password" onclick="event.preventDefault();kaGo(\'forgot-password\')">Forgot password?</a>' })
+        aside: '<a class="ka-aside" href="#forgot-password" data-ka-click="kaGo:forgot-password">Forgot password?</a>' })
       + '<label class="ka-check" for="kaShared"><input type="checkbox" id="kaShared"><span class="ka-box" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4.5 13.2 9.4 18 19.5 6.2"/></svg></span>'
       + '<span>This is a shared computer<br><span class="ka-hint">You’ll be signed out when you close this tab.</span></span></label>'
       + '<div class="ka-human" id="kaHuman"></div>'
       + '<p class="ka-error" id="kaFormE" role="alert"></p>'
       + '<button type="submit" class="ka-btn ka-btn-primary" id="kaGo">Sign in</button></form>'
       + '<p class="ka-note">' + kaIco('shield', 18) + '<span>A quick, private human check runs when you sign in.</span></p>'
-      + '<p class="ka-switch">New to KaiSip? <a href="#create-account" onclick="event.preventDefault();kaGo(\'create-account\')">Create a free account</a></p>');
+      + '<p class="ka-switch">New to KaiSip? <a href="#create-account" data-ka-click="kaGo:create-account">Create a free account</a></p>');
   },
   signup1: function () {
     return kaShell('signup1',
@@ -28377,19 +28377,19 @@ var KA_VIEWS = {
       + '<h1 class="ka-title" tabindex="-1">Create your KaiSip account</h1>'
       + '<p class="ka-lede">We’ll email you an 8-digit code to confirm it’s you. No links, ever.</p>'
       + kaNoticeHtml()
-      + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();kaSubmit(\'signup1\')">'
+      + '<form class="ka-form" id="kaForm" method="post" novalidate data-ka-submit="kaSubmit:signup1">'
       + kaField({ id: 'kaEmail', name: 'email', label: 'Email', type: 'email', ac: 'username', value: ka.email })
       + kaConsentHtml()
       + '<div class="ka-human" id="kaHuman"></div>'
       + '<p class="ka-error" id="kaFormE" role="alert"></p>'
       + '<button type="submit" class="ka-btn ka-btn-primary" id="kaGo">Send my code ' + ico('arrow-right', 18) + '</button></form>'
       + kaGooglePart('<div class="ka-divider"><span>or</span></div>'
-        + kaGoogleBtn('Sign up with Google', 'kaGoogle(true)')
+        + kaGoogleBtn('Sign up with Google', 'kaGoogle:true')
         + '<p class="ka-fine">The agreement above applies to Google sign-up too.</p>')
       + '<div class="ka-adds"><p class="ka-adds-t">' + kaIco('sync', 18) + '<span>What your account keeps</span></p>'
       + '<p>Your answers, missed questions, saved questions, notes read and mock results, in sync between this browser and the Android app.</p>'
       + '<p>Your progress is also saved in this browser, so you can keep studying when the connection drops.</p></div>'
-      + '<p class="ka-switch">Already have an account? <a href="#sign-in" onclick="event.preventDefault();kaGo(\'sign-in\')">Sign in</a></p>');
+      + '<p class="ka-switch">Already have an account? <a href="#sign-in" data-ka-click="kaGo:sign-in">Sign in</a></p>');
   },
   signup2: function () {
     return kaShell('signup2',
@@ -28397,13 +28397,13 @@ var KA_VIEWS = {
       + '<h1 class="ka-title" tabindex="-1">Check your inbox</h1>'
       + '<p class="ka-lede">We sent an 8-digit code to <strong>' + escapeHtml(ka.email) + '</strong>. It works for 10 minutes.</p>'
       + kaNoticeHtml()
-      + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();kaSubmit(\'signup2\')">'
+      + '<form class="ka-form" id="kaForm" method="post" novalidate data-ka-submit="kaSubmit:signup2">'
       + kaCodeField()
       + '<div class="ka-human" id="kaHuman"></div>'
       + '<p class="ka-error" id="kaFormE" role="alert"></p>'
       + '<button type="submit" class="ka-btn ka-btn-primary" id="kaGo">Confirm email</button></form>'
       + kaResendHtml('Send a new code')
-      + '<p><button type="button" class="ka-linkbtn" onclick="kaShow(\'signup1\')">Use a different email</button></p>'
+      + '<p><button type="button" class="ka-linkbtn" data-ka-click="kaShow:signup1">Use a different email</button></p>'
       + '<p class="ka-note">' + kaIco('mail', 18) + '<span>Codes come from <strong>codes@kaisip.com</strong>. We will never ask for your code by phone or chat.</span></p>');
   },
   signup3: function () {
@@ -28414,7 +28414,7 @@ var KA_VIEWS = {
       + '<h1 class="ka-title" tabindex="-1">Create a password</h1>'
       + '<p class="ka-lede">' + (fresh ? 'Email confirmed. Now choose a password.' : 'Your email is confirmed. Choose a password.') + '</p>'
       + kaNoticeHtml()
-      + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();kaSubmit(\'signup3\')">'
+      + '<form class="ka-form" id="kaForm" method="post" novalidate data-ka-submit="kaSubmit:signup3">'
       + kaNewPasswordField()
       + '<p class="ka-error" id="kaFormE" role="alert"></p>'
       + '<button type="submit" class="ka-btn ka-btn-primary" id="kaGo">' + (fresh ? 'Create account' : 'Save password') + '</button></form>'
@@ -28422,11 +28422,11 @@ var KA_VIEWS = {
   },
   forgot1: function () {
     return kaShell('forgot',
-      '<a class="ka-back" href="#sign-in" onclick="event.preventDefault();kaGo(\'sign-in\')">' + ico('arrow-right', 18) + '<span>Back to sign in</span></a>'
+      '<a class="ka-back" href="#sign-in" data-ka-click="kaGo:sign-in">' + ico('arrow-right', 18) + '<span>Back to sign in</span></a>'
       + '<h1 class="ka-title" tabindex="-1">Reset your password</h1>'
       + '<p class="ka-lede">Enter your account’s email and we’ll send an 8-digit reset code. No links, ever.</p>'
       + kaNoticeHtml()
-      + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();kaSubmit(\'forgot1\')">'
+      + '<form class="ka-form" id="kaForm" method="post" novalidate data-ka-submit="kaSubmit:forgot1">'
       + kaField({ id: 'kaEmail', name: 'email', label: 'Email', type: 'email', ac: 'username', value: ka.email })
       + '<div class="ka-human" id="kaHuman"></div>'
       + '<p class="ka-error" id="kaFormE" role="alert"></p>'
@@ -28435,11 +28435,11 @@ var KA_VIEWS = {
   },
   forgot2: function () {
     return kaShell('forgot',
-      '<a class="ka-back" href="#sign-in" onclick="event.preventDefault();kaGo(\'sign-in\')">' + ico('arrow-right', 18) + '<span>Back to sign in</span></a>'
+      '<a class="ka-back" href="#sign-in" data-ka-click="kaGo:sign-in">' + ico('arrow-right', 18) + '<span>Back to sign in</span></a>'
       + '<h1 class="ka-title" tabindex="-1">Reset your password</h1>'
       + '<p class="ka-lede">If there’s an account for <strong>' + escapeHtml(ka.email) + '</strong>, we’ve sent it an 8-digit reset code. It works for 10 minutes.</p>'
       + kaNoticeHtml()
-      + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();kaSubmit(\'forgot2\')">'
+      + '<form class="ka-form" id="kaForm" method="post" novalidate data-ka-submit="kaSubmit:forgot2">'
       + kaCodeField()
       + kaNewPasswordField()
       + '<div class="ka-human" id="kaHuman"></div>'
@@ -28453,11 +28453,11 @@ var KA_VIEWS = {
       '<h1 class="ka-title" tabindex="-1">One more step</h1>'
       + '<p class="ka-lede">' + (kaAgreeDue() ? 'You’re almost in. To finish creating your account, please agree to the terms.' : 'You’re signed in. Before your progress syncs, please agree to the terms.') + '</p>'
       + kaNoticeHtml()
-      + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();kaSubmit(\'consent\')">'
+      + '<form class="ka-form" id="kaForm" method="post" novalidate data-ka-submit="kaSubmit:consent">'
       + kaConsentHtml()
       + '<p class="ka-error" id="kaFormE" role="alert"></p>'
       + '<button type="submit" class="ka-btn ka-btn-primary" id="kaGo">Agree and continue</button></form>'
-      + '<p><button type="button" class="ka-linkbtn" onclick="kaSignOutQuiet()">Sign out instead</button></p>'
+      + '<p><button type="button" class="ka-linkbtn" data-ka-click="kaSignOutQuiet">Sign out instead</button></p>'
       + '<p class="ka-note">' + ico('info', 18) + '<span>' + (kaAgreeDue() ? 'Nothing is saved to your account until you agree. Progress already in this browser stays here either way.' : 'Nothing is synced until you agree. Your progress stays in this browser either way.') + '</span></p>');
   },
   firstsync: function () { return kaFirstSyncHtml(); },
@@ -28510,6 +28510,34 @@ function kaGoApp(tab) {
   if (!kaGateOk()) { kaGateShut(); return; }
   kaClose();
   try { switchTab(tab || 'home', { noScroll: true }); window.scrollTo(0, 0); navFocusTitle(); } catch (e) {}
+}
+
+// ── What the account screens' controls do ──
+// No element in this block carries an inline handler (onclick="..." needs 'unsafe-inline' in
+// the page's script policy). A control names its action in a data- attribute, one per event:
+// data-ka-click="kaGo:sign-in" is "call kaGo('sign-in') on click". One listener per event type
+// on the document reads them. Only the functions listed here can be named; the part after the
+// colon is passed as text (or true / false, @el for the element, @event for the event).
+var KA_EVENTS = ['click', 'submit', 'input', 'change', 'paste', 'keyup', 'select', 'focusin'];
+var KA_ACT = { closeFlagModal: closeFlagModal, kaCardSync: kaCardSync, kaCodeDraw: kaCodeDraw, kaCodePaste: kaCodePaste, kaCodePick: kaCodePick, kaConsentDraw: kaConsentDraw, kaDeleteDialog: kaDeleteDialog, kaDeleteGo: kaDeleteGo, kaDeleteSynced: kaDeleteSynced, kaDeleteViaGoogle: kaDeleteViaGoogle, kaDownload: kaDownload, kaFirstConfirm: kaFirstConfirm, kaFirstLater: kaFirstLater, kaGo: kaGo, kaGoogle: kaGoogle, kaHome: kaHome, kaLand: kaLand, kaNewsToggle: kaNewsToggle, kaPasswordDialog: kaPasswordDialog, kaPasswordGo: kaPasswordGo, kaPwTyped: kaPwTyped, kaResend: kaResend, kaResumeSetup: kaResumeSetup, kaReveal: kaReveal, kaShow: kaShow, kaSignOutAll: kaSignOutAll, kaSignOutDialog: kaSignOutDialog, kaSignOutGo: kaSignOutGo, kaSignOutQuiet: kaSignOutQuiet, kaSubmit: kaSubmit, kaSyncNow: kaSyncNow, kaUndo: kaUndo };
+// Three that need the element or the event themselves.
+var KA_ACT_X = {
+  reload: function () { location.reload(); },
+  goAccount: function (el, e) { navGoFocus(e, 'account'); },
+  // A sheet's backdrop: a click on the backdrop itself closes the sheet, a click inside it does not.
+  overlay: function (el, e) { if (e.target === el) closeFlagModal(); }
+};
+function kaDispatch(e) {
+  var attr = 'data-ka-' + (e.type === 'focusin' ? 'focus' : e.type);
+  var t = e.target && e.target.closest ? e.target.closest('[' + attr + ']') : null;
+  if (!t) return;
+  var spec = t.getAttribute(attr) || '', i = spec.indexOf(':');
+  var name = i < 0 ? spec : spec.slice(0, i), arg = i < 0 ? undefined : spec.slice(i + 1);
+  // A form is never sent by the browser, and a link styled as an action never navigates.
+  if (e.type === 'submit' || (e.type === 'click' && t.tagName === 'A')) e.preventDefault();
+  if (KA_ACT_X.hasOwnProperty(name)) { KA_ACT_X[name](t, e); return; }
+  if (!KA_ACT.hasOwnProperty(name)) return;
+  KA_ACT[name](arg === '@el' ? t : arg === '@event' ? e : arg === 'true' ? true : arg === 'false' ? false : arg);
 }
 
 // ── The gate: on the website the study app is for signed-in learners ──
@@ -28921,17 +28949,17 @@ function kaFirstSyncHtml() {
   if (switched) {
     title = 'A different account';
     body = 'You’re signed in as <strong>' + escapeHtml(mail) + '</strong>, but this browser last synced with another account. Start fresh to use this account’s progress here, or combine the two.';
-    main = '<button type="button" class="ka-btn ka-btn-primary" id="kaGo" onclick="kaFirstConfirm(\'replace\')">Start fresh with this account</button>';
-    alt = '<button type="button" class="ka-btn ka-btn-secondary" onclick="kaFirstConfirm(\'merge\')">Combine them</button>';
+    main = '<button type="button" class="ka-btn ka-btn-primary" id="kaGo" data-ka-click="kaFirstConfirm:replace">Start fresh with this account</button>';
+    alt = '<button type="button" class="ka-btn ka-btn-secondary" data-ka-click="kaFirstConfirm:merge">Combine them</button>';
   } else if (prep.case === 'phone') {
     title = 'Add this browser’s progress to your account?';
     body = 'You’re signed in as <strong>' + escapeHtml(mail) + '</strong>. Your account has no progress yet.';
-    main = '<button type="button" class="ka-btn ka-btn-primary" id="kaGo" onclick="kaFirstConfirm(\'merge\')">Sync this browser</button>';
+    main = '<button type="button" class="ka-btn ka-btn-primary" id="kaGo" data-ka-click="kaFirstConfirm:merge">Sync this browser</button>';
   } else {
     title = 'Bring your progress together?';
     body = 'You’re signed in as <strong>' + escapeHtml(mail) + '</strong>. This browser and your account both have progress. We’ll combine them: nothing you’ve answered is lost, and your best results are kept.';
-    main = '<button type="button" class="ka-btn ka-btn-primary" id="kaGo" onclick="kaFirstConfirm(\'merge\')">Combine</button>';
-    alt = '<button type="button" class="ka-btn ka-btn-secondary" onclick="kaFirstConfirm(\'replace\')">Use the account’s progress here</button>';
+    main = '<button type="button" class="ka-btn ka-btn-primary" id="kaGo" data-ka-click="kaFirstConfirm:merge">Combine</button>';
+    alt = '<button type="button" class="ka-btn ka-btn-secondary" data-ka-click="kaFirstConfirm:replace">Use the account’s progress here</button>';
   }
   // Answers saved here for questions the website no longer loads (study from before it moved to
   // the free sample): they stay in this browser and are said so, plainly.
@@ -28944,7 +28972,7 @@ function kaFirstSyncHtml() {
     + (switched ? '' : '<table class="ka-cols"><caption class="sr-only">What each side holds, and the result of combining</caption><thead><tr><th scope="col"><span class="sr-only">What</span></th><th scope="col">This browser</th><th scope="col">Account</th><th scope="col">After</th></tr></thead><tbody>' + rows + '</tbody></table>'
     + '<p class="ka-fine">Questions answered on both count once. “After” is the result of combining.</p>')
     + '<p class="ka-error" id="kaFormE" role="alert"></p>'
-    + '<div class="ka-choices">' + main + alt + '<button type="button" class="ka-btn ka-btn-quiet" onclick="kaFirstLater()">Not now</button></div>'
+    + '<div class="ka-choices">' + main + alt + '<button type="button" class="ka-btn ka-btn-quiet" data-ka-click="kaFirstLater">Not now</button></div>'
     + (alt ? '<p class="ka-note">' + kaIco('undo', 18) + '<span>If you replace this browser’s progress, we keep a copy for 7 days. You can put it back from your Account page.</span></p>' : ''));
 }
 function kaFirstConfirm(mode) {
@@ -29051,8 +29079,8 @@ function kaWelcomeHtml() {
     + '<p class="ka-welcome-why">KaiSip is free. A free account keeps your progress safe and in sync with the Android app.</p>'
     + (had > 0 ? '<p class="ka-welcome-kept" id="kaKept">' + ico('check', 18) + '<span>The progress you already have in this browser is kept. After you sign in, you choose whether to add it to your account.</span></p>' : '')
     + '<div class="ka-paths">'
-    + '<button type="button" class="ka-path ka-path-primary" onclick="kaGo(\'create-account\')"><span class="ka-path-ico">' + ico('home', 22) + '</span><span class="ka-path-text"><span class="ka-path-t">Create a free account</span><span class="ka-path-s">With your email and a password<span class="ka-google-part"' + (kaGoogleG ? '' : ' hidden') + '>, or with Google</span>.</span></span>' + ico('arrow-right', 20) + '</button>'
-    + '<button type="button" class="ka-path ka-path-secondary" onclick="kaGo(\'sign-in\')"><span class="ka-path-ico">' + kaIco('sync', 22) + '</span><span class="ka-path-text"><span class="ka-path-t">Sign in</span><span class="ka-path-s">Already have a KaiSip account? Pick up where you left off.</span></span>' + ico('chevron', 20) + '</button>'
+    + '<button type="button" class="ka-path ka-path-primary" data-ka-click="kaGo:create-account"><span class="ka-path-ico">' + ico('home', 22) + '</span><span class="ka-path-text"><span class="ka-path-t">Create a free account</span><span class="ka-path-s">With your email and a password<span class="ka-google-part"' + (kaGoogleG ? '' : ' hidden') + '>, or with Google</span>.</span></span>' + ico('arrow-right', 20) + '</button>'
+    + '<button type="button" class="ka-path ka-path-secondary" data-ka-click="kaGo:sign-in"><span class="ka-path-ico">' + kaIco('sync', 22) + '</span><span class="ka-path-text"><span class="ka-path-t">Sign in</span><span class="ka-path-s">Already have a KaiSip account? Pick up where you left off.</span></span>' + ico('chevron', 20) + '</button>'
     + '</div>'
     + (ios ? '<p class="ka-ios">' + kaIco('phone', 20) + '<span>On iPhone? After you sign in, Today shows how to add KaiSip to your Home Screen.</span></p>' : '')
     + '<p class="ka-fine">The web version includes a free sample of KaiSip’s CISA practice questions. Not affiliated with or endorsed by ISACA. CISA is a trademark of ISACA.</p>'
@@ -29092,11 +29120,11 @@ function kaCardHtml() {
   var text = '<span class="ka-card-text">' + title + sub + '</span>';
   if (st === 'expired' || st === 'out') {
     return head + '<div class="ka-card-row"><div class="ka-card-main">' + disc('alert', 'is-attn') + text.replace('Signed in as ', 'Account ') + '</div></div>'
-      + '<div class="ka-card-under"><a class="ka-btn ka-btn-secondary ka-btn-sm ka-btn-auto" data-f="again" href="#sign-in" onclick="event.preventDefault();kaGo(\'sign-in\')">Sign in again</a><p>' + KA_SAFE + '</p></div>';
+      + '<div class="ka-card-under"><a class="ka-btn ka-btn-secondary ka-btn-sm ka-btn-auto" data-f="again" href="#sign-in" data-ka-click="kaGo:sign-in">Sign in again</a><p>' + KA_SAFE + '</p></div>';
   }
-  var open = function (d) { return '<a class="ka-card-main" data-f="open" href="#account" onclick="return navGoFocus(event,\'account\')">' + d + text + chev + '</a>'; };
+  var open = function (d) { return '<a class="ka-card-main" data-f="open" href="#account" data-ka-click="goAccount">' + d + text + chev + '</a>'; };
   var act = function (label, icon, busy) {
-    return '<button type="button" class="ka-card-act' + (busy ? ' is-busy' : '') + '" data-f="sync"' + (busy ? ' aria-disabled="true"' : '') + ' onclick="kaCardSync()">' + kaIco(icon, 20) + '<span>' + label + '</span></button>';
+    return '<button type="button" class="ka-card-act' + (busy ? ' is-busy' : '') + '" data-f="sync"' + (busy ? ' aria-disabled="true"' : '') + ' data-ka-click="kaCardSync">' + kaIco(icon, 20) + '<span>' + label + '</span></button>';
   };
   if (st === 'checking') return head + '<div class="ka-card-row"><div class="ka-card-main">' + disc('sync', 'is-quiet') + text + '</div></div>';
   if (st === 'syncing') return head + '<div class="ka-card-row">' + open(disc('sync')) + act('Syncing…', 'sync', true) + '</div>';
@@ -29105,11 +29133,11 @@ function kaCardHtml() {
   if (st === 'off') return head + '<div class="ka-card-row">' + open(disc('sync', 'is-quiet')) + '</div>';
   if (st === 'paused') {
     return head + '<div class="ka-card-row">' + open(disc('alert', 'is-attn')) + '</div>'
-      + '<div class="ka-card-under"><button type="button" class="ka-btn ka-btn-secondary ka-btn-sm ka-btn-auto" data-f="reload" onclick="location.reload()">Refresh the page</button><p>' + KA_SAFE + '</p></div>';
+      + '<div class="ka-card-under"><button type="button" class="ka-btn ka-btn-secondary ka-btn-sm ka-btn-auto" data-f="reload" data-ka-click="reload">Refresh the page</button><p>' + KA_SAFE + '</p></div>';
   }
   if (st === 'setup' || st === 'needpw') {
     return head + '<div class="ka-card-row">' + open(disc('alert', 'is-attn')) + '</div>'
-      + '<div class="ka-card-under"><button type="button" class="ka-btn ka-btn-secondary ka-btn-sm ka-btn-auto" data-f="setup" onclick="kaResumeSetup()">' + (st === 'needpw' ? 'Create a password' : 'Finish setting up') + '</button><p>' + KA_SAFE + '</p></div>';
+      + '<div class="ka-card-under"><button type="button" class="ka-btn ka-btn-secondary ka-btn-sm ka-btn-auto" data-f="setup" data-ka-click="kaResumeSetup">' + (st === 'needpw' ? 'Create a password' : 'Finish setting up') + '</button><p>' + KA_SAFE + '</p></div>';
   }
   return head + '<div class="ka-card-row">' + open(disc('okcircle')) + act('Sync now', 'sync') + '</div>';
 }
@@ -29186,10 +29214,10 @@ function kaAccountHero() {
     : st === 'paused' ? 'Paused: refresh the page to keep syncing' : st === 'off' ? 'Sync is off' : st === 'setup' ? 'One step left to turn sync on' : st === 'needpw' ? 'Finish creating your password' : 'Sync is on';
   var icon = st === 'synced' || st === 'syncing' ? 'check' : st === 'offline' ? 'cloudoff' : st === 'off' ? 'sync' : 'alert';
   var btn = st === 'syncing' ? '<button type="button" class="ka-btn ka-btn-auto" data-f="sync" aria-disabled="true">' + kaIco('sync', 18) + 'Syncing…</button>'
-    : st === 'paused' ? '<button type="button" class="ka-btn ka-btn-auto" data-f="sync" onclick="location.reload()">Refresh the page</button>'
-    : st === 'off' ? '<button type="button" class="ka-btn ka-btn-auto" data-f="sync" onclick="kaResumeSetup()">Turn sync on</button>'
-    : st === 'setup' || st === 'needpw' ? '<button type="button" class="ka-btn ka-btn-auto" data-f="sync" onclick="kaResumeSetup()">' + (st === 'needpw' ? 'Create a password' : 'Finish setting up') + '</button>'
-    : st === 'offline' ? '' : '<button type="button" class="ka-btn ka-btn-auto" data-f="sync" onclick="kaSyncNow(true)">' + kaIco('sync', 18) + (st === 'error' ? 'Try again' : 'Sync now') + '</button>';
+    : st === 'paused' ? '<button type="button" class="ka-btn ka-btn-auto" data-f="sync" data-ka-click="reload">Refresh the page</button>'
+    : st === 'off' ? '<button type="button" class="ka-btn ka-btn-auto" data-f="sync" data-ka-click="kaResumeSetup">Turn sync on</button>'
+    : st === 'setup' || st === 'needpw' ? '<button type="button" class="ka-btn ka-btn-auto" data-f="sync" data-ka-click="kaResumeSetup">' + (st === 'needpw' ? 'Create a password' : 'Finish setting up') + '</button>'
+    : st === 'offline' ? '' : '<button type="button" class="ka-btn ka-btn-auto" data-f="sync" data-ka-click="kaSyncNow:true">' + kaIco('sync', 18) + (st === 'error' ? 'Try again' : 'Sync now') + '</button>';
   kaRedraw(box, kaFronds(600, 260, [[540, 290, 280, -14, 8], [600, 300, 180, 18, 6, true]])
     + '<div class="ka-who"><span class="ka-ava" aria-hidden="true">' + escapeHtml(Array.from(mail)[0].toLocaleUpperCase()) + '</span><div><p class="ka-who-mail">' + escapeHtml(mail) + '</p><p class="ka-who-sub">' + kaProviderWords(who.providers || []) + '</p></div></div>'
     + '<div class="ka-sync"><p class="ka-status">' + kaIco(icon, 20) + '<span>' + status + '</span></p>'
@@ -29201,7 +29229,7 @@ function kaItem(o) {
   var inner = (o.icon ? '<span class="ka-item-i" aria-hidden="true">' + kaIco(o.icon, 20) + '</span>' : '')
     + '<span><span class="ka-item-t" id="' + o.id + 'T">' + o.title + '</span><span class="ka-item-s" id="' + o.id + 'S" style="display:block">' + o.sub + '</span></span>'
     + '<span class="ka-item-go" aria-hidden="true">' + ico('chevron', 18) + '</span>';
-  return '<div class="ka-row"><button type="button" class="ka-item' + (o.danger ? ' is-danger' : '') + '" id="' + o.id + '"' + (o.dialog ? ' aria-haspopup="dialog"' : '') + ' onclick="' + o.onclick + '">' + inner + '</button>'
+  return '<div class="ka-row"><button type="button" class="ka-item' + (o.danger ? ' is-danger' : '') + '" id="' + o.id + '"' + (o.dialog ? ' aria-haspopup="dialog"' : '') + ' data-ka-click="' + o.onclick + '">' + inner + '</button>'
     + '<p class="ka-item-say" id="' + o.id + 'Say" role="status"></p></div>';
 }
 function kaSayRow(id, words) {
@@ -29239,19 +29267,19 @@ function kaRenderAccount() {
     + '<p class="ka-item-say" id="kaNewsBtnSay" role="status"></p>'
     + '<p class="ka-group-note">Account emails, like codes and security notices, always arrive.</p></section>'
     + '<section class="ka-group" aria-labelledby="kaG2"><h2 id="kaG2" class="ka-group-t">Your data</h2>'
-    + kaItem({ id: 'kaDl', icon: 'download', title: 'Download my data', sub: 'A copy of your account and synced progress, as a file.', onclick: 'kaDownload()' })
-    + kaItem({ id: 'kaDelSync', icon: 'cloudoff', title: 'Delete synced progress', sub: 'Removes the copy kept in your account and turns sync off. Progress in this browser stays.', onclick: 'kaDeleteSynced()', dialog: true })
-    + (undo ? kaItem({ id: 'kaUndo', icon: 'undo', title: 'Put back this browser’s earlier progress', sub: 'From before it took your account’s progress. Kept for 7 days.', onclick: 'kaUndo()', dialog: true }) : '')
-    + kaItem({ id: 'kaDel', icon: 'trash', title: 'Delete account', sub: 'Deletes your account and synced progress. Progress in this browser stays.', onclick: 'kaDeleteDialog()', dialog: true, danger: true })
+    + kaItem({ id: 'kaDl', icon: 'download', title: 'Download my data', sub: 'A copy of your account and synced progress, as a file.', onclick: 'kaDownload' })
+    + kaItem({ id: 'kaDelSync', icon: 'cloudoff', title: 'Delete synced progress', sub: 'Removes the copy kept in your account and turns sync off. Progress in this browser stays.', onclick: 'kaDeleteSynced', dialog: true })
+    + (undo ? kaItem({ id: 'kaUndo', icon: 'undo', title: 'Put back this browser’s earlier progress', sub: 'From before it took your account’s progress. Kept for 7 days.', onclick: 'kaUndo', dialog: true }) : '')
+    + kaItem({ id: 'kaDel', icon: 'trash', title: 'Delete account', sub: 'Deletes your account and synced progress. Progress in this browser stays.', onclick: 'kaDeleteDialog', dialog: true, danger: true })
     + '</section>'
     + '<section class="ka-group" aria-labelledby="kaG3"><h2 id="kaG3" class="ka-group-t">Security</h2>'
-    + kaItem({ id: 'kaPwRow', icon: 'key', title: hasPw ? 'Change password' : 'Add a password', sub: changed, onclick: 'kaPasswordDialog()', dialog: true })
-    + kaItem({ id: 'kaOutAll', icon: 'out', title: 'Sign out everywhere', sub: 'Ends your sign-in on every browser and phone, this one included.', onclick: 'kaSignOutAll()', dialog: true })
+    + kaItem({ id: 'kaPwRow', icon: 'key', title: hasPw ? 'Change password' : 'Add a password', sub: changed, onclick: 'kaPasswordDialog', dialog: true })
+    + kaItem({ id: 'kaOutAll', icon: 'out', title: 'Sign out everywhere', sub: 'Ends your sign-in on every browser and phone, this one included.', onclick: 'kaSignOutAll', dialog: true })
     + '<div class="ka-security">' + kaIco('shield', 22) + '<ul>'
     + '<li>Sign-ins last up to 30 days, or 14 days without use. Then we ask you to sign in again, and nothing in this browser is lost.</li>'
     + '<li>Your password is kept only as a salted one-way hash, so no one at KaiSip can read it. New passwords are checked against known leaks without ever leaving this browser whole.</li>'
     + '<li>Emailed codes only confirm your email and reset a forgotten password. We never send sign-in links.</li></ul></div></section>'
-    + '<div class="ka-signout"><button type="button" class="ka-btn ka-btn-secondary ka-btn-auto" id="kaOut" aria-haspopup="dialog" onclick="kaSignOutDialog()">' + kaIco('out', 18) + 'Sign out of this browser</button>'
+    + '<div class="ka-signout"><button type="button" class="ka-btn ka-btn-secondary ka-btn-auto" id="kaOut" aria-haspopup="dialog" data-ka-click="kaSignOutDialog">' + kaIco('out', 18) + 'Sign out of this browser</button>'
     + '<p>Your progress stays in this browser after you sign out.</p></div>';
   kaAccountHero();
   // The full address, the password date and the news choice come from the server: filled in when they arrive.
@@ -29290,7 +29318,7 @@ function kaNewsHtml() {
     : state === 'blocked' ? 'You’re unsubscribed from KaiSip news, and it can’t be restarted here.' + (KA_NEWS_FORM_URL ? ' To get it again, sign up with the ' + kaNewTab(escapeHtml(KA_NEWS_FORM_URL), 'KaiSip news form') + '.' : '')
     : KA_NEWS_SUB;
   return '<div class="ka-item no-ico" id="kaNewsRow" data-state="' + state + '"><span><span class="ka-item-t" id="kaNewsT">Study tips and KaiSip news</span><span class="ka-item-s" id="kaNewsS" style="display:block">' + sub + '</span></span>'
-    + '<button type="button" class="ka-toggle" id="kaNewsBtn" role="switch" aria-checked="' + (on ? 'true' : 'false') + '" aria-labelledby="kaNewsT" aria-describedby="kaNewsS" onclick="kaNewsToggle()"></button>'
+    + '<button type="button" class="ka-toggle" id="kaNewsBtn" role="switch" aria-checked="' + (on ? 'true' : 'false') + '" aria-labelledby="kaNewsT" aria-describedby="kaNewsS" data-ka-click="kaNewsToggle"></button>'
     + '<span class="ka-toggle-word" id="kaNewsW" aria-hidden="true">' + (on ? 'On' : 'Off') + '</span></div>';
 }
 function kaNewsSet(c, blocked) {
@@ -29410,17 +29438,17 @@ function kaUndo() {
 function kaSheet(o) {
   var modal = kaEl('flagModal');
   if (!modal) return;
-  modal.innerHTML = '<div class="mock-confirm-overlay ks-sheet-overlay" onclick="closeFlagModal(event)">'
+  modal.innerHTML = '<div class="mock-confirm-overlay ks-sheet-overlay" data-ka-click="overlay">'
     + '<div class="mock-confirm-modal ks-sheet ka-dlg" role="dialog" aria-modal="true" aria-labelledby="kaDlgH" aria-describedby="kaDlgB">'
     + '<h2 class="mock-confirm-head" id="kaDlgH">' + o.title + '</h2><div class="mock-confirm-body">'
     + '<div class="ks-sheet-sub" id="kaDlgB">' + o.body + '</div>'
-    + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();' + o.onsubmit + '()">' + o.fields
+    + '<form class="ka-form" id="kaForm" method="post" novalidate data-ka-submit="' + o.onsubmit + '">' + o.fields
     + '<p class="ka-error" id="kaFormE" role="alert"></p>'
     + '<div class="ka-dlg-acts">' + (o.google
       // Google's own button for a Google step (their branding does not allow our green one).
-      ? kaGooglePart(kaGoogleBtn(o.go, o.onsubmit + '()', 'kaGo'))
+      ? kaGooglePart(kaGoogleBtn(o.go, o.onsubmit, 'kaGo'))
       : '<button type="submit" class="ka-btn ' + (o.danger ? 'ka-btn-danger' : 'ka-btn-primary') + '" id="kaGo">' + o.go + '</button>')
-    + '<button type="button" class="ka-btn ka-btn-quiet" onclick="closeFlagModal()">' + (o.cancel || 'Cancel') + '</button></div></form>'
+    + '<button type="button" class="ka-btn ka-btn-quiet" data-ka-click="closeFlagModal">' + (o.cancel || 'Cancel') + '</button></div></form>'
     + (o.after || '') + '</div></div></div>';
   ka.busy = false;
   if (o.google) kaGoogleProbe();
@@ -29605,6 +29633,7 @@ function kaBoot() {
   document.body.insertBefore(root, rail || document.body.firstChild);
   // The address as the page was opened (the app's first page replaces it with its own).
   ka.bootHash = location.hash;
+  KA_EVENTS.forEach(function (t) { document.addEventListener(t, kaDispatch); });
   if (!kaHasSession()) kaGoogleProbe();
   var say = document.createElement('p');
   say.id = 'kaSay'; say.className = 'sr-only'; say.setAttribute('role', 'status'); say.setAttribute('aria-live', 'polite');

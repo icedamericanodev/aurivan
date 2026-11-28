@@ -12519,7 +12519,7 @@ function decodeUtf8(bytes) {
   api["config"] = pub(load("src/webcloud/config.ts"));
   api["passwordRules"] = pub(load("src/engine/passwordRules.ts"));
   api["breach"] = pub(load("src/webcloud/breach.ts"));
-  api.sourceHash = "27a31a47d5d4d0f8";
+  api.sourceHash = "82fe83c1d8fc38ff";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};
