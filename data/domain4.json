@@ -274,7 +274,7 @@
       "subtopic": "Wireless Network. Controller Failure",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A distributor's warehouse scanners use 300 wireless access points that all depend on one controller, so its failure would halt shipping. Which recommendation from the IS auditor would be MOST effective?",
+      "question": "Warehouse scanners at a distributor use 300 wireless access points, and all of them depend on one controller. If the controller fails, shipping stops. Which recommendation from the IS auditor would be MOST effective?",
       "options": {
         "A": "Add access points so their coverage overlaps across the warehouse",
         "B": "Pair the controller with a second unit that takes over automatically",
@@ -726,7 +726,7 @@
       "principle_id": "recover-by-business-priority",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A business line demands a 1-hour RTO, unsupported by any impact analysis, costing $14 million more than current capability; executives approve targets next week. What is the IS auditor's BEST recommendation?",
+      "question": "A business line demands a 1-hour RTO. The target is unsupported by any impact analysis and would cost $14 million more than current capability. Executives approve targets next week. What is the IS auditor's BEST recommendation?",
       "options": {
         "A": "Set the target to match current replication capability",
         "B": "Delay approval until impact and cost per option are compared",
@@ -1477,7 +1477,7 @@
       "subtopic": "Heterogeneous Release Coordination. Multi-Platform Deployment",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A product launch must go live on one date across cloud microservices, a quarterly-release mainframe and a vendor-run SaaS CRM. Which approach should the IS auditor recommend as BEST?",
+      "question": "A product launch must go live on one date across cloud microservices, a mainframe with quarterly releases and a SaaS CRM run by a vendor. Which approach should the IS auditor recommend as BEST?",
       "options": {
         "A": "Plan a joint release that respects each platform's own cadence",
         "B": "Move every platform onto the cloud team's CI/CD pipeline",
@@ -2800,7 +2800,7 @@
       "principle_id": "recover-by-business-priority",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A DR test found restored data corrupted by a bad incremental backup from 47 days earlier, though every backup passed verification when created. What should the IS auditor recommend as the BEST control?",
+      "question": "A DR test found that restored data was corrupted by a bad incremental backup from 47 days earlier. Every backup had passed verification when it was created. What should the IS auditor recommend as the BEST control?",
       "options": {
         "A": "Monthly test restores with checksums on the restored data",
         "B": "Weekly full backups replacing the incremental backup chain",
@@ -2876,7 +2876,7 @@
       "principle_id": "answer-from-the-stem",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Primary-region errors reach 22%, meeting the playbook's failover criteria, and the provider gives no ETA; the playbook delegates failover to the on-call manager. Which action would the IS auditor expect the manager to take FIRST?",
+      "question": "Errors in the primary region reach 22%, which meets the playbook's criteria for failover. The provider gives no ETA, and the playbook delegates failover to the on-call manager. Which action would the IS auditor expect the manager to take FIRST?",
       "options": {
         "A": "Wait for the CIO to authorize the cross-region failover",
         "B": "Wait for the provider to declare a confirmed regional incident",
@@ -3177,7 +3177,7 @@
       "principle_id": "recover-by-business-priority",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds the DR plan orders replacement servers after a disaster, though supplier lead time is six weeks against a 48-hour RTO. Which recommendation is BEST?",
+      "question": "An IS auditor finds that the DR plan orders replacement servers after a disaster, but supplier lead time is six weeks and the RTO is 48 hours. Which recommendation is BEST?",
       "options": {
         "A": "Pay for expedited shipping from suppliers once a disaster occurs",
         "B": "Standardize the server estate on one vendor to simplify ordering",
@@ -3435,7 +3435,7 @@
       "subtopic": "BCP. Backup of Required Supplies",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A bank's branch fallback procedures need pre-printed forms from one printer, with all stock held at head office. Which action should the IS auditor recommend as BEST?",
+      "question": "A bank's fallback procedures for its branches need pre-printed forms from one printer, and all the stock is held at head office. Which action should the IS auditor recommend as BEST?",
       "options": {
         "A": "Order replacement forms from the printer after a disruption",
         "B": "Hold the extra stock at the printer's own warehouse",
@@ -4066,7 +4066,7 @@
       "principle_id": "root-cause-over-symptom",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Under a risk-tiered EUC policy, owners rate their own spreadsheets, and all 600 are rated low risk, including several feeding the financial statements. What should the IS auditor recommend as BEST?",
+      "question": "Under a risk-tiered EUC policy, owners rate their own spreadsheets. All 600 are rated low risk, including several that feed the financial statements. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have IT reclassify the financial statement spreadsheets as high risk",
         "B": "Withdraw the tiering and treat every spreadsheet the same",
@@ -4375,7 +4375,7 @@
       "principle_id": "management-owns-risk",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A corrupted policy ledger forces a choice between restoring a 36-hour-old backup and slower log replay before a statutory filing deadline. What should the IS auditor recommend FIRST?",
+      "question": "A policy ledger is corrupted, and a statutory filing deadline is close. Recovery means either restoring a 36-hour-old backup or running a slower log replay. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Rebuild the corrupted indexes directly in production right away",
         "B": "Have management weigh each path's data loss against the deadline",
@@ -4453,7 +4453,7 @@
       "principle_id": "prevent-before-detect",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "After a vendor patch went straight to production, a sales interface dropped orders for 11 days while its job reported success. Which control should the IS auditor identify as BEST to have prevented it?",
+      "question": "A vendor patch went straight to production. A sales interface then dropped orders for 11 days while its job reported success. Which control should the IS auditor identify as BEST to have prevented the lost orders?",
       "options": {
         "A": "Sales staff spot-checking a weekly sample of orders",
         "B": "Review of the vendor's release notes before each patch",
@@ -4604,7 +4604,7 @@
       "principle_id": "people-contain-preserve",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A tape is missing from the offsite vault, and no one can show who held it between operators, couriers and the vault. Which control should the IS auditor recommend as MOST important?",
+      "question": "A tape is missing from the offsite vault. No one can show who held the tape as it moved from operators to couriers to the vault. Which control should the IS auditor recommend as MOST important?",
       "options": {
         "A": "Itemized receipts acknowledged by both parties at transfer",
         "B": "Locked, tamper-evident cases for each tape shipment",
@@ -4643,7 +4643,7 @@
       "principle_id": "proven-not-configured",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "IT tests its disaster recovery plan each year, and business units exercise their continuity plans separately; the two have never been exercised together. What is the GREATEST risk for the IS auditor to report?",
+      "question": "IT tests its disaster recovery plan each year, and business units exercise their continuity plans separately. The IT and business plans have never been exercised together. What is the GREATEST risk for the IS auditor to report?",
       "options": {
         "A": "Each plan may be approved by a different committee",
         "B": "Handoffs between restored systems and business recovery may fail",
@@ -4758,7 +4758,7 @@
       "principle_id": "evidence-quality",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor is planning an audit of a third-party offsite media storage vendor that provides a current SOC 2 report. Which approach is MOST appropriate?",
+      "question": "An IS auditor is planning an audit of a third-party vendor that stores offsite media and provides a current SOC 2 report. Which approach is MOST appropriate?",
       "options": {
         "A": "Evaluate the report's scope, then test any uncovered risks",
         "B": "Rely on the report's unqualified opinion without any further testing",
@@ -5145,7 +5145,7 @@
       "question": "Four months after an acquisition, the acquired unit is missing from the parent's continuity plan, and a quarterly exercise is due next month. What is the BEST recommendation by the IS auditor?",
       "options": {
         "A": "Postpone the exercise until a combined plan is completed",
-        "B": "Run the exercise with added acquired-unit gap scenarios",
+        "B": "Run the exercise and add scenarios on acquired-unit gaps",
         "C": "Run the exercise unchanged using the parent's current plan",
         "D": "Hire consultants to write a combined plan within 30 days"
       },
@@ -5681,7 +5681,7 @@
       "principle_id": "prevent-before-detect",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds an RPA bot that posts vendor invoices runs under a finance clerk's personal login. What should the auditor recommend as the BEST action?",
+      "question": "An IS auditor finds that the RPA bot posting vendor invoices runs under the personal login of a finance clerk. What should the auditor recommend as the BEST action?",
       "options": {
         "A": "Give the bot its own least-privilege account with a named owner",
         "B": "Rotate the clerk's password monthly and store it in a vault",
@@ -5987,7 +5987,7 @@
       "principle_id": "risk-sets-priority",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "The CFO cuts a hardware refresh budget by 30% but allows reallocation; some DR equipment is past vendor support. What should the IS auditor recommend to the CIO as BEST?",
+      "question": "The CFO cuts a hardware refresh budget by 30% but allows the remaining budget to be reallocated. Some DR equipment is past vendor support. What should the IS auditor recommend to the CIO as BEST?",
       "options": {
         "A": "Spread the cut evenly across every planned refresh category",
         "B": "Ask the audit committee to reinstate the original budget",
@@ -6026,7 +6026,7 @@
       "principle_id": "proven-not-configured",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An attacker reached the cardholder data zone through an unreviewed admin VLAN ACL change, which has now been reversed. Which evidence BEST shows the IS auditor that the zone is isolated again?",
+      "question": "An attacker reached the cardholder data zone through an unreviewed change to the ACL on an admin VLAN. The change has now been reversed. Which evidence BEST shows the IS auditor that the zone is isolated again?",
       "options": {
         "A": "Connection tests into the zone from each other network segment",
         "B": "The corrected ACL compared with the approved network design",
@@ -6178,7 +6178,7 @@
       "principle_id": "root-cause-over-symptom",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A problem team's root cause analysis of a storage outage stops at 'operator error'. What should the IS auditor recommend as BEST?",
+      "question": "In a root cause analysis of a storage outage, the problem management team stops at 'operator error'. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Find why the process allowed the operator's error",
         "B": "Retrain the operator and close the problem record",
@@ -6566,7 +6566,7 @@
       "question": "An IS auditor is assessing whether a business continuity plan is complete. Which check is MOST important?",
       "options": {
         "A": "Compare the plan's table of contents with last year's version",
-        "B": "Check each critical BIA process has a recovery procedure",
+        "B": "Check that each critical BIA process has a recovery procedure",
         "C": "Confirm the plan was reviewed and approved within the last year",
         "D": "Rate the plan using the BCP coordinator's self-assessment"
       },
@@ -6640,7 +6640,7 @@
       "principle_id": "evidence-quality",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Three vendors each report meeting their own SLAs, yet the firm's end-to-end monitoring shows its customer API SLA missed for three months. What should the IS auditor recommend FIRST?",
+      "question": "Three vendors each report meeting their own SLAs. Yet the firm's end-to-end monitoring shows the customer API has missed its SLA for three months. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Replace the database vendor as the most likely weak link",
         "B": "Trace end-to-end transactions to find where availability is lost",
@@ -6718,7 +6718,7 @@
       "principle_id": "recover-by-business-priority",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An IS auditor finds the business continuity plan lists five data centers where seven now operate, and its recovery objectives were set four years ago. What should the auditor recommend FIRST?",
+      "question": "An IS auditor finds the business continuity plan lists five data centers. Seven data centers now operate, and the plan's recovery objectives were set four years ago. What should the auditor recommend FIRST?",
       "options": {
         "A": "Refresh the business impact analysis against current operations",
         "B": "Rewrite the plan to cover every current site and vendor",
@@ -6757,7 +6757,7 @@
       "principle_id": "people-contain-preserve",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Ransomware entered a bank through its provider's remote-access tools, still connected, and the continuity plan names that provider as recovery lead. Which action would the IS auditor consider MOST appropriate for management to take FIRST?",
+      "question": "Ransomware entered a bank through its provider's remote-access tools, which are still connected. The continuity plan names that provider as recovery lead. Which action would the IS auditor consider MOST appropriate for management to take FIRST?",
       "options": {
         "A": "Let the provider lead recovery as the continuity plan specifies",
         "B": "Restore core systems from the bank's own offline backups",
@@ -7412,7 +7412,7 @@
       "principle_id": "escalate-to-decision-owner",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A cloud region outage is two hours old with 6–12 hours to restore against a four-hour RTO, and the BCP names the CIO as invocation authority. What should the IS auditor recommend FIRST?",
+      "question": "A cloud region outage began two hours ago. Restoring service will take 6–12 hours, against a four-hour RTO. The BCP names the CIO as the invocation authority. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Fail over workloads for the customers who are demanding it",
         "B": "Invoke failover now and brief the CIO once it completes",
@@ -7451,7 +7451,7 @@
       "principle_id": "prevent-before-detect",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A business owner edits a payment RPA bot's logic directly in production whenever suppliers change invoice layouts. What should the IS auditor recommend as the BEST control?",
+      "question": "A business owner edits the logic of a payment RPA bot directly in production whenever suppliers change invoice layouts. What should the IS auditor recommend as the BEST control?",
       "options": {
         "A": "Route bot logic changes through change management with testing first",
         "B": "Ask the business owner to document each edit after it is made",
@@ -7489,7 +7489,7 @@
       "principle_id": "management-owns-risk",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A binding directive with its own exception process requires a known-exploited flaw patched within three days, but patching needs an outage before a contract deadline. What should the IS auditor recommend the CISO do FIRST?",
+      "question": "A binding directive with its own exception process requires a known-exploited flaw to be patched within three days. But patching needs an outage that would fall before a contract deadline. What should the IS auditor recommend the CISO do FIRST?",
       "options": {
         "A": "Defer the patch under a signed internal risk-acceptance memo",
         "B": "Seek a formal directive extension with compensating controls",
@@ -7797,7 +7797,7 @@
       "subtopic": "Capacity Exhaustion During Peak Event",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An online retailer's autoscaling hits a soft service quota in its cloud account, and 28% of requests time out; no queueing exists. What should the IS auditor recommend the operations head do FIRST?",
+      "question": "An online retailer's autoscaling hits a soft service quota in its cloud account, and 28% of requests time out. The site has no queueing. What should the IS auditor recommend the operations head do FIRST?",
       "options": {
         "A": "Raise an urgent quota-increase request with the cloud provider",
         "B": "Deploy the full site to a secondary region immediately",
@@ -7949,7 +7949,7 @@
       "subtopic": "Stakeholder Pressure to Skip BCP Exercise",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Citing acquisition workload, a CFO asks to defer by six months a quarterly failover exercise the bank committed to examiners to verify last quarter's fixes. What is the IS auditor's BEST recommendation to the COO?",
+      "question": "The bank promised examiners a quarterly failover exercise to verify last quarter's fixes. Citing acquisition workload, the CFO asks to defer the exercise by six months. What is the IS auditor's BEST recommendation to the COO?",
       "options": {
         "A": "Approve the deferral with a signed risk-acceptance memo",
         "B": "Replace the failover with a walkthrough run by finance staff",
@@ -8067,7 +8067,7 @@
       "bloom_level": "Analysis",
       "question": "Twelve production batch jobs run under the personal account of an administrator who left last month; the account stays active so the jobs do not fail. Which recommendation from the IS auditor is BEST?",
       "options": {
-        "A": "Move the jobs to owned service accounts; disable the leaver's account",
+        "A": "Move the jobs to owned service accounts and disable the old account",
         "B": "Reset the account's password and give it to the operations manager",
         "C": "Keep the account active and review its activity each month",
         "D": "Delete the jobs from the scheduler until a new owner is found"
@@ -8217,7 +8217,7 @@
       "subtopic": "Capacity for Unexpected Acquisition Spike",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A key SaaS customer's acquisitions will raise its API traffic 3.4 times within four weeks, beyond current capacity. What should the IS auditor recommend the CTO do FIRST?",
+      "question": "Acquisitions by a key customer of a SaaS provider will raise the customer's API traffic 3.4 times within four weeks. That traffic is beyond current capacity. What should the IS auditor recommend the CTO do FIRST?",
       "options": {
         "A": "Model the projected load and agree a phased onboarding plan",
         "B": "Accept the volume and accelerate scaling to meet the date",
@@ -8333,7 +8333,7 @@
       "principle_id": "report-agree-follow-up",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A remediation action to test the incident response plan, untested for 2.5 years, was closed after only a document revision. What is the IS auditor's BEST recommendation?",
+      "question": "The incident response plan has not been tested for 2.5 years. A remediation action to test the plan was closed after only a document revision. What is the IS auditor's BEST recommendation?",
       "options": {
         "A": "Accept the closure because the plan document was revised",
         "B": "Reopen the action until a plan test evidences remediation",
@@ -8716,7 +8716,7 @@
       "principle_id": "management-owns-risk",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A validated BIA has gone no further than the continuity team, and IT is now selecting recovery strategies from it. What should the IS auditor recommend FIRST?",
+      "question": "A validated BIA has not gone beyond the continuity team, and IT is now selecting recovery strategies from it. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Let IT finalize strategies and seek budget approval later",
         "B": "Obtain senior management approval of the BIA results and priorities",
@@ -8754,7 +8754,7 @@
       "principle_id": "people-contain-preserve",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A new production credit-scoring model version approves applicants from certain neighborhoods at markedly lower rates than the validated, deployable prior version. Which action would the IS auditor consider MOST appropriate for management to take FIRST?",
+      "question": "A new version of a credit-scoring model is in production. It approves applicants from certain neighborhoods at markedly lower rates than the prior version, which is validated and deployable. Which action would the IS auditor consider MOST appropriate for management to take FIRST?",
       "options": {
         "A": "Roll back to the prior validated version under emergency change",
         "B": "Keep the new version live and add a fairness dashboard",
@@ -8791,7 +8791,7 @@
       "subtopic": "Tax Authority IT Audit During Planned Outage",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A weekend database upgrade carries a patch for an actively exploited flaw, but tax auditors request uninterrupted system access starting during that window. What should the IS auditor recommend to the CFO FIRST?",
+      "question": "A weekend database upgrade carries a patch for an actively exploited flaw. But tax auditors request uninterrupted system access that starts during the upgrade window. What should the IS auditor recommend to the CFO FIRST?",
       "options": {
         "A": "Run the upgrade and give the tax auditors data extracts afterward",
         "B": "Defer the upgrade and accept the exploit risk until the audit ends",
@@ -9059,7 +9059,7 @@
       "principle_id": "answer-from-the-stem",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A hotel chain's card processor is down with a 24-hour ETA, and staff process cards manually under the continuity plan; switching processors takes weeks. What is the IS auditor's BEST recommendation to the CFO?",
+      "question": "A hotel chain's card processor is down and is expected back in 24 hours. Staff process cards manually under the continuity plan, and switching processors takes weeks. What is the IS auditor's BEST recommendation to the CFO?",
       "options": {
         "A": "Stop accepting cards and take cash payments until restoration",
         "B": "Keep the manual card process with cardholder-data controls enforced",
@@ -9097,7 +9097,7 @@
       "subtopic": "Incident Classification. Severity Matrix Misfire",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Sixteen hours into a breach exposing 340,000 customer records, the incident is still ranked low priority because the priority matrix scores only affected staff users. What should the IS auditor recommend FIRST?",
+      "question": "A breach has exposed 340,000 customer records. The priority matrix counts only staff users who are affected, so 16 hours in, the incident is still ranked low priority. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Keep the current rating until more staff report problems",
         "B": "Revise the priority matrix through change control this week",
@@ -9324,7 +9324,7 @@
       "subtopic": "Colocation Services. Service Level Reporting",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Months later, a colocation provider's SOC 2 report revealed the firm's racks ran on generator power for hours, though every uptime target in the agreement was met. What PRIMARY weakness should the IS auditor report?",
+      "question": "A firm's racks at a colocation provider ran on generator power for hours, though every agreed uptime target was met. The firm learned this months later from the provider's SOC 2 report. What PRIMARY weakness should the IS auditor report?",
       "options": {
         "A": "The uptime target written into the agreement is set too low",
         "B": "The agreement sets no deadline for reporting incidents to the firm",
@@ -9362,7 +9362,7 @@
       "principle_id": "people-contain-preserve",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An internal generative AI tool trained on support tickets reveals customer contact details when prompted, once during a vendor demo. What should the IS auditor recommend management do FIRST?",
+      "question": "An internal generative AI tool was trained on support tickets. During a vendor demo, the tool revealed customer contact details once, when prompted. What should the IS auditor recommend management do FIRST?",
       "options": {
         "A": "Restrict the tool to senior staff and continue using it",
         "B": "Add an output filter that masks personal data in responses",
@@ -9478,7 +9478,7 @@
       "principle_id": "people-contain-preserve",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An IS auditor confirms a whistleblower's claim that, during the ongoing year-end close, operators are running ad hoc batch jobs that post journal entries outside the scheduler's approval workflow. What should the auditor recommend FIRST?",
+      "question": "An IS auditor confirms a whistleblower's claim. During the ongoing year-end close, operators are running ad hoc batch jobs that post journal entries outside the scheduler's approval workflow. What should the auditor recommend FIRST?",
       "options": {
         "A": "Seek controller approval for each ad hoc run after close",
         "B": "Block job submission outside the scheduler's approved queue now",
@@ -9630,7 +9630,7 @@
       "subtopic": "Post-Integration Review. Legacy System Decommissioning",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A post-implementation review finds an acquired firm's legacy ERP still running 11 months after integration because three interfaces depend on it, delaying promised IT savings. What is the IS auditor's BEST recommendation?",
+      "question": "A post-implementation review finds that an acquired firm's legacy ERP still runs 11 months after integration because three interfaces depend on it. This delays the promised IT savings. What is the IS auditor's BEST recommendation?",
       "options": {
         "A": "Shut down the legacy ERP now to realize the savings",
         "B": "Defer decommissioning until the next annual budget cycle is approved",
@@ -10875,7 +10875,7 @@
       "principle_id": "prevent-before-detect",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A reconciliation found 300 unlicensed installations, mostly programs staff downloaded using local administrator rights, and management has bought the shortfall. What should the IS auditor recommend as the PRIMARY follow-up?",
+      "question": "A reconciliation found 300 unlicensed installations, mostly programs that staff downloaded using local administrator rights. Management has paid for the shortfall. What should the IS auditor recommend as the PRIMARY follow-up?",
       "options": {
         "A": "A full reconciliation of installs and entitlements every month",
         "B": "An enterprise agreement allowing unlimited installs of every vendor product",
@@ -11101,7 +11101,7 @@
       "subtopic": "Interface Risk. Missing Records Despite Matching Totals",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A nightly data warehouse load always matches its extract file's record count and amount total, yet sales back-dated in the source ledger never arrive. What should the IS auditor identify as the MOST LIKELY cause?",
+      "question": "A nightly data warehouse load always matches the record count and total amount in its extract file. Yet sales back-dated in the source ledger never arrive. What should the IS auditor identify as the MOST LIKELY cause?",
       "options": {
         "A": "Files corrupted in transit between the ledger and the warehouse",
         "B": "Extract logic selecting only sales dated after the previous run",
@@ -11437,7 +11437,7 @@
       "subtopic": "Backup Schemes. Weekly Cycle",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "With Sunday full backups and daily incrementals, Monday restores take six hours and Saturday's take 12, against an eight-hour recovery time objective (RTO). Which change would the IS auditor consider MOST LIKELY to fix this?",
+      "question": "Full backups run on Sundays and incremental backups run daily. Restores take six hours on Monday and 12 hours on Saturday, against an eight-hour recovery time objective (RTO). Which change would the IS auditor consider MOST LIKELY to fix this?",
       "options": {
         "A": "Verify each incremental backup as it is written",
         "B": "Take incremental backups every four hours instead",
@@ -11700,7 +11700,7 @@
       "subtopic": "Log Coverage. Cloud Activity Logs",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds a firm keeps its public cloud account's activity log only for the provider's short default period and never exports it. Which risk should the IS auditor consider GREATEST?",
+      "question": "An IS auditor finds that a firm keeps the activity log of its public cloud account only for the provider's short default period and never exports it. Which risk should the IS auditor consider GREATEST?",
       "options": {
         "A": "Operating system events on the firm's cloud servers would go unrecorded",
         "B": "Errors inside the firm's cloud-hosted applications would go unrecorded",
@@ -11926,7 +11926,7 @@
       "principle_id": "management-owns-risk",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A business unit's unsanctioned file-sharing service, which holds client contracts, was registered by a project manager using a personal email address. What is the PRIMARY risk for the IS auditor to report?",
+      "question": "A project manager used a personal email address to register an unsanctioned file-sharing service for a business unit. The service holds client contracts. What is the PRIMARY risk for the IS auditor to report?",
       "options": {
         "A": "Control of the contracts could be lost when the manager leaves",
         "B": "Subscription fees for the service are paid outside the IT budget",
@@ -12000,7 +12000,7 @@
       "subtopic": "Database Models. Many-Step Relationship Queries",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An IS auditor reviews a bank's database choice for fraud analysts tracing links among accounts, devices and payees, often many steps apart. Which model would the IS auditor expect as the BEST fit?",
+      "question": "An IS auditor reviews a bank's choice of database for fraud analysts. The analysts trace links among accounts, devices and payees, often many steps apart. Which model would the IS auditor expect as the BEST fit?",
       "options": {
         "A": "A relational database that joins tables on shared keys",
         "B": "A graph database that stores records as linked nodes",
@@ -12076,7 +12076,7 @@
       "principle_id": "recommend-dont-implement",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "After an IS auditor reports that database administrators can read diagnosis fields protected only by transparent data encryption (TDE), the IT director asks the auditor to pick fields to encrypt. What is the BEST response?",
+      "question": "An IS auditor reports that database administrators can read diagnosis fields protected only by transparent data encryption (TDE). The IT director then asks the auditor to pick fields to encrypt. What is the BEST response?",
       "options": {
         "A": "Pick the fields using the data classification policy and document why",
         "B": "Let the database administrators choose the fields they do not need",
