@@ -35,6 +35,7 @@ source code is marked *(verify)*.
 | 3 | The **"password changed" security notice is a hard go-live gate** (gate 15) |
 | 4 | Android shows the **human check on each password sign-in** (accepted, R6) |
 | 5 | **No third-party leaked-password lookup** for now (no HIBP range check; Pro's server check stays off on Free) |
+| 6 | **Sign-in is Google or password; codes only confirm an email and reset** (owner, 28 Nov 2026, second decision; `docs/WEB_LAUNCH_PLAN.md`). Text below that offers "sign in with an emailed code" to learners is superseded. Beta Desk staff sign-in (email code + authenticator app) is not covered by this learner rule |
 
 ### What step A2 changed from this design (the audit's fixes)
 
@@ -47,17 +48,28 @@ source code is marked *(verify)*.
   no `created_at` counts as old.
 - **Authenticator apps for staff only (audit HIGH-2).** A new trigger,
   `kaisip_mfa_staff_only` on `auth.mfa_factors`, lets only an account in
-  `private.beta_desk_admins` or `private.staff` enrol a factor. Existing
+  `private.beta_desk_admins` or `private.staff` enrol a factor (or have one
+  moved to it). Existing
   factors are untouched, so the Beta Desk admins keep their authenticator apps
   and their aal2 sign-in. Add a staff member to the list first, then they enrol.
   Its function is the one SECURITY DEFINER here (the Auth server's role can't
   read the private lists), in schema `private`, with `search_path` empty.
 - **Order (audit LOW-2):** the new functions and triggers are created first,
   the old trigger dropped last.
-- **Tests:** `41_passwords.sql` has 70 assertions (this draft's 34 plus the
+- **Tests:** `41_passwords.sql` has 75 assertions (this draft's 34 plus the
   commit-time cases, the unconfirmed early return, the trigger shapes, the MFA
-  rule and an invite-style confirmation); `scripts/password_sql_mutants.py` has
-  26 mutants, all caught.
+  rule and an invite-style confirmation). The Auth server's writes run as its
+  own role, `supabase_auth_admin`, which owns the auth tables in the local shim
+  as on hosted, so the tests prove the triggers fire for that role with no
+  execute grant. `scripts/password_sql_mutants.py` has 36 mutants, all caught,
+  and a static check that the old trigger is dropped last.
+- **Implementation review (28 Nov 2026):** the hint says "Confirm it is you
+  again (Google, password, or a reset code)"; the guards are revoked from
+  `service_role` too; the MFA rule also fires when a factor's `user_id`
+  changes; rule 4b skips an account deleted before the commit; the emergency
+  brakes are graded, with ownership-free versions; the smoke probes need
+  positive evidence (a network failure never passes) and check on the hosted
+  project that a learner can't enrol an authenticator app.
 - **Probes:** `cloud_smoke.sh` gains `binding` (audit LOW-4), and the `captcha`
   mode also covers `/magiclink` and `/resend` and checks that the refresh and
   Google (pkce) grants are not behind the human check. `pre-register` stops
@@ -88,7 +100,8 @@ What a learner sees:
 - **Forgot password:** we email an 8-digit **reset code** (no link). They type
   it and choose a new password. This also works for people who first signed up
   with Google or with a code, so "forgot password" doubles as **"set a
-  password later"**.
+  password later"**. *(Superseded in part by decision 6: learners no longer
+  sign up "with a code"; read "who first signed up with Google".)*
 - **Add or change a password** from the Account screen: allowed within 10
   minutes of signing in, like "Delete account" today.
 
@@ -125,7 +138,9 @@ What a learner sees:
 
 **Cheapest safe fallback:** launch accounts with Google and the emailed code
 only, keep the current "wipe every password" rule, and add passwords in a later
-release. Nothing in this design blocks that order.
+release. Nothing in this design blocks that order. *(Superseded by decision 6:
+an emailed code is no longer a sign-in method, so this fallback is now "Google
+only".)*
 
 ### Decisions only you can make (my recommendation first)
 
@@ -295,8 +310,7 @@ File: `supabase/migrations/20261128000000_password_guard.sql`
 
 ```sql
 -- KaiSip: passwords allowed, the pre-registration takeover still blocked
--- (28 Nov 2026; owner decision: Google, an emailed 8-digit code, and email +
--- password). NOT APPLIED ANYWHERE. Applied after
+-- (28 Nov 2026; owner decision: Google or email + password; emailed 8-digit codes only confirm an email address and reset a password). NOT APPLIED ANYWHERE. Applied after
 -- 20261109000000_beta_desk_sign_in.sql. Append-only once applied.
 --
 -- Replaces the trigger of 20261027000100_beta_no_passwords.sql (that file
@@ -384,7 +398,7 @@ begin
   then
     raise exception 'kaisip_password_needs_recent_sign_in'
       using errcode = 'P0001',
-            hint = 'Sign in again (code, Google or password), then set the password within 10 minutes.';
+            hint = 'Confirm it is you again (Google, password, or a reset code), then set the password within 10 minutes.';
   end if;
 
   -- Rule 5: a change to an existing password, or any other update.
@@ -418,7 +432,7 @@ Notes for the engineer:
 
 ### 3.3 Technical: pgTAP tests
 
-> The draft below grew to 70 assertions in the repo (`supabase/tests/41_passwords.sql`).
+> The draft below grew to 75 assertions in the repo (`supabase/tests/41_passwords.sql`).
 
 **New file `supabase/tests/41_passwords.sql`.** Same style as `40_beta.sql`:
 one transaction, rolled back.
@@ -723,6 +737,10 @@ fi
 | Forgot password | Human check → "If there's an account for this email, we've sent a code." → code + new password → signed in, every other device signed out | 1 reset code (+1 "password changed" notice if turned on) |
 | Signed up with Google or a code, wants a password | Either "Forgot password", or Account → "Add a password" (asks them to confirm it's them first if their last sign-in was over 10 minutes ago) | 0 or 1 |
 | Change password | Account → "Change password": current password, or confirm with a code | 0 or 1 |
+
+*(Superseded in part by decision 6: there is no "sign in with a code". A
+learner signs up with email + password (the code only confirms the address)
+or Google; confirming "it's you" is Google, the password, or a reset code.)*
 | Delete account | The fresh sign-in can now also be a password (the 10-minute rule is unchanged) | 0 |
 
 **Where the reset lands:** nowhere, because the reset is a typed code, not a

@@ -25,8 +25,12 @@
 #                       (S9, password guard rule 4). A must have no password
 #                       (a code or Google account), and JWT_A must come from a
 #                       sign-in 11 to 59 minutes ago; the run reads the token's
-#                       sign-in time and skips the check, with a note, if it is
-#                       too fresh.
+#                       sign-in time and expiry, and skips the check, with a
+#                       note, if it is too fresh or expired. The refusal must be
+#                       a 500 (the database's): anything else proves nothing.
+# The main run also checks that learner A can't enrol an authenticator app
+# (gate 20: a 500 from POST /auth/v1/factors, the database refusing the row).
+# Every check needs positive evidence: a network failure (000) never passes.
 # Both learners must have accepted the terms (a profiles row each), so the
 # snapshot checks below are refused by the shape checks, not by a missing
 # profile.
@@ -73,7 +77,9 @@ rnd() { od -An -N12 -tx1 /dev/urandom | tr -d ' \n'; }
 # old rule (12, all four kinds) and the new one (15, no required kinds).
 probe_password() { printf 'Smoke-%s-Words!' "$(rnd)"; }
 token_of() { sed -n 's/.*"access_token" *: *"\([^"]*\)".*/\1/p'; }
-status_of() { curl -sS -o /dev/null -w '%{http_code}' "$@" || echo 000; }
+# The HTTP status only: 000 on a network failure (curl prints its own 000 and
+# fails, so never append a second one: "000000" would pass for a refusal).
+status_of() { local c; c=$(curl -sS -o /dev/null -w '%{http_code}' "$@") || c=000; printf '%s' "${c:0:3}"; }
 wait_a_minute() { echo "   waiting 61 s (one email a minute per address)"; sleep 61; }
 ok_n=0; bad_n=0
 # check <label> <status> <pattern>: the pattern is a shell glob ('4??' = any 4xx).
@@ -127,8 +133,14 @@ if [ "${1:-}" = pre-register ]; then
   echo "3. Sign in with the attacker's password:"
   status=$(status_of "${hdr[@]}" -X POST "$AUTH/token?grant_type=password" \
     --data "{\"email\":\"$PROBE_EMAIL\",\"password\":\"$pw\"}")
-  if [[ $status == 2* || $status == 000 ]]; then
+  if [[ $status == 2* ]]; then
     echo "   ✗ HTTP $status: the pre-registered password still works. STOP: do not open sign-up (H1)."
+    exit 1
+  fi
+  # Positive evidence only: 400 invalid_credentials. Anything else (000 network,
+  # 429 rate limit, 5xx) proves nothing either way.
+  if [[ $status != 400 ]]; then
+    echo "   ✗ HTTP $status, wanted 400 (invalid credentials): inconclusive. Run it again with a new address."
     exit 1
   fi
   echo "   ✓ HTTP $status: refused. Confirming wiped the password set before the inbox was proven ($VARIANT)."
@@ -194,10 +206,12 @@ if [ "${1:-}" = binding ]; then
   [ -n "$t_new" ] || { echo "  ✗ the code was refused"; exit 1; }
   echo "4. The OLD session tries to add a first password (HIGH-1)"
   st=$(status_of "${hdr[@]}" -H "Authorization: Bearer $t_old" -X PUT "$AUTH/user" --data "{\"password\":\"$pw\"}")
-  if [[ $st == 2* || $st == 000 ]]; then
+  if [[ $st == 2* ]]; then
     bad_n=$((bad_n + 1)); echo "  ✗ the old session added a password (HTTP $st). STOP: rule 4b is not working on this project."
+  elif [[ $st != 500 ]]; then
+    bad_n=$((bad_n + 1)); echo "  ✗ HTTP $st, wanted 500 (the database's refusal): inconclusive"
   else
-    ok_n=$((ok_n + 1)); echo "  ✓ refused (HTTP $st; 500 is the database's refusal)"
+    ok_n=$((ok_n + 1)); echo "  ✓ refused (HTTP 500: the database's refusal)"
   fi
   check "and that password does not sign in" \
     "$(status_of "${hdr[@]}" -X POST "$AUTH/token?grant_type=password" --data "{\"email\":\"$PROBE_EMAIL\",\"password\":\"$pw\"}")" 400
@@ -224,7 +238,10 @@ if [ "${1:-}" = captcha ]; then
     path=${p%%|*}; body=${p#*|}
     out=$(curl -sS -w ' %{http_code}' "${hdr[@]}" -X POST "$AUTH/$path" --data "$body" || echo ' 000')
     if [[ $out == *captcha* && $out == *' 400' ]]; then ok_n=$((ok_n + 1)); echo "  ✓ /$path needs the human check"
-    else bad_n=$((bad_n + 1)); echo "  ✗ /$path: $out"; fi
+    else
+      bad_n=$((bad_n + 1)); echo "  ✗ /$path: $out"
+      [ "$path" = signup ] && echo "    /signup was not stopped, so it may have created $nobody: delete that user (Authentication → Users)"
+    fi
   done
   echo "These grants are not behind it (refresh, and Google through pkce): a bogus token is refused for another reason:"
   for p in "refresh_token|{\"refresh_token\":\"smoke-not-a-real-token\"}" \
@@ -270,7 +287,8 @@ request() {
   [ -n "$extra" ] && args+=(-H "$extra")
   [ -n "$body" ] && args+=(--data "$body")
   local code
-  code=$(curl "${args[@]}" || echo 000)
+  code=$(curl "${args[@]}") || code=000
+  code=${code:0:3}
   printf '%s %s' "$code" "$(head -c 200 "$tmp" 2>/dev/null | tr -d '\n')"
   rm -f "$tmp"
 }
@@ -293,7 +311,8 @@ cors() {
     [ -n "$body" ] && args+=(--data "$body")
   fi
   local code acao
-  code=$(curl "${args[@]}" || echo 000)
+  code=$(curl "${args[@]}") || code=000
+  code=${code:0:3}
   acao=$(tr -d '\r' <"$hdr" | awk -F': ' 'tolower($1) == "access-control-allow-origin" { print $2 }' | tail -n 1)
   printf '%s %s' "$code" "${acao:--}"
   rm -f "$hdr"
@@ -420,26 +439,38 @@ if [ -n "${EMAIL_A:-}" ]; then
   echo "Stale session (S9, password guard rule 4): A's session, from a sign-in over 10 minutes ago, tries to add a first password:"
   # The newest sign-in time in the token (amr timestamps). Base64url, unpadded.
   payload=$(cut -d. -f2 <<<"$JWT_A" | tr '_-' '/+'); while (( ${#payload} % 4 )); do payload+='='; done
-  newest=$(base64 -d <<<"$payload" 2>/dev/null | grep -o '"timestamp":[0-9]*' | cut -d: -f2 | sort -n | tail -n 1 || true)
+  claims=$(base64 -d <<<"$payload" 2>/dev/null || true)
+  newest=$(grep -o '"timestamp":[0-9]*' <<<"$claims" | cut -d: -f2 | sort -n | tail -n 1 || true)
+  exp=$(grep -o '"exp":[0-9]*' <<<"$claims" | cut -d: -f2 | head -n 1 || true)
   age=$(( $(date +%s) - ${newest:-0} ))
-  if [ "$age" -le 660 ]; then
+  if [ "${exp:-0}" -le "$(date +%s)" ]; then
+    echo "  · skipped: JWT_A has expired (or has no exp); refresh it, or sign in again and wait 11 minutes"
+  elif [ "$age" -le 660 ]; then
     echo "  · skipped: JWT_A's sign-in is only ${age}s old; use a token from a sign-in 11 to 59 minutes ago"
   else
     probe_pw=$(probe_password)
     # The database refuses it (rule 4, and rule 4b at commit): the Auth server answers 500.
     # It fails even if A signed in elsewhere in the last 10 minutes: the check is tied to
     # the requesting session (password audit HIGH-1).
-    expect "a stale session cannot add a first password" \
-      "$(request PUT "${SUPABASE_URL%/}/auth/v1/user" "$JWT_A" "{\"password\":\"$probe_pw\"}")" denied
+    # Positive evidence: 500 is the database's refusal (anything else proves nothing).
+    expect "a stale session cannot add a first password (500, the database refuses)" \
+      "$(request PUT "${SUPABASE_URL%/}/auth/v1/user" "$JWT_A" "{\"password\":\"$probe_pw\"}")" 500
     expect "and no such password signs in" \
       "$(request POST "${SUPABASE_URL%/}/auth/v1/token?grant_type=password" '' "{\"email\":\"$EMAIL_A\",\"password\":\"$probe_pw\"}")" denied
   fi
 fi
 
+echo "Authenticator apps are for staff only (gate 20, password guard rule 6):"
+# Learner A tries to enrol TOTP. The database refuses the new factor row, and
+# the Auth server answers 500. A 200 means the guard is missing: remove the
+# unverified factor it left on A (Authentication → Users → A → factors).
+expect "learner A cannot enrol an authenticator app (500, the database refuses)" \
+  "$(request POST "${SUPABASE_URL%/}/auth/v1/factors" "$JWT_A" '{"factor_type":"totp","friendly_name":"smoke-probe"}')" 500
+
 echo "CORS (S6): only $WEB_ORIGIN may call the two account functions from a browser:"
 # Only the allowed-origin header is compared ("any <origin>", "any -" for
 # none), whatever status the gateway or the function chose for a refusal.
-origin_only() { awk '{ print "any", $2 }'; }
+origin_only() { awk '{ print ($1 == "000" ? "000" : "any"), $2 }'; }  # a network failure (000) never passes
 for f in delete-account export-my-data; do
   expect "$f: preflight from $WEB_ORIGIN" "$(cors OPTIONS "$FN/$f" "$WEB_ORIGIN")" "204 $WEB_ORIGIN"
   for other in 'https://kaisip.com.evil.example' 'https://www.kaisip.com' 'null'; do

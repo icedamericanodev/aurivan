@@ -45,7 +45,7 @@ enabled = true
 port = 54323
 api_url = "http://127.0.0.1"
 
-# Local email catcher (Mailpit): sign-in codes land here, never in a real inbox.
+# Local email catcher (Mailpit): emailed codes land here, never in a real inbox.
 [local_smtp]
 enabled = true
 port = 54324
@@ -112,6 +112,8 @@ double_confirm_changes = true
 # Never allow unverified email sign-ins.
 enable_confirmations = true
 secure_password_change = true
+# Hosted only (no CLI key): "Require current password when updating" is ON
+# (owner checklist, docs/WEB_LAUNCH_PLAN.md).
 max_frequency = "60s"
 # 8-digit code, valid for 10 minutes (security audit L7, 27 Oct 2026: the
 # Auth server has no per-code try counter, so 8 digits make guessing a
@@ -126,11 +128,11 @@ otp_expiry = 600
 # ("password changed", "sign-in method linked") are set on the hosted
 # dashboard only (AUTH_EMAIL_TEMPLATES.md §7 and §8).
 [auth.email.template.confirmation]
-subject = "Your KaiSip sign-in code"
+subject = "Your KaiSip confirmation code"
 content_path = "./supabase/templates/otp_code.html"
 
 [auth.email.template.magic_link]
-subject = "Your KaiSip sign-in code"
+subject = "Your KaiSip confirmation code"
 content_path = "./supabase/templates/otp_code.html"
 
 [auth.email.template.email_change]
@@ -159,6 +161,9 @@ max_enrolled_factors = 10
 # screen only; see docs/mobile/SECURITY_GATES.md). Mirror
 # this by hand on the hosted project (Dashboard > Authentication > Multi-Factor).
 [auth.mfa.totp]
+# On for everyone at the Auth server, but the database lets only staff enrol
+# (private.beta_desk_admins or private.staff; trigger kaisip_mfa_staff_only,
+# 20261128000000_password_guard.sql, password audit HIGH-2).
 enroll_enabled = true
 verify_enabled = true
 

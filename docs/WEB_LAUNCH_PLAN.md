@@ -68,8 +68,8 @@ loop. Nothing goes public until its gate says so.
    client (`mobile/src/webcloud/`), so web and phone use one implementation.
 
 ### B. Website version with sign-in and sync (web v14, MAJOR)
-1. `index.html`: sign-in screen (Google, emailed code, email + password,
-   forgot password), the Account section (status, Sync now, Download my
+1. `index.html`: sign-in screen (Google, email + password, forgot password;
+   sign-up confirms the email with a code), the Account section (status, Sync now, Download my
    data, Delete synced progress, Delete account, sign out), first-sync
    preview and undo, Terms and 16+.
 2. New pages: `delete-account.html`, `human-check.html` (Turnstile); CSP and
@@ -184,7 +184,9 @@ Public sign-in waits for every gate in `docs/mobile/ACCOUNTS_BETA_PLAN.md`
   `app-store-compliance-reviewer`.
 - [ ] 20. The Phone provider stays OFF (the guard watches the email columns
   only), and `auth.mfa_factors` has no learner rows (only accounts in
-  `private.beta_desk_admins` or `private.staff`).
+  `private.beta_desk_admins` or `private.staff`). Hosted proof: the full
+  `cloud_smoke.sh` run's "learner A cannot enrol an authenticator app" answers
+  500 (POST `/auth/v1/factors`, the database refusing the row).
 
 Emergency-brake numbers (audit MEDIUM-1 and MEDIUM-2): in the weekly Auth-log
 look, more than 20 `invalid_credentials` for one address in a day, more than
