@@ -236,7 +236,7 @@ The gates, in the order a round runs them (details in `data/cia/tools/README.md`
 6. `check_originality.py --fetch --require`: own words. The IIA's text is fetched outside the repository and never committed.
 7. Notes: `scripts/lint_notes.py <file> --part N --outline docs/content/CIA_BLUEPRINT.md --bank data/cia/cia{N}/originals`, and `sync_practice_ids.py --check`.
 8. Principles and exam guides: `scripts/lint_principles.py --cert <pack>` and `scripts/lint_exam_guide.py --cert <pack>` (issuer-aware: The IIA's hosts and wording).
-9. `node scripts/cia_pack_dry_run.cjs`: the phone app's own pack builders on each pack, and mock draws to the weights (`--require-full` at release time makes "cannot draw a full mock" an error).
+9. `node scripts/cia_pack_dry_run.cjs`: the phone app's own pack builders on each pack, and mock draws to the weights (`--require-full` at release time makes "cannot draw a full mock" an error; for a pack with a held-back form that includes the full mock drawn before the form is taken).
 10. `build_challenge.py --check` and `build_packs.py --check`.
 11. `check_ids.py`: against main in git, no shipped question id deleted, renumbered or given to another question, and the Challenge id map only ever appended to (a replaced item is marked `"retired": true`).
 12. `blind_copy.py`.
@@ -2605,14 +2605,70 @@ decided the open items (their notes: scratchpad `app/pm.md`, `behavior.md`,
   count, streaks and activity counts keep every answer (the plant's ready gate reads the hold's
   log). New saved fields are optional, kept by backup and sync (earliest time wins) and dropped
   safely by older apps; the website's cloud bundle rebuilt. Tests: `held-back.test.ts`,
-  `held-back-screens.test.tsx`. **Left:** wire each CIA pack's `heldBack` line in
-  `build-content.mjs` when the packs are switched on, and read the same file in the CIA dry run.
+  `held-back-screens.test.tsx`. **Done (28 Nov 2026, not yet committed):** the CIA dry run
+  (`scripts/cia_pack_dry_run.cjs`) reads each pack's `exam/held_back.json` with the app's own
+  `heldback-pack.cjs` functions, as `build-content.mjs` does, tags the questions (the dry-run pack
+  in the temp folder carries `heldBack`) and prints one "held-back form" line per pack: cia1 125
+  tagged (A 44 / B 25 / C 37 / D 19, frozen 2026-11-27); cia2, cia3 and ciac "none" (no file, not a
+  failure; a pack with no questions yet prints the same "none" line). It fails, as the real build
+  would stop, on a malformed file, another pack's file, an id written twice, an id the pack does
+  not have, a retired id or an item dated after the frozen date. Its mock-pool line also says how
+  many items the form keeps out before it is taken (cia1: a mock draws from 173 of 262 until
+  then). **The mocks are drawn twice for a pack with a form.** The "full mock" and "short mock"
+  lines are the whole pool, which a learner has only after taking the form (each line now says
+  so). Two new lines, "full mock before the form" and "short mock before the form", draw the same
+  mocks with the form's questions left out, as the app deals them until then, and give each
+  section's count against its quota (a range where a sibling group spans two sections, because
+  the app keeps a random question of each group). **cia1 before the form (28 Nov 2026): 173
+  questions; A 49 to 53 of 44, B 53 to 57 of 25, C 48 to 54 of 37, D 16 to 17 of 19.** The short
+  mock (42: A 15 / B 8 / C 13 / D 6) is drawn. The full mock is a warning, not a failure, and the
+  line to quote is: "! full mock before the form: WARNING: until the learner takes the held-back
+  form, a full mock of 125 (A 44 / B 25 / C 37 / D 19) cannot be filled at the exam's weights:
+  section D holds 16 to 17 of the 19 needed." What the app does then, read from
+  `engine/blueprint.ts` `buildMockExam` and checked by running it on this pool: the learner still
+  gets a "Full mock exam" of 125 questions, every question section D has (16 or 17, not 19) and
+  2 or 3 more from the other sections, so it is full length but off the exam's weights, and the
+  start sheet does not say so. (A pool smaller than the mock gives a shorter mock: every question
+  it holds, timed for that length.) **Open for the owner before switch-on:** grow section D's
+  practice pool by 3 distinct questions, or accept the tilt, or say it on the start sheet.
+  `--require-full` (the release check) now fails on this line too, so `cia1 --require-full`
+  fails today where it passed before. `prove_harness.py` plants five faults for the form in the
+  dry run (the four above and the release check) and six controls (the tagged form, no file,
+  no questions and no file, the warning, the short mock before the form, and a bank big enough
+  to pass the release check). `build-content.mjs` carries the four
+  ready-to-enable `heldBack` lines as a comment, beside the note on how a course adds its file; no
+  CIA pack entry is added. **Left (the switch-on only, section 9):** add the four CIA pack entries
+  to `build-content.mjs` with those lines, on the day the packs are switched on.
   **The held-back form's content side is built (27 Nov 2026, not yet committed):** `data/cia/tools/build_held_back.py` draws and freezes `<pack>/exam/held_back.json` (rules in `data/cia/tools/README.md`, "The held-back form"; `--check` runs in `run_gates.sh`); only cia1 has a form (125, frozen 2026-11-27); cia2 and cia3 are short in every section, so they have none yet.
-- **Still "Domain" for every course after batch 1 (review, 27 Nov 2026):** the Practice
-  hero's "Domains" tile (its width rule was measured for "DOMAINS"), `pathChooser.tsx`
-  (lines 155, 158), `practice.tsx` line 316 ("all domains"), `RINGS_NOTE` in
-  `journey.tsx`, and the badge case's fixed `BADGES` names "Domain Mastery" and "All
-  Domains" in `milestones.ts`. Fix with the section helper before a lettered course ships.
+- **"Domain" wording for a course with sections: done (28 Nov 2026, not yet committed).**
+  The review of 27 Nov listed the Practice hero's "Domains" tile, `pathChooser.tsx`,
+  `practice.tsx` ("all domains"), `RINGS_NOTE` in `journey.tsx` and the badge names; the tile
+  and the badges were fixed first, and now every remaining spot is: the path chooser ("Section",
+  "Section for your path", "All sections", `pathSummary`), `ringsNote` ("Section A is the inner
+  ring"), Today's plan lines (every `planText` and `planHero` call on Today passes the active
+  course), and every other fixed "domain" in
+  `mobile/src` that a learner sees or hears (Practice, Learn, You, the question bank, the notes,
+  the lesson end, the readiness report, Results, the pacing panel, Root or Rumor's level lines,
+  the Mock Complete rule, session titles, the common questions). New helper `domainCopy(text,
+  course)` in `engine/domainNaming.ts` says a fixed sentence in the course's words where it is
+  shown (the report's yardstick, "How it's worked out", the path lines, the fall note). CISA
+  reads word for word as before (no `domainStyle`: the same strings). Tests:
+  `section-wording.test.tsx` (each line, and whole screens drawn as CISA and with sections on:
+  no "domain" left) and `section-wording-source.test.ts` (a fence: a new fixed "domain" sentence
+  outside the helpers fails. Seven whole files are allowed, none with screen wording of its own;
+  in the five files that also hold screen wording, `engine/readinessReport.ts`,
+  `engine/milestones.ts`, `engine/domainBand.ts`, `engine/readySigns.ts` and
+  `components/readinessReport.tsx`, only the named constants are allowed, and the test plants a
+  sentence in a copy of each to prove a new one fails). **No screen shows the rings note or the
+  path summary line today** (You dropped the rings in mobile 1.43; the Practice hero uses tiles),
+  so `ringsNote(course)` and `pathSummary(..., course)` have no caller to wire: each says so in
+  its comment, and a screen that shows one must pass its course. The unused constant
+  `RINGS_NOTE` is removed (no screen or older test used it). **Left on purpose
+  (not a blocker for a lettered course on the phone):** What's New entries (the history of past
+  releases) keep their wording; the plant's lines in `engine/plant.ts` and `engine/plantLooks.ts`
+  and `BANDS_LINE` are not shown on the phone (the website's bundle reads them, CISA only), so
+  they need the helper only if the website ever carries a sectioned course; CISA's own notes say
+  "domain" in their text (content, not app wording). **Left:** only the switch-on itself.
 - **Sibling groups shrink the mock pools (27 Nov 2026).** With at most one item per group
   (groups that share an id are joined inside a pack), Part 2's mock pool falls from 92
   testable items to 58 distinct ones, so a full 100-item Part 2 mock cannot be filled

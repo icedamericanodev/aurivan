@@ -130,6 +130,19 @@ const PACKS = [
     // The held-back full form (heldback-pack.cjs): optional, one file per pack. CISA has none, so no
     // `heldBack` line and no `heldBack` field on any question. A course adds its file here (the CIA
     // packs: data/cia/<pack>/exam/held_back.json); a file that does not exist yet means no form.
+    //
+    // READY TO ENABLE, NOT ENABLED (docs/content/CIA_BANK_PLAN.md sections 9 and 11): the CIA packs
+    // are NOT in this list and must not be added before the switch-on. On that day, each CIA pack's
+    // entry gets the line written here for it, exactly as it stands. Nothing else is needed for the
+    // form: applyHeldBack below reads the file, a pack whose file is not written yet is built with
+    // no form, and a file with a problem stops the build.
+    //   cia1:  heldBack: path.join(REPO_ROOT, 'data', 'cia', 'cia1', 'exam', 'held_back.json'),  // written: 125 questions, frozen 2026-11-27
+    //   cia2:  heldBack: path.join(REPO_ROOT, 'data', 'cia', 'cia2', 'exam', 'held_back.json'),  // not written yet: no form until it is
+    //   cia3:  heldBack: path.join(REPO_ROOT, 'data', 'cia', 'cia3', 'exam', 'held_back.json'),  // not written yet: no form until it is
+    //   ciac:  heldBack: path.join(REPO_ROOT, 'data', 'cia', 'ciac', 'exam', 'held_back.json'),  // none planned (build_held_back.py leaves the Challenge pack out); harmless while the file is missing
+    // Until then scripts/cia_pack_dry_run.cjs reads the same four files with the same
+    // heldback-pack.cjs functions and prints one "held-back form" line per pack, so a form that
+    // would stop this build is caught before the packs are wired in.
   },
   // CRISC and AAIA (docs/WEB_LAUNCH_PLAN.md stream D, owner decision 28 Nov 2026): the full course
   // in every build except the public one, which carries only each course's free sample

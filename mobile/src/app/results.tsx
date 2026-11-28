@@ -78,6 +78,7 @@ import { shortenAtWord } from '../engine/textClip';
 import { EmptyPlate, FieldText, KeyCaption, KeyList, Plate, RunningHead, SpecimenLabel, SpecimenRow, StemChart } from '../components/fieldguide';
 import { emptyPlateLine, growthFigure, setStems } from '../engine/fieldGuide';
 import { STEADY_FROM } from '../engine/domainBand';
+import { domainWord, type DomainStyled } from '../engine/domainNaming';
 import { readinessFor } from '../engine/readiness';
 import { readinessRange } from '../engine/readinessRange';
 import { PacingPanel } from '../components/pace';
@@ -137,15 +138,25 @@ const PLATE_GROUP = 1;
 /**
  * Grove Phase 4 (PHASE4.md 7.11 and 7.13): the key under the results chart, in the website's words, so
  * the dashed line, the up arrow and the clay colour each say what they mean ("growth from this mock"
- * after a mock).
+ * after a mock). `course` (optional): a course with sections reads "each section"; none (CISA): as before.
  */
-export function resultsKey(isMock: boolean): string {
-  return `Dashed line: ${STEADY_FROM}, the target for each domain. ↑: improvement from this ${isMock ? 'mock' : 'set'}. Highlighted: below ${STEADY_FROM}.`;
+export function resultsKey(isMock: boolean, course?: DomainStyled): string {
+  return `Dashed line: ${STEADY_FROM}, the target for each ${domainWord(course, 'domain')}. ↑: improvement from this ${isMock ? 'mock' : 'set'}. Highlighted: below ${STEADY_FROM}.`;
+}
+
+/**
+ * The growth plate's title on Results: "Your five domains after this mock", "Your domains after this
+ * set", or the one area's own name. `names`: the areas drawn. `course` (optional): a course with
+ * sections reads "Your four sections after this mock"; none (CISA): as before.
+ */
+export function resultsPlateTitle(isMock: boolean, names: readonly string[], course?: DomainStyled): string {
+  if (isMock) return `Your ${areasTitle(names.length).split(' ')[0].toLowerCase()} ${domainWord(course, names.length === 1 ? 'domain' : 'domains')} after this mock`;
+  return names.length === 1 ? `${names[0]}, after this set` : `Your ${domainWord(course, 'domains')} after this set`;
 }
 
 /** The key in words for screen readers: the "↑" glyph said as "Up arrow" (release bug hunt round 2). */
-export function resultsKeySpoken(isMock: boolean): string {
-  return resultsKey(isMock).replace('↑:', 'Up arrow:');
+export function resultsKeySpoken(isMock: boolean, course?: DomainStyled): string {
+  return resultsKey(isMock, course).replace('↑:', 'Up arrow:');
 }
 
 /**
@@ -505,12 +516,7 @@ export default function Results() {
   // The plate's numbers are each area's score overall, after this set (the set's own count is the line under
   // each, "2 of 3 this set"), so the title says so, as the website's set results do ("Your domains after this set").
   // Grove Phase 4 (PHASE4.md 7.13): after a mock the caption says so ("Your five areas after this mock").
-  const plateTitle =
-    active.mode === 'mock'
-      ? `Your ${areasTitle(stems.length).split(' ')[0].toLowerCase()} ${stems.length === 1 ? 'domain' : 'domains'} after this mock`
-      : stems.length === 1
-        ? `${stems[0].name}, after this set`
-        : 'Your domains after this set';
+  const plateTitle = resultsPlateTitle(active.mode === 'mock', stems.map((s) => s.name), cert);
 
   return (
     <Screen edges={['top', 'bottom']} onScroll={moment && !momentSeen ? watch : undefined} onScrollBeginDrag={moment ? () => skipMoment.current?.() : undefined}>
@@ -569,7 +575,7 @@ export default function Results() {
         )}
         {/* The chart's key (7.11): the "70 line" label is gone from the chart, so the key says what the dashed line,
             the up arrow and clay mean, as the website's results do. Only when a chart is drawn. */}
-        {!plateLine && <KeyCaption label="Key" spoken={resultsKeySpoken(isMock)}>{resultsKey(isMock)}</KeyCaption>}
+        {!plateLine && <KeyCaption label="Key" spoken={resultsKeySpoken(isMock, cert)}>{resultsKey(isMock, cert)}</KeyCaption>}
         {range.enough && (
           // TYPE_SCALE 2.1: a range reads "68 to 78", never a dash (matches the web; a screen reader may say a dash as "minus").
           // The caps come from the head cut's textTransform.

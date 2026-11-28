@@ -52,6 +52,7 @@ import { findQuestion } from '../../content/loader';
 import { findLesson, lessonsFor, nextLesson } from '../../content/lessons';
 import type { Lesson } from '../../content/lessons/types';
 import { noteDomain } from '../../content/notes';
+import { domainWord } from '../../engine/domainNaming';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, lettersFor, makeCheckPermutation, type Permutation } from '../../engine/shuffle';
 import { interleaveTopic } from '../../engine/studyModes';
@@ -421,7 +422,8 @@ function LessonComplete({ lesson, domain, fresh }: { lesson: Lesson; domain: Dom
   const doneFlags = inDomain.map((l) => done.includes(l.id));
   const count = doneFlags.filter(Boolean).length;
   const at = inDomain.findIndex((l) => l.id === lesson.id);
-  const name = domain?.short ?? 'this domain';
+  // No area found (it should not happen): the course's own word, "this domain" or "this section".
+  const name = domain?.short ?? `this ${domainWord(getCertification(lesson.certId), 'domain')}`;
   const words =
     count >= inDomain.length
       ? `Every ${name} lesson is done.`
@@ -488,14 +490,14 @@ function CompleteActions({ lesson, domain }: { lesson: Lesson; domain: DomainInf
       () =>
         ids.length
           ? startFromIds(lesson.certId, ids, lesson.title)
-          : startPractice(lesson.certId, { count: 10, domainId: lesson.domainId, title: `${domain?.short ?? 'Domain'} practice` }),
+          : startPractice(lesson.certId, { count: 10, domainId: lesson.domainId, title: `${domain?.short ?? domainWord(getCertification(lesson.certId), 'Domain')} practice` }),
       // A lesson can be opened from a session ("Review the lesson"): start clean (lib/actions.ts).
       openSessionFromStack,
     );
   return (
     <View style={{ gap: space.sm }}>
       <Button
-        label={ids.length ? 'Practice this topic' : `Practice ${domain?.short ?? 'this domain'}`}
+        label={ids.length ? 'Practice this topic' : `Practice ${domain?.short ?? `this ${domainWord(getCertification(lesson.certId), 'domain')}`}`}
         accessibilityHint={ids.length ? `Questions on ${lesson.title}` : undefined}
         onPress={practise}
       />

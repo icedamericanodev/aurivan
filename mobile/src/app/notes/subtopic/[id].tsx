@@ -38,6 +38,7 @@ import { View } from 'react-native';
 import { KeyList } from '../../../components/fieldguide';
 import { CheckDraw, useScreenFocus } from '../../../components/motion';
 import { AcronymPlate, NoteBody } from '../../../components/notes';
+import { domainWord } from '../../../engine/domainNaming';
 import { titleAcronyms } from '../../../engine/noteAcronyms';
 import { ReportRow } from '../../../components/support';
 import { Button, Enter, Gap, PushedHeader, Row, Screen, Tag, T, useFontScale } from '../../../components/ui';
@@ -272,7 +273,7 @@ export default function NoteSubtopicScreen() {
                   kicker: 'Next note',
                   title: next.name,
                   spoken: `Next note: ${next.name}`,
-                  hint: 'Opens the next note in this domain',
+                  hint: `Opens the next note in this ${domainWord(cert, 'domain')}`,
                   onPress: () => router.replace(`/notes/subtopic/${encodeURIComponent(next.id)}`),
                 },
               ]}

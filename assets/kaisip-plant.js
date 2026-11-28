@@ -6122,6 +6122,7 @@ exports.domainStyleOf = domainStyleOf;
 exports.domainMark = domainMark;
 exports.domainTitle = domainTitle;
 exports.domainWord = domainWord;
+exports.domainCopy = domainCopy;
 exports.domainOfCode = domainOfCode;
 exports.DEFAULT_DOMAIN_STYLE = { noun: 'Domain', numbering: 'number' };
 function domainStyleOf(c) {
@@ -6145,6 +6146,13 @@ function domainWord(c, form) {
     const lower = form.charAt(0) === 'd';
     const word = plural ? `${noun}s` : noun;
     return lower ? word.toLowerCase() : word;
+}
+function domainCopy(text, c) {
+    if (!(c === null || c === void 0 ? void 0 : c.domainStyle))
+        return text;
+    return text
+        .replace(/\bDomain (\d{1,2})\b/g, (_m, id) => domainTitle(id, c))
+        .replace(/\b[Dd]omains?\b/g, (m) => domainWord(c, m));
 }
 function domainOfCode(code, c) {
     if ((0, exports.isLettered)(c)) {
@@ -7335,11 +7343,12 @@ function isPlayable(id, questions, notes, content, qc) {
     return size >= g.minPool;
 }
   };
-  links["src/engine/games/rootOrRumor.ts"] = {"../random":"src/engine/random.ts"};
+  links["src/engine/games/rootOrRumor.ts"] = {"../domainNaming":"src/engine/domainNaming.ts","../random":"src/engine/random.ts"};
   defs["src/engine/games/rootOrRumor.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.READ_AGAIN_AT = exports.DENY_CARDS = exports.IMPERATIVE_VERBS = exports.RUMOR_TIER_LINE = exports.RUMOR_TIER_NAME = exports.RUMOR_TIERS = exports.MAX_WORDS = exports.MIN_WORDS = exports.RUMOR_MIN_POOL = exports.RUMOR_SIZE = void 0;
+exports.rumorTierLines = rumorTierLines;
 exports.wordCount = wordCount;
 exports.firstSentence = firstSentence;
 exports.leansBack = leansBack;
@@ -7358,6 +7367,7 @@ exports.whyChoices = whyChoices;
 exports.tapTitle = tapTitle;
 exports.tapVerdict = tapVerdict;
 exports.readAgain = readAgain;
+const domainNaming_1 = require("../domainNaming");
 const random_1 = require("../random");
 exports.RUMOR_SIZE = 12;
 exports.RUMOR_MIN_POOL = exports.RUMOR_SIZE * 2;
@@ -7365,11 +7375,16 @@ exports.MIN_WORDS = 8;
 exports.MAX_WORDS = 30;
 exports.RUMOR_TIERS = ['seedling', 'sapling', 'heartwood'];
 exports.RUMOR_TIER_NAME = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
-exports.RUMOR_TIER_LINE = {
-    seedling: 'One domain per round.',
-    sapling: 'All domains, mixed.',
-    heartwood: 'All domains, plus “Why?” on each myth.',
-};
+function rumorTierLines(course) {
+    const one = (0, domainNaming_1.domainWord)(course, 'domain');
+    const many = (0, domainNaming_1.domainWord)(course, 'domains');
+    return {
+        seedling: `One ${one} per round.`,
+        sapling: `All ${many}, mixed.`,
+        heartwood: `All ${many}, plus “Why?” on each myth.`,
+    };
+}
+exports.RUMOR_TIER_LINE = rumorTierLines();
 function wordCount(text) {
     return text.trim().split(/\s+/).filter(Boolean).length;
 }
@@ -8169,7 +8184,7 @@ function allMarks(f) {
             met,
             progress: met ? 1 : frac(chain.length, n),
             detail: met ? 'Done' : `${Math.min(chain.length, n)} of ${n} full mocks, a week apart`,
-            rule: `Finish ${n} full, timed mocks with every question answered, each ${exports.DRESS_GAP_DAYS} days or more after the one before, once every domain is at ${pct(exports.WHOLE_MAP_FLOOR)}.`,
+            rule: `Finish ${n} full, timed mocks with every question answered, each ${exports.DRESS_GAP_DAYS} days or more after the one before, once every ${(0, domainNaming_1.domainWord)(f, 'domain')} is at ${pct(exports.WHOLE_MAP_FLOOR)}.`,
         });
     }
     const onPace = f.mocks.some(isOnPace);
@@ -10527,14 +10542,15 @@ function mockTrend(mocks, examQuestions) {
 }
 const FALL_NOTE = 'One mock can swing; look at the domains below.';
 exports.MIXED_NOTE = 'Mini and full mocks are mixed here; a mini mock swings more.';
-function trendWords(points) {
+function trendWords(points, course) {
     if (points.length < 2)
         return null;
+    const fallNote = (0, domainNaming_1.domainCopy)(FALL_NOTE, course);
     const mixed = (window) => window.some((p) => p.kind === 'mini') && window.some((p) => p.kind === 'full') ? ` ${exports.MIXED_NOTE}` : '';
     const last = points[points.length - 1].pct;
     const fall = points[points.length - 2].pct - last;
     if (fall > exports.LEVEL_POINTS)
-        return `Down ${fall} points since your last mock. ${FALL_NOTE}${mixed(points.slice(-2))}`;
+        return `Down ${fall} points since your last mock. ${fallNote}${mixed(points.slice(-2))}`;
     const n = Math.min(exports.TREND_WINDOW, points.length);
     const delta = last - points[points.length - n].pct;
     const span = n === 2 ? 'since your last mock' : `over your last ${n} mocks`;
@@ -10542,7 +10558,7 @@ function trendWords(points) {
     if (delta > exports.LEVEL_POINTS)
         return `Up ${delta} points ${span}.${note}`;
     if (delta < -exports.LEVEL_POINTS)
-        return `Down ${-delta} points ${span}. ${FALL_NOTE}${note}`;
+        return `Down ${-delta} points ${span}. ${fallNote}${note}`;
     return `About level ${span}.${note}`;
 }
 function trendSpoken(points) {
@@ -10583,8 +10599,8 @@ const mockTally = (m, domainId) => {
 exports.mockTally = mockTally;
 const mockCovers = (r) => Boolean(r.lastMock || r.prevMock);
 exports.mockCovers = mockCovers;
-function readinessLine(r) {
-    return `${r.weightPct}% of the exam · ${r.answered === 0 ? 'not started yet' : `domain readiness ${r.readinessPct}%`}`;
+function readinessLine(r, course) {
+    return `${r.weightPct}% of the exam · ${r.answered === 0 ? 'not started yet' : `${(0, domainNaming_1.domainWord)(course, 'domain')} readiness ${r.readinessPct}%`}`;
 }
 function evidenceLine(r) {
     if (r.answered === 0)
@@ -10634,7 +10650,7 @@ function raiseLowerBound(cert, readiness, range, dueCount) {
         out.push({ kind: 'review', count, text: `Clear ${count} ${count === 1 ? 'review' : 'reviews'}: revisiting steadies your range`, button: 'Start review' });
     }
     if (out.length === 0)
-        out.push({ kind: 'mix', text: 'Keep a steady mix: reviews first, then your weakest domain.' });
+        out.push({ kind: 'mix', text: `Keep a steady mix: reviews first, then your weakest ${(0, domainNaming_1.domainWord)(cert, 'domain')}.` });
     return out.slice(0, exports.RAISE_MAX);
 }
 exports.LOW_DAYS = 30;
@@ -11822,6 +11838,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "e3e735c84f5c83c2";
+  api.sourceHash = "3110d2a88ceaf2b8";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

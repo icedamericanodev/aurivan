@@ -157,7 +157,8 @@ function planSnap(certId: string, now: number): PlanSnap | null {
   const done = planComplete(plan);
   const item = plan.items[currentIndex(plan)];
   const name = item ? itemName(certId, item) : { title: '', short: '' };
-  const hero = item ? planHero(item, due.length) : null;
+  // The course is passed for its word ("mixed across the domains", or "sections").
+  const hero = item ? planHero(item, due.length, { course: getCertification(certId) }) : null;
   // The open items' minutes (a mock is left out: it is optional and says its own length).
   const left = todayMinutes(plan.items, plan.done);
   // Today's share of questions to revisit still in the plan (the plan's own number, never the queue).

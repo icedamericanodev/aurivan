@@ -43,6 +43,7 @@ import {
   type BankFilter,
   type BankItem,
 } from '../../engine/bank';
+import { domainWord } from '../../engine/domainNaming';
 import { createRng } from '../../engine/random';
 import { shortSubtopic } from '../../lib/format';
 import { guardedStart, startFromIds } from '../../lib/sessions';
@@ -134,10 +135,10 @@ function BankDomainScreen() {
   );
 
   if (!domain) {
-    return <EmptyScreen header="Question bank" fallback="/practice" title="Domain not found" body="Go back and pick a domain from the list." />;
+    return <EmptyScreen header="Question bank" fallback="/practice" title={`${domainWord(cert, 'Domain')} not found`} body={`Go back and pick a ${domainWord(cert, 'domain')} from the list.`} />;
   }
 
-  const empty = emptyCopy(filter);
+  const empty = emptyCopy(filter, cert);
   const hasItems = items.length > 0;
 
   const header = (

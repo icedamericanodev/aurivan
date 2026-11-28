@@ -13,6 +13,7 @@ import { FeatureInfo } from './featureInfo';
 import type { ReactNode, Ref } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import type { DomainInfo } from '../content/types';
+import { domainWord, type DomainStyled } from '../engine/domainNaming';
 import { MODE_INFO, SESSION_SIZES, STUDY_MODES, type StudyMode } from '../engine/studyModes';
 import { LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -91,9 +92,18 @@ export function FieldLabel({ children }: { children: string }) {
   );
 }
 
-/** What the hero will start, in one line: "Smart · All domains · 10 questions". */
-export function pathSummary(mode: StudyMode, domain: DomainInfo | undefined, size: number): string {
-  const parts = [MODE_INFO[mode].name, domain ? domain.short : 'All domains'];
+/**
+ * What the hero will start, in one line: "Smart · All domains · 10 questions".
+ * `course` (optional): a course with sections reads "All sections"; none (CISA) reads as before.
+ *
+ * No screen shows this line today: the Practice hero says the same three things in its tiles
+ * and kicker (app/(tabs)/practice.tsx, already in the course's words), and a session's title
+ * comes from lib/sessions.ts. It is kept because CISA's tests pin its wording
+ * (practice-path.test.tsx, section-wording.test.tsx). A screen that shows it must pass its
+ * course: `pathSummary(mode, domain, size, cert)`.
+ */
+export function pathSummary(mode: StudyMode, domain: DomainInfo | undefined, size: number, course?: DomainStyled): string {
+  const parts = [MODE_INFO[mode].name, domain ? domain.short : `All ${domainWord(course, 'domains')}`];
   if (mode !== 'guided') parts.push(`${size} questions`);
   return parts.join(' · ');
 }
@@ -116,11 +126,17 @@ export function PathChooser({
   onDomain,
   onSize,
   onDone,
+  course,
 }: {
   mode: StudyMode;
   suggested: StudyMode;
   domains: DomainInfo[];
   domainId: string | undefined;
+  /**
+   * The course, for its words: a course with sections shows "Section" and "All sections".
+   * Left out (or a course with no `domainStyle`, like CISA): "Domain" and "All domains", as before.
+   */
+  course?: DomainStyled;
   size: number;
   onMode: (m: StudyMode) => void;
   onDomain: (id: string | undefined) => void;
@@ -152,10 +168,11 @@ export function PathChooser({
           />
         ))}
       </View>
-      <FieldLabel>Domain</FieldLabel>
-      <View accessibilityLabel="Domain for your path">
+      {/* The group's name in the course's words: "Domain" (CISA) or "Section". */}
+      <FieldLabel>{domainWord(course, 'Domain')}</FieldLabel>
+      <View accessibilityLabel={`${domainWord(course, 'Domain')} for your path`}>
         <ChipRow>
-          <Chip label="All domains" selected={!domainId} onPress={() => onDomain(undefined)} />
+          <Chip label={`All ${domainWord(course, 'domains')}`} selected={!domainId} onPress={() => onDomain(undefined)} />
           {domains.map((d) => (
             <Chip key={d.id} label={d.short} selected={domainId === d.id} onPress={() => onDomain(d.id)} />
           ))}

@@ -1043,6 +1043,26 @@ CASES = [
     ("a malformed sibling-groups file (a group of one question)", [DRY],
      lambda r: c.write_json(r / "shared" / "siblings.json", {"groups": [{"ids": ["cia1_d1_001"]}]}),
      "group 1: a group needs 2 or more different ids"),
+    # The held-back form in the dry run: read with the app builder's own heldback-pack.cjs, so each
+    # of these is a fault the real app build would stop on.
+    ("a held-back id that the pack does not have (the dry run stops as the app's build would)", [DRY],
+     then(held_back_bank(), rebuild, lambda r: edit(r, HELD, lambda d: d["ids"].__setitem__(0, "cia1_d1_999"))),
+     "cia1_d1_999 is not a question of the cia1 pack"),
+    ("a held-back item retired after the form was frozen (the dry run stops)", [DRY],
+     then(held_back_bank(), rebuild, form_item(setf("retired", True))), "is retired, so it can't be in the form"),
+    ("a held-back item dated after the form was frozen (the dry run stops)", [DRY],
+     then(held_back_bank(), rebuild, form_item(setf("testable_from", "2027-03-01"))),
+     "is on the exam only from 2027-03-01, after the form was frozen (2026-11-19)"),
+    ("another pack's held-back file (the dry run stops)", [DRY],
+     then(held_back_bank(), rebuild, lambda r: edit(r, HELD, lambda d: d["_meta"].__setitem__("exam", "cia2"))),
+     '"_meta.exam" is "cia2", but this is the cia1 pack'),
+    # Before the form is taken the app keeps its questions out of every mock, so the release check
+    # (--require-full) also asks for a full mock from that smaller pool. Without the flag this same
+    # bank is a warning (see PASSES); a bank big enough passes with the flag (see PASSES).
+    ("a full mock that cannot be filled before the held-back form is taken, at release (--require-full)",
+     [DRY, "cia1", "--require-full"], then(held_back_bank(), rebuild),
+     "✗ full mock before the form: WARNING: until the learner takes the held-back form, a full mock of 125 "
+     "(A 44 / B 25 / C 37 / D 19) cannot be filled at the exam's weights: section A holds 20 of the 44 needed"),
     ("a hand-edited Challenge file when only cia1 is named (the gate across packs still runs)", [DRY, "cia1"],
      lambda r: edit(r, "ciac/originals/d1.json", lambda d: d["questions"][0].__setitem__("pre_read", "Edited by hand.")),
      "is not what build_challenge.py produces"),
@@ -1160,6 +1180,30 @@ PASSES = [
     ("a held-back sibling of a practised item (the pair is the transfer check)", HB,
      then(held_back_bank(), form_siblings(inside=False)), "cia1 125 frozen 2026-11-19"),
     ("no held-back form yet (nothing to check)", HB, lambda r: None, "cia1 no form yet"),
+    ("a held-back form in the dry run (tagged by the app builder's own reader, counted by section)", [DRY, "cia1"],
+     then(held_back_bank(), rebuild), 'held-back form: 125 questions tagged heldBack "2026-11-19" (A 44 / B 25 / C 37 / D 19)'),
+    ("no held-back file in the dry run (no form: a line that says so, never a failure)", [DRY], lambda r: None,
+     "held-back form: none (cia1/exam/held_back.json is not written)"),
+    ("a pack with no questions and no held-back file (the same 'none' line, never silence)", [DRY], lambda r: None,
+     "held-back form: none (cia3/exam/held_back.json is not written)"),
+    ("a full mock that cannot be filled before the held-back form is taken (a named warning, never a failure; "
+     "the line says what the app deals)", [DRY, "cia1"], then(held_back_bank(), rebuild),
+     "! full mock before the form: WARNING: until the learner takes the held-back form, a full mock of 125 "
+     "(A 44 / B 25 / C 37 / D 19) cannot be filled at the exam's weights: section A holds 20 of the 44 needed, "
+     "section B holds 17 of the 25 needed, section C holds 19 of the 37 needed, section D holds 16 of the 19 needed. "
+     "Before the form a mock draws from 72 questions; by section against the quota: A 20 of 44 / B 17 of 25 / C 19 of 37 / "
+     "D 16 of 19. In the app (engine/blueprint.ts buildMockExam) the learner gets a \"Full mock exam\" of only 72 questions",
+     "✗"),
+    ("a short mock drawn from the pool before the held-back form is taken (the form's questions left out)", [DRY, "cia1"],
+     then(held_back_bank(), rebuild),
+     "✓ short mock before the form: 42 items (A 15 / B 8 / C 13 / D 6) drawn without repeats with the held-back form's "
+     "questions left out. Before the form a mock draws from 72 questions; by section against the quota: A 20 of 15 / B 17 of 8 / "
+     "C 19 of 13 / D 16 of 6"),
+    ("a bank that holds a full mock before the held-back form is taken (passes the release check, --require-full)",
+     [DRY, "cia1", "--require-full"], then(held_back_bank(per=(11, 9, 10, 8)), rebuild),
+     "✓ full mock before the form: 125 items (A 44 / B 25 / C 37 / D 19) drawn without repeats with the held-back form's "
+     "questions left out. Before the form a mock draws from 137 questions; by section against the quota: A 44 of 44 / B 29 of 25 / "
+     "C 43 of 37 / D 21 of 19"),
     ("a question that is not testable until 2027 (left out of the mock pool: 39 of 40)", [DRY],
      q0(lambda q: q.update(framework_ref=STD + "; " + TOPICAL, testable_from="2027-03-01")), "mock pool: 39 of 40 live items"),
     ("two siblings in one pack (tagged in that pack, the other pack's id ignored, one set aside from mocks)", [DRY],

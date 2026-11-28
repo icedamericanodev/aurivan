@@ -34,6 +34,7 @@
  * Pure TypeScript: no React, no storage. The notes pack is passed in.
  */
 import type { NotesPack } from '../../content/notes/types';
+import { domainWord, type DomainStyled } from '../domainNaming';
 import { shuffled, type Rng } from '../random';
 import type { ReviewEntry } from '../srs';
 
@@ -47,11 +48,21 @@ export type StatementKind = 'root' | 'rumor';
 export type RumorTier = 'seedling' | 'sapling' | 'heartwood';
 export const RUMOR_TIERS: RumorTier[] = ['seedling', 'sapling', 'heartwood'];
 export const RUMOR_TIER_NAME: Record<RumorTier, string> = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
-export const RUMOR_TIER_LINE: Record<RumorTier, string> = {
-  seedling: 'One domain per round.',
-  sapling: 'All domains, mixed.',
-  heartwood: 'All domains, plus “Why?” on each myth.',
-};
+/**
+ * What each level changes, in the course's words: "One domain per round." (CISA, and when no
+ * course is passed) or "One section per round." for a course with sections.
+ */
+export function rumorTierLines(course?: DomainStyled): Record<RumorTier, string> {
+  const one = domainWord(course, 'domain');
+  const many = domainWord(course, 'domains');
+  return {
+    seedling: `One ${one} per round.`,
+    sapling: `All ${many}, mixed.`,
+    heartwood: `All ${many}, plus “Why?” on each myth.`,
+  };
+}
+/** The level lines for every course without a `domainStyle` (CISA: word for word as before). */
+export const RUMOR_TIER_LINE: Record<RumorTier, string> = rumorTierLines();
 
 export interface Statement {
   /** Stable card id: "rumor:4B1.2:k1x9" (kind : subtopic : hash of the text). */

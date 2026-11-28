@@ -16,6 +16,7 @@ import { Modal, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } f
 import Animated, { Easing, ReduceMotion, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { Certification } from '../content/types';
+import { domainWord } from '../engine/domainNaming';
 import { aboutSeconds, checkpointText, durationSpoken, durationText, durationWords, spokenMin, type MockPacing, type PaceStatus } from '../engine/pace';
 import { FINISH_NOW_LABEL, KEEP_GOING_LABEL, TIMES_UP_TITLE, timesUpBody } from '../engine/practiceCountdown';
 import { moveFocus } from '../lib/a11y';
@@ -292,7 +293,8 @@ export function PacingPanel({ pacing, cert }: { pacing: MockPacing; cert: Certif
     const d = cert.domains.find((x) => x.id === pacing.slowestDomain!.domainId);
     if (d) {
       const line = `${d.short}, ${aboutSeconds(pacing.slowestDomain.medianSec)} per question`;
-      rows.push(['Slowest domain', line, spokenMin(line)]);
+      // The row's name in the course's words: "Slowest domain" (CISA) or "Slowest section".
+      rows.push([`Slowest ${domainWord(cert, 'domain')}`, line, spokenMin(line)]);
     }
   }
   return (

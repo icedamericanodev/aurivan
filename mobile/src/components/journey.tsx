@@ -15,6 +15,7 @@ import { View, type ViewStyle } from 'react-native';
 import { domainColor } from '../content/certifications';
 import type { Certification } from '../content/types';
 import { biggestGrowth, clearingTitle, dayAccuracy, isOptional, itemMinutes, type DayPlan } from '../engine/dayPlan';
+import { domainTitle, domainWord, type DomainStyled } from '../engine/domainNaming';
 import { legacyTitle, type PlanItem } from '../engine/planner';
 import { SMALL_SAMPLE } from '../engine/resultsCopy';
 import type { Readiness } from '../engine/readiness';
@@ -64,7 +65,7 @@ export function planIcon(item: PlanItem, color: string): ReactNode {
  * says "8 tomorrow". Premium pass 1.4 (mobile 1.49): never the queue total,
  * so the title is "Questions to revisit", not "Review 55 due".
  */
-export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow' = 'today'): { title: string; meta: string; short: string } {
+export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow' = 'today', course?: DomainStyled): { title: string; meta: string; short: string } {
   const mins = itemMinutes(item);
   switch (item.kind) {
     case 'review': {
@@ -95,7 +96,8 @@ export function planText(item: PlanItem, due?: number, when: 'today' | 'tomorrow
           : item.why === 'check'
             ? // Not "no score yet, just a starting point" (1.24 UX review S5): by Day 2 the learner has seen
               // "3 of 5", and the readiness row says how far the first range is.
-              'mixed across the domains'
+              // The course's word: "domains" (CISA, and when no course is passed) or "sections".
+              `mixed across the ${domainWord(course, 'domains')}`
             : item.why === 'learn'
               ? 'on what you just learned'
               : item.why === 'weak'
@@ -139,7 +141,7 @@ export function heroPracticeTitle(label: string): string {
  * and they are this item's alone, so the meta leaves them out (said once).
  * The rows under the panel keep planText's titles.
  */
-export function planHero(item: PlanItem, due?: number, opts: { minutesSaid?: boolean } = {}): { title: string; meta: string } {
+export function planHero(item: PlanItem, due?: number, opts: { minutesSaid?: boolean; /** The course, for its word ("domains" or "sections"). */ course?: DomainStyled } = {}): { title: string; meta: string } {
   const mins = itemMinutes(item);
   const join = (detail: string) => {
     if (!opts.minutesSaid) return `${aboutMin(mins)} · ${detail}`;
@@ -167,7 +169,7 @@ export function planHero(item: PlanItem, due?: number, opts: { minutesSaid?: boo
         item.why === 'first'
           ? ', no timer'
           : item.why === 'check'
-            ? ', mixed across the domains' // "15 questions, mixed across the domains" (UX review S5)
+            ? `, mixed across the ${domainWord(opts.course, 'domains')}` // "15 questions, mixed across the domains" (UX review S5)
             : item.why === 'learn'
               ? ', on what you just learned'
               : item.why === 'weak'
@@ -555,14 +557,26 @@ function ReportTap({ onPress, label, style, children, testID }: { onPress: () =>
 /**
  * `values` are 0..1 per domain (blueprint order), or null for "not started".
  * The legend lists domains 1 → 5, top-down, like every other list in the app
- * (mobile 1.15, PHASE5.md C10). Domain 1 is the inner ring; RINGS_NOTE says so.
+ * (mobile 1.15, PHASE5.md C10). Domain 1 is the inner ring; ringsNote says so.
  * `only` (Results): draw just these domains (indexes, blueprint order), so a
  * one-domain session isn't four empty rings and four dashes (ui.md R1). One
  * domain alone is drawn as a single thick ring in its tone.
  */
 export const SINGLE_RING_WEIGHT = 80;
-/** Said once under the rings wherever the legend shows (You). */
-export const RINGS_NOTE = 'Domain 1 is the inner ring. Thicker rings weigh more on the exam.';
+/**
+ * The note that goes once under the rings wherever their legend shows, in the course's words:
+ * "Domain 1 is the inner ring" (CISA, or no course passed), "Section A is the inner ring" for a
+ * course with sections.
+ *
+ * No screen shows it today: You dropped the five rings and this note in mobile 1.43, and no
+ * screen draws DomainRings since. It is kept with the rings so that the screen that brings them
+ * back says the note in the course's words: call `ringsNote(cert)`, never a fixed sentence.
+ * The old constant RINGS_NOTE is gone on purpose: no screen imported it, and CISA's wording is
+ * pinned by `ringsNote()` in section-wording.test.tsx, so no test needed the constant either.
+ */
+export function ringsNote(course?: DomainStyled): string {
+  return `${domainTitle('1', course)} is the inner ring. Thicker rings weigh more on the exam.`;
+}
 /** Narrower than this (most 360 dp Android phones), the legend sits under the rings. */
 export const RINGS_SIDE_BY_SIDE_MIN = 380;
 export function DomainRings({

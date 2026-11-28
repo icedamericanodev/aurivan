@@ -39,6 +39,7 @@ import { useActiveCert } from '../../lib/useActiveCert';
 import { moveFocus } from '../../lib/a11y';
 import { useProgress, type MockResult } from '../../store/progress';
 import type { Certification } from '../../content/types';
+import { domainWord, type DomainStyled } from '../../engine/domainNaming';
 import { dailyMinutesOf, examDateOf, useSettings } from '../../store/settings';
 import { StudyProfile } from '../../components/studyProfile';
 import { firstStudyDay, nameInitial, profileLines } from '../../engine/studyProfile';
@@ -242,7 +243,7 @@ export default function You() {
       </Enter>
 
       <Enter i={2}>
-        <ReadinessCard range={range} towardRange={towardRange} growth={rangeGrowth} />
+        <ReadinessCard range={range} towardRange={towardRange} growth={rangeGrowth} course={cert} />
         {/* The badges, as one card (Settings → Show badges off hides it). */}
         {!badgesHidden && (
           <HubCard testID="you-badges" style={{ marginTop: space.lg }}>
@@ -400,7 +401,7 @@ const YouLists = memo(function YouLists({
       </HubCard>
 
       <ProgressCard cert={cert} focus={focus} hasAnswers={hasAnswers} />
-      <MocksCard mocks={mocks} miniMock={miniMock} pacingLine={pacingLine} />
+      <MocksCard mocks={mocks} miniMock={miniMock} pacingLine={pacingLine} course={cert} />
       <HelpCards helpLine={helpLine} />
       <T v="meta" center style={{ marginTop: space.xl }}>{cert.trademarkNotice}</T>
     </>
@@ -409,7 +410,7 @@ const YouLists = memo(function YouLists({
 
 
 /** The Estimated readiness card (PHASE4.md 7.14 item 5). Its own memo: it redraws only when the range does. */
-const ReadinessCard = memo(function ReadinessCard({ range, towardRange, growth }: { range: ReadinessRange; towardRange: number; growth?: Growth }) {
+const ReadinessCard = memo(function ReadinessCard({ range, towardRange, growth, course }: { range: ReadinessRange; towardRange: number; growth?: Growth; /** The course, for its word in the hint ("each domain" or "each section"). */ course?: DomainStyled }) {
   const { c } = useTheme();
   const rangeGrowth = growth;
   // From text scale 1.3 the header stacks (PHASE4 section 11): the ring, then the kicker and its words
@@ -422,7 +423,7 @@ const ReadinessCard = memo(function ReadinessCard({ range, towardRange, growth }
       label="See report"
       // WCAG 2.5.3: the spoken name starts with the visible words.
       accessibilityLabel="See report, your readiness report"
-      accessibilityHint="Your mock trend, each domain side by side, and what would raise your low end"
+      accessibilityHint={`Your mock trend, each ${domainWord(course, 'domain')} side by side, and what would raise your low end`}
       onPress={() => router.push('/readiness')}
       style={large ? { alignSelf: 'flex-start', marginLeft: -space.sm } : { marginRight: -space.sm }}
     />
@@ -490,11 +491,11 @@ const ProgressCard = memo(function ProgressCard({ cert, focus, hasAnswers }: { c
 });
 
 /** Mock exams: the history (or "No mocks yet" and its start), then the pacing line. */
-const MocksCard = memo(function MocksCard({ mocks, miniMock, pacingLine }: { mocks: readonly MockResult[]; miniMock: number; pacingLine: string | null }) {
+const MocksCard = memo(function MocksCard({ mocks, miniMock, pacingLine, course }: { mocks: readonly MockResult[]; miniMock: number; pacingLine: string | null; /** The course, for its word in the mock rows' hint. */ course?: DomainStyled }) {
   return (
       <HubCard testID="you-mocks" style={{ marginTop: space.lg, paddingBottom: space.md }}>
         <CardHead title="Mock exams" />
-        <MockHistory mocks={mocks} miniMock={miniMock} />
+        <MockHistory mocks={mocks} miniMock={miniMock} course={course} />
         {/* Pacing across timed mocks only (untimed ones are left out). */}
         {pacingLine && <T v="meta" style={{ marginTop: space.md }}>{pacingLine}</T>}
       </HubCard>
@@ -542,7 +543,7 @@ const HelpCards = memo(function HelpCards({ helpLine }: { helpLine: string }) {
 });
 
 /** The mock history (its own memo: an answer in a session changes the review count above it, never the mocks). */
-const MockHistory = memo(function MockHistory({ mocks, miniMock }: { mocks: readonly MockResult[]; miniMock: number }) {
+const MockHistory = memo(function MockHistory({ mocks, miniMock, course }: { mocks: readonly MockResult[]; miniMock: number; /** The course, for its word in the rows' hint ("domains" or "sections"). */ course?: DomainStyled }) {
   return (
     <>
       {mocks.length === 0 ? (
@@ -569,7 +570,7 @@ const MockHistory = memo(function MockHistory({ mocks, miniMock }: { mocks: read
             // mockPct: a 0-question mock (a hand-edited backup) reads 0%, never NaN.
             accessibilityLabel={`${mockRowTitle(m)}, score ${mockPct(m)} percent, ${spokenMin(mockSubtitle(m))}`}
             // Mobile 1.16 (Elena's gap): a past mock opens the report with its domains shown.
-            accessibilityHint="Opens your readiness report with this mock’s domains"
+            accessibilityHint={`Opens your readiness report with this mock’s ${domainWord(course, 'domains')}`}
             onPress={() => router.push({ pathname: '/readiness', params: { mock: m.id } })}
             last={i === all.length - 1}
           />

@@ -60,7 +60,7 @@ function BankDomainsScreen() {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }}>
-        <PushedHeader right={<FeatureInfo title="Question bank"><T v="body">Browse a domain or topic, then open a question to answer it.</T></FeatureInfo>} title="Question bank" showTitle={false} onBack={() => (router.canGoBack() ? router.back() : router.replace('/practice'))} />
+        <PushedHeader right={<FeatureInfo title="Question bank"><T v="body">{`Browse a ${domainWord(cert, 'domain')} or topic, then open a question to answer it.`}</T></FeatureInfo>} title="Question bank" showTitle={false} onBack={() => (router.canGoBack() ? router.back() : router.replace('/practice'))} />
         <PageTitle title="Question bank" />
         <Enter i={0}>
           <T v="meta" num style={{ marginTop: space.sm }}>{overall}</T>
@@ -85,7 +85,7 @@ function BankDomainsScreen() {
                 </>
               }
               accessibilityLabel={`${domainTitle(domain.id, cert)}, ${domain.name}. ${summary}`}
-              accessibilityHint="Shows this domain's topics and questions"
+              accessibilityHint={`Shows this ${domainWord(cert, 'domain')}'s topics and questions`}
               onPress={() => router.push({ pathname: '/bank/[domain]', params: { domain: domain.id } })}
               last={i === rows.length - 1}
             />
