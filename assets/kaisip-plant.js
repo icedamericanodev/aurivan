@@ -7012,6 +7012,7 @@ const MOST_ADJ = new Set([
     'common', 'valid', 'weak', 'direct', 'exact', 'precise', 'concise', 'current', 'recent', 'complex', 'mature', 'safe',
     'strict', 'often', 'concerning', 'pressing', 'compelling', 'damaging', 'misleading', 'convincing', 'telling',
     'revealing', 'worrying', 'troubling', 'alarming', 'striking', 'limiting', 'demanding', 'challenging', 'promising',
+    'lacking', 'missing', 'needed',
 ]);
 const MOST_VERBS = new Set([
     'need', 'needs', 'lack', 'lacks', 'determine', 'determines', 'undermine', 'undermines', 'warrant', 'warrants', 'stress',
@@ -11892,6 +11893,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "a08c6253b9b7ff9d";
+  api.sourceHash = "6f8167c33bd2742e";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);
