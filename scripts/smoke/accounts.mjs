@@ -58,6 +58,15 @@ const VIEWS = {
   desktop: { viewport: { width: 1280, height: 800 }, deviceScaleFactor: 2 },
 };
 const sha1 = (s) => crypto.createHash('sha1').update(s, 'utf8').digest('hex').toUpperCase();
+// The web app's Content-Security-Policy, as Cloudflare sends it (the /* rule of _headers): the
+// test server sends the same one with the app page, and anything it blocks fails the path.
+const APP_CSP = (() => {
+  const lines = fs.readFileSync(path.join(repo, '_headers'), 'utf8').split('\n');
+  const at = lines.findIndex((l) => l.trim() === '/*');
+  for (let i = at + 1; at >= 0 && i < lines.length && /^\s/.test(lines[i]); i++) { const m = /^\s+Content-Security-Policy:\s*(.+)$/.exec(lines[i]); if (m) return m[1].trim(); }
+  return '';
+})();
+if (!APP_CSP) { console.error('accounts: the /* Content-Security-Policy was not found in _headers'); process.exit(2); }
 
 // ── The fake network ──
 function siteFile(u) {
@@ -79,7 +88,8 @@ async function handle(route, server, net, origin) {
     if (rel === 'assets/kaisip-cloud.js') net.cloudJs++;
     if (rel === 'assets/kaisip-password-words.js') net.wordsJs++;
     if (!file || !file.startsWith(repo) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) return route.fulfill({ status: 404, contentType: 'text/plain', body: 'not found' });
-    return route.fulfill({ status: 200, contentType: TYPES[path.extname(file)] || 'application/octet-stream', body: fs.readFileSync(file) });
+    const headers = rel === 'index.html' ? { 'content-security-policy': APP_CSP } : {};
+    return route.fulfill({ status: 200, contentType: TYPES[path.extname(file)] || 'application/octet-stream', headers, body: fs.readFileSync(file) });
   }
   if (u.origin === SUPA) {
     net.supabase++;
@@ -123,6 +133,8 @@ async function setup(o = {}) {
   const seed = { aurivan_consent: 'denied', ...(o.onboarded === false ? {} : { cisa_onboarded_v6: '1', aurivan_exam_date_asked: '1' }), ...(o.preview === false ? {} : { kaisip_accounts_preview: '1' }), ...(o.seed || {}) };
   // Seeded once per tab (a reload must not put back what a test removed).
   await ctx.addInitScript((s) => { try { if (!sessionStorage.getItem('__seeded')) { sessionStorage.setItem('__seeded', '1'); for (const k of Object.keys(s)) localStorage.setItem(k, s[k]); } } catch (e) {} }, seed);
+  // Anything the page's own policy blocks is an error.
+  await ctx.addInitScript(() => { document.addEventListener('securitypolicyviolation', (e) => { console.error('CSP blocked ' + e.violatedDirective + ': ' + (e.blockedURI || 'inline')); }); });
   const page = await ctx.newPage();
   rec.watch(page, origin);
   if (o.scheme) await ctx.addInitScript((t) => { try { localStorage.setItem('cisa_theme', t); } catch (e) {} }, o.scheme);
