@@ -8902,7 +8902,7 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 .ka-foot a { color: var(--text2) !important; display: inline-flex; align-items: center; min-height: 44px; }
 .ka-foot span { width: 100%; }
 .ka-title { font: 400 2.125rem/1.1 var(--f-serif); letter-spacing: -.025em; text-wrap: balance; }
-.ka-steps + .ka-title, .ka-back + .ka-title { margin-top: 14px; }
+#kaRoot .ka-steps + .ka-title, #kaRoot .ka-back + .ka-title { margin-top: 18px; }
 .ka-lede { margin-top: 12px !important; font: 400 1.0625rem/1.55 var(--f-sans); color: var(--text2); text-wrap: pretty; }
 .ka-lede strong { color: var(--text); font-weight: 600; overflow-wrap: anywhere; }
 @media (min-width: 56.25em) {
@@ -9033,6 +9033,8 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 .ka-code:focus-within .ka-cell.is-active::after { content: ""; width: 2px; height: 24px; background: var(--text); border-radius: 1px; animation: kaCaret 1.1s steps(1) infinite; }
 .ka-code:focus-within .ka-cell.is-active.is-filled::after { display: none; }
 .ka-code.is-full:focus-within .ka-code-grp { box-shadow: inset 0 0 0 2px var(--text); }
+.ka-code.is-sel:focus-within .ka-code-grp { box-shadow: inset 0 0 0 2px var(--text); }
+.ka-code.is-sel:focus-within .ka-cell.is-filled { background: var(--surface2); }
 .ka-code.has-error .ka-code-grp { box-shadow: inset 0 0 0 2px var(--wrong); }
 @keyframes kaCaret { 50% { opacity: 0; } }
 .ka-resend { margin-top: 18px; font: 400 0.875rem/1.5 var(--f-sans); color: var(--text2); display: grid; gap: 2px; justify-items: start; }
@@ -27443,7 +27445,8 @@ var ka = {
   setupDue: false,    // signed in, but the agreements or the first sync are still to do
   pwNeedsCurrent: false,
   bootHash: '',
-  firstBusy: false
+  firstBusy: false,
+  resetFor: ''        // the address the last reset code was asked for
 };
 
 function kaGet(k, session) { try { return (session ? sessionStorage : localStorage).getItem(k); } catch (e) { return null; } }
@@ -27975,6 +27978,13 @@ function kaReveal(btn) {
   inp.type = show ? 'text' : 'password';
   btn.firstChild.nodeValue = show ? 'Hide' : 'Show';
 }
+// As a password field again while it is sent (so a password manager offers to save it), with its button back to "Show".
+function kaPwHide(inp) {
+  if (!inp || inp.type === 'password') return;
+  inp.type = 'password';
+  var b = inp.parentNode ? inp.parentNode.querySelector('.ka-reveal') : null;
+  if (b) b.firstChild.nodeValue = 'Show';
+}
 function kaCheck(id, html, optional) {
   return '<label class="ka-check" for="' + id + '"><input type="checkbox" id="' + id + '"' + (optional ? '' : ' aria-required="true"') + ' onchange="kaSetError(\'kaConsentE\', \'\')">'
     + '<span class="ka-box" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4.5 13.2 9.4 18 19.5 6.2"/></svg></span>'
@@ -28019,7 +28029,7 @@ function kaCodeField() {
   return '<div class="ka-field"><div class="ka-field-top"><label class="ka-label" for="kaCode">8-digit code</label></div>'
     + '<div class="ka-code" id="kaCodeBox"><div class="ka-code-cells" aria-hidden="true">' + cells + '</div>'
     + '<input class="ka-code-input" id="kaCode" name="code" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" maxlength="8" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="kaCodeE" required'
-    + ' oninput="kaCodeDraw()" onpaste="kaCodePaste(event)" onfocus="kaCodeDraw()" onkeyup="kaCodeDraw()" onclick="kaCodeDraw()"></div>'
+    + ' oninput="kaCodeDraw()" onpaste="kaCodePaste(event)" onfocus="kaCodeDraw()" onkeyup="kaCodeDraw()" onclick="kaCodeDraw()" onselect="kaCodeDraw()"></div>'
     + '<p class="ka-error" id="kaCodeE" role="alert"></p></div>';
 }
 function kaCodeDraw() {
@@ -28027,15 +28037,17 @@ function kaCodeDraw() {
   if (!inp || !box) return;
   var v = inp.value.replace(/\D/g, '').slice(0, 8);
   if (v !== inp.value) inp.value = v;
-  // The caret always sits at the end: the cells show one value, typed left to right.
-  try { inp.setSelectionRange(v.length, v.length); } catch (e) {}
+  // The caret is left where the learner put it (select all and type over must work); the cells follow it.
+  var a = v.length, z = v.length;
+  try { if (typeof inp.selectionStart === 'number') { a = inp.selectionStart; z = inp.selectionEnd; } } catch (e) {}
   box.querySelectorAll('.ka-cell').forEach(function (c) {
     var i = Number(c.getAttribute('data-i'));
     c.textContent = v[i] || '';
     c.classList.toggle('is-filled', !!v[i]);
-    c.classList.toggle('is-active', i === Math.min(v.length, 7));
+    c.classList.toggle('is-active', z === a && i === Math.min(a, 7));
   });
   box.classList.toggle('is-full', v.length === 8);
+  box.classList.toggle('is-sel', z > a);
   if (v.length) { box.classList.remove('has-error'); }
 }
 // A pasted code may carry spaces or a dash ("1234 5678"): only its digits are kept.
@@ -28076,7 +28088,8 @@ function kaPwHelp() {
       problem = a.problems.filter(function (p) { return p !== 'too_short'; })[0] || '';
     }
   } catch (e) {}
-  var st = problem ? 'refused' : len < 15 ? 'short' : len < 20 ? 'ok' : 'strong';
+  // Length first: under 15 the count is the whole message; from 15 the shared rules may still refuse it.
+  var st = len < 15 ? 'short' : problem ? 'refused' : len < 20 ? 'ok' : 'strong';
   var head = st === 'refused' ? 'This one would be refused'
     : st === 'short' ? (15 - len) + (15 - len === 1 ? ' more character to go' : ' more characters to go')
     : st === 'ok' ? 'Long enough. A word or two more makes it stronger.' : 'Long and hard to guess. Nicely done.';
@@ -28440,8 +28453,7 @@ function kaSubmit(view) {
   if (view === 'signup3') {
     var pwEl = kaEl('kaPw');
     if (!pwEl.value) { kaFail(kaGuide('too_short') || 'Choose a password of at least 15 characters.', 'kaPw'); return; }
-    // As a password field again while it is sent, so a password manager offers to save it.
-    pwEl.type = 'password';
+    kaPwHide(pwEl);
     kaBusy(true, 'Saving…');
     kaGetCloud().then(function (c) { cloud = c; return cloud.auth.setPassword(pwEl.value); }).then(function () {
       pwEl.value = '';
@@ -28470,11 +28482,12 @@ function kaSubmit(view) {
       return cloud.auth.sendPasswordResetCode(fe, { captchaToken: token });
     }).then(function () {
       ka.resendAt = Date.now() + 60000;
+      ka.resetFor = fe;
       kaShow('forgot2');
     }).catch(function (e) {
       kaBusy(false); kaHumanReset();
-      // Asked again within a minute: the code already sent still works, so carry on to it.
-      if (e && e.code === 'rate_limited' && e.retryAfterSec > 0 && e.retryAfterSec <= 60) { ka.resendAt = Date.now() + e.retryAfterSec * 1000; kaShow('forgot2'); return; }
+      // The same address asked again within a minute: the code already sent still works, so carry on to it.
+      if (e && e.code === 'rate_limited' && e.retryAfterSec > 0 && e.retryAfterSec <= 60 && ka.resetFor === fe) { ka.resendAt = Date.now() + e.retryAfterSec * 1000; kaShow('forgot2'); return; }
       kaFail(e);
     });
     return;
@@ -28484,7 +28497,7 @@ function kaSubmit(view) {
     if (!rc) return;
     var np = kaEl('kaPw');
     if (!np.value) { kaFail(kaGuide('too_short') || 'Choose a password of at least 15 characters.', 'kaPw'); return; }
-    np.type = 'password';
+    kaPwHide(np);
     kaBusy(true, 'Saving…');
     kaGetCloud().then(function (c) { cloud = c; return cloud.auth.finishPasswordReset(ka.email, rc, np.value, { shared: ka.shared }); }).then(function (done) {
       np.value = '';
@@ -29099,7 +29112,7 @@ function kaPasswordGo() {
   var cur = kaEl('kaCur'), np = kaEl('kaPw');
   if (cur && !cur.value) { kaFail('Enter your current password.', 'kaCur'); return; }
   if (!np.value) { kaFail(kaGuide('too_short'), 'kaPw'); return; }
-  np.type = 'password';
+  kaPwHide(np);
   kaBusy(true, 'Saving…');
   var cloud = ka.cloud;
   cloud.auth.setPassword(np.value, cur ? { currentPassword: cur.value } : undefined).then(function () {

@@ -178,6 +178,11 @@ const waitView = async (page, v) => {
   try { await page.waitForFunction((x) => (document.body.getAttribute('data-ka-view') || '') === x, v, { timeout: 15000 }); }
   catch (e) { throw new Error(`waited for the "${v || 'app'}" view: ${await dump(page)}`); }
 };
+// Waits for words in an element; a miss is a failed check with the page's own state, not a thrown error.
+const waitText = async (page, id, re, c) => {
+  try { await page.waitForFunction(({ id, src }) => { const e = document.getElementById(id); return !!e && new RegExp(src).test(e.textContent); }, { id, src: re.source }, { timeout: 8000 }); return true; }
+  catch (e) { c.check(false, `waited for ${re} in #${id}: ${await dump(page)}`); return false; }
+};
 const text = async (page, sel) => norm(await page.locator(sel).first().innerText().catch(() => ''));
 const store = (page) => page.evaluate(() => { const o = { local: {}, session: {} }; for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); o.local[k] = localStorage.getItem(k); } for (let i = 0; i < sessionStorage.length; i++) { const k = sessionStorage.key(i); o.session[k] = sessionStorage.getItem(k); } return o; });
 const overflow = (page) => page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
@@ -296,7 +301,7 @@ if (wanted('A1')) {
       c.check(await page.evaluate(() => { const e = document.getElementById('kaPass'); const ev = new ClipboardEvent('paste', { cancelable: true, bubbles: true }); return e.dispatchEvent(ev); }), 'paste into the password field is not blocked');
       // A wrong password: the generic words, role=alert, the field marked, Enter submits.
       await page.press('#kaPass', 'Enter');
-      await page.waitForFunction(() => document.getElementById('kaPassE').textContent.length > 0);
+      await waitText(page, 'kaPassE', /./, c);
       const err = await text(page, '#kaPassE');
       c.check(/^Email or password is incorrect/.test(err), 'the generic sign-in error: ' + err);
       c.check((await page.getAttribute('#kaPassE', 'role')) === 'alert' && (await page.getAttribute('#kaPass', 'aria-invalid')) === 'true' && (await page.getAttribute('#kaPass', 'aria-describedby')).includes('kaPassE'), 'the error is an alert tied to the field');
@@ -306,7 +311,7 @@ if (wanted('A1')) {
       // An unknown address gets the very same words.
       await page.fill('#kaEmail', 'nobody@example.com');
       await page.press('#kaPass', 'Enter');
-      await page.waitForFunction(() => document.getElementById('kaPassE').textContent.length > 0);
+      await waitText(page, 'kaPassE', /./, c);
       c.check((await text(page, '#kaPassE')) === err, 'an unknown address reads the same as a wrong password');
       c.check(!/invalid login|credentials|supabase|gotrue/i.test(await text(page, '#kaRoot')), 'no server text on the screen');
       await c.shot(`a1-${v}-error`);
@@ -314,11 +319,11 @@ if (wanted('A1')) {
       await page.fill('#kaEmail', EMAIL);
       server.force('/auth/v1/token', 429, { code: 429, error_code: 'over_request_rate_limit', msg: 'Request rate limit reached' }, { 'Retry-After': '30' });
       await page.press('#kaPass', 'Enter');
-      await page.waitForFunction(() => /Too many tries/.test(document.getElementById('kaFormE').textContent));
+      await waitText(page, 'kaFormE', /Too many tries/, c);
       c.check(/wait 30 seconds/.test(await text(page, '#kaFormE')), 'a rate limit says how long to wait: ' + (await text(page, '#kaFormE')));
       server.offline = true;
       await page.press('#kaPass', 'Enter');
-      await page.waitForFunction(() => /offline/.test(document.getElementById('kaFormE').textContent));
+      await waitText(page, 'kaFormE', /offline/, c);
       c.check(/Your progress stays in this browser/.test(await text(page, '#kaFormE')), 'offline says progress is safe');
       server.offline = false;
       // The right password.
@@ -333,6 +338,215 @@ if (wanted('A1')) {
       await noSecrets(page, c, [PW, 'not the right password', 'ts-token-'], 'after sign-in');
       c.check(!net.badKey, 'every request carried the public key');
       await c.shot(`a1-${v}-signed-in`);
+    });
+    await ctx.close();
+  }
+}
+
+// ── A2. Create an account: email and the agreements, the code, the password ──
+// A stand-in for the consent API the database engineer is building (the page's adapter calls it when it exists).
+const CONSENT_FAKE = () => { window.KaiSipConsentApi = { saved: [], saveConsent(cloud, rec) { this.saved.push(JSON.parse(JSON.stringify(rec))); return Promise.resolve(rec); }, readConsent() { return Promise.resolve(this.saved[this.saved.length - 1] || null); } }; };
+const paste = (page, sel, value) => page.evaluate(({ sel, value }) => { const el = document.querySelector(sel); el.focus(); const dt = new DataTransfer(); dt.setData('text', value); el.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true })); }, { sel, value });
+const toast = (page) => page.evaluate(() => (document.getElementById('globalToast') || {}).textContent || '');
+if (wanted('A2')) {
+  for (const v of ['phone', 'desktop']) {
+    const { ctx, page, server, net } = await setup({ view: v });
+    await ctx.addInitScript(CONSENT_FAKE);
+    const MAIL = 'xochitl.brennagh@example.com';
+    await rec.run(`A2-${v}`, 'Create account: the agreements block sending, the code (wrong, pasted), every refused password, a leaked one, then created', page, async (c) => {
+      await open(page, '#create-account');
+      await waitView(page, 'signup1');
+      c.check((await text(page, '#kaRoot h1')) === 'Create your KaiSip account', 'the Create account title');
+      c.check(/^Step 1 of 3/.test(await text(page, '.ka-steps')) && (await page.getAttribute('.ka-step.is-current', 'aria-current')) === 'step', 'Step 1 of 3 in words, with the current step marked');
+      const boxes = await page.evaluate(() => ['kaTerms', 'kaAge', 'kaNews'].map((id) => { const e = document.getElementById(id); return { checked: e.checked, req: e.getAttribute('aria-required'), label: e.closest('label').innerText.replace(/\s+/g, ' ').trim() }; }));
+      c.check(boxes.every((b) => b.checked === false), 'no box is pre-ticked: ' + JSON.stringify(boxes));
+      c.check(/^I agree to the Terms .*and Privacy Policy/.test(boxes[0].label) && boxes[1].label === 'I’m 16 or older', 'the two required agreements: ' + boxes[0].label + ' / ' + boxes[1].label);
+      c.check(boxes[2].label === 'Email me study tips and KaiSip news. I can unsubscribe anytime. Optional' && boxes[2].req === null && boxes[0].req === 'true', 'the news box is separate and marked Optional: ' + boxes[2].label);
+      c.check(await page.evaluate(() => [...document.querySelectorAll('#kaRoot .ka-consent a')].map((a) => a.getAttribute('href')).join(',') === 'terms.html,privacy.html'), 'the agreement links go to the Terms and the Privacy Policy');
+      await axe(page, c, `create account step 1 (${v})`);
+      await noOverflow(page, c, 'Create account step 1');
+      // Nothing ticked: Send is refused in words, and so is Google.
+      await page.fill('#kaEmail', MAIL);
+      await page.press('#kaEmail', 'Enter');
+      c.check((await text(page, '#kaConsentE')) === 'Tick both agreements to continue.' && (await page.getAttribute('#kaConsentE', 'role')) === 'alert', 'unticked agreements stop the form, in words: ' + (await text(page, '#kaConsentE')));
+      await page.click('.ka-btn-google');
+      await sleep(200);
+      c.check((await view(page)) === 'signup1' && !(await store(page)).session.kaisip_pkce_v1, 'Google sign-up is stopped by the same agreements');
+      await page.check('#kaTerms', { force: true });
+      await page.click('#kaGo');
+      c.check((await text(page, '#kaConsentE')) === 'Tick both agreements to continue.', 'one of two is not enough');
+      c.check(calls(server, '/auth/v1/otp').length === 0 && net.supabase === 0, 'no code is asked for (and nothing is sent) before both agreements');
+      await c.shot(`a2-${v}-blocked`);
+      await page.check('#kaAge', { force: true });
+      c.check((await text(page, '#kaConsentE')) === '', 'the message clears when a box is ticked');
+      await page.click('#kaGo');
+      await waitView(page, 'signup2');
+      const otp = calls(server, '/auth/v1/otp')[0];
+      c.check(otp && otp.body.email === MAIL && otp.body.create_user === true && /^ts-token-/.test(otp.body.gotrue_meta_security?.captcha_token || '') && !('password' in otp.body), 'the code request: the email, the human-check token, no password: ' + JSON.stringify(otp && otp.body));
+      const pending = JSON.parse((await store(page)).session.kaisip_signup_pending_v1 || 'null');
+      c.check(pending && pending.termsAccepted === true && pending.ageConfirmed === true && pending.marketingOptIn === false && pending.wordingVersion && pending.termsVersion === '2026-11' && !JSON.stringify(pending).includes('@'), 'the agreements wait in this tab only, with their wording version and time, and no email: ' + JSON.stringify(pending));
+      // Step 2: one input drawn as joined cells.
+      c.check((await text(page, '#kaRoot h1')) === 'Check your inbox' && (await text(page, '.ka-lede')).includes(MAIL), 'step 2 names the address');
+      const code = await page.evaluate(() => { const e = document.getElementById('kaCode'); return { n: document.querySelectorAll('#kaRoot input:not([type=hidden])').length, ac: e.autocomplete, im: e.inputMode, max: e.maxLength, cells: document.querySelectorAll('.ka-cell').length, groups: document.querySelectorAll('.ka-code-grp').length, label: document.querySelector('label[for=kaCode]').textContent }; });
+      c.check(code.n === 1 && code.ac === 'one-time-code' && code.im === 'numeric' && code.max === 8 && code.cells === 8 && code.groups === 2 && code.label === '8-digit code', 'the code is ONE input (one-time-code, numeric, 8) drawn as two groups of four cells: ' + JSON.stringify(code));
+      c.check(/You can ask for a new code in \d:\d\d\./.test(await text(page, '.ka-resend')) && await page.isDisabled('#kaResend'), 'a new code can be asked for after a minute');
+      await axe(page, c, `create account step 2 (${v})`);
+      await noOverflow(page, c, 'Create account step 2');
+      await page.click('#kaGo');
+      c.check(/Enter all 8 digits/.test(await text(page, '#kaCodeE')), 'an empty code is asked for in words');
+      await page.fill('#kaCode', '00000000');
+      await c.shot(`a2-${v}-code`);
+      await page.press('#kaCode', 'Enter');
+      await waitText(page, 'kaCodeE', /didn.t work/, c);
+      c.check((await page.getAttribute('#kaCode', 'aria-invalid')) === 'true' && (await page.getAttribute('#kaCodeE', 'role')) === 'alert' && !/expired|otp|token/i.test(await text(page, '#kaCodeE')), 'a wrong code: calm words tied to the field: ' + (await text(page, '#kaCodeE')));
+      c.check((await view(page)) === 'signup2', 'a wrong code stays on the code step');
+      // Paste, with the space an email client may add.
+      const real = server.codes.get(MAIL);
+      await page.fill('#kaCode', '');
+      await paste(page, '#kaCode', ` ${real.slice(0, 4)} ${real.slice(4)}\n`);
+      c.check((await page.inputValue('#kaCode')) === real && (await page.evaluate(() => [...document.querySelectorAll('.ka-cell')].map((x) => x.textContent).join(''))) === real, 'a pasted code keeps its 8 digits and fills the cells');
+      await page.press('#kaCode', 'Enter');
+      await waitView(page, 'signup3');
+      // Step 3: the password.
+      c.check((await text(page, '#kaRoot h1')) === 'Create a password' && /^Step 3 of 3/.test(await text(page, '.ka-steps')), 'step 3');
+      const pwf = await page.evaluate(() => { const e = document.getElementById('kaPw'); const u = document.querySelector('#kaForm input[autocomplete=username]'); return { ac: e.autocomplete, type: e.type, user: u && u.value, label: document.querySelector('label[for=kaPw]').textContent, forms: document.querySelectorAll('#kaRoot form').length }; });
+      c.check(pwf.ac === 'new-password' && pwf.type === 'text' && pwf.user === MAIL && pwf.label === 'New password' && pwf.forms === 1, 'the new password field: autocomplete=new-password, shown at first, with the email beside it for password managers: ' + JSON.stringify(pwf));
+      await page.waitForFunction(() => window.KaiSipCloud && window.KaiSipCloud.passwordRules.passwordWordsLoaded(), null, { timeout: 15000 });
+      c.check(net.wordsJs === 1, 'the word lists load when the password form opens, once');
+      c.check(/15 more characters to go/.test(await text(page, '#kaPwHelp')) && /0 characters · at least 15/.test(await text(page, '#kaPwHelp')), 'the helper counts from the start: ' + (await text(page, '#kaPwHelp')));
+      await axe(page, c, `create account step 3 (${v})`);
+      await noOverflow(page, c, 'Create account step 3');
+      const refused = [
+        ['short words', /Use at least 15 characters/, /4 more characters to go/],
+        ['passwordpass', /Use at least 15 characters/, /3 more characters to go/],
+        ['passwordpassword', /used by many people or is easy to guess/, /would be refused/],
+        ['zyxwvutsrqponmlkj', /Avoid repeats, sequences/, /would be refused/],
+        ['xochitl brennagh 1990', /from your email address or your name/, /would be refused/],
+        ['kaisip kaisip 2026', /the app.s or the exam.s name/, /would be refused/],
+        ['x'.repeat(73), /Use up to 72/, /would be refused/],
+      ];
+      for (const [pw, words, live] of refused) {
+        await page.fill('#kaPw', pw);
+        c.check(live.test(await text(page, '#kaPwHelp')), `the live helper for "${pw.slice(0, 12)}…": ` + (await text(page, '#kaPwHelp')));
+        await page.press('#kaPw', 'Enter');
+        await waitText(page, 'kaPwE', /./, c);
+        c.check(words.test(await text(page, '#kaPwE')) && (await page.getAttribute('#kaPwE', 'role')) === 'alert', `the reason and guidance for "${pw.slice(0, 12)}…": ` + (await text(page, '#kaPwE')));
+        c.check((await page.getAttribute('#kaPw', 'type')) === 'password' && /^Show/.test(await text(page, '.ka-reveal')), 'after sending, the field is hidden and its button reads Show');
+        await page.click('.ka-reveal');
+      }
+      c.check(calls(server, '/auth/v1/user', 'PUT').length === 0, 'a refused password is never sent');
+      await c.shot(`a2-${v}-refused`);
+      // A leaked password: refused with its own words; only 5 characters of each hash leave.
+      net.leaked.add(PW);
+      await page.fill('#kaPw', PW);
+      c.check(/Long and hard to guess|Long enough/.test(await text(page, '#kaPwHelp')), 'the helper for a long passphrase: ' + (await text(page, '#kaPwHelp')));
+      await page.press('#kaPw', 'Enter');
+      await waitText(page, 'kaPwE', /data leak/, c);
+      c.check(calls(server, '/auth/v1/user', 'PUT').length === 0, 'a leaked password is not saved');
+      c.check(net.hibp.length > 0 && net.hibp.every((p) => /^\/range\/[0-9A-Fa-f]{5}$/.test(p)), 'the leak lookup sends 5 characters of a hash and nothing else: ' + net.hibp.join(','));
+      // The lookup can't be reached: the password is saved, and the screen says so calmly.
+      net.hibpMode = 'down';
+      await page.fill('#kaPw', PW2);
+      await page.press('#kaPw', 'Enter');
+      await waitView(page, '');
+      c.check(/couldn.t check this password against known leaks/.test(await toast(page)) && /signed in/.test(await toast(page)), 'the "couldn’t check" state is said calmly after saving: ' + (await toast(page)));
+      const put = calls(server, '/auth/v1/user', 'PUT')[0];
+      c.check(put && put.body.password === PW2, 'the password is saved with the fresh session');
+      const user = server.userByEmail(MAIL);
+      c.check(user && server.profiles.get(user.id) === '2026-11', 'the Terms version and "16 or older" are saved for the account');
+      const saved = await page.evaluate(() => window.KaiSipConsentApi.saved);
+      c.check(saved.length === 1 && saved[0].marketingOptIn === false && saved[0].termsAccepted === true && saved[0].ageConfirmed === true && saved[0].wordingVersion === pending.wordingVersion && typeof saved[0].at === 'string', 'the consent record reaches the consent adapter once, news off: ' + JSON.stringify(saved));
+      c.check(!(await store(page)).session.kaisip_signup_pending_v1, 'the waiting agreements are cleared once saved');
+      await page.waitForFunction(() => /Synced/.test((document.getElementById('kaCard') || {}).textContent || ''), null, { timeout: 10000 });
+      c.check(/x•••@example\.com/.test(await text(page, '#kaCard')), 'signed in on You: ' + (await text(page, '#kaCard')));
+      await noSecrets(page, c, [PW, PW2, real, 'passwordpassword', 'ts-token-'], 'after creating the account');
+      const all = await text(page, 'body');
+      c.check(!/maple tea|coffee before|correct horse/i.test(all), 'no example password anywhere');
+    });
+    await ctx.close();
+  }
+  // The optional news box ticked; the page's own adapter (no consent API yet) keeps the choice here, marked pending.
+  {
+    const { ctx, page, server } = await setup({ view: 'phone' });
+    await rec.run('A2-news', 'Create account with the news box ticked: the choice is recorded (kept in this browser until the consent API exists)', page, async (c) => {
+      await open(page, '#create-account');
+      await page.fill('#kaEmail', EMAIL);
+      for (const id of ['#kaTerms', '#kaAge', '#kaNews']) await page.check(id, { force: true });
+      await page.press('#kaEmail', 'Enter');
+      await waitView(page, 'signup2');
+      await page.fill('#kaCode', server.codes.get(EMAIL));
+      await page.press('#kaCode', 'Enter');
+      await waitView(page, 'signup3');
+      await page.fill('#kaPw', PW);
+      await page.press('#kaPw', 'Enter');
+      await waitView(page, '');
+      const kept = JSON.parse((await store(page)).local.kaisip_consent_v1 || 'null');
+      c.check(kept && kept.marketingOptIn === true && kept.pending === true && kept.wordingVersion && kept.termsVersion === '2026-11' && !JSON.stringify(kept).includes('@') && !JSON.stringify(kept).includes(server.userByEmail(EMAIL).id), 'the news choice is kept with its wording version and time, with no email or account id: ' + JSON.stringify(kept));
+      c.check(/Sync is on|signed in/.test(await toast(page)), 'created and signed in: ' + (await toast(page)));
+    });
+    await ctx.close();
+  }
+}
+
+// ── A3. Forgot password ──
+if (wanted('A3')) {
+  for (const v of ['phone', 'desktop']) {
+    const { ctx, page, server, net } = await setup({ view: v });
+    await makeAccount(server);
+    await rec.run(`A3-${v}`, 'Forgot password: the same answer for every address, a wrong code, a refused password, then a new password signs in', page, async (c) => {
+      await open(page, '#sign-in');
+      await page.click('.ka-aside');
+      await waitView(page, 'forgot1');
+      c.check((await text(page, '#kaRoot h1')) === 'Reset your password', 'the reset title');
+      await axe(page, c, `forgot password, email (${v})`);
+      await noOverflow(page, c, 'Forgot password');
+      await page.fill('#kaEmail', 'nobody@example.com');
+      await page.press('#kaEmail', 'Enter');
+      await waitView(page, 'forgot2');
+      const unknown = (await text(page, '.ka-lede')).replace('nobody@example.com', '<email>');
+      c.check(/^If there.s an account for <email>, we.ve sent it an 8-digit reset code/.test(unknown), 'an unknown address gets the neutral answer: ' + unknown);
+      c.check(/^ts-token-/.test(calls(server, '/auth/v1/recover')[0]?.body.gotrue_meta_security?.captcha_token || ''), 'the human-check token travels with the reset request');
+      c.check(!('redirect_to' in calls(server, '/auth/v1/recover')[0].body), 'the reset email is a code, never a link');
+      // Any code for an address with no account reads as a wrong code.
+      await page.fill('#kaCode', '12345678');
+      await page.fill('#kaPw', PW2);
+      await page.press('#kaPw', 'Enter');
+      await waitText(page, 'kaCodeE', /didn.t work/, c);
+      // A new visit (this page asks for one reset code a minute, whatever the address).
+      await page.goto('about:blank');
+      await open(page, '#forgot-password');
+      await page.fill('#kaEmail', EMAIL);
+      await page.press('#kaEmail', 'Enter');
+      await waitView(page, 'forgot2');
+      c.check((await text(page, '.ka-lede')).replace(EMAIL, '<email>') === unknown, 'a real address reads exactly the same');
+      const f = await page.evaluate(() => ({ code: document.getElementById('kaCode').autocomplete, pw: document.getElementById('kaPw').autocomplete, user: document.querySelector('#kaForm input[autocomplete=username]').value, forms: document.querySelectorAll('#kaRoot form').length }));
+      c.check(f.code === 'one-time-code' && f.pw === 'new-password' && f.user === EMAIL && f.forms === 1, 'one form: the code and the new password: ' + JSON.stringify(f));
+      await axe(page, c, `forgot password, code and new password (${v})`);
+      await noOverflow(page, c, 'Forgot password step 2');
+      const code = server.codes.get(EMAIL);
+      // A refused password is caught before the code is used up.
+      await page.fill('#kaCode', code);
+      await page.fill('#kaPw', 'passwordpassword');
+      await page.press('#kaPw', 'Enter');
+      await waitText(page, 'kaPwE', /easy to guess/, c);
+      c.check(calls(server, '/auth/v1/verify').filter((x) => x.body.email === EMAIL).length === 0, 'the code is not spent on a refused password');
+      // A wrong code.
+      await page.click('.ka-reveal');
+      await page.fill('#kaPw', PW2);
+      await page.fill('#kaCode', '00000000');
+      await page.press('#kaPw', 'Enter');
+      await waitText(page, 'kaCodeE', /didn.t work/, c);
+      c.check(server.userByEmail(EMAIL).password === PW, 'a wrong code changes nothing');
+      await c.shot(`a3-${v}-wrong-code`);
+      // The right code and a good password.
+      await page.fill('#kaCode', code);
+      await page.press('#kaPw', 'Enter');
+      await waitView(page, '');
+      c.check(server.userByEmail(EMAIL).password === PW2, 'the new password is saved');
+      await page.waitForSelector('#kaCard .ka-card-act');
+      c.check(/m•••@example\.com/.test(await text(page, '#kaCard')), 'signed in after the reset');
+      await noSecrets(page, c, [PW2, code, 'passwordpassword'], 'after the reset');
+      c.check(net.third.length === 0, 'no other address was contacted: ' + net.third.join(','));
     });
     await ctx.close();
   }
