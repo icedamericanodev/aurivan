@@ -389,7 +389,7 @@ describe('the account functions and the Terms', () => {
     expect(await a.termsVersion()).toBe('2026-11');
     await a.acceptTerms({ termsVersion: '2027-01', ageConfirmed: true });
     expect(await a.termsVersion()).toBe('2027-01');
-    expect(server.calls.some((c) => c.method === 'PATCH' && c.path === `/rest/v1/profiles?id=eq.${info.userId}`)).toBe(true);
+    expect(server.calls.some((c) => c.method === 'PATCH' && c.path.startsWith(`/rest/v1/profiles?id=eq.${info.userId}`))).toBe(true);
     expect(await codeOf(a.acceptTerms({ termsVersion: 'soon', ageConfirmed: true }))).toBe('invalid');
   });
 

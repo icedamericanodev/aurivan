@@ -10493,6 +10493,7 @@ function createWebAuth(deps) {
     const redirectTo = (_c = deps.redirectTo) !== null && _c !== void 0 ? _c : config_1.REDIRECT_URL;
     const now = () => deps.clock.now();
     let lastResetAsk = -Infinity;
+    let lastSignUpAsk = -Infinity;
     let breach = 'off';
     const send = async (path, init) => {
         try {
@@ -10829,6 +10830,21 @@ function createWebAuth(deps) {
             return true;
         return (0, passwordRules_1.passwordWordsLoaded)() && (0, passwordRules_1.checkPassword)(p, { email, names: namesOf(user) }).some((r) => r !== 'too_short' && r !== 'missing_characters');
     };
+    const refuseCodeSession = () => {
+        const s = store.read();
+        if (s && needsPassword(s))
+            throw new types_1.CloudError('invalid', undefined, 'password_needed');
+    };
+    const oneRow = (text) => {
+        let rows;
+        try {
+            rows = JSON.parse(text);
+        }
+        catch {
+            return null;
+        }
+        return Array.isArray(rows) && rows.length === 1 && rows[0] && typeof rows[0] === 'object' ? rows[0] : null;
+    };
     const api = {
         async signInWithPassword(email, password, opts) {
             const e = emailOf(email);
@@ -10848,7 +10864,12 @@ function createWebAuth(deps) {
             await requestCode(e, opts === null || opts === void 0 ? void 0 : opts.captchaToken);
         },
         async sendSignUpCode(email, opts) {
-            await requestCode(emailOf(email), opts === null || opts === void 0 ? void 0 : opts.captchaToken);
+            const e = emailOf(email);
+            const wait = lastSignUpAsk + config_1.RESET_RESEND_MS - now();
+            if (wait > 0)
+                throw new types_1.CloudError('rate_limited', Math.ceil(wait / 1000));
+            await requestCode(e, opts === null || opts === void 0 ? void 0 : opts.captchaToken);
+            lastSignUpAsk = now();
         },
         async confirmSignUpCode(email, code, opts) {
             const e = emailOf(email);
@@ -11007,6 +11028,7 @@ function createWebAuth(deps) {
         async callFunction(name, body) {
             if (!FUNCTIONS.has(name))
                 throw new types_1.CloudError('invalid');
+            refuseCodeSession();
             const res = await authedFetch(`/functions/v1/${name}`, { method: 'POST', body: JSON.stringify(body) }, 'function');
             const text = await res.text();
             if (res.status < 200 || res.status >= 300)
@@ -11018,6 +11040,7 @@ function createWebAuth(deps) {
             return text;
         },
         async termsVersion() {
+            refuseCodeSession();
             const res = await authedFetch('/rest/v1/profiles?select=terms_version&limit=1', { method: 'GET' }, 'rest');
             const text = await res.text();
             if (res.status < 200 || res.status >= 300)
@@ -11041,6 +11064,7 @@ function createWebAuth(deps) {
                 throw new types_1.CloudError('invalid');
             if (v.news && (!VERSION_RE.test(v.news.wording) || v.source === undefined))
                 throw new types_1.CloudError('invalid');
+            refuseCodeSession();
             const s = store.read();
             if (!s)
                 throw signedOut();
@@ -11063,14 +11087,18 @@ function createWebAuth(deps) {
                 throw e;
             if (!UUID_RE.test(s.userId))
                 throw new types_1.CloudError('invalid');
-            const up = await authedFetch(`/rest/v1/profiles?id=eq.${s.userId}`, { method: 'PATCH', headers: { prefer: 'return=minimal' }, body: JSON.stringify(agreed) }, 'rest');
+            const up = await authedFetch(`/rest/v1/profiles?id=eq.${s.userId}&select=terms_version,privacy_version`, { method: 'PATCH', headers: { prefer: 'return=representation' }, body: JSON.stringify(agreed) }, 'rest');
             const upText = await up.text();
             if (up.status < 200 || up.status >= 300)
                 throw (0, errors_1.toCloudError)('rest', up.status, upText, up);
+            const moved = oneRow(upText);
+            if (!moved || moved.terms_version !== v.termsVersion || (v.privacyVersion !== undefined && moved.privacy_version !== v.privacyVersion))
+                throw new types_1.CloudError('invalid', undefined, 'terms');
             if (v.news && v.source)
                 await api.setNews(true, { wording: v.news.wording, source: v.source });
         },
         async consent() {
+            refuseCodeSession();
             const res = await authedFetch('/rest/v1/profiles?select=terms_version,privacy_version,marketing_opt_in,source&limit=1', { method: 'GET' }, 'rest');
             const text = await res.text();
             if (res.status < 200 || res.status >= 300)
@@ -11092,15 +11120,19 @@ function createWebAuth(deps) {
         async setNews(optIn, v) {
             if (typeof optIn !== 'boolean' || !VERSION_RE.test(v.wording) || !SOURCES.includes(v.source))
                 throw new types_1.CloudError('invalid');
+            refuseCodeSession();
             const s = store.read();
             if (!s)
                 throw signedOut();
             if (!UUID_RE.test(s.userId))
                 throw new types_1.CloudError('invalid');
-            const res = await authedFetch(`/rest/v1/profiles?id=eq.${s.userId}`, { method: 'PATCH', headers: { prefer: 'return=minimal' }, body: JSON.stringify({ marketing_opt_in: optIn, marketing_wording: v.wording, source: v.source }) }, 'rest');
+            const res = await authedFetch(`/rest/v1/profiles?id=eq.${s.userId}&select=marketing_opt_in`, { method: 'PATCH', headers: { prefer: 'return=representation' }, body: JSON.stringify({ marketing_opt_in: optIn, marketing_wording: v.wording, source: v.source }) }, 'rest');
             const text = await res.text();
             if (res.status < 200 || res.status >= 300)
                 throw (0, errors_1.toCloudError)('rest', res.status, text, res);
+            const row = oneRow(text);
+            if (!row || row.marketing_opt_in !== optIn)
+                throw new types_1.CloudError('invalid', undefined, 'terms');
         },
         async syncNews() {
             const b = (0, errors_1.bodyObject)(await api.callFunction('newsletter-sync', {}));
@@ -12519,7 +12551,7 @@ function decodeUtf8(bytes) {
   api["config"] = pub(load("src/webcloud/config.ts"));
   api["passwordRules"] = pub(load("src/engine/passwordRules.ts"));
   api["breach"] = pub(load("src/webcloud/breach.ts"));
-  api.sourceHash = "82fe83c1d8fc38ff";
+  api.sourceHash = "a10a623096198228";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

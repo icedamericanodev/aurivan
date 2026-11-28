@@ -250,6 +250,86 @@ describe('newsletter-sync', () => {
   });
 });
 
+describe('a code-only session (the email is confirmed, no password is saved yet) is not a sign-in', () => {
+  const codeSession = async () => {
+    const b = createWebAuth({ fetch: server.fetch, stores: { local: memoryStorage(), session: memoryStorage() }, random: seqRandom(), lock: pageLocks(), clock: { now: () => now }, url: FAKE_URL, apiKey: FAKE_KEY, passwordWords: testPasswordWords });
+    // The address already has an account with a password and an agreement: the worst case.
+    await agree(true);
+    now += 61_000;
+    await b.sendSignUpCode(EMAIL);
+    await b.confirmSignUpCode(EMAIL, server.codes.get(EMAIL)!);
+    expect(b.passwordNeeded()).toBe(true);
+    server.calls.length = 0;
+    return b;
+  };
+
+  it('every account call refuses it before anything is sent: no export, no delete, no consent read or write, no newsletter call', async () => {
+    const b = await codeSession();
+    expect(await codeOf(b.callFunction('export-my-data', {}))).toBe('invalid:password_needed');
+    expect(await codeOf(b.callFunction('delete-account', { confirm: 'DELETE' }))).toBe('invalid:password_needed');
+    expect(await codeOf(b.termsVersion())).toBe('invalid:password_needed');
+    expect(await codeOf(b.consent())).toBe('invalid:password_needed');
+    expect(await codeOf(b.acceptTerms({ termsVersion: TERMS_VERSION, ageConfirmed: true, privacyVersion: PRIVACY_VERSION, source: 'web' }))).toBe('invalid:password_needed');
+    expect(await codeOf(b.setNews(false, WEB))).toBe('invalid:password_needed');
+    expect(await codeOf(b.syncNews())).toBe('invalid:password_needed');
+    expect(server.calls.filter((c) => c.path.startsWith('/functions/v1/') || c.path.startsWith('/rest/v1/'))).toEqual([]);
+    expect(server.userByEmail(EMAIL)).toBeDefined();
+    expect((await a.consent())!.newsOptIn).toBe(true);
+  });
+
+  it('once the password is saved the same session works', async () => {
+    const b = await codeSession();
+    await b.setPassword('Copper falcon wobbly harbor 9#');
+    expect(b.passwordNeeded()).toBe(false);
+    expect(await b.termsVersion()).toBe('2026-12');
+    expect(JSON.parse(await b.callFunction('export-my-data', {})).app).toBe('kaisip');
+  });
+
+  it('this page asks for a sign-up code at most once a minute, whatever the address', async () => {
+    const b = createWebAuth({ fetch: server.fetch, stores: { local: memoryStorage(), session: memoryStorage() }, random: seqRandom(), lock: pageLocks(), clock: { now: () => now }, url: FAKE_URL, apiKey: FAKE_KEY, passwordWords: testPasswordWords });
+    await b.sendSignUpCode('one@example.com');
+    server.calls.length = 0;
+    let e: unknown;
+    try {
+      await b.sendSignUpCode('two@example.com');
+    } catch (x) {
+      e = x;
+    }
+    expect((e as CloudError).code).toBe('rate_limited');
+    expect((e as CloudError).retryAfterSec).toBe(60);
+    expect(server.calls).toHaveLength(0);
+    now += 60_000;
+    await b.sendSignUpCode('two@example.com');
+    expect(server.calls.map((c) => c.path)).toEqual(['/auth/v1/otp']);
+    // An address that is not one sends nothing and does not start the minute.
+    now += 60_000;
+    expect(await codeOf(b.sendSignUpCode('not an address'))).toBe('invalid:email');
+    await b.sendSignUpCode('three@example.com');
+  });
+});
+
+describe('a consent write is only "saved" when the learner\'s one row comes back holding it', () => {
+  it('the news switch with no agreement on record (no row): refused, not "On"', async () => {
+    expect(await codeOf(a.setNews(true, WEB))).toBe('invalid:terms');
+    const call = profileCalls('PATCH')[0];
+    expect(call.headers.prefer).toBe('return=representation');
+    expect(call.path).toContain('select=marketing_opt_in');
+  });
+
+  it('a row that comes back with another value, or no row for the re-accept: refused', async () => {
+    await agree();
+    server.force('/rest/v1/profiles?id=eq', 200, [{ marketing_opt_in: false }]);
+    expect(await codeOf(a.setNews(true, WEB))).toBe('invalid:terms');
+    server.force('/rest/v1/profiles?id=eq', 200, []);
+    expect(await codeOf(agree())).toBe('invalid:terms');
+    server.force('/rest/v1/profiles?id=eq', 200, [{ terms_version: '2026-11', privacy_version: '2026-12' }]);
+    expect(await codeOf(agree())).toBe('invalid:terms');
+    // The plain case still works, and says what it recorded.
+    await a.setNews(true, WEB);
+    expect((await a.consent())!.newsOptIn).toBe(true);
+  });
+});
+
 describe('the consent registry (docs/legal/consent_wording.md)', () => {
   // The registry is added by the database branch (claude/db-sessions-consent). Until the two
   // branches meet, this copy of its 2026-12 section stands in.

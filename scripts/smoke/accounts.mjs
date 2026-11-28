@@ -21,6 +21,7 @@
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
+import os from 'os';
 import { createRequire } from 'module';
 import { launch, Recorder, norm, sleep } from './lib.mjs';
 
@@ -48,10 +49,16 @@ const html = fs.readFileSync(path.join(repo, 'index.html'), 'utf8');
 const APP_VERSION = (html.match(/const APP_VERSION\s*=\s*'([^']+)'/) || [])[1];
 const rec = new Recorder(outDir, 'accounts', { appVersion: APP_VERSION, url: APP });
 const browser = await launch();
-const axeSrc = (() => {
-  for (const p of [process.env.AXE_PATH, path.join(repo, 'node_modules/axe-core/axe.min.js'), '/opt/node-tools/node_modules/axe-core/axe.min.js'].filter(Boolean)) if (fs.existsSync(p)) return fs.readFileSync(p, 'utf8');
+// axe-core: AXE_PATH, the repo's or the phone app's node_modules, the shared tools folder, or the
+// copy pa11y's own run keeps in npm's npx cache (where scripts/verify_repo.sh leaves it).
+const axeFile = (() => {
+  const npx = path.join(os.homedir(), '.npm', '_npx');
+  const cached = fs.existsSync(npx) ? fs.readdirSync(npx).map((d) => path.join(npx, d, 'node_modules/axe-core/axe.min.js')) : [];
+  for (const p of [process.env.AXE_PATH, path.join(repo, 'node_modules/axe-core/axe.min.js'), path.join(repo, 'mobile/node_modules/axe-core/axe.min.js'), '/opt/node-tools/node_modules/axe-core/axe.min.js', ...cached].filter(Boolean)) if (fs.existsSync(p)) return p;
   return '';
 })();
+const axeSrc = axeFile ? fs.readFileSync(axeFile, 'utf8') : '';
+const axeStats = { ran: 0, skipped: 0 };
 
 const VIEWS = {
   phone: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 },
@@ -59,6 +66,18 @@ const VIEWS = {
 };
 // A TEST STAND-IN for Google's "G" file: an empty dashed square. It is not Google's mark and is never published.
 const G_STAND_IN = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><rect x="1.5" y="1.5" width="17" height="17" rx="4" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="3 2"/></svg>';
+// The owner's preview needs a secret phrase whose SHA-256 is in the page. The tests never know
+// it: they make a phrase of their own for this run and serve the page with that phrase's hash
+// (setup({ realHash: true }) serves the page untouched, to prove a stranger cannot switch it on).
+const TEST_PHRASE = crypto.randomBytes(24).toString('base64url');
+const TEST_HASH = crypto.createHash('sha256').update(TEST_PHRASE, 'utf8').digest('hex');
+if (!/var KS_PREVIEW_HASH = '[0-9a-f]{64}';/.test(html)) { console.error('accounts: KS_PREVIEW_HASH was not found in index.html'); process.exit(2); }
+// The policy the page is heading for (no inline script): sent as Report-Only, so nothing breaks and the tests can count what would.
+const APP_CSP_RO = (() => {
+  const m = /^\s+Content-Security-Policy-Report-Only:\s*(.+)$/m.exec(fs.readFileSync(path.join(repo, '_headers'), 'utf8'));
+  return m ? m[1].trim() : '';
+})();
+const wouldBlock = new Map();
 const sha1 = (s) => crypto.createHash('sha1').update(s, 'utf8').digest('hex').toUpperCase();
 // The web app's Content-Security-Policy, as Cloudflare sends it (the /* rule of _headers): the
 // test server sends the same one with the app page, and anything it blocks fails the path.
@@ -98,14 +117,18 @@ async function handle(route, server, net, origin) {
       else return route.fulfill({ status: 200, contentType: 'image/svg+xml', body: G_STAND_IN });
     }
     if (!file || !file.startsWith(repo) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) return route.fulfill({ status: 404, contentType: 'text/plain', body: 'not found' });
-    const headers = rel === 'index.html' ? { 'content-security-policy': APP_CSP } : {};
-    return route.fulfill({ status: 200, contentType: TYPES[path.extname(file)] || 'application/octet-stream', headers, body: fs.readFileSync(file) });
+    const headers = rel === 'index.html' ? { 'content-security-policy': APP_CSP, ...(APP_CSP_RO ? { 'content-security-policy-report-only': APP_CSP_RO } : {}) } : {};
+    let body = fs.readFileSync(file);
+    if (rel === 'index.html' && !net.realHash) body = body.toString('utf8').replace(/var KS_PREVIEW_HASH = '[0-9a-f]{64}';/, `var KS_PREVIEW_HASH = '${TEST_HASH}';`);
+    return route.fulfill({ status: 200, contentType: TYPES[path.extname(file)] || 'application/octet-stream', headers, body });
   }
   if (u.origin === SUPA) {
     net.supabase++;
     if (req.method() === 'OPTIONS') return route.fulfill({ status: 204, headers: cors });
     const headers = req.headers();
     if (headers.apikey !== PUBLIC_KEY) net.badKey = true;
+    // The consent record cannot be read or written (an outage of that one table).
+    if (net.profilesDown && u.pathname === '/rest/v1/profiles') { net.profilesAsked = (net.profilesAsked || 0) + 1; return route.fulfill({ status: 503, headers: { ...cors, 'content-type': 'application/json' }, body: '{"message":"upstream connect error"}' }); }
     // The whole service answering with errors (an outage): every call, until switched back.
     if (net.supaMode === '503') return route.fulfill({ status: 503, headers: { ...cors, 'content-type': 'application/json' }, body: '{"message":"upstream connect error"}' });
     try {
@@ -140,13 +163,15 @@ async function setup(o = {}) {
   const server = o.server || new F.FakeSupabase(() => Date.now());
   if (!o.server) server.captchaOn = o.captchaOn !== false;
   const ctx = await browser.newContext({ ...VIEWS[o.view || 'phone'], colorScheme: o.scheme || 'light', reducedMotion: 'reduce', acceptDownloads: true });
-  const net = { googleG: o.googleG || 'stand-in', hibp: [], hibpMode: 'clean', leaked: new Set(), turnstile: 0, turnstileMode: 'ok', supabase: 0, cloudJs: 0, wordsJs: 0, third: [], badKey: false };
+  const net = { realHash: o.realHash === true, googleG: o.googleG || 'stand-in', hibp: [], hibpMode: 'clean', leaked: new Set(), turnstile: 0, turnstileMode: 'ok', supabase: 0, cloudJs: 0, wordsJs: 0, third: [], badKey: false };
   await ctx.route('**/*', (route) => handle(route, server, net, origin));
-  const seed = { aurivan_consent: 'denied', ...(o.onboarded === false ? {} : { cisa_onboarded_v6: '1', aurivan_exam_date_asked: '1' }), ...(o.preview === false ? {} : { kaisip_accounts_preview: '1' }), ...(o.seed || {}) };
+  const seed = { aurivan_consent: 'denied', ...(o.onboarded === false ? {} : { cisa_onboarded_v6: '1', aurivan_exam_date_asked: '1' }), ...(o.preview === false ? {} : { kaisip_accounts_preview: TEST_PHRASE }), ...(o.seed || {}) };
   // Seeded once per tab (a reload must not put back what a test removed).
   await ctx.addInitScript((s) => { try { if (!sessionStorage.getItem('__seeded')) { sessionStorage.setItem('__seeded', '1'); for (const k of Object.keys(s)) localStorage.setItem(k, s[k]); } } catch (e) {} }, seed);
   // Anything the page's own policy blocks is an error.
-  await ctx.addInitScript(() => { document.addEventListener('securitypolicyviolation', (e) => { console.error('CSP blocked ' + e.violatedDirective + ': ' + (e.blockedURI || 'inline')); }); });
+  // (What the Report-Only policy would block is counted, not failed: console.debug lines the harness collects.)
+  await ctx.addInitScript(() => { document.addEventListener('securitypolicyviolation', (e) => { if (e.disposition === 'report') console.debug('CSPRO|' + e.effectiveDirective + '|' + (e.sample || '').slice(0, 60) + '|' + (e.sourceFile ? e.lineNumber : 0)); else console.error('CSP blocked ' + e.violatedDirective + ': ' + (e.blockedURI || 'inline')); }); });
+  ctx.on('console', (m) => { if (m.type() !== 'debug') return; const t = m.text(); if (!t.startsWith('CSPRO|')) return; const [, dir, sample, line] = t.split('|'); const k = dir + '|' + (dir === 'script-src-attr' ? sample : 'line ' + line); wouldBlock.set(k, (wouldBlock.get(k) || 0) + 1); });
   const page = await ctx.newPage();
   rec.watch(page, origin);
   if (o.scheme) await ctx.addInitScript((t) => { try { localStorage.setItem('cisa_theme', t); } catch (e) {} }, o.scheme);
@@ -218,7 +243,8 @@ async function noOverflow(page, c, label) { const o = await overflow(page); c.ch
 const KA_PARTS = ['#kaCard', '.ka-rail-wrap', '#kaTop', '#kaAccount', '#flagModal'];
 // axe (WCAG 2.2 AA and best practice). An account screen is scanned whole; on a study-app page only the account parts.
 async function axe(page, c, label, wholePage = false) {
-  if (!axeSrc) { c.note('axe-core not found: accessibility scan skipped for ' + label); return; }
+  if (!axeSrc) { axeStats.skipped++; c.note('axe-core not found: accessibility scan skipped for ' + label); return; }
+  axeStats.ran++;
   await page.evaluate(axeSrc);
   const r = await page.evaluate(async ({ parts, wholePage }) => {
     const whole = wholePage || document.body.hasAttribute('data-ka-view');
@@ -290,19 +316,54 @@ if (wanted('A0')) {
     });
     await ctx.close();
   }
-  // The owner's preview: asked for with the address, kept in this browser, switched off the same way.
+  // The owner's preview: switched on only with the phrase, kept in this browser, switched off by anyone.
   {
     const { ctx, page, net } = await setup({ preview: false });
-    await rec.run('A0-preview-switch', 'The owner’s preview switch: on with #accounts-preview=on, off with =off, this browser only', page, async (c) => {
+    await rec.run('A0-preview-switch', 'The owner’s preview: on only with the secret phrase, checked at every load; off with =off', page, async (c) => {
+      const on = () => page.evaluate(() => window.KS_ACCT.enabled === true);
       await open(page, '#accounts-preview=on');
-      c.check(await page.evaluate(() => window.KS_ACCT.enabled === true && localStorage.getItem('kaisip_accounts_preview') === '1'), 'the preview address must switch accounts on here');
-      c.check(!page.url().includes('accounts-preview'), 'the preview words are taken out of the address');
-      c.check(await page.evaluate(() => !!document.getElementById('kaRoot') && !!document.querySelector('#kaTop')), 'the account entry points exist in preview');
-      c.check(net.cloudJs === 0 && net.supabase === 0, 'a guest in preview still loads no account script until a screen opens');
-      // A new visit (the switch is read when the page loads; a changed address in an open page is not a load).
+      c.check(!(await on()) && (await page.evaluate(() => localStorage.getItem('kaisip_accounts_preview'))) === null && !page.url().includes('accounts-preview'), '"=on" switches nothing on (and the words leave the address)');
+      await page.goto('about:blank');
+      await open(page, '#accounts-preview=' + TEST_PHRASE.slice(0, -1) + 'x');
+      c.check(!(await on()), 'a wrong phrase switches nothing on');
+      // A value typed into the browser's storage by hand does nothing either.
+      await page.evaluate(() => localStorage.setItem('kaisip_accounts_preview', '1'));
+      await page.goto('about:blank'); await open(page);
+      c.check(!(await on()) && !(await page.evaluate(() => document.getElementById('kaRoot'))), 'the old "1" note, set by hand, switches nothing on');
+      await page.goto('about:blank');
+      await open(page, '#accounts-preview=' + TEST_PHRASE);
+      c.check((await on()) && (await page.evaluate(() => !!document.getElementById('kaRoot'))), 'the phrase switches accounts on in this browser');
+      c.check(!page.url().includes('accounts-preview') && !page.url().includes(TEST_PHRASE), 'the phrase is taken out of the address at once: ' + page.url());
+      await page.goto('about:blank'); await open(page);
+      c.check(await on(), 'and it stays on at the next visit');
+      c.check(net.cloudJs === 0 && net.supabase === 0, 'the welcome still loads no account script');
       await page.goto('about:blank');
       await open(page, '#accounts-preview=off');
-      c.check(await page.evaluate(() => window.KS_ACCT.enabled === false && localStorage.getItem('kaisip_accounts_preview') === null && !document.getElementById('kaRoot')), 'the preview address must switch accounts off again');
+      c.check(!(await on()) && (await page.evaluate(() => localStorage.getItem('kaisip_accounts_preview') === null && !document.getElementById('kaRoot'))), '"=off" switches it off again, for anyone');
+    });
+    await ctx.close();
+  }
+  // The page as it is published (its own hash): the tests' phrase, "on" and a hand-set note all do nothing.
+  {
+    const { ctx, page, net } = await setup({ preview: false, realHash: true });
+    await rec.run('A0-preview-secret', 'The published page: nobody without the owner’s phrase can switch accounts on, and the phrase is not in the repo', page, async (c) => {
+      for (const v of ['on', '1', 'true', TEST_PHRASE]) {
+        await page.goto('about:blank');
+        await open(page, '#accounts-preview=' + v);
+        c.check(await page.evaluate(() => window.KS_ACCT.enabled === false && !document.getElementById('kaRoot')), `#accounts-preview=${v === TEST_PHRASE ? '<another phrase>' : v} does nothing`);
+      }
+      for (const v of ['1', 'on', TEST_PHRASE]) {
+        await page.evaluate((x) => localStorage.setItem('kaisip_accounts_preview', x), v);
+        await page.goto('about:blank'); await open(page);
+        c.check(await page.evaluate(() => window.KS_ACCT.enabled === false), 'a note set by hand does nothing');
+      }
+      c.check(net.cloudJs === 0 && net.supabase === 0, 'and nothing account-related was loaded or sent');
+      // The page holds a hash, never the phrase; the docs and the page never show a working switch.
+      const hash = (html.match(/var KS_PREVIEW_HASH = '([0-9a-f]{64})';/) || [])[1];
+      const docs = ['docs/WEBSITE_DEPLOY.md', 'docs/WEB_LAUNCH_PLAN.md', 'docs/mobile/ACCOUNTS_BETA_PLAN.md', 'docs/mobile/DESIGN_SYSTEM.md'].map((f) => fs.readFileSync(path.join(repo, f), 'utf8')).join('\n');
+      c.check(!!hash && !/accounts-preview=on\b/.test(html + docs), 'no file documents "#accounts-preview=on"');
+      const words = (html + docs).match(/[A-Za-z0-9_-]{20,64}/g) || [];
+      c.check(!words.some((w) => crypto.createHash('sha256').update(w, 'utf8').digest('hex') === hash), 'no word in the page or the docs is the phrase');
     });
     await ctx.close();
   }
@@ -433,7 +494,7 @@ if (wanted('A2')) {
       const otp = calls(server, '/auth/v1/otp')[0];
       c.check(otp && otp.body.email === MAIL && otp.body.create_user === true && /^ts-token-/.test(otp.body.gotrue_meta_security?.captcha_token || '') && !('password' in otp.body), 'the code request: the email, the human-check token, no password: ' + JSON.stringify(otp && otp.body));
       const pending = JSON.parse((await store(page)).session.kaisip_signup_pending_v1 || 'null');
-      c.check(JSON.stringify(pending) === JSON.stringify({ termsAccepted: true, ageConfirmed: true, marketingOptIn: false }), 'what was ticked waits in this tab only, with no email and no version of its own: ' + JSON.stringify(pending));
+      c.check(pending && pending.termsAccepted === true && pending.ageConfirmed === true && pending.marketingOptIn === false && pending.email === MAIL.toLowerCase() && pending.google === false && Math.abs(Date.now() - pending.at) < 60000 && Object.keys(pending).length === 6, 'what was ticked waits in this tab only, saying whose it is and when: ' + JSON.stringify(pending));
       // Step 2: one input drawn as joined cells.
       c.check((await text(page, '#kaRoot h1')) === 'Check your inbox' && (await text(page, '.ka-lede')).includes(MAIL), 'step 2 names the address');
       const code = await page.evaluate(() => { const e = document.getElementById('kaCode'); return { n: document.querySelectorAll('#kaRoot input:not([type=hidden])').length, ac: e.autocomplete, im: e.inputMode, max: e.maxLength, cells: document.querySelectorAll('.ka-cell').length, groups: document.querySelectorAll('.ka-code-grp').length, label: document.querySelector('label[for=kaCode]').textContent }; });
@@ -583,7 +644,7 @@ if (wanted('A2')) {
       for (const id of ['#kaTerms', '#kaNews']) await page.check(id, { force: true });
       await page.press('#kaEmail', 'Enter');
       await waitView(page, 'signup2');
-      c.check(JSON.stringify(JSON.parse((await store(page)).session.kaisip_signup_pending_v1)) === JSON.stringify({ termsAccepted: true, ageConfirmed: true, marketingOptIn: true }), 'the ticked box waits with the agreement');
+      c.check(JSON.parse((await store(page)).session.kaisip_signup_pending_v1).marketingOptIn === true, 'the ticked box waits with the agreement');
       await page.fill('#kaCode', server.codes.get(EMAIL));
       await page.press('#kaCode', 'Enter');
       await waitView(page, 'signup3');
@@ -2174,7 +2235,237 @@ if (wanted('G7')) {
   }
 }
 
+// ── S. The security review of 7e7b894: one path per finding ──
+const toStep3 = async (page, server, email) => {
+  await open(page, '#create-account');
+  await page.fill('#kaEmail', email);
+  await page.check('#kaTerms', { force: true });
+  await page.press('#kaEmail', 'Enter');
+  await waitView(page, 'signup2');
+  await page.fill('#kaCode', server.codes.get(email));
+  await page.press('#kaCode', 'Enter');
+  await waitView(page, 'signup3');
+};
+const viaGoogleTo = async (page, server, email, name, want) => {
+  await open(page, '#sign-in');
+  await page.waitForSelector('.ka-btn-google', { state: 'visible' });
+  const [req] = await Promise.all([page.waitForRequest((r) => r.url().startsWith(SUPA + '/auth/v1/authorize')), page.click('.ka-btn-google')]);
+  await page.goto(`${APP}?code=${server.googleCode(new URL(req.url()).searchParams.get('code_challenge'), email, name)}`);
+  if (want !== undefined) await waitView(page, want);
+};
+if (wanted('S1')) {
+  for (const kind of ['new', 'existing']) {
+    const { ctx, page, server } = await setup({ view: kind === 'new' ? 'phone' : 'desktop' });
+    await ctx.addInitScript(WATCH_APP);
+    const MAIL = kind === 'new' ? 'code.only@example.com' : EMAIL;
+    if (kind === 'existing') await makeAccount(server);
+    await rec.run(`S1-B1-${kind}`, `B1: a code-only session (${kind === 'new' ? 'a new address' : 'an address that already has an account'}) is not through the gate: every address and door keeps "Create a password", and nothing is exported, deleted or changed`, page, async (c) => {
+      await toStep3(page, server, MAIL);
+      c.check(await page.evaluate(() => ka.cloud.auth.passwordNeeded() === true && kaGateOk() === false), 'after the code: a session that needs a password, and it is not through the gate');
+      server.calls.length = 0;
+      for (const h of ['#today', '#practice', '#notes', '#account', '#delete-account', '#sign-in', '#create-account']) {
+        await page.evaluate((x) => { location.hash = x; }, h);
+        await sleep(150);
+        c.check((await view(page)) === 'signup3' && !(await appShown(page)), `${h}: still "Create a password" (${await view(page)})`);
+      }
+      await page.evaluate(() => { for (const f of [() => navTo(null, 'practice'), () => kaGoApp('account'), () => kaLand(), () => kaClose(), () => kaHome(), () => kaOpenDelete(), () => kaDeleteDialog(), () => kaDownload(), () => kaNewsToggle(), () => kaRenderAccount()]) { try { f(); } catch (e) {} } });
+      await sleep(400);
+      c.check((await view(page)) === 'signup3' && !(await appShown(page)) && !(await page.evaluate(() => document.querySelector('#flagModal [role=dialog]'))), 'called by hand, nothing opens the app, the Account page or the delete sheet');
+      const direct = await page.evaluate(async () => { const out = []; for (const f of [() => ka.cloud.auth.callFunction('export-my-data', {}), () => ka.cloud.auth.callFunction('delete-account', { confirm: 'DELETE' }), () => ka.cloud.auth.setNews(true, { wording: '2026-12', source: 'web' }), () => ka.cloud.auth.consent()]) { try { await f(); out.push('ok'); } catch (e) { out.push(e.code + ':' + e.detail); } } return out; });
+      c.check(direct.every((x) => x === 'invalid:password_needed'), 'the accounts client refuses every other call for it: ' + direct.join(', '));
+      const sent = server.calls.filter((x) => x.path.startsWith('/functions/v1/') || x.path.startsWith('/rest/v1/')).map((x) => x.method + ' ' + x.path.split('?')[0]);
+      c.check(sent.length === 0, 'no call to a function or to the consent record was made: ' + sent.join(', '));
+      // A reload: straight back to the password step, with no flash of the app.
+      await page.goto('about:blank');
+      await open(page, '#account');
+      await waitView(page, 'signup3');
+      c.check(!(await page.evaluate(() => window.__appSeen)), 'a reload at #account: "Create a password", and the app never showed');
+      if (kind === 'existing') c.check(!!server.userByEmail(EMAIL) && server.userByEmail(EMAIL).password === PW, 'the existing account is untouched: still there, same password');
+      await axe(page, c, `Create a password, code session (${kind})`);
+      // The one other way on: sign out.
+      await page.click('#kaRoot .ka-linkbtn');
+      await waitView(page, 'signin');
+      c.check(!(await store(page)).local.kaisip_auth_v1 && !(await appShown(page)), '"Sign out instead" ends it; the app is still closed');
+    });
+    await ctx.close();
+  }
+}
+
+if (wanted('S2')) {
+  const { ctx, page, server, net } = await setup({ view: 'phone' });
+  await ctx.addInitScript(WATCH_APP);
+  await rec.run('S2-S1', 'S1: a brand-new Google account whose agreement cannot be read: three tries, then the agreement screen with a line saying why; never the app', page, async (c) => {
+    net.profilesDown = true;
+    await viaGoogleTo(page, server, 'outage@gmail.com', undefined, 'consent');
+    c.check(net.profilesAsked === 3, 'the record was asked for three times: ' + net.profilesAsked);
+    c.check(/You.re offline|couldn.t reach your account just now/i.test(await text(page, '#kaNotice')), 'the screen says why: ' + (await text(page, '#kaNotice')));
+    c.check((await store(page)).local.kaisip_acct_agree_v1 === '1' && !(await appShown(page)) && !(await page.evaluate(() => window.__appSeen)), 'the agreement is due, and the app never showed');
+    c.check(!/Back to studying/.test(await text(page, '#kaRoot')), 'no way round');
+    await page.check('#kaTerms', { force: true });
+    await page.click('#kaGo');
+    await page.waitForFunction(() => (document.getElementById('kaFormE') || {}).textContent, null, { timeout: 8000 });
+    c.check((await view(page)) === 'consent' && !(await appShown(page)), 'Agree while it is still away: an error in words, still on the screen: ' + (await text(page, '#kaFormE')));
+    await page.goto('about:blank'); await open(page); await waitView(page, 'consent');
+    c.check(!(await page.evaluate(() => window.__appSeen)), 'a reload keeps the agreement screen');
+    net.profilesDown = false;
+    await page.check('#kaTerms', { force: true });
+    await page.click('#kaGo');
+    await waitView(page, '');
+    c.check(await appShown(page) && server.profiles.get(server.userByEmail('outage@gmail.com').id) === '2026-12' && !(await store(page)).local.kaisip_acct_agree_v1, 'back up: Agree records it and opens the app');
+  }, { allowErrors: true });
+  await ctx.close();
+  // A learner whose browser has synced as this account keeps studying through the same outage.
+  const k = await setup({ view: 'phone', seed: profileSeed(freeIds(1, 2)) });
+  await makeAccount(k.server);
+  await rec.run('S2-S1-known', 'S1: the same outage for a learner this browser has synced with: they keep studying (never locked out)', k.page, async (c) => {
+    await signIn(k.page); await waitView(k.page, 'firstsync'); await k.page.click('#kaGo'); await waitView(k.page, ''); await settled(k.page);
+    await k.page.evaluate(() => navGoFocus(null, 'account'));
+    await k.page.click('#kaOut'); await k.page.click('#flagModal #kaGo');
+    await waitView(k.page, 'signin');
+    k.net.profilesDown = true;
+    await k.page.fill('#kaEmail', EMAIL); await k.page.fill('#kaPass', PW); await k.page.press('#kaPass', 'Enter');
+    await waitView(k.page, '');
+    c.check(await appShown(k.page) && !(await store(k.page)).local.kaisip_acct_agree_v1 && k.net.profilesAsked === 3, 'in the app, nothing due, after three tries');
+    c.check((await answerKeys(k.page)).ids.length === 2, 'with their progress');
+  }, { allowErrors: true });
+  await k.ctx.close();
+}
+
+if (wanted('S3')) {
+  const { ctx, page, server } = await setup({ view: 'phone' });
+  await rec.run('S3-S2', 'S2: an agreement ticked on an abandoned Create account form is never applied to another account, or after 30 minutes', page, async (c) => {
+    // Ticked (news too) for one address, then abandoned at the code step.
+    await open(page, '#create-account');
+    await page.fill('#kaEmail', 'left.behind@example.com');
+    for (const id of ['#kaTerms', '#kaNews']) await page.check(id, { force: true });
+    await page.press('#kaEmail', 'Enter');
+    await waitView(page, 'signup2');
+    c.check(!!(await store(page)).session.kaisip_signup_pending_v1, 'the ticked agreement waits in this tab');
+    // A brand-new account arrives by plain "Continue with Google" in the same tab.
+    await viaGoogleTo(page, server, 'someone.else@gmail.com', undefined, 'consent');
+    c.check(consentWrites(server).length === 0 && !(await store(page)).session.kaisip_signup_pending_v1, 'it is NOT given the other form’s agreement: nothing is recorded, the screen asks, and the carried agreement is gone');
+    c.check(await page.evaluate(() => document.getElementById('kaTerms').checked === false && document.getElementById('kaNews').checked === false), 'both boxes are unticked');
+    await page.click('#kaRoot .ka-linkbtn');
+    await waitView(page, 'signin');
+    // The right address, but 31 minutes later: asked again instead of applied.
+    await page.goto('about:blank');
+    await toStep3(page, server, 'slow@example.com');
+    await page.evaluate(() => { const p = JSON.parse(sessionStorage.getItem('kaisip_signup_pending_v1')); p.at = Date.now() - 31 * 60000; sessionStorage.setItem('kaisip_signup_pending_v1', JSON.stringify(p)); });
+    await fillPw(page, PW2);
+    await page.press('#kaPw', 'Enter');
+    await waitView(page, 'consent');
+    c.check(consentWrites(server).length === 0 && !(await store(page)).session.kaisip_signup_pending_v1, 'a stale agreement is dropped, and the learner is asked');
+    await page.check('#kaTerms', { force: true });
+    await page.click('#kaGo');
+    await waitView(page, '');
+    c.check(consentWrites(server).length === 1 && consentWrites(server)[0].marketing_opt_in === undefined, 'agreeing now records what is ticked now');
+  });
+  await ctx.close();
+}
+
+if (wanted('S4')) {
+  const { ctx, page, server } = await setup({ view: 'phone' });
+  await makeAccount(server);
+  await rec.run('S4-S3', 'S3: Create account on an address that already has an account says so after the password is saved; this page sends one sign-up code a minute', page, async (c) => {
+    await toStep3(page, server, EMAIL);
+    await fillPw(page, PW2);
+    await page.press('#kaPw', 'Enter');
+    await waitView(page, '');
+    await page.waitForFunction(() => /already had a KaiSip account/.test(document.getElementById('globalToast').textContent), null, { timeout: 6000 }).catch(() => {});
+    c.check(/This email already had a KaiSip account\. You.re signed in and your password is saved\./.test(await toast(page)), 'the notice: ' + (await toast(page)));
+    c.check(server.userByEmail(EMAIL).password === PW2 && await appShown(page), 'the new password is the account’s, and the learner is in');
+    c.check(consentWrites(server).length === 0, 'the agreement already on record is left as it is');
+    // One code a minute from this page, whatever the address.
+    await page.evaluate(() => navGoFocus(null, 'account'));
+    await page.click('#kaOut'); await page.click('#flagModal #kaGo');
+    await waitView(page, 'signin');
+    await page.evaluate(() => kaGo('create-account'));
+    await waitView(page, 'signup1');
+    const before = calls(server, '/auth/v1/otp').length;
+    await page.fill('#kaEmail', 'second@example.com');
+    await page.check('#kaTerms', { force: true });
+    await page.press('#kaEmail', 'Enter');
+    await page.waitForFunction(() => (document.getElementById('kaFormE') || {}).textContent || (document.getElementById('kaEmailE') || {}).textContent, null, { timeout: 8000 });
+    const words = (await text(page, '#kaFormE')) + (await text(page, '#kaEmailE'));
+    c.check(calls(server, '/auth/v1/otp').length === before && /wait|moment|second|minute/i.test(words) && (await view(page)) === 'signup1', 'a second code within the minute is not asked for, in calm words: ' + words);
+  });
+  await ctx.close();
+}
+
+if (wanted('S5')) {
+  const { ctx, page, server } = await setup({ view: 'phone' });
+  await makeAccount(server);
+  await rec.run('S5-S4-N2', 'S4 and N2: a link with ?error= or ?code= does not put a sign-in form in front of a signed-in learner; tokens in the address are removed at once, accounts on or off', page, async (c) => {
+    await signedIn(page);
+    const session = (await store(page)).local.kaisip_auth_v1;
+    for (const q of ['?error=access_denied&error_description=x', '?code=planted-code-123456', '#error=server_error']) {
+      await page.goto('about:blank');
+      await open(page, '', APP + q);
+      await sleep(500);
+      c.check((await view(page)) === '' && await appShown(page), `${q}: the learner stays in the app (${await view(page) || 'app'})`);
+      c.check(!/error=|code=/.test(page.url()), 'and the words are taken out of the address: ' + page.url());
+    }
+    c.check((await store(page)).local.kaisip_auth_v1 === session && calls(server, '/auth/v1/token').filter((x) => /grant_type=pkce/.test(x.path)).length === 0, 'the sign-in is untouched and the planted code was never sent anywhere');
+    // Tokens in the fragment: gone before anything can read them.
+    await page.goto('about:blank');
+    await open(page, '#access_token=aaa.bbb.ccc&refresh_token=rrr&provider_token=ppp');
+    c.check(!/access_token|refresh_token|provider_token/.test(page.url()), 'accounts on: tokens in the address are removed: ' + page.url());
+  });
+  await ctx.close();
+  const off = await setup({ view: 'phone', preview: false });
+  await off.ctx.addInitScript(() => { window.__firstHash = location.hash; });
+  await rec.run('S5-N2-off', 'N2: with accounts off, tokens in the address are still removed at once', off.page, async (c) => {
+    await open(off.page, '#access_token=aaa.bbb.ccc&refresh_token=rrr');
+    c.check(!/access_token|refresh_token/.test(off.page.url()) && await off.page.evaluate(() => /access_token/.test(window.__firstHash)), 'removed by the page’s first script: ' + off.page.url());
+    await off.page.goto('about:blank');
+    await open(off.page, '#practice');
+    c.check(/#practice/.test(off.page.url()), 'an ordinary address is left alone');
+  });
+  await off.ctx.close();
+}
+
+if (wanted('S6')) {
+  const { ctx, page, server } = await setup({ view: 'phone' });
+  await rec.run('S6-injection', 'Markup in a Google name, a typed email or the stored hint is shown as text, never run', page, async (c) => {
+    const EVIL = '<img src=x onerror="window.__xss=1"><script>window.__xss=2</script>';
+    await viaGoogleTo(page, server, 'gina.x@gmail.com', EVIL, 'consent');
+    await page.check('#kaTerms', { force: true });
+    await page.click('#kaGo');
+    await waitView(page, '');
+    await settled(page);
+    await page.evaluate(() => navGoFocus(null, 'account'));
+    await page.waitForSelector('#kaHero .ka-who');
+    await goYou(page);
+    c.check((await page.evaluate(() => window.__xss)) === undefined && !(await page.evaluate(() => document.querySelector('#kaCard img, #kaHero img, #kaRail img'))), 'a Google name full of markup runs nothing and draws nothing');
+    // The stored hint (this browser's own storage, which another script or a person could edit).
+    await page.evaluate((evil) => { localStorage.setItem('kaisip_acct_hint_v1', JSON.stringify({ email: evil, full: '"><img src=x onerror="window.__xss=3">' })); const s = JSON.parse(localStorage.getItem('kaisip_auth_v1')); s.signedInAt = Date.now() - 31 * 86400000; localStorage.setItem('kaisip_auth_v1', JSON.stringify(s)); }, EVIL);
+    await page.goto('about:blank'); await open(page); await waitView(page, 'signin');
+    c.check((await page.inputValue('#kaEmail')) === '"><img src=x onerror="window.__xss=3">' && (await page.evaluate(() => window.__xss)) === undefined && !(await page.evaluate(() => document.querySelector('#kaRoot img:not([data-g])'))), 'a tampered hint lands in the email field as plain text');
+    // A typed email with markup: refused as not an address, shown nowhere as HTML.
+    await page.evaluate(() => kaGo('create-account'));
+    await waitView(page, 'signup1');
+    await page.fill('#kaEmail', '<img src=x onerror="window.__xss=4">@example.com');
+    await page.check('#kaTerms', { force: true });
+    await page.press('#kaEmail', 'Enter');
+    await sleep(400);
+    c.check((await view(page)) === 'signup1' && (await page.evaluate(() => window.__xss)) === undefined && calls(server, '/auth/v1/otp').length === 0, 'markup typed as an email is refused and never run');
+    // The account block itself carries no inline handler (they need 'unsafe-inline' in the script policy).
+    const a = html.indexOf('// ── ACCOUNTS (web sign-in'), z = html.indexOf('// ── ACCOUNTS END ──');
+    const inline = (html.slice(a, z).match(/[\s'"]on[a-z]+\s*=\s*\\?["']/g) || []);
+    c.check(a > 0 && z > a && inline.length === 0, 'no inline on...= handler in the account block: ' + inline.slice(0, 5).join(' '));
+  });
+  await ctx.close();
+}
+
+console.log(`accounts: axe-core ${axeSrc ? 'from ' + axeFile : 'NOT FOUND'}: ${axeStats.ran} scans run, ${axeStats.skipped} skipped`);
+{
+  const attr = [...wouldBlock.keys()].filter((k) => k.startsWith('script-src-attr')), elem = [...wouldBlock.keys()].filter((k) => k.startsWith('script-src-elem'));
+  console.log(`accounts: the Report-Only script policy (no inline script) would block ${elem.length} inline script block(s) and ${attr.length} different inline handler(s) on the pages these tests saw${APP_CSP_RO ? '' : ' (no Report-Only policy was found in _headers)'}`);
+  fs.writeFileSync(path.join(outDir, 'csp-report-only.txt'), [...wouldBlock.entries()].map(([k, n]) => n + ' x ' + k).sort().join('\n') + '\n');
+}
 await browser.close();
+// A run without the accessibility scan is not a pass on CI (docs/mobile/DESIGN_SYSTEM.md 22.3 leans on it).
+if (axeStats.skipped && process.env.CI) { console.error(`accounts: ${axeStats.skipped} accessibility scans were skipped because axe-core was not found (set AXE_PATH)`); process.exitCode = 1; }
 const bad = rec.paths.filter((p) => p.status === 'FAIL');
 console.log(`\naccounts: ${rec.paths.length} paths, ${bad.length} failed${bad.length ? ': ' + bad.map((p) => p.id).join(', ') : ''}`);
 for (const p of bad) for (const f of [...p.fails, ...p.errors]) console.log(`  ${p.id}: ${f}`);

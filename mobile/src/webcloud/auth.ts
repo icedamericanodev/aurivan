@@ -233,7 +233,9 @@ export interface WebAuth {
    * password. `passwordNeeded()` is true, it may not sync, and it is signed
    * out (here and on the server) after 10 minutes. Step 3 is
    * `setPassword(newPassword)` with this fresh session, within 9 minutes.
-   * This is not a way to sign in: nothing but "set a password" works with it.
+   * This is not a way to sign in: nothing but "set a password" works with it
+   * (callFunction, termsVersion, acceptTerms, consent, setNews and syncNews throw
+   * CloudError invalid / password_needed; sync refuses it too).
    */
   confirmSignUpCode(email: string, code: string, opts?: { shared?: boolean }): Promise<AccountInfo>;
   /**
@@ -364,6 +366,8 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
   const now = () => deps.clock.now();
   /** When this page last asked for a reset code (any address). In memory only. */
   let lastResetAsk = -Infinity;
+  /** The same for "Create account" codes: this page asks for one at most once a minute, for any address. */
+  let lastSignUpAsk = -Infinity;
   /** The last leaked-password check: off (none yet), clean, or unchecked (it couldn't check; the password is accepted). */
   let breach: 'off' | 'clean' | 'unchecked' = 'off';
 
@@ -735,6 +739,26 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     return passwordWordsLoaded() && checkPassword(p, { email, names: namesOf(user) }).some((r) => r !== 'too_short' && r !== 'missing_characters');
   };
 
+  /**
+   * A session made by an emailed code that has saved no password is not a sign-in: it may set a
+   * password (and ask who it is, and sign out), and nothing else. Every other signed-in call
+   * refuses it here, before anything is sent.
+   */
+  const refuseCodeSession = () => {
+    const s = store.read();
+    if (s && needsPassword(s)) throw new CloudError('invalid', undefined, 'password_needed');
+  };
+  /** A PostgREST "return=representation" answer that is exactly one row, or null. */
+  const oneRow = (text: string): Record<string, unknown> | null => {
+    let rows: unknown;
+    try {
+      rows = JSON.parse(text);
+    } catch {
+      return null;
+    }
+    return Array.isArray(rows) && rows.length === 1 && rows[0] && typeof rows[0] === 'object' ? (rows[0] as Record<string, unknown>) : null;
+  };
+
   const api: WebAuth = {
     async signInWithPassword(email, password, opts) {
       const e = emailOf(email);
@@ -755,7 +779,13 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     },
 
     async sendSignUpCode(email, opts) {
-      await requestCode(emailOf(email), opts?.captchaToken);
+      const e = emailOf(email);
+      // One a minute from this page, whatever the address (the same rule as reset codes): a second
+      // ask sooner is refused here with the seconds left, before anything is sent.
+      const wait = lastSignUpAsk + RESET_RESEND_MS - now();
+      if (wait > 0) throw new CloudError('rate_limited', Math.ceil(wait / 1000));
+      await requestCode(e, opts?.captchaToken);
+      lastSignUpAsk = now();
     },
 
     async confirmSignUpCode(email, code, opts) {
@@ -930,6 +960,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
 
     async callFunction(name, body) {
       if (!FUNCTIONS.has(name)) throw new CloudError('invalid');
+      refuseCodeSession();
       const res = await authedFetch(`/functions/v1/${name}`, { method: 'POST', body: JSON.stringify(body) }, 'function');
       const text = await res.text();
       if (res.status < 200 || res.status >= 300) throw toCloudError('function', res.status, text, res);
@@ -941,6 +972,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     },
 
     async termsVersion() {
+      refuseCodeSession();
       const res = await authedFetch('/rest/v1/profiles?select=terms_version&limit=1', { method: 'GET' }, 'rest');
       const text = await res.text();
       if (res.status < 200 || res.status >= 300) throw toCloudError('rest', res.status, text, res);
@@ -960,6 +992,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
       if (v.source !== undefined && !SOURCES.includes(v.source)) throw new CloudError('invalid');
       // The optional emails need the wording shown and where it was ticked (the server refuses an opt-in without them).
       if (v.news && (!VERSION_RE.test(v.news.wording) || v.source === undefined)) throw new CloudError('invalid');
+      refuseCodeSession();
       const s = store.read();
       if (!s) throw signedOut();
       // Only these fields, ever: no time (the server sets each one) and no other column.
@@ -978,14 +1011,19 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
       if (e.code !== 'conflict') throw e;
       // Accepted before: move to the new version (the id is checked as a UUID before it goes in a filter).
       if (!UUID_RE.test(s.userId)) throw new CloudError('invalid');
-      const up = await authedFetch(`/rest/v1/profiles?id=eq.${s.userId}`, { method: 'PATCH', headers: { prefer: 'return=minimal' }, body: JSON.stringify(agreed) }, 'rest');
+      // The answer must be the learner's one row, holding what was sent: a filter that matched
+      // nothing answers "fine" with no row, and that must never read as agreed.
+      const up = await authedFetch(`/rest/v1/profiles?id=eq.${s.userId}&select=terms_version,privacy_version`, { method: 'PATCH', headers: { prefer: 'return=representation' }, body: JSON.stringify(agreed) }, 'rest');
       const upText = await up.text();
       if (up.status < 200 || up.status >= 300) throw toCloudError('rest', up.status, upText, up);
+      const moved = oneRow(upText);
+      if (!moved || moved.terms_version !== v.termsVersion || (v.privacyVersion !== undefined && moved.privacy_version !== v.privacyVersion)) throw new CloudError('invalid', undefined, 'terms');
       // The optional box, ticked on that same screen: its own change, with its own wording and time.
       if (v.news && v.source) await api.setNews(true, { wording: v.news.wording, source: v.source });
     },
 
     async consent() {
+      refuseCodeSession();
       const res = await authedFetch('/rest/v1/profiles?select=terms_version,privacy_version,marketing_opt_in,source&limit=1', { method: 'GET' }, 'rest');
       const text = await res.text();
       if (res.status < 200 || res.status >= 300) throw toCloudError('rest', res.status, text, res);
@@ -1004,12 +1042,16 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
 
     async setNews(optIn, v) {
       if (typeof optIn !== 'boolean' || !VERSION_RE.test(v.wording) || !SOURCES.includes(v.source)) throw new CloudError('invalid');
+      refuseCodeSession();
       const s = store.read();
       if (!s) throw signedOut();
       if (!UUID_RE.test(s.userId)) throw new CloudError('invalid');
-      const res = await authedFetch(`/rest/v1/profiles?id=eq.${s.userId}`, { method: 'PATCH', headers: { prefer: 'return=minimal' }, body: JSON.stringify({ marketing_opt_in: optIn, marketing_wording: v.wording, source: v.source }) }, 'rest');
+      const res = await authedFetch(`/rest/v1/profiles?id=eq.${s.userId}&select=marketing_opt_in`, { method: 'PATCH', headers: { prefer: 'return=representation' }, body: JSON.stringify({ marketing_opt_in: optIn, marketing_wording: v.wording, source: v.source }) }, 'rest');
       const text = await res.text();
       if (res.status < 200 || res.status >= 300) throw toCloudError('rest', res.status, text, res);
+      // Exactly one row, with the choice as sent. No row (no agreement on record yet) is not "saved".
+      const row = oneRow(text);
+      if (!row || row.marketing_opt_in !== optIn) throw new CloudError('invalid', undefined, 'terms');
     },
 
     async syncNews() {

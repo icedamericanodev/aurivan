@@ -131,13 +131,21 @@ ticked. When it is `true`, the build also publishes the two account pages.
 **To try the screens yourself on the live site (owner only):**
 
 1. On the computer or phone you want to test with, open a **new tab** and go
-   to `https://kaisip.com/app/#accounts-preview=on`.
+   to `https://kaisip.com/app/#accounts-preview=` followed by **your secret
+   phrase** (no spaces). The phrase was given to you privately; it is not in
+   this repo, in any document or in the page. The page holds only a
+   fingerprint of it (its SHA-256, `KS_PREVIEW_HASH` in the first script of
+   `index.html`) and checks what you typed against that. A wrong phrase, the
+   word "on", or a value typed into the browser's storage does nothing.
 2. From now on, **in this browser only**, the site behaves as it will once
    accounts are on: it opens on the welcome screen and asks you to create an
    account or sign in before the study app opens (owner decision, 28 Nov
    2026). Progress already saved in that browser is kept and offered into the
-   account at your first sign-in. Nobody else sees anything: the note is
-   saved in your browser (`kaisip_accounts_preview`), not on the site.
+   account at your first sign-in. Nobody else sees anything: the phrase is
+   saved in your browser (`kaisip_accounts_preview`), not on the site, and
+   is checked again every time the page loads. It leaves the address bar at
+   once, but do not open that address on a shared computer or share your
+   screen while typing it.
 3. To switch it off again, open `https://kaisip.com/app/#accounts-preview=off`
    in a new tab (or clear the site's data).
 
@@ -151,9 +159,18 @@ Things to know:
   separately.
 - The preview talks to the **real** sign-in service. Until the go-live gates
   are done, use only your own test addresses.
-- It is a convenience, not a lock: the page's code is public, so someone who
-  reads it could switch the screens on in their own browser. The server-side
-  gates are what protect accounts.
+- Without the phrase nobody can switch the screens on from the page: not by
+  a link, and not by reading the page's code (a fingerprint cannot be turned
+  back into the phrase). Anyone can switch them **off** (`=off`), so a
+  browser can never get stuck behind the sign-up screen. Keep "Allow new
+  users to sign up" and the Google provider OFF in the Supabase dashboard
+  until go-live all the same: the server-side gates are what protect
+  accounts.
+- **To change the phrase** (if it may have been seen): make a new random
+  phrase of 22 or more letters and digits, work out its SHA-256 (on a Mac:
+  `printf '%s' 'the-new-phrase' | shasum -a 256`), put the 64 characters in
+  `KS_PREVIEW_HASH`, and deploy. The old phrase stops working at once, in
+  every browser.
 - **Google sign-in** needs `https://kaisip.com/app/` in Supabase →
   Authentication → URL Configuration → Redirect URLs first, and Google's "G"
   file (next).

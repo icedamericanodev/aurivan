@@ -6,65 +6,122 @@
      - ACCOUNTS_ON is false: no account screen is drawn, the accounts client
        (assets/kaisip-cloud.js), the password word lists and the human check
        are never loaded, and nothing is sent to the sign-in service.
-     - The owner's preview: on https://kaisip.com only, opening the app once
-       with #accounts-preview=on at the end of the address saves a note in
-       THIS browser (kaisip_accounts_preview); #accounts-preview=off removes
-       it. Nobody else is offered anything. Steps: docs/WEBSITE_DEPLOY.md.
+     - The owner's preview needs the owner's secret phrase. On
+       https://kaisip.com only, opening the app once with
+       #accounts-preview=<phrase> at the end of the address saves the phrase
+       in THAT browser (kaisip_accounts_preview). This page holds only the
+       phrase's SHA-256 (KS_PREVIEW_HASH) and checks the saved phrase against
+       it at every load, so neither a link with "on" nor a value typed into
+       the browser's storage switches accounts on. #accounts-preview=off
+       removes the note, for anyone. The phrase is in no file of the repo.
+       Steps: docs/WEBSITE_DEPLOY.md.
      - Never on file:// or any other address (accounts beta plan, 1.2).
      - With accounts on, the website asks for an account (owner decision, 28
-       Nov 2026). A visitor with no sign-in saved in this browser must never
-       see the study app flash before the welcome screen, so this script
-       marks the page (data-ka-gate) before anything is drawn; the page's
-       styles hide the app while the mark is there, and kaStart() removes it
-       once the welcome is up or the learner is known to be signed in.
+       Nov 2026). A visitor who is not through (no sign-in saved here, a code
+       session that still needs its password, a new account that has not
+       agreed) must never see the study app flash before the right screen,
+       so this script marks the page (data-ka-gate) before anything is drawn;
+       the page's styles hide the app while the mark is there, and kaStart()
+       removes it once a screen is up or the learner is known to be in.
      - When accounts are on here and Google sends the learner back with
        ?code=... (or ?error=...), that is taken out of the address before
-       analytics or anything else can read it, and kept only in memory. -->
+       analytics or anything else can read it, and kept only in memory; and
+       it is only acted on when this tab started a Google sign-in or nobody
+       is signed in here (a link like that must not put a sign-in form in
+       front of a signed-in learner).
+     - Always, accounts on or off: sign-in tokens that arrive in the address
+       (#access_token=...) are removed at once. The page never uses them. -->
 <script>
   var ACCOUNTS_ON = false;
+  var KS_PREVIEW_HASH = '38fa0b3eb00bf8812acbe1025330653a5b2193eac68ae81be78ce8e36d71aeaa';
   var KS_ACCT = (function () {
+    try {
+      if (/(^#|&)(access_token|refresh_token|provider_token)=/.test(location.hash || '')) history.replaceState(history.state, '', location.pathname + location.search);
+    } catch (e) {}
+    // SHA-256 of plain (ASCII) text, as hex. Small and synchronous, so the preview note can be
+    // checked before the first draw. Anything that is not plain text gives no match.
+    function sha256(text) {
+      function rr(v, a) { return (v >>> a) | (v << (32 - a)); }
+      var mp = Math.pow, mw = mp(2, 32), i, j, out = '', words = [], bits = text.length * 8, hash = [], k = [], n = 0, comp = {};
+      for (var c = 2; n < 64; c++) {
+        if (!comp[c]) { for (i = 0; i < 313; i += c) comp[i] = c; hash[n] = (mp(c, 0.5) * mw) | 0; k[n++] = (mp(c, 1 / 3) * mw) | 0; }
+      }
+      text += '\x80';
+      while (text.length % 64 - 56) text += '\x00';
+      for (i = 0; i < text.length; i++) { j = text.charCodeAt(i); if (j >> 8) return ''; words[i >> 2] |= j << ((3 - i) % 4) * 8; }
+      words[words.length] = (bits / mw) | 0;
+      words[words.length] = bits;
+      for (j = 0; j < words.length;) {
+        var w = words.slice(j, j += 16), old = hash;
+        hash = hash.slice(0, 8);
+        for (i = 0; i < 64; i++) {
+          var w15 = w[i - 15], w2 = w[i - 2], a = hash[0], e = hash[4];
+          var t1 = hash[7] + (rr(e, 6) ^ rr(e, 11) ^ rr(e, 25)) + ((e & hash[5]) ^ (~e & hash[6])) + k[i]
+            + (w[i] = i < 16 ? w[i] : (w[i - 16] + (rr(w15, 7) ^ rr(w15, 18) ^ (w15 >>> 3)) + w[i - 7] + (rr(w2, 17) ^ rr(w2, 19) ^ (w2 >>> 10))) | 0);
+          var t2 = (rr(a, 2) ^ rr(a, 13) ^ rr(a, 22)) + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+          hash = [(t1 + t2) | 0].concat(hash);
+          hash[4] = (hash[4] + t1) | 0;
+        }
+        for (i = 0; i < 8; i++) hash[i] = (hash[i] + old[i]) | 0;
+      }
+      for (i = 0; i < 8; i++) for (j = 3; j + 1; j--) { var b = (hash[i] >> (j * 8)) & 255; out += (b < 16 ? '0' : '') + b.toString(16); }
+      return out;
+    }
     var here = false, preview = false, back = null;
     try { here = location.protocol === 'https:' && location.origin === 'https://kaisip.com'; } catch (e) {}
     if (here) {
       try {
-        var m = /^#accounts-preview=(on|off)$/.exec(location.hash || '');
+        var m = /^#accounts-preview=(.{1,200})$/.exec(location.hash || '');
         if (m) {
-          if (m[1] === 'on') localStorage.setItem('kaisip_accounts_preview', '1');
-          else localStorage.removeItem('kaisip_accounts_preview');
+          var said = m[1];
+          try { said = decodeURIComponent(said); } catch (e2) {}
+          if (said === 'off') localStorage.removeItem('kaisip_accounts_preview');
+          else if (sha256(said) === KS_PREVIEW_HASH) localStorage.setItem('kaisip_accounts_preview', said);
           history.replaceState(history.state, '', location.pathname + location.search);
         }
-        preview = localStorage.getItem('kaisip_accounts_preview') === '1';
+        // The saved note is the phrase itself, checked again at every load.
+        var note = localStorage.getItem('kaisip_accounts_preview');
+        preview = !!note && note.length <= 200 && sha256(note) === KS_PREVIEW_HASH;
       } catch (e) {}
     }
     var on = here && (ACCOUNTS_ON === true || preview);
     if (on) {
-      try {
-        var q = new URLSearchParams(location.search);
-        if (q.has('code') || q.has('error') || q.has('error_code') || q.has('error_description')) {
-          back = { code: q.get('code'), error: q.get('error') || q.get('error_code') };
-          ['code', 'error', 'error_code', 'error_description', 'state'].forEach(function (k) { q.delete(k); });
-          var rest = q.toString();
-          history.replaceState(history.state, '', location.pathname + (rest ? '?' + rest : '') + (/^#error/.test(location.hash) ? '' : location.hash));
-        } else if (/^#error(_code|_description)?=/.test(location.hash)) {
-          back = { code: null, error: 'oauth' };
-          history.replaceState(history.state, '', location.pathname + location.search);
-        }
-      } catch (e) {}
-    }
-    if (on) {
       // Signed in here (a session saved by the accounts client, still inside its 30 days and
       // 14 unused days by this computer's clock)? If not, the app stays hidden until the gate decides.
-      var live = false;
+      var live = false, needsPw = false, due = false, mine = false;
       try {
         var raw = localStorage.getItem('kaisip_auth_v1') || sessionStorage.getItem('kaisip_auth_v1');
         var ses = raw ? JSON.parse(raw) : null;
         var now = Date.now();
         live = !!(ses && typeof ses.refreshToken === 'string' && (!ses.signedInAt || now - ses.signedInAt < 30 * 86400000) && (!ses.lastActiveAt || now - ses.lastActiveAt < 14 * 86400000));
+        // A session made by an emailed code that has saved no password yet is not through the gate.
+        if (live && ses.passwordSaved !== true) {
+          var strong = false;
+          try {
+            var claims = JSON.parse(atob(String(ses.accessToken).split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+            strong = Array.isArray(claims.amr) && claims.amr.some(function (x) { return x && (x.method === 'password' || x.method === 'oauth'); });
+          } catch (e3) {}
+          needsPw = !strong;
+        }
       } catch (e) {}
       // A brand-new account that has not agreed yet is not in either (the note is kept by the page's account code).
-      var due = false;
       try { due = localStorage.getItem('kaisip_acct_agree_v1') === '1'; } catch (e) {}
-      if (!live || back || due) document.documentElement.setAttribute('data-ka-gate', '');
+      // Did this tab start a Google sign-in? (The one-time secret for it lives in this tab only.)
+      try { mine = !!sessionStorage.getItem('kaisip_pkce_v1'); } catch (e) {}
+      try {
+        var q = new URLSearchParams(location.search);
+        if (q.has('code') || q.has('error') || q.has('error_code') || q.has('error_description')) {
+          // Acted on only for this tab's own Google sign-in, or when nobody is signed in here.
+          if (mine || !live) back = { code: q.get('code'), error: q.get('error') || q.get('error_code') };
+          ['code', 'error', 'error_code', 'error_description', 'state'].forEach(function (k) { q.delete(k); });
+          var rest = q.toString();
+          history.replaceState(history.state, '', location.pathname + (rest ? '?' + rest : '') + (/^#error/.test(location.hash) ? '' : location.hash));
+        } else if (/^#error(_code|_description)?=/.test(location.hash)) {
+          if (mine || !live) back = { code: null, error: 'oauth' };
+          history.replaceState(history.state, '', location.pathname + location.search);
+        }
+      } catch (e) {}
+      if (!live || back || due || needsPw) document.documentElement.setAttribute('data-ka-gate', '');
     }
     return { enabled: on, preview: preview && !ACCOUNTS_ON, back: back };
   })();
@@ -27470,7 +27527,7 @@ function appCtaInit() {
 //   the learner ticks "remove my progress from this browser".
 var KA_ON = !!(window.KS_ACCT && window.KS_ACCT.enabled);
 // Kept in step with the bundle by mobile/scripts/build-web-plant.mjs (its --check fails on a stale value).
-var KA_CLOUD_SRC = 'assets/kaisip-cloud.js?v=a105d2c97a';
+var KA_CLOUD_SRC = 'assets/kaisip-cloud.js?v=8c00665c1f';
 var KA_WORDS_SRC = 'assets/kaisip-password-words.js';
 // Cloudflare Turnstile, widget "KaiSip sign-in" (a public site key: docs/mobile/ACCOUNTS_BETA_PLAN.md, "Public config values").
 var KA_HUMAN_KEY = '0x4AAAAAAFptlSqMhAvLUI8w';
@@ -27484,7 +27541,8 @@ var KA_AGREE_WORDS = 'I agree to the Terms of Use and Privacy Policy.';
 var KA_AGE_WORDS = 'Accounts are for learners 18 and older.';
 var KA_NEWS_WORDS = 'Email me KaiSip study tips and news (optional). Unsubscribe anytime.';
 // New saved keys (none replaces an older one). Session-only: the sign-up boxes
-// while the learner is on their way (they must survive the trip to Google),
+// while the learner is on their way (they must survive the trip to Google;
+// kaPendingSave says whose they are and when, kaPendingTake always removes them),
 // and what to open after signing in. Kept: the masked email for the "sign in
 // again" card. (kaisip_consent_v1 held the news choice in early previews, before
 // the consent record existed; it is only ever removed now.)
@@ -28058,8 +28116,9 @@ function kaShell(key, body) {
 // (there is no way into the study app without an account). Signed in (the agreements, the first
 // sync, a new password): the wordmark and "Back to studying" go to the app.
 function kaTopbarHtml() {
-  // A brand-new account that has not agreed yet: Agree or Sign out are the only ways on (both are on the screen).
-  if (kaAgreeDue()) {
+  // A brand-new account that has not agreed yet, or a code session that still needs its password:
+  // the screen's own button or "Sign out instead" are the only ways on.
+  if (kaAgreeDue() || kaPwDue()) {
     return '<span class="ka-brand">' + kaLockup().replace('aria-hidden="true" focusable="false"', 'role="img" aria-label="KaiSip" focusable="false"') + '</span>'
       + kaNewTab('support.html', 'Help').replace('<a ', '<a class="ka-toplink" ');
   }
@@ -28072,6 +28131,7 @@ function kaTopbarHtml() {
 }
 // The wordmark on a signed-out screen: back to the welcome, with the address cleared of the screen's name.
 function kaHome() {
+  if (kaPwDue() || kaAgreeDue()) { kaGateShut(); return; }
   try { history.replaceState(history.state, '', location.pathname + location.search); } catch (e) {}
   kaShow('welcome');
 }
@@ -28418,6 +28478,7 @@ var KA_VIEWS = {
       + kaNewPasswordField()
       + '<p class="ka-error" id="kaFormE" role="alert"></p>'
       + '<button type="submit" class="ka-btn ka-btn-primary" id="kaGo">' + (fresh ? 'Create account' : 'Save password') + '</button></form>'
+      + '<p><button type="button" class="ka-linkbtn" data-ka-click="kaSignOutQuiet">Sign out instead</button></p>'
       + '<p class="ka-note">' + kaIco('lock', 18) + '<span>Pasting from a password manager is welcome. We keep your password only as a salted one-way hash.</span></p>');
   },
   forgot1: function () {
@@ -28545,9 +28606,15 @@ function kaDispatch(e) {
 // in keeps studying offline or while the sync service is down. Before the accounts client has
 // loaded, a saved session counts (the client then says whether it has ended).
 function kaGateOk() {
-  if (kaAgreeDue()) return false;
+  if (kaPwDue() || kaAgreeDue()) return false;
   if (ka.cloud) return !!kaAccount();
   return kaHasSession();
+}
+// A session made by an emailed code that has not saved its password yet. The email is confirmed,
+// but that is all: it is not a sign-in. Only "Create a password" (or signing out) is offered, at
+// every address and by every door, and the accounts client refuses every other call for it.
+function kaPwDue() {
+  try { return !!(ka.cloud && kaAccount() && ka.cloud.auth.passwordNeeded()); } catch (e) { return false; }
 }
 // A brand-new account (it came in through Google) that has not agreed to the Terms yet. It is
 // signed in, but not in the app: "One more step" offers Agree or Sign out, nothing else. An
@@ -28558,6 +28625,11 @@ function kaAgreeDue() {
 }
 // Shows the way in: Sign in again when a sign-in has ended here, else the welcome.
 function kaGateShut(words) {
+  if (kaPwDue()) {
+    try { var mp = document.getElementById('flagModal'); if (mp && mp.innerHTML) { mp.setAttribute('data-return', 'none'); closeFlagModal(); } } catch (ep) {}
+    if (ka.view !== 'signup3') { ka.flow = ka.flow || 'reset'; kaShow('signup3'); }
+    return;
+  }
   if (kaAgreeDue()) {
     try { var m0 = document.getElementById('flagModal'); if (m0 && m0.innerHTML) { m0.setAttribute('data-return', 'none'); closeFlagModal(); } } catch (e0) {}
     if (ka.view !== 'consent') kaShow('consent');
@@ -28568,6 +28640,8 @@ function kaGateShut(words) {
   try { var m = document.getElementById('flagModal'); if (m && m.innerHTML) { m.setAttribute('data-return', 'none'); closeFlagModal(); } } catch (e) {}
   if (ended || words) {
     ka.notice = words || 'Please sign in again to keep studying. Your progress is safe in this browser.';
+    // A sign-in that ended by itself: the address is filled in when this browser knows it.
+    if (ended && !ka.email) { var hint = kaJson(kaGet(KA_HINT_KEY)); if (hint && typeof hint.full === 'string' && hint.full.length <= 254) ka.email = hint.full; }
     kaShow('signin');
   } else kaShow('welcome');
 }
@@ -28576,7 +28650,7 @@ function kaGateShut(words) {
 function kaGateCheck() {
   if (!KA_ON || ka.view) return;
   // (While the page is starting, kaStart decides: it asks the service whether the agreement is still due.)
-  var due = ka.started && kaAgreeDue();
+  var due = ka.started && (kaPwDue() || kaAgreeDue());
   if (!due && (!ka.cloud || kaAccount())) return;
   var busy = false;
   try { busy = kaHost.busy(); } catch (e) {}
@@ -28594,7 +28668,7 @@ function kaRoute(hash) {
   if (key === 'delete-account') { kaOpenDelete(); return true; }
   var v = KA_ROUTES[key];
   if (!kaGateOk()) {
-    if (kaAgreeDue()) { kaGateShut(); return true; }
+    if (kaPwDue() || kaAgreeDue()) { kaGateShut(); return true; }
     // Signed out: an account address opens its screen; any other address is remembered for
     // after sign-in, and the visitor stays at the way in.
     if (v) { kaShow(v); return true; }
@@ -28760,7 +28834,7 @@ function kaSubmit(view) {
       return cloud.auth.sendSignUpCode(em, { captchaToken: token });
     }).then(function () {
       // The agreements travel with this sign-up (this tab only) until the account exists.
-      kaSet(KA_PENDING_KEY, JSON.stringify(rec), true);
+      kaPendingSave(rec, false);
       ka.resendAt = Date.now() + 60000;
       kaShow('signup2');
     }).catch(function (e) { kaBusy(false); kaHumanReset(); kaFail(e); });
@@ -28849,10 +28923,12 @@ function kaSubmit(view) {
 function kaGoogle(signUp) {
   if (ka.busy || !kaGoogleG) return;
   kaClearErrors();
+  // A plain "Continue with Google" carries no agreement: one left by an abandoned Create account form goes.
+  if (!signUp) kaDel(KA_PENDING_KEY, true);
   if (signUp) {
     var rec = kaConsentRead();
     if (!rec) return;
-    kaSet(KA_PENDING_KEY, JSON.stringify(rec), true);
+    kaPendingSave(rec, true);
   }
   if (kaEl('kaShared')) ka.shared = kaEl('kaShared').checked;
   kaGetCloud().then(function (cloud) {
@@ -28867,36 +28943,92 @@ function kaGoogleReturn(back) {
     return;
   }
   kaShow('wait');
-  kaGetCloud().then(function (cloud) { return cloud.auth.finishGoogleSignIn(back.code); }).then(function () { return kaAfterSignIn(); })
+  kaGetCloud().then(function (cloud) { return cloud.auth.finishGoogleSignIn(back.code); }).then(function () { return kaAfterSignIn('google'); })
     .catch(function (e) { ka.notice = kaWords(e && e.code ? e : { code: 'invalid', detail: 'oauth' }); kaShow('signin'); });
 }
 // Signed in. In order: a password if the session still needs one, the
 // agreements if this account has none yet, then the first sync.
-function kaAfterSignIn() {
+function kaAfterSignIn(how) {
   var cloud = ka.cloud;
   var who = cloud.auth.current();
   if (!who) { kaShow('signin'); return Promise.resolve(); }
-  // The masked address, for the "sign in again" card after a session ends (never on a shared computer).
-  if (!cloud.auth.sharedComputer() && who.emailMasked) kaSet(KA_HINT_KEY, JSON.stringify({ email: who.emailMasked }));
+  // For the "sign in again" screen after a session ends (never on a shared computer): the masked
+  // address, and the address the learner typed and has just proved, to fill the form in for them.
+  if (!cloud.auth.sharedComputer() && who.emailMasked) {
+    var hint = { email: who.emailMasked };
+    if (how !== 'google' && ka.email) hint.full = String(ka.email).trim().slice(0, 254);
+    kaSet(KA_HINT_KEY, JSON.stringify(hint));
+  }
   ka.user = null;
   if (cloud.auth.passwordNeeded()) { ka.flow = ka.flow || 'reset'; kaShow('signup3'); return Promise.resolve(); }
-  return cloud.auth.termsVersion().then(function (v) {
+  // The agreement ticked on the Create account form, if it belongs to this sign-in (removed either way).
+  var pending = kaPendingTake(how);
+  var agreed = false;
+  return kaTermsRead(cloud).then(function (v) {
+    // Create account on an address that already had an account (the inbox was proved, so saying so
+    // tells nobody anything new): the learner should know they have not made a second one.
+    if (ka.flow === 'signup' && (v || (who.providers || []).indexOf('google') >= 0)) {
+      ka.notice = ['This email already had a KaiSip account. You’re signed in and your password is saved.', ka.notice].filter(Boolean).join(' ');
+    }
     // Agreed to the current Terms already: on to sync. Never agreed, or agreed to an older
     // version: the agreement screen (the only place the record is written from).
-    if (v && v === kaLabels().terms) { kaDel(KA_AGREE_KEY); return kaStartSync(); }
-    var pending = kaJson(kaGet(KA_PENDING_KEY, true));
-    if (pending && pending.termsAccepted === true && pending.ageConfirmed === true) return kaConsentCommit(cloud, pending).then(function () { return kaStartSync(); });
+    if (v && v === kaLabels().terms) { agreed = true; kaDel(KA_AGREE_KEY); return kaStartSync(); }
+    if (pending) return kaConsentCommit(cloud, pending).then(function () { agreed = true; return kaStartSync(); });
     // No record at all: a brand-new account, which agrees before the app opens. A record for an
     // earlier Terms version: an existing learner, who may go on studying with sync paused.
     if (v) kaDel(KA_AGREE_KEY); else kaSet(KA_AGREE_KEY, '1');
     kaShow('consent');
     return null;
   }).catch(function (e) {
-    // Signed in, but the next step couldn't be reached: the card says so and offers it again.
+    var off = e && e.code === 'offline';
+    // The agreement could not be read (or saved), after three tries. Does this browser hold a sign
+    // that this account agreed before (it has synced here as this account)? Then the learner keeps
+    // studying: the card says the next step is waiting. If not, this may be a brand-new account:
+    // the agreement screen, with a line saying why, and Agree tries again. Never the app.
+    var known = agreed;
+    try { known = known || (cloud.device.meta().enabled && !cloud.accountChanged()); } catch (e2) {}
+    if (!known) {
+      kaSet(KA_AGREE_KEY, '1');
+      ka.notice = off ? KA_WORDS.offline : 'We couldn’t reach your account just now. Agree below and we’ll try again.';
+      ka.view = '';
+      kaShow('consent');
+      return;
+    }
     ka.setupDue = true;
-    ka.syncErr = e && e.code === 'offline' ? 'offline' : 'error';
-    kaLand(KA_WORDS[e && e.code === 'offline' ? 'offline' : 'server']);
+    ka.syncErr = off ? 'offline' : 'error';
+    kaLand(KA_WORDS[off ? 'offline' : 'server']);
   });
+}
+// The account's agreement on record, asked up to three times: one failed request must not decide
+// what a new account sees.
+function kaTermsRead(cloud) {
+  var tries = 0;
+  var ask = function () {
+    return cloud.auth.termsVersion().catch(function (e) {
+      tries++;
+      if (tries >= 3 || (e && e.code === 'unauthorized')) throw e;
+      return new Promise(function (res) { setTimeout(res, 400 * tries); }).then(ask);
+    });
+  };
+  return ask();
+}
+// The agreement a learner ticked on the Create account form, carried to the moment they are signed
+// in (this tab only). It says whose it is (the address typed, or "the Google sign-up this form
+// started") and when, so it can never be applied to another account or long after.
+var KA_PENDING_MS = 30 * 60000;
+function kaPendingSave(rec, google) {
+  kaSet(KA_PENDING_KEY, JSON.stringify({ termsAccepted: true, ageConfirmed: true, marketingOptIn: rec.marketingOptIn === true,
+    email: google ? '' : String(ka.email || '').trim().toLowerCase(), google: google === true, at: Date.now() }), true);
+}
+// Always removes it; returns it only for the sign-in it belongs to, within 30 minutes.
+function kaPendingTake(how) {
+  var p = kaJson(kaGet(KA_PENDING_KEY, true));
+  kaDel(KA_PENDING_KEY, true);
+  if (!p || p.termsAccepted !== true || p.ageConfirmed !== true || typeof p.at !== 'number') return null;
+  var age = Date.now() - p.at;
+  if (!(age >= -60000 && age <= KA_PENDING_MS)) return null;
+  var mine = how === 'google' ? p.google === true : (p.google !== true && !!p.email && p.email === String(ka.email || '').trim().toLowerCase());
+  return mine ? p : null;
 }
 // The first sync on this browser (or after another account signed in here).
 function kaStartSync() {
@@ -29018,6 +29150,7 @@ function kaLand(words) {
   if (!kaGateOk()) { kaGateShut(); return; }
   var note = ka.notice;
   ka.notice = '';
+  ka.flow = '';
   var intent = kaGet(KA_INTENT_KEY, true) || '';
   kaDel(KA_INTENT_KEY, true);
   // The app's own first-visit sheet (what KaiSip is, "Start 5 questions", then the exam date) runs
@@ -29543,6 +29676,7 @@ var KA_FRESH_MS = 9 * 60000;
 function kaDeleteDialog() {
   var who = kaAccount();
   if (!who) return;
+  if (!kaGateOk()) { kaGateShut(); return; }
   var fresh = Date.now() - who.authAt < KA_FRESH_MS;
   var hasPw = (who.providers || []).indexOf('email') >= 0;
   ka.email = ka.user && ka.user.email ? ka.user.email : '';
@@ -29603,6 +29737,7 @@ function kaDeleted() {
 // kaisip.com/delete-account's button lands here (#delete-account).
 function kaOpenDelete() {
   kaWhenKnown(function () {
+    if (kaPwDue() || kaAgreeDue()) { kaGateShut(); return; }
     if (kaAccount()) { kaClose(); switchTab('account', { noScroll: true }); setTimeout(kaDeleteDialog, 200); return; }
     kaSet(KA_INTENT_KEY, 'delete', true);
     ka.view = '';
@@ -29729,7 +29864,8 @@ function kaStart() {
         ka.setupDue = true; kaPaint();
         // Sync was never set up here. If the account has no agreement on record at all, it is a
         // brand-new one that slipped past "One more step" (the check failed at sign-in): ask now.
-        cloud.auth.termsVersion().then(function (v) { if (v === null && kaAccount()) { kaSet(KA_AGREE_KEY, '1'); kaGateCheck(); } }).catch(function () {});
+        // (If the sign-in turns out to have ended, the repaint closes the app.)
+        cloud.auth.termsVersion().then(function (v) { if (v === null && kaAccount()) { kaSet(KA_AGREE_KEY, '1'); kaGateCheck(); } }).catch(function () { kaPaint(); });
         return null;
       }
       return kaWaitBank().then(function (ready) { if (ready) return kaSyncNow(false); ka.syncErr = 'wait'; return null; });

@@ -297,13 +297,14 @@ pages not on https).
   (`assets/kaisip-cloud.js`), the password word lists and Cloudflare's human
   check are never loaded, and no request goes to the sign-in service or any
   other party. Account screens exist only on `https://kaisip.com` (never
-  `file://`, a preview host or a copy of the site). The owner's preview is a
-  note saved in her own browser by opening
-  `https://kaisip.com/app/#accounts-preview=on` (`=off` removes it); steps in
-  `docs/WEBSITE_DEPLOY.md`. It is not access control: the page's code is
-  public, so anyone who reads it can switch the screens on for their own
-  browser. What protects accounts before launch is the server side (the
-  go-live gates), not this switch.
+  `file://`, a preview host or a copy of the site). The owner's preview needs
+  her secret phrase: `#accounts-preview=<phrase>` saves it in her own
+  browser, the page holds only its SHA-256 and checks the saved phrase at
+  every load, and `#accounts-preview=off` removes it for anyone (security
+  review B2; steps in `docs/WEBSITE_DEPLOY.md`). The phrase is in no file.
+  A link, the word "on" or a value typed into storage switches nothing on.
+  What protects accounts before launch is still the server side (the go-live
+  gates, and sign-ups kept off in the dashboard).
 - **With the switch on, the website asks for an account** (owner, 28 Nov
   2026: "when they using website sign up be required to secure their
   profile"). With it off, today's open app is unchanged; the tests prove

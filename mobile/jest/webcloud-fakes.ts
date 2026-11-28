@@ -397,7 +397,7 @@ export class FakeSupabase {
     if (p.startsWith('/rest/v1/')) {
       const id = this.who(headers);
       if (!id) return res(401, { code: 'PGRST301', message: 'JWT expired' });
-      if (p === '/rest/v1/profiles') return this.profilesRoute(method, id, q, body, res);
+      if (p === '/rest/v1/profiles') return this.profilesRoute(method, id, q, body, res, headers);
       if (p === '/rest/v1/sync_snapshots') return this.snapshots(method, id, q, headers, body, res);
       return res(404, { code: 'PGRST205', message: 'no table' });
     }
@@ -475,7 +475,15 @@ export class FakeSupabase {
     return false;
   }
 
-  private profilesRoute(method: string, id: string, q: URLSearchParams, body: any, res: (s: number, b?: unknown) => HttpResponse): HttpResponse {
+  private profilesRoute(method: string, id: string, q: URLSearchParams, body: any, res: (s: number, b?: unknown) => HttpResponse, headers: Record<string, string> = {}): HttpResponse {
+    // "Prefer: return=representation": the changed rows come back (the selected columns), an empty list when the filter matched none.
+    const rows = /return=representation/.test(headers.prefer ?? '');
+    const shown = (): Record<string, unknown> => {
+      const c = this.consent.get(id);
+      const row: Record<string, unknown> = { id, terms_version: this.profiles.get(id), age_confirmed: true, privacy_version: c?.privacy_version ?? null, marketing_opt_in: c?.marketing_opt_in ?? false, marketing_wording: c?.marketing_wording ?? null, source: c?.source ?? null };
+      const cols = (q.get('select') ?? '*').split(',');
+      return cols.includes('*') ? row : Object.fromEntries(cols.map((k) => [k, row[k] ?? null]));
+    };
     if (method === 'GET') {
       if (!this.profiles.has(id)) return res(200, []);
       const c = this.consent.get(id);
@@ -503,7 +511,7 @@ export class FakeSupabase {
     if (method === 'PATCH' && q.get('id') === `eq.${id}`) {
       const refused = this.consentRefusal(body);
       if (refused) return res(refused.status, refused.body);
-      if (!this.profiles.has(id)) return res(204); // no row: nothing matches, nothing changes
+      if (!this.profiles.has(id)) return rows ? res(200, []) : res(204); // no row: nothing matches, nothing changes
       const old = this.consent.get(id) ?? { privacy_version: null, marketing_opt_in: false, marketing_wording: null, source: null, everOptedIn: false };
       const next = { ...old };
       // A value on record is replaced, never blanked.
@@ -523,7 +531,7 @@ export class FakeSupabase {
       if (!same && this.consentLimited(id, old.marketing_opt_in && !next.marketing_opt_in)) return res(400, limited);
       this.profiles.set(id, terms);
       this.consent.set(id, next);
-      return res(204);
+      return rows ? res(200, [shown()]) : res(204);
     }
     return res(400, { code: 'PGRST100', message: 'bad' });
   }
