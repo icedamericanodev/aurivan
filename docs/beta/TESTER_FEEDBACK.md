@@ -329,6 +329,12 @@ d3_127. Three fresh blind testers chose B with high confidence.
 557 of 1,000 AAIA questions. Domain experts made 33 corrections, and the blind
 test matched 557 of 557, then 38 of 38 after the corrections.
 
+**CRISC rewrite (28 Nov 2026, course not yet switched on; its free sample
+ships in the public phone app):** the same pass rewrote 524 of 1,000 CRISC
+questions. Domain experts made 18 corrections; the blind test matched 521 of
+524, then 22 of 22. Five items with a key in doubt are listed for review in
+`docs/content/CRISC_BANK_PLAN.md` section 9.
+
 **Tester reply:** none yet; reply when the phone build with the new wording
 ships.
 
