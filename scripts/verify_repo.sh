@@ -206,6 +206,50 @@ then
   status=1
 fi
 
+# 4d. The website's serif (KaiSip Serif, FB-006 and FB-014) -------------------
+# Every public page must load KaiSip Serif (Fraunces with a conventional f and
+# J, the phone app's font) for upright serif text, never plain Fraunces: the
+# owner saw the old f on the website after it was fixed on the phone. Italic
+# stays plain Fraunces. Always checked. With fontTools and brotli installed
+# (dev-only: pip install fonttools brotli), the .woff2 files are also compared
+# with the phone's .ttf files, glyph for glyph.
+printf "\nWebsite serif (KaiSip Serif on every page):\n"
+if ! python3 - <<'PY'
+import glob, os, re, sys
+pages = ['index.html', 'beta.html', 'beta-desk.html', 'privacy.html', 'terms.html', 'support.html',
+         'how-questions-are-made.html', 'assets/home.css'] + sorted(glob.glob('docs/legal/cloud/*.html'))
+bad = []
+for p in pages:
+    css = open(p, encoding='utf-8').read()
+    faces = [f for f in re.findall(r'@font-face\s*{[^}]*}', css) if re.search('Fraunces|KaiSip', f)]
+    if not faces:
+        bad.append(f"{p}: no serif @font-face found")
+    for f in faces:
+        italic = re.search(r'font-style:\s*italic', f) is not None
+        m = re.search(r'fonts/([A-Za-z0-9_]+)\.woff2', f)
+        name = m.group(1) if m else '?'
+        ok = name == 'Fraunces_400Regular_Italic' if italic else name in ('KaiSipSerif_400Regular', 'KaiSipSerif_500Medium')
+        if not ok or not re.search(r"font-family:\s*['\"]KaiSip Serif['\"]", f):
+            bad.append(f"{p}: {'italic' if italic else 'upright'} serif loads {name}.woff2 (want {'Fraunces_400Regular_Italic' if italic else 'KaiSipSerif_*'}, family 'KaiSip Serif')")
+        if not os.path.exists(f'assets/fonts/{name}.woff2'):
+            bad.append(f"{p}: assets/fonts/{name}.woff2 is missing")
+for lic in ('OFL-Fraunces.txt', 'OFL-Literata.txt'):
+    if not os.path.exists('assets/fonts/' + lic):
+        bad.append(f"assets/fonts/{lic} is missing (the licence must travel with the font)")
+if bad:
+    print("  ✗ " + "\n  ✗ ".join(bad)); sys.exit(1)
+print(f"  ✓ {len(pages)} pages load KaiSip Serif for upright text; licences present")
+PY
+then
+  status=1
+fi
+if python3 -c 'import fontTools, brotli' >/dev/null 2>&1; then
+  python3 mobile/scripts/fonts/build_kaisip_serif.py --check-web 2>/dev/null | sed 's/^/  /'
+  [ "${PIPESTATUS[0]}" -eq 0 ] || status=1
+else
+  printf "  (glyph-for-glyph check of the .woff2 files skipped: pip install fonttools brotli)\n"
+fi
+
 # 5. Originals (rebuild content) schema validation --------------------------
 # The bank lives under data/originals/ and is validated against the schema
 # in docs/content/QUESTION_SCHEMA.md. Empty banks are valid (the

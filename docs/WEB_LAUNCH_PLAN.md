@@ -131,6 +131,10 @@ loop. Nothing goes public until its gate says so.
    true once sync is on), IARC and listing updates. Checked by
    `app-store-compliance-reviewer`.
 3. Two bundles as from 2.3 (public sample, Alpha full).
+4. Already merged for 2.4 (add to the 2.4 release notes when its tracker is
+   opened): the capital J has a straight stem in headings, names and the
+   avatar initial (FB-014, owner report 28 Nov 2026; the font files in
+   `mobile/assets/fonts/`, no code change). Not in 2.3.
 
 ### D. Course packs (runs in parallel with A to C)
 1. Generalise the free sample builder to every course (CRISC, AAIA, CC,

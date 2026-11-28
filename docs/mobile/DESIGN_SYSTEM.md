@@ -62,7 +62,27 @@ matter, a clean sans for everything you tap — and a grove that visibly grows a
 
 Six files total (~350 KB). **v2 adds `Fraunces_400Regular_Italic` (86 KB) for the coaching voice**, same package, no new dependency. Plus Jakarta Sans is removed.
 
-**KaiSip Serif (mobile 2.1, FB-006, pending the owner's sign-off).** Fraunces' upright lowercase "f" has a flat, heavy hook that learners read as odd, and Fraunces has no alternate. The two upright weights therefore load from `mobile/assets/fonts/` as "KaiSip Serif": Fraunces with only the "f" replaced by Literata's conventional "f", scaled to Fraunces' x-height and stem thickness, at the same advance width (so no text reflows). Everything else is Fraunces; the italic is unchanged. Both fonts are SIL OFL 1.1 and both licence files ship beside the font. Details and the rebuild command: `mobile/assets/fonts/README.md`. Where this document says "Fraunces" for upright text, it means this file. The web app, `beta.html` and the landing page still load plain Fraunces and should get the same fix.
+**KaiSip Serif (mobile 2.1, FB-006; capital J in mobile 2.4 and web v13.2.1, FB-014).** Two upright Fraunces
+letters read as odd and Fraunces has no alternate for either: the lowercase "f" has a flat, heavy hook, and
+the capital "J" has a stem that swells to the right near the baseline (a boot shape at the start of "Jamie",
+"John", "Jose" and in the avatar initial). The two upright weights therefore load as "KaiSip Serif": Fraunces
+with the "f" replaced by Literata's conventional "f" (scaled to Fraunces' x-height and stem thickness) and the
+"J" redrawn from Fraunces' own outline with a straight stem (same serif, ball and weight). Both keep Fraunces'
+advance width, so no text reflows. Everything else is Fraunces; the italic is unchanged. Both fonts are SIL OFL
+1.1, the modified font is never called "Fraunces", and both licence files ship beside it. Details, the rebuild
+command and how to pick another J: `mobile/assets/fonts/README.md`. Where this document says "Fraunces" for
+upright text, it means this font.
+
+**One font on every surface.** The phone loads `mobile/assets/fonts/KaiSipSerif_*.ttf`. The website loads the
+same fonts as `assets/fonts/KaiSipSerif_*.woff2` on every page (the web app, the home and waitlist pages, the
+beta page, the legal and help pages, the Beta Desk) under the CSS family name `'KaiSip Serif'`, with
+`Fraunces_400Regular_Italic.woff2` for italic. `scripts/verify_repo.sh` fails if a page loads plain upright
+Fraunces.
+
+**Mockups and design sheets must load KaiSip Serif from the repo** (`assets/fonts/KaiSipSerif_400Regular.woff2`
+and `KaiSipSerif_500Medium.woff2`, both weights), never Fraunces from Google Fonts or the old
+`Fraunces_400Regular.woff2` / `Fraunces_500Medium.woff2` files. A mockup that loads plain Fraunces shows the old
+"f" and "J", and the owner then reads it as a bug that came back (28 Nov 2026).
 
 **Why two families when the owner asked for one:** the "one font" wish was really a wish for
 *consistency*. Today's single family at 600 everywhere is what reads as template. A serif used only

@@ -42,6 +42,7 @@ cause in the app, and slots it into the plan below.
 | FB-011 | 2026-11-19 | Owner review | Phone · Learn · Concept Lab (RTO/RPO): made the topic more confusing | Learning design | Medium | Learners who open the lab | Hidden in 2.2 behind one switch; redesign and uncoached learner testing before it returns | 2.2 (hide) · Later (redesign) |
 | FB-012 | By 19 Nov 2026 | Tester suggestions (messages and the testers' PDF) | Phone · question list, Practice, Settings | Feature requests | Medium | All learners | Implemented in a pull request for 2.2: read-only review of answered questions; a gentle practice countdown with length and area choice; Rate and Share rows in Settings | 2.2 |
 | FB-013 | 2026-11-28 | Owner relay of tester feedback (no report code) | Web and phone · CISA question wording | Content (readability) | Medium | Whole bank (also AAIA, written in the same style) | CISA: 171 hard-to-read questions rewritten in plainer, shorter sentences for web v13.1 (blind retest 170 of 171 matched; the one miss was ambiguous before the rewrite and is followed up separately). AAIA next | Web v13.1 · phone: next bundle |
+| FB-014 | 2026-11-28 | Owner report (no report code) | Web and phone · every heading, name and avatar initial with a capital J; and the letter f on the website | UX (typography, cosmetic) | Low | Every learner whose name or text has a capital J; every web page for the f | Implemented: web v13.2.1; phone fonts merged for 2.4 (native phone check pending) | Web v13.2.1 · phone 2.4 |
 
 ## Feedback quoted on the website
 
@@ -177,7 +178,7 @@ A closed-testing Android tester wrote: "Just an observation, does the letter 'f'
 
 **Implemented (A), waiting for the owner:** `mobile/assets/fonts/` (the two font files, both licences, a README), `mobile/scripts/fonts/build_kaisip_serif.py` (how they are made), `mobile/src/theme/tokens.ts` and `mobile/src/app/_layout.tsx` (the app loads them), `mobile/app.json` (the home-screen widgets use them). The new "f" is exactly as wide as the old one: a before/after comparison of 91 screens in light and in dark shows changes only at the letter itself. Not yet checked on a real Android phone or iPhone (the screenshots come from the app's web build, which draws the same font file).
 
-**Still to do after the owner agrees:** the same fix on the web app (`index.html`), `beta.html`, the landing and legal pages, which still load plain Fraunces.
+**Web (done in web v13.2.1, 28 Nov 2026, with FB-014):** the web app (`index.html`), `beta.html`, the home, legal and help pages and the Beta Desk now load KaiSip Serif too. Until then they loaded plain Fraunces, which is why the owner still saw the old f on the website.
 
 **Reply to the tester when shipped:** "Thanks for spotting the f. It was the typeface's own design, not a glitch. From the next update the letter has a more familiar shape everywhere in the app."
 
@@ -323,3 +324,36 @@ test matched 557 of 557, then 38 of 38 after the corrections.
 
 **Tester reply:** none yet; reply when the phone build with the new wording
 ships.
+
+### FB-014 · The capital J looks weird (and the f is still the old one on the website)
+
+**Owner said (28 Nov 2026):** looking at a You tab mockup that shows the name "Jamie" as the title and a "J" in the avatar: "Can you also fix letter J it looks weird". Later the same day, looking at website screenshots and mockups: "Letter f and j is weird. Improve it. I thought we have already fixed f before." No report footer (the owner's own review).
+
+**Reproduced (28 Nov 2026):** yes, both.
+
+- **The J.** Every upright serif "J" on the phone and the website: the You tab title and the avatar initial for a learner called Jamie, John, Joy, Jose or Juan, and words like January, June, July, Japan, Jakarta and "Just" in reading text.
+- **The f.** The phone has shown the new f since 2.1 (FB-006). The website did not: the web app, the beta page and the legal and help pages still loaded plain Fraunces, and so did the mockup's bold weight. Only the home page had the fix, and only in its regular weight.
+
+**Cause:** not a bug and not a fallback font.
+
+- The J is Fraunces' own design. It already sits on the baseline (it does not drop below the line). What reads as odd is the stem: it swells to the right on its way down and then curls into the ball, so the letter looks like a boot. It is the same in both upright weights. Fraunces has no alternate J: no stylistic set covers it, the "wonk" setting does not touch it, and its display cut keeps the swelling.
+- The f on the website was simply never switched: FB-006's "still to do" list (the web app, `beta.html`, the landing and legal pages) had not been done.
+- The italic was checked too. Its capital J does drop below the baseline with a ball at the end, as many italics do, and its f is the usual italic f with a tail. Italic is used for the coach's voice, key ideas, captions and the home page's accent words, not for names, so it is left as it is. Lowercase j is a normal j in both styles.
+
+**Triage:** UX (typography, cosmetic) · Low severity (nothing is blocked or wrong) · Reach: every learner whose name or text has a capital J (names starting with J are very common among our learners), and every web page for the f.
+
+**Options compared for the J** (a comparison sheet for the owner: the real font files at the real sizes, light and dark, one phone wide):
+
+| | Fix | Result |
+|---|---|---|
+| A | Literata's J, scaled to Fraunces (as was done for the f) | Straight stem. Its square-cut top serif is sharper than Fraunces' soft serifs, so it stands out a little in a heading. |
+| B | Fraunces' own J with the swelling taken out of the stem (outline edit by script) | Straight stem, and the serif, the ball and the weight are still Fraunces'. No second typeface involved. |
+| C | Fraunces' own J from its display cut (the only "alternate" the font has) | Keeps the swelling, so it does not fix it. |
+
+**Implemented (B):** `mobile/scripts/fonts/build_kaisip_serif.py` now changes the J as well as the f (one constant, `J_CANDIDATE`, picks A, B or C), and writes the website's `.woff2` files beside the phone's `.ttf` files. The new J is exactly as wide as the old one, the same height, and sits on the baseline as before. Measured before and after on the built website (26 strings in both weights on five pages, names and sentences with J included): every string with a J is the same width, and screenshots of Today, You, the home, beta and legal pages differ only at the changed letters, so no line of text moves. One note for the f on the web app: a double f ("effect") in regular weight is 1/2000 of the text size wider than Fraunces' joined ff, about a hundredth of a pixel in reading text; the phone has had the same since 2.1. Every web page now loads KaiSip Serif for upright text (web v13.2.1); the phone gets the new files with 2.4. Checks: `mobile/src/__tests__/kaisip-serif-font.test.ts` (only f, J and the letters built from them differ from Fraunces; the stem is straight; the website's files hold the same fonts; no page loads plain Fraunces) and `scripts/verify_repo.sh`.
+
+**The f:** kept as it is (Literata's f, FB-006). The sheet shows it beside plain Fraunces and beside a fuller-hook alternative at 18, 28 and 44px; the alternative needs about 200 extra spacing fixes to stay clear of the next letter, for little gain.
+
+**Still open:** a look on a real Android phone when 2.4 is built (the screenshots come from the same font files drawn by a browser). The italic J is the owner's call: two options are on the sheet (lift Fraunces' italic J onto the baseline, or take the italic J and f from Literata Italic); either needs a new italic font file on the phone.
+
+**Mockups:** design mockups must load KaiSip Serif from `assets/fonts/` (both weights), not Fraunces from Google Fonts or the old Fraunces files, or the owner sees the old letters again (`docs/mobile/DESIGN_SYSTEM.md`, section 1).

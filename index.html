@@ -109,14 +109,15 @@
      plant draws itself once it has arrived (plantReady). -->
 <script id="kaisipPlantJs" src="assets/kaisip-plant.js?v=515bc7a6df" defer></script>
 <link rel="preload" href="assets/fonts/Figtree_400Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/Fraunces_500Medium.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/KaiSipSerif_500Medium.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-/* ── FONTS: Fraunces + Figtree, served from this site (assets/fonts, SIL OFL).
+/* ── FONTS: KaiSip Serif (Fraunces with a conventional f and J; italic is plain Fraunces) + Figtree,
+   served from this site (assets/fonts, SIL OFL; made by mobile/scripts/fonts/build_kaisip_serif.py).
    No request goes to a font service. Heavier weights map to the heaviest file
    we ship so the browser never fakes a bold. ── */
-@font-face { font-family: 'Fraunces'; font-style: normal; font-weight: 100 400; font-display: swap; src: url('assets/fonts/Fraunces_400Regular.woff2') format('woff2'); }
-@font-face { font-family: 'Fraunces'; font-style: normal; font-weight: 500 900; font-display: swap; src: url('assets/fonts/Fraunces_500Medium.woff2') format('woff2'); }
-@font-face { font-family: 'Fraunces'; font-style: italic; font-weight: 100 900; font-display: swap; src: url('assets/fonts/Fraunces_400Regular_Italic.woff2') format('woff2'); }
+@font-face { font-family: 'KaiSip Serif'; font-style: normal; font-weight: 100 400; font-display: swap; src: url('assets/fonts/KaiSipSerif_400Regular.woff2') format('woff2'); }
+@font-face { font-family: 'KaiSip Serif'; font-style: normal; font-weight: 500 900; font-display: swap; src: url('assets/fonts/KaiSipSerif_500Medium.woff2') format('woff2'); }
+@font-face { font-family: 'KaiSip Serif'; font-style: italic; font-weight: 100 900; font-display: swap; src: url('assets/fonts/Fraunces_400Regular_Italic.woff2') format('woff2'); }
 @font-face { font-family: 'Figtree'; font-style: normal; font-weight: 100 400; font-display: swap; src: url('assets/fonts/Figtree_400Regular.woff2') format('woff2'); }
 @font-face { font-family: 'Figtree'; font-style: normal; font-weight: 500; font-display: swap; src: url('assets/fonts/Figtree_500Medium.woff2') format('woff2'); }
 @font-face { font-family: 'Figtree'; font-style: normal; font-weight: 600 900; font-display: swap; src: url('assets/fonts/Figtree_600SemiBold.woff2') format('woff2'); }
@@ -197,7 +198,7 @@
   --on-fill: #FFFFFF;     /* text on a solid correct / wrong / tip fill */
   --correct-fill: #1D6A43; --wrong-fill: #A3333D; --tip-fill: #7A5100;
   --dom1: #3F7F96; --dom2: #4E8A3E; --dom3: #B0802C; --dom4: #86689C; --dom5: #5E7482;
-  --f-serif: Fraunces, Georgia, 'Times New Roman', serif;
+  --f-serif: 'KaiSip Serif', Georgia, 'Times New Roman', serif;
   --f-sans: Figtree, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --r-sm: 8px; --r-md: 16px; --r-lg: 24px;
 
@@ -9072,7 +9073,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
     <h2 class="vision-title" id="aboutVisionT">Think like an IS auditor.</h2>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v13.2</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v13.2.1</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -9485,7 +9486,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v13.2';
+const APP_VERSION = 'v13.2.1';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -27843,6 +27844,12 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    items: [
+      { cat: 'improved', text: 'The capital J and the letter f have a cleaner, more familiar shape, so names and headings are easier to read.' },
+    ],
+  },
+  {
+    version: 'v13.2',
     title: 'KaiSip is on the web',
     items: [
       { cat: 'new', text: 'KaiSip is now on the web for everyone: study free in any browser.' },
