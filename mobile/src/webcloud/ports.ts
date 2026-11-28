@@ -18,10 +18,25 @@ export interface HttpResponse {
   text(): Promise<string>;
 }
 
-/** A network call. Throws (any error) when the network fails: read as 'offline'. */
+/**
+ * A network call. Throws (any error) when the network fails: read as 'offline'.
+ * The optional fields are the browser's own fetch options; the leaked-password
+ * lookup (breach.ts) sets them so nothing is cached, no cookies or referrer go
+ * out, a redirect is refused, and a timeout cancels the request.
+ */
 export type FetchPort = (
   url: string,
-  init: { method: string; headers: Record<string, string>; body?: string; keepalive?: boolean },
+  init: {
+    method: string;
+    headers: Record<string, string>;
+    body?: string;
+    keepalive?: boolean;
+    cache?: 'no-store';
+    credentials?: 'omit';
+    referrerPolicy?: 'no-referrer';
+    redirect?: 'error';
+    signal?: AbortSignal;
+  },
 ) => Promise<HttpResponse>;
 
 /** Web Storage (localStorage / sessionStorage). setItem may throw when the browser's storage is full. */

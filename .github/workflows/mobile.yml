@@ -26,10 +26,10 @@ name: Mobile
 on:
   pull_request:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', 'data/free/**', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'data/crisc/**', 'data/aaia/**', 'data/cia/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', 'data/free/**', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'data/crisc/**', 'data/aaia/**', 'data/cia/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'assets/kaisip-password-words.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
   push:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', 'data/free/**', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'data/crisc/**', 'data/aaia/**', 'data/cia/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', 'data/free/**', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'data/crisc/**', 'data/aaia/**', 'data/cia/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'assets/kaisip-password-words.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
 
 # Read-only token: `npm ci` runs third-party install scripts, which must not
 # be able to push to the repo.
@@ -74,8 +74,17 @@ jobs:
         run: node scripts/check-release-config.mjs
       - name: Cloud guard G8 (the server's copies of the board's text rules match the engine)
         run: node scripts/sync-shared.mjs --check
-      - name: Website bundle guard (assets/kaisip-plant.js and kaisip-cloud.js match their sources)
+      - name: Website bundle guard (assets/kaisip-plant.js, kaisip-cloud.js and kaisip-password-words.js match their sources)
         run: node scripts/build-web-plant.mjs --check
+      - name: Password lists guard (passwordBlocklist.ts and passwordWords.ts match the pinned sources; the Filipino review copy matches its source)
+        # The two sources (8.5 MB and 4.2 MB) are not kept in the repo: download the pinned
+        # copies; the builder refuses any file whose SHA-256 is not the recorded one.
+        run: |
+          urls=$(node scripts/build-password-blocklist.mjs --urls)
+          curl -fsSL --retry 3 -o "$RUNNER_TEMP/xato-1m.txt" "$(echo "$urls" | sed -n 1p)"
+          curl -fsSL --retry 3 -o "$RUNNER_TEMP/words_alpha.txt" "$(echo "$urls" | sed -n 2p)"
+          node scripts/build-password-blocklist.mjs --xato "$RUNNER_TEMP/xato-1m.txt" --words "$RUNNER_TEMP/words_alpha.txt" --check
+          node scripts/build-password-blocklist.mjs --docs --check
       - name: Lint (includes the design-system guard)
         run: npm run lint
       - name: Unit + content tests

@@ -35,6 +35,12 @@
 #   only in the /beta-desk rule, because Cloudflare JOINS this policy with
 #   every page's own and the browser enforces both: a host missing here is
 #   blocked everywhere. The web app's accounts need the same two hosts.
+#   Leaked-password check (28 Nov 2026, owner decision): api.pwnedpasswords.com
+#   (connect only), for the password forms of the web app's sign-in. Only the
+#   first 5 characters of a password hash are ever sent (k-anonymity). Pages
+#   with their own stricter policy (the home page, the legal pages) still
+#   block it, because the browser enforces both policies. Nothing calls it
+#   until a password form exists.
 /*
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   X-Content-Type-Options: nosniff
@@ -42,7 +48,7 @@
   X-Frame-Options: DENY
   Cross-Origin-Opener-Policy: same-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com/gtag/js https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://docs.google.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com https://ziadnvepttlgcowvqvom.supabase.co; frame-src https://docs.google.com https://challenges.cloudflare.com; form-action https://docs.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com/gtag/js https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://docs.google.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com https://ziadnvepttlgcowvqvom.supabase.co https://api.pwnedpasswords.com; frame-src https://docs.google.com https://challenges.cloudflare.com; form-action https://docs.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'
 
 # The home page. While SITE_MODE=landing (the default in
 # scripts/build_site.sh) it is the beta landing page (a copy of beta.html), so

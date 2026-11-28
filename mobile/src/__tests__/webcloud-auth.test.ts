@@ -5,7 +5,8 @@
  * reuse detection. Covers:
  * - PKCE: S256 checked against Node's own SHA-256; the authorize address; the
  *   verifier lives in sessionStorage only and is deleted after the exchange;
- * - email codes: send (with the captcha token), verify, calm error codes;
+ * - the sign-up code: send (with the captcha token), verify, calm error codes
+ *   (code sign-in itself is gone: codes only confirm or reset, passwords.test);
  * - where the session lives: localStorage, or sessionStorage on a shared
  *   computer (only ever one copy); a damaged value reads as signed out;
  * - refresh under the 'kaisip-auth' lock: two tabs refresh ONCE, and
@@ -24,7 +25,7 @@ import { toCloudError } from '../webcloud/errors';
 import { challengeFor, isVerifier, makeVerifier, tokenClaims } from '../webcloud/pkce';
 import { readSession } from '../webcloud/session';
 import type { LockPort } from '../webcloud/ports';
-import { FAKE_KEY, FAKE_URL, FakeSupabase, memoryStorage, seqRandom } from '../../jest/webcloud-fakes';
+import { FAKE_KEY, FAKE_URL, FakeSupabase, memoryStorage, passwordSignIn, seqRandom, TEST_PASSWORD, testPasswordWords } from '../../jest/webcloud-fakes';
 
 let now = Date.UTC(2026, 9, 28, 9, 0, 0);
 const clock = { now: () => now };
@@ -32,7 +33,7 @@ let server: FakeSupabase;
 let local: ReturnType<typeof memoryStorage>;
 let session: ReturnType<typeof memoryStorage>;
 const tab = (lock: LockPort = sharedLock, sessionStore = session) =>
-  createWebAuth({ fetch: server.fetch, stores: { local, session: sessionStore }, random: seqRandom(), lock, clock, url: FAKE_URL, apiKey: FAKE_KEY });
+  createWebAuth({ fetch: server.fetch, stores: { local, session: sessionStore }, random: seqRandom(), lock, clock, url: FAKE_URL, apiKey: FAKE_KEY, passwordWords: testPasswordWords });
 let sharedLock: LockPort;
 
 const codeOf = async (p: Promise<unknown>) => {
@@ -43,10 +44,8 @@ const codeOf = async (p: Promise<unknown>) => {
     return e instanceof CloudError ? `${e.code}${e.detail ? `:${e.detail}` : ''}` : `other:${String(e)}`;
   }
 };
-async function signIn(a: WebAuth, email = 'maya@example.com', shared = false) {
-  await a.sendEmailCode(email);
-  return a.verifyEmailCode(email, server.codes.get(email)!, { shared });
-}
+/** Signs in the way learners do (a password sign-up the first time, then the password). */
+const signIn = (a: WebAuth, email = 'maya@example.com', shared = false) => passwordSignIn(server, a, email, shared);
 
 beforeEach(() => {
   now = Date.UTC(2026, 9, 28, 9, 0, 0);
@@ -125,15 +124,15 @@ describe('PKCE (RFC 7636)', () => {
   });
 });
 
-describe('email codes', () => {
+describe('the sign-up code', () => {
   it('sends with the captcha token and signs in with the code; the session goes to localStorage', async () => {
     const a = tab();
-    await a.sendEmailCode('  Maya@Example.com ', { captchaToken: 'turnstile-token' });
+    await a.startPasswordSignUp('  Maya@Example.com ', TEST_PASSWORD, { captchaToken: 'turnstile-token' });
     const send = server.calls.find((c) => c.path === '/auth/v1/otp')!;
     expect(send.body).toEqual({ email: 'maya@example.com', create_user: true, gotrue_meta_security: { captcha_token: 'turnstile-token' } });
     expect(send.headers.apikey).toBe(FAKE_KEY);
     expect(send.headers.authorization).toBeUndefined();
-    const info = await a.verifyEmailCode('maya@example.com', server.codes.get('maya@example.com')!);
+    const info = (await a.finishPasswordSignUp('maya@example.com', server.codes.get('maya@example.com')!, TEST_PASSWORD)).account;
     expect(info.providers).toEqual(['email']);
     expect(info.authAt).toBe(Math.floor(now / 1000) * 1000);
     expect(a.current()?.userId).toBe(info.userId);
@@ -144,13 +143,13 @@ describe('email codes', () => {
 
   it('a wrong code, a bad address and a rate limit get calm codes (never server text)', async () => {
     const a = tab();
-    expect(await codeOf(a.sendEmailCode('not-an-email'))).toBe('invalid:email');
-    await a.sendEmailCode('maya@example.com');
-    expect(await codeOf(a.verifyEmailCode('maya@example.com', '00000000'))).toBe('invalid:code_wrong');
-    expect(await codeOf(a.verifyEmailCode('maya@example.com', 'abc'))).toBe('invalid:code_wrong');
+    expect(await codeOf(a.startPasswordSignUp('not-an-email', TEST_PASSWORD))).toBe('invalid:email');
+    await a.startPasswordSignUp('maya@example.com', TEST_PASSWORD);
+    expect(await codeOf(a.finishPasswordSignUp('maya@example.com', '00000000', TEST_PASSWORD))).toBe('invalid:code_wrong');
+    expect(await codeOf(a.finishPasswordSignUp('maya@example.com', 'abc', TEST_PASSWORD))).toBe('invalid:code_wrong');
     server.force('/auth/v1/otp', 429, { code: 429, error_code: 'over_email_send_rate_limit', msg: 'email rate limit exceeded' }, { 'Retry-After': '60' });
     try {
-      await a.sendEmailCode('maya@example.com');
+      await a.startPasswordSignUp('maya@example.com', TEST_PASSWORD);
       throw new Error('expected a rate limit');
     } catch (e) {
       expect(e).toBeInstanceOf(CloudError);
@@ -159,9 +158,9 @@ describe('email codes', () => {
       expect((e as CloudError).message).toBe('rate_limited');
     }
     server.force('/auth/v1/otp', 400, { code: 400, error_code: 'captcha_failed', msg: 'captcha protection: request disallowed' });
-    expect(await codeOf(a.sendEmailCode('maya@example.com'))).toBe('invalid:captcha');
+    expect(await codeOf(a.startPasswordSignUp('maya@example.com', TEST_PASSWORD))).toBe('invalid:captcha');
     server.offline = true;
-    expect(await codeOf(a.sendEmailCode('maya@example.com'))).toBe('offline');
+    expect(await codeOf(a.startPasswordSignUp('maya@example.com', TEST_PASSWORD))).toBe('offline');
   });
 });
 
@@ -264,12 +263,32 @@ describe('refresh under the lock (§1.2 mitigation 4)', () => {
     server.force('/auth/v1/user', 401, { code: 401, error_code: 'bad_jwt', msg: 'expired' });
     expect((await a.getUser()).email).toBe('maya@example.com');
     expect(server.refreshCalls()).toBe(1);
-    expect(server.calls.filter((c) => c.path === '/auth/v1/user')).toHaveLength(2);
+    expect(server.calls.filter((c) => c.method === 'GET' && c.path === '/auth/v1/user')).toHaveLength(2);
     // Twice in a row: only one refresh, then "signed out" (not a loop).
     server.force('/rest/v1/profiles', 401, { code: 'PGRST301', message: 'JWT expired' });
     server.force('/rest/v1/profiles?select', 401, { code: 'PGRST301', message: 'JWT expired' });
     expect(await codeOf(a.termsVersion())).toBe('unauthorized');
     expect(server.refreshCalls()).toBe(2);
+  });
+
+  it('GoTrue\'s 403 bad_jwt (an expired token) refreshes once too; insufficient_aal and session_not_found never do', async () => {
+    const a = tab();
+    await signIn(a);
+    const gets = () => server.calls.filter((c) => c.method === 'GET' && c.path === '/auth/v1/user').length;
+    // The token has run out on the server (the fake answers 403 bad_jwt, like GoTrue v2.199.0),
+    // but this computer thinks it still has an hour.
+    const s = readSession(local.getItem(SESSION_KEY))!;
+    now += 3_600_000 + 1000;
+    local.setItem(SESSION_KEY, JSON.stringify({ ...s, expiresAt: now + 3_600_000 }));
+    expect((await a.getUser()).email).toBe('maya@example.com');
+    expect(server.refreshCalls()).toBe(1);
+    expect(gets()).toBe(2);
+    server.force('/auth/v1/user', 403, { code: 403, error_code: 'insufficient_aal', msg: 'AAL2 required' });
+    expect(await codeOf(a.getUser())).toBe('unauthorized');
+    expect(server.refreshCalls()).toBe(1);
+    server.force('/auth/v1/user', 403, { code: 403, error_code: 'session_not_found', msg: 'Session from session_id claim in JWT does not exist' });
+    expect(await codeOf(a.getUser())).toBe('unauthorized');
+    expect(server.refreshCalls()).toBe(1);
   });
 });
 

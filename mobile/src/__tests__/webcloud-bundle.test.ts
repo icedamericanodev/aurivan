@@ -12,6 +12,7 @@
  * - Only KaiSipCloud.create is exposed, and it runs only on https://kaisip.com.
  * - The bundle holds no secret-shaped text, only the public URL and key.
  */
+import { createHash } from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import vm from 'vm';
@@ -31,9 +32,18 @@ const APP = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'app.jso
 
 const LIVE_STORES = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'LIVE_STORE_VERSIONS.json'), 'utf8'));
 
-/** The committed bundle, run like a browser script. `origin`: the page's location.origin (none: like Node). */
-function loadCloud(origin?: string): any {
+const WORDS_ASSET = path.join(ROOT, 'assets', 'kaisip-password-words.js');
+/** The committed word-list file, run like a browser script (window.KaiSipPasswordWords). */
+function loadWords(): any {
   const sandbox: Record<string, unknown> = {};
+  sandbox.window = sandbox;
+  vm.runInNewContext(fs.readFileSync(WORDS_ASSET, 'utf8'), sandbox, { filename: 'kaisip-password-words.js' });
+  return sandbox.KaiSipPasswordWords;
+}
+
+/** The committed bundle, run like a browser script. `origin`: the page's location.origin (none: like Node). */
+function loadCloud(origin?: string, globals: Record<string, unknown> = {}): any {
+  const sandbox: Record<string, unknown> = { ...globals };
   sandbox.window = sandbox;
   if (origin !== undefined) sandbox.location = { origin };
   vm.runInNewContext(fs.readFileSync(ASSET, 'utf8'), sandbox, { filename: 'kaisip-cloud.js' });
@@ -51,7 +61,24 @@ describe('the cloud bundle', () => {
     expect(K.liveStoreVersions).toEqual(LIVE_STORES);
     expect(typeof K.create).toBe('function');
     expect(K.cloud).toBeUndefined();
-    expect(Object.keys(K).sort()).toEqual(['accountsAllowed', 'browser', 'config', 'create', 'liveStoreVersions', 'liveVersion', 'sourceHash']);
+    expect(Object.keys(K).sort()).toEqual(['accountsAllowed', 'breach', 'browser', 'config', 'create', 'liveStoreVersions', 'liveVersion', 'passwordRules', 'passwordWordsIntegrity', 'passwordWordsRef', 'sourceHash']);
+    // The ?v= the page loads the word lists with: the words file's own fingerprint; and its
+    // full SHA-256 in Subresource Integrity form for <script integrity="...">.
+    const wordsText = fs.readFileSync(WORDS_ASSET, 'utf8');
+    expect(K.passwordWordsRef).toBe(bundle.refFor(wordsText));
+    expect(K.passwordWordsIntegrity).toBe(`sha256-${createHash('sha256').update(wordsText).digest('base64')}`);
+    // Test-only helpers are not public.
+    for (const m of Object.values(K)) if (m && typeof m === 'object') for (const k of Object.keys(m)) expect(k).not.toMatch(/ForTest$/);
+    expect(typeof K.passwordRules.loadPasswordWords).toBe('function');
+    // The password rules are there for the forms (the client checks again before sending).
+    expect(K.passwordRules.checkPassword('aaaaaaaaaaaaaaa')).toEqual(['common']);
+    expect(K.passwordRules.checkPassword('ocean violet lamp seven')).toEqual([]);
+    expect(K.passwordRules.PASSWORD_MIN_CHARS).toBe(15);
+    // The leaked-password check is on, with its one host and the SHA-1 adapter for the page.
+    expect(K.config.BREACH_CHECK_ON).toBe(true);
+    expect(K.config.BREACH_HOST).toBe('https://api.pwnedpasswords.com');
+    expect(typeof K.browser.browserSha1Hex).toBe('function');
+    expect(typeof K.breach.createBreachCheck).toBe('function');
     expect(typeof K.browser.browserLocks).toBe('function');
     expect(K.config.SUPABASE_URL).toBe(SUPABASE_URL);
     expect(Object.isFrozen(K)).toBe(true);
@@ -81,6 +108,50 @@ describe('the cloud bundle', () => {
     expect(() => loadCloud('http://localhost:8000').create(opts({ devOrigin: true }))).not.toThrow();
   });
 
+  it('create gives the leaked-password check the page\'s crypto.subtle SHA-1 when there is one, and the pure one when not', async () => {
+    const lookups: string[] = [];
+    const run = async (globals: Record<string, unknown>) => {
+      const server = new FakeSupabase(() => Date.UTC(2026, 10, 28));
+      const K = loadCloud(undefined, { setTimeout, clearTimeout, AbortController, ...globals });
+      const c = K.create({
+        fetch: async (url: string, init: { headers: Record<string, string> }) => {
+          if (!url.startsWith('https://api.pwnedpasswords.com/')) return server.fetch(url, init as never);
+          lookups.push(url.slice(-5));
+          return { status: 200, headers: { get: () => null }, text: async () => '0018A45C4D1DEF81644B54AB7F969B88D65:0' };
+        },
+        stores: { local: memoryStorage(), session: memoryStorage() },
+        random: seqRandom(),
+        lock: K.browser.pageLocks(),
+        clock: { now: () => Date.UTC(2026, 10, 28) },
+        gzip: { CompressionStream, DecompressionStream, ReadableStream },
+        host: fakeWeb().host,
+        bank: BANK,
+        devOrigin: true,
+        url: FAKE_URL,
+        apiKey: FAKE_KEY,
+        passwordWords: async () => {
+          const W = loadWords();
+          return { short: W.words.PASSWORD_SHORT_LIST, dict: W.words.PASSWORD_DICT_LIST, local: W.words.PASSWORD_LOCAL_LIST, names: W.words.PASSWORD_NAMES_LIST };
+        },
+      });
+      await c.auth.startPasswordSignUp('maya@example.com', 'ocean violet lamp seven');
+      return c.auth.breachState();
+    };
+    const digests: string[] = [];
+    const subtle = {
+      digest: async (alg: string, data: Uint8Array) => {
+        digests.push(alg);
+        return new Uint8Array(createHash('sha1').update(data).digest()).buffer;
+      },
+    };
+    expect(await run({ crypto: { subtle } })).toBe('clean');
+    expect(digests).toEqual(['SHA-1', 'SHA-1']);
+    const withSubtle = lookups.splice(0);
+    expect(await run({})).toBe('clean'); // no crypto.subtle (Hermes, http): the pure SHA-1, same prefixes
+    expect(lookups).toEqual(withSubtle);
+    expect(withSubtle).toEqual(['ocean violet lamp seven', 'oceanvioletlampseven'].map((f) => createHash('sha1').update(f).digest('hex').toUpperCase().slice(0, 5)));
+  });
+
   it('signs in and syncs from the bundle; every push says LIVE_VERSION, even if the page asks otherwise (W11)', async () => {
     let now = Date.UTC(2026, 9, 28, 9, 0, 0);
     const server = new FakeSupabase(() => now);
@@ -100,10 +171,20 @@ describe('the cloud bundle', () => {
       devOrigin: true,
       url: FAKE_URL,
       apiKey: FAKE_KEY,
+      // The page fetches the word lists only when a password form opens (a separate file).
+      passwordWords: async () => {
+        const W = loadWords();
+        return { short: W.words.PASSWORD_SHORT_LIST, dict: W.words.PASSWORD_DICT_LIST, local: W.words.PASSWORD_LOCAL_LIST, names: W.words.PASSWORD_NAMES_LIST };
+      },
       wait: async () => {},
     });
-    await c.auth.sendEmailCode('maya@example.com');
-    const info = await c.auth.verifyEmailCode('maya@example.com', server.codes.get('maya@example.com')!);
+    // The sign-up loads the lists first (fail closed), so "monkeymonkeymonkey" is refused.
+    expect(await c.auth.startPasswordSignUp('maya@example.com', 'monkeymonkeymonkey').then(() => 'ok', (e: { detail?: string }) => e.detail)).toBe('password_common');
+    expect(K.passwordRules.passwordWordsLoaded()).toBe(true);
+    await c.auth.startPasswordSignUp('maya@example.com', 'ocean violet lamp seven');
+    const done = await c.auth.finishPasswordSignUp('maya@example.com', server.codes.get('maya@example.com')!, 'ocean violet lamp seven');
+    expect(done.passwordSaved).toBe(true);
+    const info = done.account;
     await c.auth.acceptTerms({ termsVersion: TERMS_VERSION, ageConfirmed: true });
     webAnswer(web, QUESTION_IDS[0], true, now - 1000);
     const prep = await c.prepareFirst();
@@ -125,6 +206,30 @@ describe('the cloud bundle', () => {
       .filter((l) => l.trim() && !l.trim().startsWith('#'));
     for (const p of patterns) expect(new RegExp(p).test(text)).toBe(false);
   });
+});
+
+describe('the password word-list file (loaded only when a password form opens)', () => {
+  it('is up to date with its source, holds only the four scrambled lists, and is not in the cloud bundle', () => {
+    expect(bundle.checkBundle(undefined, 'passwordWords')).toEqual([]);
+    const W = loadWords();
+    expect(Object.keys(W).sort()).toEqual(['sourceHash', 'words']);
+    expect(Object.keys(W.words).sort()).toEqual(['PASSWORD_DICT_LIST', 'PASSWORD_DICT_SIZE', 'PASSWORD_LOCAL_LIST', 'PASSWORD_LOCAL_SIZE', 'PASSWORD_NAMES_LIST', 'PASSWORD_NAMES_SIZE', 'PASSWORD_SHORT_LIST', 'PASSWORD_SHORT_SIZE']);
+    expect(W.words.PASSWORD_SHORT_SIZE).toBe(100000);
+    expect(W.words.PASSWORD_DICT_SIZE).toBeGreaterThan(15000);
+    expect(W.words.PASSWORD_LOCAL_SIZE).toBeGreaterThan(500);
+    // The cloud bundle accepts only these exact lists (sizes and SHA-256 recorded at build time).
+    const K = loadCloud();
+    expect(K.passwordRules.loadPasswordWords({ short: W.words.PASSWORD_SHORT_LIST.slice(0, 5000), dict: W.words.PASSWORD_DICT_LIST, local: W.words.PASSWORD_LOCAL_LIST, names: W.words.PASSWORD_NAMES_LIST })).toBe(false);
+    expect(K.passwordRules.loadPasswordWords({ short: W.words.PASSWORD_SHORT_LIST, dict: W.words.PASSWORD_DICT_LIST, local: W.words.PASSWORD_LOCAL_LIST, names: W.words.PASSWORD_NAMES_LIST })).toBe(true);
+    const cloudText = fs.readFileSync(ASSET, 'utf8');
+    expect(cloudText).not.toContain('PASSWORD_DICT_LIST');
+    expect(cloudText).not.toContain('PASSWORD_SHORT_LIST');
+    // Scrambled: a common word is not there as plain text.
+    const wordsText = fs.readFileSync(WORDS_ASSET, 'utf8');
+    expect(wordsText).not.toMatch(/\bcongratulations\b/);
+    expect(wordsText).not.toMatch(/\nfootball\b/);
+    expect(wordsText).not.toMatch(/mahalkita/);
+  }, 60_000);
 });
 
 describe('the version-stamp rule (LIVE_VERSION)', () => {
