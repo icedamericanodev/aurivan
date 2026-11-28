@@ -346,6 +346,33 @@ prep provider.
 ## Knowledge: opened 2026-11-26 OpenStax, Principles of Management (Rice University, published 20 March 2019, CC BY-NC-SA 4.0; the only edition in OpenStax's catalogue); topics 2A3, 2B5 (https://assets.openstax.org/oscms-prodcms/media/documents/principles-management_-_WEB.pdf)
 - OpenStax Principles of Management Section 9.6 Measuring and Evaluating Strategic Performance
 
+## Knowledge: opened 2026-11-27 ISA 500 Audit Evidence, IAASB 2026 Handbook Volume 1 (published September 2026; the ISA in force, effective for audits of financial statements for periods beginning on or after 15 December 2009; the proposed revision is an exposure draft open for comment until 15 December 2026, not final); an external-audit standard used for method facts only, never for who does what in internal auditing; topics 2A6, 2B1, 2B2 (https://ifacweb.blob.core.windows.net/publicfiles/2026-09/IAASB-Handbook-2026-Edition-Volume-1.pdf)
+- ISA 500 Audit Evidence, paragraph 5 Definitions
+- ISA 500 Audit Evidence, paragraphs A5 to A10 Sufficient Appropriate Audit Evidence
+- ISA 500 Audit Evidence, paragraphs A11 to A13 Sources of Audit Evidence
+- ISA 500 Audit Evidence, paragraphs A14 to A17 Audit Procedures for Obtaining Audit Evidence
+- ISA 500 Audit Evidence, paragraphs A18 to A20 Inspection
+- ISA 500 Audit Evidence, paragraph A21 Observation
+- ISA 500 Audit Evidence, paragraph A22 External Confirmation
+- ISA 500 Audit Evidence, paragraph A23 Recalculation
+- ISA 500 Audit Evidence, paragraph A24 Reperformance
+- ISA 500 Audit Evidence, paragraph A25 Analytical Procedures
+- ISA 500 Audit Evidence, paragraphs A26 to A29 Inquiry
+- ISA 500 Audit Evidence, paragraphs A31 to A34 Relevance
+- ISA 500 Audit Evidence, paragraph A35 Reliability
+- ISA 500 Audit Evidence, paragraphs A63 to A67 Selecting Items for Testing to Obtain Audit Evidence
+- ISA 500 Audit Evidence, paragraphs 11 and A68 Inconsistency in, or Doubts over Reliability of, Audit Evidence
+
+## Knowledge: opened 2026-11-27 ISA 520 Analytical Procedures, IAASB 2026 Handbook Volume 1 (published September 2026; the ISA in force, effective for audits of financial statements for periods beginning on or after 15 December 2009; the proposed revision is an exposure draft open for comment until 15 December 2026, not final); an external-audit standard used for method facts only, never for who does what in internal auditing; topics 2A6, 2B2, 2B5 (https://ifacweb.blob.core.windows.net/publicfiles/2026-09/IAASB-Handbook-2026-Edition-Volume-1.pdf)
+- ISA 520 Analytical Procedures, paragraphs 4 and A1 to A3 Definition of Analytical Procedures
+- ISA 520 Analytical Procedures, paragraphs 5 and A4 to A5 Substantive Analytical Procedures
+- ISA 520 Analytical Procedures, paragraphs 5(a) and A6 to A11 Suitability of Particular Analytical Procedures for Given Assertions
+- ISA 520 Analytical Procedures, paragraphs 5(b) and A12 to A14 The Reliability of the Data
+- ISA 520 Analytical Procedures, paragraphs 5(c) and A15 Evaluation Whether the Expectation Is Sufficiently Precise
+- ISA 520 Analytical Procedures, paragraphs 5(d) and A16 Amount of Difference of Recorded Amounts from Expected Values that Is Acceptable
+- ISA 520 Analytical Procedures, paragraphs 6 and A17 to A19 Analytical Procedures that Assist When Forming an Overall Conclusion
+- ISA 520 Analytical Procedures, paragraphs 7 and A20 to A21 Investigating Results of Analytical Procedures
+
 ## Likely: not opened (for purchase: the textbook, primary reference 2, sold in the IIA Bookstore)
 - Internal Auditing: Assurance & Advisory Services, 6th edition
 
