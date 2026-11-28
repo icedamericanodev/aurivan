@@ -1095,6 +1095,9 @@ PASSES = [
     ("'IIA guidance' in a stem: a warning only", ["style_cia.py"],
      q0(setf("question", "According to IIA guidance, what should the internal auditor do first about a skipped "
                          "approval step?")), "warn  cia1_d1_001: 'IIA guidance' in the stem"),
+    ("'IIA ... guidance' with words between: a warning only", ["style_cia.py"],
+     q0(setf("question", "Under current IIA Three Lines guidance, what should the internal auditor do first about a "
+                         "skipped approval step?")), "warn  cia1_d1_001: 'IIA guidance' in the stem"),
     ("an 'I and II' option: a warning only", ["style_cia.py"], q0(first_wrong(text="I and II only"), n=2),
      "warn  cia1_d1_003: an 'I and II' combination option"),
     # The 'consulting services' case above proves pre_read is read, so these words were seen and let through.
