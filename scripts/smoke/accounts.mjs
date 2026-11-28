@@ -107,7 +107,7 @@ async function handle(route, server, net, origin) {
     net.turnstile++;
     if (net.turnstileMode === 'down') return route.abort('failed');
     // A stand-in for Cloudflare's widget: it "passes" 30 ms after it is drawn, and again after each reset.
-    return route.fulfill({ status: 200, contentType: 'text/javascript', body: `window.__ts={n:0,opts:null,actions:[]};window.turnstile={render:function(el,o){window.__ts.opts=o;window.__ts.actions.push(o.action);el.setAttribute('data-ts','1');var k=++window.__ts.n;setTimeout(function(){o.callback('ts-token-'+k);},30);return 'w1';},reset:function(){var o=window.__ts.opts;var k=++window.__ts.n;setTimeout(function(){o&&o.callback('ts-token-'+k);},30);},remove:function(){}};` });
+    return route.fulfill({ status: 200, contentType: 'text/javascript', body: `window.__ts={n:0,opts:null,actions:[]};window.turnstile={render:function(el,o){if(typeof el==='string')el=document.querySelector(el);window.__ts.opts=o;window.__ts.actions.push(o.action);el.setAttribute('data-ts','1');var k=++window.__ts.n;setTimeout(function(){o.callback('ts-token-'+k);},30);return 'w1';},reset:function(){var o=window.__ts.opts;var k=++window.__ts.n;setTimeout(function(){o&&o.callback('ts-token-'+k);},30);},remove:function(){}};(function(){var m=/[?&]onload=([A-Za-z_]+)/.exec((document.currentScript||{}).src||'');if(m&&typeof window[m[1]]==='function')window[m[1]]();})();` });
   }
   net.third.push(req.url());
   return route.abort('blockedbyclient');
@@ -192,16 +192,16 @@ async function noOverflow(page, c, label) { const o = await overflow(page); c.ch
 // The account parts of a study-app page (the rest of the page is the existing app, scanned by its own gates).
 const KA_PARTS = ['#kaCard', '.ka-rail-wrap', '#kaTop', '#kaAccount', '#flagModal'];
 // axe (WCAG 2.2 AA and best practice). An account screen is scanned whole; on a study-app page only the account parts.
-async function axe(page, c, label) {
+async function axe(page, c, label, wholePage = false) {
   if (!axeSrc) { c.note('axe-core not found: accessibility scan skipped for ' + label); return; }
   await page.evaluate(axeSrc);
-  const r = await page.evaluate(async (parts) => {
-    const whole = document.body.hasAttribute('data-ka-view');
+  const r = await page.evaluate(async ({ parts, wholePage }) => {
+    const whole = wholePage || document.body.hasAttribute('data-ka-view');
     const here = parts.filter((s) => { const e = document.querySelector(s); return e && e.getClientRects().length > 0 && e.innerHTML.trim() !== ''; });
     if (!whole && !here.length) return ['nothing to scan'];
     const res = await window.axe.run(whole ? document : { include: here.map((s) => [s]) }, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'] } });
     return res.violations.map((v) => `${v.id} (${v.impact}): ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`);
-  }, KA_PARTS);
+  }, { parts: KA_PARTS, wholePage });
   c.check(r.length === 0, `axe on ${label}: ${r.join('; ')}`);
 }
 // Signed in, and no sync is running: what the card says now is what it will keep saying.
@@ -1098,6 +1098,167 @@ if (wanted('A9')) {
     });
     await ctx.close();
   }
+}
+
+// ── A10. The two account pages (published only with accounts on or SITE_ACCOUNTS_PREVIEW=1) ──
+if (wanted('A10')) {
+  const { ctx, page, server, net } = await setup({ view: 'phone' });
+  await makeAccount(server);
+  await rec.run('A10', 'kaisip.com/delete-account works signed out (steps, email) and signed in (its button opens the Delete account step); the human check returns to the app', page, async (c) => {
+    await page.goto(SITE + '/delete-account');
+    c.check((await text(page, 'h1')) === 'Delete your KaiSip account', 'the page title');
+    const body = await text(page, 'main');
+    c.check(/In the Android app/.test(body) && /On the website/.test(body) && /Without the app or the website/.test(body) && /What we delete/.test(body) && /What we keep, and for how long/.test(body) && /certprep\.support@gmail\.com/.test(body), 'how to delete (app, website, email), what is deleted and what is kept');
+    c.check(!/draft|not in effect|\[/i.test(body), 'no draft wording or placeholder');
+    await axe(page, c, 'the delete-account page', true);
+    for (const w of [320, 390, 1280]) { await page.setViewportSize({ width: w, height: 800 }); await noOverflow(page, c, `delete-account at ${w}`); }
+    await page.setViewportSize({ width: 390, height: 844 });
+    await c.shot('a10-delete-account', page, true);
+    c.check(net.supabase === 0 && net.cloudJs === 0, 'the page itself loads no account script and contacts no service');
+    // Signed out: the button lands on Sign in, saying what comes next.
+    await page.click('a.act');
+    await waitView(page, 'signin');
+    c.check(/Sign in to the account you want to delete/.test(await text(page, '#kaNotice')), 'signed out: sign in first, then delete: ' + (await text(page, '#kaNotice')));
+    await page.fill('#kaEmail', EMAIL); await page.fill('#kaPass', PW); await page.press('#kaPass', 'Enter');
+    await page.waitForSelector('#flagModal #kaDelWord', { timeout: 15000 });
+    c.check((await page.evaluate(() => document.body.getAttribute('data-tab'))) === 'account', 'after signing in the Delete account step opens on the Account page');
+    await page.keyboard.press('Escape');
+    // Signed in already: straight to the step.
+    await page.goto(SITE + '/delete-account');
+    await page.click('a.act');
+    await page.waitForSelector('#flagModal #kaDelWord', { timeout: 15000 });
+    c.check(!!server.userByEmail(EMAIL), 'opening the step deletes nothing by itself');
+    // The Android app's human check.
+    const went = [];
+    page.on('request', (r) => { if (r.url().startsWith('kaisip://')) went.push(r.url()); });
+    page.on('framenavigated', () => {});
+    await page.goto(SITE + '/human-check?a=password_sign_in').catch(() => {});
+    await page.waitForFunction(() => /Done\. Taking you back to KaiSip\./.test(document.getElementById('msg').textContent) || location.protocol === 'kaisip:', null, { timeout: 8000 }).catch(() => {});
+    const hc = await page.evaluate(() => ({ msg: (document.getElementById('msg') || {}).textContent || '', action: window.__ts && window.__ts.actions[0], back: (document.getElementById('back') || {}).href })).catch(() => ({ msg: 'navigated', action: 'password_sign_in', back: 'kaisip://human-check' }));
+    c.check(/Done\. Taking you back|navigated/.test(hc.msg) && hc.action === 'password_sign_in' && hc.back === 'kaisip://human-check', 'the human check passes and returns to kaisip://human-check: ' + JSON.stringify(hc));
+  }, { allowErrors: true });
+  await ctx.close();
+}
+
+// ── A11 and the screenshots: every screen, 320 to 1280 wide, text at 200% ──
+// One walk through every screen. `shots` saves a picture of each (the folder);
+// `c` (a test) checks no sideways scroll at five widths and with text at 200%.
+const WIDTHS = [320, 360, 768, 1024, 1280];
+async function walk(v, scheme, shots, c) {
+  const snap = async (page, name, full = false) => {
+    if (c) {
+      const size = page.viewportSize();
+      for (const w of WIDTHS) { await page.setViewportSize({ width: w, height: size.height }); await sleep(60); await noOverflow(page, c, `${name} at ${w}px`); }
+      await page.setViewportSize(size);
+      // Text at 200% (the browser's own text size: every size in the app is rem).
+      await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+      await sleep(120);
+      await noOverflow(page, c, `${name} with text at 200%`);
+      const cut = await page.evaluate(() => [...document.querySelectorAll('#kaRoot button, #kaRoot a, #kaRoot input, #kaCard button, #kaCard a, #kaAccount button, #flagModal .ka-dlg button, #flagModal .ka-dlg input')].filter((e) => { const r = e.getBoundingClientRect(); return r.width > 0 && (r.left < -1 || r.right > document.documentElement.clientWidth + 1); }).map((e) => (e.id || e.className || e.tagName) + '').slice(0, 4));
+      c.check(cut.length === 0, `${name} with text at 200%: controls cut off: ${cut.join(', ')}`);
+      await page.evaluate(() => { document.documentElement.style.fontSize = ''; });
+      await sleep(60);
+    }
+    if (shots) { await sleep(120); await page.screenshot({ path: path.join(shots, `${name}_${v === 'phone' ? '390' : '1280'}_${scheme}.png`), fullPage: full }); }
+  };
+  const MAIL = 'jamie.reyes@example.com';
+  // 1. A first visit, then the sign-in and create-account screens.
+  let s = await setup({ view: v, scheme, onboarded: false });
+  let page = s.page, server = s.server;
+  await open(page);
+  await waitView(page, 'welcome'); await snap(page, '01-welcome');
+  await page.click('.ka-path-secondary'); await waitView(page, 'signin'); await snap(page, '02-sign-in');
+  await page.fill('#kaEmail', MAIL); await page.fill('#kaPass', 'this is not my password'); await page.press('#kaPass', 'Enter');
+  await page.waitForFunction(() => document.getElementById('kaPassE').textContent.length > 0); await snap(page, '03-sign-in-error');
+  await page.click('.ka-switch a'); await waitView(page, 'signup1'); await page.fill('#kaEmail', MAIL); await snap(page, '04-create-1-email');
+  await page.click('#kaGo'); await snap(page, '05-create-1-agreements-needed');
+  await page.check('#kaTerms', { force: true }); await page.check('#kaAge', { force: true });
+  await page.click('#kaGo'); await waitView(page, 'signup2');
+  await page.fill('#kaCode', '482715'); await page.focus('#kaCode'); await snap(page, '06-create-2-code');
+  await page.fill('#kaCode', '00000000'); await page.press('#kaCode', 'Enter');
+  await page.waitForFunction(() => document.getElementById('kaCodeE').textContent.length > 0); await snap(page, '07-create-2-wrong-code');
+  await page.fill('#kaCode', server.codes.get(MAIL)); await page.press('#kaCode', 'Enter'); await waitView(page, 'signup3');
+  await page.waitForFunction(() => window.KaiSipCloud && window.KaiSipCloud.passwordRules.passwordWordsLoaded(), null, { timeout: 15000 });
+  await page.fill('#kaPw', 'lantern'); await snap(page, '08-create-3-password-short');
+  await page.fill('#kaPw', 'passwordpassword'); await page.press('#kaPw', 'Enter');
+  await page.waitForFunction(() => document.getElementById('kaPwE').textContent.length > 0); await page.click('.ka-reveal'); await snap(page, '09-create-3-password-refused');
+  s.net.hibpMode = 'down';
+  await page.fill('#kaPw', PW); await snap(page, '10-create-3-password-good');
+  await page.press('#kaPw', 'Enter'); await waitView(page, ''); await settled(page);
+  await page.waitForFunction(() => /couldn.t check/.test(document.getElementById('globalToast').textContent)).catch(() => {});
+  if (shots) await page.screenshot({ path: path.join(shots, `11-created-leak-check-unavailable_${v === 'phone' ? '390' : '1280'}_${scheme}.png`) });
+  await sleep(7200);   // the toast leaves
+  // 2. Signed in: You and the Account page.
+  await snap(page, '12-you-signed-in');
+  await page.evaluate(() => navGoFocus(null, 'account')); await page.waitForFunction((e) => document.getElementById('kaHero').textContent.includes(e), MAIL); await snap(page, '13-account', true);
+  await page.click('#kaPwRow'); await page.waitForSelector('#flagModal #kaPw'); await snap(page, '14-account-change-password');
+  await page.keyboard.press('Escape'); await sleep(200);
+  await page.click('#kaDel'); await page.waitForSelector('#flagModal #kaDelWord'); await snap(page, '15-account-delete');
+  await page.keyboard.press('Escape'); await sleep(200);
+  await page.click('#kaOut'); await page.waitForSelector('#flagModal #kaWipe'); await snap(page, '16-account-sign-out');
+  await page.keyboard.press('Escape'); await sleep(200);
+  // 3. The states of the card.
+  await page.evaluate(() => navTo(null, 'you'));
+  server.offline = true; await page.evaluate(() => kaSyncNow(true)); await page.waitForFunction(() => /Waiting for a connection/.test(document.getElementById('kaCard').textContent)); await snap(page, '17-you-waiting-for-connection');
+  server.offline = false; server.force('/rest/v1/sync_snapshots', 503, {}); await page.evaluate(() => kaSyncNow(true)); await page.waitForFunction(() => /Couldn.t sync/.test(document.getElementById('kaCard').textContent)); await snap(page, '18-you-could-not-sync');
+  await page.evaluate(() => { const x = JSON.parse(localStorage.getItem('kaisip_auth_v1')); x.signedInAt = Date.now() - 31 * 86400000; localStorage.setItem('kaisip_auth_v1', JSON.stringify(x)); });
+  await page.reload(); await page.waitForFunction(() => document.body.hasAttribute('data-section')); await page.evaluate(() => navTo(null, 'you'));
+  await page.waitForFunction(() => /Please sign in again/.test((document.getElementById('kaCard') || {}).textContent || '')); await snap(page, '19-you-sign-in-ended');
+  // 4. Forgot password.
+  await page.click('#kaCard [data-f="again"]'); await waitView(page, 'signin');
+  await page.click('.ka-aside'); await waitView(page, 'forgot1'); await page.fill('#kaEmail', MAIL); await snap(page, '20-forgot-1-email');
+  await page.press('#kaEmail', 'Enter'); await waitView(page, 'forgot2');
+  await page.fill('#kaCode', server.codes.get(MAIL)); await page.fill('#kaPw', PW2); await snap(page, '21-forgot-2-code-and-password');
+  await s.ctx.close();
+  // 5. A guest on You: the full card, the slim row and its sheet.
+  s = await setup({ view: v, scheme }); page = s.page;
+  await open(page); await page.evaluate(() => navTo(null, 'you')); await page.waitForSelector('#kaCard'); await snap(page, '22-you-guest-full-card');
+  await page.evaluate(() => { localStorage.setItem('kaisip_acct_card_v1', '{"slim":true}'); kaPaint(); }); await snap(page, '23-you-guest-slim-row');
+  await page.click('#kaCard .ka-card-main'); await page.waitForSelector('#flagModal [role=dialog]'); await snap(page, '24-you-offer-sheet');
+  await s.ctx.close();
+  // 6. Google, a new account: the agreements. Then the first-sync preview.
+  s = await setup({ view: v, scheme }); page = s.page; server = s.server;
+  await open(page, '#sign-in');
+  const [req] = await Promise.all([page.waitForRequest((r) => r.url().startsWith(SUPA + '/auth/v1/authorize')), page.click('.ka-btn-google')]);
+  await page.goto(`${APP}?code=${server.googleCode(new URL(req.url()).searchParams.get('code_challenge'), 'gina@gmail.com')}`);
+  await waitView(page, 'consent'); await snap(page, '25-google-agreements');
+  await s.ctx.close();
+  const shared = new F.FakeSupabase(() => Date.now()); shared.captchaOn = true;
+  await makeAccount(shared);
+  s = await setup({ view: v, scheme, server: shared, seed: profileSeed(freeIds(1, 12)) }); page = s.page;
+  await signIn(page); await waitView(page, 'firstsync'); await page.click('#kaGo'); await waitView(page, ''); await settled(page);
+  await s.ctx.close();
+  s = await setup({ view: v, scheme, server: shared, seed: profileSeed(freeIds(2, 7)) }); page = s.page;
+  await signIn(page); await waitView(page, 'firstsync'); await snap(page, '26-first-sync-preview');
+  await s.ctx.close();
+  // 7. The two account pages.
+  s = await setup({ view: v, scheme }); page = s.page;
+  await page.goto(SITE + '/delete-account'); await snap(page, '27-delete-account-page', true);
+  s.net.turnstileMode = 'down';
+  await page.goto(SITE + '/human-check'); await sleep(300); await snap(page, '28-human-check-page');
+  await s.ctx.close();
+}
+if (wanted('A11')) {
+  const probe = await setup({ view: 'phone' });
+  await rec.run('A11', 'Every screen: no sideways scroll from 320 to 1280 wide, and none with text at 200%', probe.page, async (c) => { await walk('phone', 'light', '', c); }, { allowErrors: true });
+  await probe.ctx.close();
+}
+if (SHOTS) {
+  fs.mkdirSync(SHOTS, { recursive: true });
+  for (const v of ['phone', 'desktop']) for (const scheme of ['light', 'dark']) { console.log(`shots: ${v} ${scheme}`); await walk(v, scheme, SHOTS, null); }
+  // The contact sheet: every picture, by screen.
+  const files = fs.readdirSync(SHOTS).filter((f) => /^\d\d-.*\.png$/.test(f)).sort();
+  const names = [...new Set(files.map((f) => f.replace(/_(390|1280)_(light|dark)\.png$/, '')))];
+  const cell = (n, k) => `<figure><img src="${n}_${k}.png" loading="eager"><figcaption>${k.replace('_', ' ')}</figcaption></figure>`;
+  const sheet = `<!doctype html><meta charset="utf-8"><title>KaiSip web accounts: every screen</title><style>body{margin:24px;background:#e9e6dc;font:14px/1.4 system-ui,sans-serif;color:#17231b}h1{font-size:22px}h2{font-size:16px;margin:28px 0 8px}.row{display:grid;grid-template-columns:1fr 1fr 3.2fr 3.2fr;gap:12px;align-items:start}figure{margin:0}img{width:100%;height:auto;display:block;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.2)}figcaption{font-size:12px;margin-top:4px;color:#465349}</style><h1>KaiSip web accounts (stream B1): every screen at 390 and 1280, light and dark</h1>${names.map((n) => `<h2>${n}</h2><div class="row">${['390_light', '390_dark', '1280_light', '1280_dark'].map((k) => cell(n, k)).join('')}</div>`).join('')}`;
+  fs.writeFileSync(path.join(SHOTS, 'sheet.html'), sheet);
+  const sp = await browser.newPage({ viewport: { width: 2200, height: 1200 }, deviceScaleFactor: 1 });
+  await sp.goto('file://' + path.join(SHOTS, 'sheet.html'));
+  await sp.waitForLoadState('networkidle').catch(() => {});
+  await sleep(500);
+  await sp.screenshot({ path: path.join(SHOTS, 'contact_sheet.png'), fullPage: true });
+  await sp.close();
+  console.log(`shots: ${files.length} pictures and contact_sheet.png in ${SHOTS}`);
 }
 
 await browser.close();

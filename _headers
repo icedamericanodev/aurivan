@@ -19,6 +19,10 @@
 # Cloudflare serves /privacy.html at /privacy (it drops ".html"), so each page
 # is listed both ways. A new page needs its own rule here (and a line in
 # scripts/build_site.sh).
+# Two pages are NOT listed here: /delete-account and /human-check, the account
+# pages. They are published only when accounts are on (or the build is asked
+# for them), and scripts/build_site.sh writes their rules into _site/_headers
+# then, with each page's one inline script allowed by its hash.
 
 # Every response.
 #   HSTS: browsers use HTTPS only for this site for a year. ("preload" is left
