@@ -277,7 +277,7 @@ exports.LETTERS = ['A', 'B', 'C', 'D'];
   defs["src/engine/account.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ALL_PROVIDERS = exports.EXPORT_EVERY_MS = exports.REAUTH_WINDOW_MS = exports.MAX_CODE_TRIES = exports.RESEND_WAIT_MS = exports.CODE_TTL_MS = exports.CODE_LENGTH = exports.TERMS_VERSION = void 0;
+exports.ALL_PROVIDERS = exports.EXPORT_EVERY_MS = exports.REAUTH_WINDOW_MS = exports.MAX_CODE_TRIES = exports.RESEND_WAIT_MS = exports.CODE_TTL_MS = exports.CODE_LENGTH = exports.NEWS_WORDING_VERSION = exports.PRIVACY_VERSION = exports.TERMS_VERSION = void 0;
 exports.parseProviders = parseProviders;
 exports.providersFor = providersFor;
 exports.normalizeEmail = normalizeEmail;
@@ -301,7 +301,9 @@ exports.createNonceGuard = createNonceGuard;
 const sha256_1 = require("./sha256");
 const streak_1 = require("./streak");
 const support_1 = require("./support");
-exports.TERMS_VERSION = '2026-11';
+exports.TERMS_VERSION = '2026-12';
+exports.PRIVACY_VERSION = '2026-12';
+exports.NEWS_WORDING_VERSION = '2026-12';
 exports.CODE_LENGTH = 6;
 exports.CODE_TTL_MS = 10 * 60000;
 exports.RESEND_WAIT_MS = 60000;
@@ -10423,7 +10425,10 @@ const sha1_1 = require("../engine/sha1");
 const errors_1 = require("./errors");
 const pkce_1 = require("./pkce");
 const session_1 = require("./session");
-const FUNCTIONS = new Set(['delete-account', 'export-my-data']);
+const FUNCTIONS = new Set(['delete-account', 'export-my-data', 'newsletter-sync']);
+const SOURCES = ['web', 'android', 'ios'];
+const VERSION_RE = /^\d{4}-\d{2}$/;
+const NEWS_STATES = ['not_configured', 'none', 'pending', 'subscribed', 'unsubscribed'];
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const CODE_RE = /^\d{6,10}$/;
 exports.PKCE_MAX_AGE_MS = 10 * 60000;
@@ -10824,7 +10829,7 @@ function createWebAuth(deps) {
             return true;
         return (0, passwordRules_1.passwordWordsLoaded)() && (0, passwordRules_1.checkPassword)(p, { email, names: namesOf(user) }).some((r) => r !== 'too_short' && r !== 'missing_characters');
     };
-    return {
+    const api = {
         async signInWithPassword(email, password, opts) {
             const e = emailOf(email);
             const { text, password: p } = await passwordGrant(e, password, opts === null || opts === void 0 ? void 0 : opts.captchaToken);
@@ -10841,6 +10846,13 @@ function createWebAuth(deps) {
             const p = newPasswordOf(password, e);
             await breachCheck(p);
             await requestCode(e, opts === null || opts === void 0 ? void 0 : opts.captchaToken);
+        },
+        async sendSignUpCode(email, opts) {
+            await requestCode(emailOf(email), opts === null || opts === void 0 ? void 0 : opts.captchaToken);
+        },
+        async confirmSignUpCode(email, code, opts) {
+            const e = emailOf(email);
+            return info((await verifyCode(e, code, 'email', Boolean(opts === null || opts === void 0 ? void 0 : opts.shared))).s);
         },
         async finishPasswordSignUp(email, code, password, opts) {
             breach = 'off';
@@ -11021,12 +11033,28 @@ function createWebAuth(deps) {
             return typeof v === 'string' && /^\d{4}-\d{2}$/.test(v) ? v : null;
         },
         async acceptTerms(v) {
-            if (!/^\d{4}-\d{2}$/.test(v.termsVersion) || v.ageConfirmed !== true)
+            if (!VERSION_RE.test(v.termsVersion) || v.ageConfirmed !== true)
+                throw new types_1.CloudError('invalid');
+            if (v.privacyVersion !== undefined && !VERSION_RE.test(v.privacyVersion))
+                throw new types_1.CloudError('invalid');
+            if (v.source !== undefined && !SOURCES.includes(v.source))
+                throw new types_1.CloudError('invalid');
+            if (v.news && (!VERSION_RE.test(v.news.wording) || v.source === undefined))
                 throw new types_1.CloudError('invalid');
             const s = store.read();
             if (!s)
                 throw signedOut();
-            const ins = await authedFetch('/rest/v1/profiles', { method: 'POST', headers: { prefer: 'return=minimal' }, body: JSON.stringify({ terms_version: v.termsVersion, age_confirmed: true }) }, 'rest');
+            const agreed = { terms_version: v.termsVersion };
+            if (v.privacyVersion)
+                agreed.privacy_version = v.privacyVersion;
+            const row = { ...agreed, age_confirmed: true };
+            if (v.source)
+                row.source = v.source;
+            if (v.news) {
+                row.marketing_opt_in = true;
+                row.marketing_wording = v.news.wording;
+            }
+            const ins = await authedFetch('/rest/v1/profiles', { method: 'POST', headers: { prefer: 'return=minimal' }, body: JSON.stringify(row) }, 'rest');
             const insText = await ins.text();
             if (ins.status >= 200 && ins.status < 300)
                 return;
@@ -11035,12 +11063,54 @@ function createWebAuth(deps) {
                 throw e;
             if (!UUID_RE.test(s.userId))
                 throw new types_1.CloudError('invalid');
-            const up = await authedFetch(`/rest/v1/profiles?id=eq.${s.userId}`, { method: 'PATCH', headers: { prefer: 'return=minimal' }, body: JSON.stringify({ terms_version: v.termsVersion }) }, 'rest');
+            const up = await authedFetch(`/rest/v1/profiles?id=eq.${s.userId}`, { method: 'PATCH', headers: { prefer: 'return=minimal' }, body: JSON.stringify(agreed) }, 'rest');
             const upText = await up.text();
             if (up.status < 200 || up.status >= 300)
                 throw (0, errors_1.toCloudError)('rest', up.status, upText, up);
+            if (v.news && v.source)
+                await api.setNews(true, { wording: v.news.wording, source: v.source });
+        },
+        async consent() {
+            const res = await authedFetch('/rest/v1/profiles?select=terms_version,privacy_version,marketing_opt_in,source&limit=1', { method: 'GET' }, 'rest');
+            const text = await res.text();
+            if (res.status < 200 || res.status >= 300)
+                throw (0, errors_1.toCloudError)('rest', res.status, text, res);
+            let rows;
+            try {
+                rows = JSON.parse(text);
+            }
+            catch {
+                throw new types_1.CloudError('server');
+            }
+            const r = Array.isArray(rows) && rows[0] && typeof rows[0] === 'object' ? rows[0] : null;
+            if (!r)
+                return null;
+            const version = (x) => (typeof x === 'string' && VERSION_RE.test(x) ? x : null);
+            const source = r.source === 'email' || SOURCES.includes(r.source) ? r.source : null;
+            return { termsVersion: version(r.terms_version), privacyVersion: version(r.privacy_version), newsOptIn: r.marketing_opt_in === true, source };
+        },
+        async setNews(optIn, v) {
+            if (typeof optIn !== 'boolean' || !VERSION_RE.test(v.wording) || !SOURCES.includes(v.source))
+                throw new types_1.CloudError('invalid');
+            const s = store.read();
+            if (!s)
+                throw signedOut();
+            if (!UUID_RE.test(s.userId))
+                throw new types_1.CloudError('invalid');
+            const res = await authedFetch(`/rest/v1/profiles?id=eq.${s.userId}`, { method: 'PATCH', headers: { prefer: 'return=minimal' }, body: JSON.stringify({ marketing_opt_in: optIn, marketing_wording: v.wording, source: v.source }) }, 'rest');
+            const text = await res.text();
+            if (res.status < 200 || res.status >= 300)
+                throw (0, errors_1.toCloudError)('rest', res.status, text, res);
+        },
+        async syncNews() {
+            const b = (0, errors_1.bodyObject)(await api.callFunction('newsletter-sync', {}));
+            const state = NEWS_STATES.includes(b.state) ? b.state : null;
+            if (!state || typeof b.synced !== 'boolean')
+                throw new types_1.CloudError('server');
+            return { synced: b.synced, optIn: b.synced && typeof b.optIn === 'boolean' ? b.optIn : null, state };
         },
     };
+    return api;
 }
   };
   links["src/webcloud/base64.ts"] = {};
@@ -11398,15 +11468,17 @@ function streamGzip(env) {
     };
 }
   };
-  links["src/webcloud/config.ts"] = {};
+  links["src/webcloud/config.ts"] = {"../engine/account":"src/engine/account.ts"};
   defs["src/webcloud/config.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WEB_CERT = exports.PASSWORD_FRESH_MS = exports.AUTH_ENDED_KEY = exports.RESET_RESEND_MS = exports.BREACH_HOST = exports.BREACH_CHECK_ON = exports.CODE_SESSION_MAX_MS = exports.SESSION_IDLE_MAX_MS = exports.SESSION_MAX_AGE_MS = exports.REFRESH_MARGIN_MS = exports.SYNC_LOCK = exports.AUTH_LOCK = exports.DEVICE_ID_KEY = exports.SYNC_UNDO_KEY = exports.SYNC_MIRROR_KEY = exports.SYNC_META_KEY = exports.PKCE_KEY = exports.SESSION_KEY = exports.ACCOUNT_ORIGIN = exports.REDIRECT_URL = exports.PUBLISHABLE_KEY = exports.SUPABASE_URL = void 0;
+exports.WEB_CERT = exports.PASSWORD_FRESH_MS = exports.AUTH_ENDED_KEY = exports.RESET_RESEND_MS = exports.BREACH_HOST = exports.BREACH_CHECK_ON = exports.CODE_SESSION_MAX_MS = exports.SESSION_IDLE_MAX_MS = exports.SESSION_MAX_AGE_MS = exports.REFRESH_MARGIN_MS = exports.SYNC_LOCK = exports.AUTH_LOCK = exports.DEVICE_ID_KEY = exports.SYNC_UNDO_KEY = exports.SYNC_MIRROR_KEY = exports.SYNC_META_KEY = exports.PKCE_KEY = exports.SESSION_KEY = exports.CONSENT = exports.ACCOUNT_ORIGIN = exports.REDIRECT_URL = exports.PUBLISHABLE_KEY = exports.SUPABASE_URL = void 0;
+const account_1 = require("../engine/account");
 exports.SUPABASE_URL = 'https://ziadnvepttlgcowvqvom.supabase.co';
 exports.PUBLISHABLE_KEY = 'sb_publishable_s9eKQUQ0w3MTnCUBF05EkA_5e_kGEw2';
-exports.REDIRECT_URL = 'https://kaisip.com/';
+exports.REDIRECT_URL = 'https://kaisip.com/app/';
 exports.ACCOUNT_ORIGIN = 'https://kaisip.com';
+exports.CONSENT = { terms: account_1.TERMS_VERSION, privacy: account_1.PRIVACY_VERSION, news: account_1.NEWS_WORDING_VERSION, source: 'web' };
 exports.SESSION_KEY = 'kaisip_auth_v1';
 exports.PKCE_KEY = 'kaisip_pkce_v1';
 exports.SYNC_META_KEY = 'kaisip_sync_v1';
@@ -12447,7 +12519,7 @@ function decodeUtf8(bytes) {
   api["config"] = pub(load("src/webcloud/config.ts"));
   api["passwordRules"] = pub(load("src/engine/passwordRules.ts"));
   api["breach"] = pub(load("src/webcloud/breach.ts"));
-  api.sourceHash = "4e9e6691187ab29d";
+  api.sourceHash = "b5d1edeae41036f8";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

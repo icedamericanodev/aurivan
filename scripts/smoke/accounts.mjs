@@ -464,7 +464,9 @@ if (wanted('A2')) {
       // The checklist: five items, each with an icon and the words Met or Not yet.
       const list = () => page.evaluate(() => [...document.querySelectorAll('#kaPwHelp .ka-pw-list li')].map((li) => ({ label: li.querySelector('.ka-pw-l').textContent, word: li.querySelector('.ka-pw-s').textContent, met: li.classList.contains('is-met'), icon: !!li.querySelector('svg') })));
       const empty = await list();
-      c.check(JSON.stringify(empty.map((x) => x.label)) === JSON.stringify(['12 or more characters', 'A lowercase letter', 'An uppercase letter', 'A number', 'A symbol']), 'the five items, in order: ' + empty.map((x) => x.label).join(' / '));
+      const plain = (t) => t.replace(/\u00a0/g, ' ');
+      c.check(JSON.stringify(empty.map((x) => plain(x.label))) === JSON.stringify(['12 or more characters', 'A lowercase letter (a to z)', 'An uppercase letter (A to Z)', 'A number (0 to 9)', 'A symbol such as ! ? # @']), 'the five items, in order: ' + empty.map((x) => plain(x.label)).join(' / '));
+      c.check(await page.evaluate(() => JSON.stringify(window.KaiSipCloud.passwordRules.PASSWORD_CHECKLIST_ITEMS.map((x) => x.label)) === JSON.stringify(KA_PW_ITEMS)), 'the labels are the shared rules’ own (the page’s first-draw copy matches them)');
       c.check(empty.every((x) => !x.met && x.word === 'Not yet' && x.icon), 'before typing every item reads "Not yet", with an icon');
       c.check(/Your password needs/.test(await text(page, '#kaPwHelp')) && (await page.getAttribute('#kaPw', 'aria-describedby')).includes('kaPwHelp'), 'the list is tied to the field');
       c.check(!/No symbols or numbers required|\b15\b/.test(await text(page, '#kaRoot')), 'the old "15 characters, nothing else required" wording is gone');
@@ -482,7 +484,7 @@ if (wanted('A2')) {
       // Sent while items are missing: the card says exactly what to add; no second red line.
       await page.press('#kaPw', 'Enter');
       await page.waitForFunction(() => /Not saved yet/.test(document.getElementById('kaPwHelp').textContent));
-      c.check(/Add an uppercase letter, a number and a symbol\./.test(await text(page, '#kaPwHelp')) && (await text(page, '#kaPwE')) === '' && (await page.getAttribute('#kaPw', 'aria-invalid')) === 'true', 'a refused send: the card says what to add, once, and the field is marked: ' + (await text(page, '#kaPwHelp')));
+      c.check(/Add an uppercase letter \(A to Z\), a number \(0 to 9\) and a symbol such as ! \? # @\./.test(await text(page, '#kaPwHelp')) && (await text(page, '#kaPwE')) === '' && (await page.getAttribute('#kaPw', 'aria-invalid')) === 'true', 'a refused send: the card says what to add, once, and the field is marked: ' + (await text(page, '#kaPwHelp')));
       c.check((await page.getAttribute('#kaPw', 'type')) === 'password', 'the field stays hidden when it is sent');
       await page.fill('#kaPw', 'Oc7!');
       c.check((await page.getAttribute('#kaPw', 'aria-invalid')) === null && /Your password needs/.test(await text(page, '#kaPwHelp')), 'typing again clears the refusal');
@@ -492,6 +494,7 @@ if (wanted('A2')) {
       const refused = [
         ['Passwordpassword1!', /used by many people or is easy to guess, even with capitals, numbers and symbols added/],
         ['Qwertyuiop123!', /Avoid repeats, sequences, dates, keyboard patterns/],
+        ['Ocean violet 7!', /Two common words are easy to guess, even with a number and a symbol\. Add another word that doesn.t go with them\./],
         ['Xochitl brennagh 1990!', /from your email address or your name/],
         ['Kaisip kaisip 2026!', /the app.s or the exam.s name/],
         ['Aa1!' + 'x'.repeat(70), /Use up to 72/],
@@ -514,7 +517,15 @@ if (wanted('A2')) {
       // A leaked password: refused with its own words; only 5 characters of each hash leave.
       net.leaked.add(PW);
       await page.fill('#kaPw', PW);
-      c.check(/Strong password\. Nicely done\./.test(await text(page, '#kaPwHelp')) && (await list()).every((x) => x.met && x.word === 'Met'), 'a good password: all five met, in words: ' + (await text(page, '#kaPwHelp')));
+      // An accepted password "works", and that is all the card says: 15 or more characters is a
+      // length label in the rules ('long'), never shown as a strength rating.
+      await page.fill('#kaPw', 'Tidal lamp 7!');
+      c.check(/This password works\./.test(await text(page, '#kaPwHelp')) && await page.evaluate(() => window.KaiSipCloud.passwordRules.passwordChecklist('Tidal lamp 7!').state === 'ok'), 'an accepted 13-character password: "This password works."');
+      await page.fill('#kaPw', PW);
+      const good = await text(page, '#kaPwHelp');
+      c.check(/This password works\./.test(good) && !/strong|nicely|great|excellent/i.test(good) && (await list()).every((x) => x.met && x.word === 'Met') && await page.evaluate((p) => window.KaiSipCloud.passwordRules.passwordChecklist(p).state === 'long', PW), 'a longer accepted password says the same, with no strength claim: ' + good);
+      await page.waitForFunction(() => /All 5 met\. This password works\./.test(document.getElementById('kaPwSay').textContent), null, { timeout: 4000 }).catch(() => {});
+      c.check(/All 5 met\. This password works\./.test(await page.evaluate(() => document.getElementById('kaPwSay').textContent)), 'and it is said once, politely');
       await c.shot(`a2-${v}-good`);
       await page.press('#kaPw', 'Enter');
       await waitText(page, 'kaPwE', /data leak/, c);
@@ -755,7 +766,7 @@ if (wanted('A5')) {
       c.check((await page.evaluate(() => document.querySelectorAll('#flagModal #kaPwHelp .ka-pw-list li').length)) === 5, 'the same checklist on Change password');
       await page.fill('#kaPw', 'ocean violet lamp');
       await page.press('#kaPw', 'Enter');
-      await waitText(page, 'kaPwHelp', /Not saved yet.*Add an uppercase letter, a number and a symbol\./, c);
+      await waitText(page, 'kaPwHelp', /Not saved yet.*Add an uppercase letter \(A to Z\), a number \(0 to 9\) and a symbol such as ! \? # @\./, c);
       c.check(server.userByEmail(EMAIL).password === PW, 'nothing changed yet');
       await page.fill('#kaPw', PW2);
       await page.press('#kaPw', 'Enter');
@@ -1178,7 +1189,7 @@ async function walk(v, scheme, shots, c, axeOnly = false) {
   await page.fill('#kaCode', server.codes.get(MAIL)); await page.press('#kaCode', 'Enter'); await waitView(page, 'signup3');
   await page.waitForFunction(() => window.KaiSipCloud && window.KaiSipCloud.passwordRules.passwordWordsLoaded(), null, { timeout: 15000 });
   await snap(page, '08-create-3-checklist-empty');
-  await page.fill('#kaPw', 'Passwordpassword1!'); await page.press('#kaPw', 'Enter');
+  await page.fill('#kaPw', 'Ocean violet 7!'); await page.press('#kaPw', 'Enter');
   await page.waitForFunction(() => /Not saved yet/.test(document.getElementById('kaPwHelp').textContent)); await snap(page, '09-create-3-password-refused');
   s.net.hibpMode = 'down';
   await page.fill('#kaPw', PW); await snap(page, '10-create-3-password-good');
@@ -1868,6 +1879,54 @@ if (wanted('U4')) {
     }, { allowErrors: true });
     await ctx.close();
   }
+}
+
+// ── U5. The checklist's longer labels on a narrow phone ──
+if (wanted('U5')) {
+  const { ctx, page, server } = await setup({ view: 'phone' });
+  await rec.run('U5', 'The password checklist at 320px: a label wraps to two lines at most, its example stays in one piece, and "Met" / "Not yet" stays beside the first line', page, async (c) => {
+    await page.setViewportSize({ width: 320, height: 720 });
+    await open(page, '#create-account');
+    await page.fill('#kaEmail', 'narrow@example.com');
+    await page.check('#kaTerms', { force: true });
+    await page.press('#kaEmail', 'Enter');
+    await waitView(page, 'signup2');
+    await page.fill('#kaCode', server.codes.get('narrow@example.com'));
+    await page.press('#kaCode', 'Enter');
+    await waitView(page, 'signup3');
+    await page.waitForFunction(() => window.KaiSipCloud && window.KaiSipCloud.passwordRules.passwordWordsLoaded(), null, { timeout: 15000 });
+    const measure = () => page.evaluate(() => [...document.querySelectorAll('#kaPwHelp .ka-pw-list li')].map((li) => {
+      const l = li.querySelector('.ka-pw-l'), s = li.querySelector('.ka-pw-s');
+      const lh = parseFloat(getComputedStyle(l).lineHeight);
+      const lines = Math.round(l.getBoundingClientRect().height / lh);
+      // The last line of a wrapped label (its example) must not be a lone fragment like "z)".
+      const range = document.createRange(); range.selectNodeContents(l);
+      const rects = [...range.getClientRects()];
+      const lastTop = Math.max(...rects.map((r) => r.top));
+      const lastWidth = rects.filter((r) => Math.abs(r.top - lastTop) < 2).reduce((w, r) => w + r.width, 0);
+      const sr = s.getBoundingClientRect(), lr = l.getBoundingClientRect();
+      return { label: l.textContent.replace(/ /g, ' '), lines, lastWidth: Math.round(lastWidth), statusLines: Math.round(sr.height / parseFloat(getComputedStyle(s).lineHeight)), statusTop: Math.round(sr.top - lr.top), overlap: sr.left < lr.right - 1, right: Math.round(sr.right) };
+    }));
+    for (const pw of ['', 'Tidal lamp 7!']) {
+      await page.fill('#kaPw', pw);
+      const rows = await measure();
+      c.check(rows.every((r) => r.lines <= 2), `every label is one or two lines (${pw ? 'all met' : 'none met'}): ` + JSON.stringify(rows.map((r) => [r.label, r.lines])));
+      c.check(rows.every((r) => r.lines === 1 || r.lastWidth >= 48), 'a wrapped label ends with its whole example, not a stray piece: ' + JSON.stringify(rows.filter((r) => r.lines > 1).map((r) => [r.label, r.lastWidth])));
+      c.check(rows.every((r) => r.statusLines === 1 && !r.overlap && r.right <= 320), '"Met" / "Not yet" is one line, beside the label, inside the screen: ' + JSON.stringify(rows.map((r) => [r.statusLines, r.overlap, r.right])));
+      await noOverflow(page, c, 'the checklist at 320px');
+    }
+    await c.shot('u5-checklist-320', page, true);
+    await page.fill('#kaPw', '');
+    await c.shot('u5-checklist-320-empty', page, true);
+    // Text at 200% on the same phone: still no sideways scroll, nothing cut off.
+    await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+    await sleep(150);
+    await noOverflow(page, c, 'the checklist at 320px with text at 200%');
+    const big = await measure();
+    c.check(big.every((r) => r.right <= 320 && r.statusTop > 0), 'at 200% "Met" / "Not yet" goes under its label, inside the screen: ' + JSON.stringify(big.map((r) => [r.lines, r.statusTop, r.right])));
+    await c.shot('u5-checklist-320-200', page, true);
+  });
+  await ctx.close();
 }
 
 await browser.close();

@@ -9094,7 +9094,7 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 .ka-resend { margin-top: var(--sp-lg); font: 400 0.875rem/1.5 var(--f-sans); color: var(--text2); display: grid; gap: 2px; justify-items: start; }
 
 /* The password checklist: five items, each an icon and words (met or not). */
-.ka-pw { padding: 12px 16px; border-radius: var(--r-md); background: var(--raised2); box-shadow: inset 0 0 0 1px var(--border); }
+.ka-pw { padding: 12px 16px; border-radius: var(--r-md); background: var(--raised2); box-shadow: inset 0 0 0 1px var(--border); container-type: inline-size; }
 .ka-pw-head { display: flex; gap: 8px; align-items: center; font: var(--t-chip); color: var(--text); margin: 0 !important; }
 .ka-pw-head .ico { color: var(--accent-text); flex-shrink: 0; }
 .ka-pw.is-refused .ka-pw-head, .ka-pw.is-refused .ka-pw-head .ico { color: var(--wrong); }
@@ -9103,7 +9103,10 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 .ka-pw-list .ico { color: var(--control); }
 .ka-pw-list .is-met { color: var(--text); }
 .ka-pw-list .is-met .ico { color: var(--accent-text); }
-.ka-pw-s { font: var(--t-meta); color: var(--text2); }
+.ka-pw-l { text-wrap: balance; }
+.ka-pw-s { font: var(--t-meta); color: var(--text2); white-space: nowrap; }
+/* Large text on a narrow phone: "Met" / "Not yet" goes under its label. */
+@container (max-width: 15em) { .ka-pw-list li { grid-template-columns: 20px 1fr; align-items: start; } .ka-pw-s { grid-column: 2; } }
 .ka-pw-list .is-met .ka-pw-s { color: var(--accent-text); }
 .ka-pw-guide { margin: 8px 0 0 !important; font: var(--t-small); color: var(--text); }
 
@@ -27464,7 +27467,7 @@ function appCtaInit() {
 //   the learner ticks "remove my progress from this browser".
 var KA_ON = !!(window.KS_ACCT && window.KS_ACCT.enabled);
 // Kept in step with the bundle by mobile/scripts/build-web-plant.mjs (its --check fails on a stale value).
-var KA_CLOUD_SRC = 'assets/kaisip-cloud.js?v=1366306622';
+var KA_CLOUD_SRC = 'assets/kaisip-cloud.js?v=b993c63b03';
 var KA_WORDS_SRC = 'assets/kaisip-password-words.js';
 // Cloudflare Turnstile, widget "KaiSip sign-in" (a public site key: docs/mobile/ACCOUNTS_BETA_PLAN.md, "Public config values").
 var KA_HUMAN_KEY = '0x4AAAAAAFptlSqMhAvLUI8w';
@@ -28179,13 +28182,16 @@ function kaCodePaste(e) {
 // symbol; the shared rules in the accounts client decide, and their own words
 // are shown). Each item is an icon AND words, met or not, never colour alone.
 // When all five are met the shared rules may still refuse the password (a
-// common one, the email's own words ...): then the card says why, in the
-// rules' guidance sentence. The card is the one voice for these refusals; the
+// common one, two common words, the email's own words ...): then the card says
+// why, in the rules' guidance sentence. An accepted password is "works" and
+// nothing more: the rules' 'long' (15 or more characters) is a length label,
+// never shown as a strength rating. The card is the one voice for these refusals; the
 // red line under the field is only for what the card cannot know (a leak
 // found at save, a server refusal). No example password, ever.
 // Screen readers: the list is read when the field takes focus (described
 // by it); after that one polite summary, a second after typing stops.
-var KA_PW_ITEMS = ['12 or more characters', 'A lowercase letter', 'An uppercase letter', 'A number', 'A symbol'];
+// (The labels are the shared rules' own, PASSWORD_CHECKLIST_ITEMS; this copy only draws the card before the client has loaded.)
+var KA_PW_ITEMS = ['12 or more characters', 'A lowercase letter (a to z)', 'An uppercase letter (A to Z)', 'A number (0 to 9)', 'A symbol such as ! ? # @'];
 var kaPwState = '';     // what the card shows now ('' before the first draw)
 var kaPwTold = '';      // the problem a send was refused for (shown until the next keystroke)
 var kaPwSayTimer = null;
@@ -28200,6 +28206,11 @@ function kaPwRead() {
     out.state = c.state; out.problems = c.problems; out.complete = c.complete;
   } catch (e) {}
   return out;
+}
+// A label's example ("(a to z)", "! ? # @") stays in one piece when a narrow screen wraps the line.
+function kaPwLabel(label) {
+  var t = escapeHtml(label);
+  return t.replace(/\(([^)]*)\)/, function (m) { return m.replace(/ /g, '&nbsp;'); }).replace(/([!?#@]) (?=[!?#@])/g, '$1&nbsp;');
 }
 function kaPwHelp(typed) {
   var inp = kaEl('kaPw'), box = kaEl('kaPwHelp');
@@ -28216,20 +28227,21 @@ function kaPwHelp(typed) {
   var head = st === 'refused' ? (kaPwTold ? 'Not saved yet' : 'This one would be refused')
     : st === 'needs' ? 'Your password needs'
     : st === 'checking' ? 'Checking…'
-    : st === 'strong' ? 'Strong password. Nicely done.' : 'This password works.';
+    : 'This password works.';
   var guide = st === 'refused' ? kaGuide(problem, c.v) : '';
   var rows = c.items.map(function (it) {
     return '<li class="' + (it.met ? 'is-met' : 'is-not') + '">'
       + (it.met ? kaIco('okcircle', 20) : '<svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" stroke-dasharray="3 3"/></svg>')
-      + '<span class="ka-pw-l">' + escapeHtml(it.label) + '</span><span class="ka-pw-s">' + (it.met ? 'Met' : 'Not yet') + '</span></li>';
+      + '<span class="ka-pw-l">' + kaPwLabel(it.label) + '</span><span class="ka-pw-s">' + (it.met ? 'Met' : 'Not yet') + '</span></li>';
   }).join('');
-  var html = '<p class="ka-pw-head">' + (st === 'refused' ? kaIco('alert', 18) : st === 'ok' || st === 'strong' ? ico('check', 18) : '') + '<span>' + escapeHtml(head) + '</span></p>'
+  var html = '<p class="ka-pw-head">' + (st === 'refused' ? kaIco('alert', 18) : st === 'ok' || st === 'long' ? ico('check', 18) : '') + '<span>' + escapeHtml(head) + '</span></p>'
     + '<ul class="ka-pw-list">' + rows + '</ul>'
     + (guide ? '<p class="ka-pw-guide">' + escapeHtml(guide) + '</p>' : '');
   if (box.innerHTML !== html) box.innerHTML = html;
   box.classList.toggle('is-refused', st === 'refused');
   // One polite summary when the picture changes, a second after typing stops (never per key).
-  var missing = c.items.filter(function (it) { return !it.met; }).map(function (it) { return it.label.charAt(0).toLowerCase() + it.label.slice(1); });
+  // Said aloud without the examples (they are on the list itself, read when the field takes focus).
+  var missing = c.items.filter(function (it) { return !it.met; }).map(function (it) { var l = it.label.replace(/ \(.*\)$/, '').replace(/ such as .*$/, ''); return l.charAt(0).toLowerCase() + l.slice(1); });
   var words = st === 'refused' ? head + '. ' + guide
     : st === 'needs' ? (c.v ? met + ' of 5 met. Still needed: ' + missing.join(', ') + '.' : '')
     : st === 'checking' ? '' : 'All 5 met. ' + head;
@@ -28557,7 +28569,7 @@ function kaClearErrors() {
 }
 // Puts an error where it belongs (its field when there is one) and moves focus there.
 // The refusals the checklist card can show itself (the shared rules' reasons).
-var KA_PW_RULES = ['password_too_short', 'password_missing_characters', 'password_too_long', 'password_invalid_characters', 'password_common', 'password_too_simple', 'password_contains_email', 'password_contains_service_word'];
+var KA_PW_RULES = ['password_too_short', 'password_missing_characters', 'password_too_long', 'password_invalid_characters', 'password_common', 'password_two_common_words', 'password_too_simple', 'password_contains_email', 'password_contains_service_word'];
 function kaFail(e, fieldId) {
   var words = typeof e === 'string' ? e : kaWords(e);
   var detail = e && typeof e.detail === 'string' ? e.detail : '';
