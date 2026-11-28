@@ -804,15 +804,26 @@ phone fields use the matching autofill hints.
 >   (no composition rules). The password is sent in **NFKC** form, and 15
 >   code points are needed in both NFC and NFKC. The whole password is
 >   compared (NIST §3.1.1.2): it is refused when it can be written as
->   predictable pieces with at most 2 characters left over.
->   `passwordGuidance(problem)` gives the words to show after a refusal.
+>   predictable pieces with at most 2 characters left over (up to two list
+>   entries and three word pieces in all), or when fewer than 10 real
+>   characters remain after repeats, sequences, copies and years. The
+>   comparison form strips accents and invisible characters, reads Cyrillic
+>   and Greek look-alikes as Latin and letter-for-number swaps per position,
+>   and also reads the password backwards. `assessPassword` adds whether the
+>   word lists are loaded (`complete`). `passwordGuidance(problem)` gives the
+>   words to show after a refusal. `loadPasswordWords` accepts only the
+>   lists whose sizes and SHA-256 the build recorded. A breached-password
+>   range check is designed (`engine/passwordBreach.ts`, the
+>   `breachedPassword` port) but OFF (`BREACH_CHECK_ON = false`).
 >   The word lists are loaded with `loadPasswordWords` (on the website a
 >   separate file, `assets/kaisip-password-words.js`, fetched when a password
 >   form opens; no password is saved until it is loaded).
 > - `finishPasswordReset` returns the same `{ account, passwordSaved,
 >   unchanged?, problem? }` as `finishPasswordSignUp`. `unchanged`: the new
 >   password was already the account's; the client then signs out every other
->   session itself (`POST /logout?scope=others`), as a change would have.
+>   session itself (`POST /logout?scope=others`), as a change would have;
+>   when the server does not confirm that, it says `othersSignedOut: false`
+>   instead of `unchanged`.
 > - `signInWithPassword` returns the account plus `passwordChangeSuggested`
 >   when the password fails today's rules.
 > - Added: `passwordNeeded()` (a code session without a saved password: no

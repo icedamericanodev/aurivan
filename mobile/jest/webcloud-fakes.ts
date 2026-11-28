@@ -15,12 +15,12 @@ import { toBase64Url } from '../src/webcloud/base64';
 import { challengeFor } from '../src/webcloud/pkce';
 import type { FetchPort, HttpResponse, RandomPort, StoragePort } from '../src/webcloud/ports';
 import { utf8 } from '../src/engine/sha256';
-import { PASSWORD_DICT_LIST, PASSWORD_SHORT_LIST } from '../src/engine/passwordWords';
+import { PASSWORD_DICT_LIST, PASSWORD_LOCAL_LIST, PASSWORD_SHORT_LIST } from '../src/engine/passwordWords';
 import type { AccountInfo } from '../src/cloud/types';
 import type { WebAuth } from '../src/webcloud/auth';
 
 /** The password rules' word lists, as the website's lazy loader gives them. */
-export const testPasswordWords = async () => ({ short: PASSWORD_SHORT_LIST, dict: PASSWORD_DICT_LIST });
+export const testPasswordWords = async () => ({ short: PASSWORD_SHORT_LIST, dict: PASSWORD_DICT_LIST, local: PASSWORD_LOCAL_LIST });
 /** A password the rules accept (three ordinary words and one more). */
 export const TEST_PASSWORD = 'ocean violet lamp seven';
 

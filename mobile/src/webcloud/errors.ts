@@ -85,7 +85,7 @@ export function retryAfter(res: Pick<HttpResponse, 'headers'>): number | undefin
 const str = (x: unknown) => (typeof x === 'string' ? x : '');
 
 /** GoTrue's machine word for the error (new `error_code`, or the older `error`). */
-function authWord(b: Record<string, unknown>): string {
+export function authWord(b: Record<string, unknown>): string {
   // Newer answers carry `error_code`; some carry the word in `code` (older ones put the HTTP number there).
   return (str(b.error_code) || str(b.code) || str(b.error)).toLowerCase();
 }

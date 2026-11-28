@@ -1,0 +1,593 @@
+# Filipino password list (for the owner's review)
+
+GENERATED from `mobile/scripts/password-sources/filipino.txt` by
+`node mobile/scripts/build-password-blocklist.mjs --docs`; a test keeps the two the same.
+To change the list, edit that file, then run the command and `npm run web-plant`.
+
+What it is for: the apps refuse a password made mostly of common pieces (see
+`mobile/src/engine/passwordRules.ts`). Each entry below is one such piece. A password made
+of up to two of these plus numbers, years or symbols is refused ("MahalKita2026!",
+"pilipinas12345678"); a passphrase of three or more different words still passes
+("kape muna bago mag aral"). Spaces and capitals do not matter.
+
+Please check: is each entry common enough that many people would use it? Is anything
+missing that Filipino learners often type? Are the spellings the usual ones?
+
+544 readable entries in 11 groups, plus 41 rude words stored scrambled in the source (not shown here).
+
+## Endearments and feelings (67)
+
+- mahal
+- mahalko
+- mahal ko
+- mahalkita
+- mahal kita
+- mahal na mahal kita
+- mahal kita sobra
+- mahalnamahal
+- mahal kong mahal
+- iniibig kita
+- sinta
+- irog
+- giliw
+- mahal ko ikaw
+- ikaw lang
+- ikaw lamang
+- ikaw lang sapat na
+- ikaw at ako
+- ikaw ang mahal ko
+- tayong dalawa
+- tayo na
+- tayo lang
+- miss na kita
+- miss kita
+- namimiss kita
+- crush kita
+- crush ko
+- kilig
+- kilig much
+- bebe
+- bebeko
+- bebe ko
+- bebelabs
+- babe ko
+- baby ko
+- lablab
+- labyu
+- lab yu
+- labyu forever
+- walang forever
+- may forever
+- forever na
+- ikaw ang forever ko
+- mahal kita 143
+- iloveyou 143
+- 143 mahal
+- pogi
+- pogiako
+- pogi ako
+- gwapo
+- gwapoko
+- gwapo ako
+- ganda
+- gandako
+- ganda ko
+- maganda
+- maganda ako
+- cute ako
+- mabait
+- masaya
+- malungkot
+- iyak
+- puso
+- pusoko
+- puso ko
+- pag ibig
+- pagibig
+
+## Bisaya (19)
+
+- palangga
+- palangga ko
+- palanggakaayo
+- gihigugma
+- gihigugma tika
+- gugma
+- gimingaw
+- gimingaw ko nimo
+- gwapa
+- gwapa ko
+- amping
+- lami
+- unsa
+- salamat kaayo
+- dako
+- inday
+- dodong
+- day
+- bai
+
+## Everyday words and greetings (93)
+
+- salamat
+- salamat po
+- maraming salamat
+- mabuhay
+- kumusta
+- kamusta
+- kumusta ka
+- magandang umaga
+- magandang gabi
+- magandang hapon
+- paalam
+- ingat
+- ingat ka
+- ingat lagi
+- tara
+- tara na
+- sige
+- sige na
+- ayos
+- ayos lang
+- okay lang
+- bahala na
+- bahala ka
+- bahala ka sa buhay mo
+- astig
+- petmalu
+- lodi
+- werpa
+- charot
+- chika
+- beshie
+- bestie
+- besh
+- bes
+- pare
+- pareng
+- tol
+- utol
+- brad
+- kuya
+- ate
+- bunso
+- panganay
+- lola
+- lolo
+- nanay
+- tatay
+- inay
+- itay
+- nanay ko
+- tatay ko
+- mama
+- papa
+- mama ko
+- papa ko
+- mamapapa
+- mama papa
+- mommy
+- daddy
+- pamilya
+- pamilya ko
+- mahal ko ang pamilya ko
+- kaibigan
+- kaibigan ko
+- barkada
+- tropa
+- buhay
+- buhay ko
+- pangarap
+- pangarap ko
+- tagumpay
+- pag asa
+- pagasa
+- lakas
+- tapang
+- sipag
+- tiyaga
+- masipag
+- matalino
+- swerte
+- malas
+- ewan
+- ewan ko
+- ewan ko sayo
+- wala lang
+- wala na
+- wala na naman
+- walang iba
+- wala na mang iba
+- paalam na sayo
+- hindi
+- oo
+- opo
+
+## Faith (25)
+
+- diyos
+- dios
+- dios ko
+- diyos ko
+- panginoon
+- panginoon ko
+- hesus
+- hesukristo
+- jesus ko
+- maria
+- mama mary
+- mamamary
+- birhen maria
+- santo nino
+- santonino
+- senor santo nino
+- nazareno
+- poong nazareno
+- dios mahal kita
+- salamat panginoon
+- salamat sa diyos
+- amen
+- banal
+- simbahan
+- kristiyano
+
+## Pride and country (31)
+
+- pilipinas
+- pilipino
+- pilipina
+- pinoy
+- pinay
+- pinas
+- pinoy ako
+- pinay ako
+- pinoy pride
+- proud pinoy
+- proud to be pinoy
+- ako ay pilipino
+- mahal ko ang pilipinas
+- mahal kong pilipinas
+- mabuhay ang pilipinas
+- i love philippines
+- philippines
+- lupang hinirang
+- bayang magiliw
+- bayan magiliw
+- perlas ng silanganan
+- alab ng puso
+- watawat
+- kalayaan
+- bayani
+- rizal
+- jose rizal
+- bonifacio
+- andres bonifacio
+- mabini
+- aguinaldo
+
+## Places (66)
+
+- manila
+- maynila
+- metro manila
+- quezon city
+- quezoncity
+- makati
+- taguig
+- pasig
+- pasay
+- caloocan
+- marikina
+- paranaque
+- las pinas
+- muntinlupa
+- valenzuela
+- malabon
+- navotas
+- mandaluyong
+- san juan
+- cebu
+- cebu city
+- davao
+- davao city
+- iloilo
+- bacolod
+- baguio
+- cagayan
+- cagayan de oro
+- zamboanga
+- general santos
+- tacloban
+- dumaguete
+- pampanga
+- angeles
+- bulacan
+- batangas
+- cavite
+- laguna
+- rizal province
+- bataan
+- zambales
+- pangasinan
+- ilocos
+- vigan
+- bicol
+- naga
+- legazpi
+- albay
+- leyte
+- samar
+- bohol
+- palawan
+- puerto princesa
+- boracay
+- siargao
+- tagaytay
+- antipolo
+- mindanao
+- visayas
+- luzon
+- taal
+- mayon
+- luneta
+- quiapo
+- divisoria
+- intramuros
+
+## Surnames (46)
+
+- dela cruz
+- delacruz
+- santos
+- reyes
+- garcia
+- mendoza
+- bautista
+- villanueva
+- ramos
+- aquino
+- castillo
+- rivera
+- flores
+- gonzales
+- torres
+- lopez
+- cruz
+- dizon
+- tolentino
+- fernandez
+- perez
+- navarro
+- domingo
+- salazar
+- del rosario
+- delos santos
+- de leon
+- de guzman
+- pascual
+- mercado
+- aguilar
+- soriano
+- manalo
+- gutierrez
+- sison
+- morales
+- valdez
+- santiago
+- ocampo
+- marquez
+- francisco
+- macaraeg
+- lim
+- tan
+- sy
+- go
+
+## Given names and nicknames (41)
+
+- juan
+- juan dela cruz
+- jose
+- maria clara
+- ana
+- rosa
+- rosario
+- josefina
+- teresita
+- corazon
+- lourdes
+- marites
+- maricel
+- rowena
+- marivic
+- mary grace
+- mary joy
+- mary ann
+- kristine
+- jasmine
+- nicole
+- angelica
+- angel
+- princess
+- precious
+- jericho
+- joshua
+- christian
+- jhon
+- jhay
+- jaypee
+- jun jun
+- junjun
+- jojo
+- bong
+- boyet
+- dodoy
+- nene
+- inday
+- neneng
+- ading
+
+## Food and brands (50)
+
+- jollibee
+- chickenjoy
+- jolly spaghetti
+- mcdo
+- mang inasal
+- chowking
+- greenwich
+- goldilocks
+- red ribbon
+- max fried chicken
+- san miguel
+- red horse
+- tanduay
+- ginebra
+- emperador
+- lucky me
+- pancit canton
+- adobo
+- sinigang
+- lechon
+- balut
+- halo halo
+- lumpia
+- pancit
+- sisig
+- kare kare
+- tapsilog
+- longsilog
+- tocilog
+- bibingka
+- puto bumbong
+- taho
+- turon
+- pandesal
+- kape
+- kapeng barako
+- milk tea
+- siomai
+- fishball
+- kwek kwek
+- isaw
+- mangga
+- saging
+- buko
+- ube
+- leche flan
+- sm mall
+- sm megamall
+- jeepney
+- tricycle
+
+## Teams, shows and celebrities (35)
+
+- ginebra san miguel
+- barangay ginebra
+- magnolia
+- san miguel beermen
+- gilas
+- gilas pilipinas
+- puso gilas
+- pacquiao
+- manny pacquiao
+- pacman
+- kathniel
+- kathryn
+- daniel padilla
+- jadine
+- lizquen
+- aldub
+- alden
+- maine
+- vice ganda
+- coco martin
+- sarah geronimo
+- regine
+- regine velasquez
+- popoy
+- basha
+- sb19
+- bini
+- eraserheads
+- ang probinsyano
+- eat bulaga
+- its showtime
+- kapamilya
+- kapuso
+- abs cbn
+- gma
+
+## Common Filipino password phrases (71)
+
+- ito ang password ko
+- password ko ito
+- password ko
+- password ko to
+- ang password ko
+- ako si juan
+- ako lang
+- ako to
+- ako ito
+- ako nga
+- ikaw na
+- sino ka
+- sino ako
+- akin ka lang
+- akin ka
+- sayo lang
+- sayo lang ako
+- para sayo
+- para sa iyo
+- mahal kita palagi
+- hanggang dulo
+- habang buhay
+- habambuhay
+- walang hanggan
+- pag ibig ko
+- ikaw pa rin
+- ikaw parin
+- ikaw lang talaga
+- bahay kubo
+- leron leron sinta
+- sa ugoy ng duyan
+- anak
+- anak ko
+- mga anak ko
+- mahal ko mga anak ko
+- panganay ko
+- bunso ko
+- lola ko
+- lolo ko
+- pusa ko
+- aso ko
+- sana all
+- sana ol
+- charot lang
+- joke lang
+- hugot
+- hugot lines
+- paasa
+- assumera
+- marupok
+- tampo
+- galit
+- sorry na
+- patawad
+- patawarin mo ako
+- mahal pa rin kita
+- miss na miss kita
+- uwi na
+- uwian na
+- gutom na ako
+- antok na ako
+- pagod na ako
+- trabaho
+- pasok
+- walang pasok
+- sweldo
+- sahod
+- ipon
+- yaman
+- mayaman
+- mahirap

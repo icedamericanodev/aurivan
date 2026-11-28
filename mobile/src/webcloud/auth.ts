@@ -50,11 +50,12 @@
  * Pure TypeScript: no React. Network, storage, random, lock and clock are ports.
  */
 import { maskEmail, normalizeEmail, validEmail } from '../engine/account';
-import { checkPassword, loadPasswordWords, normalizePassword, PASSWORD_MAX_BYTES, passwordBytes, passwordWordsLoaded, type PasswordProblem } from '../engine/passwordRules';
+import { checkPassword, loadPasswordWords, normalizePassword, PASSWORD_MAX_BYTES, passwordBytes, passwordWordsLoaded, type PasswordProblem, type PasswordWordLists } from '../engine/passwordRules';
 import { CloudError, type AccountInfo, type Provider } from '../cloud/types';
 import {
   AUTH_ENDED_KEY,
   AUTH_LOCK,
+  BREACH_CHECK_ON,
   CODE_SESSION_MAX_MS,
   PASSWORD_FRESH_MS,
   PKCE_KEY,
@@ -66,16 +67,13 @@ import {
   SESSION_MAX_AGE_MS,
   SUPABASE_URL,
 } from './config';
-import { bodyObject, toCloudError, type Call, type PasswordDetail } from './errors';
+import { authWord, bodyObject, toCloudError, type Call, type PasswordDetail } from './errors';
 import { challengeFor, isVerifier, lastSignInAt, makeVerifier, sessionStartAt, tokenClaims } from './pkce';
 import type { BrowserStores, ClockPort, FetchPort, HttpResponse, LockPort, RandomPort } from './ports';
 import { createSessionStore, type SessionStore, type StoredSession } from './session';
 
 /** The password rules' word lists (engine/passwordWords.ts): the website fetches them only when a password form opens. */
-export interface PasswordWordLists {
-  short: string;
-  dict: string;
-}
+export type { PasswordWordLists } from '../engine/passwordRules';
 
 export interface WebAuthDeps {
   fetch: FetchPort;
@@ -89,6 +87,8 @@ export interface WebAuthDeps {
    * fails) no password is saved: CloudError offline, detail password_rules.
    */
   passwordWords?: () => Promise<PasswordWordLists>;
+  /** The breached-password check (see BreachedPasswordPort). Used only when BREACH_CHECK_ON is true; today it is false. */
+  breachedPassword?: BreachedPasswordPort;
   /** Defaults: the public values in config.ts (tests point them at a fake server). */
   url?: string;
   apiKey?: string;
@@ -188,17 +188,32 @@ export interface WebAuth {
 /**
  * What a sign-up or reset finished with. `problem` says why the password
  * wasn't saved (the learner is signed in either way). `unchanged`: the new
- * password was already the account's, so it was kept, and every other
- * session was signed out as a change would have done.
+ * password was already the account's, so it was kept, and the server
+ * confirmed signing out every other session (as a change would have done);
+ * when it didn't, `othersSignedOut` is false instead.
  */
 export interface PasswordFinish {
   account: AccountInfo;
   passwordSaved: boolean;
   unchanged?: true;
+  /** false: the password was already the account's, and the server did not confirm signing out the other sessions. */
+  othersSignedOut?: false;
   problem?: PasswordSaveProblem;
 }
 /** The app's own rules, the server's leaked/other refusals, or the usual codes. */
 export type PasswordSaveProblem = PasswordProblem | 'leaked' | 'weak' | 'reauth' | 'rate_limited' | 'offline' | 'server';
+
+/**
+ * DESIGN FOR LATER (owner decision pending; OFF): a breached-password range
+ * check, k-anonymity style. The page would hash the password with SHA-1
+ * (crypto.subtle), send only the first 5 hex characters to
+ * https://api.pwnedpasswords.com/range/<prefix> and look for the other 35 in
+ * the answer (engine/passwordBreach.ts parses it). Nothing calls a network
+ * service today: the hook runs only when BREACH_CHECK_ON (config.ts) is true
+ * AND the page passes `breachedPassword`. It fails open (a network error
+ * never blocks a password), as the audit recommends.
+ */
+export type BreachedPasswordPort = (password: string) => Promise<boolean>;
 
 /** The CloudError a broken app rule throws: invalid, with detail password_<problem>. */
 export function passwordRuleError(problem: PasswordProblem): CloudError {
@@ -338,7 +353,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     if (s.lastActiveAt) ages.push(now() - s.lastActiveAt);
     const iat = tokenClaims(s.accessToken).iat;
     if (typeof iat === 'number' && Number.isFinite(iat)) ages.push(now() + (s.skewMs ?? 0) - iat * 1000);
-    return ages.length ? Math.max(...ages) : 0;
+    return ages.length ? Math.max(...ages) : Infinity; // nothing known: too old (fail closed)
   };
   /** A code session that has saved no password. */
   const needsPassword = (s: StoredSession) => !strongSignIn(s) && s.passwordSaved !== true;
@@ -459,11 +474,17 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
       // A 401 once (or GoTrue's 403 "bad_jwt": an expired or rotated token): refresh (under the lock)
       // and try again. "reauth_required" from delete-account and GoTrue's insufficient_aal are real
       // answers, not a stale token: passed on as they are.
-      const b = attempt === 0 ? bodyObject(r.text) : {};
-      const word = typeof b.error_code === 'string' ? b.error_code : '';
+      const b = bodyObject(r.text);
+      const word = authWord(b);
       if (attempt === 0 && ((r.res.status === 401 && b.error !== 'reauth_required' && word !== 'insufficient_aal') || (r.res.status === 403 && word === 'bad_jwt'))) {
         await refreshLocked(before);
         continue;
+      }
+      // GoTrue's "this session no longer exists" (signed out elsewhere, a password change): the
+      // session is over here too, and the page says why.
+      if (r.res.status === 403 && word === 'session_not_found' && path.startsWith('/auth/v1/')) {
+        await clearLocked();
+        markEnded('revoked');
       }
       return { status: r.res.status, headers: r.res.headers, text: async () => r.text };
     }
@@ -495,6 +516,8 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
   const ensureWords = async () => {
     if (passwordWordsLoaded()) return;
     try {
+      // Only the lists this build expects are accepted (their sizes and SHA-256): a cut-down or
+      // stale file leaves the rules "not loaded", and no password is saved.
       if (deps.passwordWords) loadPasswordWords(await deps.passwordWords());
     } catch {
       // handled below
@@ -515,6 +538,17 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     save(s, shared);
     clearEnded();
     return { s, user: body.user && typeof body.user === 'object' ? (body.user as Record<string, unknown>) : null };
+  };
+  /** The optional breached-password check (OFF today). A known-breached password is refused; any failure lets it through. */
+  const breachCheck = async (password: string) => {
+    if (!BREACH_CHECK_ON || !deps.breachedPassword) return;
+    let breached = false;
+    try {
+      breached = (await deps.breachedPassword(password)) === true;
+    } catch {
+      breached = false; // fail open
+    }
+    if (breached) throw new CloudError('invalid', undefined, 'password_leaked');
   };
   /** Mark the saved session (the same one only) as having saved a password. */
   const markSaved = (userId: string) => {
@@ -545,7 +579,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
    * second channel beside the email). Throws CloudError. Returns 'unchanged'
    * when `sameIsFine` and the account already had exactly this password.
    */
-  const putPassword = async (s: StoredSession, password: string, currentPassword: string | undefined, sameIsFine: boolean): Promise<'saved' | 'unchanged'> => {
+  const putPassword = async (s: StoredSession, password: string, currentPassword: string | undefined, sameIsFine: boolean): Promise<'saved' | 'unchanged' | 'unchanged_others_kept'> => {
     const body: Record<string, unknown> = { password, data: { kaisip_password_set_at: new Date(now()).toISOString() } };
     if (currentPassword !== undefined) body.current_password = currentPassword;
     const res = await authedFetch('/auth/v1/user', { method: 'PUT', body: JSON.stringify(body) }, 'user_update');
@@ -557,18 +591,23 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     const e = toCloudError('user_update', res.status, text, res);
     if (!(sameIsFine && e.code === 'invalid' && e.detail === 'password_same')) throw e;
     // Already this account's password: nothing changed, so the server signed nobody out. Do what a
-    // change would have done (the learner proved the inbox; a thief's other sessions end).
+    // change would have done (the learner proved the inbox; a thief's other sessions end), and say
+    // so only if the server confirmed it.
     markSaved(s.userId);
     const cur = store.read();
-    if (cur) await endOnServer(cur.accessToken, 'others');
-    return 'unchanged';
+    const r = cur ? await endOnServer(cur.accessToken, 'others') : null;
+    return r && ok(r) ? 'unchanged' : 'unchanged_others_kept';
   };
   /** A code flow's last step: save the password with the session the code just made. */
   const finishWithPassword = async (s: StoredSession, password: string): Promise<PasswordFinish> => {
     try {
+      await breachCheck(password);
       const how = await putPassword(s, password, undefined, true);
       const done: PasswordFinish = { account: info(store.read() ?? s), passwordSaved: true };
       if (how === 'unchanged') done.unchanged = true;
+      // The password was already the account's, but the other sessions could not be ended:
+      // reported, never claimed (the screen can offer "sign out everywhere").
+      if (how === 'unchanged_others_kept') done.othersSignedOut = false;
       return done;
     } catch (e) {
       const ce = e instanceof CloudError ? e : new CloudError('server');
@@ -641,7 +680,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
       // A second ask within a minute answers 429 only for a real account: read it as "sent" so the
       // screen says the same thing for every address (audit LOW-1). Per-IP limits stay real errors.
       const b = bodyObject(r.text);
-      if (r.res?.status === 429 && (b.error_code === 'over_email_send_rate_limit' || b.code === 'over_email_send_rate_limit')) return;
+      if (r.res?.status === 429 && authWord(b) === 'over_email_send_rate_limit') return;
       throw fail('recover', r);
     },
 
@@ -671,6 +710,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
       // The learner's name (Google) is checked too: read from the account, never kept.
       const user = await getUser();
       const p = newPasswordOf(newPassword, s.email ?? user.email, user.names);
+      await breachCheck(p);
       await putPassword(s, p, current || undefined, needsPassword(s));
     },
 

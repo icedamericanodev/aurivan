@@ -3,8 +3,9 @@
  * Builds the password lists the apps refuse (scripts/password-lists.cjs has
  * the rules and the sources):
  *   src/engine/passwordBlocklist.ts   the 3,000 most used 15+ character passwords
- *   src/engine/passwordWords.ts       the building blocks: 10,000 short passwords
- *                                     and the English words of 15+ letters
+ *   src/engine/passwordWords.ts       the building blocks: 100,000 short passwords,
+ *                                     the English words of 15+ letters and the
+ *                                     hand-written lists in scripts/password-sources/
  *
  * The sources are big (8.5 MB and 4.2 MB), so they are NOT kept in the repo.
  * Download the pinned copies, then run this script (CI does the same with --check):
@@ -14,6 +15,7 @@
  *   node scripts/build-password-blocklist.mjs --xato /tmp/xato-1m.txt --words /tmp/words_alpha.txt
  *   node scripts/build-password-blocklist.mjs --xato /tmp/xato-1m.txt --words /tmp/words_alpha.txt --check
  *   node scripts/build-password-blocklist.mjs --urls     (prints the two addresses)
+ *   node scripts/build-password-blocklist.mjs --docs     (the owner's review copy of the Filipino list)
  *
  * It refuses a file whose SHA-256 is not the pinned one, so the lists can't
  * change by accident. No third-party packages: only Node's built-in modules.
@@ -43,15 +45,32 @@ function readPinned(file, src) {
 }
 
 try {
+  if (process.argv.includes('--docs')) {
+    // The owner's review copy of the Filipino list (needs no download).
+    const text = L.renderFilipinoDoc();
+    const now = fs.existsSync(L.DOC_FILE) ? fs.readFileSync(L.DOC_FILE, 'utf8') : '';
+    if (process.argv.includes('--check')) {
+      if (now !== text) {
+        console.error('✗ docs/content/PASSWORD_LIST_FILIPINO.md is out of date: run with --docs');
+        process.exit(1);
+      }
+      console.log('✓ docs/content/PASSWORD_LIST_FILIPINO.md matches the source');
+    } else {
+      fs.writeFileSync(L.DOC_FILE, text);
+      console.log('✓ wrote docs/content/PASSWORD_LIST_FILIPINO.md');
+    }
+    process.exit(0);
+  }
   if (process.argv.includes('--urls')) {
     console.log(`${L.SOURCES.xato.url}\n${L.SOURCES.words.url}`);
     process.exit(0);
   }
   const xato = readPinned(arg('--xato'), L.SOURCES.xato);
   const words = readPinned(arg('--words'), L.SOURCES.words);
+  const lists = L.wordLists(L.pickShort(xato), L.pickDict(words), L.readLocal());
   const outputs = [
-    [OUT_LONG, L.renderBlocklistModule(L.pickLong(xato))],
-    [OUT_WORDS, L.renderWordsModule(L.pickShort(xato), L.pickDict(words))],
+    [OUT_LONG, L.renderBlocklistModule(L.pickLong(xato), lists)],
+    [OUT_WORDS, L.renderWordsModule(lists)],
   ];
   const check = process.argv.includes('--check');
   let stale = false;

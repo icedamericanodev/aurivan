@@ -90,20 +90,33 @@ loop. Nothing goes public until its gate says so.
    `mobile/src/engine/passwordRules.ts` applies the owner's "reject all
    common passwords" decision with NIST §3.1.1.2's whole-password
    comparison: 15 code points in NFC and NFKC, at most 72 bytes (documented
-   deviation for accented text), NFKC sent, control characters refused, and
-   a password refused when it can be written as predictable pieces (the app
-   and exam words, the email, the Google name, up to two common words,
-   repeats, sequences, keyboard runs, years, symbols) with at most 2
-   characters left over; guidance words for every refusal. Lists (all
-   lightly scrambled, built by `mobile/scripts/build-password-blocklist.mjs`
-   from pinned copies, checked in CI): the top 3,000 passwords of 15+
-   characters (ASVS 6.2.4) in every bundle; the top 10,000 of 4–14 characters
-   (SecLists xato-net, MIT) and 19,886 English words of 15+ letters
-   (dwyl/english-words, Unlicense) in `assets/kaisip-password-words.js`,
-   which the website fetches only when a password form opens. Tests:
-   `password-rules.test.ts`, `webcloud-password.test.ts` (gate 17 for the web
-   client). The phone's `AuthPort` and memory backend get the same methods
-   with the phone screens (stream C).
+   deviation for accented text), NFKC sent, control and invisible characters
+   refused. The comparison reads accents, invisible characters, Cyrillic and
+   Greek look-alikes, letter-for-number swaps (per position) and the
+   password backwards. A password is refused when it can be written as
+   predictable pieces (the app and exam words, the email, the Google name,
+   up to two list entries, at most 3 word pieces in all, repeats, sequences,
+   keyboard runs, copies, short numbers, years, dates, Philippine mobile
+   numbers, months next to numbers, symbols) with at most 2 characters left
+   over, or when fewer than 10 real characters remain; guidance words for
+   every refusal. Lists (all lightly scrambled, built by
+   `mobile/scripts/build-password-blocklist.mjs` from pinned copies, checked
+   in CI): the top 3,000 passwords of 15+ characters (ASVS 6.2.4) in every
+   bundle, with the sizes and SHA-256 the lazy lists must match; the top
+   100,000 of 4–14 characters (SecLists xato-net, MIT), 19,886 English words
+   of 15+ letters (dwyl/english-words, Unlicense) and two hand-written lists
+   in `mobile/scripts/password-sources/` (clichéd phrases and exam terms; a
+   Filipino list the owner reviews in `docs/content/PASSWORD_LIST_FILIPINO.md`)
+   in `assets/kaisip-password-words.js`, which the website fetches (with
+   `?v=KaiSipCloud.passwordWordsRef`) only when a password form opens. A
+   breached-password range check is designed but OFF
+   (`BREACH_CHECK_ON = false`; owner decision pending). Independent measures
+   (fixtures in `mobile/jest/password-fixtures.ts`): 286 of the re-test's 288
+   hostile passwords refused (the 2 left are listed with reasons), 70 of 70
+   good phrases pass, fewer than 0.5% of random three-word phrases refused.
+   Tests: `password-rules.test.ts`, `webcloud-password.test.ts` (gate 17 for
+   the web client). The phone's `AuthPort` and memory backend get the same
+   methods with the phone screens (stream C).
 
 ### B. Website version with sign-in and sync (web v14, MAJOR)
 0. **Done (28 Nov 2026, web v13.2, owner decision): the web app is public

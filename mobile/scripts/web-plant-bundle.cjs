@@ -120,9 +120,10 @@ const TARGETS = {
     ],
     stamp: true,
   },
-  // The password rules' word lists (10,000 short common passwords and the English words of
-  // 15+ letters, ~270 KB): too big for every visit, so the page fetches this file only when
-  // a password form opens and passes it to KaiSipCloud.create({ passwordWords }).
+  // The password rules' word lists (100,000 short common passwords, the English words of 15+
+  // letters and the hand-written phrase and Filipino lists, ~700 KB): too big for every visit,
+  // so the page fetches this file (with ?v=KaiSipCloud.passwordWordsRef) only when a password
+  // form opens and passes it to KaiSipCloud.create({ passwordWords }).
   passwordWords: {
     out: path.join(REPO, 'assets', 'kaisip-password-words.js'),
     file: 'assets/kaisip-password-words.js',
@@ -346,6 +347,9 @@ function buildBundle(targetName = 'plant', opts = {}) {
       '  api.liveVersion = liveVersion;',
       '  api.liveStoreVersions = Object.freeze({ progress: liveStoreVersions.progress, settings: liveStoreVersions.settings });',
       '  api.accountsAllowed = cloud.accountsAllowed;',
+      '  // The ?v= the page loads assets/kaisip-password-words.js with (its own SHA-256, first 10 hex),',
+      '  // so a stale cached copy is never used; the rules also check the lists\' fingerprints.',
+      `  api.passwordWordsRef = ${JSON.stringify(refFor(buildBundle('passwordWords')))};`,
       '  // KaiSipCloud.create({ ... }): the client, with the Play versions and this page\'s address filled in',
       '  // (the caller can\'t change them). It refuses any address but https://kaisip.com; `devOrigin: true`',
       '  // adds only localhost and "no address" (Node tests), never another site.',

@@ -55,6 +55,13 @@ export const SESSION_IDLE_MAX_MS = 14 * 86_400_000;
  * decision 28 Nov 2026). The database's first-password window is the same.
  */
 export const CODE_SESSION_MAX_MS = 10 * 60_000;
+/**
+ * The breached-password range check (k-anonymity; api.pwnedpasswords.com):
+ * OFF. The owner has not decided on a third-party lookup (design decision
+ * 5). Turning it on also needs a privacy-policy line and the page's
+ * `breachedPassword` port (auth.ts BreachedPasswordPort).
+ */
+export const BREACH_CHECK_ON = false;
 /** One reset code a minute from this page, for every address alike (audit LOW-1). */
 export const RESET_RESEND_MS = 60_000;
 /**

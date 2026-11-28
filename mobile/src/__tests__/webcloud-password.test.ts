@@ -115,9 +115,9 @@ describe('create an account with a password', () => {
     expect(await codeOf(a.startPasswordSignUp(EMAIL, 'short words'))).toBe('invalid:password_too_short');
     expect(await codeOf(a.startPasswordSignUp(EMAIL, 'passwordpassword'))).toBe('invalid:password_common');
     expect(await codeOf(a.startPasswordSignUp(EMAIL, 'monkeymonkeymonkey'))).toBe('invalid:password_common');
-    expect(await codeOf(a.startPasswordSignUp(EMAIL, 'maya example 1990'))).toBe('invalid:password_contains_email');
+    expect(await codeOf(a.startPasswordSignUp('xochitl.brennagh@example.com', 'xochitl brennagh 1990'))).toBe('invalid:password_contains_email');
     expect(await codeOf(a.startPasswordSignUp(EMAIL, 'kaisip kaisip 2026'))).toBe('invalid:password_contains_service_word');
-    expect(await codeOf(a.startPasswordSignUp(EMAIL, 'abcabcabcabcabcabc'))).toBe('invalid:password_too_simple');
+    expect(await codeOf(a.startPasswordSignUp(EMAIL, 'zyxwvutsrqponmlkj'))).toBe('invalid:password_too_simple');
     expect(await codeOf(a.startPasswordSignUp(EMAIL, 'x'.repeat(73)))).toBe('invalid:password_too_long');
     expect(await codeOf(a.startPasswordSignUp(EMAIL, `${PW}\u0000`))).toBe('invalid:password_invalid_characters');
     expect(await codeOf(a.startPasswordSignUp('not-an-email', PW))).toBe('invalid:email');
@@ -402,10 +402,10 @@ describe('add or change a password later (the 10-minute rule, checked first)', (
 
   it('checks the learner\'s Google name too (read from the account, never stored)', async () => {
     const a = tab();
-    await google(a, 'maya@gmail.com', 'Maya Santos');
-    expect(await codeOf(a.setPassword('Maya Santos 1990!!'))).toBe('invalid:password_contains_email');
+    await google(a, 'maya@gmail.com', 'Xochitl Brennagh');
+    expect(await codeOf(a.setPassword('Xochitl Brennagh 1990!!'))).toBe('invalid:password_contains_email');
     expect(putCalls()).toHaveLength(0);
-    expect(JSON.stringify({ ...local.dump(), ...session.dump() })).not.toMatch(/santos/i);
+    expect(JSON.stringify({ ...local.dump(), ...session.dump() })).not.toMatch(/brennagh/i);
   });
 
   it('a refresh is not a sign-in: an hour later, after refreshes, it still asks', async () => {
@@ -565,6 +565,42 @@ describe('a code session without a password (codes only confirm or recover)', ()
     expect(server.calls.some((c) => c.path === '/auth/v1/logout?scope=local' && c.headers.authorization === `Bearer ${token}`)).toBe(true);
     expect(tab().sessionEnded()).toBe('password_not_set');
     expect(await codeOf(tab().accessToken())).toBe('unauthorized:password_not_set');
+  });
+});
+
+describe('this review\'s client fixes', () => {
+  it('S13: "already your password" claims unchanged only when the server confirmed signing out the others', async () => {
+    await signUp(tab());
+    await tab().signOut('local');
+    now += 2 * MIN;
+    server.force('/auth/v1/logout?scope=others', 500, { code: 500, error_code: 'unexpected_failure', msg: 'boom' });
+    const same = await signUp(tab(), EMAIL, PW);
+    expect(same).toEqual({ account: expect.any(Object), passwordSaved: true, othersSignedOut: false });
+  });
+
+  it('a 403 session_not_found from the Auth server signs the page out, with the reason kept', async () => {
+    await signUp(tab());
+    const a = tab();
+    server.force('/auth/v1/user', 403, { code: 403, error_code: 'session_not_found', msg: 'Session from session_id claim in JWT does not exist' });
+    expect(await codeOf(a.getUser())).toBe('unauthorized');
+    expect(a.current()).toBeNull();
+    expect(tab().sessionEnded()).toBe('revoked');
+  });
+
+  it('a saved session with no renewal time known at all reads as too old (fail closed)', () => {
+    const userId = 'aaaaaaaa-bbbb-4ccc-8ddd-000000000003';
+    const at = fakeJwt({ sub: userId, exp: Math.floor(now / 1000) + 3600, amr: [{ method: 'password', timestamp: Math.floor(now / 1000) }] }); // no iat
+    local.setItem(SESSION_KEY, JSON.stringify({ v: 1, accessToken: at, refreshToken: 'rt-noiat-xyz', expiresAt: now + 3_600_000, userId, email: EMAIL, providers: ['email'], signedInAt: now }));
+    expect(tab().current()).toBeNull();
+    expect(tab().sessionEnded()).toBe('idle');
+  });
+
+  it('the breached-password hook is OFF: the port is never called and no other address is ever asked', async () => {
+    let asked = 0;
+    const a = createWebAuth({ fetch: server.fetch, stores: { local, session }, random: seqRandom(), lock: sharedLock, clock, url: FAKE_URL, apiKey: FAKE_KEY, passwordWords: testPasswordWords, breachedPassword: async () => (asked++, true) });
+    expect((await signUp(a)).passwordSaved).toBe(true);
+    expect(asked).toBe(0);
+    for (const c of server.calls) expect(c.path).toMatch(/^\/auth\/v1\//);
   });
 });
 
