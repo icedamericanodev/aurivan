@@ -745,4 +745,9 @@ done < <(find "$OUT" -type f -print0)
 count="$(find "$OUT" -type f | wc -l | tr -d ' ')"
 size="$(du -sh "$OUT" | cut -f1)"
 echo "build_site: $count files ($size) in $OUT/ (SITE_MODE=$SITE_MODE${ACCT_PAGES:+, account pages published${ACCOUNTS_ON:+ and indexable}})"
+# Google sign-in on the website needs Google's own "G" file (never a redrawn
+# one). Until the owner adds it, the sign-in screens hide the Google button.
+if [ -n "$ACCT_PAGES" ] && [ ! -f assets/google-g.svg ] && [ ! -f assets/google-g.png ]; then
+  echo "build_site: note: assets/google-g.svg is missing, so the website will not offer Google sign-in (docs/WEBSITE_DEPLOY.md, \"Google's G file\")"
+fi
 find "$OUT" -type f | sed "s|^$OUT/|  |" | sort

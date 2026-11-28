@@ -57,6 +57,8 @@ const VIEWS = {
   phone: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 },
   desktop: { viewport: { width: 1280, height: 800 }, deviceScaleFactor: 2 },
 };
+// A TEST STAND-IN for Google's "G" file: an empty dashed square. It is not Google's mark and is never published.
+const G_STAND_IN = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><rect x="1.5" y="1.5" width="17" height="17" rx="4" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="3 2"/></svg>';
 const sha1 = (s) => crypto.createHash('sha1').update(s, 'utf8').digest('hex').toUpperCase();
 // The web app's Content-Security-Policy, as Cloudflare sends it (the /* rule of _headers): the
 // test server sends the same one with the app page, and anything it blocks fails the path.
@@ -87,6 +89,14 @@ async function handle(route, server, net, origin) {
     const file = rel && path.join(repo, rel);
     if (rel === 'assets/kaisip-cloud.js') { net.cloudJs++; if (net.cloudJsMode === 'down') return route.abort('internetdisconnected'); }
     if (rel === 'assets/kaisip-password-words.js') net.wordsJs++;
+    // Google's "G" file is not in the repo (the owner adds Google's own file). The tests stand in
+    // an empty dashed square at its address, so the screens are tested as they will be with the
+    // file in place; net.googleG = 'missing' is the repo as it is today (U4 proves the button hides).
+    if (rel === 'assets/google-g.svg' || rel === 'assets/google-g.png') {
+      net.googleAsked = (net.googleAsked || 0) + 1;
+      if (net.googleG === 'missing' || rel.endsWith('.png') || fs.existsSync(path.join(repo, rel))) { if (!fs.existsSync(path.join(repo, rel))) return route.fulfill({ status: 404, contentType: 'text/plain', body: 'not found' }); }
+      else return route.fulfill({ status: 200, contentType: 'image/svg+xml', body: G_STAND_IN });
+    }
     if (!file || !file.startsWith(repo) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) return route.fulfill({ status: 404, contentType: 'text/plain', body: 'not found' });
     const headers = rel === 'index.html' ? { 'content-security-policy': APP_CSP } : {};
     return route.fulfill({ status: 200, contentType: TYPES[path.extname(file)] || 'application/octet-stream', headers, body: fs.readFileSync(file) });
@@ -130,7 +140,7 @@ async function setup(o = {}) {
   const server = o.server || new F.FakeSupabase(() => Date.now());
   if (!o.server) server.captchaOn = o.captchaOn !== false;
   const ctx = await browser.newContext({ ...VIEWS[o.view || 'phone'], colorScheme: o.scheme || 'light', reducedMotion: 'reduce', acceptDownloads: true });
-  const net = { hibp: [], hibpMode: 'clean', leaked: new Set(), turnstile: 0, turnstileMode: 'ok', supabase: 0, cloudJs: 0, wordsJs: 0, third: [], badKey: false };
+  const net = { googleG: o.googleG || 'stand-in', hibp: [], hibpMode: 'clean', leaked: new Set(), turnstile: 0, turnstileMode: 'ok', supabase: 0, cloudJs: 0, wordsJs: 0, third: [], badKey: false };
   await ctx.route('**/*', (route) => handle(route, server, net, origin));
   const seed = { aurivan_consent: 'denied', ...(o.onboarded === false ? {} : { cisa_onboarded_v6: '1', aurivan_exam_date_asked: '1' }), ...(o.preview === false ? {} : { kaisip_accounts_preview: '1' }), ...(o.seed || {}) };
   // Seeded once per tab (a reload must not put back what a test removed).
@@ -189,7 +199,8 @@ const view = (page) => page.evaluate(() => document.body.getAttribute('data-ka-v
 // What the account code thinks, for a failed wait's message.
 const dump = (page) => page.evaluate(() => { try { return JSON.stringify({ view: document.body.getAttribute('data-ka-view'), busy: ka.busy, syncErr: ka.syncErr, setupDue: ka.setupDue, bank: kaBankReady(), notes: !!kaNoteIds, loading: Object.keys(window.QB_LOADING || {}), state: kaState(), err: (document.getElementById('kaFormE') || {}).textContent }); } catch (e) { return 'dump failed: ' + e.message; } });
 const waitView = async (page, v) => {
-  try { await page.waitForFunction((x) => (document.body.getAttribute('data-ka-view') || '') === x, v, { timeout: 15000 }); }
+  // (A notice on the new screen is written a moment after it is drawn, so screen readers say it: wait for its words.)
+  try { await page.waitForFunction((x) => { if ((document.body.getAttribute('data-ka-view') || '') !== x) return false; const n = document.getElementById('kaNotice'); return !n || n.hidden || n.textContent.trim() !== ''; }, v, { timeout: 15000 }); }
   catch (e) { throw new Error(`waited for the "${v || 'app'}" view: ${await dump(page)}`); }
 };
 // Waits for words in an element; a miss is a failed check with the page's own state, not a thrown error.
@@ -1275,6 +1286,8 @@ if (wanted('G1')) {
       c.check(/KaiSip is free\. A free account keeps your progress safe and in sync with the Android app\./.test(w), 'the welcome says why, in one honest line: ' + w.slice(0, 260));
       const paths = await page.evaluate(() => [...document.querySelectorAll('#kaRoot .ka-path-t')].map((x) => x.textContent));
       c.check(JSON.stringify(paths) === JSON.stringify(['Create a free account', 'Sign in']), 'two paths, both to an account: ' + paths.join(' / '));
+      await page.waitForFunction(() => /or with Google/.test(document.querySelector('.ka-path-primary').innerText), null, { timeout: 4000 }).catch(() => {});
+      c.check(/With your email and a password, or with Google\./.test(await text(page, '.ka-path-primary')), 'with Google’s file in place the first path names both ways: ' + (await text(page, '.ka-path-primary')));
       c.check(!/look around|without an account|Start studying free|Skip|Not now|Maybe later|limited|hurry|today only/i.test(w), 'no way round the account and no hurry words');
       c.check(!(await page.evaluate(() => window.__appSeen)), 'the study app was never on screen while the page loaded');
       c.check(!(await page.evaluate(() => document.querySelector('.ob-welcome'))), 'the older first-visit sheet does not open behind it');
@@ -1636,6 +1649,188 @@ if (wanted('N3')) {
     c.check(server.profiles.get(server.userByEmail(EMAIL).id) === '2026-12', 'the account is on the current Terms');
   });
   await ctx.close();
+}
+
+// ── U. The UX review's fixes (tap targets, the code cells, tab order, the busy button, the Google button) ──
+const box = (page, sel) => page.evaluate((q) => { const e = document.querySelector(q); if (!e) return null; const r = e.getBoundingClientRect(); return { w: Math.round(r.width), h: Math.round(r.height) }; }, sel);
+if (wanted('U1')) {
+  for (const v of ['phone', 'desktop']) {
+    const { ctx, page, server } = await setup({ view: v });
+    await makeAccount(server);
+    await rec.run(`U1-${v}`, 'Tap targets are 44px or more, buttons are 52px with the app’s corner, "Forgot password?" comes after the password in the tab order, and a busy button stays readable', page, async (c) => {
+      await open(page, '#sign-in');
+      const go = await page.evaluate(() => { const e = document.getElementById('kaGo'); const cs = getComputedStyle(e); return { h: Math.round(e.getBoundingClientRect().height), r: cs.borderTopLeftRadius, tile: getComputedStyle(document.documentElement).getPropertyValue('--r-tile').trim() }; });
+      c.check(go.h === 52 && go.r === go.tile, 'the primary button is 52px tall with --r-tile: ' + JSON.stringify(go));
+      const small = await page.evaluate(() => [...document.querySelectorAll('#kaRoot a, #kaRoot button, #kaRoot input[type=checkbox]')].filter((e) => e.getClientRects().length).map((e) => { const r = (e.type === 'checkbox' ? e.closest('label') : e).getBoundingClientRect(); return { t: (e.textContent || e.id).trim().slice(0, 24), w: Math.round(r.width), h: Math.round(r.height) }; }).filter((x) => x.w < 44 || x.h < 44));
+      c.check(small.length === 0, 'every control on Sign in is at least 44 by 44: ' + JSON.stringify(small));
+      // Tab order: email, password, Show, then "Forgot password?".
+      await page.focus('#kaEmail');
+      const order = [];
+      for (let i = 0; i < 4; i++) { await page.keyboard.press('Tab'); order.push(await page.evaluate(() => { const a = document.activeElement; return a.id || a.className || a.tagName; })); }
+      c.check(order[0] === 'kaPass' && /ka-reveal/.test(order[1]) && /ka-aside/.test(order[2]) && order[3] === 'kaShared', 'Tab goes email, password, Show, Forgot password?, shared computer: ' + order.join(' > '));
+      const row = await page.evaluate(() => { const l = document.querySelector('label[for=kaPass]').getBoundingClientRect(), a = document.querySelector('.ka-aside').getBoundingClientRect(), i = document.getElementById('kaPass').getBoundingClientRect(); return { sameRow: Math.abs((l.top + l.bottom) / 2 - (a.top + a.bottom) / 2) < 8, right: a.right > l.right, above: a.bottom <= i.top + 12 }; });
+      c.check(row.sameRow && row.right && row.above, '"Forgot password?" is still drawn on the label’s row, at the right: ' + JSON.stringify(row));
+      // The busy button: full contrast, a spinner and changed words.
+      server.offline = false;
+      await page.fill('#kaEmail', EMAIL); await page.fill('#kaPass', PW);
+      await page.evaluate(() => { kaBusy(true, 'Signing in…'); });
+      const busy = await page.evaluate(() => { const e = document.getElementById('kaGo'); const cs = getComputedStyle(e); return { opacity: cs.opacity, cursor: cs.cursor, words: e.textContent, dis: e.getAttribute('aria-disabled') }; });
+      c.check(busy.opacity === '1' && busy.cursor === 'progress' && busy.words === 'Signing in…' && busy.dis === 'true', 'busy: not dimmed, the progress cursor, and the words: ' + JSON.stringify(busy));
+      await page.evaluate(() => { kaBusy(false); });
+      // The welcome and the footer links.
+      await page.click('#kaRoot .ka-brand');
+      await waitView(page, 'welcome');
+      c.check(!/#sign-in/.test(page.url()), 'the wordmark goes to the welcome and clears the screen’s name from the address: ' + page.url());
+      const links = await page.evaluate(() => [...document.querySelectorAll('#kaRoot a')].map((a) => { const r = a.getBoundingClientRect(); return { t: a.textContent.trim().slice(0, 12), w: Math.round(r.width), h: Math.round(r.height) }; }));
+      c.check(links.length >= 4 && links.every((x) => x.w >= 44 && x.h >= 44), 'the welcome’s Help, Terms and Privacy links are 44 by 44 or more: ' + JSON.stringify(links));
+      // The news switch on Account: 32px tall to look at, 44 to tap.
+      await signedIn(page);
+      await page.evaluate(() => navGoFocus(null, 'account'));
+      await page.waitForSelector('#kaNewsBtn');
+      const hit = await page.evaluate(() => { const b = document.getElementById('kaNewsBtn'); b.scrollIntoView({ block: 'center' }); const r = b.getBoundingClientRect(); const at = (dy) => document.elementFromPoint(r.left + r.width / 2, dy) === b; return { h: Math.round(r.height), above: at(r.top - 5), below: at(r.bottom + 5), far: at(r.top - 9) }; });
+      c.check(hit.h === 32 && hit.above && hit.below && !hit.far, 'the switch takes taps 6px above and below itself (44 in all), and no further: ' + JSON.stringify(hit));
+    });
+    await ctx.close();
+  }
+}
+
+if (wanted('U2')) {
+  for (const v of ['phone', 'desktop']) {
+    const { ctx, page, server } = await setup({ view: v });
+    await rec.run(`U2-${v}`, 'The code field: a tap on a cell picks that cell, and the next digit replaces it', page, async (c) => {
+      await open(page, '#create-account');
+      await page.fill('#kaEmail', 'cells@example.com');
+      await page.check('#kaTerms', { force: true });
+      await page.press('#kaEmail', 'Enter');
+      await waitView(page, 'signup2');
+      await page.fill('#kaCode', '12345678');
+      const active = () => page.evaluate(() => [...document.querySelectorAll('.ka-cell')].map((x, i) => (x.classList.contains('is-active') ? i : -1)).filter((i) => i >= 0));
+      for (const i of [0, 1, 3, 4, 6, 7]) {
+        const r = await page.evaluate((n) => { const b = document.querySelectorAll('.ka-cell')[n].getBoundingClientRect(); return { x: b.left + b.width / 2, y: b.top + b.height / 2 }; }, i);
+        await page.mouse.click(r.x, r.y);
+        const a = await active();
+        c.check(a.length === 1 && a[0] === i, `a click on cell ${i + 1} lights cell ${i + 1} only: ${JSON.stringify(a)}`);
+      }
+      // Fix the second digit: tap it, type the right one.
+      const r2 = await page.evaluate(() => { const b = document.querySelectorAll('.ka-cell')[1].getBoundingClientRect(); return { x: b.left + b.width / 2, y: b.top + b.height / 2 }; });
+      await page.mouse.click(r2.x, r2.y);
+      await page.keyboard.type('9');
+      c.check((await page.inputValue('#kaCode')) === '19345678', 'the digit typed replaces the one tapped: ' + (await page.inputValue('#kaCode')));
+      // Select all and type over still works, and lights every cell meanwhile.
+      await page.focus('#kaCode');
+      await page.keyboard.press('ControlOrMeta+a');
+      await sleep(80);
+      c.check((await active()).length === 8, 'select all lights all eight cells');
+      await page.keyboard.type('5');
+      c.check((await page.inputValue('#kaCode')) === '5' && JSON.stringify(await active()) === '[1]', 'typing over a selection starts again, with the caret in cell 2');
+      // An empty field: a tap anywhere puts the caret in the first empty cell.
+      await page.fill('#kaCode', '12');
+      const r7 = await page.evaluate(() => { const b = document.querySelectorAll('.ka-cell')[6].getBoundingClientRect(); return { x: b.left + b.width / 2, y: b.top + b.height / 2 }; });
+      await page.mouse.click(r7.x, r7.y);
+      c.check(JSON.stringify(await active()) === '[2]', 'a tap past the digits puts the caret in the next empty cell: ' + JSON.stringify(await active()));
+      await c.shot(`u2-${v}-cells`);
+    });
+    await ctx.close();
+  }
+}
+
+if (wanted('U3')) {
+  for (const scheme of ['light', 'dark']) {
+    const { ctx, page, server } = await setup({ view: 'phone', scheme });
+    await rec.run(`U3-${scheme}`, 'The Google button follows Google’s sign-in branding: their colours, spacing, wording and label font, with the "G" read from assets/', page, async (c) => {
+      await open(page, '#sign-in');
+      await page.waitForSelector('.ka-btn-google', { state: 'visible' });
+      await page.evaluate(() => document.fonts.ready);
+      const g = await page.evaluate(() => { const b = document.querySelector('.ka-btn-google'), img = b.querySelector('img'), cs = getComputedStyle(b); const br = b.getBoundingClientRect(), ir = img.getBoundingClientRect(), sr = b.querySelector('span').getBoundingClientRect(); return { words: b.textContent, bg: cs.backgroundColor, text: cs.color, edge: cs.boxShadow, font: cs.fontFamily.split(',')[0].replace(/["']/g, ''), weight: cs.fontWeight, size: cs.fontSize, line: cs.lineHeight, roboto: document.fonts.check('500 14px Roboto'), src: img.getAttribute('src'), alt: img.getAttribute('alt'), iw: Math.round(ir.width), ih: Math.round(ir.height), gap: Math.round(sr.left - ir.right), padL: parseFloat(cs.paddingLeft), padR: parseFloat(cs.paddingRight), h: Math.round(br.height), natural: img.naturalWidth > 0 }; });
+      const want = scheme === 'light' ? { bg: 'rgb(255, 255, 255)', text: 'rgb(31, 31, 31)', edge: 'rgb(116, 119, 117)' } : { bg: 'rgb(19, 19, 20)', text: 'rgb(227, 227, 227)', edge: 'rgb(142, 145, 143)' };
+      c.check(g.words === 'Continue with Google', 'Google’s approved wording: ' + g.words);
+      c.check(g.bg === want.bg && g.text === want.text && g.edge.includes(want.edge) && /inset$| 1px inset|0px 0px 0px 1px/.test(g.edge), `Google’s ${scheme} colours (fill, label, 1px edge): ${g.bg} ${g.text} ${g.edge}`);
+      c.check(g.font === 'Roboto' && g.weight === '500' && g.size === '14px' && g.line === '20px' && g.roboto, 'the label is Roboto Medium 14/20, self-hosted: ' + JSON.stringify({ font: g.font, weight: g.weight, size: g.size, line: g.line, loaded: g.roboto }));
+      c.check(g.src === 'assets/google-g.svg' && g.alt === '' && g.natural && g.iw === 20 && g.ih === 20, 'the "G" is the file in assets/, 20px square, not distorted: ' + JSON.stringify({ src: g.src, w: g.iw, h: g.ih }));
+      c.check(g.gap === 10 && g.padL >= 12 && g.padR >= 12, '10px between the "G" and the words, 12px or more at the sides: ' + JSON.stringify({ gap: g.gap, l: g.padL, r: g.padR }));
+      c.check(g.h === 52, 'the same 52px height as the other buttons');
+      c.check(await page.evaluate(() => [...document.styleSheets].every((s) => { try { return [...s.cssRules].filter((r) => r.type === 5 && /Roboto/.test(r.cssText)).every((r) => /assets\/fonts\/Roboto_500Medium_latin\.woff2/.test(r.cssText)); } catch (e) { return true; } })), 'Roboto comes from assets/fonts only');
+      // Google's font is for Google's button only (Grove's two fonts everywhere else), and its licence travels with it.
+      const uses = (html.replace(/\/\*[\s\S]*?\*\//g, '').match(/[^{}]*\{[^{}]*Roboto[^{}]*\}/g) || []).map((r) => r.split('{')[0].trim());
+      c.check(uses.length === 2 && uses.includes('@font-face') && uses.includes('.ka-btn-google'), 'only the Google button uses Roboto: ' + JSON.stringify(uses));
+      c.check(/SIL OPEN FONT LICENSE Version 1\.1/.test(fs.readFileSync(path.join(repo, 'assets/fonts/OFL-Roboto.txt'), 'utf8')) && /Roboto Project Authors/.test(fs.readFileSync(path.join(repo, 'assets/fonts/OFL-Roboto.txt'), 'utf8')), 'the font’s licence is beside it (assets/fonts/OFL-Roboto.txt)');
+      await axe(page, c, `Sign in with the Google button (${scheme})`);
+      await c.shot(`u3-${scheme}-google`);
+      // Create account: "Sign up with Google", the same button.
+      await page.evaluate(() => kaGo('create-account'));
+      await waitView(page, 'signup1');
+      c.check((await text(page, '.ka-btn-google')) === 'Sign up with Google' && await page.isVisible('.ka-btn-google'), 'Create account: Sign up with Google');
+    });
+    await ctx.close();
+  }
+  // A Google-only account deleting itself: the re-check sheet uses Google's button too.
+  {
+    const { ctx, page, server } = await setup({ view: 'phone' });
+    await rec.run('U3-recheck', 'Delete account for a Google sign-in that is not fresh: the "Confirm it’s you" sheet shows Google’s own button, not the green one', page, async (c) => {
+      await open(page, '#sign-in');
+      await page.waitForSelector('.ka-btn-google', { state: 'visible' });
+      const [req] = await Promise.all([page.waitForRequest((r) => r.url().startsWith(SUPA + '/auth/v1/authorize')), page.click('.ka-btn-google')]);
+      const code = server.googleCode(new URL(req.url()).searchParams.get('code_challenge'), 'gil@gmail.com');
+      await page.goto(`${APP}?code=${code}`);
+      await waitView(page, 'consent');
+      await page.check('#kaTerms', { force: true });
+      await page.click('#kaGo');
+      await waitView(page, '');
+      await settled(page);
+      // Ten minutes later the sign-in is no longer fresh.
+      await page.evaluate(() => { const real = Date.now; Date.now = () => real() + 11 * 60000; });
+      await page.evaluate(() => navGoFocus(null, 'account'));
+      await page.click('#kaDel');
+      await page.waitForSelector('#flagModal [role=dialog]');
+      const sheet = await page.evaluate(() => { const b = document.querySelector('#flagModal #kaGo'); return { title: document.getElementById('kaDlgH').textContent, google: b.classList.contains('ka-btn-google'), primary: b.classList.contains('ka-btn-primary'), words: b.textContent, img: !!b.querySelector('img[src="assets/google-g.svg"]'), bg: getComputedStyle(b).backgroundColor, shown: b.getClientRects().length > 0 }; });
+      c.check(sheet.title === 'Confirm it’s you' && sheet.google && !sheet.primary && sheet.words === 'Continue with Google' && sheet.img && sheet.bg === 'rgb(255, 255, 255)' && sheet.shown, 'the sheet’s action is Google’s button: ' + JSON.stringify(sheet));
+      await axe(page, c, 'the Google re-check sheet');
+      await c.shot('u3-recheck');
+      const [again] = await Promise.all([page.waitForRequest((r) => r.url().startsWith(SUPA + '/auth/v1/authorize')), page.click('#flagModal #kaGo')]);
+      await page.goto(APP);
+      await page.waitForFunction(() => document.body.hasAttribute('data-section'));
+      c.check(!!again && (await store(page)).session.kaisip_acct_intent_v1 === 'delete', 'it goes to Google and remembers to come back to the delete step');
+    });
+    await ctx.close();
+  }
+}
+
+if (wanted('U4')) {
+  for (const v of ['phone', 'desktop']) {
+    const { ctx, page, server, net } = await setup({ view: v, googleG: 'missing' });
+    await makeAccount(server);
+    await rec.run(`U4-${v}`, 'Google’s "G" file is not in assets/ (the repo today): Google sign-in is not offered anywhere, and everything else works', page, async (c) => {
+      await open(page);
+      await waitView(page, 'welcome');
+      await sleep(500);
+      c.check(!/Google/.test(await page.evaluate(() => document.getElementById('kaRoot').innerText)) && /With your email and a password\./.test(await text(page, '.ka-path-primary')), 'the welcome does not mention Google: ' + (await text(page, '.ka-path-primary')));
+      await open(page, '#sign-in');
+      await sleep(300);
+      const s1 = await page.evaluate(() => ({ btn: [...document.querySelectorAll('.ka-btn-google')].filter((b) => b.getClientRects().length).length, divider: [...document.querySelectorAll('.ka-divider')].filter((b) => b.getClientRects().length).length, words: document.getElementById('kaRoot').innerText }));
+      c.check(s1.btn === 0 && s1.divider === 0 && !/Google|or sign in with email/i.test(s1.words), 'Sign in: no Google button, no "or" divider, no mention of Google: ' + JSON.stringify({ btn: s1.btn, divider: s1.divider }));
+      c.check(net.googleAsked >= 1, 'the page looked for the file (' + net.googleAsked + ' requests)');
+      const gap = await page.evaluate(() => { const l = document.querySelector('.ka-lede').getBoundingClientRect(), f = document.getElementById('kaForm').getBoundingClientRect(); return Math.round(f.top - l.bottom); });
+      c.check(gap >= 16 && gap <= 40, 'the form sits under the lede with its usual space (' + gap + 'px)');
+      await axe(page, c, `Sign in without Google (${v})`);
+      await noOverflow(page, c, `Sign in without Google (${v})`);
+      await c.shot(`u4-${v}-signin`);
+      await page.evaluate(() => { try { kaGoogle(false); } catch (e) {} });
+      await sleep(200);
+      c.check(!(await store(page)).session.kaisip_pkce_v1 && calls(server, '/auth/v1/authorize').length === 0, 'the Google step cannot be started by hand either');
+      await page.evaluate(() => kaGo('create-account'));
+      await waitView(page, 'signup1');
+      const s2 = await page.evaluate(() => ({ btn: [...document.querySelectorAll('.ka-btn-google')].filter((b) => b.getClientRects().length).length, words: document.getElementById('kaRoot').innerText }));
+      c.check(s2.btn === 0 && !/Sign up with Google|applies to Google/i.test(s2.words), 'Create account: no Google button and no line about it');
+      await c.shot(`u4-${v}-create`);
+      // Email and password still sign in.
+      await page.evaluate(() => kaGo('sign-in'));
+      await waitView(page, 'signin');
+      await page.fill('#kaEmail', EMAIL); await page.fill('#kaPass', PW); await page.press('#kaPass', 'Enter');
+      await waitView(page, '');
+      c.check(await appShown(page), 'signed in with email and password');
+    }, { allowErrors: true });
+    await ctx.close();
+  }
 }
 
 await browser.close();

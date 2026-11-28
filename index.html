@@ -8888,9 +8888,15 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
    "Accounts on the web"). Nothing here shows unless accounts are on for this
    browser (ACCOUNTS_ON or the owner's preview switch): every element these
    rules style is created by kaBoot(). Sizes are rem, so text follows the
-   browser's text size; --ka-r-btn is the one place the button corner lives. */
-:root { --ka-r-btn: 16px; --ka-r-field: 16px; --ka-halo: rgba(43,110,74,.18); --ka-danger-halo: rgba(163,51,61,.16); --ka-ease: cubic-bezier(.2,.75,.2,1); }
-[data-theme="dark"] { --ka-halo: rgba(127,195,156,.22); --ka-danger-halo: rgba(255,156,166,.18); }
+   browser's text size; --ka-r-btn is the one place the button corner lives
+   (the web app's own primary: 52px tall, --r-tile). Every colour that is not a
+   Grove token is declared once, on the two lines below. The --ka-g-* values
+   are Google's, for the Google button only (see "The Google button"). */
+:root { --ka-r-btn: var(--r-tile); --ka-r-field: var(--r-md); --ka-halo: rgba(43,110,74,.18); --ka-danger-halo: rgba(163,51,61,.16); --ka-ease: cubic-bezier(.2,.75,.2,1);
+  --ka-btn-shadow: rgba(30,74,52,.8); --ka-path-shadow: rgba(30,74,52,.9); --ka-path-disc: rgba(247,245,239,.14); --ka-sap-halo: rgba(169,217,186,.18); --ka-lift: rgba(0,0,0,.5);
+  --ka-g-fill: #FFFFFF; --ka-g-edge: #747775; --ka-g-text: #1F1F1F; }
+[data-theme="dark"] { --ka-halo: rgba(127,195,156,.22); --ka-danger-halo: rgba(255,156,166,.18); --ka-path-disc: rgba(15,31,22,.10); --ka-lift: rgba(0,0,0,.7);
+  --ka-g-fill: #131314; --ka-g-edge: #8E918F; --ka-g-text: #E3E3E3; }
 body[data-ka-view] { padding-left: 0 !important; }
 /* The gate: set by the page's first script before anything is drawn, so the study app never flashes for a signed-out visitor. */
 html[data-ka-gate] .app-rail, html[data-ka-gate] #studyWrap, html[data-ka-gate] #bottomNav, html[data-ka-gate] .skip-link { display: none !important; }
@@ -8904,8 +8910,10 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 #kaRoot fieldset { border: 0; min-width: 0; }
 #kaRoot a, .ka-acct a, .ka-card a, .ka-dlg a { color: var(--accent-text); text-underline-offset: 3px; text-decoration-thickness: 1px; }
 #kaRoot :focus-visible, .ka-card :focus-visible, .ka-acct :focus-visible, .ka-dlg :focus-visible, .ka-rail:focus-visible, .ka-top:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
-/* A screen's title takes focus when the screen opens: ringed for keyboard users only (:focus-visible above). */
-#kaRoot h1:focus:not(:focus-visible) { outline: none; }
+/* A screen's title takes focus when the screen opens, so a screen reader starts at the top and the
+   next Tab is the first control. It is not a control, so no box is drawn on it (as on the app's own
+   question text). */
+#kaRoot h1:focus, #kaRoot h1:focus-visible { outline: none; }
 .ka-btn, .ka-path, .ka-card-main, .ka-card-act, .ka-item, .ka-toggle, .ka-linkbtn, .ka-reveal, .ka-check { touch-action: manipulation; }
 /* A hidden label inside a flex link keeps to its link (it would otherwise widen the page). */
 #kaRoot a, .ka-card a, .ka-acct a, .ka-rail, .ka-top { position: relative; }
@@ -8916,16 +8924,16 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 .ka-topbar { border: 0; margin: 0; animation: none; flex-wrap: nowrap; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 20px 0; }
 .ka-brand { display: inline-flex; align-items: center; min-height: 44px; }
 .ka-brand .brand-lockup { height: 30px; width: auto; display: block; }
-.ka-toplink { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font: var(--t-chip); color: var(--text2) !important; text-decoration: none; text-align: right; }
+.ka-toplink { display: inline-flex; align-items: center; justify-content: flex-end; gap: 8px; min-height: 44px; min-width: 44px; font: var(--t-chip); color: var(--text2) !important; text-decoration: none; text-align: right; }
 .ka-toplink:hover { color: var(--text) !important; }
 .ka-art { display: none; }
 .ka-main { padding: 20px 20px 24px; }
 .ka-form-col { width: 100%; max-width: 26.25rem; margin: 0 auto; }
 .ka-foot { border: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 20px; margin: 32px auto 0; width: 100%; max-width: 26.25rem; font: var(--t-meta); color: var(--text2); }
-.ka-foot a { color: var(--text2) !important; display: inline-flex; align-items: center; min-height: 44px; }
+.ka-foot a { color: var(--text2) !important; display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
 .ka-foot span { width: 100%; }
 .ka-title { font: 400 2.125rem/1.1 var(--f-serif); letter-spacing: -.025em; text-wrap: balance; }
-#kaRoot .ka-steps + .ka-title, #kaRoot .ka-back + .ka-title { margin-top: 18px; }
+#kaRoot .ka-steps + .ka-title, #kaRoot .ka-back + .ka-title { margin-top: var(--sp-lg); }
 .ka-lede { margin-top: 12px !important; font: 400 1.0625rem/1.55 var(--f-sans); color: var(--text2); text-wrap: pretty; }
 .ka-lede strong { color: var(--text); font-weight: 600; overflow-wrap: anywhere; }
 @media (min-width: 56.25em) {
@@ -8945,47 +8953,63 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 .ka-fronds .ka-sap path { stroke: var(--sap); opacity: .35; }
 .ka-art-title { font: 400 3.25rem/1.06 var(--f-serif); letter-spacing: -.03em; max-width: 12ch; text-wrap: balance; }
 .ka-art-quote { margin-top: 20px !important; font: italic 400 1.3125rem/1.45 var(--f-serif); color: var(--on-forest2); max-width: 28ch; }
-.ka-art-facts { margin-top: auto !important; display: grid; gap: 14px; font: var(--t-body); color: var(--on-forest); }
+.ka-art-facts { margin-top: auto !important; display: grid; gap: var(--sp-md); font: var(--t-body); color: var(--on-forest); }
 .ka-art-facts li { display: flex; gap: 12px; align-items: center; }
 .ka-art-facts li::before { content: ""; width: 14px; height: 14px; flex-shrink: 0; background: var(--sap); border-radius: 0 70% 0 70%; }
-.ka-sync-card { margin-top: auto; max-width: 25rem; padding: 22px 24px; border-radius: 22px; background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px var(--forest-track), inset 0 1px 0 rgba(255,255,255,.06); }
+.ka-sync-card { margin-top: auto; max-width: 25rem; padding: var(--sp-xxl); border-radius: var(--r-card); background: var(--forest-hl); box-shadow: inset 0 0 0 1px var(--forest-track), inset 0 1px 0 var(--forest-hl); }
 .ka-sync-k { font: var(--t-caption); color: var(--sap); display: flex; align-items: center; gap: 8px; }
-.ka-sync-k::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--sap); box-shadow: 0 0 0 4px rgba(169,217,186,.18); }
+.ka-sync-k::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--sap); box-shadow: 0 0 0 4px var(--ka-sap-halo); }
 .ka-sync-row { display: flex; align-items: center; gap: 10px; margin-top: 16px; font: var(--t-meta); color: var(--on-forest); }
 .ka-sync-dev { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
 .ka-sync-dev .ico { color: var(--on-forest2); }
 .ka-vine { flex: 1; height: 1.5px; min-width: 24px; background: repeating-linear-gradient(90deg, var(--sap) 0 4px, transparent 4px 8px); }
 .ka-sync-list { margin-top: 16px !important; border-top: 1px solid var(--forest-track); }
-.ka-sync-list li { padding: 9px 0; border-bottom: 1px solid var(--forest-track); font: var(--t-meta); color: var(--on-forest2); }
+.ka-sync-list li { padding: 8px 0; border-bottom: 1px solid var(--forest-track); font: var(--t-meta); color: var(--on-forest2); }
 
-/* Buttons (54px; 44px floor everywhere) */
-.ka-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 54px; padding: 12px 22px; border: 0; border-radius: var(--ka-r-btn); font: var(--t-button); cursor: pointer; text-decoration: none !important; transition: transform .2s var(--ka-ease), background-color .2s, box-shadow .2s, opacity .2s; }
-.ka-btn-primary { background: var(--btn); color: var(--on-btn) !important; box-shadow: 0 10px 22px -14px rgba(30,74,52,.8); }
+/* Buttons (52px with --r-tile, the web app's primary; 44px floor everywhere) */
+.ka-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 52px; padding: 12px 24px; border: 0; border-radius: var(--ka-r-btn); font: var(--t-button); cursor: pointer; text-decoration: none !important; transition: transform .2s var(--ka-ease), background-color .2s, box-shadow .2s, opacity .2s; }
+.ka-btn-primary { background: var(--btn); color: var(--on-btn) !important; box-shadow: 0 10px 22px -14px var(--ka-btn-shadow); }
 [data-theme="dark"] .ka-btn-primary { box-shadow: none; }
 .ka-btn-secondary { background: transparent; color: var(--text) !important; box-shadow: inset 0 0 0 1.5px var(--control); }
-.ka-btn-google { background: var(--surface); color: var(--text) !important; box-shadow: inset 0 0 0 1.5px var(--border2), var(--shadow); }
-[data-theme="dark"] .ka-btn-google { box-shadow: inset 0 0 0 1.5px var(--control); }
+/* The Google button. This ONE control follows Google's sign-in branding (their
+   "custom button" rules: fill, 1px edge and label colours for the light and the
+   dark theme, 12px before the "G", 10px between the "G" and the words, 12px
+   after, the label in Roboto Medium 14/20), which outranks Grove's two-font
+   rule here and nowhere else. The "G" is Google's own file, unaltered
+   (assets/google-g.svg); while it is missing the button is not shown at all. */
+@font-face { font-family: 'Roboto'; font-style: normal; font-weight: 500; font-display: swap; src: url('assets/fonts/Roboto_500Medium_latin.woff2') format('woff2'); }
+.ka-btn-google { background: var(--ka-g-fill); color: var(--ka-g-text) !important; box-shadow: inset 0 0 0 1px var(--ka-g-edge); padding: 12px; gap: 10px; font: 500 0.875rem/1.25rem 'Roboto', var(--f-sans); letter-spacing: normal; }
+.ka-btn-google img { width: 20px; height: 20px; flex: none; display: block; }
+.ka-google-part[hidden] { display: none; }
+.ka-google-part:not([hidden]) + .ka-form { margin-top: 0; }
 .ka-btn-quiet { background: transparent; color: var(--text2) !important; min-height: 44px; }
 .ka-btn-danger { background: transparent; color: var(--wrong) !important; box-shadow: inset 0 0 0 1.5px var(--wrong); }
 .ka-btn-auto { width: auto; }
 .ka-btn-sm { min-height: 48px; padding: 10px 18px; font: var(--t-label); }
 .ka-btn:active { transform: scale(.985); }
-.ka-btn[aria-disabled="true"], .ka-btn:disabled { opacity: .6; cursor: default; }
-@media (hover: hover) { .ka-btn-primary:hover { transform: translateY(-1px); } .ka-btn-secondary:hover, .ka-btn-google:hover { background: var(--surface2); } .ka-btn-quiet:hover { color: var(--text) !important; } }
+/* A busy button keeps its full contrast: the spinner and the changed words say "busy". */
+.ka-btn:disabled { opacity: .6; cursor: default; }
+.ka-btn[aria-disabled="true"] { cursor: progress; }
+@media (hover: hover) { .ka-btn-primary:hover { transform: translateY(-1px); } .ka-btn-secondary:hover { background: var(--surface2); } .ka-btn-quiet:hover { color: var(--text) !important; } }
 
 /* Fields: a visible label above, never a placeholder. */
-.ka-form { display: grid; gap: 18px; margin-top: 28px; }
+.ka-form { display: grid; gap: var(--sp-lg); margin-top: var(--sp-xxl); }
 .ka-field { display: grid; gap: 8px; }
+/* A link beside the label ("Forgot password?"): after the field in the page, so Tab goes email, password, Show; drawn on the label's row. */
+.ka-field.has-aside { grid-template-columns: 1fr auto; }
+.ka-field.has-aside > * { grid-column: 1 / -1; }
+.ka-field.has-aside > .ka-field-top { grid-column: 1; grid-row: 1; align-self: center; }
+.ka-field.has-aside > .ka-aside { grid-column: 2; grid-row: 1; align-self: center; }
 .ka-field-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-.ka-label { font: 600 0.875rem/1.3 var(--f-sans); color: var(--text); }
-.ka-aside { font: 500 0.875rem/1.3 var(--f-sans); display: inline-flex; align-items: center; min-height: 44px; margin-block: -14px; background: none; border: 0; padding: 0; cursor: pointer; color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.ka-label { font: var(--t-badge); color: var(--text); }
+.ka-aside { font: var(--t-meta); display: inline-flex; align-items: center; min-height: 44px; margin-block: -14px; background: none; border: 0; padding: 0; cursor: pointer; color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 .ka-input-wrap { position: relative; display: flex; align-items: center; }
 .ka-input { width: 100%; min-height: 54px; padding: 12px 16px; border: 0; border-radius: var(--ka-r-field); background: var(--surface); color: var(--text); font: 400 1.0625rem/1.3 var(--f-sans); box-shadow: inset 0 0 0 1.5px var(--control); outline: 2px solid transparent; outline-offset: 2px; }
 .ka-input:focus { box-shadow: inset 0 0 0 2px var(--text), 0 0 0 4px var(--ka-halo); }
 .ka-input[aria-invalid="true"] { box-shadow: inset 0 0 0 2px var(--wrong), 0 0 0 4px var(--ka-danger-halo); }
 .ka-input-wrap .ka-input.has-reveal { padding-right: 6rem; }
-.ka-reveal { position: absolute; right: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; min-width: 44px; padding: 0 10px; border: 0; border-radius: 12px; background: transparent; color: var(--text2); font: 600 0.875rem/1 var(--f-sans); cursor: pointer; }
-.ka-error { display: flex; gap: 8px; align-items: flex-start; color: var(--wrong); font: 500 0.875rem/1.45 var(--f-sans); margin: 0; }
+.ka-reveal { position: absolute; right: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-height: 44px; min-width: 44px; padding: 0 12px; border: 0; border-radius: var(--r-12); background: transparent; color: var(--text2); font: var(--t-badge); cursor: pointer; }
+.ka-error { display: flex; gap: 8px; align-items: flex-start; color: var(--wrong); font: var(--t-meta); margin: 0; }
 .ka-error:empty { display: none; }
 .ka-error .ico { margin-top: 1px; flex-shrink: 0; }
 .ka-hint { font: var(--t-meta); font-weight: 400; color: var(--text2); margin: 0; }
@@ -8995,15 +9019,14 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 .ka-fine { margin-top: 10px !important; font: 400 0.8125rem/1.5 var(--f-sans); color: var(--text2); }
 .ka-switch { margin-top: 20px !important; font: var(--t-small); color: var(--text2); }
 .ka-switch a, .ka-linkbtn { font-weight: 600; display: inline-flex; align-items: center; min-height: 44px; }
-.ka-linkbtn { background: none; border: 0; padding: 0; cursor: pointer; color: var(--accent-text); font: 600 0.9375rem/1.3 var(--f-sans); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; text-align: left; }
+.ka-linkbtn { background: none; border: 0; padding: 0; cursor: pointer; color: var(--accent-text); font: var(--t-chip); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; text-align: left; }
 .ka-linkbtn:disabled { color: var(--text2); text-decoration: none; cursor: default; }
 .ka-back { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font: var(--t-chip); text-decoration: none; color: var(--text2) !important; background: none; border: 0; padding: 0; cursor: pointer; }
 .ka-back .ico { transform: rotate(180deg); }
-.ka-divider { display: flex; align-items: center; gap: 14px; margin: 22px 0; color: var(--text2); font: 500 0.875rem/1 var(--f-sans); }
+.ka-divider { display: flex; align-items: center; gap: var(--sp-md); margin: var(--sp-xxl) 0; color: var(--text2); font: var(--t-meta); }
 .ka-divider::before, .ka-divider::after { content: ""; flex: 1; height: 1px; background: var(--border); }
-.ka-google-slot { margin-top: 28px; }
-.ka-divider + .ka-form { margin-top: 0; }
-.ka-alert { display: flex; gap: 10px; align-items: flex-start; margin-top: 20px; padding: 14px 16px; border-radius: 16px; background: var(--tip-bg); color: var(--text); font: 400 0.9375rem/1.45 var(--f-sans); }
+.ka-google-slot { margin-top: var(--sp-xxl); }
+.ka-alert { display: flex; gap: var(--sp-md); align-items: flex-start; margin-top: var(--sp-xl); padding: var(--sp-md) var(--sp-lg); border-radius: var(--r-md); background: var(--tip-bg); color: var(--text); font: var(--t-small); }
 .ka-alert .ico { color: var(--tip); margin-top: 1px; flex-shrink: 0; }
 .ka-alert[hidden] { display: none; }
 .ka-human { min-height: 0; }
@@ -9013,9 +9036,9 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 
 /* Agreements: 44px rows, a 24px box, and an audit tick (clay) when agreed. */
 .ka-consent { display: grid; gap: 4px; }
-.ka-check { position: relative; display: grid; grid-template-columns: 24px 1fr; gap: 12px; align-items: start; padding: 10px 0; min-height: 44px; cursor: pointer; font: 400 0.9375rem/1.45 var(--f-sans); color: var(--text); }
+.ka-check { position: relative; display: grid; grid-template-columns: 24px 1fr; gap: 12px; align-items: start; padding: 10px 0; min-height: 44px; cursor: pointer; font: var(--t-small); color: var(--text); }
 .ka-check input { position: absolute; left: 0; top: 10px; width: 24px; height: 24px; margin: 0; opacity: 0; cursor: pointer; }
-.ka-box { width: 24px; height: 24px; border-radius: 7px; box-shadow: inset 0 0 0 1.5px var(--control); background: var(--surface); display: grid; place-items: center; color: transparent; margin-top: -1px; }
+.ka-box { width: 24px; height: 24px; border-radius: var(--r-sm); box-shadow: inset 0 0 0 1.5px var(--control); background: var(--surface); display: grid; place-items: center; color: transparent; margin-top: -1px; }
 .ka-box svg { width: 18px; height: 18px; }
 .ka-check input:checked + .ka-box { box-shadow: inset 0 0 0 2px var(--text); color: var(--clay); }
 .ka-check input:focus-visible + .ka-box { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
@@ -9026,8 +9049,8 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 /* The optional news box: set apart, under its own label. */
 .ka-consent-opt { padding-top: 12px; border-top: 1px solid var(--border); }
 .ka-consent-opt .ka-label { margin: 0 !important; color: var(--text2); }
-.ka-adds { margin-top: 24px; padding: 16px 18px; border-radius: 16px; background: var(--surface2); font: 400 0.875rem/1.5 var(--f-sans); color: var(--text2); display: grid; gap: 6px; }
-.ka-adds-t { display: flex; gap: 8px; align-items: center; font: 600 0.875rem/1.3 var(--f-sans); color: var(--text); }
+.ka-adds { margin-top: var(--sp-xxl); padding: var(--sp-lg); border-radius: var(--r-md); background: var(--surface2); font: 400 0.875rem/1.5 var(--f-sans); color: var(--text2); display: grid; gap: 6px; }
+.ka-adds-t { display: flex; gap: 8px; align-items: center; font: var(--t-badge); color: var(--text); }
 .ka-adds-t .ico { color: var(--accent-text); }
 
 /* Steps: three leaves on a stem; a finished step carries an audit tick. */
@@ -9053,22 +9076,22 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 /* The 8-digit code: ONE input (paste and one-time-code autofill work), drawn
    as two joined groups of four ruled cells. */
 .ka-code { position: relative; }
-.ka-code-cells { display: flex; gap: 6px; align-items: center; }
-.ka-code-grp { display: flex; flex: 1; min-width: 0; border-radius: 14px; background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--control); overflow: hidden; }
+.ka-code-cells { display: flex; gap: var(--sp-sm); align-items: center; }
+.ka-code-grp { display: flex; flex: 1; min-width: 0; border-radius: var(--r-md); background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--control); overflow: hidden; }
 .ka-cell { position: relative; flex: 1; min-width: 0; height: 3.5rem; min-height: 56px; display: grid; place-items: center; font: 500 1.625rem/1 var(--f-serif); color: var(--text); font-variant-numeric: tabular-nums; }
 .ka-cell + .ka-cell { box-shadow: inset 1.5px 0 0 var(--border2); }
 .ka-code-sep { width: 8px; height: 2px; background: var(--control); flex: 0 0 8px; border-radius: 1px; }
-.ka-code-input { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background: transparent; color: transparent; caret-color: transparent; font: 400 1rem/1 var(--f-sans); letter-spacing: 1em; text-align: left; outline: 2px solid transparent; border-radius: 14px; cursor: text; }
+.ka-code-input { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background: transparent; color: transparent; caret-color: transparent; font: 400 1rem/1 var(--f-sans); letter-spacing: 1em; text-align: left; outline: 2px solid transparent; border-radius: var(--r-md); cursor: text; }
 .ka-code-input::selection { background: transparent; }
 .ka-code:focus-within .ka-cell.is-active { box-shadow: inset 0 0 0 2px var(--text); background: var(--surface2); }
 .ka-code:focus-within .ka-cell.is-active::after { content: ""; width: 2px; height: 24px; background: var(--text); border-radius: 1px; animation: kaCaret 1.1s steps(1) infinite; }
 .ka-code:focus-within .ka-cell.is-active.is-filled::after { display: none; }
 .ka-code.is-full:focus-within .ka-code-grp { box-shadow: inset 0 0 0 2px var(--text); }
-.ka-code.is-sel:focus-within .ka-code-grp { box-shadow: inset 0 0 0 2px var(--text); }
-.ka-code.is-sel:focus-within .ka-cell.is-filled { background: var(--surface2); }
 .ka-code.has-error .ka-code-grp { box-shadow: inset 0 0 0 2px var(--wrong); }
 @keyframes kaCaret { 50% { opacity: 0; } }
-.ka-resend { margin-top: 18px; font: 400 0.875rem/1.5 var(--f-sans); color: var(--text2); display: grid; gap: 2px; justify-items: start; }
+/* Forced colours (Windows high contrast) repaint the hidden text: show the real field and hide its picture. */
+@media (forced-colors: active) { .ka-code-cells { visibility: hidden; } .ka-code-input { color: FieldText; caret-color: auto; letter-spacing: .5em; background: Field; padding: 0 12px; } }
+.ka-resend { margin-top: var(--sp-lg); font: 400 0.875rem/1.5 var(--f-sans); color: var(--text2); display: grid; gap: 2px; justify-items: start; }
 
 /* The password checklist: five items, each an icon and words (met or not). */
 .ka-pw { padding: 12px 16px; border-radius: var(--r-md); background: var(--raised2); box-shadow: inset 0 0 0 1px var(--border); }
@@ -9086,45 +9109,44 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 
 /* First visit: the welcome choice. */
 .ka-welcome { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
-.ka-welcome-main { flex: 1; display: flex; flex-direction: column; gap: 28px; padding: 16px 20px 24px; max-width: 85rem; width: 100%; margin: 0 auto; }
-.ka-kicker { font: 600 0.875rem/1.3 var(--f-sans); color: var(--accent-text); display: flex; gap: 10px; align-items: center; }
+.ka-welcome-main { flex: 1; display: flex; flex-direction: column; gap: var(--sp-2xl); padding: 16px 20px 24px; max-width: 85rem; width: 100%; margin: 0 auto; }
+.ka-kicker { font: var(--t-badge); color: var(--accent-text); display: flex; gap: var(--sp-md); align-items: center; }
 .ka-kicker::before { content: ""; width: 22px; height: 1.5px; background: var(--accent); }
-.ka-title-xl { margin-top: 18px !important; font: 400 2.75rem/1.02 var(--f-serif); letter-spacing: -.035em; text-wrap: balance; }
+.ka-title-xl { margin-top: var(--sp-lg) !important; font: 400 2.75rem/1.02 var(--f-serif); letter-spacing: -.035em; text-wrap: balance; }
 .ka-title-xl em { font-style: italic; color: var(--accent-text); }
 .ka-welcome .ka-lede { max-width: 46ch; }
 .ka-paths { display: grid; gap: 12px; margin-top: 24px; max-width: 32.5rem; }
-.ka-path { display: grid; grid-template-columns: 44px 1fr 20px; gap: 14px; align-items: center; min-height: 84px; padding: 14px 16px; border: 0; border-radius: 22px; text-decoration: none !important; text-align: left; cursor: pointer; font: inherit; transition: transform .2s var(--ka-ease); width: 100%; }
-.ka-path-primary { background: var(--btn); color: var(--on-btn) !important; box-shadow: 0 18px 30px -20px rgba(30,74,52,.9); }
+.ka-path { display: grid; grid-template-columns: 44px 1fr 20px; gap: var(--sp-md); align-items: center; min-height: 84px; padding: var(--sp-md) var(--sp-lg); border: 0; border-radius: var(--r-card); text-decoration: none !important; text-align: left; cursor: pointer; font: inherit; transition: transform .2s var(--ka-ease); width: 100%; }
+.ka-path-primary { background: var(--btn); color: var(--on-btn) !important; box-shadow: 0 18px 30px -20px var(--ka-path-shadow); }
 .ka-path-secondary { background: var(--surface); color: var(--text) !important; box-shadow: var(--card-shadow); }
 [data-theme="dark"] .ka-path-primary { box-shadow: none; }
 .ka-path-ico { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; }
-.ka-path-primary .ka-path-ico { background: rgba(247,245,239,.14); }
-[data-theme="dark"] .ka-path-primary .ka-path-ico { background: rgba(15,31,22,.10); }
+.ka-path-primary .ka-path-ico { background: var(--ka-path-disc); }
 .ka-path-secondary .ka-path-ico { background: var(--surface2); color: var(--accent-text); }
-.ka-path-text { display: grid; gap: 3px; min-width: 0; }
-.ka-path-t { font: 600 1.0625rem/1.3 var(--f-sans); }
+.ka-path-text { display: grid; gap: var(--sp-xs); min-width: 0; }
+.ka-path-t { font: var(--t-button); }
 .ka-path-s { font: 400 0.875rem/1.4 var(--f-sans); }
 .ka-path-secondary .ka-path-s { color: var(--text2); }
 @media (hover: hover) { .ka-path:hover { transform: translateY(-1px); } }
 .ka-welcome-why { margin-top: 12px !important; max-width: 46ch; font: var(--t-body); color: var(--text); }
 .ka-welcome-kept { display: flex; gap: 10px; align-items: flex-start; margin-top: 16px !important; max-width: 32.5rem; padding: 12px 16px; border-radius: var(--r-md); background: var(--surface2); font: var(--t-small); color: var(--text); }
 .ka-welcome-kept .ico { color: var(--accent-text); flex-shrink: 0; margin-top: 1px; }
-.ka-ios { display: flex; gap: 10px; align-items: flex-start; margin-top: 14px !important; font: var(--t-small); color: var(--text2); }
+.ka-ios { display: flex; gap: var(--sp-md); align-items: flex-start; margin-top: var(--sp-lg) !important; font: var(--t-small); color: var(--text2); }
 .ka-ios .ico { color: var(--accent-text); flex-shrink: 0; margin-top: 2px; }
 .ka-welcome .ka-fine { max-width: 56ch; margin-top: 24px !important; }
 .ka-welcome .ka-welcome-foot { margin: 8px 0 0 !important; max-width: none; }
 .ka-welcome-panel { position: relative; overflow: hidden; isolation: isolate; border-radius: 24px; padding: 28px 16px 20px; background: linear-gradient(180deg, var(--forest-top), var(--forest) 60%); box-shadow: inset 0 1px 0 var(--forest-hl); }
-.ka-q { background: var(--surface); color: var(--text); border-radius: 22px; padding: 18px; box-shadow: 0 30px 60px -30px rgba(0,0,0,.5); max-width: 27.5rem; margin-left: auto; }
-[data-theme="dark"] .ka-q { box-shadow: inset 0 0 0 1.5px var(--border), 0 30px 60px -30px rgba(0,0,0,.7); }
+.ka-q { background: var(--surface); color: var(--text); border-radius: var(--r-card); padding: var(--sp-lg); box-shadow: 0 30px 60px -30px var(--ka-lift); max-width: 27.5rem; margin-left: auto; }
+[data-theme="dark"] .ka-q { box-shadow: inset 0 0 0 1.5px var(--border), 0 30px 60px -30px var(--ka-lift); }
 .ka-q-k { font: var(--t-caption); color: var(--text2); }
 .ka-q-stem { margin-top: 10px !important; font: 400 1.125rem/1.42 var(--f-serif); }
-.ka-q-opts { margin-top: 14px !important; display: grid; gap: 8px; }
-.ka-q-opts li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; padding: 10px 12px; border-radius: 14px; box-shadow: inset 0 0 0 1.5px var(--border); font: 400 0.875rem/1.4 var(--f-sans); }
+.ka-q-opts { margin-top: var(--sp-lg) !important; display: grid; gap: 8px; }
+.ka-q-opts li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; padding: 8px 12px; border-radius: var(--r-md); box-shadow: inset 0 0 0 1.5px var(--border); font: 400 0.875rem/1.4 var(--f-sans); }
 .ka-q-opts li > span:first-child { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--surface2); font: 600 0.8125rem/1 var(--f-sans); }
 .ka-q-opts .is-best { box-shadow: inset 0 0 0 1.5px var(--accent); background: var(--surface2); }
 .ka-q-opts .is-best > span:first-child { background: var(--btn); color: var(--on-btn); }
 .ka-q-opts em { display: block; font: 600 0.75rem/1.4 var(--f-sans); font-style: normal; color: var(--accent-text); }
-.ka-q-why { margin-top: 14px !important; padding-left: 14px; border-left: 3px solid var(--accent); font: italic 400 1rem/1.5 var(--f-serif); color: var(--text2); }
+.ka-q-why { margin-top: var(--sp-lg) !important; padding-left: var(--sp-md); border-left: 3px solid var(--accent); font: italic 400 1rem/1.5 var(--f-serif); color: var(--text2); }
 .ka-q-why b { font: 600 0.875rem var(--f-sans); font-style: normal; color: var(--text); }
 @media (min-width: 56.25em) {
   .ka-welcome .ka-topbar { padding: 24px 56px; }
@@ -9140,7 +9162,7 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 }
 
 /* First sync: This browser, Account, After. */
-.ka-cols { margin-top: 24px; border-radius: 16px; background: var(--surface); box-shadow: var(--card-shadow); overflow: hidden; width: 100%; table-layout: fixed; border-collapse: collapse; font: var(--t-meta); }
+.ka-cols { margin-top: var(--sp-xxl); border-radius: var(--r-md); background: var(--surface); box-shadow: var(--card-shadow); overflow: hidden; width: 100%; table-layout: fixed; border-collapse: collapse; font: var(--t-meta); }
 .ka-cols th, .ka-cols td { padding: 10px 8px; text-align: right; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .ka-cols th:first-child, .ka-cols td:first-child { width: 34%; padding-left: 12px; }
 .ka-cols th:last-child, .ka-cols td:last-child { padding-right: 12px; }
@@ -9149,12 +9171,12 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 .ka-cols tbody th { font: 500 0.875rem/1.3 var(--f-sans); color: var(--text); }
 .ka-cols tbody tr + tr > * { border-top: 1px solid var(--border); }
 .ka-cols .is-after { color: var(--accent-text); font-weight: 600; }
-.ka-choices { display: grid; gap: 10px; margin-top: 24px; }
+.ka-choices { display: grid; gap: var(--sp-sm); margin-top: var(--sp-xxl); }
 
 /* The account card on You: one component, a full offer or a slim row. */
-.ka-card { background: var(--surface); border-radius: 20px; box-shadow: var(--card-shadow); color: var(--text); container-type: inline-size; }
+.ka-card { background: var(--surface); border-radius: var(--r-card); box-shadow: var(--card-shadow); color: var(--text); container-type: inline-size; }
 .ka-card-row { display: flex; align-items: stretch; }
-.ka-card-main { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 12px 10px 14px; background: none; border: 0; border-radius: 20px; color: inherit !important; text-decoration: none !important; text-align: left; font: inherit; cursor: pointer; }
+.ka-card-main { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 8px 12px 8px 16px; background: none; border: 0; border-radius: var(--r-card); color: inherit !important; text-decoration: none !important; text-align: left; font: inherit; cursor: pointer; }
 div.ka-card-main { cursor: default; }
 .ka-disc { width: 40px; height: 40px; border-radius: 50%; background: var(--surface2); color: var(--accent-text); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .ka-disc.is-attn { background: var(--tip-bg); color: var(--tip); }
@@ -9163,19 +9185,19 @@ div.ka-card-main { cursor: default; }
 .ka-card-t { font: var(--t-label); color: var(--text); overflow-wrap: anywhere; margin: 0; }
 .ka-card-m { font: var(--t-meta); color: var(--text2); margin: 0; }
 .ka-card-chev { display: inline-flex; color: var(--muted); flex-shrink: 0; }
-.ka-card-act { flex: none; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-width: 72px; min-height: 64px; padding: 6px 10px; background: none; border: 0; border-left: 1px solid var(--border); border-radius: 0 20px 20px 0; color: var(--accent-text); font: var(--t-fg-name); cursor: pointer; }
+.ka-card-act { flex: none; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-width: 72px; min-height: 64px; padding: 6px 10px; background: none; border: 0; border-left: 1px solid var(--border); border-radius: 0 var(--r-card) var(--r-card) 0; color: var(--accent-text); font: var(--t-fg-name); cursor: pointer; }
 .ka-card-act.is-busy { color: var(--muted); cursor: default; }
 .ka-card-act.is-turn .ico { animation: kaTurn .6s var(--ka-ease) 1; }
 @keyframes kaTurn { to { transform: rotate(360deg); } }
-.ka-card-body { padding: 0 16px 14px 14px; font: var(--t-small); color: var(--text2); margin: 0; }
-.ka-card-acts { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; padding: 0 14px 14px; }
-.ka-card-under { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin: 0 14px; padding: 12px 0 14px; border-top: 1px solid var(--border); font: var(--t-meta); color: var(--text2); }
+.ka-card-body { padding: 0 16px 16px; font: var(--t-small); color: var(--text2); margin: 0; }
+.ka-card-acts { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; padding: 0 16px 16px; }
+.ka-card-under { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin: 0 16px; padding: 12px 0 16px; border-top: 1px solid var(--border); font: var(--t-meta); color: var(--text2); }
 .ka-card-under p { margin: 0; flex: 1 1 10rem; }
-@container (max-width: 17.5em) { .ka-card-row { flex-direction: column; } .ka-card-act { flex-direction: row; gap: 8px; min-height: 48px; border-left: 0; border-top: 1px solid var(--border); border-radius: 0 0 20px 20px; } .ka-card-chev { display: none; } .ka-card-acts .ka-btn { width: 100%; } }
+@container (max-width: 17.5em) { .ka-card-row { flex-direction: column; } .ka-card-act { flex-direction: row; gap: 8px; min-height: 48px; border-left: 0; border-top: 1px solid var(--border); border-radius: 0 0 var(--r-card) var(--r-card); } .ka-card-chev { display: none; } .ka-card-acts .ka-btn { width: 100%; } }
 @media (min-width: 77.5em) { .you.has-ka { display: grid; grid-template-columns: minmax(0, 1fr) 25rem; column-gap: 20px; } .you.has-ka > * { grid-column: 1 / -1; } .you.has-ka > .you-top { grid-column: 1; } .you.has-ka > .ka-card { grid-column: 2; grid-row: 1; align-self: start; } }
 /* The one-line version: the desktop rail's foot and the phone's top bar. */
 .ka-rail, .ka-rail-wrap { display: none; }
-@media (min-width: 48em) { .ka-rail-wrap { display: block; margin-top: auto; } .ka-rail { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 16px; background: var(--surface); box-shadow: var(--card-shadow); color: var(--text) !important; text-decoration: none !important; min-height: 56px; } .ka-rail .ka-disc { width: 36px; height: 36px; } }
+@media (min-width: 48em) { .ka-rail-wrap { display: block; margin-top: auto; } .ka-rail { display: flex; align-items: center; gap: var(--sp-sm); padding: var(--sp-sm) var(--sp-md); border-radius: var(--r-tile); background: var(--surface); box-shadow: var(--card-shadow); color: var(--text) !important; text-decoration: none !important; min-height: 56px; } .ka-rail .ka-disc { width: 36px; height: 36px; } }
 @media (min-width: 48em) { .rail-app:not([hidden]) ~ .ka-rail-wrap, .rail-foot:not([hidden]) ~ .ka-rail-wrap { margin-top: var(--sp-lg); } }
 .ka-rail-t { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .ka-rail-h { font: var(--t-caption); color: var(--text); overflow-wrap: anywhere; }
@@ -9189,24 +9211,24 @@ div.ka-card-main { cursor: default; }
 .ka-acct h1 { margin: 0; }
 .ka-hero { position: relative; overflow: hidden; isolation: isolate; margin-top: 24px; padding: 24px; border-radius: 24px; background: linear-gradient(180deg, var(--forest-top), var(--forest)); color: var(--on-forest); box-shadow: inset 0 1px 0 var(--forest-hl); --focus-ring: var(--on-forest); }
 .ka-hero .ka-fronds { opacity: .9; }
-.ka-who { display: flex; gap: 14px; align-items: center; }
-.ka-ava { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; background: var(--sap); color: #0F1F16; font: 500 1.375rem/1 var(--f-serif); }
-.ka-who-mail { font: 600 1.0625rem/1.3 var(--f-sans); overflow-wrap: anywhere; margin: 0; }
+.ka-who { display: flex; gap: var(--sp-md); align-items: center; }
+.ka-ava { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; background: var(--sap); color: var(--on-pill); font: 500 1.375rem/1 var(--f-serif); }
+.ka-who-mail { font: var(--t-headline); overflow-wrap: anywhere; margin: 0; }
 .ka-who-sub { font: var(--t-meta); color: var(--on-forest2); margin: 0; }
-.ka-sync { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--forest-track); display: grid; grid-template-columns: 1fr; gap: 6px 16px; align-items: center; }
-.ka-status { display: flex; gap: 8px; align-items: center; font: 600 1rem/1.3 var(--f-sans); margin: 0; }
-.ka-status .ico { width: 20px; height: 20px; padding: 3px; border-radius: 50%; background: var(--sap); color: #0F1F16; flex-shrink: 0; }
+.ka-sync { margin-top: var(--sp-xl); padding-top: var(--sp-lg); border-top: 1px solid var(--forest-track); display: grid; grid-template-columns: 1fr; gap: 6px 16px; align-items: center; }
+.ka-status { display: flex; gap: 8px; align-items: center; font: var(--t-label); margin: 0; }
+.ka-status .ico { width: 20px; height: 20px; padding: 3px; border-radius: 50%; background: var(--sap); color: var(--on-pill); flex-shrink: 0; }
 .ka-last { font: var(--t-meta); color: var(--on-forest2); margin: 0; }
 .ka-devices { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font: var(--t-meta); color: var(--on-forest); margin: 6px 0 0; }
 .ka-devices > span:not(.ka-vine) { display: inline-flex; gap: 6px; align-items: center; }
 .ka-devices .ico { color: var(--on-forest2); }
 .ka-devices .ka-vine { flex: 0 0 40px; }
-.ka-sync .ka-btn { margin-top: 12px; background: var(--on-forest); color: #17231B !important; box-shadow: none; }
+.ka-sync .ka-btn { margin-top: 12px; background: var(--pill); color: var(--on-pill) !important; box-shadow: none; }
 @media (min-width: 40em) { .ka-sync { grid-template-columns: 1fr auto; } .ka-sync > p { grid-column: 1; } .ka-sync .ka-btn { grid-column: 2; grid-row: 1 / 4; width: auto; margin-top: 0; } }
 .ka-group { margin-top: 32px; }
-.ka-group-t { font: 600 1.0625rem/1.3 var(--f-sans); margin: 0 0 12px; color: var(--text); }
+.ka-group-t { font: var(--t-headline); margin: 0 0 12px; color: var(--text); }
 .ka-group-note { margin: 10px 0 0; font: var(--t-meta); font-weight: 400; color: var(--text2); }
-.ka-item { display: grid; grid-template-columns: 40px 1fr auto; gap: 12px; align-items: center; width: 100%; min-height: 72px; padding: 12px 14px; background: var(--surface); box-shadow: var(--card-shadow); border: 0; border-radius: 18px; color: var(--text) !important; text-decoration: none !important; text-align: left; font: inherit; cursor: pointer; }
+.ka-item { display: grid; grid-template-columns: 40px 1fr auto; gap: 12px; align-items: center; width: 100%; min-height: 72px; padding: 12px 16px; background: var(--surface); box-shadow: var(--card-shadow); border: 0; border-radius: var(--r-tile); color: var(--text) !important; text-decoration: none !important; text-align: left; font: inherit; cursor: pointer; }
 .ka-row + .ka-row { margin-top: 8px; }
 div.ka-item { cursor: default; }
 .ka-item.no-ico { grid-template-columns: 1fr auto auto; }
@@ -9219,11 +9241,13 @@ div.ka-item { cursor: default; }
 .ka-item-say { margin: 6px 4px 0; font: var(--t-meta); color: var(--accent-text); }
 .ka-item-say:empty { display: none; }
 .ka-toggle { position: relative; width: 52px; height: 32px; padding: 0; border: 0; border-radius: 16px; background: var(--surface2); box-shadow: inset 0 0 0 1.5px var(--control); cursor: pointer; flex-shrink: 0; }
+/* The switch is 32px tall; its tap area is 44. */
+.ka-toggle::before { content: ""; position: absolute; inset: -6px 0; }
 .ka-toggle::after { content: ""; position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 50%; background: var(--control); transition: transform .2s var(--ka-ease), background-color .2s; }
 .ka-toggle[aria-checked="true"] { background: var(--btn); box-shadow: none; }
 .ka-toggle[aria-checked="true"]::after { transform: translateX(20px); background: var(--on-btn); }
-.ka-toggle-word { font: 600 0.875rem/1 var(--f-sans); color: var(--text2); min-width: 24px; }
-.ka-security { margin-top: 8px; display: grid; grid-template-columns: 24px 1fr; gap: 12px; padding: 18px; border-radius: 18px; background: var(--raised2); box-shadow: inset 0 0 0 1px var(--border); }
+.ka-toggle-word { font: var(--t-badge); color: var(--text2); min-width: 24px; }
+.ka-security { margin-top: 8px; display: grid; grid-template-columns: 24px 1fr; gap: 12px; padding: var(--sp-lg); border-radius: var(--r-tile); background: var(--raised2); box-shadow: inset 0 0 0 1px var(--border); }
 .ka-security > .ico { color: var(--accent-text); }
 .ka-security ul { display: grid; gap: 8px; font: 400 0.875rem/1.5 var(--f-sans); color: var(--text2); margin: 0; padding: 0; list-style: none; }
 .ka-security li { padding-left: 14px; position: relative; }
@@ -28027,19 +28051,24 @@ function kaTopbarHtml() {
     return '<a class="ka-brand" href="#today" aria-label="KaiSip, back to studying" onclick="event.preventDefault();kaLand()">' + kaLockup() + '</a>'
       + '<a class="ka-toplink" href="#today" onclick="event.preventDefault();kaLand()">Back to studying ' + ico('arrow-right', 16) + '</a>';
   }
-  return '<a class="ka-brand" href="#welcome" aria-label="KaiSip, the welcome page" onclick="event.preventDefault();kaShow(\'welcome\')">' + kaLockup() + '</a>'
+  return '<a class="ka-brand" href="#welcome" aria-label="KaiSip, the welcome page" onclick="event.preventDefault();kaHome()">' + kaLockup() + '</a>'
     + kaNewTab('support.html', 'Help').replace('<a ', '<a class="ka-toplink" ');
+}
+// The wordmark on a signed-out screen: back to the welcome, with the address cleared of the screen's name.
+function kaHome() {
+  try { history.replaceState(history.state, '', location.pathname + location.search); } catch (e) {}
+  kaShow('welcome');
 }
 function kaErrorHtml(words) {
   return words ? kaIco('alert', 18) + '<span>' + escapeHtml(words) + '</span>' : '';
 }
 function kaField(o) {
-  return '<div class="ka-field"><div class="ka-field-top"><label class="ka-label" for="' + o.id + '">' + o.label + '</label>' + (o.aside || '') + '</div>'
+  return '<div class="ka-field' + (o.aside ? ' has-aside' : '') + '"><div class="ka-field-top"><label class="ka-label" for="' + o.id + '">' + o.label + '</label></div>'
     + '<div class="ka-input-wrap"><input class="ka-input' + (o.reveal ? ' has-reveal' : '') + '" id="' + o.id + '" name="' + o.name + '" type="' + o.type + '" autocomplete="' + o.ac + '"'
     + ' autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="' + o.id + 'E' + (o.describedby ? ' ' + o.describedby : '') + '"'
     + (o.value ? ' value="' + escapeHtml(o.value) + '"' : '') + (o.oninput ? ' oninput="' + o.oninput + '"' : '') + ' required>'
     + (o.reveal ? '<button type="button" class="ka-reveal" aria-controls="' + o.id + '" onclick="kaReveal(this)">' + (o.type === 'text' ? 'Hide' : 'Show') + '<span class="sr-only"> password</span></button>' : '')
-    + '</div><p class="ka-error" id="' + o.id + 'E" role="alert"></p>' + (o.after || '') + '</div>';
+    + '</div>' + (o.aside || '') + '<p class="ka-error" id="' + o.id + 'E" role="alert"></p>' + (o.after || '') + '</div>';
 }
 function kaReveal(btn) {
   var inp = kaEl(btn.getAttribute('aria-controls'));
@@ -28102,7 +28131,7 @@ function kaCodeField() {
   return '<div class="ka-field"><div class="ka-field-top"><label class="ka-label" for="kaCode">8-digit code</label></div>'
     + '<div class="ka-code" id="kaCodeBox"><div class="ka-code-cells" aria-hidden="true">' + cells + '</div>'
     + '<input class="ka-code-input" id="kaCode" name="code" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" maxlength="8" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="kaCodeE" required'
-    + ' oninput="kaCodeDraw()" onpaste="kaCodePaste(event)" onfocus="kaCodeDraw()" onkeyup="kaCodeDraw()" onclick="kaCodeDraw()" onselect="kaCodeDraw()"></div>'
+    + ' oninput="kaCodeDraw()" onpaste="kaCodePaste(event)" onfocus="kaCodeDraw()" onkeyup="kaCodeDraw()" onclick="kaCodePick(event)" onselect="kaCodeDraw()"></div>'
     + '<p class="ka-error" id="kaCodeE" role="alert"></p></div>';
 }
 function kaCodeDraw() {
@@ -28117,11 +28146,23 @@ function kaCodeDraw() {
     var i = Number(c.getAttribute('data-i'));
     c.textContent = v[i] || '';
     c.classList.toggle('is-filled', !!v[i]);
-    c.classList.toggle('is-active', z === a && i === Math.min(a, 7));
+    // The caret's cell, or every selected digit's cell (one selected digit lights one cell).
+    c.classList.toggle('is-active', (z === a && i === Math.min(a, 7)) || (z > a && i >= a && i < z));
   });
   box.classList.toggle('is-full', v.length === 8);
-  box.classList.toggle('is-sel', z > a);
   if (v.length) { box.classList.remove('has-error'); }
+}
+// A click or a tap picks the cell under it (the hidden field's own text does not line up with
+// the drawn cells): a filled cell is selected, so the next digit typed replaces it.
+function kaCodePick(e) {
+  var inp = kaEl('kaCode'), box = kaEl('kaCodeBox');
+  if (!inp || !box) return;
+  var n = inp.value.length, hit = n;
+  if (e && typeof e.clientX === 'number' && (e.clientX || e.clientY)) {
+    box.querySelectorAll('.ka-cell').forEach(function (c) { var r = c.getBoundingClientRect(); if (e.clientX >= r.left && e.clientX <= r.right) hit = Number(c.getAttribute('data-i')); });
+    try { if (hit < n) inp.setSelectionRange(hit, hit + 1); else inp.setSelectionRange(n, n); } catch (ex) {}
+  }
+  kaCodeDraw();
 }
 // A pasted code may carry spaces or a dash ("1234 5678"): only its digits are kept.
 function kaCodePaste(e) {
@@ -28221,10 +28262,41 @@ function kaNewPasswordField(label) {
     + kaField({ id: 'kaPw', name: 'new-password', label: label || 'New password', type: 'password', ac: 'new-password', reveal: true, describedby: 'kaPwHelp', oninput: 'kaPwHelp(true)',
       after: '<div class="ka-pw" id="kaPwHelp"></div><p class="sr-only" id="kaPwSay" role="status" aria-live="polite"></p>' });
 }
-function kaGoogleBtn(label, onclick) {
-  // Google's "G" mark is not in assets/ yet, so the button is words only (Google's
-  // branding rules ask for their own mark file, never a redrawn one).
-  return '<button type="button" class="ka-btn ka-btn-google" onclick="' + onclick + '">' + label + '</button>';
+// ── The Google button ──
+// It follows Google's sign-in branding on this one control: their colours and spacing (the
+// page's styles), one of their approved wordings, and THEIR "G" file, unaltered. The file is
+// never redrawn here: it is read from a fixed address in assets/, and until it is there Google
+// sign-in is not offered anywhere (the button and its divider stay hidden).
+var KA_GOOGLE_G = ['assets/google-g.svg', 'assets/google-g.png'];
+var kaGoogleG = null;       // null: not looked for yet; '': missing; else the file's address
+var kaGoogleLooking = false;
+function kaGoogleProbe() {
+  if (kaGoogleG !== null || kaGoogleLooking) return;
+  kaGoogleLooking = true;
+  var i = 0;
+  var next = function () {
+    if (i >= KA_GOOGLE_G.length) { kaGoogleG = ''; kaGoogleLooking = false; return; }
+    var src = KA_GOOGLE_G[i++], img = new Image();
+    img.onload = function () { kaGoogleG = src; kaGoogleLooking = false; kaGoogleDraw(); };
+    img.onerror = next;
+    img.src = src;
+  };
+  next();
+}
+// Shows the Google parts already on the page once the file is known to be there.
+function kaGoogleDraw() {
+  if (!kaGoogleG) return;
+  document.querySelectorAll('.ka-google-part').forEach(function (part) {
+    part.querySelectorAll('img[data-g]').forEach(function (img) { if (img.getAttribute('src') !== kaGoogleG) img.setAttribute('src', kaGoogleG); });
+    part.hidden = false;
+  });
+}
+function kaGoogleBtn(label, onclick, id) {
+  return '<button type="button" class="ka-btn ka-btn-google"' + (id ? ' id="' + id + '"' : '') + ' onclick="' + onclick + '"><img alt="" width="20" height="20" data-g' + (kaGoogleG ? ' src="' + kaGoogleG + '"' : '') + '><span>' + label + '</span></button>';
+}
+// Everything that goes with the button (a divider, a line of small print) hides with it.
+function kaGooglePart(html) {
+  return '<div class="ka-google-part"' + (kaGoogleG ? '' : ' hidden') + '>' + html + '</div>';
 }
 function kaNoticeHtml() {
   var n = ka.notice;
@@ -28245,8 +28317,8 @@ var KA_VIEWS = {
       '<h1 class="ka-title" tabindex="-1">Welcome back</h1>'
       + '<p class="ka-lede">Sign in to study, with your progress kept safe and in sync with the KaiSip Android app.</p>'
       + kaNoticeHtml()
-      + '<div class="ka-google-slot">' + kaGoogleBtn('Continue with Google', 'kaGoogle(false)') + '</div>'
-      + '<div class="ka-divider"><span>or sign in with email</span></div>'
+      + kaGooglePart('<div class="ka-google-slot">' + kaGoogleBtn('Continue with Google', 'kaGoogle(false)') + '</div>'
+        + '<div class="ka-divider"><span>or sign in with email</span></div>')
       + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();kaSubmit(\'signin\')">'
       + kaField({ id: 'kaEmail', name: 'email', label: 'Email', type: 'email', ac: 'username', value: ka.email })
       + kaField({ id: 'kaPass', name: 'password', label: 'Password', type: 'password', ac: 'current-password', reveal: true,
@@ -28271,9 +28343,9 @@ var KA_VIEWS = {
       + '<div class="ka-human" id="kaHuman"></div>'
       + '<p class="ka-error" id="kaFormE" role="alert"></p>'
       + '<button type="submit" class="ka-btn ka-btn-primary" id="kaGo">Send my code ' + ico('arrow-right', 18) + '</button></form>'
-      + '<div class="ka-divider"><span>or</span></div>'
-      + kaGoogleBtn('Sign up with Google', 'kaGoogle(true)')
-      + '<p class="ka-fine">The agreement above applies to Google sign-up too.</p>'
+      + kaGooglePart('<div class="ka-divider"><span>or</span></div>'
+        + kaGoogleBtn('Sign up with Google', 'kaGoogle(true)')
+        + '<p class="ka-fine">The agreement above applies to Google sign-up too.</p>')
       + '<div class="ka-adds"><p class="ka-adds-t">' + kaIco('sync', 18) + '<span>What your account keeps</span></p>'
       + '<p>Your answers, missed questions, saved questions, notes read and mock results, in sync between this browser and the Android app.</p>'
       + '<p>Your progress is also saved in this browser, so you can keep studying when the connection drops.</p></div>'
@@ -28369,6 +28441,10 @@ function kaShow(view, o) {
   // Focus: the screen's title, so a screen reader starts at the top and the next Tab is the first control.
   var h = root.querySelector('h1');
   if (h && !(o && o.keepFocus)) { try { h.focus({ preventScroll: true }); } catch (e) {} }
+  // A notice drawn with its words already in it is often skipped by screen readers: say it again.
+  var nt = kaEl('kaNotice');
+  if (nt && !nt.hidden && nt.lastChild) { var ns = nt.lastChild, nw = ns.textContent; ns.textContent = ''; setTimeout(function () { if (ns.isConnected) ns.textContent = nw; }, 80); }
+  if (view !== 'welcome') kaGoogleProbe();
   if (view === 'signin' || view === 'signup1' || view === 'forgot1' || view === 'signup2' || view === 'forgot2') kaHumanMount(view === 'signin' ? 'password_sign_in' : view.indexOf('forgot') === 0 ? 'password_reset' : 'sign_up');
   if (view === 'signup3' || view === 'forgot2') { kaPwHelp(); kaWarmWords(); }
   if (view === 'signup2' || view === 'forgot2') { kaCodeDraw(); kaResendTick(); }
@@ -28685,7 +28761,7 @@ function kaSubmit(view) {
 }
 // Google: the agreement first when this is a sign-up. The PKCE secret stays in this tab.
 function kaGoogle(signUp) {
-  if (ka.busy) return;
+  if (ka.busy || !kaGoogleG) return;
   kaClearErrors();
   if (signUp) {
     var rec = kaConsentRead();
@@ -28892,7 +28968,7 @@ function kaWelcomeHtml() {
     + '<p class="ka-welcome-why">KaiSip is free. A free account keeps your progress safe and in sync with the Android app.</p>'
     + (had > 0 ? '<p class="ka-welcome-kept" id="kaKept">' + ico('check', 18) + '<span>The progress you already have in this browser is kept. After you sign in, you choose whether to add it to your account.</span></p>' : '')
     + '<div class="ka-paths">'
-    + '<button type="button" class="ka-path ka-path-primary" onclick="kaGo(\'create-account\')"><span class="ka-path-ico">' + ico('home', 22) + '</span><span class="ka-path-text"><span class="ka-path-t">Create a free account</span><span class="ka-path-s">With your email and a password, or with Google.</span></span>' + ico('arrow-right', 20) + '</button>'
+    + '<button type="button" class="ka-path ka-path-primary" onclick="kaGo(\'create-account\')"><span class="ka-path-ico">' + ico('home', 22) + '</span><span class="ka-path-text"><span class="ka-path-t">Create a free account</span><span class="ka-path-s">With your email and a password<span class="ka-google-part"' + (kaGoogleG ? '' : ' hidden') + '>, or with Google</span>.</span></span>' + ico('arrow-right', 20) + '</button>'
     + '<button type="button" class="ka-path ka-path-secondary" onclick="kaGo(\'sign-in\')"><span class="ka-path-ico">' + kaIco('sync', 22) + '</span><span class="ka-path-text"><span class="ka-path-t">Sign in</span><span class="ka-path-s">Already have a KaiSip account? Pick up where you left off.</span></span>' + ico('chevron', 20) + '</button>'
     + '</div>'
     + (ios ? '<p class="ka-ios">' + kaIco('phone', 20) + '<span>On iPhone? After you sign in, Today shows how to add KaiSip to your Home Screen.</span></p>' : '')
@@ -29247,10 +29323,14 @@ function kaSheet(o) {
     + '<div class="ks-sheet-sub" id="kaDlgB">' + o.body + '</div>'
     + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();' + o.onsubmit + '()">' + o.fields
     + '<p class="ka-error" id="kaFormE" role="alert"></p>'
-    + '<div class="ka-dlg-acts"><button type="submit" class="ka-btn ' + (o.danger ? 'ka-btn-danger' : 'ka-btn-primary') + '" id="kaGo">' + o.go + '</button>'
+    + '<div class="ka-dlg-acts">' + (o.google
+      // Google's own button for a Google step (their branding does not allow our green one).
+      ? kaGooglePart(kaGoogleBtn(o.go, o.onsubmit + '()', 'kaGo'))
+      : '<button type="submit" class="ka-btn ' + (o.danger ? 'ka-btn-danger' : 'ka-btn-primary') + '" id="kaGo">' + o.go + '</button>')
     + '<button type="button" class="ka-btn ka-btn-quiet" onclick="closeFlagModal()">' + (o.cancel || 'Cancel') + '</button></div></form>'
     + (o.after || '') + '</div></div></div>';
   ka.busy = false;
+  if (o.google) kaGoogleProbe();
 }
 function kaSignOutDialog() {
   kaSheet({
@@ -29349,7 +29429,7 @@ function kaDeleteDialog() {
     kaSheet({
       title: 'Confirm it’s you',
       body: '<p>For your security, sign in with Google again before deleting your account. You’ll come straight back here.</p>',
-      fields: '', go: 'Continue with Google', onsubmit: 'kaDeleteViaGoogle'
+      fields: '', go: 'Continue with Google', onsubmit: 'kaDeleteViaGoogle', google: true
     });
     return;
   }
@@ -29425,6 +29505,7 @@ function kaBoot() {
   document.body.insertBefore(root, rail || document.body.firstChild);
   // The address as the page was opened (the app's first page replaces it with its own).
   ka.bootHash = location.hash;
+  if (!kaHasSession()) kaGoogleProbe();
   var say = document.createElement('p');
   say.id = 'kaSay'; say.className = 'sr-only'; say.setAttribute('role', 'status'); say.setAttribute('aria-live', 'polite');
   document.body.appendChild(say);
