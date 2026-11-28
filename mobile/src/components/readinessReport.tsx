@@ -176,7 +176,7 @@ export function DomainReportRow({ row, last, link, course }: { row: DomainRow; l
     <View style={{ paddingVertical: 13, borderBottomWidth: last ? 0 : 1, borderBottomColor: c.line }}>
       <View accessible accessibilityLabel={domainSpoken(row, course)} testID={`domain-row-${row.domain.id}`}>
         <T v="label">{domainLabel(row.domain, course)}</T>
-        <T v="meta" color={c.ink}>{readinessLine(row)}</T>
+        <T v="meta" color={c.ink}>{readinessLine(row, course)}</T>
         <T v="meta">{evidenceLine(row)}</T>
         {mocks && <T v="meta">{mocks}</T>}
         {/* The domain's tone fills its readiness (a static bar: nothing grows on a data screen).

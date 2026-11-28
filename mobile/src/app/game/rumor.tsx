@@ -28,7 +28,7 @@ import {
   isRightTap,
   longestRun,
   readAgain,
-  RUMOR_TIER_LINE,
+  rumorTierLines,
   RUMOR_TIER_NAME,
   RUMOR_TIERS,
   rumorScore,
@@ -63,6 +63,8 @@ function RootOrRumor() {
   const large = useFontScale() >= LARGE_TEXT;
   const { cert, progress } = useActiveCert();
   const all = useMemo(() => rumorStatements(getNotes(cert.id)), [cert.id]);
+  // The level lines in the course's words ("One domain per round.", or "section").
+  const tierLines = useMemo(() => rumorTierLines(cert), [cert]);
   // Build F: the picker starts on the learner's own level for this game.
   const [tier, setTier] = useState<RumorTier>(() => startingTier(cert.id, 'rumor'));
   const [news, setNews] = useState<RoundNews | null>(null);
@@ -103,7 +105,7 @@ function RootOrRumor() {
         tier={tier}
         onTier={setTier}
         tierName={RUMOR_TIER_NAME}
-        tierLine={RUMOR_TIER_LINE}
+        tierLine={tierLines}
         level={startingTier(cert.id, 'rumor')}
         onStart={start}
       />
@@ -126,7 +128,7 @@ function RootOrRumor() {
         onAgain={start}
         news={news}
         results={taps.map((t): ItemResult => (t ? 'right' : 'missed'))}
-        tierLines={RUMOR_TIER_LINE}
+        tierLines={tierLines}
       >
         <T v="small" num>{`Longest run of right calls: ${longestRun(taps)}`}</T>
         {whysAsked > 0 && <T v="small" num style={{ marginTop: space.xs }}>{`“Why?” right: ${whysRight} of ${whysAsked}`}</T>}

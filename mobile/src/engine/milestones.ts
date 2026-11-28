@@ -526,7 +526,7 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
       met,
       progress: met ? 1 : frac(chain.length, n),
       detail: met ? 'Done' : `${Math.min(chain.length, n)} of ${n} full mocks, a week apart`,
-      rule: `Finish ${n} full, timed mocks with every question answered, each ${DRESS_GAP_DAYS} days or more after the one before, once every domain is at ${pct(WHOLE_MAP_FLOOR)}.`,
+      rule: `Finish ${n} full, timed mocks with every question answered, each ${DRESS_GAP_DAYS} days or more after the one before, once every ${domainWord(f, 'domain')} is at ${pct(WHOLE_MAP_FLOOR)}.`,
     });
   }
   const onPace = f.mocks.some(isOnPace);

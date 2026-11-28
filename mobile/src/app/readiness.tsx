@@ -55,7 +55,7 @@ import { examWeekCount, examWeekOf, FINAL_WEEK_WINDOW, weekDaysCount, weekDaysOf
 import { getFinalWeek } from '../content/exam';
 import { aboutSeconds, pacingStats, pacingStatsLine, spokenMin, timingOf } from '../engine/pace';
 import { YARDSTICK_LINE } from '../engine/domainBand';
-import { domainWord } from '../engine/domainNaming';
+import { domainCopy, domainWord, type DomainStyled } from '../engine/domainNaming';
 import { domainLabel } from '../content/certifications';
 import { getAllQuestions } from '../content/loader';
 import { FIRST_TRY_WINDOW, firstTryReadiness, isFirstTryCourse, type FirstTrySection } from '../engine/firstTry';
@@ -134,7 +134,7 @@ function ReadinessReportScreen() {
       return {
         label: 'Study notes ›',
         accessibilityLabel: `Study notes for ${d.name}`,
-        hint: 'Every lesson here is done. Opens the study notes for this domain',
+        hint: `Every lesson here is done. Opens the study notes for this ${domainWord(cert, 'domain')}`,
         onPress: () => router.push(`/notes/${encodeURIComponent(d.id)}`),
       };
     }
@@ -142,7 +142,7 @@ function ReadinessReportScreen() {
     return {
       label: 'Lessons and notes ›',
       accessibilityLabel: `Lessons and notes for ${d.name}`,
-      hint: 'Opens Learn on this domain',
+      hint: `Opens Learn on this ${domainWord(cert, 'domain')}`,
       onPress: () => openTab({ pathname: '/learn', params: { domain: d.id } }),
     };
   };
@@ -183,7 +183,7 @@ function ReadinessReportScreen() {
       low,
       lowChart: lowMarks(low.values),
       // 5. The mock trend.
-      words: trendWords(trend),
+      words: trendWords(trend, cert),
       scores: trend.map((p) => `${p.pct}%`).join(' · '),
       trendChart: trendMarks(trend),
       // 6. Domain by domain.
@@ -269,7 +269,7 @@ function ReadinessReportScreen() {
             <T v="quote" style={{ marginTop: 4 }}>A study estimate, not a prediction.</T>
           </View>
         </View>
-        <HowItWorks />
+        <HowItWorks course={cert} />
 
         {/* First-try courses only: first tries by section (engine/firstTry.ts). */}
         {firstTries && <FirstTries cert={cert} sections={firstTries} />}
@@ -378,12 +378,16 @@ function ReadinessReportScreen() {
           {PATH_STEPS.map((s, i) => {
             const now = i === stepNow;
             const skipped = s.stage === 'learn' && examFocused;
-            const line = skipped ? `${s.line} Your exam-focused plan skips this; lessons stay in Learn.` : s.line;
+            // The step's line and reason are fixed sentences; domainCopy says them in the course's words
+            // (CISA: the very same text; a course with sections: "sections").
+            const stepLine = domainCopy(s.line, cert);
+            const reason = domainCopy(PATH_REASON[s.stage], cert);
+            const line = skipped ? `${stepLine} Your exam-focused plan skips this; lessons stay in Learn.` : stepLine;
             return (
               <View
                 key={s.stage}
                 accessible
-                accessibilityLabel={`${i + 1}. ${STAGE_LABEL[s.stage]}. ${line}${now ? ` You are here. ${PATH_REASON[s.stage]}` : ''}`}
+                accessibilityLabel={`${i + 1}. ${STAGE_LABEL[s.stage]}. ${line}${now ? ` You are here. ${reason}` : ''}`}
                 testID={`path-step-${s.stage}`}
                 style={{ flexDirection: 'row', gap: space.md, paddingVertical: space.sm }}
               >
@@ -398,13 +402,13 @@ function ReadinessReportScreen() {
                   </View>
                   <T v="meta">{line}</T>
                   {/* Why the plan is here, under the current step only (UX review O8). */}
-                  {now && <T v="meta" color={c.ink} style={{ marginTop: 2 }}>{PATH_REASON[s.stage]}</T>}
+                  {now && <T v="meta" color={c.ink} style={{ marginTop: 2 }}>{reason}</T>}
                 </View>
               </View>
             );
           })}
         </View>
-        {stepNow >= 0 && <T v="meta" style={{ marginTop: space.xs }}>{PATH_NOTE}</T>}
+        {stepNow >= 0 && <T v="meta" style={{ marginTop: space.xs }}>{domainCopy(PATH_NOTE, cert)}</T>}
 
         {/* 9. Your mocks: the newest 5, then "Show all N mocks" (UX review P8) */}
         {mocks.length > 0 && (
@@ -426,7 +430,7 @@ function ReadinessReportScreen() {
                     expanded={isOpen}
                     onPress={() => toggle(m.id)}
                     accessibilityLabel={`${mockRowTitle(m)}, score ${mockPct(m)} percent, ${spokenMin(mockSubtitle(m))}`}
-                    accessibilityHint={isOpen ? 'Hides how each domain went' : 'Shows how each domain went'}
+                    accessibilityHint={`${isOpen ? 'Hides' : 'Shows'} how each ${domainWord(cert, 'domain')} went`}
                     last={isLast}
                   />
                   <Collapse open={isOpen}>
@@ -464,7 +468,7 @@ function ReadinessReportScreen() {
  * framing's detail (FRAMING_LINE), the app's own yardstick (YARDSTICK_LINE: 80% low end, 70% per
  * domain; a study bar, never a pass mark) and how the number is worked out (HOW_LINE).
  */
-function HowItWorks() {
+function HowItWorks({ course }: { /** The course, for its word ("every domain" or "every section"). */ course?: DomainStyled }) {
   const [open, setOpen] = useState(false);
   return (
     <View style={{ marginTop: space.sm }}>
@@ -473,9 +477,9 @@ function HowItWorks() {
         <View style={{ gap: space.sm, paddingBottom: space.sm }}>
           <T v="small">{FRAMING_LINE}</T>
           <View testID="readiness-yardstick">
-            <T v="small">{YARDSTICK_LINE}</T>
+            <T v="small">{domainCopy(YARDSTICK_LINE, course)}</T>
           </View>
-          <T v="small">{HOW_LINE}</T>
+          <T v="small">{domainCopy(HOW_LINE, course)}</T>
         </View>
       </Collapse>
     </View>

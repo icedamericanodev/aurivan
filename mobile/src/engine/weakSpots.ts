@@ -15,6 +15,7 @@
  * no bundled file imports it). Every id here is a question id; letters are never touched.
  */
 import { BAND_MIN_ANSWERS, bandOf } from './domainBand';
+import { domainWord, type DomainStyled } from './domainNaming';
 import { shuffled, type Rng } from './random';
 import { andList } from './resultsCopy';
 
@@ -58,9 +59,9 @@ export function weakDrillPool(ranked: readonly WeakRank[], byDomain: Readonly<Re
 /**
  * The row's line under "Weak spots drill" (the website's `weakLine`): once anything is answered and
  * a top-three domain is not Strong, "From IS Audit and IS Operations"; otherwise
- * "From the domains you miss most".
+ * "From the domains you miss most" ("sections" for a course with sections; no `course`: as before).
  */
-export function weakDrillLine(ranked: readonly WeakRank[], shortName: (domainId: string) => string, anyAnswered: boolean): string {
+export function weakDrillLine(ranked: readonly WeakRank[], shortName: (domainId: string) => string, anyAnswered: boolean, course?: DomainStyled): string {
   const weak = ranked.slice(0, WEAK_DRILL.domains).filter((r) => r.tier < 2).map((r) => shortName(r.domainId));
-  return anyAnswered && weak.length ? `From ${andList(weak)}` : 'From the domains you miss most';
+  return anyAnswered && weak.length ? `From ${andList(weak)}` : `From the ${domainWord(course, 'domains')} you miss most`;
 }

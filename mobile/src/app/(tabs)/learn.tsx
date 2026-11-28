@@ -47,7 +47,7 @@ import { hasPrinciples } from '../../content/principles';
 import { hasTerms } from '../../content/terms';
 import type { Certification, DomainInfo } from '../../content/types';
 import { readCount, searchNotes } from '../../engine/notesSearch';
-import { domainTitle } from '../../engine/domainNaming';
+import { domainTitle, domainWord } from '../../engine/domainNaming';
 import { clearFinishedLessons, wasJustFinished } from '../../lib/lessonNews';
 import { readinessFor } from '../../engine/readiness';
 import { selectCert, useProgress } from '../../store/progress';
@@ -309,7 +309,7 @@ function UpNextCard({
         label={note ? 'Read note' : 'Open study notes'}
         icon={(col) => <BookOpen size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
         iconLeading
-        accessibilityHint={note ? note.name : 'Opens the notes, by domain'}
+        accessibilityHint={note ? note.name : `Opens the notes, by ${domainWord(cert, 'domain')}`}
         onPress={() => router.push(note ? `/notes/subtopic/${encodeURIComponent(note.id)}` : '/notes')}
         style={action}
       />
@@ -347,7 +347,7 @@ export function lookUpItems(
   if (show.showNotes) {
     // A reference has no finish line: no "x of N", only how many are read once any are.
     const line = notesRead === 0 ? 'Every topic, with traps' : `${notesRead} ${notesRead === 1 ? 'note' : 'notes'} read · with traps`;
-    items.push({ key: 'notes', title: 'Study notes', line, spoken: `Study notes, ${line.replace(' · ', ', ')}`, hint: 'Opens the notes, by domain', onPress: () => router.push('/notes') });
+    items.push({ key: 'notes', title: 'Study notes', line, spoken: `Study notes, ${line.replace(' · ', ', ')}`, hint: `Opens the notes, by ${domainWord(cert, 'domain')}`, onPress: () => router.push('/notes') });
   }
   // The key terms in plain words (O2): read-only, with search and area chips.
   if (show.showGlossary)

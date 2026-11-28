@@ -18,7 +18,14 @@ Usage:
 
 The rules for writing plain stems are in docs/content/EXAM_STYLE_V2.md; the
 reviewer that rewrites them is .claude/agents/question-readability-reviewer.md.
-CIA files are not counted: that course has its own style rules.
+
+The CIA Part files (data/cia/cia{1,2,3}/originals/d*.json) are counted too,
+each with its own baseline line: CIA took the plain-stem rule on 28 Nov 2026
+(data/cia/tools/style_cia.py; the stage 3 pass in docs/content/CIA_BANK_PLAN.md,
+section 6d, rewrites its packed stems). A retired question is left out of the
+count: it stays in its file for its id, but no learner sees it. The generated
+Challenge pack (data/cia/ciac) is not counted, because its stems are the Part
+files' stems.
 """
 import json
 import sys
@@ -31,7 +38,8 @@ ROOT = Path(__file__).resolve().parent.parent
 BASELINE = ROOT / "scripts" / "readability_baseline.json"
 BANKS = ([f"data/originals/d{n}.json" for n in range(1, 6)]
          + [f"data/aaia/originals/d{n}.json" for n in range(1, 4)]
-         + [f"data/crisc/originals/d{n}.json" for n in range(1, 5)])
+         + [f"data/crisc/originals/d{n}.json" for n in range(1, 5)]
+         + sorted(p.relative_to(ROOT).as_posix() for p in ROOT.glob("data/cia/cia[123]/originals/d*.json")))
 
 
 def problems(stem):
@@ -47,6 +55,7 @@ def problems(stem):
 def count(path):
     qs = json.loads((ROOT / path).read_text())
     qs = qs["questions"] if isinstance(qs, dict) else qs
+    qs = [q for q in qs if not q.get("retired")]   # only CIA retires in place; no learner sees a retired stem
     packed = [(q["id"], problems(q.get("question", ""))) for q in qs if q.get("style_version") == 2]
     packed = [(i, p) for i, p in packed if p]
     return len(qs), packed

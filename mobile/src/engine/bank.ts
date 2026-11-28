@@ -13,6 +13,7 @@
  */
 import type { Difficulty, PackQuestion } from '../content/types';
 import { answerRecordOf } from './answeredReview';
+import { domainWord, type DomainStyled } from './domainNaming';
 import { shuffled, type Rng } from './random';
 import type { AnswerRecord } from './readiness';
 
@@ -236,18 +237,22 @@ export function difficultyLabel(d: Difficulty): string {
   return d.charAt(0).toUpperCase() + d.slice(1);
 }
 
-/** The empty-state copy for a filter that matched nothing. */
-export function emptyCopy(filter: BankFilter): { title: string; body: string } {
+/**
+ * The empty-state copy for a filter that matched nothing.
+ * `course` (optional): a course with sections says "this section"; none (CISA) reads as before.
+ */
+export function emptyCopy(filter: BankFilter, course?: DomainStyled): { title: string; body: string } {
+  const one = domainWord(course, 'domain');
   switch (filter) {
     case 'missed':
-      return { title: 'No missed questions here yet', body: 'Any question you get wrong in this domain will show up here.' };
+      return { title: 'No missed questions here yet', body: `Any question you get wrong in this ${one} will show up here.` };
     case 'saved':
       return { title: 'Nothing saved here yet', body: 'Tap the bookmark on any question to add it to your revision set.' };
     case 'new':
       return { title: 'You’ve answered them all', body: 'Try Missed to revisit the ones that caught you.' };
     case 'answered':
-      return { title: 'Nothing answered here yet', body: 'Questions you answer in this domain show up here, so you can look back at them and their explanations.' };
+      return { title: 'Nothing answered here yet', body: `Questions you answer in this ${one} show up here, so you can look back at them and their explanations.` };
     case 'all':
-      return { title: 'No questions here yet', body: 'New questions for this domain are on the way.' };
+      return { title: 'No questions here yet', body: `New questions for this ${one} are on the way.` };
   }
 }

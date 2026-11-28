@@ -16,6 +16,7 @@ import { DisclosureRow } from '../components/pathChooser';
 import { useContactFlow } from '../components/support';
 import { Button, PushedHeader, Screen, T } from '../components/ui';
 import { FAQ } from '../content/support';
+import { domainCopy } from '../engine/domainNaming';
 import { moveFocus } from '../lib/a11y';
 import { useActiveCert } from '../lib/useActiveCert';
 import { space } from '../theme/tokens';
@@ -58,8 +59,9 @@ export default function Faq() {
             />
             {open && (
               <View style={{ paddingBottom: space.md, borderBottomWidth: last ? 0 : 1, borderBottomColor: c.line }}>
+                {/* An answer is fixed text; domainCopy says "domain" in the course's word (CISA: unchanged). */}
                 {f.answer.map((p) => (
-                  <T key={p} v="body" style={{ marginTop: space.sm }}>{p}</T>
+                  <T key={p} v="body" style={{ marginTop: space.sm }}>{domainCopy(p, cert)}</T>
                 ))}
                 <Button
                   kind="ghost"

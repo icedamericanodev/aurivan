@@ -44,6 +44,17 @@
  *                 are joined). A malformed file fails; an id no pack has, or a
  *                 retired id, is listed as a warning. No file yet: a note,
  *                 never a failure
+ *   held-back     <pack>/exam/held_back.json (the held-back full form: one full
+ *   form          exam, frozen, kept out of practice until the learner takes
+ *                 it), read by the app's own mobile/scripts/heldback-pack.cjs
+ *                 exactly as build-content.mjs applyHeldBack does: each listed
+ *                 question gets `heldBack` (the form's frozen date), and the
+ *                 line says how many were tagged, by section. It FAILS, as the
+ *                 real build would stop, on a malformed file, another pack's
+ *                 file, an id written twice, an id the pack does not have, a
+ *                 retired id, or an item dated after the form was frozen.
+ *                 No file = no form: a line that says so, never a failure
+ *                 (a pack without one is built with no `heldBack` field)
  *   mock pool     retired items (`"retired": true`: kept for their id, never
  *                 dealt again) and items whose `testableFrom` (read from the
  *                 pack question, as the app's mockPool does) is after today
@@ -58,6 +69,20 @@
  *                 and which section is short, and the draw is still checked on
  *                 the largest mock that fits and keeps the weights.
  *                 --require-full turns "cannot draw" into a failure (releases).
+ *   full mock /   only for a pack with a held-back form. The two lines above draw
+ *   short mock    from the WHOLE pool, which a learner has only after taking the
+ *   before the    form; until then the app keeps the form's questions out of every
+ *   form          mock (mobile/src/content/loader.ts leftOut, engine/heldBack.ts
+ *                 isHeldBackHidden). These two lines draw the same mocks from the
+ *                 pool WITHOUT the form's questions and say, section by section,
+ *                 what that pool holds against the quota ("D 16 to 17 of 19": the
+ *                 app keeps a random question of each sibling group, so a group
+ *                 that spans two sections makes a range). A mock that cannot be
+ *                 filled at the exam's weights is a named WARNING line ("!"),
+ *                 not a failure: it says what the app then does (buildMockExam in
+ *                 engine/blueprint.ts: every question of the short section, then
+ *                 a top-up from the other sections; a shorter mock when the whole
+ *                 pool is too small). --require-full makes it a failure.
  * Checks across packs (they run on every call, whichever packs are named):
  *   ciac          data/cia/tools/build_challenge.py --check passes, and
  *                 ciac/id_map.json has no Challenge id twice, no active source twice.
@@ -146,6 +171,10 @@ function report(ok, name, detail, problems = []) {
 function note(name, detail) {
   lines.push(`  • ${name}: ${detail}`);
 }
+/** A warning: printed with "!", never a failure. Something true that the owner should know. */
+function warn(name, detail) {
+  lines.push(`  ! ${name}: ${detail}`);
+}
 const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
 /** Read a JSON file, or null when it does not exist. A broken file is a problem. */
@@ -227,7 +256,7 @@ function allocate(total, weights) {
  * the draw is then checked on the largest mock that still fits AND keeps the
  * exam's weights, so the logic is proven on whatever the pack has today.
  */
-function drawMock(name, total, exam, pool) {
+function drawMock(name, total, exam, pool, after = '') {
   const weights = exam.sections.map((s) => s.weight);
   const live = exam.sections.map((s) => [...new Set(pool.filter((q) => q.domainId === s.id).map((q) => q.id))]);
   const poolIds = new Set(pool.map((q) => q.id));
@@ -251,7 +280,7 @@ function drawMock(name, total, exam, pool) {
   const forms = Math.min(...targets.map((t, i) => (t > 0 ? Math.floor(live[i].length / t) : Infinity)));
   if (forms >= 1) {
     const problems = draw(targets);
-    report(!problems.length, name, `${total} items (${split(targets)}) ${problems.length ? 'cannot be drawn' : 'drawn without repeats'}; the pool supports ${plural(forms, name)} with no item used twice`, problems);
+    report(!problems.length, name, `${total} items (${split(targets)}) ${problems.length ? 'cannot be drawn' : 'drawn without repeats'}; the pool supports ${plural(forms, name)} with no item used twice${after}`, problems);
     return;
   }
   const short = exam.sections
@@ -272,9 +301,104 @@ function drawMock(name, total, exam, pool) {
   const checked = fit
     ? `Draw logic checked on the largest weight-true mock that fits today: ${plural(fit, 'item')} (${split(fitTargets)}) ${problems.length ? 'could not be drawn' : 'drawn without repeats'}`
     : 'No weight-true mock of any size fits yet, so nothing was drawn';
-  const detail = `0 ${name}s yet (${total} items, ${split(targets)}): ${short.join(', ')}. ${checked}`;
+  const detail = `0 ${name}s yet (${total} items, ${split(targets)}): ${short.join(', ')}. ${checked}${after}`;
   if (problems.length || ARGS.requireFull) report(false, name, detail + (ARGS.requireFull && !problems.length ? ' (--require-full)' : ''), problems);
   else note(name, detail);
+}
+
+/**
+ * CIA: the same mock, drawn from the pool a learner has BEFORE taking the
+ * held-back form (`before`: live, testable today, not in the form; siblings
+ * still in). Only called for a pack that has a form.
+ *
+ * Plain English: the app hides the form's questions from every mock until the
+ * form is taken, so a new learner's mocks come from this smaller pool. The line
+ * says what each section holds against its quota. When a section is short, the
+ * mock cannot keep the exam's weights: that is a WARNING, not a failure (the
+ * plan records that the pools are small), and the line says what the app does
+ * then, read from the code:
+ *   - lib/sessions.ts startMock → engine/blueprint.ts buildMockExam: each
+ *     section gives its share or, if it has fewer, everything it has; then
+ *     "Top up from any domain if the whole thing is still short" fills the
+ *     mock from the other sections, so it is full length but off the weights;
+ *   - when the whole pool is smaller than the mock, every question is dealt
+ *     and the mock is simply shorter (the time allowed follows its length);
+ *   - a short mock goes through engine/shortMock.ts buildShortMock first (a
+ *     short section also takes the questions the learner has seen), then the
+ *     same buildMockExam.
+ * The draw made here is that same shape (share or all, then a top-up), checked
+ * for repeats and for two siblings.
+ */
+function drawBeforeForm(kind, total, exam, before) {
+  const name = `${kind} before the form`;
+  const targets = allocate(total, exam.sections.map((s) => s.weight));
+  const split = (t) => exam.sections.map((s, i) => `${s.letter} ${t[i]}`).join(' / ');
+  // One question per sibling group (the first; the app keeps a random one).
+  const seenGroup = new Set();
+  const pool = before.filter((q) => q.siblingGroup === undefined || (!seenGroup.has(q.siblingGroup) && seenGroup.add(q.siblingGroup)));
+  // What each section holds, whichever sibling the app keeps: a group whose questions sit in two
+  // sections counts for either, so the least and the most can differ.
+  const groupSections = new Map();
+  for (const q of before) {
+    if (q.siblingGroup === undefined) continue;
+    if (!groupSections.has(q.siblingGroup)) groupSections.set(q.siblingGroup, new Set());
+    groupSections.get(q.siblingGroup).add(q.domainId);
+  }
+  const range = exam.sections.map((s) => {
+    const alone = before.filter((q) => q.domainId === s.id && q.siblingGroup === undefined).length;
+    let least = alone;
+    let most = alone;
+    for (const sections of groupSections.values()) {
+      if (!sections.has(s.id)) continue;
+      most += 1;
+      if (sections.size === 1) least += 1;
+    }
+    return { least, most };
+  });
+  const count = (r) => (r.least === r.most ? `${r.least}` : `${r.least} to ${r.most}`);
+  const holds = exam.sections.map((s, i) => `${s.letter} ${count(range[i])} of ${targets[i]}`).join(' / ');
+  const poolLine = `Before the form a mock draws from ${plural(pool.length, 'question')}; by section against the quota: ${holds}`;
+
+  // The draw, in the app's shape: each section's share (or all it has), then a top-up from the rest.
+  const bySection = exam.sections.map((s) => pool.filter((q) => q.domainId === s.id));
+  const picked = bySection.flatMap((qs, i) => qs.slice(0, targets[i]));
+  const fromSection = picked.length;
+  const taken = new Set(picked.map((q) => q.id));
+  for (const q of pool) {
+    if (picked.length >= total) break;
+    if (!taken.has(q.id)) { picked.push(q); taken.add(q.id); }
+  }
+  const want = Math.min(total, pool.length);
+  const problems = [];
+  if (taken.size !== want || picked.length !== want) problems.push(`drew ${taken.size} distinct of ${want}`);
+  const groups = picked.map((q) => q.siblingGroup).filter((g) => g !== undefined);
+  if (new Set(groups).size !== groups.length) problems.push('drew two questions of one sibling group');
+  if (picked.some((q) => q.heldBack !== undefined)) problems.push('drew a question of the held-back form');
+
+  // Sure to fit only when every section holds its share whichever sibling the app keeps.
+  const shortSections = exam.sections
+    .map((s, i) => (range[i].least < targets[i] ? `section ${s.letter} holds ${count(range[i])} of the ${targets[i]} needed` : null))
+    .filter(Boolean);
+  if (!shortSections.length) {
+    report(!problems.length, name, `${total} items (${split(targets)}) ${problems.length ? 'cannot be drawn' : 'drawn without repeats'} with the held-back form's questions left out. ${poolLine}`, problems);
+    return;
+  }
+  const title = total === exam.questions ? 'Full mock exam' : 'Mini mock';
+  const engine = total === exam.questions ? 'engine/blueprint.ts buildMockExam' : 'engine/shortMock.ts buildShortMock, then buildMockExam';
+  const gets = exam.sections
+    .map((s, i) => (range[i].least < targets[i] ? `section ${s.letter} ${count({ least: range[i].least, most: Math.min(range[i].most, targets[i]) })}, not ${targets[i]}` : null))
+    .filter(Boolean)
+    .join('; ');
+  const app = pool.length >= total
+    ? `the learner still gets a "${title}" of ${total} questions: every question a short section has, topped up at random from the other sections, so it is full length but off the exam's weights (${gets}), and the start sheet does not say so`
+    : `the learner gets a "${title}" of only ${pool.length} questions, every one the pool holds (the time allowed is for ${pool.length} questions)`;
+  const checked = problems.length
+    ? 'That draw could not be made here'
+    : `That draw was made here: ${plural(picked.length, 'item')} (${fromSection} by section share, ${picked.length - fromSection} topped up) without repeats`;
+  const detail = `WARNING: until the learner takes the held-back form, a ${kind} of ${total} (${split(targets)}) cannot be filled at the exam's weights: ${shortSections.join(', ')}. `
+    + `${poolLine}. In the app (${engine}) ${app}. ${checked}`;
+  if (problems.length || ARGS.requireFull) report(false, name, detail + (ARGS.requireFull && !problems.length ? ' (--require-full)' : ''), problems);
+  else warn(name, `${detail}. Not a failure of this gate`);
 }
 
 /** Every .json file under a pack's folder (to tell "no content yet" from a started pack). */
@@ -404,6 +528,39 @@ function dryRunPack(pack, exam, app, builders, siblings) {
       + (t.joined ? ` (${plural(t.joined, 'group')} sharing a question with another joined to it: one per mock for all of them)` : '');
     for (const w of t.warnings) siblingLine += `; ${w}`;
   }
+  // ── The held-back full form (optional): the app's own reader and tagger ──
+  // Same steps as build-content.mjs applyHeldBack: no file = no form (nothing is tagged); a file
+  // with a problem tags nothing and fails, because the real build would stop there. It runs here,
+  // before the section files are written, so the dry-run pack carries `heldBack` as the app's would.
+  const heldFile = path.join(dir, 'exam', 'held_back.json');
+  let heldForm = null; // { key, ids } once the file is read and sound
+  let heldLine = () => {}; // prints the form's line later, under the siblings line
+  // No file: the same "none" line whether or not the pack has questions yet.
+  const noForm = () => note('held-back form', `none (${rel(heldFile)} is not written): no question is tagged, so ${pack} has no full exam form`);
+  if (!questions.length) {
+    heldLine = fs.existsSync(heldFile)
+      ? () => report(false, 'held-back form', `${rel(heldFile)} is written, but ${pack} has no questions for it to tag`)
+      : noForm;
+  } else {
+    const raw = readJson(heldFile, 'held-back form'); // a file that is not valid JSON is reported (and fails) here
+    if (raw === null) {
+      heldLine = noForm;
+    } else if (raw !== undefined) {
+      const read = builders.readHeldBack(raw, { certId: pack, questions });
+      if (read.problems.length) {
+        heldLine = () => report(false, 'held-back form', `${rel(heldFile)} has ${read.problems.length} problem(s); no question is tagged (the app's build would stop here)`, read.problems);
+      } else {
+        heldForm = read.form;
+        const tagged = builders.tagHeldBack(read.form, questions);
+        const bySection = exam.sections.map((s) => `${s.letter} ${questions.filter((q) => q.domainId === s.id && q.heldBack === read.form.key).length}`).join(' / ');
+        // Every listed id is a question of the pack (checked by the reader), so the two counts can only differ on a bug.
+        heldLine = () => report(tagged === read.form.ids.length, 'held-back form',
+          `${plural(tagged, 'question')} tagged heldBack "${read.form.key}" (${bySection}) from ${rel(heldFile)}, frozen ${read.form.key}; `
+          + `the exam is ${exam.questions} questions` + (tagged === read.form.ids.length ? '' : `, but the file lists ${read.form.ids.length}`));
+      }
+    }
+  }
+
   for (const s of exam.sections) {
     const inSection = questions.filter((q) => q.domainId === s.id);
     if (inSection.length) fs.writeFileSync(path.join(out, `d${s.id}.json`), JSON.stringify(inSection));
@@ -433,6 +590,7 @@ function dryRunPack(pack, exam, app, builders, siblings) {
   }
 
   if (siblingLine) note('siblings', siblingLine);
+  heldLine();
 
   // ── Notes: one file per section, as one schema v2 notes file ──
   const notesDir = path.join(dir, 'notes');
@@ -587,14 +745,33 @@ function dryRunPack(pack, exam, app, builders, siblings) {
     return true;
   });
   const setAside = testable.length - pool.length;
+  // CIA: the app keeps the held-back form's questions out of practice and every mock until the
+  // learner has taken it (engine/heldBack.ts). The first two draws below are on the whole pool
+  // (what a learner has afterwards); this clause says how much smaller it is before that, and the
+  // two "before the form" draws are made on that smaller pool.
+  let heldOut = '';
+  const before = testable.filter((q) => q.heldBack === undefined);
+  if (heldForm) {
+    const groupsBefore = new Set();
+    const poolBefore = before.filter((q) => q.siblingGroup === undefined || (!groupsBefore.has(q.siblingGroup) && groupsBefore.add(q.siblingGroup)));
+    heldOut = `; the held-back form keeps ${testable.length - before.length} of the testable items out of practice and mocks until the learner takes it, so before that a mock draws from ${poolBefore.length}`;
+  }
   note('mock pool', `${testable.length} of ${live.length} live items testable on ${ARGS.today}`
     + (retiredCount ? ` (${plural(retiredCount, 'retired item')} kept for the id, never dealt)` : '')
     + (waiting.length
       ? ` (${waiting.length} left out until testable_from: ${waiting.slice(0, 5).map((q) => `${q.id} ${q.testableFrom}`).join(', ')}${waiting.length > 5 ? ', …' : ''})`
       : '')
-    + (setAside ? `; one per sibling group, so a mock draws from ${pool.length} (${setAside} are a second or later sibling)` : ''));
-  drawMock('full mock', exam.questions, exam, pool);
-  drawMock('short mock', Math.round(exam.questions / 3), exam, pool); // engine/finalWeek.ts miniMockSize
+    + (setAside ? `; one per sibling group, so a mock draws from ${pool.length} (${setAside} are a second or later sibling)` : '')
+    + heldOut);
+  // With a form, say which pool the two usual lines are: the whole one, as after the form.
+  const after = heldForm ? ' (the whole pool: what a learner has after taking the held-back form)' : '';
+  const shortSize = Math.round(exam.questions / 3); // engine/finalWeek.ts miniMockSize
+  drawMock('full mock', exam.questions, exam, pool, after);
+  drawMock('short mock', shortSize, exam, pool, after);
+  if (heldForm) {
+    drawBeforeForm('full mock', exam.questions, exam, before);
+    drawBeforeForm('short mock', shortSize, exam, before);
+  }
 }
 
 /**
@@ -645,6 +822,8 @@ async function main() {
     buildExamPack: require(path.join(MOBILE_SCRIPTS, 'exam-guide-pack.cjs')).buildExamPack,
     buildTermsPack: require(path.join(MOBILE_SCRIPTS, 'terms-pack.cjs')).buildTermsPack,
     ...require(path.join(MOBILE_SCRIPTS, 'siblings-pack.cjs')),
+    // The held-back form's reader and tagger (readHeldBack, tagHeldBack): the app builder's own.
+    ...require(path.join(MOBILE_SCRIPTS, 'heldback-pack.cjs')),
   };
   const app = await appFunctions();
   const facts = examFacts();

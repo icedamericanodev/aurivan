@@ -122,5 +122,9 @@ language. The owner approved the new rule in the item table above.
 plain-stem rule for stems over 35 words and the per-domain median and share.
 `scripts/check_readability.py` (run by `verify_repo.sh`) counts the packed
 stems that are left in each bank and fails if a count goes up. The
-`question-readability-reviewer` agent rewrites packed stems. CIA files keep
-their own caps (`data/cia/tools/style_cia.py` passes `--legacy-stem`).
+`question-readability-reviewer` agent rewrites packed stems. CIA files take
+the same stem caps (owner decision, 28 Nov 2026: `data/cia/tools/style_cia.py`
+runs this linter with no stem exception, and the ratchet counts the CIA Part
+files). CIA keeps only its own format exceptions: lowercase qualifiers,
+18-word options and no EXCEPT or NOT ask (`docs/content/CIA_BANK_PLAN.md`,
+section 6d).

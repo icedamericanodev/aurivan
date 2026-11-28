@@ -8,8 +8,22 @@ format instead (owner decision, 28 Nov 2026; docs/content/CIA_BANK_PLAN.md
 sections 5, 6d and 9, and .claude/agents/cia-standards-auditor.md), so this
 wrapper reads the shared linter's result per item and applies the written CIA
 exceptions below. Every exception is listed here and in the plan; nothing else
-of the shared linter is relaxed (tips, explanations, the key's 8-character and
-length-ratio rules, the longest-option shares, shorthand in options).
+of the shared linter is relaxed (the stem caps, tips, explanations, the key's
+8-character and length-ratio rules, the longest-option shares, shorthand in
+options).
+
+Stems take the shared "plain stems" caps as they are (FB-013, 28 Nov 2026;
+docs/content/EXAM_STYLE_V2.md). A tester said some questions read like jumbled
+words, and The IIA's own samples are plain short sentences (0 semicolons and 0
+possessive chains in 23 samples), so CIA has no stem caps of its own:
+  - aim for 35 words; at most 45 words and 4 sentences (the question included);
+  - a stem over 35 words must be plain: no semicolon, no two possessives in one
+    noun phrase, no sentence over 20 words;
+  - per file, from 40 items as in the shared linter: the median stem at 35
+    words or under, and at most 25% of stems over 35 words.
+The old CIA caps (35 words and 2 sentences, with a "scenario variant" of 36 to
+50 words or 3 sentences for 10% of a file) are gone, and so is the shared
+linter's --legacy-stem switch that kept them.
 
 CIA-only exceptions (a shared ERROR that is let through when the rule holds):
   1. Lowercase qualifiers. The shared linter wants a capitalised priority word
@@ -19,20 +33,15 @@ CIA-only exceptions (a shared ERROR that is let through when the rule holds):
      "most" in a fact sentence does not count. A stem with no qualifier at all,
      in either case, is still an error.
   2. Option cap 18 words (shared cap 12). An option of 19 words or more is an error.
-  3. The scenario variant. A stem of 36 to 50 words, or of 3 sentences, is let
-     through for at most 10% of a section file (1 item in 10). Over 10% is an
-     error that names the items; over 50 words or over 3 sentences is always
-     an error.
 CIA-only errors:
-  4. An EXCEPT or NOT ask ("each of the following EXCEPT", "which ... is not",
+  3. An EXCEPT or NOT ask ("each of the following EXCEPT", "which ... is not",
      a capitalised NOT anywhere in the stem). LEAST stays the shared linter's
      business and is an observation for the reviewers, not an error.
-  5. Only with the switch on: a CAPITALISED qualifier in a CIA stem. The switch
-     is off by default because every item written before 28 Nov 2026 uses
-     capitals. It goes on (REQUIRE_LOWERCASE_QUALIFIERS = True below) in the
-     same change as the stage 1 restyle pass, which waits on the phone app's
-     case-insensitive priority-word match. `--require-lowercase-qualifiers` turns
-     it on for one run (the harness proves it that way).
+  4. A CAPITALISED qualifier in a CIA stem (REQUIRE_LOWERCASE_QUALIFIERS below,
+     on since the stage 1 restyle of 28 Nov 2026, when every stem was
+     lowercased and the phone app learned to read lowercase qualifiers).
+     `--require-lowercase-qualifiers` forces it for one run whatever the
+     default (the harness proves it that way).
 CIA-only warnings (printed, never failing):
   - more than 25% of a file's stems name a person or a place (a heuristic: a
     capitalised word outside a short list of framework terms and months, or a
@@ -42,13 +51,21 @@ CIA-only warnings (printed, never failing):
     stage 1 count, one line per file);
   - "IIA guidance" in a stem (cite what was opened, by name, instead);
   - "I and II" style combination options.
-The stem median target (20 to 28 words for a new round) is a round scorecard
-measure (plan section 7), not a file gate: the bank written before 28 Nov 2026
-sits at the 35-word cap, and its stems are not shortened mechanically.
+The target for a new round (a stem median of 20 to 28 words, at most 1 stem in
+10 over 35 words, no sentence over 25 words) is a round scorecard measure (plan
+section 7), not a file gate: the bank written before 28 Nov 2026 sits near 35
+words, and its packed stems are rewritten in plain sentences by the stage 3
+pass (plan section 6d), not shortened mechanically.
 
-One written-down difference in how the shared result is read: the shared linter
-fails a file whose key is the longest option in more than 30% of items, whatever
-the file's size. On a small file that number is noise (4 of 12 is 33%), and the
+Two written-down differences in how the shared result is read.
+First, the generated Challenge pack (ciac). Its section files hold the tagged
+Part items and are never edited by hand, so a Challenge file's median and its
+share of stems over 35 words are printed as a note and do not fail this gate:
+the fix belongs in the Part files, where the same two rules do fail. Every
+per-item rule (45 words, 4 sentences, plain over 35) fails in a Challenge file
+as anywhere else, because the item is wrong in its Part file too.
+Second, the shared linter fails a file whose key is the longest option in more
+than 30% of items, whatever the file's size. On a small file that number is noise (4 of 12 is 33%), and the
 generated Challenge pack's section files start small because they hold only the
 tagged Part items. So below 40 items in a file every "key is the longest option"
 line (the share, and the per-item 8-character line with it) is printed as a
@@ -85,10 +102,9 @@ SWITCH = "--require-lowercase-qualifiers"
 LENGTH_TELL = "key is the longest option"
 SMALL_FILE = 40
 MAX_OPTION = 18                      # shared: 12
-SCENARIO_WORDS = 50                  # shared stem cap: 35
-SCENARIO_SENTENCES = 3               # shared: 2
-SCENARIO_SHARE = 0.10                # at most 1 item in 10 per section file
 NAMED_SHARE = 0.25
+# The shared linter's two per-file stem lines (from 40 items): a failure in a Part file, a note in a generated one.
+FILE_STEMS = re.compile(r"ERROR (median stem is \d+ words .*|\d+% of stems are over \d+ words .*)$")
 
 CAPS = re.compile(r"\b(" + "|".join(shared.PRIORITY_WORDS) + r")\b")
 ANY_CASE = re.compile(r"\b(" + "|".join(shared.PRIORITY_WORDS) + r")\b", re.I)
@@ -110,8 +126,6 @@ October November December Monday Tuesday Wednesday Thursday Friday Saturday Sund
 OPENERS = {"Meanwhile", "Midyear", "However", "Later", "Earlier", "Then", "Now", "Today", "Instead", "Separately",
            "Afterwards", "Finally", "Meantime", "Overall", "Once", "Again", "Still", "Yesterday", "Also"}
 
-SHARED_STEM = re.compile(r"stem (\d+)w > \d+$")
-SHARED_SENTENCES = re.compile(r"stem has (\d+) sentences")
 SHARED_NO_CAPS = "stem has no capitalised priority word"
 SHARED_OPTION = re.compile(r"option over \d+w: (\{.*\})$")
 
@@ -137,23 +151,10 @@ def names_someone(stem):
     return False
 
 
-def reclassify(q, msg, scenario):
-    """One shared per-item ERROR: None if a CIA exception lets it through, else the error to print."""
+def reclassify(q, msg):
+    """One shared per-item ERROR: None if a CIA exception lets it through, else the error to print.
+    The stem caps are not among the exceptions: those shared errors come back as they are."""
     stem = q.get("question", "")
-    m = SHARED_STEM.match(msg)
-    if m:
-        n = int(m.group(1))
-        if n <= SCENARIO_WORDS:
-            scenario.add(q["id"])
-            return None
-        return f"stem {n}w > {SCENARIO_WORDS} (the CIA scenario variant's cap; the norm is {shared.MAX_STEM})"
-    m = SHARED_SENTENCES.match(msg)
-    if m:
-        n = int(m.group(1))
-        if n <= SCENARIO_SENTENCES:
-            scenario.add(q["id"])
-            return None
-        return f"stem has {n} sentences (max {SCENARIO_SENTENCES} in the CIA scenario variant, 2 otherwise)"
     if msg.startswith(SHARED_NO_CAPS):
         if ANY_CASE.search(ask_of(stem)):
             return None
@@ -190,19 +191,26 @@ def lint_file(pack, d, path, args, require_lower):
     """Lint one file. Returns (failed, lines to print, n errors, n CIA warnings)."""
     items = [q for q in c.read_json(path)["questions"] if q.get("style_version") == 2]
     by_id = {q.get("id"): q for q in items}
-    out = subprocess.run([sys.executable, str(c.REPO / "scripts" / "lint_exam_style_v2.py"), "--file", str(path), "--legacy-stem"],
+    out = subprocess.run([sys.executable, str(c.REPO / "scripts" / "lint_exam_style_v2.py"), "--file", str(path)],
                          capture_output=True, text=True)
     lines = out.stdout.strip().splitlines()
     summary = lines[-1] if lines and "v2 question(s) checked" in lines[-1] else None
-    shown, errors, warns, scenario = [], [], [], set()
+    shown, errors, warns = [], [], []
     shared_warns = 0
+    where = f"{pack} d{d}"
     for line in lines:
         m = re.match(r"ERROR (\S+): (.*)$", line)
+        per_file = FILE_STEMS.match(line)
         if line.startswith("ERROR") and len(items) < SMALL_FILE and LENGTH_TELL in line:
             # Below SMALL_FILE items the longest-option lines are noise: a note, not a failure (unchanged).
             shown.append(line.replace("ERROR", "note (not enforced below 40 items):"))
+        elif per_file and pack == c.CHALLENGE:
+            # A generated file: the stems are fixed in the Part files, where these two lines do fail.
+            shown.append(f"note (a generated Challenge file; the Part files carry this gate): {where}: {per_file.group(1)}")
+        elif per_file:
+            errors.append(f"ERROR {where}: {per_file.group(1)}")
         elif m and m.group(1) in by_id:
-            msg = reclassify(by_id[m.group(1)], m.group(2), scenario)
+            msg = reclassify(by_id[m.group(1)], m.group(2))
             if msg:
                 errors.append(f"ERROR {m.group(1)}: {msg}")
         elif line.startswith("ERROR"):
@@ -215,11 +223,6 @@ def lint_file(pack, d, path, args, require_lower):
         e, w = cia_checks(q, require_lower)
         errors += [f"ERROR {q.get('id')}: {x}" for x in e]
         warns += [f"warn  {q.get('id')}: {x}" for x in w]
-    where = f"{pack} d{d}"
-    if items and len(scenario) / len(items) > SCENARIO_SHARE:
-        errors.append(f"ERROR {where}: {len(scenario)} of {len(items)} stems ({len(scenario) / len(items):.0%}) use the "
-                      f"scenario variant (36 to {SCENARIO_WORDS} words or {SCENARIO_SENTENCES} sentences); at most "
-                      f"{SCENARIO_SHARE:.0%} of a section file may: " + ", ".join(sorted(scenario)))
     if items:
         named = sum(1 for q in items if names_someone(q.get("question", "")))
         if named / len(items) > NAMED_SHARE:

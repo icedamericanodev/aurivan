@@ -33,6 +33,7 @@ import { Celebrate, useCelebration, useGrowth, useScreenFocus } from '../../comp
 import { ArrowRight, ICON_STROKE, Inbox, Play, Settings } from '../../components/icons';
 import { Button, Enter, groveTile, HeroPanel, ICON_SIZE, InviteRow, Screen, Section, T } from '../../components/ui';
 import { countedDone, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete, planLeft, SHORT_SET_SIZE, shortSetItem } from '../../engine/dayPlan';
+import type { DomainStyled } from '../../engine/domainNaming';
 import { shouldAskFit } from '../../engine/fit';
 import { firstRangePanelDue, NAME_ASK_AWAY_DAYS, nameAskDue, nameNudgeDue, secondAskDue, studyDaysAway } from '../../engine/firstRun';
 import { STAGE_ORDER } from '../../engine/journey';
@@ -87,9 +88,10 @@ const sectionMinutes = (n: number) => (n > 0 ? aboutMin(n) : undefined);
 /**
  * A plan row's short line. The weekly mini mock beside timed items is
  * optional (PR #45, decided): "Optional this week · about 80 min".
+ * `course` goes on to planText, so its words are the course's ("domains" or "sections").
  */
-function rowShort(item: PlanItem, items: readonly PlanItem[], i: number, due: number | undefined, when: 'today' | 'tomorrow' = 'today'): string {
-  return isOptional(items, i) ? `Optional this week · ${aboutMin(itemMinutes(item), true)}` : planText(item, due, when).short;
+function rowShort(item: PlanItem, items: readonly PlanItem[], i: number, due: number | undefined, when: 'today' | 'tomorrow', course: DomainStyled): string {
+  return isOptional(items, i) ? `Optional this week · ${aboutMin(itemMinutes(item), true)}` : planText(item, due, when, course).short;
 }
 
 /** The stage line ("Stage 4 · Rehearse the exam") shows for this many days after the stage changes, then rests. */
@@ -259,7 +261,7 @@ export default function Today() {
   // said once: when this item is the day's only timed one, the caption's total is its own, so the meta leaves them out.
   const openTimed = plan.items.filter((it, i) => !plan.done[i] && it.kind !== 'mock' && !idle(i));
   const minutesSaid = dayMinutes > 0 && openTimed.length === 1 && openTimed[0] === curItem;
-  const hero = curItem ? planHero(curItem, j.dueCount, { minutesSaid }) : null;
+  const hero = curItem ? planHero(curItem, j.dueCount, { minutesSaid, course: j.cert }) : null;
   // Mobile 1.24: no stat tiles. After the range exists, one quiet line names the area where you'll gain most.
   const answeredTotal = j.readiness.domains.reduce((n, d) => n + d.answered, 0);
   const weakest = j.range.enough && j.focus ? j.focus : null;
@@ -488,7 +490,7 @@ export default function Today() {
     .map((item, i) => ({ item, i }))
     .filter(({ i }) => !isOptional(plan.items, i))
     .map(({ item, i }, k) => {
-      const words = planHero(item, j.dueCount, { minutesSaid: true });
+      const words = planHero(item, j.dueCount, { minutesSaid: true, course: j.cert });
       // A mock's own words already say how long it is ("50 questions · about 80 min"): no second minutes.
       // A review with nothing due says "All caught up" and has no time either.
       const nothingDue = idle(i);
@@ -619,7 +621,7 @@ export default function Today() {
                 icon={startIcon(startItem?.kind)}
                 // Play only for a lesson (leading); everything else goes forward with an arrow after the label.
                 iconLeading={startItem?.kind === 'lesson'}
-                accessibilityHint={startItem === curItem ? hero!.title : planHero(startItem, j.dueCount).title}
+                accessibilityHint={startItem === curItem ? hero!.title : planHero(startItem, j.dueCount, { course: j.cert }).title}
                 style={{ marginTop: space.xs }}
               />
               {shortIdx >= 0 && (
@@ -765,9 +767,10 @@ export default function Today() {
                   : []),
                 ...rest.map(({ item, i }) => ({
                   key: String(i),
-                  kicker: rowShort(item, plan.items, i, j.dueCount),
-                  title: planText(item, j.dueCount).title,
-                  spoken: `${planText(item, j.dueCount).title}, ${spokenMin(rowShort(item, plan.items, i, j.dueCount))}`,
+                  // The active course is passed so the plan's words are its own (CISA: unchanged).
+                  kicker: rowShort(item, plan.items, i, j.dueCount, 'today', j.cert),
+                  title: planText(item, j.dueCount, 'today', j.cert).title,
+                  spoken: `${planText(item, j.dueCount, 'today', j.cert).title}, ${spokenMin(rowShort(item, plan.items, i, j.dueCount, 'today', j.cert))}`,
                   onPress: () => runPlanItem(item, j.cert.id),
                 })),
               ]}
@@ -784,9 +787,9 @@ export default function Today() {
                   testID="tomorrow-list"
                   items={tomorrow.map((item, k) => ({
                     key: String(k),
-                    kicker: rowShort(item, tomorrow, k, undefined, 'tomorrow'),
-                    title: planText(item, undefined, 'tomorrow').title,
-                    spoken: `${planText(item, undefined, 'tomorrow').title}, ${spokenMin(rowShort(item, tomorrow, k, undefined, 'tomorrow'))}`,
+                    kicker: rowShort(item, tomorrow, k, undefined, 'tomorrow', j.cert),
+                    title: planText(item, undefined, 'tomorrow', j.cert).title,
+                    spoken: `${planText(item, undefined, 'tomorrow', j.cert).title}, ${spokenMin(rowShort(item, tomorrow, k, undefined, 'tomorrow', j.cert))}`,
                   }))}
                 />
               </>

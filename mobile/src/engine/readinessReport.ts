@@ -18,7 +18,7 @@
  * Pure TypeScript: no React, no storage.
  */
 import type { Certification, DomainInfo } from '../content/types';
-import { domainTitle, domainWord, type DomainStyled } from './domainNaming';
+import { domainCopy, domainTitle, domainWord, type DomainStyled } from './domainNaming';
 import { shiftDay, type ReadinessDay } from './examReady';
 import { STAGE_LABEL, type Stage } from './journey';
 import { timingOf, type MockTiming } from './pace';
@@ -94,19 +94,21 @@ export const MIXED_NOTE = 'Mini and full mocks are mixed here; a mini mock swing
  * recent fall is never smoothed over by an older, lower score ("60 → 70 → 58"
  * reads "Down 12 points since your last mock", not "About level").
  */
-export function trendWords(points: readonly TrendPoint[]): string | null {
+export function trendWords(points: readonly TrendPoint[], course?: DomainStyled): string | null {
   if (points.length < 2) return null;
+  // "…look at the domains below", or "sections" for a course with sections (no course: as before).
+  const fallNote = domainCopy(FALL_NOTE, course);
   const mixed = (window: readonly TrendPoint[]) =>
     window.some((p) => p.kind === 'mini') && window.some((p) => p.kind === 'full') ? ` ${MIXED_NOTE}` : '';
   const last = points[points.length - 1].pct;
   const fall = points[points.length - 2].pct - last;
-  if (fall > LEVEL_POINTS) return `Down ${fall} points since your last mock. ${FALL_NOTE}${mixed(points.slice(-2))}`;
+  if (fall > LEVEL_POINTS) return `Down ${fall} points since your last mock. ${fallNote}${mixed(points.slice(-2))}`;
   const n = Math.min(TREND_WINDOW, points.length);
   const delta = last - points[points.length - n].pct;
   const span = n === 2 ? 'since your last mock' : `over your last ${n} mocks`;
   const note = mixed(points.slice(-n));
   if (delta > LEVEL_POINTS) return `Up ${delta} points ${span}.${note}`;
-  if (delta < -LEVEL_POINTS) return `Down ${-delta} points ${span}. ${FALL_NOTE}${note}`;
+  if (delta < -LEVEL_POINTS) return `Down ${-delta} points ${span}. ${fallNote}${note}`;
   return `About level ${span}.${note}`;
 }
 
@@ -186,9 +188,10 @@ export const mockCovers = (r: DomainRow) => Boolean(r.lastMock || r.prevMock);
  * Line 1: "26% of the exam · domain readiness 68%". A domain with no answers
  * has no readiness to show, so it never reads "0%" (UX review H2): "26% of
  * the exam · not started yet".
+ * `course` (optional): a course with sections reads "section readiness 68%"; none: as before.
  */
-export function readinessLine(r: DomainRow): string {
-  return `${r.weightPct}% of the exam · ${r.answered === 0 ? 'not started yet' : `domain readiness ${r.readinessPct}%`}`;
+export function readinessLine(r: DomainRow, course?: DomainStyled): string {
+  return `${r.weightPct}% of the exam · ${r.answered === 0 ? 'not started yet' : `${domainWord(course, 'domain')} readiness ${r.readinessPct}%`}`;
 }
 
 /** Line 2: "Based on 120 answers", or "Based on 6 answers: still firming up"; none yet: "No answers here yet". */
@@ -266,7 +269,7 @@ export function raiseLowerBound(cert: Certification, readiness: Readiness, range
     const count = Math.min(dueCount, REVIEW_SESSION_CAP);
     out.push({ kind: 'review', count, text: `Clear ${count} ${count === 1 ? 'review' : 'reviews'}: revisiting steadies your range`, button: 'Start review' });
   }
-  if (out.length === 0) out.push({ kind: 'mix', text: 'Keep a steady mix: reviews first, then your weakest domain.' });
+  if (out.length === 0) out.push({ kind: 'mix', text: `Keep a steady mix: reviews first, then your weakest ${domainWord(cert, 'domain')}.` });
   return out.slice(0, RAISE_MAX);
 }
 
