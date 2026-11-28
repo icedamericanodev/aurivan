@@ -543,7 +543,11 @@ section at a time, each with a fresh blind test and a before-and-after audit.
   Part 1 run 75% to 90% (A 76%, B about 87% after a tester's copying slip, C 80%, D
   90%; chance 25%), because the options were not touched. Most options carry their
   own "Sound / Unsound: because ..." reason, so a knowledgeable reader can rule out
-  the false reasons without the stem. This is the next quality lever for Part 1.
+  the false reasons without the stem. **Read this against the benchmark:** The IIA's own
+  15 public samples score 87% on the same test (section 7), and the target is "at or
+  below the official samples' level". Part 1 as a whole (about 82%) meets it; only
+  Section D (90%) sits above. So this is not a defect to fix across Part 1: the
+  narrow job is Section D's options and the items logged above.
 - **Parts 2 and 3 (28 Nov 2026): stage 2 done for the whole bank.** Seven section
   experts restyled every item to the same brief, with Part 1's lessons added (one
   referent per pronoun, never "the executive" for the CAE, name the owner of a
@@ -562,7 +566,18 @@ section at a time, each with a fresh blind test and a before-and-after audit.
 - **For the hardening pass:** `cia3_d4_016` (a finding calling supervisors
   "negligent": Objective and Constructive both fit; needs another runner-up),
   `cia3_d2_011` (a "least reduced" ask, which section 6d discourages), and the
-  options-only cue score, 91% on both parts (chance 25%), unchanged by the restyle.
+  options-only cue score, 91% on both parts (chance 25%; The IIA's own samples 87%,
+  the target), unchanged by the restyle: slightly above target, so worth a narrow
+  pass on the weakest distractors, not a rewrite.
+- **Product view on what comes next (product-manager, 28 Nov 2026):** (1) the app
+  items in section 11 (the held-back form wired per pack, the remaining "Domain"
+  spots); (2) a narrow hardening pass: Part 1 Section D's options and the logged
+  items, two passes at most, which gates Part 1's sale; (3) the selling-compliance
+  items in section 9 that do not ship a mark early (the CIA free-sample builder).
+  More content for Parts 2 and 3 waits on a source. Part 1 is content-ready, but its
+  sale also needs the paywall to have run on CISA, the cross-part gate and a price
+  (section 3, decision 5). A full rewrite of options toward The IIA's longer
+  sentences is large and follows the sale, steered by buyers' data.
 - **The whole CIA bank is now in The IIA's question format:** lowercase qualifiers,
   a period on every option, generic roles, no nationality (one Part 1 item keeps two
   countries because its key is which country's law governs).
