@@ -237,6 +237,8 @@ async function noSecrets(page, c, secrets, label) {
   for (const x of secrets) c.check(!s.includes(x), `${label}: "${x.slice(0, 6)}…" was found in browser storage`);
   c.check(!/[?&](code|token|password)=/.test(page.url()), `${label}: the address carries a secret (${page.url()})`);
 }
+// Types a new password and waits for the page's pause in typing to pass (the rules run 200 ms after the last key).
+const fillPw = async (page, pw) => { await page.fill('#kaPw', pw); await page.waitForFunction(() => kaPwTimer === null, null, { timeout: 4000 }); };
 const goYou = async (page) => { await page.evaluate(() => navTo(null, 'you')); await page.waitForSelector('#kaCard', { state: 'visible' }); await sleep(150); };
 const answerKeys = (page) => page.evaluate(() => { const p = JSON.parse(localStorage.getItem('cisa_profiles_v1') || '{}'); const s = (p[localStorage.getItem('cisa_active_profile')] || {}).state || {}; return { ids: Object.keys(s.answerLog || {}).sort(), score: s.score || null }; });
 // Was the study app ever on screen? Sampled every frame from the first moment of the page (for "no flash before the gate").
@@ -473,11 +475,25 @@ if (wanted('A2')) {
       await axe(page, c, `create account step 3 (${v})`);
       await noOverflow(page, c, 'Create account step 3');
       await c.shot(`a2-${v}-checklist-empty`);
+      // The rules run on a pause in typing, never on every key (a slow phone needs about a tenth of a second for one run).
+      await page.evaluate(() => { const R = window.KaiSipCloud.passwordRules, real = R.passwordChecklist; window.__pwRuns = 0; R.passwordChecklist = function () { window.__pwRuns++; return real.apply(this, arguments); }; });
+      await page.focus('#kaPw');
+      await page.keyboard.type('Tidal lamp oyster seven', { delay: 25 });
+      const during = await page.evaluate(() => window.__pwRuns);
+      await page.waitForFunction(() => kaPwTimer === null, null, { timeout: 4000 });
+      const after = await page.evaluate(() => window.__pwRuns);
+      c.check(during === 0 && after === 1, `23 keys typed quickly: the rules ran ${during} times while typing and ${after} time(s) after the pause`);
+      c.check((await list()).filter((x) => x.met).length === 3, 'and the card then shows what was typed (length, lowercase, uppercase met)');
+      await page.fill('#kaPw', 'Tidal lamp');
+      await page.press('#kaPw', 'Enter');
+      c.check(await page.evaluate(() => kaPwTimer === null && /Not saved yet/.test(document.getElementById('kaPwHelp').textContent)), 'sending the form does not wait for the pause: the card answers at once');
+      await fillPw(page, '');
       // Typing ticks items one by one; the summary for screen readers waits until typing stops.
-      await page.fill('#kaPw', 'ocean violet');
+      const saidBefore = await page.evaluate(() => document.getElementById('kaPwSay').textContent);
+      await fillPw(page, 'ocean violet');
       let now = await list();
       c.check(JSON.stringify(now.map((x) => x.word)) === JSON.stringify(['Met', 'Met', 'Not yet', 'Not yet', 'Not yet']), '"ocean violet": length and lowercase met: ' + now.map((x) => x.word).join(','));
-      c.check((await page.evaluate(() => document.getElementById('kaPwSay').textContent)) === '', 'nothing is announced on the keystroke itself');
+      c.check((await page.evaluate(() => document.getElementById('kaPwSay').textContent)) === saidBefore, 'nothing new is announced on the keystroke itself');
       await page.waitForFunction(() => /2 of 5 met\. Still needed: an uppercase letter, a number, a symbol\./.test(document.getElementById('kaPwSay').textContent), null, { timeout: 4000 }).catch(() => {});
       c.check(/2 of 5 met\. Still needed: an uppercase letter, a number, a symbol\./.test(await page.evaluate(() => document.getElementById('kaPwSay').textContent)), 'one polite summary after typing stops: ' + (await page.evaluate(() => document.getElementById('kaPwSay').textContent)));
       c.check((await page.getAttribute('#kaPwSay', 'aria-live')) === 'polite', 'the summary is polite, never an interruption');
@@ -486,7 +502,7 @@ if (wanted('A2')) {
       await page.waitForFunction(() => /Not saved yet/.test(document.getElementById('kaPwHelp').textContent));
       c.check(/Add an uppercase letter \(A to Z\), a number \(0 to 9\) and a symbol such as ! \? # @\./.test(await text(page, '#kaPwHelp')) && (await text(page, '#kaPwE')) === '' && (await page.getAttribute('#kaPw', 'aria-invalid')) === 'true', 'a refused send: the card says what to add, once, and the field is marked: ' + (await text(page, '#kaPwHelp')));
       c.check((await page.getAttribute('#kaPw', 'type')) === 'password', 'the field stays hidden when it is sent');
-      await page.fill('#kaPw', 'Oc7!');
+      await fillPw(page, 'Oc7!');
       c.check((await page.getAttribute('#kaPw', 'aria-invalid')) === null && /Your password needs/.test(await text(page, '#kaPwHelp')), 'typing again clears the refusal');
       now = await list();
       c.check(JSON.stringify(now.map((x) => x.word)) === JSON.stringify(['Not yet', 'Met', 'Met', 'Met', 'Met']), 'four kinds but too short: ' + now.map((x) => x.word).join(','));
@@ -500,7 +516,7 @@ if (wanted('A2')) {
         ['Aa1!' + 'x'.repeat(70), /Use up to 72/],
       ];
       for (const [pw, words] of refused) {
-        await page.fill('#kaPw', pw);
+        await fillPw(page, pw);
         const card = await text(page, '#kaPwHelp');
         c.check(/This one would be refused/.test(card) && words.test(card) && (await page.evaluate(() => document.getElementById('kaPwHelp').classList.contains('is-refused') && !!document.querySelector('#kaPwHelp .ka-pw-head svg'))), `the live card for "${pw.slice(0, 12)}…" (an icon and the reason): ` + card);
         await page.press('#kaPw', 'Enter');
@@ -516,12 +532,12 @@ if (wanted('A2')) {
       await c.shot(`a2-${v}-refused`);
       // A leaked password: refused with its own words; only 5 characters of each hash leave.
       net.leaked.add(PW);
-      await page.fill('#kaPw', PW);
+      await fillPw(page, PW);
       // An accepted password "works", and that is all the card says: 15 or more characters is a
       // length label in the rules ('long'), never shown as a strength rating.
-      await page.fill('#kaPw', 'Tidal lamp 7!');
+      await fillPw(page, 'Tidal lamp 7!');
       c.check(/This password works\./.test(await text(page, '#kaPwHelp')) && await page.evaluate(() => window.KaiSipCloud.passwordRules.passwordChecklist('Tidal lamp 7!').state === 'ok'), 'an accepted 13-character password: "This password works."');
-      await page.fill('#kaPw', PW);
+      await fillPw(page, PW);
       const good = await text(page, '#kaPwHelp');
       c.check(/This password works\./.test(good) && !/strong|nicely|great|excellent/i.test(good) && (await list()).every((x) => x.met && x.word === 'Met') && await page.evaluate((p) => window.KaiSipCloud.passwordRules.passwordChecklist(p).state === 'long', PW), 'a longer accepted password says the same, with no strength claim: ' + good);
       await page.waitForFunction(() => /All 5 met\. This password works\./.test(document.getElementById('kaPwSay').textContent), null, { timeout: 4000 }).catch(() => {});
@@ -534,7 +550,7 @@ if (wanted('A2')) {
       c.check(net.hibp.length > 0 && net.hibp.every((p) => /^\/range\/[0-9A-Fa-f]{5}$/.test(p)), 'the leak lookup sends 5 characters of a hash and nothing else: ' + net.hibp.join(','));
       // The lookup can't be reached: the password is saved, and the screen says so calmly.
       net.hibpMode = 'down';
-      await page.fill('#kaPw', PW2);
+      await fillPw(page, PW2);
       c.check((await text(page, '#kaPwE')) === '' && (await page.getAttribute('#kaPw', 'aria-invalid')) === null, 'typing a new password clears the leak message (never two opposite messages)');
       await page.press('#kaPw', 'Enter');
       await waitView(page, '');
@@ -571,7 +587,7 @@ if (wanted('A2')) {
       await page.fill('#kaCode', server.codes.get(EMAIL));
       await page.press('#kaCode', 'Enter');
       await waitView(page, 'signup3');
-      await page.fill('#kaPw', PW);
+      await fillPw(page, PW);
       await page.press('#kaPw', 'Enter');
       await waitView(page, '');
       const wrote = consentWrites(server);
@@ -609,7 +625,7 @@ if (wanted('A3')) {
       c.check(!('redirect_to' in calls(server, '/auth/v1/recover')[0].body), 'the reset email is a code, never a link');
       // Any code for an address with no account reads as a wrong code.
       await page.fill('#kaCode', '12345678');
-      await page.fill('#kaPw', PW2);
+      await fillPw(page, PW2);
       await page.press('#kaPw', 'Enter');
       await waitText(page, 'kaCodeE', /didn.t work/, c);
       // A new visit (this page asks for one reset code a minute, whatever the address).
@@ -627,12 +643,12 @@ if (wanted('A3')) {
       // A refused password is caught before the code is used up.
       await page.fill('#kaCode', code);
       c.check((await page.evaluate(() => document.querySelectorAll('#kaPwHelp .ka-pw-list li').length)) === 5 && (await page.getAttribute('#kaPw', 'type')) === 'password', 'the same five-item checklist, on a hidden field');
-      await page.fill('#kaPw', 'Passwordpassword1!');
+      await fillPw(page, 'Passwordpassword1!');
       await page.press('#kaPw', 'Enter');
       await waitText(page, 'kaPwHelp', /Not saved yet.*easy to guess/, c);
       c.check(calls(server, '/auth/v1/verify').filter((x) => x.body.email === EMAIL).length === 0, 'the code is not spent on a refused password');
       // A wrong code.
-      await page.fill('#kaPw', PW2);
+      await fillPw(page, PW2);
       await page.fill('#kaCode', '00000000');
       await page.press('#kaPw', 'Enter');
       await waitText(page, 'kaCodeE', /didn.t work/, c);
@@ -759,16 +775,16 @@ if (wanted('A5')) {
       await axe(page, c, `change password (${v})`);
       await c.shot(`a5-${v}-change-password`);
       await page.fill('#kaCur', 'not my password at all');
-      await page.fill('#kaPw', PW2);
+      await fillPw(page, PW2);
       await page.press('#kaPw', 'Enter');
       await waitText(page, 'kaCurE', /isn.t your current password/, c);
       await page.fill('#kaCur', PW);
       c.check((await page.evaluate(() => document.querySelectorAll('#flagModal #kaPwHelp .ka-pw-list li').length)) === 5, 'the same checklist on Change password');
-      await page.fill('#kaPw', 'ocean violet lamp');
+      await fillPw(page, 'ocean violet lamp');
       await page.press('#kaPw', 'Enter');
       await waitText(page, 'kaPwHelp', /Not saved yet.*Add an uppercase letter \(A to Z\), a number \(0 to 9\) and a symbol such as ! \? # @\./, c);
       c.check(server.userByEmail(EMAIL).password === PW, 'nothing changed yet');
-      await page.fill('#kaPw', PW2);
+      await fillPw(page, PW2);
       await page.press('#kaPw', 'Enter');
       await waitText(page, 'kaPwRowSay', /Password saved/, c);
       c.check(server.userByEmail(EMAIL).password === PW2, 'the password is changed');
@@ -1036,6 +1052,8 @@ if (wanted('A9')) {
       c.check(!(await store(page)).session.kaisip_pkce_v1, 'the one-time PKCE secret is deleted');
       c.check((await text(page, '#kaRoot h1')) === 'One more step' && (await page.evaluate(() => ['kaTerms', 'kaNews'].every((id) => document.getElementById(id).checked === false) && !document.getElementById('kaAge') && document.getElementById('kaAgeLine').textContent === 'Accounts are for learners 18 and older.')), 'a new Google account meets the same agreement, unticked, with the age line');
       c.check(calls(server, '/rest/v1/sync_snapshots').length === 0, 'nothing syncs before the agreements');
+      const bar = await page.evaluate(() => ({ words: document.querySelector('#kaRoot .ka-topbar').innerText.replace(/\s+/g, ' ').trim(), links: [...document.querySelectorAll('#kaRoot .ka-topbar a')].map((a) => a.getAttribute('href')), ways: [...document.querySelectorAll('#kaRoot button')].map((b) => b.textContent.trim()) }));
+      c.check(!/Back to studying/.test(bar.words) && JSON.stringify(bar.links) === JSON.stringify(['support.html']) && bar.ways.includes('Agree and continue') && bar.ways.includes('Sign out instead'), 'a brand-new account gets Agree or Sign out, and no "Back to studying": ' + JSON.stringify(bar));
       await axe(page, c, 'the agreements after Google');
       await noOverflow(page, c, 'the agreements after Google');
       await c.shot('a9-consent');
@@ -1189,14 +1207,17 @@ async function walk(v, scheme, shots, c, axeOnly = false) {
   await page.fill('#kaCode', server.codes.get(MAIL)); await page.press('#kaCode', 'Enter'); await waitView(page, 'signup3');
   await page.waitForFunction(() => window.KaiSipCloud && window.KaiSipCloud.passwordRules.passwordWordsLoaded(), null, { timeout: 15000 });
   await snap(page, '08-create-3-checklist-empty');
-  await page.fill('#kaPw', 'Ocean violet 7!'); await page.press('#kaPw', 'Enter');
+  await fillPw(page, 'Ocean violet 7!'); await page.press('#kaPw', 'Enter');
   await page.waitForFunction(() => /Not saved yet/.test(document.getElementById('kaPwHelp').textContent)); await snap(page, '09-create-3-password-refused');
   s.net.hibpMode = 'down';
-  await page.fill('#kaPw', PW); await snap(page, '10-create-3-password-good');
+  await fillPw(page, PW); await snap(page, '10-create-3-password-good');
   await page.press('#kaPw', 'Enter'); await waitView(page, ''); await settled(page);
   await page.waitForFunction(() => /couldn.t check/.test(document.getElementById('globalToast').textContent), null, { timeout: 4000 }).catch(() => {});
   if (shots) await page.screenshot({ path: path.join(shots, `11-created-leak-check-unavailable_${v === 'phone' ? '390' : '1280'}_${scheme}.png`) });
   await sleep(7200);   // the toast leaves
+  // A new account with nothing answered: the app's own first-visit sheet, once.
+  await page.waitForSelector('.ob-welcome', { timeout: 8000 }); await snap(page, '11b-first-visit-sheet');
+  await page.click('.ob-ghost'); await sleep(250);
   // 2. Signed in: You and the Account page.
   await goYou(page);
   await snap(page, '12-you-signed-in');
@@ -1218,7 +1239,7 @@ async function walk(v, scheme, shots, c, axeOnly = false) {
   // 4. Forgot password.
   await page.click('.ka-aside'); await waitView(page, 'forgot1'); await page.fill('#kaEmail', MAIL); await snap(page, '20-forgot-1-email');
   await page.press('#kaEmail', 'Enter'); await waitView(page, 'forgot2');
-  await page.fill('#kaCode', server.codes.get(MAIL)); await page.fill('#kaPw', PW2); await snap(page, '21-forgot-2-code-and-password');
+  await page.fill('#kaCode', server.codes.get(MAIL)); await fillPw(page, PW2); await snap(page, '21-forgot-2-code-and-password');
   await s.ctx.close();
   // 6. Google, a new account: the agreements. Then the first-sync preview.
   s = await setup({ view: v, scheme }); page = s.page; server = s.server;
@@ -1556,7 +1577,7 @@ if (wanted('G5')) {
     await page.fill('#kaCode', server.codes.get('old.hand@example.com'));
     await page.press('#kaCode', 'Enter');
     await waitView(page, 'signup3');
-    await page.fill('#kaPw', PW2);
+    await fillPw(page, PW2);
     await page.click('#kaGo');
     await waitView(page, 'firstsync');
     c.check((await text(page, '#kaRoot h1')) === norm('Add this browser’s progress to your account?'), 'the first sign-in offers this browser’s progress: ' + (await text(page, '#kaRoot h1')));
@@ -1592,7 +1613,7 @@ if (wanted('N1')) {
   const row = (page) => page.evaluate(() => ({ state: document.getElementById('kaNewsRow').getAttribute('data-state'), sub: document.getElementById('kaNewsS').innerText.replace(/\s+/g, ' ').trim(), sw: (document.getElementById('kaNewsBtn') || { getAttribute() { return null; } }).getAttribute('aria-checked') }));
   const openAccount = async (page) => { await page.evaluate(() => navGoFocus(null, 'home')); await page.evaluate(() => navGoFocus(null, 'account')); await page.waitForSelector('#kaNewsRow'); await page.waitForFunction(() => !ka.newsBusy); };
   const syncs = () => calls(server, '/functions/v1/newsletter-sync').length;
-  await rec.run('N1', 'News emails: on asks to confirm by email, confirmed reads as on, an unsubscribe made by email shows with no switch, and the email service being away loses nothing', page, async (c) => {
+  await rec.run('N1', 'News emails: on asks to confirm by email, confirmed reads as on, a switch-off reaches the email service, an address the service holds as stopped cannot be restarted here, and the service being away loses nothing', page, async (c) => {
     await signedIn(page);
     await openAccount(page);
     c.check(JSON.stringify(await row(page)) === JSON.stringify({ state: 'off', sub: 'About twice a month. You can unsubscribe anytime.', sw: 'false' }), 'starts off: ' + JSON.stringify(await row(page)));
@@ -1615,25 +1636,40 @@ if (wanted('N1')) {
     await page.click('#kaNewsBtn');
     await waitText(page, 'kaNewsBtnSay', /^Off\./, c);
     await page.waitForFunction(() => !ka.newsBusy);
-    c.check((await row(page)).sw === 'false' && server.consent.get(server.userByEmail(EMAIL).id).marketing_opt_in === false && !/kit|503|unavailable/i.test(await text(page, '#kaAccount')), 'email service away: off is recorded, and no error text shows');
+    c.check((await row(page)).sw === 'false' && server.consent.get(server.userByEmail(EMAIL).id).marketing_opt_in === false && !/\bkit\b|503|unavailable/i.test(await text(page, '#kaAccount')), 'email service away: off is recorded, and no error text shows');
     server.kitDown = false;
     await openAccount(page);
-    c.check(server.kit.get(EMAIL) === 'cancelled' && (await row(page)).state === 'off', 'the next visit to Account finishes the job: the emails are stopped');
-    // Unsubscribed by email earlier (the address is stopped at the email service): switching on does not stick.
+    c.check(server.kit.get(EMAIL) === 'cancelled' && JSON.stringify(await row(page)) === JSON.stringify({ state: 'off', sub: 'About twice a month. You can unsubscribe anytime.', sw: 'false' }), 'the next visit to Account finishes the job: the emails are stopped at the service, and the row is the switch, off, nothing else: ' + JSON.stringify(await row(page)));
+    await openAccount(page);
+    c.check((await row(page)).state === 'off', 'and the same at a later visit');
+    // The email service now holds the address as stopped: switching on does not stick, and the row says so.
     await page.click('#kaNewsBtn');
-    await page.waitForFunction(() => document.getElementById('kaNewsRow').getAttribute('data-state') === 'by-email', null, { timeout: 8000 });
-    const by = await row(page);
-    c.check(by.sw === null && /^You unsubscribed by email\. To get news again, sign up with the email form on kaisip\.com( \(opens in a new tab\))? ?\.$/.test(by.sub), 'unsubscribed by email: no switch, and how to get news again: ' + JSON.stringify(by));
-    await waitText(page, 'kaNewsBtnSay', /You unsubscribed by email, so this can.t be switched on from here\./, c);
-    c.check(await page.evaluate(() => { const a = document.querySelector('#kaNewsRow a'); return a.getAttribute('href') === 'https://kaisip.com/#waitlist' && a.target === '_blank' && document.activeElement === a; }), 'the form is linked (new tab) and focus moves to it when the switch goes');
-    c.check(server.consent.get(server.userByEmail(EMAIL).id).source === 'email', 'the record says the unsubscribe came by email');
-    await axe(page, c, 'Account, unsubscribed by email');
-    await noOverflow(page, c, 'Account, unsubscribed by email');
-    await c.shot('n1-by-email', page, true);
+    await page.waitForFunction(() => document.getElementById('kaNewsRow').getAttribute('data-state') === 'blocked', null, { timeout: 8000 });
+    const blocked = await row(page);
+    c.check(blocked.sw === 'false' && norm(blocked.sub) === norm('You’re unsubscribed from KaiSip news, and it can’t be restarted here.'), 'blocked: the switch is off, with one line that it can’t be restarted here: ' + JSON.stringify(blocked));
+    c.check(!/by email|you switched|you turned|bounce|complain/i.test(blocked.sub), 'the line does not claim how it happened');
+    await waitText(page, 'kaNewsBtnSay', /^Off\. KaiSip news is stopped for this address and can.t be restarted here\.$/, c);
+    c.check(await page.evaluate(() => !document.querySelector('#kaNewsRow a') && document.activeElement.id === 'kaNewsBtn' && document.getElementById('kaNewsW').textContent === 'Off'), 'no link while the form’s address is not set; focus stays on the switch, which reads Off');
+    const rec2 = server.consent.get(server.userByEmail(EMAIL).id);
+    c.check(rec2.marketing_opt_in === false && rec2.source === 'email_service', 'the record was switched off by the server, with its own label: ' + JSON.stringify(rec2));
+    await axe(page, c, 'Account, news blocked');
+    await noOverflow(page, c, 'Account, news blocked');
+    await c.shot('n1-blocked', page, true);
+    // Once the owner supplies the email service's sign-up form, the line links to it (new tab).
+    await page.evaluate(() => { KA_NEWS_FORM_URL = 'https://kaisip.kit.com/news'; kaNewsDraw(); });
+    const linked = await page.evaluate(() => { const a = document.querySelector('#kaNewsRow a'); return a && { href: a.getAttribute('href'), blank: a.target === '_blank', rel: a.rel, words: document.getElementById('kaNewsS').innerText.replace(/\s+/g, ' ').trim() }; });
+    c.check(linked && linked.href === 'https://kaisip.kit.com/news' && linked.blank && /noopener/.test(linked.rel) && /^You.re unsubscribed from KaiSip news, and it can.t be restarted here\. To get it again, sign up with the KaiSip news form( \(opens in a new tab\))? ?\.$/.test(linked.words), 'with the address set, the line links to the form: ' + JSON.stringify(linked));
+    await axe(page, c, 'Account, news blocked, with the form link');
     await page.reload();
     await page.waitForFunction(() => document.body.hasAttribute('data-section'));
     await openAccount(page);
-    c.check((await row(page)).state === 'by-email', 'and it reads the same after a reload');
+    c.check((await row(page)).state === 'blocked' && (await row(page)).sw === 'false', 'after a reload the record’s own label keeps the line there');
+    c.check(await page.evaluate(() => KA_NEWS_FORM_URL === '' && !document.querySelector('#kaNewsRow a')), 'the form’s address ships empty, so no link is drawn');
+    // The data download says whether the app added the address to the email service.
+    const dl = page.waitForEvent('download');
+    await page.click('#kaDl');
+    const got = JSON.parse(fs.readFileSync(await (await dl).path(), 'utf8'));
+    c.check(got.newsletter && got.newsletter.addedToEmailService === false, 'Download my data carries the newsletter state: ' + JSON.stringify(got.newsletter));
   });
   await ctx.close();
 }
@@ -1658,15 +1694,27 @@ if (wanted('N2')) {
     await page.click('#kaNewsBtn');
     await waitText(page, 'kaNewsBtnSay', /^Off\./, c);
     await page.waitForFunction(() => !ka.newsBusy, null, { timeout: 8000 });
+    c.check(await page.evaluate(() => document.getElementById('kaNewsRow').getAttribute('data-state') === 'off'), 'off: the switch, nothing else');
     const before = calls(server, '/functions/v1/newsletter-sync').length;
     await page.click('#kaNewsBtn');
     await page.waitForFunction(() => document.getElementById('kaNewsRow').getAttribute('data-state') === 'pending', null, { timeout: 8000 });
     c.check(calls(server, '/functions/v1/newsletter-sync').length === before + 2, 'told to wait (429): one more ask after the wait, then the answer shows');
     c.check(!/429|rate|limit/i.test(await text(page, '#kaAccount')), 'the wait is never shown as an error');
+    // The account's email is not confirmed (a safety state on the website): the choice is shown as saved, and nothing is sent.
+    await page.click('#kaNewsBtn');
+    await waitText(page, 'kaNewsBtnSay', /^Off\./, c);
+    await page.waitForFunction(() => !ka.newsBusy, null, { timeout: 8000 });
+    server.unconfirmed.add(server.userByEmail(EMAIL).id);
+    server.kit = new Map();
+    await page.click('#kaNewsBtn');
+    await page.waitForFunction(() => document.getElementById('kaNewsRow').getAttribute('data-state') === 'unconfirmed', null, { timeout: 8000 });
+    c.check(await page.evaluate(() => document.getElementById('kaNewsBtn').getAttribute('aria-checked') === 'true' && document.getElementById('kaNewsS').textContent === 'Saved. News starts once your email address is confirmed.') && server.kit.size === 0 && server.consent.get(server.userByEmail(EMAIL).id).marketing_opt_in === true, 'unconfirmed: on as saved, the line says when news starts, and nothing went to the email service');
+    server.unconfirmed.clear();
     // The 21st change in a day is refused in words; switching off still works.
     server.newsWaitMs = 0;
     const id = server.userByEmail(EMAIL).id;
     server.consentLog.set(id, Array.from({ length: 20 }, () => Date.now()));
+    server.kit = null;   // (not connected, so the switch stays on the page for the next step)
     await page.click('#kaNewsBtn');
     await waitText(page, 'kaNewsBtnSay', /^Off\./, c);
     await page.waitForFunction(() => !ka.newsBusy);
@@ -1687,6 +1735,18 @@ if (wanted('N3')) {
     await waitView(page, 'consent');
     c.check((await text(page, '#kaRoot h1')) === 'One more step' && await page.evaluate(() => document.getElementById('kaTerms').checked === false && document.getElementById('kaAgeLine').textContent === 'Accounts are for learners 18 and older.'), 'the agreement is asked again, unticked');
     c.check(consentWrites(server).length === 0, 'nothing is written before the learner agrees');
+    // An existing learner is never locked out: "Back to studying" is there, and it opens the app with sync paused.
+    c.check(/Back to studying/.test(await text(page, '#kaRoot .ka-topbar')) && !(await store(page)).local.kaisip_acct_agree_v1, 'an account that agreed before keeps "Back to studying"');
+    await page.click('#kaRoot .ka-toplink');
+    await waitView(page, '');
+    c.check(await appShown(page), 'it opens the study app');
+    await page.goto('about:blank');
+    await open(page);
+    c.check((await view(page)) === '' && await appShown(page), 'and a later visit goes straight in');
+    c.check(calls(server, '/rest/v1/sync_snapshots').filter((x) => x.method !== 'GET').length === 0, 'nothing syncs meanwhile');
+    await goYou(page);
+    await page.click('#kaCard [data-f="setup"]');
+    await waitView(page, 'consent');
     await page.click('#kaGo');
     c.check((await text(page, '#kaConsentE')) === 'Tick the box above to continue.' && consentWrites(server).length === 0, 'and nothing without the tick');
     await page.check('#kaTerms', { force: true });
@@ -1908,7 +1968,7 @@ if (wanted('U5')) {
       return { label: l.textContent.replace(/ /g, ' '), lines, lastWidth: Math.round(lastWidth), statusLines: Math.round(sr.height / parseFloat(getComputedStyle(s).lineHeight)), statusTop: Math.round(sr.top - lr.top), overlap: sr.left < lr.right - 1, right: Math.round(sr.right) };
     }));
     for (const pw of ['', 'Tidal lamp 7!']) {
-      await page.fill('#kaPw', pw);
+      await fillPw(page, pw);
       const rows = await measure();
       c.check(rows.every((r) => r.lines <= 2), `every label is one or two lines (${pw ? 'all met' : 'none met'}): ` + JSON.stringify(rows.map((r) => [r.label, r.lines])));
       c.check(rows.every((r) => r.lines === 1 || r.lastWidth >= 48), 'a wrapped label ends with its whole example, not a stray piece: ' + JSON.stringify(rows.filter((r) => r.lines > 1).map((r) => [r.label, r.lastWidth])));
@@ -1916,7 +1976,7 @@ if (wanted('U5')) {
       await noOverflow(page, c, 'the checklist at 320px');
     }
     await c.shot('u5-checklist-320', page, true);
-    await page.fill('#kaPw', '');
+    await fillPw(page, '');
     await c.shot('u5-checklist-320-empty', page, true);
     // Text at 200% on the same phone: still no sideways scroll, nothing cut off.
     await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
@@ -1927,6 +1987,191 @@ if (wanted('U5')) {
     await c.shot('u5-checklist-320-200', page, true);
   });
   await ctx.close();
+}
+
+// ── G6, G7. A brand-new account agrees before the app opens; the first-visit sheet runs once for a new learner ──
+if (wanted('G6')) {
+  const mine = freeIds(5, 2);
+  const { ctx, page, server, net } = await setup({ view: 'phone', seed: profileSeed(mine) });
+  await ctx.addInitScript(WATCH_APP);
+  const tab2 = await ctx.newPage();
+  rec.watch(tab2, SITE);
+  await rec.run('G6', 'A brand-new account that came in through Google must agree before studying: no way round "One more step", across reloads, addresses and tabs; Sign out leaves; Agree opens the app', page, async (c) => {
+    const viaGoogle = async (email) => {
+      await open(page, '#sign-in');
+      await page.waitForSelector('.ka-btn-google', { state: 'visible' });
+      const [req] = await Promise.all([page.waitForRequest((r) => r.url().startsWith(SUPA + '/auth/v1/authorize')), page.click('.ka-btn-google')]);
+      await page.goto(`${APP}?code=${server.googleCode(new URL(req.url()).searchParams.get('code_challenge'), email)}`);
+      await waitView(page, 'consent');
+    };
+    await viaGoogle('nia@gmail.com');
+    const before = await answerKeys(page);
+    c.check((await store(page)).local.kaisip_acct_agree_v1 === '1' && !!(await store(page)).local.kaisip_auth_v1, 'signed in, with the agreement still due');
+    c.check(/You.re almost in\. To finish creating your account, please agree to the terms\./.test(await text(page, '.ka-lede')), 'the screen says what is left: ' + (await text(page, '.ka-lede')));
+    c.check(!/Back to studying/.test(await text(page, '#kaRoot')) && !(await page.evaluate(() => document.querySelector('#kaRoot a.ka-brand'))), 'no "Back to studying", and the wordmark is not a way out');
+    c.check(!(await page.evaluate(() => window.__appSeen)), 'the study app has not been on screen');
+    // Every door: a reload, each study address, the account addresses, the app's own functions, Escape.
+    for (const h of ['', '#today', '#practice', '#notes', '#account', '#sign-in', '#create-account']) {
+      await page.goto('about:blank');
+      await open(page, h);
+      await waitView(page, 'consent');
+      c.check(!(await page.evaluate(() => window.__appSeen)) && !(await appShown(page)), `${h || 'a reload'}: still "One more step", no flash`);
+    }
+    await page.evaluate(() => { try { navTo(null, 'practice'); } catch (e) {} try { kaGoApp('home'); } catch (e) {} try { kaLand(); } catch (e) {} try { kaClose(); } catch (e) {} try { kaHome(); } catch (e) {} });
+    await page.keyboard.press('Escape');
+    await sleep(200);
+    c.check(['consent', 'welcome'].includes(await view(page)) && !(await appShown(page)), 'called by hand, nothing opens the app: ' + (await view(page)));
+    await page.goto('about:blank'); await open(page); await waitView(page, 'consent');
+    c.check(calls(server, '/rest/v1/sync_snapshots').length === 0 && consentWrites(server).length === 0, 'nothing is synced or recorded meanwhile');
+    c.check(JSON.stringify(await answerKeys(page)) === JSON.stringify(before), 'progress already in this browser is untouched');
+    await axe(page, c, 'One more step, a new account');
+    await noOverflow(page, c, 'One more step, a new account');
+    await c.shot('g6-one-more-step');
+    // The sign-in service cannot be reached: still the agreement (it can't be checked), and Sign out still works.
+    net.supaMode = '503';
+    await page.goto('about:blank'); await open(page); await waitView(page, 'consent');
+    c.check(!(await appShown(page)), 'service away: still "One more step"');
+    net.supaMode = '';
+    // Sign out instead: back at the way in, and the note is gone.
+    await page.click('#kaRoot .ka-linkbtn');
+    await waitView(page, 'signin');
+    c.check(!(await store(page)).local.kaisip_acct_agree_v1 && !(await store(page)).local.kaisip_auth_v1 && !(await appShown(page)), 'Sign out instead: signed out, nothing due, the app still closed');
+    c.check(JSON.stringify(await answerKeys(page)) === JSON.stringify(before), 'and the progress in this browser stays');
+    // Again, with a second tab open on the same screen: agreeing in one opens both.
+    await viaGoogle('nia@gmail.com');
+    await open(tab2);
+    await waitView(tab2, 'consent');
+    await page.bringToFront();
+    await page.check('#kaTerms', { force: true });
+    await page.click('#kaGo');
+    await waitView(page, 'firstsync');   // this browser has progress: it is offered into the new account
+    c.check(!(await store(page)).local.kaisip_acct_agree_v1 && server.profiles.get(server.userByEmail('nia@gmail.com').id) === '2026-12', 'agreed: recorded, and nothing is due any more');
+    await tab2.waitForFunction(() => !document.body.hasAttribute('data-ka-view'), null, { timeout: 8000 });
+    c.check(await appShown(tab2), 'the other tab opens too');
+    await page.click('#kaGo');
+    await waitView(page, '');
+    await settled(page);
+    c.check(await appShown(page) && !(await page.evaluate(() => document.querySelector('.ob-welcome'))), 'in the app; a learner with progress gets no first-visit sheet');
+    // Agreed on another device meanwhile: a browser still holding the note lets the learner in.
+    await page.evaluate(() => localStorage.setItem('kaisip_acct_agree_v1', '1'));
+    await page.goto('about:blank'); await open(page);
+    await page.waitForFunction(() => !document.body.hasAttribute('data-ka-view'), null, { timeout: 8000 });
+    c.check(await appShown(page) && !(await store(page)).local.kaisip_acct_agree_v1, 'the record says agreed: straight in, and the note is cleared');
+  }, { allowErrors: true });
+  await ctx.close();
+}
+
+if (wanted('G7')) {
+  const sheet = (page) => page.evaluate(() => { const e = document.querySelector('.ob-welcome'); return e ? e.innerText.replace(/\s+/g, ' ').trim() : ''; });
+  const create = async (page, server, email) => {
+    await open(page, '#create-account');
+    await page.fill('#kaEmail', email);
+    await page.check('#kaTerms', { force: true });
+    await page.press('#kaEmail', 'Enter');
+    await waitView(page, 'signup2');
+    await page.fill('#kaCode', server.codes.get(email));
+    await page.press('#kaCode', 'Enter');
+    await waitView(page, 'signup3');
+    await fillPw(page, PW2);
+    await page.press('#kaPw', 'Enter');
+  };
+  {
+    const { ctx, page, server } = await setup({ view: 'phone', onboarded: false });
+    await rec.run('G7-new', 'A new account with nothing answered gets the app’s first-visit sheet once, after its first sign-in', page, async (c) => {
+      await open(page);
+      await waitView(page, 'welcome');
+      c.check((await sheet(page)) === '', 'no sheet over the welcome');
+      await create(page, server, 'fresh@example.com');
+      await waitView(page, '');
+      await page.waitForSelector('.ob-welcome', { timeout: 8000 });
+      const words = await sheet(page);
+      c.check(/Think like an IS auditor\./.test(words) && /Start 5 questions/.test(words) && /Look around first/.test(words), 'the sheet, as on today’s site: ' + words.slice(0, 200));
+      c.check(/Your account keeps your progress safe and in sync\./.test(words) && !/No account\./.test(words), 'its last line fits a signed-in learner (not "No account")');
+      c.check((await page.evaluate(() => document.body.getAttribute('data-tab'))) === 'home', 'over Today');
+      await axe(page, c, 'the first-visit sheet after sign-up');
+      await c.shot('g7-first-sheet');
+      // Not finished, and the page is reloaded: it comes back (once), then "Look around first" ends it.
+      await page.goto('about:blank');
+      await open(page);
+      await page.waitForSelector('.ob-welcome', { timeout: 8000 });
+      c.check(await page.evaluate(() => document.querySelectorAll('.ob-welcome').length === 1), 'after a reload it shows again, once');
+      await page.click('.ob-ghost');
+      await sleep(300);
+      c.check((await sheet(page)) === '' && (await store(page)).local.cisa_onboarded_v6 === '1' && await appShown(page), '"Look around first" closes it for good');
+      await page.goto('about:blank');
+      await open(page);
+      await sleep(1200);
+      c.check((await sheet(page)) === '', 'the next visit: no sheet');
+    });
+    await ctx.close();
+  }
+  {
+    const { ctx, page, server } = await setup({ view: 'desktop', onboarded: false });
+    await rec.run('G7-start', '"Start 5 questions" from the sheet opens the first set for the new account', page, async (c) => {
+      await create(page, server, 'five@example.com');
+      await waitView(page, '');
+      await page.waitForSelector('.ob-welcome', { timeout: 8000 });
+      await page.click('#obGo');
+      await page.waitForFunction(() => { const pf = document.getElementById('practiceFocus'); return pf && !pf.hidden; }, null, { timeout: 8000 });
+      c.check((await page.evaluate(() => S.activeTab)) === 'practice' && (await store(page)).local.cisa_onboarded_v6 === '1', 'the first five questions open, and the sheet is done');
+    });
+    await ctx.close();
+  }
+  {
+    // Progress on the device (from before accounts): no sheet.
+    const { ctx, page, server } = await setup({ view: 'phone', onboarded: false, seed: profileSeed(freeIds(1, 2)) });
+    await rec.run('G7-device-progress', 'A learner with progress in this browser gets no first-visit sheet', page, async (c) => {
+      await create(page, server, 'had@example.com');
+      await waitView(page, 'firstsync');
+      await page.click('#kaGo');
+      await waitView(page, '');
+      await settled(page);
+      await sleep(900);
+      c.check((await sheet(page)) === '' && (await store(page)).local.cisa_onboarded_v6 === '1', 'no sheet, and it is marked as done');
+    });
+    await ctx.close();
+  }
+  {
+    // Progress in the account (a learner from the phone, on a browser that has none): no sheet.
+    const server = new F.FakeSupabase(() => Date.now());
+    server.captchaOn = true;
+    await makeAccount(server);
+    const first = await setup({ view: 'phone', server, seed: profileSeed(freeIds(3, 4)) });
+    await signIn(first.page); await waitView(first.page, 'firstsync'); await first.page.click('#kaGo'); await waitView(first.page, ''); await settled(first.page);
+    await first.ctx.close();
+    const { ctx, page } = await setup({ view: 'phone', server, onboarded: false });
+    await rec.run('G7-account-progress', 'A learner whose account already has progress gets no first-visit sheet on a new browser', page, async (c) => {
+      await signIn(page);
+      await waitView(page, '');
+      await settled(page);
+      await sleep(900);
+      c.check((await answerKeys(page)).ids.length === 4, 'the account’s progress is here');
+      c.check((await sheet(page)) === '' && (await store(page)).local.cisa_onboarded_v6 === '1', 'no sheet, and it is marked as done');
+      await page.goto('about:blank');
+      await open(page);
+      await sleep(1200);
+      c.check((await sheet(page)) === '', 'nor at the next visit');
+    });
+    await ctx.close();
+  }
+  {
+    // A learner who asked for a page gets that page first; the sheet waits for a plain visit.
+    const { ctx, page, server } = await setup({ view: 'phone', onboarded: false });
+    await rec.run('G7-deep-link', 'A new account that asked for a page gets the page; the sheet comes at the next plain visit', page, async (c) => {
+      await open(page, '#glossary');
+      await waitView(page, 'welcome');
+      await create(page, server, 'link@example.com');
+      await waitView(page, '');
+      await page.waitForFunction(() => S.activeTab === 'glossary', null, { timeout: 8000 }).catch(() => {});
+      await sleep(900);
+      c.check((await page.evaluate(() => S.activeTab)) === 'glossary' && (await sheet(page)) === '', 'the Glossary opens, with no sheet over it');
+      await page.goto('about:blank');
+      await open(page);
+      await page.waitForSelector('.ob-welcome', { timeout: 8000 }).catch(() => {});
+      c.check(/Start 5 questions/.test(await sheet(page)), 'the next plain visit shows the sheet');
+    });
+    await ctx.close();
+  }
 }
 
 await browser.close();

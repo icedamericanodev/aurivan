@@ -290,7 +290,7 @@ pages not on https).
    two-step sign-in. The old `kaisip.certprep-support.workers.dev` address
    must be switched off or covered too, or it bypasses Access.
 
-#### B1 as built (28 Nov 2026, two rounds; nothing a visitor can reach changed)
+#### B1 as built (28 Nov 2026, three rounds; nothing a visitor can reach changed)
 
 - **The switch.** `ACCOUNTS_ON = false` in the first script of `index.html`.
   With it off no account element is created, the accounts client
@@ -332,6 +332,20 @@ pages not on https).
     the free sample stay in this browser and cannot be added to the account.
   - The guest card on You, its slim row and its offer sheet are gone (there
     is no guest in the app once accounts are on).
+  - **A brand-new account that came in through Google agrees before it
+    studies** (owner, round 3). "One more step" then offers Agree or Sign
+    out and nothing else, across reloads, addresses and tabs (a note kept in
+    the browser, `kaisip_acct_agree_v1`, until they agree or sign out; the
+    page asks the service at each start, so agreeing on the phone lets them
+    in). An account that agreed before and is asked again for a later Terms
+    version keeps "Back to studying": it studies on with sync paused,
+    because a signed-in learner is never locked out of their own progress.
+  - **The app's own first-visit sheet** (what KaiSip is, "Start 5
+    questions", then the exam date) runs once after a new account's first
+    sign-in. A learner with progress in the browser or in the account does
+    not get it; a learner who asked for a page gets the page, and the sheet
+    at the next plain visit. Its last line reads "Your account keeps your
+    progress safe and in sync." instead of "No account."
 - **Screens** (direction A, Grove Atelier, with joined code cells and audit
   ticks; `docs/mobile/DESIGN_SYSTEM.md` §22): the welcome; Sign in; Create
   account in the order email and agreement, the 8-digit code, the password;
@@ -346,8 +360,14 @@ pages not on https).
   symbol. A live five-item checklist sits under every new password (Create
   account, the reset, Change password), each item with an icon and the words
   "Met" or "Not yet", said politely to screen readers a second after typing
-  stops. A password the shared rules refuse as common or too simple gets the
-  rules' own guidance sentence in the same card (one voice; the red line
+  stops. The labels are the shared rules' own ("A lowercase letter (a to
+  z)" ...). An accepted password reads "This password works." and nothing
+  more: the rules' `long` (15 or more characters) is a length label, never
+  shown as strength. A password the shared rules refuse as common, as two
+  common words, or as too simple gets the
+  rules' own guidance sentence in the same card. The rules run on a pause
+  in typing (200 ms after the last key), never on every key press, and at
+  once when the form is sent. (One voice; the red line
   under the field is only for a leak found at save or a server refusal). New
   passwords are hidden as typed, with Show. No example password anywhere.
   Sign-in applies none of this and keeps "Email or password is incorrect".
@@ -375,9 +395,18 @@ pages not on https).
 - **News emails on Account.** The switch writes the record, then asks the
   `newsletter-sync` function to make the email service agree; the same ask
   runs each time Account opens. "Check your inbox to confirm your email"
-  while a confirmation is out. After an unsubscribe made through an email
-  there is no switch, only how to get news again (the email service asks for
-  a fresh sign-up, so a switch would flip back). The email service being
+  while a confirmation is out. The row is always the switch with one line
+  under it, following the function's answer (`docs/mobile/ACCOUNTS_BETA_PLAN.md`,
+  "What the clients get back"): `unsubscribed` (the learner's own switch-off
+  reached the service) is just Off; `blocked` (the service holds the address
+  as stopped) is Off with "You're unsubscribed from KaiSip news, and it
+  can't be restarted here.", plus a link to the email service's own sign-up
+  form once the owner supplies its address (`KA_NEWS_FORM_URL`, empty for
+  now, so no link is drawn; it is not the home page's waitlist form);
+  `unconfirmed` shows the choice as saved and says news starts once the
+  email is confirmed. The line never says how a stop happened. The record's
+  server-only label is `email_service`; the clients read it and never send
+  it. The email service being
   away loses nothing; the 21st change in a day is refused in words, and
   switching off always works.
 - **The Google button** follows Google's sign-in branding on that one
@@ -398,10 +427,12 @@ pages not on https).
   A1 to A12 every flow and failure (wrong code, each refused password,
   leaked, leak check unreachable, rate limit, offline, unticked agreement),
   two tabs, Google, axe on every account screen in light and dark, 320 to
-  1280 wide and text at 200%; G1 to G5 the gate (every address and door, the
-  public pages, deep links, three outages, three ways a sign-in ends, the
-  returning visitor); N1 to N3 the news switch and the email service; U1 to
-  U4 the review's fixes and the Google button, with and without its file.
+  1280 wide and text at 200%; G1 to G7 the gate (every address and door, the
+  public pages, deep links, three outages, four ways a sign-in ends, the
+  returning visitor, a brand-new Google account that must agree, the
+  first-visit sheet); N1 to N3 the news switch and the email service; U1 to
+  U5 the review's fixes, the Google button with and without its file, and
+  the checklist at 320px.
   `--shots <dir>` saves every screen at 390 and 1280, light and dark, and
   fails if KaiSip Serif was not loaded.
 - **Open before launch:**
@@ -413,12 +444,16 @@ pages not on https).
      in the browser (`kaKeepUnknown`, tested) and never reach the account;
      the first-sync preview now says so. Fix in the client (`toWeb` /
      `fromWeb`) if they should travel.
-  3. The fake server still refuses passwords under 15 characters
-     (`passwordRefusal` in `mobile/jest/webcloud-fakes.ts`); the rule is 12.
-     The real project's setting is the owner's (dashboard).
-  4. "One more step" can still be left with "Back to studying": a learner
-     who signed in with Google and has not agreed studies with sync off
-     until they agree. Decide whether a brand-new account may do that.
+  3. The real project's password setting (12 characters, the four character
+     sets) is the owner's, in the dashboard; the fake server the tests use
+     now keeps the same rule.
+  4. If the agreement lookup fails at the moment a brand-new Google account
+     first signs in (the service is away), the learner is let in with sync
+     off and is asked at the next start. Accepted, so that an existing
+     learner is never locked out by an outage.
+  4b. The email service's sign-up form address for the app's news
+     (`KA_NEWS_FORM_URL` in `index.html`) is empty until the owner makes the
+     form; the "blocked" line then gains its link.
   5. `delete-account.html` still needs the developer name exactly as on
      Google Play and the database provider's log period (both left out
      rather than guessed), and the compliance reviewer's read.

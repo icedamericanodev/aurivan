@@ -10428,7 +10428,7 @@ const session_1 = require("./session");
 const FUNCTIONS = new Set(['delete-account', 'export-my-data', 'newsletter-sync']);
 const SOURCES = ['web', 'android', 'ios'];
 const VERSION_RE = /^\d{4}-\d{2}$/;
-const NEWS_STATES = ['not_configured', 'none', 'pending', 'subscribed', 'unsubscribed'];
+const NEWS_STATES = ['not_configured', 'unconfirmed', 'none', 'pending', 'subscribed', 'unsubscribed', 'blocked'];
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const CODE_RE = /^\d{6,10}$/;
 exports.PKCE_MAX_AGE_MS = 10 * 60000;
@@ -11086,7 +11086,7 @@ function createWebAuth(deps) {
             if (!r)
                 return null;
             const version = (x) => (typeof x === 'string' && VERSION_RE.test(x) ? x : null);
-            const source = r.source === 'email' || SOURCES.includes(r.source) ? r.source : null;
+            const source = r.source === 'email_service' || SOURCES.includes(r.source) ? r.source : null;
             return { termsVersion: version(r.terms_version), privacyVersion: version(r.privacy_version), newsOptIn: r.marketing_opt_in === true, source };
         },
         async setNews(optIn, v) {
@@ -12519,7 +12519,7 @@ function decodeUtf8(bytes) {
   api["config"] = pub(load("src/webcloud/config.ts"));
   api["passwordRules"] = pub(load("src/engine/passwordRules.ts"));
   api["breach"] = pub(load("src/webcloud/breach.ts"));
-  api.sourceHash = "b5d1edeae41036f8";
+  api.sourceHash = "27a31a47d5d4d0f8";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

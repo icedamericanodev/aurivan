@@ -5,13 +5,14 @@
  * the newsletter-sync function's answers:
  * - sign-up sends terms_version, age_confirmed, privacy_version and source,
  *   and the marketing fields ONLY when the optional box is ticked;
- * - no time column and never source 'email' (the server refuses both);
+ * - no time column, and never the server-only source label 'email_service';
  * - an account still on an older version re-accepts with a PATCH of the two
  *   version labels only;
  * - the news switch: on and off, the 21st change in a day is refused, a
  *   switch-off never is;
- * - newsletter-sync: not_configured, pending, subscribed, none, unsubscribed
- *   (the email service's unsubscribe wins), 429 and 503;
+ * - newsletter-sync: not_configured, unconfirmed, none, pending, subscribed,
+ *   unsubscribed (the learner's own switch-off), blocked (the email service
+ *   holds the address as stopped), 429 and 503;
  * - the words and version labels the screens use are the ones in the consent
  *   registry (docs/legal/consent_wording.md).
  */
@@ -68,10 +69,10 @@ describe('agreeing at sign-up', () => {
   it('never sends a time, and an opt-in without its source is refused before anything is sent', async () => {
     await agree(true);
     const sent = JSON.stringify(server.calls.map((c) => c.body));
-    expect(sent).not.toMatch(/_at"|"email"/);
+    expect(sent).not.toMatch(/_at"|email_service/);
     server.calls.length = 0;
     expect(await codeOf(a.acceptTerms({ termsVersion: TERMS_VERSION, ageConfirmed: true, news: { wording: NEWS_WORDING_VERSION } }))).toBe('invalid');
-    expect(await codeOf(a.acceptTerms({ termsVersion: TERMS_VERSION, ageConfirmed: true, source: 'email' as never }))).toBe('invalid');
+    expect(await codeOf(a.acceptTerms({ termsVersion: TERMS_VERSION, ageConfirmed: true, source: 'email_service' as never }))).toBe('invalid');
     expect(await codeOf(a.acceptTerms({ termsVersion: TERMS_VERSION, ageConfirmed: true, privacyVersion: 'latest' }))).toBe('invalid');
     expect(server.calls).toHaveLength(0);
   });
@@ -88,15 +89,19 @@ describe('agreeing at sign-up', () => {
 
 describe('what the database refuses (the fake models its rules)', () => {
   const raw = (method: string, p: string, body: unknown) => a.authedFetch(p, { method, body: JSON.stringify(body) }, 'rest').then((r) => r.status);
-  it('a time column is 403; source "email" and an opt-in without wording or source are 400', async () => {
+  it('a time column is 403; an unknown source and an opt-in without wording or source are 400; the server-only label is dropped', async () => {
     expect(await raw('POST', '/rest/v1/profiles', { terms_version: '2026-12', age_confirmed: true, terms_accepted_at: '2020-01-01T00:00:00Z' })).toBe(403);
     expect(await raw('POST', '/rest/v1/profiles', { terms_version: '2026-12', age_confirmed: true, source: 'email' })).toBe(400);
+    // An opt-in that names only the server's label has no source of its own: refused.
+    expect(await raw('POST', '/rest/v1/profiles', { terms_version: '2026-12', age_confirmed: true, marketing_opt_in: true, marketing_wording: '2026-12', source: 'email_service' })).toBe(400);
     expect(await raw('POST', '/rest/v1/profiles', { terms_version: '2026-12', age_confirmed: true, marketing_opt_in: true, source: 'web' })).toBe(400);
     expect(await raw('POST', '/rest/v1/profiles', { terms_version: '2026-12', age_confirmed: true, marketing_opt_in: true, marketing_wording: '2026-12' })).toBe(400);
     await agree();
     const id = a.current()!.userId;
     expect(await raw('PATCH', `/rest/v1/profiles?id=eq.${id}`, { marketing_set_at: '2020-01-01T00:00:00Z' })).toBe(403);
-    expect(await raw('PATCH', `/rest/v1/profiles?id=eq.${id}`, { marketing_opt_in: false, source: 'email' })).toBe(400);
+    // Sent raw by a client, 'email_service' is dropped and the label on record stays.
+    expect(await raw('PATCH', `/rest/v1/profiles?id=eq.${id}`, { marketing_opt_in: false, source: 'email_service' })).toBe(204);
+    expect((await a.consent())!.source).toBe('web');
   });
 });
 
@@ -113,7 +118,7 @@ describe('the news switch', () => {
       { marketing_opt_in: false, marketing_wording: '2026-12', source: 'web' },
     ]);
     expect(await codeOf(a.setNews(true, { wording: 'new', source: 'web' }))).toBe('invalid');
-    expect(await codeOf(a.setNews(true, { wording: '2026-12', source: 'email' as never }))).toBe('invalid');
+    expect(await codeOf(a.setNews(true, { wording: '2026-12', source: 'email_service' as never }))).toBe('invalid');
   });
 
   it('the 21st change in a day is refused in words the screen can use; switching off never is', async () => {
@@ -157,18 +162,19 @@ describe('newsletter-sync', () => {
     expect(server.kit.get(EMAIL)).toBe('active');
   });
 
-  it('an unsubscribe made by email wins: the record is switched off with source "email", and switching on again does not stick', async () => {
+  it('the email service holds the address as stopped: blocked, the record is switched off with the server-only label, and switching on again does not stick', async () => {
     server.kit = new Map([[EMAIL, 'cancelled' as const]]);
     server.newsWaitMs = 0;
     await agree(true);
-    expect(await a.syncNews()).toEqual({ synced: true, optIn: false, state: 'unsubscribed' });
-    expect(await a.consent()).toEqual({ termsVersion: '2026-12', privacyVersion: '2026-12', newsOptIn: false, source: 'email' });
+    expect(await a.syncNews()).toEqual({ synced: true, optIn: false, state: 'blocked' });
+    expect(await a.consent()).toEqual({ termsVersion: '2026-12', privacyVersion: '2026-12', newsOptIn: false, source: 'email_service' });
     await a.setNews(true, WEB);
-    expect(await a.syncNews()).toEqual({ synced: true, optIn: false, state: 'unsubscribed' });
-    expect((await a.consent())!.source).toBe('email');
+    expect((await a.consent())!.source).toBe('web');
+    expect(await a.syncNews()).toEqual({ synced: true, optIn: false, state: 'blocked' });
+    expect((await a.consent())!.source).toBe('email_service');
   });
 
-  it('switched off in the app after the app added the address: the emails are stopped', async () => {
+  it('switched off in the app after the app added the address: unsubscribed (the learner\'s own switch-off reached the service), and switching on later is blocked', async () => {
     server.kit = new Map();
     server.newsWaitMs = 0;
     await agree(true);
@@ -176,6 +182,44 @@ describe('newsletter-sync', () => {
     await a.setNews(false, WEB);
     expect(await a.syncNews()).toEqual({ synced: true, optIn: false, state: 'unsubscribed' });
     expect((await a.consent())!.source).toBe('web');
+    // Nothing left to do at the service.
+    expect(await a.syncNews()).toEqual({ synced: true, optIn: false, state: 'none' });
+    await a.setNews(true, WEB);
+    expect(await a.syncNews()).toEqual({ synced: true, optIn: false, state: 'blocked' });
+  });
+
+  it('the account\'s email is not confirmed: unconfirmed, nothing is sent to the email service, and the choice stays on record', async () => {
+    server.kit = new Map();
+    await agree(true);
+    server.unconfirmed.add(a.current()!.userId);
+    expect(await a.syncNews()).toEqual({ synced: false, optIn: null, state: 'unconfirmed' });
+    expect(server.kit.size).toBe(0);
+    expect((await a.consent())!.newsOptIn).toBe(true);
+  });
+
+  it('the email service is away after a switch-off: "server", the choice is on record, and the next call finishes it', async () => {
+    server.kit = new Map();
+    server.newsWaitMs = 0;
+    await agree(true);
+    await a.syncNews();
+    server.kitDown = true;
+    await a.setNews(false, WEB);
+    expect(await codeOf(a.syncNews())).toBe('server');
+    expect((await a.consent())!.newsOptIn).toBe(false);
+    server.kitDown = false;
+    expect((await a.syncNews()).state).toBe('unsubscribed');
+    // With nothing to tell the service, it being away does not matter.
+    server.kitDown = true;
+    expect((await a.syncNews()).state).toBe('none');
+  });
+
+  it('the data download says whether the app added the address to the email service', async () => {
+    await agree(true);
+    expect(JSON.parse(await a.callFunction('export-my-data', {})).newsletter).toEqual({ addedToEmailService: null });
+    server.kit = new Map();
+    expect(JSON.parse(await a.callFunction('export-my-data', {})).newsletter).toEqual({ addedToEmailService: false });
+    await a.syncNews();
+    expect(JSON.parse(await a.callFunction('export-my-data', {})).newsletter).toEqual({ addedToEmailService: true });
   });
 
   it('asked again within 10 seconds: rate_limited with the seconds to wait; the email service down: server', async () => {

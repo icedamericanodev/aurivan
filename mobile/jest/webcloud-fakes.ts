@@ -156,6 +156,8 @@ export class FakeSupabase {
   kitDown = false;
   /** Addresses the app itself added to Kit (only those are unsubscribed there when the learner switches off). */
   kitAdded = new Set<string>();
+  /** Accounts whose email address is not confirmed (newsletter-sync answers "unconfirmed" and sends nothing). */
+  unconfirmed = new Set<string>();
   /** newsletter-sync: one call per account every `newsWaitMs` (10 seconds on the real function). */
   newsWaitMs = 10_000;
   newsCalledAt = new Map<string, number>();
@@ -403,7 +405,7 @@ export class FakeSupabase {
     if (p.startsWith('/functions/v1/') && method === 'POST') {
       const id = this.who(headers);
       if (!id) return res(401, { error: 'unauthorized' });
-      if (p === '/functions/v1/export-my-data') return res(200, { app: 'kaisip', schema: 1, stores: {} });
+      if (p === '/functions/v1/export-my-data') return res(200, { app: 'kaisip', schema: 1, stores: {}, newsletter: { addedToEmailService: this.kit === null ? null : this.kitAdded.has(this.users.get(id)!.email) } });
       if (p === '/functions/v1/newsletter-sync') return this.newsletterSync(id, res);
       if (p === '/functions/v1/delete-account') {
         if (body?.confirm !== 'DELETE') return res(400, { error: 'invalid', detail: 'confirm_required' });
@@ -417,21 +419,24 @@ export class FakeSupabase {
   /** Kit's side of newsletter-sync (supabase/functions/newsletter-sync/handler.ts), without the email service. */
   private newsletterSync(id: string, res: (s: number, b?: unknown, h?: Record<string, string>) => HttpResponse): HttpResponse {
     if (this.kit === null) return res(200, { synced: false, state: 'not_configured' });
+    if (this.unconfirmed.has(id)) return res(200, { synced: false, state: 'unconfirmed' });
     const now = this.serverNow();
     const last = this.newsCalledAt.get(id);
     if (last !== undefined && now - last < this.newsWaitMs) return res(429, { error: 'rate_limited' }, { 'retry-after': String(Math.max(1, Math.ceil(this.newsWaitMs / 1000))) });
     this.newsCalledAt.set(id, now);
-    if (this.kitDown) return res(503, { error: 'server', detail: 'kit_unavailable' }, { 'retry-after': '60' });
     const email = this.users.get(id)!.email;
     const c = this.consent.get(id);
-    if (c?.marketing_opt_in === true) {
+    const wants = c?.marketing_opt_in === true;
+    // Kit is only needed when there is something to tell it (a switch-on, or a switch-off of an address the app added).
+    if (this.kitDown && (wants || this.kitAdded.has(email))) return res(503, { error: 'server', detail: 'kit_unavailable' }, { 'retry-after': '60' });
+    if (c && wants) {
       const held = this.kit.get(email);
       if (held === 'cancelled') {
-        // Kit's unsubscribe is authoritative: the opt-in on record is withdrawn (source 'email'), never re-added.
+        // Kit holds the address as stopped: never re-added. The record follows Kit (source 'email_service').
         c.marketing_opt_in = false;
-        c.source = 'email';
+        c.source = 'email_service';
         this.kitAdded.delete(email);
-        return res(200, { synced: true, optIn: false, state: 'unsubscribed' });
+        return res(200, { synced: true, optIn: false, state: 'blocked' });
       }
       if (!held) this.kit.set(email, 'inactive');
       this.kitAdded.add(email);
@@ -455,8 +460,8 @@ export class FakeSupabase {
     for (const k of Object.keys(body)) if (!WRITABLE.includes(k)) return { status: 403, body: { code: '42501', message: 'permission denied for table profiles' } };
     const version = (v: unknown) => v === undefined || v === null || (typeof v === 'string' && /^\d{4}-\d{2}$/.test(v));
     if (!version(body.terms_version) || !version(body.privacy_version) || !version(body.marketing_wording)) return check;
-    // 'email' is the server's own word for an unsubscribe carried back from the email service.
-    if (body.source !== undefined && body.source !== null && !['web', 'android', 'ios'].includes(body.source)) return check;
+    // 'email_service' is the server's own label; from a client it is dropped (profilesRoute). Anything else unknown fails the check.
+    if (body.source !== undefined && body.source !== null && !['web', 'android', 'ios', 'email_service'].includes(body.source)) return check;
     if (body.marketing_opt_in !== undefined && typeof body.marketing_opt_in !== 'boolean') return check;
     return null;
   }
@@ -480,6 +485,8 @@ export class FakeSupabase {
     }
     const limited = { code: 'P0001', message: 'rate_limited' };
     const check = { code: '23514', message: 'new row for relation "profiles" violates check constraint' };
+    // The database drops the server-only label from a client's write and keeps what was there.
+    if (body && typeof body === 'object' && !Array.isArray(body) && body.source === 'email_service') body = { ...body, source: undefined };
     if (method === 'POST') {
       const refused = this.consentRefusal(body);
       if (refused) return res(refused.status, refused.body);
@@ -505,7 +512,8 @@ export class FakeSupabase {
       if (typeof body.marketing_opt_in === 'boolean') next.marketing_opt_in = body.marketing_opt_in;
       if (next.marketing_opt_in) {
         next.marketing_wording = body.marketing_wording ?? old.marketing_wording;
-        if (!next.marketing_wording || !next.source || next.source === 'email') return res(400, check);
+        // An opt-in says where it was made: the label left by the server's own switch-off does not count.
+        if (!next.marketing_wording || !next.source || (next.source === 'email_service' && !body.source)) return res(400, check);
         next.everOptedIn = true;
       } else if (!old.everOptedIn && body.marketing_wording !== undefined) {
         next.marketing_wording = body.marketing_wording; // once an opt-in was given, its wording stays with it

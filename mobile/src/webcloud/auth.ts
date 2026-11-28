@@ -107,7 +107,7 @@ export interface WebAuthDeps {
 export type FunctionName = 'delete-account' | 'export-my-data' | 'newsletter-sync';
 const FUNCTIONS: ReadonlySet<string> = new Set<FunctionName>(['delete-account', 'export-my-data', 'newsletter-sync']);
 
-/** Where a consent choice was made. The apps send only these; 'email' (an unsubscribe made in the email service) is written by the server alone. */
+/** Where a consent choice was made. The apps send only these; 'email_service' (the email service holds the address as stopped) is written by the server alone. */
 export type ConsentSource = 'web' | 'android' | 'ios';
 const SOURCES: readonly ConsentSource[] = ['web', 'android', 'ios'];
 const VERSION_RE = /^\d{4}-\d{2}$/;
@@ -117,23 +117,27 @@ export interface ConsentRecord {
   privacyVersion: string | null;
   /** The optional emails box. */
   newsOptIn: boolean;
-  /** Where the last choice was made. 'email': the learner unsubscribed through an email, and the app cannot switch the emails back on. */
-  source: ConsentSource | 'email' | null;
+  /** Where the last choice was made. 'email_service': the server switched the emails off because the email service holds the address as stopped; the app cannot restart them. Read only: the apps never send it. */
+  source: ConsentSource | 'email_service' | null;
 }
 /**
- * What the email service holds after POST /functions/v1/newsletter-sync:
+ * What POST /functions/v1/newsletter-sync answers (docs/mobile/ACCOUNTS_BETA_PLAN.md,
+ * "What the clients get back"):
  * - not_configured: the service is not connected yet (the choice is still on record);
- * - none: not subscribed, nothing to do;
+ * - unconfirmed: the account's email is not confirmed; nothing was sent (show the
+ *   choice as saved; news starts once the email is confirmed);
+ * - none: emails off, and the app never added this address;
  * - pending: a confirmation email was sent, "check your inbox to confirm";
  * - subscribed: confirmed;
- * - unsubscribed: the emails are stopped. With `optIn` false after the learner
- *   asked for them, the email service refused (they unsubscribed by email
- *   before): read the record again and show the switch off.
+ * - unsubscribed: the learner's own switch-off has reached the email service (show off, nothing else);
+ * - blocked: the email service holds the address as stopped (an unsubscribe link, a bounce, a
+ *   complaint or an earlier switch-off). The server has switched the record off: read it again,
+ *   show the switch off and say the emails can't be restarted here.
  */
-export type NewsState = 'not_configured' | 'none' | 'pending' | 'subscribed' | 'unsubscribed';
-const NEWS_STATES: readonly NewsState[] = ['not_configured', 'none', 'pending', 'subscribed', 'unsubscribed'];
+export type NewsState = 'not_configured' | 'unconfirmed' | 'none' | 'pending' | 'subscribed' | 'unsubscribed' | 'blocked';
+const NEWS_STATES: readonly NewsState[] = ['not_configured', 'unconfirmed', 'none', 'pending', 'subscribed', 'unsubscribed', 'blocked'];
 export interface NewsSync {
-  /** False only for not_configured. */
+  /** False for not_configured and unconfirmed (nothing was sent to the email service). */
   synced: boolean;
   /** The opt-in on record after the sync (null when not synced). */
   optIn: boolean | null;
@@ -994,7 +998,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
       const r = Array.isArray(rows) && rows[0] && typeof rows[0] === 'object' ? (rows[0] as Record<string, unknown>) : null;
       if (!r) return null;
       const version = (x: unknown) => (typeof x === 'string' && VERSION_RE.test(x) ? x : null);
-      const source = r.source === 'email' || SOURCES.includes(r.source as ConsentSource) ? (r.source as ConsentRecord['source']) : null;
+      const source = r.source === 'email_service' || SOURCES.includes(r.source as ConsentSource) ? (r.source as ConsentRecord['source']) : null;
       return { termsVersion: version(r.terms_version), privacyVersion: version(r.privacy_version), newsOptIn: r.marketing_opt_in === true, source };
     },
 
