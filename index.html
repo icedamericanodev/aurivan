@@ -27440,24 +27440,24 @@ function appCtaInit() {
 //   the learner ticks "remove my progress from this browser".
 var KA_ON = !!(window.KS_ACCT && window.KS_ACCT.enabled);
 // Kept in step with the bundle by mobile/scripts/build-web-plant.mjs (its --check fails on a stale value).
-var KA_CLOUD_SRC = 'assets/kaisip-cloud.js?v=69a2a4b136';
+var KA_CLOUD_SRC = 'assets/kaisip-cloud.js?v=1366306622';
 var KA_WORDS_SRC = 'assets/kaisip-password-words.js';
 // Cloudflare Turnstile, widget "KaiSip sign-in" (a public site key: docs/mobile/ACCOUNTS_BETA_PLAN.md, "Public config values").
 var KA_HUMAN_KEY = '0x4AAAAAAFptlSqMhAvLUI8w';
 var KA_HUMAN_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
-// The Terms version a learner agrees to (the client accepts YYYY-MM; the ONE place it is
-// written on the website, and the same value as the phone's engine/account.ts TERMS_VERSION)
-// and the wording version of the sign-up boxes (change it whenever their words change).
-var KA_TERMS_VERSION = '2026-12';
-var KA_CONSENT_WORDING = '2026-12';
+// The words of the sign-up boxes. Each wording has a version label in the consent registry
+// (docs/legal/consent_wording.md); change the words only with a new version there. The labels
+// themselves (Terms, Privacy Policy, the news box's wording) and the source "web" are written
+// ONCE, in the shared client (mobile/src/engine/account.ts), and read here from
+// KaiSipCloud.config.CONSENT: nothing on this page names a version.
 var KA_AGREE_WORDS = 'I agree to the Terms of Use and Privacy Policy.';
 var KA_AGE_WORDS = 'Accounts are for learners 18 and older.';
 var KA_NEWS_WORDS = 'Email me KaiSip study tips and news (optional). Unsubscribe anytime.';
 // New saved keys (none replaces an older one). Session-only: the sign-up boxes
 // while the learner is on their way (they must survive the trip to Google),
 // and what to open after signing in. Kept: the masked email for the "sign in
-// again" card, the guest card's day count, the news choice until the consent
-// API is live.
+// again" card. (kaisip_consent_v1 held the news choice in early previews, before
+// the consent record existed; it is only ever removed now.)
 var KA_PENDING_KEY = 'kaisip_signup_pending_v1';
 var KA_INTENT_KEY = 'kaisip_acct_intent_v1';
 var KA_HINT_KEY = 'kaisip_acct_hint_v1';
@@ -27476,7 +27476,9 @@ var ka = {
   syncErr: '',        // '', 'offline', 'error', 'wait' (banks still loading)
   firstPrep: null,    // the first-sync preview's data
   user: null,         // { email, providers, passwordSetAt } from the server, for the Account page
-  news: null,         // the news choice, once read
+  news: null,         // the news choice on record, once read: { on, byEmail }
+  newsState: '',      // what the email service last said: '', 'pending', 'subscribed', ...
+  newsBusy: false,
   said: '',           // the last status said aloud
   resendAt: 0,        // when a new code may be asked for
   resendTimer: null,
@@ -27804,49 +27806,41 @@ function kaHumanReset() {
 // One required box: the Terms of Use and the Privacy Policy. Accounts are for
 // learners 18 and older (owner decision, 28 Nov 2026): that is a line under
 // the box, not a second box, and agreeing records it (age_confirmed) with the
-// Terms version, through the client (acceptTerms), which the first sync
-// needs. The news choice, with its wording version and time, goes through
-// this small adapter.
-// TODO(consent-api): the consent API is being built by the database engineer.
-// When it lands, give the page window.KaiSipConsentApi = { saveConsent(cloud,
-// record), readConsent(cloud) } (or replace the two bodies below). Until
-// then the choice is kept in this browser only, marked `pending`, so it can
-// be sent once the API exists. No table or column is named here on purpose.
+// Terms and Privacy Policy versions, which the first sync needs. The optional
+// emails box is consent of its own: sent only when ticked, with the version of
+// its wording. This adapter is the ONE place the page touches the consent
+// record; the fields and their rules are the shared client's (acceptTerms,
+// consent, setNews, syncNews in mobile/src/webcloud/auth.ts). No time is ever
+// sent: the server sets each one.
+function kaLabels() { return window.KaiSipCloud.config.CONSENT; }
 var kaConsent = {
+  // What the learner ticked, carried from the form to the moment they are signed in.
   record: function (news) {
-    return { termsAccepted: true, ageConfirmed: true, marketingOptIn: news === true, wordingVersion: KA_CONSENT_WORDING, termsVersion: KA_TERMS_VERSION, at: new Date().toISOString() };
+    return { termsAccepted: true, ageConfirmed: true, marketingOptIn: news === true };
   },
-  tag: function (cloud) {
-    var a = cloud.auth.current();
-    if (!a || !window.crypto || !window.crypto.subtle) return Promise.resolve('');
-    return window.crypto.subtle.digest('SHA-256', new TextEncoder().encode('kaisip-consent:' + a.userId)).then(function (buf) {
-      return Array.prototype.map.call(new Uint8Array(buf).subarray(0, 8), function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
-    });
+  // Only ever called from a screen where the learner has just ticked the agree box.
+  accept: function (cloud, rec) {
+    var L = kaLabels();
+    var v = { termsVersion: L.terms, ageConfirmed: true, privacyVersion: L.privacy, source: L.source };
+    if (rec.marketingOptIn === true) v.news = { wording: L.news };
+    return cloud.auth.acceptTerms(v);
   },
-  saveConsent: function (cloud, rec) {
-    var api = window.KaiSipConsentApi;
-    if (api && typeof api.saveConsent === 'function') return Promise.resolve(api.saveConsent(cloud, rec));
-    return kaConsent.tag(cloud).then(function (tag) {
-      kaSet(KA_CONSENT_KEY, JSON.stringify({ who: tag, marketingOptIn: rec.marketingOptIn === true, wordingVersion: rec.wordingVersion, termsVersion: rec.termsVersion, at: rec.at, pending: true }));
-      return rec;
-    });
+  read: function (cloud) { return cloud.auth.consent(); },
+  setNews: function (cloud, on) {
+    var L = kaLabels();
+    return cloud.auth.setNews(on === true, { wording: L.news, source: L.source });
   },
-  readConsent: function (cloud) {
-    var api = window.KaiSipConsentApi;
-    if (api && typeof api.readConsent === 'function') return Promise.resolve(api.readConsent(cloud));
-    return kaConsent.tag(cloud).then(function (tag) {
-      var v = kaJson(kaGet(KA_CONSENT_KEY));
-      return v && v.who === tag ? v : null;
-    });
-  }
+  // Makes the email service agree with the record (it never changes the choice by itself,
+  // except to carry back an unsubscribe the learner made through an email).
+  syncNews: function (cloud) { return cloud.auth.syncNews(); }
 };
-// Saves the agreements for the account now signed in. Throws the client's error.
+// Saves the agreement for the account now signed in. Throws the client's error.
 function kaConsentCommit(cloud, rec) {
-  return cloud.auth.acceptTerms({ termsVersion: KA_TERMS_VERSION, ageConfirmed: true }).then(function () {
-    return kaConsent.saveConsent(cloud, rec);
-  }).then(function () {
-    ka.news = rec.marketingOptIn === true;
+  return kaConsent.accept(cloud, rec).then(function () {
+    ka.news = null;
     kaDel(KA_PENDING_KEY, true);
+    // The optional box was ticked: the email service sends its confirmation email now.
+    if (rec.marketingOptIn === true) kaConsent.syncNews(cloud).catch(function () {});
   });
 }
 
@@ -28725,7 +28719,9 @@ function kaAfterSignIn() {
   ka.user = null;
   if (cloud.auth.passwordNeeded()) { ka.flow = ka.flow || 'reset'; kaShow('signup3'); return Promise.resolve(); }
   return cloud.auth.termsVersion().then(function (v) {
-    if (v) return kaStartSync();
+    // Agreed to the current Terms already: on to sync. Never agreed, or agreed to an older
+    // version: the agreement screen (the only place the record is written from).
+    if (v && v === kaLabels().terms) return kaStartSync();
     var pending = kaJson(kaGet(KA_PENDING_KEY, true));
     if (pending && pending.termsAccepted === true && pending.ageConfirmed === true) return kaConsentCommit(cloud, pending).then(function () { return kaStartSync(); });
     kaShow('consent');
@@ -29080,9 +29076,7 @@ function kaRenderAccount() {
   box.innerHTML = '<h1 class="you-title" id="kaAcctTitle" tabindex="-1">Account</h1>'
     + '<section class="ka-hero" id="kaHero" aria-label="Sync status"></section>'
     + '<section class="ka-group" aria-labelledby="kaG1"><h2 id="kaG1" class="ka-group-t">Email from KaiSip</h2>'
-    + '<div class="ka-item no-ico"><span><span class="ka-item-t" id="kaNewsT">Study tips and KaiSip news</span><span class="ka-item-s" id="kaNewsS" style="display:block">About twice a month. You can unsubscribe anytime.</span></span>'
-    + '<button type="button" class="ka-toggle" id="kaNewsBtn" role="switch" aria-checked="' + (ka.news === true ? 'true' : 'false') + '" aria-labelledby="kaNewsT" aria-describedby="kaNewsS" onclick="kaNewsToggle()"></button>'
-    + '<span class="ka-toggle-word" id="kaNewsW" aria-hidden="true">' + (ka.news === true ? 'On' : 'Off') + '</span></div>'
+    + '<div id="kaNewsBox">' + kaNewsHtml() + '</div>'
     + '<p class="ka-item-say" id="kaNewsBtnSay" role="status"></p>'
     + '<p class="ka-group-note">Account emails, like codes and security notices, always arrive.</p></section>'
     + '<section class="ka-group" aria-labelledby="kaG2"><h2 id="kaG2" class="ka-group-t">Your data</h2>'
@@ -29108,28 +29102,93 @@ function kaRenderAccount() {
       if (S.activeTab === 'account' && !ka.view) { kaAccountHero(); var s = kaEl('kaPwRowS'); if (s && u.passwordSetAt) s.textContent = 'Last changed ' + new Date(u.passwordSetAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); }
     }).catch(function () { kaPaint(); });
   }
-  if (ka.news === null) {
-    kaConsent.readConsent(cloud).then(function (c) { ka.news = !!(c && c.marketingOptIn === true); kaNewsDraw(); }).catch(function () {});
+  // The news choice is read from the record every time Account opens, and the email service is
+  // asked to agree with it then (so an unsubscribe made through an email shows here).
+  if (!ka.newsBusy) {
+    ka.newsBusy = true;
+    var done = function () { ka.newsBusy = false; };
+    kaConsent.read(cloud).then(function (c) { kaNewsSet(c); return kaNewsSync(false); }).then(done, done);
   }
 }
+var KA_NEWS_SUB = 'About twice a month. You can unsubscribe anytime.';
+// The row: a switch, or, after an unsubscribe made through an email, a line saying how to get
+// the emails again (the app can't switch them back on: the email service asks for a fresh sign-up).
+function kaNewsHtml() {
+  var n = ka.news;
+  var head = '<span class="ka-item-t" id="kaNewsT">Study tips and KaiSip news</span>';
+  if (n && n.byEmail && !n.on) {
+    return '<div class="ka-item no-ico" id="kaNewsRow" data-state="by-email"><span>' + head + '<span class="ka-item-s" id="kaNewsS" style="display:block">You unsubscribed by email. To get news again, sign up with the email form on '
+      + kaNewTab('https://kaisip.com/#waitlist', 'kaisip.com') + '.</span></span></div>';
+  }
+  var on = !!(n && n.on);
+  var sub = on && ka.newsState === 'pending' ? 'Check your inbox to confirm your email. News starts after that.' : KA_NEWS_SUB;
+  return '<div class="ka-item no-ico" id="kaNewsRow" data-state="' + (on ? (ka.newsState === 'pending' ? 'pending' : 'on') : 'off') + '"><span>' + head + '<span class="ka-item-s" id="kaNewsS" style="display:block">' + sub + '</span></span>'
+    + '<button type="button" class="ka-toggle" id="kaNewsBtn" role="switch" aria-checked="' + (on ? 'true' : 'false') + '" aria-labelledby="kaNewsT" aria-describedby="kaNewsS" onclick="kaNewsToggle()"></button>'
+    + '<span class="ka-toggle-word" id="kaNewsW" aria-hidden="true">' + (on ? 'On' : 'Off') + '</span></div>';
+}
+function kaNewsSet(c) {
+  ka.news = { on: !!(c && c.newsOptIn === true), byEmail: !!(c && c.source === 'email' && c.newsOptIn !== true) };
+  kaNewsDraw();
+}
 function kaNewsDraw() {
-  var b = kaEl('kaNewsBtn'), w = kaEl('kaNewsW');
-  if (b) b.setAttribute('aria-checked', ka.news === true ? 'true' : 'false');
-  if (w) w.textContent = ka.news === true ? 'On' : 'Off';
+  var box = kaEl('kaNewsBox');
+  if (!box) return;
+  var html = kaNewsHtml();
+  if (box.innerHTML === html) return;
+  var had = document.activeElement && document.activeElement.id === 'kaNewsBtn';
+  box.innerHTML = html;
+  if (!had) return;
+  // Focus stays on the switch through the redraw; if the switch is gone, on the line that replaced it.
+  var next = kaEl('kaNewsBtn') || box.querySelector('a');
+  if (next) { try { next.focus({ preventScroll: true }); } catch (e) {} }
+}
+// Asks the email service to agree with the record, and shows what it says.
+function kaNewsSync(changed, again) {
+  var cloud = ka.cloud;
+  if (!cloud || !kaAccount()) return Promise.resolve();
+  return kaConsent.syncNews(cloud).then(function (r) {
+    ka.newsState = r.state;
+    if (r.state === 'unsubscribed' && r.optIn === false) {
+      // The emails are stopped. If the learner had asked for them, the email service refused
+      // (an unsubscribe made by email comes first): read the record again and show it as it is.
+      return kaConsent.read(cloud).then(function (c) {
+        kaNewsSet(c);
+        if (changed && ka.news.byEmail) kaSayRow('kaNewsBtn', 'You unsubscribed by email, so this can’t be switched on from here.');
+      });
+    }
+    kaNewsDraw();
+    if (changed && r.state === 'pending') kaSayRow('kaNewsBtn', 'On. Check your inbox to confirm your email.');
+    return null;
+  }).catch(function (e) {
+    if (e && e.code === 'unauthorized') { kaPaint(); return null; }
+    if (e && e.code === 'rate_limited' && !again) {
+      // Asked twice within a few seconds: once more after the wait the service names.
+      var wait = Math.min(Math.max(Number(e.retryAfterSec) || 10, 1), 30) * 1000;
+      return new Promise(function (res) { setTimeout(res, wait); }).then(function () { return ka.cloud === cloud && kaAccount() ? kaNewsSync(changed, true) : null; });
+    }
+    // The email service couldn't be reached. The choice is on record; the next visit to Account tries again.
+    return null;
+  });
 }
 function kaNewsToggle() {
   var cloud = ka.cloud;
-  if (!cloud || !kaAccount()) return;
-  var want = ka.news !== true, before = ka.news;
-  ka.news = want;
+  if (!cloud || !kaAccount() || ka.newsBusy) return;
+  var was = !!(ka.news && ka.news.on), want = !was;
+  ka.newsBusy = true;
+  ka.news = { on: want, byEmail: false };
+  ka.newsState = '';
   kaNewsDraw();
-  kaConsent.saveConsent(cloud, kaConsent.record(want)).then(function () {
+  var done = function () { ka.newsBusy = false; };
+  kaConsent.setNews(cloud, want).then(function () {
     kaSayRow('kaNewsBtn', want ? 'On. We’ll email you study tips and KaiSip news.' : 'Off. No study tips or news emails.');
-  }).catch(function (e) {
-    ka.news = before;
+    return kaNewsSync(true);
+  }, function (e) {
+    ka.news = { on: was, byEmail: false };
     kaNewsDraw();
-    kaSayRow('kaNewsBtn', kaWords(e));
-  });
+    // The record takes 20 changes a day (switching off always works).
+    kaSayRow('kaNewsBtn', e && e.code === 'rate_limited' ? 'That’s a lot of changes for one day. You can switch this on again tomorrow.' : kaWords(e));
+    if (e && e.code === 'unauthorized') kaPaint();
+  }).then(done, done);
 }
 function kaDownload() {
   var cloud = ka.cloud;
@@ -29231,7 +29290,7 @@ function kaAfterSignOut(wipe) {
   kaDel(KA_HINT_KEY);
   kaDel(KA_PENDING_KEY, true);
   kaDel(KA_INTENT_KEY, true);
-  ka.user = null; ka.news = null; ka.firstPrep = null; ka.setupDue = false; ka.syncErr = '';
+  ka.user = null; ka.news = null; ka.newsState = ''; ka.firstPrep = null; ka.setupDue = false; ka.syncErr = '';
   if (wipe) {
     try { ka.cloud.device.forget(); ka.cloud.device.dropUndo(); } catch (e) {}
     kaDel(KA_CONSENT_KEY);
@@ -29335,7 +29394,7 @@ function kaDeleted() {
   closeFlagModal();
   try { ka.cloud.device.forget(); ka.cloud.device.dropUndo(); } catch (e) {}
   kaDel(KA_HINT_KEY); kaDel(KA_CONSENT_KEY);
-  ka.user = null; ka.news = null; ka.firstPrep = null; ka.setupDue = false; ka.syncErr = '';
+  ka.user = null; ka.news = null; ka.newsState = ''; ka.firstPrep = null; ka.setupDue = false; ka.syncErr = '';
   kaGateShut('Your account was deleted. Your progress in this browser stays.');
   if (S.activeTab === 'account') { try { switchTab('home', { noScroll: true }); } catch (e2) {} }
 }
@@ -29400,7 +29459,7 @@ function kaBoot() {
     var done = function () {
       if (!kaAccount()) {
         // Signed out in another tab (or the sign-in ended there): this tab closes too.
-        ka.user = null; ka.news = null; ka.firstPrep = null;
+        ka.user = null; ka.news = null; ka.newsState = ''; ka.firstPrep = null;
         if (ka.view === 'consent' || ka.view === 'firstsync' || ka.view === 'signup3') ka.view = '';
       } else if (ka.view === 'signin' || ka.view === 'signup1' || ka.view === 'forgot1' || ka.view === 'welcome') {
         // Signed in from another tab: this tab opens.

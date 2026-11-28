@@ -163,7 +163,7 @@ function profileSeed(ids, extra = []) {
 }
 const freeIds = (d, n) => JSON.parse(fs.readFileSync(path.join(repo, 'data', 'free', `cisa_d${d}.json`), 'utf8')).questions.slice(0, n).map((q) => q.id);
 // An account made the way learners make one (a code, then the password), straight on the fake server.
-async function makeAccount(server, email = EMAIL, pw = PW, { terms = true } = {}) {
+async function makeAccount(server, email = EMAIL, pw = PW, { terms = true, news = false } = {}) {
   const call = async (method, p, body, token) => {
     const res = await server.fetch(F.FAKE_URL + p, { method, headers: { apikey: F.FAKE_KEY, 'content-type': 'application/json', ...(token ? { authorization: 'Bearer ' + token } : {}) }, body: body === undefined ? undefined : JSON.stringify(body) });
     const t = await res.text();
@@ -173,7 +173,7 @@ async function makeAccount(server, email = EMAIL, pw = PW, { terms = true } = {}
   await call('POST', '/auth/v1/otp', { email, create_user: true, gotrue_meta_security: { captcha_token: 'setup' } });
   const s = await call('POST', '/auth/v1/verify', { type: 'email', email, token: server.codes.get(email) });
   await call('PUT', '/auth/v1/user', { password: pw }, s.access_token);
-  if (terms) await call('POST', '/rest/v1/profiles', { terms_version: '2026-12', age_confirmed: true }, s.access_token);
+  if (terms) await call('POST', '/rest/v1/profiles', { terms_version: typeof terms === 'string' ? terms : '2026-12', age_confirmed: true, ...(news ? { privacy_version: '2026-12', source: 'web', marketing_opt_in: true, marketing_wording: '2026-12' } : {}) }, s.access_token);
   await call('POST', '/auth/v1/logout?scope=local', undefined, s.access_token);
   server.calls.length = 0;
   return s.user.id;
@@ -371,13 +371,14 @@ if (wanted('A1')) {
 
 // ── A2. Create an account: email and the agreements, the code, the password ──
 // A stand-in for the consent API the database engineer is building (the page's adapter calls it when it exists).
-const CONSENT_FAKE = () => { window.KaiSipConsentApi = { saved: [], saveConsent(cloud, rec) { this.saved.push(JSON.parse(JSON.stringify(rec))); return Promise.resolve(rec); }, readConsent() { return Promise.resolve(this.saved[this.saved.length - 1] || null); } }; };
+// What the page wrote to the consent record (every POST and PATCH body, in order).
+const canon = (v) => JSON.stringify(v, (k, x) => (x && typeof x === 'object' && !Array.isArray(x) ? Object.fromEntries(Object.entries(x).sort()) : x));
+const consentWrites = (server) => server.calls.filter((x) => x.path.split('?')[0] === '/rest/v1/profiles' && x.method !== 'GET').map((x) => ({ method: x.method, ...x.body }));
 const paste = (page, sel, value) => page.evaluate(({ sel, value }) => { const el = document.querySelector(sel); el.focus(); const dt = new DataTransfer(); dt.setData('text', value); el.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true })); }, { sel, value });
 const toast = (page) => page.evaluate(() => (document.getElementById('globalToast') || {}).textContent || '');
 if (wanted('A2')) {
   for (const v of ['phone', 'desktop']) {
     const { ctx, page, server, net } = await setup({ view: v });
-    await ctx.addInitScript(CONSENT_FAKE);
     const MAIL = 'xochitl.brennagh@example.com';
     await rec.run(`A2-${v}`, 'Create account: the agreements block sending, the code (wrong, pasted), every refused password, a leaked one, then created', page, async (c) => {
       await open(page, '#create-account');
@@ -419,7 +420,7 @@ if (wanted('A2')) {
       const otp = calls(server, '/auth/v1/otp')[0];
       c.check(otp && otp.body.email === MAIL && otp.body.create_user === true && /^ts-token-/.test(otp.body.gotrue_meta_security?.captcha_token || '') && !('password' in otp.body), 'the code request: the email, the human-check token, no password: ' + JSON.stringify(otp && otp.body));
       const pending = JSON.parse((await store(page)).session.kaisip_signup_pending_v1 || 'null');
-      c.check(pending && pending.termsAccepted === true && pending.ageConfirmed === true && pending.marketingOptIn === false && pending.wordingVersion && pending.termsVersion === '2026-12' && !JSON.stringify(pending).includes('@'), 'the agreements wait in this tab only, with their wording version and time, and no email: ' + JSON.stringify(pending));
+      c.check(JSON.stringify(pending) === JSON.stringify({ termsAccepted: true, ageConfirmed: true, marketingOptIn: false }), 'what was ticked waits in this tab only, with no email and no version of its own: ' + JSON.stringify(pending));
       // Step 2: one input drawn as joined cells.
       c.check((await text(page, '#kaRoot h1')) === 'Check your inbox' && (await text(page, '.ka-lede')).includes(MAIL), 'step 2 names the address');
       const code = await page.evaluate(() => { const e = document.getElementById('kaCode'); return { n: document.querySelectorAll('#kaRoot input:not([type=hidden])').length, ac: e.autocomplete, im: e.inputMode, max: e.maxLength, cells: document.querySelectorAll('.ka-cell').length, groups: document.querySelectorAll('.ka-code-grp').length, label: document.querySelector('label[for=kaCode]').textContent }; });
@@ -520,10 +521,10 @@ if (wanted('A2')) {
       c.check(put && put.body.password === PW2, 'the password is saved with the fresh session');
       const user = server.userByEmail(MAIL);
       c.check(user && server.profiles.get(user.id) === '2026-12', 'the Terms version is saved for the account');
-      const prof = calls(server, '/rest/v1/profiles', 'POST')[0];
-      c.check(prof && prof.body.terms_version === '2026-12' && prof.body.age_confirmed === true, 'agreeing records the Terms version and the age confirmation: ' + JSON.stringify(prof && prof.body));
-      const saved = await page.evaluate(() => window.KaiSipConsentApi.saved);
-      c.check(saved.length === 1 && saved[0].marketingOptIn === false && saved[0].termsAccepted === true && saved[0].ageConfirmed === true && saved[0].wordingVersion === pending.wordingVersion && typeof saved[0].at === 'string', 'the consent record reaches the consent adapter once, news off: ' + JSON.stringify(saved));
+      const wrote = consentWrites(server);
+      c.check(canon(wrote) === canon([{ method: 'POST', terms_version: '2026-12', age_confirmed: true, privacy_version: '2026-12', source: 'web' }]), 'agreeing writes the record once: both versions, the age confirmation, the source, and nothing about emails: ' + JSON.stringify(wrote));
+      c.check(await page.evaluate(() => JSON.stringify(window.KaiSipCloud.config.CONSENT) === JSON.stringify({ terms: '2026-12', privacy: '2026-12', news: '2026-12', source: 'web' })), 'the labels come from the shared client');
+      c.check(calls(server, '/functions/v1/newsletter-sync').length === 0, 'the email service is not called for a learner who did not tick the box');
       c.check(!(await store(page)).session.kaisip_signup_pending_v1, 'the waiting agreements are cleared once saved');
       await settled(page);
       await goYou(page);
@@ -534,23 +535,31 @@ if (wanted('A2')) {
     });
     await ctx.close();
   }
-  // The optional news box ticked; the page's own adapter (no consent API yet) keeps the choice here, marked pending.
+  // The optional news box ticked: the opt-in and its wording go in the same record, and the email service is told.
   {
     const { ctx, page, server } = await setup({ view: 'phone' });
-    await rec.run('A2-news', 'Create account with the news box ticked: the choice is recorded (kept in this browser until the consent API exists)', page, async (c) => {
+    server.kit = new Map();
+    await rec.run('A2-news', 'Create account with the news box ticked: the opt-in is recorded with its wording, and the confirmation email is asked for', page, async (c) => {
       await open(page, '#create-account');
       await page.fill('#kaEmail', EMAIL);
       for (const id of ['#kaTerms', '#kaNews']) await page.check(id, { force: true });
       await page.press('#kaEmail', 'Enter');
       await waitView(page, 'signup2');
+      c.check(JSON.stringify(JSON.parse((await store(page)).session.kaisip_signup_pending_v1)) === JSON.stringify({ termsAccepted: true, ageConfirmed: true, marketingOptIn: true }), 'the ticked box waits with the agreement');
       await page.fill('#kaCode', server.codes.get(EMAIL));
       await page.press('#kaCode', 'Enter');
       await waitView(page, 'signup3');
       await page.fill('#kaPw', PW);
       await page.press('#kaPw', 'Enter');
       await waitView(page, '');
-      const kept = JSON.parse((await store(page)).local.kaisip_consent_v1 || 'null');
-      c.check(kept && kept.marketingOptIn === true && kept.pending === true && kept.wordingVersion && kept.termsVersion === '2026-12' && !JSON.stringify(kept).includes('@') && !JSON.stringify(kept).includes(server.userByEmail(EMAIL).id), 'the news choice is kept with its wording version and time, with no email or account id: ' + JSON.stringify(kept));
+      const wrote = consentWrites(server);
+      c.check(canon(wrote) === canon([{ method: 'POST', terms_version: '2026-12', age_confirmed: true, privacy_version: '2026-12', source: 'web', marketing_opt_in: true, marketing_wording: '2026-12' }]), 'one record: the agreement and the opt-in with the wording shown: ' + JSON.stringify(wrote));
+      c.check(!/_at"/.test(JSON.stringify(wrote)), 'no time is sent (the server sets each one)');
+      await page.waitForFunction(() => true);
+      await sleep(300);
+      const sync = calls(server, '/functions/v1/newsletter-sync');
+      c.check(sync.length === 1 && JSON.stringify(sync[0].body) === '{}' && server.kit.get(EMAIL) === 'inactive', 'the email service is asked once, with an empty body, and sends its confirmation email: ' + JSON.stringify(sync.map((x) => x.body)));
+      c.check(!(await store(page)).local.kaisip_consent_v1, 'nothing about the choice is kept in this browser');
       c.check(/Sync is on|signed in/.test(await toast(page)), 'created and signed in: ' + (await toast(page)));
     });
     await ctx.close();
@@ -683,7 +692,6 @@ if (wanted('A5')) {
   for (const v of ['phone', 'desktop']) {
     const ids = freeIds(2, 2);
     const { ctx, page, server, net } = await setup({ view: v, seed: profileSeed(ids) });
-    await ctx.addInitScript(CONSENT_FAKE);
     const uid = await makeAccount(server);
     await rec.run(`A5-${v}`, 'Account: status, Sync now, the news switch, download, change password, delete synced progress, sign out (with and without removing progress)', page, async (c) => {
       await signIn(page);
@@ -707,11 +715,14 @@ if (wanted('A5')) {
       await page.click('#kaNewsBtn');
       await waitText(page, 'kaNewsBtnSay', /^On\./, c);
       c.check((await sw()).on === 'true' && (await sw()).word === 'On', 'On, in the switch and in words');
-      const saved = await page.evaluate(() => window.KaiSipConsentApi.saved);
-      c.check(saved.length === 1 && saved[0].marketingOptIn === true && saved[0].wordingVersion && typeof saved[0].at === 'string', 'the change goes through the consent adapter with its wording version and time: ' + JSON.stringify(saved));
+      const on = consentWrites(server).filter((x) => x.method === 'PATCH');
+      c.check(JSON.stringify(on) === JSON.stringify([{ method: 'PATCH', marketing_opt_in: true, marketing_wording: '2026-12', source: 'web' }]), 'switching on writes the opt-in with the wording and the source: ' + JSON.stringify(on));
       await page.click('#kaNewsBtn');
       await waitText(page, 'kaNewsBtnSay', /^Off\./, c);
-      c.check((await page.evaluate(() => window.KaiSipConsentApi.saved.length)) === 2, 'switching off is recorded too');
+      c.check((await sw()).on === 'false' && (await sw()).word === 'Off', 'Off again, in the switch and in words');
+      const both = consentWrites(server).filter((x) => x.method === 'PATCH');
+      c.check(both.length === 2 && both[1].marketing_opt_in === false && both[1].source === 'web', 'switching off is recorded too: ' + JSON.stringify(both[1]));
+      c.check(await page.evaluate(() => document.activeElement && document.activeElement.id === 'kaNewsBtn'), 'focus stays on the switch');
       // Download my data.
       const dl = page.waitForEvent('download');
       await page.click('#kaDl');
@@ -1033,7 +1044,8 @@ if (wanted('A9')) {
       await settled(page);
       const u = server.userByEmail('noel@gmail.com');
       c.check(server.profiles.get(u.id) === '2026-12', 'the agreements ticked before Google are saved for the new account, with no second ask');
-      c.check(JSON.parse((await store(page)).local.kaisip_consent_v1).marketingOptIn === true, 'and so is the news choice');
+      const g = consentWrites(server);
+      c.check(g.length === 1 && g[0].method === 'POST' && g[0].marketing_opt_in === true && g[0].marketing_wording === '2026-12' && g[0].source === 'web' && g[0].privacy_version === '2026-12', 'and so is the news choice, in the same record: ' + JSON.stringify(g));
       // Cancelled at Google (or any error it sends back): calm words, and nothing from the address is shown.
       await page.evaluate(() => navGoFocus(null, 'account'));
       await page.click('#kaOut'); await page.click('#flagModal #kaGo');
@@ -1506,6 +1518,122 @@ if (wanted('G5')) {
     await page.click('#kaOut'); await page.click('#flagModal #kaGo');
     await waitView(page, 'signin');
     c.check(JSON.stringify((await answerKeys(page)).ids) === JSON.stringify(before.ids), 'signed out: the progress is still in this browser');
+  });
+  await ctx.close();
+}
+
+// ── N. The news row on Account and the email service (newsletter-sync) ──
+if (wanted('N1')) {
+  const { ctx, page, server } = await setup({ view: 'phone' });
+  server.kit = new Map();
+  server.newsWaitMs = 0;
+  await makeAccount(server);
+  const row = (page) => page.evaluate(() => ({ state: document.getElementById('kaNewsRow').getAttribute('data-state'), sub: document.getElementById('kaNewsS').innerText.replace(/\s+/g, ' ').trim(), sw: (document.getElementById('kaNewsBtn') || { getAttribute() { return null; } }).getAttribute('aria-checked') }));
+  const openAccount = async (page) => { await page.evaluate(() => navGoFocus(null, 'home')); await page.evaluate(() => navGoFocus(null, 'account')); await page.waitForSelector('#kaNewsRow'); await page.waitForFunction(() => !ka.newsBusy); };
+  const syncs = () => calls(server, '/functions/v1/newsletter-sync').length;
+  await rec.run('N1', 'News emails: on asks to confirm by email, confirmed reads as on, an unsubscribe made by email shows with no switch, and the email service being away loses nothing', page, async (c) => {
+    await signedIn(page);
+    await openAccount(page);
+    c.check(JSON.stringify(await row(page)) === JSON.stringify({ state: 'off', sub: 'About twice a month. You can unsubscribe anytime.', sw: 'false' }), 'starts off: ' + JSON.stringify(await row(page)));
+    c.check(syncs() === 1 && calls(server, '/functions/v1/newsletter-sync').every((x) => JSON.stringify(x.body) === '{}'), 'opening Account asks the email service once, with an empty body');
+    // On: recorded, then "check your inbox".
+    await page.click('#kaNewsBtn');
+    await page.waitForFunction(() => document.getElementById('kaNewsRow').getAttribute('data-state') === 'pending', null, { timeout: 8000 });
+    c.check((await row(page)).sub === 'Check your inbox to confirm your email. News starts after that.' && (await row(page)).sw === 'true', 'pending: the row says to check the inbox: ' + JSON.stringify(await row(page)));
+    await waitText(page, 'kaNewsBtnSay', /Check your inbox to confirm your email\./, c);
+    c.check(server.kit.get(EMAIL) === 'inactive' && server.consent.get(server.userByEmail(EMAIL).id).marketing_opt_in === true, 'the opt-in is on record and the confirmation email is out');
+    c.check(await page.evaluate(() => document.getElementById('kaNewsBtn').getAttribute('aria-describedby') === 'kaNewsS' && document.activeElement.id === 'kaNewsBtn'), 'the switch is described by that line and keeps focus');
+    await axe(page, c, 'Account, news pending');
+    await c.shot('n1-pending', page, true);
+    // Confirmed in the email: the next visit reads as on, with the usual line.
+    server.kit.set(EMAIL, 'active');
+    await openAccount(page);
+    c.check(JSON.stringify(await row(page)) === JSON.stringify({ state: 'on', sub: 'About twice a month. You can unsubscribe anytime.', sw: 'true' }), 'confirmed: on: ' + JSON.stringify(await row(page)));
+    // The email service is away: the switch still works and the choice is on record.
+    server.kitDown = true;
+    await page.click('#kaNewsBtn');
+    await waitText(page, 'kaNewsBtnSay', /^Off\./, c);
+    await page.waitForFunction(() => !ka.newsBusy);
+    c.check((await row(page)).sw === 'false' && server.consent.get(server.userByEmail(EMAIL).id).marketing_opt_in === false && !/kit|503|unavailable/i.test(await text(page, '#kaAccount')), 'email service away: off is recorded, and no error text shows');
+    server.kitDown = false;
+    await openAccount(page);
+    c.check(server.kit.get(EMAIL) === 'cancelled' && (await row(page)).state === 'off', 'the next visit to Account finishes the job: the emails are stopped');
+    // Unsubscribed by email earlier (the address is stopped at the email service): switching on does not stick.
+    await page.click('#kaNewsBtn');
+    await page.waitForFunction(() => document.getElementById('kaNewsRow').getAttribute('data-state') === 'by-email', null, { timeout: 8000 });
+    const by = await row(page);
+    c.check(by.sw === null && /^You unsubscribed by email\. To get news again, sign up with the email form on kaisip\.com( \(opens in a new tab\))? ?\.$/.test(by.sub), 'unsubscribed by email: no switch, and how to get news again: ' + JSON.stringify(by));
+    await waitText(page, 'kaNewsBtnSay', /You unsubscribed by email, so this can.t be switched on from here\./, c);
+    c.check(await page.evaluate(() => { const a = document.querySelector('#kaNewsRow a'); return a.getAttribute('href') === 'https://kaisip.com/#waitlist' && a.target === '_blank' && document.activeElement === a; }), 'the form is linked (new tab) and focus moves to it when the switch goes');
+    c.check(server.consent.get(server.userByEmail(EMAIL).id).source === 'email', 'the record says the unsubscribe came by email');
+    await axe(page, c, 'Account, unsubscribed by email');
+    await noOverflow(page, c, 'Account, unsubscribed by email');
+    await c.shot('n1-by-email', page, true);
+    await page.reload();
+    await page.waitForFunction(() => document.body.hasAttribute('data-section'));
+    await openAccount(page);
+    c.check((await row(page)).state === 'by-email', 'and it reads the same after a reload');
+  });
+  await ctx.close();
+}
+
+if (wanted('N2')) {
+  const { ctx, page, server } = await setup({ view: 'desktop' });
+  await makeAccount(server);
+  await rec.run('N2', 'News emails before the email service is connected, the wait between two asks, and the daily limit on changes', page, async (c) => {
+    await signedIn(page);
+    await page.evaluate(() => navGoFocus(null, 'account'));
+    await page.waitForSelector('#kaNewsRow');
+    await page.waitForFunction(() => !ka.newsBusy);
+    // Not connected yet: the choice is recorded and nothing else is said.
+    await page.click('#kaNewsBtn');
+    await waitText(page, 'kaNewsBtnSay', /^On\. We.ll email you study tips and KaiSip news\.$/, c);
+    await page.waitForFunction(() => !ka.newsBusy);
+    c.check(await page.evaluate(() => document.getElementById('kaNewsRow').getAttribute('data-state') === 'on' && ka.newsState === 'not_configured'), 'not connected: the switch is on, with the usual line');
+    c.check(server.consent.get(server.userByEmail(EMAIL).id).marketing_opt_in === true, 'and the opt-in is on record');
+    // Connected, and asked twice within the wait: the page waits as told and asks once more.
+    server.kit = new Map();
+    server.newsWaitMs = 1000;
+    await page.click('#kaNewsBtn');
+    await waitText(page, 'kaNewsBtnSay', /^Off\./, c);
+    await page.waitForFunction(() => !ka.newsBusy, null, { timeout: 8000 });
+    const before = calls(server, '/functions/v1/newsletter-sync').length;
+    await page.click('#kaNewsBtn');
+    await page.waitForFunction(() => document.getElementById('kaNewsRow').getAttribute('data-state') === 'pending', null, { timeout: 8000 });
+    c.check(calls(server, '/functions/v1/newsletter-sync').length === before + 2, 'told to wait (429): one more ask after the wait, then the answer shows');
+    c.check(!/429|rate|limit/i.test(await text(page, '#kaAccount')), 'the wait is never shown as an error');
+    // The 21st change in a day is refused in words; switching off still works.
+    server.newsWaitMs = 0;
+    const id = server.userByEmail(EMAIL).id;
+    server.consentLog.set(id, Array.from({ length: 20 }, () => Date.now()));
+    await page.click('#kaNewsBtn');
+    await waitText(page, 'kaNewsBtnSay', /^Off\./, c);
+    await page.waitForFunction(() => !ka.newsBusy);
+    c.check(server.consent.get(id).marketing_opt_in === false, 'past the limit, switching off still goes through');
+    await page.click('#kaNewsBtn');
+    await waitText(page, 'kaNewsBtnSay', /^That.s a lot of changes for one day\. You can switch this on again tomorrow\.$/, c);
+    c.check(await page.evaluate(() => document.getElementById('kaNewsBtn').getAttribute('aria-checked') === 'false') && server.consent.get(id).marketing_opt_in === false, 'switching on is refused: the switch goes back to Off and says why');
+  });
+  await ctx.close();
+}
+
+if (wanted('N3')) {
+  // An account that agreed to the older Terms (test accounts only): it agrees again, and only the two labels move.
+  const { ctx, page, server } = await setup({ view: 'phone' });
+  await makeAccount(server, EMAIL, PW, { terms: '2026-11' });
+  await rec.run('N3', 'An account on the earlier Terms agrees again at sign-in: the same screen, and only the two version labels are written', page, async (c) => {
+    await signIn(page);
+    await waitView(page, 'consent');
+    c.check((await text(page, '#kaRoot h1')) === 'One more step' && await page.evaluate(() => document.getElementById('kaTerms').checked === false && document.getElementById('kaAgeLine').textContent === 'Accounts are for learners 18 and older.'), 'the agreement is asked again, unticked');
+    c.check(consentWrites(server).length === 0, 'nothing is written before the learner agrees');
+    await page.click('#kaGo');
+    c.check((await text(page, '#kaConsentE')) === 'Tick the box above to continue.' && consentWrites(server).length === 0, 'and nothing without the tick');
+    await page.check('#kaTerms', { force: true });
+    await page.click('#kaGo');
+    await waitView(page, '');
+    const wrote = consentWrites(server);
+    c.check(canon(wrote) === canon([{ method: 'POST', terms_version: '2026-12', age_confirmed: true, privacy_version: '2026-12', source: 'web' }, { method: 'PATCH', terms_version: '2026-12', privacy_version: '2026-12' }]), 'the record moves to the current versions with one PATCH of the two labels: ' + JSON.stringify(wrote));
+    c.check(server.profiles.get(server.userByEmail(EMAIL).id) === '2026-12', 'the account is on the current Terms');
   });
   await ctx.close();
 }

@@ -136,7 +136,29 @@ export class FakeSupabase {
   rows = new Map<string, Row>();
   lastRev = new Map<string, number>();
   writes = new Map<string, { start: number; n: number }>();
+  /** Each account's accepted Terms version (the consent record's other fields are in `consent`). */
   profiles = new Map<string, string>();
+  /**
+   * The rest of the consent record, as migration 20261128020000_consent_record.sql keeps it:
+   * the app may write only privacy_version, marketing_opt_in, marketing_wording and source
+   * (web, android or ios); the server sets every time.
+   */
+  consent = new Map<string, { privacy_version: string | null; marketing_opt_in: boolean; marketing_wording: string | null; source: string | null; everOptedIn: boolean }>();
+  /** When each account's record changed (ms, the server's clock): 20 changes in 24 hours, a withdrawal always allowed. */
+  consentLog = new Map<string, number[]>();
+  /**
+   * The email service behind newsletter-sync (Kit). null: not connected yet (the function answers
+   * not_configured). Else each address's state there: 'inactive' (a confirmation email is out),
+   * 'active' (confirmed), 'cancelled' (unsubscribed, bounced or complained: never added again).
+   */
+  kit: Map<string, 'inactive' | 'active' | 'cancelled'> | null = null;
+  /** Kit can't be reached: newsletter-sync answers 503 kit_unavailable. */
+  kitDown = false;
+  /** Addresses the app itself added to Kit (only those are unsubscribed there when the learner switches off). */
+  kitAdded = new Set<string>();
+  /** newsletter-sync: one call per account every `newsWaitMs` (10 seconds on the real function). */
+  newsWaitMs = 10_000;
+  newsCalledAt = new Map<string, number>();
   /** Accept an access token this long (s). */
   tokenTtl = 3600;
   private n = 0;
@@ -368,6 +390,7 @@ export class FakeSupabase {
       const id = this.who(headers);
       if (!id) return res(401, { error: 'unauthorized' });
       if (p === '/functions/v1/export-my-data') return res(200, { app: 'kaisip', schema: 1, stores: {} });
+      if (p === '/functions/v1/newsletter-sync') return this.newsletterSync(id, res);
       if (p === '/functions/v1/delete-account') {
         if (body?.confirm !== 'DELETE') return res(400, { error: 'invalid', detail: 'confirm_required' });
         this.users.delete(id);
@@ -377,16 +400,107 @@ export class FakeSupabase {
     return res(404, { message: 'not found' });
   }
 
+  /** Kit's side of newsletter-sync (supabase/functions/newsletter-sync/handler.ts), without the email service. */
+  private newsletterSync(id: string, res: (s: number, b?: unknown, h?: Record<string, string>) => HttpResponse): HttpResponse {
+    if (this.kit === null) return res(200, { synced: false, state: 'not_configured' });
+    const now = this.serverNow();
+    const last = this.newsCalledAt.get(id);
+    if (last !== undefined && now - last < this.newsWaitMs) return res(429, { error: 'rate_limited' }, { 'retry-after': String(Math.max(1, Math.ceil(this.newsWaitMs / 1000))) });
+    this.newsCalledAt.set(id, now);
+    if (this.kitDown) return res(503, { error: 'server', detail: 'kit_unavailable' }, { 'retry-after': '60' });
+    const email = this.users.get(id)!.email;
+    const c = this.consent.get(id);
+    if (c?.marketing_opt_in === true) {
+      const held = this.kit.get(email);
+      if (held === 'cancelled') {
+        // Kit's unsubscribe is authoritative: the opt-in on record is withdrawn (source 'email'), never re-added.
+        c.marketing_opt_in = false;
+        c.source = 'email';
+        this.kitAdded.delete(email);
+        return res(200, { synced: true, optIn: false, state: 'unsubscribed' });
+      }
+      if (!held) this.kit.set(email, 'inactive');
+      this.kitAdded.add(email);
+      return res(200, { synced: true, optIn: true, state: held === 'active' ? 'subscribed' : 'pending' });
+    }
+    if (this.kitAdded.has(email)) {
+      // Switched off in the app, and the app had added this address: stop the emails at Kit.
+      this.kit.set(email, 'cancelled');
+      this.kitAdded.delete(email);
+      return res(200, { synced: true, optIn: false, state: 'unsubscribed' });
+    }
+    return res(200, { synced: true, optIn: false, state: 'none' });
+  }
+
+  /** What the database refuses in a consent write, before anything is saved. */
+  private consentRefusal(body: any): { status: number; body: unknown } | null {
+    const WRITABLE = ['terms_version', 'age_confirmed', 'privacy_version', 'marketing_opt_in', 'marketing_wording', 'source'];
+    const check = { status: 400, body: { code: '23514', message: 'new row for relation "profiles" violates check constraint' } };
+    if (!body || typeof body !== 'object' || Array.isArray(body)) return { status: 400, body: { code: 'PGRST102', message: 'bad body' } };
+    // Any other column (every time among them: created_at, terms_accepted_at, marketing_set_at, marketing_withdrawn_at) has no grant.
+    for (const k of Object.keys(body)) if (!WRITABLE.includes(k)) return { status: 403, body: { code: '42501', message: 'permission denied for table profiles' } };
+    const version = (v: unknown) => v === undefined || v === null || (typeof v === 'string' && /^\d{4}-\d{2}$/.test(v));
+    if (!version(body.terms_version) || !version(body.privacy_version) || !version(body.marketing_wording)) return check;
+    // 'email' is the server's own word for an unsubscribe carried back from the email service.
+    if (body.source !== undefined && body.source !== null && !['web', 'android', 'ios'].includes(body.source)) return check;
+    if (body.marketing_opt_in !== undefined && typeof body.marketing_opt_in !== 'boolean') return check;
+    return null;
+  }
+  /** 20 changes per account in 24 hours; a withdrawal always goes through. */
+  private consentLimited(id: string, withdrawing: boolean): boolean {
+    const now = this.serverNow();
+    const log = (this.consentLog.get(id) ?? []).filter((t) => now - t < 86_400_000);
+    if (!withdrawing && log.length >= 20) return true;
+    log.push(now);
+    this.consentLog.set(id, log);
+    return false;
+  }
+
   private profilesRoute(method: string, id: string, q: URLSearchParams, body: any, res: (s: number, b?: unknown) => HttpResponse): HttpResponse {
-    if (method === 'GET') return res(200, this.profiles.has(id) ? [{ terms_version: this.profiles.get(id) }] : []);
+    if (method === 'GET') {
+      if (!this.profiles.has(id)) return res(200, []);
+      const c = this.consent.get(id);
+      const row: Record<string, unknown> = { id, terms_version: this.profiles.get(id), age_confirmed: true, privacy_version: c?.privacy_version ?? null, marketing_opt_in: c?.marketing_opt_in ?? false, marketing_wording: c?.marketing_wording ?? null, source: c?.source ?? null };
+      const cols = (q.get('select') ?? '*').split(',');
+      return res(200, [cols.includes('*') ? row : Object.fromEntries(cols.map((k) => [k, row[k] ?? null]))]);
+    }
+    const limited = { code: 'P0001', message: 'rate_limited' };
+    const check = { code: '23514', message: 'new row for relation "profiles" violates check constraint' };
     if (method === 'POST') {
+      const refused = this.consentRefusal(body);
+      if (refused) return res(refused.status, refused.body);
       if (this.profiles.has(id)) return res(409, { code: '23505', message: 'duplicate key value violates unique constraint "profiles_pkey"' });
-      if (body?.age_confirmed !== true) return res(400, { code: '23514', message: 'check' });
+      if (body.age_confirmed !== true || typeof body.terms_version !== 'string') return res(400, check);
+      const optIn = body.marketing_opt_in === true;
+      // An opt-in says which wording was shown and where.
+      if (optIn && (!body.marketing_wording || !body.source)) return res(400, check);
+      if (this.consentLimited(id, false)) return res(400, limited);
       this.profiles.set(id, body.terms_version);
+      this.consent.set(id, { privacy_version: body.privacy_version ?? null, marketing_opt_in: optIn, marketing_wording: body.marketing_wording ?? null, source: body.source ?? null, everOptedIn: optIn });
       return res(201);
     }
     if (method === 'PATCH' && q.get('id') === `eq.${id}`) {
-      this.profiles.set(id, body.terms_version);
+      const refused = this.consentRefusal(body);
+      if (refused) return res(refused.status, refused.body);
+      if (!this.profiles.has(id)) return res(204); // no row: nothing matches, nothing changes
+      const old = this.consent.get(id) ?? { privacy_version: null, marketing_opt_in: false, marketing_wording: null, source: null, everOptedIn: false };
+      const next = { ...old };
+      // A value on record is replaced, never blanked.
+      next.privacy_version = body.privacy_version ?? old.privacy_version;
+      next.source = body.source ?? old.source;
+      if (typeof body.marketing_opt_in === 'boolean') next.marketing_opt_in = body.marketing_opt_in;
+      if (next.marketing_opt_in) {
+        next.marketing_wording = body.marketing_wording ?? old.marketing_wording;
+        if (!next.marketing_wording || !next.source || next.source === 'email') return res(400, check);
+        next.everOptedIn = true;
+      } else if (!old.everOptedIn && body.marketing_wording !== undefined) {
+        next.marketing_wording = body.marketing_wording; // once an opt-in was given, its wording stays with it
+      }
+      const terms = typeof body.terms_version === 'string' ? body.terms_version : this.profiles.get(id)!;
+      const same = terms === this.profiles.get(id) && JSON.stringify(next) === JSON.stringify(old);
+      if (!same && this.consentLimited(id, old.marketing_opt_in && !next.marketing_opt_in)) return res(400, limited);
+      this.profiles.set(id, terms);
+      this.consent.set(id, next);
       return res(204);
     }
     return res(400, { code: 'PGRST100', message: 'bad' });

@@ -104,8 +104,41 @@ export interface WebAuthDeps {
 }
 
 /** The Edge Functions the website may call (no other name is ever sent). */
-export type FunctionName = 'delete-account' | 'export-my-data';
-const FUNCTIONS: ReadonlySet<string> = new Set<FunctionName>(['delete-account', 'export-my-data']);
+export type FunctionName = 'delete-account' | 'export-my-data' | 'newsletter-sync';
+const FUNCTIONS: ReadonlySet<string> = new Set<FunctionName>(['delete-account', 'export-my-data', 'newsletter-sync']);
+
+/** Where a consent choice was made. The apps send only these; 'email' (an unsubscribe made in the email service) is written by the server alone. */
+export type ConsentSource = 'web' | 'android' | 'ios';
+const SOURCES: readonly ConsentSource[] = ['web', 'android', 'ios'];
+const VERSION_RE = /^\d{4}-\d{2}$/;
+/** The learner's own consent record (public.profiles), as the screens need it. No times: the server keeps those. */
+export interface ConsentRecord {
+  termsVersion: string | null;
+  privacyVersion: string | null;
+  /** The optional emails box. */
+  newsOptIn: boolean;
+  /** Where the last choice was made. 'email': the learner unsubscribed through an email, and the app cannot switch the emails back on. */
+  source: ConsentSource | 'email' | null;
+}
+/**
+ * What the email service holds after POST /functions/v1/newsletter-sync:
+ * - not_configured: the service is not connected yet (the choice is still on record);
+ * - none: not subscribed, nothing to do;
+ * - pending: a confirmation email was sent, "check your inbox to confirm";
+ * - subscribed: confirmed;
+ * - unsubscribed: the emails are stopped. With `optIn` false after the learner
+ *   asked for them, the email service refused (they unsubscribed by email
+ *   before): read the record again and show the switch off.
+ */
+export type NewsState = 'not_configured' | 'none' | 'pending' | 'subscribed' | 'unsubscribed';
+const NEWS_STATES: readonly NewsState[] = ['not_configured', 'none', 'pending', 'subscribed', 'unsubscribed'];
+export interface NewsSync {
+  /** False only for not_configured. */
+  synced: boolean;
+  /** The opt-in on record after the sync (null when not synced). */
+  optIn: boolean | null;
+  state: NewsState;
+}
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const CODE_RE = /^\d{6,10}$/;
 /** How long a Google sign-in may take, from leaving for Google to coming back. */
@@ -153,8 +186,32 @@ export interface WebAuth {
   callFunction(name: FunctionName, body: Record<string, unknown>): Promise<string>;
   /** The learner's accepted Terms version, or null before they accepted (public.profiles). */
   termsVersion(): Promise<string | null>;
-  /** Accept the Terms and record the age confirmation (accounts are 18 and older; needed before the first sync). */
-  acceptTerms(v: { termsVersion: string; ageConfirmed: true }): Promise<void>;
+  /**
+   * Accept the Terms and record the age confirmation (accounts are 18 and
+   * older; needed before the first sync). Call it only from a screen where
+   * the learner has just agreed: for an account that already has a record it
+   * moves the acceptance to this version (and its time to now).
+   * `privacyVersion` and `source` go with it; `news` only when the optional
+   * emails box is ticked (it needs `source`). No time is ever sent: the
+   * server sets every one.
+   */
+  acceptTerms(v: { termsVersion: string; ageConfirmed: true; privacyVersion?: string; source?: ConsentSource; news?: { wording: string } }): Promise<void>;
+  /** The learner's consent record (GET /rest/v1/profiles), or null before they accepted. */
+  consent(): Promise<ConsentRecord | null>;
+  /**
+   * The optional emails switch (PATCH the learner's own row). Switching on
+   * records the wording they saw; the server refuses the 21st change in a day
+   * (CloudError rate_limited), never a switch-off. Call `syncNews()` after it.
+   */
+  setNews(optIn: boolean, v: { wording: string; source: ConsentSource }): Promise<void>;
+  /**
+   * Makes the email service agree with the record (POST
+   * /functions/v1/newsletter-sync, body {}): after each switch change and when
+   * the Account screen opens. CloudError rate_limited (with the seconds to
+   * wait) when asked again within 10 seconds; 'server' when the email service
+   * can't be reached (nothing is lost: the next call tries again).
+   */
+  syncNews(): Promise<NewsSync>;
 
   // ── Passwords ──
   /** Password sign-in (with the human-check token when captcha is on). A wrong password and an unknown address get the same answer. */
@@ -674,7 +731,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     return passwordWordsLoaded() && checkPassword(p, { email, names: namesOf(user) }).some((r) => r !== 'too_short' && r !== 'missing_characters');
   };
 
-  return {
+  const api: WebAuth = {
     async signInWithPassword(email, password, opts) {
       const e = emailOf(email);
       const { text, password: p } = await passwordGrant(e, password, opts?.captchaToken);
@@ -894,19 +951,69 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     },
 
     async acceptTerms(v) {
-      if (!/^\d{4}-\d{2}$/.test(v.termsVersion) || v.ageConfirmed !== true) throw new CloudError('invalid');
+      if (!VERSION_RE.test(v.termsVersion) || v.ageConfirmed !== true) throw new CloudError('invalid');
+      if (v.privacyVersion !== undefined && !VERSION_RE.test(v.privacyVersion)) throw new CloudError('invalid');
+      if (v.source !== undefined && !SOURCES.includes(v.source)) throw new CloudError('invalid');
+      // The optional emails need the wording shown and where it was ticked (the server refuses an opt-in without them).
+      if (v.news && (!VERSION_RE.test(v.news.wording) || v.source === undefined)) throw new CloudError('invalid');
       const s = store.read();
       if (!s) throw signedOut();
-      const ins = await authedFetch('/rest/v1/profiles', { method: 'POST', headers: { prefer: 'return=minimal' }, body: JSON.stringify({ terms_version: v.termsVersion, age_confirmed: true }) }, 'rest');
+      // Only these fields, ever: no time (the server sets each one) and no other column.
+      const agreed: Record<string, unknown> = { terms_version: v.termsVersion };
+      if (v.privacyVersion) agreed.privacy_version = v.privacyVersion;
+      const row: Record<string, unknown> = { ...agreed, age_confirmed: true };
+      if (v.source) row.source = v.source;
+      if (v.news) {
+        row.marketing_opt_in = true;
+        row.marketing_wording = v.news.wording;
+      }
+      const ins = await authedFetch('/rest/v1/profiles', { method: 'POST', headers: { prefer: 'return=minimal' }, body: JSON.stringify(row) }, 'rest');
       const insText = await ins.text();
       if (ins.status >= 200 && ins.status < 300) return;
       const e = toCloudError('rest', ins.status, insText, ins);
       if (e.code !== 'conflict') throw e;
       // Accepted before: move to the new version (the id is checked as a UUID before it goes in a filter).
       if (!UUID_RE.test(s.userId)) throw new CloudError('invalid');
-      const up = await authedFetch(`/rest/v1/profiles?id=eq.${s.userId}`, { method: 'PATCH', headers: { prefer: 'return=minimal' }, body: JSON.stringify({ terms_version: v.termsVersion }) }, 'rest');
+      const up = await authedFetch(`/rest/v1/profiles?id=eq.${s.userId}`, { method: 'PATCH', headers: { prefer: 'return=minimal' }, body: JSON.stringify(agreed) }, 'rest');
       const upText = await up.text();
       if (up.status < 200 || up.status >= 300) throw toCloudError('rest', up.status, upText, up);
+      // The optional box, ticked on that same screen: its own change, with its own wording and time.
+      if (v.news && v.source) await api.setNews(true, { wording: v.news.wording, source: v.source });
+    },
+
+    async consent() {
+      const res = await authedFetch('/rest/v1/profiles?select=terms_version,privacy_version,marketing_opt_in,source&limit=1', { method: 'GET' }, 'rest');
+      const text = await res.text();
+      if (res.status < 200 || res.status >= 300) throw toCloudError('rest', res.status, text, res);
+      let rows: unknown;
+      try {
+        rows = JSON.parse(text);
+      } catch {
+        throw new CloudError('server');
+      }
+      const r = Array.isArray(rows) && rows[0] && typeof rows[0] === 'object' ? (rows[0] as Record<string, unknown>) : null;
+      if (!r) return null;
+      const version = (x: unknown) => (typeof x === 'string' && VERSION_RE.test(x) ? x : null);
+      const source = r.source === 'email' || SOURCES.includes(r.source as ConsentSource) ? (r.source as ConsentRecord['source']) : null;
+      return { termsVersion: version(r.terms_version), privacyVersion: version(r.privacy_version), newsOptIn: r.marketing_opt_in === true, source };
+    },
+
+    async setNews(optIn, v) {
+      if (typeof optIn !== 'boolean' || !VERSION_RE.test(v.wording) || !SOURCES.includes(v.source)) throw new CloudError('invalid');
+      const s = store.read();
+      if (!s) throw signedOut();
+      if (!UUID_RE.test(s.userId)) throw new CloudError('invalid');
+      const res = await authedFetch(`/rest/v1/profiles?id=eq.${s.userId}`, { method: 'PATCH', headers: { prefer: 'return=minimal' }, body: JSON.stringify({ marketing_opt_in: optIn, marketing_wording: v.wording, source: v.source }) }, 'rest');
+      const text = await res.text();
+      if (res.status < 200 || res.status >= 300) throw toCloudError('rest', res.status, text, res);
+    },
+
+    async syncNews() {
+      const b = bodyObject(await api.callFunction('newsletter-sync', {}));
+      const state = NEWS_STATES.includes(b.state as NewsState) ? (b.state as NewsState) : null;
+      if (!state || typeof b.synced !== 'boolean') throw new CloudError('server');
+      return { synced: b.synced, optIn: b.synced && typeof b.optIn === 'boolean' ? b.optIn : null, state };
     },
   };
+  return api;
 }

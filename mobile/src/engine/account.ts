@@ -13,6 +13,14 @@ import { EMAIL_RE } from './support';
 
 /** The Terms of Use version a learner accepts when they make an account ("YYYY-MM"). */
 export const TERMS_VERSION = '2026-12';
+/**
+ * The other two consent labels sent with it (docs/legal/consent_wording.md,
+ * the registry: an app may send only versions listed there). The Privacy
+ * Policy shown beside the agree box, and the wording of the optional emails
+ * box, sent only when the learner ticks it.
+ */
+export const PRIVACY_VERSION = '2026-12';
+export const NEWS_WORDING_VERSION = '2026-12';
 
 /** Sign-in codes are 6 digits. */
 export const CODE_LENGTH = 6;

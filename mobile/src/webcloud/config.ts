@@ -11,6 +11,7 @@
  *
  * Pure TypeScript: no React, no storage, no network.
  */
+import { NEWS_WORDING_VERSION, PRIVACY_VERSION, TERMS_VERSION } from '../engine/account';
 
 /** The Supabase project (Singapore). The website's CSP connect-src names exactly this host. */
 export const SUPABASE_URL = 'https://ziadnvepttlgcowvqvom.supabase.co';
@@ -25,6 +26,14 @@ export const PUBLISHABLE_KEY = 'sb_publishable_s9eKQUQ0w3MTnCUBF05EkA_5e_kGEw2';
 export const REDIRECT_URL = 'https://kaisip.com/app/';
 /** The only address that shows account features (never file:// or a preview host). */
 export const ACCOUNT_ORIGIN = 'https://kaisip.com';
+
+/**
+ * The consent labels the website sends with a learner's agreement, read by
+ * the page from here and nowhere else (KaiSipCloud.config.CONSENT). Each is
+ * listed in docs/legal/consent_wording.md with the words the screen showed.
+ * `source` says where the choice was made; the website is always 'web'.
+ */
+export const CONSENT = { terms: TERMS_VERSION, privacy: PRIVACY_VERSION, news: NEWS_WORDING_VERSION, source: 'web' } as const;
 
 /** The session (tokens): localStorage, or sessionStorage on a shared computer. */
 export const SESSION_KEY = 'kaisip_auth_v1';
