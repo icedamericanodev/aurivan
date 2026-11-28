@@ -129,8 +129,16 @@ describe('CISA principles pack (the real file)', () => {
 });
 
 describe('certs without principles', () => {
+  // CRISC and AAIA bring their own principles (bundled since 28 Nov 2026, still `coming_soon`).
+  it('CRISC and AAIA have their own', () => {
+    for (const id of ['crisc', 'aaia']) {
+      expect(hasPrinciples(id)).toBe(true);
+      expect(principleFamilies(id).length).toBeGreaterThan(0);
+    }
+  });
+
   it('have none, and every helper says so calmly', () => {
-    for (const cert of CERTIFICATIONS.filter((c) => c.id !== 'cisa')) {
+    for (const cert of CERTIFICATIONS.filter((c) => !['cisa', 'crisc', 'aaia'].includes(c.id))) {
       expect(hasPrinciples(cert.id)).toBe(false);
       expect(principleFamilies(cert.id)).toEqual([]);
       expect(findPrinciple(cert.id, 'recommend-dont-implement')).toBeUndefined();

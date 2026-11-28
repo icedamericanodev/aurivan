@@ -1,0 +1,1560 @@
+{
+  "domain": 3,
+  "title": "AI Auditing Tools and Techniques",
+  "weight": 21,
+  "count": 42,
+  "questions": [
+    {
+      "id": "aaia_d3_001",
+      "domain": 3,
+      "subtopic": "3A Audit planning and design. AI audit universe",
+      "principle_id": "population-includes-misses",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS audit manager builds next year's AI audit universe solely from the model registry that the data science team's training platform fills automatically. What is the GREATEST concern with this approach?",
+      "options": {
+        "A": "The registry omits AI features embedded in purchased software and services",
+        "B": "The registry still lists retired models that no longer decide anything",
+        "C": "The registry does not name a business owner for each model",
+        "D": "The registry does not record each model's programming framework"
+      },
+      "correct": "A",
+      "key_concept": "A risk-based AI audit universe starts from a complete inventory, including AI embedded in purchased products, before any ranking.",
+      "pre_read": "Ask where the list came from and which kinds of AI that source could never contain.",
+      "correct_explanation": "An audit universe must be complete before it can be ranked. A registry the training platform fills lists only models trained there, so AI embedded in purchased software, cloud services and business-unit tools, often the highest-impact uses, never reaches the plan. A missing model owner is a real governance gap, but the audit can test and report it once the model is listed; an AI use never listed is never audited.",
+      "wrong_explanations": {
+        "B": "Tempting because stale entries clutter a universe. But retired models are easy to rank low; AI uses that never appear cannot be ranked at all.",
+        "C": "Tempting because every model needs a named owner. But a missing owner is a gap the audit can find and report; AI the registry never lists is never audited.",
+        "D": "Tempting for a technically minded auditor. But the programming framework does not set audit priority; the likelihood and impact of harm to people and the business do."
+      },
+      "tips": [
+        "Eliminate: D adds technical detail that does not set audit priority, and B flags retired entries that a risk ranking simply rates low.",
+        "Final two: A beats C because a missing owner is a gap the audit can test once a model is listed, but AI the registry never lists never reaches the plan.",
+        "Exam cue: completeness of the AI audit universe comes before ranking it. Look for embedded, purchased and shadow AI that a builders' list misses."
+      ],
+      "framework_ref": "NIST AI 100-1 GOVERN 1.6 (Mechanisms to inventory AI systems); ISACA IT Audit Standard 1201 (Risk Assessment in Planning)",
+      "related_concepts": [
+        "AI inventory",
+        "Audit universe",
+        "Embedded AI in purchased software"
+      ],
+      "_provenance": "Authored from concept: notes 3A.1 AI Audit Universe and Risk-Based Plan (complete the universe before ranking; trap 'the builders' registry is the universe'). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review).",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_005",
+      "domain": 3,
+      "subtopic": "3B Testing and sampling. Sampling for fairness",
+      "principle_id": "accuracy-is-not-assurance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor plans a random sample of 60 decisions by a telecom's phone-financing model, whose inputs exclude age; applicants aged over 70 are 3% of decisions. Which change BEST supports testing for age bias?",
+      "options": {
+        "A": "Draw the sample from the model's training data instead",
+        "B": "Stratify by age band and oversample the oldest band",
+        "C": "Double the random sample to 120 decisions across age groups",
+        "D": "Select the decisions the model scored with highest confidence"
+      },
+      "correct": "B",
+      "key_concept": "Fairness testing needs samples stratified by the groups at risk, sized so each group has enough decisions to compare.",
+      "pre_read": "Work out how many cases from the small group each sample would actually contain.",
+      "correct_explanation": "Leaving age out of the inputs does not prevent age bias, because other inputs can act as proxies, so outcomes are tested by age. A random sample of 60 would hold about two applicants aged over 70, too few to compare approval rates. Stratifying by age band and oversampling the oldest band fixes that; doubling the random sample still yields only about four older applicants.",
+      "wrong_explanations": {
+        "A": "Tempting because bias often starts in training data. But the objective concerns live decisions, and training records do not show how real applicants were treated.",
+        "C": "Tempting because larger samples give more confidence. But doubling a random sample still yields only a handful of older applicants, too few to compare outcomes.",
+        "D": "Tempting because confident scores look like clear cases. But the most confident decisions are the least likely to show errors, and the choice skews the sample further."
+      },
+      "tips": [
+        "Eliminate: A tests training data when the risk sits in live decisions, and D picks the cases least likely to reveal model errors.",
+        "Final two: B beats C because a larger random sample still holds only a handful of older applicants; oversampling the oldest band guarantees enough of them to compare.",
+        "Exam cue: test AI outcomes by group even when the model never uses the group attribute. A small group needs its own stratum, or the sample cannot see it."
+      ],
+      "framework_ref": "ISACA ITAF Guideline 2208 (Information Technology Audit Sampling); NIST AI 100-1 MEASURE 2.11 (Fairness and bias evaluated and documented)",
+      "related_concepts": [
+        "Stratified sampling",
+        "Fairness testing",
+        "Proxy variables",
+        "Production decisions"
+      ],
+      "_provenance": "Authored from concept: notes 3B.2 Sampling AI Decisions (stratify by group; trap 'a larger random sample solves it'). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review).",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_006",
+      "domain": 3,
+      "subtopic": "3B Testing and sampling. Testing human review",
+      "principle_id": "real-human-oversight",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Policy requires a supervisor to review every courier deactivation a delivery platform's model recommends; approval is a single checkbox. Which test gives the IS auditor the BEST evidence that the review operates effectively?",
+      "options": {
+        "A": "Inspect the review procedure and each supervisor's training record",
+        "B": "Confirm every logged deactivation carries a supervisor's approval",
+        "C": "Rerun sampled recommendations through the current production model",
+        "D": "Analyze override rates and review times across all deactivations"
+      },
+      "correct": "D",
+      "key_concept": "Human oversight of AI is tested by reviewer behavior, such as override rates and review time, not by sign-offs alone.",
+      "pre_read": "Ask what each test would prove about how the control worked during the period.",
+      "correct_explanation": "A checked box cannot show that anyone judged the case. Override rates and time spent per review show whether supervisors engage with recommendations or defer to the model, the pattern called automation bias. Confirming that every deactivation carries an approval, option B, is the runner-up: it proves the step happened, not that oversight works.",
+      "wrong_explanations": {
+        "A": "Tempting because procedures and training support a control. But they show design and readiness, not how supervisors actually review over the period.",
+        "B": "Tempting because full coverage is a classic operating test. But a checkbox on every case proves the step happened, not that supervisors judged anything.",
+        "C": "Tempting because reperformance is strong evidence. But it tests the model, not the supervisors, and today's model may differ from the one that decided."
+      },
+      "tips": [
+        "Eliminate: A inspects design documents rather than operation, and C tests the model instead of the human review.",
+        "Final two: D beats B because a sign-off proves the step happened; override rates and review times show whether supervisors actually judge each case.",
+        "Exam cue: test human oversight of AI by what reviewers do, such as overrides and time per case, not by the presence of approvals."
+      ],
+      "framework_ref": "NIST AI 100-1 MAP 3.5 (Processes for human oversight defined and assessed); NIST AI 100-1 GOVERN 3.2 (Roles defined for human-AI configurations and oversight)",
+      "related_concepts": [
+        "Automation bias",
+        "Human-in-the-loop",
+        "Operating effectiveness"
+      ],
+      "_provenance": "Authored from concept: notes 3B.1 Testing AI Controls and Human Oversight (oversight counts only when reviewers really review; automation bias). Release audit, 18 Nov 2026: stem no longer states that every deactivation carries an approval, so runner-up B is not answered by the stem. Release audit fix round 2, 18 Nov 2026: stem says approval is a single checkbox, so B's sign-off evidence is clearly weaker than reviewer behavior; neutral pre_read. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Cross-domain review fixes 30 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_007",
+      "domain": 3,
+      "subtopic": "3B Testing and sampling. Reperformance",
+      "principle_id": "reproducible-ai-evidence",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "To confirm that sampled payout holds were produced as logged by a marketplace's seller-risk model, retrained monthly, which procedure gives the IS auditor the MOST reliable evidence?",
+      "options": {
+        "A": "Rerun the sampled inputs through the current production model version",
+        "B": "Inspect the model card's description of the input features",
+        "C": "Rerun the sampled inputs through the model version that decided them",
+        "D": "Ask the data scientists how each sampled decision was reached"
+      },
+      "correct": "C",
+      "key_concept": "Reperforming an AI decision needs the same model version and logged inputs; retraining makes today's version a different model.",
+      "pre_read": "Notice how often the model changes, and what that means for rerunning old decisions.",
+      "correct_explanation": "Reperformance is strong evidence when it recreates the conditions of the original decision. Because the model is retrained monthly, only the version that made each decision, given the same logged inputs, should reproduce it. Running the inputs through today's model tests a different model, so mismatches could reflect retraining rather than error, and matches prove nothing about the past decision.",
+      "wrong_explanations": {
+        "A": "Tempting because the current model is easy to run. But monthly retraining makes it a different model, so its outputs cannot confirm past decisions.",
+        "B": "Tempting because model cards describe inputs. But a description of features cannot show that any sampled decision was produced as logged.",
+        "D": "Tempting because data scientists know the model. But their explanation is inquiry, the weakest evidence, and cannot show what the model actually output."
+      },
+      "tips": [
+        "Eliminate: D relies on inquiry of the model's builders, and B inspects documentation that describes the model but cannot prove any decision.",
+        "Final two: C beats A because monthly retraining changes the model; only the version that made the decision can reproduce it.",
+        "Exam cue: to reperform an AI decision, match the model version and inputs used at the time. Versioning is what makes reperformance possible."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); NIST AI 100-1 MEASURE 2.9 (Model explained, validated and documented, output interpreted in context)",
+      "related_concepts": [
+        "Reperformance",
+        "Model versioning",
+        "Decision logs"
+      ],
+      "_provenance": "Authored from concept: notes 3B.3 Reperformance and Full-Population Testing (reperform with the version that decided; trap 'rerun through today's model'). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review).",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_018",
+      "domain": 3,
+      "subtopic": "3E Outputs and reports. Rating findings",
+      "principle_id": "rank-ai-risk-by-harm",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An IS auditor is rating four AI findings for the audit committee. Which finding should the auditor rate as the GREATEST concern?",
+      "options": {
+        "A": "A coding assistant's prompts are not logged for later review",
+        "B": "A forecasting model drifted, raising warehouse stock costs by 2%",
+        "C": "A model suspending mobile-money accounts offers no appeal route",
+        "D": "A new marketing text generator lacks a completed model card"
+      },
+      "correct": "C",
+      "key_concept": "AI findings are rated by likelihood and impact on people and the business; high-impact decisions with no appeal route rate highest.",
+      "pre_read": "For each finding, ask who is harmed, how badly, and whether a wrong decision can be corrected.",
+      "correct_explanation": "Rating weighs likelihood and impact, counting harm to people as well as to the business. Suspending a mobile-money account can cut someone off from wages and payments, and with no appeal route, wrong suspensions cannot be corrected. The forecasting drift has a measurable cost, but it is a modest financial effect that management can absorb and correct, with no direct harm to individuals.",
+      "wrong_explanations": {
+        "A": "Tempting because missing logs weaken accountability. But an internal coding tool's prompts carry far lower impact than unappealable decisions about customers' money.",
+        "B": "Tempting because it has a measured business cost. But a modest, correctable cost increase weighs less than unappealable decisions that cut people off from their money.",
+        "D": "Tempting because model cards are expected documentation. But a missing card on a low-impact marketing tool is a documentation gap, not direct harm."
+      },
+      "tips": [
+        "Eliminate: A is a logging gap on a low-impact internal coding tool, and D is a documentation gap on a low-impact marketing tool; neither harms people directly.",
+        "Final two: C beats B because unappealable decisions that cut people off from their money outweigh a modest, correctable cost increase.",
+        "Exam cue: rate AI findings by likelihood and impact, counting harm to people as well as to the business. High-impact decisions about individuals with no recourse rate highest."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); NIST AI 100-1 MEASURE 3.3 (Feedback and appeal processes for end users and affected communities)",
+      "related_concepts": [
+        "Finding ratings",
+        "Appeal routes",
+        "Impact on people"
+      ],
+      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (rate by impact on people and the business; appeal routes). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review).",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_019",
+      "domain": 3,
+      "subtopic": "3E Outputs and reports. AI-drafted findings",
+      "principle_id": "ai-in-audit-stays-yours",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An audit manager sees that a generative AI tool drafted an IS auditor's findings from the work papers and gave each a cause the papers never mention. What should the manager require FIRST?",
+      "options": {
+        "A": "Disclose in the report that an AI tool drafted the findings",
+        "B": "Have the auditor check each statement against the evidence",
+        "C": "Ask management to confirm the causes that the tool added",
+        "D": "Have the tool redraft the findings strictly from the work papers"
+      },
+      "correct": "B",
+      "key_concept": "The auditor stays accountable for conclusions an AI tool helped draft and verifies each against the evidence before issue.",
+      "pre_read": "Ask who signs the report and what makes each finding supportable.",
+      "correct_explanation": "Generative tools fill gaps with plausible content, and causes the work papers never mention are exactly that: statements without evidence. The auditor is accountable for every finding, so each statement, causes included, must be checked against the evidence before issue. A redraft limited to the work papers may reduce invented content, but it is still unchecked output; only the auditor's review makes the findings supportable.",
+      "wrong_explanations": {
+        "A": "Tempting because transparency about AI use is good practice. But disclosure explains the method; it does not make an unchecked finding supportable.",
+        "C": "Tempting because findings are discussed with management. But a cause must come from the auditor's evidence; management's agreement is the auditee's view, not proof.",
+        "D": "Tempting because tighter instructions may curb invented content. But a redraft is still unverified output, and the auditor still owns every statement."
+      },
+      "tips": [
+        "Eliminate: A discloses AI use without verifying anything, and C seeks proof of cause from the auditee instead of the evidence.",
+        "Final two: B beats D because a tighter prompt still yields unverified text; only the auditor's check against evidence makes findings supportable.",
+        "Exam cue: an AI tool can draft, but the auditor reviews and owns every conclusion. Verify against evidence before disclosure or issue."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1204 (Performance and Supervision); NIST AI 600-1 Section 2.2 (Confabulation)",
+      "related_concepts": [
+        "Auditor accountability",
+        "Disclosure of AI use",
+        "Confabulation"
+      ],
+      "_provenance": "Authored from concept: notes 3E.3 Disclosing AI Use and Owning Conclusions (the auditor verifies and owns every conclusion; disclosure is not verification). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA pilot, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test, standards audit, concept review). Cross-domain review fixes 30 Oct 2026. Batch 2 re-angle, 31 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_025",
+      "domain": 3,
+      "subtopic": "3A Audit planning and design. Approving an audit AI use",
+      "principle_id": "ai-in-audit-stays-yours",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An audit team's approved generative AI tool will read supplier invoices and contracts, uploaded by an Egyptian cement producer's procurement staff, to flag possible kickbacks. Which risk should the chief audit executive weigh MOST heavily?",
+      "options": {
+        "A": "The tool may flag many innocent invoices as possible kickbacks",
+        "B": "Auditors may need training before writing prompts for the tool",
+        "C": "The vendor may train its models on the documents the tool reads",
+        "D": "Planted text in the documents could make the tool skip items"
+      },
+      "correct": "D",
+      "key_concept": "Audit AI tools that read auditee-controlled content can be steered by planted instructions, silently hiding evidence; weigh this before approving the use.",
+      "pre_read": "Ask who wrote the documents the tool will read and what they would want it to miss.",
+      "correct_explanation": "A generative tool can treat text it reads as instructions. Here suppliers wrote the files and procurement staff, whose dealings are under review, upload them, so anyone hiding kickbacks could cheaply plant wording that tells the tool to pass over items, and the audit would never see them. False flags are likely too, but they are visible and get followed up; steered misses are silent.",
+      "wrong_explanations": {
+        "A": "Tempting because false flags waste audit effort. But they are visible and followed up; items the tool is steered to skip are never seen.",
+        "B": "Tempting because prompting is a new skill. But training is easily arranged and does not stop the documents themselves steering the tool.",
+        "C": "Tempting because vendors may reuse inputs. But the tool is approved, so its data terms were already assessed before this use."
+      },
+      "tips": [
+        "Eliminate: C reopens data terms the tool's approval already covered, and B is a training gap that is easily closed.",
+        "Final two: D beats A because false flags are visible and followed up, while planted text can silently hide the very items under audit.",
+        "Exam cue: when an audit AI tool reads content the auditee controls, weigh indirect prompt injection. The auditee could steer the audit's own tool."
+      ],
+      "framework_ref": "NIST AI 100-2e2025 Section 3.4 (Indirect Prompt Injection Attacks and Mitigations); ISACA IT Audit Standard 1005 (Due Professional Care)",
+      "related_concepts": [
+        "Indirect prompt injection",
+        "AI in the audit",
+        "Professional skepticism"
+      ],
+      "_provenance": "Authored from concept: notes 3A.4 Planning the Audit's Own Use of AI (weigh each proposed audit use's risks to accuracy and independence before approval; content the auditee controls can steer the tool). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_028",
+      "domain": 3,
+      "subtopic": "3B Testing and sampling. Testing an output filter",
+      "principle_id": "population-includes-misses",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Uruguayan children's learning app uses an output filter to stop its tutoring chatbot from showing unsuitable content. Which procedure gives the IS auditor the BEST evidence that the filter operates effectively?",
+      "options": {
+        "A": "Inspect the filter's configured block lists and moderation rules",
+        "B": "Count the replies the filter blocked in each month this year",
+        "C": "Send reworded and disguised prompts and inspect the replies",
+        "D": "Read the filter vendor's description of how its filter works"
+      },
+      "correct": "C",
+      "key_concept": "AI guardrails are tested by attempting bypasses, such as reworded or disguised prompts; counts of blocked outputs cannot reveal misses.",
+      "pre_read": "Ask which evidence could show content that got past the filter.",
+      "correct_explanation": "Filters can often be bypassed by rewording a request or hiding it inside another task, so only trying such prompts shows whether unsuitable content gets through. Run in a test environment agreed with management, the test measures misses directly. Monthly block counts show the filter is active, but they cannot show what it let through, which is the risk to children.",
+      "wrong_explanations": {
+        "A": "Tempting because block lists define the filter. But configuration shows design, not whether reworded prompts can bypass it.",
+        "B": "Tempting because logs show the filter working all year. But blocked replies count catches; content that got through never appears in the count.",
+        "D": "Tempting because vendors document their products. But a description is the vendor's claim, not evidence of how the filter performs here."
+      },
+      "tips": [
+        "Eliminate: A inspects design rather than operation, and D relies on the vendor's description instead of evidence.",
+        "Final two: C beats B because block counts record only catches, while reworded and disguised prompts reveal what gets through.",
+        "Exam cue: to test an AI guardrail, try to get past it the way users would. Counts of blocked items never show the misses."
+      ],
+      "framework_ref": "NIST AI 100-1 MEASURE 2.6 (Evaluated regularly for safety risks, fails safely); MITRE ATLAS AML.T0054 (LLM Jailbreak)",
+      "related_concepts": [
+        "Output filters",
+        "Jailbreak testing",
+        "Operating effectiveness"
+      ],
+      "_provenance": "Authored from concept: notes 3B.1 Testing AI Controls and Human Oversight (test operation, not just design; for AI guardrails, attempt bypasses; trap 'test only the controls the builders describe'). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_045",
+      "domain": 3,
+      "subtopic": "3E Outputs and reports. Recommending on a biased model",
+      "principle_id": "accuracy-is-not-assurance",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An IS auditor finds that an Austrian bank's voice-authentication model locks out customers with speech impairments far more often than other customers. Which recommendation is BEST?",
+      "options": {
+        "A": "Have the model owner set group lockout limits and fix any breach",
+        "B": "Have the model owner raise the model's overall accuracy target",
+        "C": "Retrain the model on 2,000 hours of speech from affected customers",
+        "D": "Tell customers in the app that voice checks may sometimes fail"
+      },
+      "correct": "A",
+      "key_concept": "AI recommendations set group-level outcomes for a named owner; overall accuracy targets can hide a small group's harm, and owners choose the fix.",
+      "pre_read": "Ask whether each proposed measure would reveal the affected group's results, and who designs the fix.",
+      "correct_explanation": "An overall accuracy figure is dominated by the largest group, so a higher target can be met while customers with speech impairments stay locked out. Lockout limits for each group, owned and acted on by the model owner, make the gap visible and hold someone to closing it. The auditor recommends that outcome and its owner; the owner chooses the technical fix.",
+      "wrong_explanations": {
+        "B": "Tempting because better accuracy sounds like the cure. But an average can rise while a small group's lockouts stay high, so the gap could persist unseen.",
+        "C": "Tempting because more representative data often narrows such gaps. But designing the fix is the owner's job; the auditor recommends the result to achieve.",
+        "D": "Tempting because it is transparent. But a notice leaves affected customers locked out; it informs without fixing anything."
+      },
+      "tips": [
+        "Eliminate: C has the auditor designing the model fix, and D informs customers without reducing lockouts.",
+        "Final two: A beats B because an overall target can be met while one group stays locked out; group limits make the gap visible and owned.",
+        "Exam cue: AI recommendations name a measurable outcome for each affected group and an owner. Averages hide small groups, and the fix is the owner's."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); NIST AI 100-1 MEASURE 2.11 (Fairness and bias evaluated and documented)",
+      "related_concepts": [
+        "Audit recommendations",
+        "Group-level metrics",
+        "Model ownership"
+      ],
+      "_provenance": "Authored from concept: notes 3E.1 Writing AI Audit Findings (recommend an outcome and its owner, not a model fix the auditor designed; averages hide small groups; trap 'recommend the exact retraining approach'). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_056",
+      "domain": 3,
+      "subtopic": "3A Audit planning and design. Using a validation unit's work",
+      "principle_id": "accuracy-is-not-assurance",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A Puerto Rican staffing agency's validation unit, independent of the builders, reported only overall accuracy for its pay-offer model, and IS audit lacks machine-learning skills. How should the IS audit manager BEST use this work?",
+      "options": {
+        "A": "Rely on the unit's report, since validators were independent of builders",
+        "B": "Have a co-sourced specialist repeat the unit's accuracy tests",
+        "C": "Use it for accuracy, and co-source tests of offers by worker group",
+        "D": "Ask the builders whether validation covered the pay-offer model's main risks"
+      },
+      "correct": "C",
+      "key_concept": "Independent validation can be used for what it tested; the audit fills gaps, such as group fairness, that one accuracy figure cannot show.",
+      "pre_read": "List what the validation measured, then ask what risk of this model it leaves untested.",
+      "correct_explanation": "Independent validation can be relied on for what it tested, once the manager has evaluated the unit's competence and method. One overall accuracy figure says nothing about whether pay offers differ unfairly across worker groups, so the manager uses the work for accuracy and fills the gap with a co-sourced specialist. Relying on the report for everything treats independence as coverage; independent work still covers only what it tested.",
+      "wrong_explanations": {
+        "A": "Tempting because the validators are independent of the builders. But independence shows objectivity, not coverage; an overall accuracy figure cannot show fair pay offers across groups.",
+        "B": "Tempting because it uses a specialist. But repeating the same accuracy tests duplicates covered work and still leaves pay offers by group untested.",
+        "D": "Tempting because the builders know the model. But they are the subject of the validation; their view of its coverage is not independent evidence."
+      },
+      "tips": [
+        "Eliminate: B repeats work the unit already covered, and D asks the builders to vouch for a review of their own model.",
+        "Final two: C beats A because independence makes the unit's work usable, not complete; overall accuracy cannot show whether pay offers are fair across worker groups.",
+        "Exam cue: when using others' AI testing, rely on what it covered and fill the gaps. An overall accuracy figure never answers the fairness question."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1206 (Using the Work of Other Experts); NIST AI 100-1 MEASURE 2.11 (Fairness and bias evaluated and documented)",
+      "related_concepts": [
+        "Using the work of others",
+        "Co-sourcing",
+        "Fairness testing"
+      ],
+      "_provenance": "Authored from concept: notes 3A.3 Specialists, Skills and Independence (fill skill gaps with co-sourcing; evaluate a specialist's or validator's method and data before relying on results; the audit function stays responsible). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_059",
+      "domain": 3,
+      "subtopic": "3B Testing and sampling. Builders' control list",
+      "principle_id": "independence-of-ai-assurance",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "The data science team's control list for a Gambian airline's model, which overbooks flights it predicts will have no-shows, covers validation and drift monitoring. What should the IS auditor do FIRST?",
+      "options": {
+        "A": "Scope testing to the listed controls plus IT change controls",
+        "B": "Map the model's risks to controls independently of the list",
+        "C": "Ask the team to confirm in writing that the list is complete",
+        "D": "Check the model card for controls missing from the list"
+      },
+      "correct": "B",
+      "key_concept": "The IS auditor maps an AI model's risks to controls independently, rather than testing only the controls its builders describe.",
+      "pre_read": "Ask what each option would add to the audit plan before any testing begins.",
+      "correct_explanation": "Builders list the controls they run, and an AI model's risks reach beyond them: who can change training data, who approves retraining, whether staff can override an overbooking and how bumped passengers are affected. Mapping risks to controls independently shows which controls should exist before testing begins. Adding IT change controls looks thorough, but a retrain changes the model with no code change.",
+      "wrong_explanations": {
+        "A": "Tempting because change controls look like the missing lifecycle piece. But a retrain changes the model with no code change, and label access and overrides sit outside IT change control.",
+        "C": "Tempting because it seems to close the gap. But a written confirmation from the team is still the team's own view of its controls.",
+        "D": "Tempting because model cards describe the model. But the card is the builders' document too, so it shares the list's blind spots."
+      },
+      "tips": [
+        "Eliminate: C turns the team's own view into a signed statement, and D checks a document the same builders wrote.",
+        "Final two: B beats A because IT change controls track code, while a retrain changes the model with no code change; an independent risk map finds gaps such as retraining approval.",
+        "Exam cue: never let builders' control lists set an AI audit's scope. Map risks to controls yourself, then test."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1201 (Risk Assessment in Planning); NIST AI 100-1 MAP 4.2 (Internal risk controls for components identified)",
+      "related_concepts": [
+        "Risk and control matrix",
+        "Retraining approval",
+        "Control design"
+      ],
+      "_provenance": "Authored from concept: notes 3B.1 Testing AI Controls and Human Oversight (map risks to controls independently, including some data scientists may not mention, such as training-data access and retraining approval). Release audit, 18 Nov 2026: runner-up A now adds IT general change controls, which only the AI fact (a retrain changes the model with no code change) defeats. Release audit fix round 2, 18 Nov 2026: option A is now a scoping step, so plan-before-test sense no longer rules it out; neutral pre_read. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_072",
+      "domain": 3,
+      "subtopic": "3D Data quality and analytics. AI-written extract query",
+      "principle_id": "ai-output-is-a-lead",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An IS auditor's approved AI assistant wrote the query extracting a Belizean tourism board's tour-guide licensing decisions; the assistant then queried the source system for a total, which matched. What should the auditor do FIRST?",
+      "options": {
+        "A": "Compare the extract to a total from the system's own reports",
+        "B": "Rely on the match, since the total came from the source system",
+        "C": "Accept the extract, since the assistant is approved for audit use",
+        "D": "Ask the assistant to explain what each of its queries does"
+      },
+      "correct": "A",
+      "key_concept": "A reconciliation is independent only if the source total comes from outside the AI tool that wrote the extract query.",
+      "pre_read": "Ask who produced each of the two numbers being compared.",
+      "correct_explanation": "The assistant wrote both queries, so the match checks its work against itself: an AI-written query can drop records through a wrong join, filter or date range, and the same misreading of the schema can shape the total too. A total the assistant did not produce, such as the system's own report, gives an independent check. A source-system figure is independent only when the query behind it is.",
+      "wrong_explanations": {
+        "B": "Tempting because the total came from the source system. But the assistant wrote that query too, so one wrong filter or date range can shape both numbers.",
+        "C": "Tempting because the tool passed the audit function's approval. But approval permits using the tool; it does not show this query returned every record.",
+        "D": "Tempting because it seems to check the logic. But the assistant explaining its own queries can repeat its own mistake."
+      },
+      "tips": [
+        "Eliminate: C treats the tool's approval as proof of this one output, and D asks the tool to check its own work.",
+        "Final two: A beats B because a total the same assistant queried is not independent; one misread schema can drop the same records from both counts.",
+        "Exam cue: reconcile AI-written extracts to a figure the AI tool did not shape. A total the same assistant queried checks its work against itself."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); NIST AI 100-1 MAP 2.2 (Knowledge limits and human oversight of outputs documented)",
+      "related_concepts": [
+        "Reconciliation",
+        "Control total",
+        "AI-assisted extraction"
+      ],
+      "_provenance": "Authored from concept: notes 3D.1 Completeness and Accuracy of Audit Data (an extract is a copy; queries, joins and date ranges can drop records without any error message; reconcile counts and totals to the source). Re-angled at the batch 4 cross-domain gate: the earlier key (reconcile to the source) was answerable from CISA alone; the deciding fact is now that a source total the same assistant queried is not independent. Option A reworded in batch 4 round 2 so the key is not the only negated option. Stem reworded in batch 4 round 3 to make explicit that the assistant, not the auditor, queried the total. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_073",
+      "domain": 3,
+      "subtopic": "3D Data quality and analytics. Scoring an audit tool",
+      "principle_id": "accuracy-is-not-assurance",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A Faroese salmon exporter's audit team tuned its AI duplicate-invoice tool on 200 known duplicates, then reported it found 196 of them. What is the GREATEST concern with relying on this result?",
+      "options": {
+        "A": "Two hundred known duplicates are too few to tune the tool",
+        "B": "The four missed duplicates were not examined for a common pattern",
+        "C": "The tool vendor's own published accuracy figure was not checked",
+        "D": "The tool was scored on the same cases used to tune it"
+      },
+      "correct": "D",
+      "key_concept": "An audit AI tool scored on the cases used to tune it overstates performance; validation needs known cases held back from tuning.",
+      "pre_read": "Read how the result was produced before trusting the number.",
+      "correct_explanation": "Scoring a tool on the cases used to tune it is like grading an exam the student has already seen: the 98% shows how well it fits those 200, not how many new duplicates it will catch. Validation needs known cases held back from tuning. Studying the four misses could refine the tool, but it still trusts a catch rate that overstates performance.",
+      "wrong_explanations": {
+        "A": "Tempting because small tuning sets can limit a tool. But the bigger flaw is scoring it on those same cases, which inflates the result whatever the set's size.",
+        "B": "Tempting because exceptions deserve follow-up. But the four misses come from the tuning cases; the 98% itself overstates what the tool will catch on new invoices.",
+        "C": "Tempting because vendors publish figures. But a vendor figure from other data would not validate the tool here either."
+      },
+      "tips": [
+        "Eliminate: C looks to a vendor figure that cannot validate the tool on this data, and A blames the set's size rather than how it was scored.",
+        "Final two: D beats B because studying four misses still trusts a catch rate measured on tuning cases; only known cases held back from tuning show what the tool will miss.",
+        "Exam cue: validate an audit AI tool on known cases it never saw while being tuned, just as models are tested on held-out data."
+      ],
+      "framework_ref": "NIST AI 100-1 MEASURE 2.1 (Test sets, metrics and TEVV tools documented); ISACA IT Audit Standard 1205 (Evidence)",
+      "related_concepts": [
+        "Known-outcome test",
+        "Held-out data",
+        "Tool validation"
+      ],
+      "_provenance": "Authored from concept: notes 3D.2 AI-Assisted Audit Analytics and Tool Validation (validate the tool before relying on it by running it on data whose correct answers are known; measure both errors). Release audit fix round 2, 18 Nov 2026: runner-up B now examines the four misses instead of false alarms, removing a second defensible gap and the false-alarm runner-up shared with aaia_d3_106. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_076",
+      "domain": 3,
+      "subtopic": "3D Data quality and analytics. An AI service's web-search feature",
+      "principle_id": "ai-in-audit-stays-yours",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Greenlandic municipality's audit team finds its approved AI service's web-search feature sends prompt text to a search provider outside the contract. What should the chief audit executive do FIRST?",
+      "options": {
+        "A": "Allow its use, since the main service is approved under contract",
+        "B": "Strip names from any prompt that might trigger a web search",
+        "C": "Ask the vendor to confirm the search provider deletes queries",
+        "D": "Disable web search for audit work until its data path is assessed"
+      },
+      "correct": "D",
+      "key_concept": "An AI service's approval covers data paths its contract covers; features that send audit data to outside providers need assessment first.",
+      "pre_read": "Trace where the audit data goes when the feature runs.",
+      "correct_explanation": "The approval covered the AI service under its contract terms; the search feature sends audit data to a provider those terms do not cover, so the approval does not extend to it. Disabling the feature for audit work keeps data inside the approved boundary while the path is assessed. Stripping names leaves context that can still identify people and does nothing for confidential findings.",
+      "wrong_explanations": {
+        "A": "Tempting because the service is approved. But approval rested on contract terms that do not reach the outside search provider.",
+        "B": "Tempting because it reduces personal data. But context can still identify people, and confidential audit facts leave anyway.",
+        "C": "Tempting because it seeks assurance. But a vendor's word about a provider outside the contract is not an enforceable term."
+      },
+      "tips": [
+        "Eliminate: A extends an approval past the contract it rested on, and C relies on a vendor's word with no contract behind it.",
+        "Final two: D beats B because the feature sends audit data outside the approved boundary; stripping names still lets confidential findings and context leave.",
+        "Exam cue: an approved AI service is approved under its terms. A feature that sends data elsewhere is outside the approval until assessed."
+      ],
+      "framework_ref": "NIST AI 600-1 Section 2.4 (Data Privacy); NIST SP 800-53 Rev. 5 SA-9 (External System Services)",
+      "related_concepts": [
+        "Approved AI service",
+        "Data path",
+        "Audit data confidentiality"
+      ],
+      "_provenance": "Authored from concept: notes 3D.3 Reproducibility and Confidentiality in AI-Assisted Audits (contract terms and data classification decide which audit data an AI service may receive; removing names does not make data safe). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_081",
+      "domain": 3,
+      "subtopic": "3E Outputs and reports. Tool rating versus observation",
+      "principle_id": "ai-in-audit-stays-yours",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Three days' observation shows Isle of Man bank staff bulk-clearing a payment model's flags unread; the audit's AI tool, reading only flag statuses, rates the review effective. Which conclusion is BEST for the IS auditor?",
+      "options": {
+        "A": "The control is ineffective, with a note on why the tool disagrees",
+        "B": "Accept the tool's rating, since it analyzed the whole year's population",
+        "C": "Report both ratings and let management decide which one applies",
+        "D": "Rerun the tool with revised prompts until its rating matches"
+      },
+      "correct": "A",
+      "key_concept": "An audit AI tool's rating is an input; when direct evidence contradicts it, the auditor concludes on the evidence and documents why.",
+      "pre_read": "Ask what the tool could see in its data and what only observation could see.",
+      "correct_explanation": "The tool read only flag statuses, and a flag cleared unread has the same status as one reviewed with care. Observation shows the review does not operate as intended, and the auditor owns the conclusion. Noting why the tool's rating differs keeps the work papers defensible. Full-population coverage cannot outweigh evidence the data never captured.",
+      "wrong_explanations": {
+        "B": "Tempting because full-population analytics sound stronger than three days of observation. But the tool saw only statuses; a flag cleared unread looks the same as one reviewed with care.",
+        "C": "Tempting because it seems balanced. But the conclusion is the auditor's to reach; management does not choose the audit's ratings.",
+        "D": "Tempting because a better prompt may help. But tuning a tool until it agrees is not evidence; observation already shows the failure."
+      },
+      "tips": [
+        "Eliminate: C hands the audit's conclusion to management, and D adjusts the tool until it gives the wanted answer.",
+        "Final two: A beats B because the tool judged only flag statuses; an unread clearance has the same status as a careful one, so the auditor's evidence decides.",
+        "Exam cue: an audit AI tool's rating is input, never the conclusion. When direct evidence contradicts it, conclude on the evidence and record why they differ."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); NIST AI 100-1 MAP 2.2 (Knowledge limits and human oversight of outputs documented)",
+      "related_concepts": [
+        "Professional judgment",
+        "AI-assisted testing",
+        "Automation bias"
+      ],
+      "_provenance": "Authored from concept: notes 3E.3 Disclosing AI Use and Owning Conclusions (never present an AI tool's output as a conclusion without the auditor's own judgment; the auditor stays accountable for every finding). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_087",
+      "domain": 3,
+      "subtopic": "3A Audit planning and design. A specialist's jailbreak tests",
+      "principle_id": "test-the-ai-as-used",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "IS audit's independent specialist found all 500 jailbreak attempts on a vendor model's API failed; a Tanzanian mobile bank's assistant app adds a system prompt to that model. What should the IS auditor do FIRST?",
+      "options": {
+        "A": "Ask the vendor to confirm the API model matches the app's model",
+        "B": "Have the specialist rerun the tests through the bank's own app",
+        "C": "Rely on the result, since the bank's app calls the vendor model",
+        "D": "Rely on the result, since the specialist is independent and qualified"
+      },
+      "correct": "B",
+      "key_concept": "Judge a specialist's AI test against the system as deployed; bare model API results do not carry over to the app wrapping it.",
+      "pre_read": "Read the test conditions as closely as the result.",
+      "correct_explanation": "Using an expert's work means judging whether the method fits the objective. The bank's app adds its own system prompt, and may add data or tools, each of which can change how the model responds, so an attack the bare model refuses can succeed through the app. Rerunning the tests through the app checks the assistant customers use. Sharing one underlying model does not carry API results over.",
+      "wrong_explanations": {
+        "A": "Tempting because the vendor knows its model. But a vendor's confirmation is a claim, and the same model can behave differently inside the app.",
+        "C": "Tempting because the model is the same. But the app adds its own prompt and may add data or tools, which can change how attacks land.",
+        "D": "Tempting because the specialist is vetted and independent. But objectivity and skill do not extend tests to a channel never tried."
+      },
+      "tips": [
+        "Eliminate: A swaps a test for the vendor's assurance, and D weighs who ran the tests instead of what they covered.",
+        "Final two: B beats C because the app's own system prompt, and any data or tools it adds, can change how the model responds; API results do not carry over to the deployed assistant.",
+        "Exam cue: before relying on an AI specialist's result, check that the tests hit the system as deployed: channel, prompts, data, users and version."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1206 (Using the Work of Other Experts); NIST AI 100-1 MEASURE 2.3 (Performance measured in conditions similar to deployment)",
+      "related_concepts": [
+        "Using experts' work",
+        "Jailbreaks",
+        "Deployed system testing"
+      ],
+      "_provenance": "Authored from concept: notes 3A.3 Specialists, Skills and Independence (evaluate a specialist's method and data before relying on results; the audit function stays responsible). Review round 1, 5 Nov 2026: re-angled from an English-only test of a bilingual assistant (aaia_d2_122's frame) to tests sent to the bare model API instead of the deployed app. Final review, 5 Nov 2026: tip 2 now hedges the app's data and tools as the explanations do. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_096",
+      "domain": 3,
+      "subtopic": "3B Testing and sampling. A fairness dashboard's figures",
+      "principle_id": "population-includes-misses",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A Colombian bank's fairness dashboard compares approval rates by sex using only completed applications; its model asks some applicants for extra documents, and many then withdraw. What should the IS auditor do FIRST?",
+      "options": {
+        "A": "Rely on the dashboard, since the bank's own systems generate it",
+        "B": "Recompute approval rates by sex from completed applications in the logs",
+        "C": "Recompute approval rates by sex from all applications, withdrawals included",
+        "D": "Ask the model owner why applicants withdraw after document requests"
+      },
+      "correct": "C",
+      "key_concept": "When a model's own actions remove people before the decision, fairness is measured on everyone who applied, not only completed cases.",
+      "pre_read": "Ask who the metric's population leaves out, and why.",
+      "correct_explanation": "The model does more than approve or decline: its document requests drive withdrawals, so a measure built on completed applications leaves out people the model effectively turned away. If requests fall more on one sex, the dashboard can look fair while the process is not. Recomputing from all applications, withdrawals included, tests the model's whole effect. Reperforming the dashboard's figures only confirms its arithmetic on the same narrowed population.",
+      "wrong_explanations": {
+        "A": "Tempting because the figures are system-generated. But the system applies a definition that leaves out applicants the model's requests drove away.",
+        "B": "Tempting because reperformance is strong evidence. But it repeats the dashboard's definition, so withdrawals the model caused stay outside the measure.",
+        "D": "Tempting because it seeks the cause. But inquiry comes after evidence; first measure whether withdrawals differ by sex."
+      },
+      "tips": [
+        "Eliminate: A trusts a system's figures without checking what they measure, and D asks for explanations before the evidence is in.",
+        "Final two: C beats B because reperforming the dashboard repeats its narrowed population; only all applications show whether document requests drove one sex away.",
+        "Exam cue: check how a fairness metric's population was formed. If the model's actions remove people early, recompute from everyone who applied."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); NIST AI 100-1 MEASURE 2.11 (Fairness and bias evaluated and documented)",
+      "related_concepts": [
+        "Reperformance",
+        "Fairness metrics",
+        "Population definition"
+      ],
+      "_provenance": "Authored from concept: notes 3B.3 Reperformance and Full-Population Testing (builders' metrics can hide choices such as excluded outcomes; recomputing from raw records exposes them). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_099",
+      "domain": 3,
+      "subtopic": "3C Evidence collection. Preserving a continuously learning model",
+      "principle_id": "reproducible-ai-evidence",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Bahraini Islamic bank's fraud model updates its weights continuously from each confirmed case. Which preservation request BEST lets the IS auditor later rerun the model on decisions from the audit period?",
+      "options": {
+        "A": "The training code and the dataset that built the model's first version",
+        "B": "A full copy of the updated model as it stands at fieldwork",
+        "C": "The decision log of each transaction's score and outcome",
+        "D": "Regular snapshots of the model, with the update data between them"
+      },
+      "correct": "D",
+      "key_concept": "A continuously learning model has no fixed version; reperforming past decisions needs periodic snapshots and the update data between them.",
+      "pre_read": "Ask what a later rerun would need to recreate.",
+      "correct_explanation": "A model that learns from every confirmed case is a slightly different model after each update, so one copy taken at fieldwork reproduces only today's decisions. Regular snapshots, with the confirmed cases applied between them, let the auditor rebuild the model as it stood when a past decision was made, or come close, and rerun it. Decision logs record what was decided, but cannot show the model then in force would decide that way.",
+      "wrong_explanations": {
+        "A": "Tempting because it shows how the model began. But thousands of updates have shaped it since; the starting point cannot reproduce later states.",
+        "B": "Tempting because it preserves the model before further change. But it captures only today's state; earlier decisions came from states the updates have replaced.",
+        "C": "Tempting because logs are strong evidence of what happened. But they record results; rerunning needs the model state that produced them."
+      },
+      "tips": [
+        "Eliminate: A preserves only the starting point of a model that has changed since, and C records results without the model that produced them.",
+        "Final two: D beats B because a continuously learning model changes with each case; one copy at fieldwork cannot rerun decisions made months earlier.",
+        "Exam cue: a model that keeps learning has no single version. Preserve regular snapshots and the update data between them to rerun past decisions."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention)",
+      "related_concepts": [
+        "Evidence preservation",
+        "Online learning",
+        "Reperformance"
+      ],
+      "_provenance": "Authored from concept: notes 3C.2 Sufficiency, Reliability and Preservation of AI Evidence (tie every item to the model version under audit; ask owners to preserve versions and logs before changes overwrite them). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_100",
+      "domain": 3,
+      "subtopic": "3C Evidence collection. Model-written review reasons",
+      "principle_id": "real-human-oversight",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A Lebanese retailer's warranty assessors must give reasons for accepting the model's claim rejections; the screen pre-fills model-written reasons, which most keep. What is the IS auditor's GREATEST concern with these reasons as evidence?",
+      "options": {
+        "A": "They may be too short to explain each rejection fully",
+        "B": "The model-written reasons may contain factual errors about the claims",
+        "C": "They may record the model's text, not any human judgment",
+        "D": "They may not be kept for the whole audit period"
+      },
+      "correct": "C",
+      "key_concept": "A pre-filled, model-written reason that reviewers keep evidences the model's text, not human review, and invites automation bias.",
+      "pre_read": "Ask what each record would look like if no real review took place.",
+      "correct_explanation": "The reasons field is meant to evidence each assessor's review, but when the screen supplies a model-written reason and most assessors keep it, the field records the model's text, not human judgment. Pre-filled answers also anchor reviewers toward agreement, so the records may reflect automation bias rather than review. The auditor needs other evidence, such as review times, overrides or seeded cases. Errors in the reasons matter, but they do not show whether review happened.",
+      "wrong_explanations": {
+        "A": "Tempting because brief reasons explain little. But length is not the problem; who wrote the reason is.",
+        "B": "Tempting because generated text can be wrong. But the question is whether the field shows review; even accurate text would be the model's, not the assessor's.",
+        "D": "Tempting because retention limits evidence. But nothing suggests a retention gap; the reasons' authorship is the issue."
+      },
+      "tips": [
+        "Eliminate: A worries about length when authorship is at issue, and D raises a retention gap nothing suggests.",
+        "Final two: C beats B because even accurate model text, kept unchanged, shows acceptance, not the assessor's judgment.",
+        "Exam cue: evidence of human review must come from the human. Pre-filled AI text that reviewers keep signals automation bias, not oversight."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); NIST AI 600-1 Section 2.7 (Human-AI Configuration)",
+      "related_concepts": [
+        "Automation bias",
+        "Evidence reliability",
+        "Human review"
+      ],
+      "_provenance": "Authored from concept: notes 3C.2 Sufficiency, Reliability and Preservation of AI Evidence (rank evidence by reliability; records must show what they claim to show). Review round 1, 5 Nov 2026: setting moved from an insurer's claim denials (aaia_d3_091 is also an insurer's claims model) to a retailer's warranty-claim rejections. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_109",
+      "domain": 3,
+      "subtopic": "3E Outputs and reports. Recommendation on a vendor's silent change",
+      "principle_id": "fix-the-control-not-the-model",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor finds a Cameroonian bank's vendor-hosted chatbot quoted outdated exchange rates for a month after the vendor changed its data feed without telling the bank. Which recommendation is BEST?",
+      "options": {
+        "A": "The bank's vendor manager should require change notices and retests",
+        "B": "The vendor should restore and retest its exchange-rate data feed",
+        "C": "The bank should pin the chatbot to one fixed model version",
+        "D": "The bank's chatbot team should add a disclaimer that rates may lag"
+      },
+      "correct": "A",
+      "key_concept": "Recommendations on vendor AI address the organization's control over every vendor change, with a named internal owner; pinning the model covers only one component.",
+      "pre_read": "Locate the control gap that let the problem run for a month.",
+      "correct_explanation": "The finding's cause is the bank's missing control over vendor changes: the vendor changed a feed, and nothing at the bank detected it for a month. The recommendation goes to the bank's management, with an owner who requires notice of vendor changes and retests the chatbot after each one. Pinning the model version sounds like change control, but this change was to a data feed, which a pinned model would still read.",
+      "wrong_explanations": {
+        "B": "Tempting because the vendor's change caused the error. But the report recommends to the bank, and fixing one feed leaves the next change undetected.",
+        "C": "Tempting because version pinning is a sound AI control. But this change came through a data feed; a pinned model still reads whatever the feed supplies.",
+        "D": "Tempting because it warns customers. But a disclaimer leaves wrong rates in place and does nothing about changes going unnoticed."
+      },
+      "tips": [
+        "Eliminate: B addresses the vendor rather than the bank's control gap, and D warns customers while wrong rates continue.",
+        "Final two: A beats C because the change was to a data feed, not the model; only notice and retesting of every vendor change catch it.",
+        "Exam cue: an AI system changes through models, data feeds, prompts and settings. Recommend control over every vendor change, not just the model version."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); NIST AI 100-1 MANAGE 3.1 (Third-party AI risks monitored and controls applied)",
+      "related_concepts": [
+        "Recommendations",
+        "Vendor changes",
+        "Third-party AI"
+      ],
+      "_provenance": "Authored from concept: notes 3E.1 Writing AI Audit Findings (recommend the outcome management should achieve and who owns it; the cause is the control gap). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_114",
+      "domain": 3,
+      "subtopic": "3E Outputs and reports. Supervising an AI-assisted work paper",
+      "principle_id": "ai-in-audit-stays-yours",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Bangladeshi exporter's IS audit manager finds a work paper concluding, from an approved AI tool alone, that all 650 supplier bank-detail changes had callbacks. Which step BEST supports the conclusion before sign-off?",
+      "options": {
+        "A": "Rerun the tool on the same records to confirm its conclusion",
+        "B": "Have the preparer verify a sample against the underlying source records",
+        "C": "Sign off, since the tool is approved for audit testing",
+        "D": "Check the tool's validation record before signing off the work paper"
+      },
+      "correct": "B",
+      "key_concept": "Supervising AI-assisted work, the reviewer needs evidence of what the auditor verified; tool approval or validation does not stand in for it.",
+      "pre_read": "Read the work paper as a reviewer who must sign it.",
+      "correct_explanation": "Supervision asks whether each conclusion rests on sufficient evidence the auditor checked. Here the work paper holds only the tool's output: nothing shows whether all 650 changes were in its input or whether any callback was confirmed. Having the preparer verify a sample against change and callback records, and document it, gives the conclusion evidence. The tool's validation shows it worked on test cases, not that this run was complete and right.",
+      "wrong_explanations": {
+        "A": "Tempting because a rerun seems to confirm. But repeating the same tool on the same data checks consistency, not accuracy or completeness.",
+        "C": "Tempting because approval sounds like assurance. But approval permits use; each conclusion still needs the auditor's own checks.",
+        "D": "Tempting because validation supports reliance. But it shows the tool worked on test cases, not that this run's inputs and results were right."
+      },
+      "tips": [
+        "Eliminate: A checks the tool against itself, and C treats approval of the tool as proof of this result.",
+        "Final two: B beats D because validation shows the tool can work, not that this run covered all 650 changes and got them right.",
+        "Exam cue: an AI tool's output in a work paper is unfinished work. Supervisors look for the auditor's own checks against source records."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1204 (Performance and Supervision); ISACA IT Audit Standard 1205 (Evidence)",
+      "related_concepts": [
+        "Supervision",
+        "AI-assisted work papers",
+        "Verification"
+      ],
+      "_provenance": "Authored from concept: notes 3E.3 Disclosing AI Use and Owning Conclusions (keep work papers that show what the tool did and what the auditor verified). Review round 1, 5 Nov 2026: control population moved from leavers' access (aaia_d3_039, aaia_d3_101) to callbacks on supplier bank-detail changes; 'preparer' replaces 'senior'. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_116",
+      "domain": 3,
+      "subtopic": "3A Audit planning and design. An advisory model in the plan",
+      "principle_id": "real-human-oversight",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Queensland child-safety agency's audit universe rates its hotline-screening model low risk because caseworkers decide each visit; they accept 98% of its recommendations, most within seconds. What is the GREATEST weakness in this rating?",
+      "options": {
+        "A": "It ignores how advanced the model's machine-learning method is",
+        "B": "It does not show caseworkers are trained and authorized to override",
+        "C": "It credits a caseworker review that rarely changes the outcome",
+        "D": "It should rest on the model's accuracy at launch, not on caseworkers"
+      },
+      "correct": "C",
+      "key_concept": "A human step lowers AI risk only if it changes outcomes; fast, near-total agreement means a rating cannot credit the review untested.",
+      "pre_read": "Compare the rating's reasoning with how decisions are really made.",
+      "correct_explanation": "A human in the loop lowers risk only if the human changes outcomes. Caseworkers accepting 98% of recommendations within seconds suggests automation bias: the model largely decides which reports get a visit, so its errors become decisions about children's safety. Rating the use low because people decide credits a review that rarely acts. Training and authority to override, even if shown, would not prove the review catches errors.",
+      "wrong_explanations": {
+        "A": "Tempting because complex methods seem riskier. But novelty is not risk; ratings follow the likelihood and impact of harm.",
+        "B": "Tempting because trained, authorized reviewers are a real control. But 98% agreement in seconds suggests the review rarely changes outcomes, so paper authority cannot justify a low rating.",
+        "D": "Tempting because accuracy matters. But launch accuracy says nothing about harm when errors are followed, and the weakness here is crediting a review that rarely acts."
+      },
+      "tips": [
+        "Eliminate: A rates by technical novelty, and D rests the rating on launch accuracy.",
+        "Final two: C beats B because override authority on paper does not show the review changes outcomes; 98% agreement in seconds points to automation bias.",
+        "Exam cue: when reviewers agree with a model almost always and fast, rate the use as if the model decides, then test the review."
+      ],
+      "framework_ref": "NIST AI 100-1 MAP 3.5 (Processes for human oversight defined and assessed); ISACA IT Audit Standard 1201 (Risk Assessment in Planning)",
+      "related_concepts": [
+        "Risk ranking",
+        "Automation bias",
+        "Human oversight"
+      ],
+      "_provenance": "Authored from concept: notes 3A.1 AI Audit Universe and Risk-Based Plan (rank each use by the likelihood and impact of harm, how autonomous its decisions are and how strong its controls are). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_117",
+      "domain": 3,
+      "subtopic": "3A Audit planning and design. A scam model retrained monthly",
+      "principle_id": "population-includes-misses",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A Finnish dating service retrains its scam-profile model monthly on moderators' verdicts, and moderators review only the profiles the model flags. Which area is MOST important for the IS auditor to bring into scope?",
+      "options": {
+        "A": "Accuracy reported separately for each kind of scam and in total",
+        "B": "How the labels that each retrain learns from are produced",
+        "C": "Backup and recovery of the retraining environment",
+        "D": "Specialist review of the model's neural network architecture"
+      },
+      "correct": "B",
+      "key_concept": "A model retrained on outcomes it selected never learns what it misses; scope covers how its labels are produced, not only its accuracy.",
+      "pre_read": "Follow the model through one monthly cycle.",
+      "correct_explanation": "Moderators see only what the model flags, so every label it retrains on comes from its own choices. Scam profiles it misses are never reviewed, never labeled and never learned, and the blind spot can widen with each monthly retrain. Scope must cover how labels are produced. Accuracy by scam type is computed from those same self-selected labels, so it would look sound while the blind spot grows.",
+      "wrong_explanations": {
+        "A": "Tempting because overall accuracy can hide weak areas. But every figure uses labels the model chose, so scams it misses never appear in any of them.",
+        "C": "Tempting because recovery is a standard control. But it is a minor IT point beside labels that shape every retrain.",
+        "D": "Tempting because the model is complex. But scoping the algorithm leaves out the data, where this risk sits."
+      },
+      "tips": [
+        "Eliminate: D scopes the algorithm rather than its data, and C adds a general IT control of minor weight here.",
+        "Final two: B beats A because accuracy by scam type is computed from labels the model itself chose, so the scams it misses never show up.",
+        "Exam cue: when a model learns only from cases it selected, scope the labeling loop. What it never flags is never learned or measured."
+      ],
+      "framework_ref": "NIST AI 100-1 MAP 2.3 (Scientific integrity and TEVV considerations, including data representativeness); ISACA IT Audit Standard 1203 (Engagement Planning)",
+      "related_concepts": [
+        "Audit scope",
+        "Feedback loop",
+        "Training labels"
+      ],
+      "_provenance": "Authored from concept: notes 3A.2 Scoping an AI Audit Engagement (cover the lifecycle stages in play, including data sourcing, not only the algorithm and its accuracy). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_119",
+      "domain": 3,
+      "subtopic": "3A Audit planning and design. A specialist's stand-in model",
+      "principle_id": "test-the-ai-as-used",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "The audit's vetted specialist explains a Kerala cooperative bank's gold-loan model using a simpler surrogate model trained to mimic it, and concludes that declines rest on repayment history. What should the IS auditor do FIRST?",
+      "options": {
+        "A": "Accept the conclusion, as the specialist was vetted and is independent",
+        "B": "Compare the surrogate's main factors with the bank's model card",
+        "C": "Check how closely the surrogate's outputs match the real model",
+        "D": "Ask the model's developers to confirm the surrogate's explanation"
+      },
+      "correct": "C",
+      "key_concept": "A surrogate model explains itself; its explanations describe the real model only as far as the two agree, so check that agreement first.",
+      "pre_read": "Ask what the specialist's method can and cannot show.",
+      "correct_explanation": "A surrogate explains itself, not the bank's model. Its factors describe the real model's declines only as far as the two agree, so the first question is fidelity: how often the surrogate reaches the same decision for the same applicants. The model card is written by the builders and describes intended design; agreeing with it cannot show the surrogate tracks what the deployed model actually does.",
+      "wrong_explanations": {
+        "A": "Tempting because the specialist was vetted. But vetting covers competence and objectivity, not whether this method supports this conclusion.",
+        "B": "Tempting because the card documents the intended factors. But it is the builders' description, so matching it cannot show the surrogate mirrors the deployed model.",
+        "D": "Tempting because developers know the model. But builders vouching for a test of their own model is weak, non-independent evidence."
+      },
+      "tips": [
+        "Eliminate: A relies on a vetted specialist without evaluating the method, and D asks the builders to vouch for a test of their own model.",
+        "Final two: C beats B because a surrogate explains the real model only as far as they agree; a builder-written card cannot show that agreement.",
+        "Exam cue: an explanation from a stand-in model covers the stand-in. Check how closely it matches the real model before relying on it."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1206 (Using the Work of Other Experts); NIST AI 100-1 MEASURE 2.9 (Model explained, validated and documented, output interpreted in context)",
+      "related_concepts": [
+        "Specialists",
+        "Surrogate models",
+        "Explainability"
+      ],
+      "_provenance": "Authored from concept: notes 3A.3 Specialists, Skills and Independence (evaluate a specialist's method and data before relying on results; the audit function stays responsible). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_122",
+      "domain": 3,
+      "subtopic": "3A Audit planning and design. An audit tool on the auditee's model",
+      "principle_id": "ai-in-audit-stays-yours",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "To check 30,000 taxpayer letters drafted by a Basque tax agency's AI tool, its IS audit team plans to use an approved audit tool built on the same vendor model. What is the GREATEST concern?",
+      "options": {
+        "A": "The vendor may update the shared model while the checks run",
+        "B": "The audit tool may share the drafting tool's blind spots",
+        "C": "Checking each of the 30,000 letters costs more than a sample",
+        "D": "The agency's managers have not agreed to the tool's criteria"
+      },
+      "correct": "B",
+      "key_concept": "A checker built on the same model as the AI it checks tends to share its blind spots, so it is not an independent test.",
+      "pre_read": "Weigh each concern by how much it would weaken the audit's conclusion.",
+      "correct_explanation": "A checker built on the same model as the drafter tends to share its mistakes: if the model misreads a rule, the checker likely accepts the misreading. Its errors are correlated with the drafting tool's, so the letters most likely to be wrong are the ones most likely to pass. A model update during the checks is a reproducibility issue to record; it does not undermine validity the way shared blind spots do.",
+      "wrong_explanations": {
+        "A": "Tempting because hosted models change. Recording the version handles that; shared blind spots would make the checks unreliable even with a fixed version.",
+        "C": "Tempting because samples are cheaper. But a full-population check is a strength when the tool is valid; cost is not the main risk here.",
+        "D": "Tempting because owners know their rules. But the auditor selects audit criteria for suitability; management's agreement is never a condition."
+      },
+      "tips": [
+        "Eliminate: C treats full-population testing as the problem, and D gives the auditee a veto over audit criteria.",
+        "Final two: B beats A because shared training means shared mistakes; a model update can be recorded, but a checker blind to the same errors passes them.",
+        "Exam cue: an AI checking output from the same model is not an independent check. Look for correlated errors before relying on it."
+      ],
+      "framework_ref": "NIST AI 600-1 Section 2 (Overview of Risks Unique to or Exacerbated by GAI); ISACA IT Audit Standard 1205 (Evidence)",
+      "related_concepts": [
+        "Audit AI tools",
+        "Correlated errors",
+        "Independence"
+      ],
+      "_provenance": "Authored from concept: notes 3A.4 Planning the Audit's Own Use of AI (weigh each proposed use's benefits against its risks to accuracy and independence). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_133",
+      "domain": 3,
+      "subtopic": "3C Evidence collection. A policy rule the tool reported",
+      "principle_id": "ai-output-is-a-lead",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An IS auditor's approved AI tool, given only a Guatemalan coffee cooperative's IT policies, states that passwords must be at least 12 characters. What should the auditor do FIRST?",
+      "options": {
+        "A": "Locate the rule in the policy text before relying on it",
+        "B": "Rerun the question to see whether the answer repeats",
+        "C": "Confirm every policy file was supplied to the tool",
+        "D": "Accept it, since these policies were its sole input"
+      },
+      "correct": "A",
+      "key_concept": "A generative tool can fill gaps in documents with plausible general knowledge; confirm each statement in the source before relying on it.",
+      "pre_read": "Ask where a plausible statement like this could have come from.",
+      "correct_explanation": "A generative tool can blend the documents it was given with what it learned in training, so a common rule such as a 12-character minimum may appear even if the cooperative's policies never say it. The auditor finds the requirement in the policy text before relying on it. Confirming that every policy file was supplied checks the input, but even with every file supplied the tool can add the rule from training.",
+      "wrong_explanations": {
+        "B": "Tempting because consistency feels reassuring. But a tool can repeat the same unsupported statement every time.",
+        "C": "Tempting because missing input often causes wrong answers. But even with every file supplied, the tool can add the rule from training; only the policy text verifies it.",
+        "D": "Tempting because the tool was given nothing else. But generative tools can add plausible rules from training, so the statement may appear in no policy."
+      },
+      "tips": [
+        "Eliminate: B treats a repeated answer as verified, and D accepts the statement because of what the tool was given.",
+        "Final two: A beats C because even with every policy file supplied, a generative tool can add a common rule from training; only the policy text shows it exists.",
+        "Exam cue: AI statements about documents can come from training rather than the documents. Confirm each one in the source."
+      ],
+      "framework_ref": "NIST AI 600-1 Section 2.2 (Confabulation); ISACA IT Audit Standard 1205 (Evidence)",
+      "related_concepts": [
+        "AI-produced evidence",
+        "Confabulation",
+        "Corroboration"
+      ],
+      "_provenance": "Authored from concept: notes 3C.3 Evidence Produced by AI Tools (treat AI output as a lead until it is corroborated against source records). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_134",
+      "domain": 3,
+      "subtopic": "3C Evidence collection. Two prompts, two answers",
+      "principle_id": "ai-output-is-a-lead",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Asked whether 80 firewall rule changes at a Sardinian airport were approved, an IS auditor's approved AI tool said all were; asked which lacked approval, it named six. What is the auditor's BEST response?",
+      "options": {
+        "A": "Ask the tool which of its two answers is right",
+        "B": "Treat the six as unapproved, since that prompt was more skeptical",
+        "C": "Check every change against the approval records directly",
+        "D": "Have the tool cite the approval record for each change"
+      },
+      "correct": "C",
+      "key_concept": "Generated answers lean toward a question's framing, so two prompts can yield opposite results; neither is evidence until checked against records.",
+      "pre_read": "Ask what the difference between the two answers reveals about both.",
+      "correct_explanation": "Generated answers tend to follow the framing of the question: asked to confirm, a model leans toward confirming; asked to find faults, it leans toward finding some. Neither answer is evidence. With only 80 changes, the auditor checks each against the approval records. Having the tool cite a record for each change only adds generated text that framing can steer; a cited record proves nothing until opened.",
+      "wrong_explanations": {
+        "A": "Tempting because the tool produced both answers. But its verdict on itself is more generated text, not evidence.",
+        "B": "Tempting because a fault-finding question looks like professional skepticism. But framing steers generated answers: some of the six may be invented, and the other 74 stay untested.",
+        "D": "Tempting because a cited record looks traceable. But a generated citation is more generated text: it can follow the framing or name a record that says otherwise."
+      },
+      "tips": [
+        "Eliminate: A asks the tool to judge itself, and B mistakes a fault-finding prompt for professional skepticism.",
+        "Final two: C beats D because a citation the tool writes is more generated text, which framing can steer; only the approval records themselves are evidence.",
+        "Exam cue: when rewording a prompt changes the answer, neither answer is evidence. Go to the source records."
+      ],
+      "framework_ref": "NIST AI 600-1 Section 2.2 (Confabulation); ISACA IT Audit Standard 1205 (Evidence)",
+      "related_concepts": [
+        "AI-produced evidence",
+        "Prompt framing",
+        "Corroboration"
+      ],
+      "_provenance": "Authored from concept: notes 3C.3 Evidence Produced by AI Tools (neither asking the tool to check itself nor rerunning it proves accuracy; only the sources do). Final round, 13 Nov 2026: B and D now carry the stem terms \"approved\" and \"change\", so the key no longer echoes them alone. Re-audit, 13 Nov 2026: D (rerun) replaced with a tool-citation option a careful CISA auditor might choose, so the framing and confabulation fact decides the final two; B is now eliminated. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_137",
+      "domain": 3,
+      "subtopic": "3D Data quality and analytics. A fake-supplier tool's test result",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A Dutch flower auction's audit team measured 90% precision for its AI fake-supplier tool on 1,000 test supplier records, half of them fake; under 1% of live records are fake. What is the GREATEST concern?",
+      "options": {
+        "A": "A test on 1,000 records says nothing about larger volumes",
+        "B": "The vendor's own accuracy figure should replace this test",
+        "C": "A far larger share of its flags will be false in use",
+        "D": "It may miss kinds of fake suppliers absent from the test set"
+      },
+      "correct": "C",
+      "key_concept": "Precision depends on how common the target is; a test set rich in exceptions overstates precision when exceptions are rare in live data.",
+      "pre_read": "Compare the test conditions with the live data the tool will meet.",
+      "correct_explanation": "Precision depends on how common the target is. In a test set half full of fake suppliers, false alarms were few beside the many true hits. Live, where fakes are under 1%, the same false-alarm rate applies to almost every record, so most flags may be false and follow-up effort balloons. Missing unseen kinds of fakes is a real risk, but nothing in these facts points to it.",
+      "wrong_explanations": {
+        "A": "Tempting because volume grows. But error rates do not depend on volume; the share of fake suppliers is what changed.",
+        "B": "Tempting because vendors publish figures. But a vendor figure is an input, not validation on the auditor's data.",
+        "D": "Tempting because test sets can miss patterns. But the stated fact is the gap between test and live fake rates, which inflates false alarms."
+      },
+      "tips": [
+        "Eliminate: A confuses volume with prevalence, and B swaps validation for a vendor figure.",
+        "Final two: C beats D because the facts given are the test and live fake rates; at under 1%, the same tool's flags will be mostly false.",
+        "Exam cue: check that an audit tool was validated at a realistic exception rate. Precision measured on balanced data overstates live precision."
+      ],
+      "framework_ref": "NIST AI 100-1 MEASURE 2.3 (Performance measured in conditions similar to deployment); ISACA IT Audit Standard 1205 (Evidence)",
+      "related_concepts": [
+        "Audit tool validation",
+        "Precision",
+        "Base rates"
+      ],
+      "_provenance": "Authored from concept: notes 3D.2 AI-Assisted Audit Analytics and Tool Validation (validate the tool on known outcomes and measure both errors before reliance). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_139",
+      "domain": 3,
+      "subtopic": "3D Data quality and analytics. Whistleblower notes in an approved service",
+      "principle_id": "ai-in-audit-stays-yours",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A Sicilian ceramics maker's IS auditor plans to summarize whistleblower notes in an approved AI service whose contract bars training on inputs but keeps them 30 days for abuse review. What is the GREATEST concern?",
+      "options": {
+        "A": "The summary would need disclosing as AI use in the report",
+        "B": "The summary may distort the whistleblower's key allegations",
+        "C": "None, since the contract bars training on the notes",
+        "D": "Provider staff may see who the whistleblower is"
+      },
+      "correct": "D",
+      "key_concept": "A bar on training does not bar retention; check an AI service's retention and human-review terms before confidential audit data goes in.",
+      "pre_read": "Read each contract term for what it does and does not limit.",
+      "correct_explanation": "A bar on training stops the provider learning from the notes, not keeping them. Here inputs stay 30 days and may be read by provider staff checking for abuse, and allegations are the kind of content such review can flag, so the whistleblower's identity could reach people outside the audit. A distorted summary is a real risk, but the auditor can check it against the notes.",
+      "wrong_explanations": {
+        "A": "Tempting because methodology may require disclosure. But disclosure is a reporting step, not the risk of the provider keeping confidential notes.",
+        "B": "Tempting because summaries can be wrong. But the auditor can check a summary against the notes; exposed details cannot be taken back.",
+        "C": "Tempting because a training bar is the protection most often sought. But it does not stop retention or human review of inputs, which this contract allows."
+      },
+      "tips": [
+        "Eliminate: A mistakes a disclosure duty for the main risk, and B names a risk the auditor can check against the notes.",
+        "Final two: D beats C because barring training does not bar keeping: inputs held for abuse review can be read by provider staff.",
+        "Exam cue: read AI service terms for retention and human review, not just training use, before audit data goes in."
+      ],
+      "framework_ref": "NIST AI 600-1 Section 2.4 (Data Privacy); NIST SP 800-53 Rev. 5 SA-9 (External System Services)",
+      "related_concepts": [
+        "Audit data confidentiality",
+        "Abuse monitoring",
+        "Contract terms"
+      ],
+      "_provenance": "Authored from concept: notes 3D.3 Reproducibility and Confidentiality in AI-Assisted Audits (contract terms and data classification decide which audit data an AI service may receive). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_141",
+      "domain": 3,
+      "subtopic": "3E Outputs and reports. Stating a test result",
+      "principle_id": "test-the-ai-as-used",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor put 200 test questions to a Hungarian vehicle-registration office's assistant in May and found 12 wrong answers; the vendor updates the model monthly. Which condition statement is BEST for the finding?",
+      "options": {
+        "A": "Twelve of 200 test answers from May's version were wrong",
+        "B": "Applicants may have missed registration deadlines after wrong answers",
+        "C": "The assistant answers 12 in 200 registration questions wrongly",
+        "D": "May's test accuracy is below an acceptable standard"
+      },
+      "correct": "A",
+      "key_concept": "A condition states what was found and on what basis; for a hosted model, tie the result to the version and test that produced it.",
+      "pre_read": "Check that each statement claims no more than the test showed.",
+      "correct_explanation": "A condition states what the auditor found, on what basis. Twelve wrong answers came from 200 test questions put to the version live in May; the vendor has updated the model since, and test questions are not a random draw of applicants' questions. Stating a general 6% error rate claims more than the test showed, and management could rightly challenge it.",
+      "wrong_explanations": {
+        "B": "Tempting because harm matters. But this is the finding's effect, and stated as possible harm it does not describe what was found.",
+        "C": "Tempting because it uses the test's own figures. But it states them as a general rate for all questions and for versions since May.",
+        "D": "Tempting because it judges performance. But it names no criteria and no result, so it is a conclusion, not a condition."
+      },
+      "tips": [
+        "Eliminate: D gives a judgment with no facts or criteria, and B states the effect rather than the condition.",
+        "Final two: A beats C because a monthly-updated model and a set of test questions support a statement about that test and version, not a general rate.",
+        "Exam cue: state AI test results with their basis: version, period and sample. Hosted models change, so unqualified rates overclaim."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
+      "related_concepts": [
+        "Finding attributes",
+        "Condition",
+        "Model versions"
+      ],
+      "_provenance": "Authored from concept: notes 3E.1 Writing AI Audit Findings (condition: what the auditor found against the criteria, on a stated basis). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_146",
+      "domain": 3,
+      "subtopic": "3E Outputs and reports. A specialist's AI-assisted analysis",
+      "principle_id": "ai-in-audit-stays-yours",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An external specialist's report supporting a Bosnian telecom audit says its network-traffic analysis was AI-assisted, giving no detail. Before relying on it in the audit report, what should the IS auditor do FIRST?",
+      "options": {
+        "A": "Find out what the AI did and what the specialist then checked",
+        "B": "Rerun the analysis with the audit team's own approved AI tool",
+        "C": "Reperform a sample of the specialist's reported findings",
+        "D": "Rely on it, since the specialist is responsible for their methods"
+      },
+      "correct": "A",
+      "key_concept": "Using another's AI-assisted work, the auditor must learn how the AI was used and what was verified before relying on it as audit evidence.",
+      "pre_read": "Ask what the auditor would need to defend this analysis later.",
+      "correct_explanation": "Using another's work means understanding how it was produced, and part of this work was produced by AI in ways nobody has described. The auditor needs to know what the tool did and which outputs the specialist verified against data before the analysis can support a conclusion the auditor will own. Reperforming a sample of the reported findings checks what the specialist found, not what the AI may have screened out before anyone looked.",
+      "wrong_explanations": {
+        "B": "Tempting because it seems independent. But a different tool's rerun is another unvalidated output, not an understanding of this one.",
+        "C": "Tempting because reperformance is strong evidence. But it checks only what was reported; it cannot show what the AI screened out before the specialist looked.",
+        "D": "Tempting because specialists own their methods. But the auditor remains responsible for conclusions built on their work."
+      },
+      "tips": [
+        "Eliminate: D shifts accountability to the specialist, and B adds a second unexamined AI output.",
+        "Final two: A beats C because reperforming reported findings cannot show what the AI left out; the auditor first learns what it did and what was checked.",
+        "Exam cue: AI inside someone else's work is still evidence you own. Learn how it was produced and verified before relying on it."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1206 (Using the Work of Other Experts); ISACA IT Audit Standard 1401 (Reporting)",
+      "related_concepts": [
+        "Specialists",
+        "AI disclosure",
+        "Accountability"
+      ],
+      "_provenance": "Authored from concept: notes 3E.3 Disclosing AI Use and Owning Conclusions (never present an AI tool's output as a conclusion without the auditor's own judgment). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 8, 13 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_149",
+      "domain": 3,
+      "subtopic": "3A Audit planning and design. Co-sourcing an AI specialist",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "IS audit's co-sourced specialist, who has validated banks' credit-scoring models for years, will assess a Philippine rural bank's AI agent that chats with members and moves funds between their accounts. What is the GREATEST concern?",
+      "options": {
+        "A": "Their skills may not cover prompt injection or agent permissions",
+        "B": "IS audit cannot keep responsibility for co-sourced work",
+        "C": "The specialist may have worked for the agent's developer",
+        "D": "Members' chats would be shared outside the bank"
+      },
+      "correct": "A",
+      "key_concept": "A specialist must be competent for the AI risks in scope; credit-model validation does not cover prompt injection or agent permissions.",
+      "pre_read": "Weigh each option against the facts the question actually states.",
+      "correct_explanation": "An agent that chats with members and moves money is exposed to prompt injection and depends on its tool permissions, risks that years of credit-model validation may never have covered. IS audit must check that the specialist's competence fits these risks before relying on the work. Past ties to the agent's developer would matter, but nothing given suggests any, while the skills gap follows directly from the facts.",
+      "wrong_explanations": {
+        "B": "Tempting because outsiders do the testing. But co-sourcing keeps responsibility with IS audit, which directs and reviews the specialist's work.",
+        "C": "Tempting because objectivity must always be checked. But nothing suggests ties to the developer here, while the stated skills point to a clear competence gap.",
+        "D": "Tempting because chats hold personal data. But specialists work under audit's confidentiality terms; sharing evidence with them is normal."
+      },
+      "tips": [
+        "Eliminate: D treats normal evidence sharing with a bound specialist as the risk, and B misreads co-sourcing, which leaves responsibility with IS audit.",
+        "Final two: A beats C because the stated skills do not fit an agent's main risks, while ties to the developer are only a guess here.",
+        "Exam cue: Match the specialist to the kind of AI. Statistical modeling skills do not cover agents and language models."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1206 (Using the Work of Other Experts); ISACA IT Audit Standard 1006 (Proficiency); NIST AI 100-2e2025 Section 3.5 (Security of Agents)",
+      "related_concepts": [
+        "Specialists",
+        "Proficiency",
+        "AI agents"
+      ],
+      "_provenance": "Authored from concept: notes 3A.3 Specialists, Skills and Independence (compare the skills the engagement needs with the team's, and evaluate a specialist's competence). Round 1 completeness fix: options C and D trimmed by a word so the key is the single wordiest option (domain word tell). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_158",
+      "domain": 3,
+      "subtopic": "3C Evidence collection. A withdrawn policy in an answer",
+      "principle_id": "reproducible-ai-evidence",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Mexican state university's admissions retrieval assistant quoted a fee-waiver policy withdrawn in March, as the document system shows. Which evidence BEST shows the IS auditor why the assistant could still quote it?",
+      "options": {
+        "A": "The vendor's documentation of how its index refreshes",
+        "B": "The document system's record of the March withdrawal",
+        "C": "Staff statements on whether the policy was removed from the index",
+        "D": "The index's log of documents added and removed, with dates"
+      },
+      "correct": "D",
+      "key_concept": "A retrieval index is a separate copy of source documents; its own dated records, not the source system's, show what it held.",
+      "pre_read": "Identify which record each option comes from and what that record can prove.",
+      "correct_explanation": "A retrieval assistant answers from its own index, a copy built from source documents. Withdrawing the policy in the document system changes the source; the copy changes only if the removal reaches the index. The index's own dated log of additions and removals shows whether the policy was still there when the answer was given, while the withdrawal record shows only that the source changed.",
+      "wrong_explanations": {
+        "A": "Tempting because it explains the design. But documentation of intended refreshes cannot show what the index held on a given date.",
+        "B": "Tempting because it is a system record. But it shows the source changed, not whether the index copy the assistant searched was updated.",
+        "C": "Tempting because staff manage the index. But statements are weak evidence when a dated system log exists."
+      },
+      "tips": [
+        "Eliminate: C rests on staff statements, and A describes intended refreshes rather than what actually happened.",
+        "Final two: D beats B because the assistant searched its own index copy; only the index log shows whether the withdrawal reached it.",
+        "Exam cue: For retrieval assistants, evidence comes from the index the model searched, not only the source system."
+      ],
+      "framework_ref": "NIST AI 600-1 Section 2.8 (Information Integrity); NIST SP 800-53 Rev. 5 AU-2 (Event Logging); ISACA IT Audit Standard 1205 (Evidence)",
+      "related_concepts": [
+        "Retrieval index",
+        "Audit evidence",
+        "Data lineage"
+      ],
+      "_provenance": "Authored from concept: notes 3C.1 Sources of AI Evidence (match the evidence to the question; records systems produce outrank documents and statements). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_163",
+      "domain": 3,
+      "subtopic": "3C Evidence collection. A figure from an AI analysis",
+      "principle_id": "ai-in-audit-stays-yours",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An approved AI tool, writing and running its own code, reports that 7% of an Argentine department-store chain's 60,000 refunds went to staff-held bank accounts. What should the IS auditor do FIRST?",
+      "options": {
+        "A": "Ask the tool to explain its matching code step by step",
+        "B": "Review the matching code it ran, then recompute the rate",
+        "C": "Report the 7% as a finding, citing the tool as source",
+        "D": "Trace a sample of the matched refunds to staff payroll records"
+      },
+      "correct": "B",
+      "key_concept": "When an AI tool writes and runs its own analysis code, the code is the method; review it and recompute before relying on results.",
+      "pre_read": "Ask which part of the work each option would actually check.",
+      "correct_explanation": "The 7% rests entirely on code the tool wrote: how it matched account numbers, which refunds it counted and what it divided by. Generated code can join on partial numbers or drop records without any warning. Reviewing that logic and recomputing the rate tests the figure itself. Tracing matched refunds to payroll records confirms single hits, but cannot reveal a wrong match rule, missed matches or a wrong total.",
+      "wrong_explanations": {
+        "A": "Tempting because explanations seem to open the box. But the tool's account of its code is more generated text, not a check of it.",
+        "C": "Tempting because the figure looks precise. But unreviewed AI output is a lead; citing the tool does not make the rate right.",
+        "D": "Tempting because tracing to source is sound. But it checks only reported matches, not the rule that chose them or the 7% figure."
+      },
+      "tips": [
+        "Eliminate: C reports an unchecked figure, and A asks the tool to vouch for its own work.",
+        "Final two: B beats D because tracing hits confirms matches, while the generated code decides what counted as a match and the rate's denominator.",
+        "Exam cue: When an AI tool writes its own analysis code, that code is the method. Review it before relying on the numbers."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); NIST AI 600-1 Section 2.2 (Confabulation)",
+      "related_concepts": [
+        "AI-produced evidence",
+        "Analytics",
+        "Recomputation"
+      ],
+      "_provenance": "Authored from concept: notes 3C.3 Evidence Produced by AI Tools (understand how the output was produced: the tool, version, prompt, settings and input data). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_164",
+      "domain": 3,
+      "subtopic": "3C Evidence collection. An AI tool that found nothing",
+      "principle_id": "ai-output-is-a-lead",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An IS auditor's approved AI search tool, which finds emails by meaning, found no emails linking a Ugandan national park authority's procurement officer to a winning supplier. What should the IS auditor do FIRST?",
+      "options": {
+        "A": "Ask the tool to list every email it searched",
+        "B": "Rerun the search several times with differently worded questions",
+        "C": "Search the emails for the supplier's names and addresses",
+        "D": "Record that the emails show no dealings with the supplier"
+      },
+      "correct": "C",
+      "key_concept": "An AI search finding nothing is not evidence of absence; confirm it with a different method, such as exact searches for names and identifiers.",
+      "pre_read": "Consider how each option would change the auditor's confidence in the result.",
+      "correct_explanation": "A search that finds text by meaning ranks emails by similarity; it can miss messages that name the supplier, an account or an invoice number without discussing it in words it matches. Its silence is not evidence of absence. An exact search for the supplier's names and addresses across the email export checks that silence by another method, while rewording still relies on the same tool's sense of meaning.",
+      "wrong_explanations": {
+        "A": "Tempting because coverage matters. But a list the tool writes about itself is more generated output, not proof of what it read.",
+        "B": "Tempting because framing changes generated results. But every rerun still relies on the same meaning-based ranking that may miss exact names.",
+        "D": "Tempting because the tool is approved. But a tool's silence is not evidence that no such emails exist."
+      },
+      "tips": [
+        "Eliminate: D treats the tool's silence as proof, and A asks the tool to vouch for its own coverage.",
+        "Final two: C beats B because rewording keeps the same meaning-based method; an exact search for names and addresses tests the silence another way.",
+        "Exam cue: 'Nothing found' by an AI tool is a result to test, not a conclusion. Check absences with a different method."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
+      "related_concepts": [
+        "AI-produced evidence",
+        "Semantic search",
+        "Corroboration"
+      ],
+      "_provenance": "Authored from concept: notes 3C.3 Evidence Produced by AI Tools (treat AI output as a lead until it is corroborated against source records). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_167",
+      "domain": 3,
+      "subtopic": "3D Data quality and analytics. Validating a bid-rigging check",
+      "principle_id": "accuracy-is-not-assurance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "To spot bid rigging in a Bosnian state electricity company's tenders, an audit team validated a generative AI tool on files from 60 published court cases; it caught 58. What is the GREATEST concern?",
+      "options": {
+        "A": "The cases may come from other countries' procurement laws",
+        "B": "The tool may have learned these public cases in training",
+        "C": "Sixty published cases are too few to measure a catch rate",
+        "D": "The tool may raise many false alarms on clean tenders"
+      },
+      "correct": "B",
+      "key_concept": "Public cases may sit in a generative model's training data, so validating on them can measure memory rather than detection.",
+      "pre_read": "Ask what the 58 of 60 result would and would not show.",
+      "correct_explanation": "Published court cases, with their tender files, are public text a generative model may have read in training. If so, catching 58 of 60 can reflect memory of known cases rather than skill at spotting rigging in new tenders, and the rate says little about the company's own files. Sixty cases leave a wide margin of error, but a contaminated set misleads at any size.",
+      "wrong_explanations": {
+        "A": "Tempting because laws differ. But rigging patterns such as rotated bids recur across countries; the larger issue is whether the tool saw these cases.",
+        "C": "Tempting because small samples are imprecise. But 58 of 60 still informs; contamination could make the rate meaningless at any size.",
+        "D": "Tempting because false alarms cost effort. But false alarms show up when flags are checked, while a catch rate inflated by memory hides missed rigging."
+      },
+      "tips": [
+        "Eliminate: D worries about false alarms that checking flags would expose, and A overstates legal differences when rigging patterns travel.",
+        "Final two: B beats C because a larger set of public cases would share the same flaw; the tool may have seen them in training.",
+        "Exam cue: Validate generative tools on cases they cannot have seen, such as internal or newly built ones."
+      ],
+      "framework_ref": "NIST AI 600-1 MS-2.11-001 (Document benchmark assumptions and limitations including possible training/test data cross contamination); NIST AI 100-1 MEASURE 2.3 (Performance measured in conditions similar to deployment)",
+      "related_concepts": [
+        "Tool validation",
+        "Contamination",
+        "Known-outcome test"
+      ],
+      "_provenance": "Authored from concept: notes 3D.2 AI-Assisted Audit Analytics and Tool Validation (validate on known answers found independently of the tool and held back from tuning). Round 2 fix: wrong-answer text no longer claims a follow-up process the stem never gives. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_170",
+      "domain": 3,
+      "subtopic": "3D Data quality and analytics. What a work paper records",
+      "principle_id": "reproducible-ai-evidence",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An IS auditor's work paper for an AI-assisted ticket review records the service's 'newest' model alias, temperature 0, every prompt, a hashed input file and three identical runs. What is the GREATEST reproducibility gap?",
+      "options": {
+        "A": "Prompts typed in a chat cannot be resubmitted later",
+        "B": "Hosted output can vary between runs, even under one alias",
+        "C": "A hashed input file cannot be opened by a reviewer",
+        "D": "The alias may later point to a newer release"
+      },
+      "correct": "D",
+      "key_concept": "A moving model alias points to whatever release the provider makes current, so work papers must record the dated version that actually ran.",
+      "pre_read": "Check each recorded item against what a reviewer next year would need.",
+      "correct_explanation": "An alias such as 'newest' is a pointer the provider moves to each new release, so the work paper does not say which model actually ran. A reviewer rerunning it later may get a different model without knowing it, and any difference cannot be explained. Hosted models can vary at temperature 0, but three identical runs suggest that variation was small; the unknown model version is the open gap.",
+      "wrong_explanations": {
+        "A": "Tempting because chat feels informal. But a recorded prompt can be resubmitted in a chat or a script alike.",
+        "B": "Tempting because hosted output can vary even at temperature 0. But three identical runs suggest that variation was small; not knowing which model ran is the larger gap.",
+        "C": "Tempting because hashes look like encryption. But a hash fingerprints the kept file, proving a reviewer has the same input."
+      },
+      "tips": [
+        "Eliminate: C mistakes a hash for encryption, and A assumes recorded chat prompts cannot be resubmitted.",
+        "Final two: D beats B because three identical runs suggest variation was small, while an alias leaves unknown which model a later rerun uses.",
+        "Exam cue: Record the exact, dated model version. An alias such as 'newest' can point to a new model without notice."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); NIST AI 100-1 MEASURE 2.1 (Test sets, metrics and TEVV tools documented)",
+      "related_concepts": [
+        "Reproducibility",
+        "Model version",
+        "Work papers"
+      ],
+      "_provenance": "Authored from concept: notes 3D.3 Reproducibility and Confidentiality in AI-Assisted Audits (a rerun matches only when the tool version, settings, input data and every prompt match). Round 2 fix: the stem now records temperature 0, so run-to-run variation is the smaller gap; the 3D.3 note now teaches that an alias moves to new releases. Round 3 fix: the work paper now records three identical runs, so run-to-run variation is shown to be small and the unpinned alias is the open gap; D no longer echoes 'rerun'. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_174",
+      "domain": 3,
+      "subtopic": "3E Outputs and reports. Management's response to a chatbot finding",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Responding to a finding that a Portuguese surf school's chatbot invents safety rules, such as allowing beginners to surf alone, management will set its temperature to 0. What is the IS auditor's GREATEST concern?",
+      "options": {
+        "A": "The setting change may skip change approval and testing",
+        "B": "Customers may find fixed answers repetitive and less helpful",
+        "C": "The vendor may override the setting in an update",
+        "D": "Its answers can stay just as wrong, only more consistent"
+      },
+      "correct": "D",
+      "key_concept": "Lowering a model's temperature reduces run-to-run variation, not invented content; an action plan for false answers must reach their cause.",
+      "pre_read": "Restate the finding before weighing management's plan.",
+      "correct_explanation": "Temperature controls how much a model's output varies between runs, not whether its statements are true. At 0 the chatbot favors its most likely answer, and a confident invented rule can be exactly that, so beginners may get the same unsafe advice reliably. The setting change should still pass change approval, but even an approved change would leave the finding's cause in place.",
+      "wrong_explanations": {
+        "A": "Tempting because a setting change is a change. But approval governs how a change goes live; an approved setting would still leave the invented rules in place.",
+        "B": "Tempting because tone affects service. But repetitive wording is a minor cost next to beginners acting on false safety rules.",
+        "C": "Tempting because vendors update models. But nothing given suggests an override, and the plan would fail even if the setting held."
+      },
+      "tips": [
+        "Eliminate: B weighs tone above false safety rules, and C rests on a vendor override nothing in the facts suggests.",
+        "Final two: D beats A because temperature changes variation, not truth; even a fully approved change leaves the invented rules.",
+        "Exam cue: Ask whether management's action reaches the cause. For generative AI, consistent is not the same as correct."
+      ],
+      "framework_ref": "NIST AI 600-1 Section 2.2 (Confabulation); ISACA IT Audit Standard 1401 (Reporting)",
+      "related_concepts": [
+        "Confabulation",
+        "Temperature",
+        "Management response"
+      ],
+      "_provenance": "Authored from concept: notes 3E.2 Rating, Reporting and Follow-Up of AI Findings (actions in management's response must reach the cause; a lower temperature cuts variation, not invented answers). Round 1 fix: moved from a water utility's collections model (as aaia_d2_366, aaia_d3_051 and crisc_d1_042) to a parcel carrier's delivery-risk model. Round 2 fix: the owner cited accurate data and the runner-up tested it. Completeness round 1 fix: re-angled from an owner's acceptance beyond tolerance, which repeated aaia_d1_255 and aaia_d1_063 (acceptance goes to whoever set the limit), to a management response that lowers a chatbot's temperature, set at a surf school (not the parcel-locker chatbot of aaia_d2's support items). Nearest items: aaia_d3_143 (an action plan that leaves later vendor versions untested), aaia_d2_244 (tested at temperature 0, run at 0.8) and aaia_d2_402 (reruns at temperature 0 that differ); here the runner-up is change approval, which only the variation-not-truth fact defeats. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 14, 25 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_187",
+      "domain": 3,
+      "subtopic": "3B Testing and sampling. Strata from AI labels",
+      "principle_id": "ai-output-is-a-lead",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor plans to stratify a Thai rubber exporter's 9,000 supplier contracts by type for sampling, using labels from an approved AI tool validated at 97% accuracy overall. What should the auditor do FIRST?",
+      "options": {
+        "A": "Check a sample of the tool's labels against the source files",
+        "B": "Size each stratum by the contract value it holds",
+        "C": "Rely on the labels, given the tool's 97% validated accuracy",
+        "D": "Have procurement staff approve the sample design"
+      },
+      "correct": "A",
+      "key_concept": "AI-assigned labels that set strata decide which items can be drawn; check them before relying on the strata they create.",
+      "pre_read": "Read each option as a step in the sampling plan.",
+      "correct_explanation": "Stratifying on the tool's labels assumes they are right, and an overall 97% does not show where the other 3% fall. A mislabeled high-risk contract would sit in a stratum where it is unlikely to be drawn, and no later step would reveal it. Checking a sample of labels against the contracts shows whether the strata can be trusted. Sizing strata by value helps only once contracts sit in the right strata.",
+      "wrong_explanations": {
+        "B": "Tempting because value-based sizing is standard. But it weights strata that may hold the wrong contracts if the tool's labels are wrong.",
+        "C": "Tempting because 97% sounds reliable. But errors need not spread evenly; a few in a rare, high-risk type move those contracts into strata unlikely to be drawn.",
+        "D": "Tempting because procurement knows the contracts. But the auditee approving the audit's sample design would weaken its independence."
+      },
+      "tips": [
+        "Eliminate: B sizes strata before knowing they hold the right contracts, and D gives the auditee a say in the audit's sample design.",
+        "Final two: A beats C because an overall 97% does not show where the errors fall; a mislabeled high-risk contract moves out of view, so check labels first.",
+        "Exam cue: When AI output shapes a sample, test the output first. A wrong label moves an item out of view."
+      ],
+      "framework_ref": "ISACA ITAF Guideline 2208 (Information Technology Audit Sampling); ISACA IT Audit Standard 1205 (Evidence); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
+      "related_concepts": [
+        "Stratified sampling",
+        "AI-assigned labels",
+        "Evidence reliability"
+      ],
+      "_provenance": "Authored from concept: notes 3B.2 Sampling AI Decisions (document the sample design and its reasons; AI-assigned labels that shape strata are AI output to check). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_189",
+      "domain": 3,
+      "subtopic": "3B Testing and sampling. Evidence for an escalator failure model",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A Georgian metro's engineers overhaul every escalator drive its failure model flags and record each drive's condition when opened. Which procedure BEST shows the IS auditor how often its flags are right?",
+      "options": {
+        "A": "Recompute precision against drive failures recorded over the year",
+        "B": "Compare the wear found inside each flagged drive with its flag",
+        "C": "Rerun each flag's logged sensor inputs through the same model version",
+        "D": "Compare its precision with the drive maker's published failure rates"
+      },
+      "correct": "B",
+      "key_concept": "When flags trigger action that prevents the predicted failure, later outcomes cannot fairly score the flags; use evidence the action did not change.",
+      "pre_read": "Ask what each procedure would compare.",
+      "correct_explanation": "Every flag triggers an overhaul that removes the wear behind the predicted failure, so flagged drives rarely go on to fail, and failure records would score most correct flags as false alarms. The condition engineers record on opening each flagged drive comes before the overhaul could change it, so it shows whether each flag was right. Recomputing precision against recorded failures, option A, measures outcomes the overhauls prevented.",
+      "wrong_explanations": {
+        "A": "Tempting because recomputing a metric gives the auditor direct evidence. But overhauls stop flagged drives failing, so correct flags would count as false alarms.",
+        "C": "Tempting because reperformance shows each flag was raised as logged. But it shows the model ran consistently, not that its flags were right.",
+        "D": "Tempting because benchmarks give context. But a maker's failure rates describe drives in general, not whether this model's flags were right."
+      },
+      "tips": [
+        "Eliminate: C shows only that each flag was raised as logged, and D compares the model with drives in general.",
+        "Final two: B beats A because the overhaul removes the failures A counts; the wear found inside each flagged drive is evidence the action did not change.",
+        "Exam cue: When a model's flags trigger action, test the flags on evidence the action could not change."
+      ],
+      "framework_ref": "NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented); NIST AI 100-1 MEASURE 4.1 (Measurement connected to deployment context with domain experts); ISACA IT Audit Standard 1205 (Evidence)",
+      "related_concepts": [
+        "Reperformance",
+        "Outcome data",
+        "Precision"
+      ],
+      "_provenance": "Authored from concept: notes 3B.3 Reperformance and Full-Population Testing (recompute metrics from raw outcomes; where flags trigger action, judge them on evidence recorded before the action). Cross-domain review, 26 Nov 2026: moved from a desalination plant's pump-failure model to a metro's escalator-failure model and re-angled from the distorted figure to the evidence the overhaul could not change, so it no longer repeats aaia_d2_239. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_190",
+      "domain": 3,
+      "subtopic": "3C Evidence collection. What a customer was told",
+      "principle_id": "test-the-ai-as-used",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A Tajik coal merchant's ordering chatbot runs each model reply through an output filter. Which evidence BEST shows the IS auditor what a customer disputing a delivery price was told?",
+      "options": {
+        "A": "The model's output log, with version and prompt",
+        "B": "The filter's settings in force on that date",
+        "C": "The customer's own account of the conversation",
+        "D": "The record of each message as displayed"
+      },
+      "correct": "D",
+      "key_concept": "When an output filter can rewrite replies, the record of what a person saw is the text as shown, not the model's output.",
+      "pre_read": "Ask which record would settle the dispute.",
+      "correct_explanation": "The filter sits between the model and the customer and may rewrite a reply, so the model's output log shows what was generated, not necessarily what appeared on screen. A dispute turns on what the customer was told, which only a record of each message as shown captures. The filter's settings show what it could change, not what it changed in that conversation.",
+      "wrong_explanations": {
+        "A": "Tempting because model logs with version and prompt are usually the best record. But the filter may have rewritten the reply after the model wrote it.",
+        "B": "Tempting because settings explain the filter's behavior. But they show what it could change, not what it did to this reply.",
+        "C": "Tempting because the customer was there. But a party's recollection is weaker evidence than a system record of the message as shown."
+      },
+      "tips": [
+        "Eliminate: B shows what the filter could do, not what it did, and C rests on a party's recollection.",
+        "Final two: D beats A because a filter that can rewrite replies after the model means the model's log may not be what the customer saw.",
+        "Exam cue: Find the last step before the person. When text changes after generation, the evidence is the text as shown."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AU-2 (Event Logging); NIST SP 800-53 Rev. 5 SI-15 (Information Output Filtering); NIST AI 100-1 MEASURE 2.8 (Transparency and accountability risks examined)",
+      "related_concepts": [
+        "Output filtering",
+        "Decision logs",
+        "Evidence sources"
+      ],
+      "_provenance": "Authored from concept: notes 3C.1 Sources of AI Evidence (decision and prompt logs show what happened in production; an output filter can rewrite replies after the model). Final pass: option D no longer says 'after filtering' (it stated the deciding fact) or 'chat log' (it echoed the stem's 'chatbot'). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "aaia_d3_200",
+      "domain": 3,
+      "subtopic": "3D Data quality and analytics. Validating a credit-note screening tool",
+      "principle_id": "accuracy-is-not-assurance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A Sri Lankan apparel maker's audit team validated its AI credit-note screening tool at 95% recall overall; the audit relies on it for one rare credit-note type. What does the audit manager MOST need?",
+      "options": {
+        "A": "Its precision across the whole validation set",
+        "B": "A rerun of the overall validation on new credit notes",
+        "C": "The vendor's recall for that type at other clients",
+        "D": "Its recall on known credit notes of that type"
+      },
+      "correct": "D",
+      "key_concept": "An overall recall can hide poor recall on a rare type; validate an audit tool on the type the audit relies on.",
+      "pre_read": "Match each figure to the decision the manager must make.",
+      "correct_explanation": "An overall recall is dominated by common credit-note types, so a rare type can be missed often while the total stays at 95%. The audit relies on the tool for that one type, so its recall must be measured on known credit notes of that type. Precision across the set shows how many flags are false alarms, not how many of the rare credit notes the tool misses.",
+      "wrong_explanations": {
+        "A": "Tempting because false alarms cost effort. But precision measures wrong flags, not the misses the audit's reliance depends on.",
+        "B": "Tempting because new data tests current behavior. But another overall figure can still hide a rare type the tool misses.",
+        "C": "Tempting because it targets the right type. But other clients' credit notes and setup differ; the audit needs its own measured result."
+      },
+      "tips": [
+        "Eliminate: B repeats an overall figure, which blends the rare type into common ones, and C borrows results from other clients' data.",
+        "Final two: D beats A because reliance depends on misses of the rare type, which only recall on that type measures; precision counts false alarms.",
+        "Exam cue: Validate an audit tool for the job it will do. An overall score can hide the rare case the audit relies on."
+      ],
+      "framework_ref": "NIST AI 100-1 MEASURE 1.1 (Methods and metrics selected starting with the most significant risks); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented); ISACA IT Audit Standard 1205 (Evidence)",
+      "related_concepts": [
+        "Tool validation",
+        "Recall",
+        "Rare exceptions"
+      ],
+      "_provenance": "Authored from concept: notes 3D.2 AI-Assisted Audit Analytics and Tool Validation (validate an audit tool on known answers before relying on it, measured for the task it will do). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 15, 26 Nov 2026.",
+      "style_version": 2
+    }
+  ],
+  "free_sample": true
+}

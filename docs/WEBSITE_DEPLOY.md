@@ -353,5 +353,6 @@ Apple.
   after native library changes: `docs/mobile/RUN_ON_ANDROID_EMULATOR.md`,
   "Testing a release build".
 - **Size budgets** (CI, `mobile/scripts/check-size-budget.mjs`): the Android
-  JavaScript bundle stays under 14 MB (9.83 MB on 15 Oct 2026) and each
+  JavaScript bundle stays under 20 MB (14 MB until 28 Nov 2026, when the
+  testers' build began carrying the full CRISC and AAIA courses: 17.08 MB) and each
   certification's content under 6 MB (CISA 3.75 MB).

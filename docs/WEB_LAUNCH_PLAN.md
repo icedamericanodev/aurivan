@@ -103,6 +103,32 @@ loop. Nothing goes public until its gate says so.
 5. The website course switcher comes after the phone app (web is CISA-only
    today).
 
+**Status (28 Nov 2026): steps 1 and 2 done for CRISC and AAIA.**
+- `scripts/build_free_sample.py` builds every course's sample with its own
+  plan's rules: CRISC 100 (26 / 22 / 32 / 20; every outline area, the 50-item
+  mini mock fits), AAIA 200 (66 / 92 / 42; every notes subtopic). CISA's files
+  are unchanged. Each list only grows (`verify_repo.sh`). The website still
+  publishes CISA only, and a `build_site.sh` guard now refuses any other
+  course's id or sample file.
+- The picked samples were read by the content auditors before the lists were
+  committed: 6 CRISC and 20 AAIA items were swapped for stronger ones (and
+  the AAIA areas evened out), and seven CRISC wordings were tidied.
+- The phone app's content build carries the full CRISC and AAIA courses in
+  the testers' build and only their samples in the public build, with the
+  same fail-closed guards; `audit-public-aab.mjs` checks every bundled course
+  and that CC, CSOE and CIA are absent, and mobile CI now builds and audits a
+  public-sample export on every run.
+- Both stay `coming_soon` (step 4). A bundled `coming_soon` course is treated
+  as not on the phone, so nothing a learner sees changes yet. What switching
+  one on takes: `docs/mobile/SAMPLE_QUESTION_PACK.md`.
+- The testers' bundle grew to about 17 MB (budget raised from 14 to 20 MB).
+  Adding CC and CSOE in full would pass it: plan downloadable packs first.
+- Follow-up (not built): give the sample builder a "best-reviewed first"
+  input, a reviewed list of preferred ids per course, so the next course's
+  sample starts from the auditors' picks instead of the hash order and the
+  manual swap step goes away.
+- Next: CC and CSOE (step 3, then steps 1 and 2 for them).
+
 ### E. Apple App Store
 After the website and Android 2.4. Needs an Apple Developer account
 (US$99 a year, owner), Sign in with Apple (required by Apple when Google

@@ -1,6 +1,7 @@
 /**
  * Size budgets (architecture decision, 15 Oct 2026): CI fails when the
- * Android JavaScript bundle passes 14 MB or one certification's study
+ * Android JavaScript bundle passes 20 MB (14 MB until the testers' build
+ * carried the full CRISC and AAIA courses, 28 Nov 2026) or one certification's study
  * content passes 6 MB.
  *
  * These tests run scripts/check-size-budget.mjs as CI does, on the real
@@ -62,12 +63,12 @@ describe('check-size-budget', () => {
     expect(r.out).toMatch(/cisa content .* of 6\.00 MB/);
   });
 
-  it('passes a bundle under 14 MB and fails one over it', () => {
+  it('passes a bundle under 20 MB and fails one over it', () => {
     const content = fakeContent('cisa', 3 * MB, 0);
-    expect(run([fakeExport(9.83 * MB), ...content]).code).toBe(0);
-    const over = run([fakeExport(14 * MB + 1), ...content]);
+    expect(run([fakeExport(17.03 * MB), ...content]).code).toBe(0);
+    const over = run([fakeExport(20 * MB + 1), ...content]);
     expect(over.code).toBe(1);
-    expect(over.out).toMatch(/OVER: Android bundle 14\.00 MB of 14\.00 MB/);
+    expect(over.out).toMatch(/OVER: Android bundle 20\.00 MB of 20\.00 MB/);
   });
 
   it('the real CISA pack carries its lessons as data (lessons.json is counted)', () => {

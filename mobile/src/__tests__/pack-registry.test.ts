@@ -29,6 +29,8 @@ import {
   type PackSource,
 } from '../content/packs';
 import type { PackQuestion } from '../content/types';
+import { getCertification } from '../content/certifications';
+import { effectiveCertId } from '../lib/activeCert';
 import { knownIds } from '../lib/backup';
 import { questionExists } from '../lib/outline';
 
@@ -103,15 +105,29 @@ afterEach(() => {
 });
 
 describe('the bundled source', () => {
-  it('is what every cert reads by default, and only CISA has a pack today', () => {
+  // CRISC and AAIA are bundled since 28 Nov 2026 (docs/WEB_LAUNCH_PLAN.md stream D), still `coming_soon`.
+  it('is what every cert reads by default, and only CISA, CRISC and AAIA have a pack today', () => {
     expect(sourceFor('cisa')).toBe(BundledSource);
     expect(sourceFor('cism')).toBe(BundledSource); // no pack anywhere: still the bundle, which says "nothing"
-    expect(installedCertIds()).toEqual(['cisa']);
+    expect(installedCertIds()).toEqual(['cisa', 'crisc', 'aaia']);
     expect(packInstalled('cisa')).toBe(true);
     expect(packInstalled('cism')).toBe(false);
     expect(hasContent('cism')).toBe(false);
     expect(getAllQuestions('cism')).toEqual([]);
     expect(lessonsFor('cism')).toEqual([]);
+  });
+
+  it('keeps the bundled CRISC and AAIA parked until their status says available', () => {
+    for (const id of ['crisc', 'aaia']) {
+      expect(getCertification(id)?.status).toBe('coming_soon');
+      // The pack is built in (its questions can be read) ...
+      expect(packInstalled(id)).toBe(true);
+      expect(getAllQuestionsIncludingRetired(id).length).toBeGreaterThan(0);
+      // ... but the app treats the course as not on this phone: never studied, never trimmed.
+      expect(hasContent(id)).toBe(false);
+      expect(effectiveCertId(id)).toBe('cisa');
+      expect(knownIds(id).installed).toBe(false);
+    }
   });
 
   it('records CISA’s rev and schemaVersion (the floor a download must beat)', () => {
@@ -167,12 +183,12 @@ describe('a second source', () => {
     undo();
     undo = registerPackSource(fakeSource('zz9', 5, { schemaVersion: PACK_SCHEMA_VERSION + 1 }));
     expect(packInstalled('zz9')).toBe(false);
-    expect(installedCertIds()).toEqual(['cisa']);
+    expect(installedCertIds()).toEqual(['cisa', 'crisc', 'aaia']);
   });
 
   it('can bring an exam the app has no descriptor for, and its lessons resolve by id', () => {
     undo = registerPackSource(fakeSource('zz9', 5, { lessons: [lesson('zz9-l-1', 1)] }));
-    expect(installedCertIds()).toEqual(['cisa', 'zz9']);
+    expect(installedCertIds()).toEqual(['cisa', 'crisc', 'aaia', 'zz9']);
     expect(hasContent('zz9')).toBe(true);
     expect(getAllQuestions('zz9').map((x) => x.id)).toEqual(['zz9_001']);
     expect(findLesson('zz9-l-1')?.certId).toBe('zz9');

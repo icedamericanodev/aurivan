@@ -38,7 +38,10 @@
 #       The full bank (data/domain1..5.json) is NOT published since web
 #       v12.50 (owner, 4 Nov 2026): it stays in the repo for the phone app.
 #       A guard below stops the build if any question outside the free
-#       sample appears anywhere in _site/.
+#       sample appears anywhere in _site/. The website is CISA-only: the
+#       CRISC and AAIA samples in data/free/ are for the phone app, and a
+#       second guard stops the build if any other course's question id or
+#       data/free/ file is in _site/.
 #     - _headers (security and cache headers) and _redirects
 #     - favicon.ico at the top level (browsers ask for /favicon.ico by
 #       themselves)
@@ -428,6 +431,35 @@ for root, _, names in os.walk(out):
                 break
 if bad:
     print("build_site: paid questions found in the site:\n  " + "\n  ".join(bad[:20]), file=sys.stderr)
+    sys.exit(1)
+PY
+
+# The website is CISA-only (docs/WEB_LAUNCH_PLAN.md stream D): the other
+# courses' free samples (data/free/crisc_*, data/free/aaia_*) are for the
+# phone app and must never be published, and neither may any question of a
+# course that is not on the website. Their ids are looked for in every file
+# (the files themselves are also refused by the final list below).
+python3 - "$OUT" <<'PY' || fail "another course's questions are in the site (the website is CISA-only)"
+import os, re, sys
+out = sys.argv[1]
+other = re.compile(r"\b(?:crisc|aaia|cc|csoe|cism|cissp|cia[0-9]|ciac)_d[0-9]+_[0-9]+")
+bad = []
+for root, _, names in os.walk(out):
+    for name in names:
+        path = os.path.join(root, name)
+        rel = os.path.relpath(path, out)
+        if re.search(r"(^|/)data/free/(?!cisa_)", rel):
+            bad.append(rel + ": not a CISA free-sample file")
+            continue
+        try:
+            raw = open(path, encoding="utf-8").read()
+        except (UnicodeDecodeError, OSError):
+            continue
+        hit = other.search(raw)
+        if hit:
+            bad.append(f"{rel}: {hit.group(0)}")
+if bad:
+    print("build_site: other courses' questions found in the site:\n  " + "\n  ".join(bad[:20]), file=sys.stderr)
     sys.exit(1)
 PY
 

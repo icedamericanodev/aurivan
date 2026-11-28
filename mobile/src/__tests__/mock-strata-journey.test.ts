@@ -223,7 +223,8 @@ describe('picker edge cases', () => {
   });
 
   it('certs with no notes keep the old random pick (empty outline)', () => {
-    for (const c of ['cism', 'crisc']) {
+    // CRISC has notes since it was bundled (28 Nov 2026): CISM and CISSP still have none.
+    for (const c of ['cism', 'cissp']) {
       const cert = getCertification(c)!;
       const o = certOutline(c).topics;
       expect(o).toEqual([]);

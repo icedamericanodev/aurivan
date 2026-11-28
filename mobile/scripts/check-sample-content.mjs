@@ -5,8 +5,9 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
-import { checkSamplePack, pruneReferences, sampleSelection } from './sample-content.mjs';
+import { checkSamplePack, pruneReferences, sampleSelection, SAMPLE_COURSES } from './sample-content.mjs';
 import { PUBLIC_PROFILE, questionPackMode } from './build-content.mjs';
+import { audit, BUNDLED_COURSES, holdsId, stemNeedles } from './audit-public-aab.mjs';
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const generated = path.join(repo, 'mobile/src/content/generated');
@@ -73,14 +74,21 @@ test('manifest rejects missing, duplicate, unknown, empty-domain and full-bank s
         [1, 2].map((n) => ({ id: `d${d}_00${n}`, domain: d })) }));
     }
     const file = path.join(tmp, 'data/free/cisa_sample_ids.json');
-    assert.throws(() => sampleSelection(tmp));
+    assert.throws(() => sampleSelection(tmp, ['cisa']));
     for (const bad of [[], [...ids, ids[0]], [...ids, 'd1_999'], ids.slice(1),
       [...ids, ...ids.map((id) => id.replace('001', '002'))]]) {
       fs.writeFileSync(file, JSON.stringify({ cert: 'cisa', ids: bad }));
-      assert.throws(() => sampleSelection(tmp));
+      assert.throws(() => sampleSelection(tmp, ['cisa']));
     }
+    // A list that names another course is not this course's list.
+    fs.writeFileSync(file, JSON.stringify({ cert: 'crisc', ids }));
+    assert.throws(() => sampleSelection(tmp, ['cisa']), /Invalid or duplicate/);
     fs.writeFileSync(file, JSON.stringify({ cert: 'cisa', ids }));
-    assert.equal(sampleSelection(tmp).ids.size, 5);
+    assert.equal(sampleSelection(tmp, ['cisa']).ids.size, 5);
+    // Every course needs its own list and bank: CRISC has neither here, and a course with no
+    // reviewed manifest at all (CISM, or a prototype key) is refused, never treated as "all free".
+    assert.throws(() => sampleSelection(tmp, ['cisa', 'crisc']));
+    for (const cert of ['cism', 'constructor']) assert.throws(() => sampleSelection(tmp, [cert]), /No reviewed sample manifest/);
   } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
 });
 
@@ -117,6 +125,36 @@ test('real generator keeps default full, filters sample, fails closed and remove
       assert.throws(() => checkSamplePack(tmp, selection), /Non-sample/);
     }
     fs.writeFileSync(notes, originalNotes);
+    // The same guard holds for every bundled course (CRISC and AAIA as well as CISA).
+    for (const certId of ['crisc', 'aaia']) {
+      const course = selection.courses[certId];
+      assert.ok(course, `${certId} is in the sample build`);
+      const domainFile = path.join(tmp, `${certId}/d1.json`);
+      const domainText = fs.readFileSync(domainFile, 'utf8');
+      assert.equal(JSON.parse(domainText).length, course.domains['1'].length);
+      const paidQ = course.questions.find((q) => !course.ids.has(q.id));
+      const fullQ = JSON.parse(fs.readFileSync(path.join(repo, SAMPLE_COURSES[certId].source('1')), 'utf8')).questions
+        .find((q) => q.id === paidQ.id);
+      fs.writeFileSync(domainFile, JSON.stringify([...JSON.parse(domainText), { ...fullQ, certId, domainId: '1' }]));
+      assert.throws(() => checkSamplePack(tmp, selection), /differs/, `${certId}: a paid question added to a domain`);
+      fs.writeFileSync(domainFile, domainText);
+      const courseNotes = path.join(tmp, `${certId}/notes.json`);
+      const courseNotesText = fs.readFileSync(courseNotes, 'utf8');
+      for (const leak of [{ practiceIds: [paidQ.id] }, { explanation: `See ${paidQ.question}` }]) {
+        fs.writeFileSync(courseNotes, JSON.stringify(leak));
+        assert.throws(() => checkSamplePack(tmp, selection), /Non-sample/, `${certId}: ${JSON.stringify(leak).slice(0, 40)}`);
+      }
+      fs.writeFileSync(courseNotes, courseNotesText);
+      // These courses have no game decks: one appearing is an unreviewed file.
+      fs.writeFileSync(path.join(tmp, `${certId}/roles.json`), '[]');
+      assert.throws(() => checkSamplePack(tmp, selection), /Unexpected sample file/);
+      fs.unlinkSync(path.join(tmp, `${certId}/roles.json`));
+    }
+    // A CISA id inside a CRISC id ("crisc_d1_005" ends with "d1_005") is not a CISA reference.
+    const crisc = selection.courses.crisc;
+    const cisaPaid = new Set(selection.courses.cisa.questions.filter((q) => !selection.courses.cisa.ids.has(q.id)).map((q) => q.id));
+    assert.ok([...crisc.ids].some((id) => cisaPaid.has(id.replace(/^crisc_/, ''))), 'the test needs a CRISC sample id that ends like a paid CISA id');
+    checkSamplePack(tmp, selection);
     fs.mkdirSync(path.join(tmp, 'unreviewed-cert'));
     assert.throws(() => checkSamplePack(tmp, selection), /Unexpected sample directory/);
     fs.rmdirSync(path.join(tmp, 'unreviewed-cert'));
@@ -180,5 +218,71 @@ test('real generator keeps default full, filters sample, fails closed and remove
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
     build(); // Do not leave a reduced test pack in a developer checkout.
+  }
+});
+
+test('the public .aab audit checks every bundled course and the courses not bundled yet', () => {
+  assert.deepEqual(BUNDLED_COURSES, ['cisa', 'crisc', 'aaia']);
+  const selection = sampleSelection(repo);
+  // A fake bundle: every sample id back to back, as Hermes stores strings, plus each sample stem.
+  const free = selection.questions.filter((q) => selection.ids.has(q.id));
+  const bundle = (extra = '', utf16 = '') => Buffer.concat([
+    Buffer.from(free.map((q) => q.id).join('') + free.map((q) => q.question).join('\n') + extra, 'utf8'),
+    Buffer.from(utf16, 'utf16le'),
+  ]);
+  const ok = audit(bundle());
+  assert.equal(ok.pass, true, JSON.stringify({ ...ok, hosts: undefined }).slice(0, 400));
+  assert.equal(ok.sampleIdsFound, ok.sampleIds);
+  for (const c of BUNDLED_COURSES) {
+    assert.equal(ok.courses[c].sampleIdsFound, selection.courses[c].ids.size, c);
+    assert.ok(ok.courses[c].paidStemsChecked > 0, c);
+  }
+  // "crisc_d1_005" holds "d1_005" but is not that CISA question; on its own it is.
+  assert.equal(holdsId('xxcrisc_d1_005yy', 'd1_005'), false);
+  assert.equal(holdsId('aaia_d2_010d2_010', 'd2_010'), true);
+  assert.equal(holdsId('crisc_d1_005', 'crisc_d1_005'), true);
+  // Only "crisc_" and "aaia_" are discounted, and only for a bare CISA id.
+  assert.equal(holdsId('cisa_d1_005', 'd1_005'), true);
+  assert.equal(holdsId('aaia_crisc_d1_005', 'crisc_d1_005'), true);
+  // Every paid stem must be checkable: short ones and ones inside a free stem fail the audit.
+  assert.equal(ok.paidStemsUnchecked.length, 0);
+  for (const c of BUNDLED_COURSES) assert.deepEqual(ok.courses[c].paidStemsUnchecked, [], c);
+  const longStem = 'Which of the following should the risk practitioner recommend FIRST to the owner?';
+  const { needles, unchecked } = stemNeedles([
+    { id: 'p_short', question: 'Too short to search for.' },
+    { id: 'p_inside', question: longStem },
+    { id: 'p_start', question: `${longStem.slice(0, 60)} and then something only this paid stem says.` },
+    { id: 'p_plain', question: 'A stem that no free question shares at all, long enough to search.' },
+  ], [`A free stem. ${longStem} More free text.`]);
+  assert.deepEqual(unchecked, ['p_short', 'p_inside']);
+  assert.deepEqual(needles.map(([id, n]) => [id, n.length]), [
+    ['p_start', `${longStem.slice(0, 60)} and then something only this paid stem says.`.length], // searched whole
+    ['p_plain', 60],
+  ]);
+  for (const c of ['crisc', 'aaia']) {
+    const course = selection.courses[c];
+    const paid = course.questions.find((q) => !course.ids.has(q.id));
+    const byId = audit(bundle(paid.id));
+    assert.equal(byId.pass, false);
+    assert.deepEqual(byId.courses[c].paidIdsFound, [paid.id]);
+    const byStem = audit(bundle('', paid.question));
+    assert.equal(byStem.pass, false, `${c}: a paid stem in UTF-16`);
+    assert.deepEqual(byStem.courses[c].paidStemsFound, [paid.id]);
+    // A bundle missing one sample question of this course fails (the public build would open a gap).
+    const one = [...course.ids][0];
+    const gap = audit(Buffer.from(bundle().toString('latin1').split(one).join(''), 'latin1'));
+    assert.equal(gap.pass, false);
+    assert.equal(gap.courses[c].sampleIdsFound, course.ids.size - 1);
+  }
+  // Courses not bundled yet: any of their ids fails the audit.
+  for (const [dir, file] of [['data/cc/originals', 'd1.json'], ['data/csoe/originals', 'd1.json'],
+    ['data/cia/cia1/originals', 'd1.json'], ['data/cia/ciac/originals', 'd1.json']]) {
+    const src = path.join(repo, dir, file);
+    if (!fs.existsSync(src)) continue;
+    const raw = JSON.parse(fs.readFileSync(src, 'utf8'));
+    const id = (Array.isArray(raw) ? raw : raw.questions)[0].id;
+    const r = audit(bundle(id));
+    assert.equal(r.pass, false, id);
+    assert.deepEqual(r.unreleasedIdsFound, [id]);
   }
 });
