@@ -38,6 +38,12 @@ import {
   PASSWORD_MAX_BYTES,
   PASSWORD_MIN_CHARS,
   passwordBytes,
+  passwordChecklist,
+  PASSWORD_CHECKLIST_ITEMS,
+  passwordMissingText,
+  passwordMissingTypes,
+  PASSWORD_SYMBOLS,
+  passwordTypes,
   passwordCheckStepsForTest,
   PASSWORD_OTHER_GUIDANCE,
   passwordGuidance,
@@ -55,12 +61,14 @@ import { GOOD, HOSTILE, HOSTILE_CONTEXT, HOSTILE_GROUPS, KNOWN_ACCEPTS, OFF_LIST
 import { R3_CONTEXT, R3_FAMILIES, R3_GOOD_KINDS, R3_HOSTILE } from '../../jest/password-fixtures-r3';
 import { breachForms, createBreachCheck } from '../webcloud/breach';
 import { ADVERSARIAL } from '../../jest/password-adversarial';
+import { withAllTypes } from '../../jest/password-mix';
+import { R4_CONTEXT, R4_FAMILIES, R4_GOOD, R4_HELD_OUT, R4_TUNING } from '../../jest/password-fixtures-r4';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const lists = require('../../scripts/password-lists.cjs');
 
 /** Random characters, cut to an exact length (what a password manager makes). */
-const RANDOM = 'x7Gq2mPz9LwR4tVbK3hD8nQe5YjC6fAuS1oMxZ0wPk2VgR7tBl4HnQ9eCj3DsF8yAu6';
+const RANDOM = 'x7Gq2m#Pz9LwR4t!VbK3hD8n%Qe5YjC6f&AuS1oMxZ0w*Pk2VgR7tBl4HnQ9eCj3DsF8yAu6';
 const ofLength = (n: number) => {
   let s = '';
   while (s.length < n) s += RANDOM;
@@ -80,74 +88,153 @@ const EMAIL = 'Maya.Santos1990@Example.com';
 const CTX = { email: EMAIL, names: ['Maya Santos'] };
 const sha = (t: string) => createHash('sha256').update(t, 'utf8').digest('hex');
 const WORDS = { short: PASSWORD_SHORT_LIST, dict: PASSWORD_DICT_LIST, local: PASSWORD_LOCAL_LIST, names: PASSWORD_NAMES_LIST };
-const ok = (p: string, ctx: object = CTX) => checkPassword(p, ctx).length === 0;
+/** Accepted once the four types are added the way a learner adds them (jest/password-mix.ts). */
+const ok = (p: string, ctx: object = CTX) => checkPassword(withAllTypes(p), ctx).length === 0;
+/** The reasons other than the four types: what the structural rules and the lists say. */
+const why = (p: unknown, ctx?: object | string) => checkPassword(p, ctx as never).filter((r) => r !== 'missing_characters');
 
 beforeAll(() => {
   expect(loadPasswordWords(WORDS)).toBe(true);
 });
 
-describe('length (NIST: 15 for a single-factor password; the server stores at most 72 bytes)', () => {
+describe('length (owner decision: 12, a documented deviation from NIST\'s 15; the server stores at most 72 bytes)', () => {
   it('the constants match the owner decision and the server', () => {
-    expect([PASSWORD_MIN_CHARS, PASSWORD_MAX_BYTES, MAX_LEFT_OVER, MIN_MATERIAL]).toEqual([15, 72, 2, 10]);
+    expect([PASSWORD_MIN_CHARS, PASSWORD_MAX_BYTES, MAX_LEFT_OVER, MIN_MATERIAL]).toEqual([12, 72, 2, 8]);
   });
 
-  it('14 is too short, 15 and 64 are fine, 72 bytes is the most, 73 and 200 are too long', () => {
-    expect(checkPassword(ofLength(14))[0]).toBe('too_short');
-    expect(checkPassword(ofLength(15))).toEqual([]);
+  it('11 is too short, 12 and 64 are fine, 72 bytes is the most, 73 and 200 are too long', () => {
+    expect(checkPassword(ofLength(11))[0]).toBe('too_short');
+    expect(checkPassword(ofLength(12))).toEqual([]);
     expect(checkPassword(ofLength(64))).toEqual([]);
     expect(checkPassword(ofLength(72))).toEqual([]);
     expect(checkPassword(ofLength(73))).toEqual(['too_long']);
     expect(checkPassword(ofLength(200))).toEqual(['too_long']);
     expect(passwordProblem(ofLength(200))).toBe('too_long');
-    expect(passwordProblem(ofLength(15))).toBeNull();
+    expect(passwordProblem(ofLength(12))).toBeNull();
     expect(passwordGuidance('too_long')!.text).toBe('Use up to 72 letters, fewer with accents or emoji.');
   });
 
   it('counts code points (an emoji is one character) and bytes as UTF-8', () => {
-    const emoji = '🌿🌳🍀🌲🌱🌵🌴🌾🍁🍂🍃🌸🌼🌻🌺🌷🥀🪴';
-    expect(passwordLength(emoji)).toBe(18);
-    expect(passwordBytes(emoji)).toBe(72);
-    expect(checkPassword(emoji)).toEqual([]);
-    expect(checkPassword(`${emoji}a`)).toEqual(['too_long']);
+    const emoji = '🌿🌳🍀🌲🌱🌵🌴🌾🍁🍂🍃🌸🌼🌻🌺🌷';
+    expect(passwordLength(emoji)).toBe(16);
+    expect(passwordBytes(emoji)).toBe(64);
+    // Emoji are allowed beside the four types (the server counts only the ASCII sets).
+    expect(checkPassword(`${emoji}Ab1!`)).toEqual([]);
+    expect(checkPassword(emoji)).toEqual(['missing_characters']);
+    expect(checkPassword(`${emoji}Ab1!xyzw1`)).toEqual(['too_long']);
     expect(passwordBytes('é'.repeat(36))).toBe(72);
     expect(checkPassword('é'.repeat(64))).toEqual(['too_long']);
   });
 
-  it('spaces count and are never trimmed; no character types are required', () => {
-    expect(passwordLength(`  ${ofLength(13)}`)).toBe(15);
-    expect(checkPassword('all lower case words here')).toEqual([]);
-    expect(checkPassword('ALL UPPER CASE WORDS HERE')).toEqual([]);
-    expect(checkPassword('x7gq2mpz9lwr4tvb')).toEqual([]);
+  it('spaces count and are never trimmed', () => {
+    expect(passwordLength(`  ${ofLength(10)}`)).toBe(12);
+    expect(checkPassword(`  ${ofLength(10)}`)).toEqual([]);
   });
 
   it('anything that is not a string reads as empty, never a crash', () => {
-    expect(checkPassword(undefined)).toEqual(['too_short', 'too_simple']);
-    expect(checkPassword(42 as unknown as string, 7 as unknown as string)).toEqual(['too_short', 'too_simple']);
+    expect(checkPassword(undefined)).toEqual(['too_short', 'too_simple', 'missing_characters']);
+    expect(checkPassword(42 as unknown as string, 7 as unknown as string)).toEqual(['too_short', 'too_simple', 'missing_characters']);
     expect(normalizePassword(null)).toBeNull();
+    expect(passwordTypes(null)).toEqual({ lower: false, upper: false, digit: false, symbol: false });
   });
 });
 
-describe('Unicode: NFKC sent, 15 characters in both NFC and NFKC, invisible characters refused', () => {
+describe('the four types (owner decision 28 Nov 2026: exactly what the server checks)', () => {
+  it('the symbols are the server\'s: every ASCII punctuation character, no space, nothing else', () => {
+    let ascii = '';
+    for (let c = 33; c < 127; c++) if (!/[A-Za-z0-9]/.test(String.fromCharCode(c))) ascii += String.fromCharCode(c);
+    expect([...PASSWORD_SYMBOLS].sort().join('')).toBe([...ascii].sort().join(''));
+    expect(PASSWORD_SYMBOLS).toHaveLength(32);
+    expect(PASSWORD_SYMBOLS).not.toContain(' ');
+    // The Supabase CLI's string for "lower_upper_letters_digits_symbols", decoded the way the
+    // server decodes it (split on ':', a part ending in '\' joins the next with ':').
+    const cli = "abcdefghijklmnopqrstuvwxyz:ABCDEFGHIJKLMNOPQRSTUVWXYZ:0123456789:!@#$%^&*()_+-=[]{};'\\\\:\"|<>?,./`~";
+    const parts = cli.split(':');
+    for (let i = 0; i < parts.length - 1; i++) {
+      if (parts[i] && parts[i].endsWith('\\')) {
+        parts[i] = `${parts[i].slice(0, -1)}:${parts[i + 1]}`;
+        parts[i + 1] = '';
+      }
+    }
+    expect(parts.filter(Boolean)).toEqual(['abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', '0123456789', PASSWORD_SYMBOLS]);
+    // The local server's settings say the same as the app.
+    const toml = fs.readFileSync(path.join(__dirname, '..', '..', '..', 'supabase', 'config.toml'), 'utf8');
+    expect(toml).toMatch(new RegExp(`^minimum_password_length = ${PASSWORD_MIN_CHARS}$`, 'm'));
+    expect(toml).toMatch(/^password_requirements = "lower_upper_letters_digits_symbols"$/m);
+  });
+
+  it('each type needs a plain ASCII character, read on the form that is sent (NFKC), like the server', () => {
+    expect(passwordMissingTypes('Ab1!')).toEqual([]);
+    // "ñ", "É" and Greek or Cyrillic letters are not the server's letters; a space or "€" is not its symbol.
+    expect(passwordMissingTypes('ñandú É 7 € ok')).toEqual(['upper', 'symbol']);
+    expect(passwordMissingTypes('αβγ ΔΕΖ 1!')).toEqual(['lower', 'upper']);
+    expect(passwordMissingTypes('lower UPPER 12345')).toEqual(['symbol']);
+    // Full-width letters, digits and symbols become ASCII in NFKC, so they count (the server sees ASCII).
+    expect(passwordMissingTypes('ａＢ１！')).toEqual([]);
+    // Every symbol counts.
+    for (const s of PASSWORD_SYMBOLS) expect([s, passwordMissingTypes(`Abc1${s}`)]).toEqual([s, []]);
+  });
+
+  it('refused with missing_characters, and the guidance says exactly what is missing, in plain words', () => {
+    const p = ofLength(12).toLowerCase().replace(/[^a-z]/g, 'k'); // lower case only
+    expect(checkPassword(p)).toContain('missing_characters');
+    expect(passwordMissingText('abcdefgh')).toBe('Add an uppercase letter, a number and a symbol.');
+    expect(passwordMissingText('Abcdefgh')).toBe('Add a number and a symbol.');
+    expect(passwordMissingText('Abcdefgh1')).toBe('Add a symbol.');
+    expect(passwordMissingText('ABCDEFGH1!')).toBe('Add a lowercase letter.');
+    expect(passwordMissingText('abc1!')).toBe('Add an uppercase letter.');
+    expect(passwordMissingText('')).toBe('Add a lowercase letter, an uppercase letter, a number and a symbol.');
+    expect(passwordMissingText('Ab1!')).toBeNull();
+    expect(passwordGuidance('missing_characters', 'Abcdefgh')!).toEqual({ key: 'password.guide.missing_characters', text: 'Add a number and a symbol.' });
+    expect(passwordGuidance('password_missing_characters', 'abcdefgh1!')!.text).toBe('Add an uppercase letter.');
+    expect(passwordGuidance('missing_characters')!.text).toBe('Use at least one lowercase letter, one uppercase letter, one number and one symbol.');
+  });
+
+  it('the checklist: five items, each met or not, and refused / ok / strong', () => {
+    const labels = (p: string) => passwordChecklist(p, CTX).items.map((i) => `${i.met ? 'Y' : 'n'} ${i.label}`);
+    expect(PASSWORD_CHECKLIST_ITEMS.map((i) => [i.id, i.key, i.label])).toEqual([
+      ['length', 'password.check.length', '12 or more characters'],
+      ['lower', 'password.check.lower', 'A lowercase letter'],
+      ['upper', 'password.check.upper', 'An uppercase letter'],
+      ['digit', 'password.check.digit', 'A number'],
+      ['symbol', 'password.check.symbol', 'A symbol'],
+    ]);
+    expect(labels('')).toEqual(['n 12 or more characters', 'n A lowercase letter', 'n An uppercase letter', 'n A number', 'n A symbol']);
+    expect(labels('abc')).toEqual(['n 12 or more characters', 'Y A lowercase letter', 'n An uppercase letter', 'n A number', 'n A symbol']);
+    expect(passwordChecklist('', CTX).state).toBe('refused');
+    expect(passwordChecklist(ofLength(12), CTX)).toMatchObject({ state: 'ok', problems: [], complete: true });
+    expect(passwordChecklist(ofLength(15), CTX).state).toBe('strong');
+    // All five met and still refused: a common password with the four types around it.
+    const common = passwordChecklist('Password2026!', CTX);
+    expect(common.items.every((i) => i.met)).toBe(true);
+    expect(common.state).toBe('refused');
+    expect(common.problems[0]).toBe('common');
+    // A decomposed accent counts as one character, as the server will see it.
+    expect(passwordChecklist('Ab1!e\u0301e\u0301e\u0301e\u0301e\u0301', CTX).items[0].met).toBe(false);
+  });
+});
+
+describe('Unicode: NFKC sent, 12 characters in both NFC and NFKC, invisible characters refused', () => {
   it('composes before counting, checking and sending', () => {
-    const decomposed = 'cafe\u0301 cre\u0300me bru\u0302le\u0301e';
-    const composed = 'café crème brûlée';
+    const decomposed = 'Cafe\u0301 cre\u0300me bru\u0302le\u0301e 7!';
+    const composed = 'Café crème brûlée 7!';
     expect(normalizePassword(decomposed)).toBe(composed);
     expect(passwordLength(decomposed)).toBe(passwordLength(composed));
     expect(checkPassword(decomposed)).toEqual(checkPassword(composed));
   });
 
-  it('a decomposed 16-code-point string that composes to 14 characters is too short', () => {
-    const s = 'e\u0301e\u0301 ocean lamps';
-    expect(Array.from(s)).toHaveLength(16);
-    expect(passwordLength(s)).toBe(14);
+  it('a decomposed 13-code-point string that composes to 11 characters is too short', () => {
+    const s = 'E\u0301e\u0301 ocean 7!';
+    expect(Array.from(s)).toHaveLength(13);
+    expect(passwordLength(s)).toBe(11);
     expect(checkPassword(s)).toContain('too_short');
   });
 
-  it('NFKC: full-width letters and ligatures are their plain forms; 15 code points in both forms', () => {
+  it('NFKC: full-width letters and ligatures are their plain forms; 12 code points in both forms', () => {
     expect(normalizePassword('ｐａｓｓｗｏｒｄ')).toBe('password');
     expect(normalizePassword('ﬁve ocean lamps')).toBe('five ocean lamps');
-    expect(checkPassword('ｐａｓｓｗｏｒｄｐａｓｓｗｏｒｄ')).not.toEqual([]);
-    const s = 'ﬁve ocean lamp'; // 14 in NFC, 15 in NFKC
+    expect(checkPassword('Ｐａｓｓｗｏｒｄ２０２６！')).not.toEqual([]);
+    const s = 'Fﬁve ocean7'; // 11 in NFC, 12 in NFKC
     expect(checkPassword(s)).toContain('too_short');
   });
 
@@ -159,7 +246,7 @@ describe('Unicode: NFKC sent, 15 characters in both NFC and NFKC, invisible char
     expect(checkPassword(`${base}\ud800`)).toEqual(['invalid_characters']);
     expect(checkPassword(`\udc00${base}`)).toEqual(['invalid_characters']);
     // Allowed: the zero-width joiner (family emoji), non-joiner (Indic) and variation selectors.
-    expect(checkPassword(`👨\u200d👩\u200d👧\u200d👦 family picnic day`)).toEqual([]);
+    expect(checkPassword(`👨\u200d👩\u200d👧\u200d👦 Family picnic day 7!`)).toEqual([]);
     expect(checkPassword(`${base}\u200c`)).toEqual([]);
     expect(checkPassword(`${base}❤\ufe0f`)).toEqual([]);
     expect(passwordGuidance('invalid_characters')).not.toBeNull();
@@ -186,7 +273,9 @@ describe('Unicode: NFKC sent, 15 characters in both NFC and NFKC, invisible char
 
   it('Thai, Hindi, accented Spanish, Tagalog and family-emoji passphrases still pass', () => {
     for (const p of ['ภาษาไทยสวยงามมากจริงๆ', 'नमस्ते दुनिया आज अच्छा', 'niño jesús está aquí hoy', 'precisamos de férias', 'Ang Niño ay natutulog na', 'café crème brûlée ok', '日本語のパスワードです長い文章です']) {
-      expect([p, checkPassword(p, CTX)]).toEqual([p, []]);
+      expect([p, checkPassword(withAllTypes(p), CTX)]).toEqual([p, []]);
+      // Without the four ASCII types they are refused for that alone.
+      expect([p, checkPassword(p, CTX)]).toEqual([p, ['missing_characters']]);
     }
   });
 
@@ -195,9 +284,10 @@ describe('Unicode: NFKC sent, 15 characters in both NFC and NFKC, invisible char
     try {
       // @ts-expect-error: an engine without Unicode normalisation
       delete String.prototype.normalize;
-      expect(normalizePassword('ocean violet lamp seven')).toBe('ocean violet lamp seven');
+      expect(normalizePassword('Ocean violet lamp 7!')).toBe('Ocean violet lamp 7!');
+      expect(checkPassword('Ocean violet lamp 7!')).toEqual([]);
       expect(normalizePassword('café violet lamp seven')).toBeNull();
-      expect(checkPassword('café violet lamp seven')).toEqual(['invalid_characters']);
+      expect(checkPassword('Café violet lamp 7!')).toEqual(['invalid_characters']);
     } finally {
       // eslint-disable-next-line no-extend-native
       String.prototype.normalize = saved;
@@ -252,12 +342,12 @@ describe('the bundled lists (ASVS 6.2.4; sources, picking rules, fingerprints)',
       expect(loadPasswordWords(null)).toBe(false);
       expect(passwordWordsLoaded()).toBe(false);
       // Not loaded: a distinct state (the screen says "checking…"), and common words can slip by.
-      expect(assessPassword('monkey dragon 2026!!')).toEqual({ problems: [], complete: false });
-      expect(assessPassword('cisaexam2026pass').problems).toEqual(['contains_service_word']);
+      expect(assessPassword('Monkey dragon 2026!!')).toEqual({ problems: [], complete: false });
+      expect(assessPassword('Cisaexam2026pass!').problems).toEqual(['contains_service_word']);
     } finally {
       expect(loadPasswordWords(WORDS)).toBe(true);
     }
-    expect(assessPassword('monkey dragon 2026!!')).toEqual({ problems: ['common'], complete: true });
+    expect(assessPassword('Monkey dragon 2026!!')).toEqual({ problems: ['common'], complete: true });
   });
 
   it('are stored scrambled, not as readable text, and decode the same way in the builder and the app', () => {
@@ -298,7 +388,7 @@ describe('the bundled lists (ASVS 6.2.4; sources, picking rules, fingerprints)',
   });
 
   it('every 15+ entry is refused, in any case, with joiners or letter-for-number swaps', () => {
-    for (const p of long) expect(checkPassword(p).length).toBeGreaterThan(0);
+    for (const p of long) expect(checkPassword(withAllTypes(p)).length).toBeGreaterThan(0);
     expect(isCommonPassword('ManchesterUnited')).toBe(true);
     expect(isCommonPassword('manchester united')).toBe(true);
     expect(isCommonPassword('m4nchester.united')).toBe(true);
@@ -371,11 +461,14 @@ describe('independent measures (fixtures; not built from the bundled lists)', ()
     }
   });
 
-  it('three random ordinary words pass: refused under 0.5%, with or without spaces; four words never refused', () => {
+  it('three random ordinary words pass: refused under 1%, with or without spaces; four words almost never', () => {
     // The words are not filtered: a few are themselves patterns ("mmmm", "wert"), which is why
-    // the rate is above zero.
+    // the rate is above zero. With the four types added the way a learner adds them (a capital,
+    // and a number and a symbol at the end) it rose from under 0.5% to about 0.9% (36 of 3,991
+    // with spaces, 28 Nov 2026): a month word just before the number reads as a date, and three
+    // given names with a number as a name and a number.
     const words = unscramble(ORDINARY_WORDS);
-    for (const [k, sep, limit] of [[3, ' ', 0.005], [3, '', 0.005], [4, ' ', 0.001], [4, '', 0.001]] as const) {
+    for (const [k, sep, limit] of [[3, ' ', 0.01], [3, '', 0.01], [4, ' ', 0.001], [4, '', 0.001]] as const) {
       const rnd = random(987654321);
       const pick = () => words[Math.floor(rnd() * words.length)];
       let n = 0;
@@ -386,7 +479,7 @@ describe('independent measures (fixtures; not built from the bundled lists)', ()
         const p = ws.join(sep);
         if (Array.from(p).length < 15) continue;
         n++;
-        if (checkPassword(p).length) refused++;
+        if (checkPassword(withAllTypes(p)).length) refused++;
       }
       expect([k, sep, refused / n <= limit]).toEqual([k, sep, true]);
     }
@@ -426,6 +519,53 @@ describe('round 3: an attack the rules were not tuned on (jest/password-fixtures
   });
 });
 
+describe('round 4: the 12-to-14-character, four-types space (jest/password-fixtures-r4.ts)', () => {
+  // Split by vocabulary: pool A words build the tuning half, pool B words the held-out half
+  // (report-only: never tuned on). Same author as the rules this round, so the held-out
+  // figure is a weaker measure than round 3's. Ceilings may only fall.
+  const accepted = (set: readonly [string, string][]) => set.filter(([, p]) => checkPassword(p, R4_CONTEXT).length === 0);
+
+  it('every candidate is 12 to 14 characters with all four types; the pools do not share a word', () => {
+    for (const [, p] of [...R4_TUNING, ...R4_HELD_OUT, ...R4_GOOD]) {
+      expect([p, Array.from(p).length >= 12 && Array.from(p).length <= 14, passwordMissingTypes(p)]).toEqual([p, true, []]);
+    }
+    for (const pools of Object.values(R4_FAMILIES)) expect(pools.a.filter((w) => pools.b.includes(w))).toEqual([]);
+    expect([R4_TUNING.length, R4_HELD_OUT.length, R4_GOOD.length]).toEqual([2900, 2833, 240]);
+  });
+
+  it('tuning half: 0 of 2,900 accepted', () => {
+    expect(accepted(R4_TUNING)).toEqual([]);
+  });
+
+  it('held-out half (report-only): at most 13 of 2,833 accepted (0.5%), none of them a common password, walk or season', () => {
+    const acc = accepted(R4_HELD_OUT);
+    expect(acc.length).toBeLessThanOrEqual(13);
+    for (const [family] of acc) expect(['word', 'name', 'service']).toContain(family);
+  });
+
+  it('good: none of the 240 refused (three short words with a number and a symbol; password-manager output)', () => {
+    expect(R4_GOOD.filter(([, p]) => checkPassword(p, R4_CONTEXT).length)).toEqual([]);
+  });
+
+  it('the shape the rule invites is refused: a capitalised word, name or walk with numbers and a symbol around it', () => {
+    const ctx = { email: 'maya.santos1990@example.com', names: ['Maya Santos'] };
+    for (const [p, reason] of [
+      ['Password123!', 'common'],
+      ['Welcome2026#', 'common'],
+      ['Qwerty12345!', 'too_simple'],
+      ['Jennifer1990!', 'common'],
+      ['P@ssw0rd2026', 'common'],
+      ['!Manila2026#', 'common'],
+      ['HunyoHunyo123!', 'common'],
+      ['Kaisip@2026!', 'contains_service_word'],
+      ['MayaSantos#26', 'common'], // also the account's name; common words are enough to refuse it
+      ['Abcdefg2026!', 'too_simple'],
+    ] as const) {
+      expect([p, checkPassword(p, ctx)[0]]).toEqual([p, reason]);
+    }
+  });
+});
+
 describe('the guidance describes, it never shows an example (S2)', () => {
   const echoes = ['atleast15characters', 'at least 15 characters', 'three or four ordinary words', 'Use three or four ordinary words', 'maple cloud tiger!', 'correct horse battery', 'thisisaverylongpassword', 'passphrase12345678', 'pleasechangeyourpassword', 'three random words 2026'];
 
@@ -436,7 +576,7 @@ describe('the guidance describes, it never shows an example (S2)', () => {
   it('no guidance text holds an example: no quotes, no digits except the two limits', () => {
     for (const g of [...Object.values(PASSWORD_GUIDANCE), ...Object.values(PASSWORD_OTHER_GUIDANCE)]) {
       expect(g.text).not.toMatch(/["“”‘]|’[a-z]+’/i);
-      expect(g.text.replace(/\b(15|72)\b/g, '')).not.toMatch(/\d/);
+      expect(g.text.replace(/\b(12|72)\b/g, '')).not.toMatch(/\d/);
     }
   });
 
@@ -455,26 +595,26 @@ describe('the guidance describes, it never shows an example (S2)', () => {
 describe('round 3: structural rules (B2, B3, S1, S6 and the walks)', () => {
   it('one ordinary word of 10 to 14 letters with a year, a sequence or "@123" is too simple; a word typed twice too', () => {
     for (const p of ['Application2026', 'Governance2026!', 'Environment@123', 'conference1234567', 'MASQUERADE2026!!', 'literatureliterature', 'MasqueradeMasquerade']) {
-      expect([p, checkPassword(p)]).toEqual([p, ['too_simple']]);
+      expect([p, why(p)]).toEqual([p, ['too_simple']]);
     }
     // Two words, or a capital inside, are not "one word".
-    expect(checkPassword('quiet ApplicationX 2026', {})).toEqual([]);
+    expect(why('quiet ApplicationX 2026', {})).toEqual([]);
   });
 
   it('passwords built from the account are refused (the whole domain, its labels, reversed words), innocent mentions pass', () => {
     const ctx = { email: 'grace.villanueva0312@yahoo.com', names: ['Grace Villanueva'] };
     expect(ok('villanuevaaveunalliv', ctx)).toBe(false); // the name and its mirror
     for (const p of ['yahoo.com.grace0312', 'MrsGraceVillanueva1', 'GraceVillanuevaCPA1', 'gracevillanueva.yahoo.com', 'Atty.GraceVillanueva']) {
-      expect([p, checkPassword(p, ctx)]).toEqual([p, ['contains_email']]);
+      expect([p, why(p, ctx)]).toEqual([p, ['contains_email']]);
     }
-    expect(checkPassword('deloitte.com.2026!!', { email: 'grace@deloitte.com' })).toEqual(['contains_email']);
+    expect(why('deloitte.com.2026!!', { email: 'grace@deloitte.com' })).toEqual(['contains_email']);
     for (const p of ['grace under pressure daily', 'villanueva street bakery smells good', 'amazing grace sung at dawn', 'yahoo mail is so slow today', 'say grace before every meal']) {
-      expect([p, checkPassword(p, ctx)]).toEqual([p, []]);
+      expect([p, why(p, ctx)]).toEqual([p, []]);
     }
   });
 
   it('a full name with numbers is common, whoever it belongs to; three names alone are left to the other rules', () => {
-    for (const p of ['MarkAnthonyCruz88', 'JhonMarkSantos1998', 'LovelyMaeGarcia2001', 'maria santos reyes 1990']) expect([p, checkPassword(p)]).toEqual([p, ['common']]);
+    for (const p of ['MarkAnthonyCruz88', 'JhonMarkSantos1998', 'LovelyMaeGarcia2001', 'maria santos reyes 1990']) expect([p, why(p)]).toEqual([p, ['common']]);
   });
 
   it('a repeated word counts once (S6); four or more different ordinary words pass by design', () => {
@@ -505,7 +645,7 @@ describe('the whole-password rule', () => {
       ['ilovekaisip12345', 'contains_service_word'],
       ['maya.santos1990@example.com', 'contains_email'],
     ];
-    for (const [p, why] of cases) expect([p, checkPassword(p, CTX)]).toEqual([p, [why]]);
+    for (const [p, reason] of cases) expect([p, why(p, CTX)]).toEqual([p, [reason]]);
   });
 
   it('this review\'s examples: phrases, exam names, swaps per position, dates and phones, Filipino', () => {
@@ -521,24 +661,24 @@ describe('the whole-password rule', () => {
   });
 
   it('the learner\'s name (Google) counts as personal, and only when given', () => {
-    expect(checkPassword('Xochitl Brennagh 26', { names: ['Xochitl Brennagh'] })).toEqual(['contains_email']);
-    expect(checkPassword('brennagh xochitl brennagh', { names: ['Xochitl Brennagh'] })).toEqual(['contains_email']);
-    expect(checkPassword('Xochitl Brennagh 26')).toEqual([]);
-    expect(checkPassword('Xochitl Brennagh 26', { names: [null, undefined, 42 as unknown as string] })).toEqual([]);
+    expect(why('Xochitl Brennagh 26', { names: ['Xochitl Brennagh'] })).toEqual(['contains_email']);
+    expect(why('brennagh xochitl brennagh', { names: ['Xochitl Brennagh'] })).toEqual(['contains_email']);
+    expect(why('Xochitl Brennagh 26')).toEqual([]);
+    expect(why('Xochitl Brennagh 26', { names: [null, undefined, 42 as unknown as string] })).toEqual([]);
   });
 
   it('the reason names the piece the refusal needs: email, then the app\'s words, then common words, else too simple', () => {
-    expect(checkPassword('xochitl kaisip 1990', { names: ['Xochitl Brennagh'] })).toEqual(['contains_email']);
-    expect(checkPassword('kaisip football 2026')).toEqual(['contains_service_word']);
-    expect(checkPassword('football football 1')).toEqual(['common']);
-    expect(checkPassword('zyxwvutsrqponmlkj')).toEqual(['too_simple']);
+    expect(why('xochitl kaisip 1990', { names: ['Xochitl Brennagh'] })).toEqual(['contains_email']);
+    expect(why('kaisip football 2026')).toEqual(['contains_service_word']);
+    expect(why('football football 1')).toEqual(['common']);
+    expect(why('zyxwvutsrqponmlkj')).toEqual(['too_simple']);
     // The floor: fewer than 10 real characters after repeats, sequences, copies and years.
-    expect(checkPassword('Xochitlqq123456789')).toEqual(['too_simple']);
+    expect(why('Xochitlqq123456789')).toEqual(['too_simple']);
   });
 
   it('three different ordinary words pass, including ones a review found refused before (S7)', () => {
     for (const p of ['coffee monkey sun hat', 'monkey dragon tree', 'garden summer party', 'orange banana first', 'purple tiger june', 'apple rocky knock', 'manager struggle pass', 'kaisip helps me study daily', 'studying for the cisa exam in june', 'coffee before cisa review', 'i will pass the audit exam soon okay']) {
-      expect([p, checkPassword(p, CTX)]).toEqual([p, []]);
+      expect([p, why(p, CTX)]).toEqual([p, []]);
     }
   });
 
@@ -551,7 +691,7 @@ describe('the whole-password rule', () => {
 
 describe('guidance after a refusal (NIST: SHALL offer guidance)', () => {
   it('every reason has a key and plain words in the app\'s style', () => {
-    const reasons: PasswordProblem[] = ['invalid_characters', 'too_short', 'too_long', 'contains_email', 'contains_service_word', 'common', 'too_simple'];
+    const reasons: PasswordProblem[] = ['invalid_characters', 'too_short', 'too_long', 'missing_characters', 'contains_email', 'contains_service_word', 'common', 'too_simple'];
     expect(Object.keys(PASSWORD_GUIDANCE).sort()).toEqual([...reasons].sort());
     for (const r of reasons) {
       const g = passwordGuidance(r)!;
@@ -658,8 +798,8 @@ describe('the breached-password check (k-anonymity, at most two forms, padding)'
 
   it('a short base is never looked up on its own: strong, mostly-number passwords are not refused for "zq" or "box" (B1)', async () => {
     expect(breachForms('Zq #4829 1837 4401 9921')).toEqual(['Zq #4829 1837 4401 9921', 'zq#4829183744019921']);
-    expect(breachForms('box 48 291 7730 5512 6644')).toEqual(['box 48 291 7730 5512 6644', 'box48291773055126644']);
-    for (const pw of ['Zq #4829 1837 4401 9921', 'box 48 291 7730 5512 6644']) {
+    expect(breachForms('Box! 48 291 7730 5512 6644')).toEqual(['Box! 48 291 7730 5512 6644', 'box!48291773055126644']);
+    for (const pw of ['Zq #4829 1837 4401 9921', 'Box! 48 291 7730 5512 6644']) {
       expect(checkPassword(pw)).toEqual([]);
       const range = fakeRange(['zq', 'box']);
       expect([pw, await createBreachCheck({ fetch: range.fetch, sha1Hex })(pw)]).toEqual([pw, 'clean']);
@@ -814,13 +954,14 @@ describe('cost budget', () => {
     expect(total).toBeGreaterThan(STEP_TOTAL * 0.9);
   });
 
-  it('the answers on the adversarial list are the ones the slower version gave', () => {
-    // Checked against the previous version input by input before it was removed
-    // (17,949 inputs: every fixture and this list, 0 differences); this
-    // fingerprint keeps the adversarial answers from drifting.
+  it('the answers on the adversarial list do not drift', () => {
+    // The speed rewrite was checked against the previous version input by input
+    // (17,949 inputs: every fixture and this list, 0 differences). Re-recorded
+    // once, on purpose, for the owner's four-types rule (28 Nov 2026, evening):
+    // the answers now include missing_characters and the core rule.
     const h = createHash('sha256');
     for (const [name, p] of ADVERSARIAL) h.update(`${name}\t${checkPassword(p, CTX).join(',')}\t${checkPassword(p).join(',')}\n`);
-    expect(h.digest('hex')).toBe('c69cb90f50fa2eb3a2428e139b456712b0f05a42273e1eb23afa7b4d5767bc70');
+    expect(h.digest('hex')).toBe('a81b488e720af43bfc5a093037d98932ad781e36920be3e02e25c207a31ec143');
   });
 
   it('every adversarial input takes well under 50 ms (median of five)', () => {

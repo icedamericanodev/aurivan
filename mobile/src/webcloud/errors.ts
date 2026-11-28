@@ -28,7 +28,7 @@ export type Call = 'otp' | 'verify' | 'pkce' | 'refresh' | 'logout' | 'user' | '
  * screens; never a server message):
  * - password_wrong: "That email and password don't match" (the same words
  *   whether or not the address has an account, or a password);
- * - password_too_short / _too_long / _common / _too_simple /
+ * - password_too_short / _too_long / _missing_characters / _common / _too_simple /
  *   _contains_email / _contains_service_word / _invalid_characters: the
  *   app's own rules (engine/passwordRules.ts), refused before anything is
  *   sent (passwordGuidance has the words to show);
@@ -55,6 +55,7 @@ export type PasswordDetail =
   | 'password_needed'
   | 'password_too_short'
   | 'password_too_long'
+  | 'password_missing_characters'
   | 'password_common'
   | 'password_too_simple'
   | 'password_contains_email'
@@ -175,6 +176,7 @@ function userUpdateError(status: number, word: string, b: Record<string, unknown
       const reasons = Array.isArray(wp.reasons) ? wp.reasons.filter((r): r is string => typeof r === 'string') : [];
       if (reasons.includes('pwned')) return bad('password_leaked');
       if (reasons.includes('length')) return bad('password_too_short');
+      if (reasons.includes('characters')) return bad('password_missing_characters');
       return bad('password_weak');
     }
     case 'same_password':

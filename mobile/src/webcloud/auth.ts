@@ -651,7 +651,9 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
   const suggestChange = (text: string, p: string, email: string, user: Record<string, unknown> | null) => {
     const wp = bodyObject(text).weak_password;
     if (wp && typeof wp === 'object') return true;
-    return passwordWordsLoaded() && checkPassword(p, { email, names: namesOf(user) }).length > 0;
+    // Only the predictable-password reasons: a password set under the earlier rule (15+, no
+    // required types) is not nagged for its length or its mix (sign-in never applies those).
+    return passwordWordsLoaded() && checkPassword(p, { email, names: namesOf(user) }).some((r) => r !== 'too_short' && r !== 'missing_characters');
   };
 
   return {

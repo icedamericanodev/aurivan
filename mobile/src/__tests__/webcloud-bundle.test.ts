@@ -71,9 +71,11 @@ describe('the cloud bundle', () => {
     for (const m of Object.values(K)) if (m && typeof m === 'object') for (const k of Object.keys(m)) expect(k).not.toMatch(/ForTest$/);
     expect(typeof K.passwordRules.loadPasswordWords).toBe('function');
     // The password rules are there for the forms (the client checks again before sending).
-    expect(K.passwordRules.checkPassword('aaaaaaaaaaaaaaa')).toEqual(['common']);
-    expect(K.passwordRules.checkPassword('ocean violet lamp seven')).toEqual([]);
-    expect(K.passwordRules.PASSWORD_MIN_CHARS).toBe(15);
+    expect(K.passwordRules.checkPassword('aaaaaaaaaaaaaaa')).toEqual(['common', 'missing_characters']);
+    expect(K.passwordRules.checkPassword('Ocean violet lamp 7!')).toEqual([]);
+    expect(K.passwordRules.PASSWORD_MIN_CHARS).toBe(12);
+    expect(K.passwordRules.passwordChecklist('Ocean violet lamp 7!').state).toBe('strong');
+    expect(K.passwordRules.passwordMissingText('ocean violet lamp')).toBe('Add an uppercase letter, a number and a symbol.');
     // The leaked-password check is on, with its one host and the SHA-1 adapter for the page.
     expect(K.config.BREACH_CHECK_ON).toBe(true);
     expect(K.config.BREACH_HOST).toBe('https://api.pwnedpasswords.com');
@@ -134,7 +136,7 @@ describe('the cloud bundle', () => {
           return { short: W.words.PASSWORD_SHORT_LIST, dict: W.words.PASSWORD_DICT_LIST, local: W.words.PASSWORD_LOCAL_LIST, names: W.words.PASSWORD_NAMES_LIST };
         },
       });
-      await c.auth.startPasswordSignUp('maya@example.com', 'ocean violet lamp seven');
+      await c.auth.startPasswordSignUp('maya@example.com', 'Ocean violet lamp 7!');
       return c.auth.breachState();
     };
     const digests: string[] = [];
@@ -149,7 +151,7 @@ describe('the cloud bundle', () => {
     const withSubtle = lookups.splice(0);
     expect(await run({})).toBe('clean'); // no crypto.subtle (Hermes, http): the pure SHA-1, same prefixes
     expect(lookups).toEqual(withSubtle);
-    expect(withSubtle).toEqual(['ocean violet lamp seven', 'oceanvioletlampseven'].map((f) => createHash('sha1').update(f).digest('hex').toUpperCase().slice(0, 5)));
+    expect(withSubtle).toEqual(['Ocean violet lamp 7!', 'oceanvioletlamp'].map((f) => createHash('sha1').update(f).digest('hex').toUpperCase().slice(0, 5)));
   });
 
   it('signs in and syncs from the bundle; every push says LIVE_VERSION, even if the page asks otherwise (W11)', async () => {
@@ -181,8 +183,8 @@ describe('the cloud bundle', () => {
     // The sign-up loads the lists first (fail closed), so "monkeymonkeymonkey" is refused.
     expect(await c.auth.startPasswordSignUp('maya@example.com', 'monkeymonkeymonkey').then(() => 'ok', (e: { detail?: string }) => e.detail)).toBe('password_common');
     expect(K.passwordRules.passwordWordsLoaded()).toBe(true);
-    await c.auth.startPasswordSignUp('maya@example.com', 'ocean violet lamp seven');
-    const done = await c.auth.finishPasswordSignUp('maya@example.com', server.codes.get('maya@example.com')!, 'ocean violet lamp seven');
+    await c.auth.startPasswordSignUp('maya@example.com', 'Ocean violet lamp 7!');
+    const done = await c.auth.finishPasswordSignUp('maya@example.com', server.codes.get('maya@example.com')!, 'Ocean violet lamp 7!');
     expect(done.passwordSaved).toBe(true);
     const info = done.account;
     await c.auth.acceptTerms({ termsVersion: TERMS_VERSION, ageConfirmed: true });
