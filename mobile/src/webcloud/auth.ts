@@ -67,6 +67,7 @@ import {
   SESSION_MAX_AGE_MS,
   SUPABASE_URL,
 } from './config';
+import type { BreachVerdict } from './breach';
 import { authWord, bodyObject, toCloudError, type Call, type PasswordDetail } from './errors';
 import { challengeFor, isVerifier, lastSignInAt, makeVerifier, sessionStartAt, tokenClaims } from './pkce';
 import type { BrowserStores, ClockPort, FetchPort, HttpResponse, LockPort, RandomPort } from './ports';
@@ -181,6 +182,8 @@ export interface WebAuth {
   reauthWithPassword(password: string, opts?: { captchaToken?: string }): Promise<AccountInfo>;
   /** True while the session began with an emailed code and has saved no password (no sync until it has). */
   passwordNeeded(): boolean;
+  /** The last breached-password check: 'off' (today), 'clean', or 'unchecked' (it couldn't check; show passwordGuidance('breach_unchecked')). */
+  breachState(): 'off' | 'clean' | 'unchecked';
   /** Why this browser is signed out, when it wasn't the learner's choice (kept across reloads); null when signed in or signed out on purpose. */
   sessionEnded(): SessionEnd | null;
 }
@@ -205,15 +208,14 @@ export type PasswordSaveProblem = PasswordProblem | 'leaked' | 'weak' | 'reauth'
 
 /**
  * DESIGN FOR LATER (owner decision pending; OFF): a breached-password range
- * check, k-anonymity style. The page would hash the password with SHA-1
- * (crypto.subtle), send only the first 5 hex characters to
- * https://api.pwnedpasswords.com/range/<prefix> and look for the other 35 in
- * the answer (engine/passwordBreach.ts parses it). Nothing calls a network
- * service today: the hook runs only when BREACH_CHECK_ON (config.ts) is true
- * AND the page passes `breachedPassword`. It fails open (a network error
- * never blocks a password), as the audit recommends.
+ * check, k-anonymity style (webcloud/breach.ts createBreachCheck makes one:
+ * three forms of the password, padded range queries). Nothing calls a
+ * network service today: the hook runs only when BREACH_CHECK_ON (config.ts)
+ * is true AND the page passes `breachedPassword`. It fails open (a network
+ * error never blocks a password), as the audit recommends, and then
+ * breachState() says 'unchecked' so the screen can say so.
  */
-export type BreachedPasswordPort = (password: string) => Promise<boolean>;
+export type BreachedPasswordPort = (password: string) => Promise<BreachVerdict>;
 
 /** The CloudError a broken app rule throws: invalid, with detail password_<problem>. */
 export function passwordRuleError(problem: PasswordProblem): CloudError {
@@ -282,6 +284,8 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
   const now = () => deps.clock.now();
   /** When this page last asked for a reset code (any address). In memory only. */
   let lastResetAsk = -Infinity;
+  /** The last breached-password check: off (today), clean, or unchecked (it couldn't check; the password was saved). */
+  let breach: 'off' | 'clean' | 'unchecked' = 'off';
 
   /** One request. A network failure reads as status 0 (offline); never throws anything but CloudError. */
   const send = async (path: string, init: { method: string; headers?: Record<string, string>; body?: string; keepalive?: boolean }): Promise<{ res: HttpResponse | null; text: string }> => {
@@ -541,14 +545,18 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
   };
   /** The optional breached-password check (OFF today). A known-breached password is refused; any failure lets it through. */
   const breachCheck = async (password: string) => {
-    if (!BREACH_CHECK_ON || !deps.breachedPassword) return;
-    let breached = false;
-    try {
-      breached = (await deps.breachedPassword(password)) === true;
-    } catch {
-      breached = false; // fail open
+    if (!BREACH_CHECK_ON || !deps.breachedPassword) {
+      breach = 'off';
+      return;
     }
-    if (breached) throw new CloudError('invalid', undefined, 'password_leaked');
+    let verdict: BreachVerdict = 'unknown';
+    try {
+      verdict = await deps.breachedPassword(password);
+    } catch {
+      verdict = 'unknown'; // fail open
+    }
+    breach = verdict === 'unknown' ? 'unchecked' : 'clean';
+    if (verdict === 'breached') throw new CloudError('invalid', undefined, 'password_leaked');
   };
   /** Mark the saved session (the same one only) as having saved a password. */
   const markSaved = (userId: string) => {
@@ -734,6 +742,8 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
       if (s.expiresAt > now()) await endOnServer(s.accessToken);
       return info(next);
     },
+
+    breachState: () => breach,
 
     passwordNeeded() {
       const s = store.read();

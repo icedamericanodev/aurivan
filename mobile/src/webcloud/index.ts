@@ -61,6 +61,8 @@ export interface WebCloudOptions {
    * Without it no password can be saved (fail closed).
    */
   passwordWords?: WebAuthDeps['passwordWords'];
+  /** The breached-password check (webcloud/breach.ts createBreachCheck). Used only when BREACH_CHECK_ON is true: today it is false. */
+  breachedPassword?: WebAuthDeps['breachedPassword'];
   /** Tests: a fake server's address and key. */
   url?: string;
   apiKey?: string;
@@ -148,7 +150,7 @@ export function createWebCloud(o: WebCloudOptions): WebCloud {
   const sv = o.storeVersions;
   if (sv && !(Number.isInteger(sv.progress) && sv.progress >= 1 && Number.isInteger(sv.settings) && sv.settings >= 1)) throw new Error('KaiSipCloud: storeVersions must be whole numbers');
   const gzip: GzipPort = 'gunzipCapped' in o.gzip ? o.gzip : streamGzip(o.gzip);
-  const auth = createWebAuth({ fetch: o.fetch, stores: o.stores, random: o.random, lock: o.lock, clock: o.clock, url: o.url, apiKey: o.apiKey, passwordWords: o.passwordWords });
+  const auth = createWebAuth({ fetch: o.fetch, stores: o.stores, random: o.random, lock: o.lock, clock: o.clock, url: o.url, apiKey: o.apiKey, passwordWords: o.passwordWords, breachedPassword: o.breachedPassword });
   const sync = createRestSync(auth, gzip);
   const device = createWebDevice({ host: o.host, storage: syncStorage(o.stores, () => auth.sharedComputer()), bank: o.bank, clock: o.clock });
   const wait = o.wait ?? ((ms: number) => new Promise<void>((r) => setTimeout(r, ms)));

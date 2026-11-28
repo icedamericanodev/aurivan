@@ -17,7 +17,7 @@ and the owner's decisions.
 | Topic | Decision | What it changes |
 |---|---|---|
 | Sign-in methods | **Google, and email + password** (owner, 28 Nov 2026, second decision). Emailed 8-digit codes are kept only to confirm an email address and for "Forgot password", and both always end with setting a password | NIST SP 800-63B-4 §3.1.3: "Email SHALL NOT be used for out-of-band authentication"; confirmation and issued recovery codes (§4.2.1.2) are allowed. Reverses the 27 Oct "no passwords" choice: the wipe-all guard (`20261027000100_beta_no_passwords.sql`, the H1 fix) is replaced by `20261128000000_password_guard.sql`. A code session is a full session in GoTrue, so the apps force "set a password" after any code session; a server rule that limits learner data to password or Google sessions is a planned follow-up (design audit, "Audit alignment") |
-| Supabase plan | **Free for now** (owner: see how many learners sign up first) | Alternatives on Free, written up as documented deviations for audit: the 30-day sign-in expiry is enforced on the server by a nightly job that deletes sessions older than 30 days; common and leaked passwords are refused by the apps (a bundled blocklist), which only a learner bypassing the app for their own account could skip; the 100-wrong-tries account limit is replaced by the human check on every password sign-in, per-IP limits, 15 characters and monitoring. **Upgrade to Pro before the paid launch** (already required by `WEB_GATE_PLAN.md`), or earlier if the deviation register's trigger is hit |
+| Supabase plan | **Free for now** (owner: see how many learners sign up first) | Alternatives on Free, written up as documented deviations for audit: the 30-day sign-in expiry is enforced on the server by a nightly job that deletes sessions older than 30 days; predictable passwords are refused by the apps (structural rules and bundled lists, which only a learner bypassing the app for their own account could skip; they miss phrases and names that are on no list, see "What the password rules cannot do" below), and leaked passwords are not checked at all on Free; the 100-wrong-tries account limit is replaced by the human check on every password sign-in, per-IP limits, 15 characters and monitoring. **Upgrade to Pro before the paid launch** (already required by `WEB_GATE_PLAN.md`), or earlier if the deviation register's trigger is hit |
 | Email code length | **8 digits** (confirms the audit's L7 change) | None: already set. Close L7. |
 | GitHub Pro | **Owner buys it** | Go-live gate 4 can be met: "Require review from Code Owners" on `main`, and the `ota` and `db-backup` environments enforced again. |
 | New courses | **Public free sample; full course for Alpha testers only** (as CISA today) | Each course needs a free sample builder, a pack in the phone app, the public build's sample-only guard and audit extended to it, and the tester build carrying the full course. No payment system is part of this. |
@@ -87,36 +87,85 @@ loop. Nothing goes public until its gate says so.
    `sessionEnded()` (30 days after sign-in, 14 days unused, or a refused
    refresh: signed out with the reason kept across reloads, progress
    untouched). Code sign-in is gone from the public client.
-   `mobile/src/engine/passwordRules.ts` applies the owner's "reject all
-   common passwords" decision with NIST §3.1.1.2's whole-password
-   comparison: 15 code points in NFC and NFKC, at most 72 bytes (documented
-   deviation for accented text), NFKC sent, control and invisible characters
-   refused. The comparison reads accents, invisible characters, Cyrillic and
-   Greek look-alikes, letter-for-number swaps (per position) and the
-   password backwards. A password is refused when it can be written as
-   predictable pieces (the app and exam words, the email, the Google name,
-   up to two list entries, at most 3 word pieces in all, repeats, sequences,
-   keyboard runs, copies, short numbers, years, dates, Philippine mobile
-   numbers, months next to numbers, symbols) with at most 2 characters left
-   over, or when fewer than 10 real characters remain; guidance words for
-   every refusal. Lists (all lightly scrambled, built by
+   `mobile/src/engine/passwordRules.ts` follows NIST §3.1.1.2's
+   whole-password comparison: 15 code points in NFC and NFKC, at most 72
+   bytes (documented deviation for accented text), NFKC sent, control and
+   invisible characters refused. The comparison reads accents, invisible
+   characters, Cyrillic and Greek look-alikes, letter-for-number swaps (per
+   position) and the password backwards. Two kinds of check: structural
+   rules (fewer than 10 real characters after repeats, sequences, walks,
+   copies, mirrors and years; one word with numbers; mostly the account's own
+   words, domain included; a full name with numbers; dates and phone
+   numbers), and lists (at most two list entries and 3 word pieces in all,
+   with at most 2 characters left over). Lists (lightly scrambled, built by
    `mobile/scripts/build-password-blocklist.mjs` from pinned copies, checked
    in CI): the top 3,000 passwords of 15+ characters (ASVS 6.2.4) in every
    bundle, with the sizes and SHA-256 the lazy lists must match; the top
    100,000 of 4–14 characters (SecLists xato-net, MIT), 19,886 English words
-   of 15+ letters (dwyl/english-words, Unlicense) and two hand-written lists
-   in `mobile/scripts/password-sources/` (clichéd phrases and exam terms; a
-   Filipino list the owner reviews in `docs/content/PASSWORD_LIST_FILIPINO.md`)
-   in `assets/kaisip-password-words.js`, which the website fetches (with
-   `?v=KaiSipCloud.passwordWordsRef`) only when a password form opens. A
-   breached-password range check is designed but OFF
-   (`BREACH_CHECK_ON = false`; owner decision pending). Independent measures
-   (fixtures in `mobile/jest/password-fixtures.ts`): 286 of the re-test's 288
-   hostile passwords refused (the 2 left are listed with reasons), 70 of 70
-   good phrases pass, fewer than 0.5% of random three-word phrases refused.
+   of 15+ letters (dwyl/english-words, Unlicense) and hand-written lists in
+   `mobile/scripts/password-sources/` (clichés and the app's own hints; exam
+   and work vocabulary; Filipino; other Asian learners; names) in
+   `assets/kaisip-password-words.js`, which the website fetches (with
+   `?v=KaiSipCloud.passwordWordsRef`) only when a password form opens. The
+   owner reviews the Filipino, names and Asian lists in
+   `docs/content/PASSWORD_LIST_FILIPINO.md`. No second ranked password list
+   with Asian coverage and a clear licence was found, so none is used.
+   Guidance words for every refusal, which describe and never show an
+   example. A breached-password range check is designed but OFF (below).
    Tests: `password-rules.test.ts`, `webcloud-password.test.ts` (gate 17 for
    the web client). The phone's `AuthPort` and memory backend get the same
    methods with the phone screens (stream C).
+
+#### What the password rules cannot do (measured 28 Nov 2026)
+
+The owner asked to apply the password standard and reject common passwords.
+Without a leaked-password lookup the apps can only refuse what their rules
+and lists can see:
+
+- **Structural rules generalise.** On a third tester's 867 unseen hostile
+  passwords, the structural families (repeats, mirrors, walks, dates,
+  numbers, the account's own words) were almost all refused before any
+  list was tuned.
+- **Lists do not.** A phrase, slogan, name, school, show or brand that is on
+  no list passes. To measure that honestly the 867 are split in a fixed way
+  (`mobile/jest/password-fixtures-r3.ts`): odd index = tuning half, even
+  index = **held-out half, report-only** (the code and the lists are never
+  tuned on it). Accepted:
+
+  | | Tuning half (433) | Held-out half (434) |
+  |---|---|---|
+  | At dc23533 (before) | 147 (33.9%) | 133 (30.6%) |
+  | Now | 19 (4.4%) | 50 (11.5%: 22 the tester judged to matter, 28 obscure) |
+
+  The held-out figure is the one to quote. Both are ceilings in the tests
+  and may only fall. The good side: 0 of the tester's 164 good passphrases
+  and 0 of the 62 round-2 ones are refused; fewer than 0.5% of random
+  three-word phrases are; four or more different ordinary words pass by
+  design.
+- **What would close the gap** is a leaked-password check: Supabase Pro's
+  server check, or the range check below. Both are an owner decision.
+
+#### Breached-password check (designed, OFF; needed only if switched on)
+
+`mobile/src/webcloud/breach.ts` (with `engine/passwordBreach.ts`) looks up
+three forms of a new password (as typed; the compared form; the compared
+form without trailing numbers and symbols) with Have I Been Pwned's
+k-anonymity range API: only the first 5 characters of each SHA-1 leave the
+device, the `Add-Padding` header pads the answer, a network problem never
+blocks a password (the screen says it couldn't check), nothing is logged.
+`BREACH_CHECK_ON` in `mobile/src/webcloud/config.ts` is `false`. If the
+owner switches it on:
+
+- **Privacy policy line:** "When you set or change a password, the app
+  checks whether it has appeared in a known data leak. It sends only the
+  first 5 characters of a one-way fingerprint of the password to Have I
+  Been Pwned's Pwned Passwords service (operated by Troy Hunt), which
+  cannot work out your password from them. Your password itself never
+  leaves your device."
+- **Website CSP:** add `https://api.pwnedpasswords.com` to `connect-src`
+  in `_headers` (and the phone needs no change: no CSP).
+- The page passes `breachedPassword: createBreachCheck({ fetch, sha1Hex })`
+  to `KaiSipCloud.create`, with `sha1Hex` from `crypto.subtle.digest('SHA-1')`.
 
 ### B. Website version with sign-in and sync (web v14, MAJOR)
 0. **Done (28 Nov 2026, web v13.2, owner decision): the web app is public

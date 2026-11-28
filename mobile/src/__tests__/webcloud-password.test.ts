@@ -40,7 +40,7 @@ const MIN = 60_000;
 const DAY = 86_400_000;
 const EMAIL = 'maya@example.com';
 const PW = 'ocean violet lamp seven';
-const PW2 = 'maple cloud tiger piano';
+const PW2 = 'copper falcon wobbly harbor';
 const PW3 = 'amber frost north quilt';
 
 let now = Date.UTC(2026, 10, 28, 9, 0, 0);
@@ -597,9 +597,10 @@ describe('this review\'s client fixes', () => {
 
   it('the breached-password hook is OFF: the port is never called and no other address is ever asked', async () => {
     let asked = 0;
-    const a = createWebAuth({ fetch: server.fetch, stores: { local, session }, random: seqRandom(), lock: sharedLock, clock, url: FAKE_URL, apiKey: FAKE_KEY, passwordWords: testPasswordWords, breachedPassword: async () => (asked++, true) });
+    const a = createWebAuth({ fetch: server.fetch, stores: { local, session }, random: seqRandom(), lock: sharedLock, clock, url: FAKE_URL, apiKey: FAKE_KEY, passwordWords: testPasswordWords, breachedPassword: async () => (asked++, 'breached' as const) });
     expect((await signUp(a)).passwordSaved).toBe(true);
     expect(asked).toBe(0);
+    expect(a.breachState()).toBe('off');
     for (const c of server.calls) expect(c.path).toMatch(/^\/auth\/v1\//);
   });
 });

@@ -53,7 +53,11 @@ const SOURCES = {
 };
 /** The hand-written sources (in the repo). */
 const LOCAL_DIR = path.join(__dirname, 'password-sources');
-const LOCAL_FILES = ['phrases.txt', 'filipino.txt'];
+const LOCAL_FILES = ['phrases.txt', 'filipino.txt', 'asia.txt', 'names.txt'];
+/** The names list (its own piece kind in passwordRules.ts: a full name plus numbers is common). */
+const NAMES_FILE = 'names.txt';
+/** Name entries may be 3 letters ("joy", "kim"); list entries need 4. */
+const NAME_MIN = 3;
 
 /** The same numbers as passwordRules.ts. */
 const MIN_CHARS = 15;
@@ -143,7 +147,7 @@ function rot(s) {
  * (compared form, 4+ characters, once each), plain (the unscrambled lines
  * as written, by category: for the review document) }.
  */
-function parseLocal(text) {
+function parseLocal(text, min = WORD_MIN) {
   const entries = [];
   const seen = new Set();
   const plain = [];
@@ -160,7 +164,7 @@ function parseLocal(text) {
     const value = scrambled ? rot(line.slice(1)) : line;
     if (!scrambled) plain.push({ category, value });
     const c = canon(value);
-    if (chars(c) < WORD_MIN || seen.has(c)) continue;
+    if (chars(c) < min || seen.has(c)) continue;
     seen.add(c);
     entries.push(c);
   }
@@ -170,6 +174,10 @@ function readLocal() {
   const all = new Set();
   for (const f of LOCAL_FILES) for (const e of parseLocal(fs.readFileSync(path.join(LOCAL_DIR, f), 'utf8')).entries) all.add(e);
   return [...all];
+}
+/** The names list: names.txt entries of 3+ characters, in the compared form. */
+function readNames() {
+  return parseLocal(fs.readFileSync(path.join(LOCAL_DIR, NAMES_FILE), 'utf8'), NAME_MIN).entries;
 }
 
 /**
@@ -216,10 +224,11 @@ function header(lines_) {
 }
 const srcLine = (s) => `${s.what}: ${s.file} at commit ${s.commit} (SHA-256 ${s.sha256}). ${s.note}.`;
 
-/** The three lazy lists, encoded, with their sizes and fingerprints. */
-function wordLists(short, dict, local) {
+/** The four lazy lists, encoded, with their sizes and fingerprints. */
+function wordLists(short, dict, local, names = readNames()) {
   const out = {};
-  for (const [k, list] of Object.entries({ short, dict, local })) {
+  for (const [k, list] of Object.entries({ short, dict, local, names })) {
+    for (const w of list) if (chars(w) > MAX_BYTES) throw new Error(`a list entry is longer than a password can be: ${w.slice(0, 20)}…`);
     const text = encodeList(list);
     out[k] = { text, size: decodeList(text).length, sha256: sha256(text) };
   }
@@ -244,7 +253,7 @@ function renderBlocklistModule(long, words) {
     `export const PASSWORD_LISTS_SOURCE = 'SecLists ${SOURCES.xato.file.split('/').pop()} @ ${SOURCES.xato.commit.slice(0, 12)} (MIT); dwyl/english-words words_alpha.txt @ ${SOURCES.words.commit.slice(0, 12)} (Unlicense); KaiSip phrases and Filipino lists (scripts/password-sources)';`,
     '',
     '/** What loadPasswordWords accepts: each list text must have exactly this many entries and this SHA-256 (of the stored text). */',
-    `export const PASSWORD_WORDS_EXPECTED: Readonly<Record<'short' | 'dict' | 'local', { size: number; sha256: string }>> = ${JSON.stringify(expect)};`,
+    `export const PASSWORD_WORDS_EXPECTED: Readonly<Record<'short' | 'dict' | 'local' | 'names', { size: number; sha256: string }>> = ${JSON.stringify(expect)};`,
     '',
     `export const PASSWORD_LONG_LIST = ${JSON.stringify(text)};`,
     '',
@@ -262,8 +271,10 @@ function renderWordsModule(words) {
       `- short: ${words.short.size} most used passwords of ${SHORT_MIN}–${SHORT_MAX} characters, digits-only ones included.`,
       `  Source: ${srcLine(SOURCES.xato)}`,
       `- dict: ${words.dict.size} English words of ${MIN_CHARS}+ letters. Source: ${srcLine(SOURCES.words)}`,
-      `- local: ${words.local.size} hand-written entries: clichéd phrases and Filipino passwords and`,
-      '  words (scripts/password-sources/; reviewed in docs/content/PASSWORD_LIST_FILIPINO.md).',
+      `- local: ${words.local.size} hand-written entries: clichéd phrases and the app's hints, exam and`,
+      '  work vocabulary, Filipino and other Asian passwords and words, and names',
+      '  (scripts/password-sources/; reviewed in docs/content/PASSWORD_LIST_FILIPINO.md).',
+      `- names: ${words.names.size} given names and surnames (names.txt), their own piece kind.`,
     ]),
     `export const PASSWORD_SHORT_SIZE = ${words.short.size};`,
     `export const PASSWORD_DICT_SIZE = ${words.dict.size};`,
@@ -275,45 +286,75 @@ function renderWordsModule(words) {
     '',
     `export const PASSWORD_LOCAL_LIST = ${JSON.stringify(words.local.text)};`,
     '',
+    `export const PASSWORD_NAMES_SIZE = ${words.names.size};`,
+    '',
+    `export const PASSWORD_NAMES_LIST = ${JSON.stringify(words.names.text)};`,
+    '',
   ].join('\n');
 }
 
-/** docs/content/PASSWORD_LIST_FILIPINO.md: the Filipino list's readable entries by category (the rude ones are only counted). */
+/** The files the owner's review document shows (rude words only counted). */
+const DOC_FILES = [
+  ['filipino.txt', 'Filipino passwords and words', WORD_MIN],
+  ['names.txt', 'Names (Filipino first, then other common names)', NAME_MIN],
+  ['asia.txt', 'Other Asian learners (Indonesia, Malaysia, Singapore, India)', WORD_MIN],
+];
+
+/**
+ * docs/content/PASSWORD_LIST_FILIPINO.md: the readable entries by file and
+ * category, with true counts. An entry too short to ever match, or with the
+ * same compared form as an earlier one, is marked, not counted.
+ */
 function renderFilipinoDoc() {
-  const { plain } = parseLocal(fs.readFileSync(path.join(LOCAL_DIR, 'filipino.txt'), 'utf8'));
-  const text = fs.readFileSync(path.join(LOCAL_DIR, 'filipino.txt'), 'utf8');
-  const rude = lines(text).filter((l) => l.trim().startsWith('~')).length;
-  const byCat = new Map();
-  for (const { category, value } of plain) {
-    if (!byCat.has(category)) byCat.set(category, []);
-    byCat.get(category).push(value);
-  }
   const out = [
-    '# Filipino password list (for the owner\'s review)',
+    '# Filipino and Asian password lists (for the owner\'s review)',
     '',
-    'GENERATED from `mobile/scripts/password-sources/filipino.txt` by',
-    '`node mobile/scripts/build-password-blocklist.mjs --docs`; a test keeps the two the same.',
-    'To change the list, edit that file, then run the command and `npm run web-plant`.',
+    'GENERATED from `mobile/scripts/password-sources/` (filipino.txt, names.txt, asia.txt) by',
+    '`node mobile/scripts/build-password-blocklist.mjs --docs`; a test keeps them the same.',
+    'To change a list, edit its file, then run the command and `npm run web-plant`.',
     '',
     'What it is for: the apps refuse a password made mostly of common pieces (see',
-    '`mobile/src/engine/passwordRules.ts`). Each entry below is one such piece. A password made',
-    'of up to two of these plus numbers, years or symbols is refused ("MahalKita2026!",',
-    '"pilipinas12345678"); a passphrase of three or more different words still passes',
-    '("kape muna bago mag aral"). Spaces and capitals do not matter.',
+    '`mobile/src/engine/passwordRules.ts`). Each entry below is one such piece; spaces and',
+    'capitals do not matter. A password of up to two such pieces plus numbers, years or',
+    'symbols is refused, and so is one made only of names and numbers. A passphrase of three',
+    'or more different ordinary words still passes. These lists cannot know every phrase or',
+    'name: what they miss passes (docs/WEB_LAUNCH_PLAN.md says what the rules cannot do).',
     '',
     'Please check: is each entry common enough that many people would use it? Is anything',
-    'missing that Filipino learners often type? Are the spellings the usual ones?',
-    '',
-    `${plain.length} readable entries in ${byCat.size} groups, plus ${rude} rude words stored scrambled in the source (not shown here).`,
+    'missing that learners often type? Are the spellings the usual ones?',
     '',
   ];
-  for (const [cat, vals] of byCat) {
-    out.push(`## ${cat} (${vals.length})`, '');
-    for (const v of vals) out.push(`- ${v}`);
-    out.push('');
+  const seen = new Map();
+  let total = 0;
+  const sections = [];
+  for (const [file, title, min] of DOC_FILES) {
+    const text = fs.readFileSync(path.join(LOCAL_DIR, file), 'utf8');
+    const { plain } = parseLocal(text, min);
+    const rude = lines(text).filter((l) => l.trim().startsWith('~')).length;
+    const byCat = new Map();
+    let counted = 0;
+    for (const { category, value } of plain) {
+      const c = canon(value);
+      let note = '';
+      if (chars(c) < min) note = ' (too short to count)';
+      else if (seen.has(c)) note = ` (same as "${seen.get(c)}")`;
+      else {
+        seen.set(c, value);
+        counted++;
+      }
+      if (!byCat.has(category)) byCat.set(category, []);
+      byCat.get(category).push(`- ${value}${note}`);
+    }
+    total += counted;
+    sections.push(`# ${title}`, '', `${counted} entries that count, in ${byCat.size} groups${rude ? `, plus ${rude} rude words stored scrambled in the source (not shown here)` : ''}.`, '');
+    for (const [cat, vals] of byCat) {
+      const n = vals.filter((v) => !/\((too short to count|same as ")/.test(v)).length;
+      sections.push(`## ${cat} (${n})`, '', ...vals, '');
+    }
   }
+  out.push(`${total} readable entries that count, in all three files.`, '', ...sections);
   return out.join('\n');
 }
 const DOC_FILE = path.join(__dirname, '..', '..', 'docs', 'content', 'PASSWORD_LIST_FILIPINO.md');
 
-module.exports = { renderFilipinoDoc, DOC_FILE, SOURCES, LOCAL_DIR, LOCAL_FILES, canon, pickLong, pickShort, pickDict, parseLocal, readLocal, encodeList, decodeList, rot, wordLists, renderBlocklistModule, renderWordsModule, LONG_KEEP, SHORT_KEEP };
+module.exports = { readNames, NAMES_FILE, renderFilipinoDoc, DOC_FILE, SOURCES, LOCAL_DIR, LOCAL_FILES, canon, pickLong, pickShort, pickDict, parseLocal, readLocal, encodeList, decodeList, rot, wordLists, renderBlocklistModule, renderWordsModule, LONG_KEEP, SHORT_KEEP };

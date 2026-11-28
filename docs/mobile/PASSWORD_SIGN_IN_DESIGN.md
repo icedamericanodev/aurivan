@@ -812,9 +812,15 @@ phone fields use the matching autofill hints.
 >   and also reads the password backwards. `assessPassword` adds whether the
 >   word lists are loaded (`complete`). `passwordGuidance(problem)` gives the
 >   words to show after a refusal. `loadPasswordWords` accepts only the
->   lists whose sizes and SHA-256 the build recorded. A breached-password
->   range check is designed (`engine/passwordBreach.ts`, the
->   `breachedPassword` port) but OFF (`BREACH_CHECK_ON = false`).
+>   lists whose sizes and SHA-256 the build recorded (four lists: short,
+>   dict, local, names). Review round 3 added structural rules (one word with
+>   numbers; the account's own words incl. the whole domain and reversed
+>   words; a full name with numbers; a repeated word counts once; diagonal
+>   walks, doubled-letter sequences, mirrors) and states what the rules
+>   cannot do, with a held-out measure (`docs/WEB_LAUNCH_PLAN.md`). A
+>   breached-password range check is designed (`webcloud/breach.ts`: three
+>   forms, padded k-anonymity queries, fails open, `breachState()`) but OFF
+>   (`BREACH_CHECK_ON = false`).
 >   The word lists are loaded with `loadPasswordWords` (on the website a
 >   separate file, `assets/kaisip-password-words.js`, fetched when a password
 >   form opens; no password is saved until it is loaded).

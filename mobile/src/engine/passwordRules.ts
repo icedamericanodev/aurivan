@@ -20,37 +20,42 @@
  *   browser can't do that, a password with non-English characters is refused
  *   rather than sent unchanged.
  * - Because Supabase's Free plan has no leaked-password check, the apps
- *   refuse common and predictable passwords (the owner: "reject all common
- *   passwords"). NIST asks us to compare the WHOLE password, including
- *   derivatives, so the comparison first makes a "compared form" (lower case;
- *   accents, invisible characters and spaces taken out; Cyrillic and Greek
- *   look-alike letters read as Latin; letter-for-number swaps like "p4ssw0rd"
- *   read both ways, position by position; and read backwards too). Then:
- *   1. Refused when the whole password can be written as predictable pieces
- *      with at most 2 characters left over. The pieces are:
- *      - "kaisip", the exam names and study words ("cisa", "exam", "audit",
- *        "reviewer", "ipasa"…), any number of times;
- *      - the account's own email address, its name part and its pieces, the
- *        domain name, and the learner's name when the app knows it (Google);
- *      - up to two entries from the bundled lists: the 100,000 most used
- *        short passwords, every English word of 15+ letters
- *        ("congratulations"), clichéd phrases ("merry christmas") and a
- *        Filipino list ("mahal kita", "pilipinas", names, places);
- *      - repeats, sequences ("abcd", "1357"), keyboard rows and columns
- *        ("qwerty", "1qaz2wsx"), and copies of an earlier part (a run of
- *        exactly 3 letters next to another letter doesn't count, so ordinary
- *        words aren't mistaken for patterns);
- *      - numbers: up to 4 digits, a year (1900 to 2099), a short number next
- *        to a year, a date (6 or 8 digits), a Philippine mobile number, and a
- *        month name next to a number; and symbols.
- *   2. Refused too when fewer than 10 real characters are left after taking
- *      out repeats, sequences, copies and years ("monkey" three times has 6).
- *   3. The 3,000 most used passwords of 15+ characters are refused as they are.
- *   Three different ordinary words pass ("maple cloud tiger"): in the tests,
- *   fewer than 1 random triple in 200 is refused, and then because a word is
- *   itself a pattern ("mmmm") or two of them make a list entry ("flower
- *   power"). Four or more words always pass the word part (a cap of 3 word
- *   pieces). Passphrases in Tagalog, Thai, Hindi or with accents pass too.
+ *   refuse predictable passwords with two kinds of check (the owner asked to
+ *   apply the standard and reject common passwords; this is what we can do
+ *   without a leak lookup, not a guarantee). NIST asks us to compare the
+ *   WHOLE password, including derivatives, so the comparison first makes a
+ *   "compared form" (lower case; accents, invisible characters and spaces
+ *   taken out; Cyrillic and Greek look-alike letters read as Latin;
+ *   letter-for-number swaps read both ways, position by position; and read
+ *   backwards too). Then:
+ *   A. Structural rules, which work on passwords nobody listed:
+ *      - fewer than 10 real characters left after repeats, sequences,
+ *        keyboard runs, copies, mirrors and years;
+ *      - one ordinary word typed as one (up to 14 letters) with only
+ *        numbers, symbols or runs besides;
+ *      - mostly the account's own words (the email, its domain, the name);
+ *      - a whole password of names (up to 5) with numbers or symbols;
+ *      - dates, Philippine mobile numbers, short numbers next to years.
+ *   B. Lists, which only know what is on them: the whole password made of
+ *      at most two list entries (plus the app and exam words, numbers and
+ *      symbols, at most 3 word pieces in all) with at most 2 characters
+ *      left over. The lists: the 100,000 most used short passwords, every
+ *      English word of 15+ letters, the 3,000 most used 15+ character
+ *      passwords (refused as they are), and hand-written clichés, the
+ *      app's own hints, exam and work vocabulary, and Filipino, other Asian
+ *      and name lists.
+ *   What it cannot do: a phrase, name or slogan that is on no list passes
+ *   (a famous line, a celebrity, a school). Measured on a tester's
+ *   held-out set of predictable passwords the rules were never tuned on,
+ *   11.5% still passed (down from 30.6%; 4.4% on the half used for tuning,
+ *   from 33.9%): see docs/WEB_LAUNCH_PLAN.md, "What the password rules
+ *   cannot do". Only a leaked-password check (Pro's server check, or the
+ *   range check designed in engine/passwordBreach.ts, both an owner
+ *   decision and OFF today) would catch passwords that leaked elsewhere.
+ *   Four or more different ordinary words pass by design (a passphrase), and
+ *   so do three in nearly all cases (fewer than 1 random triple in 200 is
+ *   refused, when a word is itself a pattern or two make a list entry).
+ *   Passphrases in Tagalog, Thai, Hindi or with accents pass too.
  * - The check runs only in our apps: someone calling the server directly for
  *   their own account could skip it (a documented deviation until the Pro
  *   plan's server check).
@@ -120,18 +125,40 @@ export const MONTH_WORDS: readonly string[] = [
  * key is for the copy file; the text is the default English.
  */
 export const PASSWORD_GUIDANCE: Readonly<Record<PasswordProblem, { key: string; text: string }>> = {
-  invalid_characters: { key: 'password.guide.invalid_characters', text: 'Some characters can’t be used in a password. Use letters, numbers, spaces and the symbols on your keyboard.' },
+  invalid_characters: { key: 'password.guide.invalid_characters', text: 'Your password has a hidden character, often from copy and paste. Please type it by hand. Accents and emoji are fine.' },
   too_short: { key: 'password.guide.too_short', text: 'Use at least 15 characters. Three or four ordinary words with spaces are easy to remember.' },
   too_long: { key: 'password.guide.too_long', text: 'Use up to 72 letters, fewer with accents or emoji.' },
   contains_email: { key: 'password.guide.contains_email', text: 'Don’t build your password from your email address or your name. Add words only you would pick.' },
   contains_service_word: { key: 'password.guide.contains_service_word', text: 'Don’t build your password from the app’s or the exam’s name. Add words only you would pick.' },
   common: { key: 'password.guide.common', text: 'That password is used by many people or is easy to guess. Try three or four words that don’t usually go together.' },
-  too_simple: { key: 'password.guide.too_simple', text: 'Avoid repeats, sequences, dates and keyboard patterns like abcabc, 123456 or qwerty. Try three or four ordinary words.' },
+  too_simple: { key: 'password.guide.too_simple', text: 'Avoid repeats, sequences, dates, keyboard patterns and a single word with numbers. Try three or four ordinary words that don’t usually go together.' },
 };
 
-/** The words to show for a reason (null for none). Type-guarded: an unknown value gives null. */
+/**
+ * Words for the refusals that come from the server or the checker itself
+ * (not from the rules): the server's leaked-password check (Pro plan), the
+ * server refusing for its own reasons, and the word lists not loading.
+ */
+export const PASSWORD_OTHER_GUIDANCE: Readonly<Record<'leaked' | 'weak' | 'rules_unavailable' | 'breach_unchecked', { key: string; text: string }>> = {
+  leaked: { key: 'password.guide.leaked', text: 'This password has appeared in a data leak. Please choose a different one.' },
+  weak: { key: 'password.guide.weak', text: 'The sign-in service didn’t accept that password. Try a longer phrase of unrelated words.' },
+  rules_unavailable: { key: 'password.guide.rules_unavailable', text: 'We couldn’t load the password checker. Check your connection and try again.' },
+  breach_unchecked: { key: 'password.guide.breach_unchecked', text: 'We couldn’t check this password against known leaks just now. It was saved; you can change it later.' },
+};
+
+/**
+ * The words to show (null for none). Takes a rule reason ("too_short"), the
+ * client's error detail ("password_too_short", "password_leaked",
+ * "password_weak", "password_rules") or an other-guidance key.
+ * Type-guarded: an unknown value gives null.
+ */
 export function passwordGuidance(problem: unknown): { key: string; text: string } | null {
-  return typeof problem === 'string' && Object.prototype.hasOwnProperty.call(PASSWORD_GUIDANCE, problem) ? PASSWORD_GUIDANCE[problem as PasswordProblem] : null;
+  if (typeof problem !== 'string') return null;
+  const k = problem === 'password_rules' ? 'rules_unavailable' : problem.startsWith('password_') ? problem.slice('password_'.length) : problem;
+  const own = (o: object) => Object.prototype.hasOwnProperty.call(o, k);
+  if (own(PASSWORD_GUIDANCE)) return PASSWORD_GUIDANCE[k as PasswordProblem];
+  if (own(PASSWORD_OTHER_GUIDANCE)) return PASSWORD_OTHER_GUIDANCE[k as keyof typeof PASSWORD_OTHER_GUIDANCE];
+  return null;
 }
 
 // ── Lists ──────────────────────────────────────────────────────────────
@@ -172,7 +199,11 @@ export interface PasswordWordLists {
   short: string;
   dict: string;
   local: string;
+  /** Common given names and surnames (their own piece kind: a full name plus a year is common). */
+  names: string;
 }
+let nameSet: Set<string> | null = null;
+let namePrefix3: Set<string> = new Set();
 
 /**
  * Give the rules their word lists (passwordWords.ts). Each list must have
@@ -185,7 +216,7 @@ export function loadPasswordWords(lists: unknown): boolean {
   if (!lists || typeof lists !== 'object') return false;
   const l = lists as Record<string, unknown>;
   const parts: string[][] = [];
-  for (const k of ['short', 'dict', 'local'] as const) {
+  for (const k of ['short', 'dict', 'local', 'names'] as const) {
     const text = l[k];
     const want = PASSWORD_WORDS_EXPECTED[k];
     if (typeof text !== 'string' || sha256Hex(text) !== want.sha256) return false;
@@ -194,7 +225,9 @@ export function loadPasswordWords(lists: unknown): boolean {
     parts.push(entries);
   }
   const set = new Set<string>();
-  for (const p of parts) for (const w of p) set.add(w);
+  for (const p of parts.slice(0, 3)) for (const w of p) set.add(w);
+  nameSet = new Set(parts[3]);
+  namePrefix3 = new Set([...nameSet].map((w) => w.slice(0, 3)));
   for (const w of long()) set.add(w);
   // The first 4 and 8 characters of every entry: most positions of a password start no entry,
   // and these let the lookup stop early (a check stays around a millisecond).
@@ -216,6 +249,7 @@ export function passwordWordsLoaded(): boolean {
 /** Tests only: forget the word lists. */
 export function unloadPasswordWordsForTest(): void {
   wordSet = null;
+  nameSet = null;
 }
 
 // ── Normal form ────────────────────────────────────────────────────────
@@ -302,7 +336,7 @@ export function comparedForm(s: string): string {
   return comparedWords(s).join('');
 }
 
-/** The compared form split where the joiners were ("maple cloud" → ["maple", "cloud"]). */
+/** The compared form split where the joiners were ("red kite" → ["red", "kite"]). */
 function comparedWords(s: string): string[] {
   let x = (form(s, 'NFKC') ?? s).toLowerCase();
   x = (form(x, 'NFKD') ?? x).replace(MARKS, '').replace(INVISIBLE, '');
@@ -374,6 +408,21 @@ export function emailWords(email: unknown): string[] {
   return [...out];
 }
 
+/**
+ * The email's whole domain and its label suffixes of 4+ characters, in the
+ * compared form ("mail.yahoo.com.ph" → "mailyahoocomph", "yahoocomph", "comph").
+ */
+function domainWords(email: unknown): string[] {
+  if (typeof email !== 'string' || !email.includes('@')) return [];
+  const labels = normalizeEmail(email).split('@').pop()!.split('.');
+  const out: string[] = [];
+  for (let k = 0; k < labels.length - 1; k++) {
+    const d = comparedForm(labels.slice(k).join(''));
+    if (Array.from(d).length >= 4) out.push(d);
+  }
+  return out;
+}
+
 /** A name's pieces: the whole name and each part of 3+ letters. */
 function nameWords(names: unknown): string[] {
   const out = new Set<string>();
@@ -400,13 +449,18 @@ const KEY_RUNS = [
   'qazwsxedcrfvtgbyhnujmikolp',
   '1q2w3e4r5t6y7u8i9o0p',
   'q1w2e3r4t5y6u7i8o9p0',
+  // Right-to-left diagonals ("0okm9ijn8uhb").
+  '0okm9ijn8uhb7ygv6tfc5rdx4esz3wa2q',
+  '0pl,9okm8ijn7uhb6ygv5tfc4rdx3esz2wa1q',
 ];
 const isDigit = (c: string | undefined) => c !== undefined && c >= '0' && c <= '9';
 const isAsciiAlnum = (c: string) => (c >= 'a' && c <= 'z') || isDigit(c);
 /** An ASCII symbol is a predictable piece; a letter, digit or any other character is not. */
 const isSymbol = (c: string) => c.length === 1 && c.charCodeAt(0) < 0x80 && !isAsciiAlnum(c);
 /** The longest list entry looked up (dictionary words reach 31 letters, phrases a little more). */
-const MAX_WORD = 40;
+const MAX_WORD = 72;
+/** A full name: up to this many name pieces ("john mark santos dela cruz" is five, and still a name). */
+export const MAX_NAME_PIECES = 5;
 
 /**
  * Per position: where a repeat, sequence, keyboard run or copy of earlier
@@ -418,13 +472,25 @@ function runEnds(s: string[], bounds: ReadonlySet<number>): number[][] {
   const n = s.length;
   const lcp: number[][] = Array.from({ length: n + 1 }, () => new Array<number>(n + 1).fill(0));
   for (let j = n - 1; j >= 0; j--) for (let i = n - 1; i > j; i--) lcp[j][i] = s[j] === s[i] ? 1 + lcp[j + 1][i + 1] : 0;
+  // mir[j][i]: how far s[i..] reads as s[..j] backwards (a word and its mirror: "drowssap").
+  const mir: number[][] = Array.from({ length: n + 1 }, () => new Array<number>(n + 1).fill(0));
+  for (let i = n - 1; i >= 0; i--) for (let j = 0; j < i; j++) mir[j][i] = s[j] === s[i] ? 1 + (j > 0 ? mir[j - 1][i + 1] : 0) : 0;
   const out: number[][] = [];
   for (let i = 0; i < n; i++) {
     let copy = 0;
-    for (let j = 0; j < i; j++) copy = Math.max(copy, lcp[j][i]);
+    for (let j = 0; j < i; j++) copy = Math.max(copy, lcp[j][i], Math.min(mir[j][i], j + 1));
     let seq = 0;
     let rep = 1;
     while (i + rep < n && s[i + rep] === s[i]) rep++;
+    // Doubled-letter sequences ("aabbccdd", "111222333"): blocks of 2 to 4 equal characters,
+    // each one up or down from the last.
+    for (let k = 2; k <= Math.min(4, rep); k++) {
+      for (const d of [1, -1]) {
+        let m = k;
+        while (i + m + k <= n && isAsciiAlnum(s[i + m]) && s[i + m].charCodeAt(0) - s[i + m - 1].charCodeAt(0) === d && s.slice(i + m, i + m + k).every((c) => c === s[i + m])) m += k;
+        if (m >= 3 * k) rep = Math.max(rep, m);
+      }
+    }
     for (const d of [1, -1, 2, -2]) {
       let m = 1;
       while (i + m < n) {
@@ -529,6 +595,7 @@ interface Lattice {
   words: number[][];
   personal: number[][];
   service: number[][];
+  names: number[][];
 }
 
 /**
@@ -544,8 +611,10 @@ function lattice(forms: string[], personal: string[][], service: string[][], bou
   const runs = merge(fs.map((f) => runEnds(f, bounds)));
   // A list entry may run across a space only from the start of a word to the end of one
   // ("mahal kita" is "mahalkita"; "ouch inky" does not hide "chinky").
+  // (A word also ends where letters meet a digit or symbol: "tiger!".)
+  const edge = (i: number) => bounds.has(i) || (kindOf(plain[i - 1]) === 'l') !== (kindOf(plain[i]) === 'l');
   const crosses = (i: number, j: number) => {
-    for (let b = i + 1; b < j; b++) if (bounds.has(b)) return !(bounds.has(i) && bounds.has(j));
+    for (let b = i + 1; b < j; b++) if (bounds.has(b)) return !(edge(i) && edge(j));
     return false;
   };
   const words: number[][] = Array.from({ length: n }, () => []);
@@ -565,11 +634,38 @@ function lattice(forms: string[], personal: string[][], service: string[][], bou
       }
     }
   }
+  // A list entry that repeats earlier text counts once: its later copies are free
+  // ("twinkle twinkle little star", "love is patient love is kind").
+  for (const f of fs) {
+    const text = f.join('');
+    const offsets = [0];
+    for (const ch of f) offsets.push(offsets[offsets.length - 1] + ch.length);
+    for (let i = 0; i < n; i++) {
+      for (const j of words[i]) {
+        const sub = text.slice(offsets[i], offsets[j]);
+        if (text.slice(0, offsets[i]).includes(sub) && !runs[i].includes(j)) runs[i].push(j);
+      }
+    }
+  }
+  // Given names and surnames (their own kind: a whole password of names and numbers is common).
+  const names: number[][] = Array.from({ length: n }, () => []);
+  if (nameSet) {
+    for (const f of fs) {
+      for (let i = 0; i + 3 <= n; i++) {
+        let sub = f.slice(i, i + 3).join('');
+        if (!namePrefix3.has(sub)) continue;
+        for (let j = i + 3; j <= Math.min(n, i + 20); j++) {
+          if (j > i + 3) sub += f[j - 1];
+          if (nameSet.has(sub) && !names[i].includes(j)) names[i].push(j);
+        }
+      }
+    }
+  }
   const monthsAll = tokenEnds([plain], MONTH_WORDS.map((m) => Array.from(m)));
   const months = monthsAll.map((ends, i) => ends.filter((j) => isDigit(plain[i - 1]) || isDigit(plain[j])));
   // A 3-letter app or exam word ("cia", "cpa", "app") counts only standing alone: "special" is not "cia".
   const service3 = tokenEnds(fs, service).map((ends, i) => ends.filter((j) => j - i > 3 || (kindOf(plain[i - 1]) !== 'l' && kindOf(plain[j]) !== 'l')));
-  return { n, plain, runs, numbers: numberEnds(plain), months, words, personal: tokenEnds(fs, personal), service: service3 };
+  return { n, plain, runs, numbers: numberEnds(plain), months, words, personal: tokenEnds(fs, personal), service: service3, names };
 }
 
 /**
@@ -615,6 +711,34 @@ function leftOver(l: Lattice, use: { personal: boolean; service: boolean; listWo
   return best;
 }
 
+/**
+ * The fewest characters left over when the password is written as names
+ * only (up to MAX_NAME_PIECES given names or surnames, the account's own
+ * words) plus numbers, symbols, repeats and sequences ("MarkAnthonyCruz88").
+ */
+function namesLeftOver(l: Lattice): number {
+  const { n, plain } = l;
+  const W = MAX_NAME_PIECES;
+  const cost = Array.from({ length: W + 1 }, () => new Array<number>(n + 1).fill(Infinity));
+  cost[0][0] = 0;
+  for (let i = 0; i < n; i++) {
+    for (let w = 0; w <= W; w++) {
+      const c = cost[w][i];
+      if (c === Infinity) continue;
+      const lit = isSymbol(plain[i]) ? 0 : 1;
+      if (c + lit < cost[w][i + 1]) cost[w][i + 1] = c + lit;
+      const free = (j: number, ww: number) => {
+        if (c < cost[ww][j]) cost[ww][j] = c;
+      };
+      for (const j of l.runs[i]) free(j, w);
+      for (const j of l.numbers[i]) free(j, w);
+      for (const j of l.personal[i]) free(j, w);
+      if (w < W) for (const j of l.names[i]) free(j, w + 1);
+    }
+  }
+  return Math.min(...cost.map((row) => row[n]));
+}
+
 /** Real characters left after repeats, sequences, copies and years (B1.2's floor). */
 function material(l: Lattice): number {
   const { n, plain } = l;
@@ -644,7 +768,9 @@ function predictable(p: string, ctx: PasswordContext): PasswordProblem | null {
   let at = 0;
   for (const w of pieces) bounds.add((at += Array.from(w).length));
   const backBounds = new Set([...bounds].map((b) => n - b));
-  const personal = [...emailWords(ctx.email), ...nameWords(ctx.names)];
+  // The account's words, and backwards ("aveunalliv"); the whole email domain too ("yahoocom").
+  const account = [...emailWords(ctx.email), ...domainWords(ctx.email), ...nameWords(ctx.names)];
+  const personal = [...new Set([...account, ...account.map(reverseStr)])];
   const personalTokens = [...new Set([...personal, ...personal.map((t) => fold(t, LEET_I)), ...personal.map((t) => fold(t, LEET_L))])].map((t) => Array.from(t));
   // Study words ("exam", "review", "control"…) are ordinary English too: they count as the
   // app's words only when an app or exam name is there as well ("cisaexam2026pass"), so
@@ -666,7 +792,38 @@ function predictable(p: string, ctx: PasswordContext): PasswordProblem | null {
     if (exact || worst({ personal: false, service: false, listWords: 0, numbers: true }) > MAX_LEFT_OVER) return 'common';
     return 'too_simple';
   }
+  // Mostly the account's own words: they cover 8+ characters and at most 4 are left over
+  // ("MrsGraceVillanueva1", "yahoo.com.grace0312").
+  if (lats.some((l) => l.personal.some((e) => e.length))) {
+    const withAccount = worst({ personal: true, service: true, listWords: 0, numbers: true });
+    const without = worst({ personal: false, service: true, listWords: 0, numbers: true });
+    if (withAccount <= 4 && without - withAccount >= 8) return 'contains_email';
+  }
+  // A full name and numbers ("MarkAnthonyCruz88"): common, whoever's name it is. Names alone
+  // with no number or symbol are left to the other rules (three names can be a passphrase).
+  if (nameSet && /[0-9!-\/:-@[-`{-~]/.test(p) && lats[0].names.some((e) => e.length) && Math.min(...lats.map(namesLeftOver)) <= MAX_LEFT_OVER) return 'common';
   if (exact) return 'common';
+  // One ordinary word of up to 14 letters, typed as one (no joiner inside, no capital inside),
+  // and only numbers, symbols or runs besides; the same word typed again counts once
+  // (a single word with numbers, or a word typed twice).
+  const lettered = pieces.filter((x) => /[a-z]/.test(x));
+  const one = lettered.length === 1 ? /^[^a-z]*([a-z]+)[^a-z]*$/.exec(lettered[0]) : null;
+  if (one) {
+    const word = one[1];
+    // A word typed twice or more: the shortest repeating part (two whole copies at least).
+    let period = word.length;
+    for (let q = 1; word.length > 14 && 2 * q <= word.length && q <= 14; q++) {
+      if (Array.from(word).every((ch, i) => i < q || ch === word[i - q])) {
+        period = q;
+        break;
+      }
+    }
+    const letters = Array.from(p).filter((ch) => /[A-Za-z]/.test(ch)).join('');
+    // Each copy of the word written alike: all lower case, a capital first, or all capitals.
+    const chunks = letters.match(new RegExp(`.{1,${period}}`, 'g')) ?? [];
+    const plainCase = chunks.length > 0 && (chunks.every((x) => /^[A-Za-z][a-z]*$/.test(x)) || /^[A-Z]+$/.test(letters));
+    if (period <= 14 && plainCase && worst({ personal: false, service: false, listWords: 0, numbers: true }) <= period + MAX_LEFT_OVER) return 'too_simple';
+  }
   if (Math.min(...lats.map(material)) < MIN_MATERIAL || new Set(Array.from(c)).size < 5) return 'too_simple';
   return null;
 }

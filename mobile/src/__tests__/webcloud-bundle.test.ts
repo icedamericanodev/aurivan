@@ -60,13 +60,16 @@ describe('the cloud bundle', () => {
     expect(K.liveStoreVersions).toEqual(LIVE_STORES);
     expect(typeof K.create).toBe('function');
     expect(K.cloud).toBeUndefined();
-    expect(Object.keys(K).sort()).toEqual(['accountsAllowed', 'browser', 'config', 'create', 'liveStoreVersions', 'liveVersion', 'passwordRules', 'passwordWordsRef', 'sourceHash']);
+    expect(Object.keys(K).sort()).toEqual(['accountsAllowed', 'breach', 'browser', 'config', 'create', 'liveStoreVersions', 'liveVersion', 'passwordRules', 'passwordWordsRef', 'sourceHash']);
     // The ?v= the page loads the word lists with: the words file's own fingerprint.
     expect(K.passwordWordsRef).toBe(bundle.refFor(fs.readFileSync(WORDS_ASSET, 'utf8')));
     // The password rules are there for the forms (the client checks again before sending).
     expect(K.passwordRules.checkPassword('aaaaaaaaaaaaaaa')).toEqual(['common']);
     expect(K.passwordRules.checkPassword('ocean violet lamp seven')).toEqual([]);
     expect(K.passwordRules.PASSWORD_MIN_CHARS).toBe(15);
+    // The breached-password check is in the bundle but OFF: nothing calls it.
+    expect(K.config.BREACH_CHECK_ON).toBe(false);
+    expect(typeof K.breach.createBreachCheck).toBe('function');
     expect(typeof K.browser.browserLocks).toBe('function');
     expect(K.config.SUPABASE_URL).toBe(SUPABASE_URL);
     expect(Object.isFrozen(K)).toBe(true);
@@ -118,7 +121,7 @@ describe('the cloud bundle', () => {
       // The page fetches the word lists only when a password form opens (a separate file).
       passwordWords: async () => {
         const W = loadWords();
-        return { short: W.words.PASSWORD_SHORT_LIST, dict: W.words.PASSWORD_DICT_LIST, local: W.words.PASSWORD_LOCAL_LIST };
+        return { short: W.words.PASSWORD_SHORT_LIST, dict: W.words.PASSWORD_DICT_LIST, local: W.words.PASSWORD_LOCAL_LIST, names: W.words.PASSWORD_NAMES_LIST };
       },
       wait: async () => {},
     });
@@ -153,18 +156,18 @@ describe('the cloud bundle', () => {
 });
 
 describe('the password word-list file (loaded only when a password form opens)', () => {
-  it('is up to date with its source, holds only the three scrambled lists, and is not in the cloud bundle', () => {
+  it('is up to date with its source, holds only the four scrambled lists, and is not in the cloud bundle', () => {
     expect(bundle.checkBundle(undefined, 'passwordWords')).toEqual([]);
     const W = loadWords();
     expect(Object.keys(W).sort()).toEqual(['sourceHash', 'words']);
-    expect(Object.keys(W.words).sort()).toEqual(['PASSWORD_DICT_LIST', 'PASSWORD_DICT_SIZE', 'PASSWORD_LOCAL_LIST', 'PASSWORD_LOCAL_SIZE', 'PASSWORD_SHORT_LIST', 'PASSWORD_SHORT_SIZE']);
+    expect(Object.keys(W.words).sort()).toEqual(['PASSWORD_DICT_LIST', 'PASSWORD_DICT_SIZE', 'PASSWORD_LOCAL_LIST', 'PASSWORD_LOCAL_SIZE', 'PASSWORD_NAMES_LIST', 'PASSWORD_NAMES_SIZE', 'PASSWORD_SHORT_LIST', 'PASSWORD_SHORT_SIZE']);
     expect(W.words.PASSWORD_SHORT_SIZE).toBe(100000);
     expect(W.words.PASSWORD_DICT_SIZE).toBeGreaterThan(15000);
     expect(W.words.PASSWORD_LOCAL_SIZE).toBeGreaterThan(500);
     // The cloud bundle accepts only these exact lists (sizes and SHA-256 recorded at build time).
     const K = loadCloud();
-    expect(K.passwordRules.loadPasswordWords({ short: W.words.PASSWORD_SHORT_LIST.slice(0, 5000), dict: W.words.PASSWORD_DICT_LIST, local: W.words.PASSWORD_LOCAL_LIST })).toBe(false);
-    expect(K.passwordRules.loadPasswordWords({ short: W.words.PASSWORD_SHORT_LIST, dict: W.words.PASSWORD_DICT_LIST, local: W.words.PASSWORD_LOCAL_LIST })).toBe(true);
+    expect(K.passwordRules.loadPasswordWords({ short: W.words.PASSWORD_SHORT_LIST.slice(0, 5000), dict: W.words.PASSWORD_DICT_LIST, local: W.words.PASSWORD_LOCAL_LIST, names: W.words.PASSWORD_NAMES_LIST })).toBe(false);
+    expect(K.passwordRules.loadPasswordWords({ short: W.words.PASSWORD_SHORT_LIST, dict: W.words.PASSWORD_DICT_LIST, local: W.words.PASSWORD_LOCAL_LIST, names: W.words.PASSWORD_NAMES_LIST })).toBe(true);
     const cloudText = fs.readFileSync(ASSET, 'utf8');
     expect(cloudText).not.toContain('PASSWORD_DICT_LIST');
     expect(cloudText).not.toContain('PASSWORD_SHORT_LIST');

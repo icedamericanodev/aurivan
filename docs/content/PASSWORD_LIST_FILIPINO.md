@@ -1,30 +1,32 @@
-# Filipino password list (for the owner's review)
+# Filipino and Asian password lists (for the owner's review)
 
-GENERATED from `mobile/scripts/password-sources/filipino.txt` by
-`node mobile/scripts/build-password-blocklist.mjs --docs`; a test keeps the two the same.
-To change the list, edit that file, then run the command and `npm run web-plant`.
+GENERATED from `mobile/scripts/password-sources/` (filipino.txt, names.txt, asia.txt) by
+`node mobile/scripts/build-password-blocklist.mjs --docs`; a test keeps them the same.
+To change a list, edit its file, then run the command and `npm run web-plant`.
 
 What it is for: the apps refuse a password made mostly of common pieces (see
-`mobile/src/engine/passwordRules.ts`). Each entry below is one such piece. A password made
-of up to two of these plus numbers, years or symbols is refused ("MahalKita2026!",
-"pilipinas12345678"); a passphrase of three or more different words still passes
-("kape muna bago mag aral"). Spaces and capitals do not matter.
+`mobile/src/engine/passwordRules.ts`). Each entry below is one such piece; spaces and
+capitals do not matter. A password of up to two such pieces plus numbers, years or
+symbols is refused, and so is one made only of names and numbers. A passphrase of three
+or more different ordinary words still passes. These lists cannot know every phrase or
+name: what they miss passes (docs/WEB_LAUNCH_PLAN.md says what the rules cannot do).
 
 Please check: is each entry common enough that many people would use it? Is anything
-missing that Filipino learners often type? Are the spellings the usual ones?
+missing that learners often type? Are the spellings the usual ones?
 
-544 readable entries in 11 groups, plus 41 rude words stored scrambled in the source (not shown here).
+1558 readable entries that count, in all three files.
 
-## Endearments and feelings (67)
+# Filipino passwords and words
+
+839 entries that count, in 14 groups, plus 41 rude words stored scrambled in the source (not shown here).
+
+## Endearments and feelings (90)
 
 - mahal
-- mahalko
 - mahal ko
-- mahalkita
 - mahal kita
 - mahal na mahal kita
 - mahal kita sobra
-- mahalnamahal
 - mahal kong mahal
 - iniibig kita
 - sinta
@@ -33,7 +35,6 @@ missing that Filipino learners often type? Are the spellings the usual ones?
 - mahal ko ikaw
 - ikaw lang
 - ikaw lamang
-- ikaw lang sapat na
 - ikaw at ako
 - ikaw ang mahal ko
 - tayong dalawa
@@ -47,14 +48,12 @@ missing that Filipino learners often type? Are the spellings the usual ones?
 - kilig
 - kilig much
 - bebe
-- bebeko
 - bebe ko
 - bebelabs
 - babe ko
 - baby ko
 - lablab
 - labyu
-- lab yu
 - labyu forever
 - walang forever
 - may forever
@@ -64,13 +63,10 @@ missing that Filipino learners often type? Are the spellings the usual ones?
 - iloveyou 143
 - 143 mahal
 - pogi
-- pogiako
 - pogi ako
 - gwapo
-- gwapoko
 - gwapo ako
 - ganda
-- gandako
 - ganda ko
 - maganda
 - maganda ako
@@ -80,18 +76,53 @@ missing that Filipino learners often type? Are the spellings the usual ones?
 - malungkot
 - iyak
 - puso
-- pusoko
 - puso ko
 - pag ibig
-- pagibig
+- mahal na mahal ko siya
+- mahal ko ang diyos
+- mahal ko asawa ko
+- mahal ko anak ko
+- asawa ko
+- anak ko
+- mga anak ko
+- apo ko
+- kapatid ko
+- kuya ko
+- ate ko
+- walang jowa
+- jowa
+- single ako
+- move on
+- move on na
+- sana all
+- sana ol
+- paasa
+- marupok
+- tampo
+- sorry na
+- patawad
+- patawarin mo ako
+- mahal pa rin kita
+- miss na miss kita
+- akin ka lang
+- sayo lang ako
+- para sayo
+- para sa iyo
+- hanggang dulo
+- habang buhay
+- walang hanggan
+- ikaw pa rin
 
-## Bisaya (19)
+## Bisaya and other languages (37)
 
 - palangga
 - palangga ko
+- palangga taka
+- palangga tika
 - palanggakaayo
 - gihigugma
 - gihigugma tika
+- gihigugma ko ikaw
 - gugma
 - gimingaw
 - gimingaw ko nimo
@@ -101,24 +132,54 @@ missing that Filipino learners often type? Are the spellings the usual ones?
 - lami
 - unsa
 - salamat kaayo
-- dako
-- inday
-- dodong
-- day
-- bai
+- daghang salamat
+- maayong buntag
+- maayong gabii
+- maayong adlaw
+- padayon
+- padayon lang
+- bisaya
+- bisdak
+- ilocano
+- agyamanak
+- naimbag nga bigat
+- ay ayaten ka
+- kaluguran daka
+- padaba taka
+- oragon
+- kapampangan
+- ilonggo
+- waray
+- batangueno
+- tagalog
 
-## Everyday words and greetings (93)
+## Everyday words and greetings (121)
 
 - salamat
 - salamat po
 - maraming salamat
+- salamat sa lahat
 - mabuhay
 - kumusta
 - kamusta
 - kumusta ka
+- kumusta na
+- kamusta ka na
 - magandang umaga
 - magandang gabi
 - magandang hapon
+- magandang araw
+- magandang tanghali
+- magandang buhay
+- maligayang pasko
+- maligayang bati
+- maligayang kaarawan
+- manigong bagong taon
+- bagong taon
+- pasko
+- pasko na naman
+- good morning po
+- thank you po
 - paalam
 - ingat
 - ingat ka
@@ -132,7 +193,12 @@ missing that Filipino learners often type? Are the spellings the usual ones?
 - okay lang
 - bahala na
 - bahala ka
-- bahala ka sa buhay mo
+- bahala kayo
+- bahala na kayo
+- bahala na si batman
+- kayo na bahala
+- ikaw na bahala
+- lord ikaw na bahala
 - astig
 - petmalu
 - lodi
@@ -142,14 +208,11 @@ missing that Filipino learners often type? Are the spellings the usual ones?
 - beshie
 - bestie
 - besh
-- bes
 - pare
 - pareng
-- tol
 - utol
 - brad
 - kuya
-- ate
 - bunso
 - panganay
 - lola
@@ -164,13 +227,11 @@ missing that Filipino learners often type? Are the spellings the usual ones?
 - papa
 - mama ko
 - papa ko
-- mamapapa
 - mama papa
 - mommy
 - daddy
 - pamilya
 - pamilya ko
-- mahal ko ang pamilya ko
 - kaibigan
 - kaibigan ko
 - barkada
@@ -181,7 +242,6 @@ missing that Filipino learners often type? Are the spellings the usual ones?
 - pangarap ko
 - tagumpay
 - pag asa
-- pagasa
 - lakas
 - tapang
 - sipag
@@ -192,18 +252,145 @@ missing that Filipino learners often type? Are the spellings the usual ones?
 - malas
 - ewan
 - ewan ko
-- ewan ko sayo
 - wala lang
 - wala na
 - wala na naman
 - walang iba
-- wala na mang iba
-- paalam na sayo
+- wala nang iba
 - hindi
-- oo
-- opo
+- hindi ko alam
+- di ko alam
+- nakalimutan ko
+- nakalimutan ko na
+- ano ba
+- ano ba yan
+- bakit ba
+- bakit ba ganito
+- pakialam mo
+- wala kang pake
+- grabe
+- ang galing
+- simple lang
+- hay nako
+- jusko
+- juskolord
+- diyos ko po
+- susmaryosep
 
-## Faith (25)
+## Habits and sayings (58)
+
+- ako si
+- ako po si
+- ako ay
+- ako nga ito
+- ako lang
+- ako ito
+- ako nga
+- ikaw na
+- sino ka
+- sino ako
+- tiwala lang
+- kaya ko to
+- kaya natin to
+- kaya mo yan
+- laban lang
+- walang susuko
+- walang iwanan
+- walang sukuan
+- kapit lang
+- tuloy lang
+- fighting
+- one take lang
+- trabaho lang
+- walang personalan
+- trabaho lang walang personalan
+- petsa de peligro
+- sahod na
+- sweldo
+- sahod
+- ipon
+- yaman
+- mayaman
+- mahirap
+- tulog muna
+- kain muna
+- kain tayo
+- gutom na ako
+- antok na ako
+- pagod na ako
+- uwi na
+- uwian na
+- walang pasok
+- trabaho
+- pasok
+- bawal sabihin
+- secret lang
+- sikreto
+- edi wow
+- ikaw na magaling
+- push mo yan
+- pak ganern
+- ganern
+- keri lang
+- anyare
+- charot lang
+- joke lang
+- hugot
+- hugot lines
+
+## Text-speak (49)
+
+- mahal q
+- mahal qta
+- mhal kta
+- mahalkta
+- lab q
+- lab kita
+- lab na lab kita
+- luv u
+- luvyah
+- labyah
+- mwah
+- mishu
+- misyu
+- ilysm
+- 14344
+- 143143
+- 1432
+- 143445254
+- aqoh
+- akoh
+- bhebhe
+- bheb
+- bhabe
+- bhoszx
+- bossing
+- idol
+- lods
+- mamsh
+- mamshie
+- momshie
+- sizt
+- paps
+- tsong
+- awit
+- sheesh
+- naol
+- forda
+- ferson
+- dasurv
+- omsim
+- gigil
+- bongga
+- jeje
+- jejeje
+- jejemon
+- hehe
+- hihi
+- huhu
+- wahaha
+
+## Faith (37)
 
 - diyos
 - dios
@@ -214,24 +401,36 @@ missing that Filipino learners often type? Are the spellings the usual ones?
 - hesus
 - hesukristo
 - jesus ko
-- maria
 - mama mary
-- mamamary
 - birhen maria
 - santo nino
-- santonino
 - senor santo nino
+- viva santo nino
+- pit senyor
+- viva pit senyor
 - nazareno
 - poong nazareno
 - dios mahal kita
 - salamat panginoon
 - salamat sa diyos
+- tiwala sa diyos
+- tiwala lang sa diyos
+- purihin ang panginoon
+- papuri sa diyos
+- sa diyos ang kapurihan
+- aba ginoong maria
+- ama namin
+- ina ng laging saklolo
+- penafrancia
+- sagrada familia
+- iglesia ni cristo
+- el shaddai
 - amen
 - banal
 - simbahan
 - kristiyano
 
-## Pride and country (31)
+## Pride, country and politics (56)
 
 - pilipinas
 - pilipino
@@ -242,36 +441,61 @@ missing that Filipino learners often type? Are the spellings the usual ones?
 - pinoy ako
 - pinay ako
 - pinoy pride
+- pinoy pride worldwide
 - proud pinoy
 - proud to be pinoy
 - ako ay pilipino
 - mahal ko ang pilipinas
-- mahal kong pilipinas
 - mabuhay ang pilipinas
+- mabuhay ang pilipino
+- pilipinas kong mahal
+- bayan ko
+- ang bayan ko
 - i love philippines
+- love the philippines
+- its more fun in the philippines
+- more fun in the philippines
 - philippines
 - lupang hinirang
 - bayang magiliw
-- bayan magiliw
 - perlas ng silanganan
 - alab ng puso
 - watawat
 - kalayaan
 - bayani
-- rizal
+- laban pilipinas
+- bagong pilipinas
+- bagong lipunan
+- luzviminda
+- luzon visayas mindanao
 - jose rizal
 - bonifacio
 - andres bonifacio
 - mabini
 - aguinaldo
+- duterte
+- rodrigo duterte
+- digong
+- tatay digong
+- marcos
+- bongbong marcos
+- leni
+- leni robredo
+- kakampink
+- uniteam
+- ninoy
+- erap
+- isko moreno
+- vico sotto
+- inday sara
 
-## Places (66)
+## Places (121)
 
 - manila
 - maynila
 - metro manila
+- metro manila ncr
 - quezon city
-- quezoncity
 - makati
 - taguig
 - pasig
@@ -297,31 +521,76 @@ missing that Filipino learners often type? Are the spellings the usual ones?
 - cagayan de oro
 - zamboanga
 - general santos
+- gensan
 - tacloban
 - dumaguete
 - pampanga
 - angeles
+- san fernando
 - bulacan
 - batangas
 - cavite
 - laguna
-- rizal province
+- rizal
 - bataan
 - zambales
+- olongapo
+- subic
+- tarlac
+- nueva ecija
+- cabanatuan
+- isabela
+- tuguegarao
 - pangasinan
+- dagupan
+- la union
 - ilocos
+- ilocos norte
+- ilocos sur
+- laoag
 - vigan
+- quezon
+- lucena
+- mindoro
+- masbate
+- sorsogon
+- camarines sur
 - bicol
 - naga
 - legazpi
 - albay
+- aklan
+- kalibo
+- capiz
+- roxas city
+- negros
+- siquijor
 - leyte
+- ormoc
 - samar
 - bohol
 - palawan
 - puerto princesa
+- el nido
+- coron
 - boracay
 - siargao
+- butuan
+- surigao
+- cotabato
+- tagum
+- bukidnon
+- iligan
+- marawi
+- ozamiz
+- dipolog
+- pagadian
+- camiguin
+- sagada
+- banaue
+- batanes
+- pagudpud
+- chocolate hills
 - tagaytay
 - antipolo
 - mindanao
@@ -333,122 +602,153 @@ missing that Filipino learners often type? Are the spellings the usual ones?
 - quiapo
 - divisoria
 - intramuros
+- ortigas
+- cubao
+- alabang
+- fairview
+- novaliches
+- tondo
+- sampaloc
+- binondo
+- mall of asia
+- edsa
 
-## Surnames (46)
+## Schools and review centres (28)
 
-- dela cruz
-- delacruz
-- santos
-- reyes
-- garcia
-- mendoza
-- bautista
-- villanueva
-- ramos
-- aquino
-- castillo
-- rivera
-- flores
-- gonzales
-- torres
-- lopez
-- cruz
-- dizon
-- tolentino
-- fernandez
-- perez
-- navarro
-- domingo
-- salazar
-- del rosario
-- delos santos
-- de leon
-- de guzman
-- pascual
-- mercado
-- aguilar
-- soriano
-- manalo
-- gutierrez
-- sison
-- morales
-- valdez
-- santiago
-- ocampo
-- marquez
-- francisco
-- macaraeg
-- lim
-- tan
-- sy
-- go
+- ust growling tigers
+- feu tamaraws
+- up diliman
+- iskolar ng bayan
+- ateneo
+- ateneo blue eagles
+- la salle
+- animo la salle
+- dlsu
+- uste
+- go uste
+- pamantasan
+- adamson
+- mapua
+- san beda
+- letran
+- tamaraws
+- blue eagles
+- green archers
+- growling tigers
+- fighting maroons
+- one big fight
+- uaap
+- silliman
+- cpar
+- resa
+- prtc
+- pinnacle
 
-## Given names and nicknames (41)
+## Employers, banks and work (36)
 
-- juan
-- juan dela cruz
-- jose
-- maria clara
-- ana
-- rosa
-- rosario
-- josefina
-- teresita
-- corazon
-- lourdes
-- marites
-- maricel
-- rowena
-- marivic
-- mary grace
-- mary joy
-- mary ann
-- kristine
-- jasmine
-- nicole
-- angelica
-- angel
-- princess
-- precious
-- jericho
-- joshua
-- christian
-- jhon
-- jhay
-- jaypee
-- jun jun
-- junjun
-- jojo
-- bong
-- boyet
-- dodoy
-- nene
-- inday
-- neneng
-- ading
+- sgv co
+- philippine national bank
+- bureau of internal revenue
+- revenue region
+- sgv and co
+- sycip gorres velayo
+- navarro amper
+- manabat
+- isla lipana
+- punongbayan
+- punongbayan araullo
+- reyes tacandong
+- bdo unibank
+- we find ways
+- metrobank
+- landbank
+- land bank of the philippines
+- bank of the philippine islands
+- bpi family savings
+- rcbc
+- unionbank
+- security bank
+- china bank
+- eastwest
+- psbank
+- gcash
+- paymaya
+- bangko sentral
+- commission on audit
+- philhealth
+- pldt
+- meralco
+- ayala
+- concentrix
+- teleperformance
+- jollibee foods
 
-## Food and brands (50)
+## Exam and review (10)
+
+- sana pumasa
+- sana pumasa ako
+- papasa ako
+- pasado ako
+- ipasa mo lord
+- topnotcher
+- board passer
+- cpa na ako
+- future cpa
+- cpa board passer
+
+## Food and brands (82)
 
 - jollibee
 - chickenjoy
 - jolly spaghetti
 - mcdo
+- love ko to
+- bida ang saya
 - mang inasal
 - chowking
 - greenwich
 - goldilocks
 - red ribbon
 - max fried chicken
+- shakeys
+- andoks
 - san miguel
+- san mig light
+- pale pilsen
 - red horse
 - tanduay
 - ginebra
 - emperador
 - lucky me
 - pancit canton
+- mang tomas
+- datu puti
+- kopiko
+- bear brand
 - adobo
+- adobong manok
+- chicken adobo
+- pork adobo
 - sinigang
+- sinigang na baboy
 - lechon
+- lechon kawali
+- lechon manok
+- crispy pata
+- bulalo
+- tinola
+- kaldereta
+- menudo
+- dinuguan
+- bicol express
+- pinakbet
+- bangus
+- tuyo
+- champorado
+- arroz caldo
+- lugaw
+- batchoy
+- palabok
 - balut
 - halo halo
 - lumpia
@@ -473,121 +773,878 @@ missing that Filipino learners often type? Are the spellings the usual ones?
 - mangga
 - saging
 - buko
-- ube
 - leche flan
+- peach mango pie
+- mcfloat
 - sm mall
 - sm megamall
 - jeepney
 - tricycle
 
-## Teams, shows and celebrities (35)
+## Shows, music, games and celebrities (86)
 
-- ginebra san miguel
-- barangay ginebra
-- magnolia
-- san miguel beermen
-- gilas
-- gilas pilipinas
-- puso gilas
-- pacquiao
-- manny pacquiao
-- pacman
-- kathniel
-- kathryn
-- daniel padilla
-- jadine
-- lizquen
-- aldub
-- alden
-- maine
-- vice ganda
-- coco martin
-- sarah geronimo
-- regine
-- regine velasquez
-- popoy
-- basha
-- sb19
-- bini
-- eraserheads
+- batang quiapo
 - ang probinsyano
+- fpj ang probinsyano
+- cardo dalisay
+- maria clara at ibarra
+- darna
+- encantadia
+- mara clara
+- pangako sayo
+- marimar
+- meteor garden
 - eat bulaga
+- dabarkads
 - its showtime
+- showtime
+- madlang people
+- wowowin
+- wowowee
+- willie revillame
+- tv patrol
+- pinoy big brother
 - kapamilya
 - kapuso
 - abs cbn
-- gma
+- liza soberano
+- kathryn bernardo
+- daniel padilla
+- kathniel
+- alden richards
+- maine mendoza
+- aldub
+- marian rivera
+- dingdong dantes
+- anne curtis
+- angel locsin
+- bea alonzo
+- john lloyd cruz
+- piolo pascual
+- sharon cuneta
+- regine velasquez
+- sarah geronimo
+- vice ganda
+- coco martin
+- joshua garcia
+- donbelle
+- kimpau
+- jadine
+- nadine lustre
+- james reid
+- lizquen
+- catriona gray
+- pia wurtzbach
+- manny pacquiao
+- pacquiao
+- pacman
+- hidilyn diaz
+- carlos yulo
+- june mar fajardo
+- kai sotto
+- gilas pilipinas
+- gilas
+- barangay ginebra
+- ginebra san miguel
+- magnolia
+- san miguel beermen
+- ben and ben
+- december avenue
+- parokya ni edgar
+- rivermaya
+- eraserheads
+- kamikazee
+- moira dela torre
+- gloc 9
+- ang huling el bimbo
+- huling el bimbo
+- tadhana
+- pantropiko
+- sb19
+- bini
+- mobile legends
+- mobile legends bang bang
+- mlbb
+- codm
+- call of duty mobile
+- axie infinity
+- ragnarok
 
-## Common Filipino password phrases (71)
+## Common Filipino password phrases (28)
 
+- okay lang ako
+- move on na ako
+- god bless po
+- god bless po sa lahat
+- ingat po kayo
+- ingat po kayo lagi
+- anyare sayo
+- ikaw na nga
+- lord ipasa mo
+- taga batangas
+- taga cebu
+- taga manila
+- taga davao
+- family is love
+- its more fun in the ph
 - ito ang password ko
 - password ko ito
 - password ko
 - password ko to
 - ang password ko
-- ako si juan
-- ako lang
-- ako to
-- ako ito
-- ako nga
-- ikaw na
-- sino ka
-- sino ako
-- akin ka lang
-- akin ka
-- sayo lang
-- sayo lang ako
-- para sayo
-- para sa iyo
-- mahal kita palagi
-- hanggang dulo
-- habang buhay
-- habambuhay
-- walang hanggan
-- pag ibig ko
-- ikaw pa rin
-- ikaw parin
-- ikaw lang talaga
+- ano ba password ko
+- wala akong password
+- walang password
 - bahay kubo
+- bahay kubo kahit munti
 - leron leron sinta
 - sa ugoy ng duyan
-- anak
-- anak ko
-- mga anak ko
-- mahal ko mga anak ko
-- panganay ko
-- bunso ko
-- lola ko
-- lolo ko
-- pusa ko
-- aso ko
-- sana all
-- sana ol
-- charot lang
-- joke lang
-- hugot
-- hugot lines
-- paasa
-- assumera
-- marupok
-- tampo
-- galit
-- sorry na
-- patawad
-- patawarin mo ako
-- mahal pa rin kita
-- miss na miss kita
-- uwi na
-- uwian na
-- gutom na ako
-- antok na ako
-- pagod na ako
-- trabaho
-- pasok
-- walang pasok
-- sweldo
-- sahod
-- ipon
-- yaman
-- mayaman
-- mahirap
+- magandang umaga mga kaibigan
+
+# Names (Filipino first, then other common names)
+
+582 entries that count, in 2 groups.
+
+## Given names and nicknames (515)
+
+- juan
+- jose
+- ana
+- rosa
+- rosario
+- josefina
+- teresita
+- corazon
+- lourdes
+- marites
+- maricel
+- rowena
+- marivic
+- mary grace
+- mary joy
+- mary ann
+- kristine
+- jasmine
+- nicole
+- angelica
+- precious
+- jericho
+- joshua
+- christian
+- jhon
+- jhay
+- jaypee
+- junjun
+- jojo
+- bong
+- boyet
+- dodoy
+- nene
+- inday
+- neneng
+- ading
+- john
+- mark
+- michael
+- anthony
+- paul
+- james
+- joseph
+- mary
+- maria
+- ann
+- anne
+- joy
+- grace
+- mae
+- rose
+- jane
+- jean
+- joyce
+- kristel
+- lovely
+- princess
+- angel
+- daniel
+- david
+- jerome
+- jay
+- carlo
+- carl
+- kim
+- ken
+- kevin
+- ryan
+- bryan
+- brian
+- eric
+- erika
+- jessica
+- ashley
+- matthew
+- andrew
+- peter
+- francis
+- vincent
+- patrick
+- jennifer
+- jenny
+- lyn
+- lynn
+- marie
+- mariel
+- kathleen
+- katherine
+- cathy
+- karen
+- sarah
+- sara
+- hannah
+- ella
+- bea
+- bianca
+- camille
+- carla
+- cherry
+- cristina
+- diana
+- donna
+- elaine
+- ellen
+- emily
+- erica
+- faith
+- hope
+- gina
+- gloria
+- irene
+- ivy
+- jasmin
+- jocelyn
+- josephine
+- judy
+- julie
+- karla
+- kaye
+- liza
+- lorna
+- luz
+- lyka
+- marilou
+- marilyn
+- maricar
+- marissa
+- melanie
+- michelle
+- mylene
+- nina
+- noemi
+- pamela
+- patricia
+- rachel
+- rhea
+- rica
+- rina
+- rita
+- roxanne
+- ruby
+- ruth
+- sheila
+- sheryl
+- shiela
+- susan
+- teresa
+- tina
+- trisha
+- vanessa
+- veronica
+- vicky
+- victoria
+- wilma
+- yolanda
+- zenaida
+- alex
+- alvin
+- arnel
+- arnold
+- arthur
+- bernard
+- charles
+- dennis
+- edgar
+- eduardo
+- edwin
+- elmer
+- ernesto
+- ferdinand
+- fernando
+- gerald
+- gilbert
+- glenn
+- henry
+- ian
+- jaime
+- jake
+- jason
+- jeffrey
+- jerry
+- jesus
+- joel
+- joey
+- jonathan
+- jorge
+- julius
+- justin
+- kenneth
+- lawrence
+- leo
+- leonardo
+- lloyd
+- louie
+- luis
+- manuel
+- marco
+- mario
+- marlon
+- martin
+- marvin
+- melvin
+- miguel
+- nathan
+- nelson
+- noel
+- oliver
+- oscar
+- pedro
+- philip
+- ramon
+- randy
+- raymond
+- rey
+- ricardo
+- richard
+- robert
+- roberto
+- rodel
+- roderick
+- rodrigo
+- rolando
+- romeo
+- rommel
+- ronald
+- ronnie
+- roy
+- ruben
+- samuel
+- sherwin
+- stephen
+- steven
+- timothy
+- victor
+- wilfredo
+- william
+- xander
+- nathaniel
+- althea
+- zia
+- delacruz
+- santos
+- reyes
+- garcia
+- mendoza
+- bautista
+- villanueva
+- ramos
+- aquino
+- castillo
+- rivera
+- flores
+- gonzales
+- torres
+- lopez
+- cruz
+- dizon
+- tolentino
+- fernandez
+- perez
+- navarro
+- domingo
+- salazar
+- delrosario
+- delossantos
+- deleon
+- deguzman
+- pascual
+- mercado
+- aguilar
+- soriano
+- manalo
+- gutierrez
+- sison
+- morales
+- valdez
+- santiago
+- ocampo
+- marquez
+- francisco
+- john mark
+- john paul
+- john lloyd
+- john michael
+- mark anthony
+- jhon mark
+- jhon paul
+- jhon lloyd
+- jhun
+- junior
+- totoy
+- nonoy
+- noynoy
+- dodong
+- kiko
+- pepe
+- tisay
+- tisoy
+- pangga
+- langga
+- maymay
+- lenlen
+- jenjen
+- chacha
+- tintin
+- tonton
+- dondon
+- jonjon
+- bambam
+- mary rose
+- mary jane
+- rose ann
+- ann marie
+- anna marie
+- maricris
+- maribel
+- jennylyn
+- rosalyn
+- jonalyn
+- jovelyn
+- angeline
+- catherine
+- christine
+- cristine
+- rochelle
+- charmaine
+- shaira
+- danica
+- francine
+- hazel
+- jamaica
+- janine
+- joanna
+- jhoanna
+- judy ann
+- kimberly
+- mikaela
+- pauline
+- princess joy
+- love joy
+- jerald
+- aljon
+- jayson
+- justine
+- angelo
+- ezekiel
+- thomas
+- christopher
+- george
+- edward
+- jacob
+- gary
+- nicholas
+- larry
+- scott
+- brandon
+- benjamin
+- gregory
+- frank
+- alexander
+- jack
+- tyler
+- aaron
+- adam
+- douglas
+- zachary
+- kyle
+- walter
+- harold
+- jeremy
+- ethan
+- keith
+- roger
+- terry
+- sean
+- austin
+- noah
+- jesse
+- joe
+- billy
+- jordan
+- albert
+- dylan
+- bruce
+- willie
+- gabriel
+- alan
+- logan
+- wayne
+- ralph
+- eugene
+- russell
+- louis
+- bobby
+- johnny
+- bradley
+- elizabeth
+- linda
+- barbara
+- nancy
+- lisa
+- betty
+- margaret
+- sandra
+- dorothy
+- carol
+- amanda
+- melissa
+- deborah
+- stephanie
+- rebecca
+- sharon
+- laura
+- cynthia
+- amy
+- shirley
+- angela
+- helen
+- anna
+- brenda
+- emma
+- samantha
+- debra
+- carolyn
+- janet
+- heather
+- diane
+- virginia
+- olivia
+- kelly
+- christina
+- lauren
+- joan
+- evelyn
+- judith
+- megan
+- cheryl
+- andrea
+- martha
+- jacqueline
+- frances
+- kathryn
+- janice
+- alice
+- madison
+- doris
+- abigail
+- julia
+- denise
+- amber
+- beverly
+- danielle
+- theresa
+- sophia
+- brittany
+- natalie
+- isabella
+- charlotte
+- alexis
+- kayla
+- mohammed
+- muhammad
+- ahmad
+- ahmed
+- ali
+- fatima
+- aisha
+- siti
+- nur
+- nurul
+- budi
+- agus
+- dewi
+- putri
+- sri
+- rizky
+- andi
+- wayan
+- made
+- ketut
+- rahul
+- amit
+- priya
+- anjali
+- rohit
+- vikram
+- arjun
+- ravi
+- sanjay
+- neha
+- pooja
+- deepak
+- suresh
+- ramesh
+- kumar
+- singh
+- sharma
+- patel
+- gupta
+- khan
+- reddy
+- wei
+- ming
+- jun
+- chen
+- wang
+- zhang
+- liu
+- tan
+- lim
+- lee
+- wong
+- goh
+- ong
+- teo
+
+## Surnames (67)
+
+- macaraeg
+- delos reyes
+- dela pena
+- dela rosa
+- dela torre
+- de jesus
+- de castro
+- de vera
+- del mundo
+- san jose
+- san pedro
+- santa maria
+- sta maria
+- villar
+- villareal
+- villegas
+- velasco
+- vergara
+- zamora
+- roxas
+- rosales
+- romero
+- rodriguez
+- ramirez
+- padilla
+- pangilinan
+- panganiban
+- pineda
+- ortiz
+- natividad
+- miranda
+- medina
+- martinez
+- marasigan
+- magno
+- macapagal
+- lacson
+- jimenez
+- javier
+- ignacio
+- hernandez
+- guevarra
+- guerrero
+- gomez
+- galang
+- evangelista
+- estrada
+- espiritu
+- enriquez
+- diaz
+- cortez
+- concepcion
+- chua
+- cabrera
+- caballero
+- bernardo
+- bartolome
+- andres
+- alvarez
+- alcantara
+- agustin
+- dantes
+- soberano
+- locsin
+- robredo
+- fajardo
+- yulo
+
+# Other Asian learners (Indonesia, Malaysia, Singapore, India)
+
+137 entries that count, in 5 groups.
+
+## Indonesia (49)
+
+- aku cinta kamu
+- aku sayang kamu
+- aku sayang kamu selamanya
+- sayang
+- sayangku
+- sayang kamu
+- cinta
+- cintaku
+- cinta sejati
+- rahasia
+- kata sandi
+- indonesia
+- indonesia raya
+- merdeka
+- garuda
+- garuda pancasila
+- pancasila
+- bhinneka tunggal ika
+- terima kasih
+- terima kasih banyak
+- selamat pagi
+- selamat malam
+- selamat datang
+- selamat hari raya
+- selamat ulang tahun
+- sukses
+- sukses selalu
+- bismillah
+- bismillah sukses
+- alhamdulillah
+- insya allah
+- jakarta
+- jakarta selatan
+- surabaya
+- bandung
+- yogyakarta
+- jogja
+- bali
+- medan
+- makassar
+- semarang
+- persib
+- persija
+- persija jakarta
+- bank central asia
+- persebaya
+- arema
+- timnas indonesia
+- garuda muda
+
+## Malaysia (20)
+
+- malaysia
+- malaysia boleh
+- kuala lumpur
+- selangor
+- johor
+- johor darul takzim
+- penang
+- sabah
+- sarawak
+- harimau malaya
+- nasi lemak
+- kata laluan
+- aku cinta padamu
+- saya sayang awak
+- sayang awak
+- terima kasih banyak banyak
+- selamat hari raya aidilfitri
+- petronas
+- maybank
+- cimb
+
+## Singapore (16)
+
+- singapore
+- singapura
+- majulah singapura
+- marina bay sands
+- merlion
+- lion city
+- sentosa
+- orchard road
+- gong xi fa cai
+- huat ah
+- huat
+- woaini
+- 5201314
+- lee kuan yew
+- dbs bank
+- ocbc
+
+## India (37)
+
+- jai hind
+- vande mataram
+- bharat mata ki jai
+- mera bharat mahaan
+- incredible india
+- i love my india
+- jai shri ram
+- jai shree ram
+- jai shree krishna
+- radhe radhe
+- radhe krishna
+- har har mahadev
+- om namah shivaya
+- om sai ram
+- jai mata di
+- ganpati bappa morya
+- waheguru
+- sat sri akal
+- sachin tendulkar
+- virat kohli
+- ms dhoni
+- rohit sharma
+- shah rukh khan
+- salman khan
+- salman khan bhai
+- amitabh bachchan
+- bollywood
+- chennai super kings
+- mumbai indians
+- royal challengers bangalore
+- kolkata knight riders
+- state bank of india
+- tata consultancy
+- tata consultancy services
+- infosys
+- wipro
+- reliance
+
+## Greetings from nearby countries (15)
+
+- anh yeu em
+- mat khau
+- sawasdee
+- sawasdee krub
+- sawasdee ka
+- arigatou gozaimasu
+- arigato
+- konnichiwa
+- aishiteru
+- saranghae
+- sarang hae yo
+- oppa
+- annyeong
+- kamsahamnida
+- fighting oppa

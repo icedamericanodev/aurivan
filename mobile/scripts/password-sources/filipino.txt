@@ -3,24 +3,25 @@
 # the app also uses are mostly American). One entry per line; spaces,
 # capitals and punctuation are ignored (the compared form), so "mahal kita"
 # also catches "MahalKita2026". Each entry counts as ONE common word in the
-# whole-password rule, so a passphrase of three or more different words
-# still passes ("kape muna bago mag aral").
+# whole-password rule, so a passphrase of three or more different
+# ordinary words still passes.
 #
 # Lines starting with "~" are rude words, stored scrambled (letters ROT13,
 # digits ROT5) so the file reads cleanly. Everything else is listed, by
 # category, in docs/content/PASSWORD_LIST_FILIPINO.md for the owner to
 # review (a test keeps the two the same).
+# Names and surnames are in names.txt (their own piece kind). Reviewed 28 Nov 2026: entries
+# under 4 characters (never matched) and duplicates removed, unnatural spellings fixed, and
+# the round-3 tester's candidate list added (faith, greetings, other languages, habits,
+# text-speak, schools, employers, shows, food, places).
 # Built into the lazy word file by scripts/build-password-blocklist.mjs.
 
 ## Endearments and feelings
 mahal
-mahalko
 mahal ko
-mahalkita
 mahal kita
 mahal na mahal kita
 mahal kita sobra
-mahalnamahal
 mahal kong mahal
 iniibig kita
 sinta
@@ -29,7 +30,6 @@ giliw
 mahal ko ikaw
 ikaw lang
 ikaw lamang
-ikaw lang sapat na
 ikaw at ako
 ikaw ang mahal ko
 tayong dalawa
@@ -43,14 +43,12 @@ crush ko
 kilig
 kilig much
 bebe
-bebeko
 bebe ko
 bebelabs
 babe ko
 baby ko
 lablab
 labyu
-lab yu
 labyu forever
 walang forever
 may forever
@@ -60,13 +58,10 @@ mahal kita 143
 iloveyou 143
 143 mahal
 pogi
-pogiako
 pogi ako
 gwapo
-gwapoko
 gwapo ako
 ganda
-gandako
 ganda ko
 maganda
 maganda ako
@@ -76,17 +71,52 @@ masaya
 malungkot
 iyak
 puso
-pusoko
 puso ko
 pag ibig
-pagibig
+mahal na mahal ko siya
+mahal ko ang diyos
+mahal ko asawa ko
+mahal ko anak ko
+asawa ko
+anak ko
+mga anak ko
+apo ko
+kapatid ko
+kuya ko
+ate ko
+walang jowa
+jowa
+single ako
+move on
+move on na
+sana all
+sana ol
+paasa
+marupok
+tampo
+sorry na
+patawad
+patawarin mo ako
+mahal pa rin kita
+miss na miss kita
+akin ka lang
+sayo lang ako
+para sayo
+para sa iyo
+hanggang dulo
+habang buhay
+walang hanggan
+ikaw pa rin
 
-## Bisaya
+## Bisaya and other languages
 palangga
 palangga ko
+palangga taka
+palangga tika
 palanggakaayo
 gihigugma
 gihigugma tika
+gihigugma ko ikaw
 gugma
 gimingaw
 gimingaw ko nimo
@@ -96,23 +126,53 @@ amping
 lami
 unsa
 salamat kaayo
-dako
-inday
-dodong
-day
-bai
+daghang salamat
+maayong buntag
+maayong gabii
+maayong adlaw
+padayon
+padayon lang
+bisaya
+bisdak
+ilocano
+agyamanak
+naimbag nga bigat
+ay ayaten ka
+kaluguran daka
+padaba taka
+oragon
+kapampangan
+ilonggo
+waray
+batangueno
+tagalog
 
 ## Everyday words and greetings
 salamat
 salamat po
 maraming salamat
+salamat sa lahat
 mabuhay
 kumusta
 kamusta
 kumusta ka
+kumusta na
+kamusta ka na
 magandang umaga
 magandang gabi
 magandang hapon
+magandang araw
+magandang tanghali
+magandang buhay
+maligayang pasko
+maligayang bati
+maligayang kaarawan
+manigong bagong taon
+bagong taon
+pasko
+pasko na naman
+good morning po
+thank you po
 paalam
 ingat
 ingat ka
@@ -126,7 +186,12 @@ ayos lang
 okay lang
 bahala na
 bahala ka
-bahala ka sa buhay mo
+bahala kayo
+bahala na kayo
+bahala na si batman
+kayo na bahala
+ikaw na bahala
+lord ikaw na bahala
 astig
 petmalu
 lodi
@@ -136,14 +201,11 @@ chika
 beshie
 bestie
 besh
-bes
 pare
 pareng
-tol
 utol
 brad
 kuya
-ate
 bunso
 panganay
 lola
@@ -158,13 +220,11 @@ mama
 papa
 mama ko
 papa ko
-mamapapa
 mama papa
 mommy
 daddy
 pamilya
 pamilya ko
-mahal ko ang pamilya ko
 kaibigan
 kaibigan ko
 barkada
@@ -175,7 +235,6 @@ pangarap
 pangarap ko
 tagumpay
 pag asa
-pagasa
 lakas
 tapang
 sipag
@@ -186,16 +245,141 @@ swerte
 malas
 ewan
 ewan ko
-ewan ko sayo
 wala lang
 wala na
 wala na naman
 walang iba
-wala na mang iba
-paalam na sayo
+wala nang iba
 hindi
-oo
-opo
+hindi ko alam
+di ko alam
+nakalimutan ko
+nakalimutan ko na
+ano ba
+ano ba yan
+bakit ba
+bakit ba ganito
+pakialam mo
+wala kang pake
+grabe
+ang galing
+simple lang
+hay nako
+jusko
+juskolord
+diyos ko po
+susmaryosep
+
+## Habits and sayings
+ako si
+ako po si
+ako ay
+ako nga ito
+ako lang
+ako ito
+ako nga
+ikaw na
+sino ka
+sino ako
+tiwala lang
+kaya ko to
+kaya natin to
+kaya mo yan
+laban lang
+walang susuko
+walang iwanan
+walang sukuan
+kapit lang
+tuloy lang
+fighting
+one take lang
+trabaho lang
+walang personalan
+trabaho lang walang personalan
+petsa de peligro
+sahod na
+sweldo
+sahod
+ipon
+yaman
+mayaman
+mahirap
+tulog muna
+kain muna
+kain tayo
+gutom na ako
+antok na ako
+pagod na ako
+uwi na
+uwian na
+walang pasok
+trabaho
+pasok
+bawal sabihin
+secret lang
+sikreto
+edi wow
+ikaw na magaling
+push mo yan
+pak ganern
+ganern
+keri lang
+anyare
+charot lang
+joke lang
+hugot
+hugot lines
+
+## Text-speak
+mahal q
+mahal qta
+mhal kta
+mahalkta
+lab q
+lab kita
+lab na lab kita
+luv u
+luvyah
+labyah
+mwah
+mishu
+misyu
+ilysm
+14344
+143143
+1432
+143445254
+aqoh
+akoh
+bhebhe
+bheb
+bhabe
+bhoszx
+bossing
+idol
+lods
+mamsh
+mamshie
+momshie
+sizt
+paps
+tsong
+awit
+sheesh
+naol
+forda
+ferson
+dasurv
+omsim
+gigil
+bongga
+jeje
+jejeje
+jejemon
+hehe
+hihi
+huhu
+wahaha
 
 ## Faith
 diyos
@@ -207,24 +391,36 @@ panginoon ko
 hesus
 hesukristo
 jesus ko
-maria
 mama mary
-mamamary
 birhen maria
 santo nino
-santonino
 senor santo nino
+viva santo nino
+pit senyor
+viva pit senyor
 nazareno
 poong nazareno
 dios mahal kita
 salamat panginoon
 salamat sa diyos
+tiwala sa diyos
+tiwala lang sa diyos
+purihin ang panginoon
+papuri sa diyos
+sa diyos ang kapurihan
+aba ginoong maria
+ama namin
+ina ng laging saklolo
+penafrancia
+sagrada familia
+iglesia ni cristo
+el shaddai
 amen
 banal
 simbahan
 kristiyano
 
-## Pride and country
+## Pride, country and politics
 pilipinas
 pilipino
 pilipina
@@ -234,35 +430,60 @@ pinas
 pinoy ako
 pinay ako
 pinoy pride
+pinoy pride worldwide
 proud pinoy
 proud to be pinoy
 ako ay pilipino
 mahal ko ang pilipinas
-mahal kong pilipinas
 mabuhay ang pilipinas
+mabuhay ang pilipino
+pilipinas kong mahal
+bayan ko
+ang bayan ko
 i love philippines
+love the philippines
+its more fun in the philippines
+more fun in the philippines
 philippines
 lupang hinirang
 bayang magiliw
-bayan magiliw
 perlas ng silanganan
 alab ng puso
 watawat
 kalayaan
 bayani
-rizal
+laban pilipinas
+bagong pilipinas
+bagong lipunan
+luzviminda
+luzon visayas mindanao
 jose rizal
 bonifacio
 andres bonifacio
 mabini
 aguinaldo
+duterte
+rodrigo duterte
+digong
+tatay digong
+marcos
+bongbong marcos
+leni
+leni robredo
+kakampink
+uniteam
+ninoy
+erap
+isko moreno
+vico sotto
+inday sara
 
 ## Places
 manila
 maynila
 metro manila
+metro manila ncr
 quezon city
-quezoncity
 makati
 taguig
 pasig
@@ -288,31 +509,76 @@ cagayan
 cagayan de oro
 zamboanga
 general santos
+gensan
 tacloban
 dumaguete
 pampanga
 angeles
+san fernando
 bulacan
 batangas
 cavite
 laguna
-rizal province
+rizal
 bataan
 zambales
+olongapo
+subic
+tarlac
+nueva ecija
+cabanatuan
+isabela
+tuguegarao
 pangasinan
+dagupan
+la union
 ilocos
+ilocos norte
+ilocos sur
+laoag
 vigan
+quezon
+lucena
+mindoro
+masbate
+sorsogon
+camarines sur
 bicol
 naga
 legazpi
 albay
+aklan
+kalibo
+capiz
+roxas city
+negros
+siquijor
 leyte
+ormoc
 samar
 bohol
 palawan
 puerto princesa
+el nido
+coron
 boracay
 siargao
+butuan
+surigao
+cotabato
+tagum
+bukidnon
+iligan
+marawi
+ozamiz
+dipolog
+pagadian
+camiguin
+sagada
+banaue
+batanes
+pagudpud
+chocolate hills
 tagaytay
 antipolo
 mindanao
@@ -324,119 +590,149 @@ luneta
 quiapo
 divisoria
 intramuros
+ortigas
+cubao
+alabang
+fairview
+novaliches
+tondo
+sampaloc
+binondo
+mall of asia
+edsa
 
-## Surnames
-dela cruz
-delacruz
-santos
-reyes
-garcia
-mendoza
-bautista
-villanueva
-ramos
-aquino
-castillo
-rivera
-flores
-gonzales
-torres
-lopez
-cruz
-dizon
-tolentino
-fernandez
-perez
-navarro
-domingo
-salazar
-del rosario
-delos santos
-de leon
-de guzman
-pascual
-mercado
-aguilar
-soriano
-manalo
-gutierrez
-sison
-morales
-valdez
-santiago
-ocampo
-marquez
-francisco
-macaraeg
-lim
-tan
-sy
-go
+## Schools and review centres
+ust growling tigers
+feu tamaraws
+up diliman
+iskolar ng bayan
+ateneo
+ateneo blue eagles
+la salle
+animo la salle
+dlsu
+uste
+go uste
+pamantasan
+adamson
+mapua
+san beda
+letran
+tamaraws
+blue eagles
+green archers
+growling tigers
+fighting maroons
+one big fight
+uaap
+silliman
+cpar
+resa
+prtc
+pinnacle
 
-## Given names and nicknames
-juan
-juan dela cruz
-jose
-maria clara
-ana
-rosa
-rosario
-josefina
-teresita
-corazon
-lourdes
-marites
-maricel
-rowena
-marivic
-mary grace
-mary joy
-mary ann
-kristine
-jasmine
-nicole
-angelica
-angel
-princess
-precious
-jericho
-joshua
-christian
-jhon
-jhay
-jaypee
-jun jun
-junjun
-jojo
-bong
-boyet
-dodoy
-nene
-inday
-neneng
-ading
+## Employers, banks and work
+sgv co
+philippine national bank
+bureau of internal revenue
+revenue region
+sgv and co
+sycip gorres velayo
+navarro amper
+manabat
+isla lipana
+punongbayan
+punongbayan araullo
+reyes tacandong
+bdo unibank
+we find ways
+metrobank
+landbank
+land bank of the philippines
+bank of the philippine islands
+bpi family savings
+rcbc
+unionbank
+security bank
+china bank
+eastwest
+psbank
+gcash
+paymaya
+bangko sentral
+commission on audit
+philhealth
+pldt
+meralco
+ayala
+concentrix
+teleperformance
+jollibee foods
+
+## Exam and review
+sana pumasa
+sana pumasa ako
+papasa ako
+pasado ako
+ipasa mo lord
+topnotcher
+board passer
+cpa na ako
+future cpa
+cpa board passer
 
 ## Food and brands
 jollibee
 chickenjoy
 jolly spaghetti
 mcdo
+love ko to
+bida ang saya
 mang inasal
 chowking
 greenwich
 goldilocks
 red ribbon
 max fried chicken
+shakeys
+andoks
 san miguel
+san mig light
+pale pilsen
 red horse
 tanduay
 ginebra
 emperador
 lucky me
 pancit canton
+mang tomas
+datu puti
+kopiko
+bear brand
 adobo
+adobong manok
+chicken adobo
+pork adobo
 sinigang
+sinigang na baboy
 lechon
+lechon kawali
+lechon manok
+crispy pata
+bulalo
+tinola
+kaldereta
+menudo
+dinuguan
+bicol express
+pinakbet
+bangus
+tuyo
+champorado
+arroz caldo
+lugaw
+batchoy
+palabok
 balut
 halo halo
 lumpia
@@ -461,122 +757,131 @@ isaw
 mangga
 saging
 buko
-ube
 leche flan
+peach mango pie
+mcfloat
 sm mall
 sm megamall
 jeepney
 tricycle
 
-## Teams, shows and celebrities
-ginebra san miguel
-barangay ginebra
-magnolia
-san miguel beermen
-gilas
-gilas pilipinas
-puso gilas
-pacquiao
-manny pacquiao
-pacman
-kathniel
-kathryn
-daniel padilla
-jadine
-lizquen
-aldub
-alden
-maine
-vice ganda
-coco martin
-sarah geronimo
-regine
-regine velasquez
-popoy
-basha
-sb19
-bini
-eraserheads
+## Shows, music, games and celebrities
+batang quiapo
 ang probinsyano
+fpj ang probinsyano
+cardo dalisay
+maria clara at ibarra
+darna
+encantadia
+mara clara
+pangako sayo
+marimar
+meteor garden
 eat bulaga
+dabarkads
 its showtime
+showtime
+madlang people
+wowowin
+wowowee
+willie revillame
+tv patrol
+pinoy big brother
 kapamilya
 kapuso
 abs cbn
-gma
+liza soberano
+kathryn bernardo
+daniel padilla
+kathniel
+alden richards
+maine mendoza
+aldub
+marian rivera
+dingdong dantes
+anne curtis
+angel locsin
+bea alonzo
+john lloyd cruz
+piolo pascual
+sharon cuneta
+regine velasquez
+sarah geronimo
+vice ganda
+coco martin
+joshua garcia
+donbelle
+kimpau
+jadine
+nadine lustre
+james reid
+lizquen
+catriona gray
+pia wurtzbach
+manny pacquiao
+pacquiao
+pacman
+hidilyn diaz
+carlos yulo
+june mar fajardo
+kai sotto
+gilas pilipinas
+gilas
+barangay ginebra
+ginebra san miguel
+magnolia
+san miguel beermen
+ben and ben
+december avenue
+parokya ni edgar
+rivermaya
+eraserheads
+kamikazee
+moira dela torre
+gloc 9
+ang huling el bimbo
+huling el bimbo
+tadhana
+pantropiko
+sb19
+bini
+mobile legends
+mobile legends bang bang
+mlbb
+codm
+call of duty mobile
+axie infinity
+ragnarok
 
 ## Common Filipino password phrases
+okay lang ako
+move on na ako
+god bless po
+god bless po sa lahat
+ingat po kayo
+ingat po kayo lagi
+anyare sayo
+ikaw na nga
+lord ipasa mo
+taga batangas
+taga cebu
+taga manila
+taga davao
+family is love
+its more fun in the ph
 ito ang password ko
 password ko ito
 password ko
 password ko to
 ang password ko
-ako si juan
-ako lang
-ako to
-ako ito
-ako nga
-ikaw na
-sino ka
-sino ako
-akin ka lang
-akin ka
-sayo lang
-sayo lang ako
-para sayo
-para sa iyo
-mahal kita palagi
-hanggang dulo
-habang buhay
-habambuhay
-walang hanggan
-pag ibig ko
-ikaw pa rin
-ikaw parin
-ikaw lang talaga
+ano ba password ko
+wala akong password
+walang password
 bahay kubo
+bahay kubo kahit munti
 leron leron sinta
 sa ugoy ng duyan
-anak
-anak ko
-mga anak ko
-mahal ko mga anak ko
-panganay ko
-bunso ko
-lola ko
-lolo ko
-pusa ko
-aso ko
-sana all
-sana ol
-charot lang
-joke lang
-hugot
-hugot lines
-paasa
-assumera
-marupok
-tampo
-galit
-sorry na
-patawad
-patawarin mo ako
-mahal pa rin kita
-miss na miss kita
-uwi na
-uwian na
-gutom na ako
-antok na ako
-pagod na ako
-trabaho
-pasok
-walang pasok
-sweldo
-sahod
-ipon
-yaman
-mayaman
-mahirap
+magandang umaga mga kaibigan
 
 ## Rude words (scrambled)
 ~chgnatvan
