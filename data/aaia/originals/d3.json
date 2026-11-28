@@ -87,7 +87,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "IS audit vetted and engaged an external data scientist. The data scientist concludes that a university's student-support model is fair. The model's developers chose the test set. What should the IS auditor do FIRST?",
+      "question": "IS audit vetted and engaged an external data scientist. The data scientist concludes that a university's student-support model is fair, using the test set the model's developers chose. What should the IS auditor do FIRST?",
       "options": {
         "A": "Ask the developers to confirm that their test set was suitable",
         "B": "Evaluate whether that test set represents the current student population",
@@ -458,7 +458,7 @@
       "principle_id": "population-includes-misses",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Using vendor logs, an IS auditor will test a concert-ticketing site's support chatbot for personal-data disclosure. The logs keep only flagged chats, and the vendor says its safety filter catches 98%. What is the GREATEST concern?",
+      "question": "Using vendor logs, an IS auditor will test a concert-ticketing site's support chatbot for personal-data disclosure. The logs keep only chats the safety filter flagged, and the vendor says the filter catches 98%. What is the GREATEST concern?",
       "options": {
         "A": "Disclosures the filter missed never reach the population",
         "B": "The log export format may not load into audit software",
@@ -3558,7 +3558,7 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Estonian e-government assistant gave a resident the wrong benefit deadline. The retrieval log holds the one passage it was given, which states the correct deadline. What is the IS auditor's BEST conclusion?",
+      "question": "An Estonian e-government assistant gave a resident the wrong benefit deadline. The retrieval log holds the text of the one passage the assistant was given, which states the correct deadline. What is the IS auditor's BEST conclusion?",
       "options": {
         "A": "The error arose as the model wrote its answer from that passage",
         "B": "The guidance library held an outdated deadline for that benefit",
@@ -3743,7 +3743,7 @@
       "principle_id": "ai-in-audit-stays-yours",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A draft finding against an Indonesian nickel smelter rests on one line of a production access script. An approved AI tool says it grants all users admin rights. What should the IS auditor do FIRST?",
+      "question": "A draft finding against an Indonesian nickel smelter rests on one line of a production access script. An approved AI tool says the line grants all users admin rights. What should the IS auditor do FIRST?",
       "options": {
         "A": "Ask a second approved AI tool to explain the line and compare",
         "B": "Check the permissions the script has set in the live system",
@@ -3780,7 +3780,7 @@
       "principle_id": "ai-output-is-a-lead",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An IS auditor tests which batches a Greek olive-oil exporter's supplier-risk model sent for lab tests. To protect growers' data, the auditor is offered a synthetic log with matching statistics. What is the GREATEST concern?",
+      "question": "An IS auditor tests which batches a Greek olive-oil exporter's supplier-risk model sent for lab tests. To protect growers' data, the auditor is offered a synthetic log matching the real log's statistics. What is the GREATEST concern?",
       "options": {
         "A": "Rare, high-risk batches may be smoothed out of the copy",
         "B": "Growers might still be re-identified from the synthetic records",
@@ -4556,12 +4556,12 @@
       "principle_id": "ai-output-is-a-lead",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Saskatchewan pet insurer's AI extracts text from each scanned veterinary invoice and then summarizes it. Claims handlers check each summary against the extraction. What is the IS auditor's BEST conclusion about this control?",
+      "question": "A Saskatchewan pet insurer's AI extracts text from each scanned veterinary invoice and then summarizes the extracted text. Claims handlers check each summary against the extraction. What is the IS auditor's BEST conclusion about this control?",
       "options": {
         "A": "It is reliable if each extraction check is signed and dated",
         "B": "It is effective, since a person reviews every summary",
         "C": "It would be stronger if the model rated its own summaries",
-        "D": "It cannot catch errors the extraction and summary share"
+        "D": "It cannot catch extraction errors the summary repeats"
       },
       "correct": "D",
       "key_concept": "A human check against an AI-made reference cannot catch errors both share; reviewers need the original source, here the scanned invoice.",
@@ -6653,7 +6653,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "IS audit's vetted specialist finds no age bias in an Albanian call-center operator's bonus-tier model. This is because age carries almost no weight in an explanation tool's output. What should the IS auditor do FIRST?",
+      "question": "IS audit's vetted specialist finds no age bias in an Albanian call-center operator's bonus-tier model. The specialist bases this on age carrying almost no weight in an explanation tool's output. What should the IS auditor do FIRST?",
       "options": {
         "A": "Confirm the explanation tool is a current, recognized version",
         "B": "Accept the conclusion, as the specialist's competence was vetted",

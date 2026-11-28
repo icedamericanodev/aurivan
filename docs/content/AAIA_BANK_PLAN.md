@@ -599,6 +599,14 @@ Batch 15 review, 26 Nov 2026 (D1 +25, D3 +32; the bank is complete):
 **Bank complete:** 1,000 items (D1 330, D2 460, D3 210), matching the outline weights. AAIA stays app-ready and
 switched off until the paywall; the next AAIA work is the follow-ups in section 10.
 
+Readability pass, 28 Nov 2026 (FB-013, after a tester said CISA questions read like "jumbled words"):
+- The `question-readability-reviewer` read all 1,000 stems and options and rewrote 557 that needed a second read
+  (possessive chains, facts glued with semicolons, dropped small words, unclear "it"), under the plain-stem rule in
+  `docs/content/EXAM_STYLE_V2.md`. Settings, facts, keys and priority words are unchanged.
+- The three domain experts compared every old and new wording (33 corrections, all where a split lost a link or a
+  detail), and a blind test of all 557 matched 557, then 38 of 38 after the corrections.
+- Packed stems fell from 514 to 171; medians stay at 34–35 words, with 35, 35 and 24 stems over 35 words in D1–D3.
+
 ## 10. Follow-ups outside this plan's scope
 
 - An AAIA mode for `scripts/lint_originals.py` (library match for `data/aaia/`)

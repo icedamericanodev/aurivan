@@ -317,5 +317,9 @@ answered all 171 without the key: 170 matched. The one miss, d3_087, was
 ambiguous before the rewrite (the rewrite only moved a phrase) and is
 followed up on its own. Packed CISA stems fell from 62 to 23.
 
+**AAIA rewrite (28 Nov 2026, course not yet switched on):** the same pass rewrote
+557 of 1,000 AAIA questions. Domain experts made 33 corrections, and the blind
+test matched 557 of 557, then 38 of 38 after the corrections.
+
 **Tester reply:** none yet; reply when the phone build with the new wording
 ships.
