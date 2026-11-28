@@ -43,6 +43,8 @@ export interface TokenClaims {
   sub?: string;
   email?: string;
   exp?: number;
+  /** When the server issued the token (seconds, the server's clock). */
+  iat?: number;
   /** Sign-in methods and when they were used (seconds): delete-account needs one from the last 10 minutes. */
   amr?: { method: string; timestamp: number }[];
 }
@@ -61,6 +63,20 @@ export function tokenClaims(token: string): TokenClaims {
   } catch {
     return {};
   }
+}
+
+/**
+ * When this session began (epoch ms, the server's clock): the earliest time
+ * in the token's `amr`, or 0. A refreshed token keeps its session's times, so
+ * this is the sign-in that made the session (password guard rule 4b asks for
+ * a session under 10 minutes old).
+ */
+export function sessionStartAt(claims: TokenClaims): number {
+  let at = 0;
+  for (const a of Array.isArray(claims.amr) ? claims.amr : []) {
+    if (a && typeof a.timestamp === 'number' && Number.isFinite(a.timestamp) && a.timestamp > 0) at = at === 0 ? a.timestamp * 1000 : Math.min(at, a.timestamp * 1000);
+  }
+  return at;
 }
 
 /** The latest sign-in time in the token's `amr` (epoch ms), or 0. */

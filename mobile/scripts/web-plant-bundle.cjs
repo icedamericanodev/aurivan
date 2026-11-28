@@ -74,6 +74,11 @@ const ENTRIES = {
 const CLOUD_ENTRIES = {
   browser: 'src/webcloud/browser.ts',
   config: 'src/webcloud/config.ts',
+  // The password rules, so the website's forms can say "too short" or "too common" as the
+  // learner types (the client checks them again before anything is sent).
+  passwordRules: 'src/engine/passwordRules.ts',
+  // The leaked-password range check (ON: config.BREACH_CHECK_ON); KaiSipCloud.create passes browser.browserSha1Hex(crypto.subtle) when the page has it.
+  breach: 'src/webcloud/breach.ts',
 };
 /** Bundled but not exposed. */
 const CLOUD_INTERNAL = { cloud: 'src/webcloud/index.ts' };
@@ -116,6 +121,26 @@ const TARGETS = {
       ' * Loaded only when an account is used. Rebuild: cd mobile && npm run web-plant',
     ],
     stamp: true,
+  },
+  // The password rules' word lists (100,000 short common passwords, the English words of 15+
+  // letters and the hand-written phrase and Filipino lists, ~700 KB): too big for every visit,
+  // so the page fetches this file (with ?v=KaiSipCloud.passwordWordsRef) only when a password
+  // form opens and passes it to KaiSipCloud.create({ passwordWords }).
+  passwordWords: {
+    out: path.join(REPO, 'assets', 'kaisip-password-words.js'),
+    file: 'assets/kaisip-password-words.js',
+    global: 'KaiSipPasswordWords',
+    entries: { words: 'src/engine/passwordWords.ts' },
+    refRe: /assets\/kaisip-password-words\.js\?v=([0-9a-f]*)/g,
+    refRequired: false,
+    what: 'the mobile password word lists',
+    header: [
+      ' * GENERATED FILE: do not edit. Built by mobile/scripts/build-web-plant.mjs',
+      " * from mobile/src/engine/passwordWords.ts (the password rules' word lists,",
+      ' * stored lightly scrambled). Loaded only when a password form opens.',
+      ' * Rebuild: cd mobile && npm run web-plant',
+    ],
+    stamp: false,
   },
 };
 /** Older names (the plant), kept for callers and tests. */
@@ -309,8 +334,21 @@ function buildBundle(targetName = 'plant', opts = {}) {
     '    });',
     '    return module.exports;',
     '  }',
+    // The cloud bundle's public names leave out test-only helpers (names ending "ForTest"; a
+    // module without any is passed as is). The other bundles have none and stay byte-identical.
+    ...(target.stamp
+      ? [
+          '  function pub(m) {',
+          '    var keys = Object.keys(m);',
+          '    if (!keys.some(function (k) { return /ForTest$/.test(k); })) return m;',
+          '    var o = {};',
+          '    keys.forEach(function (k) { if (!/ForTest$/.test(k)) o[k] = m[k]; });',
+          '    return o;',
+          '  }',
+        ]
+      : []),
     '  var api = {};',
-    ...Object.entries(target.entries).map(([name, id]) => `  api[${JSON.stringify(name)}] = load(${JSON.stringify(id)});`),
+    ...Object.entries(target.entries).map(([name, id]) => (target.stamp ? `  api[${JSON.stringify(name)}] = pub(load(${JSON.stringify(id)}));` : `  api[${JSON.stringify(name)}] = load(${JSON.stringify(id)});`)),
     `  api.sourceHash = ${JSON.stringify(sourceHash.digest('hex').slice(0, 16))};`,
   );
   if (target.stamp) {
@@ -324,6 +362,11 @@ function buildBundle(targetName = 'plant', opts = {}) {
       '  api.liveVersion = liveVersion;',
       '  api.liveStoreVersions = Object.freeze({ progress: liveStoreVersions.progress, settings: liveStoreVersions.settings });',
       '  api.accountsAllowed = cloud.accountsAllowed;',
+      '  // The ?v= the page loads assets/kaisip-password-words.js with (its own SHA-256, first 10 hex),',
+      '  // so a stale cached copy is never used; the rules also check the lists\' fingerprints.',
+      `  api.passwordWordsRef = ${JSON.stringify(refFor(buildBundle('passwordWords')))};`,
+      '  // Its full SHA-256 in Subresource Integrity form, for the <script integrity="..."> that loads it.',
+      `  api.passwordWordsIntegrity = ${JSON.stringify(integrityFor(buildBundle('passwordWords')))};`,
       '  // KaiSipCloud.create({ ... }): the client, with the Play versions and this page\'s address filled in',
       '  // (the caller can\'t change them). It refuses any address but https://kaisip.com; `devOrigin: true`',
       '  // adds only localhost and "no address" (Node tests), never another site.',
@@ -333,6 +376,11 @@ function buildBundle(targetName = 'plant', opts = {}) {
       '    opts.appVersion = liveVersion;',
       '    opts.storeVersions = { progress: liveStoreVersions.progress, settings: liveStoreVersions.settings };',
       "    opts.origin = root.location && typeof root.location.origin === 'string' ? root.location.origin : '';",
+    "    // The leaked-password check's SHA-1: the browser's own when it has one (https pages); otherwise the",
+    '    // client uses its pure copy (engine/sha1.ts).',
+    "    if (!opts.sha1Hex && !opts.breachedPassword && root.crypto && root.crypto.subtle && typeof root.crypto.subtle.digest === 'function') {",
+    '      opts.sha1Hex = api.browser.browserSha1Hex(root.crypto.subtle);',
+    '    }',
       '    return cloud.createWebCloud(opts);',
       '  };',
     );
@@ -344,6 +392,11 @@ function buildBundle(targetName = 'plant', opts = {}) {
 /** The cache-busting value index.html must carry for this bundle text. */
 function refFor(text) {
   return crypto.createHash('sha256').update(text).digest('hex').slice(0, 10);
+}
+
+/** The Subresource Integrity value of a bundle text ("sha256-" + base64 of its SHA-256). */
+function integrityFor(text) {
+  return `sha256-${crypto.createHash('sha256').update(text).digest('base64')}`;
 }
 
 /** Problems with the committed files (empty when the bundle and index.html are current). */

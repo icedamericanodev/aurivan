@@ -40,5 +40,44 @@ export const SYNC_LOCK = 'kaisip-sync';
 
 /** Refresh the access token when it has less than this left (ms). */
 export const REFRESH_MARGIN_MS = 60_000;
+/**
+ * A sign-in lasts at most 30 days (owner decision 28 Nov 2026; NIST SP
+ * 800-63B-4 AAL1 reauthentication). The server's nightly job is the real
+ * limit; this client also treats an older session as signed out (local
+ * progress is never touched) and says "please sign in again to keep syncing".
+ */
+export const SESSION_MAX_AGE_MS = 30 * 86_400_000;
+/** A session nobody used (no token refresh) for 14 days ends too (owner decision; server job to follow). */
+export const SESSION_IDLE_MAX_MS = 14 * 86_400_000;
+/**
+ * A session that began with an emailed code and saved no password ends after
+ * this long (codes only confirm an address or reset a password; owner
+ * decision 28 Nov 2026). The database's first-password window is the same.
+ */
+export const CODE_SESSION_MAX_MS = 10 * 60_000;
+/**
+ * The leaked-password range check (k-anonymity; api.pwnedpasswords.com): ON
+ * (owner decision 28 Nov 2026, "Do as recommended"). It runs when a password
+ * is chosen, never at sign-in, and fails open (webcloud/breach.ts). The page
+ * needs to pass nothing: KaiSipCloud.create uses crypto.subtle when it is there, else engine/sha1.ts. The privacy-policy
+ * paragraph goes live with the sign-in release (draft: design doc §7).
+ */
+export const BREACH_CHECK_ON = true;
+/** The only address the leaked-password check contacts (the website CSP's connect-src allows it). */
+export const BREACH_HOST = 'https://api.pwnedpasswords.com';
+/** One reset code a minute from this page, for every address alike (audit LOW-1). */
+export const RESET_RESEND_MS = 60_000;
+/**
+ * Why this browser was signed out without asking ({ reason, at }: no email,
+ * no account id), so the page can say "please sign in again to keep
+ * syncing" after a reload. Cleared by the next sign-in or a sign-out.
+ */
+export const AUTH_ENDED_KEY = 'kaisip_auth_ended_v1';
+/**
+ * "Set a password" is sent only within this long of the session's sign-in.
+ * The database allows 10 minutes (password guard rule 4); one minute is
+ * kept spare for clocks and slow networks (audit LOW-3).
+ */
+export const PASSWORD_FRESH_MS = 9 * 60_000;
 /** The certification the website studies (CISA only for now). */
 export const WEB_CERT = 'cisa';

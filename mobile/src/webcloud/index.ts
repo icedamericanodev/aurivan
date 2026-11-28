@@ -21,7 +21,7 @@ import { BackupError, type UndoSnapshot } from '../engine/backup';
 import { confirmFirstSync, prepareFirstSync, syncCycle, type CycleCtx, type CycleResult, type FirstSyncPrep, type PrepResult } from '../lib/syncCore';
 import { isDeviceId, uuidV4 } from '../cloud/deviceId';
 import { CloudError, type SyncPort } from '../cloud/types';
-import { createWebAuth, type WebAuth } from './auth';
+import { createWebAuth, type WebAuth, type WebAuthDeps } from './auth';
 import { streamGzip, type GzipPort, type StreamEnv } from './codec';
 import { ACCOUNT_ORIGIN, DEVICE_ID_KEY, SYNC_LOCK, WEB_CERT } from './config';
 import { createWebDevice, type WebDevice, type WebHost } from './device';
@@ -54,6 +54,17 @@ export interface WebCloudOptions {
   devOrigin?: boolean;
   /** How the cycle waits before retrying a conflict (default setTimeout). */
   wait?: (ms: number) => Promise<void>;
+  /**
+   * Loads the password rules' word lists (the page fetches
+   * assets/kaisip-password-words.js only when a password form opens, then
+   * passes KaiSipPasswordWords.words.PASSWORD_SHORT_LIST / _DICT_LIST).
+   * Without it no password can be saved (fail closed).
+   */
+  passwordWords?: WebAuthDeps['passwordWords'];
+  /** The leaked-password check (default: webcloud/breach.ts createBreachCheck with `fetch` and `sha1Hex`). */
+  breachedPassword?: WebAuthDeps['breachedPassword'];
+  /** SHA-1 as hex for the leaked-password check (KaiSipCloud.create fills in crypto.subtle's when the page has it; else the pure engine/sha1.ts). */
+  sha1Hex?: WebAuthDeps['sha1Hex'];
   /** Tests: a fake server's address and key. */
   url?: string;
   apiKey?: string;
@@ -141,7 +152,7 @@ export function createWebCloud(o: WebCloudOptions): WebCloud {
   const sv = o.storeVersions;
   if (sv && !(Number.isInteger(sv.progress) && sv.progress >= 1 && Number.isInteger(sv.settings) && sv.settings >= 1)) throw new Error('KaiSipCloud: storeVersions must be whole numbers');
   const gzip: GzipPort = 'gunzipCapped' in o.gzip ? o.gzip : streamGzip(o.gzip);
-  const auth = createWebAuth({ fetch: o.fetch, stores: o.stores, random: o.random, lock: o.lock, clock: o.clock, url: o.url, apiKey: o.apiKey });
+  const auth = createWebAuth({ fetch: o.fetch, stores: o.stores, random: o.random, lock: o.lock, clock: o.clock, url: o.url, apiKey: o.apiKey, passwordWords: o.passwordWords, breachedPassword: o.breachedPassword, sha1Hex: o.sha1Hex });
   const sync = createRestSync(auth, gzip);
   const device = createWebDevice({ host: o.host, storage: syncStorage(o.stores, () => auth.sharedComputer()), bank: o.bank, clock: o.clock });
   const wait = o.wait ?? ((ms: number) => new Promise<void>((r) => setTimeout(r, ms)));
@@ -177,6 +188,8 @@ export function createWebCloud(o: WebCloudOptions): WebCloud {
         const m = device.meta();
         const hash = signedInHash();
         if (!hash || !m.enabled) return { kind: 'idle' } as CycleResult;
+        // A session that began with an emailed code syncs only once it has saved a password.
+        if (auth.passwordNeeded()) return { kind: 'failed', code: 'invalid', detail: 'password_needed' } as CycleResult;
         // A different account than the one this browser synced with: never synced until the learner chooses.
         if (m.accountHash && m.accountHash !== hash) return { kind: 'idle' } as CycleResult;
         return syncCycle(ctx());
@@ -184,6 +197,7 @@ export function createWebCloud(o: WebCloudOptions): WebCloud {
 
     prepareFirst: async () => {
       if (!signedInHash()) return { ok: false, code: 'unauthorized' };
+      if (auth.passwordNeeded()) return { ok: false, code: 'invalid', detail: 'password_needed' };
       return prepareFirstSync({ port: sync, thisApp: o.appVersion, now: () => o.clock.now(), knownCertIds: [WEB_CERT], read: () => device.read(), stamps: device.meta().stamps });
     },
 
@@ -191,6 +205,7 @@ export function createWebCloud(o: WebCloudOptions): WebCloud {
       o.lock.request(SYNC_LOCK, async () => {
         const hash = signedInHash();
         if (!hash) return { kind: 'failed', code: 'unauthorized' } as CycleResult;
+        if (auth.passwordNeeded()) return { kind: 'failed', code: 'invalid', detail: 'password_needed' } as CycleResult;
         try {
           // 'replace' keeps this browser's record as the undo copy (device.write); 'merge' adds, so needs none.
           return await confirmFirstSync({ ...ctx(), alive: () => signedInHash() === hash }, prep, mode, mode === 'replace' ? KEEP_UNDO : null, { accountHash: hash });

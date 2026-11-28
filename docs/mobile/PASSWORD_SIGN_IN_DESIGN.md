@@ -730,8 +730,8 @@ fi
 
 | Learner action | What happens | Emails sent |
 |---|---|---|
-| Create account with a password | Human check → we email a code → they type it → signed in → the app saves the password with that brand-new session | 1 code |
-| ...the address already has an account | The code signs them in to it, and their new password is saved (they proved the inbox). Screen: "This email already had a KaiSip account. You're signed in and your password is saved." | 1 code |
+| Create account with a password | Human check → we email a code → they type it → signed in → the app saves the password with that brand-new session | **2**: the code, then the "password changed" notice (saving the first password is a change to the Auth server). Both count against the same hourly "Emails sent" limit (corrected in step A3) |
+| ...the address already has an account | The code signs them in to it, and their new password is saved (they proved the inbox). Screen: "This email already had a KaiSip account. You're signed in and your password is saved." | 2 (code + notice; only the code when the password was already theirs) |
 | Sign in with a password | Human check → signed in | none |
 | Wrong password | "That email and password don't match." The same words whether or not the address exists | none |
 | Forgot password | Human check → "If there's an account for this email, we've sent a code." → code + new password → signed in, every other device signed out | 1 reset code (+1 "password changed" notice if turned on) |
@@ -794,6 +794,66 @@ phone fields use the matching autofill hints.
   `password`; code and reset sessions add `otp`; Google adds `oauth`.
 
 ### 4.3 Technical: how `mobile/src/webcloud/auth.ts` grows (signatures only)
+
+> **As built in step A3 (28 Nov 2026); the repo files win.** Names that
+> changed from this draft:
+> - `passwordRules.ts`: `checkPassword(password, context?: string | { email?, names? })`
+>   returns, most important first: `invalid_characters`, `too_short`,
+>   `too_long`, `contains_email` (the email or the learner's Google name),
+>   `contains_service_word`, `common`, `too_simple`. No `missing_characters`
+>   (no composition rules). The password is sent in **NFKC** form, and 15
+>   code points are needed in both NFC and NFKC. The whole password is
+>   compared (NIST §3.1.1.2): it is refused when it can be written as
+>   predictable pieces with at most 2 characters left over (up to two list
+>   entries and three word pieces in all), or when fewer than 10 real
+>   characters remain after repeats, sequences, copies and years. The
+>   comparison form strips accents and invisible characters, reads Cyrillic
+>   and Greek look-alikes as Latin and letter-for-number swaps per position,
+>   and also reads the password backwards. `assessPassword` adds whether the
+>   word lists are loaded (`complete`). `passwordGuidance(problem)` gives the
+>   words to show after a refusal. `loadPasswordWords` accepts only the
+>   lists whose sizes and SHA-256 the build recorded (four lists: short,
+>   dict, local, names). Review round 3 added structural rules (one word with
+>   numbers; the account's own words incl. the whole domain and reversed
+>   words; a full name with numbers; a repeated word counts once; diagonal
+>   walks, doubled-letter sequences, mirrors) and states what the rules
+>   cannot do, with a held-out measure (`docs/WEB_LAUNCH_PLAN.md`). A
+>   leaked-password range check (`webcloud/breach.ts`: at most two forms, padded
+>   k-anonymity queries, 3-second timeout, fails open, `breachState()`) is
+>   ON since 28 Nov 2026 (owner decision; `BREACH_CHECK_ON = true`), on
+>   sign-up, reset and "set a password", never at sign-in. Its privacy
+>   paragraph is a draft in §7.
+>   The word lists are loaded with `loadPasswordWords` (on the website a
+>   separate file, `assets/kaisip-password-words.js`, fetched when a password
+>   form opens; no password is saved until it is loaded).
+> - `finishPasswordReset` returns the same `{ account, passwordSaved,
+>   unchanged?, problem? }` as `finishPasswordSignUp`. `unchanged`: the new
+>   password was already the account's; the client then signs out every other
+>   session itself (`POST /logout?scope=others`), as a change would have;
+>   when the server does not confirm that, it says `othersSignedOut: false`
+>   instead of `unchanged`.
+> - `signInWithPassword` returns the account plus `passwordChangeSuggested`
+>   when the password fails today's rules.
+> - Added: `passwordNeeded()` (a code session without a saved password: no
+>   sync, signed out after 10 minutes) and `sessionEnded()` (`expired`, `idle`,
+>   `password_not_set`, `revoked`; kept across reloads in
+>   `kaisip_auth_ended_v1`, a reason and a time only). Removed from the public
+>   client: `sendEmailCode` / `verifyEmailCode` (no code sign-in).
+> - `errors.ts` detail words: `password_wrong`, `password_invalid_characters`,
+>   `password_too_short`, `password_too_long`, `password_common`,
+>   `password_too_simple`, `password_contains_email`,
+>   `password_contains_service_word`, `password_leaked`, `password_weak`,
+>   `password_same`, `password_current_needed`, `password_current_wrong`,
+>   `password_needed`; with `reauth_required`: `recent_sign_in`, `aal2`; with
+>   `unauthorized`: `session_expired`, `password_not_set`; with `offline`:
+>   `password_rules`. (This draft's `password_long` is `password_too_long`;
+>   `password_current` is split in two.)
+> - `config.ts` gains one storage key, `kaisip_auth_ended_v1` (no
+>   identifiers), and the limits `SESSION_MAX_AGE_MS` (30 days),
+>   `SESSION_IDLE_MAX_MS` (14 days), `CODE_SESSION_MAX_MS` (10 minutes),
+>   `PASSWORD_FRESH_MS` (9 minutes), `RESET_RESEND_MS` (60 seconds).
+
+The draft as reviewed:
 
 A new shared, pure module (used by the web and the phone):
 
@@ -897,8 +957,14 @@ are green. Each step is a box to tick.
 
 **Authentication → Rate Limits** (the box next to each value shows its unit,
 per hour or per 5 minutes; note which it is *(verify)*)
-12. [ ] Emails sent: **20** (unchanged; a password sign-up still sends one code,
-    password sign-ins send none).
+12. [ ] Emails sent: **20** (unchanged). A password sign-up sends **two** emails
+    under this one hourly limit: the code and the "password changed" notice
+    (so about 10 sign-ups an hour at most); a reset sends two as well;
+    password sign-ins send none. Raise it with the owner if sign-ups queue.
+    The apps also record the time in the account (`user_metadata
+    .kaisip_password_set_at`, written with every password save) so a
+    "password changed on <date>" line can show in the app as a second
+    channel beside the email (data only today; the screen comes later).
 13. [ ] Sign-ups and sign-ins: **30** (unchanged). This bucket covers `/otp`,
     `/signup`, `/recover`, `/resend` and saving a password, per IP address.
 14. [ ] Token verifications: **30** (unchanged; covers typed codes and reset
@@ -1023,6 +1089,57 @@ and no new data type or company.**
   not "sensitive personal information", so NPC registration is unchanged
   (still "not mandatory" by the earlier analysis; that analysis's own
   *(verify)* items stand).
+
+**Leaked-password check (ON since 28 Nov 2026, owner decision). DRAFT for the
+sign-in release; not in the live `privacy.html` yet. It goes live with the
+sign-in release after `app-store-compliance-reviewer` checks it.**
+
+- **Where:** section 6A (the KaiSip account) of the cloud privacy draft,
+  `docs/legal/cloud/privacy.html`, which becomes the live `privacy.html` with
+  the sign-in release: a new paragraph right after the sentence about how the
+  password is stored (the §7 table below). Section 5 (third-party services)
+  also gains one row: "Have I Been Pwned (Pwned Passwords), Troy Hunt /
+  Superlative Enterprises Pty Ltd, served through Cloudflare: checks a new
+  password against known leaks; receives only a 5-character hash prefix."
+- **Wording (draft):**
+
+  > **Checking for leaked passwords.** When you choose a password (when you
+  > create an account, reset your password or set a new one), the app checks
+  > whether that password has appeared in a known data leak, so you don't
+  > pick one that criminals already have. To do this, your device makes a
+  > one-way fingerprint (a SHA-1 hash) of your password and of one
+  > simplified version of it (for example without capitals, spaces or a
+  > number at the end), and sends only the first 5 characters of each
+  > fingerprint to the Pwned Passwords service of Have I Been Pwned, run by
+  > Troy Hunt (Superlative Enterprises Pty Ltd) on Cloudflare's network. The
+  > service sends back a long list of fingerprints that start the same way,
+  > padded with made-up ones, and your device looks for a match itself. Your
+  > password, your email address and the full fingerprints never leave your
+  > device, and we send no cookies or account details with the request. Like
+  > any website you contact, the service can see your device's IP address
+  > and that the request came from kaisip.com. We don't check when you sign
+  > in. If the service can't be reached, the app accepts your password
+  > without the check and tells you it couldn't check.
+
+- **What is sent, exactly (S1, owner decision 28 Nov 2026):** at most two
+  5-character prefixes per password chosen: the typed form, and ONE derived
+  form (the compared form without its trailing numbers and symbols when what
+  is left is at least 8 characters and at least half the password, otherwise
+  the compared form; not sent when it is the same as the typed form).
+- **Play Data safety (for the compliance check):** no new data type is
+  collected or shared. A 5-character prefix of a password hash is not
+  personal data on its own: there are about a million possible prefixes
+  (16^5 = 1,048,576), each matching several hundred to a thousand-odd leaked
+  hashes in the service's list *(verify against HIBP's API documentation)*,
+  no account identifier goes with it, and the answer is padded. The service
+  does see the IP address and the page's origin, as for any request. Our
+  view is that the form's answers stay as they are ("Data shared: none" for
+  this flow); **flag it for `app-store-compliance-reviewer`** to confirm,
+  together with whether Apple's privacy label needs a line.
+- **Website CSP:** `https://api.pwnedpasswords.com` is in `connect-src` for
+  the study app's pages. The policy lives in `_headers`, which is edited by
+  hand; `scripts/build_site.sh` only checks it (for example that the home
+  and thanks pages' stricter policies do not allow the lookup host).
 
 **Edits needed (for `app-store-compliance-reviewer` and the legal drafts):**
 

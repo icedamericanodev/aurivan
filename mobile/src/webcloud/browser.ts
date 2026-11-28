@@ -5,6 +5,7 @@
  *
  * Pure TypeScript: no React. Nothing here runs until index.html calls it.
  */
+import { toHex, utf8 } from '../engine/sha256';
 import type { ClockPort, LockPort, RandomPort, StoragePort } from './ports';
 
 /** navigator.locks, or (older Safari without it) a queue inside this page only. */
@@ -34,6 +35,14 @@ export function pageLocks(): LockPort {
 /** crypto.getRandomValues as a RandomPort. */
 export function browserRandom(crypto: { getRandomValues(a: Uint8Array): Uint8Array }): RandomPort {
   return { bytes: (n) => crypto.getRandomValues(new Uint8Array(n)) };
+}
+
+/**
+ * SHA-1 as 40 hex characters with the browser's crypto.subtle (the
+ * leaked-password check sends only the first 5 to the lookup service).
+ */
+export function browserSha1Hex(subtle: { digest(algorithm: string, data: Uint8Array): Promise<ArrayBuffer> }): (text: string) => Promise<string> {
+  return async (text) => toHex(new Uint8Array(await subtle.digest('SHA-1', utf8(text))));
 }
 
 /** Date.now as a ClockPort. */
