@@ -2,6 +2,7 @@
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { Alert, Dimensions, StyleSheet } from 'react-native';
 import { DAY_MS } from '../engine/srs';
+import { mistakeDNA } from '../engine/mistakeDNA';
 import { runnerUp } from '../engine/tips';
 import Mistakes from '../app/mistakes';
 import { MistakeDNASummary } from '../components/mistakeDNA';
@@ -226,3 +227,22 @@ describe('(g) 200% text at 320pt', () => {
   });
 });
 void cardCount;
+
+// Second qualifier review (28 Nov 2026): the help sheet quotes a lowercase course's words, so
+// "a word like first or best" never reads as an order. CISA (capitals) keeps its copy.
+describe('(z) the help sheet names the qualifier in the course style', () => {
+  const helpText = (qualifierCase?: 'lowercase') => {
+    useSettings.setState({ ...useSettings.getInitialState(), onboarded: true, theme: 'light' });
+    act(() => { r = create(<MistakeDNASummary dna={mistakeDNA([], 'cisa', Date.now())} qualifierCase={qualifierCase} />); });
+    press('How mistake patterns work');
+    return text();
+  };
+  it('capitals: "a word like FIRST or BEST"', () => {
+    expect(helpText()).toContain('the question had a word like FIRST or BEST.');
+  });
+  it('lowercase: "a word like “first” or “best”"', () => {
+    const t = helpText('lowercase');
+    expect(t).toContain('the question had a word like “first” or “best”.');
+    expect(t).toContain('Identify “first”, “best” or “most”');
+  });
+});

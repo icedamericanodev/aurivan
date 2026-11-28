@@ -10,6 +10,7 @@
  * the journal said "Not enough evidence yet" (behavioral-scientist, 20 Nov
  * 2026: recent evidence, one source of truth). Letters stay ORIGINAL letters.
  */
+import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { mistakeDNA, type DNAInput, type MistakeDNA } from '../engine/mistakeDNA';
 import type { SlipPattern } from '../engine/slipCoach';
@@ -19,9 +20,11 @@ import type { MistakeEntry } from '../store/progress';
 /** The journal's pattern summary for one exam: saved mistakes joined with their questions. */
 export function mistakePatternsFor(certId: string, mistakes: Record<string, MistakeEntry>, now: number): MistakeDNA {
   const inputs: DNAInput[] = [];
+  // How the course writes its qualifier: a lowercase course's "first" counts as a priority word too.
+  const qualifierCase = getCertification(certId)?.qualifierCase;
   for (const [id, m] of Object.entries(mistakes)) {
     const q = findQuestion(certId, id);
-    if (q) inputs.push({ id, certId, at: m.at, slip: m.slip, picked: m.picked, confidence: m.confidence, correct: q.correct, tips: q.tips, stem: q.stem });
+    if (q) inputs.push({ id, certId, at: m.at, slip: m.slip, picked: m.picked, confidence: m.confidence, correct: q.correct, tips: q.tips, stem: q.stem, ...(qualifierCase ? { qualifierCase } : {}) });
   }
   return mistakeDNA(inputs, certId, now);
 }

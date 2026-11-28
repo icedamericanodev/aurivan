@@ -13,8 +13,8 @@
  * Pure TypeScript: no React, no storage. Option text and explanations are
  * passed in already rendered for the round's shuffle (engine/shuffle.ts).
  */
-import type { Letter, PackQuestion } from '../../content/types';
-import { meaningFor, priorityWord } from './priorityLens';
+import type { Letter, PackQuestion, QualifierCase } from '../../content/types';
+import { meaningFor, priorityWritten, shownWord } from './priorityLens';
 import { trapLetter } from './trapSpotter';
 
 /** How many round scores we keep per game (the save stays tiny). */
@@ -119,17 +119,18 @@ export function snareMiss(q: PackQuestion, spotted: boolean, answerCorrect: bool
 
 /**
  * Signpost: a miss is a wrong reading of the deciding word OR a wrong answer.
- * Tag = the deciding word; why = what that word asks for.
+ * Tag = the deciding word, as the stem writes it; why = what that word asks for.
+ * `qc` (optional): the course's QualifierCase; left out = capitals, exactly as before.
  */
-export function signpostMiss(q: PackQuestion, readRight: boolean, answerCorrect: boolean): RecapMiss | null {
+export function signpostMiss(q: PackQuestion, readRight: boolean, answerCorrect: boolean, qc?: QualifierCase): RecapMiss | null {
   if (readRight && answerCorrect) return null;
-  const word = priorityWord(q.stem);
+  const word = priorityWritten(q.stem, qc);
   return {
     questionId: q.id,
     stem: clip(q.stem),
-    tag: word ? `Signpost word: ${word}` : 'Signpost word',
+    tag: word ? `Signpost word: ${shownWord(word)}` : 'Signpost word',
     // From the first accepted meaning: "MOST appropriate" coaches like BEST.
-    why: word ? meaningFor(q.stem) : firstSentence(q.explanation),
+    why: word ? meaningFor(q.stem, qc) : firstSentence(q.explanation),
     answerWrong: !answerCorrect,
   };
 }
@@ -138,16 +139,17 @@ export function signpostMiss(q: PackQuestion, readRight: boolean, answerCorrect:
  * Forecast: a miss is a wrong answer. If the pick was the question's
  * snare, name it; otherwise name the deciding word when the stem has one.
  * Why = the note on the option the learner picked.
+ * `qc` (optional): the course's QualifierCase; left out = capitals, exactly as before.
  */
-export function pickMiss(q: PackQuestion, picked: Letter, answerCorrect: boolean, render: Render): RecapMiss | null {
+export function pickMiss(q: PackQuestion, picked: Letter, answerCorrect: boolean, render: Render, qc?: QualifierCase): RecapMiss | null {
   if (answerCorrect) return null;
-  const word = priorityWord(q.stem);
+  const word = priorityWritten(q.stem, qc);
   const pickedText = q.options[picked] ?? '';
   const tag =
     trapLetter(q) === picked
       ? `Snare: ${clip(render(pickedText), 70)}`
       : word
-        ? `Signpost word: ${word}`
+        ? `Signpost word: ${shownWord(word)}`
         : `Your pick: ${clip(render(pickedText), 70)}`;
   return {
     questionId: q.id,

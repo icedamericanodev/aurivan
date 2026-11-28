@@ -2,7 +2,9 @@
  * One saved latest miss per question. A correct later answer does not erase
  * that observation. Repeated misses replace it; there is no attempt history.
  */
-import { PATTERN_ORDER, SLIP_COACH_MIN, isThinkingSlip, patternsOf, type SlipInput, type SlipPattern } from './slipCoach';
+import type { QualifierCase } from '../content/types';
+import { qualifierCopy } from './games/priorityLens';
+import { PATTERN_COPY, PATTERN_ORDER, SLIP_COACH_MIN, isThinkingSlip, patternsOf, type SlipInput, type SlipPattern } from './slipCoach';
 import { DAY_MS } from './srs';
 
 export const DNA_DAYS = 28;
@@ -37,6 +39,24 @@ export const DNA_COPY: Record<SlipPattern, { label: string; explanation: string 
   misread: { label: 'Question interpretation', explanation: 'Your tags suggest revisiting the scenario’s last sentence. Restate what it asks before comparing the options.' },
   knowledge: { label: 'Concept needs review', explanation: 'You tagged a concept gap. Read the related study note in the mistake history, then explain the idea in your own words before fresh practice.' },
 };
+
+/**
+ * A pattern's label and explanation in the course's style: DNA_COPY as it is
+ * for capitals (CISA), "Identify “first”, “best” or “most”" (quoted, so it never reads as an order) for a course whose
+ * qualifierCase is 'lowercase' (engine/games/priorityLens.ts qualifierCopy).
+ */
+export function dnaCopy(pattern: SlipPattern, qc?: QualifierCase): { label: string; explanation: string } {
+  const copy = DNA_COPY[pattern];
+  return qc === 'lowercase' ? { label: copy.label, explanation: qualifierCopy(copy.explanation, qc, true) } : copy;
+}
+
+/**
+ * The one action for a pattern: shown on the card, and again beside a rising trend.
+ * `qc`: the course's QualifierCase. Capitals (CISA) read as always; a lowercase
+ * course reads "Look for “first”, “best” or “most” in the question", quoted, as its stems write them.
+ */
+export const dnaCue = (pattern: SlipPattern, qc?: QualifierCase) =>
+  pattern === 'knowledge' ? 'Read a related note, then try fresh practice.' : pattern === 'runner-up' ? 'Say why the best answer wins before you tap.' : pattern === 'priority' ? qualifierCopy('Look for FIRST, BEST or MOST in the question, then read the options.', qc, true) : PATTERN_COPY[pattern].coach;
 
 function summarize(rows: DNAInput[]): DNAWindow {
   const classified = rows.map((m) => ({ m, patterns: m.picked === m.correct ? [] : patternsOf(m) }));

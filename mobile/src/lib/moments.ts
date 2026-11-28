@@ -8,7 +8,7 @@
  */
 import { useEffect, useMemo, useState } from 'react';
 import { findQuestion } from '../content/loader';
-import type { Certification } from '../content/types';
+import type { Certification, QualifierCase } from '../content/types';
 import { examMoment, paceLine } from '../engine/examDay';
 import { eveReminders } from '../engine/eveReminders';
 import { examReadyDue } from '../engine/examReady';
@@ -24,12 +24,13 @@ import { mistakePatternsFor } from './slipPattern';
  * set does not reshuffle (and replay) tonight's lines (behavioral-scientist).
  */
 const eveCache = new Map<string, ReturnType<typeof eveReminders>>();
-export function eveFor(certId: string, today: string, mistakes: CertProgress['mistakes'], now: number) {
+/** `qc` (optional): the course's QualifierCase, so a lowercase course's line reads "“first”"; left out = capitals. */
+export function eveFor(certId: string, today: string, mistakes: CertProgress['mistakes'], now: number, qc?: QualifierCase) {
   const key = `${certId}|${today}`;
   // A reset the same evening leaves no mistakes: start over, never keep "your" lines with nothing behind them.
   if (Object.keys(mistakes).length === 0) eveCache.delete(key);
   let hit = eveCache.get(key);
-  if (!hit) eveCache.set(key, (hit = eveReminders(mistakePatternsFor(certId, mistakes, now))));
+  if (!hit) eveCache.set(key, (hit = eveReminders(mistakePatternsFor(certId, mistakes, now), qc)));
   return hit;
 }
 
@@ -63,8 +64,8 @@ export function useTodayMoments({
   const ready = examReadyDue(progress.moments?.readiness, today, Boolean(progress.moments?.readySeenAt), moment !== null);
   const eve = useMemo(
     // eslint-disable-next-line react-hooks/purity -- the window's clock; the result is kept for the day (eveFor)
-    () => (moment === 'eve' ? eveFor(cert.id, today, progress.mistakes, Date.now()) : null),
-    [moment, cert.id, today, progress.mistakes],
+    () => (moment === 'eve' ? eveFor(cert.id, today, progress.mistakes, Date.now(), cert.qualifierCase) : null),
+    [moment, cert.id, today, progress.mistakes, cert.qualifierCase],
   );
   return {
     ready,

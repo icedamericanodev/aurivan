@@ -25,6 +25,8 @@
  * Pure TypeScript: no React, no storage, no dates formatted here.
  */
 import { GAMES, type GameId } from './games/registry';
+import { qualifierCopy } from './games/priorityLens';
+import type { QualifierCase } from '../content/types';
 import { DIAGNOSTIC_SIZE, MOCK_DOMAIN_FLOOR, type Stage } from './journey';
 import { domainWord, type DomainStyle, type DomainStyled } from './domainNaming';
 import {
@@ -437,10 +439,11 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
         minDays: 0,
       };
     case 'signpost-reader':
+      // FIRST and BEST in the course's style: as here for capitals (CISA), "“first” and “best”" for a lowercase course.
       return {
         howTo: `Play ${g('priority')}: find the word that decides the question first.`,
-        unlock: 'You read the deciding word right 8 times in 10. FIRST and BEST change the answer.',
-        effort: `Needs 10 different FIRST questions in ${g('priority')}.`,
+        unlock: qualifierCopy('You read the deciding word right 8 times in 10. FIRST and BEST change the answer.', course?.qualifierCase, true),
+        effort: qualifierCopy(`Needs 10 different FIRST questions in ${g('priority')}.`, course?.qualifierCase, true),
         skill: 'Reads the deciding word',
         minDays: 0,
       };
@@ -571,6 +574,8 @@ export interface CaseInput {
   mindsetData: boolean;
   /** The course's domain words: "Section Mastery", "All Sections" (badgeName). Missing → BADGES' names, as every course today. */
   domainStyle?: DomainStyle;
+  /** The course's qualifier style (Signpost Reader's "“first” questions"). Missing → capitals, as every course today. */
+  qualifierCase?: QualifierCase;
 }
 
 /** Domain Mastery's leaves, heaviest domain first (ties: the domain order). */

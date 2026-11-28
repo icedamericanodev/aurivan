@@ -154,6 +154,17 @@ export interface DomainStyle {
   numbering: 'number' | 'letter';
 }
 
+/**
+ * How a course writes its qualifier (CIA_BANK_PLAN.md section 6d, owner decision 28 Nov 2026).
+ * - 'capitals': ISACA's style, "Which is the BEST control?" Only a word in
+ *   capitals counts, anywhere in the stem; a lowercase "most" is ordinary prose.
+ * - 'lowercase': The IIA's style, "Which action should the internal auditor
+ *   take first?" The word counts in any case, but only in the question
+ *   sentence (the last one), so a "most" in a fact sentence is not picked.
+ *   A word in capitals still counts, as in 'capitals', while a bank moves over.
+ */
+export type QualifierCase = 'capitals' | 'lowercase';
+
 /** Everything the app needs to know about one certification. */
 export interface Certification {
   id: string;
@@ -189,6 +200,12 @@ export interface Certification {
   domains: DomainInfo[];
   /** "Domain 1" or "Section A" (see DomainStyle). Missing → "Domain 1", as every course today. */
   domainStyle?: DomainStyle;
+  /**
+   * How the course's stems write the qualifier, the word the question turns on
+   * (see QualifierCase). Missing → 'capitals' ("FIRST", ISACA's style), as every
+   * course today, so CISA's hint, Signpost game and coach copy never change.
+   */
+  qualifierCase?: QualifierCase;
   /**
    * How readiness is read (docs/content/CIA_BANK_PLAN.md section 11, item 7).
    * Missing → the blueprint-weighted range from every answer (engine/readiness.ts),

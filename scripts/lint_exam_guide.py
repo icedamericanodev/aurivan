@@ -89,7 +89,7 @@ ISSUERS = {
     "isaca": {"name": "ISACA", "hosts": SOURCE_HOSTS, "disclaimer_word": "ISACA",
               "booking_host": "isaca.org"},
     "iia": {"name": "The IIA", "hosts": ("theiia.org", "pearsonvue.com"), "disclaimer_word": "The IIA",
-            "booking_host": "theiia.org"},
+            "booking_host": "theiia.org", "priority_case": "lower"},
 }
 ISSUER = "isaca"
 # The IIA's CIA packs are not in the apps yet: their domains (sections), weights,
@@ -663,14 +663,23 @@ def lint_cheat_sheet(cs, ctx):
             if not check_keys(ww, w, {"word", "meaning", "cue"}):
                 continue
             seen.append(w.get("word"))
-            if not (isinstance(w.get("word"), str) and w["word"] == w["word"].upper()):
-                err(ww, "word must be written in capitals")
+            # ISACA writes the priority word in capitals; The IIA writes it in
+            # lowercase (CIA_BANK_PLAN.md section 6d), and the cheat sheet
+            # shows it as the learner meets it in the question.
+            lower = ISSUERS[ISSUER].get("priority_case") == "lower"
+            word = w.get("word")
+            if not (isinstance(word, str) and word == (word.lower() if lower else word.upper())):
+                err(ww, "word must be written in lowercase, as The IIA writes it" if lower
+                    else "word must be written in capitals")
             text_field(ww, w.get("meaning"), W_MEANING_MAX, "meaning")
             text_field(ww, w.get("cue"), W_CUE_MAX, "cue")
         if len(set(seen)) != len(seen):
             err(label, "priority_words has duplicates")
-        if set(seen) != PRIORITY_WORDS:
-            err(label, f"priority_words must be exactly {sorted(PRIORITY_WORDS)} (got {sorted(set(seen))})")
+        want = PRIORITY_WORDS
+        if ISSUERS[ISSUER].get("priority_case") == "lower":
+            want = {x.lower() for x in PRIORITY_WORDS}
+        if set(seen) != want:
+            err(label, f"priority_words must be exactly {sorted(want)} (got {sorted(set(seen))})")
 
     rt = cs.get("answering_routine")
     if not isinstance(rt, list) or not (4 <= len(rt) <= 6):

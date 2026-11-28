@@ -209,7 +209,7 @@ function Forecast() {
       markRulesSeen('sprint');
       const next = [...results, { questionId: q.id, footing, correct: ok }];
       setResults(next);
-      const miss = pickMiss(q, displayToOriginal(display, perm), ok, (t) => renderText(t, perm));
+      const miss = pickMiss(q, displayToOriginal(display, perm), ok, (t) => renderText(t, perm), cert.qualifierCase);
       if (miss) setMisses((m) => [...m, miss]);
       // Guess / Lean / Sure are the practice confidence levels, so spaced
       // review treats a lucky Guess like a lucky guess anywhere else.

@@ -79,7 +79,7 @@ sys.path.insert(0, str(c.REPO / "scripts"))
 import lint_exam_style_v2 as shared  # noqa: E402  (its caps and word count, so the two never drift)
 
 # The stage 1 switch. Flip to True in the change that lowercases every CIA qualifier.
-REQUIRE_LOWERCASE_QUALIFIERS = False
+REQUIRE_LOWERCASE_QUALIFIERS = True  # on since the stage 1 restyle, 28 Nov 2026
 SWITCH = "--require-lowercase-qualifiers"
 
 LENGTH_TELL = "key is the longest option"

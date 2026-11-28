@@ -23,7 +23,7 @@ import { missCoach, readHalf, twoHalfVerdict } from '../../lib/drillVerdict';
 import { getAllQuestions, siblingGroupOf } from '../../content/loader';
 import { relaxedMark } from '../../engine/siblings';
 import { LETTERS, type Letter } from '../../content/types';
-import { acceptedAsks, ASK_LABEL, askChoices, buildPriorityRound, meaningFor, priorityWord, type Ask } from '../../engine/games/priorityLens';
+import { acceptedAsks, ASK_LABEL, askChoices, buildPriorityRound, findPriority, meaningFor, shownWord, type Ask } from '../../engine/games/priorityLens';
 import { signpostMiss, type RecapMiss } from '../../engine/games/recap';
 import { GAMES } from '../../engine/games/registry';
 import { createRng } from '../../engine/random';
@@ -50,7 +50,7 @@ export default function SignpostScreen() {
 function Signpost() {
   const { c } = useTheme();
   const { cert } = useActiveCert();
-  const { round, seed, restart } = useRound(cert.id, (seed) => buildPriorityRound(getAllQuestions(cert.id), createRng(seed), SIZE, siblingGroupOf(cert.id)));
+  const { round, seed, restart } = useRound(cert.id, (seed) => buildPriorityRound(getAllQuestions(cert.id), createRng(seed), SIZE, siblingGroupOf(cert.id), cert.qualifierCase));
   const [i, setI] = useState(0);
   const [score, setScore] = useState(0);
   const [ask, setAsk] = useState<Ask | null>(null);
@@ -66,7 +66,10 @@ function Signpost() {
   const readClock = useAnswerClock(round[i] ? `${i}:${round[i].q.id}` : undefined);
 
   const item = round[i];
-  const actual = item ? priorityWord(item.q.stem)! : null;
+  // The deciding word: `hit.word` is its key (FIRST…); `actual` is how the stem writes it, the text shown
+  // back ("FIRST" in CISA, "first" in a course whose qualifierCase is 'lowercase').
+  const hit = item ? findPriority(item.q.stem, cert.qualifierCase) : null;
+  const actual = hit ? hit.written : null;
   // Seeded from this round's own seed, so the right meaning moves around.
   const choices = useMemo(() => askChoices(createRng(seed * 31 + i)), [i, seed]);
 
@@ -103,7 +106,7 @@ function Signpost() {
   const letters = LETTERS.slice(0, perm.length);
   const answered = pick !== null;
   // "MOST appropriate" accepts best fit (and degree): engine acceptedAsks.
-  const accepted = acceptedAsks(q.stem);
+  const accepted = acceptedAsks(q.stem, cert.qualifierCase);
   const readRight = ask !== null && accepted.includes(ask);
 
   const choose = (d: Letter) => {
@@ -115,14 +118,14 @@ function Signpost() {
       setPick(d);
       const gained = (readRight ? 1 : 0) + (ok ? 1 : 0);
       setScore((s) => s + gained);
-      const miss = signpostMiss(q, readRight, ok);
+      const miss = signpostMiss(q, readRight, ok, cert.qualifierCase);
       if (miss) setMisses((m) => [...m, miss]);
       // Game answers never count toward the subtopic mastery date (mastery: false).
       // Sibling groups: a sibling back in the round after its partner is marked (engine/siblings.ts).
       progress.recordAnswer(cert.id, q.id, ok, undefined, { ms: readClock(), mastery: false, ...relaxedMark(round.map((x) => x.q.id), q.id, siblingGroupOf(cert.id)) });
       if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(d, perm));
       setItems((it) => [...it, readRight && ok ? 'right' : 'missed']);
-      const nextReads = [...reads, { id: q.id, right: readRight, first: actual === 'FIRST' }];
+      const nextReads = [...reads, { id: q.id, right: readRight, first: hit?.word === 'FIRST' }];
       setReads(nextReads);
       if (i === round.length - 1) {
         setNews(
@@ -139,8 +142,8 @@ function Signpost() {
     });
   };
 
-  const readTitle = readRight ? `${actual}: you read it right` : `${actual} asks for: ${ASK_LABEL[accepted[0]].toLowerCase()}`;
-  const readCard = ask ? <RevealCard tone={readRight ? 'good' : 'bad'} title={readTitle} body={meaningFor(q.stem)} /> : null;
+  const readTitle = readRight ? `${shownWord(actual)}: you read it right` : `${shownWord(actual)} asks for: ${ASK_LABEL[accepted[0]].toLowerCase()}`;
+  const readCard = ask ? <RevealCard tone={readRight ? 'good' : 'bad'} title={readTitle} body={meaningFor(q.stem, cert.qualifierCase)} /> : null;
 
   return (
     <GameFrame
@@ -171,8 +174,8 @@ function Signpost() {
           {...twoHalfVerdict({
             skill: readRight,
             correct: isCorrect(q, pick, perm),
-            skillHalf: readHalf(actual),
-            skillCoach: `${actual} asks for: ${ASK_LABEL[accepted[0]].toLowerCase()}`,
+            skillHalf: readHalf(shownWord(actual)),
+            skillCoach: `${shownWord(actual)} asks for: ${ASK_LABEL[accepted[0]].toLowerCase()}`,
             missCoach: missCoach(q, displayToOriginal(pick, perm), perm),
           })}
         >
@@ -199,9 +202,9 @@ function Signpost() {
           )}
           {ask && (
             // PHASE4B 6.6: Signpost step 2, the word marked and its coaching line in `aside`.
-            <View testID="signpost-read" accessible accessibilityLabel={`${readTitle}. ${meaningFor(q.stem)}`} style={{ marginBottom: space.lg }}>
+            <View testID="signpost-read" accessible accessibilityLabel={`${readTitle}. ${meaningFor(q.stem, cert.qualifierCase)}`} style={{ marginBottom: space.lg }}>
               <T v="caption" color={readRight ? c.correct : c.wrong}>{`${readRight ? '✓' : '✗'} ${readTitle}`}</T>
-              <FieldText v="sub" style={{ marginTop: space.xs }}>{meaningFor(q.stem)}</FieldText>
+              <FieldText v="sub" style={{ marginTop: space.xs }}>{meaningFor(q.stem, cert.qualifierCase)}</FieldText>
             </View>
           )}
           {ask &&

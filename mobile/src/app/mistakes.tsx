@@ -30,7 +30,10 @@ import { useActiveCert } from '../lib/useActiveCert';
 import { GAMES } from '../engine/games/registry';
 import { canPlay } from '../lib/games';
 import { useAvailableGames } from '../components/drills';
-import { PATTERN_COPY } from '../engine/slipCoach';
+import { patternCopy } from '../engine/slipCoach';
+import { qualifierCopy } from '../engine/games/priorityLens';
+import { getCertification } from '../content/certifications';
+import type { QualifierCase } from '../content/types';
 import { useProgress, type MistakeEntry, type ThinkingSlip } from '../store/progress';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -45,6 +48,10 @@ export const SLIPS: { id: ThinkingSlip; label: string; example: string }[] = [
   { id: 'misread', label: 'Misread', example: 'You knew it, but missed a word in the question.' },
   { id: 'knowledge', label: 'Didn’t know it', example: 'The topic was new to you.' },
 ];
+/** The tags for a lowercase course: "Missed “first” or “best”", as its questions write the words. */
+const SLIPS_LOWER = SLIPS.map((x) => (x.id === 'priority' ? { ...x, label: qualifierCopy(x.label, 'lowercase', true) } : x));
+/** The tags in the course's style (`qc`: its QualifierCase); capitals (CISA) = SLIPS, word for word. */
+export const slipsFor = (qc?: QualifierCase) => (qc === 'lowercase' ? SLIPS_LOWER : SLIPS);
 /** One practice set takes at most this many open mistakes. */
 const SET_MAX = 20;
 
@@ -56,7 +63,7 @@ export function practiceOpenLabel(open: number): { label: string; spoken: string
 }
 
 /** The tags explained: one example each (a page sheet; a fade under Reduce Motion). */
-function SlipTagsSheet({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+function SlipTagsSheet({ visible, onClose, slips }: { visible: boolean; onClose: () => void; slips: typeof SLIPS }) {
   const { c } = useTheme();
   const { reduced } = useMotion();
   return (
@@ -69,12 +76,12 @@ function SlipTagsSheet({ visible, onClose }: { visible: boolean; onClose: () => 
               <Button kind="ghost" label="Close" onPress={onClose} accessibilityLabel="Close what the tags mean" />
             </Row>
             <T v="meta" style={{ marginTop: space.xs }}>Pick the one that fits best. Your pattern shows after a few.</T>
-            {SLIPS.map((x, i) => (
+            {slips.map((x, i) => (
               <View
                 key={x.id}
                 accessible
                 accessibilityLabel={`${x.label}. For example: ${x.example}`}
-                style={{ paddingVertical: space.md, borderBottomWidth: i === SLIPS.length - 1 ? 0 : 1, borderBottomColor: c.line }}
+                style={{ paddingVertical: space.md, borderBottomWidth: i === slips.length - 1 ? 0 : 1, borderBottomColor: c.line }}
               >
                 <T v="label">{x.label}</T>
                 <T v="small" color={c.ink2} style={{ marginTop: 2 }}>{x.example}</T>
@@ -113,6 +120,8 @@ const MistakeCard = memo(function MistakeCard({
 }) {
   const { c } = useTheme();
   const q = useMemo(() => findQuestion(certId, id), [certId, id]);
+  // The tags in the course's style (a constant list per style, so nothing is rebuilt per card).
+  const slips = slipsFor(getCertification(certId)?.qualifierCase);
   // The study note remains available after the mistake is fixed, too.
   const note = useMemo(() => {
     const noteId = subtopicOfQuestion(certId, id);
@@ -178,7 +187,7 @@ const MistakeCard = memo(function MistakeCard({
                 accessibilityLabel={`Why you slipped on this question: ${q.stem.split(/\s+/).slice(0, 6).join(' ')}`}
                 style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}
               >
-                {SLIPS.map((s) => (
+                {slips.map((s) => (
                   <Chip
                     key={s.id}
                     label={s.label}
@@ -193,7 +202,7 @@ const MistakeCard = memo(function MistakeCard({
           ) : m.slip ? (
             <Row gap={space.xs} style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
               <View ref={slipRef} accessible style={{ flexShrink: 1 }}>
-                <T v="meta" color={c.ink}>{`Why you slipped: ${SLIPS.find((x) => x.id === m.slip)?.label ?? ''}`}</T>
+                <T v="meta" color={c.ink}>{`Why you slipped: ${slips.find((x) => x.id === m.slip)?.label ?? ''}`}</T>
               </View>
               <Button kind="ghost" label="Change" accessibilityHint="Shows the tags again" onPress={() => onToggleTag(id)} style={{ marginRight: -space.sm }} />
             </Row>
@@ -254,7 +263,9 @@ export default function Mistakes() {
   // The same summary Play and the final review week use (lib/slipPattern.ts), so they never disagree.
   // eslint-disable-next-line react-hooks/purity -- the window's clock, refreshed with the saved mistakes
   const dna = useMemo(() => mistakePatternsFor(certId, progress.mistakes, Date.now()), [certId, progress.mistakes]);
-  const pattern = dna.top ? { ready: true as const, pattern: dna.top.pattern, ...PATTERN_COPY[dna.top.pattern] } : { ready: false as const };
+  // The tags and the pattern's copy in the course's style ("first" for a lowercase course; CISA unchanged).
+  const slips = slipsFor(cert.qualifierCase);
+  const pattern = dna.top ? { ready: true as const, pattern: dna.top.pattern, ...patternCopy(dna.top.pattern, cert.qualifierCase) } : { ready: false as const };
   // The principle that coaches this pattern (none for a content gap, or a cert without principles).
   const patternPrinciple = pattern.ready ? principleForSlip(cert.id, pattern.pattern) : undefined;
 
@@ -277,10 +288,10 @@ export default function Mistakes() {
       tagMistake(certId, id, slip);
       setTagging((t) => t.filter((x) => x !== id));
       // The chip just pressed goes away: say the saved choice (TalkBack, release bug hunt round 3).
-      const label = SLIPS.find((x) => x.id === slip)?.label;
+      const label = slips.find((x) => x.id === slip)?.label;
       if (label) sayLater(`Tagged: ${label}`);
     },
-    [certId, tagMistake],
+    [certId, tagMistake, slips],
   );
   const onOpenTags = useCallback(() => setTagsOpen(true), []);
   const renderItem = useCallback(
@@ -294,7 +305,7 @@ export default function Mistakes() {
     <View>
       <PushedHeader title="Mistake journal" onBack={() => backOr('/you')} />
 
-      {known.length > 0 && <MistakeDNASummary dna={dna} />}
+      {known.length > 0 && <MistakeDNASummary dna={dna} qualifierCase={cert.qualifierCase} />}
       {pattern.ready && (
         // Keep remediation beside the summary, using existing content and access rules.
         // UX review (2.2): no extra "What to do next" heading; the actions follow the cue directly.
@@ -373,7 +384,7 @@ export default function Mistakes() {
           />
         </StickyFooter>
       )}
-      <SlipTagsSheet visible={tagsOpen} onClose={() => setTagsOpen(false)} />
+      <SlipTagsSheet visible={tagsOpen} onClose={() => setTagsOpen(false)} slips={slips} />
     </SafeAreaView>
   );
 }

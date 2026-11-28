@@ -6,7 +6,7 @@ import { GAMES } from '../engine/games/registry';
 import { FeatureInfo } from '../components/featureInfo';
 import { useSession } from '../store/session';
 import { DAY_MS } from '../engine/srs';
-import Mistakes from '../app/mistakes';
+import Mistakes, { SLIPS, slipsFor } from '../app/mistakes';
 import { getAllQuestions } from '../content/loader';
 import { selectCert, useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
@@ -158,4 +158,13 @@ it('counts misses made after the journal opened (the clock moves with the saved 
   } finally {
     jest.useRealTimers();
   }
+});
+
+test('the slip tags name the qualifier in the course style (CISA unchanged)', () => {
+  // Capitals (CISA, every course today): the same list, word for word.
+  expect(slipsFor()).toBe(SLIPS);
+  expect(SLIPS.find((x) => x.id === 'priority')!.label).toBe('Missed FIRST or BEST');
+  // A lowercase course (The IIA's style): the words as its questions write them.
+  expect(slipsFor('lowercase').find((x) => x.id === 'priority')!.label).toBe('Missed “first” or “best”');
+  expect(slipsFor('lowercase').filter((x) => x.id !== 'priority')).toEqual(SLIPS.filter((x) => x.id !== 'priority'));
 });

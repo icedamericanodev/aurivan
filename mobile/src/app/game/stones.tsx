@@ -21,6 +21,7 @@ import { GameFrame, GameIntro, MatchTile, PlayableGate, RevealCard, RoundEnd, ty
 import { BookOpen, ICON_STROKE, Play as PlayIcon } from '../../components/icons';
 import { Button, groveCard, ICON_SIZE, ListRow, Section, T } from '../../components/ui';
 import { getStepSequences } from '../../content/games';
+import { qualifierCopy } from '../../engine/games/priorityLens';
 import type { RecapMiss } from '../../engine/games/recap';
 import {
   buildStonesRound,
@@ -101,7 +102,8 @@ function SteppingStones() {
     return (
       <GameIntro
         game="stones"
-        rules="Three processes, their steps shuffled. Tap the steps in order to build the path; tap a placed step to take it back. Each step rests on the one before it, and FIRST questions test exactly that."
+        // In the course's style: "FIRST questions" (CISA), "“first” questions" (a lowercase course).
+        rules={qualifierCopy('Three processes, their steps shuffled. Tap the steps in order to build the path; tap a placed step to take it back. Each step rests on the one before it, and FIRST questions test exactly that.', cert.qualifierCase, true)}
         tiers={STONES_TIERS}
         tier={tier}
         onTier={setTier}
@@ -128,7 +130,7 @@ function SteppingStones() {
         results={paths}
         tierLines={STONES_TIER_LINE}
       >
-        <T v="aside" color={c.ink2}>On the exam, FIRST questions are order questions: picture the path and find the step everything else rests on.</T>
+        <T v="aside" color={c.ink2}>{qualifierCopy('On the exam, FIRST questions are order questions: picture the path and find the step everything else rests on.', cert.qualifierCase, true)}</T>
       </RoundEnd>
     );
   }
