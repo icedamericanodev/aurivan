@@ -321,13 +321,24 @@ def key_longest_everywhere(data):
         q["options"][q["correct"]] = grown(max(q["options"].values(), key=len), " now")
 
 
-# The CIA format exceptions in style_cia.py (owner decision, 28 Nov 2026). The stems are the fixture's first stem,
-# grown: 48 words in 3 sentences (the scenario variant), 51 words (one over its cap) and 4 sentences.
-VARIANT = ("During a review of purchasing at a regional hospital, an internal auditor finds that a required approval step "
-           "is often skipped, and the manager of the area says the step slows urgent orders. No loss has been found in "
-           "the sample. What should the internal auditor do first?")
-VARIANT_51 = VARIANT.replace("urgent orders.", "urgent night orders.").replace("sample.", "sample so far.")
-FOUR_SENTENCES = VARIANT.replace(", and the manager", ". The manager")
+# The stem caps style_cia.py takes from the shared linter (the plain-stem rule, FB-013, 28 Nov 2026): aim for 35
+# words; at most 45 words and 4 sentences; a stem over 35 words has no semicolon, no two possessives in one noun
+# phrase and no sentence over 20 words. The stems are the fixture's first finding, told at each limit and one step
+# past it. PLAIN_45 is the longest allowed form: 45 words in 4 sentences of 9, 20, 9 and 7 words.
+ASK = "What should the internal auditor do first?"
+PLAIN_45 = ("An internal auditor reviews purchasing at a regional hospital. The auditor finds that a required approval "
+            "step is often skipped, and no loss has been found in the sample. The area manager says the step slows "
+            "urgent orders. " + ASK)
+WORDS_46 = PLAIN_45.replace("urgent orders.", "urgent night orders.")            # one word over the cap
+FIVE_SENTENCES = PLAIN_45.replace("skipped, and no loss", "skipped. No loss")    # 44 words, one sentence too many
+# 36 words, one over the 35 a packed stem may have: each breaks one part of "plain" and nothing else.
+SEMICOLON_36 = ("An internal auditor reviews purchasing at a regional hospital. A required approval step is often "
+                "skipped; the area manager says the step slows orders, and no loss was found. " + ASK)
+SEMICOLON_35 = SEMICOLON_36.replace("often skipped;", "skipped;")                # at 35 words a semicolon is no error
+POSSESSIVES_36 = ("An internal auditor reviews a regional hospital's purchasing manager's approvals. A required approval "
+                  "step is often skipped, and the manager says the step slows urgent orders late at night. " + ASK)
+LONG_SENTENCE_36 = ("An internal auditor reviews purchasing at a hospital. A required approval step is often skipped, "
+                    "and the area manager says the step slows urgent orders, with no loss found. " + ASK)
 FIRST_STEM = STEMS[0].format(org=ORGS[0])
 CAPS_STEM = FIRST_STEM.replace("do first?", "do FIRST?")     # the ISACA capitals The IIA's format does not use
 SWITCH = "--require-lowercase-qualifiers"
@@ -341,10 +352,23 @@ def first_wrong(n_words=None, text=None):
                                               text or " ".join(LONG_WRONG[:n_words]) + ".")
 
 
-def variant_stems(k):
-    """Make the first k stems of the 40-question cia1 file the 48-word scenario variant."""
+def long_stems(k):
+    """Make the first k stems of the 40-question cia1 file the plain 45-word stem (over 35 words, and allowed)."""
     return lambda root: edit(root, "cia1/originals/d1.json",
-                             lambda d: [q.__setitem__("question", VARIANT) for q in d["questions"][:k]])
+                             lambda d: [q.__setitem__("question", PLAIN_45) for q in d["questions"][:k]])
+
+
+def challenge_file_of_40(k):
+    """Give the generated Challenge pack a 40-question section file whose first k stems are the plain 45-word stem:
+    the cia1 file's questions under Challenge ids (the built fixture files are too small for a per-file share)."""
+    def fault(root):
+        qs = c.read_json(root / "cia1/originals/d1.json")["questions"]
+        for n, q in enumerate(qs):
+            q["id"] = f"{c.CHALLENGE}_d1_{n + 1:03d}"
+            if n < k:
+                q["question"] = PLAIN_45
+        edit(root, f"{c.CHALLENGE}/originals/d1.json", lambda d: d.__setitem__("questions", qs))
+    return fault
 
 
 def name_people(k):
@@ -951,12 +975,21 @@ CASES = [
     # The CIA format exceptions (style_cia.py, owner decision 28 Nov 2026): each limit, one step past it.
     ("a 19-word wrong option (the CIA option cap is 18)", ["style_cia.py"], q0(first_wrong(19), n=2),
      "ERROR cia1_d1_003: option over 18w (the CIA option cap): {'A': 19}"),
-    ("5 of 40 stems in the scenario variant (12%, over the 10% a section file may hold)", ["style_cia.py"],
-     variant_stems(5), "ERROR cia1 d1: 5 of 40 stems (12%) use the scenario variant"),
-    ("a 51-word stem (over the scenario variant's 50)", ["style_cia.py"], q0(setf("question", VARIANT_51)),
-     "ERROR cia1_d1_001: stem 51w > 50 (the CIA scenario variant's cap"),
-    ("a stem of 4 sentences (the scenario variant allows 3)", ["style_cia.py"], q0(setf("question", FOUR_SENTENCES)),
-     "ERROR cia1_d1_001: stem has 4 sentences (max 3"),
+    # The stem caps CIA shares with every bank since the plain-stem rule (FB-013, 28 Nov 2026): each limit, one step past it.
+    ("a 46-word stem (the cap is 45)", ["style_cia.py"], q0(setf("question", WORDS_46)),
+     "ERROR cia1_d1_001: stem 46w > 45"),
+    ("a stem of 5 sentences (at most 4, the question included)", ["style_cia.py"], q0(setf("question", FIVE_SENTENCES)),
+     "ERROR cia1_d1_001: stem has 5 sentences (max 4)"),
+    ("a 36-word stem with a semicolon (over 35 words a stem must be plain)", ["style_cia.py"],
+     q0(setf("question", SEMICOLON_36)), "ERROR cia1_d1_001: stem over 35 words uses a semicolon"),
+    ("a 36-word stem with two possessives in one noun phrase", ["style_cia.py"], q0(setf("question", POSSESSIVES_36)),
+     "ERROR cia1_d1_001: stem over 35 words stacks possessives ('hospital's purchasing manager's')"),
+    ("a 36-word stem with a 21-word sentence (over 35 words no sentence passes 20)", ["style_cia.py"],
+     q0(setf("question", LONG_SENTENCE_36)), "ERROR cia1_d1_001: stem over 35 words has a 21-word sentence (max 20)"),
+    ("11 of 40 stems over 35 words (28%, over the 25% a file may hold)", ["style_cia.py"], long_stems(11),
+     "ERROR cia1 d1: 28% of stems are over 35 words (max 25%)"),
+    ("21 of 40 stems over 35 words, so the file's median stem is over 35", ["style_cia.py"], long_stems(21),
+     "ERROR cia1 d1: median stem is 45 words (max 35)"),
     ("an EXCEPT ask", ["style_cia.py"], q0(setf("question", "An internal auditor at a regional hospital finds that a "
                                               "required approval step is often skipped. Each of these is a best first step EXCEPT which one?")),
      "ERROR cia1_d1_001: EXCEPT or NOT ask"),
@@ -1100,8 +1133,19 @@ PASSES = [
      "cia1 d1: 40 v2 question(s) checked", "ERROR"),
     ("a 15-word wrong option (over the shared 12, inside the CIA 18)", ["style_cia.py"], q0(first_wrong(15), n=2),
      "cia1 d1: 40 v2 question(s) checked", "ERROR"),
-    ("4 of 40 stems in the 48-word, 3-sentence scenario variant (one in ten)", ["style_cia.py"], variant_stems(4),
-     "cia1 d1: 40 v2 question(s) checked", "scenario variant"),
+    # The allowed stem forms, each at its limit (the plain-stem rule).
+    ("a plain 45-word stem in 4 sentences, none over 20 words", ["style_cia.py"], q0(setf("question", PLAIN_45)),
+     "cia1 d1: 40 v2 question(s) checked", "ERROR"),
+    ("a 35-word stem with a semicolon (the plain rule starts over 35 words; the readability ratchet counts it)",
+     ["style_cia.py"], q0(setf("question", SEMICOLON_35)), "cia1 d1: 40 v2 question(s) checked", "ERROR"),
+    ("10 of 40 stems over 35 words (exactly 25%)", ["style_cia.py"], long_stems(10),
+     "cia1 d1: 40 v2 question(s) checked", "ERROR"),
+    ("11 of 40 stems over 35 words in a generated Challenge file: a note, not a failure", ["style_cia.py", "ciac"],
+     challenge_file_of_40(11),
+     "note (a generated Challenge file; the Part files carry this gate): ciac d1: 28% of stems are over 35 words", "ERROR"),
+    ("21 of 40 stems over 35 words in a generated Challenge file: the median is a note too", ["style_cia.py", "ciac"],
+     challenge_file_of_40(21),
+     "note (a generated Challenge file; the Part files carry this gate): ciac d1: median stem is 45 words", "ERROR"),
     ("every qualifier lowercase (the clean fixture, with capitalised qualifiers errors by default)",
      ["style_cia.py", "cia1"], lambda r: None, "capitalised qualifiers are errors", "ERROR"),
     ("options without a terminal period: a warning only", ["style_cia.py"],
