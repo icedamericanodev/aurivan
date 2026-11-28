@@ -840,9 +840,18 @@ phone fields use the matching autofill hints.
 >   and symbols each a run; any word typed twice; the mixed readings of 1
 >   and !; verse references; swap symbols inside a word not counted as
 >   material at 15+; and `two_common_words` as its own reason. Held-out
->   acceptance on the reviewer's set: 5.7% (9.8% before). The shapes that
+>   acceptance on the reviewer's set: 5.8% (9.8% before); on its
+>   verification round aimed at the fixed shapes, 15.4% (44.6% before),
+>   a worst-area figure. The shapes that
 >   still pass are named in `docs/WEB_LAUNCH_PLAN.md`. The captcha (gate
 >   16) and the server-side end of sessions (gate 21) apply from go-live.
+>
+> **Screens: check on a pause in typing, not on every key.** The worst
+> 72-character input takes about 3 to 4 ms in a desktop browser and an
+> estimated 80 to 150 ms on a slow phone, so the forms run `checkPassword`
+> / `passwordChecklist` after a short pause (debounced, as the
+> announcements already are), and again on submit (auth.ts checks again
+> before anything is sent).
 >   The word lists are loaded with `loadPasswordWords` (on the website a
 >   separate file, `assets/kaisip-password-words.js`, fetched when a password
 >   form opens; no password is saved until it is loaded).

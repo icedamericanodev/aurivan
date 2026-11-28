@@ -162,23 +162,39 @@ and lists can see:
   | Measure | Tuning half | Held-out half (report-only) | Good passwords refused |
   |---|---|---|---|
   | Round 4 (same author; new words in ONE shape, a word plus numbers and a symbol; `password-fixtures-r4.ts`) | 0 of 2,900 | 0 of 2,833 (13 before round 5) | 0 of 240 |
-  | Round 5 (an **independent** reviewer's 5,220 candidates in 17 families; `password-fixtures-r5.ts`, split by base word before any result was seen) | 225 of 3,206 (7.0%; 368 before) | **115 of 2,014 (5.7%; 197, 9.8%, before)** | 6 of 370, all on purpose |
+  | Round 5 (an **independent** reviewer's 5,220 candidates in 17 families; `password-fixtures-r5.ts`, split by base word before any result was seen) | 228 of 3,206 (7.1%; 368 before) | **116 of 2,014 (5.8%; 197, 9.8%, before)** | 6 of 370, all on purpose |
+  | Verification (the reviewer's 758 new candidates aimed at the fixed shapes and their neighbours; not in the repo) | n/a | 117 of 758 (15.4%; 44.6% before the fixes), 115 after the follow-ups | 5 of 150 (four random strings of mostly digits and symbols, one two-common-words) |
 
-  Round 5's held-out figure is the one to quote. It is somewhat optimistic:
-  the round-5 fixes follow the reviewer's prototypes, which were made with
-  the whole set in view. Before round 5 the reviewer measured 10.8% of the
-  whole set (12.1% on fresh vocabulary). What still passes, in words: two
+  Two numbers to quote, and what each one is. **5.8% (116 of 2,014)** is
+  round 5's held-out half: the broad, independent set, somewhat optimistic
+  because the round-5 fixes follow the reviewer's prototypes, which were
+  made with the whole set in view. **15.4% (117 of 758; 44.6% before the
+  fixes)** is the reviewer's verification round: new candidates written
+  after the fixes and aimed at the fixed shapes and their neighbours, so it
+  is a worst-area figure, not an average (115 of 758 after two small
+  follow-ups, one of which targets a shape that round found). Before round 5
+  the reviewer measured 10.8% of the whole set (12.1% on fresh vocabulary).
+  What still passes, in words: two
   uncommon words with a number and a symbol; an unlisted word with
   letter-for-number swaps; a date or phone number written with separators
   and a short label; text-speak and expressions; names and places that are
-  on no list; a short random core padded with repeated symbols or spaces.
+  on no list; a short random core padded with repeated symbols or spaces;
+  the app's name with a four-letter word; four-letter and double fillers
+  before a listed word; stepping patterns whose letters step by two; one
+  look-alike digit standing for two different letters in a word; two-letter
+  book names in verse references; pairs of words joined by "and". The
+  other way round: random generated passwords (uniform printable, or
+  browser style) of 12 characters are refused about 2 to 2.5% of the time,
+  of 14 about 1 to 2%, of 16 under 0.5% (measured on 3,000 of each; test
+  ceilings keep it from drifting).
   The good passwords the rules refuse on purpose: four with no plain ASCII
   capital or lowercase letter (the server would refuse them too), and two
   made of two common words. Two common words with a number and a symbol are
-  refused at every length (owner question settled by the reviewer's
-  numbers: about 90% of natural two-word choices are refused at 12 and at
-  18 characters, and the cheapest fall within about 60 million guesses), and
-  the guidance says that a third unrelated word fixes it.
+  refused at every length: the reviewer's recommendation is to keep refusing
+  two common words at every length; the owner was told on 28 Nov 2026 and is
+  to confirm (the reviewer's numbers: about 90% of natural two-word choices
+  are refused at 12 and at 18 characters, and the cheapest fall within about
+  60 million guesses). The guidance says that a third unrelated word fixes it.
 - **The leaked-password check is ON** (owner decision 28 Nov 2026, below).
   It closes most of the gap for passwords that leaked anywhere. What still
   passes: an uncommon phrase, name or slogan that is on no list and has
@@ -350,8 +366,11 @@ failed-attempt limit, the 72-byte limit, client-side-only blocklist) are in
   a capitalised word, name, walk or season with numbers and a symbol around
   it, a list word with a short tag, and letters, digits and symbols each in
   a run. Measured: an independent reviewer's attack (round 5, 5,220
-  candidates) still passes **115 of its 2,014 held-out candidates (5.7%)**;
-  the author's own round 4, which tests one shape only, passes 0. Shapes that
+  candidates) still passes **116 of its 2,014 held-out candidates (5.8%)**,
+  the broad figure (somewhat optimistic); the reviewer's verification round,
+  aimed at the fixed shapes and their neighbours, passes **117 of 758
+  (15.4%; 44.6% before the fixes)**, a worst-area figure, not an average; the
+  author's own round 4, which tests one shape only, passes 0. Shapes that
   still pass are named in "What the password rules cannot do".
 - The leaked-password check (Have I Been Pwned range API, k-anonymity) when a
   password is chosen; it fails open when the service can't be reached.

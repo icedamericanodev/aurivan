@@ -18,7 +18,7 @@ migrations, `supabase/tests/40_beta.sql`, `supabase/config.toml`, `scripts/cloud
 | LOW-1, LOW-3 | Client work (step A3) |
 | LOW-2 | Fixed: the new functions and triggers are created first, the old trigger is dropped last |
 | LOW-4 | Done: `cloud_smoke.sh binding`, and `/magiclink` and `/resend` in `cloud_smoke.sh captcha` |
-| Password rule (item 6) | *28 Nov 2026 (evening): the owner chose 12 characters with all four types; the 15-character, no-composition recommendation below is superseded. Deviations D3, D4 and D5, `docs/WEB_LAUNCH_PLAN.md`. An independent review of that rule (round 5) found first guesses for the policy accepted; after the fixes, 5.7% of its held-out candidates still pass (9.8% before). The captcha (gate 16) and the server-side 30-day and 14-day session end (gate 21) are compensating controls from go-live, not yet in force.* |
+| Password rule (item 6) | *28 Nov 2026 (evening): the owner chose 12 characters with all four types; the 15-character, no-composition recommendation below is superseded. Deviations D3, D4 and D5, `docs/WEB_LAUNCH_PLAN.md`. An independent review of that rule (round 5) found first guesses for the policy accepted; after the fixes, 5.8% of its held-out candidates still pass (9.8% before), and 15.4% of its verification round aimed at the fixed shapes (44.6% before). The captcha (gate 16) and the server-side 30-day and 14-day session end (gate 21) are compensating controls from go-live, not yet in force.* |
 | LOW-5 | Phone OFF is gate 20; the `config.toml` rate-limit comment is fixed; the brake text says to re-run the probes first |
 
 ## Verdict: GO WITH CHANGES
