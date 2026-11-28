@@ -254,6 +254,21 @@ if it words them differently.
   protection, code owner review and environments (with their secrets) are
   not enforced. Also recreate the `ota` and `db-backup` environments
   (deployment branch `main` only) and move their secrets back into them.
+  **28 Nov 2026 (owner has GitHub Pro):** the control is met a different
+  way, because Claude sessions act through the owner's own GitHub account:
+  every pull request shows the owner as author, GitHub lets nobody approve
+  their own pull request, so "Require review from Code Owners" would block
+  every change and separate nothing. Instead: (a) the `db-backup` and `ota`
+  environments are limited to `main` and hold the only copies of their
+  secrets (no repository-level copy; "Allow administrators to bypass" off);
+  `db-backup` was confirmed by the owner on 28 Nov with three green nightly
+  backups, and `EXPO_TOKEN` is being moved from a repository secret into
+  `ota` with a fresh token; (b) `main` is protected (pull request required,
+  the repo health check required, no force pushes or deletions); (c) a pull
+  request that changes `.github/` is merged by the owner, or by Claude only
+  when the owner says so for that pull request, after Claude says in plain
+  words what the workflow change does. Recorded as a documented deviation
+  from finding M3's original fix.
 - [ ] 5. `list_edge_functions` shows only `delete-account` and
   `export-my-data` (no board function deployed).
 - [ ] 6. `DELETION_PEPPER` set (40 random characters, Function secret)

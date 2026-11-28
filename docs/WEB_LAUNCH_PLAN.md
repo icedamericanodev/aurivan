@@ -74,10 +74,33 @@ loop. Nothing goes public until its gate says so.
    preview and undo, Terms and 16+.
 2. New pages: `delete-account.html`, `human-check.html` (Turnstile); CSP and
    `_headers` updates; `build_site.sh` publishes them.
-3. Where the study app lives on kaisip.com (keep the home page at `/` and
-   the app at a short path) is a step-4 decision for the experts.
+3. The study app goes to `https://kaisip.com/app/` (owner, 28 Nov 2026: open
+   the web version now for iPhone users; free CISA sample, no sign-in yet),
+   with the home page staying at `/`.
 4. Stays behind the `ACCOUNTS_ON` switch (preview only) until every go-live
    gate is ticked.
+5. **Sign-up consent (owner, 28 Nov 2026).** On the first sign-up step,
+   before "Send my code" and before Google: required "I agree to the Terms
+   and Privacy Policy" and "I'm 16 or older"; a separate, optional, unticked
+   "Email me study tips and KaiSip news. I can unsubscribe anytime." The
+   choice is stored with its wording version and time, can be changed in the
+   Account section, and every such email has an unsubscribe link. Sending the
+   opted-in addresses to Kit comes later (an Edge Function with Kit's key as
+   a Function secret). Wording checked by `app-store-compliance-reviewer`
+   and `growth-marketer`; the privacy policy is updated in the same release.
+6. **Design (owner asked for a creative web design, 28 Nov 2026).** Three
+   directions were drawn (Grove Atelier, Working Paper, Canopy); the designer
+   recommends Grove Atelier with Working Paper's joined code cells and tick
+   marks. Waiting for the owner's pick. Sign-up order is email, then the
+   code, then the password.
+7. **Sessions.** A sign-in lasts at most 30 days (NIST SP 800-63B-4 2.1.3):
+   a nightly database job removes older sessions, and the apps say "please
+   sign in again to keep syncing" and never touch saved progress.
+8. **Beta Desk behind Cloudflare Access (owner approved, 28 Nov 2026).** A
+   Zero Trust Access application on `kaisip.com/beta-desk` (and its script),
+   allow-list of the owner's email, as a layer in front of the existing
+   two-step sign-in. The old `kaisip.certprep-support.workers.dev` address
+   must be switched off or covered too, or it bypasses Access.
 
 ### C. Android 2.4 with sign-in and sync
 1. Supabase adapters, the sign-in and account screens, in-app account
@@ -197,8 +220,10 @@ traffic.
 
 ## Owner checklist for this plan (only you can do these)
 
-1. Buy GitHub Pro, then turn on "Require review from Code Owners" on `main`
-   (gate 4). Recreate the `ota` and `db-backup` environments.
+1. GitHub Pro is active (28 Nov 2026). Gate 4 as rewritten in
+   `ACCOUNTS_BETA_PLAN.md`: both environments limited to `main` with the only
+   copies of their secrets, admin bypass off, `main` protected, Code Owners
+   review left off (Claude acts through the owner's account).
 2. The remaining items in `ACCOUNTS_BETA_PLAN.md` section 9 (Supabase
    settings, Turnstile, the restore drill, go-live day).
 3. Passwords: after Claude says the password guard is applied and its
