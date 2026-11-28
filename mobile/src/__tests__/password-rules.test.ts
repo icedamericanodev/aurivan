@@ -1,8 +1,10 @@
 /**
  * engine/passwordRules.ts and its lists (owner decisions 28 Nov 2026,
  * docs/WEB_LAUNCH_PLAN.md; NIST SP 800-63B-4 §3.1.1.2; OWASP ASVS 5.0 V6.2):
- * - 15 characters minimum (code points, in both NFC and NFKC), no
- *   composition rules, at most 72 bytes (the server's bcrypt limit),
+ * - 12 characters minimum (code points, in both NFC and NFKC) and the four
+ *   types the server requires (a-z, A-Z, 0-9, ASCII punctuation; owner
+ *   decision 28 Nov 2026 evening, deviations D3 and D4), the checklist and
+ *   the "Add ..." guidance, at most 72 bytes (the server's bcrypt limit),
  *   Unicode and spaces allowed; control and invisible characters and broken
  *   characters refused; a device without Unicode normalisation fails closed;
  * - the compared form: accents, invisible characters and joiners out,

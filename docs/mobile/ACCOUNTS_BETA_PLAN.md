@@ -304,8 +304,9 @@ in `docs/WEB_LAUNCH_PLAN.md` ("Go-live gates"); in short:
   Sky present, with the checks in "Applying the password guard"; 13b: the
   three `pre-register` variants, the `password` and `binding` probes and the
   `EMAIL_A` stale-session check pass on the hosted project, captcha still
-  off; 13c: the dashboard settings (minimum length 15, no required
-  characters, the rate limits, notices, Phone OFF); 13d: security and
+  off; 13c: the dashboard settings (minimum length 12 and all four
+  character types, owner decision 28 Nov 2026 evening: confirm, do not
+  change; the rate limits, notices, Phone OFF); 13d: security and
   architecture review of the guard, both clients and the screens.
 - [ ] 14. The reset email comes from `codes@kaisip.com`, a code and no link
   (`AUTH_EMAIL_TEMPLATES.md` §5).
