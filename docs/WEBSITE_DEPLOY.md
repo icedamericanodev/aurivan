@@ -131,6 +131,7 @@ site changes**: Cloudflare still runs the plain build, which is landing mode.
 | Its build mode | `SITE_MODE=home bash scripts/build_site.sh` |
 | Its policy | `HOME_CSP` in `scripts/build_site.sh` (swapped into the `/` and `/index.html` rules) |
 | Its checks | `scripts/home_page/check.cjs`, served by `scripts/home_page/serve_site.cjs` |
+| Its stylesheet stamp | `home.html` links `assets/home.css?v=<stamp>`. After any change to `assets/home.css`, run the build: it stops and prints the new stamp to paste into that link. The stamp makes a returning visitor's browser fetch the new stylesheet with the new page |
 
 How the mode works: `/` becomes `home.html`; `/beta`, the legal pages, the Beta
 Desk and the web app at `/app/` (the unlisted preview until 28 Nov 2026) stay

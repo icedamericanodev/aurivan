@@ -66,7 +66,6 @@ The first update after the 2.0.0 launch (closed testing). Play version name exac
 
 ### Improved
 - The beta has ended, so the wording that still mentioned it is updated.
-- The home page is calmer: one clear way to start on the web, on Android and on iPhone, a waitlist for the iPhone app only, and less small print.
 
 ## Web [v13.2.1] · 2026-11-28
 

@@ -194,7 +194,7 @@ a,button,summary,label{-webkit-tap-highlight-color:transparent;touch-action:mani
   }
 }
 
-/* ---------- Waitlist (mockup: sends and saves nothing) ---------- */
+/* ---------- Waitlist ---------- */
 .waitlist-panel{display:grid;grid-template-columns:1fr 1fr;gap:32px clamp(32px,5vw,72px);align-items:center;padding:clamp(28px,5vw,72px);border-radius:28px;background:linear-gradient(180deg,var(--forest-top),var(--forest));color:var(--on-forest)}
 .waitlist-panel .eyebrow,.waitlist-panel em{color:var(--sap)}
 .waitlist-panel h2{margin:18px 0 20px;font-size:clamp(32px,3.6vw,48px)}
@@ -215,7 +215,7 @@ a,button,summary,label{-webkit-tap-highlight-color:transparent;touch-action:mani
 .waitlist-form input::placeholder{color:var(--ink2);opacity:1}
 /* The one consent line sits right under the button, so the two are read together. */
 .waitlist-privacy{margin-top:14px;font-size:14px;line-height:1.5}
-.waitlist-privacy a{white-space:nowrap}
+.waitlist-privacy a{white-space:nowrap;display:inline-block;padding-block:13px;margin-block:-13px}
 .waitlist-form .button{width:100%;margin-top:16px}
 .waitlist-fields:disabled :is(input,button){opacity:.6}
 
@@ -274,7 +274,7 @@ a,button,summary,label{-webkit-tap-highlight-color:transparent;touch-action:mani
   .panel{height:400px}
   .panel .phone,.panel-sap .phone{--pw:200px;top:176px}
   .site-footer .wrap{grid-template-columns:1fr}
-  .start .button{width:100%}
+  .start .button,.story-cta .button{width:100%}
   .waitlist-panel{margin-inline:calc(var(--gutter)*-.5)}
 }
 
