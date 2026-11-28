@@ -61,7 +61,9 @@
 <meta property="og:site_name" content="KaiSip">
 <meta property="og:title" content="KaiSip: CISA exam prep that teaches the auditor’s mindset">
 <meta property="og:description" content="Think like an IS auditor. Practice questions that explain every option, mock exams and plain-language study notes for the CISA exam.">
-<meta property="og:url" content="https://kaisip.com/">
+<meta property="og:url" content="https://kaisip.com/app/">
+<!-- The web app lives at kaisip.com/app/ (the home page is at /). -->
+<link rel="canonical" href="https://kaisip.com/app/">
 <!-- Link previews (Reddit, Threads, iMessage, Slack): a 1200×630 card. Crawlers
      fetch it from the live site, so the URL is absolute. Master: design-notes/brand-kaisip/og/. -->
 <meta property="og:image" content="https://kaisip.com/assets/og-kaisip.png">
@@ -80,6 +82,15 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<!-- Install (v13.2): "Add to Home Screen" on iPhone and iPad, "Install" on
+     computers. The manifest gives the name, icons and full screen; the Apple
+     tags do the same on older iOS. Relative, so it works at /app/. -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="application-name" content="KaiSip">
+<meta name="apple-mobile-web-app-title" content="KaiSip">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#F3F1EA" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#111613" media="(prefers-color-scheme: dark)">
 
@@ -98,14 +109,15 @@
      plant draws itself once it has arrived (plantReady). -->
 <script id="kaisipPlantJs" src="assets/kaisip-plant.js?v=515bc7a6df" defer></script>
 <link rel="preload" href="assets/fonts/Figtree_400Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/Fraunces_500Medium.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/KaiSipSerif_500Medium.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-/* ── FONTS: Fraunces + Figtree, served from this site (assets/fonts, SIL OFL).
+/* ── FONTS: KaiSip Serif (Fraunces with a conventional f and J; italic is plain Fraunces) + Figtree,
+   served from this site (assets/fonts, SIL OFL; made by mobile/scripts/fonts/build_kaisip_serif.py).
    No request goes to a font service. Heavier weights map to the heaviest file
    we ship so the browser never fakes a bold. ── */
-@font-face { font-family: 'Fraunces'; font-style: normal; font-weight: 100 400; font-display: swap; src: url('assets/fonts/Fraunces_400Regular.woff2') format('woff2'); }
-@font-face { font-family: 'Fraunces'; font-style: normal; font-weight: 500 900; font-display: swap; src: url('assets/fonts/Fraunces_500Medium.woff2') format('woff2'); }
-@font-face { font-family: 'Fraunces'; font-style: italic; font-weight: 100 900; font-display: swap; src: url('assets/fonts/Fraunces_400Regular_Italic.woff2') format('woff2'); }
+@font-face { font-family: 'KaiSip Serif'; font-style: normal; font-weight: 100 400; font-display: swap; src: url('assets/fonts/KaiSipSerif_400Regular.woff2') format('woff2'); }
+@font-face { font-family: 'KaiSip Serif'; font-style: normal; font-weight: 500 900; font-display: swap; src: url('assets/fonts/KaiSipSerif_500Medium.woff2') format('woff2'); }
+@font-face { font-family: 'KaiSip Serif'; font-style: italic; font-weight: 100 900; font-display: swap; src: url('assets/fonts/Fraunces_400Regular_Italic.woff2') format('woff2'); }
 @font-face { font-family: 'Figtree'; font-style: normal; font-weight: 100 400; font-display: swap; src: url('assets/fonts/Figtree_400Regular.woff2') format('woff2'); }
 @font-face { font-family: 'Figtree'; font-style: normal; font-weight: 500; font-display: swap; src: url('assets/fonts/Figtree_500Medium.woff2') format('woff2'); }
 @font-face { font-family: 'Figtree'; font-style: normal; font-weight: 600 900; font-display: swap; src: url('assets/fonts/Figtree_600SemiBold.woff2') format('woff2'); }
@@ -186,7 +198,7 @@
   --on-fill: #FFFFFF;     /* text on a solid correct / wrong / tip fill */
   --correct-fill: #1D6A43; --wrong-fill: #A3333D; --tip-fill: #7A5100;
   --dom1: #3F7F96; --dom2: #4E8A3E; --dom3: #B0802C; --dom4: #86689C; --dom5: #5E7482;
-  --f-serif: Fraunces, Georgia, 'Times New Roman', serif;
+  --f-serif: 'KaiSip Serif', Georgia, 'Times New Roman', serif;
   --f-sans: Figtree, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --r-sm: 8px; --r-md: 16px; --r-lg: 24px;
 
@@ -1583,6 +1595,7 @@ header {
   display: flex; align-items: center; gap: 7px; color: var(--text2);
 }
 .act-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+a.act-btn { text-decoration: none; }
 .act-btn.primary { background: var(--ink); color: var(--ink-fg); border-color: var(--ink); }
 .act-btn.primary:hover { background: var(--accent-fill); border-color: var(--accent-fill); }
 .act-btn.secondary:hover { border-color: var(--warning); color: var(--warning); }
@@ -5959,6 +5972,14 @@ header.app-header .brand-lockup { height: 28px; }
 .app-cta-badge { display: inline-block; border-radius: var(--r-sm); line-height: 0; margin: 15px 0; } /* Google: clear space = 1/4 of the badge height */
 .app-cta-badge img { display: block; height: 60px; width: auto; }
 .app-cta-ios { font: var(--t-meta); color: var(--text2); margin: 0; }
+.app-cta-ios a { color: var(--accent-text); }
+/* Google's trademark line beside the Play badge (v13.2). */
+.app-cta-legal { flex-basis: 100%; font: var(--t-meta); letter-spacing: normal; color: var(--text2); margin: 0; }
+.app-cta-legal[hidden], .rail-app-legal[hidden] { display: none; }
+.rail-app-legal { margin: var(--sp-xs) 0 0; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
+/* A short rail keeps the title and badge first: the trademark line steps out
+   in the tight fits (Today's footer and About still carry it). */
+#appRail[data-app-fit="plain"] .rail-app-legal, #appRail[data-app-fit="tight"] .rail-app-legal, #appRail[data-app-fit="min"] .rail-app-legal { display: none; }
 /* QR to the Play listing (desktop only). Dark on white in both themes so phone cameras can read it. */
 .app-cta-qr { display: flex; align-items: center; gap: var(--sp-lg); margin: var(--sp-lg) 0 0; }
 .app-cta-qr[hidden] { display: none; }
@@ -5972,8 +5993,8 @@ body[data-app-cta="android"][data-section="learn"] .app-cta-line { display: bloc
 body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: none; }
 
 /* Desktop rail: "Get KaiSip for Android" (shown from 768px; railAppFit picks
-   data-app-fit: "qr" with room, "base" badge or button only, "tight" pulls the
-   rail's top spacing in, "min" also keeps the title for screen readers only). */
+   data-app-fit: "qr" with room, "base" badge or button only, "plain" the same
+   without the trademark line, "tight" pulls the rail's top spacing in, "min" also keeps the title for screen readers only). */
 .rail-app { display: none; }
 .rail-app-t { margin: 0; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text); }
 .rail-app-qr { display: flex; align-items: center; gap: var(--sp-md); margin: var(--sp-md) 0 0; }
@@ -5992,10 +6013,19 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .td-app { margin: 0 0 var(--sp-xxl); padding: var(--sp-lg); background: var(--raised2); border-radius: var(--r-lg); }
 .td-app-t { margin: 0; font: var(--t-small); color: var(--text); }
 .td-app-acts { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-sm) var(--sp-lg); margin-top: var(--sp-sm); }
-.td-app-badge { display: inline-block; margin: 2px 0; line-height: 0; border-radius: var(--r-sm); }
+.td-app-badge { display: inline-block; padding: 2px 0; margin: 0; line-height: 0; border-radius: var(--r-sm); }
 .td-app-badge img { display: block; height: 40px; width: auto; }
 .td-app-acts .gt-btn-secondary { min-height: 44px; padding: 0 var(--sp-lg); text-decoration: none; }
 .td-app-hide { margin-right: -4px; }
+/* Today, iPhone and iPad Safari (v13.2): add KaiSip to the Home Screen. An
+   InviteRow on a Today card (the td-app card rules), with the three steps. */
+.td-install .plnt-invite-h { font: var(--t-title); letter-spacing: var(--tr-title); }
+.td-install-steps { margin: var(--sp-sm) 0 0; padding-left: 1.4em; font: var(--t-small); color: var(--text); }
+.td-install-steps li { padding-left: 2px; }
+.td-install-steps li + li { margin-top: var(--sp-xs); }
+.td-install-steps strong { font-weight: 600; }
+.td-install-steps .ico { display: inline-block; vertical-align: -3px; margin: 0; color: var(--accent-text); }
+.td-install-note { margin: var(--sp-sm) 0 0; font: var(--t-meta); color: var(--text2); max-width: 60ch; }
 /* v12.50: "You've worked through the free questions" (Today, between sessions). */
 .td-fs { margin: var(--sp-2xl) 0 0; padding: var(--sp-lg); background: var(--raised2); border-radius: var(--r-lg); }
 .td-fs-t { margin: 0; font: var(--t-headline); color: var(--text); }
@@ -8811,7 +8841,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
 <!-- Address markers for the section links (#today, #notes ...). The router
      reads the address; these empty markers sit at the very top of the page so
      every in-page link has a real target and opening one never scrolls. -->
-<div class="route-marks" aria-hidden="true"><span id="today"></span><span id="learn"></span><span id="notes"></span><span id="glossary"></span><span id="principles"></span><span id="exam-guide"></span><span id="final-week"></span><span id="practice"></span><span id="mock"></span><span id="saved"></span><span id="you"></span><span id="weak-spots"></span><span id="progress"></span><span id="help"></span><span id="about"></span></div>
+<div class="route-marks" aria-hidden="true"><span id="today"></span><span id="learn"></span><span id="notes"></span><span id="glossary"></span><span id="principles"></span><span id="exam-guide"></span><span id="final-week"></span><span id="practice"></span><span id="mock"></span><span id="saved"></span><span id="you"></span><span id="settings"></span><span id="weak-spots"></span><span id="progress"></span><span id="help"></span><span id="about"></span></div>
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="app-rail" id="appRail">
 <header class="app-header">
@@ -8857,6 +8887,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
   <a class="rail-app-badge" id="railAppPlay" target="_blank" rel="noopener" hidden><img id="railAppBadge" alt="Get it on Google Play (opens in a new tab)" width="135" height="40" decoding="async"></a>
   <a class="tipjar-btn rail-app-btn" id="railAppPlayText" target="_blank" rel="noopener" hidden>Get it on Google Play<span class="sr-only"> (opens in a new tab)</span></a>
   <a class="tipjar-btn rail-app-btn" id="railAppBeta" target="_blank" rel="noopener" hidden>Join the Android beta<span class="sr-only"> (opens in a new tab)</span></a>
+  <p class="rail-app-legal" id="railAppLegal" hidden>Google Play and the Google Play logo are trademarks of Google LLC.</p>
 </aside>
 <div class="rail-foot" id="railCountdown" hidden></div>
 <!-- Grove: "Synced with your phone". Built hidden for the future sync
@@ -9042,7 +9073,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
     <h2 class="vision-title" id="aboutVisionT">Think like an IS auditor.</h2>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v13.1</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v13.2</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -9094,7 +9125,8 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
       <a class="tipjar-btn" id="appCtaBeta" target="_blank" rel="noopener" hidden>Join the Android beta<span class="sr-only"> (opens in a new tab)</span></a>
       <a class="app-cta-badge" id="appCtaPlay" target="_blank" rel="noopener" hidden><img id="appCtaBadge" alt="Get it on Google Play (opens in a new tab)" width="202" height="60" decoding="async"></a>
       <a class="tipjar-btn" id="appCtaPlayText" target="_blank" rel="noopener" hidden>Get it on Google Play<span class="sr-only"> (opens in a new tab)</span></a>
-      <p class="app-cta-ios" id="appCtaIos" hidden>The iPhone app isn&rsquo;t ready yet. KaiSip works here in your browser.</p>
+      <p class="app-cta-legal" id="appCtaLegal" hidden>Google Play and the Google Play logo are trademarks of Google LLC.</p>
+      <p class="app-cta-ios" id="appCtaIos" hidden>The iPhone app is planned, with no date yet. KaiSip works here in your browser. <a href="../#waitlist">Join the waitlist</a> to hear when the app is ready.</p>
     </div>
     <figure class="app-cta-qr" id="appCtaQr" hidden>
       <img id="appCtaQrImg" alt="QR code that opens KaiSip on Google Play" width="148" height="148" decoding="async">
@@ -9209,7 +9241,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
             <li id="setOthersLi" hidden><button type="button" class="you-row" id="setOthers" aria-haspopup="dialog" onclick="showYourData()" aria-labelledby="setOthersT" aria-describedby="setOthersM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/></svg></span><span class="you-text"><span class="you-t" id="setOthersT">Other saved progress</span><span class="you-m" id="setOthersM">Earlier records in this browser</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
           </ul>
           <!-- The one file input for a restore (Settings and the Your data sheet both use it). -->
-          <input type="file" id="setFile" accept=".json" hidden onchange="importProgress(this.files[0]);this.value=''">
+          <input type="file" id="setFile" accept=".json" hidden aria-label="Backup file to restore" onchange="importProgress(this.files[0]);this.value=''">
         </section>
         <section class="you-card set-card set-danger" aria-labelledby="setResetH">
           <h3 class="you-card-h" id="setResetH">Reset</h3>
@@ -9290,7 +9322,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
 <script id="faqData" type="application/json">[
 {"cat":"Using the app","q":"How do I start practicing?","a":"Open Practice from the bottom navigation, choose a domain (or 'All domains'), and answer questions one at a time. Your first question loads automatically. Read the explanation after every answer, right or wrong."},
 {"cat":"Using the app","q":"What does Exam-day rehearsal change?","a":"Turn on Exam-day rehearsal in Settings (the cog on You) to practice the way exam day feels: the scenario sits inside the question, and the tips and coaching after you answer are hidden. The questions are the same exam-style questions either way. Turn it off to see the full scenario, tips and coaching again."},
-{"cat":"Using the app","q":"How does the Mock Exam work?","a":"On the website you can take the mini mock (50 questions, 80 minutes). The full mock (150 questions, 4 hours) is part of the full course in the KaiSip Android app. Both follow the real CISA blueprint: the same domain mix and a realistic spread of difficulty. Like the real exam, you see no right or wrong while you answer. Your score, a breakdown by domain and every explanation come at the end."},
+{"cat":"Using the app","q":"How does the Mock Exam work?","a":"On the website you can take the mini mock (50 questions, 80 minutes). The full mock (150 questions, 4 hours) is part of the full course, which is not open to everyone yet. Both follow the real CISA blueprint: the same domain mix and a realistic spread of difficulty. Like the real exam, you see no right or wrong while you answer. Your score, a breakdown by domain and every explanation come at the end."},
 {"cat":"Using the app","q":"What are Questions to revisit?","a":"Questions you miss come back the next day, then at widening intervals as you get them right, until they retire. A right answer you marked Unsure or Guessing comes back too. Today's plan starts with them, a few at a time, oldest first."},
 {"cat":"Using the app","q":"How do I save a question for later?","a":"Use the bookmark control on a question to save it. Saved questions live under Practice, then Saved, where you can revisit them any time."},
 {"cat":"Using the app","q":"What does Weak spots (under You) show?","a":"Weak spots shows how each of the five domains is going and lets you start a drill on the ones that need work. A domain shows too few yet until it has 30 answers, so a few answers never read as a verdict. From 30 answers it shows a score and a band: Building under 70, Steady 70 to 79, Strong 80 and up."},
@@ -9313,8 +9345,8 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
 {"cat":"Study strategy","q":"How many practice questions should I do?","a":"There is no fixed number. Aim for consistent daily practice, full coverage of every domain, and Mock Exams close to your test date. How carefully you review each answer matters more than raw volume."},
 {"cat":"About & your data","q":"Is this app affiliated with ISACA?","a":"No. It is an independent study resource. CISA is a registered trademark of ISACA; this app is for educational use only and is not a substitute for ISACA's own materials."},
 {"cat":"About & your data","q":"Where do the questions and notes come from?","a":"KaiSip's questions, explanations and study notes are original. They are drafted with AI tools, directed by a CISA-certified founder, and each question is mapped to ISACA's current CISA exam content outline. Before a question is added, it goes through automated checks and AI review checks (exam question style, technical accuracy, a blind answer test, sources and how current they are, consistency across domains, grammar, and whether the longest option gives the answer away). Then the founder reads the review reports and decides what to fix; not every question has been checked by hand yet. There is no outside panel of human reviewers yet. AI tools make mistakes, and so do people, so check anything important against ISACA's own materials and your own judgment. If something looks wrong, use Report a problem; fixes ship in app updates. A readiness range is a study estimate, not a prediction of your exam result. KaiSip is not affiliated with or endorsed by ISACA."},
-{"cat":"About & your data","q":"Does the app cost anything?","a":"Not during the beta. KaiSip is free during the beta, with no account and no ads. If paid features come later, we'll say so here first, and everything you've saved stays yours."},
-{"cat":"About & your data","q":"Is everything free on the website?","a":"The website has a free set of practice questions from every topic, plus all the study notes, the glossary, and review of what you've answered. The full course, with every practice question and full mock exams, is in the KaiSip Android app (in beta now)."},
+{"cat":"About & your data","q":"Does the app cost anything?","a":"No. KaiSip is free, with no account and no ads. Paid Premium features are planned, and we will tell you before you pay for anything. Everything you've saved stays yours."},
+{"cat":"About & your data","q":"Is everything free on the website?","a":"The website has a free set of practice questions from every topic, plus all the study notes, the glossary, and review of what you've answered. The full course, with every practice question and full mock exams, is not open to everyone yet."},
 {"cat":"About & your data","q":"Is my data private?","a":"Yes. Your progress is stored only in your own browser and never leaves your device. There is no sign-up, and your answers are not sent to any server."},
 {"cat":"About & your data","q":"Where is my progress saved?","a":"All progress is saved locally in your browser. Clearing your browser data or using a different device or browser will start you fresh. Open Settings (the cog on You), then use Your data to back up a copy, restore one, or start fresh."},
 {"cat":"About & your data","q":"How do I report a problem or suggest a feature?","a":"Open Settings (the cog on You), then Send feedback. It goes straight to the team."}
@@ -9362,6 +9394,9 @@ var ICONS = {
   "sliders": "<path d=\"M4 7h9M17 7h3M4 17h3M11 17h9\"/><circle cx=\"15\" cy=\"7\" r=\"2\"/><circle cx=\"9\" cy=\"17\" r=\"2\"/>",
   "retry": "<path d=\"M9 14 4 9l5-5\"/><path d=\"M4 9h10.5a5.5 5.5 0 0 1 0 11H11\"/>",
   "install": "<path d=\"M12 3.5v11M7.5 10l4.5 4.5 4.5-4.5\"/><path d=\"M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17\"/>",
+  // Add to Home Screen (v13.2): Safari's Share glyph and the add-to-home square.
+  "share": "<path d=\"M12 14.5v-11\"/><path d=\"m8 7.5 4-4 4 4\"/><path d=\"M8.5 10H7a1.5 1.5 0 0 0-1.5 1.5v8A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 17 10h-1.5\"/>",
+  "add-square": "<rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"4\"/><path d=\"M12 8.5v7M8.5 12h7\"/>",
   // The study-day streak's glyph (mobile Sprig, components/glyphs.tsx).
   "sprig": "<path d=\"M11 21c.2-5 1.5-9.4 5-13\"/><path d=\"M12.2 14.5C8.6 15 5.6 13.4 4.6 10c3.6-.6 6.6.9 7.6 4.5z\" fill=\"currentColor\" fill-opacity=\".22\"/><path d=\"M14.5 10.5c-.6-3.6 1-6.6 4.9-8 .6 3.7-1.2 6.8-4.9 8z\" fill=\"currentColor\" fill-opacity=\".22\"/>"
   };
@@ -9388,10 +9423,10 @@ function ico(name, size, cls) {
 // also get one quiet line on Today and Learn plus a Today card ("Not now"
 // hides it for 14 days); computers get a panel at the foot of the desktop
 // rail (with the QR when it fits); the first-visit welcome has a small "Also
-// on Android" link (not on iPhone); iPhones see "Coming soon to iPhone."
-// instead of a button. The badge image is assets/google-play-badge.png
+// on Android" link (not on iPhone); iPhones see "The iPhone app is planned,
+// with no date yet" and the waitlist link instead of a button (v13.2: live). The badge image is assets/google-play-badge.png
 // (see appCtaInit). Plain links only: nothing extra loads, the CSP is unchanged.
-const APP_CTA = { mode: 'off', betaUrl: '', playUrl: '' };
+const APP_CTA = { mode: 'live', betaUrl: '', playUrl: 'https://play.google.com/store/apps/details?id=com.kaisip.app' };
 
 const QB = JSON.parse(document.getElementById('qbData').textContent);
 
@@ -9451,7 +9486,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v13.1';
+const APP_VERSION = 'v13.2';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -10169,14 +10204,19 @@ var MOCK_SECONDS_TOTAL = 240 * 60;
 var MOCK_MINI_TOTAL = Math.round(MOCK_TOTAL / 3);
 // v12.50 (owner, 4 Nov 2026): the website has the free sample, so the full
 // mock is part of the full course (locked: the setup page shows it calmly
-// with a link to the Android beta and it cannot start); the mini mock is open.
+// and it cannot start); the mini mock is open.
 var MOCK_TYPES = {
   full: { total: MOCK_TOTAL, minutes: 240, name: 'Full mock', locked: true },
   mini: { total: MOCK_MINI_TOTAL, minutes: Math.round(240 * MOCK_MINI_TOTAL / MOCK_TOTAL), name: 'Mini mock' }
 };
-// Where "the full course" lives for now: the Android beta page on this site.
-var FULL_COURSE_URL = 'beta.html';
-var FULL_COURSE_ROW = 'More practice on this is in the full course.';
+// v13.2 (owner, 28 Nov 2026): the Android beta has closed and the full course
+// is not open to everyone yet, so nothing links to it. Learners who finish the
+// free questions get the Android app on Google Play (the official badge) or,
+// on iPhone, the home page's waitlist (WAITLIST_URL is kaisip.com/#waitlist
+// from /app/).
+var FULL_COURSE_ROW = 'More practice on this is in the full course, which is not open to everyone yet.';
+var PLAY_WEB_URL = 'https://play.google.com/store/apps/details?id=com.kaisip.app&referrer=utm_source%3Dkaisip_web';
+var WAITLIST_URL = '../#waitlist';
 // Anything that is not 'mini' (older saves have no type) is the full mock.
 function mockTypeOf(t) { return t === 'mini' ? 'mini' : 'full'; }
 function mockSecondsFor(t) { return MOCK_TYPES[mockTypeOf(t)].minutes * 60; }
@@ -12577,8 +12617,7 @@ function renderItemBody(raw, domainId, searchQ, itemId) {
 // v12.50: one calm row where a list of practice questions has none in the
 // free set on the website (the ids name questions in the full course).
 function fullCourseRowHtml(cls, text) {
-  return '<div class="fc-row' + (cls ? ' ' + cls : '') + '"><p class="fc-row-t">' + (text || FULL_COURSE_ROW) + '</p>'
-    + '<a class="sr-link sr-link-pl fc-row-a" href="' + escapeHtml(FULL_COURSE_URL) + '">Get the full course in the Android <span class="sr-link-tail">beta' + ico('arrow-right', 18) + '</span></a></div>';
+  return '<div class="fc-row' + (cls ? ' ' + cls : '') + '"><p class="fc-row-t">' + (text || FULL_COURSE_ROW) + '</p></div>';
 }
 
 // ── "Practice this concept" (practice_ids on a subtopic) ──
@@ -16625,7 +16664,7 @@ function renderHome() {
     }
   }
   var intro = '';
-  if (r.answered === 0) intro = '<p class="td-intro">CISA exam practice, free during the beta.</p>';
+  if (r.answered === 0) intro = '<p class="td-intro">CISA exam practice, free with no account.</p>';
   else if (st.back) intro = '<p class="td-intro">A short start today.' + (plan && plan.due > plan.review ? ' Other reviews spread over the next days.' : '') + '</p>';
 
   // One invitation per visit: when the backup reminder and the plant
@@ -16641,10 +16680,12 @@ function renderHome() {
   // other invitation or setup card is on Today this visit (the other goes
   // first; the name waits). Showing it counts, for today only.
   var appCard = appCtaTodayHtml();
+  // iPhone and iPad Safari: how to add KaiSip to the Home Screen (v13.2).
+  var installCard = installTipHtml(r.answered);
   var finalWeek = todayFinalWeekHtml(days);
   var freeDone = todayFreeDoneHtml();
   var todayKey = parityDayKey(now.getTime());
-  var askName = !todayNameNote && nameAskDue(st, todayKey, !!(backup || appCard || finalWeek || freeDone || plantInviteDue()));
+  var askName = !todayNameNote && nameAskDue(st, todayKey, !!(backup || appCard || installCard || finalWeek || freeDone || plantInviteDue()));
   if (askName && nameAskRead() === '') { try { localStorage.setItem(NAME_ASK_KEY, 'shown:' + todayKey); } catch (e) {} }
   // Only ask when the "shown" day sticks; otherwise a browser that can't save
   // would ask on every visit.
@@ -16706,7 +16747,7 @@ function renderHome() {
     + '</div>'
     // Phones read it top to bottom: the hero, the plan, the week, what else, then the column.
     + appCard
-    + hero + freeDone + nameCard + finalWeek
+    + hero + installCard + freeDone + nameCard + finalWeek
     + (showTwig ? todayTwigHtml(now, st, 'm', twigGrow) : '')
     + next
     + '<div class="td-pair">' + todayMindSlotHtml(st) + backup + '</div>'
@@ -16718,7 +16759,8 @@ function renderHome() {
       + '<div class="td-plant" id="tdPlant">' + plantRow + '</div>')
     + (apps.length ? '<p class="td-apps">Get the app: ' + apps.join(' &middot; ') + '</p>' : '')
     // The full disclaimer lives on About (and Help); Today keeps one line.
-    + '<p class="td-legal">Not affiliated with or endorsed by ISACA&reg;. CISA&reg; is a registered trademark of ISACA.</p>'
+    + '<p class="td-legal">Not affiliated with or endorsed by ISACA&reg;. CISA&reg; is a registered trademark of ISACA.'
+    + (playBadgeShown() ? ' Google Play and the Google Play logo are trademarks of Google LLC.' : '') + '</p>'
     + '</div>';
   appCtaTodayWire();
   todayRingWatch();
@@ -17167,7 +17209,7 @@ function fgSheet(o) {
 // The engine parts come from the app (assets/kaisip-plant.js); every text
 // written into the page is escaped.
 var PROGRESS_MOCK_SIGN = true;  // owner's call: false leaves only signs 1 and 2
-// The full mock is locked on the website (in the Android app): with no full
+// The full mock is locked on the website (part of the full course): with no full
 // timed mock saved yet, the mock sign says where it can be taken.
 function webFullMockAway(mocks) {
   return !!(MOCK_TYPES.full && MOCK_TYPES.full.locked)
@@ -17435,9 +17477,7 @@ function pgSignsHtml(r, phase, today) {
   var act = {
     low: '<button type="button" class="gt-btn-ghost pg-sact" onclick="pgGoRaise()">What would raise it' + ico('chevron', 18) + '</button>',
     domains: pgSignDomain ? '<button type="button" class="gt-btn-secondary pg-act" onclick="pgStartSet(pgSignDomain)">Practice ' + escapeHtml(DI[pgSignDomain].short) + ico('arrow-right', 18) + '</button>' : '',
-    mocks: webFullMockAway(S.mockHistory)
-      ? '<a class="gt-btn-ghost pg-sact" href="' + escapeHtml(FULL_COURSE_URL) + '">Full mock in the Android app' + ico('chevron', 18) + '</a>'
-      : '<a class="gt-btn-ghost pg-sact" href="#mock" onclick="return navTo(event,\'mock\')">Go to mock exams' + ico('chevron', 18) + '</a>'
+    mocks: '<a class="gt-btn-ghost pg-sact" href="#mock" onclick="return navTo(event,\'mock\')">Go to mock exams' + ico('chevron', 18) + '</a>'
   };
   return '<section class="pg-sec pg-signs" aria-labelledby="pgSignsH"><h2 class="pg-h2" id="pgSignsH">'
     + escapeHtml(phase === 'dated' ? K.readySigns.SIGNS_HEADING_DATED : K.readySigns.SIGNS_HEADING) + '</h2>'
@@ -20970,7 +21010,7 @@ function nextQ() {
       if (sessionGoal !== null) endSession();
       showFilterComplete();
     } else if (S.selectedDomain === "all") {
-      document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">Free questions complete</div><div class="empty-sub">You have answered every free question on the website. Your review keeps going here, and the full course is in the KaiSip Android beta.</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="confirmResetAllDomains()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Reset all and restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View summary</button><a class="act-btn secondary" href="' + escapeHtml(FULL_COURSE_URL) + '">Get the full course</a></div></div>';
+      document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">Free questions complete</div><div class="empty-sub">You have answered every free question on the website. Your review keeps going here. The full course is not open to everyone yet.</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="confirmResetAllDomains()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Reset all and restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View summary</button>' + freeDoneEmptyLinkHtml() + '</div></div>';
     } else {
       showDomainComplete(S.selectedDomain);
     }
@@ -23029,8 +23069,7 @@ function renderMockSetup() {
       + '<h3 class="mk-type-t" id="mkT-' + type + '">' + t.name + '</h3>'
       + '<p class="mk-type-n" id="mkN-' + type + '">' + t.total + ' questions &middot; ' + mockMinutesWords(t.minutes) + '</p>'
       + '<p class="mk-type-cap">Part of the full course</p>'
-      + '<p class="mk-type-m">The real exam&rsquo;s length and pace, in the KaiSip Android app.</p>'
-      + '<a class="sr-link sr-link-pl mk-course-link" href="' + escapeHtml(FULL_COURSE_URL) + '">Get the full course in the Android <span class="sr-link-tail">beta' + ico('arrow-right', 18) + '</span></a>'
+      + '<p class="mk-type-m">The real exam&rsquo;s length and pace. The full course is not open to everyone yet.</p>'
       + '</div>';
   };
   // With the full mock in the full course, the mini mock's start is the
@@ -23636,7 +23675,7 @@ function mockSignsHtml(pre) {
       var hasFull = mocks.some(function (x) { return x.total === MOCK_TOTAL && x.timing !== 'untimed'; });
       var left = Math.max(0, MOCKS_SIGN_N - mocks.length);
       rr = s.met ? rr : Math.min(mocks.length, MOCKS_SIGN_N) + ' of ' + MOCKS_SIGN_N;
-      var away = webFullMockAway(mocks) ? 'The full timed mock is in the Android app.' : '';
+      var away = webFullMockAway(mocks) ? 'The full timed mock is part of the full course, which is not open to everyone yet.' : '';
       m = s.met ? '' : !hasFull ? (away ? (left > 1 ? (NUM_WORDS[left] || left) + ' mocks to go. ' : '') + away
           : left > 1 ? (NUM_WORDS[left] || left) + ' mocks to go, one of them the full timed mock.' : 'The full timed mock is still to do.')
         : left === 1 ? 'One more mock to go.' : (NUM_WORDS[left] || left) + ' more mocks to go.';
@@ -26650,7 +26689,7 @@ function appCtaTodayQrHtml() {
 }
 // The badge file missing: a Today card's link reads "Get it on Google Play".
 function appCtaTodayWire() {
-  Array.prototype.forEach.call(document.querySelectorAll('#tdApp .td-app-badge img, #tdQr .td-app-badge img'), function (img) {
+  Array.prototype.forEach.call(document.querySelectorAll('#tdApp .td-app-badge img, #tdQr .td-app-badge img, #tdFs .td-app-badge img'), function (img) {
     var fallback = function () {
       var a = img.parentNode;
       if (!a || !a.parentNode) return;
@@ -26669,6 +26708,56 @@ function appCtaNotNow() {
   var next = document.getElementById('tdGo') || document.getElementById('tdTitle');
   if (next) { try { next.focus({ preventScroll: true }); } catch (e) {} }
   showToast('Hidden for 14 days. The app link stays in About.', 'info', 2600);
+}
+
+// ── ADD TO HOME SCREEN (v13.2): iPhone and iPad Safari only ──
+// Safari has no install prompt, so Today shows the three steps in one quiet
+// card under the plan, until "Hide tip" (a NEW device-only key, 'hidden').
+// Never when KaiSip already runs from the Home Screen, in another iOS browser
+// or an in-app browser, or off https (a saved file or a plain address).
+var INSTALL_TIP_KEY = 'aurivan_install_tip';
+function installTipStandalone() {
+  try {
+    if (navigator.standalone === true) return true;
+    return !!(window.matchMedia && (window.matchMedia('(display-mode: standalone)').matches
+      || window.matchMedia('(display-mode: fullscreen)').matches));
+  } catch (e) { return false; }
+}
+function installTipDue() {
+  try {
+    if (appCtaPlatform() !== 'ios' || installTipStandalone()) return false;
+    var ua = String(navigator.userAgent || '');
+    // Other iOS browsers and in-app browsers name themselves in the UA.
+    if (!/Safari\//.test(ua) || /CriOS|FxiOS|EdgiOS|OPiOS|OPT\/|YaBrowser|DuckDuckGo|Ddg\/|GSA\/|FBAN|FBAV|Instagram|Line\/|LinkedInApp|MicroMessenger|Snapchat|Pinterest|Twitter/i.test(ua)) return false;
+    if (location.protocol !== 'https:' && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) return false;
+    return localStorage.getItem(INSTALL_TIP_KEY) !== 'hidden';
+  } catch (e) { return false; }
+}
+function installTipHtml(answered) {
+  if (!installTipDue()) return '';
+  return '<section class="td-app td-install" id="tdInstall" aria-labelledby="tdInstallH">'
+    + '<div class="plnt-invite"><span class="you-ico" aria-hidden="true">' + ico('add-square', 20) + '</span>'
+    + '<div class="plnt-invite-t"><h2 class="plnt-invite-h" id="tdInstallH">Add KaiSip to your Home Screen</h2>'
+    + '<p class="plnt-invite-m">It opens full screen, like an app. It still needs an internet connection.</p>'
+    + '<ol class="td-install-steps">'
+    + '<li>Tap <strong>Share</strong> ' + ico('share', 18) + ' in Safari. Don&rsquo;t see it? Tap <strong>More</strong> <span aria-hidden="true">(&middot;&middot;&middot;)</span> first.</li>'
+    + '<li>Choose <strong>Add to Home Screen</strong>.</li>'
+    + '<li>Tap <strong>Add</strong>.</li></ol>'
+    // Safari and the Home Screen app keep separate progress: before any
+    // answer, study there from the start; after, move it with Back up/Restore.
+    + '<p class="td-install-note">' + (answered > 0
+      ? 'The Home Screen app starts empty: progress saved in Safari does not move across by itself. To bring it with you, go to You, then Settings, and tap Back up. Then tap Restore in Settings in the Home Screen app, and keep studying there.'
+      : 'Then open KaiSip from your Home Screen and study there, so your progress stays in one place.') + '</p>'
+    + '<div class="plnt-invite-acts"><button type="button" class="plnt-ghost plnt-ghost-quiet" onclick="installTipHide()" aria-describedby="tdInstallH">Hide tip</button></div>'
+    + '</div></div></section>';
+}
+function installTipHide() {
+  try { localStorage.setItem(INSTALL_TIP_KEY, 'hidden'); } catch (e) {}
+  var card = document.getElementById('tdInstall');
+  if (card && card.parentNode) card.parentNode.removeChild(card);
+  var next = document.getElementById('tdGo') || document.getElementById('tdTitle');
+  if (next) { try { next.focus({ preventScroll: true }); } catch (e) {} }
+  showToast('Tip hidden. Safari\u2019s Share menu can still add KaiSip to your Home Screen.', 'info', 3200);
 }
 
 // ── "You've worked through the free questions" (web v12.50) ──
@@ -26709,11 +26798,45 @@ function todayFreeDoneHtml() {
   if (!todayFreeDoneDue()) return '';
   return '<section class="td-fs" id="tdFs" aria-labelledby="tdFsT">'
     + '<h2 class="td-fs-t" id="tdFsT">You&rsquo;ve worked through the free questions</h2>'
-    + '<p class="td-fs-m">Your review keeps going here for free. The full course, with every practice question and full mock exams, is in the KaiSip Android beta.</p>'
-    + '<div class="td-app-acts">'
-    + '<a class="gt-btn-secondary" href="' + escapeHtml(FULL_COURSE_URL) + '">Join the Android beta</a>'
-    + '<button type="button" class="gt-btn-ghost td-fs-hide" onclick="todayFreeDoneNotNow()">Not now</button>'
-    + '</div></section>';
+    + '<p class="td-fs-m">Your review keeps going here for free. The full course, with every practice question and full mock exams, is not open to everyone yet.</p>'
+    + freeDoneNextHtml()
+    + '</section>';
+}
+// What comes next, by device: iPhone and iPad get the waitlist (no Android
+// link); everyone else gets the Android app with Google's official badge, the
+// badge never alone in a sentence and never beside a rating or review ask.
+function freeDoneNextHtml() {
+  var ios = false;
+  try { ios = appCtaPlatform() === 'ios'; } catch (e) {}
+  var hide = '<button type="button" class="gt-btn-ghost td-fs-hide" onclick="todayFreeDoneNotNow()">Not now</button>';
+  if (ios) {
+    return '<p class="td-fs-m">The iPhone app is planned, with no date yet.</p>'
+      + '<div class="td-app-acts"><a class="gt-btn-secondary" href="' + escapeHtml(WAITLIST_URL) + '">Join the waitlist</a>' + hide + '</div>';
+  }
+  // The Android phone card (#tdApp) already shows the badge at the top of
+  // Today: keep the sentence, leave out a second badge (nothing moves).
+  var appCardShown = document.body && document.body.getAttribute('data-app-cta-card') === 'shown';
+  if (appCardShown) {
+    return '<p class="td-fs-m">Meanwhile, the KaiSip app for Android has short lessons and a daily plan.</p>'
+      + '<div class="td-app-acts">' + hide + '</div>';
+  }
+  return '<p class="td-fs-m">Meanwhile, the KaiSip app for Android has short lessons and a daily plan.</p>'
+    + '<div class="td-app-acts"><a class="td-app-badge" href="' + escapeHtml(PLAY_WEB_URL) + '" target="_blank" rel="noopener"><img src="assets/google-play-badge.png" alt="Get it on Google Play (opens in a new tab)" width="135" height="40" decoding="async"></a>' + hide + '</div>';
+}
+// Is Google's Play badge on this device's pages (live mode, or the free-done
+// card, both everywhere but iPhone and iPad)? Then Today's footer carries
+// Google's trademark line.
+function playBadgeShown() {
+  try { return appCtaPlatform() !== 'ios'; } catch (e) { return false; }
+}
+// Practice with every free question answered: the same next step as a link
+// (iPhone: the waitlist; others: the Android app, as text, no badge).
+function freeDoneEmptyLinkHtml() {
+  var ios = false;
+  try { ios = appCtaPlatform() === 'ios'; } catch (e) {}
+  return ios
+    ? '<a class="act-btn secondary" href="' + escapeHtml(WAITLIST_URL) + '">Join the waitlist</a>'
+    : '<a class="act-btn secondary" href="' + escapeHtml(PLAY_WEB_URL) + '" target="_blank" rel="noopener">Android app on Google Play<span class="sr-only"> (opens in a new tab)</span></a>';
 }
 function todayFreeDoneNotNow() {
   try { localStorage.setItem(FREE_DONE_HIDE_KEY, String(Date.now() + FREE_DONE_HIDE_MS)); } catch (e) {}
@@ -26745,7 +26868,7 @@ document.addEventListener('qb:domain-loaded', function () {
     if (S.activeTab !== 'home' || document.getElementById('tdFs') || document.querySelector('#homeArea .td-name')) return;
     var hero = document.querySelector('#homeArea .td-hero');
     var html = hero ? todayFreeDoneHtml() : '';
-    if (html) hero.insertAdjacentHTML('afterend', html);
+    if (html) { (document.getElementById('tdInstall') || hero).insertAdjacentHTML('afterend', html); appCtaTodayWire(); }
   } catch (e) {}
 });
 
@@ -26760,7 +26883,7 @@ function railAppFit() {
   var wide = !window.matchMedia || window.matchMedia('(min-width: 48em)').matches;
   if (panel.hidden || !wide) { rail.removeAttribute('data-app-fit'); return; }
   if (!rail.clientHeight) return; // hidden (a focused question): fit when it returns
-  var fits = ['qr', 'base', 'tight', 'min'];
+  var fits = ['qr', 'base', 'plain', 'tight', 'min'];
   if (document.getElementById('railAppQr').hidden) fits.shift();
   // Measured with the QR in place even on Today (where Today's own card may
   // hide it), so the fit holds on every page.
@@ -26814,6 +26937,8 @@ function appCtaInit() {
     textLink.setAttribute('href', href);
     appCtaBadge(img, badgeLink, textLink);
   }
+  // Google's badge rules: the trademark line goes wherever the badge shows.
+  el('appCtaLegal').hidden = !(live && showLink);
   // Computers only: the QR code (see appCtaQrOk).
   var qrOk = appCtaQrOk(href);
   var qr = el('appCtaQr');
@@ -26834,6 +26959,7 @@ function appCtaInit() {
       rText.setAttribute('href', href);
       appCtaBadge(el('railAppBadge'), rBadge, rText, railAppFit);
     }
+    el('railAppLegal').hidden = !live;
     el('railAppQr').hidden = !qrOk;
     if (qrOk) el('railAppQrImg').setAttribute('src', 'assets/kaisip-play-qr.svg');
     rp.hidden = false;
@@ -27718,6 +27844,17 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'KaiSip is on the web',
+    items: [
+      { cat: 'new', text: 'KaiSip is now on the web for everyone: study free in any browser.' },
+      { cat: 'new', text: 'On iPhone and iPad, add KaiSip to your Home Screen from Safari to open it full screen, like an app. Today shows the steps.' },
+      { cat: 'new', text: 'KaiSip is also on Google Play for Android phones.' },
+      { cat: 'improved', text: 'The Android beta has finished. Thank you to everyone who tested KaiSip.' },
+      { cat: 'improved', text: 'The capital J and the letter f have a cleaner, more familiar shape, so names and headings are easier to read.' },
+    ],
+  },
+  {
+    version: 'v13.1',
     items: [
       { cat: 'improved', text: 'Practice questions that were hard to follow now read more plainly, in short sentences, so you can focus on the answer instead of the wording.' },
     ],

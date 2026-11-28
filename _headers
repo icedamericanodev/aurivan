@@ -127,12 +127,27 @@
   Cache-Control: public, max-age=0, must-revalidate
   Content-Security-Policy: default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; script-src 'sha256-nbMPt7DJNCogX1hWKTLNy0Fg4H3+bU/3Jfci1NXG084=' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
 
-# The unlisted preview of the web study app while the site is closed to a
-# landing page (scripts/build_site.sh, PREVIEW_DIR). Not for search engines,
-# and always fresh. Remove this rule when the web app reopens at launch.
-/preview-u63raxyfxc/*
-  X-Robots-Tag: noindex, nofollow
+# The web study app at kaisip.com/app/ (public since 28 Nov 2026; built by
+# scripts/build_site.sh into APP_DIR in home and landing mode). Its policy is
+# the /* one above, the same as the app at the top of the site in app mode.
+# These rules only set caching (and, for its data and assets, the same strict
+# extra policy as /data/* and /assets/*). Each address gets ONE Cache-Control:
+# never add a /app/* catch-all, because Cloudflare would join its value with
+# these. The build checks them. The old preview folder redirects here
+# (_redirects).
+/app/
   Cache-Control: public, max-age=0, must-revalidate
+/app/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+# The install manifest (name, icons, full screen). Small, so always re-checked.
+/app/manifest.webmanifest
+  Cache-Control: public, max-age=0, must-revalidate
+/app/data/*
+  Cache-Control: public, max-age=300, must-revalidate
+  Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+/app/assets/*
+  Cache-Control: public, max-age=86400
+  Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'
 
 # Question banks and notes change with releases: short cache, then revalidate.
 # Opened directly in a browser they may do nothing (no scripts, no framing).

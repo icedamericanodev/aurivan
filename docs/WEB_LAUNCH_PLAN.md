@@ -28,6 +28,19 @@ and the owner's decisions.
 | Leaked-password lookup | **No third-party lookup for now** (no HIBP range check from the apps; Pro's server check is not on Free) | Listed risk R2; the Pro upgrade path stays open |
 | CIA | **Placeholder until it is done** | Stays out of the apps (expert decision 27 Nov: not until The IIA licence question is settled). The pack pipeline keeps passing its dry run so it can be switched on later. |
 
+## Owner decisions (28 Nov 2026, later the same day)
+
+| Topic | Decision |
+|---|---|
+| Web design | Direction A, "Grove Atelier" (Grove, elevated), with joined code cells and tick marks; **one design across the website, Android and iPhone**. It ships to existing Android users in 2.4 |
+| Common passwords | "Apply the password security standard and reject all common passwords": the whole password is compared (NIST SP 800-63B-4 3.1.1.2), against a common-password list, patterns (repeats, sequences, keyboard walks, years), the service's own words and the learner's email and name. Normal phrases pass |
+| Idle sign-in | A sign-in unused for 14 days ends, on top of the 30-day limit (the owner's checklist asked for an idle timeout) |
+| Sign-up for new learners | A step of onboarding on every platform, shown as **optional**, explaining that an account lets them study on the website too and keeps progress in sync; "Continue without an account" stays |
+| Existing Android users | 2.4 shows a one-time, dismissible pop-up inviting them to sign in; afterwards an account card on the You tab ("Saved on this phone only", create a free account, sign in). Mockups reviewed by the owner |
+| Ratings | 2.4 asks for a Google Play rating with Google's own sheet. Experts' agreed rule (behaviour, compliance, growth, support): celebrate every milestone, ask only at the best ones; first ask after about 7 days and 5 study days; at least 90 days apart, at most 3 a year, once per app version; never on day one, mid-question, after a poor mock, in exam week or where the free questions end. "Rate KaiSip on Google Play" and "Tell us what to improve" are always in the app. No reward, no "do you like it?" question, no request for 5 stars anywhere. Reviews with a problem go into `docs/beta/TESTER_FEEDBACK.md` |
+| Android beta | **Closed** (no new testers, no new reward). Existing Alpha testers keep their track and their 6 months. The "Testers Community" tester list is left as it is |
+| After the free questions on the web | The Google Play badge to the Android app, and the waitlist for iPhone |
+
 ## What already exists
 
 - Supabase project (Singapore, Free plan): sync, snapshots, deletion,
@@ -37,8 +50,9 @@ and the owner's decisions.
   own TypeScript (`mobile/src/webcloud/`), so both apps sync with the same
   rules.
 - Nightly encrypted backups to Cloudflare R2.
-- The web study app already loads only the free CISA sample (web v12.50+),
-  and is built at a hidden preview path under the home page.
+- The web study app loads only the free CISA sample (web v12.50+). Since
+  28 Nov 2026 (web v13.2) it is public at https://kaisip.com/app/ (see
+  stream B, step 0).
 - Course content: CRISC 1,000, AAIA 1,000, CC 1,000 and CSOE 392 questions,
   each with notes, principles, an exam guide and a final review week. CIA
   Part 1 meets its gate; Parts 2 and 3 do not yet.
@@ -68,6 +82,14 @@ loop. Nothing goes public until its gate says so.
    client (`mobile/src/webcloud/`), so web and phone use one implementation.
 
 ### B. Website version with sign-in and sync (web v14, MAJOR)
+0. **Done (28 Nov 2026, web v13.2, owner decision): the web app is public
+   without sign-in**, so iPhone users can study before the App Store app.
+   The home page stays at `/`; the app is at `/app/` (step 3
+   below); the old preview folder redirects there. It installs with "Add to
+   Home Screen" (manifest, Apple tags, an iPhone Safari tip on Today). No
+   service worker yet. Details and rollback: `docs/WEBSITE_DEPLOY.md`.
+   Sign-in (the steps below) is unchanged and still waits for the go-live gates;
+   its redirect addresses must include `https://kaisip.com/app/`.
 1. `index.html`: sign-in screen (Google, email + password, forgot password;
    sign-up confirms the email with a code), the Account section (status, Sync now, Download my
    data, Delete synced progress, Delete account, sign out), first-sync
@@ -109,6 +131,10 @@ loop. Nothing goes public until its gate says so.
    true once sync is on), IARC and listing updates. Checked by
    `app-store-compliance-reviewer`.
 3. Two bundles as from 2.3 (public sample, Alpha full).
+4. Already merged for 2.4 (add to the 2.4 release notes when its tracker is
+   opened): the capital J has a straight stem in headings, names and the
+   avatar initial (FB-014, owner report 28 Nov 2026; the font files in
+   `mobile/assets/fonts/`, no code change). Not in 2.3.
 
 ### D. Course packs (runs in parallel with A to C)
 1. Generalise the free sample builder to every course (CRISC, AAIA, CC,

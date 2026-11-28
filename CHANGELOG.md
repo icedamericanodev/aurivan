@@ -4,7 +4,7 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
-## Phone [2.3] · in preparation (first public release)
+## Phone [2.3] · 2026-11-26 (first public release)
 
 The first public Google Play release. The public app includes a free sample of the practice questions; closed testers keep the full question bank.
 
@@ -61,6 +61,17 @@ The first update after the 2.0.0 launch (closed testing). Play version name exac
 - A learner noticed the letter f looked unusual; it now has a familiar shape.
 - A learner saw Android's navigation buttons covering the buttons at the bottom of a screen; bottom buttons now sit above the navigation bar.
 - A learner found a password policy question unclear; it now states that management requires the controls.
+
+## Web [v13.2] · 2026-11-28 · KaiSip is on the web
+
+### New
+- KaiSip is now on the web for everyone: study free in any browser.
+- On iPhone and iPad, add KaiSip to your Home Screen from Safari to open it full screen, like an app. Today shows the steps.
+- KaiSip is also on Google Play for Android phones.
+
+### Improved
+- The Android beta has finished. Thank you to everyone who tested KaiSip.
+- The capital J and the letter f have a cleaner, more familiar shape, so names and headings are easier to read.
 
 ## Web [v13.1] · 2026-11-28
 
