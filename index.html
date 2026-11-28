@@ -27465,12 +27465,14 @@ function kaEl(id) { return document.getElementById(id); }
 
 // A script this site (or the human check) serves, loaded once.
 var kaScripts = {};
-function kaLoadScript(src) {
+function kaLoadScript(src, integrity) {
   if (kaScripts[src]) return kaScripts[src];
   kaScripts[src] = new Promise(function (resolve, reject) {
     var s = document.createElement('script');
     s.src = src;
     s.async = true;
+    // The file's own fingerprint, when the caller knows it: a changed file is refused by the browser.
+    if (integrity) s.integrity = integrity;
     s.onload = function () { resolve(true); };
     s.onerror = function () { delete kaScripts[src]; if (s.parentNode) s.parentNode.removeChild(s); reject(new Error('load')); };
     document.head.appendChild(s);
@@ -27619,10 +27621,14 @@ function kaGetCloud() {
     if (!K || typeof K.create !== 'function') throw new Error('client');
     var B = K.browser;
     ka.cloud = K.create({
+      // Never cached, no cookies, no referrer; the client's own options (a refused redirect and a
+      // timeout signal for the leaked-password lookup) are passed on as given.
       fetch: function (url, init) {
         var o = { method: init.method, headers: init.headers, credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' };
         if (init.body !== undefined) o.body = init.body;
         if (init.keepalive) o.keepalive = true;
+        if (init.redirect) o.redirect = init.redirect;
+        if (init.signal) o.signal = init.signal;
         return window.fetch(url, o);
       },
       stores: { local: B.browserStorage(function () { return window.localStorage; }), session: B.browserStorage(function () { return window.sessionStorage; }) },
@@ -27632,8 +27638,8 @@ function kaGetCloud() {
       gzip: { CompressionStream: window.CompressionStream, DecompressionStream: window.DecompressionStream, ReadableStream: window.ReadableStream },
       host: kaHost,
       bank: kaBank,
-      passwordWords: kaLoadWords,
-      sha1Hex: B.browserSha1Hex(window.crypto.subtle)
+      // The leaked-password check's SHA-1 is filled in by KaiSipCloud.create (the browser's own).
+      passwordWords: kaLoadWords
     });
     kaBankWarm();
     return ka.cloud;
@@ -27643,7 +27649,7 @@ function kaGetCloud() {
 // The password rules' word lists: fetched when a password form opens.
 function kaLoadWords() {
   var K = window.KaiSipCloud;
-  return kaLoadScript(KA_WORDS_SRC + '?v=' + encodeURIComponent(K.passwordWordsRef)).then(function () {
+  return kaLoadScript(KA_WORDS_SRC + '?v=' + encodeURIComponent(K.passwordWordsRef), K.passwordWordsIntegrity).then(function () {
     var w = window.KaiSipPasswordWords && window.KaiSipPasswordWords.words;
     if (!w) throw new Error('words');
     return { short: w.PASSWORD_SHORT_LIST, dict: w.PASSWORD_DICT_LIST, local: w.PASSWORD_LOCAL_LIST, names: w.PASSWORD_NAMES_LIST };

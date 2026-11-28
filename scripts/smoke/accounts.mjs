@@ -421,6 +421,7 @@ if (wanted('A2')) {
       c.check(pwf.ac === 'new-password' && pwf.type === 'text' && pwf.user === MAIL && pwf.label === 'New password' && pwf.forms === 1, 'the new password field: autocomplete=new-password, shown at first, with the email beside it for password managers: ' + JSON.stringify(pwf));
       await page.waitForFunction(() => window.KaiSipCloud && window.KaiSipCloud.passwordRules.passwordWordsLoaded(), null, { timeout: 15000 });
       c.check(net.wordsJs === 1, 'the word lists load when the password form opens, once');
+      c.check(await page.evaluate(() => { const x = [...document.scripts].find((e) => /kaisip-password-words/.test(e.src)); return !!x && /^sha256-/.test(x.integrity) && x.integrity === window.KaiSipCloud.passwordWordsIntegrity; }), 'the word lists are loaded with their fingerprint (the browser refuses a changed file)');
       c.check(/15 more characters to go/.test(await text(page, '#kaPwHelp')) && /0 characters · at least 15/.test(await text(page, '#kaPwHelp')), 'the helper counts from the start: ' + (await text(page, '#kaPwHelp')));
       await axe(page, c, `create account step 3 (${v})`);
       await noOverflow(page, c, 'Create account step 3');
