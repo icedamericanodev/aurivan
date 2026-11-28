@@ -168,6 +168,16 @@
   Cache-Control: public, max-age=86400
   Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'
 
+# The home page's stylesheet and script: always re-checked (the browser asks
+# "changed?" and gets a short "no" when it has not), so a returning visitor
+# can never get new HTML with yesterday's stylesheet. That happened on
+# 28 Nov 2026: the Google Play badge showed at its raw size for a day.
+# Joined with the /assets/* rule above: no-cache wins.
+/assets/home.css
+  Cache-Control: no-cache
+/assets/home.js
+  Cache-Control: no-cache
+
 # The Beta Desk's code: always re-checked, so the page and its code never
 # drift apart (joined with the /assets/* rule above: no-cache wins).
 /assets/beta-desk.js

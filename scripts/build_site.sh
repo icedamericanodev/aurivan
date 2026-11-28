@@ -251,7 +251,7 @@ blocks = [b for _, b in re.findall(r'<(\w+)\b([^>]*\bclass\s*=\s*["\']?[^"\'>]*\
 n_quotes = len(re.findall(r"<blockquote\b", page, re.I))
 if n_quotes != len(blocks) or any(not re.search(r'data-quote-permission\s*=\s*["\']?recorded\b', b, re.I) for b in blocks):
     draft.append("a quote without recorded permission")
-if any("CISA Premium free" not in b for b in blocks):
+if any("offered free Premium access" not in b for b in blocks):
     draft.append("a quote without the reward disclosure")
 # The waitlist needs its own section in the privacy policy before it goes live.
 if forms and 'id="s3f"' not in open("privacy.html").read():
