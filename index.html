@@ -8992,7 +8992,7 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 .ka-foot { border: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 20px; margin: 32px auto 0; width: 100%; max-width: 26.25rem; font: var(--t-meta); color: var(--text2); }
 .ka-foot a { color: var(--text2) !important; display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
 .ka-foot span { width: 100%; }
-.ka-title { font: 400 2.125rem/1.1 var(--f-serif); letter-spacing: -.025em; text-wrap: balance; }
+.ka-title { font: 400 min(2.125rem, 12vw)/1.1 var(--f-serif); overflow-wrap: break-word; letter-spacing: -.025em; text-wrap: balance; }
 #kaRoot .ka-steps + .ka-title, #kaRoot .ka-back + .ka-title { margin-top: var(--sp-lg); }
 .ka-lede { margin-top: 12px !important; font: 400 1.0625rem/1.55 var(--f-sans); color: var(--text2); text-wrap: pretty; }
 .ka-lede strong { color: var(--text); font-weight: 600; overflow-wrap: anywhere; }
@@ -9007,7 +9007,7 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
   .ka-foot span { width: auto; margin-left: auto; align-self: center; }
   .ka-title { font-size: 2.5rem; }
 }
-.ka-panel { height: 100%; min-height: 40rem; border-radius: 28px; overflow: hidden; isolation: isolate; padding: 72px 64px 56px; display: flex; flex-direction: column; color: var(--on-forest); background: linear-gradient(180deg, var(--forest-top), var(--forest) 60%); box-shadow: inset 0 1px 0 var(--forest-hl); position: sticky; top: 16px; max-height: calc(100vh - 32px); }
+.ka-panel { height: 100%; min-height: 40rem; border-radius: var(--r-xl); overflow: hidden; isolation: isolate; padding: 72px 64px 56px; display: flex; flex-direction: column; color: var(--on-forest); background: linear-gradient(180deg, var(--forest-top), var(--forest) 60%); box-shadow: inset 0 1px 0 var(--forest-hl); position: sticky; top: 16px; max-height: calc(100vh - 32px); }
 .ka-fronds { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
 .ka-fronds path { fill: none; stroke: var(--forest-line); stroke-width: 1.6; stroke-linejoin: round; }
 .ka-fronds .ka-sap path { stroke: var(--sap); opacity: .35; }
@@ -9064,7 +9064,7 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 .ka-label { font: var(--t-badge); color: var(--text); }
 .ka-aside { font: var(--t-meta); display: inline-flex; align-items: center; min-height: 44px; margin-block: -14px; background: none; border: 0; padding: 0; cursor: pointer; color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 .ka-input-wrap { position: relative; display: flex; align-items: center; }
-.ka-input { width: 100%; min-height: 54px; padding: 12px 16px; border: 0; border-radius: var(--ka-r-field); background: var(--surface); color: var(--text); font: 400 1.0625rem/1.3 var(--f-sans); box-shadow: inset 0 0 0 1.5px var(--control); outline: 2px solid transparent; outline-offset: 2px; }
+.ka-input { width: 100%; min-height: 52px; padding: 12px 16px; border: 0; border-radius: var(--ka-r-field); background: var(--surface); color: var(--text); font: 400 1.0625rem/1.3 var(--f-sans); box-shadow: inset 0 0 0 1.5px var(--control); outline: 2px solid transparent; outline-offset: 2px; }
 .ka-input:focus { box-shadow: inset 0 0 0 2px var(--text), 0 0 0 4px var(--ka-halo); }
 .ka-input[aria-invalid="true"] { box-shadow: inset 0 0 0 2px var(--wrong), 0 0 0 4px var(--ka-danger-halo); }
 .ka-input-wrap .ka-input.has-reveal { padding-right: 6rem; }
@@ -9150,7 +9150,6 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 .ka-code.has-error .ka-code-grp { box-shadow: inset 0 0 0 2px var(--wrong); }
 @keyframes kaCaret { 50% { opacity: 0; } }
 /* Forced colours (Windows high contrast) repaint the hidden text: show the real field and hide its picture. */
-@media (forced-colors: active) { .ka-code-cells { visibility: hidden; } .ka-code-input { color: FieldText; caret-color: auto; letter-spacing: .5em; background: Field; padding: 0 12px; } }
 .ka-resend { margin-top: var(--sp-lg); font: 400 0.875rem/1.5 var(--f-sans); color: var(--text2); display: grid; gap: 2px; justify-items: start; }
 
 /* The password checklist: five items, each an icon and words (met or not). */
@@ -9198,7 +9197,7 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 .ka-ios .ico { color: var(--accent-text); flex-shrink: 0; margin-top: 2px; }
 .ka-welcome .ka-fine { max-width: 56ch; margin-top: 24px !important; }
 .ka-welcome .ka-welcome-foot { margin: 8px 0 0 !important; max-width: none; }
-.ka-welcome-panel { position: relative; overflow: hidden; isolation: isolate; border-radius: 24px; padding: 28px 16px 20px; background: linear-gradient(180deg, var(--forest-top), var(--forest) 60%); box-shadow: inset 0 1px 0 var(--forest-hl); }
+.ka-welcome-panel { position: relative; overflow: hidden; isolation: isolate; border-radius: var(--r-card); padding: 28px 16px 20px; background: linear-gradient(180deg, var(--forest-top), var(--forest) 60%); box-shadow: inset 0 1px 0 var(--forest-hl); }
 .ka-q { background: var(--surface); color: var(--text); border-radius: var(--r-card); padding: var(--sp-lg); box-shadow: 0 30px 60px -30px var(--ka-lift); max-width: 27.5rem; margin-left: auto; }
 [data-theme="dark"] .ka-q { box-shadow: inset 0 0 0 1.5px var(--border), 0 30px 60px -30px var(--ka-lift); }
 .ka-q-k { font: var(--t-caption); color: var(--text2); }
@@ -9219,7 +9218,7 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
   .ka-paths { margin-top: 32px; }
   .ka-path { padding: 16px 20px; grid-template-columns: 48px 1fr 24px; gap: 16px; }
   .ka-path-ico { width: 48px; height: 48px; }
-  .ka-welcome-panel { min-height: 38.75rem; padding: 56px; border-radius: 28px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .ka-welcome-panel { min-height: 38.75rem; padding: 56px; border-radius: var(--r-xl); display: flex; flex-direction: column; justify-content: flex-end; }
   .ka-q { padding: 24px; transform: rotate(-1.2deg); }
   .ka-q-stem { font-size: 1.25rem; }
 }
@@ -9272,7 +9271,7 @@ div.ka-card-main { cursor: default; }
 /* The Account page (You, then Account). */
 .ka-acct { max-width: 42.5rem; display: flex; flex-direction: column; }
 .ka-acct h1 { margin: 0; }
-.ka-hero { position: relative; overflow: hidden; isolation: isolate; margin-top: 24px; padding: 24px; border-radius: 24px; background: linear-gradient(180deg, var(--forest-top), var(--forest)); color: var(--on-forest); box-shadow: inset 0 1px 0 var(--forest-hl); --focus-ring: var(--on-forest); }
+.ka-hero { position: relative; overflow: hidden; isolation: isolate; margin-top: 24px; padding: 24px; border-radius: var(--r-card); background: linear-gradient(180deg, var(--forest-top), var(--forest)); color: var(--on-forest); box-shadow: inset 0 1px 0 var(--forest-hl); --focus-ring: var(--on-forest); }
 .ka-hero .ka-fronds { opacity: .9; }
 .ka-who { display: flex; gap: var(--sp-md); align-items: center; }
 .ka-ava { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; background: var(--sap); color: var(--on-pill); font: 500 1.375rem/1 var(--f-serif); }
@@ -9303,7 +9302,7 @@ div.ka-item { cursor: default; }
 .ka-item.is-danger .ka-item-i { background: var(--wrong-light); }
 .ka-item-say { margin: 6px 4px 0; font: var(--t-meta); color: var(--accent-text); }
 .ka-item-say:empty { display: none; }
-.ka-toggle { position: relative; width: 52px; height: 32px; padding: 0; border: 0; border-radius: 16px; background: var(--surface2); box-shadow: inset 0 0 0 1.5px var(--control); cursor: pointer; flex-shrink: 0; }
+.ka-toggle { position: relative; width: 52px; height: 32px; padding: 0; border: 0; border-radius: var(--r-tile); background: var(--surface2); box-shadow: inset 0 0 0 1.5px var(--control); cursor: pointer; flex-shrink: 0; }
 /* The switch is 32px tall; its tap area is 44. */
 .ka-toggle::before { content: ""; position: absolute; inset: -6px 0; }
 .ka-toggle::after { content: ""; position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 50%; background: var(--control); transition: transform .2s var(--ka-ease), background-color .2s; }
@@ -9325,6 +9324,20 @@ div.ka-item { cursor: default; }
 .ka-dlg .ka-form { margin-top: 16px; }
 .ka-dlg-acts { display: grid; gap: 8px; margin-top: 20px; }
 @media (prefers-reduced-motion: reduce) { .ka-busy, .ka-card-act.is-turn .ico, .ka-code:focus-within .ka-cell.is-active::after { animation: none !important; } .ka-btn, .ka-path, .ka-toggle::after { transition: none !important; } }
+/* Forced colours (Windows high contrast). Last in the block on purpose: these rules must win over the
+   components' own "border: 0" and backgrounds above. */
+@media (forced-colors: active) {
+  .ka-code-cells { visibility: hidden; }
+  .ka-code-input { color: FieldText; caret-color: auto; letter-spacing: .5em; background: Field; padding: 0 12px; }
+  /* Edges drawn with box-shadow vanish here: draw real ones. */
+  .ka-btn, .ka-path, .ka-input, .ka-box, .ka-toggle, .ka-pw, .ka-item, .ka-card, .ka-adds, .ka-alert { border: 1px solid CanvasText; }
+  .ka-btn-primary, .ka-path-primary { border-width: 2px; }
+  /* The tick is hidden with a transparent colour, which this mode repaints: hide the drawing itself. */
+  .ka-check input:not(:checked) + .ka-box svg { visibility: hidden; }
+  .ka-toggle::after { forced-color-adjust: none; background: ButtonText; }
+  .ka-toggle[aria-checked="true"] { forced-color-adjust: none; background: Highlight; border-color: Highlight; }
+  .ka-toggle[aria-checked="true"]::after { background: HighlightText; }
+}
 /* ── ACCOUNTS END ── */
 </style>
 </head>
@@ -24293,7 +24306,7 @@ function showOnboarding() {
     + '<div class="ob-forest">'
       + gtFrondSvg()
       + '<div class="ob-lockup">' + lockHtml + '</div>'
-      + '<h2 class="onboard-title ob-title" id="onboardTitle"><span class="sr-only">Welcome to KaiSip. </span>Think like an IS auditor.</h2>'
+      + '<h2 class="onboard-title ob-title" id="onboardTitle"><span class="sr-only">' + kaObHello() + '</span>Think like an IS auditor.</h2>'
       + '<p class="ob-sub">CISA exam prep, taught the way the exam thinks.</p>'
     + '</div>'
     + '<div class="ob-body">'
@@ -24332,6 +24345,7 @@ function onboardStartFive() {
 function closeOnboarding() {
   document.getElementById("flagModal").innerHTML = "";
   try { localStorage.setItem("cisa_onboarded_v6", "1"); } catch(e) {}
+  kaSheetClosed();   // accounts: a note kept back while the sheet was open
 }
 
 function checkOnboarding() {
@@ -27571,6 +27585,7 @@ var ka = {
   newsState: '',      // what the email service last said: '', 'pending', 'subscribed', ...
   newsBusy: false,
   started: false,     // kaStart has run (the page has decided what to show first)
+  landNote: '',       // a note kept back while the first-visit sheet is open
   said: '',           // the last status said aloud
   resendAt: 0,        // when a new code may be asked for
   resendTimer: null,
@@ -28089,6 +28104,7 @@ var KA_ART = {
   signup1: ['Three short steps. Then your study travels with you.', 'Email, a code, a password. That’s all.'],
   signup2: ['One code, so we know the inbox is yours.', 'It only confirms your email. It never signs you in on its own.'],
   signup3: ['One password, kept safe.', 'It is stored only as a salted one-way hash. No one at KaiSip can read it.'],
+  consent: ['Your study, ready to travel with you.', 'Agree once, and your progress syncs between this browser and the Android app.'],
   forgot: ['Back in, in a minute.', 'A reset code, a new password, and you are studying again.'],
   sync: ['Nothing you’ve answered is lost.', 'Combining only adds: your best results are kept.']
 };
@@ -28100,7 +28116,7 @@ function kaArt(key) {
   var facts = '<ul class="ka-art-facts"><li>Free, with nothing to install</li><li>Codes by email, never sign-in links</li><li>Sign-ins end after 30 days</li></ul>';
   return '<div class="ka-panel">' + kaFronds(600, 900, [[470, 930, 520, -14, 9], [560, 960, 380, 18, 7], [90, 980, 300, -28, 6], [380, 980, 240, 8, 5, true]])
     + '<div><p class="ka-art-title">' + a[0] + '</p><p class="ka-art-quote">' + a[1] + '</p></div>'
-    + (key === 'signin' || key === 'forgot' || key === 'sync' ? syncCard : facts) + '</div>';
+    + (key === 'signin' || key === 'forgot' || key === 'sync' || key === 'consent' ? syncCard : facts) + '</div>';
 }
 function kaNewTab(href, text) {
   return '<a href="' + href + '" target="_blank" rel="noopener noreferrer">' + text + '<span class="sr-only"> (opens in a new tab)</span></a>';
@@ -28175,11 +28191,15 @@ function kaConsentDraw() {
   if (!t) return;
   if (t.checked) kaSetError('kaConsentE', '');
   if (hint) hint.hidden = t.checked || !!(kaEl('kaConsentE') && kaEl('kaConsentE').textContent);
+  // Described only by what is showing (a hidden hint is still read out), and no longer "invalid" once ticked.
+  t.setAttribute('aria-describedby', 'kaAgeLine' + (hint && !hint.hidden ? ' kaConsentHint' : '') + ' kaConsentE');
+  if (t.checked) t.removeAttribute('aria-invalid');
 }
 function kaConsentRead() {
   var t = kaEl('kaTerms'), n = kaEl('kaNews');
   if (!t || !t.checked) {
     kaSetError('kaConsentE', 'Tick the box above to continue.');
+    if (t) t.setAttribute('aria-invalid', 'true');
     kaConsentDraw();
     if (t) { try { t.focus(); } catch (e) {} }
     return null;
@@ -28510,7 +28530,7 @@ var KA_VIEWS = {
       + '<p class="ka-note">' + ico('info', 18) + '<span>Saving a new password signs you out on your other devices. Your study progress is not affected.</span></p>');
   },
   consent: function () {
-    return kaShell('signup1',
+    return kaShell('consent',
       '<h1 class="ka-title" tabindex="-1">One more step</h1>'
       + '<p class="ka-lede">' + (kaAgreeDue() ? 'You’re almost in. To finish creating your account, please agree to the terms.' : 'You’re signed in. Before your progress syncs, please agree to the terms.') + '</p>'
       + kaNoticeHtml()
@@ -29166,8 +29186,13 @@ function kaLand(words) {
   }
   document.documentElement.removeAttribute('data-ka-gate');
   kaPaint();
+  // The first-visit sheet opens in a moment for a new learner (below): a toast would sit over it and
+  // be cut off for a screen reader. The plain "signed in" line is dropped (the sheet says it); a real
+  // note (the leak check couldn't run ...) is kept and shown when the sheet closes.
+  var sheet = fresh && !intent && !!kaAccount();
   var say = [words, note].filter(Boolean).join(' ');
-  if (say) showToast(say, 'info', note ? 7000 : 3600);
+  if (sheet) ka.landNote = note || '';
+  else if (say) showToast(say, 'info', note ? 7000 : 3600);
   if (intent === 'delete' && kaAccount()) setTimeout(kaDeleteDialog, 300);
   // Only on a plain landing (a learner who asked for a page gets that page; the sheet comes at their next visit).
   else if (fresh && !intent && kaAccount()) setTimeout(function () { if (!ka.view && kaGateOk() && kaFirstSheetDue()) { try { showOnboarding(); } catch (e4) {} } }, 400);
@@ -29180,6 +29205,17 @@ function kaFirstSheetDue() {
     if (Number(S.score && S.score.t) > 0) { localStorage.setItem('cisa_onboarded_v6', '1'); return false; }
     return true;
   } catch (e) { return false; }
+}
+// The first-visit sheet has closed: a note kept back while it was open is shown now.
+function kaSheetClosed() {
+  if (!KA_ON || !ka.landNote) return;
+  var n = ka.landNote;
+  ka.landNote = '';
+  showToast(n, 'info', 7000);
+}
+// What a screen reader hears first on the sheet: with accounts on, that they are signed in.
+function kaObHello() {
+  return KA_ON && kaAccount() ? 'You’re signed in. Welcome to KaiSip. ' : 'Welcome to KaiSip. ';
 }
 // The sheet's last line says "No account" on today's open site; with accounts on it says what the account does.
 function kaObChecks(list) {
@@ -29209,7 +29245,7 @@ function kaWelcomeHtml() {
     + '<p class="ka-kicker">CISA exam prep, in your browser</p>'
     + '<h1 class="ka-title-xl" tabindex="-1">Study for the CISA, <em>right here.</em></h1>'
     + '<p class="ka-lede">Practice questions with the reasoning behind every best answer, study notes and a mistake journal.</p>'
-    + '<p class="ka-welcome-why">KaiSip is free. A free account keeps your progress safe and in sync with the Android app.</p>'
+    + '<p class="ka-welcome-why">You need an account to study here. It’s free, and it keeps your progress safe and in sync with the Android app.</p>'
     + (had > 0 ? '<p class="ka-welcome-kept" id="kaKept">' + ico('check', 18) + '<span>The progress you already have in this browser is kept. After you sign in, you choose whether to add it to your account.</span></p>' : '')
     + '<div class="ka-paths">'
     + '<button type="button" class="ka-path ka-path-primary" data-ka-click="kaGo:create-account"><span class="ka-path-ico">' + ico('home', 22) + '</span><span class="ka-path-text"><span class="ka-path-t">Create a free account</span><span class="ka-path-s">With your email and a password<span class="ka-google-part"' + (kaGoogleG ? '' : ' hidden') + '>, or with Google</span>.</span></span>' + ico('arrow-right', 20) + '</button>'
@@ -29217,7 +29253,7 @@ function kaWelcomeHtml() {
     + '</div>'
     + (ios ? '<p class="ka-ios">' + kaIco('phone', 20) + '<span>On iPhone? After you sign in, Today shows how to add KaiSip to your Home Screen.</span></p>' : '')
     + '<p class="ka-fine">The web version includes a free sample of KaiSip’s CISA practice questions. Not affiliated with or endorsed by ISACA. CISA is a trademark of ISACA.</p>'
-    + '<p class="ka-foot ka-welcome-foot">' + kaNewTab('terms.html', 'Terms') + kaNewTab('privacy.html', 'Privacy') + kaNewTab('support.html', 'Help') + '</p>'
+    + '<p class="ka-foot ka-welcome-foot">' + kaNewTab('terms.html', 'Terms') + kaNewTab('privacy.html', 'Privacy') + kaNewTab('support.html', 'Help') + '<a href="/">About KaiSip</a></p>'
     + '</div><div aria-hidden="true"><div class="ka-welcome-panel">' + kaFronds(600, 760, [[520, 800, 480, -12, 9], [80, 820, 300, -26, 6], [600, 820, 300, 20, 6, true]])
     + '<div class="ka-q"><p class="ka-q-k">Practice · Protection of Information Assets</p>'
     + '<p class="ka-q-stem">Which control BEST prevents developers from moving unapproved changes into production?</p>'
@@ -29448,7 +29484,7 @@ function kaNewsHtml() {
   var state = on ? (ka.newsState === 'pending' ? 'pending' : ka.newsState === 'unconfirmed' ? 'unconfirmed' : 'on') : (n && n.blocked ? 'blocked' : 'off');
   var sub = state === 'pending' ? 'Check your inbox to confirm your email. News starts after that.'
     : state === 'unconfirmed' ? 'Saved. News starts once your email address is confirmed.'
-    : state === 'blocked' ? 'You’re unsubscribed from KaiSip news, and it can’t be restarted here.' + (KA_NEWS_FORM_URL ? ' To get it again, sign up with the ' + kaNewTab(escapeHtml(KA_NEWS_FORM_URL), 'KaiSip news form') + '.' : '')
+    : state === 'blocked' ? 'You’re unsubscribed from KaiSip news, and it can’t be restarted here.' + (KA_NEWS_FORM_URL ? ' To get it again, sign up with the ' + kaNewTab(escapeHtml(KA_NEWS_FORM_URL), 'KaiSip news form') + '.' : ' For help, see ' + kaNewTab('support.html', 'Help') + '.')
     : KA_NEWS_SUB;
   return '<div class="ka-item no-ico" id="kaNewsRow" data-state="' + state + '"><span><span class="ka-item-t" id="kaNewsT">Study tips and KaiSip news</span><span class="ka-item-s" id="kaNewsS" style="display:block">' + sub + '</span></span>'
     + '<button type="button" class="ka-toggle" id="kaNewsBtn" role="switch" aria-checked="' + (on ? 'true' : 'false') + '" aria-labelledby="kaNewsT" aria-describedby="kaNewsS" data-ka-click="kaNewsToggle"></button>'
@@ -29481,7 +29517,7 @@ function kaNewsSync(changed, again) {
       // off: read it again and show it as it is (off, with the one line).
       return kaConsent.read(cloud).then(function (c) {
         kaNewsSet(c, true);
-        if (changed === 'on') kaSayRow('kaNewsBtn', 'Off. KaiSip news is stopped for this address and can’t be restarted here.');
+        if (changed === 'on') kaSayRow('kaNewsBtn', 'Still off. It can’t be restarted here.');
       });
     }
     kaNewsDraw();

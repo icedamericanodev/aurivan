@@ -310,9 +310,17 @@ pages not on https).
   profile"). With it off, today's open app is unchanged; the tests prove
   both states.
   - A visitor who is not signed in gets the welcome and the sign-in screens,
-    and no path into the study app. The welcome says why in one line
-    ("KaiSip is free. A free account keeps your progress safe and in sync
-    with the Android app.") and links Terms, Privacy and Help.
+    and no path into the study app. The welcome says so and why in one line
+    ("You need an account to study here. It's free, and it keeps your
+    progress safe and in sync with the Android app.") and links Terms,
+    Privacy, Help and "About KaiSip" (the home page, for someone who only
+    wanted a look).
+  - **A code is not a sign-in** (security review B1). After the emailed code
+    and before a password is saved, the session opens nothing: every address
+    and door keeps "Create a password" (with "Sign out instead"), the app is
+    hidden from the first draw, and the shared client refuses every other
+    call for that session before sending it. The functions and the row rules
+    must refuse it on the server too (the database engineer's half).
   - No flash: the page's first script marks the page (`data-ka-gate`) before
     anything is drawn when this browser holds no live sign-in; the styles
     hide the app while the mark is there.
@@ -374,7 +382,8 @@ pages not on https).
   Sign-in applies none of this and keeps "Email or password is incorrect".
 - **Shared client** (`mobile/src/webcloud/`): `sendSignUpCode` and
   `confirmSignUpCode` (a code session that only "needs a password": no sync,
-  signed out after 10 minutes), then the existing `setPassword`; and, for
+  no account call of any kind, signed out after 10 minutes), then the
+  existing `setPassword`; one sign-up code a minute from a page; and, for
   the consent record, `acceptTerms` (now with the Privacy Policy version,
   the source and the optional emails), `consent`, `setNews` and `syncNews`.
   Google returns to `https://kaisip.com/app/` (`REDIRECT_URL`), so **the
@@ -436,6 +445,27 @@ pages not on https).
   the checklist at 320px.
   `--shots <dir>` saves every screen at 390 and 1280, light and dark, and
   fails if KaiSip Serif was not loaded.
+- **Round 4 (both reviews of 7e7b894).** Security: B1 and B2 above; a new
+  account whose agreement cannot be read gets three tries, then the
+  agreement screen (S1); the agreement carried from the Create account form
+  has an owner and 30 minutes (S2); Create account on an address that
+  already had an account says so (S3); `?error=` / `?code=` never puts a
+  sign-in form in front of a signed-in learner (S4); a consent write must
+  come back as the learner's one row (S5); tokens in the address are removed
+  at once (N2); the account block has no inline handlers, and `_headers`
+  carries the target script policy as Report-Only, which blocks nothing and
+  lets the tests count what is left (S7, part). UX: forced colours (an
+  unticked box draws no tick; buttons, fields and the switch keep an edge);
+  the "One more step" panel; the agreement box's description for screen
+  readers; no toast over the first-visit sheet; fields are 52 tall like the
+  buttons.
+- **Follow-ups listed, not done:** the spacing sweep (about 35 off-scale
+  gaps and paddings in the account styles, and `font:` shorthands that
+  bypass the type tokens); moving the page's four inline script blocks and
+  the rest of the app's inline handlers out, so the Report-Only policy can
+  be enforced (the reviewer's phases 1 and 2); the review's S6 (email budget
+  and a purge of unconfirmed accounts) and the `magic_link` email template
+  (S3) are the database engineer's.
 - **Open before launch:**
   1. Add Google's "G" file (above). Until then accounts made with Google on
      the phone cannot sign in on the website, except by setting a password

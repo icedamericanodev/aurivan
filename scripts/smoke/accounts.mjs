@@ -1275,10 +1275,11 @@ async function walk(v, scheme, shots, c, axeOnly = false) {
   await page.press('#kaPw', 'Enter'); await waitView(page, ''); await settled(page);
   await page.waitForFunction(() => /couldn.t check/.test(document.getElementById('globalToast').textContent), null, { timeout: 4000 }).catch(() => {});
   if (shots) await page.screenshot({ path: path.join(shots, `11-created-leak-check-unavailable_${v === 'phone' ? '390' : '1280'}_${scheme}.png`) });
-  await sleep(7200);   // the toast leaves
-  // A new account with nothing answered: the app's own first-visit sheet, once.
-  await page.waitForSelector('.ob-welcome', { timeout: 8000 }); await snap(page, '11b-first-visit-sheet');
-  await page.click('.ob-ghost'); await sleep(250);
+  // A new account with nothing answered: the app's own first-visit sheet, once, with no toast over it.
+  await page.waitForSelector('.ob-welcome', { timeout: 8000 }); await sleep(500); await snap(page, '11b-first-visit-sheet');
+  await page.click('.ob-ghost'); await sleep(400);
+  if (shots) await page.screenshot({ path: path.join(shots, `11c-note-after-the-sheet_${v === 'phone' ? '390' : '1280'}_${scheme}.png`) });
+  await sleep(7200);   // the note kept for after the sheet leaves
   // 2. Signed in: You and the Account page.
   await goYou(page);
   await snap(page, '12-you-signed-in');
@@ -1403,7 +1404,9 @@ if (wanted('G1')) {
       await open(page);
       await waitView(page, 'welcome');
       const w = await text(page, '#kaRoot');
-      c.check(/KaiSip is free\. A free account keeps your progress safe and in sync with the Android app\./.test(w), 'the welcome says why, in one honest line: ' + w.slice(0, 260));
+      c.check(/You need an account to study here\. It.s free, and it keeps your progress safe and in sync with the Android app\./.test(w) && !/KaiSip is free/.test(w), 'the welcome says an account is needed, and why, in one honest line: ' + w.slice(0, 260));
+      const about = await page.evaluate(() => { const a = [...document.querySelectorAll('#kaRoot .ka-welcome-foot a')].find((x) => x.textContent.trim() === 'About KaiSip'); return a && { href: a.getAttribute('href'), target: a.getAttribute('target') }; });
+      c.check(about && about.href === '/' && !about.target, 'a quiet "About KaiSip" link leads to the home page (not round the gate): ' + JSON.stringify(about));
       const paths = await page.evaluate(() => [...document.querySelectorAll('#kaRoot .ka-path-t')].map((x) => x.textContent));
       c.check(JSON.stringify(paths) === JSON.stringify(['Create a free account', 'Sign in']), 'two paths, both to an account: ' + paths.join(' / '));
       await page.waitForFunction(() => /or with Google/.test(document.querySelector('.ka-path-primary').innerText), null, { timeout: 4000 }).catch(() => {});
@@ -1707,10 +1710,10 @@ if (wanted('N1')) {
     await page.click('#kaNewsBtn');
     await page.waitForFunction(() => document.getElementById('kaNewsRow').getAttribute('data-state') === 'blocked', null, { timeout: 8000 });
     const blocked = await row(page);
-    c.check(blocked.sw === 'false' && norm(blocked.sub) === norm('You’re unsubscribed from KaiSip news, and it can’t be restarted here.'), 'blocked: the switch is off, with one line that it can’t be restarted here: ' + JSON.stringify(blocked));
+    c.check(blocked.sw === 'false' && /^You.re unsubscribed from KaiSip news, and it can.t be restarted here\. For help, see Help( \(opens in a new tab\))? ?\.$/.test(norm(blocked.sub)), 'blocked: the switch is off, with one line that it can’t be restarted here and where to get help: ' + JSON.stringify(blocked));
     c.check(!/by email|you switched|you turned|bounce|complain/i.test(blocked.sub), 'the line does not claim how it happened');
-    await waitText(page, 'kaNewsBtnSay', /^Off\. KaiSip news is stopped for this address and can.t be restarted here\.$/, c);
-    c.check(await page.evaluate(() => !document.querySelector('#kaNewsRow a') && document.activeElement.id === 'kaNewsBtn' && document.getElementById('kaNewsW').textContent === 'Off'), 'no link while the form’s address is not set; focus stays on the switch, which reads Off');
+    await waitText(page, 'kaNewsBtnSay', /^Still off\. It can.t be restarted here\.$/, c);
+    c.check(await page.evaluate(() => { const a = document.querySelectorAll('#kaNewsRow a'); return a.length === 1 && a[0].getAttribute('href') === 'support.html' && a[0].target === '_blank' && document.activeElement.id === 'kaNewsBtn' && document.getElementById('kaNewsW').textContent === 'Off'; }), 'while the form’s address is not set the line points to Help (never a dead end); focus stays on the switch, which reads Off');
     const rec2 = server.consent.get(server.userByEmail(EMAIL).id);
     c.check(rec2.marketing_opt_in === false && rec2.source === 'email_service', 'the record was switched off by the server, with its own label: ' + JSON.stringify(rec2));
     await axe(page, c, 'Account, news blocked');
@@ -1725,7 +1728,7 @@ if (wanted('N1')) {
     await page.waitForFunction(() => document.body.hasAttribute('data-section'));
     await openAccount(page);
     c.check((await row(page)).state === 'blocked' && (await row(page)).sw === 'false', 'after a reload the record’s own label keeps the line there');
-    c.check(await page.evaluate(() => KA_NEWS_FORM_URL === '' && !document.querySelector('#kaNewsRow a')), 'the form’s address ships empty, so no link is drawn');
+    c.check(await page.evaluate(() => KA_NEWS_FORM_URL === '' && document.querySelector('#kaNewsRow a').getAttribute('href') === 'support.html'), 'the form’s address ships empty, so the line points to Help');
     // The data download says whether the app added the address to the email service.
     const dl = page.waitForEvent('download');
     await page.click('#kaDl');
@@ -2453,6 +2456,128 @@ if (wanted('S6')) {
     const a = html.indexOf('// ── ACCOUNTS (web sign-in'), z = html.indexOf('// ── ACCOUNTS END ──');
     const inline = (html.slice(a, z).match(/[\s'"]on[a-z]+\s*=\s*\\?["']/g) || []);
     c.check(a > 0 && z > a && inline.length === 0, 'no inline on...= handler in the account block: ' + inline.slice(0, 5).join(' '));
+  });
+  await ctx.close();
+}
+
+// ── X. UX review 2 ──
+if (wanted('X1')) {
+  for (const scheme of ['light', 'dark']) {
+    const { ctx, page, server } = await setup({ view: 'phone', scheme });
+    await makeAccount(server);
+    await rec.run(`X1-forced-${scheme}`, 'Forced colours (Windows high contrast): an unticked box draws no tick, and buttons, fields and the switch keep an edge', page, async (c) => {
+      await page.emulateMedia({ forcedColors: 'active' });
+      await open(page, '#create-account');
+      const boxes = () => page.evaluate(() => ['kaTerms', 'kaNews'].map((id) => { const i = document.getElementById(id), b = i.nextElementSibling, cs = getComputedStyle(b); return { id, checked: i.checked, tick: getComputedStyle(b.querySelector('svg')).visibility, edge: cs.borderTopWidth + ' ' + cs.borderTopStyle }; }));
+      let b = await boxes();
+      c.check(b.every((x) => !x.checked && x.tick === 'hidden' && x.edge === '1px solid'), 'both boxes unticked: no tick is drawn, and each box has a real edge: ' + JSON.stringify(b));
+      await page.check('#kaTerms', { force: true });
+      b = await boxes();
+      c.check(b[0].tick === 'visible' && b[1].tick === 'hidden', 'only the ticked box shows a tick: ' + JSON.stringify(b.map((x) => x.tick)));
+      const edges = await page.evaluate(() => ['#kaGo', '#kaEmail'].map((q) => { const cs = getComputedStyle(document.querySelector(q)); return q + ' ' + cs.borderTopWidth + ' ' + cs.borderTopStyle; }));
+      c.check(edges[0] === '#kaGo 2px solid' && edges[1] === '#kaEmail 1px solid', 'the main button and the field have real edges: ' + edges.join(', '));
+      await c.shot(`x1-forced-${scheme}-create`, page, true);
+      await page.evaluate(() => kaGo('sign-in'));
+      await waitView(page, 'signin');
+      c.check(await page.evaluate(() => getComputedStyle(document.getElementById('kaShared').nextElementSibling.querySelector('svg')).visibility === 'hidden'), 'the "shared computer" box on Sign in draws no tick either');
+      // The switch on Account, off and on.
+      await page.fill('#kaEmail', EMAIL); await page.fill('#kaPass', PW); await page.press('#kaPass', 'Enter');
+      await waitView(page, '');
+      await page.evaluate(() => navGoFocus(null, 'account'));
+      await page.waitForSelector('#kaNewsBtn');
+      await page.waitForFunction(() => !ka.newsBusy);
+      const sw = () => page.evaluate(() => { const t = document.getElementById('kaNewsBtn'), cs = getComputedStyle(t), k = getComputedStyle(t, '::after'); return { on: t.getAttribute('aria-checked'), track: cs.backgroundColor, edge: cs.borderTopWidth + ' ' + cs.borderTopStyle + ' ' + cs.borderTopColor, knob: k.backgroundColor, w: Math.round(t.getBoundingClientRect().width), h: Math.round(t.getBoundingClientRect().height) }; });
+      const off = await sw();
+      await page.click('#kaNewsBtn');
+      await page.waitForFunction(() => document.getElementById('kaNewsBtn').getAttribute('aria-checked') === 'true');
+      const on = await sw();
+      c.check(off.edge.startsWith('1px solid') && off.knob !== off.track, 'Off: an edge, and a knob that stands out from the track: ' + JSON.stringify(off));
+      c.check(on.track !== off.track && on.knob !== on.track && on.knob !== off.knob && on.edge.includes(on.track), 'On: the track takes the system highlight (edge too) and the knob its text colour, so On and Off differ without relying on position alone: ' + JSON.stringify(on));
+      c.check(on.w === off.w && on.h === off.h && on.w >= 52, 'the switch keeps its size: ' + on.w + ' by ' + on.h);
+      await c.shot(`x1-forced-${scheme}-switch`);
+    });
+    await ctx.close();
+  }
+}
+
+if (wanted('X2')) {
+  const { ctx, page, server } = await setup({ view: 'desktop' });
+  await rec.run('X2', '"One more step" at 1280: the forest panel speaks about agreeing and syncing, not about codes and passwords; the consent box is described only by what is showing', page, async (c) => {
+    await open(page, '#sign-in');
+    await page.waitForSelector('.ka-btn-google', { state: 'visible' });
+    const [req] = await Promise.all([page.waitForRequest((r) => r.url().startsWith(SUPA + '/auth/v1/authorize')), page.click('.ka-btn-google')]);
+    await page.goto(`${APP}?code=${server.googleCode(new URL(req.url()).searchParams.get('code_challenge'), 'panel@gmail.com')}`);
+    await waitView(page, 'consent');
+    const art = await page.evaluate(() => document.querySelector('.ka-art').innerText.replace(/\s+/g, ' ').trim());
+    c.check(/Your study, ready to travel with you\./.test(art) && /Agree once, and your progress syncs between this browser and the Android app\./.test(art) && /What an account keeps in step/.test(art), 'the panel: ' + art.slice(0, 200));
+    c.check(!/Three short steps|a code, a password|Codes by email/.test(art), 'nothing about codes or passwords for a Google arrival');
+    await c.shot('x2-one-more-step-1280');
+    // The agreement box for a screen reader.
+    const aria = () => page.evaluate(() => { const t = document.getElementById('kaTerms'); return { by: t.getAttribute('aria-describedby'), invalid: t.getAttribute('aria-invalid'), hint: !document.getElementById('kaConsentHint').hidden }; });
+    let a = await aria();
+    c.check(a.by === 'kaAgeLine kaConsentHint kaConsentE' && a.invalid === null && a.hint, 'unticked: described by the age line, the hint and the (empty) message: ' + JSON.stringify(a));
+    await page.click('#kaGo');
+    a = await aria();
+    c.check(a.by === 'kaAgeLine kaConsentE' && a.invalid === 'true' && !a.hint, 'refused: marked invalid, and the sentence is heard once (the hidden hint is no longer in the description): ' + JSON.stringify(a));
+    await page.check('#kaTerms', { force: true });
+    a = await aria();
+    c.check(a.by === 'kaAgeLine kaConsentE' && a.invalid === null, 'ticked: no longer invalid, described by the age line only: ' + JSON.stringify(a));
+    await axe(page, c, 'One more step at 1280');
+  });
+  await ctx.close();
+}
+
+if (wanted('X3')) {
+  const { ctx, page, server, net } = await setup({ view: 'phone', onboarded: false });
+  await rec.run('X3', 'The first-visit sheet for a new account: no toast over it, "signed in" is said by the sheet itself, and a real note waits until the sheet closes', page, async (c) => {
+    net.hibpMode = 'down';   // the leak check can't run: a real note to carry
+    await open(page, '#create-account');
+    await page.fill('#kaEmail', 'quiet@example.com');
+    await page.check('#kaTerms', { force: true });
+    await page.press('#kaEmail', 'Enter');
+    await waitView(page, 'signup2');
+    await page.fill('#kaCode', server.codes.get('quiet@example.com'));
+    await page.press('#kaCode', 'Enter');
+    await waitView(page, 'signup3');
+    await fillPw(page, PW2);
+    await page.press('#kaPw', 'Enter');
+    await waitView(page, '');
+    await page.waitForSelector('.ob-welcome', { timeout: 8000 });
+    await sleep(300);
+    const t1 = await page.evaluate(() => { const t = document.getElementById('globalToast'); return t && t.classList.contains('show') ? t.textContent : ''; });
+    c.check(t1 === '', 'no toast sits over the sheet: "' + t1 + '"');
+    c.check((await page.evaluate(() => document.querySelector('#onboardTitle .sr-only').textContent)) === norm('You’re signed in. Welcome to KaiSip. ') + ' ' || /^You.re signed in\. Welcome to KaiSip\. $/.test(await page.evaluate(() => document.querySelector('#onboardTitle .sr-only').textContent)), 'a screen reader hears "You’re signed in. Welcome to KaiSip." from the sheet');
+    await c.shot('x3-sheet-no-toast');
+    await page.click('.ob-ghost');
+    await page.waitForFunction(() => /couldn.t check this password against known leaks/.test(document.getElementById('globalToast').textContent), null, { timeout: 4000 }).catch(() => {});
+    c.check(/couldn.t check this password against known leaks/.test(await toast(page)), 'the note about the leak check shows once the sheet is closed: ' + (await toast(page)));
+  });
+  await ctx.close();
+}
+
+if (wanted('X4')) {
+  const { ctx, page, server } = await setup({ view: 'phone' });
+  await rec.run('X4', 'Fields are as tall as buttons (52), and at 320px with text at 200% the title wraps between words', page, async (c) => {
+    await open(page, '#sign-in');
+    const h = await page.evaluate(() => ['#kaEmail', '#kaPass', '#kaGo'].map((q) => Math.round(document.querySelector(q).getBoundingClientRect().height)));
+    c.check(h.every((x) => x === 52), 'email, password and the button are all 52 tall: ' + h.join(', '));
+    await page.setViewportSize({ width: 320, height: 720 });
+    await page.evaluate(() => kaGo('create-account'));
+    await waitView(page, 'signup1');
+    await page.fill('#kaEmail', 'big@example.com');
+    await page.check('#kaTerms', { force: true });
+    await page.press('#kaEmail', 'Enter');
+    await waitView(page, 'signup2');
+    await page.fill('#kaCode', server.codes.get('big@example.com'));
+    await page.press('#kaCode', 'Enter');
+    await waitView(page, 'signup3');
+    await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+    await sleep(150);
+    // No word of the title is cut: every word's box sits on one line.
+    const cut = await page.evaluate(() => { const t = document.querySelector('#kaRoot h1'); const node = t.firstChild; const out = []; let at = 0; for (const w of t.textContent.split(' ')) { const r = document.createRange(); r.setStart(node, at); r.setEnd(node, at + w.length); const tops = new Set([...r.getClientRects()].map((x) => Math.round(x.top))); if (tops.size > 1) out.push(w); at += w.length + 1; } return out; });
+    c.check(cut.length === 0, 'no word of "Create a password" is broken across lines: ' + cut.join(', '));
+    await noOverflow(page, c, 'Create a password at 320px, text at 200%');
+    await c.shot('x4-title-320-200', page, true);
   });
   await ctx.close();
 }

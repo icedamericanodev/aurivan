@@ -2309,7 +2309,7 @@ beside it). No other element may use Roboto; `accounts.mjs` U3 checks it.
 | News row (`#kaNewsRow`) | The switch for study tips and news, with one line under it | The switch is always there. The line follows the email service: the usual line; "Check your inbox to confirm your email. News starts after that."; "Saved. News starts once your email address is confirmed."; or, when the service holds the address as stopped, Off with "You’re unsubscribed from KaiSip news, and it can’t be restarted here." and a link to the service's own sign-up form once its address is set (the line never says how the stop happened). The learner's own switch-off is just Off. A refusal or a wait is never shown as an error |
 | Data rows (`.ka-item`) | White rows with a 40px disc; a status line under the row acted on | Confirmations say it at the row (§21.12). Danger rows are words first, in `--wrong` |
 | First-sync table (`.ka-cols`) | This browser, Account, After | A real table with a caption. "After" in `--accent-text` and bold. It always asks before a browser's progress goes into an account, and says when some older answers can only stay in the browser |
-| Welcome paths (`.ka-path`) | Two large rows: the filled one is "Create a free account", the white one "Sign in" | Both lead to an account. One honest line says why ("KaiSip is free. A free account keeps your progress safe and in sync with the Android app."). No hurry words, no way round |
+| Welcome paths (`.ka-path`) | Two large rows: the filled one is "Create a free account", the white one "Sign in" | Both lead to an account. One honest line says an account is needed and why ("You need an account to study here. It’s free, and it keeps your progress safe and in sync with the Android app."). No hurry words, no way round; the footer's quiet "About KaiSip" link leads to the home page for someone who only wanted a look |
 | Sheets | The app's own sheet (`#flagModal`) with a `.ka-form` inside | One form a sheet; the safe choice first |
 
 ### 22.2 Words (final strings are in `index.html`)
@@ -2342,5 +2342,14 @@ beside it). No other element may use Roboto; `accounts.mjs` U3 checks it.
   blocked; Enter sends the one form on the screen.
 - No sideways scroll from 320 to 1280 wide, or with text at 200%.
 - Reduce Motion: the spinner, the caret and the Sync now turn stop.
+- Forced colours (Windows high contrast): edges drawn with `box-shadow`
+  become real borders, an unticked box draws no tick (its drawing is hidden,
+  not just made transparent), and the switch's On state uses the system
+  highlight. These rules sit last in the block so they win.
+- Fields and buttons are both 52 tall. The password step's title stops
+  growing at 12% of the width, so it wraps between words at 320px with text
+  at 200%.
+- No inline `on…=` handlers: a control names its action in a `data-ka-*`
+  attribute and one listener per event type reads it.
 - Screenshots of every screen (390 and 1280, light and dark):
   `node scripts/smoke/accounts.mjs . <out> --shots <folder>`.
