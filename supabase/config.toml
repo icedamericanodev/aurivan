@@ -69,14 +69,19 @@ refresh_token_reuse_interval = 10
 enable_signup = true
 enable_anonymous_sign_ins = false
 enable_manual_linking = false
-# Passwords (owner decision 28 Nov 2026; docs/mobile/PASSWORD_SIGN_IN_DESIGN.md):
-# at least 15 characters, no required character types (NIST SP 800-63B rev 4
-# for a password-only factor). The apps add a common-password blocklist on the
-# client. The database keeps only a password set by a session that has just
-# proved the inbox (20261128000000_password_guard.sql). Hosted: the same two
-# values (Authentication → Sign In / Providers → Email).
-minimum_password_length = 15
-password_requirements = ""
+# Passwords (owner decision 28 Nov 2026, evening; docs/mobile/PASSWORD_SIGN_IN_DESIGN.md):
+# at least 12 characters with at least one lowercase letter, uppercase letter,
+# digit and symbol (ASCII sets; the Supabase CLI maps this value to
+# GOTRUE_PASSWORD_REQUIRED_CHARACTERS). Two documented deviations from NIST
+# SP 800-63B-4 3.1.1.2 (deviation register in docs/WEB_LAUNCH_PLAN.md). The
+# apps mirror these checks exactly and add the common-password and structural
+# rules and the leaked-password lookup on the client. The database keeps only
+# a password set by a session that has just proved the inbox
+# (20261128000000_password_guard.sql). Hosted: the same two values
+# (Authentication → Sign In / Providers → Email); reported already set there,
+# so confirm, do not change.
+minimum_password_length = 12
+password_requirements = "lower_upper_letters_digits_symbols"
 
 [auth.rate_limit]
 # Units (GoTrue v2.199.0, internal/api/apilimiter.go; password audit LOW-5):

@@ -30,7 +30,7 @@ source code is marked *(verify)*.
 
 | # | Decision |
 |---|---|
-| 1 | Passwords: **at least 15 characters, no required character types** |
+| 1 | Passwords: **at least 12 characters, with a lowercase letter, an uppercase letter, a number and a symbol** (28 Nov 2026, evening: "Require all 4 types, 12+"; replaces "at least 15, no required types"; deviations D3 and D4 in `docs/WEB_LAUNCH_PLAN.md`) |
 | 2 | A **client-side common-password blocklist is required** (the apps; step A3) |
 | 3 | The **"password changed" security notice is a hard go-live gate** (gate 15) |
 | 4 | Android shows the **human check on each password sign-in** (accepted, R6) |
@@ -144,7 +144,10 @@ only".)*
 
 ### Decisions only you can make (my recommendation first)
 
-1. **Password rules.** Recommended: **at least 15 characters, no required
+1. **Password rules.** *Decided 28 Nov 2026 (evening): at least 12
+   characters with all four types (the owner's choice; recorded as deviations
+   D3 and D4). The text below is the recommendation as it was.*
+   Recommended: **at least 15 characters, no required
    character types**, with the hint "use three or four ordinary words". This is
    what the US standard for passwords (NIST SP 800-63B revision 4, 2025) asks
    for when a password is the only factor, and it matters more for us because
@@ -799,13 +802,22 @@ phone fields use the matching autofill hints.
 > changed from this draft:
 > - `passwordRules.ts`: `checkPassword(password, context?: string | { email?, names? })`
 >   returns, most important first: `invalid_characters`, `too_short`,
->   `too_long`, `contains_email` (the email or the learner's Google name),
->   `contains_service_word`, `common`, `too_simple`. No `missing_characters`
->   (no composition rules). The password is sent in **NFKC** form, and 15
->   code points are needed in both NFC and NFKC. The whole password is
+>   `too_long`, `missing_characters` (owner decision 28 Nov 2026, evening:
+>   a lowercase letter, an uppercase letter, a digit and a symbol, ASCII,
+>   exactly as the server checks), `contains_email` (the email or the
+>   learner's Google name), `contains_service_word`, `common`, `too_simple`
+>   (the predictable reasons come before `missing_characters`). The password
+>   is sent in **NFKC** form, and 12 code points are needed in both NFC and
+>   NFKC. `passwordChecklist` gives the five checklist items (12 or more
+>   characters; a lowercase letter; an uppercase letter; a number; a symbol)
+>   and refused / ok / long (`long`: accepted and 15 or more characters, a
+>   length label only); `passwordMissingText` says what is missing, naming
+>   a to z, A to Z, 0 to 9 and "a symbol such as ! ? # @".
+>   Sign-in applies none of this. The whole password is
 >   compared (NIST §3.1.1.2): it is refused when it can be written as
 >   predictable pieces with at most 2 characters left over (up to two list
->   entries and three word pieces in all), or when fewer than 10 real
+>   entries and three word pieces in all), or when fewer than 8 to 10 real
+>   (by length: 8 at 12 characters, 10 at 14 and over)
 >   characters remain after repeats, sequences, copies and years. The
 >   comparison form strips accents and invisible characters, reads Cyrillic
 >   and Greek look-alikes as Latin and letter-for-number swaps per position,
@@ -822,7 +834,24 @@ phone fields use the matching autofill hints.
 >   k-anonymity queries, 3-second timeout, fails open, `breachState()`) is
 >   ON since 28 Nov 2026 (owner decision; `BREACH_CHECK_ON = true`), on
 >   sign-up, reset and "set a password", never at sign-in. Its privacy
->   paragraph is a draft in §7.
+>   paragraph is a draft in §7. For the 12-character, four-types rule,
+>   round 5 (an independent reviewer's 5,220 candidates) added: one list,
+>   app or account word with 3 or fewer other characters; letters, digits
+>   and symbols each a run; any word typed twice; the mixed readings of 1
+>   and !; verse references; swap symbols inside a word not counted as
+>   material at 15+; and `two_common_words` as its own reason. Held-out
+>   acceptance on the reviewer's set: 5.8% (9.8% before); on its
+>   verification round aimed at the fixed shapes, 15.4% (44.6% before),
+>   a worst-area figure. The shapes that
+>   still pass are named in `docs/WEB_LAUNCH_PLAN.md`. The captcha (gate
+>   16) and the server-side end of sessions (gate 21) apply from go-live.
+>
+> **Screens: check on a pause in typing, not on every key.** The worst
+> 72-character input takes about 3 to 4 ms in a desktop browser and an
+> estimated 80 to 150 ms on a slow phone, so the forms run `checkPassword`
+> / `passwordChecklist` after a short pause (debounced, as the
+> announcements already are), and again on submit (auth.ts checks again
+> before anything is sent).
 >   The word lists are loaded with `loadPasswordWords` (on the website a
 >   separate file, `assets/kaisip-password-words.js`, fetched when a password
 >   form opens; no password is saved until it is loaded).
@@ -859,11 +888,11 @@ A new shared, pure module (used by the web and the phone):
 
 ```ts
 // mobile/src/engine/passwordRules.ts
-export const PASSWORD_MIN_CHARS: number;   // 15 (owner decision 1), the same as the dashboard
+export const PASSWORD_MIN_CHARS: number;   // 12 (owner decision 1, 28 Nov 2026 evening), the same as the dashboard
 export const PASSWORD_MAX_BYTES = 72;      // the Auth server's limit (bcrypt)
 export type PasswordProblem =
   | 'too_short' | 'too_long' | 'too_simple'   // repeats, sequences, "password…", "kaisip…", "cisa…"
-  | 'contains_email' | 'missing_characters';  // the last only if decision 1 picks required characters
+  | 'contains_email' | 'missing_characters';  // required characters: decision 1 picked all four types
 export function checkPassword(password: string, email?: string): PasswordProblem[];
 ```
 
@@ -938,10 +967,10 @@ are green. Each step is a box to tick.
 4. [ ] **Require current password when updating: ON** (the exact label is
    *(verify)*; the Supabase docs call it "Require current password when
    changing password").
-5. [ ] **Minimum password length: 15** (or 12 if you choose the alternative in
-   decision 1).
-6. [ ] **Password requirements: "No required characters"** (or "Letters and
-   digits" with the alternative).
+5. [ ] **Minimum password length: 12** (decision 1, 28 Nov 2026 evening).
+   Reported already set on the hosted project: **confirm, do not change**.
+6. [ ] **Password requirements: "Lowercase, uppercase letters, digits and
+   symbols"** (the same; confirm, do not change).
 7. [ ] **Prevent use of leaked passwords:** **not available on the Free plan**
    (Pro and above, from Supabase's own docs). Leave it off; it is a listed
    remaining risk.
@@ -1232,7 +1261,7 @@ sign-in release after `app-store-compliance-reviewer` checks it.**
 |---|---|---|---|---|
 | Password storage | Supabase Auth (bcrypt), Free plan | $0 / $0 | already there | R1, R2 |
 | H1 guard | `private.guard_password()` trigger | $0 / $0 | Claude (PR, then MCP apply with the owner present) | R4, R5 |
-| Password rules | 15 characters, no required types, client "too simple" check | $0 / $0 | owner (dashboard), Claude (client) | R2 |
+| Password rules | 12 characters with all four types (server and client), client "too simple" check | $0 / $0 | owner (dashboard), Claude (client) | R2 |
 | Leaked-password check | off (Pro only) | $0 / $0 (Pro about $25 if later *(verify)*) | owner, if ever | R2 |
 | Reset | emailed 8-digit code, no link | $0 / $0 (within Resend's 3,000 a month and 100 a day) | owner (template), Claude (clients) | — |
 | Notices | password changed, method linked | $0 / $0 (a few emails a day) | owner (toggle and template) | uses email allowance |

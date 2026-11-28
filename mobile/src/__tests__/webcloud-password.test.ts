@@ -41,9 +41,9 @@ import { BANK, fakeWeb } from '../../jest/webcloud-web';
 const MIN = 60_000;
 const DAY = 86_400_000;
 const EMAIL = 'maya@example.com';
-const PW = 'ocean violet lamp seven';
-const PW2 = 'copper falcon wobbly harbor';
-const PW3 = 'amber frost north quilt';
+const PW = 'Ocean violet lamp 7!';
+const PW2 = 'Copper falcon wobbly harbor 9#';
+const PW3 = 'Amber frost north quilt 4%';
 
 let now = Date.UTC(2026, 10, 28, 9, 0, 0);
 const clock = { now: () => now };
@@ -118,7 +118,7 @@ describe('create an account with a password', () => {
     expect(await codeOf(a.startPasswordSignUp(EMAIL, 'passwordpassword'))).toBe('invalid:password_common');
     expect(await codeOf(a.startPasswordSignUp(EMAIL, 'monkeymonkeymonkey'))).toBe('invalid:password_common');
     expect(await codeOf(a.startPasswordSignUp('xochitl.brennagh@example.com', 'xochitl brennagh 1990'))).toBe('invalid:password_contains_email');
-    expect(await codeOf(a.startPasswordSignUp(EMAIL, 'kaisip kaisip 2026'))).toBe('invalid:password_contains_service_word');
+    expect(await codeOf(a.startPasswordSignUp(EMAIL, 'Kaisip kaisip 2026!'))).toBe('invalid:password_contains_service_word');
     expect(await codeOf(a.startPasswordSignUp(EMAIL, 'zyxwvutsrqponmlkj'))).toBe('invalid:password_too_simple');
     expect(await codeOf(a.startPasswordSignUp(EMAIL, 'x'.repeat(73)))).toBe('invalid:password_too_long');
     expect(await codeOf(a.startPasswordSignUp(EMAIL, `${PW}\u0000`))).toBe('invalid:password_invalid_characters');
@@ -267,6 +267,12 @@ describe('sign in with a password', () => {
     // One the app's own rules would refuse today (set before they existed).
     server.userByEmail(EMAIL)!.password = 'monkeymonkeymonkey';
     expect((await tab().signInWithPassword(EMAIL, 'monkeymonkeymonkey')).passwordChangeSuggested).toBe(true);
+    await tab().signOut('local');
+    // A passphrase set under the earlier rule (15+, no required types) signs in with no hint:
+    // sign-in never applies the length or the four types.
+    server.userByEmail(EMAIL)!.password = 'ocean violet lamp seven';
+    const old = await tab().signInWithPassword(EMAIL, 'ocean violet lamp seven');
+    expect(old.passwordChangeSuggested).toBeUndefined();
   });
 
   it('rate limits, captcha refusals and offline are calm codes', async () => {
@@ -287,9 +293,9 @@ describe('sign in with a password', () => {
 
   it('NFKC: combining accents and full-width letters sign in as the plain form, and are sent in it', async () => {
     const acute = String.fromCharCode(0x301);
-    const composed = 'café violet lamp seven';
-    const decomposed = `cafe${acute} violet lamp seven`;
-    const wide = 'ｃａｆé violet lamp seven';
+    const composed = 'Café violet lamp 7!';
+    const decomposed = `Cafe${acute} violet lamp 7!`;
+    const wide = 'Ｃａｆé violet lamp 7!'; // a full-width capital is a plain capital after NFKC
     await signUp(tab(), EMAIL, decomposed);
     expect(putCalls()[0].body).toEqual({ password: composed, data: stamp() });
     for (const typed of [composed, decomposed, wide]) {
@@ -378,7 +384,7 @@ describe('forgot password (a code, never a link)', () => {
     await g.signOut('local');
     const a = tab();
     await a.sendPasswordResetCode('maya@gmail.com');
-    const named = await a.finishPasswordReset('maya@gmail.com', server.codes.get('maya@gmail.com')!, 'xochitl brennagh 26');
+    const named = await a.finishPasswordReset('maya@gmail.com', server.codes.get('maya@gmail.com')!, 'Xochitl Brennagh 26!');
     expect([named.passwordSaved, named.problem]).toEqual([false, 'contains_email']);
     await a.setPassword(PW);
     await a.signOut('local');
@@ -464,7 +470,7 @@ describe('add or change a password later (the 10-minute rule, checked first)', (
     expect(await codeOf(a.setPassword(PW2))).toBe('invalid:password_current_needed');
     expect(await codeOf(a.setPassword(PW2, { currentPassword: PW3 }))).toBe('invalid:password_current_wrong');
     expect(await codeOf(a.setPassword(PW, { currentPassword: PW }))).toBe('invalid:password_same');
-    expect(await codeOf(a.setPassword('kaisip kaisip 2026', { currentPassword: PW }))).toBe('invalid:password_contains_service_word');
+    expect(await codeOf(a.setPassword('Kaisip kaisip 2026!', { currentPassword: PW }))).toBe('invalid:password_contains_service_word');
     // An hour later, with the current password, the server decides (it allows changes for 24 hours).
     now += 60 * MIN;
     expect(await codeOf(a.setPassword(PW2, { currentPassword: PW }))).toBe('ok');
@@ -602,7 +608,7 @@ describe('this review\'s client fixes', () => {
 describe('the leaked-password check (ON: Pwned Passwords range API, k-anonymity)', () => {
   const sha1 = (t: string) => createHash('sha1').update(t, 'utf8').digest('hex');
   const sha1Hex = async (t: string) => sha1(t);
-  const GOOD_PW = 'copper falcon wobbly harbor';
+  const GOOD_PW = 'Copper falcon wobbly harbor 9#';
   /** The fake range service beside the fake Supabase: knows `leaked`, pads when asked, records every call. */
   function withRange(leaked: string[], mode: 'ok' | 'hang' | 'down' = 'ok') {
     const calls: { url: string; headers: Record<string, string> }[] = [];
@@ -627,9 +633,9 @@ describe('the leaked-password check (ON: Pwned Passwords range API, k-anonymity)
 
   it('refuses a leaked password on each of the two forms (typed, and one simplified: compared, or compared without its tail), before any code is emailed', async () => {
     const cases: [string, string][] = [
-      ['Copper Falcon Wobbly Harbor', 'Copper Falcon Wobbly Harbor'], // as typed
-      ['Copper Falcon Wobbly Harbor', 'copperfalconwobblyharbor'], // the compared form
-      ['copper falcon wobbly harbor 2026!', 'copperfalconwobblyharbor'], // without trailing numbers and symbols
+      ['Copper Falcon Wobbly Harbor 9#', 'Copper Falcon Wobbly Harbor 9#'], // as typed
+      ['Copper Falcon 9# Wobbly Harbor', 'copperfalcon9#wobblyharbor'], // the compared form (no tail to take off)
+      ['Copper falcon wobbly harbor 2026!', 'copperfalconwobblyharbor'], // without trailing numbers and symbols
     ];
     for (const [typed, leaked] of cases) {
       const { a, calls } = withRange([leaked]);
@@ -642,14 +648,14 @@ describe('the leaked-password check (ON: Pwned Passwords range API, k-anonymity)
 
   it('a refusal never leaves an earlier "clean" showing, and a long base with a short tail is still looked up', async () => {
     const { a } = withRange(['copperfalconwobblyharbor']);
-    await signUp(a, EMAIL, 'quiet lantern mossy orbit');
+    await signUp(a, EMAIL, 'Quiet lantern mossy orbit 3$');
     expect(a.breachState()).toBe('clean');
-    expect(await codeOf(a.setPassword('copper falcon wobbly harbor 7!'))).toBe('invalid:password_leaked');
+    expect(await codeOf(a.setPassword('Copper falcon wobbly harbor 7!'))).toBe('invalid:password_leaked');
     expect(a.breachState()).toBe('off');
   });
 
   it('a strong password made mostly of numbers is not refused because its first letters leaked (B1)', async () => {
-    for (const pw of ['Zq #4829 1837 4401 9921', 'box 48 291 7730 5512 6644']) {
+    for (const pw of ['Zq #4829 1837 4401 9921', 'Box! 48 291 7730 5512 6644']) {
       server = new FakeSupabase(() => now);
       const { a, calls } = withRange(['zq', 'box']);
       expect(await codeOf(a.startPasswordSignUp(EMAIL, pw))).toBe('ok');
@@ -853,7 +859,7 @@ describe('error mapping for the password calls', () => {
       ['verify', 403, { error_code: 'otp_expired' }, 'invalid:code_wrong'],
       ['user_update', 422, { error_code: 'weak_password', weak_password: { reasons: ['length'] } }, 'invalid:password_too_short'],
       ['user_update', 422, { error_code: 'weak_password', weak_password: { reasons: ['pwned'] } }, 'invalid:password_leaked'],
-      ['user_update', 422, { error_code: 'weak_password', weak_password: { reasons: ['characters'] } }, 'invalid:password_weak'],
+      ['user_update', 422, { error_code: 'weak_password', weak_password: { reasons: ['characters'] } }, 'invalid:password_missing_characters'],
       ['user_update', 422, { error_code: 'weak_password' }, 'invalid:password_weak'],
       ['user_update', 422, { error_code: 'same_password' }, 'invalid:password_same'],
       ['user_update', 400, { error_code: 'current_password_required' }, 'invalid:password_current_needed'],
@@ -891,7 +897,7 @@ describe('error mapping for the password calls', () => {
 
 describe('go-live gate 17: the password is never stored or logged', () => {
   it('every flow, then: no storage value, log line, error or address holds a password, code or captcha token; only the two endpoints get a password', async () => {
-    const PASSWORDS = [PW, PW2, PW3, 'kaisip kaisip 2026', 'too short'];
+    const PASSWORDS = [PW, PW2, PW3, 'Kaisip kaisip 2026!', 'too short'];
     const CAPTCHA = 'captcha-token-abcdef123';
     const logged: string[] = [];
     const spies = (['log', 'info', 'warn', 'error', 'debug', 'trace'] as const).map((m) =>
@@ -918,7 +924,7 @@ describe('go-live gate 17: the password is never stored or logged', () => {
       await attempt(a.startPasswordSignUp(EMAIL, 'too short', { captchaToken: CAPTCHA }));
       await attempt(a.startPasswordSignUp(EMAIL, PW, { captchaToken: CAPTCHA }));
       await attempt(a.finishPasswordSignUp(EMAIL, code(), PW));
-      await attempt(a.setPassword('kaisip kaisip 2026'));
+      await attempt(a.setPassword('Kaisip kaisip 2026!'));
       await a.signOut('local');
       await attempt(a.signInWithPassword(EMAIL, PW2, { captchaToken: CAPTCHA }));
       await attempt(a.signInWithPassword(EMAIL, PW, { captchaToken: CAPTCHA }));

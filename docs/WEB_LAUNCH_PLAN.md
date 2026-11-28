@@ -17,11 +17,11 @@ and the owner's decisions.
 | Topic | Decision | What it changes |
 |---|---|---|
 | Sign-in methods | **Google, and email + password** (owner, 28 Nov 2026, second decision). Emailed 8-digit codes are kept only to confirm an email address and for "Forgot password", and both always end with setting a password | NIST SP 800-63B-4 §3.1.3: "Email SHALL NOT be used for out-of-band authentication"; confirmation and issued recovery codes (§4.2.1.2) are allowed. Reverses the 27 Oct "no passwords" choice: the wipe-all guard (`20261027000100_beta_no_passwords.sql`, the H1 fix) is replaced by `20261128000000_password_guard.sql`. A code session is a full session in GoTrue, so the apps force "set a password" after any code session; a server rule that limits learner data to password or Google sessions is a planned follow-up (design audit, "Audit alignment") |
-| Supabase plan | **Free for now** (owner: see how many learners sign up first) | Alternatives on Free, written up as documented deviations for audit: the 30-day sign-in expiry is enforced on the server by a nightly job that deletes sessions older than 30 days; predictable passwords are refused by the apps (structural rules and bundled lists, which only a learner bypassing the app for their own account could skip; they miss phrases and names that are on no list, see "What the password rules cannot do" below); Supabase's own leaked-password check is a Pro feature, so the apps run their own lookup instead (Have I Been Pwned's range API, ON since the later decision the same day; "Leaked-password check" below); the 100-wrong-tries account limit is replaced by the human check on every password sign-in, per-IP limits, 15 characters and monitoring. **Upgrade to Pro before the paid launch** (already required by `WEB_GATE_PLAN.md`), or earlier if the deviation register's trigger is hit |
+| Supabase plan | **Free for now** (owner: see how many learners sign up first) | Alternatives on Free, written up as documented deviations for audit: the 30-day sign-in expiry is enforced on the server by a nightly job that deletes sessions older than 30 days; predictable passwords are refused by the apps (structural rules and bundled lists, which only a learner bypassing the app for their own account could skip; they miss phrases and names that are on no list, see "What the password rules cannot do" below); Supabase's own leaked-password check is a Pro feature, so the apps run their own lookup instead (Have I Been Pwned's range API, ON since the later decision the same day; "Leaked-password check" below); the 100-wrong-tries account limit is replaced by the human check on every password sign-in, per-IP limits, the password length and monitoring. **Upgrade to Pro before the paid launch** (already required by `WEB_GATE_PLAN.md`), or earlier if the deviation register's trigger is hit |
 | Email code length | **8 digits** (confirms the audit's L7 change) | None: already set. Close L7. |
 | GitHub Pro | **Owner buys it** | Go-live gate 4 can be met: "Require review from Code Owners" on `main`, and the `ota` and `db-backup` environments enforced again. |
 | New courses | **Public free sample; full course for Alpha testers only** (as CISA today) | Each course needs a free sample builder, a pack in the phone app, the public build's sample-only guard and audit extended to it, and the tester build carrying the full course. No payment system is part of this. |
-| Password rules | **At least 15 characters, no required character types** (NIST SP 800-63B rev 4) | Dashboard setting (checklist below); `supabase/config.toml` mirrors it |
+| Password rules | **At least 12 characters, with a lowercase letter, an uppercase letter, a number and a symbol** (owner decision, 28 Nov 2026, evening: "Require all 4 types, 12+"; it replaced "at least 15 characters, no required character types") | Dashboard setting (checklist below: confirm, do not change); `supabase/config.toml` mirrors it; the apps mirror the server's exact checks. Deviations D3 and D4 in the deviation register below |
 | Common passwords | **Client-side blocklist required** (common passwords, the email's name part, "kaisip", "cisa", "isaca", repeats and sequences) | Step A3 (`mobile/src/engine/passwordRules.ts`, shared by web and phone) |
 | "Password changed" notice | **Hard go-live gate** (gate 15) | If the Free plan with custom SMTP can't send it, passwords wait for an in-app "password changed on <date>" notice instead |
 | Android human check | **Shown on each password sign-in** (the same browser sheet as email codes) | Accepted (design R6); an in-app web view later only if it hurts sign-ins |
@@ -88,13 +88,17 @@ loop. Nothing goes public until its gate says so.
    refresh: signed out with the reason kept across reloads, progress
    untouched). Code sign-in is gone from the public client.
    `mobile/src/engine/passwordRules.ts` follows NIST §3.1.1.2's
-   whole-password comparison: 15 code points in NFC and NFKC, at most 72
+   whole-password comparison: 12 code points in NFC and NFKC, at least one
+   lowercase letter, uppercase letter, digit and symbol (ASCII, as the server
+   checks; owner decision, deviation D3), at most 72
    bytes (documented deviation for accented text), NFKC sent, control and
    invisible characters refused. The comparison reads accents, invisible
    characters, Cyrillic and Greek look-alikes, letter-for-number swaps (per
    position) and the password backwards. Two kinds of check: structural
-   rules (fewer than 10 real characters after repeats, sequences, walks,
-   copies, mirrors and years; one word with numbers; mostly the account's own
+   rules (fewer than 8 to 10 real characters, by length, after repeats,
+   sequences, walks, copies, mirrors and years; a core, without the numbers
+   and symbols around it, that is one list entry, name, run or the account's
+   or app's word; one word with numbers; mostly the account's own
    words, domain included; a full name with numbers; dates and phone
    numbers), and lists (at most two list entries and 3 word pieces in all,
    with at most 2 characters left over). Lists (lightly scrambled, built by
@@ -136,6 +140,7 @@ and lists can see:
   |---|---|---|
   | At dc23533 (before) | 147 (33.9%) | 133 (30.6%) |
   | Now | 19 (4.4%) | 50 (11.5%: 22 the tester judged to matter, 28 obscure) |
+  | Under the 12-character, four-types rule (each with the four types added) | 15 (3.5%) | 45 (10.4%) |
 
   The held-out figure is the one to quote. It is held out from tuning, but
   NOT from the tester's candidate vocabulary list, which was added to the
@@ -144,9 +149,52 @@ and lists can see:
   somewhere between 11.5% and about 30% on vocabulary families (phrases,
   names, brands), which is what the leaked-password check is for. Both
   figures are ceilings in the tests and may only fall. The good side: 0 of the tester's 164 good passphrases
-  and 0 of the 62 round-2 ones are refused; fewer than 0.5% of random
-  three-word phrases are; four or more different ordinary words pass by
+  and 0 of the 62 round-2 ones are refused (one round-2 phrase is refused
+  since round 5 on purpose: the app's own old hint with "The" in front);
+  with the four types added (a capital, a number and a symbol), under 1 in
+  100 random three-word phrases with spaces is refused, and under 4 in 100
+  when the three words are typed as one (14 letters or fewer run together
+  look like one word); four or more different ordinary words pass by
   design.
+- **The 12-character, four-types rule (owner decision 28 Nov 2026,
+  evening), measured twice.**
+
+  | Measure | Tuning half | Held-out half (report-only) | Good passwords refused |
+  |---|---|---|---|
+  | Round 4 (same author; new words in ONE shape, a word plus numbers and a symbol; `password-fixtures-r4.ts`) | 0 of 2,900 | 0 of 2,833 (13 before round 5) | 0 of 240 |
+  | Round 5 (an **independent** reviewer's 5,220 candidates in 17 families; `password-fixtures-r5.ts`, split by base word before any result was seen) | 228 of 3,206 (7.1%; 368 before) | **116 of 2,014 (5.8%; 197, 9.8%, before)** | 6 of 370, all on purpose |
+  | Verification (the reviewer's 758 new candidates aimed at the fixed shapes and their neighbours; not in the repo) | n/a | 117 of 758 (15.4%; 44.6% before the fixes), 115 after the follow-ups | 5 of 150 (four random strings of mostly digits and symbols, one two-common-words) |
+
+  Two numbers to quote, and what each one is. **5.8% (116 of 2,014)** is
+  round 5's held-out half: the broad, independent set, somewhat optimistic
+  because the round-5 fixes follow the reviewer's prototypes, which were
+  made with the whole set in view. **15.4% (117 of 758; 44.6% before the
+  fixes)** is the reviewer's verification round: new candidates written
+  after the fixes and aimed at the fixed shapes and their neighbours, so it
+  is a worst-area figure, not an average (115 of 758 after two small
+  follow-ups, one of which targets a shape that round found). Before round 5
+  the reviewer measured 10.8% of the whole set (12.1% on fresh vocabulary).
+  What still passes, in words: two
+  uncommon words with a number and a symbol; an unlisted word with
+  letter-for-number swaps; a date or phone number written with separators
+  and a short label; text-speak and expressions; names and places that are
+  on no list; a short random core padded with repeated symbols or spaces;
+  the app's name with a four-letter word; four-letter and double fillers
+  before a listed word; stepping patterns whose letters step by two; one
+  look-alike digit standing for two different letters in a word; two-letter
+  book names in verse references; pairs of words joined by "and". The
+  other way round: random generated passwords (uniform printable, or
+  browser style) of 12 characters are refused about 2 to 2.5% of the time,
+  of 14 about 1 to 2%, of 16 under 0.5% (measured on 3,000 of each; test
+  ceilings keep it from drifting).
+  The good passwords the rules refuse on purpose: four with no plain ASCII
+  capital or lowercase letter (the server would refuse them too), and two
+  made of two common words. Two common words with a number and a symbol are
+  refused at every length: the reviewer's recommendation is to keep refusing
+  two common words at every length; the owner was told on 28 Nov 2026 and is
+  to confirm (the reviewer's numbers: about 90% of natural two-word choices
+  are refused at 12 and at 18 characters, and the cheapest fall within about
+  60 million guesses). The guidance says that a third unrelated word fixes it.
 - **The leaked-password check is ON** (owner decision 28 Nov 2026, below).
   It closes most of the gap for passwords that leaked anywhere. What still
   passes: an uncommon phrase, name or slogan that is on no list and has
@@ -295,6 +343,61 @@ After the website and Android 2.4. Needs an Apple Developer account
 (US$99 a year, owner), Sign in with Apple (required by Apple when Google
 sign-in is offered), and the iOS build and review.
 
+## Deviation register: passwords (for audit)
+
+Each row is a place where KaiSip's password handling does not do what the
+cited standard asks, the owner's decision behind it, and what compensates.
+"Meets" is used only where the requirement is met as written. Earlier
+deviations (D1 email codes only to confirm and recover, D2 no per-account
+failed-attempt limit, the 72-byte limit, client-side-only blocklist) are in
+`docs/mobile/PASSWORD_DESIGN_AUDIT.md`.
+
+| # | Date, decision | Requirement | What KaiSip does | Status |
+|---|---|---|---|---|
+| D3 | 28 Nov 2026, owner decision ("Require all 4 types, 12+") | NIST SP 800-63B-4 §3.1.1.2: verifiers SHALL NOT impose composition rules (such as requiring mixtures of character types); §3.1.1.1 says the same of other composition requirements *(as cited by the independent review; verify the wording)*. OWASP ASVS 5.0 **6.2.5** (L1): passwords of any composition can be used, with no requirement for upper or lower case characters, numbers or special characters | A new password needs at least one lowercase letter (a-z), uppercase letter (A-Z), digit (0-9) and symbol (ASCII punctuation), checked by the apps and by the sign-in server (Supabase Auth `password_requirements = lower_upper_letters_digits_symbols`) | **Does not meet** NIST §3.1.1.2 (composition) or ASVS 6.2.5 |
+| D5 | Earlier (design), recorded 28 Nov 2026 | OWASP ASVS 5.0 **6.2.8** (L1): verify the password exactly as received, without modifications. NIST SP 800-63B-4 asks for normalisation as a SHOULD, and names NFC *(per the independent review; verify)* | The apps send the password in **NFKC** (full-width letters, ligatures and compatibility forms made plain), so the same keys make the same password on every device | **Does not meet** ASVS 6.2.8 as written; NFKC instead of NIST's NFC |
+| D4 | 28 Nov 2026, the same decision | NIST SP 800-63B-4 §3.1.1.2: a password used as a single-factor authenticator SHALL be at least 15 characters. OWASP ASVS 5.0 **6.2.1** (L1): at least 8 characters, 15 strongly recommended | At least 12 characters (code points, in NFC and NFKC), server and apps | **Does not meet** NIST's 15 for a single factor (KaiSip passwords are single-factor). **Meets** ASVS 6.2.1's minimum of 8, below its recommended 15 |
+
+**Compensating controls (both rows):**
+- The apps refuse predictable passwords before anything is sent: the bundled
+  common-password lists, the whole-password comparison and the structural
+  rules (repeats, sequences, keyboard walks, dates, the account's own words,
+  the app's and exam names), including the shapes composition rules invite:
+  a capitalised word, name, walk or season with numbers and a symbol around
+  it, a list word with a short tag, and letters, digits and symbols each in
+  a run. Measured: an independent reviewer's attack (round 5, 5,220
+  candidates) still passes **116 of its 2,014 held-out candidates (5.8%)**,
+  the broad figure (somewhat optimistic); the reviewer's verification round,
+  aimed at the fixed shapes and their neighbours, passes **117 of 758
+  (15.4%; 44.6% before the fixes)**, a worst-area figure, not an average; the
+  author's own round 4, which tests one shape only, passes 0. Shapes that
+  still pass are named in "What the password rules cannot do".
+- The leaked-password check (Have I Been Pwned range API, k-anonymity) when a
+  password is chosen; it fails open when the service can't be reached.
+- **From go-live, not today:** the human check (captcha) on every password
+  sign-in, sign-up and reset (go-live gate 16; it is off in
+  `supabase/config.toml` until then), and the sessions' 30-day and 14-day
+  end on the server (gate 21; today only the client ends them). Supabase's
+  per-IP rate limits apply now (local values in `supabase/config.toml`; the
+  hosted values to confirm).
+- These client checks run only in the apps: a learner calling the server
+  directly for their own account can skip everything except the server's own
+  length and composition checks (the earlier client-side-only deviation).
+
+**What the rule does line up with:** PCI DSS v4.0.1 requirement 8.3.6 asks
+for passwords of at least 12 characters (8 where a system cannot do 12)
+containing both numeric and alphabetic characters *(wording from the
+standard as recalled; verify against the PCI SSC document before quoting)*.
+KaiSip's rule meets that and goes further (both cases and a symbol). KaiSip
+is not in PCI DSS scope; this is a point of reference, not a claim.
+
+**ASVS 6.2.4 note:** the bundled lists were picked for the earlier 15+
+policy (the top 3,000 passwords of 15+ characters, and the top 100,000 of 4
+to 14 characters, compared in any case). They cover 12 to 14 character
+passwords through the 100,000 list, but a "top 3,000 that meet the new
+policy" list has not been built, so 6.2.4 is not yet shown as met for the new
+policy *(follow-up)*.
+
 ## Go-live gates
 
 Public sign-in waits for every gate in `docs/mobile/ACCOUNTS_BETA_PLAN.md`
@@ -376,8 +479,10 @@ traffic.
    and reasons: `docs/mobile/PASSWORD_SIGN_IN_DESIGN.md` §5):
    - **Authentication → Sign In / Providers → Email:** Confirm email stays
      ON; Secure email change stays ON; Secure password change ON; Require
-     current password when updating ON; **Minimum password length 15**;
-     **Password requirements: no required characters**; Prevent use of leaked
+     current password when updating ON; **Minimum password length 12** and
+     **Password requirements: lowercase, uppercase letters, digits and
+     symbols** (reported already set this way on the hosted project:
+     **confirm, do not change**); Prevent use of leaked
      passwords stays off (Pro only); Email OTP length 8 and expiry 600
      unchanged. Save.
    - **Authentication → Emails → Templates → Reset Password:** paste the

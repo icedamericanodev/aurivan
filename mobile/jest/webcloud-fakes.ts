@@ -21,8 +21,8 @@ import type { WebAuth } from '../src/webcloud/auth';
 
 /** The password rules' word lists, as the website's lazy loader gives them. */
 export const testPasswordWords = async () => ({ short: PASSWORD_SHORT_LIST, dict: PASSWORD_DICT_LIST, local: PASSWORD_LOCAL_LIST, names: PASSWORD_NAMES_LIST });
-/** A password the rules accept (three ordinary words and one more). */
-export const TEST_PASSWORD = 'ocean violet lamp seven';
+/** A password the rules accept (three ordinary words, a capital, a number and a symbol). */
+export const TEST_PASSWORD = 'Ocean violet lamp 7!';
 
 /**
  * Signs `a` in the way learners do: the first time a password sign-up (a code, then the

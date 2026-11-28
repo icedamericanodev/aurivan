@@ -4306,7 +4306,7 @@ function breachRangeResult(answer, suffix) {
   defs["src/engine/passwordRules.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MAX_NAME_PIECES = exports.PASSWORD_OTHER_GUIDANCE = exports.PASSWORD_GUIDANCE = exports.MONTH_WORDS = exports.STUDY_WORDS = exports.SERVICE_WORDS = exports.MIN_MATERIAL = exports.MAX_WORD_PIECES = exports.MAX_LIST_WORDS = exports.MAX_LEFT_OVER = exports.PASSWORD_MAX_BYTES = exports.PASSWORD_MIN_CHARS = void 0;
+exports.MAX_NAME_PIECES = exports.PASSWORD_CHECKLIST_ITEMS = exports.PASSWORD_OTHER_GUIDANCE = exports.PASSWORD_GUIDANCE = exports.MONTH_WORDS = exports.BOOK_WORDS = exports.STUDY_WORDS = exports.SERVICE_WORDS = exports.MIN_MATERIAL_LONG = exports.MIN_MATERIAL = exports.MAX_WORD_PIECES = exports.MAX_LIST_WORDS = exports.MAX_LEFT_OVER = exports.PASSWORD_MAX_BYTES = exports.PASSWORD_LONG_CHARS = exports.PASSWORD_CHAR_TYPES = exports.PASSWORD_SYMBOLS = exports.PASSWORD_MIN_CHARS = void 0;
 exports.passwordGuidance = passwordGuidance;
 exports.decodeList = decodeList;
 exports.passwordCheckStepsForTest = passwordCheckStepsForTest;
@@ -4316,6 +4316,10 @@ exports.unloadPasswordWordsForTest = unloadPasswordWordsForTest;
 exports.normalizePassword = normalizePassword;
 exports.passwordLength = passwordLength;
 exports.passwordBytes = passwordBytes;
+exports.passwordTypes = passwordTypes;
+exports.passwordMissingTypes = passwordMissingTypes;
+exports.passwordMissingText = passwordMissingText;
+exports.passwordChecklist = passwordChecklist;
 exports.comparedForm = comparedForm;
 exports.isCommonPassword = isCommonPassword;
 exports.emailWords = emailWords;
@@ -4325,16 +4329,28 @@ exports.passwordProblem = passwordProblem;
 const account_1 = require("./account");
 const passwordBlocklist_1 = require("./passwordBlocklist");
 const sha256_1 = require("./sha256");
-exports.PASSWORD_MIN_CHARS = 15;
+exports.PASSWORD_MIN_CHARS = 12;
+exports.PASSWORD_SYMBOLS = "!@#$%^&*()_+-=[]{};'\\:\"|<>?,./`~";
+exports.PASSWORD_CHAR_TYPES = ['lower', 'upper', 'digit', 'symbol'];
+exports.PASSWORD_LONG_CHARS = 15;
 exports.PASSWORD_MAX_BYTES = 72;
 exports.MAX_LEFT_OVER = 2;
 exports.MAX_LIST_WORDS = 2;
 exports.MAX_WORD_PIECES = 3;
-exports.MIN_MATERIAL = 10;
+exports.MIN_MATERIAL = 8;
+exports.MIN_MATERIAL_LONG = 10;
 exports.SERVICE_WORDS = ['kaisip', 'cisa', 'isaca', 'crisc', 'aaia', 'csoe', 'cia', 'cpa'];
 exports.STUDY_WORDS = [
     'exam', 'study', 'pass', 'passer', 'prep', 'cert', 'certified', 'audit', 'auditor', 'auditing', 'information', 'systems', 'system', 'security', 'control', 'controls',
     'internal', 'risk', 'governance', 'review', 'reviewer', 'board', 'license', 'accountant', 'accounting', 'app', 'ipasa', 'papasa', 'pasado', 'pumasa',
+];
+exports.BOOK_WORDS = [
+    'genesis', 'gen', 'exodus', 'exod', 'leviticus', 'lev', 'numbers', 'deuteronomy', 'deut', 'joshua', 'josh', 'judges', 'ruth', 'samuel', 'sam', 'kings',
+    'chronicles', 'chron', 'ezra', 'nehemiah', 'neh', 'esther', 'job', 'psalm', 'psalms', 'psa', 'proverbs', 'prov', 'ecclesiastes', 'eccl', 'isaiah', 'isa',
+    'jeremiah', 'jer', 'lamentations', 'lam', 'ezekiel', 'ezek', 'daniel', 'dan', 'hosea', 'joel', 'amos', 'obadiah', 'jonah', 'micah', 'nahum', 'habakkuk',
+    'zephaniah', 'haggai', 'zechariah', 'zech', 'malachi', 'mal', 'matthew', 'matt', 'mark', 'luke', 'john', 'acts', 'romans', 'rom', 'corinthians', 'cor',
+    'galatians', 'gal', 'ephesians', 'eph', 'philippians', 'phil', 'colossians', 'col', 'thessalonians', 'thess', 'timothy', 'tim', 'titus', 'philemon',
+    'hebrews', 'heb', 'james', 'peter', 'pet', 'jude', 'revelation', 'revelations', 'rev',
 ];
 exports.MONTH_WORDS = [
     'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december',
@@ -4343,12 +4359,14 @@ exports.MONTH_WORDS = [
 ];
 exports.PASSWORD_GUIDANCE = {
     invalid_characters: { key: 'password.guide.invalid_characters', text: 'Your password has a hidden character, often from copy and paste. Please type it by hand. Accents and emoji are fine.' },
-    too_short: { key: 'password.guide.too_short', text: 'Use at least 15 characters. Three or four ordinary words with spaces are easy to remember.' },
+    too_short: { key: 'password.guide.too_short', text: 'Use at least 12 characters. A few ordinary words with a number and a symbol are easy to remember.' },
     too_long: { key: 'password.guide.too_long', text: 'Use up to 72 letters, fewer with accents or emoji.' },
+    missing_characters: { key: 'password.guide.missing_characters', text: 'Use at least one lowercase letter (a to z), one uppercase letter (A to Z), one number (0 to 9) and one symbol such as ! ? # @.' },
+    two_common_words: { key: 'password.guide.two_common_words', text: 'Two common words are easy to guess, even with a number and a symbol. Add another word that doesn’t go with them.' },
     contains_email: { key: 'password.guide.contains_email', text: 'Don’t build your password from your email address or your name. Add words only you would pick.' },
     contains_service_word: { key: 'password.guide.contains_service_word', text: 'Don’t build your password from the app’s or the exam’s name. Add words only you would pick.' },
-    common: { key: 'password.guide.common', text: 'That password is used by many people or is easy to guess. Try three or four words that don’t usually go together.' },
-    too_simple: { key: 'password.guide.too_simple', text: 'Avoid repeats, sequences, dates, keyboard patterns and a single word with numbers. Try three or four ordinary words that don’t usually go together.' },
+    common: { key: 'password.guide.common', text: 'That password is used by many people or is easy to guess, even with capitals, numbers and symbols added. Try a few words that don’t usually go together.' },
+    too_simple: { key: 'password.guide.too_simple', text: 'Avoid repeats, sequences, dates, keyboard patterns and a single word with numbers and symbols around it. Try a few ordinary words that don’t usually go together.' },
 };
 exports.PASSWORD_OTHER_GUIDANCE = {
     leaked: { key: 'password.guide.leaked', text: 'This password, or a simple variation of it, has appeared in a data leak. Please choose a different one.' },
@@ -4356,11 +4374,16 @@ exports.PASSWORD_OTHER_GUIDANCE = {
     rules_unavailable: { key: 'password.guide.rules_unavailable', text: 'We couldn’t load the password checker. Check your connection and try again.' },
     breach_unchecked: { key: 'password.guide.breach_unchecked', text: 'We couldn’t check this password against known leaks just now. It was saved; you can change it later.' },
 };
-function passwordGuidance(problem) {
+function passwordGuidance(problem, password) {
     if (typeof problem !== 'string')
         return null;
     const k = problem === 'password_rules' ? 'rules_unavailable' : problem.startsWith('password_') ? problem.slice('password_'.length) : problem;
     const own = (o) => Object.prototype.hasOwnProperty.call(o, k);
+    if (k === 'missing_characters' && password !== undefined) {
+        const text = passwordMissingText(password);
+        if (text)
+            return { key: exports.PASSWORD_GUIDANCE.missing_characters.key, text };
+    }
     if (own(exports.PASSWORD_GUIDANCE))
         return exports.PASSWORD_GUIDANCE[k];
     if (own(exports.PASSWORD_OTHER_GUIDANCE))
@@ -4515,6 +4538,51 @@ function passwordBytes(password) {
     }
     return n;
 }
+const TYPE_WORDS = {
+    lower: 'a lowercase letter (a to z)',
+    upper: 'an uppercase letter (A to Z)',
+    digit: 'a number (0 to 9)',
+    symbol: 'a symbol such as ! ? # @',
+};
+function passwordTypes(password) {
+    var _a;
+    const p = (_a = normalizePassword(password)) !== null && _a !== void 0 ? _a : '';
+    const has = (test) => Array.from(p).some(test);
+    return {
+        lower: has((c) => c >= 'a' && c <= 'z'),
+        upper: has((c) => c >= 'A' && c <= 'Z'),
+        digit: has((c) => c >= '0' && c <= '9'),
+        symbol: has((c) => exports.PASSWORD_SYMBOLS.includes(c)),
+    };
+}
+function passwordMissingTypes(password) {
+    const t = passwordTypes(password);
+    return exports.PASSWORD_CHAR_TYPES.filter((k) => !t[k]);
+}
+function passwordMissingText(password) {
+    const words = passwordMissingTypes(password).map((k) => TYPE_WORDS[k]);
+    if (!words.length)
+        return null;
+    const list = words.length === 1 ? words[0] : `${words.slice(0, -1).join(', ')} and ${words[words.length - 1]}`;
+    return `Add ${list}.`;
+}
+exports.PASSWORD_CHECKLIST_ITEMS = [
+    { id: 'length', key: 'password.check.length', label: `${exports.PASSWORD_MIN_CHARS} or more characters` },
+    { id: 'lower', key: 'password.check.lower', label: 'A lowercase letter (a to z)' },
+    { id: 'upper', key: 'password.check.upper', label: 'An uppercase letter (A to Z)' },
+    { id: 'digit', key: 'password.check.digit', label: 'A number (0 to 9)' },
+    { id: 'symbol', key: 'password.check.symbol', label: 'A symbol such as ! ? # @' },
+];
+function passwordChecklist(password, context) {
+    const { problems, complete } = assessPassword(password, context);
+    const t = passwordTypes(password);
+    const raw = typeof password === 'string' ? password : '';
+    const nfc = form(raw, 'NFC');
+    const chars = Math.min(passwordLength(password), nfc === null ? 0 : Array.from(nfc).length);
+    const items = exports.PASSWORD_CHECKLIST_ITEMS.map((it) => ({ ...it, met: it.id === 'length' ? chars >= exports.PASSWORD_MIN_CHARS : t[it.id] }));
+    const state = problems.length ? 'refused' : chars >= exports.PASSWORD_LONG_CHARS ? 'long' : 'ok';
+    return { items, state, problems, complete };
+}
 function comparedForm(s) {
     return comparedWords(s).join('');
 }
@@ -4530,13 +4598,16 @@ function comparedWords(s) {
 }
 const LEET_I = { '0': 'o', '1': 'i', '2': 'z', '3': 'e', '4': 'a', '5': 's', '7': 't', '8': 'b', '9': 'g', '@': 'a', $: 's', '!': 'i', '+': 't' };
 const LEET_L = { ...LEET_I, '1': 'l', '!': 'l' };
+const LEET_IL = { ...LEET_I, '1': 'l' };
+const LEET_LI = { ...LEET_I, '!': 'l' };
+const LEETS = [LEET_I, LEET_L, LEET_IL, LEET_LI];
 const fold = (s, map) => Array.from(s, (c) => { var _a; return (_a = map[c]) !== null && _a !== void 0 ? _a : c; }).join('');
 function isCommonPassword(password) {
     const p = normalizePassword(password);
     if (p === null)
         return false;
     const c = comparedForm(p);
-    return [c, fold(c, LEET_I), fold(c, LEET_L)].some((x) => long().has(x));
+    return [c, ...LEETS.map((m) => fold(c, m))].some((x) => long().has(x));
 }
 function kindOf(ch) {
     if (ch === undefined)
@@ -4861,10 +4932,23 @@ function lattice(forms, personal, service, bounds) {
     const names = endsOf(nameMark);
     const monthsAll = tokenEnds([plain], exports.MONTH_WORDS.map((m) => Array.from(m)));
     const months = monthsAll.map((ends, i) => ends.filter((j) => isDigit(plain[i - 1]) || isDigit(plain[j])));
+    const verseAt = (j) => {
+        let k = j;
+        while (k < n && isDigit(plain[k]))
+            k++;
+        return k > j && plain[k] === ':';
+    };
+    tokenEnds([plain], exports.BOOK_WORDS.map((m) => Array.from(m))).forEach((ends, i) => {
+        for (const j of ends)
+            if (verseAt(j) && !months[i].includes(j))
+                months[i].push(j);
+    });
     const service3 = tokenEnds(fs, service).map((ends, i) => ends.filter((j) => j - i > 3 || (kindOf(plain[i - 1]) !== 'l' && kindOf(plain[j]) !== 'l')));
     return { n, plain, runs, numbers: numberEnds(plain), months, words, personal: tokenEnds(fs, personal), service: service3, names };
 }
 function leftOver(l, use) {
+    var _a;
+    const minWord = (_a = use.minWord) !== null && _a !== void 0 ? _a : 0;
     const { n, plain } = l;
     const W = exports.MAX_WORD_PIECES;
     const at = (k, w) => k * (W + 1) + w;
@@ -4876,7 +4960,9 @@ function leftOver(l, use) {
                 const c = cost[at(k, w)][i];
                 if (c === Infinity)
                     continue;
+                opCount++;
                 const relax = (kk, ww, j) => {
+                    opCount++;
                     const row = cost[at(kk, ww)];
                     if (c < row[j])
                         row[j] = c;
@@ -4885,7 +4971,6 @@ function leftOver(l, use) {
                 const here = cost[at(k, w)];
                 if (c + lit < here[i + 1])
                     here[i + 1] = c + lit;
-                opCount += l.runs[i].length;
                 for (const j of l.runs[i])
                     relax(k, w, j);
                 if (use.numbers) {
@@ -4903,7 +4988,8 @@ function leftOver(l, use) {
                             relax(k, w + 1, j);
                     if (k < use.listWords)
                         for (const j of l.words[i])
-                            relax(k + 1, w + 1, j);
+                            if (j - i >= minWord || plain.slice(i, j).every((ch) => kindOf(ch) === 'l'))
+                                relax(k + 1, w + 1, j);
                 }
             }
         }
@@ -4943,15 +5029,24 @@ function namesLeftOver(l) {
     }
     return Math.min(...cost.map((row) => row[n]));
 }
-function material(l) {
+function material(l, from, to, long) {
     const { n, plain } = l;
     const cost = new Array(n + 1).fill(Infinity);
     cost[0] = 0;
+    let firstLead = -1;
+    for (let i = from - 1; i >= 0; i--)
+        if (isSymbol(plain[i]))
+            firstLead = i;
+    let firstTrail = -1;
+    for (let i = n - 1; i >= to; i--)
+        if (isSymbol(plain[i]))
+            firstTrail = i;
     for (let i = 0; i < n; i++) {
         const c = cost[i];
         if (c === Infinity)
             continue;
-        const step = isSymbol(plain[i]) ? 0 : 1;
+        const swapInWord = long && SWAP_SYMBOLS.includes(plain[i]) && kindOf(plain[i - 1]) === 'l' && kindOf(plain[i + 1]) === 'l';
+        const step = isSymbol(plain[i]) ? (plain[i - 1] === plain[i] || i === firstLead || i === firstTrail || swapInWord ? 0 : 1) : 1;
         if (c + step < cost[i + 1])
             cost[i + 1] = c + step;
         for (const j of l.runs[i])
@@ -4964,11 +5059,34 @@ function material(l) {
     return cost[n];
 }
 const reverseStr = (s) => Array.from(s).reverse().join('');
+const WEB_AFTER = ['com', 'comph', 'ph', 'org', 'net', 'app'];
+const SWAP_SYMBOLS = '@$!+';
+const SHIFT_DIGIT = { '!': '1', '@': '2', '#': '3', $: '4', '%': '5', '^': '6', '&': '7', '*': '8', '(': '9', ')': '0' };
+function runsLeft(seq) {
+    const m = seq.length;
+    if (!m)
+        return 0;
+    const mark = marks(m);
+    opCount += m * m;
+    runEnds(formTables(seq), new Set([0, m]), mark);
+    const ends = endsOf(mark);
+    const cost = new Array(m + 1).fill(Infinity);
+    cost[0] = 0;
+    for (let i = 0; i < m; i++) {
+        opCount += 1 + ends[i].length;
+        if (cost[i] + 1 < cost[i + 1])
+            cost[i + 1] = cost[i] + 1;
+        for (const j of ends[i])
+            if (cost[i] < cost[j])
+                cost[j] = cost[i];
+    }
+    return cost[m];
+}
 function predictable(p, ctx) {
     var _a;
     const pieces = comparedWords(p);
     const c = pieces.join('');
-    const readings = [c, fold(c, LEET_I), fold(c, LEET_L)];
+    const readings = [...new Set([c, ...LEETS.map((m) => fold(c, m))])];
     const n = Array.from(c).length;
     const bounds = new Set([0, n]);
     let at = 0;
@@ -4979,11 +5097,14 @@ function predictable(p, ctx) {
     const personal = [...new Set([...account, ...account.map(reverseStr)])];
     const personalTokens = [...new Set([...personal, ...personal.map((t) => fold(t, LEET_I)), ...personal.map((t) => fold(t, LEET_L))])].map((t) => Array.from(t));
     const has = (w) => readings.some((r) => r.includes(w) || reverseStr(r).includes(w));
-    const serviceTokens = [...exports.SERVICE_WORDS, ...(exports.SERVICE_WORDS.some(has) ? exports.STUDY_WORDS : [])].map((t) => Array.from(t));
+    const named = exports.SERVICE_WORDS.filter(has);
+    const web = named.flatMap((w) => [...WEB_AFTER.map((a) => w + a), ...['', ...WEB_AFTER].map((a) => `www${w}${a}`)]);
+    const serviceTokens = [...exports.SERVICE_WORDS, ...web, ...(named.length ? [...exports.STUDY_WORDS, 'http', 'https'] : [])].map((t) => Array.from(t));
     const lats = [lattice(readings, personalTokens, serviceTokens, bounds), lattice(readings.map(reverseStr), personalTokens, serviceTokens, backBounds)];
     const asked = new Map();
     const worst = (use) => {
-        const key = `${+use.personal}${+use.service}${use.listWords}${+use.numbers}`;
+        var _a;
+        const key = `${+use.personal}${+use.service}${use.listWords}${+use.numbers}:${(_a = use.minWord) !== null && _a !== void 0 ? _a : 0}`;
         if (!asked.has(key))
             asked.set(key, Math.min(...lats.map((l) => leftOver(l, use))));
         return asked.get(key);
@@ -4995,9 +5116,25 @@ function predictable(p, ctx) {
             return 'contains_email';
         if (worst({ personal: false, service: false, listWords: exports.MAX_LIST_WORDS, numbers: true }) > exports.MAX_LEFT_OVER)
             return 'contains_service_word';
+        if (!exact && worst({ personal: false, service: false, listWords: 1, numbers: true }) > exports.MAX_LEFT_OVER && !(nameSet && Math.min(...lats.map(namesLeftOver)) <= exports.MAX_LEFT_OVER))
+            return 'two_common_words';
         if (exact || worst({ personal: false, service: false, listWords: 0, numbers: true }) > exports.MAX_LEFT_OVER)
             return 'common';
         return 'too_simple';
+    }
+    const ONE_LEFT = exports.MAX_LEFT_OVER + 1;
+    const oneWord = (personal, service) => worst({ personal, service, listWords: 1, numbers: true, minWord: 5 });
+    if (all <= ONE_LEFT && oneWord(true, true) <= ONE_LEFT) {
+        if (oneWord(false, true) > ONE_LEFT)
+            return 'contains_email';
+        if (oneWord(false, false) > ONE_LEFT) {
+            if (readings.some((r) => exports.SERVICE_WORDS.some((w) => w.length >= 5 && (r.includes(w) || reverseStr(r).includes(w)))))
+                return 'contains_service_word';
+        }
+        else if (worst({ personal: false, service: false, listWords: 0, numbers: true }) > ONE_LEFT)
+            return 'common';
+        else if (Array.from(c).filter((ch) => ch >= 'a' && ch <= 'z').length >= 4)
+            return 'too_simple';
     }
     if (lats.some((l) => l.personal.some((e) => e.length))) {
         const withAccount = worst({ personal: true, service: true, listWords: 0, numbers: true });
@@ -5009,6 +5146,40 @@ function predictable(p, ctx) {
         return 'common';
     if (exact)
         return 'common';
+    const chars = Array.from(c);
+    const fringe = (ch) => isDigit(ch) || isSymbol(ch);
+    let from = 0;
+    while (from < n && fringe(chars[from]))
+        from++;
+    let to = n;
+    while (to > from && fringe(chars[to - 1]))
+        to--;
+    if (to > from) {
+        const core = chars.slice(from, to);
+        let unit = core.length;
+        for (let q = 1; 2 * q <= core.length; q++) {
+            if (core.length % q === 0 && core.every((ch, k) => k < q || ch === core[k - q])) {
+                unit = q;
+                break;
+            }
+        }
+        const spans = [[lats[0], from, to], [lats[1], n - to, n - from]];
+        if (unit < core.length)
+            spans.push([lats[0], from, from + unit]);
+        for (const [l, i, j] of spans) {
+            opCount++;
+            if (l.personal[i].includes(j))
+                return 'contains_email';
+            if (l.service[i].includes(j))
+                return 'contains_service_word';
+            if (l.words[i].includes(j) || l.names[i].includes(j) || exports.MONTH_WORDS.includes(l.plain.slice(i, j).join('')))
+                return 'common';
+            if (l.runs[i].includes(j))
+                return 'too_simple';
+        }
+        if (unit < core.length && unit >= 3 && unit <= 14 && core.every((ch) => ch >= 'a' && ch <= 'z') && worst({ personal: false, service: false, listWords: 0, numbers: true }) <= core.length + exports.MAX_LEFT_OVER)
+            return 'too_simple';
+    }
     const lettered = pieces.filter((x) => /[a-z]/.test(x));
     const one = lettered.length === 1 ? /^[^a-z]*([a-z]+)[^a-z]*$/.exec(lettered[0]) : null;
     if (one) {
@@ -5026,7 +5197,19 @@ function predictable(p, ctx) {
         if (period <= 14 && plainCase && worst({ personal: false, service: false, listWords: 0, numbers: true }) <= period + exports.MAX_LEFT_OVER)
             return 'too_simple';
     }
-    if (Math.min(...lats.map(material)) < exports.MIN_MATERIAL || new Set(Array.from(c)).size < 5)
+    const letterSeq = chars.filter((ch) => kindOf(ch) === 'l');
+    const digitSeq = chars.filter(isDigit);
+    const symbolSeq = chars.filter(isSymbol).map((ch) => { var _a; return (_a = SHIFT_DIGIT[ch]) !== null && _a !== void 0 ? _a : ch; });
+    let switches = 0;
+    for (let i = 1; i < n; i++)
+        if (kindOf(chars[i]) !== kindOf(chars[i - 1]))
+            switches++;
+    const lettersLeft = () => Math.min(runsLeft(letterSeq), runsLeft(letterSeq.filter((_, k) => k % 2 === 0)) + runsLeft(letterSeq.filter((_, k) => k % 2 === 1)));
+    if (letterSeq.length >= 3 && digitSeq.length >= 2 && switches >= 5 && runsLeft(digitSeq) + runsLeft(symbolSeq) <= exports.MAX_LEFT_OVER && runsLeft(digitSeq) + runsLeft(symbolSeq) + lettersLeft() <= exports.MAX_LEFT_OVER)
+        return 'too_simple';
+    const floor = Math.min(exports.MIN_MATERIAL_LONG, Math.max(exports.MIN_MATERIAL, Array.from(p).length - (exports.PASSWORD_MIN_CHARS - exports.MIN_MATERIAL)));
+    const long15 = Array.from(p).length >= exports.PASSWORD_LONG_CHARS;
+    if (Math.min(material(lats[0], from, to, long15), material(lats[1], n - to, n - from, long15)) < floor || new Set(Array.from(c)).size < 5)
         return 'too_simple';
     return null;
 }
@@ -5045,6 +5228,8 @@ function checkPassword(password, context) {
     const why = predictable(p, ctx);
     if (why)
         out.push(why);
+    if (passwordMissingTypes(p).length)
+        out.push('missing_characters');
     return out;
 }
 function assessPassword(password, context) {
@@ -10637,7 +10822,7 @@ function createWebAuth(deps) {
         const wp = (0, errors_1.bodyObject)(text).weak_password;
         if (wp && typeof wp === 'object')
             return true;
-        return (0, passwordRules_1.passwordWordsLoaded)() && (0, passwordRules_1.checkPassword)(p, { email, names: namesOf(user) }).length > 0;
+        return (0, passwordRules_1.passwordWordsLoaded)() && (0, passwordRules_1.checkPassword)(p, { email, names: namesOf(user) }).some((r) => r !== 'too_short' && r !== 'missing_characters');
     };
     return {
         async signInWithPassword(email, password, opts) {
@@ -11535,6 +11720,8 @@ function userUpdateError(status, word, b) {
                 return bad('password_leaked');
             if (reasons.includes('length'))
                 return bad('password_too_short');
+            if (reasons.includes('characters'))
+                return bad('password_missing_characters');
             return bad('password_weak');
         }
         case 'same_password':
@@ -12260,7 +12447,7 @@ function decodeUtf8(bytes) {
   api["config"] = pub(load("src/webcloud/config.ts"));
   api["passwordRules"] = pub(load("src/engine/passwordRules.ts"));
   api["breach"] = pub(load("src/webcloud/breach.ts"));
-  api.sourceHash = "5aadc2138e0a6fae";
+  api.sourceHash = "4e9e6691187ab29d";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

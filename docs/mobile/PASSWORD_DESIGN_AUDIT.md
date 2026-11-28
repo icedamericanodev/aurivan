@@ -18,6 +18,7 @@ migrations, `supabase/tests/40_beta.sql`, `supabase/config.toml`, `scripts/cloud
 | LOW-1, LOW-3 | Client work (step A3) |
 | LOW-2 | Fixed: the new functions and triggers are created first, the old trigger is dropped last |
 | LOW-4 | Done: `cloud_smoke.sh binding`, and `/magiclink` and `/resend` in `cloud_smoke.sh captcha` |
+| Password rule (item 6) | *28 Nov 2026 (evening): the owner chose 12 characters with all four types; the 15-character, no-composition recommendation below is superseded. Deviations D3, D4 and D5, `docs/WEB_LAUNCH_PLAN.md`. An independent review of that rule (round 5) found first guesses for the policy accepted; after the fixes, 5.8% of its held-out candidates still pass (9.8% before), and 15.4% of its verification round aimed at the fixed shapes (44.6% before). The captcha (gate 16) and the server-side 30-day and 14-day session end (gate 21) are compensating controls from go-live, not yet in force.* |
 | LOW-5 | Phone OFF is gate 20; the `config.toml` rate-limit comment is fixed; the brake text says to re-run the probes first |
 
 ## Verdict: GO WITH CHANGES
@@ -370,7 +371,9 @@ token arrived` (or the HTTP `Date` header). Keep the 500 → `reauth_required` m
      confirmed account, so sign-ins can't break.
    - Fixes: add rule 4b (deferred), reorder the migration (LOW-2), add the tests and mutants (MEDIUM-3). The H-2
      guard needs SECURITY DEFINER for its list lookup (empty `search_path`, EXECUTE revoked from app roles; add a pgTAP check that `prosecdef` is true for it and false for the password guards).
-6. **Password rule:** **15 characters minimum, no composition rules**, as the design recommends. Reasons:
+6. **Password rule:** **15 characters minimum, no composition rules**, as the design recommends. *Update 28 Nov 2026
+   (evening): the owner decided on 12 characters with all four types instead; recorded as deviations D3 and D4 in
+   `docs/WEB_LAUNCH_PLAN.md` (deviation register), with the compensating controls.* Reasons given at the time:
    - Without a leaked-password check, length is the main thing keeping reused passwords out: most passwords in breach
      lists are shorter than 15.
    - Composition rules push people to "Password1!"-style patterns that are at the top of stuffing lists.
@@ -447,7 +450,7 @@ it together with the server-side blocklist (Pro HIBP), not before.
 | NIST / ASVS control | On Free | Client-side only acceptable? | What closes it |
 |---|---|---|---|
 | 3.1.1.2 blocklist (SHALL) of common, expected or compromised values | Client check only; the API accepts any password of 15+ characters | **No**: the SHALL binds the *verifier* (server), and a raw API call skips it. An auditor marks this "control bypassable / not enforced at verifier" | **Pro** leaked-password protection (HIBP) on the server. Keep the client list for "expected" words (email, "kaisip", "cisa"), which HIBP doesn't cover |
-| 3.1.1.2 length ≥15, no composition rules, no forced rotation, no hints or KBA | Met by dashboard settings (15, no required characters); GoTrue has no hints, KBA or rotation | n/a | Settings (§5 of the design) |
+| 3.1.1.2 length ≥15, no composition rules, no forced rotation, no hints or KBA | *Update 28 Nov 2026 (evening):* **not met** for length and composition by the owner's decision (12 characters, all four types required: deviations D3, D4 in `docs/WEB_LAUNCH_PLAN.md`); GoTrue has no hints, KBA or rotation (met) | **No** (length, composition) | Owner's risk acceptance in the deviation register |
 | 3.1.1.2 SHOULD allow ≥64 | GoTrue caps at **72 bytes** (bcrypt), which is 64+ ASCII characters but fewer for multi-byte text | SHOULD only | Document: "max 72 bytes (bcrypt)" |
 | 2.1.3 AAL1 overall reauthentication timeout (SHALL; SHOULD ≤30 days) | Refresh tokens never expire on Free | **No**: a client "forget after 30 days" leaves a stolen refresh token valid forever. An auditor marks this "timeout not enforced server-side" | **Either** Pro time-box (30 days) **or on Free** a `pg_cron` job, sketched below |
 | 3.2.2 ≤100 consecutive failures per account | Not available (see Q3) | No | Only the Teams-tier hook, or a documented deviation |
@@ -513,7 +516,8 @@ time-box plus the client blocklist is defensible, provided the deviations are wr
   - A captcha token is required on *every* password attempt (single use, verified server-side), so each guess costs a
     solved challenge.
   - The per-IP limit is 150 per 5 minutes with a burst of 30, shared with refresh.
-  - The 15-character minimum plus the blocklist bounds the guessing space. State the numbers: with 15 characters and
+  - The length minimum plus the blocklist bounds the guessing space (*12 since the owner's decision of 28 Nov 2026,
+    evening; recompute the numbers below for 12*). State the numbers: with 15 characters and
     the top-N list removed, the chance of success within, say, 10⁶ captcha-gated guesses against one account is far
     below the 1-in-100-guesses bound that NIST's limit is meant to give.
 - **Detective:** a scheduled check of Auth logs for `invalid_credentials` volume per IP and overall, with thresholds;
