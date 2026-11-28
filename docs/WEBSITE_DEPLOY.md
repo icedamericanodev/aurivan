@@ -127,7 +127,7 @@ site changes**: Cloudflare still runs the plain build, which is landing mode.
 |---|---|
 | The page | `home.html` (no inline script or style) |
 | Its stylesheet, script and pictures | `assets/home.css`, `assets/home.js`, `assets/home/` |
-| Its font | `assets/fonts/KaiSipSerif_400Regular.woff2` (the phone app's serif with a conventional f and J; since web v13.2.1 every page loads it, see `mobile/assets/fonts/README.md`) |
+| Its font | `assets/fonts/KaiSipSerif_400Regular.woff2` (the phone app's serif with a conventional f and J; since web v13.2 every page loads it, see `mobile/assets/fonts/README.md`) |
 | Its build mode | `SITE_MODE=home bash scripts/build_site.sh` |
 | Its policy | `HOME_CSP` in `scripts/build_site.sh` (swapped into the `/` and `/index.html` rules) |
 | Its checks | `scripts/home_page/check.cjs`, served by `scripts/home_page/serve_site.cjs` |

@@ -62,11 +62,6 @@ The first update after the 2.0.0 launch (closed testing). Play version name exac
 - A learner saw Android's navigation buttons covering the buttons at the bottom of a screen; bottom buttons now sit above the navigation bar.
 - A learner found a password policy question unclear; it now states that management requires the controls.
 
-## Web [v13.2.1] · 2026-11-28
-
-### Improved
-- The capital J and the letter f have a cleaner, more familiar shape, so names and headings are easier to read.
-
 ## Web [v13.2] · 2026-11-28 · KaiSip is on the web
 
 ### New
@@ -76,6 +71,7 @@ The first update after the 2.0.0 launch (closed testing). Play version name exac
 
 ### Improved
 - The Android beta has finished. Thank you to everyone who tested KaiSip.
+- The capital J and the letter f have a cleaner, more familiar shape, so names and headings are easier to read.
 
 ## Web [v13.1] · 2026-11-28
 

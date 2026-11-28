@@ -2,7 +2,7 @@
 """
 Builds "KaiSip Serif": the upright reading font of the phone app and the
 website, with a conventional lowercase "f" (FB-006, mobile 2.1) and a
-capital "J" with a straight stem (FB-014, mobile 2.4 and web v13.2.1).
+capital "J" with a straight stem (FB-014, mobile 2.4 and web v13.2).
 
 PLAIN ENGLISH
   The brand serif is Fraunces. Two of its upright letters read as "odd":

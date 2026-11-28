@@ -62,7 +62,7 @@ matter, a clean sans for everything you tap — and a grove that visibly grows a
 
 Six files total (~350 KB). **v2 adds `Fraunces_400Regular_Italic` (86 KB) for the coaching voice**, same package, no new dependency. Plus Jakarta Sans is removed.
 
-**KaiSip Serif (mobile 2.1, FB-006; capital J in mobile 2.4 and web v13.2.1, FB-014).** Two upright Fraunces
+**KaiSip Serif (mobile 2.1, FB-006; capital J in mobile 2.4 and web v13.2, FB-014).** Two upright Fraunces
 letters read as odd and Fraunces has no alternate for either: the lowercase "f" has a flat, heavy hook, and
 the capital "J" has a stem that swells to the right near the baseline (a boot shape at the start of "Jamie",
 "John", "Jose" and in the avatar initial). The two upright weights therefore load as "KaiSip Serif": Fraunces

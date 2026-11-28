@@ -1,7 +1,7 @@
 /**
  * KaiSip Serif: the upright reading font is Fraunces with a conventional
  * lowercase "f" (mobile 2.1, FB-006) and a capital "J" with a straight stem
- * (mobile 2.4 and web v13.2.1, FB-014). These tests read the font files directly
+ * (mobile 2.4 and web v13.2, FB-014). These tests read the font files directly
  * (no font library: the few table fields needed are parsed here) and pin what
  * makes the swap safe:
  *   - the files exist, are named as the app and the widgets expect, and carry their own name;
