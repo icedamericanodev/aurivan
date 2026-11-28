@@ -2583,7 +2583,11 @@ const IIA_MIX = { analysis: 0.3, application: 0.5, foundational: 0.2 };
 const IIA_NOTE = 'The IIA reports scaled scores from 250 to 750; 600 is the passing mark.';
 // What the phone shows (the owner's word rule: "the score needed", never "pass"); content/scoreNote.ts reads it.
 const IIA_SCORE = 'The IIA reports scaled scores from 250 to 750. The score needed is 600.';
+// IIA is already exported by certifications.ts (28 Nov 2026); reuse it, do not redeclare it.
+// domainStyle: The IIA says "Section A". qualifierCase: The IIA writes "first", "best" in lowercase
+// (owner decision 28 Nov 2026, section 9; app support in engine/games/priorityLens.ts).
 const IIA_BASE = { issuer: IIA, mindset: IIA_MINDSET, notesRole: 'internal auditor', welcomeHeadline: 'Think like an internal auditor.',
+  domainStyle: { noun: 'Section', numbering: 'letter' } as const, qualifierCase: 'lowercase' as const,
   trademarkNotice: IIA_TM, trademarkRegistered: false, status: 'coming_soon' as const };
   { id: 'cia1', name: 'CIA Part 1', fullName: 'Internal Audit Fundamentals', ...IIA_BASE,
     exam: { questions: 125, minutes: 150, difficultyMix: IIA_MIX, passingNote: IIA_NOTE, scoreNote: IIA_SCORE },
