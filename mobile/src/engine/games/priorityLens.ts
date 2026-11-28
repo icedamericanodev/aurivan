@@ -137,7 +137,8 @@ const MOST_ADJ = new Set([
   'likely', 'complete', 'prompt', 'clear', 'strong', 'severe', 'secure', 'robust', 'sound', 'true', 'wise', 'apt', 'fair',
   'common', 'valid', 'weak', 'direct', 'exact', 'precise', 'concise', 'current', 'recent', 'complex', 'mature', 'safe',
   'strict', 'often', 'concerning', 'pressing', 'compelling', 'damaging', 'misleading', 'convincing', 'telling',
-  'revealing', 'worrying', 'troubling', 'alarming', 'striking', 'limiting', 'demanding', 'challenging', 'promising', 'lacking',
+  'revealing', 'worrying', 'troubling', 'alarming', 'striking', 'limiting', 'demanding', 'challenging', 'promising',
+  'lacking', 'missing', 'needed',
 ]);
 /** Verbs "most" asks about: "Which gap most needs action?", "What does it most lack?", "should most rely on". */
 const MOST_VERBS = new Set([

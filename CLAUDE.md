@@ -26,6 +26,7 @@ work without rediscovering the layout.
 | `scripts/check_longest_option.py` | Longest-option tell per domain: how often "always pick the longest" would win (target about 20%, chance 25%; fails outside 15–24%). Run by `verify_repo.sh` |
 | `scripts/check_aaia_bank.py` | AAIA bank checks: every `framework_ref` part in `data/aaia/originals/_framework_library.md`, ids, area coverage, the length tell (enforced from 40 questions per domain), notes links, no "AAIA®", and the glossary. Run by `verify_repo.sh` with the AAIA exam-style and notes lints |
 | `scripts/aaia_pack_dry_run.cjs` | Runs the phone app's pack builders on the AAIA files (output to /tmp only) and draws a full 90-item and a short mock; proves the course loads before it is switched on. Run by `verify_repo.sh` |
+| `scripts/check_triage.py` | Human sign-off guardrail for the five triage fields the `human-verification-triage` agent adds (`is_human_verified`, `triage_status`, `audit_note`, `domain_tag`, `verified_date`). Only the certified owner sets `is_human_verified` to true, with a `verified_date`; the check fails otherwise. Run by `verify_repo.sh`. AAIA report: `docs/content/AAIA_TRIAGE.md` |
 | `scripts/print_alignment.py` | Prints v2 options beside their explanations and tips for the alignment read (catches option texts under the wrong letters) |
 | `scripts/lint_inline_js.sh` | Extracts inline `<script>` blocks from `index.html` and runs ESLint `no-undef` |
 | `.claude/settings.json` | Permission allowlist + SessionStart validation hook |
@@ -224,6 +225,7 @@ kill %1
   `notes-application-tester` (do the notes let a learner answer the bank?),
   `beta-desk-engineer` (any Beta Desk problem or change: reproduce, fix, test, ship, confirm live, admin runbook),
   `isaca-language-reviewer` (ISACA terminology and exam phrasing).
+  Sign-off and wording: `human-verification-triage` (READY_FOR_SIGN_OFF / NEEDS_HUMAN_EDIT notes for the owner's final sign-off; never marks an item verified), `question-readability-reviewer` (plain stems, FB-013).
 
 ## Branching + GitHub
 

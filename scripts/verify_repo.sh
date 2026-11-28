@@ -300,6 +300,13 @@ if ! python3 scripts/check_readability.py; then
   status=1
 fi
 
+# 6a1b. Human sign-off fields (Human Verification Triage) ----------------------
+# Only the certified human flips is_human_verified to true, with a date.
+printf "\nHuman sign-off (triage fields):\n"
+if ! python3 scripts/check_triage.py; then
+  status=1
+fi
+
 # 6a2. AAIA course (data/aaia/) ---------------------------------------------
 # The paid AAIA pack: item style (lint_exam_style_v2 --file, exit 1 = error),
 # notes against the AAIA outline and bank, and the bank checks (citations in
