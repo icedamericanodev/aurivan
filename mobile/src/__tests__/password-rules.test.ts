@@ -17,7 +17,8 @@
  * - the generated lists are intact, match their sources, and are only
  *   accepted with the recorded sizes and fingerprints;
  * - guidance after every refusal (NIST: SHALL offer guidance);
- * - fast enough to run on every key press.
+ * - fast enough to run on every key press: a deterministic step budget and
+ *   a median-of-five clock on inputs built to be slow (jest/password-adversarial.ts).
  */
 import { createHash } from 'crypto';
 import fs from 'fs';
@@ -37,6 +38,7 @@ import {
   PASSWORD_MAX_BYTES,
   PASSWORD_MIN_CHARS,
   passwordBytes,
+  passwordCheckStepsForTest,
   PASSWORD_OTHER_GUIDANCE,
   passwordGuidance,
   passwordLength,
@@ -51,6 +53,7 @@ import { PASSWORD_DICT_LIST, PASSWORD_DICT_SIZE, PASSWORD_LOCAL_LIST, PASSWORD_L
 import { GOOD, HOSTILE, HOSTILE_CONTEXT, HOSTILE_GROUPS, KNOWN_ACCEPTS, OFF_LIST_LONG_WORDS, OFF_LIST_WORDS, ORDINARY_WORDS, unscramble } from '../../jest/password-fixtures';
 import { R3_CONTEXT, R3_FAMILIES, R3_GOOD_KINDS, R3_HOSTILE } from '../../jest/password-fixtures-r3';
 import { breachForms, createBreachCheck } from '../webcloud/breach';
+import { ADVERSARIAL } from '../../jest/password-adversarial';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const lists = require('../../scripts/password-lists.cjs');
@@ -632,12 +635,77 @@ describe('the breached-password check, designed and OFF (k-anonymity, three form
 });
 
 describe('cost budget', () => {
-  it('the worst inputs take well under 50 ms; a thousand typical checks well under three seconds', () => {
-    checkPassword('warm up the sets once');
-    for (const p of ['a'.repeat(72), 'password'.repeat(9), 'ab'.repeat(36), '1q2w3e4r5t6y7u8i9o0p'.repeat(4).slice(0, 72), 'internationalization'.repeat(3).slice(0, 72), 'correct horse battery staple and nine more words here to be long!!']) {
-      const t0 = Date.now();
-      checkPassword(p, CTX);
-      expect([p.slice(0, 12), Date.now() - t0 < 50]).toEqual([p.slice(0, 12), true]);
+  // The rules look at every stretch of the password, so repetitive text is the
+  // worst case (jest/password-adversarial.ts). Two checks, both on that list:
+  // - a step count the rules keep (passwordCheckStepsForTest). It is the same on
+  //   every machine, so the main budget cannot flake on a slow, shared runner;
+  // - the clock, as a backstop for work the count does not see: the median of
+  //   five runs per input, so one slow moment on the runner does not fail it.
+  // Measured 28 Nov 2026, lists loaded: at most 82,576 steps for one check
+  // ('1' x 72), 17,928,195 for the whole list (each input with and without
+  // CTX); in plain Node (the website bundle) at most 2.3 ms median, in Jest at
+  // most about 11 ms (Jest's transformed code is several times slower). The
+  // version before this budget took up to 23 ms in plain Node and failed CI at
+  // 50 ms. The counts only change when the code or the lists do, so the
+  // margins are small on purpose (about 6%): taking out the "no entry starts
+  // like this" stop, or looking at identical readings twice, already fails.
+  // A change that adds work on purpose updates these numbers, with the reason.
+  const STEP_WORST = 88_000;
+  const STEP_TOTAL = 18_900_000;
+  const MEDIAN_MS = 50;
+  const median = (f: () => void) => {
+    const t: number[] = [];
+    for (let k = 0; k < 5; k++) {
+      const t0 = process.hrtime.bigint();
+      f();
+      t.push(Number(process.hrtime.bigint() - t0) / 1e6);
+    }
+    return t.sort((a, b) => a - b)[2];
+  };
+
+  it('the adversarial list covers every shape the budget is about', () => {
+    const kinds = new Set(ADVERSARIAL.map(([name]) => name.split(' ')[0]));
+    expect([...kinds].sort()).toEqual(['case', 'emoji', 'leet', 'names', 'near', 'random', 'repeat', 'walk']);
+    for (const [name, p] of ADVERSARIAL) if (name !== 'emoji 72') expect([name, passwordBytes(p) <= PASSWORD_MAX_BYTES]).toEqual([name, true]);
+    // Near-repeats change each of the 72 positions in turn.
+    expect(ADVERSARIAL.filter(([name]) => name.startsWith('near a @')).length).toBe(72);
+  });
+
+  it('every adversarial input stays inside the step budget, and the count does not depend on the run', () => {
+    let worst = 0;
+    let total = 0;
+    for (const [name, p] of ADVERSARIAL) {
+      for (const ctx of [{}, CTX]) {
+        passwordCheckStepsForTest(true);
+        checkPassword(p, ctx);
+        const steps = passwordCheckStepsForTest(true);
+        checkPassword(p, ctx);
+        expect([name, passwordCheckStepsForTest(true)]).toEqual([name, steps]);
+        expect([name, steps <= STEP_WORST]).toEqual([name, true]);
+        worst = Math.max(worst, steps);
+        total += steps;
+      }
+    }
+    expect(total).toBeLessThanOrEqual(STEP_TOTAL);
+    // The budgets are ceilings close to the real cost, not loose guesses.
+    expect(worst).toBeGreaterThan(STEP_WORST * 0.9);
+    expect(total).toBeGreaterThan(STEP_TOTAL * 0.9);
+  });
+
+  it('the answers on the adversarial list are the ones the slower version gave', () => {
+    // Checked against the previous version input by input before it was removed
+    // (17,949 inputs: every fixture and this list, 0 differences); this
+    // fingerprint keeps the adversarial answers from drifting.
+    const h = createHash('sha256');
+    for (const [name, p] of ADVERSARIAL) h.update(`${name}\t${checkPassword(p, CTX).join(',')}\t${checkPassword(p).join(',')}\n`);
+    expect(h.digest('hex')).toBe('4f7c69058fcf1b935617d6c0e017f76458410dc9f8281bc6cae2a618482b6961');
+  });
+
+  it('every adversarial input takes well under 50 ms (median of five); a thousand typical checks well under six seconds', () => {
+    for (const [, p] of ADVERSARIAL.slice(0, 40)) checkPassword(p, CTX); // warm up
+    for (const [name, p] of ADVERSARIAL) {
+      const ms = median(() => checkPassword(p, CTX));
+      expect([name, ms < MEDIAN_MS]).toEqual([name, true]);
     }
     const inputs = Array.from({ length: 1000 }, (_, i) => `${ofLength(40)}${String(i).padStart(4, '0')}`);
     const t0 = Date.now();

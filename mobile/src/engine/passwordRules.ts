@@ -192,8 +192,32 @@ export function decodeList(text: unknown): string[] {
 let longSet: Set<string> | null = null;
 const long = () => (longSet ??= new Set(decodeList(PASSWORD_LONG_LIST)));
 let wordSet: Set<string> | null = null;
+/**
+ * A count of the inner steps the last checks took (positions × piece lengths
+ * looked at, and dynamic-programming moves). Deterministic, so a test can
+ * hold the work to a budget whatever the machine's speed.
+ */
+let opCount = 0;
+/** Tests only: the steps counted since the last reset. */
+export function passwordCheckStepsForTest(reset = false): number {
+  const n = opCount;
+  if (reset) opCount = 0;
+  return n;
+}
 let prefix4: Set<string> = new Set();
 let prefix8: Set<string> = new Set();
+/** Every entry, sorted: "does any entry start with this?" by binary search (stops long lookups early). */
+let sortedWords: string[] = [];
+function anyStartsWith(sub: string): boolean {
+  let lo = 0;
+  let hi = sortedWords.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (sortedWords[mid] < sub) lo = mid + 1;
+    else hi = mid;
+  }
+  return lo < sortedWords.length && sortedWords[lo].startsWith(sub);
+}
 
 /** The word lists, as passwordWords.ts holds them. */
 export interface PasswordWordLists {
@@ -241,6 +265,7 @@ export function loadPasswordWords(lists: unknown): boolean {
   wordSet = set;
   prefix4 = p4;
   prefix8 = p8;
+  sortedWords = [...set].sort();
   return true;
 }
 /** True once loadPasswordWords has accepted the real lists. */
@@ -464,22 +489,67 @@ const MAX_WORD = 72;
 export const MAX_NAME_PIECES = 5;
 
 /**
+ * What one reading of the password needs again and again, computed once
+ * (the checks below would otherwise re-scan the text for every position and
+ * length, which made repetitive passwords slow): the character kinds, a
+ * running count of letters, and the copy tables.
+ */
+interface FormTables {
+  s: string[];
+  n: number;
+  /** 1 letter, 2 digit, 0 anything else. */
+  kind: Uint8Array;
+  /** letters[i]: how many letters in s[0..i). */
+  letters: Uint16Array;
+  /** lcp[j * (n + 1) + i]: how far s[j..] and s[i..] agree (j < i). */
+  lcp: Uint16Array;
+  /** The longest copy of earlier text, or mirror of it, starting at each position. */
+  copy: Uint16Array;
+  /** The longest text starting at i that also appears wholly before i. */
+  repeatBefore: Uint16Array;
+}
+
+function formTables(s: string[]): FormTables {
+  const n = s.length;
+  const w = n + 1;
+  const kind = new Uint8Array(n);
+  const letters = new Uint16Array(n + 1);
+  for (let i = 0; i < n; i++) {
+    const k = kindOf(s[i]);
+    kind[i] = k === 'l' ? 1 : k === 'd' ? 2 : 0;
+    letters[i + 1] = letters[i] + (kind[i] === 1 ? 1 : 0);
+  }
+  const lcp = new Uint16Array(w * w);
+  for (let j = n - 1; j >= 0; j--) for (let i = n - 1; i > j; i--) lcp[j * w + i] = s[j] === s[i] ? 1 + lcp[(j + 1) * w + i + 1] : 0;
+  // mir: how far s[i..] reads as s[..j] backwards (a word and its mirror: "drowssap").
+  const mir = new Uint16Array(w * w);
+  for (let i = n - 1; i >= 0; i--) for (let j = 0; j < i; j++) mir[j * w + i] = s[j] === s[i] ? 1 + (j > 0 ? mir[(j - 1) * w + i + 1] : 0) : 0;
+  const copy = new Uint16Array(n);
+  const repeatBefore = new Uint16Array(n);
+  for (let i = 0; i < n; i++) {
+    let c = 0;
+    let r = 0;
+    for (let j = 0; j < i; j++) {
+      const l = lcp[j * w + i];
+      c = Math.max(c, l, Math.min(mir[j * w + i], j + 1));
+      r = Math.max(r, Math.min(l, i - j));
+    }
+    copy[i] = c;
+    repeatBefore[i] = r;
+  }
+  return { s, n, kind, letters, lcp, copy, repeatBefore };
+}
+
+/**
  * Per position: where a repeat, sequence, keyboard run or copy of earlier
  * text starting there may end (3+ characters). A run of exactly 3 that is
  * not the same character three times, is all letters, and touches another
  * letter doesn't count: "par-ty" or "the" are parts of words, not patterns.
+ * Written into `mark` (mark[i][j] = 1) so several readings merge for free.
  */
-function runEnds(s: string[], bounds: ReadonlySet<number>): number[][] {
-  const n = s.length;
-  const lcp: number[][] = Array.from({ length: n + 1 }, () => new Array<number>(n + 1).fill(0));
-  for (let j = n - 1; j >= 0; j--) for (let i = n - 1; i > j; i--) lcp[j][i] = s[j] === s[i] ? 1 + lcp[j + 1][i + 1] : 0;
-  // mir[j][i]: how far s[i..] reads as s[..j] backwards (a word and its mirror: "drowssap").
-  const mir: number[][] = Array.from({ length: n + 1 }, () => new Array<number>(n + 1).fill(0));
-  for (let i = n - 1; i >= 0; i--) for (let j = 0; j < i; j++) mir[j][i] = s[j] === s[i] ? 1 + (j > 0 ? mir[j - 1][i + 1] : 0) : 0;
-  const out: number[][] = [];
+function runEnds(t: FormTables, bounds: ReadonlySet<number>, mark: Uint8Array[]): void {
+  const { s, n, kind, letters, copy } = t;
   for (let i = 0; i < n; i++) {
-    let copy = 0;
-    for (let j = 0; j < i; j++) copy = Math.max(copy, lcp[j][i], Math.min(mir[j][i], j + 1));
     let seq = 0;
     let rep = 1;
     while (i + rep < n && s[i + rep] === s[i]) rep++;
@@ -512,23 +582,32 @@ function runEnds(s: string[], bounds: ReadonlySet<number>): number[][] {
         }
       }
     }
-    const ends = new Set<number>();
-    const lettersOnly = (len: number) => s.slice(i, i + len).every((c) => kindOf(c) === 'l');
+    const ends = mark[i];
+    const lettersOnly = (len: number) => letters[i + len] - letters[i] === len;
     // A letter just before / after, in the same word (a joiner or the edge is not one).
-    const letterBefore = !bounds.has(i) && kindOf(s[i - 1]) === 'l';
-    const letterAfter = (len: number) => !bounds.has(i + len) && kindOf(s[i + len]) === 'l';
-    for (let len = 3; len <= rep; len++) ends.add(i + len);
+    const letterBefore = !bounds.has(i) && i > 0 && kind[i - 1] === 1;
+    const letterAfter = (len: number) => !bounds.has(i + len) && i + len < n && kind[i + len] === 1;
+    for (let len = 3; len <= rep; len++) ends[i + len] = 1;
     // Sequences and keyboard runs: a letters-only run of exactly 3 next to a letter is part of a word.
-    for (let len = 3; len <= seq; len++) if (!(len === 3 && lettersOnly(3) && (letterBefore || letterAfter(3)))) ends.add(i + len);
+    for (let len = 3; len <= seq; len++) if (!(len === 3 && lettersOnly(3) && (letterBefore || letterAfter(3)))) ends[i + len] = 1;
     // Copies of earlier text. Letters-only copies count when they stand alone, start a word and
     // have 5+ letters, or have 6+ letters: ordinary words share shorter pieces ("ball" in
     // "balloon" and "caballo").
-    for (let len = 3; len <= copy; len++) {
-      if (!lettersOnly(len) || len >= 6 || (!letterBefore && (len >= 5 || !letterAfter(len)))) ends.add(i + len);
+    for (let len = 3; len <= copy[i]; len++) {
+      if (!lettersOnly(len) || len >= 6 || (!letterBefore && (len >= 5 || !letterAfter(len)))) ends[i + len] = 1;
     }
-    out.push([...ends]);
+    opCount += 1 + rep + seq + copy[i];
   }
-  return out;
+}
+
+/** A per-position mark table (mark[i][j] = 1: a piece may run from i to j) → lists of ends. */
+const marks = (n: number) => Array.from({ length: n }, () => new Uint8Array(n + 1));
+function endsOf(mark: Uint8Array[]): number[][] {
+  return mark.map((m) => {
+    const out: number[] = [];
+    for (let j = 0; j < m.length; j++) if (m[j]) out.push(j);
+    return out;
+  });
 }
 
 const validMonth = (m: number) => m >= 1 && m <= 12;
@@ -578,10 +657,20 @@ function numberEnds(s: string[]): number[][] {
 function tokenEnds(forms: string[][], tokens: string[][]): number[][] {
   const n = forms[0].length;
   const out: number[][] = Array.from({ length: n }, () => []);
+  // Tokens by their first character: most positions start none.
+  const byFirst = new Map<string, string[][]>();
+  for (const t of tokens) if (t.length) (byFirst.get(t[0]) ?? byFirst.set(t[0], []).get(t[0])!).push(t);
   for (let i = 0; i < n; i++) {
-    for (const t of tokens) {
-      if (!t.length || i + t.length > n) continue;
-      if (forms.some((f) => t.every((c, k) => f[i + k] === c))) out[i].push(i + t.length);
+    const seen = new Set<string[]>();
+    for (const f of forms) {
+      for (const t of byFirst.get(f[i]) ?? []) {
+        if (seen.has(t) || i + t.length > n) continue;
+        opCount++;
+        if (forms.some((g) => t.every((c, k) => g[i + k] === c))) {
+          seen.add(t);
+          if (!out[i].includes(i + t.length)) out[i].push(i + t.length);
+        }
+      }
     }
   }
   return out;
@@ -605,63 +694,65 @@ interface Lattice {
  * piece may come from any of them at each position.
  */
 function lattice(forms: string[], personal: string[][], service: string[][], bounds: ReadonlySet<number>): Lattice {
-  const fs = forms.map((f) => Array.from(f));
+  // Readings that are the same text (no letter-for-number swaps in it) are looked at once.
+  const fs = [...new Set(forms)].map((f) => Array.from(f));
   const plain = fs[0];
   const n = plain.length;
-  const merge = (lists: number[][][]) => Array.from({ length: n }, (_, i) => [...new Set(lists.flatMap((l) => l[i]))]);
-  const runs = merge(fs.map((f) => runEnds(f, bounds)));
+  const tables = fs.map(formTables);
+  const runMark = marks(n);
+  for (const t of tables) runEnds(t, bounds, runMark);
   // A list entry may run across a space only from the start of a word to the end of one
   // ("mahal kita" is "mahalkita"; "ouch inky" does not hide "chinky").
   // (A word also ends where letters meet a digit or symbol: "tiger!".)
-  const edge = (i: number) => bounds.has(i) || (kindOf(plain[i - 1]) === 'l') !== (kindOf(plain[i]) === 'l');
-  const crosses = (i: number, j: number) => {
-    for (let b = i + 1; b < j; b++) if (bounds.has(b)) return !(edge(i) && edge(j));
-    return false;
-  };
-  const words: number[][] = Array.from({ length: n }, () => []);
+  const kind0 = tables[0].kind;
+  const isLetter = (i: number) => i >= 0 && i < n && kind0[i] === 1;
+  const edge = (i: number) => bounds.has(i) || isLetter(i - 1) !== isLetter(i);
+  // inner[i]: how many word boundaries lie in 1..i (for "is there one strictly inside (i, j)?").
+  const inner = new Uint16Array(n + 2);
+  for (let b = 1; b <= n; b++) inner[b] = inner[b - 1] + (bounds.has(b) && b < n ? 1 : 0);
+  const crosses = (i: number, j: number) => inner[j - 1] - inner[i] > 0 && !(edge(i) && edge(j));
+  const wordMark = marks(n);
   if (wordSet) {
     for (const f of fs) {
       for (let i = 0; i + 4 <= n; i++) {
         let sub = f.slice(i, i + 4).join('');
         if (!prefix4.has(sub)) continue;
         for (let j = i + 4; j <= Math.min(n, i + MAX_WORD); j++) {
+          opCount++;
           if (j > i + 4) sub += f[j - 1];
           if (j === i + 8 && !prefix8.has(sub)) {
-            if (wordSet.has(sub) && !words[i].includes(j) && !crosses(i, j)) words[i].push(j);
+            if (wordSet.has(sub) && !crosses(i, j)) wordMark[i][j] = 1;
             break;
           }
-          if (wordSet.has(sub) && !words[i].includes(j) && !crosses(i, j)) words[i].push(j);
+          if (wordSet.has(sub) && !crosses(i, j)) wordMark[i][j] = 1;
+          if (j - i >= 9 && !anyStartsWith(sub)) break;
         }
       }
     }
   }
+  const words = endsOf(wordMark);
   // A list entry that repeats earlier text counts once: its later copies are free
   // ("twinkle twinkle little star", "love is patient love is kind").
-  for (const f of fs) {
-    const text = f.join('');
-    const offsets = [0];
-    for (const ch of f) offsets.push(offsets[offsets.length - 1] + ch.length);
-    for (let i = 0; i < n; i++) {
-      for (const j of words[i]) {
-        const sub = text.slice(offsets[i], offsets[j]);
-        if (text.slice(0, offsets[i]).includes(sub) && !runs[i].includes(j)) runs[i].push(j);
-      }
-    }
+  for (const t of tables) {
+    for (let i = 0; i < n; i++) for (const j of words[i]) if (j - i <= t.repeatBefore[i]) runMark[i][j] = 1;
   }
+  const runs = endsOf(runMark);
   // Given names and surnames (their own kind: a whole password of names and numbers is common).
-  const names: number[][] = Array.from({ length: n }, () => []);
+  const nameMark = marks(n);
   if (nameSet) {
     for (const f of fs) {
       for (let i = 0; i + 3 <= n; i++) {
         let sub = f.slice(i, i + 3).join('');
         if (!namePrefix3.has(sub)) continue;
         for (let j = i + 3; j <= Math.min(n, i + 20); j++) {
+          opCount++;
           if (j > i + 3) sub += f[j - 1];
-          if (nameSet.has(sub) && !names[i].includes(j)) names[i].push(j);
+          if (nameSet.has(sub)) nameMark[i][j] = 1;
         }
       }
     }
   }
+  const names = endsOf(nameMark);
   const monthsAll = tokenEnds([plain], MONTH_WORDS.map((m) => Array.from(m)));
   const months = monthsAll.map((ends, i) => ends.filter((j) => isDigit(plain[i - 1]) || isDigit(plain[j])));
   // A 3-letter app or exam word ("cia", "cpa", "app") counts only standing alone: "special" is not "cia".
@@ -694,6 +785,7 @@ function leftOver(l: Lattice, use: { personal: boolean; service: boolean; listWo
         const lit = isSymbol(plain[i]) ? 0 : 1;
         const here = cost[at(k, w)];
         if (c + lit < here[i + 1]) here[i + 1] = c + lit;
+        opCount += l.runs[i].length;
         for (const j of l.runs[i]) relax(k, w, j);
         if (use.numbers) {
           for (const j of l.numbers[i]) relax(k, w, j);
@@ -782,7 +874,12 @@ function predictable(p: string, ctx: PasswordContext): PasswordProblem | null {
   const serviceTokens = [...SERVICE_WORDS, ...(SERVICE_WORDS.some(has) ? STUDY_WORDS : [])].map((t) => Array.from(t));
   // Forwards and backwards ("drowssap").
   const lats = [lattice(readings, personalTokens, serviceTokens, bounds), lattice(readings.map(reverseStr), personalTokens, serviceTokens, backBounds)];
-  const worst = (use: Parameters<typeof leftOver>[1]) => Math.min(...lats.map((l) => leftOver(l, use)));
+  const asked = new Map<string, number>();
+  const worst = (use: Parameters<typeof leftOver>[1]) => {
+    const key = `${+use.personal}${+use.service}${use.listWords}${+use.numbers}`;
+    if (!asked.has(key)) asked.set(key, Math.min(...lats.map((l) => leftOver(l, use))));
+    return asked.get(key)!;
+  };
 
   const exact = readings.some((x) => long().has(x));
   const all = worst({ personal: true, service: true, listWords: MAX_LIST_WORDS, numbers: true });

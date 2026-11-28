@@ -4301,6 +4301,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MAX_NAME_PIECES = exports.PASSWORD_OTHER_GUIDANCE = exports.PASSWORD_GUIDANCE = exports.MONTH_WORDS = exports.STUDY_WORDS = exports.SERVICE_WORDS = exports.MIN_MATERIAL = exports.MAX_WORD_PIECES = exports.MAX_LIST_WORDS = exports.MAX_LEFT_OVER = exports.PASSWORD_MAX_BYTES = exports.PASSWORD_MIN_CHARS = void 0;
 exports.passwordGuidance = passwordGuidance;
 exports.decodeList = decodeList;
+exports.passwordCheckStepsForTest = passwordCheckStepsForTest;
 exports.loadPasswordWords = loadPasswordWords;
 exports.passwordWordsLoaded = passwordWordsLoaded;
 exports.unloadPasswordWordsForTest = unloadPasswordWordsForTest;
@@ -4386,8 +4387,28 @@ function decodeList(text) {
 let longSet = null;
 const long = () => (longSet !== null && longSet !== void 0 ? longSet : (longSet = new Set(decodeList(passwordBlocklist_1.PASSWORD_LONG_LIST))));
 let wordSet = null;
+let opCount = 0;
+function passwordCheckStepsForTest(reset = false) {
+    const n = opCount;
+    if (reset)
+        opCount = 0;
+    return n;
+}
 let prefix4 = new Set();
 let prefix8 = new Set();
+let sortedWords = [];
+function anyStartsWith(sub) {
+    let lo = 0;
+    let hi = sortedWords.length;
+    while (lo < hi) {
+        const mid = (lo + hi) >> 1;
+        if (sortedWords[mid] < sub)
+            lo = mid + 1;
+        else
+            hi = mid;
+    }
+    return lo < sortedWords.length && sortedWords[lo].startsWith(sub);
+}
 let nameSet = null;
 let namePrefix3 = new Set();
 function loadPasswordWords(lists) {
@@ -4423,6 +4444,7 @@ function loadPasswordWords(lists) {
     wordSet = set;
     prefix4 = p4;
     prefix8 = p8;
+    sortedWords = [...set].sort();
     return true;
 }
 function passwordWordsLoaded() {
@@ -4596,21 +4618,42 @@ const isAsciiAlnum = (c) => (c >= 'a' && c <= 'z') || isDigit(c);
 const isSymbol = (c) => c.length === 1 && c.charCodeAt(0) < 0x80 && !isAsciiAlnum(c);
 const MAX_WORD = 72;
 exports.MAX_NAME_PIECES = 5;
-function runEnds(s, bounds) {
+function formTables(s) {
     const n = s.length;
-    const lcp = Array.from({ length: n + 1 }, () => new Array(n + 1).fill(0));
+    const w = n + 1;
+    const kind = new Uint8Array(n);
+    const letters = new Uint16Array(n + 1);
+    for (let i = 0; i < n; i++) {
+        const k = kindOf(s[i]);
+        kind[i] = k === 'l' ? 1 : k === 'd' ? 2 : 0;
+        letters[i + 1] = letters[i] + (kind[i] === 1 ? 1 : 0);
+    }
+    const lcp = new Uint16Array(w * w);
     for (let j = n - 1; j >= 0; j--)
         for (let i = n - 1; i > j; i--)
-            lcp[j][i] = s[j] === s[i] ? 1 + lcp[j + 1][i + 1] : 0;
-    const mir = Array.from({ length: n + 1 }, () => new Array(n + 1).fill(0));
+            lcp[j * w + i] = s[j] === s[i] ? 1 + lcp[(j + 1) * w + i + 1] : 0;
+    const mir = new Uint16Array(w * w);
     for (let i = n - 1; i >= 0; i--)
         for (let j = 0; j < i; j++)
-            mir[j][i] = s[j] === s[i] ? 1 + (j > 0 ? mir[j - 1][i + 1] : 0) : 0;
-    const out = [];
+            mir[j * w + i] = s[j] === s[i] ? 1 + (j > 0 ? mir[(j - 1) * w + i + 1] : 0) : 0;
+    const copy = new Uint16Array(n);
+    const repeatBefore = new Uint16Array(n);
     for (let i = 0; i < n; i++) {
-        let copy = 0;
-        for (let j = 0; j < i; j++)
-            copy = Math.max(copy, lcp[j][i], Math.min(mir[j][i], j + 1));
+        let c = 0;
+        let r = 0;
+        for (let j = 0; j < i; j++) {
+            const l = lcp[j * w + i];
+            c = Math.max(c, l, Math.min(mir[j * w + i], j + 1));
+            r = Math.max(r, Math.min(l, i - j));
+        }
+        copy[i] = c;
+        repeatBefore[i] = r;
+    }
+    return { s, n, kind, letters, lcp, copy, repeatBefore };
+}
+function runEnds(t, bounds, mark) {
+    const { s, n, kind, letters, copy } = t;
+    for (let i = 0; i < n; i++) {
         let seq = 0;
         let rep = 1;
         while (i + rep < n && s[i + rep] === s[i])
@@ -4646,22 +4689,31 @@ function runEnds(s, bounds) {
                 }
             }
         }
-        const ends = new Set();
-        const lettersOnly = (len) => s.slice(i, i + len).every((c) => kindOf(c) === 'l');
-        const letterBefore = !bounds.has(i) && kindOf(s[i - 1]) === 'l';
-        const letterAfter = (len) => !bounds.has(i + len) && kindOf(s[i + len]) === 'l';
+        const ends = mark[i];
+        const lettersOnly = (len) => letters[i + len] - letters[i] === len;
+        const letterBefore = !bounds.has(i) && i > 0 && kind[i - 1] === 1;
+        const letterAfter = (len) => !bounds.has(i + len) && i + len < n && kind[i + len] === 1;
         for (let len = 3; len <= rep; len++)
-            ends.add(i + len);
+            ends[i + len] = 1;
         for (let len = 3; len <= seq; len++)
             if (!(len === 3 && lettersOnly(3) && (letterBefore || letterAfter(3))))
-                ends.add(i + len);
-        for (let len = 3; len <= copy; len++) {
+                ends[i + len] = 1;
+        for (let len = 3; len <= copy[i]; len++) {
             if (!lettersOnly(len) || len >= 6 || (!letterBefore && (len >= 5 || !letterAfter(len))))
-                ends.add(i + len);
+                ends[i + len] = 1;
         }
-        out.push([...ends]);
+        opCount += 1 + rep + seq + copy[i];
     }
-    return out;
+}
+const marks = (n) => Array.from({ length: n }, () => new Uint8Array(n + 1));
+function endsOf(mark) {
+    return mark.map((m) => {
+        const out = [];
+        for (let j = 0; j < m.length; j++)
+            if (m[j])
+                out.push(j);
+        return out;
+    });
 }
 const validMonth = (m) => m >= 1 && m <= 12;
 const validDay = (d) => d >= 1 && d <= 31;
@@ -4710,32 +4762,46 @@ function numberEnds(s) {
     return out;
 }
 function tokenEnds(forms, tokens) {
+    var _a, _b;
     const n = forms[0].length;
     const out = Array.from({ length: n }, () => []);
+    const byFirst = new Map();
+    for (const t of tokens)
+        if (t.length)
+            ((_a = byFirst.get(t[0])) !== null && _a !== void 0 ? _a : byFirst.set(t[0], []).get(t[0])).push(t);
     for (let i = 0; i < n; i++) {
-        for (const t of tokens) {
-            if (!t.length || i + t.length > n)
-                continue;
-            if (forms.some((f) => t.every((c, k) => f[i + k] === c)))
-                out[i].push(i + t.length);
+        const seen = new Set();
+        for (const f of forms) {
+            for (const t of (_b = byFirst.get(f[i])) !== null && _b !== void 0 ? _b : []) {
+                if (seen.has(t) || i + t.length > n)
+                    continue;
+                opCount++;
+                if (forms.some((g) => t.every((c, k) => g[i + k] === c))) {
+                    seen.add(t);
+                    if (!out[i].includes(i + t.length))
+                        out[i].push(i + t.length);
+                }
+            }
         }
     }
     return out;
 }
 function lattice(forms, personal, service, bounds) {
-    const fs = forms.map((f) => Array.from(f));
+    const fs = [...new Set(forms)].map((f) => Array.from(f));
     const plain = fs[0];
     const n = plain.length;
-    const merge = (lists) => Array.from({ length: n }, (_, i) => [...new Set(lists.flatMap((l) => l[i]))]);
-    const runs = merge(fs.map((f) => runEnds(f, bounds)));
-    const edge = (i) => bounds.has(i) || (kindOf(plain[i - 1]) === 'l') !== (kindOf(plain[i]) === 'l');
-    const crosses = (i, j) => {
-        for (let b = i + 1; b < j; b++)
-            if (bounds.has(b))
-                return !(edge(i) && edge(j));
-        return false;
-    };
-    const words = Array.from({ length: n }, () => []);
+    const tables = fs.map(formTables);
+    const runMark = marks(n);
+    for (const t of tables)
+        runEnds(t, bounds, runMark);
+    const kind0 = tables[0].kind;
+    const isLetter = (i) => i >= 0 && i < n && kind0[i] === 1;
+    const edge = (i) => bounds.has(i) || isLetter(i - 1) !== isLetter(i);
+    const inner = new Uint16Array(n + 2);
+    for (let b = 1; b <= n; b++)
+        inner[b] = inner[b - 1] + (bounds.has(b) && b < n ? 1 : 0);
+    const crosses = (i, j) => inner[j - 1] - inner[i] > 0 && !(edge(i) && edge(j));
+    const wordMark = marks(n);
     if (wordSet) {
         for (const f of fs) {
             for (let i = 0; i + 4 <= n; i++) {
@@ -4743,33 +4809,31 @@ function lattice(forms, personal, service, bounds) {
                 if (!prefix4.has(sub))
                     continue;
                 for (let j = i + 4; j <= Math.min(n, i + MAX_WORD); j++) {
+                    opCount++;
                     if (j > i + 4)
                         sub += f[j - 1];
                     if (j === i + 8 && !prefix8.has(sub)) {
-                        if (wordSet.has(sub) && !words[i].includes(j) && !crosses(i, j))
-                            words[i].push(j);
+                        if (wordSet.has(sub) && !crosses(i, j))
+                            wordMark[i][j] = 1;
                         break;
                     }
-                    if (wordSet.has(sub) && !words[i].includes(j) && !crosses(i, j))
-                        words[i].push(j);
+                    if (wordSet.has(sub) && !crosses(i, j))
+                        wordMark[i][j] = 1;
+                    if (j - i >= 9 && !anyStartsWith(sub))
+                        break;
                 }
             }
         }
     }
-    for (const f of fs) {
-        const text = f.join('');
-        const offsets = [0];
-        for (const ch of f)
-            offsets.push(offsets[offsets.length - 1] + ch.length);
-        for (let i = 0; i < n; i++) {
-            for (const j of words[i]) {
-                const sub = text.slice(offsets[i], offsets[j]);
-                if (text.slice(0, offsets[i]).includes(sub) && !runs[i].includes(j))
-                    runs[i].push(j);
-            }
-        }
+    const words = endsOf(wordMark);
+    for (const t of tables) {
+        for (let i = 0; i < n; i++)
+            for (const j of words[i])
+                if (j - i <= t.repeatBefore[i])
+                    runMark[i][j] = 1;
     }
-    const names = Array.from({ length: n }, () => []);
+    const runs = endsOf(runMark);
+    const nameMark = marks(n);
     if (nameSet) {
         for (const f of fs) {
             for (let i = 0; i + 3 <= n; i++) {
@@ -4777,14 +4841,16 @@ function lattice(forms, personal, service, bounds) {
                 if (!namePrefix3.has(sub))
                     continue;
                 for (let j = i + 3; j <= Math.min(n, i + 20); j++) {
+                    opCount++;
                     if (j > i + 3)
                         sub += f[j - 1];
-                    if (nameSet.has(sub) && !names[i].includes(j))
-                        names[i].push(j);
+                    if (nameSet.has(sub))
+                        nameMark[i][j] = 1;
                 }
             }
         }
     }
+    const names = endsOf(nameMark);
     const monthsAll = tokenEnds([plain], exports.MONTH_WORDS.map((m) => Array.from(m)));
     const months = monthsAll.map((ends, i) => ends.filter((j) => isDigit(plain[i - 1]) || isDigit(plain[j])));
     const service3 = tokenEnds(fs, service).map((ends, i) => ends.filter((j) => j - i > 3 || (kindOf(plain[i - 1]) !== 'l' && kindOf(plain[j]) !== 'l')));
@@ -4811,6 +4877,7 @@ function leftOver(l, use) {
                 const here = cost[at(k, w)];
                 if (c + lit < here[i + 1])
                     here[i + 1] = c + lit;
+                opCount += l.runs[i].length;
                 for (const j of l.runs[i])
                     relax(k, w, j);
                 if (use.numbers) {
@@ -4906,7 +4973,13 @@ function predictable(p, ctx) {
     const has = (w) => readings.some((r) => r.includes(w) || reverseStr(r).includes(w));
     const serviceTokens = [...exports.SERVICE_WORDS, ...(exports.SERVICE_WORDS.some(has) ? exports.STUDY_WORDS : [])].map((t) => Array.from(t));
     const lats = [lattice(readings, personalTokens, serviceTokens, bounds), lattice(readings.map(reverseStr), personalTokens, serviceTokens, backBounds)];
-    const worst = (use) => Math.min(...lats.map((l) => leftOver(l, use)));
+    const asked = new Map();
+    const worst = (use) => {
+        const key = `${+use.personal}${+use.service}${use.listWords}${+use.numbers}`;
+        if (!asked.has(key))
+            asked.set(key, Math.min(...lats.map((l) => leftOver(l, use))));
+        return asked.get(key);
+    };
     const exact = readings.some((x) => long().has(x));
     const all = worst({ personal: true, service: true, listWords: exports.MAX_LIST_WORDS, numbers: true });
     if (all <= exports.MAX_LEFT_OVER) {
@@ -11983,7 +12056,7 @@ function decodeUtf8(bytes) {
   api["config"] = load("src/webcloud/config.ts");
   api["passwordRules"] = load("src/engine/passwordRules.ts");
   api["breach"] = load("src/webcloud/breach.ts");
-  api.sourceHash = "d4360f8f662109cf";
+  api.sourceHash = "bf9db5a6bebbb05d";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};
