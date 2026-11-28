@@ -162,7 +162,10 @@ email code, so before this fix a phished staff mailbox gave full control.
    insert into private.staff (user_id, role) values ('<moderator account id>', 'moderator');
    ```
 3. Each staff member installs an authenticator app (for example the one built
-   into their password manager) and enrols it on the staff screen.
+   into their password manager) and enrols it on the staff screen. Step 2
+   comes first: since the password guard (`20261128000000_password_guard.sql`)
+   only accounts in `private.staff` or `private.beta_desk_admins` can enrol an
+   authenticator app.
 4. Check it: a moderator account that tries **Pause posting** gets "not
    allowed", and a staff account that has not verified its authenticator
    gets asked to verify.

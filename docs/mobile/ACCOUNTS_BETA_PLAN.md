@@ -88,6 +88,77 @@ Live smoke: a request without CAPTCHA returns HTTP 400 `captcha_failed` with
 CORS restricted to kaisip.com. Full email/MFA acceptance remains an owner
 browser test after the frontend release. No Android release is needed.
 
+### Applying the password guard (not applied yet; Claude through the Supabase MCP, Sky present)
+
+`supabase/migrations/20261128000000_password_guard.sql` replaces the
+`kaisip_clear_password` trigger. Apply it only after its pull request is
+merged with the `supabase.yml` CI green (pgTAP, plpgsql_check lint,
+advisors) and
+`PGTAP_RUN='bash scripts/beta_desk/pg_local.sh supabase/tests/*.sql' python3 scripts/password_sql_mutants.py`
+catching every mutant. The MCP asks Sky to confirm (the file contains DROP).
+
+**Pre-checks (read-only, `execute_sql`); stop on any surprise:**
+1. `list_migrations`: the eight versions in the table above are there, and no
+   password-guard version yet (20261109000000 was applied by hand, so it is
+   not listed).
+2. The old trigger is the live one:
+   `select t.tgname, t.tgenabled from pg_trigger t where t.tgrelid = 'auth.users'::regclass and not t.tgisinternal;`
+   shows `kaisip_clear_password` enabled (`O`), and no `kaisip_password_guard`.
+3. The applying role may put triggers on both tables (the one step not
+   proven outside a local stack):
+   `select current_user, has_table_privilege('auth.users', 'TRIGGER') as users_trigger, has_table_privilege('auth.mfa_factors', 'TRIGGER') as factors_trigger, has_table_privilege('supabase_auth_admin', 'auth.sessions', 'SELECT') as auth_reads_sessions;`
+   all true. If `factors_trigger` is false, stop: the migration would fail as
+   a whole (nothing changes) and the MFA rule needs another plan (the audit's
+   support-runbook fallback, HIGH-2).
+4. No learner has an authenticator app:
+   `select count(*) from auth.mfa_factors f where f.user_id not in (select user_id from private.beta_desk_admins union select user_id from private.staff);`
+   is 0. If not, stop and tell Sky (a count only, no ids or emails in chat).
+5. For the record, the staff factors that must keep working:
+   `select count(*) from auth.mfa_factors f where f.status = 'verified' and f.user_id in (select user_id from private.beta_desk_admins union select user_id from private.staff);`
+6. The old rule held:
+   `select count(*) from auth.users where email_confirmed_at is not null and coalesce(encrypted_password, '') <> '';`
+   is 0.
+7. `/auth/v1/health` shows v2.199.0 or later (write it down, gate 18) and
+   `/auth/v1/settings` shows `"mailer_autoconfirm":false`.
+8. The md5 of `supabase/migrations/20261128000000_password_guard.sql` on
+   `main` matches the reviewed pull request.
+
+**Apply:** `apply_migration` with name `password_guard` and the file's exact
+text (byte for byte, comments included). It runs as one transaction: if any
+statement fails, nothing changes and the old trigger stays.
+
+**Post-checks:**
+1. `list_migrations` shows the new version: add it, with the md5, to the
+   "Hosted apply record" table.
+2. The three triggers:
+   ```sql
+   select c.relname, t.tgname, t.tgenabled, t.tgtype, t.tgdeferrable, t.tginitdeferred,
+          p.proname, p.prosecdef, p.proconfig, p.proowner::regrole
+   from pg_trigger t join pg_class c on c.oid = t.tgrelid join pg_namespace n on n.oid = c.relnamespace
+   join pg_proc p on p.oid = t.tgfoid
+   where n.nspname = 'auth' and t.tgname like 'kaisip_%' order by t.tgname;
+   ```
+   Exactly three rows, all `tgenabled = O` and `proconfig = {search_path=""}`:
+   `kaisip_first_password_session` (users, tgtype 17, deferrable and
+   initially deferred, `prosecdef` false), `kaisip_mfa_staff_only`
+   (mfa_factors, 7, `prosecdef` true, owner `postgres`),
+   `kaisip_password_guard` (users, 23, `prosecdef` false).
+3. `select to_regprocedure('private.clear_password_when_confirmed()');` is null.
+4. No app role can call the guards:
+   `select has_function_privilege('anon', 'private.guard_mfa_enrol()', 'execute') or has_function_privilege('authenticated', 'private.guard_mfa_enrol()', 'execute') or has_function_privilege('authenticated', 'private.guard_password()', 'execute') or has_function_privilege('authenticated', 'private.guard_first_password_session()', 'execute');`
+   is false.
+5. Pre-check 5's count is unchanged; then Sky signs in to Beta Desk (email
+   code, then the authenticator app) and sees the roster.
+6. `get_advisors` (security and performance): no new ERROR or WARN.
+7. With captcha still off, gate 13b: the three `pre-register` variants,
+   `password`, `binding`, and the full run with `EMAIL_A` (Sky types the
+   codes from the probe inboxes; delete the probe accounts afterwards).
+
+**If something is wrong after the apply:** the emergency brake in the
+migration's header (drop the new triggers; the Auth server still clears
+pre-registered passwords on every path the apps use), then a new migration
+that puts back the 27 Oct rule. Never edit the applied file.
+
 ## Security audit (27 Oct 2026) and the go-live gates
 
 A security audit of ticket 1 found 0 critical, 2 high, 4 medium and 9 low
@@ -96,7 +167,7 @@ git log for the commits). What changed, in short:
 
 | Finding | Fix |
 |---|---|
-| H1 pre-registration takeover (an attacker signs up with the victim's email and a password; the victim later confirms with a code) | The trigger now **wipes** any password on a confirmed account (insert, confirmation, or a new password) instead of raising: `20261027000100_beta_no_passwords.sql`. Smoke: `cloud_smoke.sh pre-register` and the `EMAIL_A` probe (S9) |
+| H1 pre-registration takeover (an attacker signs up with the victim's email and a password; the victim later confirms with a code) | The trigger now **wipes** any password on a confirmed account (insert, confirmation, or a new password) instead of raising: `20261027000100_beta_no_passwords.sql`. Smoke: `cloud_smoke.sh pre-register` and the `EMAIL_A` probe (S9). **28 Nov 2026 (passwords allowed):** to be replaced by the narrower guard `20261128000000_password_guard.sql` (wipe at confirmation, insert and email change; a first password only from a fresh requesting session, checked at commit; authenticator apps for staff only). Design and audit: `docs/mobile/PASSWORD_SIGN_IN_DESIGN.md`, `docs/mobile/PASSWORD_DESIGN_AUDIT.md`. Not applied yet: see "Applying the password guard" below |
 | H2 Auth audit logs keep email, user id and IP after deletion | Go-live gate 2 below; the privacy and deletion drafts name the sign-in event logs and say exactly what the deletion record holds |
 | L8 deletion record time | The record keeps the DAY (UTC), the keyed hash and the board counts; purged after 3 years (at each deletion and nightly) |
 | M1 the gzip cap might not bound memory | The reader feeds the inflater 1 KB slices from a pull-based stream. Measured on a 500 MB zero bomb: the old single-chunk feed grew memory by about 506 MB, the sliced one by under 2 MB; a test asserts under 64 MB. **The phone's and the website's codecs must slice too** (SECURITY_GATES.md I9) |
@@ -118,7 +189,9 @@ if it words them differently.
 - [ ] 1. **Confirm email = ON** (Authentication → Sign In / Providers →
   Email). HARD gate: with it off, sign-up makes an already-confirmed account.
   Then run `PROBE_EMAIL=… bash scripts/cloud_smoke.sh pre-register`: the
-  pre-registered password must be refused (S9).
+  pre-registered password must be refused (S9). With passwords (28 Nov
+  2026), run it three times, `VARIANT=signup`, `otp` and `recover`, each
+  with a new probe address (gate 13b).
 - [ ] 2. **Auth audit logs not written to the database** (Authentication →
   settings: turn off writing Auth audit logs to the database) *(verify the
   switch's name)*. If it can't be turned off: a nightly pg_cron job
@@ -148,9 +221,36 @@ if it words them differently.
 - [ ] 10. Advisors: 0 ERROR; the §3.3 SQL checks clean; no sync table in
   realtime (S2, S4).
 - [ ] 11. `bash scripts/cloud_smoke.sh` all pass, with `EMAIL_A` set (S3,
-  S6, S9).
+  S6, S9). Since the password guard, the `EMAIL_A` check shows that a
+  session from a sign-in over 10 minutes ago can't add a first password
+  (A has no password; `JWT_A` from a sign-in 11 to 59 minutes ago).
 - [ ] 12. One backup decrypted by Sky and a restore drill done, including
   the re-deletion of deleted accounts (S8, SCALING.md §7).
+
+**Passwords (owner decision 28 Nov 2026): gates 13 to 20.** The full text is
+in `docs/WEB_LAUNCH_PLAN.md` ("Go-live gates"); in short:
+
+- [ ] 13. Password sign-in reviewed, no HIGH finding. 13a: the password guard
+  merged (tests green, every mutant caught) and applied through the MCP with
+  Sky present, with the checks in "Applying the password guard"; 13b: the
+  three `pre-register` variants, the `password` and `binding` probes and the
+  `EMAIL_A` stale-session check pass on the hosted project, captcha still
+  off; 13c: the dashboard settings (minimum length 15, no required
+  characters, the rate limits, notices, Phone OFF); 13d: security and
+  architecture review of the guard, both clients and the screens.
+- [ ] 14. The reset email comes from `codes@kaisip.com`, a code and no link
+  (`AUTH_EMAIL_TEMPLATES.md` §5).
+- [ ] 15. **HARD:** the "password changed" notice is ON and arrives
+  (`AUTH_EMAIL_TEMPLATES.md` §7), or the in-app replacement ships first.
+- [ ] 16. With captcha on, `cloud_smoke.sh captcha` passes (password
+  sign-in, `/signup`, `/recover`, `/resend`, `/magiclink`, `/otp` refused
+  without a token; refresh and pkce not behind it).
+- [ ] 17. Neither client ever saves the password (a Jest test); the client
+  common-password blocklist ships.
+- [ ] 18. The hosted Auth version is written down; the `pre-register` probes
+  are re-run after every Auth upgrade.
+- [ ] 19. Privacy, Terms and Play Data safety updated for passwords.
+- [ ] 20. Phone provider OFF; `auth.mfa_factors` has no learner rows.
 
 ### What ticket 1 found when it read the real files (corrections to this plan)
 
@@ -537,7 +637,8 @@ The real figure is lower, because not every monthly user is active every day. At
 
 ### 3.4 Tests
 
-- pgTAP, the SQL mutants, `check_rls.sh`, `db lint` and local advisors already run in `.github/workflows/supabase.yml` on the exact files. That must be green before step 2. Do **not** install pgTAP on the hosted project.
+- pgTAP, `check_rls.sh`, `db lint` and local advisors already run in `.github/workflows/supabase.yml` on the exact files. That must be green before step 2. Do **not** install pgTAP on the hosted project.
+- Without Docker, the same pgTAP suite runs on a plain local Postgres: `bash scripts/beta_desk/pg_local.sh supabase/tests/*.sql` (its `shim.sql` mirrors the GoTrue v2.199.0 columns of `auth.users`, `auth.sessions` and `auth.mfa_factors`). The mutation scripts (`scripts/sync_sql_mutants.py`, `board_sql_mutants.py`, `password_sql_mutants.py`) run by hand with `PGTAP_RUN='bash scripts/beta_desk/pg_local.sh supabase/tests/*.sql'`; every mutant must be caught.
 - Hosted evidence = the step-3 SQL checks plus `scripts/cloud_smoke.sh`, which needs two test learners' tokens. Run it **before captcha is switched on**. Two ways:
   - (a) Sky runs a 3-minute local step: two `sky+a`/`sky+b` Gmail addresses, codes, tokens into env;
   - (b) with Sky's explicit OK in their own message, Claude uses the Gmail connector to read the two test codes and runs it end to end.
@@ -689,9 +790,10 @@ The job runs in GitHub Environment `db-backup`, limited to `main`. No artefacts 
 - S4. RLS and grant SQL checks clean; no sync table in realtime.
 - S5. A pushed gzip bomb (10 MB of zeros) pauses sync as unreadable on phone and web, and `export-my-data` refuses it cleanly.
 - S6. `OPTIONS` from `https://kaisip.com` → 204 with the exact origin; from another origin → no CORS header.
-- S7. With captcha on: `/otp` without a token is refused, with one it works; `/verify`, PKCE exchange and refresh work without one.
+- S7. With captcha on: `/otp` without a token is refused, with one it works; `/verify`, PKCE exchange and refresh work without one. With passwords: `cloud_smoke.sh captcha` (password sign-in, `/signup`, `/recover`, `/resend`, `/magiclink` and `/otp` refused without a token; refresh and pkce not behind it).
 - S8. Keep-awake and backup runs are green; one backup decrypted by Sky.
-- S9. On the hosted project: a new address signs in with an email code (including a second code before the first is used), Google sign-in works; `cloud_smoke.sh` with `EMAIL_A` shows a password set by a session can't be used, and `cloud_smoke.sh pre-register` shows a password set by signUp before the owner confirmed with a code can't be used either (H1).
+- S9. On the hosted project: a new address signs in with an email code (including a second code before the first is used), Google sign-in works; `cloud_smoke.sh` with `EMAIL_A` shows a password set by a session can't be used, and `cloud_smoke.sh pre-register` shows a password set by signUp before the owner confirmed with a code can't be used either (H1). With the password guard: `EMAIL_A` shows a STALE session can't add a first password, and `pre-register` runs with `VARIANT=signup`, `otp` and `recover`.
+- S10. With the password guard, on the hosted project: `cloud_smoke.sh password` (code first, then the password with that fresh session; sign-in; a too-short password refused; a stranger's re-sign-up changes nothing; reset code; the old password and the first session stop working) and `cloud_smoke.sh binding` (an 11-minute-old session can't add a first password after the owner signs in again; the owner's own fresh session can) both pass.
 
 *Web (Chrome, Firefox, Safari on iPhone)*
 - W1. Google sign-in works, and `?code=` is gone before analytics fire.

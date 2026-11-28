@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # Penetration-style smoke for the accounts backend (Uplift Phase 6, spec §2.7;
 # accounts beta, docs/mobile/ACCOUNTS_BETA_PLAN.md §3.4 and acceptance tests
-# S1, S3, S4, S6). Run it against the hosted project right after the
-# migrations are applied and the two Edge Functions deployed, BEFORE captcha
-# is switched on, and keep the output with the go-live checklist. It also
-# runs against a local stack (`supabase start`).
+# S1, S3, S4, S6; passwords, docs/mobile/PASSWORD_SIGN_IN_DESIGN.md §3.4 and
+# the password audit's LOW-4). Run it against the hosted project right after
+# the migrations are applied and the two Edge Functions deployed, BEFORE
+# captcha is switched on, and keep the output with the go-live checklist. It
+# also runs against a local stack (`supabase start`).
 #
 # It only READS, or attempts writes that must be refused. With two real test
 # accounts A and B, every cross-user read and write, every anon read, every
@@ -20,45 +21,221 @@
 #   WEB_ORIGIN          optional; the only origin the functions answer
 #                       (default https://kaisip.com)
 #   EMAIL_A             optional; learner A's email. With it, the run also
-#                       tries to give A a password with A's own session, then
-#                       signs in with that password, which must fail (S9).
+#                       checks that a STALE session can't add a first password
+#                       (S9, password guard rule 4). A must have no password
+#                       (a code or Google account), and JWT_A must come from a
+#                       sign-in 11 to 59 minutes ago; the run reads the token's
+#                       sign-in time and skips the check, with a note, if it is
+#                       too fresh.
 # Both learners must have accepted the terms (a profiles row each), so the
 # snapshot checks below are refused by the shape checks, not by a missing
 # profile.
 #
 # Usage: bash scripts/cloud_smoke.sh
 #
-# Second mode, by hand (security audit H1, acceptance test S9), with captcha
-# still off and "Confirm email" ON:
-#   PROBE_EMAIL=you+probe@example.com bash scripts/cloud_smoke.sh pre-register
-# It signs up a NEW address WITH a password (what an attacker would do with a
-# victim's address), asks you for the code sent to that inbox (the
-# victim confirming with a code), then signs in with the password, which must
-# fail: confirming wipes any password. Delete the probe account afterwards
-# (Supabase dashboard → Authentication → Users).
+# Modes run by hand, with captcha still OFF and "Confirm email" ON (each needs
+# a NEW probe address with no account; delete the probe account afterwards in
+# Supabase dashboard → Authentication → Users). Every email-sending step waits
+# 61 seconds first: the Auth server sends one email a minute per address.
+#
+#   VARIANT=signup|otp|recover PROBE_EMAIL=you+probe1@example.com bash scripts/cloud_smoke.sh pre-register
+#     Security audit H1, acceptance test S9. Signs up the address WITH a
+#     password (what an attacker would do with a victim's address), then the
+#     victim confirms: with the sign-up code (signup, the default), with an
+#     emailed sign-in code (otp) or with a reset code (recover). Signing in
+#     with the attacker's password must then fail. Run all three (three probe
+#     addresses) after every Auth upgrade (/auth/v1/health shows the version).
+#
+#   PROBE_EMAIL=you+probe4@example.com bash scripts/cloud_smoke.sh password
+#     Acceptance test S10: the real flows work. Code first, then the password
+#     with that fresh session; sign-in; a too-short password refused; a
+#     stranger's re-sign-up changes nothing; "forgot password" with a reset
+#     code; the old password stops working and the first session is signed out.
+#
+#   PROBE_EMAIL=you+probe5@example.com bash scripts/cloud_smoke.sh binding
+#     The password audit's HIGH-1 fix on the hosted project. Signs in with a
+#     code (the "thief's" session), waits 11 minutes, signs in again (the
+#     owner), then the OLD session tries to add a first password: refused, and
+#     the owner's session still works. Then the owner's own fresh session adds
+#     a password. Takes about 12 minutes. A refused attempt may still send the
+#     "password changed" notice (the Auth server sends it before the commit).
+#
+#   bash scripts/cloud_smoke.sh captcha
+#     Acceptance test S7, run straight AFTER captcha is switched on: password
+#     sign-in, /signup, /recover, /resend, /magiclink and /otp are refused
+#     without a human-check token; the refresh and Google (pkce) grants are not
+#     behind it. Needs only SUPABASE_URL and SUPABASE_ANON_KEY; sends no email.
 set -euo pipefail
 
-if [ "${1:-}" = pre-register ]; then
-  : "${SUPABASE_URL:?set SUPABASE_URL}" "${SUPABASE_ANON_KEY:?set SUPABASE_ANON_KEY}" "${PROBE_EMAIL:?set PROBE_EMAIL}"
+# Shared by the modes below.
+rnd() { od -An -N12 -tx1 /dev/urandom | tr -d ' \n'; }
+# 37 characters with upper and lower case, digits and symbols: valid under the
+# old rule (12, all four kinds) and the new one (15, no required kinds).
+probe_password() { printf 'Smoke-%s-Words!' "$(rnd)"; }
+token_of() { sed -n 's/.*"access_token" *: *"\([^"]*\)".*/\1/p'; }
+status_of() { curl -sS -o /dev/null -w '%{http_code}' "$@" || echo 000; }
+wait_a_minute() { echo "   waiting 61 s (one email a minute per address)"; sleep 61; }
+ok_n=0; bad_n=0
+# check <label> <status> <pattern>: the pattern is a shell glob ('4??' = any 4xx).
+check() {
+  # shellcheck disable=SC2053
+  if [[ $2 == $3 ]]; then ok_n=$((ok_n + 1)); echo "  ✓ $1 ($2)"
+  else bad_n=$((bad_n + 1)); echo "  ✗ $1 ($2, wanted $3)"; fi
+}
+mode_env() {
+  : "${SUPABASE_URL:?set SUPABASE_URL}" "${SUPABASE_ANON_KEY:?set SUPABASE_ANON_KEY}"
   AUTH="${SUPABASE_URL%/}/auth/v1"
-  pw="Smoke-$(od -An -N12 -tx1 /dev/urandom | tr -d ' \n')!"
   hdr=(-H "apikey: $SUPABASE_ANON_KEY" -H 'Content-Type: application/json')
+}
+# verify_code <type> <prompt>: asks for the emailed code, prints the access token (empty if refused).
+verify_code() {
+  local code
+  printf '   %s: ' "$2" >&2
+  read -r code
+  { curl -sS "${hdr[@]}" -X POST "$AUTH/verify" \
+    --data "{\"type\":\"$1\",\"email\":\"$PROBE_EMAIL\",\"token\":\"$code\"}" || true; } | token_of
+}
+
+if [ "${1:-}" = pre-register ]; then
+  mode_env; : "${PROBE_EMAIL:?set PROBE_EMAIL (an address with no account yet)}"
+  VARIANT=${VARIANT:-signup}
+  case $VARIANT in
+    signup) vtype=signup ;;    # the victim types the code from the attacker's own sign-up
+    otp) vtype=email ;;        # the victim signs in with an emailed code
+    recover) vtype=recovery ;; # the victim uses "forgot password"
+    *) echo "VARIANT must be signup, otp or recover"; exit 2 ;;
+  esac
+  pw=$(probe_password)
   echo "1. Sign up $PROBE_EMAIL with a password (the attacker's step):"
   curl -sS -o /dev/null -w '   HTTP %{http_code}\n' "${hdr[@]}" -X POST "$AUTH/signup" \
     --data "{\"email\":\"$PROBE_EMAIL\",\"password\":\"$pw\"}"
-  printf '2. Enter the code emailed to %s (the victim confirming): ' "$PROBE_EMAIL"
-  read -r code
-  curl -sS -o /dev/null -w '   verify: HTTP %{http_code} (200 expected)\n' "${hdr[@]}" -X POST "$AUTH/verify" \
-    --data "{\"type\":\"signup\",\"email\":\"$PROBE_EMAIL\",\"token\":\"$code\"}"
+  case $VARIANT in
+    otp) wait_a_minute
+         curl -sS -o /dev/null -w '   otp: HTTP %{http_code}\n' "${hdr[@]}" -X POST "$AUTH/otp" \
+           --data "{\"email\":\"$PROBE_EMAIL\",\"create_user\":true}" ;;
+    recover) wait_a_minute
+         curl -sS -o /dev/null -w '   recover: HTTP %{http_code}\n' "${hdr[@]}" -X POST "$AUTH/recover" \
+           --data "{\"email\":\"$PROBE_EMAIL\"}" ;;
+  esac
+  echo "2. The victim confirms ($VARIANT):"
+  t=$(verify_code "$vtype" "enter the NEWEST code emailed to $PROBE_EMAIL")
+  if [ -z "$t" ]; then
+    echo "   ✗ the code was refused, so the account is not confirmed and step 3 would prove nothing. Run it again with a new address."
+    exit 1
+  fi
+  echo "   ✓ confirmed (a session was issued)"
   echo "3. Sign in with the attacker's password:"
-  status=$(curl -sS -o /dev/null -w '%{http_code}' "${hdr[@]}" -X POST "$AUTH/token?grant_type=password" \
-    --data "{\"email\":\"$PROBE_EMAIL\",\"password\":\"$pw\"}" || echo 000)
+  status=$(status_of "${hdr[@]}" -X POST "$AUTH/token?grant_type=password" \
+    --data "{\"email\":\"$PROBE_EMAIL\",\"password\":\"$pw\"}")
   if [[ $status == 2* || $status == 000 ]]; then
     echo "   ✗ HTTP $status: the pre-registered password still works. STOP: do not open sign-up (H1)."
     exit 1
   fi
-  echo "   ✓ HTTP $status: refused. The confirmed account has no password."
+  echo "   ✓ HTTP $status: refused. Confirming wiped the password set before the inbox was proven ($VARIANT)."
   exit 0
+fi
+
+if [ "${1:-}" = password ]; then
+  mode_env; : "${PROBE_EMAIL:?set PROBE_EMAIL (an address with no account yet)}"
+  pw1=$(probe_password); pw2=$(probe_password); evil=$(probe_password)
+  echo "1. Create the account the way the apps do: code first, then the password"
+  curl -sS -o /dev/null -w '   otp: HTTP %{http_code}\n' "${hdr[@]}" -X POST "$AUTH/otp" \
+    --data "{\"email\":\"$PROBE_EMAIL\",\"create_user\":true}"
+  t1=$(verify_code email "sign-in code")
+  [ -n "$t1" ] || { echo "  ✗ the code was refused; run it again with a new address"; exit 1; }
+  check "saving the password with the fresh session" \
+    "$(status_of "${hdr[@]}" -H "Authorization: Bearer $t1" -X PUT "$AUTH/user" --data "{\"password\":\"$pw1\"}")" 200
+  check "signing in with it" \
+    "$(status_of "${hdr[@]}" -X POST "$AUTH/token?grant_type=password" --data "{\"email\":\"$PROBE_EMAIL\",\"password\":\"$pw1\"}")" 200
+  check "a too-short password is refused" \
+    "$(status_of "${hdr[@]}" -H "Authorization: Bearer $t1" -X PUT "$AUTH/user" --data '{"password":"short"}')" 422
+
+  echo "2. A stranger signs up again with this address and their own password"
+  curl -sS -o /dev/null -w '   signup: HTTP %{http_code} (looks like a new sign-up; changes nothing)\n' "${hdr[@]}" \
+    -X POST "$AUTH/signup" --data "{\"email\":\"$PROBE_EMAIL\",\"password\":\"$evil\"}"
+  check "the stranger's password does not sign in" \
+    "$(status_of "${hdr[@]}" -X POST "$AUTH/token?grant_type=password" --data "{\"email\":\"$PROBE_EMAIL\",\"password\":\"$evil\"}")" 400
+  check "the owner's password still does" \
+    "$(status_of "${hdr[@]}" -X POST "$AUTH/token?grant_type=password" --data "{\"email\":\"$PROBE_EMAIL\",\"password\":\"$pw1\"}")" 200
+
+  echo "3. Forgot password: a reset code, then a new password"
+  wait_a_minute
+  curl -sS -o /dev/null -w '   recover: HTTP %{http_code}\n' "${hdr[@]}" -X POST "$AUTH/recover" \
+    --data "{\"email\":\"$PROBE_EMAIL\"}"
+  t2=$(verify_code recovery "reset code")
+  [ -n "$t2" ] || { echo "  ✗ the reset code was refused"; exit 1; }
+  check "setting the new password after the reset code" \
+    "$(status_of "${hdr[@]}" -H "Authorization: Bearer $t2" -X PUT "$AUTH/user" --data "{\"password\":\"$pw2\"}")" 200
+  check "the old password no longer works" \
+    "$(status_of "${hdr[@]}" -X POST "$AUTH/token?grant_type=password" --data "{\"email\":\"$PROBE_EMAIL\",\"password\":\"$pw1\"}")" 400
+  check "the new one does" \
+    "$(status_of "${hdr[@]}" -X POST "$AUTH/token?grant_type=password" --data "{\"email\":\"$PROBE_EMAIL\",\"password\":\"$pw2\"}")" 200
+  # A signed-out session's token is refused at once (403 session_not_found).
+  check "the first session was signed out by the change" \
+    "$(status_of "${hdr[@]}" -H "Authorization: Bearer $t1" "$AUTH/user")" '4??'
+  echo "password probe: $ok_n passed, $bad_n failed. Delete the probe account afterwards."
+  [ "$bad_n" -eq 0 ]; exit
+fi
+
+if [ "${1:-}" = binding ]; then
+  mode_env; : "${PROBE_EMAIL:?set PROBE_EMAIL (an address with no account yet)}"
+  pw=$(probe_password)
+  echo "1. Sign in with a code: the session a thief would steal"
+  curl -sS -o /dev/null -w '   otp: HTTP %{http_code}\n' "${hdr[@]}" -X POST "$AUTH/otp" \
+    --data "{\"email\":\"$PROBE_EMAIL\",\"create_user\":true}"
+  t_old=$(verify_code email "sign-in code")
+  [ -n "$t_old" ] || { echo "  ✗ the code was refused; run it again with a new address"; exit 1; }
+  echo "2. Waiting 11 minutes, so that session is older than the 10-minute window"
+  sleep 660
+  echo "3. The owner signs in again: a fresh session"
+  curl -sS -o /dev/null -w '   otp: HTTP %{http_code}\n' "${hdr[@]}" -X POST "$AUTH/otp" \
+    --data "{\"email\":\"$PROBE_EMAIL\",\"create_user\":true}"
+  t_new=$(verify_code email "the NEWEST sign-in code")
+  [ -n "$t_new" ] || { echo "  ✗ the code was refused"; exit 1; }
+  echo "4. The OLD session tries to add a first password (HIGH-1)"
+  st=$(status_of "${hdr[@]}" -H "Authorization: Bearer $t_old" -X PUT "$AUTH/user" --data "{\"password\":\"$pw\"}")
+  if [[ $st == 2* || $st == 000 ]]; then
+    bad_n=$((bad_n + 1)); echo "  ✗ the old session added a password (HTTP $st). STOP: rule 4b is not working on this project."
+  else
+    ok_n=$((ok_n + 1)); echo "  ✓ refused (HTTP $st; 500 is the database's refusal)"
+  fi
+  check "and that password does not sign in" \
+    "$(status_of "${hdr[@]}" -X POST "$AUTH/token?grant_type=password" --data "{\"email\":\"$PROBE_EMAIL\",\"password\":\"$pw\"}")" 400
+  check "the owner's fresh session still works (the refused write rolled back)" \
+    "$(status_of "${hdr[@]}" -H "Authorization: Bearer $t_new" "$AUTH/user")" 200
+  check "the owner's own fresh session adds a password" \
+    "$(status_of "${hdr[@]}" -H "Authorization: Bearer $t_new" -X PUT "$AUTH/user" --data "{\"password\":\"$pw\"}")" 200
+  check "and the old session was signed out by it" \
+    "$(status_of "${hdr[@]}" -H "Authorization: Bearer $t_old" "$AUTH/user")" '4??'
+  echo "binding probe: $ok_n passed, $bad_n failed. Delete the probe account afterwards."
+  [ "$bad_n" -eq 0 ]; exit
+fi
+
+if [ "${1:-}" = captcha ]; then
+  mode_env
+  nobody='nobody@example.invalid'
+  echo "Every request without a human-check token must be refused (HTTP 400, captcha_failed):"
+  for p in "token?grant_type=password|{\"email\":\"$nobody\",\"password\":\"x x x x x x x x\"}" \
+           "signup|{\"email\":\"$nobody\",\"password\":\"x x x x x x x x\"}" \
+           "recover|{\"email\":\"$nobody\"}" \
+           "resend|{\"type\":\"signup\",\"email\":\"$nobody\"}" \
+           "magiclink|{\"email\":\"$nobody\"}" \
+           "otp|{\"email\":\"$nobody\",\"create_user\":false}"; do
+    path=${p%%|*}; body=${p#*|}
+    out=$(curl -sS -w ' %{http_code}' "${hdr[@]}" -X POST "$AUTH/$path" --data "$body" || echo ' 000')
+    if [[ $out == *captcha* && $out == *' 400' ]]; then ok_n=$((ok_n + 1)); echo "  ✓ /$path needs the human check"
+    else bad_n=$((bad_n + 1)); echo "  ✗ /$path: $out"; fi
+  done
+  echo "These grants are not behind it (refresh, and Google through pkce): a bogus token is refused for another reason:"
+  for p in "refresh_token|{\"refresh_token\":\"smoke-not-a-real-token\"}" \
+           "pkce|{\"auth_code\":\"00000000-0000-4000-8000-000000000000\",\"code_verifier\":\"smoke-not-a-real-verifier-smoke-not-a-real-verifier\"}"; do
+    grant=${p%%|*}; body=${p#*|}
+    out=$(curl -sS -w ' %{http_code}' "${hdr[@]}" -X POST "$AUTH/token?grant_type=$grant" --data "$body" || echo ' 000')
+    if [[ $out != *captcha* && $out != *' 000' ]]; then ok_n=$((ok_n + 1)); echo "  ✓ grant_type=$grant is not behind the human check (${out##* })"
+    else bad_n=$((bad_n + 1)); echo "  ✗ grant_type=$grant: $out"; fi
+  done
+  echo "captcha probe: $ok_n passed, $bad_n failed."
+  [ "$bad_n" -eq 0 ]; exit
 fi
 
 : "${SUPABASE_URL:?set SUPABASE_URL}" "${SUPABASE_ANON_KEY:?set SUPABASE_ANON_KEY}"
@@ -240,13 +417,23 @@ expect "delete-account needs confirm=DELETE (learner A's token)" "$(request POST
 expect "delete-account refuses a GET (learner A's token)" "$(request GET "$FN/delete-account" "$JWT_A")" denied
 
 if [ -n "${EMAIL_A:-}" ]; then
-  echo "No passwords (S9): learner A's own session tries to add one; password sign-in must still fail:"
-  probe_pw="Smoke-$(od -An -N12 -tx1 /dev/urandom | tr -d ' \n')!"
-  # Whatever the Auth server answers here (it may accept the write), the database wipes the password.
-  set_pw=$(request PUT "${SUPABASE_URL%/}/auth/v1/user" "$JWT_A" "{\"password\":\"$probe_pw\"}")
-  printf '  · setting a password answered %s\n' "${set_pw%% *}"
-  expect "A cannot sign in with a password set by a session" \
-    "$(request POST "${SUPABASE_URL%/}/auth/v1/token?grant_type=password" '' "{\"email\":\"$EMAIL_A\",\"password\":\"$probe_pw\"}")" denied
+  echo "Stale session (S9, password guard rule 4): A's session, from a sign-in over 10 minutes ago, tries to add a first password:"
+  # The newest sign-in time in the token (amr timestamps). Base64url, unpadded.
+  payload=$(cut -d. -f2 <<<"$JWT_A" | tr '_-' '/+'); while (( ${#payload} % 4 )); do payload+='='; done
+  newest=$(base64 -d <<<"$payload" 2>/dev/null | grep -o '"timestamp":[0-9]*' | cut -d: -f2 | sort -n | tail -n 1 || true)
+  age=$(( $(date +%s) - ${newest:-0} ))
+  if [ "$age" -le 660 ]; then
+    echo "  · skipped: JWT_A's sign-in is only ${age}s old; use a token from a sign-in 11 to 59 minutes ago"
+  else
+    probe_pw=$(probe_password)
+    # The database refuses it (rule 4, and rule 4b at commit): the Auth server answers 500.
+    # It fails even if A signed in elsewhere in the last 10 minutes: the check is tied to
+    # the requesting session (password audit HIGH-1).
+    expect "a stale session cannot add a first password" \
+      "$(request PUT "${SUPABASE_URL%/}/auth/v1/user" "$JWT_A" "{\"password\":\"$probe_pw\"}")" denied
+    expect "and no such password signs in" \
+      "$(request POST "${SUPABASE_URL%/}/auth/v1/token?grant_type=password" '' "{\"email\":\"$EMAIL_A\",\"password\":\"$probe_pw\"}")" denied
+  fi
 fi
 
 echo "CORS (S6): only $WEB_ORIGIN may call the two account functions from a browser:"

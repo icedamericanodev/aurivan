@@ -20,6 +20,11 @@ and the owner's decisions.
 | Email code length | **8 digits** (confirms the audit's L7 change) | None: already set. Close L7. |
 | GitHub Pro | **Owner buys it** | Go-live gate 4 can be met: "Require review from Code Owners" on `main`, and the `ota` and `db-backup` environments enforced again. |
 | New courses | **Public free sample; full course for Alpha testers only** (as CISA today) | Each course needs a free sample builder, a pack in the phone app, the public build's sample-only guard and audit extended to it, and the tester build carrying the full course. No payment system is part of this. |
+| Password rules | **At least 15 characters, no required character types** (NIST SP 800-63B rev 4) | Dashboard setting (checklist below); `supabase/config.toml` mirrors it |
+| Common passwords | **Client-side blocklist required** (common passwords, the email's name part, "kaisip", "cisa", "isaca", repeats and sequences) | Step A3 (`mobile/src/engine/passwordRules.ts`, shared by web and phone) |
+| "Password changed" notice | **Hard go-live gate** (gate 15) | If the Free plan with custom SMTP can't send it, passwords wait for an in-app "password changed on <date>" notice instead |
+| Android human check | **Shown on each password sign-in** (the same browser sheet as email codes) | Accepted (design R6); an in-app web view later only if it hurts sign-ins |
+| Leaked-password lookup | **No third-party lookup for now** (no HIBP range check from the apps; Pro's server check is not on Free) | Listed risk R2; the Pro upgrade path stays open |
 | CIA | **Placeholder until it is done** | Stays out of the apps (expert decision 27 Nov: not until The IIA licence question is settled). The pack pipeline keeps passing its dry run so it can be switched on later. |
 
 ## What already exists
@@ -47,9 +52,17 @@ loop. Nothing goes public until its gate says so.
    replace the H1 guard, password reset, password rules, leaked-password
    check, rate limits, Google linking, the "set a password later" path.
    Reviewed by `backend-architect` and `mobile-security-auditor`.
+   **Done 28 Nov 2026:** `docs/mobile/PASSWORD_SIGN_IN_DESIGN.md`, audited in
+   `docs/mobile/PASSWORD_DESIGN_AUDIT.md` (go with changes: two HIGH, fixed in
+   step 2).
 2. Migration for the new guard, with tests (local Postgres) and the
    `cloud_smoke.sh` probes updated; applied through the Supabase MCP after
-   the PR is green.
+   the PR is green. **Built 28 Nov 2026** (not applied):
+   `supabase/migrations/20261128000000_password_guard.sql` (the design's
+   guard plus the audit's commit-time check and staff-only authenticator
+   apps), `supabase/tests/41_passwords.sql`, `scripts/password_sql_mutants.py`,
+   the `cloud_smoke.sh` modes `pre-register` (with `VARIANT`), `password`,
+   `binding` and `captcha`.
 3. Add password sign-in, sign-up and reset to the shared TypeScript sign-in
    client (`mobile/src/webcloud/`), so web and phone use one implementation.
 
@@ -99,10 +112,59 @@ sign-in is offered), and the iOS build and review.
 Public sign-in waits for every gate in `docs/mobile/ACCOUNTS_BETA_PLAN.md`
 ("Go-live gates", 1 to 12), plus:
 
-- 13. Password sign-in reviewed: the new guard's tests pass and the
-  security auditor finds no HIGH issue.
-- 14. Password reset emails come from our own sender (not Supabase's
-  default), with the template text in `docs/mobile/AUTH_EMAIL_TEMPLATES.md`.
+- [ ] 13. Password sign-in reviewed: the new guard's tests pass and the
+  security auditor finds no HIGH issue. In detail:
+  - [ ] **13a.** `20261128000000_password_guard.sql` merged with
+    `41_passwords.sql` green in CI and every mutant of
+    `scripts/password_sql_mutants.py` caught, then applied through the MCP
+    with the owner present (steps in `docs/mobile/ACCOUNTS_BETA_PLAN.md`,
+    "Applying the password guard"). The apply record has its md5, and a
+    read-only check shows `kaisip_password_guard` and
+    `kaisip_first_password_session` (deferrable, initially deferred) on
+    `auth.users`, `kaisip_mfa_staff_only` on `auth.mfa_factors`, all enabled,
+    and `kaisip_clear_password` gone.
+  - [ ] **13b.** On the hosted project, captcha still off:
+    `VARIANT=signup|otp|recover … cloud_smoke.sh pre-register` all pass
+    (three probe addresses); `cloud_smoke.sh password` passes;
+    `cloud_smoke.sh binding` passes (the old session is refused, audit
+    LOW-4); the `EMAIL_A` stale-session check passes.
+  - [ ] **13c.** Dashboard settings as in the owner checklist below.
+    `/auth/v1/settings` still shows `"mailer_autoconfirm":false`.
+  - [ ] **13d.** `mobile-security-auditor` and `backend-architect` review the
+    guard, both clients and the screens: no HIGH finding.
+- [ ] 14. Password reset emails come from our own sender
+  (`codes@kaisip.com`, not Supabase's default), with the template text in
+  `docs/mobile/AUTH_EMAIL_TEMPLATES.md` §5: a code and no link.
+- [ ] 15. **HARD:** the "password changed" notice is ON and arrives (§7 of
+  the templates). If the Free plan with custom SMTP can't send it, passwords
+  do not go live until the apps show "Your password was changed on <date>"
+  from a `password_set_at` the client records (audit MEDIUM-1).
+- [ ] 16. With captcha on, `cloud_smoke.sh captcha` passes: password
+  sign-in, `/signup`, `/recover`, `/resend`, `/magiclink` and `/otp` are
+  refused without a token; the refresh and Google (pkce) grants are not
+  behind it (acceptance test S7).
+- [ ] 17. The password is never saved by either client: a Jest test fills the
+  sign-up, sign-in, reset and set-password flows, then asserts that no
+  storage (web localStorage and sessionStorage; the phone's persisted stores
+  and SecureStore) and no log line contains it. The client blocklist
+  (decision above) ships with its own tests.
+- [ ] 18. The hosted Auth version at go-live is written down (v2.199.0 or
+  later). The three `pre-register` probes are re-run whenever
+  `/auth/v1/health` shows a new version (a monthly look, beside the weekly
+  Usage check).
+- [ ] 19. Privacy policy, Terms and the Play Data safety "account creation"
+  answer updated as in the design §7, checked by
+  `app-store-compliance-reviewer`.
+- [ ] 20. The Phone provider stays OFF (the guard watches the email columns
+  only), and `auth.mfa_factors` has no learner rows (only accounts in
+  `private.beta_desk_admins` or `private.staff`).
+
+Emergency-brake numbers (audit MEDIUM-1 and MEDIUM-2): in the weekly Auth-log
+look, more than 20 `invalid_credentials` for one address in a day, more than
+5 `/recover` requests for one address in a day, or bursts of failed `/verify`
+codes are the signal to hide the password form (its own remote switch) and
+tell the owner. These starting numbers are a judgement, to be tuned with real
+traffic.
 
 ## Owner checklist for this plan (only you can do these)
 
@@ -110,6 +172,30 @@ Public sign-in waits for every gate in `docs/mobile/ACCOUNTS_BETA_PLAN.md`
    (gate 4). Recreate the `ota` and `db-backup` environments.
 2. The remaining items in `ACCOUNTS_BETA_PLAN.md` section 9 (Supabase
    settings, Turnstile, the restore drill, go-live day).
-3. When the password design is ready: switch on the Email provider's
-   password option in Supabase with the settings it lists.
+3. Passwords: after Claude says the password guard is applied and its
+   checks are green, set these in the Supabase dashboard, in order (details
+   and reasons: `docs/mobile/PASSWORD_SIGN_IN_DESIGN.md` §5):
+   - **Authentication → Sign In / Providers → Email:** Confirm email stays
+     ON; Secure email change stays ON; Secure password change ON; Require
+     current password when updating ON; **Minimum password length 15**;
+     **Password requirements: no required characters**; Prevent use of leaked
+     passwords stays off (Pro only); Email OTP length 8 and expiry 600
+     unchanged. Save.
+   - **Authentication → Emails → Templates → Reset Password:** paste the
+     subject and body from `docs/mobile/AUTH_EMAIL_TEMPLATES.md` §5.
+   - **Authentication → Emails → Security notifications:** "Password changed"
+     ON with the text from §7 (a hard gate: tell Claude if Free with custom
+     SMTP doesn't offer it). "Sign-in method linked" ON with §8, if offered.
+   - **Authentication → Rate Limits** (note the unit shown beside each box):
+     emails sent 20 an hour; sign-ups and sign-ins 30; token verifications 30;
+     token refreshes 150 (password sign-ins share this one, so don't lower
+     it); per-address waits at 60 seconds.
+   - **Leave as they are:** Phone OFF, Anonymous sign-ins OFF, Manual
+     linking OFF, Allow new users to sign up ON, URL Configuration unchanged.
+     Multi-factor (TOTP) stays on: only staff can enrol now.
+   - **Authentication → Attack Protection → CAPTCHA (Turnstile):** ON, on
+     go-live day, last; then Claude runs `bash scripts/cloud_smoke.sh captcha`.
+   - Make test accounts the way learners do (code first, then the
+     password): a dashboard user created with a password and "Auto confirm"
+     ends up with none.
 4. Later: Apple Developer account for stream E.

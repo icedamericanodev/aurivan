@@ -50,6 +50,13 @@ delete from private.beta_desk_admins
 
 They sign in again and are asked to set up the authenticator.
 
+Keep this order: **list first, then the authenticator.** Since the password
+guard (`supabase/migrations/20261128000000_password_guard.sql`), only accounts
+in `private.beta_desk_admins` or `private.staff` can set up an authenticator
+app, so a learner's account (or a thief holding one) can never use one to lock
+the real owner out. Factors already set up keep working; an admin taken off the
+list keeps theirs but can't add a new one.
+
 ## How privacy works
 
 - The page is public, but it is an empty shell. Tester rows come from the
