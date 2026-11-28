@@ -88,7 +88,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A telecom's call-center speech-to-text model was trained on recordings from one regional office and will now serve customers in five countries. What should the IS auditor recommend FIRST?",
+      "question": "A telecom company trained a speech-to-text model for its call center on recordings from one regional office. The model will now serve customers in five countries. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Add more recordings from the same speakers to enlarge the dataset",
         "B": "Rely on the vendor's published accuracy for the base speech model",
@@ -162,7 +162,7 @@
       "principle_id": "ai-priority-word-decides",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A customs broker plans to license a vendor's pre-trained model to classify import declarations; the vendor offers an accuracy summary but no model card or training-data description. What should the IS auditor recommend FIRST?",
+      "question": "A customs broker plans to license a vendor's pre-trained model to classify import declarations. The vendor offers an accuracy summary but no model card or training-data description. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Accept the vendor's accuracy summary as the validation evidence",
         "B": "Run a pilot comparing the model with staff decisions before signing",
@@ -236,7 +236,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A pet-supplies retailer logs edits to its care-advice assistant's system prompt as pre-approved standard changes, like website text updates. What should the IS auditor recommend as BEST?",
+      "question": "A pet-supplies retailer has an assistant that gives pet-care advice. The retailer logs edits to the assistant's system prompt as pre-approved standard changes, like website text updates. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Keep the standard-change route and log each editor's name",
         "B": "Treat prompt edits as changes needing testing and approval",
@@ -273,7 +273,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An online marketplace flags prohibited listings with a vendor-hosted large language model; flag rates fell sharply after the vendor upgraded the model without notice. What should the IS auditor recommend as BEST?",
+      "question": "An online marketplace flags prohibited listings with a vendor-hosted large language model. Flag rates fell sharply after the vendor upgraded the model without notice. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept the vendor's statement that the upgrade improved accuracy",
         "B": "Retune the flagging threshold until rates match last month",
@@ -310,7 +310,7 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A grocery chain retrains its demand-forecast model nightly; after a costly bad forecast, the team cannot reproduce the deployed version or say what it learned from. What should the IS auditor recommend as MOST important?",
+      "question": "A grocery chain retrains its demand-forecast model nightly. After a costly bad forecast, the team cannot reproduce the deployed version or say what it learned from. What should the IS auditor recommend as MOST important?",
       "options": {
         "A": "Retrain weekly instead of nightly so fewer versions need tracking",
         "B": "Keep the previous model version and its settings ready to restore quickly",
@@ -347,7 +347,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A nursing council's registration staff confirm 99.7% of an AI model's rejection recommendations, spending under a minute per file. Which conclusion does this evidence BEST support?",
+      "question": "Registration staff at a nursing council confirm 99.7% of the rejections an AI model recommends. They spend under a minute per file. Which conclusion does this evidence BEST support?",
       "options": {
         "A": "Human review may be a rubber stamp rather than real oversight",
         "B": "The model may have drifted since it was last validated",
@@ -495,7 +495,7 @@
       "principle_id": "independence-of-ai-assurance",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A savings cooperative's data scientists built a member-risk model and present their automated machine learning platform's built-in validation report as independent evidence. What should the IS auditor recommend as BEST before deployment?",
+      "question": "Data scientists at a savings cooperative built a member-risk model. They present the built-in validation report from their automated machine learning platform as independent evidence. What should the IS auditor recommend as BEST before deployment?",
       "options": {
         "A": "Have the IS auditor validate and approve the model for release",
         "B": "Have the team rerun the platform's validation on an out-of-time sample",
@@ -532,7 +532,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Reviewing a pre-release test report, the IS auditor finds the model owner chose the approval accuracy threshold after seeing the scores. What is the GREATEST concern?",
+      "question": "In a pre-release test report, the IS auditor finds that the model owner chose the accuracy threshold for approval after seeing the scores. What is the GREATEST concern?",
       "options": {
         "A": "The model owner, not the auditor, chose the accuracy threshold",
         "B": "The pass mark may fit these results, not the business need",
@@ -605,7 +605,7 @@
       "principle_id": "limits-outside-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An internet provider's AI agent answers billing questions from customer chats under a service account that can issue refunds; its system prompt forbids refunds. What should the IS auditor recommend as BEST?",
+      "question": "An internet provider's AI agent answers billing questions in customer chats. Its service account can issue refunds. The agent's system prompt forbids refunds. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Remove refund rights from the service account the agent uses",
         "B": "Keep the prompt rule and review the service account's refunds monthly",
@@ -679,7 +679,7 @@
       "principle_id": "contain-and-preserve-ai",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An energy supplier's AI model that schedules disconnections for unpaid bills has flagged five times more households in one region since Monday. What should the IS auditor recommend FIRST?",
+      "question": "An energy supplier uses an AI model to schedule disconnections for unpaid bills. Since Monday, the model has flagged five times more households in one region. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Retrain the model on last month's data to restore normal rates",
         "B": "Log the spike for the next quarterly model performance review",
@@ -716,7 +716,7 @@
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A help desk rolled back its ticket-routing model, which learns from agents' corrections, and closed the incident; one contractor account had submitted thousands of corrections. What should the IS auditor recommend as BEST?",
+      "question": "A help desk's ticket-routing model learns from agents' corrections. The help desk rolled it back and closed the incident. One contractor account had submitted thousands of corrections. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Retrain at once on the recent corrections to restore accuracy",
         "B": "Treat the event as normal drift and tighten monitoring",
@@ -753,7 +753,7 @@
       "principle_id": "limits-outside-the-model",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Finnish building-materials maker's HR assistant answers staff questions using retrieval-augmented generation (RAG) over files, including manager-only salary reviews, through one service account. What should the IS auditor recommend FIRST?",
+      "question": "An HR assistant at a building-materials maker in Finland answers staff questions using retrieval-augmented generation (RAG). The assistant reads files, including manager-only salary reviews, through one service account. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Have the data owner limit retrieval to files each user may open",
         "B": "Add an output filter that masks salary figures in answers",
@@ -790,7 +790,7 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Kazakh railway's contractor sends corrected label files for its track-defect model under the same file names, replacing the earlier files before each retraining. What should the IS auditor recommend as BEST?",
+      "question": "A contractor supplies label files for a Kazakh railway's track-defect model. Corrected files come under the same names and replace the earlier files before each retraining. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have the data team recheck a sample of the corrected labels",
         "B": "Add more labeled images so single label errors matter less",
@@ -901,7 +901,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Saudi desalination plant's data scientists tuned a membrane-fouling model over 40 rounds, checking each round's score on the test set, then reported that score. What is the IS auditor's GREATEST concern?",
+      "question": "Data scientists at a Saudi desalination plant tuned a membrane-fouling model over 40 rounds. They checked each round's score on the test set, then reported that score. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Each tuning round went ahead without the model owner's approval",
         "B": "The rounds may have overfitted the model to its training data",
@@ -938,7 +938,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Norwegian salmon farm's sea-lice model, validated for monthly lice-trend reports to managers, now also decides when individual pens get chemical treatment. What should the IS auditor recommend FIRST?",
+      "question": "A Norwegian salmon farm validated its sea-lice model for monthly lice-trend reports to managers. The model now also decides when individual pens get chemical treatment. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Treat the existing validation as covering the treatment decisions too",
         "B": "Retrain the model on past treatment records before wider use",
@@ -975,7 +975,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Indonesian e-wallet routes 20% of live loan applications to an unvalidated challenger model whose decisions take effect, to compare it with the current model. What should the IS auditor recommend as BEST?",
+      "question": "An Indonesian e-wallet sends 20% of live loan applications to an unvalidated challenger model to compare it with the current model. The challenger's decisions take effect. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Treat the live comparison as the challenger's agile validation",
         "B": "Reduce the challenger's share of live applications to 5%",
@@ -1049,7 +1049,7 @@
       "principle_id": "ai-deciding-fact",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Maltese dating app is retiring a vendor-hosted translation model it fine-tuned on members' messages; logs are archived and staff access revoked, but the vendor was never contacted. What is the IS auditor's GREATEST concern?",
+      "question": "A Maltese dating app is retiring a vendor-hosted translation model it fine-tuned on members' messages. The app archived logs and revoked staff access, but never contacted the vendor. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The vendor may still hold the tuned model and members' messages",
         "B": "Archived logs may hold more members' messages than are needed",
@@ -1086,7 +1086,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Slovak bottled-water producer swapped the weather feed its demand model uses for a cheaper provider, logging it only as a supplier change. What should the IS auditor recommend as BEST?",
+      "question": "A Slovak bottled-water producer's demand model uses a weather feed. The producer moved to a cheaper feed provider and logged this only as a supplier change. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Close the supplier change once the model's code is confirmed unchanged",
         "B": "Retrain the demand model now on the new feed's past data",
@@ -1160,7 +1160,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Italian eyewear maker's lens-defect model began misgrading after routine server patching updated its image-processing library; the model and its code were unchanged. What should the IS auditor recommend as BEST?",
+      "question": "An Italian eyewear maker's lens-defect model began misgrading after routine server patching updated its image-processing library. The model and its code were unchanged. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Exempt the inspection servers from routine patching",
         "B": "Leave library updates to the server team's patch process",
@@ -1234,7 +1234,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An aid agency in Jordan lets a model automatically stop about 30 families' food vouchers a week when it flags duplicate registrations; a supervisor reviews weekly totals. What should the IS auditor recommend as BEST?",
+      "question": "An aid agency in Jordan lets a model automatically stop about 30 families' food vouchers a week when it flags duplicate registrations. A supervisor reviews weekly totals. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have a caseworker approve each stop before it takes effect",
         "B": "Have the supervisor review a sample of stops each week",
@@ -1271,7 +1271,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Mongolian herder-insurance provider's assessors override 18% of a model's livestock-loss payout recommendations, each with a reason code that nobody reviews. What should the IS auditor recommend as BEST?",
+      "question": "A model at a Mongolian herder-insurance provider recommends livestock-loss payouts. Assessors override 18% of the recommendations, each with a reason code that nobody reviews. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Require a manager to approve each override reason before any payout",
         "B": "Have the model owner analyze override reasons for error patterns",
@@ -1308,7 +1308,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Pakistani online game publisher's account-takeover model shows input drift within tolerance, yet confirmed takeovers it missed have tripled since attackers changed tactics. What should the IS auditor recommend as BEST?",
+      "question": "A Pakistani online game publisher's account-takeover model shows input drift within tolerance. Yet the confirmed takeovers the model missed have tripled since attackers changed tactics. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Tighten the input drift thresholds so alerts fire sooner",
         "B": "Lower the takeover alert threshold so the model flags more logins",
@@ -1345,7 +1345,7 @@
       "principle_id": "fix-the-control-not-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A French city's AI traffic-signal model is measured only on its travel-time target, which it meets, but residents report pedestrian waits near a care home have doubled. What should the IS auditor recommend as BEST?",
+      "question": "A French city measures its AI traffic-signal model only against a travel-time target, which the model meets. Residents report pedestrian waits near a care home have doubled. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Keep the approved travel-time target as the model's main measure",
         "B": "Have the model owner assess and monitor impacts on pedestrians",
@@ -1382,7 +1382,7 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Swiss city's school-placement model, retrained each spring, assigns children to schools; families can appeal, but its decision log keeps only each child's final placement. What should the IS auditor recommend as BEST?",
+      "question": "A Swiss city's school-placement model assigns children to schools and is retrained each spring. Families can appeal, but the decision log keeps only each child's final placement. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Log each placement's inputs and model version with the outcome",
         "B": "Have staff rerun disputed cases through the current model version",
@@ -1493,7 +1493,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Ecuadorian flower exporter's pricing assistant can change list prices through a connected tool; its red team tested only the underlying model, with no tool attached. What should the IS auditor recommend as BEST?",
+      "question": "An Ecuadorian flower exporter's pricing assistant can change list prices through a connected tool. The red team tested only the underlying model, with no tool attached. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add an output filter that blocks harmful replies to staff",
         "B": "Rerun the same red-team tests after each assistant update",
@@ -1640,7 +1640,7 @@
       "subtopic": "2F AI threats. Secrets in prompts",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Hungarian bike-sharing firm's support chatbot has its rental-database password written into its system prompt; staff say riders cannot see the prompt. Which risk should the IS auditor consider GREATEST?",
+      "question": "A Hungarian bike-sharing firm has a support chatbot. The chatbot's system prompt contains the rental-database password. Staff say riders cannot see the prompt. Which risk should the IS auditor consider GREATEST?",
       "options": {
         "A": "Attackers breaching the chatbot's firewall to read the stored prompt",
         "B": "The vendor logging prompt text, including the password",
@@ -1677,7 +1677,7 @@
       "principle_id": "limits-outside-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Scottish distillery's AI procurement agent reads emailed invoices into its chat and pays each one once any message in that chat shows a manager's approval. What should the IS auditor recommend as BEST?",
+      "question": "A Scottish distillery's AI procurement agent reads emailed invoices into its chat. The agent pays each invoice once any message in that chat shows a manager's approval. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have the agent match each invoice to its purchase order first",
         "B": "Cap each agent payment at a small amount to limit losses",
@@ -1714,7 +1714,7 @@
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Croatian disability-benefits office's model that sets home-care hours has exceeded its error tolerance for three weeks; the data team logged it as a backlog item. What should the IS auditor recommend FIRST?",
+      "question": "A Croatian disability-benefits office's model sets home-care hours. It has exceeded its error tolerance for three weeks, and the data team logged this as a backlog item. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Treat it as an AI incident and triage by impact on people",
         "B": "Schedule retraining for the next quarterly model release",
@@ -1753,10 +1753,10 @@
       "bloom_level": "Foundational",
       "question": "A South African emergency dispatch center receives four AI incident reports in one morning. Which should the IS auditor expect incident managers to triage FIRST?",
       "options": {
-        "A": "Priority model's error rate on minority-language calls above tolerance",
-        "B": "Website chatbot jailbroken, its insulting replies shared widely online",
-        "C": "Rota-planning model proposing uneven weekend shifts for night dispatchers",
-        "D": "Transcription dashboard down for an hour, with calls still handled"
+        "A": "The priority model's error rate on minority-language calls is above tolerance",
+        "B": "The website chatbot was jailbroken, and its insulting replies spread widely online",
+        "C": "The rota-planning model is proposing uneven weekend shifts for night dispatchers",
+        "D": "The transcription dashboard was down an hour, but calls were still handled"
       },
       "correct": "A",
       "key_concept": "Triage ranks AI incidents by likely harm to people, then the business; a quiet tolerance breach in a live model can outrank a visible attack.",
@@ -1788,7 +1788,7 @@
       "principle_id": "contain-and-preserve-ai",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "After a Peruvian blood bank switched off its generative AI chatbot for showing donors others' appointment details, the privacy officer wants every chat log deleted at once. What should the IS auditor recommend as BEST?",
+      "question": "A Peruvian blood bank switched off its generative AI chatbot because it showed donors others' appointment details. The privacy officer wants every chat log deleted at once. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Delete the logs now to limit further exposure of donors' data",
         "B": "Keep the model version and settings, and delete the chat logs",
@@ -1825,7 +1825,7 @@
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Costa Rican park service's chatbot told hikers a closed trail was open; the problem record names 'model hallucination' as root cause and is closed. What should the IS auditor recommend as BEST?",
+      "question": "A Costa Rican park service's chatbot told hikers that a closed trail was open. The problem record, now closed, gives 'model hallucination' as the root cause. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Reopen the problem and find why the chatbot gave that answer",
         "B": "Add a notice that the chatbot's answers may be inaccurate",
@@ -2121,7 +2121,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Namibian mining company's vendor-hosted ore-sorting model passed the vendor's lifecycle gates; the company set its own reject threshold and connected the model to its conveyor diverters. What should the IS auditor recommend as BEST?",
+      "question": "A Namibian mining company's vendor-hosted ore-sorting model passed the vendor's lifecycle gates. The company set its own reject threshold and connected the model to its conveyor diverters. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept the vendor's gate results as covering the deployed system",
         "B": "Have the IS auditor test the threshold before the system goes live",
@@ -2157,7 +2157,7 @@
       "subtopic": "2B AI lifecycle. Tuned model documentation",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Kyrgyz television broadcaster fine-tuned a vendor's licensed language model to write subtitles; its model card describes the tuning data but nothing about the base model. What is the IS auditor's GREATEST concern?",
+      "question": "A Kyrgyz television broadcaster fine-tuned a vendor's licensed language model to write subtitles. The model card describes the tuning data but says nothing about the base model. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The tuning data may be too small to change the model's behavior",
         "B": "The model card was written by the team that tuned the model",
@@ -2194,7 +2194,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Mozambican bank has retrained its ATM cash-demand model eight times, but the model card describes the launch version; the team says updating it would slow sprints. What should the IS auditor recommend as BEST?",
+      "question": "A Mozambican bank retrained its ATM cash-demand model eight times, but the model card describes the launch version. The team says updating the card would slow sprints. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Make an updated model card a condition of each release",
         "B": "Fully rewrite the model card at each annual model review",
@@ -2342,7 +2342,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Honduran rental agency's model owner approved a retrained tenant-screening model citing only a two-point overall accuracy gain, though it changes the decision for 9% of applicants. What is the IS auditor's GREATEST concern?",
+      "question": "A Honduran rental agency's model owner approved a retrained tenant-screening model, citing only a two-point gain in overall accuracy. The model changes the decision for 9% of applicants. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "No one reviewed the changed outcomes for errors and group patterns",
         "B": "A two-point gain is too small to justify a new release",
@@ -2379,7 +2379,7 @@
       "principle_id": "fix-the-control-not-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A monthly baseline check finds a Qatari bank's mortgage-help chatbot running with a higher temperature setting and a different retrieval index than approved; its answers look normal. What should the IS auditor recommend as BEST?",
+      "question": "A monthly baseline check finds a Qatari bank's mortgage-help chatbot using a higher temperature setting and a different retrieval index than approved. The chatbot's answers look normal. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Update the approved baseline to match the settings now in use",
         "B": "Restore the approved settings at once and close the baseline check",
@@ -2453,7 +2453,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An Argentine soccer club's member assistant searches documents indexed with a vendor's embedding model; after a vendor swap, queries and new documents use a new model. What should the IS auditor recommend as BEST?",
+      "question": "An Argentine soccer club's assistant for members searches documents indexed with a vendor's embedding model. After a vendor swap, queries and new documents use a new model. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Pin the version of the model that writes the assistant's answers",
         "B": "Rely on the vendor's testing of its new embedding model",
@@ -2527,7 +2527,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Guatemalan insurance claims officers review a model's health-claim hold recommendations; their bonus counts cases cleared daily, and the model's choice comes pre-selected, so agreeing takes one click. What should the IS auditor recommend as BEST?",
+      "question": "Claims officers at a Guatemalan insurer review a model's recommendations to hold health claims. Their bonus counts cases cleared daily. The model's choice comes pre-selected, so agreeing takes one click. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add a monthly supervisor check of cases where officers agreed",
         "B": "Train officers on how the model scores health claims",
@@ -2564,7 +2564,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An Algerian refinery's model assigns crews to equipment alarms; dispatchers can change single assignments, but no one may suspend the model when its assignments look wrong. What should the IS auditor recommend as BEST?",
+      "question": "An Algerian refinery's model assigns crews to equipment alarms. Dispatchers can change single assignments, but no one may suspend the model when its assignments look wrong. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Let dispatchers change more assignments without a supervisor's agreement",
         "B": "Let a named owner suspend the model through a tested procedure",
@@ -2601,7 +2601,7 @@
       "principle_id": "named-human-owner",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Cambodian province retrains its malaria-spraying model monthly; its dashboard shows drift and district error rates, but no reading triggers action, as the team relies on retraining. What should the IS auditor recommend as BEST?",
+      "question": "A Cambodian province retrains its malaria-spraying model monthly. Its dashboard shows drift and district error rates, but no reading triggers action because the team relies on retraining. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have the owner set a threshold and response for each indicator",
         "B": "Send the dashboard to the board each month for its review",
@@ -2638,7 +2638,7 @@
       "principle_id": "population-includes-misses",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An Iraqi freight platform's carrier-vetting model rejects 30% of trucking firms' applications; its monitoring tracks cargo theft only among carriers it approved. What should the IS auditor recommend as BEST?",
+      "question": "An Iraqi freight platform's carrier-vetting model rejects 30% of applications from trucking firms. Its monitoring tracks cargo theft only among the carriers it approved. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have shippers report theft by approved carriers within a week",
         "B": "Lower the model's threshold so it rejects fewer trucking firms",
@@ -2675,7 +2675,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Indonesian motorcycle-finance company's chatbot, presented as a staff member named Sari, decides whether borrowers get extensions on loan repayments. What should the IS auditor recommend as BEST?",
+      "question": "An Indonesian motorcycle-finance company's chatbot decides whether borrowers get extensions on loan repayments. The chatbot is presented as a staff member named Sari. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have a supervisor review a weekly sample of borrowers' extension cases",
         "B": "Have Sari explain each extension decision in more detail",
@@ -2749,7 +2749,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Azerbaijani pipeline operator's corrosion model will choose which pipe sections get inspected; under 2% are corroded, and the draft acceptance criterion is 95% overall accuracy. What should the IS auditor recommend as MOST important?",
+      "question": "An Azerbaijani pipeline operator's corrosion model will choose which pipe sections get inspected. Under 2% are corroded. The draft acceptance criterion is 95% overall accuracy. What should the IS auditor recommend as MOST important?",
       "options": {
         "A": "Add a cap on missed corroded sections, set from risk tolerance",
         "B": "Raise the overall accuracy pass mark from 95% to 99%",
@@ -2786,7 +2786,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Cameroonian parliament's clerks approved a debate summarizer after each read about 20 outputs, keeping no record of inputs or results; the vendor updates the model monthly. What is the IS auditor's GREATEST concern?",
+      "question": "Clerks at Cameroon's parliament approved a debate summarizer after each read about 20 outputs. They kept no record of inputs or results. The vendor updates the model monthly. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "About 20 outputs per clerk is too small a test sample",
         "B": "The clerks may lack the technical skill to test an AI model",
@@ -2823,7 +2823,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Greek mobile operator's SIM-swap fraud model flags men and women, and younger and older customers, at similar rates, yet women aged over 70 file most complaints. Which result should the IS auditor request FIRST?",
+      "question": "A Greek mobile operator's SIM-swap fraud model flags men, women, younger and older customers at similar rates. Yet women aged over 70 file most complaints. Which result should the IS auditor request FIRST?",
       "options": {
         "A": "Wrongful-flag rates for women and for those aged over 70, separately",
         "B": "Overall accuracy on recent confirmed fraud cases",
@@ -2896,7 +2896,7 @@
       "principle_id": "independence-of-ai-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Cypriot sports-betting regulator's validators received only the builders' summary metrics for a new match-fixing alert model; their requests for its data and code were refused. What should the IS auditor recommend as BEST?",
+      "question": "Validators at a Cypriot sports-betting regulator received only the builders' summary metrics for a new match-fixing alert model. Their requests for data and code were refused. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Give validators the data and code access that challenge requires",
         "B": "Have validators recompute the builders' summary metrics for errors",
@@ -3005,7 +3005,7 @@
       "subtopic": "2F AI threats. Exhausting AI service",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Senegalese recipe site's chatbot allows users 30 prompts an hour; overnight, a few accounts filled their quotas with pasted whole cookbooks, exhausting the monthly model budget. What should the IS auditor recommend as BEST?",
+      "question": "A Senegalese recipe site's chatbot allows users 30 prompts an hour. Overnight, a few accounts filled their quotas with pasted whole cookbooks, exhausting the monthly model budget. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Raise the model usage budget agreed with the vendor",
         "B": "Cap prompt length and daily token use per account, with alerts",
@@ -3042,7 +3042,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Ukrainian grain trader's pricing assistant reads market news websites; it passed prompt-injection tests in which testers typed attacks into its chat window. What should the IS auditor recommend FIRST?",
+      "question": "A Ukrainian grain trader's pricing assistant reads market news websites. The assistant passed prompt-injection tests in which testers typed attacks into its chat window. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Retest it with attack instructions hidden in news web pages",
         "B": "Rely on the chat tests, since the same model reads both sources",
@@ -3115,7 +3115,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A South Korean comics platform's translation service loads whichever model its registry tags 'production'; code releases need approval, and 60 data scientists have registry write access. What should the IS auditor recommend as BEST?",
+      "question": "A South Korean comics platform's translation service loads whichever model its registry tags as 'production'. Code releases need approval, and 60 data scientists can change the registry. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Log every production tag move for review each month",
         "B": "Encrypt the registry's stored model files at rest",
@@ -3152,7 +3152,7 @@
       "principle_id": "limits-outside-the-model",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An Emirati co-working operator's facilities agent reads supplier emails and, 'to be useful', can order repairs, unlock members' doors and edit contracts at any time. What should the IS auditor recommend as BEST?",
+      "question": "An Emirati co-working operator's facilities agent reads supplier emails. 'To be useful', it can order repairs, unlock members' doors and edit contracts at any time. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Tell the agent in its prompt to ask staff before unlocking doors",
         "B": "Grant task-scoped rights and require approval for high-impact actions",
@@ -3189,7 +3189,7 @@
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Montenegrin tax office's AI vendor warned an update may put plausible wrong amounts in tax notices, raising no errors; procurement left it unread for nine days. What should the IS auditor recommend as BEST?",
+      "question": "A Montenegrin tax office's AI vendor warned an update may put plausible wrong amounts in tax notices, raising no errors. Procurement left the warning unread for nine days. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Send vendor AI notices to incident intake with named triage roles",
         "B": "Have procurement check the inbox daily and forward any urgent mail",
@@ -3226,7 +3226,7 @@
       "principle_id": "fix-the-control-not-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Czech poison-information center rates AI incidents by users affected and downtime, so a chatbot telling 12 callers a cleaning-product mix was safe was rated low. What should the IS auditor recommend as BEST?",
+      "question": "A Czech poison-information center rates AI incidents by users affected and downtime. A chatbot told 12 callers a cleaning-product mix was safe, and the incident was rated low. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Raise this incident to high and keep the current rating scale",
         "B": "Rate AI incidents by how many model outputs were affected",
@@ -3263,7 +3263,7 @@
       "principle_id": "contain-and-preserve-ai",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An Egyptian irrigation authority's canal-gate model has a tested kill switch to its previous version, its only fallback, which reads the same sensor feeds. What should the IS auditor recommend as BEST?",
+      "question": "An Egyptian irrigation authority's canal-gate model has a tested kill switch to its previous version. That version is the only fallback and reads the same sensor feeds. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Test the kill switch each month as well as before go-live",
         "B": "Obtain a vendor attestation that both versions tolerate feed faults",
@@ -3300,7 +3300,7 @@
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Malawian tobacco auction rolled back its bale-grading model after two days of wrong grades that set growers' pay; grading is now normal, but those payments stand uncorrected. What should the IS auditor recommend FIRST?",
+      "question": "A Malawian tobacco auction rolled back its bale-grading model after two days of wrong grades that set growers' pay. Grading is now normal, but those payments stand uncorrected. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Close the incident, since grading has now returned to normal",
         "B": "Use decision logs to find and regrade the affected bales",
@@ -3337,7 +3337,7 @@
       "principle_id": "fix-the-control-not-the-model",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Uruguayan wool mill's output-forecast model began over-forecasting when a new truck scale arrived, whose readings for similar loads are 2.2 times the old scale's. What should the IS auditor recommend as BEST?",
+      "question": "A Uruguayan wool mill's output-forecast model began over-forecasting when a new truck scale arrived. The new scale reads 2.2 times the old one for similar loads. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Correct the truck scale feed's units through change control",
         "B": "Retrain the model on recent data including the truck scale readings",
@@ -3374,7 +3374,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Guyanese water utility's voice bot failed Creolese-speaking callers three times as often as others; a retrained version passed release tests, and the problem record was closed. What should the IS auditor recommend as BEST?",
+      "question": "A Guyanese water utility's voice bot failed Creolese-speaking callers three times as often as others. A retrained version passed release tests, and the problem record was closed. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Keep the record closed, since the retrained version passed its tests",
         "B": "Add a notice that the bot may misunderstand some ways of speaking",
@@ -3411,7 +3411,7 @@
       "principle_id": "ai-governance-before-tooling",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Togolese agriculture ministry's crop-advice assistant answers farmers from an index of approved websites plus any page those sites link to, which no one vets. What should the IS auditor recommend as BEST?",
+      "question": "A Togolese agriculture ministry's crop-advice assistant answers farmers from an index of approved websites and any page those sites link to. No one vets those pages. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Scan every indexed page for hidden instructions before each answer",
         "B": "Show farmers the source link with every answer given",
@@ -3448,7 +3448,7 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A data vendor says 4% of the harvest records it sold a Sri Lankan coconut exporter were wrong; nine of the exporter's models may have trained on them. What should the IS auditor recommend FIRST?",
+      "question": "A Sri Lankan coconut exporter bought harvest records from a data vendor, which says 4% were wrong. Nine of the exporter's models may have trained on them. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Use lineage records to find model versions trained on those records",
         "B": "Retrain the nine models on the vendor's corrected records",
@@ -3484,7 +3484,7 @@
       "subtopic": "2A Data management for AI. Hauls removed by a cleaning rule",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Mauritanian fishing fleet's catch-forecast model was trained after a cleaning rule deleted every haul over five tons as a sensor fault; trawlers land most such hauls. What should the IS auditor recommend as BEST?",
+      "question": "A Mauritanian fishing fleet trained its catch-forecast model after a cleaning rule deleted every haul over five tons as a sensor fault. Trawlers land most such hauls. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Retrain on twice as many hauls, cleaned by the same rule",
         "B": "Have the data owner fix the rule and restore real hauls",
@@ -3521,7 +3521,7 @@
       "principle_id": "rank-ai-risk-by-harm",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Kiribati health service's diabetes-risk model fills blank weight fields with the national average weight; most blanks belong to outer-island patients whose clinics have no scales. What is the IS auditor's GREATEST concern?",
+      "question": "A Kiribati health service's diabetes-risk model fills blank weight fields with the national average weight. Most blanks belong to outer-island patients whose clinics have no scales. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The weight field may breach the service's completeness standard",
         "B": "The national average weight may be several years out of date",
@@ -3595,7 +3595,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Liechtenstein dental-implant maker's data scientists picked the 20 sensor inputs most linked to confirmed defects using the whole dataset, then split it into training and test sets. What is the IS auditor's GREATEST concern?",
+      "question": "Using the whole dataset, a Liechtenstein dental-implant maker's data scientists picked the 20 sensor inputs most linked to confirmed defects. Then they split it into training and test sets. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Twenty inputs may be too few to detect implant defects",
         "B": "The chosen inputs may be hard to explain to the quality engineers",
@@ -3631,7 +3631,7 @@
       "subtopic": "2B AI lifecycle. Shrimp-feed release gate",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Belizean shrimp farm's deployment gate releases each feed-ration model once it passes validation on the latest pond data; the gate's checklist ends at release. What should the IS auditor recommend as BEST?",
+      "question": "A Belizean shrimp farm's deployment gate releases each feed-ration model once the model passes validation on the latest pond data. The gate's checklist ends at release. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept the gate, since each model passes validation before release",
         "B": "Check each model against its limits at a 30-day monitoring review",
@@ -3668,7 +3668,7 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Seychelles tourism board's validation report names training run 287 of 300, but the deployed visitor-forecast model's registry entry records only its code version. What is the IS auditor's GREATEST concern?",
+      "question": "A Seychelles tourism board's validation report names training run 287 of 300. But the registry entry for the deployed visitor-forecast model records only its code version. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The code may have changed since run 287 was trained",
         "B": "Nothing shows the deployed model is the run that was validated",
@@ -3704,7 +3704,7 @@
       "subtopic": "2B AI lifecycle. What a model card leaves out",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Lesotho wool exporter's fleece-grading model card gives accuracy and intended use, but nothing records how the training fleeces were sampled, graded or cleaned. What should the IS auditor recommend as BEST?",
+      "question": "The model card for a Lesotho wool exporter's fleece-grading model gives accuracy and intended use. But nothing records how the training fleeces were sampled, graded or cleaned. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add a datasheet on how the training set was built and checked",
         "B": "Add accuracy results for each fleece type to the model card",
@@ -3741,7 +3741,7 @@
       "principle_id": "fix-the-control-not-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Kosovar grid operator's drone model for spotting damaged insulators missed many faults in fog during validation, yet its draft model card claims it suits all weather. What should the IS auditor recommend as BEST?",
+      "question": "A Kosovar grid operator's drone model spots damaged insulators. In validation, it missed many faults in fog, yet its draft model card claims it suits all weather. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Retrain the model with more foggy-flight images before release",
         "B": "Add a general statement that results may vary by weather",
@@ -3852,7 +3852,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Eswatini driving school linked its approved lesson-advice chatbot to its booking system so it can book lessons; IT tested only that the link works. What should the IS auditor recommend as BEST?",
+      "question": "An Eswatini driving school linked its approved lesson-advice chatbot to its booking system so the chatbot can book lessons. IT tested only that the link works. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Treat the link as an AI change and test the chatbot's bookings",
         "B": "Accept IT's link test, since the chatbot's model is unchanged",
@@ -3889,7 +3889,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Djiboutian telecom regulator's staff assistant answers licensing questions from a document index; on Friday an analyst added 4,000 published licensing decisions to it, logging no change. What should the IS auditor recommend as BEST?",
+      "question": "A Djiboutian telecom regulator's staff assistant answers licensing questions from a document index. On Friday, an analyst added 4,000 published licensing decisions to the index, logging no change. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Check the decisions for personal data before they stay indexed",
         "B": "Treat the decisions as content, not a change, as they are public",
@@ -3926,7 +3926,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Vanuatu land-lease office edits its public chatbot's system prompt directly in the vendor console, which overwrites the previous text each time. What should the IS auditor recommend as MOST important?",
+      "question": "A Vanuatu land-lease office edits the system prompt of its public chatbot directly in the vendor console. The console overwrites the previous text each time. What should the IS auditor recommend as MOST important?",
       "options": {
         "A": "Limit console access to two named, trained administrators",
         "B": "Keep each approved prompt version so it can be restored",
@@ -3999,7 +3999,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Salvadoran remittance firm's ID-reading model must read a redesigned card most customers carry; a vendor retrain, with no code change, passed regression tests built before the redesign. What should the IS auditor recommend FIRST?",
+      "question": "A Salvadoran remittance firm's ID-reading model must read a redesigned card most customers carry. A vendor retrain, with no code change, passed regression tests built before the redesign. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Adopt the update, since it passed every regression test",
         "B": "Ask the vendor to confirm the update reads the new cards",
@@ -4036,7 +4036,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Kenyan geothermal utility's engineering, billing and legal teams use one vendor language model to draft text; IT approved its latest update after testing only engineering summaries. What should the IS auditor recommend as BEST?",
+      "question": "A Kenyan geothermal utility's engineering, billing and legal teams use one vendor language model to draft text. IT approved its latest update after testing only engineering summaries. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have the owner of each use test the update on its tasks",
         "B": "Have IT run its standard test prompts on billing and legal tasks",
@@ -4073,7 +4073,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Rangers at a Botswanan game reserve confirm a camera-trap model's poacher alerts, but were never told its validation excluded rainy-season footage, a third of all footage. What should the IS auditor recommend as BEST?",
+      "question": "Rangers at a Botswanan game reserve confirm a camera-trap model's poacher alerts. They were never told the model's validation excluded rainy-season footage, a third of all footage. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Require a second ranger to confirm each poacher alert",
         "B": "Have the IS auditor test the model on rainy-season footage",
@@ -4110,7 +4110,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Greenlandic power utility's model adjusts hydro output every few seconds; a proposal would have an engineer approve each adjustment before it takes effect. What should the IS auditor recommend as BEST?",
+      "question": "A Greenlandic power utility's model adjusts hydro output every few seconds. A proposal would have an engineer approve each adjustment before it takes effect. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Adopt the proposal, since a person should approve each action",
         "B": "Have engineers watch it live, with set limits and a tested stop",
@@ -4146,7 +4146,7 @@
       "subtopic": "2D AI supervision. Late outcomes",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Malagasy vanilla exporter's model predicts growers' cured-bean yields at flowering to set contracts; actual yields are known only after curing, nine months later. What should the IS auditor recommend as BEST for monitoring it?",
+      "question": "A Malagasy vanilla exporter's model predicts growers' cured-bean yields at flowering to set contracts. Actual yields are known only after curing, nine months later. What should the IS auditor recommend as BEST for monitoring it?",
       "options": {
         "A": "Track input and prediction shifts as early warnings of drift",
         "B": "Compare each prediction with actual yields once curing ends",
@@ -4183,7 +4183,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Zambian veterinary service's livestock-permit risk model, trained before a northern border post opened, meets its national error tolerance monthly; that post now handles 6% of permits. What should the IS auditor recommend as BEST?",
+      "question": "A Zambian veterinary service's livestock-permit risk model meets its national error tolerance monthly. A northern border post opened after the model was trained and now handles 6% of permits. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Tighten the national error tolerance for the permit risk model",
         "B": "Retrain the model on the new border post's permits",
@@ -4220,7 +4220,7 @@
       "principle_id": "ai-deciding-fact",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Sierra Leonean bank's face-matching model, retrained monthly on its past decisions, blocks account openings; 200 blocks a month reversed on appeal stay recorded as mismatches. What should the IS auditor recommend as BEST?",
+      "question": "A Sierra Leonean bank's face-matching model blocks account openings and is retrained monthly on its decisions. Each month, 200 blocks reversed on appeal stay recorded as mismatches. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add appeal staff so that reversals are made more quickly",
         "B": "Relabel overturned cases as matches in the data it learns from",
@@ -4257,7 +4257,7 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Beninese market authority's stall-license model, retrained quarterly, revokes licenses; full decision logs last 30 days, appeals run six months, and staff say reruns can recreate decisions. What should the IS auditor recommend as BEST?",
+      "question": "A Beninese market authority's stall-license model revokes licenses and is retrained quarterly. Full decision logs last 30 days, and appeals run six months. Staff say reruns can recreate decisions. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Rely on reruns, archiving each quarter's model version for appeals",
         "B": "Shorten the appeal window to match the 30-day log period",
@@ -4294,7 +4294,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Liberian rubber plantation compressed its accepted leaf-disease model to run on workers' phones; engineers say the acceptance results still apply, as its logic is unchanged. What should the IS auditor recommend FIRST?",
+      "question": "A Liberian rubber plantation compressed its accepted leaf-disease model to run on workers' phones. Engineers say the acceptance results still apply because the model's logic is unchanged. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Monitor field results against acceptance criteria for a month",
         "B": "Compare the compressed file's hash with the registry entry",
@@ -4368,7 +4368,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A North Macedonian equipment-hire firm charges deposits to customers whose model risk score is above one cutoff; the model ranks equally well in every region. What should the IS auditor recommend as BEST?",
+      "question": "A North Macedonian equipment-hire firm uses a model to score customers' risk. Customers above one cutoff are charged deposits. The model ranks equally well in every region. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Recheck ranking accuracy by region on a fresh sample",
         "B": "Accept equal ranking accuracy as proof that deposits are fair",
@@ -4404,7 +4404,7 @@
       "subtopic": "2E AI testing. Generated summaries",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Cape Verdean civil service's generative assistant summarizes candidates' promotion files for selection panels; its tests checked only factual accuracy. Which fairness test should the IS auditor recommend as MOST useful?",
+      "question": "A Cape Verdean civil service's generative assistant summarizes candidates' promotion files for selection panels. Its tests checked only factual accuracy. Which fairness test should the IS auditor recommend as MOST useful?",
       "options": {
         "A": "Compare promotion rates by group a year after launch",
         "B": "Run identical files many times, changing only names and pronouns",
@@ -4478,7 +4478,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Mauritian vehicle-licensing office's chatbot answers in English, French and Mauritian Creole from one model; its red team's jailbreaks and harmful requests, all in English, were refused. What should the IS auditor recommend as BEST?",
+      "question": "A Mauritian vehicle-licensing office's chatbot answers in English, French and Mauritian Creole from one model. The red team's jailbreaks and harmful requests, all in English, were refused. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Repeat the attack tests in the chatbot's other two languages",
         "B": "Accept the results, as one model's safeguards serve each language",
@@ -4515,7 +4515,7 @@
       "principle_id": "ai-deciding-fact",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Bhutanese bank bought a document-routing classifier fine-tuned by a contractor that will not share its training data; it scored 99% on the bank's tests. Which threat should the IS auditor consider MOST significant?",
+      "question": "A Bhutanese bank bought a document-routing classifier that scored 99% on the bank's tests. The contractor that fine-tuned it will not share the training data. Which threat should the IS auditor consider MOST significant?",
       "options": {
         "A": "Attackers rebuilding the model by querying it repeatedly",
         "B": "Planted triggers that make it misroute chosen documents",
@@ -4552,7 +4552,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Palauan marine institute retrains its coral-bleaching model monthly on a public hub dataset fetched by name, whose uploader can replace its files at any time. What should the IS auditor recommend as BEST?",
+      "question": "A Palauan marine institute retrains its coral-bleaching model monthly on a public hub dataset, fetched by name. The dataset's uploader can replace its files at any time. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Confirm the dataset's license terms before each monthly pull",
         "B": "Retrain less often so that fewer dataset changes reach it",
@@ -4589,7 +4589,7 @@
       "principle_id": "limits-outside-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Bahamian cruise line's onboard assistant relies on its system prompt to refuse medical advice; testers got dosing advice by asking it to role-play the ship's doctor. What should the IS auditor recommend as BEST?",
+      "question": "A Bahamian cruise line's onboard assistant relies on its system prompt to refuse medical advice. Testers got dosing advice by asking it to role-play the ship's doctor. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add safety checks on prompts and replies outside the model",
         "B": "Add stronger refusal wording to the assistant's system prompt",
@@ -4625,7 +4625,7 @@
       "subtopic": "2F AI threats. Email scanning and injection",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Cook Islands pearl exporter's sales assistant reads customer emails and drafts quotes; IT says prompt injection is covered because the email gateway scans every message for malware. What is the IS auditor's GREATEST concern?",
+      "question": "A Cook Islands pearl exporter's sales assistant reads customer emails and drafts quotes. IT says prompt injection is covered because the email gateway scans every message for malware. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The gateway may miss new malware in customer attachments",
         "B": "The gateway may skip emails sent between internal staff",
@@ -4699,7 +4699,7 @@
       "principle_id": "limits-outside-the-model",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Burkinabé shea-butter cooperative's analytics assistant writes and runs code to answer questions from non-technical staff, on a server that holds stored credentials for the finance database. What should the IS auditor recommend as BEST?",
+      "question": "A Burkinabé shea-butter cooperative's analytics assistant writes and runs code to answer questions from non-technical staff. The server it uses holds stored credentials for the finance database. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have staff approve each script before the assistant runs it",
         "B": "Instruct the assistant in its prompt to avoid the finance data",
@@ -4736,7 +4736,7 @@
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "Pilots at a Maldivian seaplane operator caught its load-planning assistant's weight errors 11 times this month, though they now check fewer of its figures; nothing was logged. What should the IS auditor recommend as BEST?",
+      "question": "Pilots at a Maldivian seaplane operator caught 11 weight errors by its load-planning assistant this month. They now check fewer of its figures, and nothing was logged. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Record the pilots' checks as a working compensating control",
         "B": "Wait to log errors until one reaches a flight",
@@ -4773,7 +4773,7 @@
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A dealer account sent an Angolan diamond trader's valuation API two million slightly varied queries over a weekend, then stopped; IT logged it as a capacity issue. What should the IS auditor recommend FIRST?",
+      "question": "Over a weekend, a dealer account sent two million slightly varied queries to an Angolan diamond trader's valuation API, then stopped. IT logged it as a capacity issue. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Triage it as a suspected model-extraction incident",
         "B": "Rate-limit the account to protect service for other dealers",
@@ -4810,7 +4810,7 @@
       "principle_id": "contain-and-preserve-ai",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Cayman Islands fund administrator's investor chatbot began quoting wrong redemption prices; an engineer wants to restart it at once, which would clear its session logs. What should the IS auditor recommend FIRST?",
+      "question": "A Cayman Islands fund administrator's investor chatbot began quoting wrong redemption prices. An engineer wants to restart the chatbot at once, which would clear its session logs. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Restart it now, then rebuild its logs by rerunning prompts",
         "B": "Disengage the chatbot and save its logs before restarting",
@@ -4847,7 +4847,7 @@
       "principle_id": "contain-and-preserve-ai",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Solomon Islands hospital's supply agent placed duplicate medicine orders; staff closed its chat window, but its scheduled order jobs keep running under its service account. What should the IS auditor recommend FIRST?",
+      "question": "A Solomon Islands hospital's supply agent placed duplicate medicine orders. Staff closed the agent's chat window, but its scheduled order jobs keep running under its service account. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Roll back the model behind the service account's scheduled jobs",
         "B": "Cancel the duplicate orders with each medicine supplier",
@@ -4884,7 +4884,7 @@
       "principle_id": "fix-the-control-not-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Aruban hotel group's guest chatbot gave wrong check-out times after four of the last five weekly index refreshes; each was closed as a separate incident. What should the IS auditor recommend as BEST?",
+      "question": "An Aruban hotel group's guest chatbot gave wrong check-out times after four of the last five weekly index refreshes. Each case was closed as a separate incident. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Open a problem record on how refreshes rebuild the index",
         "B": "Roll back the index after any refresh that gives wrong times",
@@ -4921,7 +4921,7 @@
       "principle_id": "limits-outside-the-model",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Congolese cobalt mining company's safety assistant gives wrong unit conversions, traced to the vendor's base model; the vendor's fix is five months away. What should the IS auditor recommend as BEST?",
+      "question": "A Congolese cobalt mining company's safety assistant gives wrong unit conversions, traced to the vendor's base model. The vendor's fix is five months away. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Close the problem record, since the vendor owns the cause",
         "B": "Switch to another vendor's model before the five months end",
@@ -4958,7 +4958,7 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Dominican baseball academy's player-injury model was trained on data an analyst cleaned in a personal code notebook, since edited; only the raw files remain. What should the IS auditor recommend as BEST?",
+      "question": "A Dominican baseball academy's player-injury model was trained on data an analyst cleaned in a personal code notebook. The notebook was later edited, and only raw files remain. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have the analyst write up the cleaning steps from memory",
         "B": "Rebuild the cleaning as versioned code linked to each training set",
@@ -4994,7 +4994,7 @@
       "subtopic": "2A Data management for AI. Chatbot drafts in its own sources",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Ugandan solar-kit distributor's chatbot now drafts many help-center articles, unmarked; those articles feed both its retrieval index and its quarterly fine-tuning. What should the IS auditor recommend as BEST?",
+      "question": "A Ugandan solar-kit distributor's chatbot now drafts many help-center articles without marking them. Those articles feed both its retrieval index and its quarterly fine-tuning. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Tag chatbot drafts so unreviewed ones stay out of its data",
         "B": "Have editors review a random sample of new articles each month",
@@ -5030,7 +5030,7 @@
       "subtopic": "2A Data management for AI. Burn-photo archive",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Saint Lucian hospital's burn model, trained mostly on lighter-skin archive photos, misses more deep burns on darker skin; staff will triple the data from that archive. Which plan should the IS auditor consider BEST?",
+      "question": "A Saint Lucian hospital's burn model, trained mostly on lighter-skin archive photos, misses more deep burns on darker skin. Staff will triple the data from that archive. Which plan should the IS auditor consider BEST?",
       "options": {
         "A": "Triple the training set as planned, then retest on darker skin",
         "B": "Lower every patient's alert threshold so fewer deep burns are missed",
@@ -5067,7 +5067,7 @@
       "principle_id": "ai-deciding-fact",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Slovenian hospital's clinical coders confirm diagnosis codes its model pre-fills, accepting 98%; the next model version will be tested against these confirmed codes. What is the IS auditor's GREATEST concern?",
+      "question": "Clinical coders at a Slovenian hospital confirm diagnosis codes its model pre-fills, and they accept 98%. The next model version will be tested against these confirmed codes. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Coders may not keep pace with the volume the model codes",
         "B": "The test set may hold too few rare diagnoses to judge them",
@@ -5104,7 +5104,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Irish farm-software firm's mastitis-alert model, built from 40 client farms' records split randomly into training and test sets, will now be sold to new farms. Which test should the IS auditor request FIRST?",
+      "question": "An Irish farm-software firm's mastitis-alert model will now be sold to new farms. It was built from 40 client farms' records, split randomly into training and test sets. Which test should the IS auditor request FIRST?",
       "options": {
         "A": "A test on whole farms whose records the model never saw",
         "B": "A rerun of the same test with a larger random sample",
@@ -5177,7 +5177,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Rwandan examinations council built its assistant for students from a system prompt on a hosted model; as no model was trained, it skipped the validation gate. What should the IS auditor recommend as BEST?",
+      "question": "A Rwandan examinations council built an assistant for students from a system prompt on a hosted model. Since no model was trained, the council skipped the validation gate. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have staff review the system prompt's wording before it goes live",
         "B": "Test how it answers as deployed before students rely on it",
@@ -5214,7 +5214,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An Omani airline's fuel-load model passed validation on features the data team computed in batch; in production, a separately coded live service will compute them. What should the IS auditor recommend as BEST before go-live?",
+      "question": "An Omani airline's fuel-load model passed validation on features the data team computed in batch. In production, a separately coded live service will compute them. What should the IS auditor recommend as BEST before go-live?",
       "options": {
         "A": "Load-test the live service at peak flight-planning volumes",
         "B": "Review the live service's code against the coding standard",
@@ -5250,7 +5250,7 @@
       "subtopic": "2B AI lifecycle. A spice exporter's buyer assistant",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Grenadian spice exporter's buyer assistant adds a system prompt, retrieval index and output filter to a vendor model; the vendor's model card is its sole record. What should the IS auditor recommend as BEST?",
+      "question": "A Grenadian spice exporter's buyer assistant adds a system prompt, retrieval index and output filter to a vendor model. The vendor's model card is the assistant's only record. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Document the whole assistant, including what the exporter added",
         "B": "Ask the vendor for a fuller model card with known limits",
@@ -5323,7 +5323,7 @@
       "subtopic": "2B AI lifecycle. Retiring a scheduling agent",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Chilean architecture firm retired its meeting-scheduling agent by deleting its service account; staff had each authorized the agent's app to read their mailbox. What should the IS auditor recommend FIRST?",
+      "question": "A Chilean architecture firm retired its meeting-scheduling agent by deleting its service account. Each staff member had authorized the agent's app to read their mailbox. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Confirm the account deletion in the next access review",
         "B": "Revoke the access users delegated to the agent",
@@ -5396,7 +5396,7 @@
       "subtopic": "2C AI change management. Retraining as a standard change",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Bolivian mining cooperative wants its ore-price model's weekly retraining, same code and data sources each time, classed as a pre-approved standard change. What should the IS auditor recommend as BEST?",
+      "question": "A Bolivian mining cooperative retrains its ore-price model weekly, with the same code and data sources each time. It wants this classed as a pre-approved standard change. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Allow it only if each run passes independently approved tests",
         "B": "Refuse it; send each retrain to the change advisory board",
@@ -5433,7 +5433,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "To cut costs, a Burundian public university reduced staff review of its model's fee-waiver rejections from every rejection to a 10% sample; the model itself is unchanged. What should the IS auditor recommend as BEST?",
+      "question": "To cut costs, a Burundian public university reduced staff review of its model's fee-waiver rejections from every rejection to a 10% sample. The model itself is unchanged. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept it as a staffing decision, since the model did not change",
         "B": "Treat it as an AI change, assessed and approved before use",
@@ -5470,7 +5470,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A New Zealand tribunal service's documented rollback target for its transcription model is version 5, which was replaced because it misheard Māori names far more often. What should the IS auditor recommend as BEST?",
+      "question": "A New Zealand tribunal service's documented rollback target for its transcription model is version 5. Version 5 was replaced because it misheard Māori names far more often. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Record the known name errors in the rollback runbook",
         "B": "Drop the rollback plan, since no older version is safe",
@@ -5506,7 +5506,7 @@
       "subtopic": "2C AI change management. A ship registry's tuned adapters",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Marshall Islands ship registry's document checker runs a tuned adapter on an open-weight base model; its model registry versions each adapter but not its base model. What should the IS auditor recommend as BEST?",
+      "question": "A Marshall Islands ship registry's document checker runs a tuned adapter on an open-weight base model. The model registry versions each adapter but not its base model. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Keep every adapter version so any one can be restored quickly",
         "B": "Retune the adapter each time a new base model is released",
@@ -5543,7 +5543,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Nicaraguan crowdfunding platform pauses campaigns scoring above 0.7 on a vendor's scam-detection model; the vendor says next month's version is more accurate but scores lower overall. What should the IS auditor recommend FIRST?",
+      "question": "A Nicaraguan crowdfunding platform pauses campaigns scoring above 0.7 on a vendor's scam-detection model. The vendor says next month's version is more accurate but scores lower overall. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Reset the cutoff on the new version's scores, then retest",
         "B": "Keep 0.7, since the vendor says the new version is better",
@@ -5580,7 +5580,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Latvian timber exporter pins the vendor model version behind its contract-translation assistant, yet more passages return untranslated; the vendor says only its server-side safety filter changed. What should the IS auditor recommend as BEST?",
+      "question": "A Latvian timber exporter pins the vendor model version behind its contract-translation assistant. Yet more passages return untranslated. The vendor says only its server-side safety filter changed. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Rely on the pin, as the model version did not change",
         "B": "Require the vendor to give notice of every filter change",
@@ -5617,7 +5617,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Tbilisi lab's pathologists agreed with an unchanged biopsy model's flags 96% of the time, up from 70%, once each flag showed ahead of the slide image. What should the IS auditor recommend as BEST?",
+      "question": "Pathologists at a Tbilisi lab agreed with an unchanged biopsy model's flags 70% of the time. Agreement rose to 96% once each flag was shown ahead of the slide image. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Remove the pathologists' step, since they agree with the model anyway",
         "B": "Have pathologists record their own reading before the flag appears",
@@ -5654,7 +5654,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Lithuanian consumer-protection agency's clerks approve AI-drafted replies that cite consumer law; reviews show they rarely question citations, which they cannot check without legal training. What should the IS auditor recommend as BEST?",
+      "question": "Clerks at a Lithuanian consumer-protection agency approve AI-drafted replies that cite consumer law. Reviews show they rarely question the citations, which they cannot check without legal training. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add a notice telling consumers that replies are AI-assisted",
         "B": "Stop the model from citing consumer law in replies",
@@ -5691,7 +5691,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Antiguan tourism authority tracks its generative visitor chatbot by thumbs-up ratings, steady at 92%; its answers on entry rules sound equally confident when wrong. What should the IS auditor recommend as BEST?",
+      "question": "An Antiguan tourism authority tracks its generative chatbot for visitors by thumbs-up ratings, steady at 92%. Wrong answers on entry rules sound as confident as right ones. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have staff check sampled answers against current entry rules",
         "B": "Add a rating question asking if entry-rule answers were accurate",
@@ -5727,7 +5727,7 @@
       "subtopic": "2D AI supervision. An erosion model's drift check",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Tuvaluan coastal-works agency's drift check compares each month's erosion-model inputs with the prior month's and never trips, though sea levels edged up steadily for two years. What should the IS auditor recommend as BEST?",
+      "question": "The drift check at a Tuvaluan coastal-works agency compares erosion-model inputs month to month. It never trips, though sea levels crept up steadily for two years. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Tighten the month-to-month drift limit so smaller shifts trip it",
         "B": "Compare inputs with the data the model was trained on",
@@ -5764,7 +5764,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Ghanaian customs service's officers decide the declarations its risk model flags; importers dispute decisions using its log of model version, inputs, score and final status. What should the IS auditor recommend as BEST?",
+      "question": "Officers at a Ghanaian customs service decide the declarations its risk model flags. Importers dispute decisions using a log of model version, inputs, score and final status. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add the flagging threshold in force for each score to the log",
         "B": "Have officers sign a monthly statement that they reviewed declarations",
@@ -5801,7 +5801,7 @@
       "principle_id": "population-includes-misses",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Scottish council retrains its council-tax reduction model on appeal outcomes as corrected labels; most successful appeals come from applicants helped by welfare-rights advisers. What is the IS auditor's GREATEST concern?",
+      "question": "A Scottish council retrains its model for council-tax reductions on appeal outcomes, used as corrected labels. Most successful appeals come from applicants helped by welfare-rights advisers. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The model learns fixes mainly from applicants who had advisers",
         "B": "Appeal outcomes may take months to reach the training data",
@@ -5838,7 +5838,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Japanese city's step-free-route assistant for wheelchair users passed acceptance testing, each of 200 test questions asked once; its answers vary run to run. What should the IS auditor recommend as BEST?",
+      "question": "A Japanese city offers wheelchair users an assistant for step-free routes. It passed acceptance tests asking each of 200 questions once. Its answers vary run to run. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add 200 more test questions, each asked once",
         "B": "Accept the results, since the 200 answers each passed",
@@ -5985,7 +5985,7 @@
       "principle_id": "independence-of-ai-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Moroccan auto-finance company's validation unit, independent of the builders, reran the builders' code on the builders' test set for a car-loan model and matched every score. What should the IS auditor recommend as BEST?",
+      "question": "A Moroccan auto-finance company's validation unit is independent of its car-loan model's builders. It reran their code on their test set and matched every score. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept the validation, as the unit is independent of the builders",
         "B": "Have IS audit rerun the code to confirm the validators' scores",
@@ -6022,7 +6022,7 @@
       "principle_id": "named-human-owner",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Jamaican lottery operator's red team found three high-severity jailbreaks in its player chatbot that remain open; the red team lead says it passes for launch anyway. What should the IS auditor recommend as BEST?",
+      "question": "A Jamaican lottery operator's red team found three high-severity jailbreaks in its player chatbot. They remain open, yet the team lead says the chatbot passes for launch. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Launch if the three jailbreaks fail when the red team reruns them",
         "B": "Have the model owner decide on the open findings before launch",
@@ -6059,7 +6059,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Vietnamese used-car listings site's search-ranking model trains on 5 million clicks; analysts found 2,000 from bot accounts favoring one seller, and the team says 0.04% cannot matter. What is the IS auditor's GREATEST concern?",
+      "question": "A Vietnamese used-car site trains its search-ranking model on 5 million clicks. Analysts found 2,000 from bot accounts favoring one seller. The team says 0.04% cannot matter. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "A small targeted share can still lift that seller's ranking",
         "B": "Overall ranking accuracy may fall below the team's tolerance",
@@ -6096,7 +6096,7 @@
       "principle_id": "ai-deciding-fact",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Bahraini aluminum smelter's IT team says its invoice-approval model needs no AI threat model, having no internet access; suppliers' invoices reach it by email. What should the IS auditor recommend as BEST?",
+      "question": "A Bahraini aluminum smelter runs its invoice-approval model without internet access, so IT says the model needs no AI threat model. Suppliers' invoices reach it by email. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept IT's view, since no outsider can reach the model",
         "B": "Limit access to the model's files to its data scientists",
@@ -6132,7 +6132,7 @@
       "subtopic": "2F AI threats. Data sent out in an image link",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Danish software firm's support assistant can show web images in its replies; a tester's ticket made it send customers' details out inside an image link. What should the IS auditor recommend as BEST?",
+      "question": "A Danish software firm lets its support assistant show web images in replies. A tester's ticket made it send customer details out inside an image link. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Tell the assistant in its prompt to disregard ticket instructions",
         "B": "Block replies from loading images or links from unapproved sites",
@@ -6354,7 +6354,7 @@
       "principle_id": "contain-and-preserve-ai",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Kazakh grain elevator rolled back its grain-drying model, which updates itself from live humidity readings, after faulty sensors skewed its settings; the sensors are still faulty. What should the IS auditor recommend FIRST?",
+      "question": "A Kazakh grain elevator rolled back its grain-drying model after faulty sensors skewed its settings. The model updates itself from live humidity readings. The sensors are still faulty. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Let the rolled-back model run, as it was known to be good",
         "B": "Retrain tonight on clean data from the previous month",
@@ -6428,7 +6428,7 @@
       "principle_id": "fix-the-control-not-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Belgian hospital managers rate porters by a route-planning model's time estimates, a purpose never assessed; after porters complained of bias, the data team plans a retrain. What should the IS auditor recommend as BEST?",
+      "question": "Belgian hospital managers rate porters by a route-planning model's time estimates. That use was never assessed. After porters complained of bias, the data team plans a retrain. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Retrain the model as planned to reduce bias in its estimates",
         "B": "Add a disclaimer that estimates are not for rating staff",
@@ -6575,7 +6575,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Welsh broadcaster will clean its moderation model's training posts, a third of them in Welsh, with a vendor's quality filter validated only on English text. What should the IS auditor recommend as BEST?",
+      "question": "A Welsh broadcaster will clean its moderation model's training posts with a vendor's quality filter validated only on English text. A third of the posts are in Welsh. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Use the filter as supplied, since the vendor validated it",
         "B": "Test what the filter removes from Welsh and English posts first",
@@ -6797,7 +6797,7 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Lithuanian export-control agency's draft contract for a vendor's hosted export-risk model, retrained monthly, covers uptime and data security; refused exporters may appeal within a year. What should the IS auditor recommend as BEST?",
+      "question": "A Lithuanian export-control agency will use a vendor's hosted export-risk model, retrained monthly. The draft contract covers uptime and data security. Refused exporters may appeal within a year. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add a right to audit the vendor's data centers and access controls",
         "B": "Require version logs and vendor analysis for challenged results",
@@ -6871,7 +6871,7 @@
       "principle_id": "fix-the-control-not-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Estonian insurer shares most models across lines; car claims dropped a triage model still serving boat claims, and the inventory marked it retired, ending drift checks. Which IS auditor recommendation BEST prevents a recurrence?",
+      "question": "An Estonian insurer shares most models across lines. The car line dropped a triage model still used for boat claims. The inventory marked it retired, ending drift checks. Which IS auditor recommendation BEST prevents a recurrence?",
       "options": {
         "A": "Require drift checks on every model the inventory lists as live",
         "B": "Retire the model for boat claims too, so it matches the inventory",
@@ -6981,7 +6981,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Chilean telecom widened its formal-complaint definition and relabeled past emails, under an approved change, to retrain its triage model; the release test set keeps old labels. What is the IS auditor's GREATEST concern?",
+      "question": "Under an approved change, a Chilean telecom widened its formal-complaint definition and relabeled past emails to retrain its triage model. The release test set keeps old labels. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Correct routings under the new definition will count as errors",
         "B": "More emails will reach the complaints team than it can handle",
@@ -7055,7 +7055,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Mongolian courier's new delivery-time model matched rural and city accuracy on past deliveries; staging covers 5% of customers, all in Ulaanbaatar; 40% of parcels go rural. What should the IS auditor recommend as BEST?",
+      "question": "A Mongolian courier's new delivery-time model matched rural and city accuracy on past deliveries. Staging covers 5% of customers, all in Ulaanbaatar. 40% of parcels go rural. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept the plan, since rural accuracy already matched city accuracy",
         "B": "Raise the staged share from 5% to 20% of Ulaanbaatar customers",
@@ -7092,7 +7092,7 @@
       "principle_id": "rank-ai-risk-by-harm",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Swedish retailer ranks job applicants with its HR platform's AI; the platform's sub-processor notice shows it switched AI model providers, with data kept in the EU. What is the IS auditor's GREATEST concern?",
+      "question": "A Swedish retailer ranks job applicants with its HR platform's AI. A sub-processor notice shows the platform switched AI model providers, with data kept in the EU. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Applicants may not be told a new provider's model now ranks them",
         "B": "Applicant groups' rankings may have shifted without any testing",
@@ -7166,7 +7166,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Polish hospital's model recommends moving intensive-care patients to general wards; each recommendation takes effect if no doctor responds within two hours, as happens for 40%. What should the IS auditor recommend as BEST?",
+      "question": "A Polish hospital's model recommends moving intensive-care patients to general wards. A recommendation takes effect if no doctor responds within two hours, as in 40% of cases. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Hold each transfer until a doctor decides, and escalate late ones",
         "B": "Send doctors a reminder one hour before the response deadline",
@@ -7202,7 +7202,7 @@
       "subtopic": "2D AI supervision. A 98% catch rate on seeded flags",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Philippine overseas-employment agency tests reviewers of its model's fake-contract flags with seeded wrong flags, all copied from one 2022 batch; reviewers catch 98%. What is the IS auditor's GREATEST concern?",
+      "question": "A Philippine overseas-employment agency's model flags fake contracts. The agency tests the reviewers with seeded wrong flags, all copied from one 2022 batch. Reviewers catch 98%. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The 98% rate may set too high a bar for new reviewers",
         "B": "Seeded flags may delay real workers' departures by mistake",
@@ -7387,7 +7387,7 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Panamanian health insurer compares each member-assistant release with the last using pass rates from a hosted grading model, which its vendor updates without notice. What is the IS auditor's GREATEST concern?",
+      "question": "A Panamanian health insurer compares each member-assistant release with the last one, using pass rates from a hosted grading model. The grader's vendor updates it without notice. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Pass rates may fall below the level needed for release approval",
         "B": "Pass-rate changes may come from the grader, not the assistant",
@@ -7498,7 +7498,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Brazilian development agency's farm-credit model shows equal error rates for women and men farmers, but credit officers, who decide, overturn its approvals more often for women. What should the IS auditor recommend as BEST?",
+      "question": "A Brazilian development agency's farm-credit model shows equal error rates for women and men farmers. Credit officers decide, and they overturn its approvals more often for women. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Retest the model's error rates by sex on recent applications",
         "B": "Remove the officers' power to overturn the model's approvals",
@@ -7609,7 +7609,7 @@
       "principle_id": "fix-the-control-not-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Nigerian card issuer's fraud model refused thousands of slightly varied attempts at the same large purchase, made on many cards, before variants began to pass. What should the IS auditor recommend as BEST?",
+      "question": "A Nigerian card issuer's fraud model refused thousands of slightly varied attempts at the same large purchase across many cards. Then variants began to pass. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Detect and throttle repeated declined attempts across cards",
         "B": "Retrain the fraud model every week on the latest fraud cases",
@@ -7717,7 +7717,7 @@
       "subtopic": "2F AI threats. An instruction saved to memory",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Jersey trust company's staff assistant saves lasting 'memories' from chats; a tester's pasted document planted one telling it to copy future drafts to an outside address. What should the IS auditor recommend as BEST?",
+      "question": "A Jersey trust company's staff assistant saves lasting 'memories' from chats. A tester's pasted document planted a memory telling it to copy future drafts to an outside address. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Wipe every user's saved memories at the end of each week",
         "B": "Block memory writes from documents and let users review memories",
@@ -7790,7 +7790,7 @@
       "subtopic": "2F AI threats. An agent that makes its own accounts",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Finnish software firm's AI deployment agent acts on tickets any employee can file, under an account that can create service accounts and access keys. What is the IS auditor's GREATEST concern?",
+      "question": "A Finnish software firm's AI deployment agent acts on tickets any employee can file. It runs under an account that can create service accounts and access keys. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "New accounts may break the firm's naming standard for accounts",
         "B": "Ticket text could steer it into creating unreviewed access",
@@ -7827,7 +7827,7 @@
       "principle_id": "ai-deciding-fact",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Romanian utility's model sets new households' security deposits; customers are not told a model is involved, and its AI incident process starts only from complaints. What is the IS auditor's GREATEST concern?",
+      "question": "A Romanian utility's model sets new households' security deposits. Customers are not told a model is involved. The utility's AI incident process starts only from complaints. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Complaint handlers may route AI-related complaints to the wrong team",
         "B": "The deposit model may breach the utility's pricing policy",
@@ -7938,7 +7938,7 @@
       "principle_id": "contain-and-preserve-ai",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "During an AI incident, a Bulgarian ministry found that only its procurement-software vendor could turn off the software's AI supplier ratings, which took four days. What should the IS auditor recommend as BEST?",
+      "question": "During an AI incident, a Bulgarian ministry found that only its procurement-software vendor could turn off the AI supplier ratings. Doing so took four days. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Secure a tested way for the ministry to switch the ratings off",
         "B": "Agree with the vendor a four-hour response time for AI incidents",
@@ -7975,7 +7975,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Greek museum group traced its chatbot's wrong ticket prices to a prompt template four assistants on other models share; the problem record covers the chatbot alone. What should the IS auditor recommend as BEST?",
+      "question": "A Greek museum group traced its chatbot's wrong prices to a prompt template shared with four assistants on other models. The problem record covers the chatbot alone. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Fix the template, retest the chatbot, then close the problem record",
         "B": "Have each assistant tell visitors to check prices on the website",
@@ -8012,7 +8012,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Egyptian elevator-safety agency closed a problem record as staff error: an inspector shown the model's 'low risk' rating passed a faulty elevator, using a checklist judged sound. What should the IS auditor recommend FIRST?",
+      "question": "An Egyptian elevator-safety agency closed a problem record as staff error. Shown the model's 'low risk' rating, an inspector passed a faulty elevator using a checklist judged sound. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Show inspectors the model's confidence score beside each rating",
         "B": "Retrain the model on the faulty elevator's inspection records",
@@ -8085,7 +8085,7 @@
       "subtopic": "2A Data management for AI. Retrieval rights that lag the source",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Qatari sovereign wealth fund's research assistant indexes deal files with their access rights, refreshed weekly, so a deal restricted on Monday stays retrievable fund-wide until Sunday. What should the IS auditor recommend as BEST?",
+      "question": "A Qatari sovereign wealth fund's research assistant indexes deal files with access rights. The rights refresh weekly, so a deal restricted on Monday stays retrievable fund-wide until Sunday. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Instruct the assistant not to quote restricted deals",
         "B": "Refresh the index's copy of access rights every night",
@@ -8121,7 +8121,7 @@
       "subtopic": "2A Data management for AI. A sawmill's grading data",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Uruguayan sawmill cleaned its log-grading model's training data once, at build; live readings from its 12 scanners now feed daily grades and weekly retraining. What should the IS auditor recommend as BEST?",
+      "question": "A Uruguayan sawmill cleaned its log-grading model's training data once, at build time. Live readings from its 12 scanners now feed daily grades and weekly retraining. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Check live readings against ranges and patterns seen in training",
         "B": "Have the vendor recalibrate the 12 scanners once a year",
@@ -8158,7 +8158,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Nigerian music-streaming app's comment filter learns from toxicity labels made by six overseas contractors, who agree on 96% of comments; a third are in Nigerian Pidgin. What is the IS auditor's GREATEST concern?",
+      "question": "A Nigerian music-streaming app's comment filter learns from toxicity labels by six overseas contractors, who agree on 96% of comments. A third of the comments are in Nigerian Pidgin. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Sending users' comments to overseas contractors may breach privacy rules",
         "B": "Agreement below 100% shows the labels cannot be trusted",
@@ -8194,7 +8194,7 @@
       "subtopic": "2A Data management for AI. Near-identical questions on both sides",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Bruneian courier fine-tuned its delivery assistant on 6,000 emails and tested on 600 others from the same months as unseen questions; customers often send near-identical questions. What should the IS auditor recommend as BEST?",
+      "question": "A Bruneian courier fine-tuned its delivery assistant on 6,000 emails. It used 600 others from the same months as unseen test questions. Customers often send near-identical questions. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add 600 more test emails drawn from those same months, then retest",
         "B": "Remove test emails that closely reword a tuning email, then retest",
@@ -8268,7 +8268,7 @@
       "principle_id": "rank-ai-risk-by-harm",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Norwegian county's AI lifecycle requires an impact assessment only for models using personal data, so its snowplow routing model, which uses only road sensors, skipped it. What should the IS auditor recommend as BEST?",
+      "question": "A Norwegian county's AI lifecycle requires an impact assessment only for models using personal data. Its snowplow routing model uses only road sensors, so it skipped the assessment. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add a privacy review of the sensor data the routing model reads",
         "B": "Accept the exemption, since no personal data means low risk",
@@ -8305,7 +8305,7 @@
       "principle_id": "rank-ai-risk-by-harm",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Montenegrin health insurance fund's lifecycle lets each project team set its own model's risk tier, which decides whether independent validation is needed; most teams choose 'low'. What should the IS auditor recommend as BEST?",
+      "question": "A Montenegrin health insurance fund's lifecycle lets each project team set its model's risk tier. The tier decides whether independent validation is needed. Most teams choose 'low'. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Let teams keep choosing, as they know their models best",
         "B": "Require independent validation for every model, whatever its tier",
@@ -8378,7 +8378,7 @@
       "principle_id": "ai-deciding-fact",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A vendor's model card for a Cambodian eye clinic's retinal-scan model says results assume an ophthalmologist reviews every scan; the clinic now clears scans rated normal without one. What is the IS auditor's GREATEST concern?",
+      "question": "A Cambodian eye clinic's retinal-scan model has a vendor model card saying results assume an ophthalmologist reviews every scan. The clinic now clears scans rated normal without one. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The model's accuracy may drift as cameras and patient groups change",
         "B": "The vendor's evidence no longer covers how the model is used",
@@ -8452,7 +8452,7 @@
       "principle_id": "named-human-owner",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Taiwanese logistics firm retired its customer chat agent; no refund system records the refunds it promised 180 customers in chats, some coaxed past its rules. What should the IS auditor recommend FIRST?",
+      "question": "A Taiwanese logistics firm retired its customer chat agent. In chats, it promised 180 customers refunds, some after being coaxed past its rules. No refund system records them. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Restore the agent so it can complete the refunds it promised",
         "B": "Have the IS auditor decide which promises the firm honors",
@@ -8526,7 +8526,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Kuwaiti cinema chain's assistant quoted outdated fees on cancellations and exchanges; fee-only spot checks show an emergency system-prompt line, 'never discuss refunds', stopped those quotes. What should the IS auditor recommend as BEST next?",
+      "question": "A Kuwaiti cinema chain's assistant quoted outdated fees on cancellations and exchanges. Spot checks on fees alone show an emergency system-prompt line, 'never discuss refunds', stopped those quotes. What should the IS auditor recommend as BEST next?",
       "options": {
         "A": "Check that users cannot prompt the assistant past the new line",
         "B": "Confirm with a sample of fee questions that quoting has stopped",
@@ -8637,7 +8637,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Austrian notary office's hosted staff assistant gained a 'memory' feature in a vendor update, switched on by default, that keeps client details across chats. What should the IS auditor recommend as BEST?",
+      "question": "An Austrian notary office's hosted staff assistant gained a 'memory' feature in a vendor update. The feature keeps client details across chats and is on by default. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept it, since vendor updates fall under the vendor's testing",
         "B": "Pin the model version so that new vendor updates cannot apply",
@@ -8674,7 +8674,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A vendor model update made an Indonesian theme park's booking agent grant twice as many free fast-track passes, each within limits; replies read the same. Which control should the IS auditor recommend as BEST?",
+      "question": "A vendor model update made an Indonesian theme park's booking agent grant double the free fast-track passes. Each was within limits, and replies read the same. Which control should the IS auditor recommend as BEST?",
       "options": {
         "A": "Test the agent's tool actions before each update applies",
         "B": "Rely on vendor release notes to flag behavior changes",
@@ -8711,7 +8711,7 @@
       "principle_id": "ai-output-is-a-lead",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Tunisian social-security fund's model sends disability claims it scores below 80% confidence to assessors and decides the rest itself; its confidence was never checked against outcomes. What is the IS auditor's GREATEST concern?",
+      "question": "A Tunisian social-security fund's model scores disability claims. It sends those below 80% confidence to assessors and decides the rest itself. Its confidence was never checked against outcomes. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Assessors may be overloaded by the low-confidence claims",
         "B": "Confident but wrong decisions take effect with no one seeing them",
@@ -8785,7 +8785,7 @@
       "principle_id": "ai-deciding-fact",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Spanish newspaper calls subscribers its churn model flags; monitoring counts flagged subscribers who stay as false alarms, and that rate doubled after callers began offering discounts. What is the IS auditor's GREATEST concern?",
+      "question": "A Spanish newspaper phones subscribers flagged by its churn model. Monitoring treats flagged subscribers who stay as false alarms. That rate doubled once callers began offering discounts. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Calls that kept subscribers are being counted as model errors",
         "B": "The model may be drifting as subscribers' reading habits change",
@@ -8931,7 +8931,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Zimbabwean revenue authority accepted a bought document classifier on the vendor's pass mark and benchmark, documents the vendor had tuned the model against. What should the IS auditor recommend as BEST?",
+      "question": "A Zimbabwean revenue authority accepted a bought document classifier on the vendor's pass mark and benchmark. The vendor had tuned the model against the benchmark documents. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have the model owner set pass marks and test on in-house files",
         "B": "Have the model owner set pass marks and rerun the benchmark in-house",
@@ -9041,7 +9041,7 @@
       "subtopic": "2E AI testing. A shortlist and a workforce benchmark",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Of 2,000 applicants to an Australian miner, half women, its résumé-screening model shortlisted 400; women are 30% of the shortlist, which the vendor says matches the mining workforce. What is the IS auditor's BEST conclusion?",
+      "question": "An Australian miner's résumé-screening model shortlisted 400 of 2,000 applicants, half of them women. Women are 30% of the shortlist, which the vendor says matches the mining workforce. What is the IS auditor's BEST conclusion?",
       "options": {
         "A": "The shortlist of 400 is too small to judge fairness",
         "B": "The shortlist matches the mining workforce, so it shows no bias",
@@ -9078,7 +9078,7 @@
       "principle_id": "ai-output-is-a-lead",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Guatemalan airline's validators, refused its vendor's code and training data, plan to validate its loyalty-fraud model by running an explanation tool on its scores. What should the IS auditor recommend as BEST?",
+      "question": "A Guatemalan airline's validators were refused the vendor's code and training data. They plan to validate the loyalty-fraud model by running an explanation tool on its scores. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept the vendor's own validation report in place of review",
         "B": "Run the explanation tool on a larger sample of the model's scores",
@@ -9115,7 +9115,7 @@
       "principle_id": "rank-ai-risk-by-harm",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Mauritian housing agency's validators found that changing an applicant's declared income by 1% flips 15% of its grant model's decisions. What is the IS auditor's GREATEST concern?",
+      "question": "Validators at a Mauritian housing agency found that changing an applicant's declared income by 1% flips 15% of the decisions made by its grant model. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Small input errors may decide which families receive a grant",
         "B": "The model may be overfitted to quirks in its training data",
@@ -9261,7 +9261,7 @@
       "principle_id": "limits-outside-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Kosovar ministry's staff portal displays its citizen assistant's replies as web code; a tester got a reply carrying a script that ran in staff browsers. What should the IS auditor recommend as BEST?",
+      "question": "A Kosovar ministry's staff portal displays replies from its citizen assistant as web code. A tester got a reply carrying a script that ran in staff browsers. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Scan citizens' messages for malware before the assistant reads them",
         "B": "Train staff to close the portal when replies look odd",
@@ -9335,7 +9335,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Saudi engineering consultancy's research agent uses tools from an outside provider's server; it reads their descriptions as instructions, and the provider can change them without notice. What should the IS auditor recommend as BEST?",
+      "question": "A Saudi engineering consultancy's research agent uses tools from an outside provider's server. The agent treats tool descriptions as instructions the provider can change without notice. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Tell the agent in its prompt to ignore odd tool descriptions",
         "B": "Accept tool providers that hold a recognized security certificate",
@@ -9409,7 +9409,7 @@
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "During fieldwork, an IS auditor finds an Albanian hospital's postpartum-hemorrhage alert model has run two months with input drift beyond its owner's tolerance, unnoticed; alert volumes look normal. What should the IS auditor do FIRST?",
+      "question": "During fieldwork, an IS auditor finds unnoticed input drift in an Albanian hospital's postpartum-hemorrhage alert model. It has lasted two months, beyond the owner's tolerance. Alert volumes look normal. What should the IS auditor do FIRST?",
       "options": {
         "A": "Confirm from patient outcomes that detection has fallen first",
         "B": "Notify the model owner of the drift at once",
@@ -9557,7 +9557,7 @@
       "principle_id": "fix-the-control-not-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Belgian broadcaster traced its misinformation model's flagging of satire to a labeling guide with no satire rule; staff relabeled 900 posts, retrained and closed the problem. What should the IS auditor recommend as BEST?",
+      "question": "A Belgian broadcaster's misinformation model flagged satire because its labeling guide had no satire rule. Staff relabeled 900 posts, retrained and closed the problem. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have labelers reread the labeling guide before each batch",
         "B": "Reopen the problem until the labeling guide covers satire",
@@ -9667,7 +9667,7 @@
       "principle_id": "ai-deciding-fact",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Czech building-savings bank's early-repayment model, trained on loans from 2020 to mid-2021, when rates were unusually low, scored 93% on held-out loans from that period. What is the IS auditor's GREATEST concern?",
+      "question": "A Czech building-savings bank trained its early-repayment model on loans from 2020 to mid-2021, when rates were unusually low. It scored 93% on held-out loans from that period. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Repayment habits it learned may not hold at today's rates",
         "B": "That period's loans may be too few to train any model",
@@ -10000,7 +10000,7 @@
       "principle_id": "fix-the-control-not-the-model",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Turkish bank's registry still showed a model version approved after it was withdrawn for age bias; the card unit deployed it, as it tested most accurate. What should the IS auditor recommend as BEST?",
+      "question": "A Turkish bank withdrew a model version for age bias, but its registry still showed it approved. The card unit deployed it, as it tested most accurate. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Retrain the version on card data to correct the age bias",
         "B": "Have the card unit's manager approve each model it deploys",
@@ -10037,7 +10037,7 @@
       "principle_id": "fix-the-control-not-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Egyptian car insurer's app team, unaware the damage-estimate model reads claim photos, approved a release compressing them more; data science heard of it by chance. What should the IS auditor recommend as BEST?",
+      "question": "An Egyptian car insurer's app team approved a release compressing claim photos more, unaware the damage-estimate model reads them. Data science heard of it by chance. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept the release, since the model itself did not change",
         "B": "Map each model's input sources so any change to them triggers review",
@@ -10074,7 +10074,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A German online pharmacy's assistant now sends questions it rates as simple to a cheaper model, approved after that model passed tests on simple questions. What should the IS auditor recommend as BEST?",
+      "question": "A German online pharmacy's assistant now sends questions it rates as simple to a cheaper model. That model was approved after passing tests on simple questions. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Track complaints about routed answers after the switch",
         "B": "Accept it, since both models come from the same vendor",
@@ -10111,7 +10111,7 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Ghanaian palm-oil group's three mills each run a fruit-ripeness model their change records show as approved 'v4', yet they grade the same test images differently. What should the IS auditor recommend as BEST?",
+      "question": "A Ghanaian palm-oil group's three mills each run a fruit-ripeness model. Change records show all three as approved 'v4', yet the mills grade the same test images differently. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept the differences, since fruit varies from mill to mill",
         "B": "Check each mill's deployment log names the approved v4 release",
@@ -10370,7 +10370,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Indian IT-services firm's generative helpdesk assistant, built for IT help but answering any question, passes a fixed 200-question IT test monthly; logs hold every staff conversation. What should the IS auditor recommend as BEST?",
+      "question": "An Indian IT-services firm's generative helpdesk assistant, built for IT help, answers any question. It passes a fixed 200-question IT test monthly. Logs hold every staff conversation. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Track staff ratings on each logged conversation",
         "B": "Check sampled logged IT answers against the IT knowledge base",
@@ -10444,7 +10444,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Brazilian freelance platform's account-fraud model rescores every freelancer nightly; reviewers who lift a payout freeze on appeal often see the next night's run freeze it again. What should the IS auditor recommend as BEST?",
+      "question": "A Brazilian freelance platform's account-fraud model rescores every freelancer nightly. When reviewers lift a payout freeze on appeal, the next night's run often freezes the payout again. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Retrain the model on upheld appeals, used as corrected labels",
         "B": "Rescore freelancers weekly so reviewers have time to act",
@@ -10555,7 +10555,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A British building society's sign-in model checks members' typing rhythm; its fairness tests compared false rejections by age and sex, the only groups its records hold. What should the IS auditor recommend as BEST?",
+      "question": "A British building society's sign-in model checks members' typing rhythm. Its fairness tests compared false rejections by age and sex, the only groups in the society's records. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept the tests, since no member group showed a gap",
         "B": "Add a disability field to the model's inputs",
@@ -10591,7 +10591,7 @@
       "subtopic": "2E AI testing. Equal error rates against past ratings",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Dutch warehouse operator's promotion-readiness model was tested against supervisors' past ratings, which a staff survey says favor men; its error rates for women and men match. What is the IS auditor's BEST conclusion?",
+      "question": "A Dutch warehouse operator tested its promotion-readiness model against supervisors' past ratings, which a staff survey says favor men. The model's error rates for women and men match. What is the IS auditor's BEST conclusion?",
       "options": {
         "A": "Equal error rates cannot show fairness against disputed ratings",
         "B": "A staff survey is opinion and cannot outweigh measured test results",
@@ -10885,7 +10885,7 @@
       "principle_id": "ai-output-is-a-lead",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Colombian builder's finance agent prepares supplier payments; approvers see only its own one-line summary of each before the payment tool sends it. What should the IS auditor recommend as BEST?",
+      "question": "A Colombian builder's finance agent prepares supplier payments. Before the payment tool sends each one, approvers see only the agent's own one-line summary of it. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Show approvers the payee and amount the payment tool will send",
         "B": "Require a second approver for payments to new or changed payees",
@@ -10959,7 +10959,7 @@
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "After a fuel supplier changed its invoice layout, a Ugandan flower farm's invoice-coding model misposted 40 invoices; finance logged an AI incident and corrected them. What should the IS auditor expect triage to establish FIRST?",
+      "question": "A fuel supplier changed its invoice layout. A Ugandan flower farm's invoice-coding model then misposted 40 invoices. Finance logged an AI incident and corrected them. What should the IS auditor expect triage to establish FIRST?",
       "options": {
         "A": "Whether the 40 corrected entries now match their invoices",
         "B": "Which clerk approved the misposted entries for posting",
@@ -11107,7 +11107,7 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "Investigating why a Bangladeshi ceramic-tile maker's glaze-defect model passed a flawed batch last month, engineers rerun the batch's images through today's model, retrained twice since. What should the IS auditor recommend as BEST?",
+      "question": "A Bangladeshi ceramic-tile maker's glaze-defect model passed a flawed batch last month. To find out why, engineers rerun the batch's images through today's model, retrained twice since. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Retrain again with the flawed batch labeled as defective",
         "B": "Have inspectors first confirm the flaws shown in the batch's images",
@@ -11255,7 +11255,7 @@
       "principle_id": "population-includes-misses",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Croatian port authority trains a fraud-detection anomaly model on two years of shipping agents' berth-fee declarations, minus every one its old rules engine flagged. What is the IS auditor's GREATEST concern?",
+      "question": "A Croatian port authority trains an anomaly model to detect fraud. It uses two years of shipping agents' berth-fee declarations, minus every one its old rules engine flagged. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The model needs labeled fraud cases before it can flag any",
         "B": "Underdeclarations the old rules missed may be learned as normal",
@@ -11329,7 +11329,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Cypriot bank trained its money-laundering model on 200,000 synthetic transactions from a generator fitted to all 60,000 real ones, 10,000 of which form its test set. What is the IS auditor's GREATEST concern?",
+      "question": "A Cypriot bank trained its money-laundering model on 200,000 synthetic transactions from a generator. The generator was fitted to all 60,000 real ones, including the model's 10,000 test transactions. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The generator learned from the test transactions, so tests are not unseen",
         "B": "The generator may miss rare laundering patterns in real data",
@@ -11403,7 +11403,7 @@
       "principle_id": "named-human-owner",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Tunisian date-palm cooperative's harvest-forecast model went live; its project team then disbanded, and IT operations took over its servers, uptime alerts and support tickets. What should the IS auditor recommend as BEST?",
+      "question": "A Tunisian date-palm cooperative put a harvest-forecast model live. The project team then disbanded, and IT operations took over the model's servers, uptime alerts and support tickets. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add the model's servers to IT operations' patch and backup cycles",
         "B": "Name an owner who tracks prediction accuracy and decides responses",
@@ -11512,7 +11512,7 @@
       "subtopic": "2B AI lifecycle. A retired model's grades as labels",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Spanish property insurer retired its roof-condition model for misgrading tile roofs; its past grades stay in a shared label store teams use to build new models. What should the IS auditor recommend FIRST?",
+      "question": "A Spanish property insurer retired its roof-condition model for misgrading tile roofs. The model's past grades stay in a shared label store that teams use for new models. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Withhold its tile-roof grades from training until regraded",
         "B": "Revoke the retired model's endpoint, keys and service accounts",
@@ -11696,7 +11696,7 @@
       "subtopic": "2C AI change management. Minor and major release labels",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Turkish grocer's change board approves labels builders propose, and 'minor' releases get only a smoke test; an item-substitution model retrained on new data passed as minor. What should the IS auditor recommend as BEST?",
+      "question": "A Turkish grocer's change board approves labels that builders propose. 'Minor' releases get only a smoke test. An item-substitution model retrained on new data passed as minor. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Require builders to give the board written reasons for each label",
         "B": "Let builders keep labeling, as they know the model best",
@@ -11733,7 +11733,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Nepali family-planning charity's assistant passed regression tests of a vendor update billed 'stronger safety': all 150 prompts it must refuse, recent jailbreaks included, were refused. What should the IS auditor recommend as BEST?",
+      "question": "A Nepali family-planning charity ran regression tests on a vendor update billed as 'stronger safety'. Its assistant refused all 150 prompts it must refuse, recent jailbreaks included. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Approve the update, since every harmful prompt was refused",
         "B": "Add sensitive but legitimate questions it should still answer",
@@ -11880,7 +11880,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Armenian card issuer sets loan-loss provisions from its model's default probabilities; monitoring tracks only how well it ranks borrowers, steady at 0.86, though defaults doubled this year. What is the IS auditor's GREATEST concern?",
+      "question": "An Armenian card issuer sets loan-loss provisions from its model's default probabilities. Monitoring tracks only how well the model ranks borrowers, steady at 0.86. Defaults doubled this year. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "A ranking score of 0.86 is too weak to set provisions",
         "B": "Provisions may be far too low while the ranking looks sound",
@@ -11954,7 +11954,7 @@
       "principle_id": "ai-output-is-a-lead",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Bulgarian bank's language model writes refused overdraft applicants' letters from each case's logged top factors, using a change-approved prompt; letters are stored as sent. What should the IS auditor recommend as BEST?",
+      "question": "A Bulgarian bank's language model writes letters to refused overdraft applicants. It uses each case's logged top factors and a change-approved prompt. Letters are stored as sent. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Inspect the approved prompt against the bank's letter policy",
         "B": "Let refused applicants request their logged factors on appeal",
@@ -11991,7 +11991,7 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Costa Rican health service funds the top 300 model-ranked hearing-aid applicants each round; for appeals, its log keeps each applicant's inputs, score and model version. What should the IS auditor recommend as BEST?",
+      "question": "A Costa Rican health service funds hearing aids for its model's top 300 applicants each round. For appeals, it logs each applicant's inputs, score and model version. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Keep each round's full ranking and its cutoff score",
         "B": "Keep each round's training data snapshot with the version",
@@ -12028,7 +12028,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Ghanaian land commission's language-model assistant passed acceptance testing on 300 questions about title applications, its intended use, and will now open to the public. What should the IS auditor recommend as BEST?",
+      "question": "A Ghanaian land commission's language-model assistant is for questions about title applications. It passed acceptance testing on 300 such questions and will now open to the public. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept it, since it passed every intended-use question",
         "B": "Add more title questions to raise statistical confidence in the results",
@@ -12175,7 +12175,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Canadian hospital pharmacy's pill-identification model refers photos scored below 60% confidence, meant to catch unfamiliar pills, to a pharmacist; validation confirmed every such photo was referred. What should the IS auditor recommend as BEST?",
+      "question": "A Canadian hospital pharmacy's pill-identification model refers photos below 60% confidence to a pharmacist, to catch unfamiliar pills. Validation confirmed every such photo was referred. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept it, since every low-confidence photo was referred",
         "B": "Validate on more photos of known pills, taken on new wards",
@@ -12212,7 +12212,7 @@
       "principle_id": "population-includes-misses",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Kenyan county's tender-shortlisting model scores bids partly on wording; consultants now sell bid templates stuffed with terms it scores highly, and evaluators see only shortlisted bids. What should the IS auditor recommend as BEST?",
+      "question": "A Kenyan county's tender-shortlisting model scores bids partly on wording. Consultants now sell bid templates stuffed with terms the model scores highly. Evaluators see only shortlisted bids. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Retrain it on this year's bids so it learns the new style",
         "B": "Test how a bid's score moves when stock phrases are added",
@@ -12248,7 +12248,7 @@
       "subtopic": "2F AI threats. A credit-score API's threat model",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Jordanian appliance retailer's store-credit score API, used by franchise stores, has a threat model covering only web threats such as injection flaws and stolen credentials. What should the IS auditor recommend as BEST?",
+      "question": "A Jordanian appliance retailer runs a store-credit scoring API for franchise stores. The API's threat model covers only web threats, such as injection flaws and stolen credentials. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have a penetration test cover the scoring API",
         "B": "Accept it, since franchise stores must sign in to use it",
@@ -12357,7 +12357,7 @@
       "subtopic": "2F AI threats. Guest photos described by an assistant",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An Albanian hotel-booking site's assistant describes guests' uploaded room photos to shoppers; its injection filter screens all text guests submit, reviews included. Which threat should the IS auditor consider MOST significant?",
+      "question": "An Albanian hotel-booking site's assistant describes guests' uploaded room photos to shoppers. Its injection filter screens all the text that guests submit, reviews included. Which threat should the IS auditor consider MOST significant?",
       "options": {
         "A": "Attack uploads getting past the site's network firewall",
         "B": "Instructions written into photos to steer its replies",
@@ -12468,7 +12468,7 @@
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An Icelandic fisheries directorate rates incidents in its letter-drafting assistant as low severity because staff review every draft; staff send 99% unchanged as quota decisions to vessel owners. What is the IS auditor's GREATEST concern?",
+      "question": "An Icelandic fisheries directorate rates incidents in its letter-drafting assistant as low severity because staff review every draft. They send 99% unchanged to vessel owners as quota decisions. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Incidents may bypass the security team's review",
         "B": "Staff may stop reporting vessel owners' complaints they expect rated low",
@@ -12505,7 +12505,7 @@
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Moldovan bank's assistant reuses stored answers to similar questions across all customers; after 37 received wrong balances, the AI team disabled the cache, logging an accuracy defect. What should the IS auditor recommend FIRST?",
+      "question": "A Moldovan bank's assistant reuses stored answers to similar questions across customers. After 37 customers received wrong balances, the AI team disabled the cache, logging an accuracy defect. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Retest the cache's similarity setting before it is re-enabled",
         "B": "Bring in the privacy officer to assess any duty to notify",
@@ -12542,7 +12542,7 @@
       "principle_id": "contain-and-preserve-ai",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Belgian advertising agency's copywriting assistant began reproducing one client's unreleased campaign slogans in drafts for other clients after last month's fine-tuning on campaign files. What should the IS auditor recommend FIRST?",
+      "question": "Last month, a Belgian advertising agency fine-tuned its copywriting assistant on campaign files. The assistant has since reproduced one client's unreleased campaign slogans in drafts for other clients. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Delete the campaign files it was fine-tuned on from its data store",
         "B": "Remind staff not to ask it about other clients' campaigns",
@@ -12616,7 +12616,7 @@
       "principle_id": "named-human-owner",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Medellín's metro AI committee approved weapons-detection gates on accuracy tests without medical or mobility devices; engineers traced insulin-pump false flags to that gap, retrained and closed the problem. What is the IS auditor's BEST recommendation?",
+      "question": "Medellín's metro AI committee approved weapons-detection gates on accuracy tests lacking medical or mobility devices. Engineers traced insulin-pump false flags to that gap, retrained and closed the problem. What is the IS auditor's BEST recommendation?",
       "options": {
         "A": "Have the cause reported to the approving committee",
         "B": "Add insulin-pump scans to the tests rerun after each change",
@@ -12910,7 +12910,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Moroccan car-rental firm's model that sets each day's rental rates runs nightly from an analyst's notebook and has never entered the firm's AI lifecycle. What should the IS auditor recommend as BEST?",
+      "question": "A Moroccan car-rental firm's model sets each day's rental rates. It runs nightly from an analyst's notebook and has never entered the firm's AI lifecycle. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Take the model through the data and validation stage gates",
         "B": "Compare its nightly rates with rates staff set by hand",
@@ -12984,7 +12984,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Finnish university compared a hosted API its provider silently updates with an in-house open-weight model for deaf students' year-round captions, on today's accuracy and cost. Which added criterion matters MOST to the IS auditor?",
+      "question": "A Finnish university needs year-round captions for deaf students. It compared a hosted API with an in-house open-weight model, on today's accuracy and cost. The API's provider updates it silently. Which added criterion matters MOST to the IS auditor?",
       "options": {
         "A": "Whether each option's vendor publishes its training code",
         "B": "Which option's model has more trained parameters",
@@ -13279,7 +13279,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Slovak glassworks' on-premises bottle-inspection appliance receives monthly vendor patch bundles that include new inspection-model weights; IT installs them as routine patches. What should the IS auditor recommend as BEST?",
+      "question": "A Slovak glassworks runs an on-premises bottle-inspection appliance. Each month the vendor sends patch bundles that include new inspection-model weights. IT installs them as routine patches. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Treat bundles that change the model as AI changes, tested first",
         "B": "Stop patching so the inspection model stays as approved",
@@ -13537,7 +13537,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Chilean municipality's school-transport eligibility model handles appeals by letting families correct their data and rescoring; staff may not grant transport against the new score. What should the IS auditor recommend as BEST?",
+      "question": "A Chilean municipality's model sets school-transport eligibility. On appeal, families correct their data and the model rescores. Staff may not grant transport against the new score. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Send families the model's main factors with each new score",
         "B": "Have staff check each corrected input against source records first",
@@ -13648,7 +13648,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An Austrian crowdfunding platform's project-ranking model, retrained weekly on backers' clicks, ranked women's and men's projects alike in its launch fairness test. What is the IS auditor's BEST conclusion?",
+      "question": "An Austrian crowdfunding platform ranks projects with a model retrained weekly on backers' clicks. In its launch fairness test, the model ranked projects by women and men alike. What is the IS auditor's BEST conclusion?",
       "options": {
         "A": "Ranking should stay fair, as sex is not one of its inputs",
         "B": "The launch result can stand until ranking accuracy falls",
@@ -13685,7 +13685,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Danish workplace-injury insurer's compensation-amount model shows the same average size of error for claimants with and without disabilities. What should the IS auditor recommend as BEST?",
+      "question": "A Danish workplace-injury insurer uses a model to set compensation amounts. The model shows the same average size of error for claimants with and without disabilities. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept the result, since equal error shows equal treatment",
         "B": "Compare whether its errors underpay or overpay each group",
@@ -13831,7 +13831,7 @@
       "subtopic": "2F AI threats. A list of photo addresses",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Slovenian beekeepers' association's hive-disease model trains on a public list of image web addresses, fetched afresh at each retrain; some listed sites' domains have expired. Which threat should the IS auditor consider MOST significant?",
+      "question": "A Slovenian beekeepers' association trains its hive-disease model on a public list of image web addresses, fetched afresh at each retrain. Some listed domains have expired. Which threat should the IS auditor consider MOST significant?",
       "options": {
         "A": "Expired domains shrinking the training set at each retrain",
         "B": "Photo owners objecting to the association's use of their images",
@@ -13905,7 +13905,7 @@
       "principle_id": "limits-outside-the-model",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Uruguayan pension fund's member agent reads uploaded documents and can switch members' savings between investment funds; its only injection defense filters the agent's replies. What is the IS auditor's GREATEST concern?",
+      "question": "A Uruguayan pension fund uses an agent that reads uploaded documents and can switch members' savings between investment funds. The only injection defense filters the agent's replies. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Planted instructions can trigger actions no reply filter sees",
         "B": "Attackers can reword replies so they slip past the filter's rules",
@@ -14015,7 +14015,7 @@
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Thai ride-hailing app's wallet fraud model, hash-matched to the approved release, approved 15% more top-ups this month, most from new accounts; managers credit fewer false declines. What should the IS auditor recommend FIRST?",
+      "question": "A Thai ride-hailing app's wallet fraud model is hash-matched to the approved release. This month it approved 15% more top-ups, most from new accounts. Managers credit the rise to fewer false declines. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Adjust the decision threshold to bring top-up approvals down",
         "B": "Have the owner log a possible incident and check the extra top-ups",
@@ -14052,7 +14052,7 @@
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Mexican toy maker's three teams each logged their own assistant's wrong toy-safety answers one morning as low severity, citing few users; all three call one hosted model. What is the IS auditor's GREATEST concern?",
+      "question": "Three teams at a Mexican toy maker each logged their assistant's wrong toy-safety answers as low severity one morning, citing few users. All three call one hosted model. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Harm from one shared fault may be rated too low",
         "B": "Three incidents in a morning may overload the incident team",
@@ -14125,7 +14125,7 @@
       "subtopic": "2G AI incident response. Restarting a hijacked agent",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Belgian cold-storage firm suspended its hijacked operations agent, whose saved memories and tool settings the attacker rewrote; the team will restart it once its keys are rotated. What should the IS auditor recommend FIRST?",
+      "question": "A Belgian cold-storage firm suspended its hijacked operations agent. The attacker rewrote the agent's saved memories and tool settings. The team will restart it after rotating its keys. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Restart the agent with a stricter system prompt",
         "B": "Rotate the agent's own keys and its account password",
@@ -14161,7 +14161,7 @@
       "subtopic": "2G AI incident response. A fixed flaw in a sold product",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Hungarian firm fixed a year-old flaw making its scholarship-ranking model, sold to universities, rank vocational-school applicants too low, added regression tests and closed the problem record. What should the IS auditor recommend as BEST?",
+      "question": "A Hungarian firm sells a scholarship-ranking model to universities. A year-old flaw made it rank vocational-school applicants too low. The firm fixed the flaw, added regression tests and closed the problem record. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Keep the record closed, since the fix is now live",
         "B": "Have the product owner tell customers the flaw and when it applied",
@@ -14198,7 +14198,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "As an open problem's workaround, an Irish veterinary lab's technicians have checked each model-assigned test code for 14 months; checks fell from a minute to five seconds. What is the IS auditor's GREATEST concern?",
+      "question": "An Irish veterinary lab has an open problem. As a workaround, its technicians have checked each model-assigned code for 14 months. Checks fell from a minute to five seconds. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The checks may have stopped catching wrong codes",
         "B": "Checking every code costs more than fixing the cause",
@@ -14380,7 +14380,7 @@
       "subtopic": "2A Data management for AI. Misread pages and the test set",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Before each release, a Swedish archive's team moves every test page its handwriting model misreads into training data, replacing it with a new page; scores rise each release. What is the IS auditor's GREATEST concern?",
+      "question": "Before each release, a Swedish archive's team moves every test page its handwriting model misreads into training data. A new page replaces each one. Scores rise each release. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Retraining on misread pages may teach the model wrong readings",
         "B": "The test set keeps losing the pages the model finds hardest",
@@ -14454,7 +14454,7 @@
       "principle_id": "ai-output-is-a-lead",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Paraguayan social-housing agency's design has its generative assistant read the waiting list, pasted into its prompt, and tell applicants their positions; validators will check 500 test replies. What should the IS auditor recommend FIRST?",
+      "question": "A Paraguayan social-housing agency is designing a generative assistant that tells applicants their positions. The waiting list is pasted into its prompt. Validators will check 500 test replies. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Have each position looked up from the list, not generated",
         "B": "Check every position in the 500 test replies against the list",
@@ -14638,12 +14638,12 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Merging Irish energy suppliers will keep one of their two models picking homes for free insulation; one served mainly prepaid-meter homes; IT favors the more accurate overall. What should the IS auditor recommend as BEST?",
+      "question": "Merging Irish energy suppliers will keep one of their two models that pick homes for free insulation. One served mainly prepaid-meter homes. IT favors higher overall accuracy. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Compare both models' errors for prepaid-meter homes",
         "B": "Keep the more accurate model, as IT proposes",
         "C": "Run both models side by side another quarter on overall accuracy",
-        "D": "Keep the model the prepaid-meter homes' supplier used"
+        "D": "Keep the model that mainly served prepaid-meter homes"
       },
       "correct": "A",
       "key_concept": "Before retiring one of two models, compare errors for each group the survivor will serve; overall accuracy can hide a group it fails.",
@@ -14712,7 +14712,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Uruguayan environmental agency will switch from inspecting factories its model scores above 0.7 to inspecting each month's 200 top scorers, logged as a scheduling tweak. What should the IS auditor recommend as BEST?",
+      "question": "A Uruguayan environmental agency inspects factories that its model scores above 0.7. It will switch to inspecting each month's 200 top scorers, logged as a scheduling tweak. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept the tweak, since the model and its scores are unchanged",
         "B": "Confirm inspectors can visit 200 factories each month",
@@ -14749,7 +14749,7 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Canadian ticket reseller's servers load whichever price model is tagged 'latest', a tag its nightly retraining moves once tests pass; new servers start as traffic rises. What should the IS auditor recommend as BEST?",
+      "question": "A Canadian ticket reseller's servers load whichever price model is tagged 'latest'. Nightly retraining moves that tag once tests pass. New servers start as traffic rises. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Keep the last seven nightly models in storage for rollback",
         "B": "Add stricter automated tests before each nightly tag move",
@@ -14897,7 +14897,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Danish job platform's model blocks job ads it finds discriminatory, with no appeal; moderators, who cannot lift blocks, edit the tone of notices a language model drafts. What is the IS auditor's GREATEST concern?",
+      "question": "A Danish job platform's model blocks ads it finds discriminatory, with no appeal. Moderators, who cannot lift blocks, edit the tone of notices that a language model drafts. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "Employers may not trust a block notice drafted by AI",
         "B": "Notices may give reasons the blocking model did not use",
@@ -14970,7 +14970,7 @@
       "subtopic": "2D AI supervision. An overnight jump in accuracy",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Irish florist's order-cancellation model, rescoring orders hourly, rose from 81% to 97% live accuracy the week a new courier feed began filling one input, without retraining. What should the IS auditor recommend as BEST?",
+      "question": "An Irish florist's order-cancellation model rescores orders hourly. Its live accuracy rose from 81% to 97% without retraining, the week a new courier feed began filling one input. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Tighten the drift alert limits now that accuracy is higher",
         "B": "Report the gain to the AI governance committee as a success",
@@ -15044,7 +15044,7 @@
       "principle_id": "real-human-oversight",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Philippine private hospital's staff decide charity-care applications, with appeals; its chat assistant tells patients whether they qualify, and those told no rarely apply. What should the IS auditor recommend as BEST?",
+      "question": "Staff at a Philippine private hospital decide charity-care applications, and applicants can appeal. The hospital's chat assistant tells patients whether they qualify. Those told no rarely apply. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have staff review a monthly sample of its eligibility chats",
         "B": "Ground it on the hospital's current charity-care policy",
@@ -15444,7 +15444,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Kazakh electronics marketplace now runs its shopping assistant's open-weight model on its own servers instead of a vendor's hosted service, where jailbreak tests passed. What should the IS auditor recommend as BEST?",
+      "question": "A Kazakh electronics marketplace's shopping assistant uses an open-weight model. Jailbreak tests passed while a vendor hosted it. The marketplace now runs it on its own servers. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Rely on the earlier jailbreak tests, since the weights are the same",
         "B": "Repeat the jailbreak tests on the self-hosted setup",
@@ -15555,7 +15555,7 @@
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A scan found hidden instructions in 30 documents a Croatian shipyard's policy assistant retrieves from; seeing no harmful answers, the team will delete them and log nothing. What should the IS auditor recommend FIRST?",
+      "question": "A scan found hidden instructions in 30 documents that a Croatian shipyard's policy assistant retrieves. Seeing no harmful answers, the team will delete the documents and log nothing. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Delete the documents, then log an incident if harm appears",
         "B": "Retrain the model to ignore instructions hidden in documents",
@@ -15629,7 +15629,7 @@
       "principle_id": "contain-and-preserve-ai",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Turkish home-appliance retailer stopped its description generator's automatic publishing and pulled its listings after it invented safety certifications; editors' 'suggest' button still calls the same generator. What should the IS auditor recommend FIRST?",
+      "question": "A Turkish home-appliance retailer's description generator invented safety certifications. The retailer stopped the generator's automatic publishing and pulled its listings. Editors' 'suggest' button still calls the same generator. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Find the generator's root cause before changing anything",
         "B": "Remind editors to check each suggestion for safety claims",
@@ -15703,7 +15703,7 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Japanese camera maker closed its assistant's wrong-quote problem record as a vendor model fault since fixed; its retrieved price list changed as the wrong quotes began. What should the IS auditor recommend as BEST?",
+      "question": "A Japanese camera maker closed the wrong-quote problem record for its assistant as a vendor model fault, since fixed. The assistant's retrieved price list changed as the wrong quotes began. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Keep the record closed, since the vendor fixed its model",
         "B": "Have the owner test whether the model or price list caused it",
@@ -15740,7 +15740,7 @@
       "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Singaporean bank's problem records code every AI fault as an 'application defect', so its trend reports show one undivided total that nobody can act on. What should the IS auditor recommend as BEST?",
+      "question": "A Singaporean bank's problem records classify every AI fault as an 'application defect', so its trend reports show one undivided total that nobody can act on. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add AI cause categories, such as data and prompt faults",
         "B": "Tag each AI fault with the system and model version",
@@ -15885,7 +15885,7 @@
       "subtopic": "2B AI lifecycle. Scored call recordings",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Qatari airline's data gate cleared 300,000 call recordings, scored by supervisors from 2019 to 2025, to train a call-grading model; the scoring rubric was rewritten in 2022. What should the IS auditor recommend FIRST?",
+      "question": "A Qatari airline's data gate cleared 300,000 call recordings to train a call-grading model. Supervisors scored them from 2019 to 2025. The rubric was rewritten in 2022. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Train on every year, since more scored calls improve accuracy",
         "B": "Have the gate check old and new rubric scores are comparable",
@@ -15957,7 +15957,7 @@
       "subtopic": "2B AI lifecycle. Handwritten tax amounts",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Swiss tax office cites its form-reading model's 98% accuracy; its card flags handwritten amounts, 4% of test forms but most of the office's, as often misread. What should the IS auditor recommend as BEST?",
+      "question": "A Swiss tax office cites its form-reading model's 98% accuracy. The model card says handwritten amounts are often misread. They appear on 4% of test forms but most office forms. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Rely on its 98% accuracy, since the model card discloses the limit",
         "B": "Obtain the model's test accuracy on handwritten forms alone",
@@ -16067,7 +16067,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Lithuanian online marketplace's refusal notices to would-be sellers give reasons from an explanation library, which IT patched as routine because the vetting model was untouched. What should the IS auditor recommend as BEST?",
+      "question": "A Lithuanian online marketplace's refusal notices give would-be sellers reasons from an explanation library. IT patched the library as routine because the vetting model was untouched. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Rerun the vetting model's regression tests on sampled decisions",
         "B": "Replace the reasons with the model's top global factors",
@@ -16215,7 +16215,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Luxembourg drug regulator accepts vendor updates to its leaflet-translation model if errors of the types on its list fall; the vendor tunes updates to those types. What should the IS auditor recommend as BEST?",
+      "question": "A Luxembourg drug regulator accepts vendor updates to its leaflet-translation model if they reduce errors of its listed types. The vendor tunes updates to those types. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Ask the vendor to warrant each update is error-free",
         "B": "Test each update for error types beyond the list",
@@ -16399,7 +16399,7 @@
       "subtopic": "2E AI testing. Plain-language rewrites",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Slovak insurer accepted a model's plain-language policy rewrites after lawyers confirmed meaning was kept and staff preferred them in 70% of 300 pairs labeled by version. What should the IS auditor recommend as BEST?",
+      "question": "A Slovak insurer accepted a model's plain-language policy rewrites after lawyers confirmed meaning was kept. Staff preferred the rewrites in 70% of 300 pairs labeled by version. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Score rewrites by word overlap with the original terms",
         "B": "Redo the comparison with raters not told which text is which",
@@ -16621,7 +16621,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Japanese machine-tool maker raised its customer portal assistant's input limit from 10 to 500 pages so customers can upload specifications; jailbreak tests passed before the change. What should the IS auditor recommend as BEST?",
+      "question": "A Japanese machine-tool maker's portal assistant now accepts 500 pages of input, up from 10, so customers can upload specifications. Jailbreak tests passed before the change. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept the earlier tests, since the model itself is unchanged",
         "B": "Rerun the existing jailbreak tests on the changed assistant",
@@ -16805,7 +16805,7 @@
       "principle_id": "ai-output-is-a-lead",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Finnish gas distributor switched off its meter-reading vision model after a faulty update; staff confirm its 600 queued bills from the read figures alone before sending. What should the IS auditor recommend FIRST?",
+      "question": "A Finnish gas distributor switched off its meter-reading vision model after a faulty update. Staff confirm 600 queued bills before sending, using only the figures the model read. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Delete the queue so no faulty bill can be sent",
         "B": "Let staff confirm each queued bill in their usual way",
@@ -16841,7 +16841,7 @@
       "subtopic": "2G AI incident response. Export quotes after a devaluation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "After Sri Lanka's rupee fell 40% in a month, a Colombo rubber exporter's quote-pricing model began underquoting orders; engineers plan to roll back to last year's approved version. What is the IS auditor's GREATEST concern?",
+      "question": "After Sri Lanka's rupee fell 40% in a month, a Colombo rubber exporter's quote-pricing model began underquoting orders. Engineers plan to roll back to last year's approved version. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The rollback may overwrite evidence of the current version's fault",
         "B": "Last year's version also learned from prices before the fall",
@@ -16878,7 +16878,7 @@
       "principle_id": "fix-the-control-not-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Staff at a Czech university pasted its help assistant's answers into wiki pages the assistant reads, spreading a wrong VPN step; the problem record blames those pages. What should the IS auditor recommend as BEST?",
+      "question": "Staff at a Czech university pasted the help assistant's answers into wiki pages that it reads, spreading a wrong VPN step. The problem record blames those pages. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have the record name copied answers as the root cause",
         "B": "Have the assistant cite the wiki page behind each answer",
@@ -16914,7 +16914,7 @@
       "subtopic": "2G AI incident response. Crime alerts and complaints",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Romanian news app trains its alert model on readers' opens; its problem record ties complaints about alarming crime alerts to that signal and proposes blocking them. What should the IS auditor recommend as BEST?",
+      "question": "A Romanian news app trains its alert model on readers' opens. Its problem record ties complaints about alarming crime alerts to that signal and proposes blocking those alerts. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Retrain the model on this month's alert opens",
         "B": "Have crime alerts blocked, then confirm crime complaints fall",
