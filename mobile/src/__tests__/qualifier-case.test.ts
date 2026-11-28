@@ -97,6 +97,9 @@ describe('a lowercase course finds its qualifier in the question sentence', () =
     // An earlier "first" in a fact sentence does not count either.
     const early = 'In its first year, a lender adopted a risk framework. Which gap is the most significant?';
     expect(findPriority(early, 'lowercase')).toMatchObject({ word: 'MOST', written: 'most' });
+    // "most lacking" asks about a degree, like "most lacks" (cia3_d4_016).
+    expect(findPriority('One finding calls boat owners dishonest. Which quality is most lacking?', 'lowercase'))
+      .toMatchObject({ word: 'MOST', written: 'most' });
   });
 
   it('reads the clause ending with "?" when a sentence follows it', () => {
