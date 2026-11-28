@@ -1,6 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Accounts (stream B1 of docs/WEB_LAUNCH_PLAN.md): the switch, and the first
+     script on the page on purpose.
+     - ACCOUNTS_ON is false: no account screen is drawn, the accounts client
+       (assets/kaisip-cloud.js), the password word lists and the human check
+       are never loaded, and nothing is sent to the sign-in service.
+     - The owner's preview: on https://kaisip.com only, opening the app once
+       with #accounts-preview=on at the end of the address saves a note in
+       THIS browser (kaisip_accounts_preview); #accounts-preview=off removes
+       it. Nobody else is offered anything. Steps: docs/WEBSITE_DEPLOY.md.
+     - Never on file:// or any other address (accounts beta plan, 1.2).
+     - When accounts are on here and Google sends the learner back with
+       ?code=... (or ?error=...), that is taken out of the address before
+       analytics or anything else can read it, and kept only in memory. -->
+<script>
+  var ACCOUNTS_ON = false;
+  var KS_ACCT = (function () {
+    var here = false, preview = false, back = null;
+    try { here = location.protocol === 'https:' && location.origin === 'https://kaisip.com'; } catch (e) {}
+    if (here) {
+      try {
+        var m = /^#accounts-preview=(on|off)$/.exec(location.hash || '');
+        if (m) {
+          if (m[1] === 'on') localStorage.setItem('kaisip_accounts_preview', '1');
+          else localStorage.removeItem('kaisip_accounts_preview');
+          history.replaceState(history.state, '', location.pathname + location.search);
+        }
+        preview = localStorage.getItem('kaisip_accounts_preview') === '1';
+      } catch (e) {}
+    }
+    var on = here && (ACCOUNTS_ON === true || preview);
+    if (on) {
+      try {
+        var q = new URLSearchParams(location.search);
+        if (q.has('code') || q.has('error') || q.has('error_code') || q.has('error_description')) {
+          back = { code: q.get('code'), error: q.get('error') || q.get('error_code') };
+          ['code', 'error', 'error_code', 'error_description', 'state'].forEach(function (k) { q.delete(k); });
+          var rest = q.toString();
+          history.replaceState(history.state, '', location.pathname + (rest ? '?' + rest : '') + (/^#error/.test(location.hash) ? '' : location.hash));
+        } else if (/^#error(_code|_description)?=/.test(location.hash)) {
+          back = { code: null, error: 'oauth' };
+          history.replaceState(history.state, '', location.pathname + location.search);
+        }
+      } catch (e) {}
+    }
+    return { enabled: on, preview: preview && !ACCOUNTS_ON, back: back };
+  })();
+</script>
 <!-- Google Analytics — Consent Mode v2, basic mode (v12.28).
      Every consent type is denied by default, and the Google script is not
      loaded at all until the visitor accepts on the cookie banner (setConsent
@@ -8818,6 +8865,347 @@ h1, h2, h3, h4 { overflow-wrap: break-word; }
    focus-visible: the ring waits until the learner has used the keyboard. */
 html[data-kbd] :where(h1, h2, h3, h4)[tabindex="-1"]:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 4px; border-radius: var(--r-xs); }
 html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :where(h1, h2, h3, h4)[tabindex="-1"]:focus-visible { outline-color: var(--on-forest); }
+/* ── ACCOUNTS (web sign-in and account screens, stream B1 of docs/WEB_LAUNCH_PLAN.md) ──
+   Direction A "Grove Atelier": Grove tokens only (docs/mobile/DESIGN_SYSTEM.md,
+   "Accounts on the web"). Nothing here shows unless accounts are on for this
+   browser (ACCOUNTS_ON or the owner's preview switch): every element these
+   rules style is created by kaBoot(). Sizes are rem, so text follows the
+   browser's text size; --ka-r-btn is the one place the button corner lives. */
+:root { --ka-r-btn: 16px; --ka-r-field: 16px; --ka-halo: rgba(43,110,74,.18); --ka-danger-halo: rgba(163,51,61,.16); --ka-ease: cubic-bezier(.2,.75,.2,1); }
+[data-theme="dark"] { --ka-halo: rgba(127,195,156,.22); --ka-danger-halo: rgba(255,156,166,.18); }
+body[data-ka-view] { padding-left: 0 !important; }
+body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] #bottomNav, body[data-ka-view] .skip-link { display: none !important; }
+#kaRoot { min-height: 100vh; min-height: 100dvh; background: var(--bg); color: var(--text); font: var(--t-body); }
+#kaRoot[hidden] { display: none; }
+#kaRoot *, .ka-card *, .ka-acct *, .ka-dlg * { box-sizing: border-box; }
+#kaRoot h1, #kaRoot h2, #kaRoot p, #kaRoot ol, #kaRoot ul, #kaRoot fieldset, #kaRoot legend { margin: 0; padding: 0; }
+#kaRoot ol, #kaRoot ul { list-style: none; }
+#kaRoot fieldset { border: 0; min-width: 0; }
+#kaRoot a, .ka-acct a, .ka-card a, .ka-dlg a { color: var(--accent-text); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+#kaRoot :focus-visible, .ka-card :focus-visible, .ka-acct :focus-visible, .ka-dlg :focus-visible, .ka-rail:focus-visible, .ka-top:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+#kaRoot h1:focus { outline: none; }
+/* A hidden label inside a flex link keeps to its link (it would otherwise widen the page). */
+#kaRoot a, .ka-card a, .ka-acct a, .ka-rail, .ka-top { position: relative; }
+#kaRoot .sr-only, .ka-card .sr-only, .ka-acct .sr-only, .ka-rail .sr-only, .ka-top .sr-only { left: 0; top: 0; }
+
+/* Auth layout: the form on paper; from 900px the forest panel beside it. */
+.ka-auth { display: block; min-height: 100vh; min-height: 100dvh; }
+.ka-topbar { border: 0; margin: 0; animation: none; flex-wrap: nowrap; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 20px 0; }
+.ka-brand { display: inline-flex; align-items: center; min-height: 44px; }
+.ka-brand .brand-lockup { height: 30px; width: auto; display: block; }
+.ka-toplink { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font: var(--t-chip); color: var(--text2) !important; text-decoration: none; text-align: right; }
+.ka-toplink:hover { color: var(--text) !important; }
+.ka-art { display: none; }
+.ka-main { padding: 20px 20px 24px; }
+.ka-form-col { width: 100%; max-width: 26.25rem; margin: 0 auto; }
+.ka-foot { border: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 20px; margin: 32px auto 0; width: 100%; max-width: 26.25rem; font: var(--t-meta); color: var(--text2); }
+.ka-foot a { color: var(--text2) !important; display: inline-flex; align-items: center; min-height: 44px; }
+.ka-foot span { width: 100%; }
+.ka-title { font: 400 2.125rem/1.1 var(--f-serif); letter-spacing: -.025em; text-wrap: balance; }
+.ka-steps + .ka-title, .ka-back + .ka-title { margin-top: 14px; }
+.ka-lede { margin-top: 12px !important; font: 400 1.0625rem/1.55 var(--f-sans); color: var(--text2); text-wrap: pretty; }
+.ka-lede strong { color: var(--text); font-weight: 600; overflow-wrap: anywhere; }
+@media (min-width: 56.25em) {
+  .ka-auth { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.04fr); grid-template-rows: auto 1fr; grid-template-areas: "top art" "main art"; }
+  .ka-topbar { grid-area: top; padding: 24px 56px 0; }
+  .ka-brand .brand-lockup { height: 34px; }
+  .ka-art { display: block; grid-area: art; padding: 16px 16px 16px 0; }
+  .ka-main { grid-area: main; display: flex; flex-direction: column; align-items: center; padding: 32px 56px 28px; }
+  .ka-form-col { margin-block: auto; }
+  .ka-foot { margin-top: 40px; }
+  .ka-foot span { width: auto; margin-left: auto; align-self: center; }
+  .ka-title { font-size: 2.5rem; }
+}
+.ka-panel { position: relative; height: 100%; min-height: 40rem; border-radius: 28px; overflow: hidden; isolation: isolate; padding: 72px 64px 56px; display: flex; flex-direction: column; color: var(--on-forest); background: linear-gradient(180deg, var(--forest-top), var(--forest) 60%); box-shadow: inset 0 1px 0 var(--forest-hl); position: sticky; top: 16px; max-height: calc(100vh - 32px); }
+.ka-fronds { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+.ka-fronds path { fill: none; stroke: var(--forest-line); stroke-width: 1.6; stroke-linejoin: round; }
+.ka-fronds .ka-sap path { stroke: var(--sap); opacity: .35; }
+.ka-art-title { font: 400 3.25rem/1.06 var(--f-serif); letter-spacing: -.03em; max-width: 12ch; text-wrap: balance; }
+.ka-art-quote { margin-top: 20px !important; font: italic 400 1.3125rem/1.45 var(--f-serif); color: var(--on-forest2); max-width: 28ch; }
+.ka-art-facts { margin-top: auto !important; display: grid; gap: 14px; font: var(--t-body); color: var(--on-forest); }
+.ka-art-facts li { display: flex; gap: 12px; align-items: center; }
+.ka-art-facts li::before { content: ""; width: 14px; height: 14px; flex-shrink: 0; background: var(--sap); border-radius: 0 70% 0 70%; }
+.ka-sync-card { margin-top: auto; max-width: 25rem; padding: 22px 24px; border-radius: 22px; background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px var(--forest-track), inset 0 1px 0 rgba(255,255,255,.06); }
+.ka-sync-k { font: var(--t-caption); color: var(--sap); display: flex; align-items: center; gap: 8px; }
+.ka-sync-k::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--sap); box-shadow: 0 0 0 4px rgba(169,217,186,.18); }
+.ka-sync-row { display: flex; align-items: center; gap: 10px; margin-top: 16px; font: var(--t-meta); color: var(--on-forest); }
+.ka-sync-dev { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.ka-sync-dev .ico { color: var(--on-forest2); }
+.ka-vine { flex: 1; height: 1.5px; min-width: 24px; background: repeating-linear-gradient(90deg, var(--sap) 0 4px, transparent 4px 8px); }
+.ka-sync-list { margin-top: 16px !important; border-top: 1px solid var(--forest-track); }
+.ka-sync-list li { padding: 9px 0; border-bottom: 1px solid var(--forest-track); font: var(--t-meta); color: var(--on-forest2); }
+
+/* Buttons (54px; 44px floor everywhere) */
+.ka-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 54px; padding: 12px 22px; border: 0; border-radius: var(--ka-r-btn); font: var(--t-button); cursor: pointer; text-decoration: none !important; transition: transform .2s var(--ka-ease), background-color .2s, box-shadow .2s, opacity .2s; }
+.ka-btn-primary { background: var(--btn); color: var(--on-btn) !important; box-shadow: 0 10px 22px -14px rgba(30,74,52,.8); }
+[data-theme="dark"] .ka-btn-primary { box-shadow: none; }
+.ka-btn-secondary { background: transparent; color: var(--text) !important; box-shadow: inset 0 0 0 1.5px var(--control); }
+.ka-btn-google { background: var(--surface); color: var(--text) !important; box-shadow: inset 0 0 0 1.5px var(--border2), var(--shadow); }
+[data-theme="dark"] .ka-btn-google { box-shadow: inset 0 0 0 1.5px var(--control); }
+.ka-btn-quiet { background: transparent; color: var(--text2) !important; min-height: 44px; }
+.ka-btn-danger { background: transparent; color: var(--wrong) !important; box-shadow: inset 0 0 0 1.5px var(--wrong); }
+.ka-btn-auto { width: auto; }
+.ka-btn-sm { min-height: 48px; padding: 10px 18px; font: var(--t-label); }
+.ka-btn:active { transform: scale(.985); }
+.ka-btn[aria-disabled="true"], .ka-btn:disabled { opacity: .6; cursor: default; }
+@media (hover: hover) { .ka-btn-primary:hover { transform: translateY(-1px); } .ka-btn-secondary:hover, .ka-btn-google:hover { background: var(--surface2); } .ka-btn-quiet:hover { color: var(--text) !important; } }
+
+/* Fields: a visible label above, never a placeholder. */
+.ka-form { display: grid; gap: 18px; margin-top: 28px; }
+.ka-field { display: grid; gap: 8px; }
+.ka-field-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.ka-label { font: 600 0.875rem/1.3 var(--f-sans); color: var(--text); }
+.ka-aside { font: 500 0.875rem/1.3 var(--f-sans); display: inline-flex; align-items: center; min-height: 44px; margin-block: -14px; background: none; border: 0; padding: 0; cursor: pointer; color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.ka-input-wrap { position: relative; display: flex; align-items: center; }
+.ka-input { width: 100%; min-height: 54px; padding: 12px 16px; border: 0; border-radius: var(--ka-r-field); background: var(--surface); color: var(--text); font: 400 1.0625rem/1.3 var(--f-sans); box-shadow: inset 0 0 0 1.5px var(--control); outline: 2px solid transparent; outline-offset: 2px; }
+.ka-input:focus { box-shadow: inset 0 0 0 2px var(--text), 0 0 0 4px var(--ka-halo); }
+.ka-input[aria-invalid="true"] { box-shadow: inset 0 0 0 2px var(--wrong), 0 0 0 4px var(--ka-danger-halo); }
+.ka-input-wrap .ka-input.has-reveal { padding-right: 6rem; }
+.ka-reveal { position: absolute; right: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; min-width: 44px; padding: 0 10px; border: 0; border-radius: 12px; background: transparent; color: var(--text2); font: 600 0.875rem/1 var(--f-sans); cursor: pointer; }
+.ka-error { display: flex; gap: 8px; align-items: flex-start; color: var(--wrong); font: 500 0.875rem/1.45 var(--f-sans); margin: 0; }
+.ka-error:empty { display: none; }
+.ka-error .ico { margin-top: 1px; flex-shrink: 0; }
+.ka-hint { font: var(--t-meta); font-weight: 400; color: var(--text2); margin: 0; }
+.ka-note { display: flex; gap: 10px; align-items: flex-start; font: 400 0.875rem/1.5 var(--f-sans); color: var(--text2); margin-top: 16px !important; }
+.ka-note .ico { margin-top: 1px; color: var(--accent-text); flex-shrink: 0; }
+.ka-note strong { color: var(--text); font-weight: 600; overflow-wrap: anywhere; }
+.ka-fine { margin-top: 10px !important; font: 400 0.8125rem/1.5 var(--f-sans); color: var(--text2); }
+.ka-switch { margin-top: 20px !important; font: var(--t-small); color: var(--text2); }
+.ka-switch a, .ka-linkbtn { font-weight: 600; display: inline-flex; align-items: center; min-height: 44px; }
+.ka-linkbtn { background: none; border: 0; padding: 0; cursor: pointer; color: var(--accent-text); font: 600 0.9375rem/1.3 var(--f-sans); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; text-align: left; }
+.ka-linkbtn:disabled { color: var(--text2); text-decoration: none; cursor: default; }
+.ka-back { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font: var(--t-chip); text-decoration: none; color: var(--text2) !important; background: none; border: 0; padding: 0; cursor: pointer; }
+.ka-back .ico { transform: rotate(180deg); }
+.ka-divider { display: flex; align-items: center; gap: 14px; margin: 22px 0; color: var(--text2); font: 500 0.875rem/1 var(--f-sans); }
+.ka-divider::before, .ka-divider::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+.ka-google-slot { margin-top: 28px; }
+.ka-divider + .ka-form { margin-top: 0; }
+.ka-alert { display: flex; gap: 10px; align-items: flex-start; margin-top: 20px; padding: 14px 16px; border-radius: 16px; background: var(--tip-bg); color: var(--text); font: 400 0.9375rem/1.45 var(--f-sans); }
+.ka-alert .ico { color: var(--tip); margin-top: 1px; flex-shrink: 0; }
+.ka-alert[hidden] { display: none; }
+.ka-human { min-height: 0; }
+.ka-human:empty { display: none; }
+.ka-busy { display: inline-block; width: 16px; height: 16px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: kaSpin .8s linear infinite; }
+@keyframes kaSpin { to { transform: rotate(360deg); } }
+
+/* Agreements: 44px rows, a 24px box, and an audit tick (clay) when agreed. */
+.ka-consent { display: grid; gap: 4px; }
+.ka-check { position: relative; display: grid; grid-template-columns: 24px 1fr; gap: 12px; align-items: start; padding: 10px 0; min-height: 44px; cursor: pointer; font: 400 0.9375rem/1.45 var(--f-sans); color: var(--text); }
+.ka-check input { position: absolute; left: 0; top: 10px; width: 24px; height: 24px; margin: 0; opacity: 0; cursor: pointer; }
+.ka-box { width: 24px; height: 24px; border-radius: 7px; box-shadow: inset 0 0 0 1.5px var(--control); background: var(--surface); display: grid; place-items: center; color: transparent; margin-top: -1px; }
+.ka-box svg { width: 18px; height: 18px; }
+.ka-check input:checked + .ka-box { box-shadow: inset 0 0 0 2px var(--text); color: var(--clay); }
+.ka-check input:focus-visible + .ka-box { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+.ka-opt { display: inline-block; margin-left: 4px; padding: 1px 8px; border-radius: 999px; font: 600 0.75rem/1.6 var(--f-sans); color: var(--text2); background: var(--surface2); }
+.ka-adds { margin-top: 24px; padding: 16px 18px; border-radius: 16px; background: var(--surface2); font: 400 0.875rem/1.5 var(--f-sans); color: var(--text2); display: grid; gap: 6px; }
+.ka-adds-t { display: flex; gap: 8px; align-items: center; font: 600 0.875rem/1.3 var(--f-sans); color: var(--text); }
+.ka-adds-t .ico { color: var(--accent-text); }
+
+/* Steps: three leaves on a stem; a finished step carries an audit tick. */
+.ka-steps { display: grid; gap: 10px; }
+.ka-steps-count { font: var(--t-caption); color: var(--text2); }
+.ka-steps ol { display: flex; align-items: center; }
+.ka-step { display: flex; align-items: center; gap: 8px; font: 500 0.875rem/1 var(--f-sans); color: var(--muted); }
+.ka-step:not(:last-child) { flex: 1; }
+.ka-step:not(:last-child)::after { content: ""; flex: 1; height: 1.5px; min-width: 8px; background: var(--track); margin: 0 10px; border-radius: 1px; }
+.ka-step.is-done:not(:last-child)::after { background: var(--accent); }
+.ka-step svg { width: 22px; height: 22px; display: block; flex-shrink: 0; }
+.ka-step .ka-leaf { fill: none; stroke: var(--control); stroke-width: 1.6; }
+.ka-step .ka-rib { stroke: var(--control); stroke-width: 1.4; fill: none; }
+.ka-step.is-current .ka-leaf { fill: var(--btn); stroke: var(--btn); }
+.ka-step.is-current .ka-rib { stroke: var(--bg); }
+.ka-step.is-current { color: var(--text); font-weight: 600; }
+.ka-step.is-done { color: var(--text2); }
+.ka-step .ka-tick { fill: none; stroke: var(--clay); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 22.5em) { .ka-step:not(:last-child)::after { margin: 0 6px; } .ka-step { font-size: 0.8125rem; gap: 6px; } }
+
+/* The 8-digit code: ONE input (paste and one-time-code autofill work), drawn
+   as two joined groups of four ruled cells. */
+.ka-code { position: relative; }
+.ka-code-cells { display: flex; gap: 6px; align-items: center; }
+.ka-code-grp { display: flex; flex: 1; min-width: 0; border-radius: 14px; background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--control); overflow: hidden; }
+.ka-cell { position: relative; flex: 1; min-width: 0; height: 3.5rem; min-height: 56px; display: grid; place-items: center; font: 500 1.625rem/1 var(--f-serif); color: var(--text); font-variant-numeric: tabular-nums; }
+.ka-cell + .ka-cell { box-shadow: inset 1.5px 0 0 var(--border2); }
+.ka-code-sep { width: 8px; height: 2px; background: var(--control); flex: 0 0 8px; border-radius: 1px; }
+.ka-code-input { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background: transparent; color: transparent; caret-color: transparent; font: 400 1rem/1 var(--f-sans); letter-spacing: 1em; text-align: left; outline: 2px solid transparent; border-radius: 14px; cursor: text; }
+.ka-code-input::selection { background: transparent; }
+.ka-code:focus-within .ka-cell.is-active { box-shadow: inset 0 0 0 2px var(--text); background: var(--surface2); }
+.ka-code:focus-within .ka-cell.is-active::after { content: ""; width: 2px; height: 24px; background: var(--text); border-radius: 1px; animation: kaCaret 1.1s steps(1) infinite; }
+.ka-code:focus-within .ka-cell.is-active.is-filled::after { display: none; }
+.ka-code.is-full:focus-within .ka-code-grp { box-shadow: inset 0 0 0 2px var(--text); }
+.ka-code.has-error .ka-code-grp { box-shadow: inset 0 0 0 2px var(--wrong); }
+@keyframes kaCaret { 50% { opacity: 0; } }
+.ka-resend { margin-top: 18px; font: 400 0.875rem/1.5 var(--f-sans); color: var(--text2); display: grid; gap: 2px; justify-items: start; }
+
+/* The password helper: a sprig that grows with the length (one leaf per three
+   characters, a bud from 20). Words and a count carry the meaning. */
+.ka-pw { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start; padding: 14px 16px; border-radius: 16px; background: var(--raised2); box-shadow: inset 0 0 0 1px var(--border); }
+.ka-sprig { width: 40px; height: 62px; display: block; }
+.ka-sprig .ka-stem { fill: none; stroke: var(--track); stroke-width: 2; stroke-linecap: round; }
+.ka-sprig .ka-stem-grown { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; }
+.ka-sprig .is-on { fill: var(--accent); }
+.ka-sprig .is-off { fill: none; stroke: var(--control); stroke-width: 1.2; stroke-dasharray: 2 2; }
+.ka-sprig .ka-bud { fill: var(--sap); stroke: var(--accent); stroke-width: 1.2; }
+.ka-pw-head { display: flex; gap: 6px; align-items: center; font: 600 0.9375rem/1.35 var(--f-sans); color: var(--text); margin: 0; }
+.ka-pw-head .ico { color: var(--accent-text); flex-shrink: 0; }
+.ka-pw-count { font: 500 0.8125rem/1.4 var(--f-sans); color: var(--text2); margin: 2px 0 0 !important; font-variant-numeric: tabular-nums; }
+.ka-pw-sub { font: 400 0.875rem/1.45 var(--f-sans); color: var(--text2); margin: 6px 0 0 !important; }
+
+/* First visit: the welcome choice. */
+.ka-welcome { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+.ka-welcome-main { flex: 1; display: flex; flex-direction: column; gap: 28px; padding: 16px 20px 24px; max-width: 85rem; width: 100%; margin: 0 auto; }
+.ka-kicker { font: 600 0.875rem/1.3 var(--f-sans); color: var(--accent-text); display: flex; gap: 10px; align-items: center; }
+.ka-kicker::before { content: ""; width: 22px; height: 1.5px; background: var(--accent); }
+.ka-title-xl { margin-top: 18px !important; font: 400 2.75rem/1.02 var(--f-serif); letter-spacing: -.035em; text-wrap: balance; }
+.ka-title-xl em { font-style: italic; color: var(--accent-text); }
+.ka-welcome .ka-lede { max-width: 46ch; }
+.ka-paths { display: grid; gap: 12px; margin-top: 24px; max-width: 32.5rem; }
+.ka-path { display: grid; grid-template-columns: 44px 1fr 20px; gap: 14px; align-items: center; min-height: 84px; padding: 14px 16px; border: 0; border-radius: 22px; text-decoration: none !important; text-align: left; cursor: pointer; font: inherit; transition: transform .2s var(--ka-ease); width: 100%; }
+.ka-path-primary { background: var(--btn); color: var(--on-btn) !important; box-shadow: 0 18px 30px -20px rgba(30,74,52,.9); }
+.ka-path-secondary { background: var(--surface); color: var(--text) !important; box-shadow: var(--card-shadow); }
+[data-theme="dark"] .ka-path-primary { box-shadow: none; }
+.ka-path-ico { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; }
+.ka-path-primary .ka-path-ico { background: rgba(247,245,239,.14); }
+[data-theme="dark"] .ka-path-primary .ka-path-ico { background: rgba(15,31,22,.10); }
+.ka-path-secondary .ka-path-ico { background: var(--surface2); color: var(--accent-text); }
+.ka-path-text { display: grid; gap: 3px; min-width: 0; }
+.ka-path-t { font: 600 1.0625rem/1.3 var(--f-sans); }
+.ka-path-s { font: 400 0.875rem/1.4 var(--f-sans); }
+.ka-path-secondary .ka-path-s { color: var(--text2); }
+@media (hover: hover) { .ka-path:hover { transform: translateY(-1px); } }
+.ka-welcome-more { margin-top: 14px !important; }
+.ka-ios { display: flex; gap: 10px; align-items: flex-start; margin-top: 14px !important; font: var(--t-small); color: var(--text2); }
+.ka-ios .ico { color: var(--accent-text); flex-shrink: 0; margin-top: 2px; }
+.ka-welcome .ka-fine { max-width: 56ch; margin-top: 24px !important; }
+.ka-welcome-panel { position: relative; overflow: hidden; isolation: isolate; border-radius: 24px; padding: 28px 16px 20px; background: linear-gradient(180deg, var(--forest-top), var(--forest) 60%); box-shadow: inset 0 1px 0 var(--forest-hl); }
+.ka-q { background: var(--surface); color: var(--text); border-radius: 22px; padding: 18px; box-shadow: 0 30px 60px -30px rgba(0,0,0,.5); max-width: 27.5rem; margin-left: auto; }
+[data-theme="dark"] .ka-q { box-shadow: inset 0 0 0 1.5px var(--border), 0 30px 60px -30px rgba(0,0,0,.7); }
+.ka-q-k { font: var(--t-caption); color: var(--text2); }
+.ka-q-stem { margin-top: 10px !important; font: 400 1.125rem/1.42 var(--f-serif); }
+.ka-q-opts { margin-top: 14px !important; display: grid; gap: 8px; }
+.ka-q-opts li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; padding: 10px 12px; border-radius: 14px; box-shadow: inset 0 0 0 1.5px var(--border); font: 400 0.875rem/1.4 var(--f-sans); }
+.ka-q-opts li > span:first-child { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--surface2); font: 600 0.8125rem/1 var(--f-sans); }
+.ka-q-opts .is-best { box-shadow: inset 0 0 0 1.5px var(--accent); background: var(--surface2); }
+.ka-q-opts .is-best > span:first-child { background: var(--btn); color: var(--on-btn); }
+.ka-q-opts em { display: block; font: 600 0.75rem/1.4 var(--f-sans); font-style: normal; color: var(--accent-text); }
+.ka-q-why { margin-top: 14px !important; padding-left: 14px; border-left: 3px solid var(--accent); font: italic 400 1rem/1.5 var(--f-serif); color: var(--text2); }
+.ka-q-why b { font: 600 0.875rem var(--f-sans); font-style: normal; color: var(--text); }
+@media (min-width: 56.25em) {
+  .ka-welcome .ka-topbar { padding: 24px 56px; }
+  .ka-welcome-main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; padding: 8px 56px 48px; }
+  .ka-title-xl { font-size: 4.25rem; }
+  .ka-welcome .ka-lede { font-size: 1.125rem; }
+  .ka-paths { margin-top: 32px; }
+  .ka-path { padding: 16px 20px; grid-template-columns: 48px 1fr 24px; gap: 16px; }
+  .ka-path-ico { width: 48px; height: 48px; }
+  .ka-welcome-panel { min-height: 38.75rem; padding: 56px; border-radius: 28px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .ka-q { padding: 24px; transform: rotate(-1.2deg); }
+  .ka-q-stem { font-size: 1.25rem; }
+}
+
+/* First sync: This browser, Account, After. */
+.ka-cols { margin-top: 24px; border-radius: 16px; background: var(--surface); box-shadow: var(--card-shadow); overflow: hidden; width: 100%; border-collapse: collapse; font: var(--t-meta); }
+.ka-cols th, .ka-cols td { padding: 10px 12px; text-align: right; font-variant-numeric: tabular-nums; }
+.ka-cols th:first-child, .ka-cols td:first-child { text-align: left; }
+.ka-cols thead th { font: var(--t-caption); color: var(--text2); border-bottom: 1px solid var(--border); }
+.ka-cols tbody th { font: 500 0.875rem/1.3 var(--f-sans); color: var(--text); }
+.ka-cols tbody tr + tr > * { border-top: 1px solid var(--border); }
+.ka-cols .is-after { color: var(--accent-text); font-weight: 600; }
+.ka-choices { display: grid; gap: 10px; margin-top: 24px; }
+
+/* The account card on You: one component, a full offer or a slim row. */
+.ka-card { background: var(--surface); border-radius: 20px; box-shadow: var(--card-shadow); color: var(--text); container-type: inline-size; }
+.ka-card-row { display: flex; align-items: stretch; }
+.ka-card-main { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 12px 10px 14px; background: none; border: 0; border-radius: 20px; color: inherit !important; text-decoration: none !important; text-align: left; font: inherit; cursor: pointer; }
+div.ka-card-main { cursor: default; }
+.ka-disc { width: 40px; height: 40px; border-radius: 50%; background: var(--surface2); color: var(--accent-text); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ka-disc.is-attn { background: var(--tip-bg); color: var(--tip); }
+.ka-disc.is-quiet { color: var(--text2); }
+.ka-card-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.ka-card-t { font: var(--t-label); color: var(--text); overflow-wrap: anywhere; margin: 0; }
+.ka-card-m { font: var(--t-meta); color: var(--text2); margin: 0; }
+.ka-card-chev { display: inline-flex; color: var(--muted); flex-shrink: 0; }
+.ka-card-act { flex: none; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-width: 72px; min-height: 64px; padding: 6px 10px; background: none; border: 0; border-left: 1px solid var(--border); border-radius: 0 20px 20px 0; color: var(--accent-text); font: var(--t-fg-name); cursor: pointer; }
+.ka-card-act.is-busy { color: var(--muted); cursor: default; }
+.ka-card-act.is-turn .ico { animation: kaTurn .6s var(--ka-ease) 1; }
+@keyframes kaTurn { to { transform: rotate(360deg); } }
+.ka-card-body { padding: 0 16px 14px 14px; font: var(--t-small); color: var(--text2); margin: 0; }
+.ka-card-acts { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; padding: 0 14px 14px; }
+.ka-card-under { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin: 0 14px; padding: 12px 0 14px; border-top: 1px solid var(--border); font: var(--t-meta); color: var(--text2); }
+.ka-card-under p { margin: 0; flex: 1 1 10rem; }
+@container (max-width: 17.5em) { .ka-card-row { flex-direction: column; } .ka-card-act { flex-direction: row; gap: 8px; min-height: 48px; border-left: 0; border-top: 1px solid var(--border); border-radius: 0 0 20px 20px; } .ka-card-chev { display: none; } .ka-card-acts .ka-btn { width: 100%; } }
+@media (min-width: 77.5em) { .you.has-ka { display: grid; grid-template-columns: minmax(0, 1fr) 25rem; column-gap: 20px; } .you.has-ka > * { grid-column: 1 / -1; } .you.has-ka > .you-top { grid-column: 1; } .you.has-ka > .ka-card { grid-column: 2; grid-row: 1; align-self: start; } }
+/* The one-line version: the desktop rail's foot and the phone's top bar. */
+.ka-rail { display: none; }
+@media (min-width: 48em) { .ka-rail { display: flex; align-items: center; gap: 10px; margin-top: auto; padding: 10px 12px; border-radius: 16px; background: var(--surface); box-shadow: var(--card-shadow); color: var(--text) !important; text-decoration: none !important; min-height: 56px; } .ka-rail .ka-disc { width: 36px; height: 36px; } }
+@media (min-width: 48em) { .rail-app:not([hidden]) ~ .ka-rail, .rail-foot:not([hidden]) ~ .ka-rail { margin-top: var(--sp-lg); } }
+.ka-rail-t { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ka-rail-h { font: var(--t-caption); color: var(--text); overflow-wrap: anywhere; }
+.ka-rail-m { font: var(--t-meta); color: var(--text2); }
+.ka-top { margin-left: auto; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 0 6px; font: var(--t-chip); color: var(--accent-text) !important; text-decoration: none !important; }
+.ka-top .ka-ava { width: 36px; height: 36px; font-size: 0.9375rem; background: var(--surface2); color: var(--text); }
+@media (min-width: 48em) { .ka-top { display: none; } }
+
+/* The Account page (You, then Account). */
+.ka-acct { max-width: 42.5rem; display: flex; flex-direction: column; }
+.ka-acct h1 { margin: 0; }
+.ka-hero { position: relative; overflow: hidden; isolation: isolate; margin-top: 24px; padding: 24px; border-radius: 24px; background: linear-gradient(180deg, var(--forest-top), var(--forest)); color: var(--on-forest); box-shadow: inset 0 1px 0 var(--forest-hl); --focus-ring: var(--on-forest); }
+.ka-hero .ka-fronds { opacity: .9; }
+.ka-who { display: flex; gap: 14px; align-items: center; }
+.ka-ava { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; background: var(--sap); color: #0F1F16; font: 500 1.375rem/1 var(--f-serif); }
+.ka-who-mail { font: 600 1.0625rem/1.3 var(--f-sans); overflow-wrap: anywhere; margin: 0; }
+.ka-who-sub { font: var(--t-meta); color: var(--on-forest2); margin: 0; }
+.ka-sync { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--forest-track); display: grid; grid-template-columns: 1fr; gap: 6px 16px; align-items: center; }
+.ka-status { display: flex; gap: 8px; align-items: center; font: 600 1rem/1.3 var(--f-sans); margin: 0; }
+.ka-status .ico { width: 20px; height: 20px; padding: 3px; border-radius: 50%; background: var(--sap); color: #0F1F16; flex-shrink: 0; }
+.ka-last { font: var(--t-meta); color: var(--on-forest2); margin: 0; }
+.ka-devices { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font: var(--t-meta); color: var(--on-forest); margin: 6px 0 0; }
+.ka-devices > span:not(.ka-vine) { display: inline-flex; gap: 6px; align-items: center; }
+.ka-devices .ico { color: var(--on-forest2); }
+.ka-devices .ka-vine { flex: 0 0 40px; }
+.ka-sync .ka-btn { margin-top: 12px; background: var(--on-forest); color: #17231B !important; box-shadow: none; }
+@media (min-width: 40em) { .ka-sync { grid-template-columns: 1fr auto; } .ka-sync > p { grid-column: 1; } .ka-sync .ka-btn { grid-column: 2; grid-row: 1 / 4; width: auto; margin-top: 0; } }
+.ka-group { margin-top: 32px; }
+.ka-group-t { font: 600 1.0625rem/1.3 var(--f-sans); margin: 0 0 12px; color: var(--text); }
+.ka-group-note { margin: 10px 0 0; font: var(--t-meta); font-weight: 400; color: var(--text2); }
+.ka-item { display: grid; grid-template-columns: 40px 1fr auto; gap: 12px; align-items: center; width: 100%; min-height: 72px; padding: 12px 14px; background: var(--surface); box-shadow: var(--card-shadow); border: 0; border-radius: 18px; color: var(--text) !important; text-decoration: none !important; text-align: left; font: inherit; cursor: pointer; }
+.ka-row + .ka-row { margin-top: 8px; }
+div.ka-item { cursor: default; }
+.ka-item.no-ico { grid-template-columns: 1fr auto auto; }
+.ka-item-i { width: 40px; height: 40px; border-radius: 50%; background: var(--surface2); color: var(--accent-text); display: grid; place-items: center; }
+.ka-item-t { font: var(--t-label); margin: 0; }
+.ka-item-s { font: 400 0.875rem/1.45 var(--f-sans); color: var(--text2); margin: 2px 0 0; }
+.ka-item-go { color: var(--muted); display: inline-flex; }
+.ka-item.is-danger .ka-item-t, .ka-item.is-danger .ka-item-i { color: var(--wrong); }
+.ka-item.is-danger .ka-item-i { background: var(--wrong-light); }
+.ka-item-say { margin: 6px 4px 0; font: var(--t-meta); color: var(--accent-text); }
+.ka-item-say:empty { display: none; }
+.ka-toggle { position: relative; width: 52px; height: 32px; padding: 0; border: 0; border-radius: 16px; background: var(--surface2); box-shadow: inset 0 0 0 1.5px var(--control); cursor: pointer; flex-shrink: 0; }
+.ka-toggle::after { content: ""; position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 50%; background: var(--control); transition: transform .2s var(--ka-ease), background-color .2s; }
+.ka-toggle[aria-checked="true"] { background: var(--btn); box-shadow: none; }
+.ka-toggle[aria-checked="true"]::after { transform: translateX(20px); background: var(--on-btn); }
+.ka-toggle-word { font: 600 0.875rem/1 var(--f-sans); color: var(--text2); min-width: 24px; }
+.ka-security { margin-top: 8px; display: grid; grid-template-columns: 24px 1fr; gap: 12px; padding: 18px; border-radius: 18px; background: var(--raised2); box-shadow: inset 0 0 0 1px var(--border); }
+.ka-security > .ico { color: var(--accent-text); }
+.ka-security ul { display: grid; gap: 8px; font: 400 0.875rem/1.5 var(--f-sans); color: var(--text2); margin: 0; padding: 0; list-style: none; }
+.ka-security li { padding-left: 14px; position: relative; }
+.ka-security li::before { content: ""; position: absolute; left: 0; top: .6em; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+.ka-signout { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: center; }
+.ka-signout p { margin: 0; font: var(--t-meta); font-weight: 400; color: var(--text2); flex: 1 1 14rem; }
+@media (max-width: 39.99em) { .ka-signout .ka-btn { width: 100%; } }
+.ka-acct-note { margin-top: 20px; }
+
+/* Sheets (the app's own dialog holder): forms inside. */
+.ka-dlg { text-align: left; }
+.ka-dlg .ka-form { margin-top: 16px; }
+.ka-dlg-acts { display: grid; gap: 8px; margin-top: 20px; }
+.ka-offer { display: grid; gap: 14px; margin: 16px 0 0; padding: 0; list-style: none; }
+.ka-offer li { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: start; }
+.ka-offer li:first-child { padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+.ka-offer b { display: block; font: var(--t-label); color: var(--text); }
+.ka-offer span span { font: var(--t-small); color: var(--text2); }
+@media (prefers-reduced-motion: reduce) { .ka-busy, .ka-card-act.is-turn .ico, .ka-code:focus-within .ka-cell.is-active::after { animation: none !important; } .ka-btn, .ka-path, .ka-toggle::after { transition: none !important; } }
+/* ── ACCOUNTS END ── */
 </style>
 </head>
 <body>
@@ -14215,6 +14603,7 @@ function switchTab(t, opts) {
   if (t === 'weakspots') renderWeakSpots();
   if (t === 'progress') renderProgress();
   if (t === 'you') renderYou();
+  if (t === 'account') kaRenderAccount();
   if (t === 'plant') renderPlantPage();
   if (t === 'mock') renderMockSetup();
   if (t === 'learn') renderLearnHub();
@@ -14369,6 +14758,8 @@ var NAV_TITLE = {
   plant: 'Your plant'
 };
 function syncNav(t) {
+  // An account screen is covering the app: its own title and address stay.
+  if (KA_ON && ka.view) return;
   var sec = NAV_SECTION[t] || 'today';
   // Screen readers announce the new title, so a page change is not silent.
   document.title = NAV_TITLE[t] ? NAV_TITLE[t] + ' · KaiSip' : 'KaiSip: CISA exam prep that teaches the auditor’s mindset';
@@ -14605,6 +14996,8 @@ function saveDisplayName() {
 }
 // Someone follows or types an address (#glossary, an old #topics link ...).
 window.addEventListener('hashchange', function () {
+  // Accounts: #sign-in, #create-account, #forgot-password, #delete-account (never when accounts are off).
+  if (kaRoute(location.hash)) return;
   var r = navFromHash(location.hash);
   if (!r) return;
   // Plain #principles (Back from a principle opened from the list): the list.
@@ -15048,6 +15441,7 @@ function renderYou() {
   put('youBadges', plantSafe(function () { return pgHerbariumHtml('you'); }));
   youToolsSync();
   youRingWatch();
+  kaPaint();
 }
 // The summary: one sentence for the week, then the next step and the plant.
 // Days: "No study days yet this week" / "1 study day" / "N study days". Focus next is Today's r.focusId; "where you'll gain most" once there
@@ -23465,6 +23859,7 @@ var MR_SHOWN = 5;              // review rows shown before "Show the other …"
 var mrShowAll = {};            // filter -> the learner asked for every row
 var NUM_WORDS = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
 function showMockResults() {
+  kaSyncSoon();   // accounts: a finished mock syncs when the page is next idle
   document.body.setAttribute('data-mock-results', '1');
   mockSetMview('results');
   clearAllTimers();
@@ -23819,6 +24214,8 @@ function closeOnboarding() {
 }
 
 function checkOnboarding() {
+  // Accounts on: the first visit is the welcome choice (study free, or sign in to sync).
+  if (kaWelcomeDue()) { kaShow('welcome'); return; }
   try {
     if (!localStorage.getItem("cisa_onboarded_v6")) {
       setTimeout(function(){ showOnboarding(); }, 300);
@@ -26976,10 +27373,1911 @@ function appCtaInit() {
   }
 }
 
+// ── ACCOUNTS (web sign-in, the account card and the Account page; stream B1
+// of docs/WEB_LAUNCH_PLAN.md) ──
+// Everything below is behind the switch in the page's first script
+// (ACCOUNTS_ON, or the owner's preview note in this browser, on
+// https://kaisip.com only). With it off, kaBoot() returns at once: no
+// element is created, no script is loaded and nothing is sent anywhere.
+//
+// How it fits together:
+// - The sign-in client and the sync engine are assets/kaisip-cloud.js
+//   (compiled from the phone app's own TypeScript, mobile/src/webcloud). It is
+//   loaded only when an account is used: a sign-in screen opens, or this
+//   browser already holds a session. The password word lists
+//   (assets/kaisip-password-words.js) load only when a password form opens,
+//   and Cloudflare's human check only when a form that needs it opens.
+// - The page gives the client two things: kaHost (read and write this
+//   browser's saved progress) and kaBank (which question and note ids the
+//   loaded free sample knows). Sync never runs before the banks and the notes
+//   have loaded, because ids the page can't recognise would be left out.
+// - Screens: kaShow('signin' | 'signup1' | 'signup2' | 'signup3' | 'forgot1'
+//   | 'forgot2' | 'consent' | 'firstsync' | 'welcome'). The account card on
+//   You is kaCardHtml(); the Account page is kaRenderAccount().
+// - Rules kept here: the password is read from its field only when a form is
+//   sent and is never saved or logged; no server text is ever shown (every
+//   error goes through kaWords); sign-out never touches saved progress unless
+//   the learner ticks "remove my progress from this browser".
+var KA_ON = !!(window.KS_ACCT && window.KS_ACCT.enabled);
+// Kept in step with the bundle by mobile/scripts/build-web-plant.mjs (its --check fails on a stale value).
+var KA_CLOUD_SRC = 'assets/kaisip-cloud.js?v=2b4bc1b7eb';
+var KA_WORDS_SRC = 'assets/kaisip-password-words.js';
+// Cloudflare Turnstile, widget "KaiSip sign-in" (a public site key: docs/mobile/ACCOUNTS_BETA_PLAN.md, "Public config values").
+var KA_HUMAN_KEY = '0x4AAAAAAFptlSqMhAvLUI8w';
+var KA_HUMAN_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+// The Terms version a learner agrees to (the client accepts YYYY-MM) and the
+// wording version of the three sign-up boxes (change it whenever their words change).
+var KA_TERMS_VERSION = '2026-11';
+var KA_CONSENT_WORDING = '2026-11-28';
+var KA_NEWS_WORDS = 'Email me study tips and KaiSip news. I can unsubscribe anytime.';
+// New saved keys (none replaces an older one). Session-only: the sign-up boxes
+// while the learner is on their way (they must survive the trip to Google),
+// and what to open after signing in. Kept: the masked email for the "sign in
+// again" card, the guest card's day count, the news choice until the consent
+// API is live.
+var KA_PENDING_KEY = 'kaisip_signup_pending_v1';
+var KA_INTENT_KEY = 'kaisip_acct_intent_v1';
+var KA_HINT_KEY = 'kaisip_acct_hint_v1';
+var KA_CARD_KEY = 'kaisip_acct_card_v1';
+var KA_CONSENT_KEY = 'kaisip_consent_v1';
+// The client's own keys, read here only to know whether to load it at all.
+var KA_SESSION_KEYS = ['kaisip_auth_v1', 'kaisip_auth_ended_v1'];
+
+var ka = {
+  cloud: null,        // the client, once loaded
+  cloudWait: null,    // its loading promise
+  view: '',           // the auth screen showing, or ''
+  email: '',          // the address the sign-up or reset in progress is for (memory only)
+  shared: false,      // "This is a shared computer"
+  busy: false,        // a form is being sent
+  syncBusy: false,
+  syncErr: '',        // '', 'offline', 'error', 'wait' (banks still loading)
+  firstPrep: null,    // the first-sync preview's data
+  user: null,         // { email, providers, passwordSetAt } from the server, for the Account page
+  news: null,         // the news choice, once read
+  said: '',           // the last status said aloud
+  resendAt: 0,        // when a new code may be asked for
+  resendTimer: null,
+  notice: '',         // one calm line shown on the next screen
+  flow: '',           // 'signup' or 'reset': which steps led to "Create a password"
+  setupDue: false,    // signed in, but the agreements or the first sync are still to do
+  pwNeedsCurrent: false,
+  bootHash: '',
+  firstBusy: false
+};
+
+function kaGet(k, session) { try { return (session ? sessionStorage : localStorage).getItem(k); } catch (e) { return null; } }
+function kaSet(k, v, session) { try { (session ? sessionStorage : localStorage).setItem(k, v); return true; } catch (e) { return false; } }
+function kaDel(k, session) { try { (session ? sessionStorage : localStorage).removeItem(k); } catch (e) {} }
+function kaJson(raw) { try { var v = JSON.parse(raw || 'null'); return isPlainObj(v) ? v : null; } catch (e) { return null; } }
+function kaEl(id) { return document.getElementById(id); }
+
+// A script this site (or the human check) serves, loaded once.
+var kaScripts = {};
+function kaLoadScript(src) {
+  if (kaScripts[src]) return kaScripts[src];
+  kaScripts[src] = new Promise(function (resolve, reject) {
+    var s = document.createElement('script');
+    s.src = src;
+    s.async = true;
+    s.onload = function () { resolve(true); };
+    s.onerror = function () { delete kaScripts[src]; if (s.parentNode) s.parentNode.removeChild(s); reject(new Error('load')); };
+    document.head.appendChild(s);
+  });
+  return kaScripts[src];
+}
+
+// ── What the loaded free sample knows (the sync engine's "bank") ──
+var kaQIndex = null;
+var kaNoteIds = null;
+function kaBankReady() {
+  var ok = Object.keys(DI).every(function (d) { return isQBReady(d) && !(window.QB_LOAD_ERROR && window.QB_LOAD_ERROR[d]); });
+  if (!ok || !kaNoteIds) return false;
+  if (!kaQIndex) {
+    var idx = {};
+    Object.keys(QB).forEach(function (d) { (QB[d] || []).forEach(function (q) { if (q && q.id) idx[q.id] = q; }); });
+    kaQIndex = idx;
+  }
+  return true;
+}
+function kaBankWarm() {
+  if (kaNoteIds) return;
+  try {
+    loadConceptsData(function (data) {
+      if (!CISA_NOTES_RAW || CISA_NOTES_RAW.schema_version !== 2 || !data || !Array.isArray(data.domains)) return;
+      var set = {};
+      data.domains.forEach(function (dom) { (dom.groups || []).forEach(function (g) { (g.items || []).forEach(function (it) { if (it && it.id) set[it.id] = true; }); }); });
+      kaNoteIds = set;
+    });
+  } catch (e) {}
+}
+var kaBank = {
+  question: function (id) { return !!(kaQIndex && kaQIndex[id]); },
+  note: function (id) { return !!(kaNoteIds && kaNoteIds[id]); },
+  domain: function (id) { return !!DI[id]; },
+  copy: function (id) { var q = kaQIndex && kaQIndex[id]; return q ? JSON.parse(JSON.stringify(q)) : null; },
+  domainOf: function (id) {
+    var q = kaQIndex && kaQIndex[id];
+    if (q) return String(q.domain);
+    var m = /^d(\d)_/.exec(String(id));
+    return m && DI[m[1]] ? m[1] : null;
+  },
+  domains: Object.keys(DI)
+};
+
+// Sync rewrites the synced fields from the account's copy, which holds only
+// questions this page has loaded. Anything this browser saved for a question
+// that is NOT loaded (study from before the website moved to the free sample)
+// is carried over as it was, with its counts, so a sync never removes it.
+function kaKeepUnknown(cur, next) {
+  var known = kaBank.question;
+  ['answerLog', 'review', 'mistakeLog', 'qNotes'].forEach(function (k) {
+    var a = isPlainObj(cur[k]) ? cur[k] : {}, b = isPlainObj(next[k]) ? next[k] : {}, add = null;
+    Object.keys(a).forEach(function (id) { if (!(id in b) && !known(id)) { add = add || {}; add[id] = a[id]; } });
+    if (add) next[k] = Object.assign(add, b);
+  });
+  ['bookmarks', 'missedQuestions'].forEach(function (k) {
+    var now = Array.isArray(next[k]) ? next[k] : [], have = {};
+    now.forEach(function (q) { if (q && q.id) have[q.id] = true; });
+    var extra = (Array.isArray(cur[k]) ? cur[k] : []).filter(function (q) { return q && q.id && !have[q.id] && !known(q.id); });
+    if (extra.length) next[k] = extra.concat(now);
+  });
+  var log = isPlainObj(cur.answerLog) ? cur.answerLog : {};
+  Object.keys(log).forEach(function (id) {
+    if (known(id) || !isPlainObj(log[id])) return;
+    var t = Math.max(0, Math.floor(Number(log[id].attempts) || 0));
+    var c = Math.min(t, Math.max(0, Math.floor(Number(log[id].correctCount) || 0)));
+    if (!t) return;
+    if (!isPlainObj(next.score)) next.score = { t: 0, c: 0 };
+    next.score.t = (Number(next.score.t) || 0) + t;
+    next.score.c = (Number(next.score.c) || 0) + c;
+    var d = kaBank.domainOf(id);
+    if (d && isPlainObj(next.ds) && isPlainObj(next.ds[d])) {
+      next.ds[d].t = (Number(next.ds[d].t) || 0) + t;
+      next.ds[d].c = (Number(next.ds[d].c) || 0) + c;
+    }
+  });
+  return next;
+}
+
+// ── This browser as a sync device (the client's WebHost) ──
+var kaHost = {
+  readWeb: function () {
+    try { saveState({ quiet: true }); } catch (e) {}
+    var p = getProfiles()[getActiveProfileId()];
+    return p && isPlainObj(p.state) ? JSON.parse(JSON.stringify(p.state)) : {};
+  },
+  writeWeb: function (next) {
+    var id = getActiveProfileId();
+    var profiles = getProfiles();
+    if (!id || !profiles[id] || !isPlainObj(next)) throw new Error('no record');
+    next = kaKeepUnknown(isPlainObj(profiles[id].state) ? profiles[id].state : {}, next);
+    profiles[id].state = next;
+    profiles[id].totalAnswered = isPlainObj(next.score) ? Number(next.score.t) || 0 : 0;
+    profiles[id].lastActive = Date.now();
+    var revBefore = heldRev;
+    stampRecord(profiles[id], id);
+    try {
+      localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
+    } catch (e) {
+      heldRev = revBefore;   // nothing was written: the sync cycle stops here
+      throw e;
+    }
+    // The page now shows what was saved.
+    cancelSaveSoon();
+    loadState();
+    try { buildQueues(); updateStats(); } catch (e2) {}
+    kaRedrawPage();
+  },
+  examDate: function () { var d = savedExamDate(); return /^\d{4}-\d{2}-\d{2}$/.test(d) ? d : null; },
+  setExamDate: function (day) {
+    try {
+      if (day && /^\d{4}-\d{2}-\d{2}$/.test(day)) localStorage.setItem('aurivan_exam_date', day);
+      else localStorage.removeItem('aurivan_exam_date');
+    } catch (e) {}
+    try { updateHeaderCountdown(); renderYouExamDate(); } catch (e2) {}
+  },
+  // A question, a mock or a set is open: a pull waits until it is over.
+  busy: function () {
+    try {
+      var pf = kaEl('practiceFocus');
+      if (pf && !pf.hidden) return true;
+      return S.activeTab === 'mock' && isMockInProgress() && !!S.mockTotalTimerInt;
+    } catch (e) { return false; }
+  }
+};
+// After a sync changed the saved progress: draw the page in view again,
+// unless the learner is typing in it (it redraws at the next page change).
+function kaRedrawPage() {
+  try {
+    if (ka.view) return;
+    var a = document.activeElement;
+    if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
+    if (S.activeTab === 'account') { kaRenderAccount(); return; }
+    switchTab(S.activeTab, { noScroll: true });
+  } catch (e) {}
+}
+
+// ── The client ──
+function kaGetCloud() {
+  if (ka.cloud) return Promise.resolve(ka.cloud);
+  if (ka.cloudWait) return ka.cloudWait;
+  ka.cloudWait = kaLoadScript(KA_CLOUD_SRC).then(function () {
+    var K = window.KaiSipCloud;
+    if (!K || typeof K.create !== 'function') throw new Error('client');
+    var B = K.browser;
+    ka.cloud = K.create({
+      fetch: function (url, init) {
+        var o = { method: init.method, headers: init.headers, credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' };
+        if (init.body !== undefined) o.body = init.body;
+        if (init.keepalive) o.keepalive = true;
+        return window.fetch(url, o);
+      },
+      stores: { local: B.browserStorage(function () { return window.localStorage; }), session: B.browserStorage(function () { return window.sessionStorage; }) },
+      random: B.browserRandom(window.crypto),
+      lock: B.browserLocks(navigator.locks),
+      clock: B.browserClock,
+      gzip: { CompressionStream: window.CompressionStream, DecompressionStream: window.DecompressionStream, ReadableStream: window.ReadableStream },
+      host: kaHost,
+      bank: kaBank,
+      passwordWords: kaLoadWords,
+      sha1Hex: B.browserSha1Hex(window.crypto.subtle)
+    });
+    kaBankWarm();
+    return ka.cloud;
+  }).catch(function (e) { ka.cloudWait = null; throw e; });
+  return ka.cloudWait;
+}
+// The password rules' word lists: fetched when a password form opens.
+function kaLoadWords() {
+  var K = window.KaiSipCloud;
+  return kaLoadScript(KA_WORDS_SRC + '?v=' + encodeURIComponent(K.passwordWordsRef)).then(function () {
+    var w = window.KaiSipPasswordWords && window.KaiSipPasswordWords.words;
+    if (!w) throw new Error('words');
+    return { short: w.PASSWORD_SHORT_LIST, dict: w.PASSWORD_DICT_LIST, local: w.PASSWORD_LOCAL_LIST, names: w.PASSWORD_NAMES_LIST };
+  });
+}
+// The live helper needs them too: asked once, quietly (a failure only means
+// the helper checks length alone; the client still refuses to save without them).
+var kaWordsAsked = false;
+function kaWarmWords() {
+  if (kaWordsAsked) return;
+  kaWordsAsked = true;
+  kaGetCloud().then(function () {
+    var R = window.KaiSipCloud.passwordRules;
+    if (R.passwordWordsLoaded()) return null;
+    return kaLoadWords().then(function (lists) { R.loadPasswordWords(lists); kaPwHelp(); });
+  }).catch(function () { kaWordsAsked = false; });
+}
+function kaAccount() {
+  try { return ka.cloud ? ka.cloud.auth.current() : null; } catch (e) { return null; }
+}
+function kaEnded() {
+  try { return ka.cloud ? ka.cloud.auth.sessionEnded() : null; } catch (e) { return null; }
+}
+
+// ── Errors, in words. No server text ever reaches the page. ──
+var KA_WORDS = {
+  offline: 'You’re offline. Connect to the internet and try again. Your progress stays in this browser.',
+  server: 'Something went wrong on our side. Nothing was changed. Try again in a little while.',
+  signin: 'Email or password is incorrect. Check them and try again, or reset your password.',
+  email: 'That email address doesn’t look right. Check it and try again.',
+  code: 'That code didn’t work. Check the 8 digits, or ask for a new code. Codes work for 10 minutes.',
+  human: 'The human check didn’t finish. Please try again.',
+  paused: 'New accounts are paused for the moment. Please try again later.',
+  google: 'Google sign-in didn’t finish. Please start it again.',
+  reauth: 'For your security, sign in again first, then try once more.',
+  signedout: 'Your sign-in has ended. Please sign in again.',
+  current: 'That isn’t your current password. Check it and try again.',
+  same: 'That is already your password. Choose a different one.'
+};
+function kaWords(e) {
+  var code = e && typeof e.code === 'string' ? e.code : 'server';
+  var detail = e && typeof e.detail === 'string' ? e.detail : '';
+  if (code === 'offline') {
+    if (detail === 'password_rules') return kaGuide('password_rules') || KA_WORDS.offline;
+    return KA_WORDS.offline;
+  }
+  if (code === 'rate_limited') {
+    var s = Number(e.retryAfterSec);
+    return 'Too many tries just now. Please wait ' + (s > 0 && s <= 3600 ? (s < 90 ? s + ' seconds' : Math.ceil(s / 60) + ' minutes') : 'a minute') + ' and try again.';
+  }
+  if (code === 'reauth_required') return KA_WORDS.reauth;
+  if (code === 'unauthorized') return KA_WORDS.signedout;
+  if (code === 'invalid') {
+    if (detail === 'password_wrong') return KA_WORDS.signin;
+    if (detail === 'email') return KA_WORDS.email;
+    if (detail === 'code_wrong') return KA_WORDS.code;
+    if (detail === 'captcha') return KA_WORDS.human;
+    if (detail === 'signup_disabled') return KA_WORDS.paused;
+    if (detail === 'oauth') return KA_WORDS.google;
+    if (detail === 'password_current_wrong' || detail === 'password_current_needed') return KA_WORDS.current;
+    if (detail === 'password_same') return KA_WORDS.same;
+    if (detail.indexOf('password_') === 0) return kaGuide(detail) || KA_WORDS.server;
+  }
+  return KA_WORDS.server;
+}
+// The reason and the guidance for a refused password (the shared rules' own words).
+function kaGuide(problem) {
+  try {
+    var g = window.KaiSipCloud.passwordRules.passwordGuidance(problem);
+    return g ? g.text : '';
+  } catch (e) { return ''; }
+}
+
+// ── The human check (Cloudflare Turnstile) ──
+// Loaded only when a form that needs it opens (sign-up, password sign-in,
+// reset). The widget shows itself only if it needs the learner. If it can't
+// load, the form is still sent: the server decides, and its refusal reads as
+// "The human check didn't finish".
+var kaHuman = { wait: null, id: null, token: '', waiters: [], failed: false };
+function kaHumanMount(action) {
+  var slot = kaEl('kaHuman');
+  kaHuman.id = null; kaHuman.token = ''; kaHuman.failed = false; kaHuman.waiters = [];
+  if (!slot) return;
+  if (!kaHuman.wait) kaHuman.wait = kaLoadScript(KA_HUMAN_SRC).catch(function () { kaHuman.wait = null; throw new Error('human'); });
+  var view = ka.view;
+  kaHuman.wait.then(function () {
+    if (ka.view !== view || !kaEl('kaHuman') || !window.turnstile) return;
+    var done = function (t) { kaHuman.token = t || ''; kaHuman.waiters.splice(0).forEach(function (w) { w(kaHuman.token); }); };
+    kaHuman.id = window.turnstile.render(kaEl('kaHuman'), {
+      sitekey: KA_HUMAN_KEY,
+      action: action,
+      theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light',
+      size: 'flexible',
+      appearance: 'interaction-only',
+      callback: function (t) { done(t); },
+      'expired-callback': function () { kaHuman.token = ''; },
+      'error-callback': function () { kaHuman.failed = true; done(''); return true; }
+    });
+  }).catch(function () { kaHuman.failed = true; });
+}
+// The token for this send (asked for again after each try: a token works once).
+function kaHumanToken() {
+  if (kaHuman.token) { var t = kaHuman.token; kaHuman.token = ''; return Promise.resolve(t); }
+  if (kaHuman.failed || !kaEl('kaHuman')) return Promise.resolve(undefined);
+  return new Promise(function (resolve) {
+    var settled = false;
+    var end = function (t) { if (settled) return; settled = true; if (t) kaHuman.token = ''; resolve(t || undefined); };
+    kaHuman.waiters.push(end);
+    setTimeout(function () { end(''); }, 12000);
+  });
+}
+function kaHumanReset() {
+  kaHuman.token = '';
+  try { if (kaHuman.id !== null && window.turnstile) window.turnstile.reset(kaHuman.id); } catch (e) {}
+}
+
+// ── Consent (the sign-up boxes) ──
+// The Terms and "16 or older" are saved by the client (acceptTerms), which the
+// first sync needs. The news choice, with its wording version and time, goes
+// through this small adapter.
+// TODO(consent-api): the consent API is being built by the database engineer.
+// When it lands, give the page window.KaiSipConsentApi = { saveConsent(cloud,
+// record), readConsent(cloud) } (or replace the two bodies below). Until
+// then the choice is kept in this browser only, marked `pending`, so it can
+// be sent once the API exists. No table or column is named here on purpose.
+var kaConsent = {
+  record: function (news) {
+    return { termsAccepted: true, ageConfirmed: true, marketingOptIn: news === true, wordingVersion: KA_CONSENT_WORDING, termsVersion: KA_TERMS_VERSION, at: new Date().toISOString() };
+  },
+  tag: function (cloud) {
+    var a = cloud.auth.current();
+    if (!a || !window.crypto || !window.crypto.subtle) return Promise.resolve('');
+    return window.crypto.subtle.digest('SHA-256', new TextEncoder().encode('kaisip-consent:' + a.userId)).then(function (buf) {
+      return Array.prototype.map.call(new Uint8Array(buf).subarray(0, 8), function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+    });
+  },
+  saveConsent: function (cloud, rec) {
+    var api = window.KaiSipConsentApi;
+    if (api && typeof api.saveConsent === 'function') return Promise.resolve(api.saveConsent(cloud, rec));
+    return kaConsent.tag(cloud).then(function (tag) {
+      kaSet(KA_CONSENT_KEY, JSON.stringify({ who: tag, marketingOptIn: rec.marketingOptIn === true, wordingVersion: rec.wordingVersion, termsVersion: rec.termsVersion, at: rec.at, pending: true }));
+      return rec;
+    });
+  },
+  readConsent: function (cloud) {
+    var api = window.KaiSipConsentApi;
+    if (api && typeof api.readConsent === 'function') return Promise.resolve(api.readConsent(cloud));
+    return kaConsent.tag(cloud).then(function (tag) {
+      var v = kaJson(kaGet(KA_CONSENT_KEY));
+      return v && v.who === tag ? v : null;
+    });
+  }
+};
+// Saves the agreements for the account now signed in. Throws the client's error.
+function kaConsentCommit(cloud, rec) {
+  return cloud.auth.acceptTerms({ termsVersion: KA_TERMS_VERSION, ageConfirmed: true }).then(function () {
+    return kaConsent.saveConsent(cloud, rec);
+  }).then(function () {
+    ka.news = rec.marketingOptIn === true;
+    kaDel(KA_PENDING_KEY, true);
+  });
+}
+
+// ── Sync ──
+// Runs after the banks load, when the page is hidden, after a set or a mock
+// ends (the next time the page is idle), at most every 10 minutes, and on
+// "Sync now". One cycle at a time across tabs (the client's own lock).
+var KA_SYNC_EVERY_MS = 10 * 60000;
+var kaSyncTimer = null;
+function kaSyncNow(manual) {
+  var cloud = ka.cloud;
+  if (!cloud || !kaAccount() || ka.syncBusy) return Promise.resolve();
+  var meta = cloud.device.meta();
+  if (!meta.enabled) { kaPaint(); return Promise.resolve(); }
+  if (!kaBankReady()) { ka.syncErr = 'wait'; kaBankWarm(); kaPaint(); return Promise.resolve(); }
+  ka.syncBusy = true;
+  kaPaint();
+  var t0 = Date.now();
+  return cloud.syncNow().catch(function () { return { kind: 'failed', code: 'server' }; }).then(function (r) {
+    // "Syncing…" stays for at least 600 ms, so the change can be read.
+    return new Promise(function (res) { setTimeout(function () { res(r); }, manual ? Math.max(0, 600 - (Date.now() - t0)) : 0); });
+  }).then(function (r) {
+    ka.syncBusy = false;
+    ka.syncErr = '';
+    if (r.kind === 'failed') {
+      if (r.code === 'offline') ka.syncErr = 'offline';
+      else if (r.code === 'invalid' && r.detail === 'terms') { ka.syncErr = 'error'; if (manual) kaShow('consent'); }
+      else if (r.code !== 'unauthorized') ka.syncErr = 'error';
+    }
+    kaPaint(true);
+  });
+}
+function kaSyncSoon() {
+  if (!KA_ON || !ka.cloud || !kaAccount()) return;
+  if (window.requestIdleCallback) window.requestIdleCallback(function () { kaSyncNow(false); }, { timeout: 4000 });
+  else setTimeout(function () { kaSyncNow(false); }, 1500);
+}
+// What the account card and the Account page say. One word per state.
+function kaState() {
+  var acct = kaAccount();
+  if (!acct) return kaEnded() || (!ka.cloud && kaGet('kaisip_auth_ended_v1')) ? 'expired' : 'guest';
+  var cloud = ka.cloud;
+  try { if (cloud.auth.passwordNeeded()) return 'needpw'; } catch (e) {}
+  var meta = cloud.device.meta();
+  if (cloud.accountChanged()) return 'setup';
+  if (!meta.enabled) return ka.firstPrep || ka.setupDue ? 'setup' : 'off';
+  if (ka.syncBusy) return 'syncing';
+  if (meta.pausedReason) return 'paused';
+  if (ka.syncErr === 'offline') return 'offline';
+  if (ka.syncErr === 'error') return 'error';
+  return 'synced';
+}
+function kaSyncedWords(long) {
+  var at = null;
+  try { at = ka.cloud.device.meta().lastSyncAt; } catch (e) {}
+  if (!at) return long ? 'Not synced yet' : 'Sync is on';
+  var now = Date.now(), mins = Math.floor((now - at) / 60000);
+  var d = new Date(at);
+  var time = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  if (mins < 1) return long ? 'Last synced just now' : 'Synced just now';
+  if (mins < 60) return long ? 'Last synced ' + mins + (mins === 1 ? ' minute' : ' minutes') + ' ago, at ' + time : 'Synced ' + mins + ' min ago';
+  if (isoLocalDate(d) === isoLocalDate(new Date(now))) return (long ? 'Last synced today at ' : 'Synced today at ') + time;
+  var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return (long ? 'Last synced ' : 'Synced ') + d.getDate() + ' ' + MON[d.getMonth()];
+}
+// The status line in words (the card's second line).
+function kaStateWords(st) {
+  if (st === 'syncing') return 'Syncing…';
+  if (st === 'offline') return 'Waiting for a connection';
+  if (st === 'error') return 'Couldn’t sync just now';
+  if (st === 'expired') return 'Please sign in again to keep syncing';
+  if (st === 'paused') return 'Sync is paused. Refresh the page to keep syncing.';
+  if (st === 'off') return 'Sync is off';
+  if (st === 'setup') return 'One step left to turn sync on';
+  if (st === 'needpw') return 'Finish creating your password';
+  if (st === 'synced') return ka.syncErr === 'wait' ? 'Sync is on' : kaSyncedWords(false);
+  return '';
+}
+// Redraws every place the account shows; `say` announces a changed status once, politely.
+function kaPaint(say) {
+  if (!KA_ON) return;
+  try { kaCardDraw(); } catch (e) {}
+  try { kaRailDraw(); } catch (e) {}
+  try { if (S.activeTab === 'account' && !ka.view) kaAccountHero(); } catch (e) {}
+  if (!say) return;
+  var st = kaState();
+  var words = st === 'synced' || st === 'error' || st === 'offline' || st === 'expired' || st === 'paused' ? kaStateWords(st) : '';
+  var live = kaEl('kaSay');
+  if (live && words && words !== ka.said) { ka.said = words; live.textContent = ''; setTimeout(function () { live.textContent = words; }, 60); }
+}
+
+// ── Screen parts ──
+var KA_ICONS = {
+  lock: '<rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>',
+  mail: '<rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/>',
+  sync: '<path d="M20 11a8 8 0 0 0-14.3-4.3L4 9"/><path d="M4 4v5h5"/><path d="M4 13a8 8 0 0 0 14.3 4.3L20 15"/><path d="M20 20v-5h-5"/>',
+  download: '<path d="M12 4v11M7 10.5l5 5 5-5"/><path d="M4.5 19.5h15"/>',
+  trash: '<path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/>',
+  out: '<path d="M14 4.5h4.5v15H14"/><path d="M10 8l-4 4 4 4M6 12h10"/>',
+  shield: '<path d="M12 3.5l7 2.8v5.2c0 4.4-3 7.8-7 9-4-1.2-7-4.6-7-9V6.3Z"/><path d="M9 12l2.2 2.2L15.5 10"/>',
+  alert: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5.5"/><path d="M12 16.3h.01"/>',
+  phone: '<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/>',
+  laptop: '<rect x="4.5" y="5" width="15" height="10.5" rx="1.5"/><path d="M2.5 19h19"/>',
+  key: '<circle cx="8" cy="15" r="3.5"/><path d="M10.5 12.5 19 4M16 7l2.5 2.5M14 9l2 2"/>',
+  cloudoff: '<path d="M4 4l16 16"/><path d="M7.5 8.2A5 5 0 0 0 4 13a4.5 4.5 0 0 0 4.5 4.5h8"/><path d="M19.6 16.4A3.8 3.8 0 0 0 17.5 9.6h-.9A6 6 0 0 0 10.5 6"/>',
+  okcircle: '<circle cx="12" cy="12" r="8.5"/><path d="m8.5 12.3 2.4 2.4 4.6-5"/>',
+  undo: '<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>'
+};
+function kaIco(name, size) {
+  if (!KA_ICONS[name]) return ico(name, size || 20);
+  size = size || 20;
+  return '<svg class="ico" width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + KA_ICONS[name] + '</svg>';
+}
+var kaUid = 0;
+// The header's lockup again (a fresh mask id, so no two copies share one).
+function kaLockup() {
+  var lock = document.querySelector('header .brand-lockup');
+  return lock ? lock.outerHTML.replace(/kslr/g, 'kslka' + (++kaUid)).replace(/role="img" aria-label="KaiSip"/, 'aria-hidden="true" focusable="false"').replace(/<title>.*?<\/title>/, '') : '';
+}
+// A procedural frond for the forest panels: a curved stem with paired leaves.
+function kaFrond(x, y, len, rot, leaves, sap) {
+  var d = '', cx = len * 0.18;
+  d += '<path d="M0 0 Q' + cx.toFixed(1) + ' ' + (-len / 2).toFixed(1) + ' 0 ' + (-len) + '"/>';
+  for (var i = 1; i <= leaves; i++) {
+    var t = i / (leaves + 1), py = -len * t, px = Math.sin(t * Math.PI) * cx * 0.5, s = (1 - t * 0.7) * len * 0.22;
+    var f = function (n) { return n.toFixed(1); };
+    d += '<path d="M' + f(px) + ' ' + f(py) + ' q' + f(s * 0.5) + ' ' + f(-s * 0.15) + ' ' + f(s) + ' ' + f(-s * 0.55) + ' q' + f(-s * 0.55) + ' ' + f(-s * 0.05) + ' ' + f(-s) + ' ' + f(s * 0.55) + 'Z"/>';
+    d += '<path d="M' + f(px) + ' ' + f(py) + ' q' + f(-s * 0.5) + ' ' + f(-s * 0.15) + ' ' + f(-s) + ' ' + f(-s * 0.55) + ' q' + f(s * 0.55) + ' ' + f(-s * 0.05) + ' ' + f(s) + ' ' + f(s * 0.55) + 'Z"/>';
+  }
+  return '<g' + (sap ? ' class="ka-sap"' : '') + ' transform="translate(' + x + ' ' + y + ') rotate(' + rot + ')">' + d + '</g>';
+}
+function kaFronds(w, h, set) {
+  return '<svg class="ka-fronds" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">'
+    + set.map(function (a) { return kaFrond(a[0], a[1], a[2], a[3], a[4], a[5]); }).join('') + '</svg>';
+}
+var KA_ART = {
+  signin: ['Your progress, on every device you study on.', 'Sign in here, carry on in the Android app.'],
+  signup1: ['Three short steps. Then your study travels with you.', 'Email, a code, a password. That’s all.'],
+  signup2: ['One code, so we know the inbox is yours.', 'It only confirms your email. It never signs you in on its own.'],
+  signup3: ['Long beats complex.', 'A few everyday words you can picture make a strong password.'],
+  forgot: ['Back in, in a minute.', 'A reset code, a new password, and you are studying again.'],
+  sync: ['Nothing you’ve answered is lost.', 'Combining only adds: your best results are kept.']
+};
+function kaArt(key) {
+  var a = KA_ART[key] || KA_ART.signin;
+  var syncCard = '<div class="ka-sync-card"><p class="ka-sync-k">What an account keeps in step</p>'
+    + '<div class="ka-sync-row"><span class="ka-sync-dev">' + kaIco('laptop', 18) + 'This browser</span><span class="ka-vine"></span><span class="ka-sync-dev">' + kaIco('phone', 18) + 'Android app</span></div>'
+    + '<ul class="ka-sync-list"><li>Answers and missed questions</li><li>Saved questions and your notes</li><li>Notes read and mock results</li></ul></div>';
+  var facts = '<ul class="ka-art-facts"><li>Studying never needs an account</li><li>Codes by email, never sign-in links</li><li>Sign-ins end after 30 days</li></ul>';
+  return '<div class="ka-panel">' + kaFronds(600, 900, [[470, 930, 520, -14, 9], [560, 960, 380, 18, 7], [90, 980, 300, -28, 6], [380, 980, 240, 8, 5, true]])
+    + '<div><p class="ka-art-title">' + a[0] + '</p><p class="ka-art-quote">' + a[1] + '</p></div>'
+    + (key === 'signin' || key === 'forgot' || key === 'sync' ? syncCard : facts) + '</div>';
+}
+function kaNewTab(href, text) {
+  return '<a href="' + href + '" target="_blank" rel="noopener noreferrer">' + text + '<span class="sr-only"> (opens in a new tab)</span></a>';
+}
+function kaShell(key, body) {
+  return '<div class="ka-auth">'
+    + '<header class="ka-topbar"><a class="ka-brand" href="#today" aria-label="KaiSip, back to studying" onclick="event.preventDefault();kaGoApp(\'home\')">' + kaLockup() + '</a>'
+    + '<a class="ka-toplink" href="#today" onclick="event.preventDefault();kaGoApp(\'home\')">Study without an account ' + ico('arrow-right', 16) + '</a></header>'
+    + '<aside class="ka-art" aria-hidden="true">' + kaArt(key) + '</aside>'
+    + '<main class="ka-main"><div class="ka-form-col">' + body + '</div>'
+    + '<footer class="ka-foot">' + kaNewTab('terms.html', 'Terms') + kaNewTab('privacy.html', 'Privacy') + kaNewTab('support.html', 'Help')
+    + '<span>Not affiliated with or endorsed by ISACA</span></footer></main></div>';
+}
+function kaErrorHtml(words) {
+  return words ? kaIco('alert', 18) + '<span>' + escapeHtml(words) + '</span>' : '';
+}
+function kaField(o) {
+  return '<div class="ka-field"><div class="ka-field-top"><label class="ka-label" for="' + o.id + '">' + o.label + '</label>' + (o.aside || '') + '</div>'
+    + '<div class="ka-input-wrap"><input class="ka-input' + (o.reveal ? ' has-reveal' : '') + '" id="' + o.id + '" name="' + o.name + '" type="' + o.type + '" autocomplete="' + o.ac + '"'
+    + ' autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="' + o.id + 'E' + (o.describedby ? ' ' + o.describedby : '') + '"'
+    + (o.value ? ' value="' + escapeHtml(o.value) + '"' : '') + (o.oninput ? ' oninput="' + o.oninput + '"' : '') + ' required>'
+    + (o.reveal ? '<button type="button" class="ka-reveal" aria-controls="' + o.id + '" onclick="kaReveal(this)">' + (o.type === 'text' ? 'Hide' : 'Show') + '<span class="sr-only"> password</span></button>' : '')
+    + '</div><p class="ka-error" id="' + o.id + 'E" role="alert"></p>' + (o.after || '') + '</div>';
+}
+function kaReveal(btn) {
+  var inp = kaEl(btn.getAttribute('aria-controls'));
+  if (!inp) return;
+  var show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.firstChild.nodeValue = show ? 'Hide' : 'Show';
+}
+function kaCheck(id, html, optional) {
+  return '<label class="ka-check" for="' + id + '"><input type="checkbox" id="' + id + '"' + (optional ? '' : ' aria-required="true"') + ' onchange="kaSetError(\'kaConsentE\', \'\')">'
+    + '<span class="ka-box" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4.5 13.2 9.4 18 19.5 6.2"/></svg></span>'
+    + '<span>' + html + (optional ? ' <span class="ka-opt">Optional</span>' : '') + '</span></label>';
+}
+// The three sign-up boxes. The two without a tag are required; the news box is separate, optional and never pre-ticked.
+function kaConsentHtml() {
+  return '<fieldset class="ka-consent"><legend class="sr-only">Agreements</legend>'
+    + kaCheck('kaTerms', 'I agree to the ' + kaNewTab('terms.html', 'Terms') + ' and ' + kaNewTab('privacy.html', 'Privacy Policy'))
+    + kaCheck('kaAge', 'I’m 16 or older')
+    + kaCheck('kaNews', escapeHtml(KA_NEWS_WORDS), true)
+    + '<p class="ka-error" id="kaConsentE" role="alert"></p></fieldset>';
+}
+function kaConsentRead() {
+  var t = kaEl('kaTerms'), a = kaEl('kaAge'), n = kaEl('kaNews');
+  if (!t || !a || !t.checked || !a.checked) {
+    kaSetError('kaConsentE', 'Tick both agreements to continue.');
+    var first = t && !t.checked ? t : a;
+    if (first) { try { first.focus(); } catch (e) {} }
+    return null;
+  }
+  return kaConsent.record(!!(n && n.checked));
+}
+function kaSteps(cur) {
+  var names = ['Email', 'Confirm', 'Password'];
+  return '<div class="ka-steps"><p class="ka-steps-count">Step ' + cur + ' of 3</p><ol aria-label="Create account progress">' + names.map(function (n, i) {
+    var st = i + 1 < cur ? 'done' : i + 1 === cur ? 'current' : 'todo';
+    var mark = st === 'done'
+      ? '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="ka-tick" d="M4.5 13.2 9.4 18 19.5 6.2"/></svg>'
+      : '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="ka-leaf" d="M4 20 C4 10 10 4 20 4 C20 14 14 20 4 20Z"/><path class="ka-rib" d="M4 20 L14 10"/></svg>';
+    return '<li class="ka-step is-' + st + '"' + (st === 'current' ? ' aria-current="step"' : '') + '>' + mark + '<span>' + n + (st === 'done' ? '<span class="sr-only">, done</span>' : '') + '</span></li>';
+  }).join('') + '</ol></div>';
+}
+// One input for the whole code, so paste and one-time-code autofill work; the cells are its picture.
+function kaCodeField() {
+  var cells = '';
+  for (var g = 0; g < 2; g++) {
+    cells += '<span class="ka-code-grp">';
+    for (var i = 0; i < 4; i++) cells += '<span class="ka-cell" data-i="' + (g * 4 + i) + '"></span>';
+    cells += '</span>' + (g === 0 ? '<span class="ka-code-sep"></span>' : '');
+  }
+  return '<div class="ka-field"><div class="ka-field-top"><label class="ka-label" for="kaCode">8-digit code</label></div>'
+    + '<div class="ka-code" id="kaCodeBox"><div class="ka-code-cells" aria-hidden="true">' + cells + '</div>'
+    + '<input class="ka-code-input" id="kaCode" name="code" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" maxlength="8" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="kaCodeE" required'
+    + ' oninput="kaCodeDraw()" onpaste="kaCodePaste(event)" onfocus="kaCodeDraw()" onkeyup="kaCodeDraw()" onclick="kaCodeDraw()"></div>'
+    + '<p class="ka-error" id="kaCodeE" role="alert"></p></div>';
+}
+function kaCodeDraw() {
+  var inp = kaEl('kaCode'), box = kaEl('kaCodeBox');
+  if (!inp || !box) return;
+  var v = inp.value.replace(/\D/g, '').slice(0, 8);
+  if (v !== inp.value) inp.value = v;
+  // The caret always sits at the end: the cells show one value, typed left to right.
+  try { inp.setSelectionRange(v.length, v.length); } catch (e) {}
+  box.querySelectorAll('.ka-cell').forEach(function (c) {
+    var i = Number(c.getAttribute('data-i'));
+    c.textContent = v[i] || '';
+    c.classList.toggle('is-filled', !!v[i]);
+    c.classList.toggle('is-active', i === Math.min(v.length, 7));
+  });
+  box.classList.toggle('is-full', v.length === 8);
+  if (v.length) { box.classList.remove('has-error'); }
+}
+// A pasted code may carry spaces or a dash ("1234 5678"): only its digits are kept.
+function kaCodePaste(e) {
+  var text = '';
+  try { text = (e.clipboardData || window.clipboardData).getData('text') || ''; } catch (ex) { return; }
+  var digits = text.replace(/\D/g, '').slice(0, 8);
+  if (!digits) return;
+  e.preventDefault();
+  e.target.value = digits;
+  kaCodeDraw();
+}
+// The sprig: one leaf per three characters, a bud from 20.
+function kaSprig(len, strong) {
+  var grown = Math.min(6, Math.floor(len / 3)), leaves = '';
+  for (var i = 0; i < 6; i++) {
+    var y = 62 - i * 9.5;
+    var d = i % 2 === 0 ? 'M24 ' + y + ' q-6 -2 -12 -9 q8 -1 12 9Z' : 'M24 ' + y + ' q6 -2 12 -9 q-8 -1 -12 9Z';
+    leaves += '<path class="' + (i < grown ? 'is-on' : 'is-off') + '" d="' + d + '"/>';
+  }
+  return '<svg class="ka-sprig" viewBox="0 0 48 72" aria-hidden="true" focusable="false"><path class="ka-stem" d="M24 70 C24 50 23 30 24 6"/>'
+    + '<path class="ka-stem-grown" d="M24 70 C24 50 23 30 24 6" pathLength="100" style="stroke-dasharray:' + Math.min(100, Math.round(len / 20 * 100)) + ' 100"/>'
+    + leaves + (strong ? '<circle class="ka-bud" cx="24" cy="5" r="3.2"/>' : '') + '</svg>';
+}
+// The live helper under a new password. No rule about character types and no
+// example password: length first, then the shared rules' own guidance when
+// they would refuse it. Said aloud only when the state changes, not per key.
+var kaPwState = '';
+function kaPwHelp() {
+  var inp = kaEl('kaPw'), box = kaEl('kaPwHelp');
+  if (!inp || !box) return;
+  var v = inp.value, len = Array.from(v).length, problem = '';
+  try {
+    var R = window.KaiSipCloud.passwordRules;
+    len = R.passwordLength(v);
+    if (v) {
+      var a = R.assessPassword(v, { email: ka.email || null });
+      problem = a.problems.filter(function (p) { return p !== 'too_short'; })[0] || '';
+    }
+  } catch (e) {}
+  var st = problem ? 'refused' : len < 15 ? 'short' : len < 20 ? 'ok' : 'strong';
+  var head = st === 'refused' ? 'This one would be refused'
+    : st === 'short' ? (15 - len) + (15 - len === 1 ? ' more character to go' : ' more characters to go')
+    : st === 'ok' ? 'Long enough. A word or two more makes it stronger.' : 'Long and hard to guess. Nicely done.';
+  var sub = st === 'refused' ? kaGuide(problem)
+    : st === 'short' ? 'Three or four ordinary words with spaces are easy to remember.'
+    : st === 'ok' ? 'Spaces are fine. Everyday words you can picture work best.'
+    : 'Long and memorable beats short and complex. Your password manager can save it too.';
+  box.innerHTML = '<div>' + kaSprig(st === 'refused' ? 0 : len, st === 'strong') + '</div><div>'
+    + '<p class="ka-pw-head">' + (st === 'ok' || st === 'strong' ? ico('check', 18) : '') + '<span>' + escapeHtml(head) + '</span></p>'
+    + '<p class="ka-pw-count">' + len + (len === 1 ? ' character' : ' characters') + ' · at least 15</p>'
+    + '<p class="ka-pw-sub">' + escapeHtml(sub) + '</p></div>';
+  var key = st + (st === 'refused' ? ':' + problem : '');
+  if (key !== kaPwState) {
+    kaPwState = key;
+    var say = kaEl('kaPwSay');
+    if (say) say.textContent = st === 'short' ? 'At least 15 characters. ' + head + '.' : head + (st === 'refused' ? '. ' + sub : '');
+  }
+}
+function kaNewPasswordField(label) {
+  kaPwState = '';
+  return '<input type="email" class="sr-only" name="email" autocomplete="username" tabindex="-1" aria-hidden="true" readonly value="' + escapeHtml(ka.email || '') + '">'
+    + kaField({ id: 'kaPw', name: 'new-password', label: label || 'New password', type: 'text', ac: 'new-password', reveal: true, describedby: 'kaPwHelp', oninput: 'kaPwHelp()',
+      after: '<div class="ka-pw" id="kaPwHelp"></div><p class="sr-only" id="kaPwSay" role="status" aria-live="polite"></p>' });
+}
+function kaGoogleBtn(label, onclick) {
+  // Google's "G" mark is not in assets/ yet, so the button is words only (Google's
+  // branding rules ask for their own mark file, never a redrawn one).
+  return '<button type="button" class="ka-btn ka-btn-google" onclick="' + onclick + '">' + label + '</button>';
+}
+function kaNoticeHtml() {
+  var n = ka.notice;
+  ka.notice = '';
+  return '<div class="ka-alert" id="kaNotice" role="status"' + (n ? '' : ' hidden') + '>' + kaIco('alert', 20) + '<span>' + escapeHtml(n) + '</span></div>';
+}
+function kaResendHtml(label) {
+  return '<div class="ka-resend"><p>Nothing yet? Check your spam folder. <span id="kaResendWait"></span></p>'
+    + '<button type="button" class="ka-linkbtn" id="kaResend" onclick="kaResend()">' + label + '</button>'
+    + '<p class="ka-hint" id="kaResendSay" role="status"></p></div>';
+}
+
+// ── The screens ──
+var KA_TITLES = { signin: 'Sign in', signup1: 'Create account', signup2: 'Confirm your email', signup3: 'Create a password', forgot1: 'Reset your password', forgot2: 'Reset your password', consent: 'One more step', firstsync: 'Your progress', welcome: 'Welcome', wait: 'Signing in' };
+var KA_VIEWS = {
+  signin: function () {
+    return kaShell('signin',
+      '<h1 class="ka-title" tabindex="-1">Welcome back</h1>'
+      + '<p class="ka-lede">Sign in to sync your progress between this browser and the KaiSip Android app.</p>'
+      + kaNoticeHtml()
+      + '<div class="ka-google-slot">' + kaGoogleBtn('Continue with Google', 'kaGoogle(false)') + '</div>'
+      + '<div class="ka-divider"><span>or sign in with email</span></div>'
+      + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();kaSubmit(\'signin\')">'
+      + kaField({ id: 'kaEmail', name: 'email', label: 'Email', type: 'email', ac: 'username', value: ka.email })
+      + kaField({ id: 'kaPass', name: 'password', label: 'Password', type: 'password', ac: 'current-password', reveal: true,
+        aside: '<a class="ka-aside" href="#forgot-password" onclick="event.preventDefault();kaGo(\'forgot-password\')">Forgot password?</a>' })
+      + '<label class="ka-check" for="kaShared"><input type="checkbox" id="kaShared"><span class="ka-box" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4.5 13.2 9.4 18 19.5 6.2"/></svg></span>'
+      + '<span>This is a shared computer<br><span class="ka-hint">You’ll be signed out when you close this tab.</span></span></label>'
+      + '<div class="ka-human" id="kaHuman"></div>'
+      + '<p class="ka-error" id="kaFormE" role="alert"></p>'
+      + '<button type="submit" class="ka-btn ka-btn-primary" id="kaGo">Sign in</button></form>'
+      + '<p class="ka-note">' + kaIco('shield', 18) + '<span>A quick, private human check runs when you sign in.</span></p>'
+      + '<p class="ka-switch">New to KaiSip? <a href="#create-account" onclick="event.preventDefault();kaGo(\'create-account\')">Create an account</a></p>'
+      + '<p class="ka-note">' + ico('info', 18) + '<span>You never need an account to study. Your progress always stays in this browser.</span></p>');
+  },
+  signup1: function () {
+    return kaShell('signup1',
+      kaSteps(1)
+      + '<h1 class="ka-title" tabindex="-1">Create your KaiSip account</h1>'
+      + '<p class="ka-lede">We’ll email you an 8-digit code to confirm it’s you. No links, ever.</p>'
+      + kaNoticeHtml()
+      + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();kaSubmit(\'signup1\')">'
+      + kaField({ id: 'kaEmail', name: 'email', label: 'Email', type: 'email', ac: 'username', value: ka.email })
+      + kaConsentHtml()
+      + '<div class="ka-human" id="kaHuman"></div>'
+      + '<p class="ka-error" id="kaFormE" role="alert"></p>'
+      + '<button type="submit" class="ka-btn ka-btn-primary" id="kaGo">Send my code ' + ico('arrow-right', 18) + '</button></form>'
+      + '<div class="ka-divider"><span>or</span></div>'
+      + kaGoogleBtn('Sign up with Google', 'kaGoogle(true)')
+      + '<p class="ka-fine">The two agreements above apply to Google sign-up too.</p>'
+      + '<div class="ka-adds"><p class="ka-adds-t">' + kaIco('sync', 18) + '<span>What an account adds</span></p>'
+      + '<p>Your answers, missed questions, saved questions, notes read and mock results sync between this browser and the Android app.</p>'
+      + '<p>Studying works without an account. Without one, your progress stays in this browser only.</p></div>'
+      + '<p class="ka-switch">Already have an account? <a href="#sign-in" onclick="event.preventDefault();kaGo(\'sign-in\')">Sign in</a></p>');
+  },
+  signup2: function () {
+    return kaShell('signup2',
+      kaSteps(2)
+      + '<h1 class="ka-title" tabindex="-1">Check your inbox</h1>'
+      + '<p class="ka-lede">We sent an 8-digit code to <strong>' + escapeHtml(ka.email) + '</strong>. It works for 10 minutes.</p>'
+      + kaNoticeHtml()
+      + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();kaSubmit(\'signup2\')">'
+      + kaCodeField()
+      + '<div class="ka-human" id="kaHuman"></div>'
+      + '<p class="ka-error" id="kaFormE" role="alert"></p>'
+      + '<button type="submit" class="ka-btn ka-btn-primary" id="kaGo">Confirm email</button></form>'
+      + kaResendHtml('Send a new code')
+      + '<p><button type="button" class="ka-linkbtn" onclick="kaShow(\'signup1\')">Use a different email</button></p>'
+      + '<p class="ka-note">' + kaIco('mail', 18) + '<span>Codes come from <strong>codes@kaisip.com</strong>. We will never ask for your code by phone or chat.</span></p>');
+  },
+  signup3: function () {
+    // Also "finish creating your password": a code session that has none yet (after a reset whose password was refused, or a reload).
+    var fresh = ka.flow === 'signup';
+    return kaShell('signup3',
+      (fresh ? kaSteps(3) : '')
+      + '<h1 class="ka-title" tabindex="-1">Create a password</h1>'
+      + '<p class="ka-lede">' + (fresh ? 'Email confirmed. Now choose' : 'Your email is confirmed. Choose') + ' a password of at least 15 characters. No symbols or numbers required.</p>'
+      + kaNoticeHtml()
+      + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();kaSubmit(\'signup3\')">'
+      + kaNewPasswordField()
+      + '<p class="ka-error" id="kaFormE" role="alert"></p>'
+      + '<button type="submit" class="ka-btn ka-btn-primary" id="kaGo">' + (fresh ? 'Create account' : 'Save password') + '</button></form>'
+      + '<p class="ka-note">' + kaIco('lock', 18) + '<span>Pasting from a password manager is welcome. We keep your password only as a salted one-way hash.</span></p>');
+  },
+  forgot1: function () {
+    return kaShell('forgot',
+      '<a class="ka-back" href="#sign-in" onclick="event.preventDefault();kaGo(\'sign-in\')">' + ico('arrow-right', 18) + '<span>Back to sign in</span></a>'
+      + '<h1 class="ka-title" tabindex="-1">Reset your password</h1>'
+      + '<p class="ka-lede">Enter your account’s email and we’ll send an 8-digit reset code. No links, ever.</p>'
+      + kaNoticeHtml()
+      + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();kaSubmit(\'forgot1\')">'
+      + kaField({ id: 'kaEmail', name: 'email', label: 'Email', type: 'email', ac: 'username', value: ka.email })
+      + '<div class="ka-human" id="kaHuman"></div>'
+      + '<p class="ka-error" id="kaFormE" role="alert"></p>'
+      + '<button type="submit" class="ka-btn ka-btn-primary" id="kaGo">Send reset code</button></form>'
+      + '<p class="ka-note">' + ico('info', 18) + '<span>Signed up with Google? This also lets you add a password to that account.</span></p>');
+  },
+  forgot2: function () {
+    return kaShell('forgot',
+      '<a class="ka-back" href="#sign-in" onclick="event.preventDefault();kaGo(\'sign-in\')">' + ico('arrow-right', 18) + '<span>Back to sign in</span></a>'
+      + '<h1 class="ka-title" tabindex="-1">Reset your password</h1>'
+      + '<p class="ka-lede">If there’s an account for <strong>' + escapeHtml(ka.email) + '</strong>, we’ve sent it an 8-digit reset code. It works for 10 minutes.</p>'
+      + kaNoticeHtml()
+      + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();kaSubmit(\'forgot2\')">'
+      + kaCodeField()
+      + kaNewPasswordField()
+      + '<div class="ka-human" id="kaHuman"></div>'
+      + '<p class="ka-error" id="kaFormE" role="alert"></p>'
+      + '<button type="submit" class="ka-btn ka-btn-primary" id="kaGo">Save and sign in</button></form>'
+      + kaResendHtml('Send a new code')
+      + '<p class="ka-note">' + ico('info', 18) + '<span>Saving a new password signs you out on your other devices. Your study progress is not affected.</span></p>');
+  },
+  consent: function () {
+    return kaShell('signup1',
+      '<h1 class="ka-title" tabindex="-1">One more step</h1>'
+      + '<p class="ka-lede">You’re signed in. Before your progress syncs, we need two agreements.</p>'
+      + kaNoticeHtml()
+      + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();kaSubmit(\'consent\')">'
+      + kaConsentHtml()
+      + '<p class="ka-error" id="kaFormE" role="alert"></p>'
+      + '<button type="submit" class="ka-btn ka-btn-primary" id="kaGo">Agree and continue</button></form>'
+      + '<p><button type="button" class="ka-linkbtn" onclick="kaSignOutQuiet()">Sign out instead</button></p>'
+      + '<p class="ka-note">' + ico('info', 18) + '<span>Nothing is synced until you agree. Your progress stays in this browser either way.</span></p>');
+  },
+  firstsync: function () { return kaFirstSyncHtml(); },
+  wait: function () {
+    return kaShell('signin', '<h1 class="ka-title" tabindex="-1">Signing you in</h1><p class="ka-lede" role="status"><span class="ka-busy" aria-hidden="true"></span> One moment…</p>');
+  },
+  welcome: function () { return kaWelcomeHtml(); }
+};
+function kaShow(view, o) {
+  if (!KA_ON || !KA_VIEWS[view]) return;
+  var root = kaEl('kaRoot');
+  if (!root) return;
+  if (ka.resendTimer) { clearInterval(ka.resendTimer); ka.resendTimer = null; }
+  ka.view = view;
+  ka.busy = false;
+  document.body.setAttribute('data-ka-view', view);
+  root.innerHTML = KA_VIEWS[view]();
+  root.hidden = false;
+  document.title = (KA_TITLES[view] || 'Account') + ' · KaiSip';
+  window.scrollTo(0, 0);
+  // Focus: the screen's title, so a screen reader starts at the top and the next Tab is the first control.
+  var h = root.querySelector('h1');
+  if (h && !(o && o.keepFocus)) { try { h.focus({ preventScroll: true }); } catch (e) {} }
+  if (view === 'signin' || view === 'signup1' || view === 'forgot1' || view === 'signup2' || view === 'forgot2') kaHumanMount(view === 'signin' ? 'password_sign_in' : view.indexOf('forgot') === 0 ? 'password_reset' : 'sign_up');
+  if (view === 'signup3' || view === 'forgot2') { kaPwHelp(); kaWarmWords(); }
+  if (view === 'signup2' || view === 'forgot2') { kaCodeDraw(); kaResendTick(); }
+  if (view !== 'welcome') kaGetCloud().catch(function () {});
+}
+// Leaves the account screens for the study app.
+function kaClose() {
+  if (!ka.view) return;
+  if (ka.resendTimer) { clearInterval(ka.resendTimer); ka.resendTimer = null; }
+  ka.view = '';
+  document.body.removeAttribute('data-ka-view');
+  var root = kaEl('kaRoot');
+  if (root) { root.hidden = true; root.innerHTML = ''; }
+  try { syncNav(S.activeTab); } catch (e) {}
+  kaPaint();
+}
+// Opens a page of the study app from an account screen, with focus on its title.
+function kaGoApp(tab) {
+  kaClose();
+  try { switchTab(tab || 'home', { noScroll: true }); window.scrollTo(0, 0); navFocusTitle(); } catch (e) {}
+}
+var KA_ROUTES = { 'sign-in': 'signin', 'create-account': 'signup1', 'forgot-password': 'forgot1' };
+// Addresses: #sign-in, #create-account, #forgot-password, #delete-account. True when it took the address.
+function kaRoute(hash) {
+  if (!KA_ON) return false;
+  var key = String(hash || '').replace(/^#\/?/, '').toLowerCase();
+  if (key === 'delete-account') { kaOpenDelete(); return true; }
+  if (key === 'account' && !kaAccount()) { kaWhenKnown(function () { if (kaAccount()) { kaClose(); switchTab('account', { noScroll: true }); } else kaShow('signin'); }); return true; }
+  var v = KA_ROUTES[key];
+  if (!v) { if (ka.view) kaClose(); return false; }
+  // Signed in already: these screens have nothing to offer.
+  if (kaAccount() && !ka.cloud.auth.passwordNeeded()) { kaGoApp('account'); return true; }
+  kaShow(v);
+  return true;
+}
+function kaGo(key) {
+  if (location.hash === '#' + key) kaRoute('#' + key);
+  else location.hash = '#' + key;
+}
+// Runs `fn` once the client has loaded (when this browser holds a session) or at once (a guest).
+function kaWhenKnown(fn) {
+  if (ka.cloud || !kaHasSession()) { fn(); return; }
+  kaGetCloud().then(fn, fn);
+}
+function kaHasSession() {
+  return !!(kaGet(KA_SESSION_KEYS[0]) || kaGet(KA_SESSION_KEYS[0], true));
+}
+function kaSetError(id, words) {
+  var el = kaEl(id);
+  if (el) el.innerHTML = kaErrorHtml(words);
+  var inp = id.slice(-1) === 'E' ? kaEl(id.slice(0, -1)) : null;
+  if (inp) { if (words) inp.setAttribute('aria-invalid', 'true'); else inp.removeAttribute('aria-invalid'); }
+  if (id === 'kaCodeE') { var box = kaEl('kaCodeBox'); if (box) box.classList.toggle('has-error', !!words); }
+}
+function kaClearErrors() {
+  ['kaEmailE', 'kaPassE', 'kaPwE', 'kaCodeE', 'kaFormE', 'kaConsentE', 'kaCurE'].forEach(function (id) { if (kaEl(id)) kaSetError(id, ''); });
+}
+// Puts an error where it belongs (its field when there is one) and moves focus there.
+function kaFail(e, fieldId) {
+  var words = typeof e === 'string' ? e : kaWords(e);
+  var detail = e && typeof e.detail === 'string' ? e.detail : '';
+  var id = fieldId || (detail === 'email' ? 'kaEmail' : detail === 'code_wrong' ? 'kaCode' : detail === 'password_wrong' ? 'kaPass' : detail.indexOf('password_current') === 0 ? 'kaCur' : detail.indexOf('password_') === 0 && kaEl('kaPw') ? 'kaPw' : '');
+  if (id && kaEl(id + 'E')) {
+    kaSetError(id + 'E', words);
+    try { kaEl(id).focus(); } catch (ex) {}
+  } else {
+    kaSetError('kaFormE', words);
+    var go = kaEl('kaGo');
+    if (go) { try { go.focus(); } catch (ex2) {} }
+  }
+}
+var kaGoLabel = '';
+function kaBusy(on, label) {
+  ka.busy = on;
+  var go = kaEl('kaGo');
+  if (!go) return;
+  if (on) {
+    kaGoLabel = go.innerHTML;
+    go.setAttribute('aria-disabled', 'true');
+    go.innerHTML = '<span class="ka-busy" aria-hidden="true"></span><span>' + escapeHtml(label) + '</span>';
+  } else {
+    go.removeAttribute('aria-disabled');
+    if (kaGoLabel) go.innerHTML = kaGoLabel;
+  }
+}
+function kaEmailValue() {
+  var inp = kaEl('kaEmail');
+  var v = inp ? inp.value.trim() : '';
+  if (!v) { kaFail('Enter your email address.', 'kaEmail'); return ''; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { kaFail(KA_WORDS.email, 'kaEmail'); return ''; }
+  return v;
+}
+function kaCodeValue() {
+  var inp = kaEl('kaCode');
+  var v = inp ? inp.value.replace(/\D/g, '') : '';
+  if (v.length !== 8) { kaFail('Enter all 8 digits of the code.', 'kaCode'); return ''; }
+  return v;
+}
+function kaResendTick() {
+  var wait = kaEl('kaResendWait'), btn = kaEl('kaResend');
+  if (!wait || !btn) return;
+  var draw = function () {
+    var left = Math.ceil((ka.resendAt - Date.now()) / 1000);
+    if (left > 0) {
+      wait.textContent = 'You can ask for a new code in ' + Math.floor(left / 60) + ':' + ('0' + (left % 60)).slice(-2) + '.';
+      btn.disabled = true;
+    } else {
+      wait.textContent = '';
+      btn.disabled = false;
+      if (ka.resendTimer) { clearInterval(ka.resendTimer); ka.resendTimer = null; }
+    }
+  };
+  if (ka.resendTimer) clearInterval(ka.resendTimer);
+  ka.resendTimer = setInterval(draw, 1000);
+  draw();
+}
+function kaResend() {
+  if (ka.busy || Date.now() < ka.resendAt) return;
+  var reset = ka.view === 'forgot2';
+  var say = kaEl('kaResendSay');
+  ka.busy = true;
+  kaGetCloud().then(function (cloud) {
+    return kaHumanToken().then(function (token) {
+      return reset ? cloud.auth.sendPasswordResetCode(ka.email, { captchaToken: token }) : cloud.auth.sendSignUpCode(ka.email, { captchaToken: token });
+    });
+  }).then(function () {
+    ka.busy = false;
+    ka.resendAt = Date.now() + 60000;
+    kaResendTick();
+    kaHumanReset();
+    if (say) say.textContent = reset ? 'If there’s an account for this email, a new code is on its way.' : 'A new code is on its way. The earlier one no longer works.';
+  }, function (e) {
+    ka.busy = false;
+    kaHumanReset();
+    if (e && e.code === 'rate_limited' && e.retryAfterSec > 0) { ka.resendAt = Date.now() + e.retryAfterSec * 1000; kaResendTick(); }
+    if (say) say.textContent = kaWords(e);
+  });
+}
+// One handler for every form (one form per screen; Enter sends it).
+function kaSubmit(view) {
+  if (ka.busy || ka.view !== view) return;
+  kaClearErrors();
+  var cloud;
+  if (view === 'signin') {
+    var email = kaEmailValue();
+    if (!email) return;
+    var passEl = kaEl('kaPass');
+    if (!passEl.value) { kaFail('Enter your password.', 'kaPass'); return; }
+    ka.email = email;
+    ka.shared = !!(kaEl('kaShared') && kaEl('kaShared').checked);
+    kaBusy(true, 'Signing in…');
+    kaGetCloud().then(function (c) { cloud = c; return kaHumanToken(); }).then(function (token) {
+      return cloud.auth.signInWithPassword(email, passEl.value, { captchaToken: token, shared: ka.shared });
+    }).then(function (who) {
+      passEl.value = '';
+      if (who && who.passwordChangeSuggested) ka.notice = 'Your password no longer meets today’s rules. Please change it from your Account page when you can.';
+      return kaAfterSignIn();
+    }).catch(function (e) { kaBusy(false); kaHumanReset(); kaFail(e); });
+    return;
+  }
+  if (view === 'signup1') {
+    var em = kaEmailValue();
+    if (!em) return;
+    var rec = kaConsentRead();
+    if (!rec) return;
+    ka.email = em;
+    ka.flow = 'signup';
+    kaBusy(true, 'Sending your code…');
+    kaGetCloud().then(function (c) { cloud = c; return kaHumanToken(); }).then(function (token) {
+      return cloud.auth.sendSignUpCode(em, { captchaToken: token });
+    }).then(function () {
+      // The agreements travel with this sign-up (this tab only) until the account exists.
+      kaSet(KA_PENDING_KEY, JSON.stringify(rec), true);
+      ka.resendAt = Date.now() + 60000;
+      kaShow('signup2');
+    }).catch(function (e) { kaBusy(false); kaHumanReset(); kaFail(e); });
+    return;
+  }
+  if (view === 'signup2') {
+    var code = kaCodeValue();
+    if (!code) return;
+    kaBusy(true, 'Checking…');
+    kaGetCloud().then(function (c) { cloud = c; return cloud.auth.confirmSignUpCode(ka.email, code, { shared: ka.shared }); }).then(function () {
+      kaShow('signup3');
+    }).catch(function (e) { kaBusy(false); kaFail(e); });
+    return;
+  }
+  if (view === 'signup3') {
+    var pwEl = kaEl('kaPw');
+    if (!pwEl.value) { kaFail(kaGuide('too_short') || 'Choose a password of at least 15 characters.', 'kaPw'); return; }
+    // As a password field again while it is sent, so a password manager offers to save it.
+    pwEl.type = 'password';
+    kaBusy(true, 'Saving…');
+    kaGetCloud().then(function (c) { cloud = c; return cloud.auth.setPassword(pwEl.value); }).then(function () {
+      pwEl.value = '';
+      if (cloud.auth.breachState() === 'unchecked') ka.notice = kaGuide('breach_unchecked');
+      return kaAfterSignIn();
+    }).catch(function (e) {
+      kaBusy(false);
+      // The 10 minutes for a first password ran out: the email is confirmed again from the start.
+      if (e && (e.code === 'reauth_required' || e.code === 'unauthorized')) {
+        pwEl.value = '';
+        ka.notice = 'That took a little long, so for your security we need to confirm your email again.';
+        cloud.auth.signOut('local').then(function () { kaShow(ka.flow === 'signup' ? 'signup1' : 'forgot1'); }, function () { kaShow('signin'); });
+        return;
+      }
+      kaFail(e, e && e.code === 'invalid' ? 'kaPw' : '');
+    });
+    return;
+  }
+  if (view === 'forgot1') {
+    var fe = kaEmailValue();
+    if (!fe) return;
+    ka.email = fe;
+    ka.flow = 'reset';
+    kaBusy(true, 'Sending…');
+    kaGetCloud().then(function (c) { cloud = c; return kaHumanToken(); }).then(function (token) {
+      return cloud.auth.sendPasswordResetCode(fe, { captchaToken: token });
+    }).then(function () {
+      ka.resendAt = Date.now() + 60000;
+      kaShow('forgot2');
+    }).catch(function (e) {
+      kaBusy(false); kaHumanReset();
+      // Asked again within a minute: the code already sent still works, so carry on to it.
+      if (e && e.code === 'rate_limited' && e.retryAfterSec > 0 && e.retryAfterSec <= 60) { ka.resendAt = Date.now() + e.retryAfterSec * 1000; kaShow('forgot2'); return; }
+      kaFail(e);
+    });
+    return;
+  }
+  if (view === 'forgot2') {
+    var rc = kaCodeValue();
+    if (!rc) return;
+    var np = kaEl('kaPw');
+    if (!np.value) { kaFail(kaGuide('too_short') || 'Choose a password of at least 15 characters.', 'kaPw'); return; }
+    np.type = 'password';
+    kaBusy(true, 'Saving…');
+    kaGetCloud().then(function (c) { cloud = c; return cloud.auth.finishPasswordReset(ka.email, rc, np.value, { shared: ka.shared }); }).then(function (done) {
+      np.value = '';
+      if (!done.passwordSaved) {
+        // The code worked but the password wasn't saved: ask once more, with the reason.
+        var p = done.problem;
+        ka.notice = p === 'leaked' || p === 'weak' ? kaGuide(p) : p === 'offline' ? KA_WORDS.offline : p === 'rate_limited' ? kaWords({ code: 'rate_limited' }) : (kaGuide(p) || 'Your email is confirmed, but the password wasn’t saved. Please choose it again.');
+        kaShow('signup3');
+        return null;
+      }
+      if (cloud.auth.breachState() === 'unchecked') ka.notice = kaGuide('breach_unchecked');
+      else if (done.othersSignedOut === false) ka.notice = 'Your password is saved. To be safe, sign out everywhere from your Account page.';
+      return kaAfterSignIn();
+    }).catch(function (e) { kaBusy(false); kaFail(e); });
+    return;
+  }
+  if (view === 'consent') {
+    var cr = kaConsentRead();
+    if (!cr) return;
+    kaBusy(true, 'Saving…');
+    kaGetCloud().then(function (c) { cloud = c; return kaConsentCommit(cloud, cr); }).then(function () { return kaStartSync(); })
+      .catch(function (e) { kaBusy(false); kaFail(e); });
+  }
+}
+// Google: the two agreements first when this is a sign-up. The PKCE secret stays in this tab.
+function kaGoogle(signUp) {
+  if (ka.busy) return;
+  kaClearErrors();
+  if (signUp) {
+    var rec = kaConsentRead();
+    if (!rec) return;
+    kaSet(KA_PENDING_KEY, JSON.stringify(rec), true);
+  }
+  if (kaEl('kaShared')) ka.shared = kaEl('kaShared').checked;
+  kaGetCloud().then(function (cloud) {
+    window.location.assign(cloud.auth.googleSignInUrl({ shared: ka.shared }));
+  }).catch(function (e) { kaFail(e && e.code ? e : { code: 'offline' }); });
+}
+// Back from Google with ?code= (already taken out of the address by the page's first script).
+function kaGoogleReturn(back) {
+  if (!back.code) {
+    ka.notice = 'Google sign-in was cancelled. Nothing changed.';
+    kaShow('signin');
+    return;
+  }
+  kaShow('wait');
+  kaGetCloud().then(function (cloud) { return cloud.auth.finishGoogleSignIn(back.code); }).then(function () { return kaAfterSignIn(); })
+    .catch(function (e) { ka.notice = kaWords(e && e.code ? e : { code: 'invalid', detail: 'oauth' }); kaShow('signin'); });
+}
+// Signed in. In order: a password if the session still needs one, the
+// agreements if this account has none yet, then the first sync.
+function kaAfterSignIn() {
+  var cloud = ka.cloud;
+  var who = cloud.auth.current();
+  if (!who) { kaShow('signin'); return Promise.resolve(); }
+  // The masked address, for the "sign in again" card after a session ends (never on a shared computer).
+  if (!cloud.auth.sharedComputer() && who.emailMasked) kaSet(KA_HINT_KEY, JSON.stringify({ email: who.emailMasked }));
+  ka.user = null;
+  if (cloud.auth.passwordNeeded()) { ka.flow = ka.flow || 'reset'; kaShow('signup3'); return Promise.resolve(); }
+  return cloud.auth.termsVersion().then(function (v) {
+    if (v) return kaStartSync();
+    var pending = kaJson(kaGet(KA_PENDING_KEY, true));
+    if (pending && pending.termsAccepted === true && pending.ageConfirmed === true) return kaConsentCommit(cloud, pending).then(function () { return kaStartSync(); });
+    kaShow('consent');
+    return null;
+  }).catch(function (e) {
+    // Signed in, but the next step couldn't be reached: the card says so and offers it again.
+    ka.setupDue = true;
+    ka.syncErr = e && e.code === 'offline' ? 'offline' : 'error';
+    kaLand(KA_WORDS[e && e.code === 'offline' ? 'offline' : 'server']);
+  });
+}
+// The first sync on this browser (or after another account signed in here).
+function kaStartSync() {
+  var cloud = ka.cloud;
+  var meta = cloud.device.meta();
+  if (meta.enabled && !cloud.accountChanged()) { kaLand(); kaSyncSoon(); return Promise.resolve(); }
+  ka.setupDue = true;
+  return kaWaitBank().then(function (ready) {
+    if (!ready) { ka.syncErr = 'wait'; kaLand('You’re signed in. Sync starts once the questions have loaded.'); return null; }
+    return cloud.prepareFirst().then(function (r) {
+      if (!r.ok) {
+        ka.syncErr = r.code === 'offline' ? 'offline' : 'error';
+        kaLand(r.code === 'newer' ? 'You’re signed in. Refresh this page to finish turning sync on.' : r.code === 'offline' ? KA_WORDS.offline : 'You’re signed in, but we couldn’t reach your synced progress just now. Nothing was changed.');
+        return null;
+      }
+      ka.firstPrep = r.prep;
+      // Ask first whenever this browser's progress would go into the account, or the account changed.
+      if (cloud.accountChanged() || r.prep.case === 'both' || r.prep.case === 'phone') { kaShow('firstsync'); return null; }
+      return kaFirstConfirm('merge');
+    });
+  });
+}
+function kaWaitBank() {
+  kaBankWarm();
+  return new Promise(function (resolve) {
+    var tries = 0;
+    var tick = function () {
+      if (kaBankReady()) { resolve(true); return; }
+      if (++tries > 40) { resolve(false); return; }
+      setTimeout(tick, 250);
+    };
+    tick();
+  });
+}
+function kaCount(x) { return Array.isArray(x) ? x.length : isPlainObj(x) ? Object.keys(x).length : 0; }
+function kaFirstRow(data) {
+  var c = data && isPlainObj(data.progress) && isPlainObj(data.progress.byCert) && isPlainObj(data.progress.byCert.cisa) ? data.progress.byCert.cisa : {};
+  return [kaCount(c.answers), kaCount(c.bookmarks), kaCount(c.notesRead), kaCount(c.mocks)];
+}
+function kaFirstSyncHtml() {
+  var prep = ka.firstPrep, cloud = ka.cloud;
+  var switched = cloud && cloud.accountChanged();
+  var who = kaAccount();
+  var mail = who && who.emailMasked ? who.emailMasked : 'your account';
+  var a = kaFirstRow(prep.phone), b = prep.account ? kaFirstRow(prep.account) : [0, 0, 0, 0], c = kaFirstRow(prep.after);
+  var rows = ['Questions answered', 'Saved questions', 'Notes read', 'Mock exams'].map(function (label, i) {
+    return '<tr><th scope="row">' + label + '</th><td>' + a[i] + '</td><td>' + b[i] + '</td><td class="is-after">' + c[i] + '</td></tr>';
+  }).join('');
+  var title, body, main, alt = '';
+  if (switched) {
+    title = 'A different account';
+    body = 'You’re signed in as <strong>' + escapeHtml(mail) + '</strong>, but this browser last synced with another account. Start fresh to use this account’s progress here, or combine the two.';
+    main = '<button type="button" class="ka-btn ka-btn-primary" id="kaGo" onclick="kaFirstConfirm(\'replace\')">Start fresh with this account</button>';
+    alt = '<button type="button" class="ka-btn ka-btn-secondary" onclick="kaFirstConfirm(\'merge\')">Combine them</button>';
+  } else if (prep.case === 'phone') {
+    title = 'Add this browser’s progress to your account?';
+    body = 'You’re signed in as <strong>' + escapeHtml(mail) + '</strong>. Your account has no progress yet.';
+    main = '<button type="button" class="ka-btn ka-btn-primary" id="kaGo" onclick="kaFirstConfirm(\'merge\')">Sync this browser</button>';
+  } else {
+    title = 'Bring your progress together?';
+    body = 'You’re signed in as <strong>' + escapeHtml(mail) + '</strong>. This browser and your account both have progress. We’ll combine them: nothing you’ve answered is lost, and your best results are kept.';
+    main = '<button type="button" class="ka-btn ka-btn-primary" id="kaGo" onclick="kaFirstConfirm(\'merge\')">Combine</button>';
+    alt = '<button type="button" class="ka-btn ka-btn-secondary" onclick="kaFirstConfirm(\'replace\')">Use the account’s progress here</button>';
+  }
+  return kaShell('sync',
+    '<h1 class="ka-title" tabindex="-1">' + title + '</h1><p class="ka-lede">' + body + '</p>'
+    + '<table class="ka-cols"><caption class="sr-only">What each side holds, and the result of combining</caption><thead><tr><th scope="col"><span class="sr-only">What</span></th><th scope="col">This browser</th><th scope="col">Account</th><th scope="col">After</th></tr></thead><tbody>' + rows + '</tbody></table>'
+    + '<p class="ka-fine">Questions answered on both count once. “After” is the result of combining.</p>'
+    + '<p class="ka-error" id="kaFormE" role="alert"></p>'
+    + '<div class="ka-choices">' + main + alt + '<button type="button" class="ka-btn ka-btn-quiet" onclick="kaFirstLater()">Not now</button></div>'
+    + (alt ? '<p class="ka-note">' + kaIco('undo', 18) + '<span>If you replace this browser’s progress, we keep a copy for 7 days. You can put it back from your Account page.</span></p>' : ''));
+}
+function kaFirstConfirm(mode) {
+  var cloud = ka.cloud, prep = ka.firstPrep;
+  if (!cloud || !prep || ka.firstBusy) return Promise.resolve();
+  ka.firstBusy = true;
+  if (ka.view === 'firstsync') kaBusy(true, 'Syncing your progress…');
+  return cloud.confirmFirst(prep, mode).catch(function () { return { kind: 'failed', code: 'server' }; }).then(function (r) {
+    ka.firstBusy = false;
+    if (r.kind === 'failed' || r.kind === 'paused') {
+      var words = r.kind === 'paused' ? 'This browser’s progress is too large to sync. It is safe here; nothing was changed.' : r.code === 'offline' ? KA_WORDS.offline : 'We couldn’t sync just now. Nothing was changed. Try again in a little while.';
+      if (ka.view === 'firstsync') { kaBusy(false); kaSetError('kaFormE', words); return; }
+      ka.syncErr = r.code === 'offline' ? 'offline' : 'error';
+      kaLand(words);
+      return;
+    }
+    ka.firstPrep = null;
+    ka.setupDue = false;
+    ka.syncErr = '';
+    kaLand(mode === 'replace' ? 'Sync is on. This browser now shows your account’s progress.' : 'You’re signed in. Sync is on.');
+    kaSyncSoon();
+  });
+}
+function kaFirstLater() {
+  ka.firstPrep = null;
+  ka.setupDue = true;
+  kaLand('Signed in. Sync is off until you choose; your progress stays in this browser.');
+}
+// Back to the study app after an account step, with one line saying what happened.
+function kaLand(words) {
+  var note = ka.notice;
+  ka.notice = '';
+  var intent = kaGet(KA_INTENT_KEY, true);
+  kaDel(KA_INTENT_KEY, true);
+  if (ka.view || S.activeTab === 'account') kaGoApp(intent === 'delete' || intent === 'account' ? 'account' : 'you');
+  kaPaint();
+  var say = [words, note].filter(Boolean).join(' ');
+  if (say) showToast(say, 'info', note ? 7000 : 3600);
+  if (intent === 'delete' && kaAccount()) setTimeout(kaDeleteDialog, 300);
+}
+function kaSignOutQuiet() {
+  kaGetCloud().then(function (cloud) { return cloud.auth.signOut('local'); }).then(function () { kaAfterSignOut(false); }, function () { kaAfterSignOut(false); });
+}
+
+// ── The first-visit welcome ──
+function kaWelcomeHtml() {
+  var ios = false;
+  try { ios = installTipDue(); } catch (e) { ios = false; }
+  return '<div class="ka-welcome">'
+    + '<header class="ka-topbar"><span class="ka-brand">' + kaLockup().replace('aria-hidden="true" focusable="false"', 'role="img" aria-label="KaiSip" focusable="false"') + '</span>'
+    + kaNewTab('support.html', 'Help').replace('<a ', '<a class="ka-toplink" ') + '</header>'
+    + '<main class="ka-welcome-main"><div>'
+    + '<p class="ka-kicker">CISA exam prep, in your browser</p>'
+    + '<h1 class="ka-title-xl" tabindex="-1">Study for the CISA, <em>right here.</em></h1>'
+    + '<p class="ka-lede">Practice questions with the reasoning behind every best answer, study notes and a mistake journal. Free, with nothing to install.</p>'
+    + '<div class="ka-paths">'
+    + '<button type="button" class="ka-path ka-path-primary" onclick="kaWelcomeStart()"><span class="ka-path-ico">' + ico('home', 22) + '</span><span class="ka-path-text"><span class="ka-path-t">Start studying free</span><span class="ka-path-s">No account. Your progress stays in this browser.</span></span>' + ico('arrow-right', 20) + '</button>'
+    + '<button type="button" class="ka-path ka-path-secondary" onclick="kaWelcomeSignIn()"><span class="ka-path-ico">' + kaIco('sync', 22) + '</span><span class="ka-path-text"><span class="ka-path-t">Sign in to sync with your Android app</span><span class="ka-path-s">Already study on Android? Pick up where you left off.</span></span>' + ico('chevron', 20) + '</button>'
+    + '</div>'
+    + '<p class="ka-welcome-more"><button type="button" class="ka-linkbtn" onclick="kaWelcomeLook()">Or look around first</button></p>'
+    + (ios ? '<p class="ka-ios">' + kaIco('phone', 20) + '<span>On iPhone? Add KaiSip to your Home Screen to open it like an app. The steps are on Today.</span></p>' : '')
+    + '<p class="ka-fine">The web version includes a free sample of KaiSip’s CISA practice questions. Not affiliated with or endorsed by ISACA. CISA is a trademark of ISACA.</p>'
+    + '</div><div aria-hidden="true"><div class="ka-welcome-panel">' + kaFronds(600, 760, [[520, 800, 480, -12, 9], [80, 820, 300, -26, 6], [600, 820, 300, 20, 6, true]])
+    + '<div class="ka-q"><p class="ka-q-k">Practice · Protection of Information Assets</p>'
+    + '<p class="ka-q-stem">Which control BEST prevents developers from moving unapproved changes into production?</p>'
+    + '<ul class="ka-q-opts"><li><span>A</span><span>Monthly review of change logs</span></li><li class="is-best"><span>B</span><span>A separate team promotes approved changes<em>Best answer</em></span></li><li><span>C</span><span>Developers document each change</span></li></ul>'
+    + '<p class="ka-q-why"><b>Why B:</b> segregating migration duties stops the change before it happens. The others only detect it later.</p></div></div></div>'
+    + '</main></div>';
+}
+function kaWelcomeDone() {
+  try { localStorage.setItem('cisa_onboarded_v6', '1'); } catch (e) {}
+}
+function kaWelcomeStart() {
+  // The same first step as before accounts: five questions, straight away.
+  kaClose();
+  onboardStartFive();
+}
+function kaWelcomeLook() { kaWelcomeDone(); kaGoApp('home'); }
+function kaWelcomeSignIn() { kaWelcomeDone(); kaGo('sign-in'); }
+
+// ── The account card on You (and its one-line versions) ──
+// Guest: the full card on the first 3 different days it is seen, then the slim
+// row for good. It also collapses at once when the learner opens Create or
+// Sign in from it (they have seen it). Signed in: the masked email, the sync
+// status in words and the one action that fits.
+function kaCardMode() {
+  var st = kaJson(kaGet(KA_CARD_KEY)) || {};
+  if (st.slim === true) return 'slim';
+  // Short phone screens and large text get the slim row (the full card would push Practice down).
+  var roomy = window.innerWidth >= 768 || window.innerHeight >= 700;
+  if (!roomy || document.documentElement.classList.contains('fg-large')) return 'slim';
+  var today = isoLocalDate(new Date());
+  var days = Array.isArray(st.days) ? st.days.filter(function (d) { return typeof d === 'string'; }).slice(0, 3) : [];
+  if (days.indexOf(today) < 0) {
+    if (days.length >= 3) { kaSet(KA_CARD_KEY, JSON.stringify({ slim: true })); return 'slim'; }
+    days.push(today);
+    kaSet(KA_CARD_KEY, JSON.stringify({ days: days }));
+  }
+  return 'full';
+}
+function kaCardCollapse() { kaSet(KA_CARD_KEY, JSON.stringify({ slim: true })); }
+function kaHintMail() {
+  var who = kaAccount();
+  if (who && who.emailMasked) return who.emailMasked;
+  var h = kaJson(kaGet(KA_HINT_KEY));
+  return h && typeof h.email === 'string' && h.email.length <= 200 ? h.email : '';
+}
+// "j•••@example.com" for the eye; "j, at example.com" for a screen reader (no "dot dot dot").
+function kaMailSpoken(masked) {
+  var m = /^(.)[^@]*@(.+)$/.exec(masked || '');
+  return m ? m[1] + ', at ' + m[2] : 'your account';
+}
+var KA_SAFE = 'Your progress is safe in this browser.';
+function kaCardHtml() {
+  var st = kaState();
+  var disc = function (name, cls) { return '<span class="ka-disc' + (cls ? ' ' + cls : '') + '" aria-hidden="true">' + kaIco(name, 20) + '</span>'; };
+  var chev = '<span class="ka-card-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>';
+  var head = '<h2 class="sr-only" id="kaCardH">Account</h2>';
+  if (st === 'guest') {
+    if (kaCardMode() === 'full') {
+      return head + '<div class="ka-card-row"><div class="ka-card-main">' + disc('laptop') + '<div class="ka-card-text"><p class="ka-card-t">Saved in this browser only</p></div></div></div>'
+        + '<p class="ka-card-body">A free account syncs it with the KaiSip Android app and keeps a safe copy if this browser’s data is cleared.</p>'
+        + '<div class="ka-card-acts"><a class="ka-btn ka-btn-secondary ka-btn-sm ka-btn-auto" data-f="create" href="#create-account" onclick="event.preventDefault();kaCardCollapse();kaGo(\'create-account\')">Create a free account</a>'
+        + '<a class="ka-linkbtn" data-f="signin" href="#sign-in" onclick="event.preventDefault();kaCardCollapse();kaGo(\'sign-in\')">Sign in</a></div>';
+    }
+    return head + '<div class="ka-card-row"><button type="button" class="ka-card-main" data-f="offer" aria-haspopup="dialog" onclick="kaOffer()">' + disc('laptop')
+      + '<span class="ka-card-text"><span class="ka-card-t">Saved in this browser only</span><span class="ka-card-m">Add a free account to sync</span></span>' + chev + '</button></div>';
+  }
+  var mail = kaHintMail();
+  var title = '<span class="ka-card-t"><span aria-hidden="true">' + escapeHtml(mail || 'Your account') + '</span><span class="sr-only">' + (mail ? 'Signed in as ' + escapeHtml(kaMailSpoken(mail)) : 'Your account') + '</span></span>';
+  var sub = '<span class="ka-card-m">' + escapeHtml(kaStateWords(st)) + '</span>';
+  var text = '<span class="ka-card-text">' + title + sub + '</span>';
+  if (st === 'expired') {
+    return head + '<div class="ka-card-row"><div class="ka-card-main">' + disc('alert', 'is-attn') + text.replace('Signed in as ', 'Account ') + '</div></div>'
+      + '<div class="ka-card-under"><a class="ka-btn ka-btn-secondary ka-btn-sm ka-btn-auto" data-f="again" href="#sign-in" onclick="event.preventDefault();kaGo(\'sign-in\')">Sign in again</a><p>' + KA_SAFE + '</p></div>';
+  }
+  var open = function (d) { return '<a class="ka-card-main" data-f="open" href="#account" onclick="return navGoFocus(event,\'account\')">' + d + text + chev + '</a>'; };
+  var act = function (label, icon, busy) {
+    return '<button type="button" class="ka-card-act' + (busy ? ' is-busy' : '') + '" data-f="sync"' + (busy ? ' aria-disabled="true"' : '') + ' onclick="kaCardSync()">' + kaIco(icon, 20) + '<span>' + label + '</span></button>';
+  };
+  if (st === 'syncing') return head + '<div class="ka-card-row">' + open(disc('sync')) + act('Syncing…', 'sync', true) + '</div>';
+  if (st === 'offline') return head + '<div class="ka-card-row">' + open(disc('cloudoff', 'is-quiet')) + '</div>';
+  if (st === 'error') return head + '<div class="ka-card-row">' + open(disc('alert', 'is-attn')) + act('Try again', 'sync') + '</div>';
+  if (st === 'off') return head + '<div class="ka-card-row">' + open(disc('sync', 'is-quiet')) + '</div>';
+  if (st === 'paused') {
+    return head + '<div class="ka-card-row">' + open(disc('alert', 'is-attn')) + '</div>'
+      + '<div class="ka-card-under"><button type="button" class="ka-btn ka-btn-secondary ka-btn-sm ka-btn-auto" data-f="reload" onclick="location.reload()">Refresh the page</button><p>' + KA_SAFE + '</p></div>';
+  }
+  if (st === 'setup' || st === 'needpw') {
+    return head + '<div class="ka-card-row">' + open(disc('alert', 'is-attn')) + '</div>'
+      + '<div class="ka-card-under"><button type="button" class="ka-btn ka-btn-secondary ka-btn-sm ka-btn-auto" data-f="setup" onclick="kaResumeSetup()">' + (st === 'needpw' ? 'Create a password' : 'Finish setting up') + '</button><p>' + KA_SAFE + '</p></div>';
+  }
+  return head + '<div class="ka-card-row">' + open(disc('okcircle')) + act('Sync now', 'sync') + '</div>';
+}
+// Draws a region again and puts keyboard focus back on the control that had it.
+function kaRedraw(box, html) {
+  var a = document.activeElement;
+  var key = a && box.contains(a) ? a.getAttribute('data-f') : null;
+  if (box.innerHTML !== html) box.innerHTML = html;
+  if (key) { var again = box.querySelector('[data-f="' + key + '"]') || box.querySelector('[data-f]'); if (again && again !== document.activeElement) { try { again.focus({ preventScroll: true }); } catch (e) {} } }
+}
+function kaCardDraw() {
+  var you = document.querySelector('#screen-you .you');
+  if (!you) return;
+  var box = kaEl('kaCard');
+  if (!box) {
+    box = document.createElement('section');
+    box.id = 'kaCard';
+    box.className = 'ka-card';
+    box.setAttribute('aria-labelledby', 'kaCardH');
+    var top = you.querySelector('.you-top');
+    if (top && top.nextSibling) you.insertBefore(box, top.nextSibling); else you.appendChild(box);
+    you.classList.add('has-ka');
+  }
+  kaRedraw(box, kaCardHtml());
+}
+function kaCardSync() {
+  if (ka.syncBusy) return;
+  var b = document.querySelector('#kaCard .ka-card-act');
+  kaSyncNow(true).then(function () { var n = document.querySelector('#kaCard .ka-card-act'); if (n && b) n.classList.add('is-turn'); });
+}
+// Picks up a sign-in that stopped part way (a password, the agreements, or the first sync).
+function kaResumeSetup() {
+  kaGetCloud().then(function () { return kaAfterSignIn(); }).catch(function () { showToast(KA_WORDS.offline, 'info', 3600); });
+}
+// The one-line version: the desktop rail's foot, and "Sign in" or the initial in the phone's top bar.
+function kaRailDraw() {
+  var st = kaState(), mail = kaHintMail(), guest = st === 'guest';
+  var rail = kaEl('kaRail');
+  if (rail) {
+    rail.setAttribute('href', guest || st === 'expired' ? '#sign-in' : '#account');
+    var html = '<span class="ka-disc' + (st === 'expired' || st === 'error' || st === 'setup' || st === 'needpw' || st === 'paused' ? ' is-attn' : '') + '" aria-hidden="true">' + kaIco(guest ? 'laptop' : st === 'synced' || st === 'syncing' ? 'okcircle' : st === 'offline' ? 'cloudoff' : st === 'off' ? 'sync' : 'alert', 18) + '</span>'
+      + '<span class="ka-rail-t"><span class="ka-rail-h">' + (guest ? 'Not signed in' : '<span aria-hidden="true">' + escapeHtml(mail || 'Your account') + '</span><span class="sr-only">Account, ' + escapeHtml(kaMailSpoken(mail)) + '</span>') + '</span>'
+      + '<span class="ka-rail-m">' + escapeHtml(guest ? 'Saved in this browser' : kaStateWords(st)) + '</span></span>';
+    if (rail.innerHTML !== html) rail.innerHTML = html;
+  }
+  var top = kaEl('kaTop');
+  if (top) {
+    var signedIn = !guest && st !== 'expired';
+    top.setAttribute('href', signedIn ? '#account' : '#sign-in');
+    var t = signedIn ? '<span class="ka-ava" aria-hidden="true">' + escapeHtml(Array.from(mail || 'K')[0].toLocaleUpperCase()) + '</span><span class="sr-only">Account</span>' : (st === 'expired' ? 'Sign in again' : 'Sign in');
+    if (top.innerHTML !== t) top.innerHTML = t;
+  }
+}
+function kaRailGo(e) {
+  if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)) return true;
+  if (e) e.preventDefault();
+  var st = kaState();
+  if (st === 'guest' || st === 'expired') kaGo('sign-in'); else navGoFocus(null, 'account');
+  return false;
+}
+// The slim row's sheet: what an account adds, and the two ways in.
+function kaOffer() {
+  var modal = kaEl('flagModal');
+  if (!modal) return;
+  var row = function (icon, t, s) { return '<li><span class="ka-disc" aria-hidden="true">' + kaIco(icon, 20) + '</span><span><b>' + t + '</b><span>' + s + '</span></span></li>'; };
+  modal.innerHTML = '<div class="mock-confirm-overlay ks-sheet-overlay" onclick="closeFlagModal(event)">'
+    + '<div class="mock-confirm-modal ks-sheet ka-dlg" role="dialog" aria-modal="true" aria-labelledby="kaOfferH">'
+    + '<h2 class="mock-confirm-head" id="kaOfferH">Keep your progress everywhere</h2><div class="mock-confirm-body">'
+    + '<ul class="ka-offer">' + row('laptop', 'Saved in this browser only', 'Where your progress lives today.')
+    + row('sync', 'In sync with your phone', 'Study here and in the KaiSip Android app, and carry on where you stopped.')
+    + row('shield', 'A safe copy', 'If this browser’s data is cleared, sign in and your progress comes back.') + '</ul>'
+    + '<p class="ka-hint" style="margin-top:16px">Free and optional. KaiSip works the same without an account.</p>'
+    + '<div class="ka-dlg-acts"><button type="button" class="ka-btn ka-btn-primary" onclick="kaOfferGo(\'create-account\')">Create a free account</button>'
+    + '<button type="button" class="ka-btn ka-btn-secondary" onclick="kaOfferGo(\'sign-in\')">Sign in</button>'
+    + '<button type="button" class="ka-btn ka-btn-quiet" onclick="closeFlagModal()">Close</button></div>'
+    + '</div></div></div>';
+}
+function kaOfferGo(key) {
+  var modal = kaEl('flagModal');
+  if (modal) modal.setAttribute('data-return', 'none');
+  closeFlagModal();
+  kaGo(key);
+}
+
+// ── The Account page (You, then Account) ──
+function kaProviderWords(p) {
+  var g = p.indexOf('google') >= 0, e = p.indexOf('email') >= 0;
+  return g && e ? 'Signed in with Google, or email and password' : g ? 'Signed in with Google' : 'Signed in with email and password';
+}
+function kaAccountHero() {
+  var box = kaEl('kaHero');
+  var who = kaAccount();
+  if (!box || !who) return;
+  var st = kaState();
+  var mail = ka.user && ka.user.email ? ka.user.email : (who.emailMasked || 'Your account');
+  var status = st === 'syncing' ? 'Syncing…' : st === 'offline' ? 'Waiting for a connection' : st === 'error' ? 'Couldn’t sync. We’ll try again; your progress is safe here.'
+    : st === 'paused' ? 'Paused: refresh the page to keep syncing' : st === 'off' ? 'Sync is off' : st === 'setup' ? 'One step left to turn sync on' : st === 'needpw' ? 'Finish creating your password' : 'Sync is on';
+  var icon = st === 'synced' || st === 'syncing' ? 'check' : st === 'offline' ? 'cloudoff' : st === 'off' ? 'sync' : 'alert';
+  var btn = st === 'syncing' ? '<button type="button" class="ka-btn ka-btn-auto" data-f="sync" aria-disabled="true">' + kaIco('sync', 18) + 'Syncing…</button>'
+    : st === 'paused' ? '<button type="button" class="ka-btn ka-btn-auto" data-f="sync" onclick="location.reload()">Refresh the page</button>'
+    : st === 'off' ? '<button type="button" class="ka-btn ka-btn-auto" data-f="sync" onclick="kaResumeSetup()">Turn sync on</button>'
+    : st === 'setup' || st === 'needpw' ? '<button type="button" class="ka-btn ka-btn-auto" data-f="sync" onclick="kaResumeSetup()">' + (st === 'needpw' ? 'Create a password' : 'Finish setting up') + '</button>'
+    : st === 'offline' ? '' : '<button type="button" class="ka-btn ka-btn-auto" data-f="sync" onclick="kaSyncNow(true)">' + kaIco('sync', 18) + (st === 'error' ? 'Try again' : 'Sync now') + '</button>';
+  kaRedraw(box, kaFronds(600, 260, [[540, 290, 280, -14, 8], [600, 300, 180, 18, 6, true]])
+    + '<div class="ka-who"><span class="ka-ava" aria-hidden="true">' + escapeHtml(Array.from(mail)[0].toLocaleUpperCase()) + '</span><div><p class="ka-who-mail">' + escapeHtml(mail) + '</p><p class="ka-who-sub">' + kaProviderWords(who.providers || []) + '</p></div></div>'
+    + '<div class="ka-sync"><p class="ka-status">' + kaIco(icon, 20) + '<span>' + status + '</span></p>'
+    + '<p class="ka-last">' + (st === 'off' || st === 'setup' || st === 'needpw' ? KA_SAFE : kaSyncedWords(true)) + '</p>'
+    + '<p class="ka-devices"><span>' + kaIco('laptop', 16) + ' This browser</span><span class="ka-vine" aria-hidden="true"></span><span>' + kaIco('phone', 16) + ' Android app</span></p>'
+    + btn + '</div>');
+}
+function kaItem(o) {
+  var inner = (o.icon ? '<span class="ka-item-i" aria-hidden="true">' + kaIco(o.icon, 20) + '</span>' : '')
+    + '<span><span class="ka-item-t" id="' + o.id + 'T">' + o.title + '</span><span class="ka-item-s" id="' + o.id + 'S" style="display:block">' + o.sub + '</span></span>'
+    + '<span class="ka-item-go" aria-hidden="true">' + ico('chevron', 18) + '</span>';
+  return '<div class="ka-row"><button type="button" class="ka-item' + (o.danger ? ' is-danger' : '') + '" id="' + o.id + '"' + (o.dialog ? ' aria-haspopup="dialog"' : '') + ' onclick="' + o.onclick + '">' + inner + '</button>'
+    + '<p class="ka-item-say" id="' + o.id + 'Say" role="status"></p></div>';
+}
+function kaSayRow(id, words) {
+  var el = kaEl(id + 'Say');
+  if (!el) { if (words) showToast(words, 'info', 3600); return; }
+  el.textContent = '';
+  setTimeout(function () { el.textContent = words; }, 60);
+}
+function kaRenderAccount() {
+  var box = kaEl('kaAccount');
+  if (!box) return;
+  var who = kaAccount();
+  if (!who) {
+    // Not signed in (or not known yet): the Account page has nothing to show.
+    box.innerHTML = '<h1 class="you-title" id="kaAcctTitle" tabindex="-1">Account</h1>';
+    kaWhenKnown(function () { if (kaAccount()) kaRenderAccount(); else { switchTab('you', { noScroll: true }); kaShow('signin'); } });
+    return;
+  }
+  var cloud = ka.cloud;
+  var hasPw = (who.providers || []).indexOf('email') >= 0;
+  var undo = null;
+  try { undo = cloud.device.undo(); } catch (e) {}
+  var changed = ka.user && ka.user.passwordSetAt ? 'Last changed ' + new Date(ka.user.passwordSetAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : (hasPw ? 'Needs your current password' : 'So you can also sign in with your email');
+  box.innerHTML = '<h1 class="you-title" id="kaAcctTitle" tabindex="-1">Account</h1>'
+    + '<section class="ka-hero" id="kaHero" aria-label="Sync status"></section>'
+    + '<section class="ka-group" aria-labelledby="kaG1"><h2 id="kaG1" class="ka-group-t">Email from KaiSip</h2>'
+    + '<div class="ka-item no-ico"><span><span class="ka-item-t" id="kaNewsT">Study tips and KaiSip news</span><span class="ka-item-s" id="kaNewsS" style="display:block">About twice a month. You can unsubscribe anytime.</span></span>'
+    + '<button type="button" class="ka-toggle" id="kaNewsBtn" role="switch" aria-checked="' + (ka.news === true ? 'true' : 'false') + '" aria-labelledby="kaNewsT" aria-describedby="kaNewsS" onclick="kaNewsToggle()"></button>'
+    + '<span class="ka-toggle-word" id="kaNewsW" aria-hidden="true">' + (ka.news === true ? 'On' : 'Off') + '</span></div>'
+    + '<p class="ka-item-say" id="kaNewsBtnSay" role="status"></p>'
+    + '<p class="ka-group-note">Account emails, like codes and security notices, always arrive.</p></section>'
+    + '<section class="ka-group" aria-labelledby="kaG2"><h2 id="kaG2" class="ka-group-t">Your data</h2>'
+    + kaItem({ id: 'kaDl', icon: 'download', title: 'Download my data', sub: 'A copy of your account and synced progress, as a file.', onclick: 'kaDownload()' })
+    + kaItem({ id: 'kaDelSync', icon: 'cloudoff', title: 'Delete synced progress', sub: 'Removes the copy kept in your account and turns sync off. Progress in this browser stays.', onclick: 'kaDeleteSynced()', dialog: true })
+    + (undo ? kaItem({ id: 'kaUndo', icon: 'undo', title: 'Put back this browser’s earlier progress', sub: 'From before it took your account’s progress. Kept for 7 days.', onclick: 'kaUndo()', dialog: true }) : '')
+    + kaItem({ id: 'kaDel', icon: 'trash', title: 'Delete account', sub: 'Deletes your account and synced progress. Progress in this browser stays.', onclick: 'kaDeleteDialog()', dialog: true, danger: true })
+    + '</section>'
+    + '<section class="ka-group" aria-labelledby="kaG3"><h2 id="kaG3" class="ka-group-t">Security</h2>'
+    + kaItem({ id: 'kaPwRow', icon: 'key', title: hasPw ? 'Change password' : 'Add a password', sub: changed, onclick: 'kaPasswordDialog()', dialog: true })
+    + kaItem({ id: 'kaOutAll', icon: 'out', title: 'Sign out everywhere', sub: 'Ends your sign-in on every browser and phone, this one included.', onclick: 'kaSignOutAll()', dialog: true })
+    + '<div class="ka-security">' + kaIco('shield', 22) + '<ul>'
+    + '<li>Sign-ins last up to 30 days, or 14 days without use. Then we ask you to sign in again, and nothing in this browser is lost.</li>'
+    + '<li>Your password is kept only as a salted one-way hash, so no one at KaiSip can read it. New passwords are checked against known leaks without ever leaving this browser whole.</li>'
+    + '<li>Emailed codes only confirm your email and reset a forgotten password. We never send sign-in links.</li></ul></div></section>'
+    + '<div class="ka-signout"><button type="button" class="ka-btn ka-btn-secondary ka-btn-auto" id="kaOut" aria-haspopup="dialog" onclick="kaSignOutDialog()">' + kaIco('out', 18) + 'Sign out of this browser</button>'
+    + '<p>Your progress stays in this browser after you sign out.</p></div>';
+  kaAccountHero();
+  // The full address, the password date and the news choice come from the server: filled in when they arrive.
+  if (!ka.user) {
+    cloud.auth.getUser().then(function (u) {
+      ka.user = { email: u.email, providers: u.providers, passwordSetAt: u.passwordSetAt };
+      if (S.activeTab === 'account' && !ka.view) { kaAccountHero(); var s = kaEl('kaPwRowS'); if (s && u.passwordSetAt) s.textContent = 'Last changed ' + new Date(u.passwordSetAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); }
+    }).catch(function () { kaPaint(); });
+  }
+  if (ka.news === null) {
+    kaConsent.readConsent(cloud).then(function (c) { ka.news = !!(c && c.marketingOptIn === true); kaNewsDraw(); }).catch(function () {});
+  }
+}
+function kaNewsDraw() {
+  var b = kaEl('kaNewsBtn'), w = kaEl('kaNewsW');
+  if (b) b.setAttribute('aria-checked', ka.news === true ? 'true' : 'false');
+  if (w) w.textContent = ka.news === true ? 'On' : 'Off';
+}
+function kaNewsToggle() {
+  var cloud = ka.cloud;
+  if (!cloud || !kaAccount()) return;
+  var want = ka.news !== true, before = ka.news;
+  ka.news = want;
+  kaNewsDraw();
+  kaConsent.saveConsent(cloud, kaConsent.record(want)).then(function () {
+    kaSayRow('kaNewsBtn', want ? 'On. We’ll email you study tips and KaiSip news.' : 'Off. No study tips or news emails.');
+  }).catch(function (e) {
+    ka.news = before;
+    kaNewsDraw();
+    kaSayRow('kaNewsBtn', kaWords(e));
+  });
+}
+function kaDownload() {
+  var cloud = ka.cloud;
+  if (!cloud) return;
+  kaSayRow('kaDl', 'Getting your data…');
+  cloud.auth.callFunction('export-my-data', {}).then(function (text) {
+    var a = document.createElement('a');
+    var url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
+    a.href = url;
+    a.download = 'kaisip-my-data-' + isoLocalDate(new Date()) + '.json';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(url); if (a.parentNode) a.parentNode.removeChild(a); }, 1000);
+    kaSayRow('kaDl', 'Saved to your downloads.');
+  }).catch(function (e) { kaSayRow('kaDl', kaWords(e)); if (e && e.code === 'unauthorized') kaPaint(); });
+}
+function kaDeleteSynced() {
+  ksConfirm({
+    title: 'Delete synced progress?',
+    lines: ['The copy of your progress kept in your account is deleted, and sync is turned off in this browser.', 'Your progress in this browser stays, and so does your account.'],
+    cancelLabel: 'Keep it', confirmLabel: 'Delete synced progress', danger: true,
+    onConfirm: function () {
+      var cloud = ka.cloud;
+      cloud.sync.deleteAll().then(function () {
+        cloud.device.forget();
+        ka.syncErr = '';
+        ka.setupDue = false;
+        kaPaint();
+        kaSayRow('kaDelSync', 'Synced progress deleted. Sync is off.');
+      }).catch(function (e) { kaSayRow('kaDelSync', kaWords(e)); });
+    }
+  });
+}
+function kaUndo() {
+  ksConfirm({
+    title: 'Put back your earlier progress?',
+    lines: ['This browser goes back to the progress it had before it took your account’s.', 'At the next sync it is combined with your account, so nothing is lost.'],
+    cancelLabel: 'Cancel', confirmLabel: 'Put it back',
+    onConfirm: function () {
+      var ok = false;
+      try { ok = ka.cloud.device.restoreUndo(); } catch (e) { ok = false; }
+      if (ok) { showToast('Put back. It combines with your account at the next sync.', 'info', 4200); kaSyncSoon(); }
+      else kaSayRow('kaUndo', 'That copy is no longer there. Nothing was changed.');
+    }
+  });
+}
+// A small form in the app's sheet. `fields` is HTML; `onsubmit` is the handler's name.
+function kaSheet(o) {
+  var modal = kaEl('flagModal');
+  if (!modal) return;
+  modal.innerHTML = '<div class="mock-confirm-overlay ks-sheet-overlay" onclick="closeFlagModal(event)">'
+    + '<div class="mock-confirm-modal ks-sheet ka-dlg" role="dialog" aria-modal="true" aria-labelledby="kaDlgH" aria-describedby="kaDlgB">'
+    + '<h2 class="mock-confirm-head" id="kaDlgH">' + o.title + '</h2><div class="mock-confirm-body">'
+    + '<div class="ks-sheet-sub" id="kaDlgB">' + o.body + '</div>'
+    + '<form class="ka-form" id="kaForm" method="post" novalidate onsubmit="event.preventDefault();' + o.onsubmit + '()">' + o.fields
+    + '<p class="ka-error" id="kaFormE" role="alert"></p>'
+    + '<div class="ka-dlg-acts"><button type="submit" class="ka-btn ' + (o.danger ? 'ka-btn-danger' : 'ka-btn-primary') + '" id="kaGo">' + o.go + '</button>'
+    + '<button type="button" class="ka-btn ka-btn-quiet" onclick="closeFlagModal()">' + (o.cancel || 'Cancel') + '</button></div></form>'
+    + (o.after || '') + '</div></div></div>';
+  ka.busy = false;
+}
+function kaSignOutDialog() {
+  kaSheet({
+    title: 'Sign out of this browser?',
+    body: '<p>Your progress stays in this browser, and your account keeps its synced copy.</p>',
+    fields: '<label class="ka-check" for="kaWipe"><input type="checkbox" id="kaWipe"><span class="ka-box" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4.5 13.2 9.4 18 19.5 6.2"/></svg></span>'
+      + '<span>Also remove my progress from this browser<br><span class="ka-hint">For a shared computer. It can’t be undone here; your account keeps its copy.</span></span></label>',
+    go: 'Sign out', onsubmit: 'kaSignOutGo'
+  });
+}
+function kaSignOutGo() {
+  if (ka.busy) return;
+  var wipe = !!(kaEl('kaWipe') && kaEl('kaWipe').checked);
+  kaBusy(true, 'Signing out…');
+  var cloud = ka.cloud;
+  // Sync what this browser has first when it is about to be removed, so the account's copy is complete.
+  var before = wipe && cloud.device.meta().enabled && kaBankReady() ? cloud.syncNow().catch(function () {}) : Promise.resolve();
+  before.then(function () { return cloud.auth.signOut('local'); }).then(function () {
+    var modal = kaEl('flagModal');
+    if (modal) modal.setAttribute('data-return', 'none');
+    closeFlagModal();
+    kaAfterSignOut(wipe);
+  }, function () { kaBusy(false); kaSetError('kaFormE', KA_WORDS.server); });
+}
+function kaSignOutAll() {
+  ksConfirm({
+    title: 'Sign out everywhere?',
+    lines: ['Every browser and phone signed in to your account is signed out, this one included.', 'Your progress stays on each of them.'],
+    cancelLabel: 'Cancel', confirmLabel: 'Sign out everywhere',
+    onConfirm: function () {
+      ka.cloud.auth.signOut('global').then(function () { kaAfterSignOut(false); }, function (e) { kaSayRow('kaOutAll', e && e.code === 'offline' ? 'You’re offline, so nothing changed. Try again when you’re connected.' : kaWords(e)); });
+    }
+  });
+}
+// Signed out on purpose. Saved progress is left alone unless the learner asked to remove it.
+function kaAfterSignOut(wipe) {
+  kaDel(KA_HINT_KEY);
+  kaDel(KA_PENDING_KEY, true);
+  kaDel(KA_INTENT_KEY, true);
+  ka.user = null; ka.news = null; ka.firstPrep = null; ka.setupDue = false; ka.syncErr = '';
+  if (wipe) {
+    try { ka.cloud.device.forget(); ka.cloud.device.dropUndo(); } catch (e) {}
+    kaDel(KA_CONSENT_KEY);
+  }
+  if (ka.view) kaGoApp('you');
+  else if (S.activeTab === 'account') { switchTab('you', { noScroll: true }); window.scrollTo(0, 0); try { navFocusTitle(); } catch (e2) {} }
+  kaPaint();
+  if (wipe) { try { doResetProgress(); } catch (e3) {} showToast('Signed out. Your progress was removed from this browser.', 'info', 4200); }
+  else showToast('Signed out. Your progress stays in this browser.', 'info', 3600);
+}
+function kaPasswordDialog() {
+  var who = kaAccount();
+  if (!who) return;
+  var hasPw = (who.providers || []).indexOf('email') >= 0;
+  ka.email = ka.user && ka.user.email ? ka.user.email : '';
+  ka.pwNeedsCurrent = hasPw;
+  kaSheet({
+    title: hasPw ? 'Change password' : 'Add a password',
+    body: '<p>' + (hasPw ? 'Changing it signs you out on your other devices.' : 'Then you can sign in with your email as well as Google.') + ' At least 15 characters; no symbols or numbers required.</p>',
+    fields: (hasPw ? kaField({ id: 'kaCur', name: 'password', label: 'Current password', type: 'password', ac: 'current-password', reveal: true }) : '') + kaNewPasswordField(),
+    go: 'Save password', onsubmit: 'kaPasswordGo'
+  });
+  kaPwHelp();
+  kaWarmWords();
+}
+function kaPasswordGo() {
+  if (ka.busy) return;
+  kaClearErrors();
+  var cur = kaEl('kaCur'), np = kaEl('kaPw');
+  if (cur && !cur.value) { kaFail('Enter your current password.', 'kaCur'); return; }
+  if (!np.value) { kaFail(kaGuide('too_short'), 'kaPw'); return; }
+  np.type = 'password';
+  kaBusy(true, 'Saving…');
+  var cloud = ka.cloud;
+  cloud.auth.setPassword(np.value, cur ? { currentPassword: cur.value } : undefined).then(function () {
+    np.value = ''; if (cur) cur.value = '';
+    closeFlagModal();
+    ka.user = null;
+    if (S.activeTab === 'account') kaRenderAccount();
+    kaSayRow('kaPwRow', 'Password saved.' + (cloud.auth.breachState() === 'unchecked' ? ' ' + kaGuide('breach_unchecked') : ''));
+  }).catch(function (e) {
+    kaBusy(false);
+    if (e && e.code === 'reauth_required') { kaSetError('kaFormE', (kaAccount() && (kaAccount().providers || []).indexOf('email') < 0) ? 'For your security, sign out and sign in again with Google, then add a password within a few minutes.' : KA_WORDS.reauth); return; }
+    kaFail(e, e && e.code === 'invalid' && String(e.detail).indexOf('password_current') !== 0 && String(e.detail) !== 'password_wrong' ? 'kaPw' : '');
+  });
+}
+// Delete account: a fresh sign-in (under 10 minutes), then the word DELETE.
+var KA_FRESH_MS = 9 * 60000;
+function kaDeleteDialog() {
+  var who = kaAccount();
+  if (!who) return;
+  var fresh = Date.now() - who.authAt < KA_FRESH_MS;
+  var hasPw = (who.providers || []).indexOf('email') >= 0;
+  ka.email = ka.user && ka.user.email ? ka.user.email : '';
+  if (!fresh && !hasPw) {
+    // A Google account: confirm with Google again, then come straight back here.
+    kaSheet({
+      title: 'Confirm it’s you',
+      body: '<p>For your security, sign in with Google again before deleting your account. You’ll come straight back here.</p>',
+      fields: '', go: 'Continue with Google', onsubmit: 'kaDeleteViaGoogle'
+    });
+    return;
+  }
+  kaSheet({
+    title: 'Delete your account?',
+    body: '<p>Your account, its email address and your synced progress are deleted for good, on every device. This can’t be undone.</p><p>Your progress in this browser stays.</p>',
+    fields: (fresh ? '' : '<input type="email" class="sr-only" name="email" autocomplete="username" tabindex="-1" aria-hidden="true" readonly value="' + escapeHtml(ka.email) + '">'
+      + kaField({ id: 'kaCur', name: 'password', label: 'Your password, to confirm it’s you', type: 'password', ac: 'current-password', reveal: true }) + '<div class="ka-human" id="kaHuman"></div>')
+      + '<div class="ka-field"><div class="ka-field-top"><label class="ka-label" for="kaDelWord">Type DELETE to confirm</label></div>'
+      + '<div class="ka-input-wrap"><input class="ka-input" id="kaDelWord" name="confirm" type="text" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" aria-describedby="kaDelWordE" required></div>'
+      + '<p class="ka-error" id="kaDelWordE" role="alert"></p></div>',
+    go: 'Delete my account', danger: true, cancel: 'Keep my account', onsubmit: 'kaDeleteGo'
+  });
+  if (!fresh) kaHumanMount('password_sign_in');
+}
+function kaDeleteViaGoogle() {
+  kaSet(KA_INTENT_KEY, 'delete', true);
+  kaGoogle(false);
+}
+function kaDeleteGo() {
+  if (ka.busy) return;
+  kaClearErrors();
+  var word = kaEl('kaDelWord'), cur = kaEl('kaCur');
+  if (cur && !cur.value) { kaFail('Enter your password.', 'kaCur'); return; }
+  if (!word || word.value.trim() !== 'DELETE') { kaFail('Type DELETE in capital letters to confirm.', 'kaDelWord'); return; }
+  kaBusy(true, 'Deleting…');
+  var cloud = ka.cloud;
+  var step = cur ? kaHumanToken().then(function (token) { return cloud.auth.reauthWithPassword(cur.value, { captchaToken: token }); }) : Promise.resolve();
+  step.then(function () { if (cur) cur.value = ''; return cloud.auth.callFunction('delete-account', { confirm: 'DELETE' }); }).then(function () { kaDeleted(); }, function (e) {
+    // "Already gone" is the one answer that also means done.
+    if (e && e.code === 'gone') { cloud.auth.signOut('local').then(kaDeleted, kaDeleted); return; }
+    kaBusy(false);
+    kaHumanReset();
+    if (e && e.code === 'reauth_required') { closeFlagModal(); kaSayRow('kaDel', 'For your security, confirm it’s you again, then delete.'); setTimeout(kaDeleteDialog, 50); return; }
+    if (e && e.code === 'invalid' && e.detail === 'password_wrong') { kaFail('That password isn’t right. Check it and try again.', 'kaCur'); return; }
+    kaFail(e);
+  });
+}
+function kaDeleted() {
+  var modal = kaEl('flagModal');
+  if (modal) modal.setAttribute('data-return', 'none');
+  closeFlagModal();
+  try { ka.cloud.device.forget(); ka.cloud.device.dropUndo(); } catch (e) {}
+  kaDel(KA_HINT_KEY); kaDel(KA_CONSENT_KEY);
+  ka.user = null; ka.news = null; ka.firstPrep = null; ka.setupDue = false; ka.syncErr = '';
+  if (S.activeTab === 'account') { switchTab('you', { noScroll: true }); window.scrollTo(0, 0); try { navFocusTitle(); } catch (e2) {} }
+  kaPaint();
+  showToast('Your account was deleted. Your progress in this browser stays.', 'info', 6000);
+}
+// kaisip.com/delete-account's button lands here (#delete-account).
+function kaOpenDelete() {
+  kaWhenKnown(function () {
+    if (kaAccount()) { kaClose(); switchTab('account', { noScroll: true }); setTimeout(kaDeleteDialog, 200); return; }
+    kaSet(KA_INTENT_KEY, 'delete', true);
+    ka.notice = 'Sign in to the account you want to delete. Deleting it is the next step.';
+    kaShow('signin');
+  });
+}
+
+// ── Start-up ──
+function kaWelcomeDue() {
+  if (!KA_ON || ka.view) return false;
+  try { return !localStorage.getItem('cisa_onboarded_v6'); } catch (e) { return false; }
+}
+function kaBoot() {
+  if (!KA_ON) return;
+  // The Account page joins You's pages only now, so with accounts off #account is an unknown address as before.
+  NAV_SECTION.account = 'you';
+  NAV_HASH.account = 'account';
+  NAV_ALIAS.account = 'account';
+  NAV_TITLE.account = 'Account';
+  var root = document.createElement('div');
+  root.id = 'kaRoot';
+  root.hidden = true;
+  var rail = kaEl('appRail');
+  document.body.insertBefore(root, rail || document.body.firstChild);
+  // The address as the page was opened (the app's first page replaces it with its own).
+  ka.bootHash = location.hash;
+  var say = document.createElement('p');
+  say.id = 'kaSay'; say.className = 'sr-only'; say.setAttribute('role', 'status'); say.setAttribute('aria-live', 'polite');
+  document.body.appendChild(say);
+  var set = kaEl('screen-settings');
+  if (set && set.parentNode) {
+    var scr = document.createElement('div');
+    scr.id = 'screen-account'; scr.className = 'screen';
+    scr.innerHTML = '<div class="you ka-acct" id="kaAccount"></div>';
+    set.parentNode.insertBefore(scr, set.nextSibling);
+  }
+  if (rail) {
+    var a = document.createElement('a');
+    a.id = 'kaRail'; a.className = 'ka-rail'; a.href = '#sign-in';
+    a.onclick = kaRailGo;
+    rail.appendChild(a);
+  }
+  var head = document.querySelector('header.app-header');
+  if (head) {
+    var t = document.createElement('a');
+    t.id = 'kaTop'; t.className = 'ka-top'; t.href = '#sign-in';
+    t.onclick = kaRailGo;
+    head.appendChild(t);
+  }
+  // Another tab signed in or out, or synced: this tab says the same.
+  window.addEventListener('storage', function (e) {
+    if (e.key !== null && KA_SESSION_KEYS.indexOf(e.key) < 0 && e.key !== 'kaisip_sync_v1') return;
+    var done = function () {
+      if (!kaAccount()) {
+        ka.user = null; ka.news = null; ka.firstPrep = null;
+        if (S.activeTab === 'account' && !ka.view) switchTab('you', { noScroll: true });
+        if (ka.view === 'consent' || ka.view === 'firstsync' || ka.view === 'signup3') kaGoApp('you');
+      } else if (ka.view === 'signin' || ka.view === 'signup1' || ka.view === 'forgot1') {
+        kaGoApp('you');
+      }
+      kaPaint();
+    };
+    if (ka.cloud || kaHasSession() || kaGet(KA_SESSION_KEYS[1])) kaGetCloud().then(done, done); else done();
+  });
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') { if (ka.cloud && kaAccount() && !ka.syncBusy) kaSyncNow(false); }
+    else kaPaint();
+  });
+  kaSyncTimer = setInterval(function () { if (document.visibilityState !== 'hidden' && navigator.onLine !== false) kaSyncNow(false); }, KA_SYNC_EVERY_MS);
+  window.addEventListener('online', function () { if (ka.syncErr === 'offline') kaSyncNow(false); });
+  kaPaint();
+}
+// After the app has drawn its first page: a return from Google, a saved session, or an account address.
+function kaStart() {
+  if (!KA_ON) return;
+  var back = window.KS_ACCT.back;
+  if (back) { kaGoogleReturn(back); return; }
+  if (kaHasSession() || kaGet(KA_SESSION_KEYS[1])) {
+    kaGetCloud().then(function (cloud) {
+      kaPaint();
+      if (!kaAccount()) return null;
+      if (cloud.auth.passwordNeeded() || !cloud.device.meta().enabled || cloud.accountChanged()) { ka.setupDue = true; kaPaint(); return null; }
+      return kaWaitBank().then(function (ready) { if (ready) return kaSyncNow(false); ka.syncErr = 'wait'; return null; });
+    }).catch(function () {});
+  }
+  var h = ka.bootHash || '';
+  if (/^#(sign-in|create-account|forgot-password|delete-account)$/i.test(h) && kaRoute(h)) {
+    try { history.replaceState(history.state, '', h); } catch (e) {}
+  }
+}
+// ── ACCOUNTS END ──
+
 ensureLocalProfile();
 loadState();
 buildQueues();
 initConsentBanner(); // cookie consent — gates Google Analytics
+// Accounts (off unless the switch in the page's first script is on): its pages join the app before the address is read.
+kaBoot();
 // An address like #glossary (or an old #topics / #weak link) opens that page
 // instead of the one used last.
 var bootNav = navFromHash(location.hash);
@@ -27034,6 +29332,8 @@ if (shouldResumeCurrent() && (!S.activeTab || S.activeTab === 'practice')) {
 // An address that asks for a popup (#whats-new on You, #your-data on Settings) opens it.
 if (bootNav && bootNav.action) setTimeout(function () { navRunAction(bootNav.action); }, 0);
 
+// Accounts: an account address (#sign-in ...), a return from Google, or a saved session.
+kaStart();
 // First visit: the welcome (onboarding) opens after a short pause.
 checkOnboarding();
 // Just restored from a file: say how many answers came back.
@@ -27413,6 +29713,7 @@ function showSessionSummary() {
     return;
   }
 
+  kaSyncSoon();   // accounts: a finished set syncs when the page is next idle
   var t = S.score.t, c = S.score.c;
   var pctColor = "var(--text)";
 

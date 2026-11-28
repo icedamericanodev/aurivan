@@ -215,6 +215,67 @@ describe('create an account with a password', () => {
   });
 });
 
+describe('create an account in the screens\' order: email, then the code, then the password', () => {
+  it('step 1 emails a code with no password anywhere; step 2 gives a session that only needs a password; step 3 saves it', async () => {
+    const a = tab();
+    await a.sendSignUpCode('  Maya@Example.com ', { captchaToken: 'turnstile-token' });
+    expect(server.calls.map((c) => `${c.method} ${c.path}`)).toEqual(['POST /auth/v1/otp']);
+    expect(server.calls[0].body).toEqual({ email: EMAIL, create_user: true, gotrue_meta_security: { captcha_token: 'turnstile-token' } });
+
+    const who = await a.confirmSignUpCode(EMAIL, server.codes.get(EMAIL)!);
+    expect(who.providers).toEqual(['email']);
+    expect(server.calls[1].body).toEqual({ type: 'email', email: EMAIL, token: expect.any(String) });
+    // Signed in, but only to set a password: no sync, and "needs a password" across a reload.
+    expect(a.passwordNeeded()).toBe(true);
+    expect(tab().passwordNeeded()).toBe(true);
+    expect(putCalls()).toHaveLength(0);
+
+    now += 2 * MIN;
+    await a.setPassword(PW);
+    expect(putCalls()[0].body).toEqual({ password: PW, data: stamp() });
+    expect(a.passwordNeeded()).toBe(false);
+    await a.signOut('local');
+    expect((await tab().signInWithPassword(EMAIL, PW)).userId).toBe(who.userId);
+  });
+
+  it('a bad address or a wrong code is a calm code; nothing is saved', async () => {
+    const a = tab();
+    expect(await codeOf(a.sendSignUpCode('not-an-email'))).toBe('invalid:email');
+    expect(server.calls).toHaveLength(0);
+    await a.sendSignUpCode(EMAIL);
+    expect(await codeOf(a.confirmSignUpCode(EMAIL, '00000000'))).toBe('invalid:code_wrong');
+    expect(await codeOf(a.confirmSignUpCode(EMAIL, 'abc'))).toBe('invalid:code_wrong');
+    expect(a.current()).toBeNull();
+  });
+
+  it('a refused password keeps the session waiting; with no password in 10 minutes it is signed out, and the page says why', async () => {
+    const a = tab();
+    await a.sendSignUpCode(EMAIL);
+    await a.confirmSignUpCode(EMAIL, server.codes.get(EMAIL)!);
+    expect(await codeOf(a.setPassword('too short'))).toBe('invalid:password_too_short');
+    expect(await codeOf(a.setPassword('passwordpassword'))).toBe('invalid:password_common');
+    expect(putCalls()).toHaveLength(0);
+    expect(a.passwordNeeded()).toBe(true);
+    now += CODE_SESSION_MAX_MS;
+    expect(a.current()).toBeNull();
+    expect(a.sessionEnded()).toBe('password_not_set');
+  });
+
+  it('the address already had an account: the code confirms the inbox and the new password replaces the old one', async () => {
+    const first = await signUp(tab());
+    await tab().signOut('local');
+    now += 5 * MIN;
+    const a = tab();
+    await a.sendSignUpCode(EMAIL);
+    const who = await a.confirmSignUpCode(EMAIL, server.codes.get(EMAIL)!);
+    expect(who.userId).toBe(first.account.userId);
+    expect(a.passwordNeeded()).toBe(true);
+    await a.setPassword(PW2);
+    expect(a.passwordNeeded()).toBe(false);
+    expect(await codeOf(tab().signInWithPassword(EMAIL, PW))).toBe('invalid:password_wrong');
+  });
+});
+
 describe('sign in with a password', () => {
   it('works, with the human-check token; a password session counts as "email"', async () => {
     await signUp(tab());

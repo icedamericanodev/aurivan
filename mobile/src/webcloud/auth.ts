@@ -16,6 +16,10 @@
  *   NOT sent then. `finishPasswordSignUp` trades the code for a session and
  *   at once saves the password with that brand-new session (PUT /user), the
  *   only way the database's password guard keeps it.
+ * - The screens ask in the order email → code → password (owner decision 28
+ *   Nov 2026): `sendSignUpCode`, then `confirmSignUpCode` (a session that
+ *   only "needs a password"), then `setPassword`. The two-call form above
+ *   stays for a screen that asks for the password first.
  * - Forgot password: `sendPasswordResetCode` (no link, no redirect; the
  *   same answer for every address, at most one a minute from this page),
  *   then `finishPasswordReset` (the reset code, then the new password).
@@ -157,6 +161,20 @@ export interface WebAuth {
   signInWithPassword(email: string, password: string, opts?: { captchaToken?: string; shared?: boolean }): Promise<PasswordSignIn>;
   /** "Create an account", step 1: checks the password with the app's rules, then emails a code. The password is NOT sent. */
   startPasswordSignUp(email: string, password: string, opts?: { captchaToken?: string }): Promise<void>;
+  /**
+   * "Create an account" in the screens' order, email → code → password (owner
+   * decision 28 Nov 2026, web design step 6): step 1 emails the code that
+   * confirms the address. No password exists yet, so none is checked or sent.
+   */
+  sendSignUpCode(email: string, opts?: { captchaToken?: string }): Promise<void>;
+  /**
+   * Step 2 of that order: the code → a session (saved) that still NEEDS a
+   * password. `passwordNeeded()` is true, it may not sync, and it is signed
+   * out (here and on the server) after 10 minutes. Step 3 is
+   * `setPassword(newPassword)` with this fresh session, within 9 minutes.
+   * This is not a way to sign in: nothing but "set a password" works with it.
+   */
+  confirmSignUpCode(email: string, code: string, opts?: { shared?: boolean }): Promise<AccountInfo>;
   /**
    * Step 2: the code → a session (saved), then the password is saved with that fresh session.
    * If the code works but the password is refused, the learner stays signed in, `passwordSaved`
@@ -673,6 +691,15 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
       const p = newPasswordOf(password, e); // refused here if the rules fail; the password itself is not sent
       await breachCheck(p); // a leaked password is refused before any code is emailed
       await requestCode(e, opts?.captchaToken);
+    },
+
+    async sendSignUpCode(email, opts) {
+      await requestCode(emailOf(email), opts?.captchaToken);
+    },
+
+    async confirmSignUpCode(email, code, opts) {
+      const e = emailOf(email);
+      return info((await verifyCode(e, code, 'email', Boolean(opts?.shared))).s);
     },
 
     async finishPasswordSignUp(email, code, password, opts) {

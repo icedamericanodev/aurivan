@@ -16,8 +16,13 @@
 export const SUPABASE_URL = 'https://ziadnvepttlgcowvqvom.supabase.co';
 /** The publishable (public) key, sent as `apikey`. */
 export const PUBLISHABLE_KEY = 'sb_publishable_s9eKQUQ0w3MTnCUBF05EkA_5e_kGEw2';
-/** Where Google sends the learner back (must match the Auth redirect list exactly). */
-export const REDIRECT_URL = 'https://kaisip.com/';
+/**
+ * Where Google sends the learner back (must match the Auth redirect list
+ * exactly). The web study app lives at /app/ since web v13.2 (the home page
+ * at / has no account code), so the list in the Supabase dashboard must hold
+ * this address (docs/WEB_LAUNCH_PLAN.md, stream B step 0).
+ */
+export const REDIRECT_URL = 'https://kaisip.com/app/';
 /** The only address that shows account features (never file:// or a preview host). */
 export const ACCOUNT_ORIGIN = 'https://kaisip.com';
 
