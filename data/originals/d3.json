@@ -3256,37 +3256,39 @@
       "id": "d3_087",
       "domain": 3,
       "subtopic": "Release Management. Deployment Strategy",
+      "principle_id": "prevent-before-detect",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "After a defective release disrupted payments, management proposes blue-green deployment for a payment app, with both environments built from one template. Which risk should the IS auditor raise as GREATEST?",
+      "question": "After a defective release disrupted payments, management proposes blue-green deployment so it can switch back quickly. Both environments are rebuilt from one template before each release. Which risk should the IS auditor raise as GREATEST?",
       "options": {
-        "A": "A defect reaches every customer at once before switch-back",
-        "B": "Change approvals relaxed because switching back looks easy",
+        "A": "A defect reaching every customer at once before switch-back",
+        "B": "Testing and change approval being relaxed because switch-back looks easy",
         "C": "The idle environment drifting out of step with live settings",
         "D": "Customers facing long downtime while traffic switches between environments"
       },
-      "correct": "A",
-      "key_concept": "Blue-green deployment moves all users at once; it limits downtime, not exposure, so a defect reaches every customer until switch-back.",
-      "pre_read": "Recall what blue-green deployment limits and what it does not. Then picture the next faulty release.",
-      "correct_explanation": "Blue-green deployment keeps two identical environments and switches all traffic to the new one at once. It allows a fast switch back and near-zero downtime, but every customer meets a defect before anyone reverses it, repeating the failed release's harm. Relaxed approvals are the tempting option: they are a real behavior risk, but change management can control them, while all-at-once exposure is built into blue-green and happens on every release.",
+      "correct": "B",
+      "key_concept": "A fast switch-back speeds recovery but prevents no defects; the greater risk is that easy rollback weakens the testing and approval that do.",
+      "pre_read": "Ask what caused the incident, then whether the proposed fix prevents that cause or only speeds recovery from it.",
+      "correct_explanation": "The incident was a defect that got past preventive controls. Blue-green deployment is a recovery control: it gives near-zero downtime and a fast switch back, but it stops no defect from reaching production. If easy rollback becomes a reason to relax testing and change approval, defective releases grow more frequent. Exposing every customer at once is the tempting option, but switch-back limits how long that exposure lasts.",
       "wrong_explanations": {
-        "B": "Complacent approvals are a genuine hazard when rollback seems cheap, but risks are ranked by what remains once existing controls have acted.",
-        "C": "Both environments are built from one template, which controls drift; all-at-once exposure is built into blue-green and no template removes it.",
+        "A": "All customers do meet a defect at once, but the fast switch back limits how long; weaker testing and approval would let more defects through in the first place.",
+        "C": "Rebuilding both environments from one template before each release controls drift, so the stem already shows this risk addressed.",
         "D": "Blue-green switches traffic almost instantly, so long downtime is the problem it solves, not one it creates."
       },
       "tips": [
-        "Eliminate: C is controlled by building both environments from one template, and D gets blue-green backwards, since it avoids downtime.",
-        "Final two: A beats B because all-at-once exposure is built into blue-green and recurs on every release, while relaxed approvals are behavior change management can control.",
-        "Exam cue: blue-green limits downtime, canary limits exposure; match the deployment strategy to the risk the stem names."
+        "Eliminate: C is controlled by rebuilding both environments from one template before each release, and D gets blue-green backwards, since it avoids downtime.",
+        "Final two: B beats A because the incident was a defect that passed preventive controls; switch-back limits A's exposure, while relaxed testing and approval cause more defective releases.",
+        "Exam cue: a faster recovery does not replace prevention; when a proposed fix only speeds recovery, the GREATEST risk is usually the preventive control it tempts people to weaken."
       ],
-      "framework_ref": "Continuous Delivery (Humble & Farley); DORA / Accelerate (DevOps Research and Assessment); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "framework_ref": "Continuous Delivery (Humble & Farley); DORA / Accelerate (DevOps Research and Assessment); COBIT 2019 BAI06 (Managed IT Changes); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
       "related_concepts": [
         "Blue-green deployment",
         "Canary deployment",
         "Blast radius",
-        "Progressive delivery"
+        "Progressive delivery",
+        "Preventive vs corrective controls"
       ],
-      "_provenance": "Authored from concept: 'Canary deployment strategy per Continuous Delivery and DORA research'. Public sources: Humble & Farley, DORA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): recast from a canary-definition recall stem into an auditor risk judgment on a blue-green proposal. Content review round 2 (Oct 2026): stem now names the harm of the failed release; hosting-cost distractor replaced with a change-approval risk; drift rebuttal now names version-controlled templates. Final review (Oct 2026, exam developer and blind test): blind test: B kept for difficulty and is now the runner-up; W-B, the Final two tip and the correct explanation carry the same reason (inherent and every release against controllable behavior).",
+      "_provenance": "Authored from concept: 'Canary deployment strategy per Continuous Delivery and DORA research'. Public sources: Humble & Farley, DORA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): recast from a canary-definition recall stem into an auditor risk judgment on a blue-green proposal. Content review round 2 (Oct 2026): stem now names the harm of the failed release; hosting-cost distractor replaced with a change-approval risk; drift rebuttal now names version-controlled templates. Final review (Oct 2026, exam developer and blind test): blind test: B kept for difficulty and is now the runner-up; W-B, the Final two tip and the correct explanation carry the same reason (inherent and every release against controllable behavior). Key change (28 Nov 2026, FB-013 follow-up): four blind testers chose B; the exam developer, the senior item writer and the Domain 3 auditor agreed that blue-green is a recovery control that prevents no defect, so easy switch-back eroding testing and change approval (the controls that failed) is the GREATEST risk. Key moved from A to B, consistent with d3_127.",
       "style_version": 2
     },
     {
