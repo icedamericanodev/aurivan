@@ -625,7 +625,7 @@ describe('the leaked-password check (ON: Pwned Passwords range API, k-anonymity)
     expect(BREACH_TIMEOUT_MS).toBe(3000);
   });
 
-  it('refuses a leaked password on each of the three forms (typed, compared, compared without its tail), before any code is emailed', async () => {
+  it('refuses a leaked password on each of the two forms (typed, and one simplified: compared, or compared without its tail), before any code is emailed', async () => {
     const cases: [string, string][] = [
       ['Copper Falcon Wobbly Harbor', 'Copper Falcon Wobbly Harbor'], // as typed
       ['Copper Falcon Wobbly Harbor', 'copperfalconwobblyharbor'], // the compared form
@@ -636,7 +636,25 @@ describe('the leaked-password check (ON: Pwned Passwords range API, k-anonymity)
       expect([typed, leaked, await codeOf(a.startPasswordSignUp(EMAIL, typed))]).toEqual([typed, leaked, 'invalid:password_leaked']);
       expect(calls.length).toBeGreaterThan(0);
       expect(server.calls.some((c) => c.path === '/auth/v1/otp')).toBe(false);
-      expect(passwordGuidance('password_leaked')!.text).toBe('This password has appeared in a data leak. Please choose a different one.');
+      expect(passwordGuidance('password_leaked')!.text).toBe('This password, or a simple variation of it, has appeared in a data leak. Please choose a different one.');
+    }
+  });
+
+  it('a refusal never leaves an earlier "clean" showing, and a long base with a short tail is still looked up', async () => {
+    const { a } = withRange(['copperfalconwobblyharbor']);
+    await signUp(a, EMAIL, 'quiet lantern mossy orbit');
+    expect(a.breachState()).toBe('clean');
+    expect(await codeOf(a.setPassword('copper falcon wobbly harbor 7!'))).toBe('invalid:password_leaked');
+    expect(a.breachState()).toBe('off');
+  });
+
+  it('a strong password made mostly of numbers is not refused because its first letters leaked (B1)', async () => {
+    for (const pw of ['Zq #4829 1837 4401 9921', 'box 48 291 7730 5512 6644']) {
+      server = new FakeSupabase(() => now);
+      const { a, calls } = withRange(['zq', 'box']);
+      expect(await codeOf(a.startPasswordSignUp(EMAIL, pw))).toBe('ok');
+      expect(a.breachState()).toBe('clean');
+      for (const short of ['zq', 'box']) expect(calls.some((c) => c.url.endsWith(sha1(short).toUpperCase().slice(0, 5)))).toBe(false);
     }
   });
 

@@ -12,6 +12,7 @@
  * - Only KaiSipCloud.create is exposed, and it runs only on https://kaisip.com.
  * - The bundle holds no secret-shaped text, only the public URL and key.
  */
+import { createHash } from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import vm from 'vm';
@@ -41,8 +42,8 @@ function loadWords(): any {
 }
 
 /** The committed bundle, run like a browser script. `origin`: the page's location.origin (none: like Node). */
-function loadCloud(origin?: string): any {
-  const sandbox: Record<string, unknown> = {};
+function loadCloud(origin?: string, globals: Record<string, unknown> = {}): any {
+  const sandbox: Record<string, unknown> = { ...globals };
   sandbox.window = sandbox;
   if (origin !== undefined) sandbox.location = { origin };
   vm.runInNewContext(fs.readFileSync(ASSET, 'utf8'), sandbox, { filename: 'kaisip-cloud.js' });
@@ -60,9 +61,15 @@ describe('the cloud bundle', () => {
     expect(K.liveStoreVersions).toEqual(LIVE_STORES);
     expect(typeof K.create).toBe('function');
     expect(K.cloud).toBeUndefined();
-    expect(Object.keys(K).sort()).toEqual(['accountsAllowed', 'breach', 'browser', 'config', 'create', 'liveStoreVersions', 'liveVersion', 'passwordRules', 'passwordWordsRef', 'sourceHash']);
-    // The ?v= the page loads the word lists with: the words file's own fingerprint.
-    expect(K.passwordWordsRef).toBe(bundle.refFor(fs.readFileSync(WORDS_ASSET, 'utf8')));
+    expect(Object.keys(K).sort()).toEqual(['accountsAllowed', 'breach', 'browser', 'config', 'create', 'liveStoreVersions', 'liveVersion', 'passwordRules', 'passwordWordsIntegrity', 'passwordWordsRef', 'sourceHash']);
+    // The ?v= the page loads the word lists with: the words file's own fingerprint; and its
+    // full SHA-256 in Subresource Integrity form for <script integrity="...">.
+    const wordsText = fs.readFileSync(WORDS_ASSET, 'utf8');
+    expect(K.passwordWordsRef).toBe(bundle.refFor(wordsText));
+    expect(K.passwordWordsIntegrity).toBe(`sha256-${createHash('sha256').update(wordsText).digest('base64')}`);
+    // Test-only helpers are not public.
+    for (const m of Object.values(K)) if (m && typeof m === 'object') for (const k of Object.keys(m)) expect(k).not.toMatch(/ForTest$/);
+    expect(typeof K.passwordRules.loadPasswordWords).toBe('function');
     // The password rules are there for the forms (the client checks again before sending).
     expect(K.passwordRules.checkPassword('aaaaaaaaaaaaaaa')).toEqual(['common']);
     expect(K.passwordRules.checkPassword('ocean violet lamp seven')).toEqual([]);
@@ -99,6 +106,50 @@ describe('the cloud bundle', () => {
     expect(() => loadCloud().create(opts())).toThrow(/only on/);
     expect(() => loadCloud().create(opts({ devOrigin: true }))).not.toThrow();
     expect(() => loadCloud('http://localhost:8000').create(opts({ devOrigin: true }))).not.toThrow();
+  });
+
+  it('create gives the leaked-password check the page\'s crypto.subtle SHA-1 when there is one, and the pure one when not', async () => {
+    const lookups: string[] = [];
+    const run = async (globals: Record<string, unknown>) => {
+      const server = new FakeSupabase(() => Date.UTC(2026, 10, 28));
+      const K = loadCloud(undefined, { setTimeout, clearTimeout, AbortController, ...globals });
+      const c = K.create({
+        fetch: async (url: string, init: { headers: Record<string, string> }) => {
+          if (!url.startsWith('https://api.pwnedpasswords.com/')) return server.fetch(url, init as never);
+          lookups.push(url.slice(-5));
+          return { status: 200, headers: { get: () => null }, text: async () => '0018A45C4D1DEF81644B54AB7F969B88D65:0' };
+        },
+        stores: { local: memoryStorage(), session: memoryStorage() },
+        random: seqRandom(),
+        lock: K.browser.pageLocks(),
+        clock: { now: () => Date.UTC(2026, 10, 28) },
+        gzip: { CompressionStream, DecompressionStream, ReadableStream },
+        host: fakeWeb().host,
+        bank: BANK,
+        devOrigin: true,
+        url: FAKE_URL,
+        apiKey: FAKE_KEY,
+        passwordWords: async () => {
+          const W = loadWords();
+          return { short: W.words.PASSWORD_SHORT_LIST, dict: W.words.PASSWORD_DICT_LIST, local: W.words.PASSWORD_LOCAL_LIST, names: W.words.PASSWORD_NAMES_LIST };
+        },
+      });
+      await c.auth.startPasswordSignUp('maya@example.com', 'ocean violet lamp seven');
+      return c.auth.breachState();
+    };
+    const digests: string[] = [];
+    const subtle = {
+      digest: async (alg: string, data: Uint8Array) => {
+        digests.push(alg);
+        return new Uint8Array(createHash('sha1').update(data).digest()).buffer;
+      },
+    };
+    expect(await run({ crypto: { subtle } })).toBe('clean');
+    expect(digests).toEqual(['SHA-1', 'SHA-1']);
+    const withSubtle = lookups.splice(0);
+    expect(await run({})).toBe('clean'); // no crypto.subtle (Hermes, http): the pure SHA-1, same prefixes
+    expect(lookups).toEqual(withSubtle);
+    expect(withSubtle).toEqual(['ocean violet lamp seven', 'oceanvioletlampseven'].map((f) => createHash('sha1').update(f).digest('hex').toUpperCase().slice(0, 5)));
   });
 
   it('signs in and syncs from the bundle; every push says LIVE_VERSION, even if the page asks otherwise (W11)', async () => {

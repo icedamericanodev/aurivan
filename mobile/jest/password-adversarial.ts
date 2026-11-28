@@ -43,6 +43,11 @@ function build(): [string, string][] {
     const t = fill(base);
     for (let i = 0; i < 72; i++) out.push([`near ${base} @${i}`, t.slice(0, i) + odd + t.slice(i + 1)]);
   }
+  // Periodic near-repeats: a unit with one different character, written again and again
+  // (copies of earlier text everywhere, but no single run).
+  for (const unit of ['441', 'aaaa1', 'aab', 'abab1', '1112', 'xxxxxxy', 'aaaaaaaaaab', 'passwordx', 'maya1', 'Aa1!']) {
+    out.push([`periodic ${unit}`, fill(unit)]);
+  }
   // Long keyboard walks.
   for (const walk of [
     'qwertyuiopasdfghjklzxcvbnm',

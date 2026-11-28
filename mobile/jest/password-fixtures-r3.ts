@@ -8,7 +8,9 @@
  * - The split is fixed: an ODD index (0-based, in this order) is the TUNING half, an EVEN
  *   index the HELD-OUT half. The code and the lists may be tuned on the tuning half and on the
  *   tester's candidate list only, NEVER on the held-out half: it is report-only, so its number
- *   says how the rules do on passwords nobody tuned them for.
+ *   says how the rules do on passwords the rules were not tuned on. It is NOT independent of
+ *   the tester's candidate vocabulary list, which went into the local list in the same
+ *   change, so it is an optimistic figure for a fresh tester (docs/WEB_LAUNCH_PLAN.md).
  * - R3_GOOD: 164 passphrases a real learner might choose (9 kinds, incl. password-manager
  *   output). The tester's account for the "built from the account" family is R3_CONTEXT.
  */

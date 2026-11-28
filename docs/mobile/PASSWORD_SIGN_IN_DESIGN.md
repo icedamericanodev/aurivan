@@ -818,7 +818,7 @@ phone fields use the matching autofill hints.
 >   words; a full name with numbers; a repeated word counts once; diagonal
 >   walks, doubled-letter sequences, mirrors) and states what the rules
 >   cannot do, with a held-out measure (`docs/WEB_LAUNCH_PLAN.md`). A
->   leaked-password range check (`webcloud/breach.ts`: three forms, padded
+>   leaked-password range check (`webcloud/breach.ts`: at most two forms, padded
 >   k-anonymity queries, 3-second timeout, fails open, `breachState()`) is
 >   ON since 28 Nov 2026 (owner decision; `BREACH_CHECK_ON = true`), on
 >   sign-up, reset and "set a password", never at sign-in. Its privacy
@@ -1107,28 +1107,39 @@ sign-in release after `app-store-compliance-reviewer` checks it.**
   > create an account, reset your password or set a new one), the app checks
   > whether that password has appeared in a known data leak, so you don't
   > pick one that criminals already have. To do this, your device makes a
-  > one-way fingerprint of the password (a SHA-1 hash) and sends only its
-  > first 5 characters to the Pwned Passwords service of Have I Been Pwned,
-  > run by Troy Hunt (Superlative Enterprises Pty Ltd) on Cloudflare's
-  > network. The service sends back a long list of fingerprints that start
-  > the same way, padded with made-up ones, and your device looks for a match
-  > itself. Your password, your email address and the full fingerprint never
-  > leave your device, and nothing sent can be linked to you or your
-  > account. We don't check when you sign in. If the service can't be
-  > reached, the app accepts your password without the check and tells you it
-  > couldn't check.
+  > one-way fingerprint (a SHA-1 hash) of your password and of one
+  > simplified version of it (for example without capitals, spaces or a
+  > number at the end), and sends only the first 5 characters of each
+  > fingerprint to the Pwned Passwords service of Have I Been Pwned, run by
+  > Troy Hunt (Superlative Enterprises Pty Ltd) on Cloudflare's network. The
+  > service sends back a long list of fingerprints that start the same way,
+  > padded with made-up ones, and your device looks for a match itself. Your
+  > password, your email address and the full fingerprints never leave your
+  > device, and we send no cookies or account details with the request. Like
+  > any website you contact, the service can see your device's IP address
+  > and that the request came from kaisip.com. We don't check when you sign
+  > in. If the service can't be reached, the app accepts your password
+  > without the check and tells you it couldn't check.
 
+- **What is sent, exactly (S1, owner decision 28 Nov 2026):** at most two
+  5-character prefixes per password chosen: the typed form, and ONE derived
+  form (the compared form without its trailing numbers and symbols when what
+  is left is at least 8 characters and at least half the password, otherwise
+  the compared form; not sent when it is the same as the typed form).
 - **Play Data safety (for the compliance check):** no new data type is
-  collected or shared. The 5-character prefix of a password hash is not
-  personal data: it can't be linked to a person or an account (about a
-  million passwords share each prefix), no identifier goes with it, and the
-  answer is padded. Our view is that the form's answers stay as they are
-  ("Data shared: none" for this flow); **flag it for
-  `app-store-compliance-reviewer`** to confirm, together with whether Apple's
-  privacy label needs a line.
+  collected or shared. A 5-character prefix of a password hash is not
+  personal data on its own: there are about a million possible prefixes
+  (16^5 = 1,048,576), each matching several hundred to a thousand-odd leaked
+  hashes in the service's list *(verify against HIBP's API documentation)*,
+  no account identifier goes with it, and the answer is padded. The service
+  does see the IP address and the page's origin, as for any request. Our
+  view is that the form's answers stay as they are ("Data shared: none" for
+  this flow); **flag it for `app-store-compliance-reviewer`** to confirm,
+  together with whether Apple's privacy label needs a line.
 - **Website CSP:** `https://api.pwnedpasswords.com` is in `connect-src` for
-  the study app's pages (the policy `scripts/build_site.sh` writes into
-  `_headers`); the home page's stricter policy is unchanged.
+  the study app's pages. The policy lives in `_headers`, which is edited by
+  hand; `scripts/build_site.sh` only checks it (for example that the home
+  and thanks pages' stricter policies do not allow the lookup host).
 
 **Edits needed (for `app-store-compliance-reviewer` and the legal drafts):**
 

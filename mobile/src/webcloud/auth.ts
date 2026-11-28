@@ -68,6 +68,7 @@ import {
   SUPABASE_URL,
 } from './config';
 import { createBreachCheck, type BreachVerdict } from './breach';
+import { sha1Hex as pureSha1Hex } from '../engine/sha1';
 import { authWord, bodyObject, toCloudError, type Call, type PasswordDetail } from './errors';
 import { challengeFor, isVerifier, lastSignInAt, makeVerifier, sessionStartAt, tokenClaims } from './pkce';
 import type { BrowserStores, ClockPort, FetchPort, HttpResponse, LockPort, RandomPort } from './ports';
@@ -90,7 +91,7 @@ export interface WebAuthDeps {
   passwordWords?: () => Promise<PasswordWordLists>;
   /** The leaked-password check (see BreachedPasswordPort); default: createBreachCheck with `fetch` and `sha1Hex`. */
   breachedPassword?: BreachedPasswordPort;
-  /** SHA-1 as hex (browser.ts browserSha1Hex(crypto.subtle)), for the default leaked-password check. */
+  /** SHA-1 as hex (browser.ts browserSha1Hex(crypto.subtle)), for the default leaked-password check; default the pure engine/sha1.ts (Hermes and http pages have no crypto.subtle). */
   sha1Hex?: (text: string) => Promise<string>;
   /** Defaults: the public values in config.ts (tests point them at a fake server). */
   url?: string;
@@ -210,7 +211,7 @@ export type PasswordSaveProblem = PasswordProblem | 'leaked' | 'weak' | 'reauth'
 
 /**
  * The leaked-password check (ON; owner decision 28 Nov 2026): k-anonymity
- * range queries for three forms of the password (webcloud/breach.ts
+ * range queries for two forms of the password (webcloud/breach.ts
  * createBreachCheck). It fails open (a network error or a 3-second timeout
  * never blocks a password), as the audit recommends, and then breachState()
  * says 'unchecked' so the screen can say so.
@@ -546,10 +547,10 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
   /**
    * The leaked-password check (ON). Runs only after the app's rules have
    * accepted the password, and only when one is chosen (never at sign-in). A
-   * known-leaked password is refused (password_leaked); a failure, a timeout
-   * or no SHA-1 port lets it through, with breachState() 'unchecked'.
+   * known-leaked password is refused (password_leaked); a failure or a timeout
+   * lets it through, with breachState() 'unchecked'.
    */
-  const breachLookup: BreachedPasswordPort | undefined = deps.breachedPassword ?? (deps.sha1Hex ? createBreachCheck({ fetch: deps.fetch, sha1Hex: deps.sha1Hex }) : undefined);
+  const breachLookup: BreachedPasswordPort = deps.breachedPassword ?? createBreachCheck({ fetch: deps.fetch, sha1Hex: deps.sha1Hex ?? (async (t: string) => pureSha1Hex(t)) });
   const breachCheck = async (password: string) => {
     if (!BREACH_CHECK_ON) {
       breach = 'off';
@@ -557,11 +558,12 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     }
     let verdict: BreachVerdict = 'unknown';
     try {
-      if (breachLookup) verdict = await breachLookup(password);
+      verdict = await breachLookup(password);
     } catch {
       verdict = 'unknown'; // fail open
     }
-    breach = verdict === 'unknown' ? 'unchecked' : 'clean';
+    // 'clean' only for a clean answer: a refused (leaked) password leaves the state 'off'.
+    breach = verdict === 'unknown' ? 'unchecked' : verdict === 'clean' ? 'clean' : 'off';
     if (verdict === 'breached') throw new CloudError('invalid', undefined, 'password_leaked');
   };
   /** Mark the saved session (the same one only) as having saved a password. */
@@ -663,6 +665,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     },
 
     async startPasswordSignUp(email, password, opts) {
+      breach = 'off'; // a refusal below never leaves the last password's answer showing
       const e = emailOf(email);
       await ensureWords();
       const p = newPasswordOf(password, e); // refused here if the rules fail; the password itself is not sent
@@ -671,6 +674,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     },
 
     async finishPasswordSignUp(email, code, password, opts) {
+      breach = 'off';
       const e = emailOf(email);
       await ensureWords();
       await breachCheck(newPasswordOf(password, e)); // checked BEFORE the code is used up
@@ -699,6 +703,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     },
 
     async finishPasswordReset(email, code, newPassword, opts) {
+      breach = 'off';
       const e = emailOf(email);
       await ensureWords();
       await breachCheck(newPasswordOf(newPassword, e)); // checked BEFORE the code is used up
@@ -711,6 +716,7 @@ export function createWebAuth(deps: WebAuthDeps): WebAuth {
     },
 
     async setPassword(newPassword, opts) {
+      breach = 'off';
       const s = store.read();
       if (!s) throw signedOut();
       await ensureWords();

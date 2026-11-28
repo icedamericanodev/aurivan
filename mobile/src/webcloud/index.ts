@@ -63,7 +63,7 @@ export interface WebCloudOptions {
   passwordWords?: WebAuthDeps['passwordWords'];
   /** The leaked-password check (default: webcloud/breach.ts createBreachCheck with `fetch` and `sha1Hex`). */
   breachedPassword?: WebAuthDeps['breachedPassword'];
-  /** SHA-1 as hex for the leaked-password check: KaiSipCloud.browser.browserSha1Hex(crypto.subtle). */
+  /** SHA-1 as hex for the leaked-password check (KaiSipCloud.create fills in crypto.subtle's when the page has it; else the pure engine/sha1.ts). */
   sha1Hex?: WebAuthDeps['sha1Hex'];
   /** Tests: a fake server's address and key. */
   url?: string;

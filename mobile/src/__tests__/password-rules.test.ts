@@ -47,7 +47,8 @@ import {
   unloadPasswordWordsForTest,
   type PasswordProblem,
 } from '../engine/passwordRules';
-import { breachRangeHit, breachRangeParts } from '../engine/passwordBreach';
+import { BREACH_ANSWER_MAX, breachRangeParts, breachRangeResult } from '../engine/passwordBreach';
+import { sha1Hex as pureSha1Hex } from '../engine/sha1';
 import { PASSWORD_LISTS_SOURCE, PASSWORD_LONG_LIST, PASSWORD_LONG_SHA256, PASSWORD_LONG_SIZE, PASSWORD_WORDS_EXPECTED } from '../engine/passwordBlocklist';
 import { PASSWORD_DICT_LIST, PASSWORD_DICT_SIZE, PASSWORD_LOCAL_LIST, PASSWORD_LOCAL_SIZE, PASSWORD_NAMES_LIST, PASSWORD_NAMES_SIZE, PASSWORD_SHORT_LIST, PASSWORD_SHORT_SIZE } from '../engine/passwordWords';
 import { GOOD, HOSTILE, HOSTILE_CONTEXT, HOSTILE_GROUPS, KNOWN_ACCEPTS, OFF_LIST_LONG_WORDS, OFF_LIST_WORDS, ORDINARY_WORDS, unscramble } from '../../jest/password-fixtures';
@@ -564,22 +565,46 @@ describe('guidance after a refusal (NIST: SHALL offer guidance)', () => {
   });
 });
 
-describe('the breached-password helpers (design for later; nothing calls them)', () => {
+describe('the breached-password helpers (the pure half of the check)', () => {
   it('split a SHA-1 into the 5 characters sent and the 35 looked for, and read the range answer', () => {
     const h = createHash('sha1').update('password').digest('hex');
     const parts = breachRangeParts(h)!;
     expect(parts.prefix).toBe('5BAA6');
     expect(parts.suffix).toHaveLength(35);
     expect(breachRangeParts('nope')).toBeNull();
-    expect(breachRangeHit(`0018A45C4D1DEF81644B54AB7F969B88D65:1\r\n${parts.suffix}:9545824\r\n`, parts.suffix)).toBe(true);
-    expect(breachRangeHit(`${parts.suffix}:0`, parts.suffix)).toBe(false); // padding
-    expect(breachRangeHit(null, parts.suffix)).toBe(false);
+    expect(breachRangeResult(`0018A45C4D1DEF81644B54AB7F969B88D65:1\r\n${parts.suffix}:9545824\r\n`, parts.suffix)).toBe('hit');
+    expect(breachRangeResult(`0018A45C4D1DEF81644B54AB7F969B88D65:1\r\n${parts.suffix}:0`, parts.suffix)).toBe('miss'); // padding
+    expect(breachRangeResult(`${parts.suffix.toLowerCase()}:3`, parts.suffix)).toBe('hit');
+  });
+
+  it('an answer that is not a range list is "bad" (couldn\'t check), never "not leaked"', () => {
+    const { suffix } = breachRangeParts(createHash('sha1').update('password').digest('hex'))!;
+    expect(breachRangeResult(null, suffix)).toBe('bad');
+    expect(breachRangeResult('', suffix)).toBe('bad');
+    expect(breachRangeResult('<!doctype html><html><body>Service unavailable</body></html>', suffix)).toBe('bad');
+    expect(breachRangeResult(`${suffix}:9:extra\n${suffix}`, suffix)).toBe('bad');
+    // Oversized: a real padded answer is about 40 KB.
+    const big = `${'0018A45C4D1DEF81644B54AB7F969B88D65:1\r\n'.repeat(Math.ceil(BREACH_ANSWER_MAX / 38))}${suffix}:5`;
+    expect(big.length).toBeGreaterThan(BREACH_ANSWER_MAX);
+    expect(breachRangeResult(big, suffix)).toBe('bad');
+    expect(breachRangeResult('0018A45C4D1DEF81644B54AB7F969B88D65:1', 'not a suffix')).toBe('bad');
+  });
+
+  it('the pure SHA-1 gives the known answers (Hermes and http pages have no crypto.subtle)', () => {
+    expect(pureSha1Hex('')).toBe('da39a3ee5e6b4b0d3255bfef95601890afd80709');
+    expect(pureSha1Hex('abc')).toBe('a9993e364706816aba3e25717850c26c9cd0d89d');
+    expect(pureSha1Hex('abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq')).toBe('84983e441c3bd26ebaae4aa1f95129e5e54670f1');
+    expect(pureSha1Hex('password')).toBe('5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8');
+    // Accents, CJK, emoji, and inputs across block boundaries: the same as Node's.
+    for (const t of ['Summer Café 2026!', 'naïve façade', '密码很长很长的句子', 'パスワード', '😀🌲🔒 tree', 'a'.repeat(55), 'a'.repeat(56), 'a'.repeat(64), 'a'.repeat(1000)]) {
+      expect([t.slice(0, 12), pureSha1Hex(t)]).toEqual([t.slice(0, 12), createHash('sha1').update(t, 'utf8').digest('hex')]);
+    }
   });
 });
 
 describe('guidance for the server\'s and the checker\'s own refusals (S5)', () => {
   it('leaked, weak, the checker not loading and an unchecked leak lookup each have words; details map to them', () => {
-    expect(passwordGuidance('password_leaked')!.text).toBe('This password has appeared in a data leak. Please choose a different one.');
+    expect(passwordGuidance('password_leaked')!.text).toBe('This password, or a simple variation of it, has appeared in a data leak. Please choose a different one.');
     expect(passwordGuidance('password_weak')!.text).toBe('The sign-in service didn’t accept that password. Try a longer phrase of unrelated words.');
     expect(passwordGuidance('password_rules')!.text).toBe('We couldn’t load the password checker. Check your connection and try again.');
     expect(passwordGuidance('invalid_characters')!.text).toBe('Your password has a hidden character, often from copy and paste. Please type it by hand. Accents and emoji are fine.');
@@ -589,33 +614,101 @@ describe('guidance for the server\'s and the checker\'s own refusals (S5)', () =
   });
 });
 
-describe('the breached-password check, designed and OFF (k-anonymity, three forms, padding)', () => {
+describe('the breached-password check (k-anonymity, at most two forms, padding)', () => {
   const sha1Hex = async (t: string) => createHash('sha1').update(t, 'utf8').digest('hex');
-  /** A fake range API: knows the leaked passwords given; answers with padding when asked. */
-  function fakeRange(leaked: string[], fail = false) {
-    const calls: { url: string; headers: Record<string, string> }[] = [];
-    const fetch = async (url: string, init: { method: string; headers: Record<string, string> }) => {
-      calls.push({ url, headers: init.headers });
-      if (fail) throw new TypeError('Failed to fetch');
+  type Init = Parameters<Parameters<typeof createBreachCheck>[0]['fetch']>[1];
+  /** A fake range API: knows the leaked passwords given; answers with padding when asked. `refusePadding`: the network refuses the header. */
+  function fakeRange(leaked: string[], fail = false, refusePadding = false) {
+    const calls: { url: string; headers: Record<string, string>; init: Init }[] = [];
+    const fetch = async (url: string, init: Init) => {
+      calls.push({ url, headers: init.headers, init });
+      if (fail || (refusePadding && init.headers['Add-Padding'])) throw new TypeError('Failed to fetch');
       const prefix = url.split('/').pop()!;
       const lines = leaked.map((p) => createHash('sha1').update(p, 'utf8').digest('hex').toUpperCase()).filter((h) => h.startsWith(prefix)).map((h) => `${h.slice(5)}:42`);
-      if (init.headers['Add-Padding'] === 'true') lines.push('0000000000000000000000000000000000A:0');
+      lines.push(init.headers['Add-Padding'] === 'true' ? '0000000000000000000000000000000000A:0' : '0018A45C4D1DEF81644B54AB7F969B88D65:3');
       return { status: 200, headers: { get: () => null }, text: async () => lines.join('\r\n') };
     };
     return { fetch, calls };
   }
 
-  it('looks up the typed form, the compared form and the compared form without its tail; only 5 characters leave', async () => {
-    expect(breachForms('Summer Café 2026!')).toEqual(['Summer Café 2026!', 'summercafe2026!', 'summercafe']);
+  it('looks up the typed form and ONE simplified form; only 5 characters leave, with padding, no cookies, no referrer, no cache', async () => {
+    expect(breachForms('Summer Café 2026!')).toEqual(['Summer Café 2026!', 'summercafe']);
+    expect(breachForms('copper falcon wobbly harbor')).toEqual(['copper falcon wobbly harbor', 'copperfalconwobblyharbor']);
+    expect(breachForms('copperfalconwobblyharbor')).toEqual(['copperfalconwobblyharbor']); // the same text is sent once
     const range = fakeRange(['summercafe']);
     const check = createBreachCheck({ fetch: range.fetch, sha1Hex });
     expect(await check('Summer Café 2026!')).toBe('breached');
+    expect(range.calls).toHaveLength(2);
     for (const c of range.calls) {
       expect(c.url).toMatch(/^https:\/\/api\.pwnedpasswords\.com\/range\/[0-9A-F]{5}$/);
       expect(c.headers['Add-Padding']).toBe('true');
       expect(c.url).not.toMatch(/summer|caf/i);
+      expect([c.init.cache, c.init.credentials, c.init.referrerPolicy, c.init.redirect]).toEqual(['no-store', 'omit', 'no-referrer', 'error']);
+      expect(c.init.signal).toBeInstanceOf(AbortSignal);
     }
     expect(await createBreachCheck({ fetch: fakeRange(['nothing here']).fetch, sha1Hex })('Summer Café 2026!')).toBe('clean');
+  });
+
+  it('never more than two forms, on every good phrase and every hostile password of both re-tests', () => {
+    for (const p of [...GOOD, ...unscramble(HOSTILE), ...R3_HOSTILE.map(([, s]) => unscramble([s])[0])]) {
+      const f = breachForms(p);
+      expect([p, f.length >= 1 && f.length <= 2, new Set(f).size === f.length]).toEqual([p, true, true]);
+    }
+  });
+
+  it('a short base is never looked up on its own: strong, mostly-number passwords are not refused for "zq" or "box" (B1)', async () => {
+    expect(breachForms('Zq #4829 1837 4401 9921')).toEqual(['Zq #4829 1837 4401 9921', 'zq#4829183744019921']);
+    expect(breachForms('box 48 291 7730 5512 6644')).toEqual(['box 48 291 7730 5512 6644', 'box48291773055126644']);
+    for (const pw of ['Zq #4829 1837 4401 9921', 'box 48 291 7730 5512 6644']) {
+      expect(checkPassword(pw)).toEqual([]);
+      const range = fakeRange(['zq', 'box']);
+      expect([pw, await createBreachCheck({ fetch: range.fetch, sha1Hex })(pw)]).toEqual([pw, 'clean']);
+      for (const short of ['zq', 'box']) expect(range.calls.some((c) => c.url.endsWith(createHash('sha1').update(short).digest('hex').toUpperCase().slice(0, 5)))).toBe(false);
+    }
+    // A long base with a short tail is still looked up without the tail.
+    expect(breachForms('correct horse battery staple 2026!')).toEqual(['correct horse battery staple 2026!', 'correcthorsebatterystaple']);
+    expect(await createBreachCheck({ fetch: fakeRange(['correcthorsebatterystaple']).fetch, sha1Hex })('correct horse battery staple 2026!')).toBe('breached');
+    // The base must be at least 8 characters and at least half the password.
+    expect(breachForms('Sunflower 12345678901')).toEqual(['Sunflower 12345678901', 'sunflower12345678901']);
+    expect(breachForms('Sunflower!! 2026')).toEqual(['Sunflower!! 2026', 'sunflower']);
+  });
+
+  it('when the network refuses the padding header, each lookup is tried once more without it', async () => {
+    const range = fakeRange(['summercafe'], false, true);
+    expect(await createBreachCheck({ fetch: range.fetch, sha1Hex })('Summer Café 2026!')).toBe('breached');
+    expect(range.calls.map((c) => c.headers['Add-Padding'] ?? 'none')).toEqual(['true', 'true', 'none', 'none']);
+    const down = fakeRange([], true);
+    expect(await createBreachCheck({ fetch: down.fetch, sha1Hex })('Summer Café 2026!')).toBe('unknown');
+    expect(down.calls).toHaveLength(4); // one retry each, no more
+    // A server answer (503) is not a network refusal: no retry.
+    const calls: string[] = [];
+    const busy = async (url: string) => (calls.push(url), { status: 503, headers: { get: () => null }, text: async () => '' });
+    expect(await createBreachCheck({ fetch: busy, sha1Hex })('Summer Café 2026!')).toBe('unknown');
+    expect(calls).toHaveLength(2);
+  });
+
+  it('the two lookups run together; a timeout cancels them, and a finished check leaves no timer behind', async () => {
+    let started = 0;
+    const signals: AbortSignal[] = [];
+    const hang = (_url: string, init: Init) => {
+      started++;
+      signals.push(init.signal!);
+      return new Promise<never>((_, reject) => init.signal!.addEventListener('abort', () => reject(new Error('aborted'))));
+    };
+    const pending = createBreachCheck({ fetch: hang, sha1Hex, timeoutMs: 30 })('Summer Café 2026!');
+    await new Promise((r) => setTimeout(r, 5));
+    expect(started).toBe(2); // both started before either answered
+    expect(await pending).toBe('unknown');
+    expect(signals.every((s) => s.aborted)).toBe(true);
+    expect(started).toBe(2); // an aborted lookup is not retried
+    jest.useFakeTimers();
+    try {
+      const quick = createBreachCheck({ fetch: fakeRange([]).fetch, sha1Hex });
+      expect(await quick('Summer Café 2026!')).toBe('clean');
+      expect(jest.getTimerCount()).toBe(0);
+    } finally {
+      jest.useRealTimers();
+    }
   });
 
   it('fails open: a network problem or a bad answer is "unknown", never a refusal, and nothing is logged', async () => {
@@ -625,6 +718,15 @@ describe('the breached-password check, designed and OFF (k-anonymity, three form
       expect(await createBreachCheck({ fetch: fakeRange([], true).fetch, sha1Hex })('Summer Café 2026!')).toBe('unknown');
       const bad = async () => ({ status: 503, headers: { get: () => null }, text: async () => '' });
       expect(await createBreachCheck({ fetch: bad, sha1Hex })('Summer Café 2026!')).toBe('unknown');
+      // A 200 that isn't a range list (a captive portal's page, an empty body, a huge body): "unknown", not "clean".
+      for (const body of ['<html><body>Sign in to the Wi-Fi</body></html>', '', 'A'.repeat(BREACH_ANSWER_MAX + 1)]) {
+        const odd = async () => ({ status: 200, headers: { get: () => null }, text: async () => body });
+        expect([body.slice(0, 10), await createBreachCheck({ fetch: odd, sha1Hex })('Summer Café 2026!')]).toEqual([body.slice(0, 10), 'unknown']);
+      }
+      const throwingHash = async () => {
+        throw new Error('no crypto');
+      };
+      expect(await createBreachCheck({ fetch: fakeRange([]).fetch, sha1Hex: throwingHash })('Summer Café 2026!')).toBe('unknown');
       expect(log).not.toHaveBeenCalled();
       expect(err).not.toHaveBeenCalled();
     } finally {
@@ -641,17 +743,24 @@ describe('cost budget', () => {
   //   every machine, so the main budget cannot flake on a slow, shared runner;
   // - the clock, as a backstop for work the count does not see: the median of
   //   five runs per input, so one slow moment on the runner does not fail it.
-  // Measured 28 Nov 2026, lists loaded: at most 82,576 steps for one check
-  // ('1' x 72), 17,928,195 for the whole list (each input with and without
-  // CTX); in plain Node (the website bundle) at most 2.3 ms median, in Jest at
-  // most about 11 ms (Jest's transformed code is several times slower). The
-  // version before this budget took up to 23 ms in plain Node and failed CI at
-  // 50 ms. The counts only change when the code or the lists do, so the
-  // margins are small on purpose (about 6%): taking out the "no entry starts
-  // like this" stop, or looking at identical readings twice, already fails.
-  // A change that adds work on purpose updates these numbers, with the reason.
-  const STEP_WORST = 88_000;
-  const STEP_TOTAL = 18_900_000;
+  // What the count sees: the per-position run, sequence and copy work, every
+  // step of the word and name lookups, the app/exam/personal token matches and
+  // the dynamic-programming moves over runs. What it does NOT see: building
+  // the per-reading tables (the copy and mirror tables, n² per reading), the
+  // normal-form and compared-form work, number and month matching, and the
+  // list lookups' own hashing; a slowdown there shows only on the clock.
+  // Measured 28 Nov 2026 on this list, lists loaded: 105,179 steps for the
+  // worst check ('441' repeated), 19,056,137 for the whole list (each input
+  // with and without CTX); in plain Node (the website bundle) at most about
+  // 2.7 ms median, in Jest about 11 ms (Jest's transformed code is several
+  // times slower). The version before this budget took up to 23 ms in plain
+  // Node and failed CI at 50 ms. The counts only change when the code or the
+  // lists do, so the margins are small on purpose (about 4 to 5%): taking out
+  // the "no entry starts like this" stop, or looking at identical readings
+  // twice, fails. A change that adds work on purpose updates these numbers,
+  // with the reason.
+  const STEP_WORST = 110_000;
+  const STEP_TOTAL = 19_800_000;
   const MEDIAN_MS = 50;
   const TYPICAL_STEPS = 1_450_000; // measured 1,367,194 (28 Nov 2026)
   // The clock backstop for typical checks: their CPU time as a multiple of a fixed
@@ -673,7 +782,7 @@ describe('cost budget', () => {
 
   it('the adversarial list covers every shape the budget is about', () => {
     const kinds = new Set(ADVERSARIAL.map(([name]) => name.split(' ')[0]));
-    expect([...kinds].sort()).toEqual(['case', 'emoji', 'leet', 'names', 'near', 'random', 'repeat', 'walk']);
+    expect([...kinds].sort()).toEqual(['case', 'emoji', 'leet', 'names', 'near', 'periodic', 'random', 'repeat', 'walk']);
     for (const [name, p] of ADVERSARIAL) if (name !== 'emoji 72') expect([name, passwordBytes(p) <= PASSWORD_MAX_BYTES]).toEqual([name, true]);
     // Near-repeats change each of the 72 positions in turn.
     expect(ADVERSARIAL.filter(([name]) => name.startsWith('near a @')).length).toBe(72);
@@ -706,7 +815,7 @@ describe('cost budget', () => {
     // fingerprint keeps the adversarial answers from drifting.
     const h = createHash('sha256');
     for (const [name, p] of ADVERSARIAL) h.update(`${name}\t${checkPassword(p, CTX).join(',')}\t${checkPassword(p).join(',')}\n`);
-    expect(h.digest('hex')).toBe('4f7c69058fcf1b935617d6c0e017f76458410dc9f8281bc6cae2a618482b6961');
+    expect(h.digest('hex')).toBe('c69cb90f50fa2eb3a2428e139b456712b0f05a42273e1eb23afa7b4d5767bc70');
   });
 
   it('every adversarial input takes well under 50 ms (median of five)', () => {

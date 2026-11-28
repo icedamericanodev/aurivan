@@ -19,10 +19,12 @@
  *   letters, all make the same password on every device. If a phone or
  *   browser can't do that, a password with non-English characters is refused
  *   rather than sent unchanged.
- * - Because Supabase's Free plan has no leaked-password check, the apps
- *   refuse predictable passwords with two kinds of check (the owner asked to
- *   apply the standard and reject common passwords; this is what we can do
- *   without a leak lookup, not a guarantee). NIST asks us to compare the
+ * - Supabase's Free plan has no leaked-password check, so the apps refuse
+ *   predictable passwords themselves with two kinds of check (the owner
+ *   asked to apply the standard and reject common passwords; not a
+ *   guarantee). Since 28 Nov 2026 a leaked-password lookup runs as well
+ *   when a password is chosen (webcloud/breach.ts, owner decision); these
+ *   rules still run first and work without it. NIST asks us to compare the
  *   WHOLE password, including derivatives, so the comparison first makes a
  *   "compared form" (lower case; accents, invisible characters and spaces
  *   taken out; Cyrillic and Greek look-alike letters read as Latin;
@@ -141,7 +143,7 @@ export const PASSWORD_GUIDANCE: Readonly<Record<PasswordProblem, { key: string; 
  * server refusing for its own reasons, and the word lists not loading.
  */
 export const PASSWORD_OTHER_GUIDANCE: Readonly<Record<'leaked' | 'weak' | 'rules_unavailable' | 'breach_unchecked', { key: string; text: string }>> = {
-  leaked: { key: 'password.guide.leaked', text: 'This password has appeared in a data leak. Please choose a different one.' },
+  leaked: { key: 'password.guide.leaked', text: 'This password, or a simple variation of it, has appeared in a data leak. Please choose a different one.' },
   weak: { key: 'password.guide.weak', text: 'The sign-in service didn’t accept that password. Try a longer phrase of unrelated words.' },
   rules_unavailable: { key: 'password.guide.rules_unavailable', text: 'We couldn’t load the password checker. Check your connection and try again.' },
   breach_unchecked: { key: 'password.guide.breach_unchecked', text: 'We couldn’t check this password against known leaks just now. It was saved; you can change it later.' },
@@ -899,6 +901,9 @@ function predictable(p: string, ctx: PasswordContext): PasswordProblem | null {
   }
   // A full name and numbers ("MarkAnthonyCruz88"): common, whoever's name it is. Names alone
   // with no number or symbol are left to the other rules (three names can be a passphrase).
+  // Known, on purpose: this is not monotonic. Four name-like words can pass, and the same
+  // four plus "!" are refused ("a name and a symbol" is the pattern people use); adding a
+  // character never makes a password weaker, but here it moves it into this rule.
   if (nameSet && /[0-9!-\/:-@[-`{-~]/.test(p) && lats[0].names.some((e) => e.length) && Math.min(...lats.map(namesLeftOver)) <= MAX_LEFT_OVER) return 'common';
   if (exact) return 'common';
   // One ordinary word of up to 14 letters, typed as one (no joiner inside, no capital inside),

@@ -3,7 +3,7 @@
  * from the mobile app's own TypeScript (mobile/src/webcloud and the sync
  * engine it uses), so the website syncs with the same rules as the app.
  * Loaded only when an account is used. Rebuild: cd mobile && npm run web-plant
- * TypeScript 6.0.3. Modules: 67.
+ * TypeScript 6.0.3. Modules: 68.
  */
 (function (root) {
   "use strict";
@@ -4275,23 +4275,30 @@ exports.PASSWORD_LONG_LIST = "A!7u2=nby19#rkd5d\nBphpvwya497d5rj\nBdnmkfj7#rqpis
   defs["src/engine/passwordBreach.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BREACH_ANSWER_MAX = void 0;
 exports.breachRangeParts = breachRangeParts;
-exports.breachRangeHit = breachRangeHit;
+exports.breachRangeResult = breachRangeResult;
 function breachRangeParts(sha1Hex) {
     if (typeof sha1Hex !== 'string' || !/^[0-9a-fA-F]{40}$/.test(sha1Hex))
         return null;
     const h = sha1Hex.toUpperCase();
     return { prefix: h.slice(0, 5), suffix: h.slice(5) };
 }
-function breachRangeHit(answer, suffix) {
-    if (typeof answer !== 'string' || typeof suffix !== 'string' || !/^[0-9A-F]{35}$/.test(suffix) || answer.length > 2000000)
-        return false;
+exports.BREACH_ANSWER_MAX = 200000;
+const RANGE_LINE = /^([0-9A-F]{35}):(\d+)$/i;
+function breachRangeResult(answer, suffix) {
+    if (typeof answer !== 'string' || typeof suffix !== 'string' || !/^[0-9A-F]{35}$/.test(suffix) || answer.length > exports.BREACH_ANSWER_MAX)
+        return 'bad';
+    let rangeLines = 0;
     for (const line of answer.split(/\r?\n/)) {
-        const [s, n] = line.trim().split(':');
-        if (s && s.toUpperCase() === suffix && Number(n) > 0)
-            return true;
+        const m = RANGE_LINE.exec(line.trim());
+        if (!m)
+            continue;
+        rangeLines++;
+        if (m[1].toUpperCase() === suffix && Number(m[2]) > 0)
+            return 'hit';
     }
-    return false;
+    return rangeLines > 0 ? 'miss' : 'bad';
 }
   };
   links["src/engine/passwordRules.ts"] = {"./account":"src/engine/account.ts","./passwordBlocklist":"src/engine/passwordBlocklist.ts","./sha256":"src/engine/sha256.ts"};
@@ -4343,7 +4350,7 @@ exports.PASSWORD_GUIDANCE = {
     too_simple: { key: 'password.guide.too_simple', text: 'Avoid repeats, sequences, dates, keyboard patterns and a single word with numbers. Try three or four ordinary words that don’t usually go together.' },
 };
 exports.PASSWORD_OTHER_GUIDANCE = {
-    leaked: { key: 'password.guide.leaked', text: 'This password has appeared in a data leak. Please choose a different one.' },
+    leaked: { key: 'password.guide.leaked', text: 'This password, or a simple variation of it, has appeared in a data leak. Please choose a different one.' },
     weak: { key: 'password.guide.weak', text: 'The sign-in service didn’t accept that password. Try a longer phrase of unrelated words.' },
     rules_unavailable: { key: 'password.guide.rules_unavailable', text: 'We couldn’t load the password checker. Check your connection and try again.' },
     breach_unchecked: { key: 'password.guide.breach_unchecked', text: 'We couldn’t check this password against known leaks just now. It was saved; you can change it later.' },
@@ -6876,6 +6883,54 @@ function migrateProgress(persisted) {
     if (day && typeof day === 'object' && day.certId && !days[day.certId])
         days[day.certId] = day;
     return { ...rest, days };
+}
+  };
+  links["src/engine/sha1.ts"] = {"./sha256":"src/engine/sha256.ts"};
+  defs["src/engine/sha1.ts"] = function (module, exports, require) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sha1 = sha1;
+exports.sha1Hex = sha1Hex;
+const sha256_1 = require("./sha256");
+const rotl = (x, n) => (x << n) | (x >>> (32 - n));
+function sha1(bytes) {
+    const bitLen = bytes.length * 8;
+    const padded = new Uint8Array(Math.ceil((bytes.length + 9) / 64) * 64);
+    padded.set(bytes);
+    padded[bytes.length] = 0x80;
+    const view = new DataView(padded.buffer);
+    view.setUint32(padded.length - 8, Math.floor(bitLen / 2 ** 32));
+    view.setUint32(padded.length - 4, bitLen >>> 0);
+    const h = new Uint32Array([0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0]);
+    const w = new Uint32Array(80);
+    for (let block = 0; block < padded.length; block += 64) {
+        for (let i = 0; i < 16; i++)
+            w[i] = view.getUint32(block + i * 4);
+        for (let i = 16; i < 80; i++)
+            w[i] = rotl(w[i - 3] ^ w[i - 8] ^ w[i - 14] ^ w[i - 16], 1);
+        let [a, b, c, d, e] = h;
+        for (let i = 0; i < 80; i++) {
+            const [f, k] = i < 20 ? [(b & c) | (~b & d), 0x5a827999] : i < 40 ? [b ^ c ^ d, 0x6ed9eba1] : i < 60 ? [(b & c) | (b & d) | (c & d), 0x8f1bbcdc] : [b ^ c ^ d, 0xca62c1d6];
+            const t = (rotl(a, 5) + f + e + k + w[i]) >>> 0;
+            e = d;
+            d = c;
+            c = rotl(b, 30) >>> 0;
+            b = a;
+            a = t;
+        }
+        h[0] = (h[0] + a) >>> 0;
+        h[1] = (h[1] + b) >>> 0;
+        h[2] = (h[2] + c) >>> 0;
+        h[3] = (h[3] + d) >>> 0;
+        h[4] = (h[4] + e) >>> 0;
+    }
+    const out = new Uint8Array(20);
+    const outView = new DataView(out.buffer);
+    h.forEach((v, i) => outView.setUint32(i * 4, v));
+    return out;
+}
+function sha1Hex(text) {
+    return (0, sha256_1.toHex)(sha1((0, sha256_1.utf8)(text)));
 }
   };
   links["src/engine/sha256.ts"] = {};
@@ -10074,7 +10129,7 @@ exports.fieldInk = {
     },
 };
   };
-  links["src/webcloud/auth.ts"] = {"../engine/account":"src/engine/account.ts","../engine/passwordRules":"src/engine/passwordRules.ts","../cloud/types":"src/cloud/types.ts","./config":"src/webcloud/config.ts","./breach":"src/webcloud/breach.ts","./errors":"src/webcloud/errors.ts","./pkce":"src/webcloud/pkce.ts","./session":"src/webcloud/session.ts"};
+  links["src/webcloud/auth.ts"] = {"../engine/account":"src/engine/account.ts","../engine/passwordRules":"src/engine/passwordRules.ts","../cloud/types":"src/cloud/types.ts","./config":"src/webcloud/config.ts","./breach":"src/webcloud/breach.ts","../engine/sha1":"src/engine/sha1.ts","./errors":"src/webcloud/errors.ts","./pkce":"src/webcloud/pkce.ts","./session":"src/webcloud/session.ts"};
   defs["src/webcloud/auth.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -10086,6 +10141,7 @@ const passwordRules_1 = require("../engine/passwordRules");
 const types_1 = require("../cloud/types");
 const config_1 = require("./config");
 const breach_1 = require("./breach");
+const sha1_1 = require("../engine/sha1");
 const errors_1 = require("./errors");
 const pkce_1 = require("./pkce");
 const session_1 = require("./session");
@@ -10148,7 +10204,7 @@ function strongSignIn(s) {
     return Array.isArray(amr) && amr.some((a) => a && typeof a.method === 'string' && STRONG_METHODS.includes(a.method));
 }
 function createWebAuth(deps) {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e;
     const base = ((_a = deps.url) !== null && _a !== void 0 ? _a : config_1.SUPABASE_URL).replace(/\/+$/, '');
     const apiKey = (_b = deps.apiKey) !== null && _b !== void 0 ? _b : config_1.PUBLISHABLE_KEY;
     const redirectTo = (_c = deps.redirectTo) !== null && _c !== void 0 ? _c : config_1.REDIRECT_URL;
@@ -10389,7 +10445,7 @@ function createWebAuth(deps) {
         clearEnded();
         return { s, user: body.user && typeof body.user === 'object' ? body.user : null };
     };
-    const breachLookup = (_d = deps.breachedPassword) !== null && _d !== void 0 ? _d : (deps.sha1Hex ? (0, breach_1.createBreachCheck)({ fetch: deps.fetch, sha1Hex: deps.sha1Hex }) : undefined);
+    const breachLookup = (_d = deps.breachedPassword) !== null && _d !== void 0 ? _d : (0, breach_1.createBreachCheck)({ fetch: deps.fetch, sha1Hex: (_e = deps.sha1Hex) !== null && _e !== void 0 ? _e : (async (t) => (0, sha1_1.sha1Hex)(t)) });
     const breachCheck = async (password) => {
         if (!config_1.BREACH_CHECK_ON) {
             breach = 'off';
@@ -10397,13 +10453,12 @@ function createWebAuth(deps) {
         }
         let verdict = 'unknown';
         try {
-            if (breachLookup)
-                verdict = await breachLookup(password);
+            verdict = await breachLookup(password);
         }
         catch {
             verdict = 'unknown';
         }
-        breach = verdict === 'unknown' ? 'unchecked' : 'clean';
+        breach = verdict === 'unknown' ? 'unchecked' : verdict === 'clean' ? 'clean' : 'off';
         if (verdict === 'breached')
             throw new types_1.CloudError('invalid', undefined, 'password_leaked');
     };
@@ -10502,6 +10557,7 @@ function createWebAuth(deps) {
             return out;
         },
         async startPasswordSignUp(email, password, opts) {
+            breach = 'off';
             const e = emailOf(email);
             await ensureWords();
             const p = newPasswordOf(password, e);
@@ -10509,6 +10565,7 @@ function createWebAuth(deps) {
             await requestCode(e, opts === null || opts === void 0 ? void 0 : opts.captchaToken);
         },
         async finishPasswordSignUp(email, code, password, opts) {
+            breach = 'off';
             const e = emailOf(email);
             await ensureWords();
             await breachCheck(newPasswordOf(password, e));
@@ -10536,6 +10593,7 @@ function createWebAuth(deps) {
             throw fail('recover', r);
         },
         async finishPasswordReset(email, code, newPassword, opts) {
+            breach = 'off';
             const e = emailOf(email);
             await ensureWords();
             await breachCheck(newPasswordOf(newPassword, e));
@@ -10548,6 +10606,7 @@ function createWebAuth(deps) {
         },
         async setPassword(newPassword, opts) {
             var _a;
+            breach = 'off';
             const s = store.read();
             if (!s)
                 throw signedOut();
@@ -10776,7 +10835,7 @@ function decodeWith(body, alphabet) {
   defs["src/webcloud/breach.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BREACH_RANGE_URL = exports.BREACH_TIMEOUT_MS = void 0;
+exports.BREACH_BASE_MIN = exports.BREACH_RANGE_URL = exports.BREACH_TIMEOUT_MS = void 0;
 exports.breachForms = breachForms;
 exports.createBreachCheck = createBreachCheck;
 const passwordBreach_1 = require("../engine/passwordBreach");
@@ -10784,43 +10843,88 @@ const passwordRules_1 = require("../engine/passwordRules");
 exports.BREACH_TIMEOUT_MS = 3000;
 exports.BREACH_RANGE_URL = 'https://api.pwnedpasswords.com/range';
 const TAIL = /[0-9!-/:-@[-`{-~]+$/;
+exports.BREACH_BASE_MIN = 8;
 function breachForms(password) {
     const p = (0, passwordRules_1.normalizePassword)(password);
     if (!p)
         return [];
     const c = (0, passwordRules_1.comparedForm)(p);
-    return [...new Set([p, c, c.replace(TAIL, '')])].filter((x) => x.length > 0);
+    const t = c.replace(TAIL, '');
+    const tl = Array.from(t).length;
+    const keep = tl >= exports.BREACH_BASE_MIN && tl * 2 >= Array.from(c).length;
+    return [...new Set([p, keep ? t : c])].filter((x) => x.length > 0);
 }
 function createBreachCheck(deps) {
     var _a, _b;
     const base = ((_a = deps.url) !== null && _a !== void 0 ? _a : exports.BREACH_RANGE_URL).replace(/\/+$/, '');
-    const wait = (_b = deps.wait) !== null && _b !== void 0 ? _b : ((ms) => new Promise((r) => setTimeout(r, ms)));
-    const lookups = lookupAll(deps, base);
-    return (password) => { var _a; return Promise.race([lookups(password), wait((_a = deps.timeoutMs) !== null && _a !== void 0 ? _a : exports.BREACH_TIMEOUT_MS).then(() => 'unknown')]); };
-}
-function lookupAll(deps, base) {
-    return async (password) => {
-        let unknown = false;
-        for (const f of breachForms(password)) {
+    const ms = (_b = deps.timeoutMs) !== null && _b !== void 0 ? _b : exports.BREACH_TIMEOUT_MS;
+    const one = async (prefix, suffix, padding, signal) => {
+        let res;
+        try {
+            res = await deps.fetch(`${base}/${prefix}`, {
+                method: 'GET',
+                headers: padding ? { 'Add-Padding': 'true' } : {},
+                cache: 'no-store',
+                credentials: 'omit',
+                referrerPolicy: 'no-referrer',
+                redirect: 'error',
+                signal,
+            });
+        }
+        catch {
+            return 'network';
+        }
+        try {
+            if (res.status !== 200)
+                return 'unknown';
+            const r = (0, passwordBreach_1.breachRangeResult)(await res.text(), suffix);
+            return r === 'bad' ? 'unknown' : r;
+        }
+        catch {
+            return 'unknown';
+        }
+    };
+    const run = async (password, signal) => {
+        const forms = breachForms(password);
+        if (!forms.length)
+            return 'unknown';
+        const parts = await Promise.all(forms.map(async (f) => {
             try {
-                const parts = (0, passwordBreach_1.breachRangeParts)(await deps.sha1Hex(f));
-                if (!parts) {
-                    unknown = true;
-                    continue;
-                }
-                const res = await deps.fetch(`${base}/${parts.prefix}`, { method: 'GET', headers: { 'Add-Padding': 'true' } });
-                if (res.status !== 200) {
-                    unknown = true;
-                    continue;
-                }
-                if ((0, passwordBreach_1.breachRangeHit)(await res.text(), parts.suffix))
-                    return 'breached';
+                return (0, passwordBreach_1.breachRangeParts)(await deps.sha1Hex(f));
             }
             catch {
-                unknown = true;
+                return null;
             }
+        }));
+        const lookup = (i, padding) => {
+            const x = parts[i];
+            return x ? one(x.prefix, x.suffix, padding, signal) : Promise.resolve('unknown');
+        };
+        let got = await Promise.all(parts.map((_, i) => lookup(i, true)));
+        if (got.includes('hit'))
+            return 'breached';
+        if (got.includes('network') && !(signal === null || signal === void 0 ? void 0 : signal.aborted)) {
+            got = await Promise.all(got.map((g, i) => (g === 'network' ? lookup(i, false) : Promise.resolve(g))));
+            if (got.includes('hit'))
+                return 'breached';
         }
-        return unknown ? 'unknown' : 'clean';
+        return got.every((g) => g === 'miss') ? 'clean' : 'unknown';
+    };
+    return async (password) => {
+        const ctl = typeof AbortController === 'function' ? new AbortController() : undefined;
+        let timer;
+        const late = new Promise((resolve) => {
+            timer = setTimeout(() => {
+                ctl === null || ctl === void 0 ? void 0 : ctl.abort();
+                resolve('unknown');
+            }, ms);
+        });
+        try {
+            return await Promise.race([run(password, ctl === null || ctl === void 0 ? void 0 : ctl.signal).catch(() => 'unknown'), late]);
+        }
+        finally {
+            clearTimeout(timer);
+        }
     };
 }
   };
@@ -12051,12 +12155,19 @@ function decodeUtf8(bytes) {
     });
     return module.exports;
   }
+  function pub(m) {
+    var keys = Object.keys(m);
+    if (!keys.some(function (k) { return /ForTest$/.test(k); })) return m;
+    var o = {};
+    keys.forEach(function (k) { if (!/ForTest$/.test(k)) o[k] = m[k]; });
+    return o;
+  }
   var api = {};
-  api["browser"] = load("src/webcloud/browser.ts");
-  api["config"] = load("src/webcloud/config.ts");
-  api["passwordRules"] = load("src/engine/passwordRules.ts");
-  api["breach"] = load("src/webcloud/breach.ts");
-  api.sourceHash = "bf9db5a6bebbb05d";
+  api["browser"] = pub(load("src/webcloud/browser.ts"));
+  api["config"] = pub(load("src/webcloud/config.ts"));
+  api["passwordRules"] = pub(load("src/engine/passwordRules.ts"));
+  api["breach"] = pub(load("src/webcloud/breach.ts"));
+  api.sourceHash = "520745f0e5670e65";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};
@@ -12066,6 +12177,8 @@ function decodeUtf8(bytes) {
   // The ?v= the page loads assets/kaisip-password-words.js with (its own SHA-256, first 10 hex),
   // so a stale cached copy is never used; the rules also check the lists' fingerprints.
   api.passwordWordsRef = "74e089bd42";
+  // Its full SHA-256 in Subresource Integrity form, for the <script integrity="..."> that loads it.
+  api.passwordWordsIntegrity = "sha256-dOCJvUJjPim6GP7Fw7+Qcl4Yzbajkr28LN7GwCbUGVE=";
   // KaiSipCloud.create({ ... }): the client, with the Play versions and this page's address filled in
   // (the caller can't change them). It refuses any address but https://kaisip.com; `devOrigin: true`
   // adds only localhost and "no address" (Node tests), never another site.
@@ -12075,6 +12188,11 @@ function decodeUtf8(bytes) {
     opts.appVersion = liveVersion;
     opts.storeVersions = { progress: liveStoreVersions.progress, settings: liveStoreVersions.settings };
     opts.origin = root.location && typeof root.location.origin === 'string' ? root.location.origin : '';
+    // The leaked-password check's SHA-1: the browser's own when it has one (https pages); otherwise the
+    // client uses its pure copy (engine/sha1.ts).
+    if (!opts.sha1Hex && !opts.breachedPassword && root.crypto && root.crypto.subtle && typeof root.crypto.subtle.digest === 'function') {
+      opts.sha1Hex = api.browser.browserSha1Hex(root.crypto.subtle);
+    }
     return cloud.createWebCloud(opts);
   };
   root.KaiSipCloud = Object.freeze(api);

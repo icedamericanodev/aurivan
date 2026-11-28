@@ -13,7 +13,7 @@ migrations, `supabase/tests/40_beta.sql`, `supabase/config.toml`, `scripts/cloud
 | HIGH-1 | Fixed: rule 4b, the deferred constraint trigger `kaisip_first_password_session` in `supabase/migrations/20261128000000_password_guard.sql` |
 | HIGH-2 | Fixed: `kaisip_mfa_staff_only` on `auth.mfa_factors` (only `private.beta_desk_admins` or `private.staff` may enrol; existing factors untouched) |
 | MEDIUM-1 | The "password changed" notice is a HARD gate (owner decision; `docs/WEB_LAUNCH_PLAN.md` gate 15). R10 recorded. The reset email no longer implies the reset code is special |
-| MEDIUM-2 | Client-side common-password blocklist REQUIRED (owner decision; client work in step A3). Third-party leaked-password lookup (HIBP range check): **not for now** (owner decision) |
+| MEDIUM-2 | Client-side common-password blocklist REQUIRED (owner decision; client work in step A3). Third-party leaked-password lookup (HIBP range check): **not for now** (owner decision). *Update 28 Nov 2026: the owner then switched the check on ("Do as recommended"): `mobile/src/webcloud/breach.ts`, `BREACH_CHECK_ON = true`; see `docs/WEB_LAUNCH_PLAN.md`, "Leaked-password check".* |
 | MEDIUM-3 | Done: `supabase/tests/41_passwords.sql` and `scripts/password_sql_mutants.py`, with the cases and mutants below and more |
 | LOW-1, LOW-3 | Client work (step A3) |
 | LOW-2 | Fixed: the new functions and triggers are created first, the old trigger is dropped last |
