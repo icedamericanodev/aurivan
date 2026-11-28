@@ -571,7 +571,9 @@ What the pass taught (all in the stage 3 brief):
   uses, and a replaced noun phrase must leave the service or document named.
 - **Plain text shows older weak spots** (a first sentence that restates the key, a
   runner-up that can be argued). Left for the hardening pass: A `073`; B `079`,
-  `081`, `021`, `018`, `026`, `020`, `078`; C `069`, `067`; D `027`, `034`.
+  `081`, `021`, `018`, `026`, `020`, `078`, `085` (option C is as tailored as key A);
+  C `069`, `067`, `107` (rests on one named user guide); D `027`, `034`. A final
+  blind test of the 87 items the B to D fix passes changed scored 87 of 87.
 
 **Next:** the same pass on Part 2 (49 packed) and Part 3 (22 packed).
 
