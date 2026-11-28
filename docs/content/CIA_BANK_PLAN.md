@@ -16,7 +16,7 @@ Tools: `data/cia/tools/README.md`. Started from `docs/content/CIA_KICKOFF_PROMPT
 | **Owner decisions (19 Nov 2026)** | **Licence: keep building privately; settle the licence before selling.** The owner's reasoning: the packs are downloadable content nobody can open until they pay, and KaiSip does for CIA what it does for CISA (original questions, reviewed against the official framework, never copying it). Note for later: the free sample and the store listing are visible before payment, so the licence question is settled before those go live too. **Prices: decide later.** |
 | **Rounds 1 to 15, the Part 2 pilot, Part 2 rounds 1 to 6, Part 3 rounds 1 and 2, and the Third-Party and Organizational Behavior items written ahead done (28 Nov 2026)** | Part 1 stands at **349 questions (A 116, B 85, C 106, D 42; `cia1_d3_057` retired 28 Nov 2026), all in The IIA's question format since the stage 2 restyle** and meets the revised sale gate's counts (section 3, decision 4); two of them (`cia1_d3_106`, `cia1_d3_107`, on 1C2a) are Organizational Behavior items written ahead, dated 2027-06-01. **Part 2 stands at 105 questions (A 52, B 42, C 11)**, every key confirmed by blind tests and Standards audits; six of them are written ahead and dated: `cia2_d1_043` to `045` (Third-Party, 2027-03-01) and `cia2_d1_046` to `048` (Organizational Behavior, 2027-06-01, the first items on 2A5g), so out of the held-back form, the mocks and the free sample until their dates. **Part 2's gate (owner, 26 Nov 2026) is about A 67, B 53, C 13**: 21, 11 and 2 short today; A is 18 short from 1 Mar 2027 and 15 from 1 Jun 2027. **Rounds 4 and 5 (26 Nov 2026) were keyed on free public Knowledge sources** (K1 to K18): round 4 kept 14 of 14 and brought four bullets to depth; round 5 kept 7 of 7, all second or later lessons (2A3f, 2A4b, 2B4c and 2B5b now have two items each), and left three of its ten leads empty. **Round 6 (28 Nov 2026) was keyed on ISA 500 and ISA 520** (K19, K20; the owner cleared them on 28 Nov 2026 for method facts only, cited by title and paragraph): it kept 7 of 9 (A 4 of 5, B 3 of 4), cut a 2A6b and a 2B2b draft that stayed test-taking in both blind tests, left leads R6-1 to R6-3 empty, gave 2A6e its first items outside IT and 2B2c its second item; but options-only guessing stayed at 7 of 9 after the fix pass, so the self-check is not yet enough on ISA method items. 52 of 60 bullets meet their depth today, 7 have no testable item and only 2A7c is below depth; from 1 Jun 2027, when 2A5g's three dated items count, 53 meet it and 6 have none. **Part 3's study notes are done** (63 sub-topics, audited and learner-read) and **its bank holds 66 questions (A 17, B 15, C 15, D 19)** after the pilot, rounds 1 and 2 and the Third-Party items written ahead (`cia3_d2_014`, `d2_015`, `d3_015`, dated 2027-03-01), every key confirmed by blind tests and Standards audits. **Part 3 round 2 (26 Nov 2026)** kept 3 of 3 items on 3B1f (blockchain, connected devices, AI), keyed on NIST Knowledge sources with the chief audit executive's step on Standard 9.4. **The Third-Party and Organizational Behavior Topical Requirements are now spent** (six and five items written ahead, all kept; section 7). **The opened sources are now close to spent across all three parts**: the IIA sources after Part 2 round 3 and Part 1 round 14, the Knowledge sources after Part 2 round 6 and Part 3 round 2 (three thin Part 2 leads on ISA 500 and 520 and one Part 3 lead left), and both requirements that can be written ahead now. The Challenge pack holds 223 items, nine of them dated (six 2027-03-01, three 2027-06-01); its Section B fills one mock (26, 24 testable today, of 23), but Section E, fed by Part 3's Section D, holds 15 of 30, so no full Challenge mock can be drawn yet. The Topical Requirements Application Guidance is Background only (Part 2 round 1). |
 | **Next step** | Owner decisions of 26 Nov 2026 (section 9): Part 2's gate is about A 67, B 53, C 13; **write our own questions from free public sources** for the knowledge bullets (the textbook is on hold); and one expert agent per section. **Done 26 Nov 2026:** eleven section experts; 18 public Knowledge sources opened and listed (research log K1 to K18); **Part 2 rounds 4 and 5** (14 kept of 14, then 7 of 7); **Part 3 round 2** (3B1f, 3 kept of 3); **the Third-Party items written ahead** (6 kept of 6, `testable_from` 2027-03-01); and **the Organizational Behavior items written ahead** (5 kept of 5, `testable_from` 2027-06-01: Part 2's 2A5g three times, its first items, and Part 1's 1C2a twice; incentives, speak-up channels, training lists and gap follow-up left empty as repeats or recall only; nothing for Part 3, as the plan expected). **Done 28 Nov 2026: Part 2 round 6** on ISA 500 and 520 (K19, K20; opened 27 Nov 2026 once the owner allowed their host, use cleared by the owner 28 Nov 2026): 7 kept of 9 (`cia2_d1_049` to `052`, `cia2_d2_040` to `042`), two cut, R6-1 to R6-3 left empty. Scorecards in section 7. The two stems changed after the fresh blind test (`cia2_d2_040`, whose days off; `cia2_d2_042`, the limit set for normal-risk shops) were blind re-tested 2 of 2, both classed knowledge, neither ambiguous (step 7 of section 6). **Spent now:** the IIA sources, the Knowledge leads (Part 2 has three thin leads on ISA 500 and 520, R7-1 to R7-3 in `CIA_P2_COVERAGE.md` section 6; Part 3 one, 3B1f tokens on K11), and the Third-Party and Organizational Behavior requirements. **The opened sources are close to spent across all three parts:** another content round would yield a few items at best, against Part 2's gap of 21, 11 and 2 (15 in A from 1 Jun 2027). Before any round 7 on ISA 500 and 520, change the brief: the authors' options-only self-check did not lower round 6's options-only result (7 of 9 before and after the fix pass), so an independent options-only tester reads the drafts before the audit, keys name a concrete procedure rather than the principle, and one lesson list is agreed across the two sections first. Topic 2B5 takes no eighth item alone (its Apply mix; `CIA_P2_COVERAGE.md` section 4). What would open more, none of it available now: the textbook (on hold, owner, 26 Nov 2026); and the Organizational Resilience requirement (testable 2027-10-01), only if its text opens lessons distinct from the three items already on 2A3d, its one Part 2 bullet. **Next (recommended):** the app items still open in section 11 (wire each CIA pack's held-back form, the remaining "Domain" spots, the onboarding course choice, the glossary builder) and the compliance items for selling (section 9: the in-app IIA course switched to `available` only in the selling release, the trademark notice on the listing, paywall, terms, home and support pages, the free-sample builder for CIA). Why: every content lead left is thin, and none of these waits on a source. The owner decided on 27 Nov 2026 to build our own banks without an IIA licence (section 9); copyright and trademark rules still hold. After that, if no source opens: the hardening pass (section 6b, rule 12; `cia2_d1_047`'s two weak distractors are logged for it) and Part 3's Section D, the pinch for a full Challenge mock (Section E 15 of 30), which still waits on a new source or the owner's sale-gate decision. |
-| **Plain stems, stage 3 (opened 28 Nov 2026)** | FB-013: CIA stems now take the shared plain-stem caps (section 6d, rule 5; `style_cia.py` has no stem caps of its own, and the scenario variant is gone). The gate, the harness and the readability ratchet are changed, and the five stems that failed the new gate are rewritten (they still need their blind re-test). **Next for this pass:** rewrite the packed stems one section at a time, Part 1 Section A first (section 6d, the stages table and "Stage 3 opened"); 183 packed stems are left by the ratchet's count. |
+| **Plain stems, stage 3 (opened 28 Nov 2026)** | FB-013: CIA stems now take the shared plain-stem caps (section 6d, rule 5; `style_cia.py` has no stem caps of its own, and the scenario variant is gone). The gate, the harness and the readability ratchet are changed, and the five stems that failed the new gate are rewritten and blind tested 5 of 5. **Part 1 is done (28 Nov 2026):** 266 of its 349 stems rewritten as plain sentences, packed stems 112 to 2, blind tests 100% in all four sections, audits 0 HARD (section 6d, "Stage 3, Part 1 done"). **Next for this pass:** Part 2 (49 packed) and Part 3 (22 packed), section by section, to the same brief; 73 packed stems are left by the ratchet's count. |
 | **Then** | Part 2, Part 3, the Challenge build and the CISA bridge notes (from the outline), the cross-part release gate. |
 | **Known weak spot** | Difficulty. No pilot key was wrong and all four blind rounds agreed 80 of 80, but the last testers still called 21 of 80 answerable by test-taking alone, most in Sections B and D, and 8 items carry a TOO EASY or GIVEAWAY flag (section 7). New rounds must do better; the pilot items are candidates for a later hardening pass, not for more polishing now (section 6b, rule 12). |
 
@@ -527,14 +527,55 @@ harness proves each new limit, and the readability ratchet now counts the Part
 files. Five stems failed the new gate (each over 35 words with a semicolon or
 one sentence over 20 words) and were rewritten in the same change, with no key,
 option, explanation, tip or citation touched: `cia1_d1_115`, `cia1_d2_044`,
-`cia1_d3_099`, `cia2_d1_016`, `cia3_d4_010`. **These five still need their
-blind re-test**, with the section they belong to. Packed stems left (a
+`cia1_d3_099`, `cia2_d1_016`, `cia3_d4_010` (blind tested 5 of 5 the same day). Packed stems left (a
 semicolon or a possessive chain; the ratchet's baseline): Part 1 A 26, B 30,
 C 46, D 10 (112); Part 2 A 23, B 21, C 5 (49); Part 3 A 2, B 6, C 3, D 11
 (22); 183 in all, from 186 before the five rewrites. The pass's "about 210"
 adds the readability review's estimate of stems that are hard on a first read
 for another reason. Two expert reviews (the standards audit and the
 readability review, 28 Nov 2026) agreed CIA should take the shared caps.
+
+**Stage 3, Part 1 done (28 Nov 2026).** The five gate-change stems were blind
+tested 5 of 5. Then a pilot on Section A and the same pass on Sections B to D, each
+by its section expert, each with three reviews: a blind test, a before-and-after
+audit and a readability re-read.
+
+| Section | Stems rewritten | Packed, before to after | Median words | Over 35 words | Blind test | Audit (HARD / PRECISION / OBS) |
+|---|---|---|---|---|---|---|
+| A | 77 of 116 | 26 to 2 (both read plainly) | 33 to 34 | 27 (23.3%) | 116 of 116; fixes 30 of 30 | 0 / 2 / 3 |
+| B | 76 of 85 | 30 to 0 | 34 to 35 | 20 (23.5%) | 85 of 85 | 0 / 3 / 4 |
+| C | 81 of 106 | 46 to 0 | 32.5 to 33.5 | 16 (15.1%) | 106 of 106 | 0 / 1 / 2 |
+| D | 32 of 42 | 10 to 0 | 33 to 34 | 8 (19.0%) | 42 of 42 | 0 / 0 / 2 |
+
+No key or citation changed, and every stem stays at least 0.60 similar to main.
+Every PRECISION was a fact or referent the rewrite had dropped (a region inside its
+limit; counsel as the source of a legal claim; "learns"; an antecedent) or a new
+echo of the key; all fixed. Older ambiguities settled along the way by one added
+fact or one wrong-option edit: `cia1_d4_022` (the manager meant to use the copied
+list), `cia1_d4_037` (the board replies only "dealt with it" and the finding stays
+open), `cia1_d4_025` (option B: replacing the 12 lost files with 12 others),
+`cia1_d2_044` (option D), `cia1_d1_056` (option A), `cia1_d2_066`, `cia1_d1_031`,
+`cia1_d1_044`.
+
+What the pass taught (all in the stage 3 brief):
+- **The 25% share is the real limit.** A plain split costs 3 to 6 words; zero-cost
+  fixes first (semicolon to period, "its" to "the", a moved phrase).
+- **Sentence shape was the smaller half.** The readability re-reads found the
+  rewrites plain on the first read in 61 of 67 (A), 54 of 67 (B), 61 of 69 (C) and
+  27 of 29 (D) stems; what was left was words: a British or trade word ("remit",
+  "tariff", "Till" opening a sentence), an idiom ("seconded", "catch-ups"), a bare
+  verb in a noun string ("recommended that a hospital lock dose limits"), a
+  modifier that attaches two ways. And 18 stems the experts had left as plain were
+  still hard on a first read: read what you leave, too.
+- **No echo, and keep the thing named.** A rewrite must not add a word only the key
+  uses, and a replaced noun phrase must leave the service or document named.
+- **Plain text shows older weak spots** (a first sentence that restates the key, a
+  runner-up that can be argued). Left for the hardening pass: A `073`; B `079`,
+  `081`, `021`, `018`, `026`, `020`, `078`, `085` (option C is as tailored as key A);
+  C `069`, `067`, `107` (rests on one named user guide); D `027`, `034`. A final
+  blind test of the 87 items the B to D fix passes changed scored 87 of 87.
+
+**Next:** the same pass on Part 2 (49 packed) and Part 3 (22 packed).
 
 **Stage 1 done (28 Nov 2026, merged):** every CIA stem lowercased (MAIN made "primary"),
 a period on every option, the teaching pieces matched, `REQUIRE_LOWERCASE_QUALIFIERS`
