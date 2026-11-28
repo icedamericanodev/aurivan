@@ -7011,7 +7011,7 @@ const MOST_ADJ = new Set([
     'likely', 'complete', 'prompt', 'clear', 'strong', 'severe', 'secure', 'robust', 'sound', 'true', 'wise', 'apt', 'fair',
     'common', 'valid', 'weak', 'direct', 'exact', 'precise', 'concise', 'current', 'recent', 'complex', 'mature', 'safe',
     'strict', 'often', 'concerning', 'pressing', 'compelling', 'damaging', 'misleading', 'convincing', 'telling',
-    'revealing', 'worrying', 'troubling', 'alarming', 'striking', 'limiting', 'demanding', 'challenging', 'promising',
+    'revealing', 'worrying', 'troubling', 'alarming', 'striking', 'limiting', 'demanding', 'challenging', 'promising', 'lacking',
 ]);
 const MOST_VERBS = new Set([
     'need', 'needs', 'lack', 'lacks', 'determine', 'determines', 'undermine', 'undermines', 'warrant', 'warrants', 'stress',
@@ -11838,6 +11838,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "3110d2a88ceaf2b8";
+  api.sourceHash = "9d50a11becf31b0f";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);
