@@ -11,6 +11,12 @@
        THIS browser (kaisip_accounts_preview); #accounts-preview=off removes
        it. Nobody else is offered anything. Steps: docs/WEBSITE_DEPLOY.md.
      - Never on file:// or any other address (accounts beta plan, 1.2).
+     - With accounts on, the website asks for an account (owner decision, 28
+       Nov 2026). A visitor with no sign-in saved in this browser must never
+       see the study app flash before the welcome screen, so this script
+       marks the page (data-ka-gate) before anything is drawn; the page's
+       styles hide the app while the mark is there, and kaStart() removes it
+       once the welcome is up or the learner is known to be signed in.
      - When accounts are on here and Google sends the learner back with
        ?code=... (or ?error=...), that is taken out of the address before
        analytics or anything else can read it, and kept only in memory. -->
@@ -44,6 +50,18 @@
           history.replaceState(history.state, '', location.pathname + location.search);
         }
       } catch (e) {}
+    }
+    if (on) {
+      // Signed in here (a session saved by the accounts client, still inside its 30 days and
+      // 14 unused days by this computer's clock)? If not, the app stays hidden until the gate decides.
+      var live = false;
+      try {
+        var raw = localStorage.getItem('kaisip_auth_v1') || sessionStorage.getItem('kaisip_auth_v1');
+        var ses = raw ? JSON.parse(raw) : null;
+        var now = Date.now();
+        live = !!(ses && typeof ses.refreshToken === 'string' && (!ses.signedInAt || now - ses.signedInAt < 30 * 86400000) && (!ses.lastActiveAt || now - ses.lastActiveAt < 14 * 86400000));
+      } catch (e) {}
+      if (!live || back) document.documentElement.setAttribute('data-ka-gate', '');
     }
     return { enabled: on, preview: preview && !ACCOUNTS_ON, back: back };
   })();
@@ -8874,6 +8892,9 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
 :root { --ka-r-btn: 16px; --ka-r-field: 16px; --ka-halo: rgba(43,110,74,.18); --ka-danger-halo: rgba(163,51,61,.16); --ka-ease: cubic-bezier(.2,.75,.2,1); }
 [data-theme="dark"] { --ka-halo: rgba(127,195,156,.22); --ka-danger-halo: rgba(255,156,166,.18); }
 body[data-ka-view] { padding-left: 0 !important; }
+/* The gate: set by the page's first script before anything is drawn, so the study app never flashes for a signed-out visitor. */
+html[data-ka-gate] .app-rail, html[data-ka-gate] #studyWrap, html[data-ka-gate] #bottomNav, html[data-ka-gate] .skip-link { display: none !important; }
+html[data-ka-gate] body { padding-left: 0 !important; }
 body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] #bottomNav, body[data-ka-view] .skip-link { display: none !important; }
 #kaRoot { min-height: 100vh; min-height: 100dvh; background: var(--bg); color: var(--text); font: var(--t-body); }
 #kaRoot[hidden] { display: none; }
@@ -9085,10 +9106,13 @@ body[data-ka-view] .app-rail, body[data-ka-view] #studyWrap, body[data-ka-view] 
 .ka-path-s { font: 400 0.875rem/1.4 var(--f-sans); }
 .ka-path-secondary .ka-path-s { color: var(--text2); }
 @media (hover: hover) { .ka-path:hover { transform: translateY(-1px); } }
-.ka-welcome-more { margin-top: 14px !important; }
+.ka-welcome-why { margin-top: 12px !important; max-width: 46ch; font: var(--t-body); color: var(--text); }
+.ka-welcome-kept { display: flex; gap: 10px; align-items: flex-start; margin-top: 16px !important; max-width: 32.5rem; padding: 12px 16px; border-radius: var(--r-md); background: var(--surface2); font: var(--t-small); color: var(--text); }
+.ka-welcome-kept .ico { color: var(--accent-text); flex-shrink: 0; margin-top: 1px; }
 .ka-ios { display: flex; gap: 10px; align-items: flex-start; margin-top: 14px !important; font: var(--t-small); color: var(--text2); }
 .ka-ios .ico { color: var(--accent-text); flex-shrink: 0; margin-top: 2px; }
 .ka-welcome .ka-fine { max-width: 56ch; margin-top: 24px !important; }
+.ka-welcome .ka-welcome-foot { margin: 8px 0 0 !important; max-width: none; }
 .ka-welcome-panel { position: relative; overflow: hidden; isolation: isolate; border-radius: 24px; padding: 28px 16px 20px; background: linear-gradient(180deg, var(--forest-top), var(--forest) 60%); box-shadow: inset 0 1px 0 var(--forest-hl); }
 .ka-q { background: var(--surface); color: var(--text); border-radius: 22px; padding: 18px; box-shadow: 0 30px 60px -30px rgba(0,0,0,.5); max-width: 27.5rem; margin-left: auto; }
 [data-theme="dark"] .ka-q { box-shadow: inset 0 0 0 1.5px var(--border), 0 30px 60px -30px rgba(0,0,0,.7); }
@@ -9213,11 +9237,6 @@ div.ka-item { cursor: default; }
 .ka-dlg { text-align: left; }
 .ka-dlg .ka-form { margin-top: 16px; }
 .ka-dlg-acts { display: grid; gap: 8px; margin-top: 20px; }
-.ka-offer { display: grid; gap: 14px; margin: 16px 0 0; padding: 0; list-style: none; }
-.ka-offer li { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: start; }
-.ka-offer li:first-child { padding-bottom: 14px; border-bottom: 1px solid var(--border); }
-.ka-offer b { display: block; font: var(--t-label); color: var(--text); }
-.ka-offer span span { font: var(--t-small); color: var(--text2); }
 @media (prefers-reduced-motion: reduce) { .ka-busy, .ka-card-act.is-turn .ico, .ka-code:focus-within .ka-cell.is-active::after { animation: none !important; } .ka-btn, .ka-path, .ka-toggle::after { transition: none !important; } }
 /* ── ACCOUNTS END ── */
 </style>
@@ -14618,6 +14637,7 @@ function switchTab(t, opts) {
   if (t === 'progress') renderProgress();
   if (t === 'you') renderYou();
   if (t === 'account') kaRenderAccount();
+  kaGateCheck();   // accounts: a sign-in that has ended closes the app at the next page change
   if (t === 'plant') renderPlantPage();
   if (t === 'mock') renderMockSetup();
   if (t === 'learn') renderLearnHub();
@@ -24228,8 +24248,8 @@ function closeOnboarding() {
 }
 
 function checkOnboarding() {
-  // Accounts on: the first visit is the welcome choice (study free, or sign in to sync).
-  if (kaWelcomeDue()) { kaShow('welcome'); return; }
+  // Accounts on: the first visit is the account welcome (kaStart), never this sheet.
+  if (kaWelcomeDue()) return;
   try {
     if (!localStorage.getItem("cisa_onboarded_v6")) {
       setTimeout(function(){ showOnboarding(); }, 300);
@@ -27408,6 +27428,12 @@ function appCtaInit() {
 // - Screens: kaShow('signin' | 'signup1' | 'signup2' | 'signup3' | 'forgot1'
 //   | 'forgot2' | 'consent' | 'firstsync' | 'welcome'). The account card on
 //   You is kaCardHtml(); the Account page is kaRenderAccount().
+// - The website asks for an account (owner decision, 28 Nov 2026): with
+//   accounts on, a visitor who is not signed in sees the welcome and sign-in
+//   screens, never the study app (kaGateShut). A learner who IS signed in is
+//   never locked out: offline, or with the sync service down, they keep
+//   studying from this browser's own saved progress, and nothing here is
+//   decided by a network answer except "this sign-in has ended".
 // - Rules kept here: the password is read from its field only when a form is
 //   sent and is never saved or logged; no server text is ever shown (every
 //   error goes through kaWords); sign-out never touches saved progress unless
@@ -27435,7 +27461,6 @@ var KA_NEWS_WORDS = 'Email me KaiSip study tips and news (optional). Unsubscribe
 var KA_PENDING_KEY = 'kaisip_signup_pending_v1';
 var KA_INTENT_KEY = 'kaisip_acct_intent_v1';
 var KA_HINT_KEY = 'kaisip_acct_hint_v1';
-var KA_CARD_KEY = 'kaisip_acct_card_v1';
 var KA_CONSENT_KEY = 'kaisip_consent_v1';
 // The client's own keys, read here only to know whether to load it at all.
 var KA_SESSION_KEYS = ['kaisip_auth_v1', 'kaisip_auth_ended_v1'];
@@ -27604,7 +27629,7 @@ var kaHost = {
   busy: function () {
     try {
       var pf = kaEl('practiceFocus');
-      if (pf && !pf.hidden) return true;
+      if (S.activeTab === 'practice' && pf && !pf.hidden) return true;
       return S.activeTab === 'mock' && isMockInProgress() && !!S.mockTotalTimerInt;
     } catch (e) { return false; }
   }
@@ -27862,7 +27887,9 @@ function kaSyncNow(manual) {
   });
 }
 function kaSyncSoon() {
-  if (!KA_ON || !ka.cloud || !kaAccount()) return;
+  if (!KA_ON) return;
+  kaGateCheck();
+  if (!ka.cloud || !kaAccount()) return;
   if (window.requestIdleCallback) window.requestIdleCallback(function () { kaSyncNow(false); }, { timeout: 4000 });
   else setTimeout(function () { kaSyncNow(false); }, 1500);
 }
@@ -27872,7 +27899,7 @@ function kaState() {
   if (!acct) {
     // A saved session, but the client is still on its way (or couldn't load): not a guest.
     if (!ka.cloud && kaHasSession()) return ka.loadFailed ? 'offline' : 'checking';
-    return kaEnded() || (!ka.cloud && kaGet('kaisip_auth_ended_v1')) ? 'expired' : 'guest';
+    return kaEnded() || (!ka.cloud && kaGet('kaisip_auth_ended_v1')) ? 'expired' : 'out';
   }
   var cloud = ka.cloud;
   try { if (cloud.auth.passwordNeeded()) return 'needpw'; } catch (e) {}
@@ -27904,6 +27931,7 @@ function kaStateWords(st) {
   if (st === 'offline') return 'Waiting for a connection';
   if (st === 'error') return 'Couldn’t sync just now';
   if (st === 'expired') return 'Please sign in again to keep syncing';
+  if (st === 'out') return 'Please sign in to keep studying';
   if (st === 'paused') return 'Sync is paused. Refresh the page to keep syncing.';
   if (st === 'off') return 'Sync is off';
   if (st === 'setup') return 'One step left to turn sync on';
@@ -27914,6 +27942,7 @@ function kaStateWords(st) {
 // Redraws every place the account shows; `say` announces a changed status once, politely.
 function kaPaint(say) {
   if (!KA_ON) return;
+  kaGateCheck();
   try { kaCardDraw(); } catch (e) {}
   try { kaRailDraw(); } catch (e) {}
   try { if (S.activeTab === 'account' && !ka.view) kaAccountHero(); } catch (e) {}
@@ -27981,7 +28010,7 @@ function kaArt(key) {
   var syncCard = '<div class="ka-sync-card"><p class="ka-sync-k">What an account keeps in step</p>'
     + '<div class="ka-sync-row"><span class="ka-sync-dev">' + kaIco('laptop', 18) + 'This browser</span><span class="ka-vine"></span><span class="ka-sync-dev">' + kaIco('phone', 18) + 'Android app</span></div>'
     + '<ul class="ka-sync-list"><li>Answers and missed questions</li><li>Saved questions and your notes</li><li>Notes read and mock results</li></ul></div>';
-  var facts = '<ul class="ka-art-facts"><li>Studying never needs an account</li><li>Codes by email, never sign-in links</li><li>Sign-ins end after 30 days</li></ul>';
+  var facts = '<ul class="ka-art-facts"><li>Free, with nothing to install</li><li>Codes by email, never sign-in links</li><li>Sign-ins end after 30 days</li></ul>';
   return '<div class="ka-panel">' + kaFronds(600, 900, [[470, 930, 520, -14, 9], [560, 960, 380, 18, 7], [90, 980, 300, -28, 6], [380, 980, 240, 8, 5, true]])
     + '<div><p class="ka-art-title">' + a[0] + '</p><p class="ka-art-quote">' + a[1] + '</p></div>'
     + (key === 'signin' || key === 'forgot' || key === 'sync' ? syncCard : facts) + '</div>';
@@ -27991,11 +28020,21 @@ function kaNewTab(href, text) {
 }
 function kaShell(key, body) {
   return '<div class="ka-auth">'
-    + '<header class="ka-topbar"><a class="ka-brand" href="#today" aria-label="KaiSip, back to studying" onclick="event.preventDefault();kaGoApp(\'home\')">' + kaLockup() + '</a>'
-    + '<a class="ka-toplink" href="#today" onclick="event.preventDefault();kaGoApp(\'home\')">Study without an account ' + ico('arrow-right', 16) + '</a></header>'
+    + '<header class="ka-topbar">' + kaTopbarHtml() + '</header>'
     + '<aside class="ka-art" aria-hidden="true">' + kaArt(key) + '</aside>'
     + '<main class="ka-main"><div class="ka-form-col">' + body + '</div>'
     + '<footer class="ka-foot">' + kaNewTab('terms.html', 'Terms') + kaNewTab('privacy.html', 'Privacy') + kaNewTab('support.html', 'Help') + '</footer></main></div>';
+}
+// The top of an account screen. Signed out: the wordmark goes to the welcome and Help is always there
+// (there is no way into the study app without an account). Signed in (the agreements, the first
+// sync, a new password): the wordmark and "Back to studying" go to the app.
+function kaTopbarHtml() {
+  if (kaAccount() && !ka.cloud.auth.passwordNeeded()) {
+    return '<a class="ka-brand" href="#today" aria-label="KaiSip, back to studying" onclick="event.preventDefault();kaLand()">' + kaLockup() + '</a>'
+      + '<a class="ka-toplink" href="#today" onclick="event.preventDefault();kaLand()">Back to studying ' + ico('arrow-right', 16) + '</a>';
+  }
+  return '<a class="ka-brand" href="#welcome" aria-label="KaiSip, the welcome page" onclick="event.preventDefault();kaShow(\'welcome\')">' + kaLockup() + '</a>'
+    + kaNewTab('support.html', 'Help').replace('<a ', '<a class="ka-toplink" ');
 }
 function kaErrorHtml(words) {
   return words ? kaIco('alert', 18) + '<span>' + escapeHtml(words) + '</span>' : '';
@@ -28210,7 +28249,7 @@ var KA_VIEWS = {
   signin: function () {
     return kaShell('signin',
       '<h1 class="ka-title" tabindex="-1">Welcome back</h1>'
-      + '<p class="ka-lede">Sign in to sync your progress between this browser and the KaiSip Android app.</p>'
+      + '<p class="ka-lede">Sign in to study, with your progress kept safe and in sync with the KaiSip Android app.</p>'
       + kaNoticeHtml()
       + '<div class="ka-google-slot">' + kaGoogleBtn('Continue with Google', 'kaGoogle(false)') + '</div>'
       + '<div class="ka-divider"><span>or sign in with email</span></div>'
@@ -28224,8 +28263,7 @@ var KA_VIEWS = {
       + '<p class="ka-error" id="kaFormE" role="alert"></p>'
       + '<button type="submit" class="ka-btn ka-btn-primary" id="kaGo">Sign in</button></form>'
       + '<p class="ka-note">' + kaIco('shield', 18) + '<span>A quick, private human check runs when you sign in.</span></p>'
-      + '<p class="ka-switch">New to KaiSip? <a href="#create-account" onclick="event.preventDefault();kaGo(\'create-account\')">Create an account</a></p>'
-      + '<p class="ka-note">' + ico('info', 18) + '<span>You never need an account to study. Your progress always stays in this browser.</span></p>');
+      + '<p class="ka-switch">New to KaiSip? <a href="#create-account" onclick="event.preventDefault();kaGo(\'create-account\')">Create a free account</a></p>');
   },
   signup1: function () {
     return kaShell('signup1',
@@ -28242,9 +28280,9 @@ var KA_VIEWS = {
       + '<div class="ka-divider"><span>or</span></div>'
       + kaGoogleBtn('Sign up with Google', 'kaGoogle(true)')
       + '<p class="ka-fine">The agreement above applies to Google sign-up too.</p>'
-      + '<div class="ka-adds"><p class="ka-adds-t">' + kaIco('sync', 18) + '<span>What an account adds</span></p>'
-      + '<p>Your answers, missed questions, saved questions, notes read and mock results sync between this browser and the Android app.</p>'
-      + '<p>Studying works without an account. Without one, your progress stays in this browser only.</p></div>'
+      + '<div class="ka-adds"><p class="ka-adds-t">' + kaIco('sync', 18) + '<span>What your account keeps</span></p>'
+      + '<p>Your answers, missed questions, saved questions, notes read and mock results, in sync between this browser and the Android app.</p>'
+      + '<p>Your progress is also saved in this browser, so you can keep studying when the connection drops.</p></div>'
       + '<p class="ka-switch">Already have an account? <a href="#sign-in" onclick="event.preventDefault();kaGo(\'sign-in\')">Sign in</a></p>');
   },
   signup2: function () {
@@ -28341,13 +28379,17 @@ function kaShow(view, o) {
   if (view === 'signup3' || view === 'forgot2') { kaPwHelp(); kaWarmWords(); }
   if (view === 'signup2' || view === 'forgot2') { kaCodeDraw(); kaResendTick(); }
   if (view !== 'welcome') kaGetCloud().catch(function () {});
+  document.documentElement.removeAttribute('data-ka-gate');
 }
-// Leaves the account screens for the study app.
+// Leaves the account screens for the study app. Only ever for a signed-in learner (kaGateOk).
 function kaClose() {
   if (!ka.view) return;
+  // Never for a visitor who is not signed in: the way in stays up.
+  if (!kaGateOk()) { if (ka.view === 'wait') { ka.view = ''; kaGateShut(); } return; }
   if (ka.resendTimer) { clearInterval(ka.resendTimer); ka.resendTimer = null; }
   ka.view = '';
   document.body.removeAttribute('data-ka-view');
+  document.documentElement.removeAttribute('data-ka-gate');
   var root = kaEl('kaRoot');
   if (root) { root.hidden = true; root.innerHTML = ''; }
   try { syncNav(S.activeTab); } catch (e) {}
@@ -28355,8 +28397,39 @@ function kaClose() {
 }
 // Opens a page of the study app from an account screen, with focus on its title.
 function kaGoApp(tab) {
+  if (!kaGateOk()) { kaGateShut(); return; }
   kaClose();
   try { switchTab(tab || 'home', { noScroll: true }); window.scrollTo(0, 0); navFocusTitle(); } catch (e) {}
+}
+
+// ── The gate: on the website the study app is for signed-in learners ──
+// True when this browser holds a sign-in. It never asks the network: a learner who is signed
+// in keeps studying offline or while the sync service is down. Before the accounts client has
+// loaded, a saved session counts (the client then says whether it has ended).
+function kaGateOk() {
+  if (ka.cloud) return !!kaAccount();
+  return kaHasSession();
+}
+// Shows the way in: Sign in again when a sign-in has ended here, else the welcome.
+function kaGateShut(words) {
+  if (ka.view === 'signin' || ka.view === 'signup1' || ka.view === 'signup2' || ka.view === 'forgot1' || ka.view === 'forgot2' || ka.view === 'welcome' || ka.view === 'wait') return;
+  var ended = kaEnded() || (!ka.cloud && kaGet(KA_SESSION_KEYS[1]));
+  try { var m = document.getElementById('flagModal'); if (m && m.innerHTML) { m.setAttribute('data-return', 'none'); closeFlagModal(); } } catch (e) {}
+  if (ended || words) {
+    ka.notice = words || 'Please sign in again to keep studying. Your progress is safe in this browser.';
+    kaShow('signin');
+  } else kaShow('welcome');
+}
+// Called whenever the account may have changed. A sign-in that ended while a question or a
+// mock is open waits until it is over (nothing is interrupted, nothing saved is touched).
+function kaGateCheck() {
+  if (!KA_ON || ka.view || !ka.cloud || kaAccount()) return;
+  var busy = false;
+  try { busy = kaHost.busy(); } catch (e) {}
+  if (busy) return;
+  // Where the learner was: they come back to it after signing in.
+  try { if (NAV_HASH[S.activeTab] && S.activeTab !== 'home' && S.activeTab !== 'account') kaSet(KA_INTENT_KEY, 'hash:#' + NAV_HASH[S.activeTab], true); } catch (e2) {}
+  kaGateShut();
 }
 var KA_ROUTES = { 'sign-in': 'signin', 'create-account': 'signup1', 'forgot-password': 'forgot1' };
 // Addresses: #sign-in, #create-account, #forgot-password, #delete-account. True when it took the address.
@@ -28364,19 +28437,37 @@ function kaRoute(hash) {
   if (!KA_ON) return false;
   var key = String(hash || '').replace(/^#\/?/, '').toLowerCase();
   if (key === 'delete-account') { kaOpenDelete(); return true; }
-  if (key === 'account' && !kaAccount()) { kaWhenKnown(function () { if (kaAccount()) { kaClose(); switchTab('account', { noScroll: true }); } else kaShow('signin'); }); return true; }
   var v = KA_ROUTES[key];
-  if (!v) { if (ka.view) kaClose(); return false; }
+  if (!kaGateOk()) {
+    // Signed out: an account address opens its screen; any other address is remembered for
+    // after sign-in, and the visitor stays at the way in.
+    if (v) { kaShow(v); return true; }
+    kaRemember(hash);
+    if (!ka.view) kaGateShut();
+    return true;
+  }
+  if (!v) {
+    // A study page's address while an account screen is up (the agreements, the first sync): leave it.
+    if (ka.view && ka.view !== 'wait') kaClose();
+    return false;
+  }
   // Signed in already: these screens have nothing to offer.
   if (kaAccount() && !ka.cloud.auth.passwordNeeded()) { kaGoApp('account'); return true; }
   kaShow(v);
   return true;
 }
+// A study page's address a signed-out visitor asked for (this tab only), opened after sign-in.
+function kaRemember(hash) {
+  var h = String(hash || '');
+  var r = null;
+  try { r = navFromHash(h); } catch (e) { r = null; }
+  if (r && h.length <= 200 && !/^#(today)?$/i.test(h)) kaSet(KA_INTENT_KEY, 'hash:' + h, true);
+}
 function kaGo(key) {
   if (location.hash === '#' + key) kaRoute('#' + key);
   else location.hash = '#' + key;
 }
-// Runs `fn` once the client has loaded (when this browser holds a session) or at once (a guest).
+// Runs `fn` once the client has loaded (when this browser holds a session) or at once (signed out).
 function kaWhenKnown(fn) {
   if (ka.cloud || !kaHasSession()) { fn(); return; }
   kaGetCloud().then(fn, fn);
@@ -28709,8 +28800,14 @@ function kaFirstSyncHtml() {
     main = '<button type="button" class="ka-btn ka-btn-primary" id="kaGo" onclick="kaFirstConfirm(\'merge\')">Combine</button>';
     alt = '<button type="button" class="ka-btn ka-btn-secondary" onclick="kaFirstConfirm(\'replace\')">Use the account’s progress here</button>';
   }
+  // Answers saved here for questions the website no longer loads (study from before it moved to
+  // the free sample): they stay in this browser and are said so, plainly.
+  var older = 0;
+  try { var log = kaHost.readWeb().answerLog || {}; older = Object.keys(log).filter(function (id) { return !kaBank.question(id); }).length; } catch (e) { older = 0; }
+  var olderNote = older ? '<p class="ka-note" id="kaOlder">' + ico('info', 18) + '<span>' + older + (older === 1 ? ' answer here is for a question' : ' answers here are for questions') + ' now only in the Android app. '
+    + (older === 1 ? 'It stays' : 'They stay') + ' saved and counted in this browser, but the website can\u2019t add ' + (older === 1 ? 'it' : 'them') + ' to your account.</span></p>' : '';
   return kaShell('sync',
-    '<h1 class="ka-title" tabindex="-1">' + title + '</h1><p class="ka-lede">' + body + '</p>'
+    '<h1 class="ka-title" tabindex="-1">' + title + '</h1><p class="ka-lede">' + body + '</p>' + olderNote
     + (switched ? '' : '<table class="ka-cols"><caption class="sr-only">What each side holds, and the result of combining</caption><thead><tr><th scope="col"><span class="sr-only">What</span></th><th scope="col">This browser</th><th scope="col">Account</th><th scope="col">After</th></tr></thead><tbody>' + rows + '</tbody></table>'
     + '<p class="ka-fine">Questions answered on both count once. “After” is the result of combining.</p>')
     + '<p class="ka-error" id="kaFormE" role="alert"></p>'
@@ -28753,13 +28850,25 @@ function kaFirstLater() {
   ka.setupDue = true;
   kaLand('Signed in. Sync is off until you choose; your progress stays in this browser.');
 }
-// Back to the study app after an account step, with one line saying what happened.
+// Into the study app after an account step, with one line saying what happened. It opens what
+// the learner asked for before signing in (a study page's address, Account, or the delete step),
+// else Today.
 function kaLand(words) {
+  if (!kaGateOk()) { kaGateShut(); return; }
   var note = ka.notice;
   ka.notice = '';
-  var intent = kaGet(KA_INTENT_KEY, true);
+  var intent = kaGet(KA_INTENT_KEY, true) || '';
   kaDel(KA_INTENT_KEY, true);
-  if (ka.view || S.activeTab === 'account') kaGoApp(intent === 'delete' || intent === 'account' ? 'account' : 'you');
+  // The first visit's welcome is done once the learner is in.
+  try { localStorage.setItem('cisa_onboarded_v6', '1'); } catch (e) {}
+  var was = ka.view;
+  var r = null;
+  if (intent.indexOf('hash:') === 0) { try { r = navFromHash(intent.slice(5)); } catch (e2) { r = null; } }
+  if (was || S.activeTab === 'account') {
+    if (r && NAV_SECTION[r.tab]) { kaGoApp(r.tab); if (r.action) { try { navRunAction(r.action); } catch (e3) {} } }
+    else kaGoApp(intent === 'delete' || intent === 'account' ? 'account' : 'home');
+  }
+  document.documentElement.removeAttribute('data-ka-gate');
   kaPaint();
   var say = [words, note].filter(Boolean).join(' ');
   if (say) showToast(say, 'info', note ? 7000 : 3600);
@@ -28769,24 +28878,30 @@ function kaSignOutQuiet() {
   kaGetCloud().then(function (cloud) { return cloud.auth.signOut('local'); }).then(function () { kaAfterSignOut(false); }, function () { kaAfterSignOut(false); });
 }
 
-// ── The first-visit welcome ──
+// ── The welcome: the way in for a visitor who is not signed in ──
+// Two paths, both to an account (the website asks for one, and says why in one honest line).
+// A visitor who studied here before accounts existed is told their progress is kept.
 function kaWelcomeHtml() {
   var ios = false;
   try { ios = installTipDue(); } catch (e) { ios = false; }
+  var had = 0;
+  try { had = Number(S.score && S.score.t) || 0; } catch (e2) { had = 0; }
   return '<div class="ka-welcome">'
     + '<header class="ka-topbar"><span class="ka-brand">' + kaLockup().replace('aria-hidden="true" focusable="false"', 'role="img" aria-label="KaiSip" focusable="false"') + '</span>'
     + kaNewTab('support.html', 'Help').replace('<a ', '<a class="ka-toplink" ') + '</header>'
     + '<main class="ka-welcome-main"><div>'
     + '<p class="ka-kicker">CISA exam prep, in your browser</p>'
     + '<h1 class="ka-title-xl" tabindex="-1">Study for the CISA, <em>right here.</em></h1>'
-    + '<p class="ka-lede">Practice questions with the reasoning behind every best answer, study notes and a mistake journal. Free, with nothing to install.</p>'
+    + '<p class="ka-lede">Practice questions with the reasoning behind every best answer, study notes and a mistake journal.</p>'
+    + '<p class="ka-welcome-why">KaiSip is free. A free account keeps your progress safe and in sync with the Android app.</p>'
+    + (had > 0 ? '<p class="ka-welcome-kept" id="kaKept">' + ico('check', 18) + '<span>The progress you already have in this browser is kept. After you sign in, you choose whether to add it to your account.</span></p>' : '')
     + '<div class="ka-paths">'
-    + '<button type="button" class="ka-path ka-path-primary" onclick="kaWelcomeStart()"><span class="ka-path-ico">' + ico('home', 22) + '</span><span class="ka-path-text"><span class="ka-path-t">Start studying free</span><span class="ka-path-s">No account. Your progress stays in this browser.</span></span>' + ico('arrow-right', 20) + '</button>'
-    + '<button type="button" class="ka-path ka-path-secondary" onclick="kaWelcomeSignIn()"><span class="ka-path-ico">' + kaIco('sync', 22) + '</span><span class="ka-path-text"><span class="ka-path-t">Sign in to sync with your Android app</span><span class="ka-path-s">Already study on Android? Pick up where you left off.</span></span>' + ico('chevron', 20) + '</button>'
+    + '<button type="button" class="ka-path ka-path-primary" onclick="kaGo(\'create-account\')"><span class="ka-path-ico">' + ico('home', 22) + '</span><span class="ka-path-text"><span class="ka-path-t">Create a free account</span><span class="ka-path-s">With your email and a password, or with Google.</span></span>' + ico('arrow-right', 20) + '</button>'
+    + '<button type="button" class="ka-path ka-path-secondary" onclick="kaGo(\'sign-in\')"><span class="ka-path-ico">' + kaIco('sync', 22) + '</span><span class="ka-path-text"><span class="ka-path-t">Sign in</span><span class="ka-path-s">Already have a KaiSip account? Pick up where you left off.</span></span>' + ico('chevron', 20) + '</button>'
     + '</div>'
-    + '<p class="ka-welcome-more"><button type="button" class="ka-linkbtn" onclick="kaWelcomeLook()">Or look around first</button></p>'
-    + (ios ? '<p class="ka-ios">' + kaIco('phone', 20) + '<span>On iPhone? Add KaiSip to your Home Screen to open it like an app. The steps are on Today.</span></p>' : '')
+    + (ios ? '<p class="ka-ios">' + kaIco('phone', 20) + '<span>On iPhone? After you sign in, Today shows how to add KaiSip to your Home Screen.</span></p>' : '')
     + '<p class="ka-fine">The web version includes a free sample of KaiSip’s CISA practice questions. Not affiliated with or endorsed by ISACA. CISA is a trademark of ISACA.</p>'
+    + '<p class="ka-foot ka-welcome-foot">' + kaNewTab('terms.html', 'Terms') + kaNewTab('privacy.html', 'Privacy') + kaNewTab('support.html', 'Help') + '</p>'
     + '</div><div aria-hidden="true"><div class="ka-welcome-panel">' + kaFronds(600, 760, [[520, 800, 480, -12, 9], [80, 820, 300, -26, 6], [600, 820, 300, 20, 6, true]])
     + '<div class="ka-q"><p class="ka-q-k">Practice · Protection of Information Assets</p>'
     + '<p class="ka-q-stem">Which control BEST prevents developers from moving unapproved changes into production?</p>'
@@ -28794,38 +28909,11 @@ function kaWelcomeHtml() {
     + '<p class="ka-q-why"><b>Why B:</b> segregating migration duties stops the change before it happens. The others only detect it later.</p></div></div></div>'
     + '</main></div>';
 }
-function kaWelcomeDone() {
-  try { localStorage.setItem('cisa_onboarded_v6', '1'); } catch (e) {}
-}
-function kaWelcomeStart() {
-  // The same first step as before accounts: five questions, straight away.
-  kaClose();
-  onboardStartFive();
-}
-function kaWelcomeLook() { kaWelcomeDone(); kaGoApp('home'); }
-function kaWelcomeSignIn() { kaWelcomeDone(); kaGo('sign-in'); }
 
 // ── The account card on You (and its one-line versions) ──
-// Guest: the full card on the first 3 different days it is seen, then the slim
-// row for good. It also collapses at once when the learner opens Create or
-// Sign in from it (they have seen it). Signed in: the masked email, the sync
-// status in words and the one action that fits.
-function kaCardMode() {
-  var st = kaJson(kaGet(KA_CARD_KEY)) || {};
-  if (st.slim === true) return 'slim';
-  // Short phone screens and large text get the slim row (the full card would push Practice down).
-  var roomy = window.innerWidth >= 768 || window.innerHeight >= 700;
-  if (!roomy || document.documentElement.classList.contains('fg-large')) return 'slim';
-  var today = isoLocalDate(new Date());
-  var days = Array.isArray(st.days) ? st.days.filter(function (d) { return typeof d === 'string'; }).slice(0, 3) : [];
-  if (days.indexOf(today) < 0) {
-    if (days.length >= 3) { kaSet(KA_CARD_KEY, JSON.stringify({ slim: true })); return 'slim'; }
-    days.push(today);
-    kaSet(KA_CARD_KEY, JSON.stringify({ days: days }));
-  }
-  return 'full';
-}
-function kaCardCollapse() { kaSet(KA_CARD_KEY, JSON.stringify({ slim: true })); }
+// The masked email, the sync status in words and the one action that fits.
+// (On the website every learner in the app is signed in; the one exception is
+// a sign-in that ended while a question was open, which says "sign in again".)
 function kaHintMail() {
   var who = kaAccount();
   if (who && who.emailMasked) return who.emailMasked;
@@ -28843,21 +28931,11 @@ function kaCardHtml() {
   var disc = function (name, cls) { return '<span class="ka-disc' + (cls ? ' ' + cls : '') + '" aria-hidden="true">' + kaIco(name, 20) + '</span>'; };
   var chev = '<span class="ka-card-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>';
   var head = '<h2 class="sr-only" id="kaCardH">Account</h2>';
-  if (st === 'guest') {
-    if (kaCardMode() === 'full') {
-      return head + '<div class="ka-card-row"><div class="ka-card-main">' + disc('laptop') + '<div class="ka-card-text"><p class="ka-card-t">Saved in this browser only</p></div></div></div>'
-        + '<p class="ka-card-body">A free account syncs it with the KaiSip Android app and keeps a safe copy if this browser’s data is cleared.</p>'
-        + '<div class="ka-card-acts"><a class="ka-btn ka-btn-secondary ka-btn-sm ka-btn-auto" data-f="create" href="#create-account" onclick="event.preventDefault();kaCardCollapse();kaGo(\'create-account\')">Create a free account</a>'
-        + '<a class="ka-linkbtn" data-f="signin" href="#sign-in" onclick="event.preventDefault();kaCardCollapse();kaGo(\'sign-in\')">Sign in</a></div>';
-    }
-    return head + '<div class="ka-card-row"><button type="button" class="ka-card-main" data-f="offer" aria-haspopup="dialog" onclick="kaOffer()">' + disc('laptop')
-      + '<span class="ka-card-text"><span class="ka-card-t">Saved in this browser only</span><span class="ka-card-m">Add a free account to sync</span></span>' + chev + '</button></div>';
-  }
   var mail = kaHintMail();
   var title = '<span class="ka-card-t"><span aria-hidden="true">' + escapeHtml(mail || 'Your account') + '</span><span class="sr-only">' + (mail ? 'Signed in as ' + escapeHtml(kaMailSpoken(mail)) : 'Your account') + '</span></span>';
   var sub = '<span class="ka-card-m">' + escapeHtml(kaStateWords(st)) + '</span>';
   var text = '<span class="ka-card-text">' + title + sub + '</span>';
-  if (st === 'expired') {
+  if (st === 'expired' || st === 'out') {
     return head + '<div class="ka-card-row"><div class="ka-card-main">' + disc('alert', 'is-attn') + text.replace('Signed in as ', 'Account ') + '</div></div>'
       + '<div class="ka-card-under"><a class="ka-btn ka-btn-secondary ka-btn-sm ka-btn-auto" data-f="again" href="#sign-in" onclick="event.preventDefault();kaGo(\'sign-in\')">Sign in again</a><p>' + KA_SAFE + '</p></div>';
   }
@@ -28913,7 +28991,7 @@ function kaResumeSetup() {
 }
 // The one-line version: the desktop rail's foot, and "Sign in" or the initial in the phone's top bar.
 function kaRailDraw() {
-  var st = kaState(), mail = kaHintMail(), guest = st === 'guest';
+  var st = kaState(), mail = kaHintMail(), guest = st === 'out';
   var rail = kaEl('kaRail');
   if (rail) {
     rail.setAttribute('href', guest || st === 'expired' ? '#sign-in' : '#account');
@@ -28934,31 +29012,8 @@ function kaRailGo(e) {
   if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)) return true;
   if (e) e.preventDefault();
   var st = kaState();
-  if (st === 'guest' || st === 'expired') kaGo('sign-in'); else navGoFocus(null, 'account');
+  if (st === 'out' || st === 'expired') kaGateShut(); else navGoFocus(null, 'account');
   return false;
-}
-// The slim row's sheet: what an account adds, and the two ways in.
-function kaOffer() {
-  var modal = kaEl('flagModal');
-  if (!modal) return;
-  var row = function (icon, t, s) { return '<li><span class="ka-disc" aria-hidden="true">' + kaIco(icon, 20) + '</span><span><b>' + t + '</b><span>' + s + '</span></span></li>'; };
-  modal.innerHTML = '<div class="mock-confirm-overlay ks-sheet-overlay" onclick="closeFlagModal(event)">'
-    + '<div class="mock-confirm-modal ks-sheet ka-dlg" role="dialog" aria-modal="true" aria-labelledby="kaOfferH">'
-    + '<h2 class="mock-confirm-head" id="kaOfferH">Keep your progress everywhere</h2><div class="mock-confirm-body">'
-    + '<ul class="ka-offer">' + row('laptop', 'Saved in this browser only', 'Where your progress lives today.')
-    + row('sync', 'In sync with your phone', 'Study here and in the KaiSip Android app, and carry on where you stopped.')
-    + row('shield', 'A safe copy', 'If this browser’s data is cleared, sign in and your progress comes back.') + '</ul>'
-    + '<p class="ka-hint" style="margin-top:16px">Free and optional. KaiSip works the same without an account.</p>'
-    + '<div class="ka-dlg-acts"><button type="button" class="ka-btn ka-btn-primary" onclick="kaOfferGo(\'create-account\')">Create a free account</button>'
-    + '<button type="button" class="ka-btn ka-btn-secondary" onclick="kaOfferGo(\'sign-in\')">Sign in</button>'
-    + '<button type="button" class="ka-btn ka-btn-quiet" onclick="closeFlagModal()">Close</button></div>'
-    + '</div></div></div>';
-}
-function kaOfferGo(key) {
-  var modal = kaEl('flagModal');
-  if (modal) modal.setAttribute('data-return', 'none');
-  closeFlagModal();
-  kaGo(key);
 }
 
 // ── The Account page (You, then Account) ──
@@ -29012,7 +29067,8 @@ function kaRenderAccount() {
       switchTab('you', { noScroll: true });
       // A session is saved here but the client couldn't load: say so; never ask a signed-in learner to sign in.
       if (!ka.cloud && kaHasSession()) { ka.loadFailed = true; kaPaint(); showToast(KA_WORDS.offline, 'info', 3600); return; }
-      kaShow('signin');
+      kaSet(KA_INTENT_KEY, 'account', true);
+      kaGateShut();
     });
     return;
   }
@@ -29180,12 +29236,11 @@ function kaAfterSignOut(wipe) {
     try { ka.cloud.device.forget(); ka.cloud.device.dropUndo(); } catch (e) {}
     kaDel(KA_CONSENT_KEY);
   }
-  // Leave a screen that needs a signed-in learner; a sign-in screen already open stays.
-  if (ka.view === 'consent' || ka.view === 'firstsync' || ka.view === 'signup3') kaGoApp('you');
-  else if (!ka.view && S.activeTab === 'account') { switchTab('you', { noScroll: true }); window.scrollTo(0, 0); try { navFocusTitle(); } catch (e2) {} }
-  kaPaint();
-  if (wipe) { try { doResetProgress(); } catch (e3) {} showToast('Signed out. Your progress was removed from this browser.', 'info', 4200); }
-  else showToast('Signed out. Your progress stays in this browser.', 'info', 3600);
+  if (wipe) { try { doResetProgress(); } catch (e3) {} }
+  // Signed out: the study app closes behind the way in (a sign-in screen already open stays).
+  if (ka.view === 'consent' || ka.view === 'firstsync' || ka.view === 'signup3') ka.view = '';
+  kaGateShut(wipe ? 'Signed out. Your progress was removed from this browser.' : 'Signed out. Your progress stays in this browser.');
+  if (S.activeTab === 'account') { try { switchTab('home', { noScroll: true }); } catch (e2) {} }
 }
 function kaPasswordDialog() {
   var who = kaAccount();
@@ -29281,25 +29336,22 @@ function kaDeleted() {
   try { ka.cloud.device.forget(); ka.cloud.device.dropUndo(); } catch (e) {}
   kaDel(KA_HINT_KEY); kaDel(KA_CONSENT_KEY);
   ka.user = null; ka.news = null; ka.firstPrep = null; ka.setupDue = false; ka.syncErr = '';
-  if (S.activeTab === 'account') { switchTab('you', { noScroll: true }); window.scrollTo(0, 0); try { navFocusTitle(); } catch (e2) {} }
-  kaPaint();
-  showToast('Your account was deleted. Your progress in this browser stays.', 'info', 6000);
+  kaGateShut('Your account was deleted. Your progress in this browser stays.');
+  if (S.activeTab === 'account') { try { switchTab('home', { noScroll: true }); } catch (e2) {} }
 }
 // kaisip.com/delete-account's button lands here (#delete-account).
 function kaOpenDelete() {
   kaWhenKnown(function () {
     if (kaAccount()) { kaClose(); switchTab('account', { noScroll: true }); setTimeout(kaDeleteDialog, 200); return; }
     kaSet(KA_INTENT_KEY, 'delete', true);
-    ka.notice = 'Sign in to the account you want to delete. Deleting it is the next step.';
-    kaShow('signin');
+    ka.view = '';
+    kaGateShut('Sign in to the account you want to delete. Deleting it is the next step.');
   });
 }
 
 // ── Start-up ──
-function kaWelcomeDue() {
-  if (!KA_ON || ka.view) return false;
-  try { return !localStorage.getItem('cisa_onboarded_v6'); } catch (e) { return false; }
-}
+// With accounts on, the first visit is the account welcome (kaStart), never the older welcome sheet.
+function kaWelcomeDue() { return KA_ON; }
 function kaBoot() {
   if (!KA_ON) return;
   // The Account page joins You's pages only now, so with accounts off #account is an unknown address as before.
@@ -29347,11 +29399,12 @@ function kaBoot() {
     if (e.key !== null && KA_SESSION_KEYS.indexOf(e.key) < 0 && e.key !== 'kaisip_sync_v1') return;
     var done = function () {
       if (!kaAccount()) {
+        // Signed out in another tab (or the sign-in ended there): this tab closes too.
         ka.user = null; ka.news = null; ka.firstPrep = null;
-        if (S.activeTab === 'account' && !ka.view) switchTab('you', { noScroll: true });
-        if (ka.view === 'consent' || ka.view === 'firstsync' || ka.view === 'signup3') kaGoApp('you');
-      } else if (ka.view === 'signin' || ka.view === 'signup1' || ka.view === 'forgot1') {
-        kaGoApp('you');
+        if (ka.view === 'consent' || ka.view === 'firstsync' || ka.view === 'signup3') ka.view = '';
+      } else if (ka.view === 'signin' || ka.view === 'signup1' || ka.view === 'forgot1' || ka.view === 'welcome') {
+        // Signed in from another tab: this tab opens.
+        kaLand();
       }
       kaPaint();
     };
@@ -29365,23 +29418,47 @@ function kaBoot() {
   window.addEventListener('online', function () { if (ka.syncErr === 'offline') kaSyncNow(false); });
   kaPaint();
 }
-// After the app has drawn its first page: a return from Google, a saved session, or an account address.
+
+// After the app has drawn its first page (still hidden by the gate mark for a signed-out
+// visitor): a return from Google, an account address, a saved session, or the way in.
 function kaStart() {
   if (!KA_ON) return;
   var back = window.KS_ACCT.back;
-  if (back) { kaGoogleReturn(back); return; }
-  if (kaHasSession() || kaGet(KA_SESSION_KEYS[1])) {
-    kaGetCloud().then(function (cloud) {
-      kaPaint();
-      if (!kaAccount()) return null;
-      if (cloud.auth.passwordNeeded() || !cloud.device.meta().enabled || cloud.accountChanged()) { ka.setupDue = true; kaPaint(); return null; }
-      return kaWaitBank().then(function (ready) { if (ready) return kaSyncNow(false); ka.syncErr = 'wait'; return null; });
-    }).catch(function () { ka.loadFailed = true; kaPaint(); });
-  }
   var h = ka.bootHash || '';
-  if (/^#(sign-in|create-account|forgot-password|delete-account)$/i.test(h) && kaRoute(h)) {
-    try { history.replaceState(history.state, '', h); } catch (e) {}
+  var route = /^#(sign-in|create-account|forgot-password|delete-account)$/i.test(h);
+  if (back) { kaGoogleReturn(back); return; }
+  if (!kaHasSession()) {
+    // Not signed in: the welcome (or the screen the address names). A study page's address is kept for after.
+    if (route && kaRoute(h)) { try { history.replaceState(history.state, '', h); } catch (e) {} }
+    else { kaRemember(h); kaGateShut(); }
+    return;
   }
+  // A saved sign-in. If it looked ended before the page drew (the gate mark is set), wait for the
+  // client's word behind a neutral screen; otherwise the learner is in at once.
+  var marked = document.documentElement.hasAttribute('data-ka-gate');
+  if (marked) kaShow('wait');
+  kaGetCloud().then(function (cloud) {
+    if (!kaAccount()) {
+      // The sign-in ended (30 days, 14 unused days, or it was ended elsewhere): nothing saved is touched.
+      kaRemember(h);
+      if (ka.view === 'wait') ka.view = '';
+      kaGateShut();
+      return null;
+    }
+    if (cloud.auth.passwordNeeded()) { ka.flow = 'reset'; kaShow('signup3'); return null; }
+    if (ka.view === 'wait') kaClose();
+    document.documentElement.removeAttribute('data-ka-gate');
+    if (route) kaRoute(h);
+    kaPaint();
+    if (!cloud.device.meta().enabled || cloud.accountChanged()) { ka.setupDue = true; kaPaint(); return null; }
+    return kaWaitBank().then(function (ready) { if (ready) return kaSyncNow(false); ka.syncErr = 'wait'; return null; });
+  }).catch(function () {
+    // The accounts client couldn't be loaded (offline). A learner with a saved sign-in still studies.
+    ka.loadFailed = true;
+    if (ka.view === 'wait') kaClose();
+    document.documentElement.removeAttribute('data-ka-gate');
+    kaPaint();
+  });
 }
 // ── ACCOUNTS END ──
 

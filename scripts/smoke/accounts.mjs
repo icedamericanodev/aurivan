@@ -85,7 +85,7 @@ async function handle(route, server, net, origin) {
   if (u.origin === origin) {
     const rel = siteFile(u);
     const file = rel && path.join(repo, rel);
-    if (rel === 'assets/kaisip-cloud.js') net.cloudJs++;
+    if (rel === 'assets/kaisip-cloud.js') { net.cloudJs++; if (net.cloudJsMode === 'down') return route.abort('internetdisconnected'); }
     if (rel === 'assets/kaisip-password-words.js') net.wordsJs++;
     if (!file || !file.startsWith(repo) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) return route.fulfill({ status: 404, contentType: 'text/plain', body: 'not found' });
     const headers = rel === 'index.html' ? { 'content-security-policy': APP_CSP } : {};
@@ -96,6 +96,8 @@ async function handle(route, server, net, origin) {
     if (req.method() === 'OPTIONS') return route.fulfill({ status: 204, headers: cors });
     const headers = req.headers();
     if (headers.apikey !== PUBLIC_KEY) net.badKey = true;
+    // The whole service answering with errors (an outage): every call, until switched back.
+    if (net.supaMode === '503') return route.fulfill({ status: 503, headers: { ...cors, 'content-type': 'application/json' }, body: '{"message":"upstream connect error"}' });
     try {
       const res = await server.fetch(F.FAKE_URL + u.pathname + u.search, { method: req.method(), headers: { ...headers, apikey: F.FAKE_KEY }, body: req.postData() ?? undefined });
       const h = { ...cors, 'content-type': 'application/json' };
@@ -224,6 +226,11 @@ async function noSecrets(page, c, secrets, label) {
   for (const x of secrets) c.check(!s.includes(x), `${label}: "${x.slice(0, 6)}…" was found in browser storage`);
   c.check(!/[?&](code|token|password)=/.test(page.url()), `${label}: the address carries a secret (${page.url()})`);
 }
+const goYou = async (page) => { await page.evaluate(() => navTo(null, 'you')); await page.waitForSelector('#kaCard', { state: 'visible' }); await sleep(150); };
+const answerKeys = (page) => page.evaluate(() => { const p = JSON.parse(localStorage.getItem('cisa_profiles_v1') || '{}'); const s = (p[localStorage.getItem('cisa_active_profile')] || {}).state || {}; return { ids: Object.keys(s.answerLog || {}).sort(), score: s.score || null }; });
+// Was the study app ever on screen? Sampled every frame from the first moment of the page (for "no flash before the gate").
+const WATCH_APP = () => { window.__appSeen = false; const tick = () => { const w = document.getElementById('studyWrap'), r = document.getElementById('appRail'), b = document.getElementById('bottomNav'); if ((w && w.getClientRects().length) || (r && r.getClientRects().length) || (b && b.getClientRects().length)) window.__appSeen = true; requestAnimationFrame(tick); }; tick(); };
+const appShown = (page) => page.evaluate(() => ['studyWrap', 'appRail', 'bottomNav'].some((id) => { const e = document.getElementById(id); return !!e && e.getClientRects().length > 0; }));
 const only = (process.env.SMOKE_ONLY || '').split(',').filter(Boolean);
 const wanted = (id) => !only.length || only.some((o) => id === o || id.startsWith(o + '-') || o.startsWith(id + '-'));
 
@@ -302,7 +309,6 @@ if (wanted('A1')) {
       c.check(attrs.email.ac === 'username' && attrs.email.type === 'email' && attrs.email.label === 'Email' && !attrs.email.ph, 'the email field: autocomplete=username, a label, no placeholder: ' + JSON.stringify(attrs.email));
       c.check(attrs.pass.ac === 'current-password' && attrs.pass.type === 'password' && attrs.pass.label === 'Password' && !attrs.pass.ph, 'the password field: autocomplete=current-password: ' + JSON.stringify(attrs.pass));
       c.check(attrs.forms === 1, 'one form on the screen');
-      c.check(/Continue with Google/.test(await text(page, '.ka-btn-google')), 'the Google button');
       c.check(net.cloudJs === 1 && net.turnstile === 1, `the account script and the human check load when the form opens (${net.cloudJs}, ${net.turnstile})`);
       c.check(net.wordsJs === 0, 'the password word lists are not needed to sign in');
       await axe(page, c, `sign in (${v})`);
@@ -350,10 +356,10 @@ if (wanted('A1')) {
       await page.fill('#kaPass', PW);
       await page.press('#kaPass', 'Enter');
       await waitView(page, '');
-      await page.waitForSelector('#kaCard .ka-card-act');
-      c.check((await page.evaluate(() => document.body.getAttribute('data-tab'))) === 'you', 'signed in lands on You');
-      c.check(/m•••@example\.com/.test(await text(page, '#kaCard')), 'the card shows the masked email: ' + (await text(page, '#kaCard')));
-      await page.waitForFunction(() => /Synced/.test(document.getElementById('kaCard').textContent), null, { timeout: 8000 });
+      await settled(page);
+      c.check((await page.evaluate(() => document.body.getAttribute('data-tab'))) === 'home' && await appShown(page), 'signed in lands on Today, in the study app');
+      await goYou(page);
+      c.check(/m•••@example\.com/.test(await text(page, '#kaCard')), 'the card on You shows the masked email: ' + (await text(page, '#kaCard')));
       c.check(calls(server, '/rest/v1/sync_snapshots', 'POST').length >= 1, 'this browser’s progress was pushed to the account');
       await noSecrets(page, c, [PW, 'not the right password', 'ts-token-'], 'after sign-in');
       c.check(!net.badKey, 'every request carried the public key');
@@ -519,8 +525,9 @@ if (wanted('A2')) {
       const saved = await page.evaluate(() => window.KaiSipConsentApi.saved);
       c.check(saved.length === 1 && saved[0].marketingOptIn === false && saved[0].termsAccepted === true && saved[0].ageConfirmed === true && saved[0].wordingVersion === pending.wordingVersion && typeof saved[0].at === 'string', 'the consent record reaches the consent adapter once, news off: ' + JSON.stringify(saved));
       c.check(!(await store(page)).session.kaisip_signup_pending_v1, 'the waiting agreements are cleared once saved');
-      await page.waitForFunction(() => /Synced/.test((document.getElementById('kaCard') || {}).textContent || ''), null, { timeout: 10000 });
-      c.check(/x•••@example\.com/.test(await text(page, '#kaCard')), 'signed in on You: ' + (await text(page, '#kaCard')));
+      await settled(page);
+      await goYou(page);
+      c.check(/x•••@example\.com/.test(await text(page, '#kaCard')), 'signed in: ' + (await text(page, '#kaCard')));
       await noSecrets(page, c, [PW, PW2, real, 'Passwordpassword1!', 'ts-token-'], 'after creating the account');
       const all = await text(page, 'body');
       c.check(!/maple tea|coffee before|correct horse/i.test(all), 'no example password anywhere');
@@ -605,7 +612,8 @@ if (wanted('A3')) {
       await page.press('#kaPw', 'Enter');
       await waitView(page, '');
       c.check(server.userByEmail(EMAIL).password === PW2, 'the new password is saved');
-      await page.waitForSelector('#kaCard .ka-card-act');
+      await settled(page);
+      await goYou(page);
       c.check(/m•••@example\.com/.test(await text(page, '#kaCard')), 'signed in after the reset');
       await noSecrets(page, c, [PW2, code, 'Passwordpassword1!'], 'after the reset');
       c.check(net.third.length === 0, 'no other address was contacted: ' + net.third.join(','));
@@ -615,9 +623,6 @@ if (wanted('A3')) {
 }
 
 // ── A4. The account card on You ──
-const goYou = async (page) => { await page.evaluate(() => navTo(null, 'you')); await page.waitForSelector('#kaCard'); await sleep(150); };
-const dayKey = (back) => { const d = new Date(Date.now() - back * 86400000); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
-const answerKeys = (page) => page.evaluate(() => { const p = JSON.parse(localStorage.getItem('cisa_profiles_v1') || '{}'); const s = (p[localStorage.getItem('cisa_active_profile')] || {}).state || {}; return { ids: Object.keys(s.answerLog || {}).sort(), score: s.score || null }; });
 // Signs in through the screen and waits for the card to say it is synced.
 async function signedIn(page, email = EMAIL, pw = PW) {
   await signIn(page, email, pw);
@@ -625,75 +630,18 @@ async function signedIn(page, email = EMAIL, pw = PW) {
   await page.waitForFunction(() => /Synced|Sync is on/.test((document.getElementById('kaCard') || {}).textContent || ''), null, { timeout: 12000 });
 }
 if (wanted('A4')) {
-  {
-    const { ctx, page, net } = await setup({ view: 'phone' });
-    await rec.run('A4-guest', 'You, not signed in: the full card on the first 3 days it is seen, then the slim row; it collapses once opened', page, async (c) => {
-      await open(page);
-      await goYou(page);
-      const full = await text(page, '#kaCard');
-      c.check(/Saved in this browser only/.test(full) && /A free account syncs it with the KaiSip Android app and keeps a safe copy if this browser.s data is cleared\./.test(full) && /Create a free account/.test(full) && /Sign in/.test(full), 'the full card: ' + full);
-      c.check(await page.evaluate(() => { const card = document.getElementById('kaCard'), top = document.querySelector('#screen-you .you-top'), sum = document.getElementById('youSummary'); return top.compareDocumentPosition(card) & 4 && card.compareDocumentPosition(sum) & 4; }), 'the card sits under the profile, before the summary');
-      c.check(JSON.stringify(JSON.parse((await store(page)).local.kaisip_acct_card_v1).days) === JSON.stringify([dayKey(0)]), 'today counts as one of the three days');
-      c.check(net.cloudJs === 0 && net.supabase === 0, 'a guest looking at You loads no account script and sends nothing');
-      await axe(page, c, 'You, guest full card');
-      await noOverflow(page, c, 'You, guest full card');
-      await c.shot('a4-guest-full');
-      // Counted by day, not by visit.
-      await page.reload(); await page.waitForFunction(() => document.body.hasAttribute('data-section')); await goYou(page);
-      c.check(JSON.parse((await store(page)).local.kaisip_acct_card_v1).days.length === 1, 'a second visit the same day uses no extra day');
-      // The third day is still full; the fourth is the slim row, for good.
-      await page.evaluate((d) => localStorage.setItem('kaisip_acct_card_v1', JSON.stringify({ days: d })), [dayKey(3), dayKey(2)]);
-      await page.reload(); await page.waitForFunction(() => document.body.hasAttribute('data-section')); await goYou(page);
-      c.check(/Create a free account/.test(await text(page, '#kaCard')), 'the third day still shows the full card');
-      await page.evaluate((d) => localStorage.setItem('kaisip_acct_card_v1', JSON.stringify({ days: d })), [dayKey(3), dayKey(2), dayKey(1)]);
-      await page.reload(); await page.waitForFunction(() => document.body.hasAttribute('data-section')); await goYou(page);
-      const slim = await text(page, '#kaCard');
-      c.check(/Saved in this browser only/.test(slim) && /Add a free account to sync/.test(slim) && !/Create a free account/.test(slim), 'after three days: the slim row: ' + slim);
-      c.check(JSON.parse((await store(page)).local.kaisip_acct_card_v1).slim === true, 'and it stays slim');
-      await axe(page, c, 'You, guest slim row');
-      await c.shot('a4-guest-slim');
-      // The slim row opens the offer sheet.
-      await page.click('#kaCard .ka-card-main');
-      await page.waitForSelector('#flagModal [role=dialog]');
-      const sheet = await text(page, '#flagModal [role=dialog]');
-      c.check(/Keep your progress everywhere/.test(sheet) && /In sync with your phone/.test(sheet) && /A safe copy/.test(sheet) && /Free and optional\. KaiSip works the same without an account\./.test(sheet), 'the offer sheet: ' + sheet);
-      await axe(page, c, 'the offer sheet');
-      await c.shot('a4-offer-sheet');
-      await page.click('#flagModal .ka-btn-primary');
-      await waitView(page, 'signup1');
-    });
-    await ctx.close();
-  }
-  {
-    const { ctx, page } = await setup({ view: 'phone' });
-    await rec.run('A4-collapse', 'The full card collapses at once when Create or Sign in is opened from it; a short phone gets the slim row', page, async (c) => {
-      await open(page);
-      await goYou(page);
-      await page.click('#kaCard [data-f="signin"]');
-      await waitView(page, 'signin');
-      await page.click('.ka-toplink');
-      await waitView(page, '');
-      await goYou(page);
-      c.check(/Add a free account to sync/.test(await text(page, '#kaCard')), 'back without an account: the slim row');
-      await page.evaluate(() => localStorage.removeItem('kaisip_acct_card_v1'));
-      await page.setViewportSize({ width: 360, height: 640 });
-      await page.reload(); await page.waitForFunction(() => document.body.hasAttribute('data-section')); await goYou(page);
-      c.check(/Add a free account to sync/.test(await text(page, '#kaCard')) && !(await store(page)).local.kaisip_acct_card_v1, 'a 360x640 phone shows the slim row and uses none of the three days');
-      await noOverflow(page, c, 'You at 360');
-    });
-    await ctx.close();
-  }
   for (const v of ['phone', 'desktop']) {
     const ids = freeIds(1, 3);
     const { ctx, page, server } = await setup({ view: v, seed: profileSeed(ids) });
     await makeAccount(server);
-    await rec.run(`A4-signed-in-${v}`, 'You, signed in: synced, syncing, waiting for a connection, couldn’t sync, and "sign in again" after 30 days', page, async (c) => {
+    await rec.run(`A4-signed-in-${v}`, 'You, signed in: synced, syncing, waiting for a connection and couldn’t sync', page, async (c) => {
       await signIn(page);
       // This browser has progress and the account has none: the preview asks first.
       await waitView(page, 'firstsync');
       await page.click('#kaGo');
       await waitView(page, '');
       await settled(page);
+      await goYou(page);
       const card = await text(page, '#kaCard');
       c.check(/m•••@example\.com/.test(card) && /Synced just now/.test(card) && /Sync now/.test(card), 'synced: the masked email, the status in words, Sync now: ' + card);
       c.check(!card.includes(EMAIL), 'the full address is not on You');
@@ -725,25 +673,6 @@ if (wanted('A4')) {
       await c.shot(`a4-${v}-error`);
       await page.click('#kaCard .ka-card-act');
       await page.waitForFunction(() => /Synced just now/.test(document.getElementById('kaCard').textContent), null, { timeout: 8000 });
-      // 30 days later: signed out here, progress untouched, the reason kept across a reload.
-      const before = await answerKeys(page);
-      await page.evaluate(() => { const s = JSON.parse(localStorage.getItem('kaisip_auth_v1')); s.signedInAt = Date.now() - 31 * 86400000; localStorage.setItem('kaisip_auth_v1', JSON.stringify(s)); });
-      await page.reload(); await page.waitForFunction(() => document.body.hasAttribute('data-section')); await goYou(page);
-      await page.waitForFunction(() => /Please sign in again/.test(document.getElementById('kaCard').textContent), null, { timeout: 8000 });
-      const exp = await text(page, '#kaCard');
-      c.check(/m•••@example\.com/.test(exp) && /Please sign in again to keep syncing/.test(exp) && /Sign in again/.test(exp) && /Your progress is safe in this browser\./.test(exp), 'the expired card: ' + exp);
-      const st = await store(page);
-      c.check(!st.local.kaisip_auth_v1 && JSON.parse(st.local.kaisip_auth_ended_v1).reason === 'expired', 'the session is gone and only the reason is kept (kaisip_auth_ended_v1)');
-      c.check(JSON.stringify(await answerKeys(page)) === JSON.stringify(before) && before.ids.length === 3, 'saved progress is untouched: ' + JSON.stringify(before.ids));
-      await axe(page, c, `You, sign-in ended (${v})`);
-      await noOverflow(page, c, `You, sign-in ended (${v})`);
-      await c.shot(`a4-${v}-expired`);
-      await page.click('#kaCard [data-f="again"]');
-      await waitView(page, 'signin');
-      await page.fill('#kaEmail', EMAIL); await page.fill('#kaPass', PW); await page.press('#kaPass', 'Enter');
-      await waitView(page, '');
-      await page.waitForFunction(() => /Synced/.test((document.getElementById('kaCard') || {}).textContent || ''), null, { timeout: 12000 });
-      c.check(!(await store(page)).local.kaisip_auth_ended_v1, 'signing in again clears the note, with no preview the second time');
     });
     await ctx.close();
   }
@@ -837,11 +766,11 @@ if (wanted('A5')) {
       await axe(page, c, `sign out sheet (${v})`);
       await c.shot(`a5-${v}-sign-out`);
       await page.click('#flagModal #kaGo');
-      await page.waitForFunction(() => /Saved in this browser only/.test((document.getElementById('kaCard') || {}).textContent || ''), null, { timeout: 8000 });
+      await waitView(page, 'signin');
       const out = await store(page);
       c.check(!out.local.kaisip_auth_v1 && !out.local.kaisip_auth_ended_v1 && !out.local.kaisip_acct_hint_v1, 'signed out: no session, no "signed out" note, no address kept');
       c.check(JSON.stringify(await answerKeys(page)) === JSON.stringify(before), 'signing out leaves saved progress alone: ' + JSON.stringify(before.ids));
-      c.check((await page.evaluate(() => document.body.getAttribute('data-tab'))) === 'you' && /Signed out\. Your progress stays in this browser\./.test(await toast(page)), 'back on You, with the words: ' + (await toast(page)));
+      c.check(/Signed out\. Your progress stays in this browser\./.test(await text(page, '#kaNotice')) && !(await appShown(page)), 'signed out: the study app closes behind Sign in, with the words: ' + (await text(page, '#kaNotice')));
       // Sign in again and sign out WITH "remove my progress".
       await signIn(page, EMAIL, PW2);
       await waitView(page, '');
@@ -849,8 +778,8 @@ if (wanted('A5')) {
       await page.click('#kaOut');
       await page.check('#kaWipe', { force: true });
       await page.click('#flagModal #kaGo');
-      await page.waitForFunction(() => !localStorage.getItem('kaisip_auth_v1') && !document.querySelector('#flagModal [role=dialog]'), null, { timeout: 8000 });
-      await sleep(400);
+      await waitView(page, 'signin');
+      c.check(/Your progress was removed from this browser\./.test(await text(page, '#kaNotice')), 'the words after: ' + (await text(page, '#kaNotice')));
       const wiped = await answerKeys(page);
       const st = await store(page);
       c.check(wiped.ids.length === 0, 'the progress is removed from this browser when asked: ' + JSON.stringify(wiped));
@@ -896,9 +825,9 @@ if (wanted('A5')) {
       c.check(!!server.userByEmail(EMAIL), 'a wrong password deletes nothing');
       await page.fill('#kaCur', PW);
       await page.press('#kaDelWord', 'Enter');
-      await page.waitForFunction(() => /Saved in this browser only/.test((document.getElementById('kaCard') || {}).textContent || ''), null, { timeout: 8000 });
+      await waitView(page, 'signin');
       c.check(!server.userByEmail(EMAIL), 'the account is gone');
-      c.check(/Your account was deleted\. Your progress in this browser stays\./.test(await toast(page)), 'the words after: ' + (await toast(page)));
+      c.check(/Your account was deleted\. Your progress in this browser stays\./.test(await text(page, '#kaNotice')) && !(await appShown(page)), 'the words after, at the way in: ' + (await text(page, '#kaNotice')));
       c.check((await answerKeys(page)).ids.length === 2, 'this browser keeps its progress');
       const st = await store(page);
       c.check(!st.local.kaisip_auth_v1 && !st.local.kaisip_sync_v1 && !st.local.kaisip_sync_mirror_v1 && !st.local.kaisip_acct_hint_v1, 'no session, sync record or address is left');
@@ -907,41 +836,8 @@ if (wanted('A5')) {
   }
 }
 
-// ── A6. The first-visit welcome ──
+// ── A6. With the switch off, the first visit is today's welcome sheet ──
 if (wanted('A6')) {
-  for (const v of ['phone', 'desktop']) {
-    const { ctx, page, net } = await setup({ view: v, onboarded: false });
-    await rec.run(`A6-${v}`, 'First visit: "Start studying free" is the main path, "Sign in to sync" the second', page, async (c) => {
-      await open(page);
-      await waitView(page, 'welcome');
-      c.check((await text(page, '#kaRoot h1')) === 'Study for the CISA, right here.', 'the welcome title: ' + (await text(page, '#kaRoot h1')));
-      const paths = await page.evaluate(() => [...document.querySelectorAll('.ka-path')].map((p) => ({ cls: p.className, t: p.querySelector('.ka-path-t').textContent, s: p.querySelector('.ka-path-s').textContent })));
-      c.check(paths.length === 2 && /primary/.test(paths[0].cls) && paths[0].t === 'Start studying free' && paths[0].s === 'No account. Your progress stays in this browser.', 'the main path: ' + JSON.stringify(paths[0]));
-      c.check(/secondary/.test(paths[1].cls) && paths[1].t === 'Sign in to sync with your Android app' && paths[1].s === 'Already study on Android? Pick up where you left off.', 'the second path: ' + JSON.stringify(paths[1]));
-      c.check(/free sample of KaiSip.s CISA practice questions\. Not affiliated with or endorsed by ISACA/.test(await text(page, '#kaRoot')), 'the honest fine print');
-      c.check(!/\b\d{3,}\b questions/.test(await text(page, '#kaRoot')), 'no question count');
-      c.check(net.cloudJs === 0 && net.supabase === 0 && net.turnstile === 0, 'the welcome loads no account script');
-      c.check(!(await page.locator('.ob-welcome').count()), 'the older welcome sheet does not also open');
-      await axe(page, c, `welcome (${v})`);
-      await noOverflow(page, c, `welcome (${v})`);
-      await c.shot(`a6-${v}-welcome`);
-      await page.click('.ka-path-secondary');
-      await waitView(page, 'signin');
-      c.check((await store(page)).local.cisa_onboarded_v6 === '1', 'choosing a path ends the first-visit welcome');
-      // A fresh visitor again: the main path starts the first five questions, as before accounts.
-      await page.evaluate(() => { localStorage.removeItem('cisa_onboarded_v6'); });
-      await page.goto('about:blank');
-      const loaded = net.cloudJs;
-      await open(page);
-      await waitView(page, 'welcome');
-      await page.click('.ka-path-primary');
-      await waitView(page, '');
-      await page.waitForFunction(() => { const pf = document.getElementById('practiceFocus'); return pf && !pf.hidden && document.querySelectorAll('#qArea .opt').length >= 4; }, null, { timeout: 15000 });
-      c.check((await store(page)).local.cisa_onboarded_v6 === '1', 'studying free starts a question straight away');
-      c.check(net.cloudJs === loaded, 'and loads no account script for it');
-    });
-    await ctx.close();
-  }
   // With accounts off, the first visit is exactly the welcome sheet learners see today.
   {
     const { ctx, page } = await setup({ view: 'phone', onboarded: false, preview: false });
@@ -1044,6 +940,7 @@ if (wanted('A7')) {
       await waitView(page, 'firstsync');
       await page.click('.ka-choices .ka-btn-quiet');
       await waitView(page, '');
+      await goYou(page);
       await page.waitForSelector('#kaCard [data-f="setup"]');
       const card = await text(page, '#kaCard');
       c.check(/One step left to turn sync on/.test(card) && /Finish setting up/.test(card) && /Your progress is safe in this browser\./.test(card), 'the card: ' + card);
@@ -1062,25 +959,23 @@ if (wanted('A8')) {
   await makeAccount(server);
   const tab2 = await ctx.newPage();
   rec.watch(tab2, SITE);
-  await rec.run('A8', 'Two tabs: signing in or out in one shows in the other without a reload', page, async (c) => {
+  await rec.run('A8', 'Two tabs: signing in or out in one opens or closes the other without a reload', page, async (c) => {
     await open(tab2);
-    await tab2.evaluate(() => navTo(null, 'you'));
-    await tab2.waitForSelector('#kaCard');
-    c.check(/Saved in this browser only/.test(await text(tab2, '#kaCard')), 'tab 2 starts signed out');
+    await waitView(tab2, 'welcome');
+    c.check(!(await appShown(tab2)), 'tab 2 starts at the way in');
+    await page.bringToFront();
     await signedIn(page);
-    await tab2.waitForFunction(() => /@example\.com/.test(document.getElementById('kaCard').textContent), null, { timeout: 8000 });
-    c.check(/m•••@example\.com/.test(await text(tab2, '#kaCard')), 'tab 2 shows the account after tab 1 signs in: ' + (await text(tab2, '#kaCard')));
+    await tab2.waitForFunction(() => !document.body.hasAttribute('data-ka-view'), null, { timeout: 8000 });
+    c.check(await appShown(tab2), 'tab 2 opens the study app after tab 1 signs in');
     await tab2.evaluate(() => navGoFocus(null, 'account'));
     await tab2.waitForSelector('#kaHero .ka-who');
     // Sign out in tab 1.
-    await page.bringToFront();
     await page.evaluate(() => navGoFocus(null, 'account'));
     await page.click('#kaOut');
     await page.click('#flagModal #kaGo');
-    await page.waitForFunction(() => !localStorage.getItem('kaisip_auth_v1'));
-    await tab2.waitForFunction(() => document.body.getAttribute('data-tab') === 'you' && /Saved in this browser only/.test(document.getElementById('kaCard').textContent), null, { timeout: 8000 });
-    c.check(true, 'tab 2 left the Account page and shows the signed-out card');
-    c.check(/Not signed in/.test(await text(tab2, '#kaRail')), 'and so does its rail: ' + (await text(tab2, '#kaRail')));
+    await waitView(page, 'signin');
+    await tab2.waitForFunction(() => document.body.hasAttribute('data-ka-view'), null, { timeout: 8000 });
+    c.check(!(await appShown(tab2)) && ['welcome', 'signin'].includes(await view(tab2)), 'tab 2 closes too: ' + (await view(tab2)));
   });
   await ctx.close();
 }
@@ -1117,6 +1012,7 @@ if (wanted('A9')) {
       await page.click('#kaGo');
       await waitView(page, '');
       await settled(page);
+      await goYou(page);
       c.check(/g•••@gmail\.com/.test(await text(page, '#kaCard')), 'signed in: ' + (await text(page, '#kaCard')));
       await page.evaluate(() => navGoFocus(null, 'account'));
       await page.waitForSelector('#kaHero .ka-who');
@@ -1141,7 +1037,7 @@ if (wanted('A9')) {
       // Cancelled at Google (or any error it sends back): calm words, and nothing from the address is shown.
       await page.evaluate(() => navGoFocus(null, 'account'));
       await page.click('#kaOut'); await page.click('#flagModal #kaGo');
-      await page.waitForFunction(() => !localStorage.getItem('kaisip_auth_v1'));
+      await waitView(page, 'signin');
       await page.goto(`${APP}?error=access_denied&error_description=%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3ESECRET-TEXT`);
       await waitView(page, 'signin');
       c.check(/Google sign-in was cancelled\. Nothing changed\./.test(await text(page, '#kaNotice')), 'the calm notice: ' + (await text(page, '#kaNotice')));
@@ -1241,10 +1137,11 @@ async function walk(v, scheme, shots, c, axeOnly = false) {
   s.net.hibpMode = 'down';
   await page.fill('#kaPw', PW); await snap(page, '10-create-3-password-good');
   await page.press('#kaPw', 'Enter'); await waitView(page, ''); await settled(page);
-  await page.waitForFunction(() => /couldn.t check/.test(document.getElementById('globalToast').textContent)).catch(() => {});
+  await page.waitForFunction(() => /couldn.t check/.test(document.getElementById('globalToast').textContent), null, { timeout: 4000 }).catch(() => {});
   if (shots) await page.screenshot({ path: path.join(shots, `11-created-leak-check-unavailable_${v === 'phone' ? '390' : '1280'}_${scheme}.png`) });
   await sleep(7200);   // the toast leaves
   // 2. Signed in: You and the Account page.
+  await goYou(page);
   await snap(page, '12-you-signed-in');
   await page.evaluate(() => navGoFocus(null, 'account')); await page.waitForFunction((e) => document.getElementById('kaHero').textContent.includes(e), MAIL); await snap(page, '13-account', true);
   await page.click('#kaPwRow'); await page.waitForSelector('#flagModal #kaPw'); await snap(page, '14-account-change-password');
@@ -1258,19 +1155,11 @@ async function walk(v, scheme, shots, c, axeOnly = false) {
   server.offline = true; await page.evaluate(() => kaSyncNow(true)); await page.waitForFunction(() => /Waiting for a connection/.test(document.getElementById('kaCard').textContent)); await snap(page, '17-you-waiting-for-connection');
   server.offline = false; server.force('/rest/v1/sync_snapshots', 503, {}); await page.evaluate(() => kaSyncNow(true)); await page.waitForFunction(() => /Couldn.t sync/.test(document.getElementById('kaCard').textContent)); await snap(page, '18-you-could-not-sync');
   await page.evaluate(() => { const x = JSON.parse(localStorage.getItem('kaisip_auth_v1')); x.signedInAt = Date.now() - 31 * 86400000; localStorage.setItem('kaisip_auth_v1', JSON.stringify(x)); });
-  await page.reload(); await page.waitForFunction(() => document.body.hasAttribute('data-section')); await page.evaluate(() => navTo(null, 'you'));
-  await page.waitForFunction(() => /Please sign in again/.test((document.getElementById('kaCard') || {}).textContent || '')); await snap(page, '19-you-sign-in-ended');
+  await page.reload(); await waitView(page, 'signin'); await snap(page, '19-sign-in-again-after-30-days');
   // 4. Forgot password.
-  await page.click('#kaCard [data-f="again"]'); await waitView(page, 'signin');
   await page.click('.ka-aside'); await waitView(page, 'forgot1'); await page.fill('#kaEmail', MAIL); await snap(page, '20-forgot-1-email');
   await page.press('#kaEmail', 'Enter'); await waitView(page, 'forgot2');
   await page.fill('#kaCode', server.codes.get(MAIL)); await page.fill('#kaPw', PW2); await snap(page, '21-forgot-2-code-and-password');
-  await s.ctx.close();
-  // 5. A guest on You: the full card, the slim row and its sheet.
-  s = await setup({ view: v, scheme }); page = s.page;
-  await open(page); await page.evaluate(() => navTo(null, 'you')); await page.waitForSelector('#kaCard'); await snap(page, '22-you-guest-full-card');
-  await page.evaluate(() => { localStorage.setItem('kaisip_acct_card_v1', '{"slim":true}'); kaPaint(); }); await snap(page, '23-you-guest-slim-row');
-  await page.click('#kaCard .ka-card-main'); await page.waitForSelector('#flagModal [role=dialog]'); await snap(page, '24-you-offer-sheet');
   await s.ctx.close();
   // 6. Google, a new account: the agreements. Then the first-sync preview.
   s = await setup({ view: v, scheme }); page = s.page; server = s.server;
@@ -1336,7 +1225,7 @@ if (wanted('A7')) {
     await waitView(page, 'firstsync'); await page.click('#kaGo'); await waitView(page, ''); await settled(page);
     const hashA = JSON.parse((await store(page)).local.kaisip_sync_v1).accountHash;
     await page.evaluate(() => navGoFocus(null, 'account')); await page.click('#kaOut'); await page.click('#flagModal #kaGo');
-    await page.waitForFunction(() => !localStorage.getItem('kaisip_auth_v1') && /Saved in this browser only/.test((document.getElementById('kaCard') || {}).textContent || ''));
+    await waitView(page, 'signin');
     c.check(!!(await store(page)).local.kaisip_sync_mirror_v1, 'signing out keeps this browser’s sync record, so the same account carries on later');
     await signIn(page, 'noel@example.com', PW2);
     await waitView(page, 'firstsync');
@@ -1353,6 +1242,270 @@ if (wanted('A7')) {
     c.check(JSON.parse(st.local.kaisip_sync_v1).accountHash !== hashA && !!server.row(idB, 'progress'), 'this browser now syncs with the second account');
     c.check(ids.every((id) => (JSON.parse(st.local.cisa_profiles_v1)['CISA-AAAAA'].state.answerLog || {})[id]), 'and keeps its own progress');
     c.check(!!server.row(idA, 'progress'), 'the first account keeps its copy');
+  });
+  await ctx.close();
+}
+
+// ── G. The website asks for an account (owner decision, 28 Nov 2026) ──
+// G1 a signed-out visitor never sees the study app; G2 a deep link comes back after sign-in;
+// G3 a signed-in learner keeps studying when the sync service or the accounts script is down;
+// G4 a sign-in that ended asks again and touches nothing; G5 progress from before accounts is kept.
+const STUDY_HASHES = ['#today', '#practice', '#notes', '#mock', '#you', '#glossary', '#account', '#settings'];
+const outsideKa = (page) => page.evaluate(() => [...document.querySelectorAll('a[href],button,input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter((e) => !e.closest('#kaRoot') && e.getClientRects().length > 0).slice(0, 5).map((e) => e.tagName.toLowerCase() + (e.id ? '#' + e.id : '') + '.' + String(e.className).slice(0, 30)));
+if (wanted('G1')) {
+  for (const v of ['phone', 'desktop']) {
+    const { ctx, page, net } = await setup({ view: v, onboarded: false });
+    await ctx.addInitScript(WATCH_APP);
+    await rec.run(`G1-${v}`, 'Accounts on, not signed in: the welcome is the only way in; the study app never shows, at any address', page, async (c) => {
+      await open(page);
+      await waitView(page, 'welcome');
+      const w = await text(page, '#kaRoot');
+      c.check(/KaiSip is free\. A free account keeps your progress safe and in sync with the Android app\./.test(w), 'the welcome says why, in one honest line: ' + w.slice(0, 260));
+      const paths = await page.evaluate(() => [...document.querySelectorAll('#kaRoot .ka-path-t')].map((x) => x.textContent));
+      c.check(JSON.stringify(paths) === JSON.stringify(['Create a free account', 'Sign in']), 'two paths, both to an account: ' + paths.join(' / '));
+      c.check(!/look around|without an account|Start studying free|Skip|Not now|Maybe later|limited|hurry|today only/i.test(w), 'no way round the account and no hurry words');
+      c.check(!(await page.evaluate(() => window.__appSeen)), 'the study app was never on screen while the page loaded');
+      c.check(!(await page.evaluate(() => document.querySelector('.ob-welcome'))), 'the older first-visit sheet does not open behind it');
+      c.check((await outsideKa(page)).length === 0, 'nothing outside the welcome can be reached by keyboard: ' + JSON.stringify(await outsideKa(page)));
+      c.check(net.cloudJs === 0 && net.supabase === 0 && net.turnstile === 0 && net.hibp.length === 0, `the welcome loads no account script and sends nothing (${net.cloudJs}, ${net.supabase}, ${net.turnstile})`);
+      const links = await page.evaluate(() => [...document.querySelectorAll('#kaRoot a[href]')].map((a) => a.getAttribute('href')));
+      c.check(['terms.html', 'privacy.html', 'support.html'].every((h) => links.includes(h)), 'Terms, Privacy and Help are linked from the welcome: ' + links.join(','));
+      c.check(!(await page.evaluate(() => document.getElementById('kaKept'))), 'a new visitor sees no "progress kept" line');
+      await axe(page, c, `the welcome (${v})`);
+      await noOverflow(page, c, `the welcome (${v})`);
+      await c.shot(`g1-${v}-welcome`);
+      await page.keyboard.press('Escape');
+      await sleep(150);
+      c.check((await view(page)) === 'welcome' && !(await appShown(page)), 'Escape does not open the app');
+      // Every study address, opened fresh and changed in the open page: still the way in.
+      for (const h of STUDY_HASHES) {
+        await page.goto('about:blank');
+        await open(page, h);
+        c.check((await view(page)) === 'welcome' && !(await page.evaluate(() => window.__appSeen)), `${h} opened fresh: still the welcome, no flash (${await view(page)})`);
+      }
+      for (const h of STUDY_HASHES) {
+        await page.evaluate((x) => { location.hash = x; }, h);
+        await sleep(120);
+        c.check(['welcome'].includes(await view(page)) && !(await appShown(page)), `${h} in the open page: still the welcome`);
+      }
+      // The app's own doors, called directly (a stale link, the keyboard): none opens the app.
+      await page.evaluate(() => { try { navTo(null, 'practice'); } catch (e) {} try { switchTab('notes'); } catch (e) {} try { kaGoApp('home'); } catch (e) {} try { kaLand(); } catch (e) {} try { kaClose(); } catch (e) {} });
+      await sleep(200);
+      c.check(!(await appShown(page)) || (await view(page)) !== '', 'the app stays closed behind an account screen: ' + (await view(page)));
+      c.check(!(await page.evaluate(() => window.__appSeen)), 'and it was never on screen');
+      // The account addresses open their screens; the wordmark goes back to the welcome, never into the app.
+      for (const [h, vw] of [['#sign-in', 'signin'], ['#create-account', 'signup1'], ['#forgot-password', 'forgot1']]) {
+        await page.goto('about:blank');
+        await open(page, h);
+        c.check((await view(page)) === vw && !(await page.evaluate(() => window.__appSeen)), `${h} opens its screen with no flash (${await view(page)})`);
+        c.check(!/Back to studying|look around/i.test(await text(page, '#kaRoot')), `${h}: no way into the app without an account`);
+      }
+      await page.click('#kaRoot .ka-brand');
+      await waitView(page, 'welcome');
+      // The public pages stay public (no gate, no account script).
+      const pub = await ctx.newPage();
+      for (const p of ['/terms', '/privacy', '/support', '/delete-account', '/human-check']) {
+        const res = await pub.goto(SITE + p);
+        const st = await pub.evaluate(() => ({ gate: document.documentElement.hasAttribute('data-ka-gate'), root: !!document.getElementById('kaRoot'), words: document.body.innerText.trim().length }));
+        c.check(res.status() === 200 && !st.gate && !st.root && st.words > 30, `${p} is public: ${res.status()} ${JSON.stringify(st)}`);
+      }
+      await pub.close();
+    });
+    await ctx.close();
+  }
+}
+
+if (wanted('G2')) {
+  const { ctx, page, server } = await setup({ view: 'phone' });
+  await ctx.addInitScript(WATCH_APP);
+  await makeAccount(server);
+  await rec.run('G2', 'A deep link asked for while signed out opens after sign-in (this tab only), then is forgotten', page, async (c) => {
+    await open(page, '#glossary');
+    await waitView(page, 'welcome');
+    c.check((await store(page)).session.kaisip_acct_intent_v1 === 'hash:#glossary' && !(await store(page)).local.kaisip_acct_intent_v1, 'the address is kept for this tab only: ' + (await store(page)).session.kaisip_acct_intent_v1);
+    await page.click('.ka-path-secondary');
+    await waitView(page, 'signin');
+    await page.fill('#kaEmail', EMAIL); await page.fill('#kaPass', PW); await page.press('#kaPass', 'Enter');
+    await waitView(page, '');
+    await page.waitForFunction(() => S.activeTab === 'glossary', null, { timeout: 8000 }).catch(() => {});
+    c.check((await page.evaluate(() => S.activeTab)) === 'glossary' && await appShown(page), 'signed in: the Glossary opens, as asked: ' + (await page.evaluate(() => S.activeTab)));
+    c.check(!(await store(page)).session.kaisip_acct_intent_v1, 'and the kept address is used up');
+    await settled(page);
+    // A reload stays in (no welcome, no flash of a sign-in screen), on the address in the bar.
+    await page.goto('about:blank');
+    await open(page, '#notes');
+    c.check((await view(page)) === '' && (await page.evaluate(() => S.activeTab)) === 'topics' && await appShown(page), 'a later visit goes straight to the page asked for: ' + (await dump(page)) + ' ' + (await page.evaluate(() => S.activeTab)));
+    // A hostile or unknown address is not kept.
+    await page.evaluate(() => navGoFocus(null, 'account'));
+    await page.click('#kaOut'); await page.click('#flagModal #kaGo');
+    await waitView(page, 'signin');
+    await page.goto('about:blank');
+    await open(page, '#javascript:alert(1)');
+    c.check(!(await store(page)).session.kaisip_acct_intent_v1, 'an unknown address is not remembered');
+    await page.goto('about:blank');
+    await open(page, '#account');
+    await page.goto('about:blank');
+    await signIn(page);
+    await waitView(page, '');
+    await page.waitForSelector('#kaHero .ka-who', { timeout: 8000 }).catch(() => {});
+    c.check((await page.evaluate(() => S.activeTab)) === 'account', 'the Account page asked for while signed out opens after sign-in: ' + (await page.evaluate(() => S.activeTab)));
+  });
+  await ctx.close();
+}
+
+if (wanted('G3')) {
+  const ids = freeIds(2, 3);
+  const { ctx, page, server, net } = await setup({ view: 'phone', seed: profileSeed(ids) });
+  await ctx.addInitScript(WATCH_APP);
+  await makeAccount(server);
+  await rec.run('G3', 'Signed in: the learner keeps studying when the sync service is down, offline, or the accounts script cannot load', page, async (c) => {
+    await signIn(page);
+    await waitView(page, 'firstsync');
+    await page.click('#kaGo');
+    await waitView(page, '');
+    await settled(page);
+    const before = await answerKeys(page);
+    // 1. The sync service answers with errors.
+    net.supaMode = '503';
+    await page.goto('about:blank');
+    await open(page);
+    await sleep(1200);
+    c.check((await view(page)) === '' && await appShown(page), 'service errors: still in the study app (' + (await view(page)) + ')');
+    c.check((await store(page)).local.kaisip_auth_v1 && !(await store(page)).local.kaisip_auth_ended_v1, 'a server error does not end the sign-in');
+    net.supaMode = '';
+    // 2. No connection to the service at all.
+    server.offline = true;
+    await page.goto('about:blank');
+    await open(page, '#practice');
+    await sleep(1200);
+    c.check((await view(page)) === '' && (await page.evaluate(() => S.activeTab)) === 'practice' && await appShown(page), 'no connection: Practice opens (' + (await view(page)) + ')');
+    await goYou(page);
+    c.check(/Waiting for a connection|Couldn.t sync|Synced/.test(await text(page, '#kaCard')), 'the card says so calmly: ' + (await text(page, '#kaCard')));
+    // 3. The accounts script itself cannot be loaded.
+    net.cloudJsMode = 'down';
+    await page.goto('about:blank');
+    await open(page);
+    await sleep(1200);
+    c.check((await view(page)) === '' && await appShown(page) && (await page.evaluate(() => typeof window.KaiSipCloud)) === 'undefined', 'the accounts script is unreachable: still in the study app');
+    await page.evaluate(() => navTo(null, 'practice'));
+    await sleep(300);
+    c.check((await view(page)) === '' && await appShown(page), 'and moving between pages does not close it');
+    c.check(JSON.stringify(await answerKeys(page)) === JSON.stringify(before), 'progress is untouched through all three');
+    c.check((await store(page)).local.kaisip_auth_v1, 'the sign-in is still saved');
+    net.cloudJsMode = ''; server.offline = false;
+  }, { allowErrors: true });
+  await ctx.close();
+}
+
+if (wanted('G4')) {
+  for (const how of ['30 days', '14 unused days', 'ended by the service']) {
+    const ids = freeIds(3, 3);
+    const { ctx, page, server } = await setup({ view: how === '30 days' ? 'desktop' : 'phone', seed: profileSeed(ids) });
+    await ctx.addInitScript(WATCH_APP);
+    await makeAccount(server);
+    await rec.run(`G4-${how.replace(/ /g, '-')}`, `The sign-in ends (${how}): asked to sign in again, nothing in this browser is touched, and they come back to where they were`, page, async (c) => {
+      await signIn(page);
+      await waitView(page, 'firstsync');
+      await page.click('#kaGo');
+      await waitView(page, '');
+      await settled(page);
+      const before = await answerKeys(page);
+      if (how === 'ended by the service') {
+        // The service ends the session (signed out everywhere, a changed password elsewhere).
+        const uid = server.userByEmail(EMAIL).id;
+        for (const [f, info] of server.families) if (info.userId === uid) server.revokedFamilies.add(f);
+        await page.evaluate(() => { const s = JSON.parse(localStorage.getItem('kaisip_auth_v1')); s.expiresAt = 1000; localStorage.setItem('kaisip_auth_v1', JSON.stringify(s)); });
+        // A question is open: the gate waits for it.
+        await page.evaluate(() => navTo(null, 'practice'));
+        await page.evaluate(() => startSession(5, 'all'));
+        await page.waitForFunction(() => { const pf = document.getElementById('practiceFocus'); return pf && !pf.hidden; }, null, { timeout: 8000 });
+        await page.evaluate(() => kaSyncNow(true));
+        await page.waitForFunction(() => !localStorage.getItem('kaisip_auth_v1'), null, { timeout: 8000 });
+        await sleep(400);
+        c.check((await view(page)) === '' && await page.evaluate(() => !document.getElementById('practiceFocus').hidden), 'the sign-in ended while a question is open: the question stays: ' + (await dump(page)) + ' ' + (await page.evaluate(() => document.getElementById('practiceFocus').hidden + ' ' + S.activeTab + ' ' + kaHost.busy())));
+        await page.evaluate(() => { try { setPracticeView('hub'); } catch (e) {} });
+        await sleep(300);
+        await page.evaluate(() => { try { navTo(null, 'notes'); } catch (e) {} });
+        await waitView(page, 'signin');
+      } else {
+        await page.evaluate((h) => { const s = JSON.parse(localStorage.getItem('kaisip_auth_v1')); if (h === '30 days') s.signedInAt = Date.now() - 31 * 86400000; else s.lastActiveAt = Date.now() - 15 * 86400000; localStorage.setItem('kaisip_auth_v1', JSON.stringify(s)); }, how);
+        await page.goto('about:blank');
+        await page.evaluate(() => 0);
+        await open(page, '#notes');
+        await waitView(page, 'signin');
+        c.check(!(await page.evaluate(() => window.__appSeen)), 'the study app does not flash before "sign in again"');
+      }
+      c.check(/Please sign in again to keep studying\. Your progress is safe in this browser\./.test(await text(page, '#kaNotice')), 'the words: ' + (await text(page, '#kaNotice')));
+      c.check(!(await appShown(page)), 'the study app is closed');
+      const st = await store(page);
+      const ended = JSON.parse(st.local.kaisip_auth_ended_v1 || 'null');
+      c.check(!st.local.kaisip_auth_v1 && ended && typeof ended.reason === 'string', 'the session is gone and only the reason is kept: ' + JSON.stringify(ended));
+      c.check(JSON.stringify(await answerKeys(page)) === JSON.stringify(before) && before.ids.length === 3, 'saved progress is untouched: ' + JSON.stringify(before.ids));
+      await axe(page, c, `sign in again (${how})`);
+      await noOverflow(page, c, `sign in again (${how})`);
+      await c.shot(`g4-${how.replace(/ /g, '-')}`);
+      // A reload shows the same screen, still with no flash.
+      await page.goto('about:blank');
+      await open(page);
+      c.check((await view(page)) === 'signin' && !(await page.evaluate(() => window.__appSeen)), 'a reload: sign in again, no flash (' + (await view(page)) + ')');
+      await page.fill('#kaEmail', EMAIL); await page.fill('#kaPass', PW); await page.press('#kaPass', 'Enter');
+      await waitView(page, '');
+      await settled(page);
+      c.check(await appShown(page) && !(await store(page)).local.kaisip_auth_ended_v1, 'signed in again: back in the app, the note cleared, no preview the second time');
+      if (how !== 'ended by the service') c.check(true, 'landed on ' + (await page.evaluate(() => S.activeTab)));
+      c.check(JSON.stringify((await answerKeys(page)).ids) === JSON.stringify(before.ids), 'and the same progress');
+    }, { allowErrors: how === 'ended by the service' });
+    await ctx.close();
+  }
+}
+
+if (wanted('G5')) {
+  const mine = freeIds(4, 3);
+  const OLD = 'd1_001';   // answered before the website's free sample (v12.50); the website no longer loads it
+  const { ctx, page, server } = await setup({ view: 'phone', seed: profileSeed(mine, [OLD]) });
+  await ctx.addInitScript(WATCH_APP);
+  await rec.run('G5', 'A visitor who studied before accounts existed: told the progress is kept, offered it into the new account, and the older answers stay here', page, async (c) => {
+    await open(page);
+    await waitView(page, 'welcome');
+    c.check(!(await page.evaluate(() => window.__appSeen)), 'no flash of the app, even with progress saved here');
+    c.check((await text(page, '#kaKept')) === 'The progress you already have in this browser is kept. After you sign in, you choose whether to add it to your account.', 'the welcome says the progress is kept: ' + (await text(page, '#kaKept')));
+    const before = await answerKeys(page);
+    c.check(before.ids.length === 4 && before.ids.includes(OLD), 'nothing was removed by the gate: ' + before.ids.join(','));
+    await axe(page, c, 'the welcome, returning visitor');
+    await c.shot('g5-welcome-returning');
+    // Create the account: email and agreement, the code, the password.
+    await page.click('.ka-path-primary');
+    await waitView(page, 'signup1');
+    await page.fill('#kaEmail', 'old.hand@example.com');
+    await page.check('#kaTerms', { force: true });
+    await page.click('#kaGo');
+    await waitView(page, 'signup2');
+    await page.fill('#kaCode', server.codes.get('old.hand@example.com'));
+    await page.press('#kaCode', 'Enter');
+    await waitView(page, 'signup3');
+    await page.fill('#kaPw', PW2);
+    await page.click('#kaGo');
+    await waitView(page, 'firstsync');
+    c.check((await text(page, '#kaRoot h1')) === norm('Add this browser’s progress to your account?'), 'the first sign-in offers this browser’s progress: ' + (await text(page, '#kaRoot h1')));
+    const row = await page.evaluate(() => [...document.querySelectorAll('.ka-cols tbody tr')[0].children].map((x) => x.textContent));
+    c.check(JSON.stringify(row) === JSON.stringify(['Questions answered', '3', '0', '3']), 'it counts what the account can hold (3 of 4): ' + JSON.stringify(row));
+    const older = await text(page, '#kaOlder');
+    c.check(/^1 answer here is for a question now only in the Android app\. It stays saved and counted in this browser, but the website can.t add it to your account\.$/.test(older), 'and says plainly what happens to the older answer: ' + older);
+    await axe(page, c, 'first sync preview with older answers');
+    await noOverflow(page, c, 'first sync preview with older answers');
+    await c.shot('g5-preview-older');
+    await page.click('#kaGo');
+    await waitView(page, '');
+    await settled(page);
+    const after = await answerKeys(page);
+    c.check(JSON.stringify(after) === JSON.stringify(before), 'in the app with all four answers, still counted: ' + JSON.stringify(after));
+    const sent = calls(server, '/rest/v1/sync_snapshots', 'POST').map((x) => JSON.stringify(x.body)).join('');
+    c.check(!sent.includes(OLD), 'the older answer is not sent to the account');
+    // "Not now" is also safe: tested in A7-not-now. Sign out keeps all four here.
+    await page.evaluate(() => navGoFocus(null, 'account'));
+    await page.click('#kaOut'); await page.click('#flagModal #kaGo');
+    await waitView(page, 'signin');
+    c.check(JSON.stringify((await answerKeys(page)).ids) === JSON.stringify(before.ids), 'signed out: the progress is still in this browser');
   });
   await ctx.close();
 }
