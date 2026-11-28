@@ -317,6 +317,22 @@ done < <(find assets -type f -print0)
 
 [ -f assets/favicon.ico ] && cp assets/favicon.ico "$OUT/favicon.ico"
 
+# Home mode: every file the home page and the beta page name in assets/ (the
+# Google Play badge among them) must be in the site, so a picture never breaks.
+if [ "$SITE_MODE" = "home" ]; then
+  python3 - "$OUT" <<'PYASSETS' || fail "home.html or beta.html names an assets/ file that is not published (see above)"
+import os, re, sys
+out = sys.argv[1]
+missing = []
+for page in ("home.html", "beta.html"):
+    for ref in re.findall(r"""(?:src|href)\s*=\s*["'](assets/[^"'?#]+)""", open(page).read()):
+        if not os.path.isfile(os.path.join(out, ref)):
+            missing.append(page + ": " + ref)
+if missing:
+    print("build_site: " + "; ".join(missing), file=sys.stderr); sys.exit(1)
+PYASSETS
+fi
+
 # Home and landing mode: build the web app (app mode, with all its own checks)
 # into /app/. Its _headers/_redirects are dropped: Cloudflare reads only the
 # ones at the top of the site, which carry the /app/ rules (checked here).

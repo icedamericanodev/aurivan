@@ -58,6 +58,8 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
     });
     check(loaded.styled && loaded.enhanced, 'stylesheet and script must both load under the policy');
     check(loaded.serif, 'KaiSip Serif (the upright face with the conventional f) must load');
+    const badge = await page.request.get(ORIGIN + '/assets/google-play-badge.png');
+    check(badge.status() === 200 && badge.headers()['content-type'] === 'image/png', 'the Google Play badge must be served (200, image/png): ' + badge.status());
     for (const p of ['beta', 'privacy', 'terms', 'support']) {
       const r = await page.request.get(ORIGIN + '/' + p);
       check(r.status() === 200, '/' + p + ' should still be served: ' + r.status());
@@ -91,7 +93,7 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
       const height = document.documentElement.scrollHeight;
       for (let y = 0; y < height; y += innerHeight / 2) { scrollTo(0, y); await new Promise(r => setTimeout(r, 40)); }
       await new Promise(r => setTimeout(r, 400));
-      const targets = [...document.querySelectorAll('.site-header a, main a.button, main a.text-link, main button, summary, .device-grid label, .site-footer nav a')];
+      const targets = [...document.querySelectorAll('.site-header a, main a.button, main a.text-link, main a.play-badge, main button, summary, .device-grid label, .site-footer nav a')];
       return {
         overflow: document.documentElement.scrollWidth - innerWidth,
         h1: document.querySelectorAll('h1').length,
@@ -100,6 +102,22 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
         small: targets.filter(el => el.offsetParent && el.getBoundingClientRect().height < 44).map(el => el.textContent.trim().slice(0, 30) || el.className),
         wrapped: [...document.querySelectorAll('.button')].filter(b => b.offsetParent && b.getBoundingClientRect().height > 60).map(b => b.textContent.trim()),
         enhanced: document.querySelector('.story').classList.contains('is-enhanced'),
+        // Google Play badge (Google's rules): the official file, at least 40px
+        // tall and no taller than the main button, alt text as Google words
+        // it, a quarter of its height clear on every side, the trademark line
+        // in the footer, and never beside a rating or review ask.
+        badges: [...document.querySelectorAll('main a.play-badge')].filter((a) => a.offsetParent).map((a) => {
+          const img = a.querySelector('img'); const r = img.getBoundingClientRect();
+          const btn = a.parentElement.querySelector('a.button');
+          const pad = r.height / 4;
+          const crowd = [...a.parentElement.parentElement.querySelectorAll('a, button, p, span, img, h1, h2')].filter((el) => !a.contains(el) && !el.contains(a) && el.offsetParent).some((el) => {
+            const o = el.getBoundingClientRect();
+            return o.width && o.height && o.left < r.right + pad && o.right > r.left - pad && o.top < r.bottom + pad && o.bottom > r.top - pad;
+          });
+          return { src: img.getAttribute('src'), alt: img.alt, h: r.height, btnH: btn ? btn.getBoundingClientRect().height : 0, loaded: img.complete && img.naturalWidth === 478, crowd,
+            nearAsk: /rate|rating|review|stars/i.test(a.parentElement.textContent) };
+        }),
+        legal: /Google Play and the Google Play logo are trademarks of Google LLC\./.test(document.querySelector('.site-footer').textContent),
         ids: (() => { const all = [...document.querySelectorAll('[id]')].map(e => e.id); return all.filter((id, i) => all.indexOf(id) !== i); })(),
       };
     });
@@ -111,6 +129,12 @@ const check = (ok, label) => { if (!ok) { failures++; console.log('  FAIL', labe
     check(!info.wrapped.length, `${width}x${height} buttons wrapped to two lines: ${info.wrapped}`);
     check(!info.ids.length, `${width}x${height} duplicate ids: ${info.ids}`);
     check(info.enhanced === (width >= 900 && height >= 560), `${width}x${height} story enhancement state ${info.enhanced}`);
+    check(info.badges.length >= 1 && info.legal, `${width}x${height} the Google Play badge shows, with the trademark line in the footer`);
+    for (const b of info.badges) {
+      check(b.src === 'assets/google-play-badge.png' && b.alt === 'Get it on Google Play' && b.loaded, `${width}x${height} badge must be the official file, loaded, alt "Get it on Google Play": ${JSON.stringify(b)}`);
+      check(b.h >= 40 && (!b.btnH || b.h <= b.btnH + 1), `${width}x${height} badge height ${b.h} must be 40px or more and not taller than the button (${b.btnH})`);
+      check(!b.crowd && !b.nearAsk, `${width}x${height} badge needs clear space of a quarter of its height and no rating or review ask nearby`);
+    }
     check(!problems.length, `${width}x${height} console or network problems: ${problems}`);
     check(!external.length, `${width}x${height} external requests: ${external}`);
     await page.close();

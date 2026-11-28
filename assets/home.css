@@ -53,6 +53,11 @@ a,button,summary,label{-webkit-tap-highlight-color:transparent;touch-action:mani
 .button .arrow{display:inline-block;transition:transform .3s var(--ease)}
 .button.small{min-height:44px;padding:10px 20px;font-size:14px;gap:10px}
 .button:active{transform:scale(.97)}
+/* Google Play badge: Google's artwork as supplied (never recoloured), 56px tall
+   like the button beside it; the gaps around it keep the clear space Google
+   asks for (a quarter of its height, 14px). */
+.play-badge{display:inline-flex;flex:none;line-height:0;border-radius:10px}
+.play-badge img{width:188px;max-width:100%;height:auto}
 .text-link{display:inline-flex;align-items:center;gap:10px;min-height:44px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:1px solid var(--control)}
 .text-link .arrow{display:inline-block;transition:transform .3s var(--ease)}
 @media(hover:hover){
@@ -149,6 +154,7 @@ a,button,summary,label{-webkit-tap-highlight-color:transparent;touch-action:mani
 
 /* ---------- A call to action after the story ---------- */
 .story-cta{display:flex;align-items:center;justify-content:space-between;gap:16px 32px;flex-wrap:wrap;margin-top:clamp(48px,6vw,80px);padding:24px 28px;border-radius:28px;background:var(--raised);border:1px solid var(--line)}
+.story-acts{display:flex;flex-wrap:wrap;align-items:center;gap:16px 20px}
 .story-cta p{font:400 clamp(22px,2vw,28px)/1.2 var(--serif);letter-spacing:-.02em;color:var(--ink)}
 
 /* ---------- Feedback: one real, permission-based quote ---------- */
