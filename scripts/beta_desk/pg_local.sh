@@ -10,7 +10,9 @@
 # Needs the Postgres server binaries (PG_BIN, default /usr/lib/postgresql/16/bin)
 # and, for tests, the pgtap extension (apt: postgresql-16-pgtap). Runs Postgres
 # as the `postgres` user when started as root. Database: "t" on port 55432,
-# socket in /var/tmp/kpg (PGDIR).
+# socket in /var/tmp/kpg (PGDIR). MIGDIR (default supabase/migrations) lets the
+# mutation checks (scripts/*_sql_mutants.py, PGTAP_RUN) swap in a mutant.
+# A test file fails on any "not ok", any SQL error, or a plan miscount.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 PG_BIN="${PG_BIN:-/usr/lib/postgresql/16/bin}"
@@ -26,7 +28,7 @@ as_pg "$PG_BIN/pg_ctl -D $PGDIR/data status >/dev/null" || as_pg "$PG_BIN/pg_ctl
 P="psql -h $PGDIR -p $PORT -U postgres -v ON_ERROR_STOP=1 -q"
 psql -h "$PGDIR" -p "$PORT" -U postgres -q -c 'drop database if exists t' -c 'create database t' >/dev/null
 $P -d t -f scripts/beta_desk/shim.sql >/dev/null 2>&1
-for m in supabase/migrations/*.sql; do $P -d t -f "$m" >/dev/null; done
+for m in "${MIGDIR:-supabase/migrations}"/*.sql; do $P -d t -f "$m" >/dev/null; done
 echo "pg_local: migrations applied (database t, socket $PGDIR, port $PORT)"
 fail=0
 for t in "$@"; do
@@ -34,5 +36,6 @@ for t in "$@"; do
   printf '%s\n' "$out" | grep -E '^(not ok|# )' || true
   printf '%s: %s ok, %s not ok\n' "$t" "$(printf '%s\n' "$out" | grep -c '^ok')" "$(printf '%s\n' "$out" | grep -c '^not ok')"
   printf '%s\n' "$out" | grep -q '^not ok' && fail=1
+  printf '%s\n' "$out" | grep -q '^# Looks like you planned' && fail=1
 done
 exit $fail

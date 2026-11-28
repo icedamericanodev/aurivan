@@ -69,14 +69,24 @@ refresh_token_reuse_interval = 10
 enable_signup = true
 enable_anonymous_sign_ins = false
 enable_manual_linking = false
-# The app never offers passwords. These only harden the API path that exists anyway.
-minimum_password_length = 12
-password_requirements = "lower_upper_letters_digits_symbols"
+# Passwords (owner decision 28 Nov 2026; docs/mobile/PASSWORD_SIGN_IN_DESIGN.md):
+# at least 15 characters, no required character types (NIST SP 800-63B rev 4
+# for a password-only factor). The apps add a common-password blocklist on the
+# client. The database keeps only a password set by a session that has just
+# proved the inbox (20261128000000_password_guard.sql). Hosted: the same two
+# values (Authentication → Sign In / Providers → Email).
+minimum_password_length = 15
+password_requirements = ""
 
 [auth.rate_limit]
-# Per hour. Local Mailpit only. Hosted (custom SMTP through Resend's free
-# plan, 100 emails a day): email_sent 20, token_verifications 30,
-# sign_in_sign_ups 30, token_refresh 150.
+# Units (GoTrue v2.199.0, internal/api/apilimiter.go; password audit LOW-5):
+# email_sent is per HOUR and project-wide. token_verifications,
+# sign_in_sign_ups and token_refresh are per 5 MINUTES per IP address (burst
+# 30), with no IPv6 /64 grouping; password sign-ins share the token_refresh
+# bucket. Check the unit shown beside each box on the dashboard *(verify)*.
+# Local values below; Mailpit only. Hosted (custom SMTP through Resend's free
+# plan, 100 emails a day): email_sent 20 per hour; token_verifications 30,
+# sign_in_sign_ups 30 and token_refresh 150 per 5 minutes.
 email_sent = 2
 sms_sent = 0
 anonymous_users = 0
@@ -87,7 +97,9 @@ web3 = 0
 
 # Captcha: Cloudflare Turnstile (Managed, hostname kaisip.com). Hosted:
 # switched on LAST, after both clients send tokens and the smoke test has
-# run (ACCOUNTS_BETA_PLAN.md §4). It guards sending codes (/otp).
+# run (ACCOUNTS_BETA_PLAN.md §4). It guards /signup, /recover, /resend,
+# /magiclink, /otp and password sign-in (/token?grant_type=password), not the
+# refresh or Google (pkce) grants; `cloud_smoke.sh captcha` checks it.
 # [auth.captcha]
 # enabled = true
 # provider = "turnstile"
@@ -109,8 +121,10 @@ otp_expiry = 600
 
 # Code-only emails: the templates carry {{ .Token }} and no link. The
 # hosted copies are pasted from docs/mobile/AUTH_EMAIL_TEMPLATES.md, which
-# matches these files. Password reset is not offered, but its template is
-# code-only too, so no KaiSip email ever carries a sign-in link.
+# matches these files. "Forgot password" sends an 8-digit reset code (no
+# link), so no KaiSip email ever carries a sign-in link. The security notices
+# ("password changed", "sign-in method linked") are set on the hosted
+# dashboard only (AUTH_EMAIL_TEMPLATES.md §7 and §8).
 [auth.email.template.confirmation]
 subject = "Your KaiSip sign-in code"
 content_path = "./supabase/templates/otp_code.html"
@@ -124,8 +138,8 @@ subject = "Confirm your new email for KaiSip"
 content_path = "./supabase/templates/email_change_code.html"
 
 [auth.email.template.recovery]
-subject = "Your KaiSip sign-in code"
-content_path = "./supabase/templates/otp_code.html"
+subject = "Your KaiSip password reset code"
+content_path = "./supabase/templates/password_reset_code.html"
 
 [auth.email.template.reauthentication]
 subject = "Your KaiSip confirmation code"
