@@ -223,7 +223,7 @@ if re.search(r"\sform(?:action|method|enctype|target|novalidate)\b", page, I):
 urls = [u for u in urls if u != kit]
 for url in urls:
     url = url.replace("\\", "/")
-    if (re.match(r"//", url) or re.match(r"[a-z][a-z0-9+.-]*:", url, re.I)) and not re.match(r"(?:https://kaisip\.com/|mailto:)", url):
+    if (re.match(r"//", url) or re.match(r"[a-z][a-z0-9+.-]*:", url, re.I)) and not re.match(r"(?:https://kaisip\.com/|mailto:|https://play\.google\.com/store/apps/details\?id=com\.kaisip\.app(?:&|$))", url):
         bad.append("an address on another site: " + url)
     if url.startswith(("design-notes/", "marketing/", "mobile/", "docs/", "../")):
         bad.append("a file that is not published: " + url)

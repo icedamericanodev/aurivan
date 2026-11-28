@@ -4,7 +4,7 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
-## Phone [2.3] · in preparation (first public release)
+## Phone [2.3] · 2026-11-26 (first public release)
 
 The first public Google Play release. The public app includes a free sample of the practice questions; closed testers keep the full question bank.
 

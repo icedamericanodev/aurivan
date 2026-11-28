@@ -9310,7 +9310,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
 <script id="faqData" type="application/json">[
 {"cat":"Using the app","q":"How do I start practicing?","a":"Open Practice from the bottom navigation, choose a domain (or 'All domains'), and answer questions one at a time. Your first question loads automatically. Read the explanation after every answer, right or wrong."},
 {"cat":"Using the app","q":"What does Exam-day rehearsal change?","a":"Turn on Exam-day rehearsal in Settings (the cog on You) to practice the way exam day feels: the scenario sits inside the question, and the tips and coaching after you answer are hidden. The questions are the same exam-style questions either way. Turn it off to see the full scenario, tips and coaching again."},
-{"cat":"Using the app","q":"How does the Mock Exam work?","a":"On the website you can take the mini mock (50 questions, 80 minutes). The full mock (150 questions, 4 hours) is part of the full course in the KaiSip Android app. Both follow the real CISA blueprint: the same domain mix and a realistic spread of difficulty. Like the real exam, you see no right or wrong while you answer. Your score, a breakdown by domain and every explanation come at the end."},
+{"cat":"Using the app","q":"How does the Mock Exam work?","a":"On the website you can take the mini mock (50 questions, 80 minutes). The full mock (150 questions, 4 hours) is part of the full course, which is in testing in the KaiSip Android beta. Both follow the real CISA blueprint: the same domain mix and a realistic spread of difficulty. Like the real exam, you see no right or wrong while you answer. Your score, a breakdown by domain and every explanation come at the end."},
 {"cat":"Using the app","q":"What are Questions to revisit?","a":"Questions you miss come back the next day, then at widening intervals as you get them right, until they retire. A right answer you marked Unsure or Guessing comes back too. Today's plan starts with them, a few at a time, oldest first."},
 {"cat":"Using the app","q":"How do I save a question for later?","a":"Use the bookmark control on a question to save it. Saved questions live under Practice, then Saved, where you can revisit them any time."},
 {"cat":"Using the app","q":"What does Weak spots (under You) show?","a":"Weak spots shows how each of the five domains is going and lets you start a drill on the ones that need work. A domain shows too few yet until it has 30 answers, so a few answers never read as a verdict. From 30 answers it shows a score and a band: Building under 70, Steady 70 to 79, Strong 80 and up."},
@@ -9334,7 +9334,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
 {"cat":"About & your data","q":"Is this app affiliated with ISACA?","a":"No. It is an independent study resource. CISA is a registered trademark of ISACA; this app is for educational use only and is not a substitute for ISACA's own materials."},
 {"cat":"About & your data","q":"Where do the questions and notes come from?","a":"KaiSip's questions, explanations and study notes are original. They are drafted with AI tools, directed by a CISA-certified founder, and each question is mapped to ISACA's current CISA exam content outline. Before a question is added, it goes through automated checks and AI review checks (exam question style, technical accuracy, a blind answer test, sources and how current they are, consistency across domains, grammar, and whether the longest option gives the answer away). Then the founder reads the review reports and decides what to fix; not every question has been checked by hand yet. There is no outside panel of human reviewers yet. AI tools make mistakes, and so do people, so check anything important against ISACA's own materials and your own judgment. If something looks wrong, use Report a problem; fixes ship in app updates. A readiness range is a study estimate, not a prediction of your exam result. KaiSip is not affiliated with or endorsed by ISACA."},
 {"cat":"About & your data","q":"Does the app cost anything?","a":"Not during the beta. KaiSip is free during the beta, with no account and no ads. If paid features come later, we'll say so here first, and everything you've saved stays yours."},
-{"cat":"About & your data","q":"Is everything free on the website?","a":"The website has a free set of practice questions from every topic, plus all the study notes, the glossary, and review of what you've answered. The full course, with every practice question and full mock exams, is in the KaiSip Android app (in beta now)."},
+{"cat":"About & your data","q":"Is everything free on the website?","a":"The website has a free set of practice questions from every topic, plus all the study notes, the glossary, and review of what you've answered. The full course, with every practice question and full mock exams, is in testing in the KaiSip Android beta."},
 {"cat":"About & your data","q":"Is my data private?","a":"Yes. Your progress is stored only in your own browser and never leaves your device. There is no sign-up, and your answers are not sent to any server."},
 {"cat":"About & your data","q":"Where is my progress saved?","a":"All progress is saved locally in your browser. Clearing your browser data or using a different device or browser will start you fresh. Open Settings (the cog on You), then use Your data to back up a copy, restore one, or start fresh."},
 {"cat":"About & your data","q":"How do I report a problem or suggest a feature?","a":"Open Settings (the cog on You), then Send feedback. It goes straight to the team."}
@@ -16665,7 +16665,7 @@ function renderHome() {
   // first; the name waits). Showing it counts, for today only.
   var appCard = appCtaTodayHtml();
   // iPhone and iPad Safari: how to add KaiSip to the Home Screen (v13.1).
-  var installCard = installTipHtml();
+  var installCard = installTipHtml(r.answered);
   var finalWeek = todayFinalWeekHtml(days);
   var freeDone = todayFreeDoneHtml();
   var todayKey = parityDayKey(now.getTime());
@@ -26719,17 +26719,21 @@ function installTipDue() {
     return localStorage.getItem(INSTALL_TIP_KEY) !== 'hidden';
   } catch (e) { return false; }
 }
-function installTipHtml() {
+function installTipHtml(answered) {
   if (!installTipDue()) return '';
   return '<section class="td-app td-install" id="tdInstall" aria-labelledby="tdInstallH">'
     + '<div class="plnt-invite"><span class="you-ico" aria-hidden="true">' + ico('add-square', 20) + '</span>'
     + '<div class="plnt-invite-t"><h2 class="plnt-invite-h" id="tdInstallH">Add KaiSip to your Home Screen</h2>'
-    + '<p class="plnt-invite-m">It opens full screen, like an app.</p>'
+    + '<p class="plnt-invite-m">It opens full screen, like an app. It still needs an internet connection.</p>'
     + '<ol class="td-install-steps">'
     + '<li>Tap <strong>Share</strong>' + ico('share', 18) + 'in Safari. Don&rsquo;t see it? Tap <strong>More</strong> (&middot;&middot;&middot;) first.</li>'
     + '<li>Choose <strong>Add to Home Screen</strong>.</li>'
     + '<li>Tap <strong>Add</strong>.</li></ol>'
-    + '<p class="td-install-note">The Home Screen app keeps its own progress. Studied here already? Use Back up in Settings, then Restore in the Home Screen app.</p>'
+    // Safari and the Home Screen app keep separate progress: before any
+    // answer, study there from the start; after, move it with Back up/Restore.
+    + '<p class="td-install-note">' + (answered > 0
+      ? 'The Home Screen app starts empty: progress saved in Safari does not move across by itself. To bring it with you, go to You, then Settings, and tap Back up. Then tap Restore in Settings in the Home Screen app, and keep studying there.'
+      : 'Then open KaiSip from your Home Screen and study there, so your progress stays in one place.') + '</p>'
     + '<div class="plnt-invite-acts"><button type="button" class="plnt-ghost plnt-ghost-quiet" onclick="installTipHide()" aria-describedby="tdInstallH">Hide tip</button></div>'
     + '</div></div></section>';
 }

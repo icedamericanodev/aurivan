@@ -53,13 +53,10 @@ a,button,summary,label{-webkit-tap-highlight-color:transparent;touch-action:mani
 .button .arrow{display:inline-block;transition:transform .3s var(--ease)}
 .button.small{min-height:44px;padding:10px 20px;font-size:14px;gap:10px}
 .button:active{transform:scale(.97)}
-/* The second button beside a filled one (hero: the waitlist beside "Study free on the web"). */
-.button.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
 .text-link{display:inline-flex;align-items:center;gap:10px;min-height:44px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:1px solid var(--control)}
 .text-link .arrow{display:inline-block;transition:transform .3s var(--ease)}
 @media(hover:hover){
   .button:hover{transform:translateY(-2px);box-shadow:0 14px 26px -14px color-mix(in srgb,var(--btn) 70%,transparent)}
-  .button.ghost:hover{box-shadow:inset 0 0 0 1.5px var(--ink),0 14px 26px -14px color-mix(in srgb,var(--btn) 45%,transparent)}
   .button:hover .arrow{transform:translate(3px,-3px)}
   .text-link:hover .arrow{transform:translateY(4px)}
 }
@@ -110,7 +107,7 @@ a,button,summary,label{-webkit-tap-highlight-color:transparent;touch-action:mani
 /* ---------- Facts strip ---------- */
 .facts{border-block:1px solid var(--line)}
 .facts ul{display:grid;grid-template-columns:repeat(4,1fr);gap:8px 28px;padding-block:22px}
-@media(min-width:1200px){.facts ul{grid-template-columns:repeat(4,auto);justify-content:space-between}.facts li span{white-space:nowrap}}
+@media(min-width:1320px){.facts ul{grid-template-columns:repeat(4,auto);justify-content:space-between}.facts li span{white-space:nowrap}}
 .facts li{display:flex;align-items:center;gap:12px;font-size:15px;color:var(--ink2);line-height:1.35}
 .facts svg{flex-shrink:0;width:22px;height:22px;color:var(--accent)}
 
