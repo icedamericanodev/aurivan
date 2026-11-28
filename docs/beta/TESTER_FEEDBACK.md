@@ -318,6 +318,13 @@ answered all 171 without the key: 170 matched. The one miss, d3_087, was
 ambiguous before the rewrite (the rewrite only moved a phrase) and is
 followed up on its own. Packed CISA stems fell from 62 to 23.
 
+**d3_087 follow-up (web v13.2.1, 28 Nov 2026):** a first fix kept key A and
+lost the blind test 0 of 3. The exam developer, the senior item writer and the
+Domain 3 auditor then agreed on key B: blue-green deployment speeds recovery
+but prevents no defect, so easy switch-back eroding testing and change
+approval (the controls that failed) is the GREATEST risk, consistent with
+d3_127. Three fresh blind testers chose B with high confidence.
+
 **AAIA rewrite (28 Nov 2026, course not yet switched on):** the same pass rewrote
 557 of 1,000 AAIA questions. Domain experts made 33 corrections, and the blind
 test matched 557 of 557, then 38 of 38 after the corrections.

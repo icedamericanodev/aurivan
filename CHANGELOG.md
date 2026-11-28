@@ -62,6 +62,11 @@ The first update after the 2.0.0 launch (closed testing). Play version name exac
 - A learner saw Android's navigation buttons covering the buttons at the bottom of a screen; bottom buttons now sit above the navigation bar.
 - A learner found a password policy question unclear; it now states that management requires the controls.
 
+## Web [v13.2.1] · 2026-11-28
+
+### Fixed
+- A practice question on blue-green deployment now marks the answer that matches how the exam thinks: a faster way to recover never replaces checks that stop faulty releases.
+
 ## Web [v13.2] · 2026-11-28 · KaiSip is on the web
 
 ### New
