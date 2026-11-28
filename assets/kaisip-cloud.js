@@ -7088,6 +7088,7 @@ function isCheckCorrect(correctIndex, displayChoice, perm) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.spreadSiblings = spreadSiblings;
 exports.isRelaxedSibling = isRelaxedSibling;
+exports.groupsForShortDomains = groupsForShortDomains;
 exports.oneOfEachGroup = oneOfEachGroup;
 exports.takeApart = takeApart;
 exports.relaxedMark = relaxedMark;
@@ -7147,13 +7148,104 @@ function isRelaxedSibling(ids, id, groupOf) {
     }
     return false;
 }
-function oneOfEachGroup(pool, rng) {
+const MOST_DOMAINS_TRIED = 8;
+function groupsForShortDomains(pool, targets) {
+    var _a;
+    const need = new Map(targets);
+    const lower = (domainId) => {
+        const n = need.get(domainId);
+        if (n !== undefined)
+            need.set(domainId, n - 1);
+    };
+    const domainsOf = new Map();
+    for (const q of pool) {
+        if (q.siblingGroup === undefined) {
+            lower(q.domainId);
+            continue;
+        }
+        const domains = domainsOf.get(q.siblingGroup);
+        if (domains)
+            domains.add(q.domainId);
+        else
+            domainsOf.set(q.siblingGroup, new Set([q.domainId]));
+    }
+    const cross = [];
+    for (const [group, domains] of domainsOf) {
+        if (domains.size === 1)
+            lower([...domains][0]);
+        else
+            cross.push([group, domains]);
+    }
+    const short = [...need].filter(([domainId, n]) => n > 0 && cross.some(([, domains]) => domains.has(domainId)));
+    if (short.length === 0)
+        return new Map();
+    const giveOne = (holder, domainId, asked) => {
+        asked.add(domainId);
+        for (const [group, domains] of cross) {
+            if (!domains.has(domainId) || holder.has(group))
+                continue;
+            holder.set(group, domainId);
+            return true;
+        }
+        for (const [group, domains] of cross) {
+            if (!domains.has(domainId))
+                continue;
+            const other = holder.get(group);
+            if (asked.has(other) || !giveOne(holder, other, asked))
+                continue;
+            holder.set(group, domainId);
+            return true;
+        }
+        return false;
+    };
+    const fillAll = (holder, wanted) => wanted.every(([domainId, n]) => {
+        for (let k = 0; k < n; k++)
+            if (!giveOne(holder, domainId, new Set()))
+                return false;
+        return true;
+    });
+    const count = short.length;
+    const sets = count > MOST_DOMAINS_TRIED
+        ? []
+        : Array.from({ length: 2 ** count - 1 }, (_, i) => short.filter((_d, j) => ((2 ** count - 1 - i) >> (count - 1 - j)) & 1));
+    sets.sort((a, b) => b.length - a.length);
+    const full = (_a = sets.find((set) => fillAll(new Map(), set))) !== null && _a !== void 0 ? _a : [];
+    const holder = new Map();
+    fillAll(holder, full);
+    const open = new Map(short.filter((d) => !full.includes(d)));
+    for (;;) {
+        let next;
+        for (const [domainId, n] of open)
+            if (n > 0 && (next === undefined || n > open.get(next)))
+                next = domainId;
+        if (next === undefined)
+            break;
+        if (giveOne(holder, next, new Set()))
+            open.set(next, open.get(next) - 1);
+        else
+            open.delete(next);
+    }
+    const given = new Map();
+    for (const [group] of cross) {
+        const domainId = holder.get(group);
+        if (domainId !== undefined)
+            given.set(group, domainId);
+    }
+    return given;
+}
+function oneOfEachGroup(pool, rng, targets) {
     if (!pool.some((q) => q.siblingGroup !== undefined))
         return pool;
+    const mustBeFrom = targets ? groupsForShortDomains(pool, targets) : undefined;
     const chosen = new Map();
     for (const q of (0, random_1.shuffled)(pool, rng)) {
-        if (q.siblingGroup !== undefined && !chosen.has(q.siblingGroup))
-            chosen.set(q.siblingGroup, q.id);
+        const g = q.siblingGroup;
+        if (g === undefined || chosen.has(g))
+            continue;
+        const domainId = mustBeFrom === null || mustBeFrom === void 0 ? void 0 : mustBeFrom.get(g);
+        if (domainId !== undefined && q.domainId !== domainId)
+            continue;
+        chosen.set(g, q.id);
     }
     return pool.filter((q) => q.siblingGroup === undefined || chosen.get(q.siblingGroup) === q.id);
 }
@@ -12168,7 +12260,7 @@ function decodeUtf8(bytes) {
   api["config"] = pub(load("src/webcloud/config.ts"));
   api["passwordRules"] = pub(load("src/engine/passwordRules.ts"));
   api["breach"] = pub(load("src/webcloud/breach.ts"));
-  api.sourceHash = "f161b854f4a92572";
+  api.sourceHash = "5aadc2138e0a6fae";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

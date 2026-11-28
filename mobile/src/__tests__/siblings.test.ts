@@ -101,6 +101,15 @@ describe('engine: a mock never holds two siblings', () => {
     expect(a()).toBe(b());
   });
 
+  it('oneOfEachGroup with no group and the domain targets a mock passes: still the same pool, no random number', () => {
+    // buildMockExam passes each domain's share (mock-sibling-scarce.test.ts covers the groups that span domains).
+    const targets = new Map(cisa.domains.map((d) => [d.id, 30]));
+    const a = createRng(7);
+    const b = createRng(7);
+    expect(oneOfEachGroup(bank, a, targets)).toBe(bank);
+    expect(a()).toBe(b());
+  });
+
   it('full and mini mocks: at most one question per group, at full length', () => {
     // Every pair of neighbouring questions becomes a sibling group (a made-up course).
     const grouped: PackQuestion[] = bank.map((q, i) => ({ ...q, siblingGroup: `g${Math.floor(i / 2)}` }));
